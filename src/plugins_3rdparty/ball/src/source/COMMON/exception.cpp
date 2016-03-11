@@ -329,9 +329,9 @@ namespace BALL
 		
 			GlobalExceptionHandler::GlobalExceptionHandler()
 			{
-				std::set_terminate(terminate);
-				std::set_unexpected(terminate);
-				std::set_new_handler(newHandler);
+//				std::set_terminate(terminate);
+//				std::set_unexpected(terminate);
+//				std::set_new_handler(newHandler);
 			}
 
 			void GlobalExceptionHandler::newHandler()
