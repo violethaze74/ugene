@@ -25,12 +25,12 @@
 #include <QLabel>
 #include <QTableWidgetItem>
 #include <QUrl>
+#include <ui_LogSettingsWidget.h>
 
 #include <LogSettings.h>
 
 #include <U2Gui/AppSettingsGUI.h>
 
-#include "ui/ui_LogSettingsWidget.h"
 
 namespace U2 {
 

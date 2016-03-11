@@ -24,11 +24,10 @@
 
 #include <QDialog>
 
-#include <U2Core/MAlignment.h>
-#include <U2Core/Task.h>
-
+#include <ui_SiteconBuildDialog.h>
 #include "SiteconAlgorithm.h"
-#include "ui/ui_SiteconBuildDialog.h"
+#include <U2Core/Task.h>
+#include <U2Core/MAlignment.h>
 
 namespace U2 {
 

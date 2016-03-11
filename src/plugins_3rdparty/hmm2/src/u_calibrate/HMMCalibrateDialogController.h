@@ -25,7 +25,7 @@
 #include <QDialog>
 
 #include "uhmmcalibrate.h"
-#include "ui/ui_HMMCalibrateDialog.h"
+#include "ui_HMMCalibrateDialog.h"
 
 namespace U2 {
 

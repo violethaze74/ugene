@@ -24,11 +24,12 @@
 
 #include <QDialog>
 
+#include <ui_HMMBuildDialog.h>
+
 #include <U2Core/MAlignment.h>
 #include <U2Core/Task.h>
 
 #include "uhmmbuild.h"
-#include "ui/ui_HMMBuildDialog.h"
 
 struct plan7_s;
 

@@ -22,8 +22,9 @@
 #ifndef _U2_IMPORT_ANNOTATIONS_FROM_CSV_DIALOG_H_
 #define _U2_IMPORT_ANNOTATIONS_FROM_CSV_DIALOG_H_
 
+#include <ui_ImportAnnotationsFromCSVDialog.h>
+
 #include "CSVColumnConfiguration.h"
-#include "ui/ui_ImportAnnotationsFromCSVDialog.h"
 
 class QTreeWidgetItem;
 

@@ -67,8 +67,8 @@ private:
     bool checkReferencesState();
     void initSaveController();
 
-    Ui::ConvertToSQLiteDialog ui;
     SaveDocumentController *saveController;
+    Ui_ConvertToSQLiteDialog ui;
 
     GUrl destinationUrl;
     GUrl sourceUrl;

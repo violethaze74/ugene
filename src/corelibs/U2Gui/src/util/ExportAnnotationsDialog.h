@@ -28,11 +28,8 @@
 
 namespace U2 {
 
-namespace Ui {
+class Ui_ExportAnnotationsDialog;
 
-class ExportAnnotationsDialog;
-
-}
 
 class SaveDocumentController;
 
@@ -56,8 +53,8 @@ private:
     void                            initSaveController(const QString &filename);
 
     QList<QString>                  supportedFormatsExts;
-    Ui::ExportAnnotationsDialog *   ui;
     SaveDocumentController *        saveController;
+    Ui_ExportAnnotationsDialog *    ui;
 };
 
 } // namespace U2

@@ -23,9 +23,9 @@
 #define _U2_CONSTRUCT_MOLECULE_DIALOG_H_
 
 #include <QList>
+#include <ui_ConstructMoleculeDialog.h>
 
 #include "CloningUtilTasks.h"
-#include "ui/ui_ConstructMoleculeDialog.h"
 
 namespace U2 {
 

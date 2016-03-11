@@ -22,13 +22,13 @@
 #ifndef _U2_QD_RUN_DIALOG_H_
 #define _U2_QD_RUN_DIALOG_H_
 
+#include <ui_RunQueryDialog.h>
+#include <ui_QDDialog.h>
+
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
 #include <U2Gui/RegionSelector.h>
-
-#include "ui/ui_RunQueryDialog.h"
-#include "ui/ui_QDDialog.h"
 
 namespace U2 {
 

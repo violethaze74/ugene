@@ -25,7 +25,7 @@
 #include <QDialog>
 
 #include "ExportConsensusVariationsTask.h"
-#include "ui/ui_ExportConsensusDialog.h"
+#include <ui_ExportConsensusDialog.h>
 
 namespace U2 {
 
