@@ -29,7 +29,8 @@ class DistanceMatrixDialogFiller : public Filler {
 public:
     enum SaveFormat {
         HTML,
-        CSV
+        CSV,
+        NONE
     };
 
     DistanceMatrixDialogFiller(HI::GUITestOpStatus &os, bool _hamming=true, bool _counts=true, bool _excludeGaps=true);

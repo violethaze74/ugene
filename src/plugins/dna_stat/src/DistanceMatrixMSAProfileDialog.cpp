@@ -30,6 +30,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/MAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 
@@ -132,6 +133,7 @@ void DistanceMatrixMSAProfileDialog::sl_formatChanged(const QString &newFormatId
 
 //////////////////////////////////////////////////////////////////////////
 // task
+
 DistanceMatrixMSAProfileTask::DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings& _s)
 : Task(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC), s(_s)
 {
@@ -164,34 +166,48 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask){
             setError(tr("No output file name specified"));
             return res;
         }
+        QFile *f = NULL;
         if (s.outFormat == DistanceMatrixMSAProfileOutputFormat_Show || s.outFormat == DistanceMatrixMSAProfileOutputFormat_HTML) {
-            QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
+            if (s.outFormat == DistanceMatrixMSAProfileOutputFormat_HTML) {
+                f = new QFile(s.outURL);
+                if (!f->open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+                    setError(tr("Can't open file for write: %1").arg(s.outURL));
+                    return res;
+                }
+            }
+            QString colors[] = { "#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd" };
 
             //setup style
-            resultText= "<STYLE TYPE=\"text/css\"><!-- \n";
-            resultText+="table.tbl   {\n border-width: 1px;\n border-style: solid;\n border-spacing: 0;\n border-collapse: collapse;\n}\n";
-            resultText+="table.tbl td{\n max-width: 400px;\n min-width: 20px;\n text-align: center;\n border-width: 1px;\n ";
-            resultText+="border-style: solid;\n margin:0px;\n padding: 0px;\n}\n";
-            resultText+="--></STYLE>\n";
+            resultText = "<STYLE TYPE=\"text/css\"><!-- \n";
+            resultText += "table.tbl   {\n border-width: 1px;\n border-style: solid;\n border-spacing: 0;\n border-collapse: collapse;\n}\n";
+            resultText += "table.tbl td{\n max-width: 400px;\n min-width: 20px;\n text-align: center;\n border-width: 1px;\n ";
+            resultText += "border-style: solid;\n margin:0px;\n padding: 0px;\n}\n";
+            resultText += "--></STYLE>\n";
 
             //header
-            resultText+= "<h2>" + tr("Multiple Sequence Alignment Distance Matrix") + "</h2><br>\n";
+            resultText += "<h2>" + tr("Multiple Sequence Alignment Distance Matrix") + "</h2><br>\n";
 
-            resultText+="<table>\n";
-            resultText+= "<tr><td><b>"+tr("Alignment file:") + "</b></td><td>" + s.profileURL + "@" + s.profileName+ "</td></tr>\n";
-            resultText+= "<tr><td><b>"+tr("Table content:") + "</b></td><td>" +(s.usePercents ? (algo->getName()+" in percent") : algo->getName()) + "</td></tr>\n";
-            resultText+= "</table>\n";
-            resultText+="<br><br>\n";
+            resultText += "<table>\n";
+            resultText += "<tr><td><b>" + tr("Alignment file:") + "</b></td><td>" + s.profileURL + "@" + s.profileName + "</td></tr>\n";
+            resultText += "<tr><td><b>" + tr("Table content:") + "</b></td><td>" + (s.usePercents ? (algo->getName() + " in percent") : algo->getName()) + "</td></tr>\n";
+            resultText += "</table>\n";
+            resultText += "<br><br>\n";
 
+            FileAndDirectoryUtils::dumpStringToFile(f, resultText);
             bool isSimilarity = algo->isSimilarityMeasure();
+            try {
+                createDistanceTable(algo, s.ma.getRows(), f);
+            } catch (std::bad_alloc &e) {
+                Q_UNUSED(e);
+                setError(tr("There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser."));
+                return res;
+            }
 
-            createDistanceTable(algo, s.ma.getRows());
+            resultText += "<br><br>\n";
 
-            resultText+="<br><br>\n";
-
-            if(true == s.showGroupStatistic) {
-                resultText+= "<tr><td><b>"+tr("Group statistics of multiple alignment") + "</td></tr>\n";
-                resultText+="<table>\n";
+            if (true == s.showGroupStatistic) {
+                resultText += "<tr><td><b>" + tr("Group statistics of multiple alignment") + "</td></tr>\n";
+                resultText += "<table>\n";
                 QVector<U2Region> unitedRows;
                 s.ma.sortRowsBySimilarity(unitedRows);
                 QList<MAlignmentRow> rows;
@@ -202,70 +218,80 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask){
                     row.setName(QString("Group %1: ").arg(i) + "(" + row.getName() + ")");
                     rows.append(s.ma.getRow(reg.startPos + qrand() % reg.length));
 
-                    resultText+="<tr><td><b>" + QString("Group %1: ").arg(i) + "</b></td><td>";
-                    for(int x = reg.startPos; x < reg.endPos(); x++)
-                        resultText+= s.ma.getRow(x).getName() + ", ";
+                    resultText += "<tr><td><b>" + QString("Group %1: ").arg(i) + "</b></td><td>";
+                    for (int x = reg.startPos; x < reg.endPos(); x++)
+                        resultText += s.ma.getRow(x).getName() + ", ";
                     resultText += "\n";
                     i++;
-                    }
-                resultText+= "</table>\n";
-                resultText+="<br><br>\n";
-                createDistanceTable(algo, rows);
-                        }
-
-
-            //legend:
-            resultText+="<br><br>\n";
-            resultText+= "<table><tr><td><b>" + tr("Legend:")+"&nbsp;&nbsp;</b>\n";
-            if(isSimilarity){
-                resultText+="<td bgcolor="+colors[4]+">10%</td>\n";
-                resultText+="<td bgcolor="+colors[3]+">25%</td>\n";
-                resultText+="<td bgcolor="+colors[2]+">50%</td>\n";
-                resultText+="<td bgcolor="+colors[1]+">70%</td>\n";
-                resultText+="<td bgcolor="+colors[0]+">90%</td>\n";
-            }else{
-                resultText+="<td bgcolor="+colors[0]+">10%</td>\n";
-                resultText+="<td bgcolor="+colors[1]+">25%</td>\n";
-                resultText+="<td bgcolor="+colors[2]+">50%</td>\n";
-                resultText+="<td bgcolor="+colors[3]+">70%</td>\n";
-                resultText+="<td bgcolor="+colors[4]+">90%</td>\n";
-            }
-            resultText+="</tr></table><br>\n";
-        } else {
-            resultText+= " ";
-            for (int i=0; i < s.ma.getNumRows(); i++) {
-                QString name = s.ma.getRow(i).getName();
-                TextUtils::wrapForCSV(name);
-                resultText+= "," + name;
-            }
-            resultText+="\n";
-
-            for (int i=0; i < s.ma.getNumRows(); i++) {
-                QString name = s.ma.getRow(i).getName();
-                TextUtils::wrapForCSV(name);
-                resultText+=name;
-                for (int j=0; j < s.ma.getNumRows(); j++) {
-                    int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / s.ma.getLength()) : 1.0));
-                    resultText+= "," + QString::number(val) + (s.usePercents ? "%" : "");
+                    FileAndDirectoryUtils::dumpStringToFile(f, resultText);
                 }
-                resultText+="\n";
-            }
-        }
+                resultText += "</table>\n";
+                resultText += "<br><br>\n";
+                try {
+                    createDistanceTable(algo, rows, f);
+                } catch (std::bad_alloc &e) {
+                    Q_UNUSED(e);
+                    setError(tr("There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser."));
+                    return res;
+                }
 
-        if (s.outFormat != DistanceMatrixMSAProfileOutputFormat_Show) {
-            QFile f(s.outURL);
-            bool ok = f.open(QIODevice::Truncate | QIODevice::WriteOnly);
-            if (!ok) {
-                setError(tr("Can't open file for write: %1").arg(s.outURL));
-                return res;
+
+                //legend:
+                resultText += "<br><br>\n";
+                resultText += "<table><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
+                if (isSimilarity) {
+                    resultText += "<td bgcolor=" + colors[4] + ">10%</td>\n";
+                    resultText += "<td bgcolor=" + colors[3] + ">25%</td>\n";
+                    resultText += "<td bgcolor=" + colors[2] + ">50%</td>\n";
+                    resultText += "<td bgcolor=" + colors[1] + ">70%</td>\n";
+                    resultText += "<td bgcolor=" + colors[0] + ">90%</td>\n";
+                } else {
+                    resultText += "<td bgcolor=" + colors[0] + ">10%</td>\n";
+                    resultText += "<td bgcolor=" + colors[1] + ">25%</td>\n";
+                    resultText += "<td bgcolor=" + colors[2] + ">50%</td>\n";
+                    resultText += "<td bgcolor=" + colors[3] + ">70%</td>\n";
+                    resultText += "<td bgcolor=" + colors[4] + ">90%</td>\n";
+                }
+                resultText += "</tr></table><br>\n";
+            } else {
+                f = new QFile(s.outURL);
+                if (!f->open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+                    setError(tr("Can't open file for write: %1").arg(s.outURL));
+                    return res;
+                }
+                resultText += " ";
+                for (int i = 0; i < s.ma.getNumRows(); i++) {
+                    QString name = s.ma.getRow(i).getName();
+                    TextUtils::wrapForCSV(name);
+                    resultText += "," + name;
+                    FileAndDirectoryUtils::dumpStringToFile(f, resultText);
+                }
+                resultText += "\n";
+
+                for (int i = 0; i < s.ma.getNumRows(); i++) {
+                    QString name = s.ma.getRow(i).getName();
+                    TextUtils::wrapForCSV(name);
+                    resultText += name;
+                    for (int j = 0; j < s.ma.getNumRows(); j++) {
+                        int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / s.ma.getLength()) : 1.0));
+                        resultText += "," + QString::number(val) + (s.usePercents ? "%" : "");
+                        FileAndDirectoryUtils::dumpStringToFile(f, resultText);
+                    }
+                    resultText += "\n";
+                }
             }
-            f.write(resultText.toLocal8Bit());
+
+            if (f != NULL) {
+                f->write(resultText.toLocal8Bit());
+                f->close();
+                delete f;
+            }
         }
     }
     return res;
 }
 
-void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MAlignmentRow> &rows)
+void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MAlignmentRow> &rows, QFile *f)
 {
     int maxVal = s.usePercents ? 100 : s.ma.getLength();
     QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
@@ -273,23 +299,23 @@ void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* alg
     int minLen = s.ma.getLength();
 
     if(rows.size() < 2) {
-        resultText+= "<tr><td><b>"+tr("There is not enough groups to create distance matrix!") + "</td></tr>\n";
+        resultText += "<tr><td><b>"+tr("There is not enough groups to create distance matrix!") + "</td></tr>\n";
         return;
     }
 
-    resultText+="<table class=tbl>\n";
-    resultText+="<tr><td></td>";
+    resultText += "<table class=tbl>\n";
+    resultText += "<tr><td></td>";
     for (int i=0; i < rows.size(); i++) {
         QString name = rows.at(i).getName();
-        resultText+="<td> " + name + "</td>";
+        resultText += "<td> " + name + "</td>";
     }
-    resultText+="</tr>\n";
+    resultText += "</tr>\n";
 
     //out char freqs
     for (int i=0; i < rows.size(); i++) {
         QString name = rows.at(i).getName();
-        resultText+="<tr>";
-        resultText+="<td> " + name + "</td>";
+        resultText += "<tr>";
+        resultText += "<td> " + name + "</td>";
         for (int j=0; j < rows.size(); j++) {
             if(s.usePercents && s.excludeGaps){
                 int len1 = rows.at(i).getUngappedLength();
@@ -313,11 +339,12 @@ void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* alg
                     colorStr = " bgcolor=" + colors[4];
                 }
             }
-            resultText+="<td"+colorStr+">" + QString::number(val) + (s.usePercents ? "%" : "") + "</td>";
+            resultText += "<td"+colorStr+">" + QString::number(val) + (s.usePercents ? "%" : "") + "</td>";
+            FileAndDirectoryUtils::dumpStringToFile(f, resultText);
         }
-        resultText+="</tr>\n";
+        resultText += "</tr>\n";
     }
-    resultText+="</table>\n";
+    resultText += "</table>\n";
 }
 
 

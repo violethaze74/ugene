@@ -89,19 +89,20 @@ void DistanceMatrixDialogFiller::commonScenario(){
         GTRadioButton::click(os,percentsRB);
     }
 
-    if(saveToFile){
-        GTGroupBox::setChecked(os, "saveBox", dialog);
+    if (format != NONE) {
+        if (saveToFile) {
+            GTGroupBox::setChecked(os, "saveBox", dialog);
 
-        QLineEdit* fileEdit = dialog->findChild<QLineEdit*>("fileEdit");
-        GTLineEdit::setText(os, fileEdit,path);
+            QLineEdit* fileEdit = dialog->findChild<QLineEdit*>("fileEdit");
+            GTLineEdit::setText(os, fileEdit, path);
 
-        if(format == HTML){
-            QRadioButton* htmlRB = dialog->findChild<QRadioButton*>("htmlRB");
-            GTRadioButton::click(os,htmlRB);
-        }
-        else{
-            QRadioButton* csvRB = dialog->findChild<QRadioButton*>("csvRB");
-            GTRadioButton::click(os,csvRB);
+            if (format == HTML) {
+                QRadioButton* htmlRB = dialog->findChild<QRadioButton*>("htmlRB");
+                GTRadioButton::click(os, htmlRB);
+            } else {
+                QRadioButton* csvRB = dialog->findChild<QRadioButton*>("csvRB");
+                GTRadioButton::click(os, csvRB);
+            }
         }
     }
     QCheckBox* checkBox = dialog->findChild<QCheckBox*>("checkBox");

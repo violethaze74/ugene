@@ -89,8 +89,11 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -373,6 +376,38 @@ GUI_TEST_CLASS_DEFINITION(test_5128) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Molecular Surface" << "SAS"));
     GTWidget::click(os, GTWidget::findWidget(os, "1-1CF7"), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5160_1) {
+    //1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "big_aln.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Do MSA area context menu->Statistics->generate distance matrix
+    //    Expected state: notification about low memory has appeared
+    Runnable* dis = new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::NONE, testDir + "_common_data/scenarios/sandbox/matrix.html");
+    GTUtilsDialog::waitForDialog(os, dis);
+    Runnable* pop = new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate distance matrix", GTGlobals::UseKey);
+    GTUtilsDialog::waitForDialog(os, pop);
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5160_2) {
+    //    1. Open document test/_common_data/clustal/big.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //    2. Do MSA area context menu->Statistics->generate grid profile
+    //    Expected state: notification about low memory has appeared
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate grid profile", GTGlobals::UseKey));
+    GTUtilsDialog::waitForDialog(os, new GenerateAlignmentProfileDialogFiller(os, true, GenerateAlignmentProfileDialogFiller::NONE,
+        testDir + "_common_data/scenarios/sandbox/stat.html"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
 }
 
 } // namespace GUITest_regression_scenarios

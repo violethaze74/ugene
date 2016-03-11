@@ -29,7 +29,11 @@
 #include <U2Core/Task.h>
 #include <U2Core/MAlignment.h>
 
+#include <QHash>
+#include <QSet>
 #include "ui_DistanceMatrixMSAProfileDialog.h"
+
+class QFile;
 
 namespace U2 {
 
@@ -88,7 +92,7 @@ public:
 
     virtual void prepare();
 
-    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MAlignmentRow> &rows);
+    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MAlignmentRow> &rows, QFile *f);
 
     QList<Task*> createStatisticsDocument(Task* subTask);
 
@@ -97,7 +101,6 @@ public:
     ReportResult report();
 
 private:
-
     DistanceMatrixMSAProfileTaskSettings   s;
     QString                         resultText;
 };

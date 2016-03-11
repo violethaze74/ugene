@@ -29,6 +29,8 @@ static const QString OUTPUT_SUBDIR = "run";
 
 namespace U2 {
 
+int FileAndDirectoryUtils::minLengthToWrite = 32768;
+
 QString FileAndDirectoryUtils::getFormatId(const FormatDetectionResult &r) {
     if (NULL != r.format) {
         return r.format->getFormatId();
@@ -104,5 +106,12 @@ bool FileAndDirectoryUtils::isFileEmpty(const QString& url){
    return false;
 }
 
+void FileAndDirectoryUtils::dumpStringToFile(QFile *f, QString &str) {
+    if (Q_LIKELY(f == NULL || str.length() <= minLengthToWrite)) {
+        return;
+    }
+    f->write(str.toLocal8Bit());
+    str.clear();
+}
 
 } // U2

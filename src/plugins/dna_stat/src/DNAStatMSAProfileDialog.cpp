@@ -19,12 +19,13 @@
  * MA 02110-1301, USA.
  */
 
+#include <qglobal.h>
 #include <QFile>
 #include <QMessageBox>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/MAlignmentObject.h>
 
 #include <U2Gui/HelpButton.h>
@@ -126,97 +127,120 @@ void DNAStatMSAProfileTask::run() {
         setError(tr("No output file name specified"));
         return;
     }
+
+    QFile *f = NULL;
     if (s.outFormat == DNAStatMSAProfileOutputFormat_Show || s.outFormat == DNAStatMSAProfileOutputFormat_HTML) {
+        if (s.outFormat == DNAStatMSAProfileOutputFormat_HTML) {
+            f = new QFile(s.outURL);
+            if (!f->open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+                setError(tr("Can't open file for write: %1").arg(s.outURL));
+                return;
+            }
+        }
         int maxVal = s.usePercents ? 100 : s.ma.getNumRows();
         QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
 
-        //setup style
-        resultText= "<STYLE TYPE=\"text/css\"><!-- \n";
-        resultText+="table.tbl   {\n border-width: 1px;\n border-style: solid;\n border-spacing: 0;\n border-collapse: collapse;\n}\n";
-        resultText+="table.tbl td{\n max-width: 200px;\n min-width: 20px;\n text-align: center;\n border-width: 1px;\n ";
-        resultText+="border-style: solid;\n margin:0px;\n padding: 0px;\n}\n";
-        resultText+="--></STYLE>\n";
+        try {
+            //setup style
+            resultText = "<STYLE TYPE=\"text/css\"><!-- \n";
+            resultText += "table.tbl   {\n border-width: 1px;\n border-style: solid;\n border-spacing: 0;\n border-collapse: collapse;\n}\n";
+            resultText += "table.tbl td{\n max-width: 200px;\n min-width: 20px;\n text-align: center;\n border-width: 1px;\n ";
+            resultText += "border-style: solid;\n margin:0px;\n padding: 0px;\n}\n";
+            resultText += "--></STYLE>\n";
 
-        //header
-        resultText+= "<h2>" + tr("Multiple Sequence Alignment Grid Profile") + "</h2><br>\n";
+            //header
+            resultText += "<h2>" + tr("Multiple Sequence Alignment Grid Profile") + "</h2><br>\n";
 
-        resultText+="<table>\n";
-        resultText+= "<tr><td><b>"+tr("Alignment file:") + "</b></td><td>" + s.profileURL + "@" + s.profileName+ "</td></tr>\n";
-        resultText+= "<tr><td><b>"+tr("Table content:") + "</b></td><td>" +(s.usePercents ? tr("symbol percents") : tr("symbol counts")) + "</td></tr>\n";
-        resultText+= "</table>\n";
-        resultText+="<br><br>\n";
+            resultText += "<table>\n";
+            resultText += "<tr><td><b>" + tr("Alignment file:") + "</b></td><td>" + s.profileURL + "@" + s.profileName + "</td></tr>\n";
+            resultText += "<tr><td><b>" + tr("Table content:") + "</b></td><td>" + (s.usePercents ? tr("symbol percents") : tr("symbol counts")) + "</td></tr>\n";
+            resultText += "</table>\n";
+            resultText += "<br><br>\n";
 
-        resultText+="<table class=tbl>";
+            resultText += "<table class=tbl>";
 
-        //consensus numbers line
-        resultText+="<tr><td></td>";
-        int pos = 1;
-        for (int i=0; i< columns.size(); i++) {
-            ColumnStat& cs = columns[i];
-            QString posStr;
-            bool nums = s.countGapsInConsensusNumbering || cs.consChar!=MAlignment_GapChar;
-            posStr = nums? QString::number(pos++) : QString("&nbsp;");
-//            while(posStr.length() < maxLenLen) {posStr = (nums ? "0" : "&nbsp;") + posStr;}
-            resultText+="<td width=20>" + posStr + "</td>";
-        }
-        resultText+="</tr>\n";
-
-        //consensus chars line
-
-        resultText+="<tr><td> Consensus </td>";
-        for (int i=0; i< columns.size(); i++) {
-            ColumnStat& cs = columns[i];
-            resultText+="<td><b>" + QString(cs.consChar) + "</b></td>";
-        }
-        resultText+="</tr>\n";
-        //out char freqs
-        QByteArray aChars = s.ma.getAlphabet()->getAlphabetChars();
-        for (int i=0; i < aChars.size(); i++) {
-            char c = aChars[i];
-            if (c == MAlignment_GapChar && !s.reportGaps) {
-                continue;
+            //consensus numbers line
+            resultText += "<tr><td></td>";
+            int pos = 1;
+            for (int i = 0; i < columns.size(); i++) {
+                ColumnStat& cs = columns[i];
+                QString posStr;
+                bool nums = s.countGapsInConsensusNumbering || cs.consChar != MAlignment_GapChar;
+                posStr = nums ? QString::number(pos++) : QString("&nbsp;");
+                //            while(posStr.length() < maxLenLen) {posStr = (nums ? "0" : "&nbsp;") + posStr;}
+                resultText += "<td width=20>" + posStr + "</td>";
+                FileAndDirectoryUtils::dumpStringToFile(f, resultText);
             }
-            if (s.stripUnused && unusedChars.contains(c)) {
-                continue;
+            resultText += "</tr>\n";
+
+            //consensus chars line
+
+            resultText += "<tr><td> Consensus </td>";
+            for (int i = 0; i < columns.size(); i++) {
+                ColumnStat& cs = columns[i];
+                resultText += "<td><b>" + QString(cs.consChar) + "</b></td>";
             }
-            int idx = char2index[c];
-            resultText+="<tr>";
-            resultText+="<td> " + QString(c) + "</td>";
-            for (int j=0; j < columns.size(); j++) {
-                ColumnStat& cs = columns[j];
-                int val = cs.charFreqs[idx];
-                QString colorStr;
-                int hotness = qRound(100 * double(val) / maxVal);
-                if (hotness  >= 90)  {
-                    colorStr = " bgcolor=" + colors[0];
-                } else if (hotness >= 70) {
-                    colorStr = " bgcolor=" + colors[1];
-                } else if (hotness > 50) {
-                    colorStr = " bgcolor=" + colors[2];
-                } else if (hotness > 25) {
-                    colorStr = " bgcolor=" + colors[3];
-                } else if (hotness > 10) {
-                    colorStr = " bgcolor=" + colors[4];
+            resultText += "</tr>\n";
+            //out char freqs
+            QByteArray aChars = s.ma.getAlphabet()->getAlphabetChars();
+            for (int i = 0; i < aChars.size(); i++) {
+                char c = aChars[i];
+                if (c == MAlignment_GapChar && !s.reportGaps) {
+                    continue;
                 }
-                resultText+="<td"+colorStr+">" + QString::number(cs.charFreqs[idx]) + "</td>";
+                if (s.stripUnused && unusedChars.contains(c)) {
+                    continue;
+                }
+                int idx = char2index[c];
+                resultText += "<tr>";
+                resultText += "<td> " + QString(c) + "</td>";
+                for (int j = 0; j < columns.size(); j++) {
+                    ColumnStat& cs = columns[j];
+                    int val = cs.charFreqs[idx];
+                    QString colorStr;
+                    int hotness = qRound(100 * double(val) / maxVal);
+                    if (hotness >= 90) {
+                        colorStr = " bgcolor=" + colors[0];
+                    } else if (hotness >= 70) {
+                        colorStr = " bgcolor=" + colors[1];
+                    } else if (hotness > 50) {
+                        colorStr = " bgcolor=" + colors[2];
+                    } else if (hotness > 25) {
+                        colorStr = " bgcolor=" + colors[3];
+                    } else if (hotness > 10) {
+                        colorStr = " bgcolor=" + colors[4];
+                    }
+                    resultText += "<td" + colorStr + ">" + QString::number(cs.charFreqs[idx]) + "</td>";
+                    FileAndDirectoryUtils::dumpStringToFile(f, resultText);
+                }
+                resultText += "</tr>\n";
             }
-            resultText+="</tr>\n";
-        }
-        resultText+="</table>\n";
+            resultText += "</table>\n";
 
-        //legend:
-        resultText+="<br><br>\n";
-        resultText+= "<table><tr><td><b>" + tr("Legend:")+"&nbsp;&nbsp;</b>\n";
-        resultText+="<td bgcolor="+colors[4]+">10%</td>\n";
-        resultText+="<td bgcolor="+colors[3]+">25%</td>\n";
-        resultText+="<td bgcolor="+colors[2]+">50%</td>\n";
-        resultText+="<td bgcolor="+colors[1]+">70%</td>\n";
-        resultText+="<td bgcolor="+colors[0]+">90%</td>\n";
-        resultText+="</tr></table><br>\n";
+            //legend:
+            resultText += "<br><br>\n";
+            resultText += "<table><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
+            resultText += "<td bgcolor=" + colors[4] + ">10%</td>\n";
+            resultText += "<td bgcolor=" + colors[3] + ">25%</td>\n";
+            resultText += "<td bgcolor=" + colors[2] + ">50%</td>\n";
+            resultText += "<td bgcolor=" + colors[1] + ">70%</td>\n";
+            resultText += "<td bgcolor=" + colors[0] + ">90%</td>\n";
+            resultText += "</tr></table><br>\n";
+        } catch (std::bad_alloc &e) {
+            Q_UNUSED(e);
+            verticalColumnNames.clear();
+            columns.clear();
+            consenusChars.clear();
+            char2index.clear();
+            unusedChars.clear();
+            resultText.clear();
+            setError(tr("There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser."));
+            return;
+        }
     } else {
         //out char freqs
         QByteArray aChars = s.ma.getAlphabet()->getAlphabetChars();
-        for (int i=0; i < aChars.size(); i++) {
+        for (int i = 0; i < aChars.size(); i++) {
             char c = aChars[i];
             if (c == MAlignment_GapChar && !s.reportGaps) {
                 continue;
@@ -225,23 +249,20 @@ void DNAStatMSAProfileTask::run() {
                 continue;
             }
             int idx = char2index[c];
-            resultText+=QString(c);
-            for (int j=0; j < columns.size(); j++) {
+            resultText += QString(c);
+            for (int j = 0; j < columns.size(); j++) {
                 ColumnStat& cs = columns[j];
-                resultText+="," + QString::number(cs.charFreqs[idx]);
+                resultText += "," + QString::number(cs.charFreqs[idx]);
+                FileAndDirectoryUtils::dumpStringToFile(f, resultText);
             }
-            resultText+="\n";
+            resultText += "\n";
         }
     }
 
-    if (s.outFormat != DNAStatMSAProfileOutputFormat_Show) {
-        QFile f(s.outURL);
-        bool ok = f.open(QIODevice::Truncate | QIODevice::WriteOnly);
-        if (!ok) {
-            setError(tr("Can't open file for write: %1").arg(s.outURL));
-            return;
-        }
-        f.write(resultText.toLocal8Bit());
+    if (f != NULL) {
+        f->write(resultText.toLocal8Bit());
+        f->close();
+        delete f;
     }
 }
 

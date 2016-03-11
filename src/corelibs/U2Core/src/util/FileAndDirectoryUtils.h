@@ -40,9 +40,12 @@ public:
     static QString createWorkingDir(const QString& fileUrl, int dirMode, const QString& customDir, const QString& workingDir);
     static QString detectFormat(const QString &url);
     static bool isFileEmpty(const QString& url);
+    static void dumpStringToFile(QFile *f, QString &str); //Be aware: string will be cleared after dumping
 
 private:
     static QString getFormatId(const FormatDetectionResult &r);
+
+    static int minLengthToWrite;
 };
 
 } // U2
