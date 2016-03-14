@@ -60,6 +60,7 @@ public:
     static int getTopLevelTasksCount(HI::GUITestOpStatus &os);
     static bool checkTask(HI::GUITestOpStatus& os, const QString &itemName);
     static int countTasks(HI::GUITestOpStatus& os, const QString &itemName);
+    static QString getTaskStatus(HI::GUITestOpStatus& os, const QString &itemName);
 
     static const QString widgetName;
 

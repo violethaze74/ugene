@@ -4745,13 +4745,15 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 //    Expected state: annotations has appeared on the sequence view
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, GTUtilsProjectTreeView::findIndex(os, "NC_001363 features"), GTUtilsAnnotationsTreeView::getTreeWidget(os));
+    GTGlobals::sleep();
 
 //    5. Open file {data/samples/Genbank/murine.gb} with text editor, then make some identical modification (i.e. delete and type the same character) and save file
 //    Expected state: dialog about detected file modification has appeared in UGENE window
 //    6. Press "Yes"
 //    Expected state: "human_T1" view has disappeared from the "Bookmarks" list, "murine.gb" has been reloaded.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
 
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QFile murineFile(sandBoxDir + "test_2713/murine.gb");
     const bool opened = murineFile.open(QFile::Append);
     CHECK_SET_ERR(opened, "Can't open the file: " + sandBoxDir + "test_2713/murine.gb");
@@ -4763,7 +4765,7 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 //    7. Open "human_T1" sequence view
 //    Expected state: annotations from "murine.gb" present on the sequence view
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
-       GTGlobals::sleep(5000);
+    GTGlobals::sleep(5000);
     GTUtilsAnnotationsTreeView::findFirstAnnotation(os);
 }
 

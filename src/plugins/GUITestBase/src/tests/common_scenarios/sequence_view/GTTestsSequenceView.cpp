@@ -900,8 +900,8 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "YkrI"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Find restriction sites"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Find restriction sites..."));
+    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 

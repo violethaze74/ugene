@@ -216,6 +216,12 @@ int GTUtilsTaskTreeView::countTasks(HI::GUITestOpStatus &os, const QString &item
 }
 #undef GT_METHOD_NAME
 
+QString GTUtilsTaskTreeView::getTaskStatus(GUITestOpStatus &os, const QString &itemName){
+    openView(os);
+    GTGlobals::sleep(500);
+    return getTreeWidgetItem(os, itemName)->text(1);
+}
+
 SchedulerListener::SchedulerListener() :
     QObject(NULL),
     registeredTaskCount(0)

@@ -5086,6 +5086,7 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
 
     // 6) Click the "Sort alignment by tree" button on the Tree View toolbar.
     // = > UGENE does not crash.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTMouseDriver::moveTo(os, GTUtilsMsaEditor::getSequenceNameRect(os, "Zychia_baranovi").center());
     GTMouseDriver::click(os);
     GTGlobals::sleep(1000);

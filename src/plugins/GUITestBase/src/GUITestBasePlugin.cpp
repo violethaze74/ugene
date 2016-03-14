@@ -745,7 +745,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2701);
     REGISTER_TEST(GUITest_regression_scenarios::test_2709);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2711);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2713, "test_2713");
+    REGISTER_TEST(GUITest_regression_scenarios::test_2713);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2721);// no cistrome data on windows servers
     REGISTER_TEST(GUITest_regression_scenarios::test_2726);
     REGISTER_TEST(GUITest_regression_scenarios::test_2729);
