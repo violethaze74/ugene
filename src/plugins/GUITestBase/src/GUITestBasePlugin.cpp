@@ -1249,8 +1249,8 @@ if(QSysInfo::WordSize == 64){
     REGISTER_TEST(GUITest_regression_scenarios::test_5082);
     REGISTER_TEST(GUITest_regression_scenarios::test_5128);
 if (QSysInfo::WordSize == 32) {
-    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5160_1, 420000);
-    REGISTER_TEST(GUITest_regression_scenarios::test_5160_2);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1460,6 +1460,7 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0069);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0070);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0071);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0075);
 
 //////////////////////////////////////////////////////////////////////////
 // Common scenarios/sequence edit/

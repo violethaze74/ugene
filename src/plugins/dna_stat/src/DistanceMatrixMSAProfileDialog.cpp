@@ -154,11 +154,11 @@ void DistanceMatrixMSAProfileTask::prepare() {
     addSubTask(algo);
 }
 
-QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask){
+QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
     MSADistanceAlgorithm* algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
     QList<Task*> res;
     if (algo != NULL) {
-        if(algo->hasError() || algo->isCanceled()) {
+        if (algo->hasError() || algo->isCanceled()) {
             setError(algo->getError());
             return res;
         }
@@ -253,39 +253,39 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask){
                     resultText += "<td bgcolor=" + colors[4] + ">90%</td>\n";
                 }
                 resultText += "</tr></table><br>\n";
-            } else {
-                f = new QFile(s.outURL);
-                if (!f->open(QIODevice::Truncate | QIODevice::WriteOnly)) {
-                    setError(tr("Can't open file for write: %1").arg(s.outURL));
-                    return res;
-                }
-                resultText += " ";
-                for (int i = 0; i < s.ma.getNumRows(); i++) {
-                    QString name = s.ma.getRow(i).getName();
-                    TextUtils::wrapForCSV(name);
-                    resultText += "," + name;
+            }
+        } else {
+            f = new QFile(s.outURL);
+            if (!f->open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+                setError(tr("Can't open file for write: %1").arg(s.outURL));
+                return res;
+            }
+            resultText += " ";
+            for (int i = 0; i < s.ma.getNumRows(); i++) {
+                QString name = s.ma.getRow(i).getName();
+                TextUtils::wrapForCSV(name);
+                resultText += "," + name;
+                FileAndDirectoryUtils::dumpStringToFile(f, resultText);
+            }
+            resultText += "\n";
+
+            for (int i = 0; i < s.ma.getNumRows(); i++) {
+                QString name = s.ma.getRow(i).getName();
+                TextUtils::wrapForCSV(name);
+                resultText += name;
+                for (int j = 0; j < s.ma.getNumRows(); j++) {
+                    int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / s.ma.getLength()) : 1.0));
+                    resultText += "," + QString::number(val) + (s.usePercents ? "%" : "");
                     FileAndDirectoryUtils::dumpStringToFile(f, resultText);
                 }
                 resultText += "\n";
-
-                for (int i = 0; i < s.ma.getNumRows(); i++) {
-                    QString name = s.ma.getRow(i).getName();
-                    TextUtils::wrapForCSV(name);
-                    resultText += name;
-                    for (int j = 0; j < s.ma.getNumRows(); j++) {
-                        int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / s.ma.getLength()) : 1.0));
-                        resultText += "," + QString::number(val) + (s.usePercents ? "%" : "");
-                        FileAndDirectoryUtils::dumpStringToFile(f, resultText);
-                    }
-                    resultText += "\n";
-                }
             }
+        }
 
-            if (f != NULL) {
-                f->write(resultText.toLocal8Bit());
-                f->close();
-                delete f;
-            }
+        if (f != NULL) {
+            f->write(resultText.toLocal8Bit());
+            f->close();
+            delete f;
         }
     }
     return res;
