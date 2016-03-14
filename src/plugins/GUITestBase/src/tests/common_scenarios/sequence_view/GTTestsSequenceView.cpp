@@ -2316,6 +2316,36 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
     CHECK_SET_ERR(p.size() != QSize() && p.size() !=  seqWgt->getDetView()->getDetViewRenderArea()->size(), "Exported image size is incorrect");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0075) {
+    //1. Open "data/samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+
+    //2. Click the translations toolbar button.
+    GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
+
+    //Expected: the menu appears.
+    QMenu *menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+    CHECK_SET_ERR(NULL != menu, "No menu");
+
+    //3. Click "Show/hide translations".
+    GTMenu::clickMenuItem(os, menu, "translation_action");
+
+    //Expected: the menu doesn't disappear.
+    CHECK_SET_ERR(NULL != QApplication::activePopupWidget(), "Menu disappeared 1");
+
+    //4. Click "Show all".
+    GTMenu::clickMenuItemByText(os, menu, QStringList() << "Show all");
+
+    //Expected: the menu doesn't disappear.
+    CHECK_SET_ERR(NULL != QApplication::activePopupWidget(), "Menu disappeared 2");
+
+    //5. Click somewhere else.
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
+
+    //Expected: the menu disappears.
+    CHECK_SET_ERR(NULL == QApplication::activePopupWidget(), "Menu is shown");
+}
+
 } // namespace GUITest_common_scenarios_sequence_view
 
 } // namespace U2
