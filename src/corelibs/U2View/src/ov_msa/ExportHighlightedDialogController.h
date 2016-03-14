@@ -22,7 +22,7 @@
 #ifndef _U2_EXPORT_HIGHLIGHTING_DIALOG_CONTROLLER_H_
 #define _U2_EXPORT_HIGHLIGHTING_DIALOG_CONTROLLER_H_
 
-#include <ui/ui_ExportHighlightedDialog.h>
+#include <ui_ExportHighlightedDialog.h>
 
 #include "MSAEditor.h"
 
