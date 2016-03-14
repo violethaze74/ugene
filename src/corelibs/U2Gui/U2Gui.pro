@@ -64,6 +64,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/LabelClickTransmitter.h \
            src/util/LastUsedDirHelper.h \
            src/util/LocalToolbar.h \
+           src/util/MultiClickMenu.h \
            src/util/ObjectViewTreeController.h \
            src/util/OrderedToolbar.h \
            src/util/PositionSelector.h \
@@ -154,6 +155,7 @@ SOURCES += src/MainWindow.cpp \
            src/ObjectViewModel.cpp \
            src/ObjectViewTasks.cpp \
            src/OpenViewTask.cpp \
+           src/PasteController.cpp \
            src/ProjectParsing.cpp \
            src/ToolsMenu.cpp \
            src/UnloadDocumentTask.cpp \
@@ -205,9 +207,9 @@ SOURCES += src/MainWindow.cpp \
            src/util/LabelClickTransmitter.cpp \
            src/util/LastUsedDirHelper.cpp \
            src/util/LocalToolbar.cpp \
+           src/util/MultiClickMenu.cpp \
            src/util/ObjectViewTreeController.cpp \
            src/util/OrderedToolbar.cpp \
-           src/PasteController.cpp \
            src/util/PositionSelector.cpp \
            src/util/ProjectDocumentComboBoxController.cpp \
            src/util/ProjectTreeItemSelectorDialog.cpp \
