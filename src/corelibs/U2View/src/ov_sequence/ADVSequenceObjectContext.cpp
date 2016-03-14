@@ -33,6 +33,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Gui/MultiClickMenu.h>
 #include <U2View/CodonTable.h>
 
 
@@ -228,6 +229,7 @@ QMenu * ADVSequenceObjectContext::createTranslationFramesMenu(QAction *showTrans
     QMenu *menu = new QMenu(tr("Show/hide amino acid translations"));
     menu->setIcon(QIcon(":core/images/show_trans.png"));
     menu->menuAction()->setObjectName("Translation frames");
+    new MultiClickMenu(menu);
 
     menu->addAction(showTranslationAction);
     menu->addSeparator();
