@@ -15,7 +15,6 @@ add_definitions(-DHI_EXCLUDED)
 include_directories(src)
 include_directories(../include)
 include_directories(../corelibs/U2Private/src)
-include_directories(../libs_3rdparty/QSpec/src)
 
 file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)
