@@ -20,6 +20,6 @@ file(GLOB HDRS src/*.h src/xmltest/*.h)
 add_library(U2Test SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Test
-        U2Core
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml)
+        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml
+        U2Core)
 

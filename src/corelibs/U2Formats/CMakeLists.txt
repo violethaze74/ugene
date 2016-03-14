@@ -21,7 +21,7 @@ qt5_add_resources(RCC_SRCS src/U2Formats.qrc)
 add_library(U2Formats SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Formats
-        U2Core U2Algorithm
+        Qt5::Core Qt5::Gui Qt5::Widgets
         samtools ugenedb
-        Qt5::Core Qt5::Gui Qt5::Widgets)
+        U2Core U2Algorithm)
 

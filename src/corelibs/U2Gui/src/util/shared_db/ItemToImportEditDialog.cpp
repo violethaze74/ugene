@@ -29,7 +29,7 @@ namespace U2 {
 
 ItemToImportEditDialog::ItemToImportEditDialog(const QString &item, const QString &folder, const ImportToDatabaseOptions& options, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ItemToImportEditDialog)
+    ui(new Ui_ItemToImportEditDialog)
 {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "17467874");

@@ -2,11 +2,10 @@
 #include "ui/ui_ExcludeReasonDialog.h"
 
 namespace U2{
-using namespace Ui;
 
 ExcludeReasonDialog::ExcludeReasonDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ExcludeReasonDialog)
+    ui(new Ui_ExcludeReasonDialog)
 {
     ui->setupUi(this);
 }

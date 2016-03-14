@@ -4,17 +4,17 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../src/main_window/ui/AboutDialog.ui" line="23"/>
+        <location filename="../src/main_window/AboutDialog.ui" line="23"/>
         <source>About UGENE</source>
         <translation>About UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ui/AboutDialog.ui" line="60"/>
+        <location filename="../src/main_window/AboutDialog.ui" line="60"/>
         <source>Web Page</source>
         <translation>Web Page</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ui/AboutDialog.ui" line="80"/>
+        <location filename="../src/main_window/AboutDialog.ui" line="80"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
@@ -29,17 +29,17 @@
 <context>
     <name>AppSettingsDialog</name>
     <message>
-        <location filename="../src/app_settings/ui/AppSettingsDialog.ui" line="14"/>
+        <location filename="../src/app_settings/AppSettingsDialog.ui" line="14"/>
         <source>AppSettingsDialog</source>
         <translation>Application Settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/ui/AppSettingsDialog.ui" line="50"/>
+        <location filename="../src/app_settings/AppSettingsDialog.ui" line="50"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/ui/AppSettingsDialog.ui" line="58"/>
+        <location filename="../src/app_settings/AppSettingsDialog.ui" line="58"/>
         <source>GroupBox</source>
         <translation>GroupBox</translation>
     </message>
@@ -47,27 +47,27 @@
 <context>
     <name>CreateNewProjectDialog</name>
     <message>
-        <location filename="../src/project_support/ui/CreateNewProjectWidget.ui" line="20"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="20"/>
         <source>Create New Project</source>
         <translation>Create New Project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/CreateNewProjectWidget.ui" line="28"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="28"/>
         <source>Project name</source>
         <translation>Project name</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/CreateNewProjectWidget.ui" line="38"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="38"/>
         <source>Project folder</source>
         <translation>Project folder</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/CreateNewProjectWidget.ui" line="45"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="45"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/CreateNewProjectWidget.ui" line="52"/>
+        <location filename="../src/project_support/CreateNewProjectWidget.ui" line="52"/>
         <source>Project file</source>
         <translation>Project file</translation>
     </message>
@@ -75,29 +75,29 @@
 <context>
     <name>DirectoriesSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/ui/DirectoriesSettingsWidget.ui" line="26"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="26"/>
         <source>Path to downloaded data:</source>
         <translation>Path to downloaded data:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/ui/DirectoriesSettingsWidget.ui" line="46"/>
-        <location filename="../src/app_settings/directories_settings/ui/DirectoriesSettingsWidget.ui" line="84"/>
-        <location filename="../src/app_settings/directories_settings/ui/DirectoriesSettingsWidget.ui" line="128"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="46"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="84"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="128"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/ui/DirectoriesSettingsWidget.ui" line="58"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="58"/>
         <source>Path for temporary files</source>
         <translation>Path for temporary files</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/ui/DirectoriesSettingsWidget.ui" line="102"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="102"/>
         <source>File storage</source>
         <translation>File storage</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/ui/DirectoriesSettingsWidget.ui" line="158"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="158"/>
         <source>Cleanup storage</source>
         <translation>Cleanup storage</translation>
     </message>
@@ -105,17 +105,17 @@
 <context>
     <name>DocumentFormatSelectorDialog</name>
     <message>
-        <location filename="../src/project_support/ui/DocumentFormatSelectorDialog.ui" line="14"/>
+        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui" line="14"/>
         <source>Select Correct Document Format</source>
         <translation>Select Correct Document Format</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/DocumentFormatSelectorDialog.ui" line="32"/>
+        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui" line="32"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/DocumentFormatSelectorDialog.ui" line="39"/>
+        <location filename="../src/project_support/DocumentFormatSelectorDialog.ui" line="39"/>
         <source>File preview</source>
         <translation>File preview</translation>
     </message>
@@ -123,12 +123,12 @@
 <context>
     <name>DocumentProviderSelectorDialog</name>
     <message>
-        <location filename="../src/project_support/ui/DocumentProviderSelectorDialog.ui" line="20"/>
+        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui" line="20"/>
         <source>Select Document Format</source>
         <translation>Select Document Format</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/DocumentProviderSelectorDialog.ui" line="35"/>
+        <location filename="../src/project_support/DocumentProviderSelectorDialog.ui" line="35"/>
         <source>Document Format</source>
         <translation>Document Format</translation>
     </message>
@@ -136,7 +136,7 @@
 <context>
     <name>ExportProjectDialog</name>
     <message>
-        <location filename="../src/project_support/ui/ExportProjectDialog.ui" line="20"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui" line="20"/>
         <source>Export Project</source>
         <translation>Export Project</translation>
     </message>
@@ -153,7 +153,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600; color:#a6392e;&quot;&gt;Warning! All pending changes in the active project will be saved!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/ExportProjectDialog.ui" line="41"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui" line="41"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -162,17 +162,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/ExportProjectDialog.ui" line="54"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui" line="54"/>
         <source>Destination folder</source>
         <translation>Destination folder</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/ExportProjectDialog.ui" line="71"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui" line="71"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/ExportProjectDialog.ui" line="78"/>
+        <location filename="../src/project_support/ExportProjectDialog.ui" line="78"/>
         <source>Project file name</source>
         <translation>Project file name</translation>
     </message>
@@ -180,17 +180,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FormatSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/format_settings/ui/FormatSettingsWidget.ui" line="14"/>
+        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui" line="14"/>
         <source>Format settings</source>
         <translation>Format settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/format_settings/ui/FormatSettingsWidget.ui" line="20"/>
+        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui" line="20"/>
         <source>Sequence annotations</source>
         <translation>Sequence annotations</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/format_settings/ui/FormatSettingsWidget.ui" line="32"/>
+        <location filename="../src/app_settings/format_settings/FormatSettingsWidget.ui" line="32"/>
         <source>Create annotations for case switchings:</source>
         <translation>Create annotations for case switchings:</translation>
     </message>
@@ -198,47 +198,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LogSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/logview_settings/ui/LogSettingsWidget.ui" line="14"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="14"/>
         <source>LogSettingsWidget</source>
         <translation>Logger settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/ui/LogSettingsWidget.ui" line="47"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="47"/>
         <source>Log format</source>
         <translation>Log format</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/ui/LogSettingsWidget.ui" line="53"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="53"/>
         <source>Show date</source>
         <translation>Show date</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/ui/LogSettingsWidget.ui" line="60"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="60"/>
         <source>Date format:</source>
         <translation>Date format:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/ui/LogSettingsWidget.ui" line="83"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="83"/>
         <source>Show log level</source>
         <translation>Show log level</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/ui/LogSettingsWidget.ui" line="90"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="90"/>
         <source>Show log category</source>
         <translation>Show log category</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/ui/LogSettingsWidget.ui" line="97"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="97"/>
         <source>Enable colored log output</source>
         <translation>Enable colored log output</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/ui/LogSettingsWidget.ui" line="106"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="106"/>
         <source>Save output to file:</source>
         <translation>Save output to file:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/ui/LogSettingsWidget.ui" line="116"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsWidget.ui" line="116"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -246,42 +246,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MultipleDocumentsReadingModeSelectorController</name>
     <message>
-        <location filename="../src/project_support/ui/MultipleSequenceFilesReadingMode.ui" line="14"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="14"/>
         <source>Multiple Sequence Reading Mode</source>
         <translation>Multiple Sequence Reading Mode</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/MultipleSequenceFilesReadingMode.ui" line="26"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="26"/>
         <source>Separate sequence mode</source>
         <translation>Separate sequence mode</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/MultipleSequenceFilesReadingMode.ui" line="36"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="36"/>
         <source>Merge sequence mode</source>
         <translation>Merge sequence mode</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/MultipleSequenceFilesReadingMode.ui" line="51"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="51"/>
         <source>Number of unknown symbols (&apos;N &apos;for nucleic acid or &apos;X&apos; for amino acid) between sequences</source>
         <translation>Number of unknown symbols (&apos;N &apos;for nucleic acid or &apos;X&apos; for amino acid) between sequences</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/MultipleSequenceFilesReadingMode.ui" line="75"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="75"/>
         <source>New document name</source>
         <translation>New document name</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/MultipleSequenceFilesReadingMode.ui" line="92"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="92"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/MultipleSequenceFilesReadingMode.ui" line="109"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="109"/>
         <source>Save document</source>
         <translation>Save document</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/MultipleSequenceFilesReadingMode.ui" line="207"/>
+        <location filename="../src/project_support/MultipleSequenceFilesReadingMode.ui" line="207"/>
         <source>Join sequences into alignment</source>
         <translation>Join sequences into alignment</translation>
     </message>
@@ -289,97 +289,97 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NetworkSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="47"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="47"/>
         <source>Preferred Web browser</source>
         <translation>Preferred Web browser</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="67"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="67"/>
         <source>System default browser</source>
         <translation>System default browser</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="77"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="77"/>
         <source>Custom browser</source>
         <translation>Custom browser</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="100"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="100"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="187"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="187"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="198"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="198"/>
         <source>Type:</source>
         <translation>Type:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="205"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="205"/>
         <source>Server:</source>
         <translation>Server:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="212"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="212"/>
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="225"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="225"/>
         <source>HTTP</source>
         <translation>HTTP</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="334"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="334"/>
         <source>Do not use proxy on following addresses (separate line for each):</source>
         <translation>Do not use proxy on following addresses (separate line for each):</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="266"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="266"/>
         <source>Use authentication with HTTP proxy:</source>
         <translation>Use authentication with HTTP proxy:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="278"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="278"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="288"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="288"/>
         <source>Password</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="353"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="353"/>
         <source>SSL settings</source>
         <translation>SSL settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="364"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="364"/>
         <source>Secure Socket protocol:</source>
         <translation>Secure Socket protocol:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="121"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="121"/>
         <source>Remote request settings</source>
         <translation>Remote request settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="26"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="26"/>
         <source>Network settings</source>
         <translation>Network settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="130"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="130"/>
         <source>Remote request timeout</source>
         <translation>Remote request timeout</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/network_settings/ui/NetworkSettingsWidget.ui" line="143"/>
+        <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="143"/>
         <source> sec</source>
         <translation>sec</translation>
     </message>
@@ -387,47 +387,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PluginViewWidget</name>
     <message>
-        <location filename="../src/plugin_viewer/ui/PluginViewerWidget.ui" line="14"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="14"/>
         <source>Plugin Viewer</source>
         <translation>Plugin Viewer</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/ui/PluginViewerWidget.ui" line="24"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="24"/>
         <source>Pugin info:</source>
         <translation>Pugin info:</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/ui/PluginViewerWidget.ui" line="38"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="38"/>
         <source>Plugin license:</source>
         <translation>Plugin license:</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/ui/PluginViewerWidget.ui" line="63"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="63"/>
         <source>Accept</source>
         <translation>Accept</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/ui/PluginViewerWidget.ui" line="70"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="70"/>
         <source>Show License</source>
         <translation>Show License</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/ui/PluginViewerWidget.ui" line="94"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="94"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/ui/PluginViewerWidget.ui" line="99"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="99"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/ui/PluginViewerWidget.ui" line="104"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="104"/>
         <source>State</source>
         <translation>State</translation>
     </message>
     <message>
-        <location filename="../src/plugin_viewer/ui/PluginViewerWidget.ui" line="109"/>
+        <location filename="../src/plugin_viewer/PluginViewerWidget.ui" line="109"/>
         <source>Description</source>
         <translation>Description</translation>
     </message>
@@ -435,17 +435,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ProjectViewWidget</name>
     <message>
-        <location filename="../src/project_view/ui/ProjectViewWidget.ui" line="14"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Project View</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ui/ProjectViewWidget.ui" line="92"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui" line="92"/>
         <source>Bookmarks</source>
         <translation>Bookmarks</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ui/ProjectViewWidget.ui" line="62"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui" line="62"/>
         <source>Objects</source>
         <translation>Objects</translation>
     </message>
@@ -476,32 +476,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ResourceSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/resource_settings/ui/ResourceSettingsWidget.ui" line="14"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="14"/>
         <source>Resource settings</source>
         <translation>Resource settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ui/ResourceSettingsWidget.ui" line="20"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="20"/>
         <source>Application resources</source>
         <translation>Application resources</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ui/ResourceSettingsWidget.ui" line="32"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="32"/>
         <source>Optimize for CPU count</source>
         <translation>Optimize for CPU count</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ui/ResourceSettingsWidget.ui" line="64"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="64"/>
         <source>Tasks memory limit</source>
         <translation>Tasks memory limit</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ui/ResourceSettingsWidget.ui" line="83"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="83"/>
         <source>Mb</source>
         <translation>Mb</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/resource_settings/ui/ResourceSettingsWidget.ui" line="105"/>
+        <location filename="../src/app_settings/resource_settings/ResourceSettingsWidget.ui" line="105"/>
         <source>Threads limit</source>
         <translation>Threads limit</translation>
     </message>
@@ -509,17 +509,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SaveProjectDialog</name>
     <message>
-        <location filename="../src/project_support/ui/SaveProjectDialog.ui" line="26"/>
+        <location filename="../src/project_support/SaveProjectDialog.ui" line="26"/>
         <source>UGENE</source>
         <translation>UGENE</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SaveProjectDialog.ui" line="38"/>
+        <location filename="../src/project_support/SaveProjectDialog.ui" line="38"/>
         <source>Save current project?</source>
         <translation>Save current project?</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SaveProjectDialog.ui" line="71"/>
+        <location filename="../src/project_support/SaveProjectDialog.ui" line="71"/>
         <source>don&apos;t ask again</source>
         <translation>don&apos;t ask again</translation>
     </message>
@@ -527,12 +527,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SequenceReadingModeSelectorDialog</name>
     <message>
-        <location filename="../src/project_support/ui/SequenceReadingModeSelectorDialog.ui" line="14"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="14"/>
         <source>Sequence Reading Options</source>
         <translation>Sequence Reading Options</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SequenceReadingModeSelectorDialog.ui" line="20"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="20"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -549,17 +549,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Please select the way UGENE will read these sequences:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SequenceReadingModeSelectorDialog.ui" line="39"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="39"/>
         <source> As separate sequences in sequence viewer</source>
         <translation> As separate sequences in sequence viewer</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SequenceReadingModeSelectorDialog.ui" line="65"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="65"/>
         <source>Merge sequences into a single sequence to show in sequence viewer</source>
         <translation>Merge sequences into a single sequence to show in sequence viewer</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SequenceReadingModeSelectorDialog.ui" line="90"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="90"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -572,22 +572,22 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Number of &apos;unknown&apos; symbols &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;(&apos;N &apos;for nucleic or &apos;X&apos; for amino)&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; between parts:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SequenceReadingModeSelectorDialog.ui" line="110"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="110"/>
         <source> bases</source>
         <translation> bases</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SequenceReadingModeSelectorDialog.ui" line="141"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="141"/>
         <source>Join sequences into alignment and open in multiple alignment viewer</source>
         <translation>Join sequences into alignment and open in multiple alignment viewer</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SequenceReadingModeSelectorDialog.ui" line="167"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="167"/>
         <source>Align reads to reference sequence</source>
         <translation>Align reads to reference sequence</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ui/SequenceReadingModeSelectorDialog.ui" line="193"/>
+        <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="193"/>
         <source>File preview:</source>
         <translation>File preview:</translation>
     </message>
@@ -595,7 +595,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>StatisticalReport</name>
     <message>
-        <location filename="../src/shtirlitz/ui/StatisticalReport.ui" line="20"/>
+        <location filename="../src/shtirlitz/StatisticalReport.ui" line="20"/>
         <source>Welcome to UGENE 1.16</source>
         <translation>Welcome to UGENE 1.16</translation>
     </message>
@@ -615,27 +615,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TmpDirChangeDialog</name>
     <message>
-        <location filename="../src/main_window/ui/TmpDirChangeDialog.ui" line="20"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="20"/>
         <source>Dialog</source>
         <translation>Create New Project</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ui/TmpDirChangeDialog.ui" line="39"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="39"/>
         <source>Path for temporary files</source>
         <translation>Path for temporary files</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ui/TmpDirChangeDialog.ui" line="72"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="72"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ui/TmpDirChangeDialog.ui" line="99"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="99"/>
         <source>Exit UGENE</source>
         <translation>Exit UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ui/TmpDirChangeDialog.ui" line="119"/>
+        <location filename="../src/main_window/TmpDirChangeDialog.ui" line="119"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -2333,62 +2333,62 @@ Do you want view online documentation?</translation>
 <context>
     <name>UserApplicationsSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="26"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="26"/>
         <source>LangBoxTitle</source>
         <translation>Language of User Interface (applied after restart)</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="41"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="41"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="63"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="63"/>
         <source>Window Layout</source>
         <translation>Window Layout</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="69"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="69"/>
         <source>Multiple documents</source>
         <translation>Multiple documents</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="79"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="79"/>
         <source>Tabbed documents</source>
         <translation>Tabbed documents</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="98"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="98"/>
         <source>Open last project at startup</source>
         <translation>Open last project at startup</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="92"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="92"/>
         <source>Project</source>
         <translation>Project</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="128"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="128"/>
         <source>Statistical reports</source>
         <translation>Statistical reports</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="134"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="134"/>
         <source>Enable statistical reports collecting</source>
         <translation>Enable statistical reports collecting</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="144"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="144"/>
         <source>Default settings</source>
         <translation>Default settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="150"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="150"/>
         <source>Reset settings to default on the next run</source>
         <translation>Reset settings to default on the next run</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="51"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="51"/>
         <source>Appearance</source>
         <translation>Appearance</translation>
     </message>

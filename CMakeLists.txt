@@ -25,13 +25,11 @@ add_definitions(
         -DQT_FATAL_ASSERT
 )
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
 add_subdirectory(src/libs_3rdparty/breakpad)
+add_subdirectory(src/libs_3rdparty/gtest)
 add_subdirectory(src/libs_3rdparty/samtools)
 add_subdirectory(src/libs_3rdparty/sqlite3)
 add_subdirectory(src/libs_3rdparty/zlib)
@@ -46,3 +44,4 @@ add_subdirectory(src/corelibs/U2Remote)
 add_subdirectory(src/corelibs/U2Test)
 add_subdirectory(src/corelibs/U2Designer)
 add_subdirectory(src/corelibs/U2View)
+add_subdirectory(src/ugeneui)

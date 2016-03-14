@@ -34,7 +34,7 @@ endif ()
 add_library(U2Private SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Private
-        U2Core U2Algorithm U2Formats
+        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml
         breakpad
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml)
+        U2Core U2Algorithm U2Formats)
 
