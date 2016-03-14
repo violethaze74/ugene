@@ -378,7 +378,7 @@ GUI_TEST_CLASS_DEFINITION(test_5128) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5160_1) {
+GUI_TEST_CLASS_DEFINITION(test_5138_1) {
     //1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "big_aln.fa");
@@ -395,7 +395,7 @@ GUI_TEST_CLASS_DEFINITION(test_5160_1) {
     GTGlobals::sleep();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5160_2) {
+GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     //    1. Open document test/_common_data/clustal/big.aln
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
