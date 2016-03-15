@@ -481,7 +481,7 @@ QMap<U2FeatureType, VectorNtiSequenceFormat::VntiDnaFeatureTypes> VectorNtiSeque
     dnaFeatureTypesMap.insert(U2FeatureTypes::PrecursorRna,         DnaPrecursorRna);
     dnaFeatureTypesMap.insert(U2FeatureTypes::Primer,               DnaPrimer);
     dnaFeatureTypesMap.insert(U2FeatureTypes::PrimerBindingSite,    DnaPrimerBindingSite);
-    dnaFeatureTypesMap.insert(U2FeatureTypes::PrimeryTranscript,    DnaPrimerTranscript);
+    dnaFeatureTypesMap.insert(U2FeatureTypes::PrimaryTranscript,    DnaPrimerTranscript);
     dnaFeatureTypesMap.insert(U2FeatureTypes::PromoterEukaryotic,   DnaPromoterEukaryotic);
     dnaFeatureTypesMap.insert(U2FeatureTypes::PromoterProkaryotic,  DnaPromoterProkaryotic);
     dnaFeatureTypesMap.insert(U2FeatureTypes::ProteinBindingSite,   DnaProteinBindingSite);

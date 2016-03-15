@@ -115,7 +115,7 @@ const QVector<GBFeatureKeyInfo>& GBFeatureUtils::allKeys() {
     FK(GBFeatureKey_polyA_signal,     U2FeatureTypes::PolyASignal,          "polyA_signal",     cl("000000"), false, QObject::tr("Signal for cleavage & polyadenylation"));
     FK(GBFeatureKey_polyA_site,       U2FeatureTypes::PolyASite,            "polyA_site",       cl("000000"), false, QObject::tr("Site at which polyadenine is added to mRNA"));
     FK(GBFeatureKey_precursor_RNA,    U2FeatureTypes::PrecursorRna,         "precursor_RNA",    cl("000000"), false, QObject::tr("Any RNA species that is not yet the mature RNA product"));
-    FK(GBFeatureKey_prim_transcript,  U2FeatureTypes::PrimeryTranscript,    "prim_transcript",  cl("000000"), false, QObject::tr("Primary (unprocessed) transcript"));
+    FK(GBFeatureKey_prim_transcript,  U2FeatureTypes::PrimaryTranscript,    "prim_transcript",  cl("000000"), false, QObject::tr("Primary (unprocessed) transcript"));
     FK(GBFeatureKey_primer,           U2FeatureTypes::Primer,               "primer",           cl("000000"), false, QObject::tr("Primer binding region used with PCR"));
     FK(GBFeatureKey_primer_bind,      U2FeatureTypes::PrimerBindingSite,    "primer_bind",      cl("000000"), false, QObject::tr("Non-covalent primer binding site"));
     FK(GBFeatureKey_promoter,         U2FeatureTypes::Promoter,             "promoter",         cl("000000"), false, QObject::tr("A region involved in transcription initiation"));

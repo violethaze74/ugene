@@ -301,8 +301,8 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
     typeInfoIndexByType[Primer] = infoCounter++;
     featureTypeInfos << U2FeatureTypeInfo(PrimerBindingSite, "Primer Binding Site", Alphabet_Nucleic);
     typeInfoIndexByType[PrimerBindingSite] = infoCounter++;
-    featureTypeInfos << U2FeatureTypeInfo(PrimeryTranscript, "Primary Transcript", Alphabet_Nucleic);
-    typeInfoIndexByType[PrimeryTranscript] = infoCounter++;
+    featureTypeInfos << U2FeatureTypeInfo(PrimaryTranscript, "Primary Transcript", Alphabet_Nucleic);
+    typeInfoIndexByType[PrimaryTranscript] = infoCounter++;
     featureTypeInfos << U2FeatureTypeInfo(ProcessedActivePeptide, "Processed active peptide", Alphabet_Amino);
     typeInfoIndexByType[ProcessedActivePeptide] = infoCounter++;
     featureTypeInfos << U2FeatureTypeInfo(Promoter, "Promoter", Alphabet_Nucleic);

@@ -443,6 +443,7 @@ void AnnotationsTreeView::sl_onAnnotationSelectionChanged(AnnotationSelection *,
 
     if(!selectedItems.isEmpty()) {
         tree->setCurrentItem(selectedItems.last(), 0, QItemSelectionModel::NoUpdate);
+        editAction->setText(tr("Annotation"));
     }
 
     connect(tree, SIGNAL(itemSelectionChanged()), SLOT(sl_onItemSelectionChanged()));
