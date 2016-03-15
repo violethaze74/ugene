@@ -22,8 +22,9 @@
 #ifndef _DELETE_GAPS_DIALOG_
 #define _DELETE_GAPS_DIALOG_
 
-#include "ui_DeleteGapsDialog.h"
+#include <QDialog>
 
+class Ui_DeleteGapsDialog;
 
 namespace U2 {
 
@@ -33,7 +34,7 @@ enum DeleteMode {
     DeleteAll
 };
 
-class DeleteGapsDialog: public QDialog, public Ui_DeleteGapsDialog {
+class DeleteGapsDialog: public QDialog {
     Q_OBJECT
 public:
     DeleteGapsDialog(QWidget* parent, int alignmentLen);
@@ -47,6 +48,7 @@ private slots:
 private:
     DeleteMode deleteMode;
     int value;
+    Ui_DeleteGapsDialog* ui;
 };
 
 }

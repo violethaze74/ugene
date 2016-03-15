@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QFile>
 #include <QListWidget>
 #include <QPlainTextEdit>

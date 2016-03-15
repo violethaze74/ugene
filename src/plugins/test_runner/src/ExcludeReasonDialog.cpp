@@ -1,5 +1,5 @@
 #include "ExcludeReasonDialog.h"
-#include "ui/ui_ExcludeReasonDialog.h"
+#include "ui_ExcludeReasonDialog.h"
 
 namespace U2{
 

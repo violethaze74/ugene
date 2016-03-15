@@ -19,8 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QTreeWidgetItem>
+#include <QApplication>
 #include <QListWidget>
+#include <QTreeWidgetItem>
 
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>

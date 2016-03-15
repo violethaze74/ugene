@@ -20,6 +20,7 @@
  */
 
 #include <QDir>
+#include <QGroupBox>
 #include <QLabel>
 #include <QTextEdit>
 #include <QTreeWidget>

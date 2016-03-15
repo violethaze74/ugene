@@ -40,8 +40,8 @@
 #include <QMouseEvent>
 #include <QResizeEvent>
 #include <QStack>
+#include <QVBoxLayout>
 #include <QWheelEvent>
-
 
 namespace U2 {
 

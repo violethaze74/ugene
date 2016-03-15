@@ -20,6 +20,7 @@
  */
 
 #include <QComboBox>
+#include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QToolButton>

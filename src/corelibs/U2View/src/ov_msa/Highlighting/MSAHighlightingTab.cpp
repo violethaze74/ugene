@@ -19,6 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QRadioButton>
+#include <QToolButton>
+#include <QVBoxLayout>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>

@@ -22,6 +22,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include "ui_SaveSelectedSequenceFromMSADialog.h"
+
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/L10n.h>
 
@@ -30,15 +32,16 @@
 
 #include "SaveSelectedSequenceFromMSADialogController.h"
 
+
 namespace U2 {
 
 SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogController(QWidget* p)
     : QDialog(p),
       saveController(NULL) {
-    setupUi(this);
-    new HelpButton(this, buttonBox, "17467653");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    ui->setupUi(this);
+    new HelpButton(this, ui->buttonBox, "17467653");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     trimGapsFlag = false;
     addToProjectFlag = true;
@@ -54,8 +57,8 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
 
     url = saveController->getSaveFileName();
     format = saveController->getFormatIdToSave();
-    trimGapsFlag = trimGapsRB->isChecked();
-    addToProjectFlag = addToProjectBox->isChecked();
+    trimGapsFlag = ui->trimGapsRB->isChecked();
+    addToProjectFlag = ui->addToProjectBox->isChecked();
 
     QDialog::accept();
 }
@@ -63,9 +66,9 @@ void SaveSelectedSequenceFromMSADialogController::accept() {
 void SaveSelectedSequenceFromMSADialogController::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultFormatId = BaseDocumentFormats::FASTA;
-    config.fileDialogButton = fileButton;
-    config.fileNameEdit = fileNameEdit;
-    config.formatCombo = formatCombo;
+    config.fileDialogButton = ui->fileButton;
+    config.fileNameEdit = ui->fileNameEdit;
+    config.formatCombo = ui->formatCombo;
     config.parentWidget = this;
 
     DocumentFormatConstraints formatConstraints;

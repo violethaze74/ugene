@@ -20,13 +20,10 @@
  */
 
 #include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QMainWindow>
-#else
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QMainWindow>
-#endif
+
+#include <QApplication>
+#include <QGraphicsItem>
+#include <QMainWindow>
 
 #include "GTTestsOptionPanelMSA.h"
 
