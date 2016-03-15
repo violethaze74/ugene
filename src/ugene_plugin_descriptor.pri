@@ -129,11 +129,11 @@ PLUGIN_LICENSE_FILE_REP=$$replace(PLUGIN_LICENSE_FILE, "/","\\")
 !debug_and_release|build_pass {
     CONFIG(debug, debug|release) {
         unix: system (cat $$PLUGIN_LICENSE_FILE > $$OUT_PWD/../../_debug/plugins/$${PLUGIN_ID}.license)
-        win32: system (copy /B $$PLUGIN_LICENSE_FILE_REP $$OUT_PWD\\..\\..\\_debug\\plugins\\$${PLUGIN_ID}.license)
+        win32: system (copy /B $$PLUGIN_LICENSE_FILE_REP $$system_path($$OUT_PWD)\\..\\..\\_debug\\plugins\\$${PLUGIN_ID}.license)
     }
     CONFIG(release, debug|release) {
         unix: system (cat $$PLUGIN_LICENSE_FILE > $$OUT_PWD/../../_release/plugins/$${PLUGIN_ID}.license)
-        win32: system (copy /B $$PLUGIN_LICENSE_FILE_REP $$OUT_PWD\\..\\..\\_release\\plugins\\$${PLUGIN_ID}.license)
+        win32: system (copy /B $$PLUGIN_LICENSE_FILE_REP $$system_path($$OUT_PWD)\\..\\..\\_release\\plugins\\$${PLUGIN_ID}.license)
     }
 }
 
