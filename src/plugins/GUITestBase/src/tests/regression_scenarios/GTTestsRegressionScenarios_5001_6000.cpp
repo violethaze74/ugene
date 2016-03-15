@@ -397,7 +397,7 @@ GUI_TEST_CLASS_DEFINITION(test_5138_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     //    1. Open document test/_common_data/clustal/big.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5138", "big_5138.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Do MSA area context menu->Statistics->generate grid profile
     //    Expected state: notification about low memory has appeared
