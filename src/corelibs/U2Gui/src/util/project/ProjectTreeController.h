@@ -35,6 +35,7 @@ class QTreeView;
 
 namespace U2 {
 
+class EditableTreeView;
 class GObjectView;
 class MWMDIWindow;
 class ProjectFilterProxyModel;
@@ -46,7 +47,7 @@ class Task;
 class U2GUI_EXPORT ProjectTreeController : public QObject {
     Q_OBJECT
 public:
-    ProjectTreeController(QTreeView *tree, const ProjectTreeControllerModeSettings &settings, QObject *parent);
+    ProjectTreeController(EditableTreeView *tree, const ProjectTreeControllerModeSettings &settings, QObject *parent);
     ~ProjectTreeController();
 
     const DocumentSelection * getDocumentSelection() const;
@@ -153,7 +154,7 @@ private:
     static void excludeUnremovableFoldersFromList(QList<Folder> &folders);
     static bool isSubFolder(const QList<Folder> &folders, const Folder &expectedSubFolder, bool trueIfSamePath);
 
-    QTreeView *tree;
+    EditableTreeView *tree;
     ProjectTreeControllerModeSettings settings;
     ProjectUpdater *updater;
     ProjectViewModel *model;

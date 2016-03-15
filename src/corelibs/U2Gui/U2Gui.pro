@@ -100,6 +100,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/project/filter_tasks/TextContentFilterTask.h \
            src/util/project/ConnectionHelper.h \
            src/util/project/DocumentFolders.h \
+           src/util/project/EditableTreeView.h \
            src/util/project/FilteredProjectItemDelegate.h \
            src/util/project/FilteredProjectGroup.h \
            src/util/project/FolderNameDialog.h \
@@ -242,6 +243,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/project/filter_tasks/TextContentFilterTask.cpp \
            src/util/project/ConnectionHelper.cpp \
            src/util/project/DocumentFolders.cpp \
+           src/util/project/EditableTreeView.cpp \
            src/util/project/FilteredProjectItemDelegate.cpp \
            src/util/project/FilteredProjectGroup.cpp \
            src/util/project/FolderNameDialog.cpp \
