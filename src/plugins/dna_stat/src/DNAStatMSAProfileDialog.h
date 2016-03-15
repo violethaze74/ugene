@@ -34,6 +34,8 @@
 
 #include "ui_DNAStatMSAProfileDialog.h"
 
+class QFile;
+
 namespace U2 {
 
 class MSAEditor;
@@ -99,6 +101,7 @@ public:
 
 private:
     void computeStats();
+    QFile * prepareFile();
 
     DNAStatMSAProfileTaskSettings   s;
 
