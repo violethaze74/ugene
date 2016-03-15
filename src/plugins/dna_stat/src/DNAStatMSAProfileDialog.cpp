@@ -234,7 +234,11 @@ void DNAStatMSAProfileTask::run() {
             char2index.clear();
             unusedChars.clear();
             resultText.clear();
-            setError(tr("There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser."));
+            if (s.outFormat == DNAStatMSAProfileOutputFormat_Show) {
+                setError(tr("There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser."));
+            } else {
+                setError(tr("There is not enough memory to generate this grid profile in UGENE."));
+            }
             return;
         }
     } else {
