@@ -47,6 +47,12 @@ CreateAnnotationFullWidget::~CreateAnnotationFullWidget() {
     countDescriptionUsage();
 }
 
+void CreateAnnotationFullWidget::setGroupNameVisible(bool visible) {
+    lblGroupName->setVisible(visible);
+    leGroupName->setVisible(visible);
+    tbSelectGroupName->setVisible(visible);
+}
+
 void CreateAnnotationFullWidget::setLocationVisible(bool visible) {
     gbLocation->setVisible(visible);
 
@@ -122,6 +128,10 @@ void CreateAnnotationFullWidget::setDescriptionVisible(bool visible) {
 
 void CreateAnnotationFullWidget::setUsePatternNamesVisible(bool visible) {
     chbUsePatternNames->setVisible(visible);
+}
+
+void CreateAnnotationFullWidget::setAnnotationTableOptionVisible(bool visible) {
+    saveAnnotationsInnerWidget->setVisible(visible);
 }
 
 void CreateAnnotationFullWidget::setAnnotationNameEnabled(bool enable) {
@@ -200,6 +210,10 @@ void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
     leRegionEnd->setText(endString);
     chbComplement->setChecked(location->strand.isCompementary());
     leLocation->setText(getGenbankLocationString(location));
+}
+
+void CreateAnnotationFullWidget::setDescription(const QString &description) {
+    leDescription->setText(description);
 }
 
 QString CreateAnnotationFullWidget::getAnnotationTypeString() const {

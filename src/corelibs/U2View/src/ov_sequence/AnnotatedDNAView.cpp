@@ -132,9 +132,6 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     removeAnnsAndQsAction->setShortcut(QKeySequence(Qt::Key_Delete));
     removeAnnsAndQsAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 
-    renameItemAction = new QAction(tr("Rename item"), this);
-    renameItemAction->setObjectName("rename_item");
-
     syncViewManager = new ADVSyncViewManager(this);
 
     foreach(U2SequenceObject* dnaObj, dnaObjects) {
@@ -250,13 +247,11 @@ QWidget* AnnotatedDNAView::createWidget() {
 //add view global shortcuts
 
     connect(removeAnnsAndQsAction, SIGNAL(triggered()),annotationsView->removeAnnsAndQsAction, SIGNAL(triggered()));
-    connect(renameItemAction, SIGNAL(triggered()), annotationsView->renameAction, SIGNAL(triggered()));
 
     mainSplitter->addAction(toggleHLAction);
     mainSplitter->addAction(removeSequenceObjectAction);
 
     mainSplitter->addAction(removeAnnsAndQsAction);
-    mainSplitter->addAction(renameItemAction);
 
     mainSplitter->setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).icon);
 
@@ -595,6 +590,10 @@ void AnnotatedDNAView::addEditMenu(QMenu* m) {
     };
     rm->menuAction()->setObjectName(ADV_MENU_EDIT);
 
+    if (annotationSelection->getSelection().size() == 1 && annotationsView->editAction->isEnabled()) {
+        rm->addAction(annotationsView->editAction);
+    }
+
     rm->addAction(addSequencePart);
     rm->addAction(replaceSequencePart);
     sl_selectionChanged();
@@ -744,14 +743,6 @@ void AnnotatedDNAView::sl_onContextMenuRequested(const QPoint &scrollAreaPos) {
 
     m.addAction(posSelectorAction);
 
-    QRect annTreeRect = annotationsView->getTreeWidget()->rect();
-    // convert to global coordinates
-    annTreeRect.moveTopLeft(annotationsView->getTreeWidget()->mapToGlobal(annTreeRect.topLeft()));
-    QPoint globalPos = mainSplitter->mapToGlobal(scrollAreaPos);
-    if (!annTreeRect.contains(globalPos)) {
-        m.addAction(renameItemAction);
-    }
-
     m.addSeparator()->setObjectName("FIRST_SEP");
     clipb->addCopyMenu(&m);
     m.addSeparator()->setObjectName(ADV_MENU_SECTION1_SEP);
@@ -779,9 +770,6 @@ void AnnotatedDNAView::sl_onContextMenuRequested(const QPoint &scrollAreaPos) {
 
         toggleHLAction->setObjectName("toggle_HL_action");
         m.addAction(toggleHLAction);
-        renameItemAction->setEnabled(true);
-    } else {
-        renameItemAction->setEnabled(false);
     }
 
     if (NULL != focusedWidget) {
@@ -1348,7 +1336,7 @@ void AnnotatedDNAView::sl_paste(){
             }
         }
     }
-    
+
     PasteTask* task = pasteFactory->pasteTask(!focus);
     if (focus){
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteFinished(Task*)));

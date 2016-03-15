@@ -43,6 +43,7 @@ class CreateAnnotationWidget : public QWidget {
 public:
     CreateAnnotationWidget(QWidget *parent = NULL);
 
+    virtual void setGroupNameVisible(bool visible) = 0;
     virtual void setLocationVisible(bool visible) = 0;
     virtual void setAnnotationParametersVisible(bool visible) = 0;
     virtual void setAnnotationTypeVisible(bool visible) = 0;
@@ -50,6 +51,7 @@ public:
     virtual void setAutoTableOptionVisible(bool visible) = 0;
     virtual void setDescriptionVisible(bool visible) = 0;
     virtual void setUsePatternNamesVisible(bool visible) = 0;
+    virtual void setAnnotationTableOptionVisible(bool visible) = 0;
 
     virtual void setAnnotationNameEnabled(bool enable) = 0;
 
@@ -65,6 +67,7 @@ public:
     virtual void setAnnotationType(U2FeatureType featureType) = 0;
     virtual void setAnnotationName(const QString &name) = 0;
     virtual void setLocation(const U2Location &location) = 0;
+    virtual void setDescription(const QString &description) = 0;
 
     virtual QString getAnnotationTypeString() const = 0;
     virtual QString getGroupName() const = 0;

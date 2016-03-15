@@ -1356,7 +1356,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042){
     QString selected = GTUtilsAnnotationsTreeView::getSelectedItem(os);
     CHECK_SET_ERR(selected == "misc_feature", "Unexpected selected anntoation: " + selected);
 //    Click on annotation on seq view with right button
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList()<<"rename_item", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled));
     GTMouseDriver::click(os, Qt::RightButton);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_REMOVE
                                                       << "Selected annotations and qualifiers", PopupChecker::IsEnabled));

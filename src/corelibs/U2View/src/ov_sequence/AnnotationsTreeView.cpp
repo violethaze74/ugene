@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QClipboard>
 #include <QDrag>
 #include <QFileInfo>
@@ -41,6 +42,7 @@
 #include <U2Core/DBXRefRegistry.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/GenbankFeatures.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -63,7 +65,6 @@
 #include "AnnotatedDNAView.h"
 #include "AnnotationsTreeView.h"
 #include "AutoAnnotationUtils.h"
-#include "EditAnnotationDialogController.h"
 
 namespace U2 {
 
@@ -217,25 +218,12 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx) : ctx(_ctx), dn
     copyColumnURLAction = new QAction(tr("copy column URL"), this);
     connect(copyColumnURLAction, SIGNAL(triggered()), SLOT(sl_onCopyColumnURL()));
 
-    renameAction = new QAction(tr("Rename item"), this);
-    renameAction->setObjectName("rename_item");
-    renameAction->setShortcut(QKeySequence(Qt::Key_F2));
-    renameAction->setShortcutContext(Qt::WindowShortcut);
-    connect(renameAction, SIGNAL(triggered()), SLOT(sl_rename()));
-    tree->addAction(renameAction);
-
-    editAction = new QAction(tr("Edit qualifier"), this);
-    editAction->setShortcut(QKeySequence(Qt::Key_F4));
+    editAction = new QAction(tr("Annotation"), this);
+    editAction->setObjectName("edit_annotation_tree_item");
+    editAction->setShortcut(QKeySequence(Qt::Key_F2));
     editAction->setShortcutContext(Qt::WindowShortcut);
-    editAction->setObjectName("edit_qualifier_action");
     connect(editAction, SIGNAL(triggered()), SLOT(sl_edit()));
     tree->addAction(editAction);
-
-    viewAction = new QAction(tr("View qualifier"), this);
-    viewAction->setShortcut(QKeySequence(Qt::Key_F3));
-    viewAction->setShortcutContext(Qt::WindowShortcut);
-    connect(viewAction, SIGNAL(triggered()), SLOT(sl_edit()));
-    tree->addAction(viewAction);
 
     addQualifierAction = new QAction(tr("Qualifier..."), this);
     addQualifierAction->setShortcut(QKeySequence(Qt::Key_Insert));
@@ -397,6 +385,24 @@ void AnnotationsTreeView::sl_onItemSelectionChanged() {
             ags->addToSelection(gItem->group);
         }
     }
+
+    // make the text of Edit action correct
+    if (items.size() == 1) {
+        switch (static_cast<AVItem*>(items.last())->type) {
+        case AVItemType_Group:
+            editAction->setText(tr("Group"));
+            break;
+        case AVItemType_Qualifier:
+            editAction->setText(tr("Qualifier"));
+            break;
+        case AVItemType_Annotation:
+            editAction->setText(tr("Annotation"));
+            break;
+        default:
+            FAIL("Invalid annotation tree item type", );
+        }
+    }
+
     connectAnnotationSelection();
     connectAnnotationGroupSelection();
     updateState();
@@ -610,6 +616,7 @@ void AnnotationsTreeView::sl_onAnnotationModified(const AnnotationModification &
     switch(md.type) {
     case AnnotationModification_NameChanged:
     case AnnotationModification_LocationChanged:
+    case AnnotationModification_TypeChanged:
         {
             QList<AVAnnotationItem *> aItems = findAnnotationItems(md.annotation);
             assert(!aItems.isEmpty());
@@ -865,7 +872,7 @@ void AnnotationsTreeView::sl_onBuildPopupMenu(GObjectView*, QMenu* m) {
 
     //Add active context actions to the top level menu
     QList<QAction*> contextActions;
-    contextActions << toggleQualifierColumnAction << editAction;
+    contextActions << toggleQualifierColumnAction;
 
     QList<QAction *> copySubmenuActions;
     copySubmenuActions << copyQualifierAction << copyQualifierURLAction << copyColumnTextAction
@@ -882,8 +889,12 @@ void AnnotationsTreeView::sl_onBuildPopupMenu(GObjectView*, QMenu* m) {
     QAction* first = m->actions().first();
     m->insertAction(first, searchQualifierAction);
     m->insertAction(first, invertAnnotationSelectionAction);
-    m->insertAction(first, renameAction);
-    //m->insertAction(first, pasteAction);
+
+    QMenu* editMenu = GUIUtils::findSubMenu(m, ADV_MENU_EDIT);
+    SAFE_POINT(editMenu != NULL, L10N::nullPointerError(ADV_MENU_EDIT), );
+    if (editAction->isEnabled()) {
+        editMenu->addAction(editAction);
+    }
 
     m->insertSeparator(first);
     foreach(QAction* a, contextActions) {
@@ -1135,9 +1146,7 @@ void AnnotationsTreeView::updateState() {
     QTreeWidgetItem *ciBase = tree->currentItem();
     AVItem *ci = static_cast<AVItem *>(ciBase);
     bool editableItemSelected = items.size() == 1 && ci!=NULL && ci == items.first() && !ci->isReadonly();
-    renameAction->setEnabled(editableItemSelected);
-    editAction->setEnabled(hasOnly1QualifierSelected && editableItemSelected);
-    viewAction->setEnabled(hasOnly1QualifierSelected);
+    editAction->setEnabled(editableItemSelected);
 
     bool hasEditableAnnotationContext = editableItemSelected && (ci->type == AVItemType_Annotation || ci->type == AVItemType_Qualifier);
     addQualifierAction->setEnabled(hasEditableAnnotationContext);
@@ -1549,7 +1558,8 @@ void AnnotationsTreeView::sl_itemEntered(QTreeWidgetItem * i, int column) {
 void AnnotationsTreeView::sl_itemDoubleClicked(QTreeWidgetItem *i, int) {
     AVItem* item = static_cast<AVItem*>(i);
     if (item->type == AVItemType_Qualifier) {
-        editItem(item);
+        AVQualifierItem *qi = static_cast<AVQualifierItem *>(item);
+        editQualifierItem(qi);
     }
 }
 
@@ -1723,7 +1733,6 @@ void AnnotationsTreeView::saveState(QVariantMap& map) const {
 
 void AnnotationsTreeView::updateState(const QVariantMap& map) {
     QStringList columns = map.value(COLUMN_NAMES).toStringList();
-    //QByteArray geom = map.value(COLUMNS_GEOM).toByteArray();
 
     if (columns != qColumns && !columns.isEmpty()) {
         TreeSorter ts(this);
@@ -1734,9 +1743,6 @@ void AnnotationsTreeView::updateState(const QVariantMap& map) {
             addQualifierColumn(q);
         }
     }
-    /*if (columns == qColumns && !geom.isEmpty()) {
-        tree->header()->restoreState(geom);
-    }*/
 }
 
 void AnnotationsTreeView::setSortingEnabled(bool v) {
@@ -1754,35 +1760,93 @@ void AnnotationsTreeView::sl_sortTree() {
     tree->setSortingEnabled(true);
 }
 
-void AnnotationsTreeView::sl_rename() {
-    AVItem *item = static_cast<AVItem *>(tree->currentItem());
-    renameItem(item);
-}
-
 void AnnotationsTreeView::sl_edit() {
     AVItem *item = static_cast<AVItem *>(tree->currentItem());
-    if (item != NULL) {
-        editItem(item);
+    editItem(item);
+}
+
+void AnnotationsTreeView::editGroupItem(AVGroupItem *gi) {
+    SAFE_POINT(gi != NULL, "Item is NULL", );
+    SAFE_POINT(gi->group->getParentGroup() != NULL, "Attempting renaming of root group!", ); //not a root group
+    QString oldName = gi->group->getName();
+    QString newName = renameDialogHelper(gi, oldName, tr("Edit Group"));
+    AnnotationGroup *parentAnnotationGroup = gi->group->getParentGroup();
+    if (newName != oldName && AnnotationGroup::isValidGroupName(newName, false) && parentAnnotationGroup->getSubgroup(newName, false) == NULL) {
+        gi->group->setName(newName);
+        gi->group->getGObject()->setModified(true);
+        gi->updateVisual();
     }
 }
 
-void AnnotationsTreeView::editItem(AVItem *item) {
-    //warn: item could be readonly here -> used just for viewing advanced context
-    if (item->type == AVItemType_Qualifier) {
-        AVQualifierItem *qi  = static_cast<AVQualifierItem*>(item);
-        AVAnnotationItem *ai = static_cast<AVAnnotationItem*>(qi->parent());
-        U2Qualifier q;
-        bool ro = qi->isReadonly();
-        bool ok = editQualifierDialogHelper(qi, ro, q);
-        QString simplifiedValue = AVQualifierItem::simplifyText(q.value);
-        if (!ro && ok && (q.name !=qi->qName || simplifiedValue != qi->qValue)) {
-            Annotation *a = (static_cast<AVAnnotationItem*>(qi->parent()))->annotation;
-            a->removeQualifier(U2Qualifier(qi->qName, qi->qValue));
-            a->addQualifier(q);
-            AVQualifierItem *qi = ai->findQualifierItem(q.name, q.value);
-            tree->setCurrentItem(qi);
-            tree->scrollToItem(qi);
+void AnnotationsTreeView::editQualifierItem(AVQualifierItem *qi) {
+    SAFE_POINT(qi != NULL, "Item is NULL", );
+    AVAnnotationItem *ai = static_cast<AVAnnotationItem*>(qi->parent());
+    U2Qualifier q;
+    bool ro = qi->isReadonly();
+    bool ok = editQualifierDialogHelper(qi, ro, q);
+    QString simplifiedValue = AVQualifierItem::simplifyText(q.value);
+    if (!ro && ok && (q.name !=qi->qName || simplifiedValue != qi->qValue)) {
+        Annotation *a = (static_cast<AVAnnotationItem*>(qi->parent()))->annotation;
+        a->removeQualifier(U2Qualifier(qi->qName, qi->qValue));
+        a->addQualifier(q);
+        AVQualifierItem *qi = ai->findQualifierItem(q.name, q.value);
+        tree->setCurrentItem(qi);
+        tree->scrollToItem(qi);
+    }
+}
+
+void AnnotationsTreeView::editAnnotationItem(AVAnnotationItem *ai) {
+    QVector<U2Region> l = ai->annotation->getRegions();
+    QList<ADVSequenceObjectContext *> soList = ctx->findRelatedSequenceContexts(ai->annotation->getGObject());
+    SAFE_POINT(1 == soList.size(), "Invalid sequence context count!", );
+    ADVSequenceObjectContext *so = soList.first();
+
+    CreateAnnotationModel m;
+    m.sequenceObjectRef = GObjectReference(so->getSequenceGObject());
+    m.defaultIsNewDoc = false;
+    m.groupName = ai->getAnnotationGroup()->getName();
+    m.data = ai->annotation->getData();
+    QString oldDescription = ai->annotation->findFirstQualifierValue(GBFeatureUtils::QUALIFIER_NOTE);
+    m.description = oldDescription;
+    m.hideAnnotationTableOption = true;
+    m.hideGroupName = true;
+
+    m.annotationObjectRef = GObjectReference(ai->getAnnotationTableObject());
+    m.sequenceLen = so->getSequenceLength();
+    QObjectScopedPointer<CreateAnnotationDialog> dlg = new CreateAnnotationDialog(this, m);
+    QString helpPageId= "17467567"; //! the line is important for the script that changes the documentation links
+    dlg->updateAppearance(tr("Edit Annotation"), helpPageId, tr("Edit"));
+    const int result = dlg->exec();
+
+    if (result == QDialog::Accepted) {
+        QString newName = m.data->name;
+        if (newName != ai->annotation->getName()) {
+            ai->annotation->setName(newName);
+            QList<AVAnnotationItem *> ais = findAnnotationItems(ai->annotation);
+            foreach (AVAnnotationItem *a, ais) {
+                a->updateVisual(ATVAnnUpdateFlag_BaseColumns);
+            }
         }
+        U2Location location = m.data->location;
+        if(!location->regions.isEmpty() && l != location->regions){
+            ai->annotation->updateRegions(location->regions);
+        }
+
+        U2FeatureType newType = m.data->type;
+        if (newType != ai->annotation->getType()) {
+            ai->annotation->setType(newType);
+        }
+
+        if (!m.description.isEmpty() && oldDescription == QString::null) {
+            ai->annotation->addQualifier(U2Qualifier(GBFeatureUtils::QUALIFIER_NOTE, m.description));
+        } else if (m.description != oldDescription) {
+            ai->annotation->removeQualifier(U2Qualifier(GBFeatureUtils::QUALIFIER_NOTE, oldDescription));
+            ai->annotation->addQualifier(U2Qualifier(GBFeatureUtils::QUALIFIER_NOTE, m.description));
+        }
+
+        ai->annotation->setLocationOperator(location->op);
+        ai->annotation->setStrand(location->strand);
+        ai->annotation->getGObject()->setModified(true);
     }
 }
 
@@ -1839,66 +1903,20 @@ bool AnnotationsTreeView::editQualifierDialogHelper(AVQualifierItem *i, bool ro,
     return rc == QDialog::Accepted;
 }
 
-void AnnotationsTreeView::renameItem(AVItem *item) {
+void AnnotationsTreeView::editItem(AVItem *item) {
     if (item->isReadonly()) {
         return;
     }
     if (item->type == AVItemType_Group) {
         AVGroupItem *gi = static_cast<AVGroupItem *>(item);
-        SAFE_POINT(gi->group->getParentGroup() != NULL, "Attempting renaming of root group!", ); //not a root group
-        QString oldName = gi->group->getName();
-        QString newName = renameDialogHelper(item, oldName, tr("Rename Group"));
-        AnnotationGroup *parentAnnotationGroup = gi->group->getParentGroup();
-        if (newName != oldName && AnnotationGroup::isValidGroupName(newName, false) && parentAnnotationGroup->getSubgroup(newName, false) == NULL) {
-            gi->group->setName(newName);
-            gi->group->getGObject()->setModified(true);
-            gi->updateVisual();
-        }
+        editGroupItem(gi);
     } else if (item->type == AVItemType_Annotation) {
         AVAnnotationItem *ai = static_cast<AVAnnotationItem *>(item);
-        QVector<U2Region> l = ai->annotation->getRegions();
-        QList<ADVSequenceObjectContext *> soList = ctx->findRelatedSequenceContexts(ai->annotation->getGObject());
-        SAFE_POINT(1 == soList.size(), "Invalid sequence context count!", );
-        ADVSequenceObjectContext *so = soList.first();
-        U2Region seqRange(0, so->getSequenceObject()->getSequenceLength());
-
-        QObjectScopedPointer<EditAnnotationDialogController> dialog = new EditAnnotationDialogController(ai->annotation->getData(), seqRange, this);
-        moveDialogToItem(ai, dialog.data());
-        const int result = dialog->exec();
-        CHECK(!dialog.isNull(), );
-
-        if (result == QDialog::Accepted) {
-            QString newName = dialog->getName();
-            if (newName != ai->annotation->getName()) {
-                ai->annotation->setName(newName);
-                QList<AVAnnotationItem *> ais = findAnnotationItems(ai->annotation);
-                foreach (AVAnnotationItem *a, ais) {
-                    a->updateVisual(ATVAnnUpdateFlag_BaseColumns);
-                }
-            }
-            U2Location location = dialog->getLocation();
-            if(!location->regions.isEmpty() && l != location->regions){
-                ai->annotation->updateRegions(location->regions);
-            }
-            ai->annotation->setLocationOperator(location->op);
-            ai->annotation->setStrand(location->strand);
-            ai->annotation->getGObject()->setModified(true);
-        }
+        editAnnotationItem(ai);
     } else {
         SAFE_POINT(item->type == AVItemType_Qualifier, "Unexpected annotation view item's qualifier!", );
         AVQualifierItem *qi = static_cast<AVQualifierItem *>(item);
-        AVAnnotationItem *ai = static_cast<AVAnnotationItem *>(qi->parent());
-        QString newName = renameDialogHelper(item, qi->qName, tr("Rename Qualifier"));
-        if (newName != qi->qName) {
-            Annotation *a = (static_cast<AVAnnotationItem *>(qi->parent()))->annotation;
-            QString val = qi->qValue;
-            a->removeQualifier(U2Qualifier(qi->qName, val));
-            a->addQualifier(U2Qualifier(newName, val));
-            a->getGObject()->setModified(true);
-            AVQualifierItem *qi = ai->findQualifierItem(newName, val);
-            tree->setCurrentItem(qi);
-            tree->scrollToItem(qi);
-        }
+        editQualifierItem(qi);
     }
 }
 

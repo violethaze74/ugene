@@ -44,6 +44,12 @@ CreateAnnotationNormalWidget::~CreateAnnotationNormalWidget() {
     countDescriptionUsage();
 }
 
+void CreateAnnotationNormalWidget::setGroupNameVisible(bool visible) {
+    lblGroupName->setVisible(visible);
+    leGroupName->setVisible(visible);
+    tbSelectGroupName->setVisible(visible);
+}
+
 void CreateAnnotationNormalWidget::setLocationVisible(bool visible) {
     lblLocation->setVisible(visible);
     leLocation->setVisible(visible);
@@ -75,6 +81,10 @@ void CreateAnnotationNormalWidget::setDescriptionVisible(bool visible) {
 
 void CreateAnnotationNormalWidget::setUsePatternNamesVisible(bool visible) {
     chbUsePatternNames->setVisible(visible);
+}
+
+void CreateAnnotationNormalWidget::setAnnotationTableOptionVisible(bool visible) {
+    saveAnnotationsInnerWidget->setVisible(visible);
 }
 
 void CreateAnnotationNormalWidget::setAnnotationNameEnabled(bool enable) {
@@ -127,6 +137,10 @@ void CreateAnnotationNormalWidget::setAnnotationName(const QString &name) {
 
 void CreateAnnotationNormalWidget::setLocation(const U2Location &location) {
     leLocation->setText(getGenbankLocationString(location));
+}
+
+void CreateAnnotationNormalWidget::setDescription(const QString &description) {
+    leDescription->setText(description);
 }
 
 QString CreateAnnotationNormalWidget::getAnnotationTypeString() const {
