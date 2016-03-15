@@ -22,6 +22,7 @@ file(GLOB_RECURSE HDRS src/*.h)
 add_library(U2Core SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Core
-        ugenedb zlib
-        Qt5::Core Qt5::Gui Qt5::Widgets)
+        proc
+        Qt5::Core Qt5::Gui Qt5::Widgets
+        ugenedb zlib)
 

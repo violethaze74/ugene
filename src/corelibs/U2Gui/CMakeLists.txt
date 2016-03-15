@@ -24,6 +24,6 @@ qt5_add_resources(RCC_SRCS src/U2Gui.qrc)
 add_library(U2Gui SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Gui
-        U2Core U2Algorithm U2Formats U2Private
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::PrintSupport)
+        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::PrintSupport
+        U2Core U2Algorithm U2Formats U2Private)
 

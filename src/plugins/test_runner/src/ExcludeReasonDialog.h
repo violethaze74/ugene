@@ -1,11 +1,9 @@
 #ifndef EXCLUDERESAONDIALOG_H
 #define EXCLUDERESAONDIALOG_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 
-namespace Ui {
-    class ExcludeReasonDialog;
-};
+class Ui_ExcludeReasonDialog;
 
 namespace U2{
 
@@ -18,7 +16,7 @@ public:
     ~ExcludeReasonDialog();
     QString getReason();
 private:
-    Ui::ExcludeReasonDialog *ui;
+    Ui_ExcludeReasonDialog *ui;
 };
 
 }

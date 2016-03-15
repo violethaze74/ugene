@@ -19,6 +19,6 @@ qt5_add_resources(RCC_SRCS src/U2Lang.qrc)
 add_library(U2Lang SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Lang
-        U2Core
-        Qt5::Core Qt5::Xml Qt5::Script)
+        Qt5::Core Qt5::Xml Qt5::Script
+        U2Core)
 

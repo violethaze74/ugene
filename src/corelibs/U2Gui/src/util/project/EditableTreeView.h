@@ -19,23 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_VIEW_DOC_TREE_H_
-#define _U2_PROJECT_VIEW_DOC_TREE_H_
+#ifndef _U2_EDITABLE_TREE_VIEW_H_
+#define _U2_EDITABLE_TREE_VIEW_H_
 
-#include <QtCore/QMimeData>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeView>
-#else
-#include <QtWidgets/QTreeView>
-#endif
+#include <U2Core/global.h>
+#include <QTreeView>
+
 
 namespace U2 {
 
-class ProjectViewDocTree : public QTreeView {
+class U2GUI_EXPORT EditableTreeView : public QTreeView {
 public:
-    ProjectViewDocTree(QWidget* w);
+    EditableTreeView(QWidget* p);
+
+    bool isEditingActive();
 };
 
-}//namespace
+} // namespace
 
-#endif
+#endif // _U2_EDITABLE_TREE_VIEW_H_

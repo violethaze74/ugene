@@ -34,6 +34,7 @@ class CreateAnnotationOptionsPanelWidget : public CreateAnnotationWidget, privat
 public:
     CreateAnnotationOptionsPanelWidget(QWidget *parent = NULL);
 
+    void setGroupNameVisible(bool visible);
     void setLocationVisible(bool visible);
     void setAnnotationParametersVisible(bool visible);
     void setAnnotationTypeVisible(bool visible);
@@ -41,6 +42,7 @@ public:
     void setAutoTableOptionVisible(bool visible);
     void setDescriptionVisible(bool visible);
     void setUsePatternNamesVisible(bool visible);
+    void setAnnotationTableOptionVisible(bool visible);
 
     void setAnnotationNameEnabled(bool enable);
 
@@ -56,6 +58,7 @@ public:
     void setAnnotationType(U2FeatureType type);
     void setAnnotationName(const QString &name);
     void setLocation(const U2Location &location);
+    void setDescription(const QString &description);
 
     QString getAnnotationTypeString() const;
     QString getGroupName() const;

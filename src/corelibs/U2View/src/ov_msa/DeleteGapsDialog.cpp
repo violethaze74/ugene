@@ -20,32 +20,30 @@
  */
 
 #include "DeleteGapsDialog.h"
-#include <U2Gui/HelpButton.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#else
-#include <QtWidgets/QPushButton>
-#endif
+#include "ui_DeleteGapsDialog.h"
 
+#include <U2Gui/HelpButton.h>
+
+#include <QPushButton>
 
 namespace U2 {
 
 DeleteGapsDialog::DeleteGapsDialog(QWidget* parent, int rowNum): QDialog(parent) {
-    setupUi(this);
-    new HelpButton(this, buttonBox, "17467637");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Remove"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    ui->setupUi(this);
+    new HelpButton(this, ui->buttonBox, "17467637");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Remove"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    allRadioButton->setChecked(true);
-    absoluteSpinBox->setMinimum(1);
-    absoluteSpinBox->setMaximum(rowNum);
+    ui->allRadioButton->setChecked(true);
+    ui->absoluteSpinBox->setMinimum(1);
+    ui->absoluteSpinBox->setMaximum(rowNum);
 
-    QPushButton *deleteButton = buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    QPushButton *deleteButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton *cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
 
-    connect(absoluteRadioButton, SIGNAL(clicked()), SLOT(sl_onRadioButtonClicked()));
-    connect(relativeRadioButton, SIGNAL(clicked()), SLOT(sl_onRadioButtonClicked()));
-    connect(allRadioButton, SIGNAL(clicked()), SLOT(sl_onRadioButtonClicked()));
+    connect(ui->absoluteRadioButton, SIGNAL(clicked()), SLOT(sl_onRadioButtonClicked()));
+    connect(ui->relativeRadioButton, SIGNAL(clicked()), SLOT(sl_onRadioButtonClicked()));
+    connect(ui->allRadioButton, SIGNAL(clicked()), SLOT(sl_onRadioButtonClicked()));
     connect(deleteButton, SIGNAL(clicked()), SLOT(sl_onOkClicked()));
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_onCancelClicked()));
 
@@ -54,24 +52,24 @@ DeleteGapsDialog::DeleteGapsDialog(QWidget* parent, int rowNum): QDialog(parent)
 }
 
 void DeleteGapsDialog::sl_onRadioButtonClicked() {
-    absoluteSpinBox->setEnabled(absoluteRadioButton->isChecked());
-    relativeSpinBox->setEnabled(relativeRadioButton->isChecked());
+    ui->absoluteSpinBox->setEnabled(ui->absoluteRadioButton->isChecked());
+    ui->relativeSpinBox->setEnabled(ui->relativeRadioButton->isChecked());
 
-    if (absoluteRadioButton->isChecked()) {
-        absoluteSpinBox->setFocus();
+    if (ui->absoluteRadioButton->isChecked()) {
+        ui->absoluteSpinBox->setFocus();
     }
-    if (relativeRadioButton->isChecked()) {
-        relativeSpinBox->setFocus();
+    if (ui->relativeRadioButton->isChecked()) {
+        ui->relativeSpinBox->setFocus();
     }
 }
 
 void DeleteGapsDialog::sl_onOkClicked() {
-    deleteMode = allRadioButton->isChecked() ? DeleteAll : (relativeRadioButton->isChecked() ? DeleteByRelativeVal : DeleteByAbsoluteVal);
+    deleteMode = ui->allRadioButton->isChecked() ? DeleteAll : (ui->relativeRadioButton->isChecked() ? DeleteByRelativeVal : DeleteByAbsoluteVal);
 
     switch(deleteMode) {
-        case DeleteByAbsoluteVal: value = absoluteSpinBox->value();
+        case DeleteByAbsoluteVal: value = ui->absoluteSpinBox->value();
             break;
-        case DeleteByRelativeVal: value = relativeSpinBox->value();
+        case DeleteByRelativeVal: value = ui->relativeSpinBox->value();
             break;
         default: value = 0;
     }

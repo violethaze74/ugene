@@ -33,6 +33,8 @@
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MSADistanceAlgorithm.h>
 
+#include <QVBoxLayout>
+
 namespace U2
 {
 

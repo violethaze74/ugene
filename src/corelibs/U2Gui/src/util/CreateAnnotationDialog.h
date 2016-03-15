@@ -32,21 +32,24 @@ namespace U2 {
 
 class CreateAnnotationWidgetController;
 class CreateAnnotationModel;
+class HelpButton;
 
 class U2GUI_EXPORT CreateAnnotationDialog : public QDialog {
-Q_OBJECT
+    Q_OBJECT
 public:
     //saves the results to the provided model
     CreateAnnotationDialog(QWidget* p, CreateAnnotationModel& m);
     ~CreateAnnotationDialog();
-    
+
+    void updateAppearance(const QString& newTitle, const QString& newHelpPage, const QString& newOkButtonName);
 private slots:
     void accept();
 
 private:
-    CreateAnnotationModel& model;
-    CreateAnnotationWidgetController* annWidgetController;
-    Ui_CreateAnnotationDialog *ui;
+    CreateAnnotationModel&              model;
+    CreateAnnotationWidgetController*   annWidgetController;
+    Ui_CreateAnnotationDialog*          ui;
+    HelpButton*                         helpButton;
 };
 
 } // namespace

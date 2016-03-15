@@ -3,6 +3,7 @@
 PLUGIN_ID=GUITestBase
 PLUGIN_NAME=GUI Test Base
 PLUGIN_VENDOR=Unipro
+include( ../../ugene_plugin_common.pri )
 
 QT += testlib
 greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
@@ -41,4 +42,4 @@ macx {
 }
 
 
-include( ../../ugene_plugin_common.pri )
+

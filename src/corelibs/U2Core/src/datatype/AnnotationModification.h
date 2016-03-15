@@ -32,7 +32,8 @@ enum AnnotationModificationType {
     AnnotationModification_AddedToGroup, // Emitted when annotation is added to a group.
                                          // Note that first time annotation added to the object it automatically
                                          // has a group assigned and this signal is not emitted
-    AnnotationModification_RemovedFromGroup
+    AnnotationModification_RemovedFromGroup,
+    AnnotationModification_TypeChanged
 };
 
 class U2CORE_EXPORT AnnotationModification {

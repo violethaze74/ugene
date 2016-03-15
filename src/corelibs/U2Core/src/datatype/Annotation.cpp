@@ -83,6 +83,20 @@ void Annotation::setName(const QString &name) {
     parentObject->emit_onAnnotationModified(md);
 }
 
+void Annotation::setType(U2FeatureType type) {
+    CHECK(type != data->type, );
+
+    U2OpStatusImpl os;
+    U2FeatureUtils::updateFeatureType(id, type, parentObject->getEntityRef().dbiRef, os);
+    SAFE_POINT_OP(os,);
+
+    data->type = type;
+
+    parentObject->setModified(true);
+    AnnotationModification md(AnnotationModification_TypeChanged, this);
+    parentObject->emit_onAnnotationModified(md);
+}
+
 bool Annotation::isOrder() const {
     return data->isOrder();
 }

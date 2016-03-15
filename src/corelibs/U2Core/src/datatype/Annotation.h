@@ -50,6 +50,8 @@ public:
 
     void                            setName(const QString &name);
 
+    void                            setType(U2FeatureType type);
+
     bool                            isOrder() const;
 
     bool                            isJoin() const;
