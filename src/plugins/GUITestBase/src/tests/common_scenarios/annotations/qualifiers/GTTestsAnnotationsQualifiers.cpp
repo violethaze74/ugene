@@ -41,6 +41,7 @@
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include "primitives/PopupChooser.h"
+#include <utils/GTThread.h>
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditQualifierDialogFiller.h"
 
@@ -149,12 +150,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
     GTMouseDriver::click(os);
 
-    Runnable *filler = new RenameQualifierFiller(os, "qu");
+    Runnable *filler = new EditQualifierFiller(os, "qu");
     GTUtilsDialog::waitForDialog(os, filler);
     GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
-    GTGlobals::sleep();
+    GTThread::waitForMainThread(os);
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qu") != NULL, "Item qu not found in tree widget");
 }
 
@@ -172,12 +172,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
     GTMouseDriver::click(os);
 
-    Runnable *filler = new RenameQualifierFiller(os, "qu");
+    Runnable *filler = new EditQualifierFiller(os, "qu");
     GTUtilsDialog::waitForDialog(os, filler);
     GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
-    GTGlobals::sleep();
+    GTThread::waitForMainThread(os);
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qu") != NULL, "Item qu not found in tree widget");
     }
 
@@ -195,7 +194,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
     GTMouseDriver::click(os);
 
-    Runnable *filler = new RenameQualifierFiller(os, "qu");
+    Runnable *filler = new EditQualifierFiller(os, "qu");
     GTUtilsDialog::waitForDialog(os, filler);
     GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
     GTGlobals::sleep();
@@ -204,7 +203,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
     GTMouseDriver::click(os);
 
-    Runnable *filler1 = new RenameQualifierFiller(os, "qu1");
+    Runnable *filler1 = new EditQualifierFiller(os, "qu1");
     GTUtilsDialog::waitForDialog(os, filler1);
     GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
     GTGlobals::sleep();

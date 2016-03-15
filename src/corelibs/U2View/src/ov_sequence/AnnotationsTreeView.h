@@ -129,7 +129,6 @@ private slots:
     void sl_searchQualifier();
     void sl_invertSelection();
 
-    void sl_rename();
     void sl_edit();
     void sl_addQualifier();
 
@@ -144,8 +143,10 @@ protected:
     bool eventFilter(QObject *o, QEvent *e);
 
 private:
-    void renameItem(AVItem *i);
     void editItem(AVItem *i);
+    void editGroupItem(AVGroupItem *gi);
+    void editQualifierItem(AVQualifierItem *qi);
+    void editAnnotationItem(AVAnnotationItem *ai);
 
     QString renameDialogHelper(AVItem *i, const QString &defText, const QString &title);
     bool editQualifierDialogHelper(AVQualifierItem *i, bool ro, U2Qualifier &res);
@@ -177,7 +178,6 @@ private:
     AnnotationsTreeWidget* tree;
 
     AnnotatedDNAView*   ctx;
-    //QAction*            pasteAction;
     QAction*            addAnnotationObjectAction;
     QAction*            removeObjectsFromViewAction;
     QAction*            removeAnnsAndQsAction;
@@ -189,9 +189,7 @@ private:
     QAction*            copyColumnURLAction;
     QAction*            exportAutoAnnotationsGroup;
 
-    QAction*            renameAction;       // action to rename active group/qualifier/annotation only
-    QAction*            editAction;         // action to edit active item -> only for non-readonly
-    QAction*            viewAction;         // action to view active item -> could be used both for readonly and not readonly
+    QAction*            editAction;         // action to edit active group/qualifier/annotation only
     QAction*            addQualifierAction; // action to create qualifier. Editable annotation or editable qualifier must be selected
 
     QAction*            searchQualifierAction;

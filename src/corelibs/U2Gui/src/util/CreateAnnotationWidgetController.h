@@ -48,6 +48,7 @@ public:
     GObjectReference        sequenceObjectRef;  // this object is selected by default
     bool                    defaultIsNewDoc;    //new doc field is selected by default
 
+    bool                    hideGroupName;      // hides annotation group name field
     bool                    hideLocation;       // hides location field and does not check it in validate()
     bool                    hideAnnotationType; // hides annotation type field
     bool                    hideAnnotationName; // hides annotation name field
@@ -64,6 +65,7 @@ public:
     QString                 newDocUrl;        // the URL of new document with annotation table to be created
     qint64                  sequenceLen;        //length of target sequence for validation purposes
 
+    bool                    hideAnnotationTableOption;  // hides all options of annotation table object location
     bool                    hideAutoAnnotationsOption; // show automated highlighting for new annotation if possible
     bool                    hideAnnotationParameters;   // hides annotation parameters groupbox
 
@@ -78,16 +80,16 @@ public:
         Normal,
         OptionsPanel
     };
-    
+
     // useCompact defines the layout of the widget (normal or compact for the Options Panel)
     CreateAnnotationWidgetController(const CreateAnnotationModel& m, QObject* p, AnnotationWidgetMode layoutMode = Normal);
-    
+
     // returns error message or empty string if no error found;
     // does not create any new objects
-    QString validate(); 
+    QString validate();
 
     // Ensures that annotationObeject is valid
-    // for a validated model creates new document (newDocUrl), adds annotation table object 
+    // for a validated model creates new document (newDocUrl), adds annotation table object
     // to the document created and stores the reference to the object to annotationObject
     // Does nothing if annotationObject is not NULL
     // returns true if annotation object is prepared

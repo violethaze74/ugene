@@ -28,17 +28,10 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/GObjectRelationRoles.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QMessageBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
-#endif
+#include <QPushButton>
+#include <QMessageBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include <U2Gui/HelpButton.h>
 #include "ui_CreateAnnotationDialog.h"
@@ -52,12 +45,12 @@ CreateAnnotationDialog::CreateAnnotationDialog(QWidget* p, CreateAnnotationModel
 {
     ui->setupUi(this);
     annWidgetController = new CreateAnnotationWidgetController(m, this, CreateAnnotationWidgetController::Full);
-    
-    new HelpButton(this, ui->buttonBox, "17467566");
+
+    helpButton = new HelpButton(this, ui->buttonBox, "17467566");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
 
     ui->mainLayout->insertWidget(0, annWidgetController->getWidget());
-    
+
     annWidgetController->setFocusToAnnotationType();
 }
 
@@ -65,12 +58,18 @@ CreateAnnotationDialog::~CreateAnnotationDialog() {
     delete ui;
 }
 
+void CreateAnnotationDialog::updateAppearance(const QString &newTitle, const QString &newHelpPage, const QString &newOkButtonName) {
+    setWindowTitle(newTitle);
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(newOkButtonName);
+    helpButton->updatePageId(newHelpPage);
+}
+
 void CreateAnnotationDialog::accept() {
     QString err = annWidgetController->validate();
     if (!err.isEmpty()) {
         QMessageBox::warning(this, tr("Error"), err);
         return;
-    } 
+    }
     bool objectPrepared = annWidgetController->prepareAnnotationObject();
     if (!objectPrepared){
         QMessageBox::warning(this, tr("Error"), tr("Cannot create an annotation object. Please check settings"));

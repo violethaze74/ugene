@@ -40,6 +40,12 @@ CreateAnnotationOptionsPanelWidget::CreateAnnotationOptionsPanelWidget(QWidget *
     connectSignals();
 }
 
+void CreateAnnotationOptionsPanelWidget::setGroupNameVisible(bool visible) {
+    lblGroupName->setVisible(visible);
+    leGroupName->setVisible(visible);
+    tbSelectGroupName->setVisible(visible);
+}
+
 void CreateAnnotationOptionsPanelWidget::setLocationVisible(bool visible) {
     lblLocation->setVisible(visible);
     leLocation->setVisible(visible);
@@ -71,6 +77,10 @@ void CreateAnnotationOptionsPanelWidget::setDescriptionVisible(bool visible) {
 
 void CreateAnnotationOptionsPanelWidget::setUsePatternNamesVisible(bool visible) {
     chbUsePatternNames->setVisible(visible);
+}
+
+void CreateAnnotationOptionsPanelWidget::setAnnotationTableOptionVisible(bool visible) {
+    saveAnnotationsInnerWidget->setVisible(visible);
 }
 
 void CreateAnnotationOptionsPanelWidget::setAnnotationNameEnabled(bool enable) {
@@ -123,6 +133,10 @@ void CreateAnnotationOptionsPanelWidget::setAnnotationName(const QString &name) 
 
 void CreateAnnotationOptionsPanelWidget::setLocation(const U2Location &location) {
     leLocation->setText(getGenbankLocationString(location));
+}
+
+void CreateAnnotationOptionsPanelWidget::setDescription(const QString &description) {
+    leDescription->setText(description);
 }
 
 QString CreateAnnotationOptionsPanelWidget::getAnnotationTypeString() const {
