@@ -76,7 +76,7 @@ AddNewDocumentDialogImpl::AddNewDocumentDialogImpl(QWidget* p, AddNewDocumentDia
 }
 
 void AddNewDocumentDialogImpl::accept() {
-    model.format = formatController->getActiveFormatId();
+    model.format = saveController->getFormatIdToSave();
     model.url = saveController->getSaveFileName();
     if (model.url.isEmpty()) {
         QMessageBox::critical(this, tr("Invalid Document Location"), tr("Document location is empty"));

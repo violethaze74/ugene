@@ -94,7 +94,7 @@ void DistanceMatrixDialogFiller::commonScenario(){
             GTGroupBox::setChecked(os, "saveBox", dialog);
 
             QLineEdit* fileEdit = dialog->findChild<QLineEdit*>("fileEdit");
-            GTLineEdit::setText(os, fileEdit, path);
+            GTLineEdit::setText(os, fileEdit, QDir::toNativeSeparators(path));
 
             if (format == HTML) {
                 QRadioButton* htmlRB = dialog->findChild<QRadioButton*>("htmlRB");

@@ -2405,9 +2405,9 @@ GUI_TEST_CLASS_DEFINITION( test_2360 ) {
 
     // 3. Choose the context menu {Export/Import->Export nucleic alignment to amino translation}.
     // Expected state: Export dialog appears.
-    // 4. Set "File format to use" to PHYLIP Sequantial.
+    // 4. Set "File format to use" to PHYLIP Sequential.
     // 5. Click "Export".
-    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, "PHYLIP Sequantial"));
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, "PHYLIP Sequential"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_TO_AMINO_ACTION));
     GTMouseDriver::click(os, Qt::RightButton);
 }
