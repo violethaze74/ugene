@@ -19,25 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include "ProjectViewDocTree.h"
+#include "EditableTreeView.h"
 
-#include <U2Core/BunchMimeData.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObject.h>
-#include <U2Core/U2SafePoints.h>
-
-#include <U2Gui/ProjectTreeController.h>
 
 namespace U2 {
 
-ProjectViewDocTree::ProjectViewDocTree(QWidget* w) : QTreeView(w) 
-{
-    setDragDropMode(QAbstractItemView::DragDrop);
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    setDragEnabled(true);
-    setAcceptDrops(true);
-    setDropIndicatorShown(true);
-    setDragDropOverwriteMode(true);
+EditableTreeView::EditableTreeView(QWidget *p)
+    : QTreeView(p) {
+
 }
 
-} //namespace
+bool EditableTreeView::isEditingActive() {
+    return state() == QAbstractItemView::EditingState;
+}
+
+} // namespace

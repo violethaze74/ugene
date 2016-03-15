@@ -53,6 +53,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/UnloadDocumentTask.h>
 
+#include "EditableTreeView.h"
 #include "FilteredProjectItemDelegate.h"
 #include "FolderNameDialog.h"
 #include "ProjectFilterProxyModel.h"
@@ -63,9 +64,17 @@
 
 namespace U2 {
 
-ProjectTreeController::ProjectTreeController(QTreeView *tree, const ProjectTreeControllerModeSettings &settings, QObject *parent)
-    : QObject(parent), tree(tree), settings(settings), updater(NULL), model(NULL), filterModel(NULL), previousItemDelegate(NULL),
-    proxyModel(NULL), markActiveView(NULL), objectIsBeingRecycled(NULL)
+ProjectTreeController::ProjectTreeController(EditableTreeView *tree, const ProjectTreeControllerModeSettings &settings, QObject *parent)
+    : QObject(parent),
+      tree(tree),
+      settings(settings),
+      updater(NULL),
+      model(NULL),
+      filterModel(NULL),
+      previousItemDelegate(NULL),
+      proxyModel(NULL),
+      markActiveView(NULL),
+      objectIsBeingRecycled(NULL)
 {
     Project *project = AppContext::getProject();
     SAFE_POINT(NULL != project, "NULL project", );
@@ -899,8 +908,9 @@ void ProjectTreeController::sl_onLoadingDocumentProgressChanged() {
 }
 
 bool ProjectTreeController::eventFilter(QObject *o, QEvent *e) {
-    QTreeView *tree = dynamic_cast<QTreeView*>(o);
+    EditableTreeView* tree = dynamic_cast<EditableTreeView*>(o);
     CHECK(NULL != tree, false);
+    CHECK(tree == this->tree, false);
 
     if (QEvent::KeyPress == e->type()) {
         QKeyEvent *kEvent = dynamic_cast<QKeyEvent *>(e);
@@ -912,7 +922,7 @@ bool ProjectTreeController::eventFilter(QObject *o, QEvent *e) {
                 GObject *obj = objectSelection.getSelectedObjects().last();
                 QModelIndex idx = model->getIndexForObject(obj);
                 CHECK(idx.isValid(), false);
-                if (!model->flags(idx).testFlag(Qt::ItemIsEditable)) {
+                if (!tree->isEditingActive()) {
                     emit si_returnPressed(obj);
                     return true;
                 }

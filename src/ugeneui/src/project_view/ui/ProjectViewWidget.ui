@@ -51,8 +51,7 @@
           <number>5</number>
          </property>
          <item>
-          <widget class="U2::ProjectViewSearchBox" name="nameFilterEdit">
-          </widget>
+          <widget class="U2::ProjectViewSearchBox" name="nameFilterEdit"/>
          </item>
         </layout>
        </item>
@@ -70,7 +69,25 @@
         </widget>
        </item>
        <item>
-        <widget class="U2::ProjectViewDocTree" name="documentTreeWidget">
+        <widget class="U2::EditableTreeView" name="documentTreeWidget">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
+         <property name="acceptDrops">
+          <bool>true</bool>
+         </property>
+         <property name="showDropIndicator" stdset="0">
+          <bool>true</bool>
+         </property>
+         <property name="dragEnabled">
+          <bool>true</bool>
+         </property>
+         <property name="dragDropOverwriteMode">
+          <bool>true</bool>
+         </property>
+         <property name="dragDropMode">
+          <enum>QAbstractItemView::DragDrop</enum>
+         </property>
          <property name="uniformRowHeights">
           <bool>true</bool>
          </property>
@@ -122,14 +139,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>U2::ProjectViewDocTree</class>
-   <extends>QTreeView</extends>
-   <header location="global">project_view/ProjectViewDocTree.h</header>
-  </customwidget>
-  <customwidget>
    <class>U2::ProjectViewSearchBox</class>
    <extends>QLineEdit</extends>
-   <header location="global">project_view/ProjectViewSearchBox.h</header>
+   <header>project_view/ProjectViewSearchBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>U2::EditableTreeView</class>
+   <extends>QTreeView</extends>
+   <header location="global">U2Gui/EditableTreeView.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

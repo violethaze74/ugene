@@ -15,7 +15,10 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTreeView" name="treeView">
+    <widget class="U2::EditableTreeView" name="treeView">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <attribute name="headerVisible">
       <bool>false</bool>
      </attribute>
@@ -30,6 +33,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>U2::EditableTreeView</class>
+   <extends>QTreeView</extends>
+   <header location="global">util/project/EditableTreeView.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
