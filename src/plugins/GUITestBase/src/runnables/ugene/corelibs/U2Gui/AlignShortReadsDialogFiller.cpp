@@ -35,6 +35,7 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 #include <base_dialogs/MessageBoxFiller.h>
+#include <utils/GTThread.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -84,6 +85,7 @@ void AlignShortReadsFiller::setCommonParameters(QWidget* dialog) {
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters->referenceFile));
     GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
+    GTThread::waitForMainThread(os);
 
     if (!parameters->useDefaultResultPath) {
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils (os, parameters->resultDir, parameters->resultFileName, GTFileDialogUtils::Save));
@@ -93,6 +95,7 @@ void AlignShortReadsFiller::setCommonParameters(QWidget* dialog) {
     foreach (const QString &readsFile, parameters->readsFiles) {
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, readsFile));
         GTWidget::click(os, GTWidget::findWidget(os, "addShortreadsButton", dialog));
+        GTThread::waitForMainThread(os);
     }
 
     QComboBox* libraryComboBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "libraryComboBox", dialog));

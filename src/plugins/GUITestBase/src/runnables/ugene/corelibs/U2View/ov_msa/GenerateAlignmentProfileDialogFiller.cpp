@@ -83,6 +83,8 @@ void GenerateAlignmentProfileDialogFiller::commonScenario() {
     QCheckBox* skipGapPositionsCB = dialog->findChild<QCheckBox*>("skipGapPositionsCB");
     GTCheckBox::setChecked(os,skipGapPositionsCB,skipGaps);
 
+    GTGlobals::sleep(10000);
+
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 
