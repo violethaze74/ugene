@@ -4772,13 +4772,28 @@ GUI_TEST_CLASS_DEFINITION(test_3744) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTGlobals::sleep(500);
 
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
+
     QComboBox* algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
     GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
 
+    QWidget* textPattern = GTWidget::findWidget(os, "textPattern");
+    GTWidget::click(os, textPattern);
     GTKeyboardDriver::keySequence(os, "ACT.G");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QLabel* resultLabel = GTWidget::findExactWidget<QLabel*>(os, "resultLabel");
+    CHECK_SET_ERR(resultLabel->text() == "Results: 1/1132", "Unexpected result label text: " + resultLabel->text());
+
+    GTKeyboardDriver::keyClick(os, 'a', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
 
     QWidget* createButton = GTWidget::findWidget(os, "getAnnotationsPushButton");
-    CHECK_SET_ERR(!createButton->isEnabled(), "prevPushButton is unexpectidly enabled")
+    QWidget* prevPushButton = GTWidget::findWidget(os, "prevPushButton");
+    QWidget* nextPushButton = GTWidget::findWidget(os, "nextPushButton");
+    CHECK_SET_ERR(!createButton->isEnabled(), "create annotations button is unexpectidly enabled")
+    CHECK_SET_ERR(!nextPushButton->isEnabled(), "next button is unexpectidly enabled")
+    CHECK_SET_ERR(!prevPushButton->isEnabled(), "prev button is unexpectidly enabled")
 
 
 }

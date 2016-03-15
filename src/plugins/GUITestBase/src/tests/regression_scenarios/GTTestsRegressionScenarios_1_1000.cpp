@@ -1206,6 +1206,7 @@ GUI_TEST_CLASS_DEFINITION(test_0703) {
     GTUtilsProjectTreeView::dragAndDrop(os, GTUtilsProjectTreeView::findIndex(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "1.fa")),
         GTUtilsMdi::activeWindow(os));
 
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTUtilsDocument::removeDocument(os, "1.fa");
     GTUtilsDocument::removeDocument(os, "1.ugenedb");
 
@@ -1216,7 +1217,6 @@ GUI_TEST_CLASS_DEFINITION(test_0703) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : UGENE not crashes
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0729){

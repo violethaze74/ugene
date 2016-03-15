@@ -1819,12 +1819,9 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok,
-        "Please fix issues listed in the error list (located under workflow)."));
     GTGlobals::sleep(100);
     GTUtilsWorkflowDesigner::runWorkflow(os);
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
