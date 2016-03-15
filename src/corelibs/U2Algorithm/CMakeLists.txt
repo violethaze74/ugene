@@ -20,7 +20,7 @@ file(GLOB_RECURSE HDRS src/*.h)
 add_library(U2Algorithm SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Algorithm
-        U2Core
+        Qt5::Core Qt5::Gui Qt5::Widgets
         samtools
-        Qt5::Core Qt5::Gui Qt5::Widgets)
+        U2Core)
 
