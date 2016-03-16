@@ -242,6 +242,11 @@ void DNAStatMSAProfileTask::run() {
             return;
         }
     } else {
+        f = new QFile(s.outURL);
+        if (!f->open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+            setError(tr("Can't open file for write: %1").arg(s.outURL));
+            return;
+        }
         //out char freqs
         QByteArray aChars = s.ma.getAlphabet()->getAlphabetChars();
         for (int i = 0; i < aChars.size(); i++) {
