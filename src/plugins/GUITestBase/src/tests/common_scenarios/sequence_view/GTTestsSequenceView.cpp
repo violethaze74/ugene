@@ -1545,11 +1545,12 @@ GUI_TEST_CLASS_DEFINITION(test_0050){
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Wrong annotation name"));
-            QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameEdit", dialog);
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal annotation name"));
+            QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "leAnnotationName", dialog);
             GTLineEdit::setText(os, nameEdit, "//");
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
 
@@ -1559,19 +1560,26 @@ GUI_TEST_CLASS_DEFINITION(test_0050){
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
-            QLabel* statusLabel = GTWidget::findExactWidget<QLabel*>(os, "statusLabel", dialog);
-            QLineEdit* locationEdit = GTWidget::findExactWidget<QLineEdit*>(os, "locationEdit", dialog);
+            QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
+            CHECK_SET_ERR(gbFormatLocation != NULL, "radio button rbGenbankFormat not found");
+            GTRadioButton::click(os, gbFormatLocation);
 
+            QLineEdit* locationEdit = GTWidget::findExactWidget<QLineEdit*>(os, "leLocation", dialog);
             GTLineEdit::clear(os, locationEdit);
-            CHECK_SET_ERR(statusLabel->text() == "<b><font color=\"#A6392E\">Location is empty!</font></b>", QString("1 Unexpected status: %1").arg(statusLabel->text()));
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location"));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             GTLineEdit::setText(os, locationEdit, "1..");
-            CHECK_SET_ERR(statusLabel->text() == "<b><font color=\"#A6392E\">Invalid location!</font><b>", QString("2 Unexpected status: %1").arg(statusLabel->text()));
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location"));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             GTLineEdit::setText(os, locationEdit, "1..0");
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "New annotation locations is out of sequence bounds!"));
-
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
 
@@ -1586,32 +1594,6 @@ GUI_TEST_CLASS_DEFINITION(test_0050){
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new WrongDistanceChecker));
     GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
     GTGlobals::sleep(1000);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0050_1){
-    class custom : public CustomScenario {
-    public:
-        virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-            GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Genes" << "promoter"));
-            GTWidget::click(os, GTWidget::findWidget(os, "showNameGroupsButton", dialog));
-            QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameEdit", dialog);
-            CHECK_SET_ERR(nameEdit->text() == "promoter", "unexpected name: " + nameEdit->text());
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem*>() << GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
-
-    GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new custom));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
-    GTGlobals::sleep(1000);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0051){

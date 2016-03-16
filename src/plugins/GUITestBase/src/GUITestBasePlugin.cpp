@@ -1214,6 +1214,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4852);
     REGISTER_TEST(GUITest_regression_scenarios::test_4860);
     REGISTER_TEST(GUITest_regression_scenarios::test_4871);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4881);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_3);
@@ -1432,7 +1433,6 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0047);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0048);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0050);
-    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0050_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0051);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0052);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0052_1);

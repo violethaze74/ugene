@@ -210,6 +210,10 @@ void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
     leRegionEnd->setText(endString);
     chbComplement->setChecked(location->strand.isCompementary());
     leLocation->setText(getGenbankLocationString(location));
+
+    if (location->isMultiRegion()) {
+        rbGenbankFormat->setChecked(true);
+    }
 }
 
 void CreateAnnotationFullWidget::setDescription(const QString &description) {

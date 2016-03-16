@@ -80,7 +80,7 @@ void CreateAnnotationOptionsPanelWidget::setUsePatternNamesVisible(bool visible)
 }
 
 void CreateAnnotationOptionsPanelWidget::setAnnotationTableOptionVisible(bool visible) {
-    saveAnnotationsInnerWidget->setVisible(visible);
+    annotationParametersWidget->setVisible(visible);
 }
 
 void CreateAnnotationOptionsPanelWidget::setAnnotationNameEnabled(bool enable) {

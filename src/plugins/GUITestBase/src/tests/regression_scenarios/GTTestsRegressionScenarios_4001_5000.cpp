@@ -4999,6 +4999,37 @@ GUI_TEST_CLASS_DEFINITION(test_4871) {
     CHECK_SET_ERR(!undo->isEnabled(), "Button should be disabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4881) {
+    // Check Enter shortcut on object
+    // 1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Close the view
+    GTUtilsMdi::closeAllWindows(os);
+
+    // 3. Select the sequence object and press Enter
+    GTUtilsProjectTreeView::click(os, "NC_001363");
+    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: the sequence is opened
+    CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle(os).contains("NC_001363"), "No opened sequence view");
+
+    // 4. Close the view again
+    GTUtilsMdi::closeAllWindows(os);
+
+    // 3. Select the sequence object and press F2 and Enter
+    GTUtilsProjectTreeView::click(os, "NC_001363");
+    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["f2"]);
+    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: no view opened
+    CHECK_SET_ERR(GTUtilsMdi::findWindow(os, "NC_001363", GTGlobals::FindOptions(false, Qt::MatchContains)) == NULL, "Some window is opened");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4885_1) {
 //    1. Open "data/samples/CLUSTALW/ty3.aln.gz".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
@@ -5206,7 +5237,7 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
 
     GTUtilsLog::checkContainsError(os, l, "Object 'ty3.aln.gz' removed");
     int errorNum = GTUtilsLog::getErrors(os, l).size();
-    CHECK_SET_ERR(errorNum==1, QString("Too many errors in log: %1").arg(errorNum));
+    CHECK_SET_ERR(errorNum == 1, QString("Too many errors in log: %1").arg(errorNum));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4936) {

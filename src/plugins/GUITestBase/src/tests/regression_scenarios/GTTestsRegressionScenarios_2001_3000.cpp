@@ -1488,7 +1488,7 @@ GUI_TEST_CLASS_DEFINITION( test_2187 ) {
     GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick(os);
 
-    Runnable *filler = new EditAnnotationChecker(os, "repeat_unit", "join(251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259)");
+    Runnable *filler = new EditAnnotationChecker(os, "repeat_unit", "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259");
     GTUtilsDialog::waitForDialog(os, filler);
 
     GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
