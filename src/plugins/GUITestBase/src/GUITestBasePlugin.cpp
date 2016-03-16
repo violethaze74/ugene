@@ -1433,7 +1433,6 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0047);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0048);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0050);
-    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0050_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0051);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0052);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0052_1);

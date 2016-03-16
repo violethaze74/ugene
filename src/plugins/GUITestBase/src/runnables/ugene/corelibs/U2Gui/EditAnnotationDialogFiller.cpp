@@ -76,7 +76,7 @@ void EditAnnotationChecker::commonScenario() {
         GT_CHECK(lineEdit != NULL, "line edit leAnnotationName not found");
         QString text = lineEdit->text();
 
-        GT_CHECK (text == annotationName, "This name is not expected name");
+        GT_CHECK (text == annotationName, QString("The name is incorrect: got [%1], expected [%2]").arg(text).arg(annotationName));
     }
 
     if (!location.isEmpty()){
@@ -89,7 +89,7 @@ void EditAnnotationChecker::commonScenario() {
 
         QString text = lineEdit1->text();
 
-        GT_CHECK (text == location, "This name is not expected name");
+        GT_CHECK (text == location, QString("The location is incorrect: got [%1], expected [%2]").arg(text).arg(location));
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);

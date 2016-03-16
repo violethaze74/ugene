@@ -663,7 +663,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //Check rename annotation action at popup menu (UGENE-3449)
+    // Check rename annotation action at popup menu (UGENE-3449)
     // Rename annotation
     // Steps:
     // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
@@ -678,14 +678,14 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTMouseDriver::doubleClick(os);
     GTGlobals::sleep();
 
-    // 3. Check that menu item { Edit -> Annotation } is disabled at popup menu of sequence view.
+    // 3. Check that menu item { Edit -> Annotation } is absent at popup menu of sequence view.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
-                                                      PopupChecker::IsDisabled, GTGlobals::UseMouse));
+                                                      PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
-    // 4. Check that menu item { Edit -> Annotation } is disabled at popup menu of annotations view.
+    // 4. Check that menu item { Edit -> Annotation } is absent at popup menu of annotations view.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
-                                                      PopupChecker::IsDisabled, GTGlobals::UseMouse));
+                                                      PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
 
 }
