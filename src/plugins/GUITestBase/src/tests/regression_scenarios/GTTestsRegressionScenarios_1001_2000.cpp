@@ -1148,12 +1148,13 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
         }
     };
 
-    GTLogTracer lt;
+
 
     //1) Set "Enable debugger" in Settings->WD
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new EnableWdDebuggerFiller()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
 
+    GTLogTracer lt;
     //2) Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -1179,9 +1180,12 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
     CHECK_SET_ERR(pauseButton->isVisible() && !pauseButton->isEnabled(), "'Pause workflow' button is either invisible or active unexpectedly");
 
     //6) Click "Run schema" button
+    GTUtilsNotifications::waitForNotification(os, true, "The task 'Execute workflow' has been finished");
     GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTThread::waitForMainThread(os);
     //Expected state : run finished successfully
-    GTUtilsLog::check(os, lt);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1064) {

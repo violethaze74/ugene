@@ -226,7 +226,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_0829);
     REGISTER_TEST(GUITest_regression_scenarios::test_0830);
     REGISTER_TEST(GUITest_regression_scenarios::test_0834);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_0835, "Drag&drop from project to sequence view doesn't work");
+    REGISTER_TEST(GUITest_regression_scenarios::test_0835);
     REGISTER_TEST(GUITest_regression_scenarios::test_0839);
     REGISTER_TEST(GUITest_regression_scenarios::test_0840);
     REGISTER_TEST(GUITest_regression_scenarios::test_0842);
@@ -315,8 +315,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1058);
     REGISTER_TEST(GUITest_regression_scenarios::test_1059);
     REGISTER_TEST(GUITest_regression_scenarios::test_1061);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1063,
-        "The test causes a dead-lock in the task scheduler. See test scenario in the 'Strange' folder");
+    REGISTER_TEST(GUITest_regression_scenarios::test_1063);
     REGISTER_TEST(GUITest_regression_scenarios::test_1064);
     REGISTER_TEST(GUITest_regression_scenarios::test_1065_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_1065_2);
@@ -604,7 +603,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2021_8);
     REGISTER_TEST(GUITest_regression_scenarios::test_2021_9);
     REGISTER_TEST(GUITest_regression_scenarios::test_2024);
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_2026, "holding 'shift' does not work (at least on Windows)");
+    REGISTER_TEST(GUITest_regression_scenarios::test_2026);
     REGISTER_TEST(GUITest_regression_scenarios::test_2030);
     REGISTER_TEST(GUITest_regression_scenarios::test_2032);
     REGISTER_TEST(GUITest_regression_scenarios::test_2049);
@@ -881,7 +880,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3313);
     REGISTER_TEST(GUITest_regression_scenarios::test_3318);
     REGISTER_TEST(GUITest_regression_scenarios::test_3321);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3328, "Test crashes: it must work in another thread");
+    REGISTER_TEST(GUITest_regression_scenarios::test_3328);
     REGISTER_TEST(GUITest_regression_scenarios::test_3332);
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3333, "drag and drop");
     REGISTER_TEST(GUITest_regression_scenarios::test_3335);
