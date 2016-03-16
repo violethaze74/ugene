@@ -122,15 +122,13 @@ without_non_free() {
     SUBDIRS -= src/plugins_3rdparty/phylip
 }
 
-#create target directories
-win32 {
-    system( if not exist src\\_debug mkdir src\\_debug )
-    system( if not exist src\\_release mkdir src\\_release )    
-} else {
-    system( cd src && [ -d _debug ] || mkdir _debug )
-    system( cd src && [ -d _release ] || mkdir _release )
-    system( cp ./installer/_common_data/ugene src/_release/ugene )
-    system( cp ./installer/_common_data/ugened src/_debug/ugened )
+# create target build & plugin directories (to copy licenses/descriptors to)
+mkpath($$OUT_PWD/src/_debug/plugins)
+mkpath($$OUT_PWD/src/_release/plugins)
+
+!win32 {
+    system( cp ./installer/_common_data/ugene $$OUT_PWD/src/_release/ugene )
+    system( cp ./installer/_common_data/ugened $$OUT_PWD/src/_debug/ugened )
 }
 
 
@@ -172,16 +170,15 @@ for( i, UGENE_TRANSL_IDX ) {
 #            system( $$UGENE_LUPDATE $$translFile ) FIXME
         }
     }
-    for( targetDir, UGENE_TRANSL_QM_TARGET_DIR ) {
-        targetQmFile = $$targetDir/transl_$$curTranslTag            # 'transl_en.qm' etc.
-        targetQmFile = $$join( targetQmFile, , , .qm )              # special workaround for adding suffix started with '.'
-
-        !isEmpty(UGENE_LRELEASE) {
+    !isEmpty(UGENE_LRELEASE) {
+        for( targetDir, UGENE_TRANSL_QM_TARGET_DIR ) {
+            targetQmFile = $$targetDir/transl_$$curTranslTag            # 'transl_en.qm' etc.
+            targetQmFile = $$join( targetQmFile, , , .qm )              # special workaround for adding suffix started with '.'
             message( Generating traslations for language: $$curTranslTag )
-            system( $$UGENE_LRELEASE $$UGENE_TRANSLATIONS -qm $$targetQmFile > $$UGENE_DEV_NULL ) 
-        } else {
-            message( Cannot generate translations: no lrelease binary found )
+            system( $$UGENE_LRELEASE $$UGENE_TRANSLATIONS -qm $$targetQmFile > $$UGENE_DEV_NULL )
         }
+    } else {
+        message( Cannot generate translations: no lrelease binary found )
     }
 }
 
