@@ -36,6 +36,7 @@ class ExportHighligtingDialogController : public QDialog{
     Q_OBJECT
 public:
     ExportHighligtingDialogController(MSAEditorUI *msaui_, QWidget* p);
+    ~ExportHighligtingDialogController();
 
     virtual void accept();
     void lockKeepGaps();

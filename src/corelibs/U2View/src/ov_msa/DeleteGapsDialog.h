@@ -38,6 +38,7 @@ class DeleteGapsDialog: public QDialog {
     Q_OBJECT
 public:
     DeleteGapsDialog(QWidget* parent, int alignmentLen);
+    ~DeleteGapsDialog();
     DeleteMode getDeleteMode() const {return deleteMode;}
     int getValue() const {return value;}
 private slots:

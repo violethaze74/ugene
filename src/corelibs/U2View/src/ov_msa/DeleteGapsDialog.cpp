@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-DeleteGapsDialog::DeleteGapsDialog(QWidget* parent, int rowNum): QDialog(parent) {
+DeleteGapsDialog::DeleteGapsDialog(QWidget* parent, int rowNum): QDialog(parent), ui(new Ui_DeleteGapsDialog()) {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "17467637");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Remove"));
@@ -49,6 +49,9 @@ DeleteGapsDialog::DeleteGapsDialog(QWidget* parent, int rowNum): QDialog(parent)
 
     sl_onRadioButtonClicked();
 
+}
+DeleteGapsDialog::~DeleteGapsDialog(){
+    delete ui;
 }
 
 void DeleteGapsDialog::sl_onRadioButtonClicked() {
