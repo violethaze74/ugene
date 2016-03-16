@@ -36,6 +36,7 @@ class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
     SaveSelectedSequenceFromMSADialogController(QWidget* p);
+    ~SaveSelectedSequenceFromMSADialogController();
 
     virtual void accept();
 
