@@ -306,7 +306,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTKeyboardUtils::selectAll(os);
     GTGlobals::sleep(1000);
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(1000);
 
     QString sequence = GTClipboard::text(os);
@@ -337,9 +337,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_COPY" << "action_copy_annotation_sequence"));
-    GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "DUMMY_1"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "DUMMY_1"));
     GTGlobals::sleep(1000);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(1000);
 
     const QString expectedSequence = "AATGA";

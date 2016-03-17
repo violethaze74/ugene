@@ -66,7 +66,7 @@ CreateAnnotationWidgetFiller::CreateAnnotationWidgetFiller(HI::GUITestOpStatus &
 
 void CreateAnnotationWidgetFiller::commonScenario() {
 #ifdef Q_OS_MAC
-    GTKeyboardDriver::keyRelease(os,GTKeyboardDriver::key["cmd"]);
+    GTKeyboardDriver::keyRelease(GTKeyboardDriver::key["cmd"]);
 #endif
 
     QWidget* dialog = QApplication::activeModalWidget();

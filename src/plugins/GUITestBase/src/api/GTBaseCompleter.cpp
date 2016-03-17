@@ -44,8 +44,8 @@ void GTBaseCompleter::click(HI::GUITestOpStatus &os, QTreeWidget* tree, const QS
     tree->scrollToItem(item);
     QRect itemRect = tree->visualItemRect(item);
     QPoint globalCenter = tree->mapToGlobal(itemRect.center());
-    GTMouseDriver::moveTo(os, globalCenter);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(globalCenter);
+    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 

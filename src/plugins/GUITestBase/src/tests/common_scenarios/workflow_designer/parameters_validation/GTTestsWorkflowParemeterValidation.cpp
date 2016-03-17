@@ -54,17 +54,17 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
     // 2. Set some name for an output file
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
     CHECK_SET_ERR(table,"tableView not found");
-    GTMouseDriver::moveTo(os,GTUtilsWorkflowDesigner::getItemCenter(os,"Write alignment"));
-    GTMouseDriver::click(os);
-    GTMouseDriver::moveTo(os,GTTableView::getCellPosition(os,table,1,1));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Write alignment"));
+    GTMouseDriver::click();
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(os,table,1,1));
+    GTMouseDriver::click();
     QString s = QFileInfo(testDir + "_common_data/scenarios/sandbox/").absoluteFilePath();
-    GTKeyboardDriver::keySequence(os, s+"/wd_pv_0001.sto");
+    GTKeyboardDriver::keySequence(s+"/wd_pv_0001.sto");
     GTWidget::click(os,GTUtilsMdi::activeWindow(os));
 
     // 3. Add the file "test/_common_data/clustal/align.aln" as input
-    GTMouseDriver::moveTo(os,GTUtilsWorkflowDesigner::getItemCenter(os,"Read alignment"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Read alignment"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/", "align.aln");
 
     // 4. Move this file somewhere from its directory
@@ -111,13 +111,13 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table"));
     CHECK_SET_ERR(table, "tableView not found");
     QPoint writeAlignmentCenter = GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment");
-    GTMouseDriver::moveTo(os, writeAlignmentCenter);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(writeAlignmentCenter);
+    GTMouseDriver::click();
     QPoint cellPoint = GTTableView::getCellPosition(os, table, 1, 1);
-    GTMouseDriver::moveTo(os, cellPoint);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(cellPoint);
+    GTMouseDriver::click();
     QString dirPath = QFileInfo(testDir + "_common_data/scenarios/sandbox/").absoluteFilePath();
-    GTKeyboardDriver::keySequence(os, dirPath + "/wd_pv_0002.sto");
+    GTKeyboardDriver::keySequence(dirPath + "/wd_pv_0002.sto");
     QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(activeWindow, "Active window wasn't found");
     GTWidget::click(os, activeWindow);
@@ -129,8 +129,8 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
 
 //    4. Add that directory as input in WD
     QPoint readAlignmentCenter = GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment");
-    GTMouseDriver::moveTo(os, readAlignmentCenter);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(readAlignmentCenter);
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, outputDir.path());
     GTGlobals::sleep(2000);
     GTWidget::click(os, activeWindow);
@@ -169,29 +169,29 @@ GUI_TEST_CLASS_DEFINITION( test_0003 ) {
 
     //2. Set some name for an output file
 
-    GTMouseDriver::moveTo( os, GTUtilsWorkflowDesigner::getItemCenter( os, "Write Sequence" ) );
-    GTMouseDriver::click( os );
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Write Sequence" ) );
+    GTMouseDriver::click();
     QTableView *table = qobject_cast<QTableView *>( GTWidget::findWidget( os, "table" ) );
     CHECK_SET_ERR( table, "tableView not found" );
-    GTMouseDriver::moveTo( os, GTTableView::getCellPosition( os, table, 1, 3 ) );
-    GTMouseDriver::click( os );
-    GTKeyboardDriver::keySequence( os, "sequence.gb" );
+    GTMouseDriver::moveTo(GTTableView::getCellPosition( os, table, 1, 3 ) );
+    GTMouseDriver::click();
+    GTKeyboardDriver::keySequence("sequence.gb" );
     GTWidget::click( os, GTUtilsMdi::activeWindow( os ) );
 
     //3. Add some valid sequence file as input
 
-    GTMouseDriver::moveTo( os, GTUtilsWorkflowDesigner::getItemCenter( os, "Read Sequence" ) );
-    GTMouseDriver::click( os );
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Read Sequence" ) );
+    GTMouseDriver::click();
     QString dirPath = testDir + "_common_data/fasta/";
     GTUtilsWorkflowDesigner::setDatasetInputFile( os, dirPath, "fa1.fa" );
 
     //4. Set some nonexistent path to a file as the "Pattern file" parameter of the "Find Substrings" worker
 
-    GTMouseDriver::moveTo( os, GTUtilsWorkflowDesigner::getItemCenter( os, "Find Pattern" ) );
-    GTMouseDriver::click( os );
-    GTMouseDriver::moveTo( os, GTTableView::getCellPosition( os, table, 1, 2 ) );
-    GTMouseDriver::click( os );
-    GTKeyboardDriver::keySequence( os, "pattern_file.txt" );
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Find Pattern" ) );
+    GTMouseDriver::click();
+    GTMouseDriver::moveTo(GTTableView::getCellPosition( os, table, 1, 2 ) );
+    GTMouseDriver::click();
+    GTKeyboardDriver::keySequence("pattern_file.txt" );
     GTWidget::click( os, GTUtilsMdi::activeWindow( os ) );
 
     //5. In WD press the "Validate" button
@@ -216,16 +216,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
     // 2. Set some name for an output file
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
     CHECK_SET_ERR(table,"tableView not found");
-    GTMouseDriver::moveTo(os,GTUtilsWorkflowDesigner::getItemCenter(os,"Write alignment"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Write alignment"));
+    GTMouseDriver::click();
     //GTGlobals::sleep(60000);
     QString s = QFileInfo(testDir + "_common_data/scenarios/sandbox/permDir").absoluteFilePath();
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QVariant(s+"/wd_pv_0001.sto"), GTUtilsWorkflowDesigner::textValue);
     GTWidget::click(os,GTUtilsMdi::activeWindow(os));
 
     // 3. Add the file "test/_common_data/clustal/align.aln" as input
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os,"Read alignment"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Read alignment"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/", "align.aln");
     GTGlobals::sleep(2000);
 
@@ -275,19 +275,19 @@ GUI_TEST_CLASS_DEFINITION( test_0006 ) {
 
     //2. Set some name for an output file
 
-    GTMouseDriver::moveTo( os, GTUtilsWorkflowDesigner::getItemCenter( os, "Write Sequence" ) );
-    GTMouseDriver::click( os );
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Write Sequence" ) );
+    GTMouseDriver::click();
     QTableView *table = qobject_cast<QTableView *>( GTWidget::findWidget( os, "table" ) );
     CHECK_SET_ERR( table, "tableView not found" );
-    GTMouseDriver::moveTo( os, GTTableView::getCellPosition( os, table, 1, 3 ) );
-    GTMouseDriver::click( os );
-    GTKeyboardDriver::keySequence( os, "sequence.gb" );
+    GTMouseDriver::moveTo(GTTableView::getCellPosition( os, table, 1, 3 ) );
+    GTMouseDriver::click();
+    GTKeyboardDriver::keySequence("sequence.gb" );
     GTWidget::click( os, GTUtilsMdi::activeWindow( os ) );
 
     //3. Add some valid sequence file as input
 
-    GTMouseDriver::moveTo( os, GTUtilsWorkflowDesigner::getItemCenter( os, "Read Sequence" ) );
-    GTMouseDriver::click( os );
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Read Sequence" ) );
+    GTMouseDriver::click();
     QString dirPath = testDir + "_common_data/fasta/";
     GTUtilsWorkflowDesigner::setDatasetInputFile( os, dirPath, "fa1.fa" );
 
@@ -296,11 +296,11 @@ GUI_TEST_CLASS_DEFINITION( test_0006 ) {
     newDir.mkdir("_empty_tmp");
 
     //5. Set the path to this directory as the "Database directory" parameter of the "CD Search" worker
-    GTMouseDriver::moveTo( os, GTUtilsWorkflowDesigner::getItemCenter( os, "CD Search" ) );
-    GTMouseDriver::click( os );
-    GTMouseDriver::moveTo( os, GTTableView::getCellPosition( os, table, 1, 2 ) );
-    GTMouseDriver::click( os );
-    GTKeyboardDriver::keySequence( os, testDir + "_empty_tmp");
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "CD Search" ) );
+    GTMouseDriver::click();
+    GTMouseDriver::moveTo(GTTableView::getCellPosition( os, table, 1, 2 ) );
+    GTMouseDriver::click();
+    GTKeyboardDriver::keySequence(testDir + "_empty_tmp");
     GTWidget::click( os, GTUtilsMdi::activeWindow( os ) );
 
     //6. Remove this directory

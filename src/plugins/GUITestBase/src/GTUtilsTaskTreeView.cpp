@@ -84,12 +84,12 @@ void GTUtilsTaskTreeView::openView(HI::GUITestOpStatus& os) {
     if (!documentTreeWidget) {
         toggleView(os);
         GTGlobals::sleep(500);
-        GTThread::waitForMainThread(os);
+        GTThread::waitForMainThread();
     }
 }
 
 void GTUtilsTaskTreeView::toggleView(HI::GUITestOpStatus& os) {
-    GTKeyboardDriver::keyClick(os, '2', GTKeyboardDriver::key["alt"]);
+    GTKeyboardDriver::keyClick('2', Qt::AltModifier);
 }
 
 #define GT_METHOD_NAME "getTreeWidgetItem"
@@ -153,7 +153,7 @@ void GTUtilsTaskTreeView::cancelTask( HI::GUITestOpStatus& os, const QString &it
 
 void GTUtilsTaskTreeView::click( HI::GUITestOpStatus &os, const QString &itemName, Qt::MouseButton b ){
     moveTo(os, itemName);
-    GTMouseDriver::click(os, b);
+    GTMouseDriver::click(b);
 }
 
 void GTUtilsTaskTreeView::moveTo(HI::GUITestOpStatus &os,const QString &itemName) {
@@ -174,7 +174,7 @@ int GTUtilsTaskTreeView::getTopLevelTasksCount(HI::GUITestOpStatus &os) {
 
 void GTUtilsTaskTreeView::moveToOpenedView( HI::GUITestOpStatus& os, const QString &itemName ){
     QPoint p = getTreeViewItemPosition(os, itemName);
-    GTMouseDriver::moveTo(os, p);
+    GTMouseDriver::moveTo(p);
 }
 
 #define GT_METHOD_NAME "getTreeViewItemPosition"

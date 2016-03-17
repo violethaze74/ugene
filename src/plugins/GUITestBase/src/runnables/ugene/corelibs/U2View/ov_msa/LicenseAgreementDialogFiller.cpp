@@ -44,7 +44,7 @@ void LicenseAgreemntDialogFiller::commonScenario() {
 
     QPushButton* accept = dialog->findChild<QPushButton*>("acceptButton");
     GTWidget::click(os, accept);
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

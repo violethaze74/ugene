@@ -24,9 +24,9 @@
 #include "GTDatabaseConfig.h"
 #include "GTTestsPrimerLibrary.h"
 #include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsOptionPanelSequenceView.h"
 #include "utils/GTUtilsDialog.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
@@ -137,16 +137,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //3. Click the empty place of the table.
     QPoint emptyPoint = GTUtilsPrimerLibrary::getPrimerPoint(os, librarySize);
     emptyPoint.setY(emptyPoint.y() + 40);
-    GTMouseDriver::moveTo(os, emptyPoint);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(emptyPoint);
+    GTMouseDriver::click();
 
     //Expected: The remove button is disabled.
     QAbstractButton *removeButton = GTUtilsPrimerLibrary::getButton(os, GTUtilsPrimerLibrary::Remove);
     CHECK_SET_ERR(!removeButton->isEnabled(), "The remove button is enabled");
 
     //4. Select the primer.
-    GTMouseDriver::moveTo(os, GTUtilsPrimerLibrary::getPrimerPoint(os, librarySize));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsPrimerLibrary::getPrimerPoint(os, librarySize));
+    GTMouseDriver::click();
 
     //Expected: The remove button is enabled.
     CHECK_SET_ERR(removeButton->isEnabled(), "The remove button is disabled");
@@ -211,27 +211,27 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //3. Click the empty place of the table.
     QPoint emptyPoint = GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer);
     emptyPoint.setY(emptyPoint.y() + 40);
-    GTMouseDriver::moveTo(os, emptyPoint);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(emptyPoint);
+    GTMouseDriver::click();
 
     //Expected: The edit button is disabled.
     QAbstractButton *editButton = GTUtilsPrimerLibrary::getButton(os, GTUtilsPrimerLibrary::Edit);
     CHECK_SET_ERR(!editButton->isEnabled(), "The remove button is enabled");
 
     //4. Select several primers.
-    GTMouseDriver::moveTo(os, GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer));
-    GTMouseDriver::click(os);
-    GTMouseDriver::moveTo(os, GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer - 2));
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["shift"]);
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["shift"]);
+    GTMouseDriver::moveTo(GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer));
+    GTMouseDriver::click();
+    GTMouseDriver::moveTo(GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer - 2));
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     //Expected: The edit button is disabled.
     CHECK_SET_ERR(!editButton->isEnabled(), "The remove button is enabled");
 
     //5. Select the primer P.
-    GTMouseDriver::moveTo(os, GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsPrimerLibrary::getPrimerPoint(os, lastPrimer));
+    GTMouseDriver::click();
 
     //Expected: The edit button is enabled.
     CHECK_SET_ERR(editButton->isEnabled(), "The remove button is disabled");
@@ -243,7 +243,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     parameters.primer = "CCCCCCCCCCCCCC";
     parameters.name = "test_0005";
     GTUtilsDialog::waitForDialog(os, new AddPrimerDialogFiller(os, parameters));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
 
     //Expected: the primer is changed in the table.
     CHECK_SET_ERR("CCCCCCCCCCCCCC" == GTUtilsPrimerLibrary::getPrimerSequence(os, lastPrimer), "The sequence is not changed");
@@ -275,7 +275,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
-            ExportPrimersDialogFiller::setFormat(os, "FASTA");
+            ExportPrimersDialogFiller::setFormat(os, "fasta");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0006/primers.fa");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -330,7 +330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
-            ExportPrimersDialogFiller::setFormat(os, "Genbank");
+            ExportPrimersDialogFiller::setFormat(os, "genbank");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0007/primers.gb");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }

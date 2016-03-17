@@ -61,7 +61,7 @@ Document* GTUtilsSharedDatabaseDocument::connectToTestDatabase(HI::GUITestOpStat
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Connect to UGENE shared database...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 
     CHECK_SET_ERR_RESULT(!lt.hasError(), "errors in log", NULL);
 
@@ -151,8 +151,8 @@ void GTUtilsSharedDatabaseDocument::createFolder(HI::GUITestOpStatus &os, Docume
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__CREATE_FOLDER));
     GTUtilsDialog::waitForDialog(os, new AddFolderDialogFiller(os, newFolderName, GTGlobals::UseMouse));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, parentFolderIndex));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, parentFolderIndex));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
@@ -328,8 +328,8 @@ void GTUtilsSharedDatabaseDocument::callImportDialog(HI::GUITestOpStatus &os, Do
 
     GTUtilsProjectTreeView::getTreeView(os)->scrollTo(itemIndex);
     const QPoint itemCenter = GTUtilsProjectTreeView::getItemCenter(os, itemIndex);
-    GTMouseDriver::moveTo(os, itemCenter);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(itemCenter);
+    GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 

@@ -81,7 +81,7 @@ void GTUtilsQueryDesigner::addAlgorithm(HI::GUITestOpStatus &os, QString algName
     GTGlobals::sleep(500);
     CHECK_SET_ERR(w!=NULL,"algorithm is NULL");
 
-    GTMouseDriver::moveTo(os,GTTreeWidget::getItemCenter(os,w));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os,w));
 
     GTWidget::click(os, GTWidget::findWidget(os,"sceneView"));
 }

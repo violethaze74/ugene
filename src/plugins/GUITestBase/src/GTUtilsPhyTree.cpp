@@ -192,9 +192,9 @@ QPoint GTUtilsPhyTree::getGlobalCoord(HI::GUITestOpStatus& os,QGraphicsItem *ite
 void GTUtilsPhyTree::clickNode(HI::GUITestOpStatus &os, GraphicsButtonItem *node) {
     GT_CHECK(NULL != node, "Node to click is NULL");
     node->ensureVisible();
-    GTThread::waitForMainThread(os);
-    GTMouseDriver::moveTo(os, getGlobalCoord(os, node));
-    GTMouseDriver::click(os);
+    GTThread::waitForMainThread();
+    GTMouseDriver::moveTo(getGlobalCoord(os, node));
+    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 

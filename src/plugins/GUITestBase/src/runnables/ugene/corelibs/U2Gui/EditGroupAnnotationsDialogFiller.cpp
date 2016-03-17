@@ -54,7 +54,7 @@ void EditGroupAnnotationsFiller::commonScenario()
     GT_CHECK(lineEdit != NULL, "line edit not found");
     GTLineEdit::setText(os, lineEdit, groupName);
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["Enter"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

@@ -163,25 +163,25 @@ void GTUtilsMsaEditor::replaceSequence(HI::GUITestOpStatus &os, const QString &s
     const QPoint dragFrom = getSequenceNameRect(os, sequenceToReplace).center();
     const QPoint dragTo = getSequenceNameRect(os, targetSequenceName).center();
 
-    GTMouseDriver::moveTo(os, dragFrom);
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, dragTo);
-    GTMouseDriver::release(os);
+    GTMouseDriver::moveTo(dragFrom);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(dragTo);
+    GTMouseDriver::release();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "removeColumn"
 void GTUtilsMsaEditor::removeColumn(HI::GUITestOpStatus &os, int column) {
     clickColumn(os, column);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickSequenceName"
 void GTUtilsMsaEditor::clickSequenceName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton) {
     const QRect sequenceNameRect = getSequenceNameRect(os, sequenceName);
-    GTMouseDriver::moveTo(os, sequenceNameRect.center());
-    GTMouseDriver::click(os, mouseButton);
+    GTMouseDriver::moveTo(sequenceNameRect.center());
+    GTMouseDriver::click(mouseButton);
 }
 #undef GT_METHOD_NAME
 
@@ -230,8 +230,8 @@ void GTUtilsMsaEditor::toggleCollapsingGroup(HI::GUITestOpStatus &os, const QStr
 #else
     magicExpandButtonOffset = QPoint(15, 5);
 #endif
-    GTMouseDriver::moveTo(os, sequenceNameRect.topLeft() + magicExpandButtonOffset);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(sequenceNameRect.topLeft() + magicExpandButtonOffset);
+    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 

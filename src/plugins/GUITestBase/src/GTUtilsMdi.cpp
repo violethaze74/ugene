@@ -69,8 +69,8 @@ void GTUtilsMdi::click(HI::GUITestOpStatus &os, GTGlobals::WindowAction action) 
         int left = mdiWindow->rect().left();
         int top = mdiWindow->rect().top();
         QPoint p(left + 15,top - 10);
-        GTMouseDriver::moveTo(os, mdiWindow->mapToGlobal(p));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(mdiWindow->mapToGlobal(p));
+        GTMouseDriver::click();
         break;
     }
     default:
@@ -162,10 +162,10 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
         GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
 
         const QPoint closeButtonPos = GTWidget::getWidgetGlobalTopLeftPoint(os, mdiWindow) + QPoint(10, 5);
-        GTMouseDriver::moveTo(os, closeButtonPos);
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(closeButtonPos);
+        GTMouseDriver::click();
         GTGlobals::sleep(100);
-        GTThread::waitForMainThread(os);
+        GTThread::waitForMainThread();
     }
 #endif
 }
@@ -249,10 +249,10 @@ void GTUtilsMdi::selectRandomRegion(HI::GUITestOpStatus &os, const QString& wind
     GT_CHECK(w != NULL, "MDI window not found");
     const QRect r = w->rect();
     QPoint p = QPoint((r.topLeft().x() + r.bottomLeft().x())/2 + 5, r.center().y()/2);
-    GTMouseDriver::moveTo(os, w->mapToGlobal(p));
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, w->mapToGlobal(r.center()));
-    GTMouseDriver::release(os);
+    GTMouseDriver::moveTo(w->mapToGlobal(p));
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(w->mapToGlobal(r.center()));
+    GTMouseDriver::release();
 }
 #undef GT_METHOD_NAME
 

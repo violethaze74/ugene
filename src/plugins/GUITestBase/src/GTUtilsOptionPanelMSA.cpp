@@ -114,14 +114,14 @@ void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus &os, QString seqNam
     case Completer:
         QWidget* sequenceLineEdit = GTWidget::findWidget(os, "sequenceLineEdit");
         GTWidget::click(os, sequenceLineEdit);
-        GTKeyboardDriver::keyClick(os, seqName.at(0).toLatin1());
+        GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
         GTGlobals::sleep(200);
         QTreeWidget* completer = sequenceLineEdit->findChild<QTreeWidget*>();
         GT_CHECK(completer != NULL, "auto completer widget not found");
         GTBaseCompleter::click(os, completer, seqName);
         break;
     }
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
@@ -213,7 +213,7 @@ void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus &os, QString seqName,
     case Completer:
         QWidget* sequenceLineEdit = getSeqLineEdit(os, number);
         GTWidget::click(os, sequenceLineEdit);
-        GTKeyboardDriver::keyClick(os, seqName.at(0).toLatin1());
+        GTKeyboardDriver::keyClick( seqName.at(0).toLatin1());
         GTGlobals::sleep(200);
         QTreeWidget* completer = sequenceLineEdit->findChild<QTreeWidget*>();
         GT_CHECK(completer != NULL, "auto completer widget not found");

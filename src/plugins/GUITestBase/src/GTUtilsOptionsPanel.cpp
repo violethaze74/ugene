@@ -50,16 +50,16 @@ using namespace HI;
 
 #define GT_METHOD_NAME "runFindPatternWithHotKey"
 void GTUtilsOptionsPanel::runFindPatternWithHotKey( const QString& pattern, HI::GUITestOpStatus& os){
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep();
 
     QWidget *w = QApplication::focusWidget();
     GT_CHECK(w && w->objectName()=="textPattern", "Focus is not on FindPattern widget");
 
-    GTKeyboardDriver::keySequence(os, pattern);
+    GTKeyboardDriver::keySequence(pattern);
     GTGlobals::sleep(1000);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
-    GTThread::waitForMainThread(os);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

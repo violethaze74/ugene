@@ -33,7 +33,6 @@
 #include <U2Gui/ObjectViewModel.h>
 
 #include "utils/GTUtilsDialog.h"
-#include "utils/GTThread.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
@@ -67,11 +66,11 @@ GUI_TEST_CLASS_DEFINITION(pre_action_0000) {
     GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
 
 #ifndef Q_OS_WIN
-    GTMouseDriver::release(os, Qt::RightButton);
-    GTMouseDriver::release(os);
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["shift"]);
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["alt"]);
+    GTMouseDriver::release(Qt::RightButton);
+    GTMouseDriver::release();
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     uiLog.trace(QString("pre_action_0000: next keyboard modifiers are pressed before test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
 #endif
 
@@ -115,7 +114,7 @@ GUI_TEST_CLASS_DEFINITION(pre_action_0004) {
 
 GUI_TEST_CLASS_DEFINITION(pre_action_0005) {
     if(QDir(sandBoxDir).exists()){
-        GTFile::setReadWrite(os, sandBoxDir);
+        //GTFile::setReadWrite(os, sandBoxDir);
         GTGlobals::sleep();
         QDir sandBox = QDir(sandBoxDir);
         foreach (QString path, sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
@@ -149,15 +148,15 @@ GUI_TEST_CLASS_DEFINITION(post_check_0001) {
 GUI_TEST_CLASS_DEFINITION(post_action_0000) {
     const Qt::KeyboardModifiers modifiers = QGuiApplication::queryKeyboardModifiers();
     if (modifiers & Qt::ShiftModifier) {
-        GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["shift"]);
+        GTKeyboardDriver::keyRelease(Qt::ShiftModifier);
     }
 
     if (modifiers & Qt::ControlModifier) {
-        GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+        GTKeyboardDriver::keyRelease( Qt::Key_Control);
     }
 
     if (modifiers & Qt::AltModifier) {
-        GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["alt"]);
+        GTKeyboardDriver::keyRelease(Qt::AltModifier);
     }
 
     uiLog.trace(QString("post_action_0000: next keyboard modifiers are pressed after test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
@@ -185,18 +184,17 @@ GUI_TEST_CLASS_DEFINITION(post_action_0002) {
     if (AppContext::getProject() != NULL) {
         GTGlobals::sleep();
         GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
-        GTKeyboardDriver::keyClick(os, 'a', GTKeyboardDriver::key["ctrl"]);
+        GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
         GTGlobals::sleep(100);
 
         GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
         GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
-        GTThread::waitForMainThread(os);
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
         GTGlobals::sleep(500);
 #ifdef Q_OS_MAC
         GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Close project");
 #else
-        GTKeyboardDriver::keyClick(os, 'q', GTKeyboardDriver::key["ctrl"]);
+        GTKeyboardDriver::keyClick( 'q', Qt::ControlModifier);
         GTGlobals::sleep(100);
 #endif
         GTGlobals::sleep(500);
@@ -222,7 +220,7 @@ GUI_TEST_CLASS_DEFINITION(post_action_0003) {
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj5.uprj");
     }
     if(QDir(sandBoxDir).exists()){
-        GTFile::setReadWrite(os, sandBoxDir);
+        //GTFile::setReadWrite(os, sandBoxDir);
         GTGlobals::sleep();
         QDir sandBox = QDir(sandBoxDir);
         foreach (QString path, sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {

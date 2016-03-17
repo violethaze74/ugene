@@ -60,7 +60,7 @@ void GTUtilsProjectTreeView::openView(HI::GUITestOpStatus& os, GTGlobals::UseMet
         toggleView(os, method);
     }
     GTGlobals::sleep(100);
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 
     documentTreeWidget = GTWidget::findWidget(os, widgetName, NULL, options);
     GT_CHECK(documentTreeWidget != NULL, "Can't open document tree widget view, findWidget returned NULL");
@@ -80,7 +80,7 @@ void GTUtilsProjectTreeView::toggleView(HI::GUITestOpStatus& os, GTGlobals::UseM
     switch (method) {
     case GTGlobals::UseKey:
     case GTGlobals::UseKeyBoard:
-        GTKeyboardDriver::keyClick(os, '1', GTKeyboardDriver::key["alt"]);
+        GTKeyboardDriver::keyClick('1', Qt::AltModifier);
         break;
     case GTGlobals::UseMouse:
         GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_project_view"));
@@ -90,7 +90,7 @@ void GTUtilsProjectTreeView::toggleView(HI::GUITestOpStatus& os, GTGlobals::UseM
     }
 
     GTGlobals::sleep(100);
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
@@ -119,12 +119,12 @@ namespace {
 void editItemName(HI::GUITestOpStatus &os, const QString &newItemName, GTGlobals::UseMethod invokeMethod) {
     switch (invokeMethod) {
     case GTGlobals::UseKey:
-        GTMouseDriver::click(os);
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
+        GTMouseDriver::click();
+        GTKeyboardDriver::keyClick(Qt::Key_F2);
         break;
     case GTGlobals::UseMouse:
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename", GTGlobals::UseMouse));
-        GTMouseDriver::click(os, Qt::RightButton);
+        GTMouseDriver::click(Qt::RightButton);
         GTGlobals::sleep(300);
         break;
     default:
@@ -132,9 +132,9 @@ void editItemName(HI::GUITestOpStatus &os, const QString &newItemName, GTGlobals
         return;
     }
 
-    GTKeyboardDriver::keySequence(os, newItemName);
+    GTKeyboardDriver::keySequence(newItemName);
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["Enter"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     GTGlobals::sleep(500);
 }
@@ -143,14 +143,14 @@ void editItemName(HI::GUITestOpStatus &os, const QString &newItemName, GTGlobals
 
 #define GT_METHOD_NAME "rename"
 void GTUtilsProjectTreeView::rename(HI::GUITestOpStatus &os, const QString &itemName, const QString &newItemName, GTGlobals::UseMethod invokeMethod) {
-    GTMouseDriver::moveTo(os, getItemCenter(os, itemName));
+    GTMouseDriver::moveTo(getItemCenter(os, itemName));
     editItemName(os, newItemName, invokeMethod);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "rename"
 void GTUtilsProjectTreeView::rename(HI::GUITestOpStatus &os, const QModelIndex& itemIndex, const QString &newItemName, GTGlobals::UseMethod invokeMethod) {
-    GTMouseDriver::moveTo(os, getItemCenter(os, itemIndex));
+    GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
     editItemName(os, newItemName, invokeMethod);
 }
 #undef GT_METHOD_NAME
@@ -179,8 +179,8 @@ void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus &os, const QMod
     GT_CHECK(itemIndex.isValid(), "Item index is invalid");
     getTreeView(os)->scrollTo(itemIndex);
 
-    GTMouseDriver::moveTo(os, getItemCenter(os, itemIndex));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
+    GTMouseDriver::doubleClick();
 }
 #undef GT_METHOD_NAME
 
@@ -196,8 +196,8 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemN
     GT_CHECK(itemIndex.isValid(), "Item index is invalid");
     getTreeView(os)->scrollTo(itemIndex);
 
-    GTMouseDriver::moveTo(os, getItemCenter(os, itemIndex));
-    GTMouseDriver::click(os, button);
+    GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
+    GTMouseDriver::click(button);
 }
 #undef GT_METHOD_NAME
 
@@ -209,8 +209,8 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString& itemN
     GT_CHECK(itemIndex.isValid(), "Item index is invalid");
     getTreeView(os)->scrollTo(itemIndex);
 
-    GTMouseDriver::moveTo(os, getItemCenter(os, itemIndex));
-    GTMouseDriver::click(os, button);
+    GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
+    GTMouseDriver::click(button);
 }
 #undef GT_METHOD_NAME
 
@@ -552,18 +552,14 @@ void GTUtilsProjectTreeView::dragAndDrop(HI::GUITestOpStatus &os, const QModelIn
 
 void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os, QModelIndexList from, QModelIndex to) {
     QTreeView *treeView = getTreeView(os);
-#ifdef Q_OS_MAC
-    int key = GTKeyboardDriver::key["cmd"];
-#else
-    int key = GTKeyboardDriver::key["ctrl"];
-#endif
-    GTKeyboardDriver::keyPress(os, key);
+
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     foreach (QModelIndex index, from){
         treeView->scrollTo(index);
-        GTMouseDriver::moveTo(os, getItemCenter(os, index));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(getItemCenter(os, index));
+        GTMouseDriver::click();
     }
-    GTKeyboardDriver::keyRelease(os, key);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     QPoint enterPos = getItemCenter(os, from.at(0));
     QPoint dropPos = getItemCenter(os, to);
@@ -572,7 +568,7 @@ void GTUtilsProjectTreeView::dragAndDropSeveralElements(HI::GUITestOpStatus &os,
 }
 
 void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus &os, const QPoint &enterPos, const QPoint &dropPos) {
-    GTMouseDriver::dragAndDrop(os, enterPos, dropPos);
+    GTMouseDriver::dragAndDrop(enterPos, dropPos);
     GTGlobals::sleep(1000);
 }
 

@@ -148,8 +148,8 @@ QString GTUtilsSequenceView::getBeginOfSequenceAsString(HI::GUITestOpStatus &os,
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GT_CHECK_RESULT(mdiWindow != NULL, "MDI window == NULL", NULL);
 
-    GTMouseDriver::moveTo(os, mdiWindow->mapToGlobal(mdiWindow->rect().center()));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click();
 
     Runnable *filler = new SelectSequenceRegionDialogFiller(os, length);
     GTUtilsDialog::waitForDialog(os, filler);
@@ -176,8 +176,8 @@ QString GTUtilsSequenceView::getEndOfSequenceAsString(HI::GUITestOpStatus &os, i
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GT_CHECK_RESULT(mdiWindow != NULL, "MDI window == NULL", NULL);
 
-    GTMouseDriver::moveTo(os, mdiWindow->mapToGlobal(mdiWindow->rect().center()));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click();
 
     Runnable *filler = new SelectSequenceRegionDialogFiller(os, length, false);
     GTUtilsDialog::waitForDialog(os, filler);
@@ -210,8 +210,8 @@ int GTUtilsSequenceView::getLengthOfSequence(HI::GUITestOpStatus &os)
 
     GTGlobals::sleep();
 
-    GTMouseDriver::moveTo(os, mdiWindow->mapToGlobal(mdiWindow->rect().center()));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click();
 
     int length = -1;
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, &length));
@@ -255,8 +255,8 @@ void GTUtilsSequenceView::selectSequenceRegion(HI::GUITestOpStatus &os, int from
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, from, to));
 
-    GTMouseDriver::moveTo(os, mdiWindow->mapToGlobal(mdiWindow->rect().center()));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click();
 
     GTKeyboardUtils::selectAll(os);
     GTGlobals::sleep(1000);
@@ -268,8 +268,8 @@ void GTUtilsSequenceView::openSequenceView(HI::GUITestOpStatus &os, const QStrin
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view", GTGlobals::UseMouse));
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, sequenceName);
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
@@ -278,8 +278,8 @@ void GTUtilsSequenceView::addSequenceView(HI::GUITestOpStatus &os, const QString
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "submenu_add_view" << "action_add_view", GTGlobals::UseMouse));
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, sequenceName);
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
@@ -292,8 +292,8 @@ void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, int position) {
     GT_CHECK(NULL != positionLineEdit, "Can't find the position line edit");
 
     GTWidget::click(os, positionLineEdit);
-    GTKeyboardDriver::keySequence(os, QString::number(position));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTKeyboardDriver::keySequence(QString::number(position));
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
 
@@ -433,8 +433,8 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString na
     int x1 = qRound(x1f);
 
     const QRect annotationRect(x1, y.startPos, rw, y.length);
-    GTMouseDriver::moveTo(os, det->mapToGlobal(annotationRect.center()));
-    GTMouseDriver::click(os, button);
+    GTMouseDriver::moveTo(det->mapToGlobal(annotationRect.center()));
+    GTMouseDriver::click(button);
 }
 #undef GT_METHOD_NAME
 

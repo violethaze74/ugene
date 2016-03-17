@@ -89,8 +89,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
    /* GTUtilsWorkflowDesigner::openWorkfolwDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "call variants"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "call variants"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::getParameter(os, "Max number of reads per input BAM");*/
     int i = GTFile::getSize(os, dataDir + "cmdline/pwm-build.uwl");
     CHECK_SET_ERR(false, QString("%1").arg(i));
@@ -122,7 +122,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
 
 
 
-    GTKeyboardDriver::keyClick(os, 'r' ,GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'r' ,Qt::ControlModifier);
     TaskScheduler* scheduller = AppContext::getTaskScheduler();
 
     GTGlobals::sleep(5000);
@@ -232,12 +232,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1){
         posList.append(item->pos());
     }
 
-    GTMouseDriver::moveTo(os,GTUtilsWorkflowDesigner::getItemCenter(os, "Write weight matrix"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write weight matrix"));
+    GTMouseDriver::doubleClick();
 
     GTGlobals::sleep();
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Write weight matrix"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write weight matrix"));
+    GTMouseDriver::doubleClick();
 
 //  Expected state: all arrows in schema still unbroken
         items = sceneView->items();
@@ -256,12 +256,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
 //    Expected state: workflow schema opened in Workflow designer
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
     CHECK_SET_ERR(table,"tableView not found");
-    GTMouseDriver::moveTo(os,GTUtilsWorkflowDesigner::getItemCenter(os,"Write Genbank"));
-    GTMouseDriver::click(os);
-    GTMouseDriver::moveTo(os,GTTableView::getCellPosition(os,table,1,3));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Write Genbank"));
+    GTMouseDriver::click();
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(os,table,1,3));
+    GTMouseDriver::click();
     QString s = QDir().absoluteFilePath(testDir + "_common_data/scenarios/sandbox/");
-    GTKeyboardDriver::keySequence(os,s+"T1.gb");
+    GTKeyboardDriver::keySequence(s+"T1.gb");
     GTWidget::click(os,GTUtilsMdi::activeWindow(os));
 
     GTWidget::click(os,GTAction::button(os,"Run workflow"));
@@ -380,8 +380,8 @@ GUI_TEST_CLASS_DEFINITION(test_0009){
     }
 
     GTWidget::setFocus(os,GTWidget::findWidget(os,"sceneView"));
-    GTKeyboardDriver::keyClick(os, 'a', GTKeyboardDriver::key["ctrl"]);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    3. Open this schema from examples
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
 //    Expected state: items and links between them painted correctly
@@ -437,8 +437,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013){
             QPointF scenePButton = p->mapToScene(p->boundingRect().center());
             QPoint viewP = sceneView->mapFromScene(scenePButton);
             QPoint globalBottomRightPos = sceneView->viewport()->mapToGlobal(viewP);
-            GTMouseDriver::moveTo(os, globalBottomRightPos);
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(globalBottomRightPos);
+            GTMouseDriver::click();
             GTGlobals::sleep(2000);
         }
     }
@@ -452,8 +452,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013){
     QPointF scenePButton = in->mapToScene(in->boundingRect().center());
     QPoint viewP = sceneView->mapFromScene(scenePButton);
     QPoint globalBottomRightPos = sceneView->viewport()->mapToGlobal(viewP);
-    GTMouseDriver::moveTo(os, globalBottomRightPos);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(globalBottomRightPos);
+    GTMouseDriver::click();
 
     doc = qobject_cast<QTextEdit*>(GTWidget::findWidget(os,"doc"));
     CHECK_SET_ERR(doc->document()->toPlainText().contains("Input port \"Input assembly"),"expected text not found");
@@ -465,8 +465,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 //    2. Select any worker on palette.
     GTUtilsWorkflowDesigner::addSample(os,"call variants");
-    GTMouseDriver::moveTo(os,GTUtilsWorkflowDesigner::getItemCenter(os,"Call Variants"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Call Variants"));
+    GTMouseDriver::click();
     GTGlobals::sleep(500);
     CHECK_SET_ERR(GTWidget::findWidget(os,"table"),"parameters table not found");
     CHECK_SET_ERR(GTWidget::findWidget(os,"doc"),"element documentation widget not found");
@@ -483,8 +483,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1){//DIFFERENCE:file is loaded
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 //    2. Select any worker on palette.
-    GTMouseDriver::moveTo(os,GTUtilsWorkflowDesigner::getItemCenter(os,"Write Weight Matrix"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Write Weight Matrix"));
+    GTMouseDriver::click();
     GTGlobals::sleep(500);
     CHECK_SET_ERR(GTWidget::findWidget(os,"table"),"parameters table not found");
     CHECK_SET_ERR(GTWidget::findWidget(os,"doc"),"element documentation widget not found");
@@ -533,13 +533,6 @@ GUI_TEST_CLASS_DEFINITION(test_0017){
     //2. Write the path to the directory which does not exist(in the StartupDialogFiller).
     //3. Click OK(in the StartupDialogFiller).
     CHECK_SET_ERR(!l.hasError(), "There are error messages about write access in WD directory");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0018){
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "read alignment", false, true);
-    GTGlobals::sleep();
-    GTUtilsWorkflowDesigner::getWorker(os, "Read Alignment");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058){
@@ -609,7 +602,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
 //            parameters["Annotations B"] = QDir(testDir).absolutePath() + "/_common_data/bedtools/mutation.gff";
             GTUtilsWizard::setAllParameters(os, parameters);
 
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Enter);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
         }
     };

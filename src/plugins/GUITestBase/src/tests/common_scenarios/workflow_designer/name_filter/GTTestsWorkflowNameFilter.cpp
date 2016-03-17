@@ -58,7 +58,7 @@ GUI_TEST_CLASS_DEFINITION( test_0001 ) {
     CHECK(nameFilter, );
     //hack. GTLineEdit can not set focus on widget. Don't know why
     GTWidget::click(os, nameFilter);
-    GTKeyboardDriver::keySequence(os,"HMM");
+    GTKeyboardDriver::keySequence("HMM");
     GTGlobals::sleep();
     // 4. Write "HMM".
 
@@ -92,11 +92,11 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
 
     // 3. Press Ctrl+F.
     //Expected: the "Name filter" line edit has the focus
-    GTKeyboardDriver::keyClick( os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     GTGlobals::sleep(200);
     // 4. Write "align muscle".
     //Expected: There is the muscle alignment sample after filtering.
-    GTKeyboardDriver::keySequence(os, "align muscle");
+    GTKeyboardDriver::keySequence("align muscle");
     GTGlobals::sleep(500);
 
     // Expected: There are two samples after filtering.
@@ -122,7 +122,7 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
     //5. Press Esc.
     //Expected: the name filter is clear, all samples are shown.
 
-    GTKeyboardDriver::keyClick(os,GTKeyboardDriver::key["esc"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(200);
 
     int hiddenItemsCount = 0;
@@ -156,7 +156,7 @@ GUI_TEST_CLASS_DEFINITION( test_0003 ) {
     // 4. Write "NGS".
     //hack. GTLineEdit can not set focus on widget. Don't know why
     GTWidget::click(os,nameFilter);
-    GTKeyboardDriver::keySequence(os, "NGS");
+    GTKeyboardDriver::keySequence("NGS");
     GTGlobals::sleep();
 
     // Expected: There are two samples after filtering.

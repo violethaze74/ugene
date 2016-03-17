@@ -64,10 +64,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 // 3. Close sequence view, then reopen it
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click(os);
+    GTMouseDriver::click();
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "seq4.fa"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "seq4.fa"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep(1000);
 
 // 4. Check that annotation have the qualifier "repeat homology"
@@ -75,13 +75,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
 
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 325)");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
+    GTMouseDriver::doubleClick();
     GTUtilsAnnotationsTreeView::findItem(os, "repeat_homology(%)");
 
 // 5. Close sequence view (it's needed to refresh screen since Ugene cannot close correctly on Win7 32bit)
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click(os);
+    GTMouseDriver::click();
 }
 
 } // namespace GUITest_common_scenarios_repeat_finder

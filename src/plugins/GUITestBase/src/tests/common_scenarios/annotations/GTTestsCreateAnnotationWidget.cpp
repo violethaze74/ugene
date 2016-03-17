@@ -196,7 +196,7 @@ public:
 
     void run(HI::GUITestOpStatus &os) {
         GTGlobals::sleep(1000);
-        GTMouseDriver::release(os);
+        GTMouseDriver::release();
         QMenu* activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
         CHECK_SET_ERR(NULL != activePopupMenu, "Active popup menu is NULL");
 
@@ -209,7 +209,7 @@ public:
                       .arg(groupNames.join(", ")).arg(actualGroupNames.join(", ")));
 
         if (groupToSelect.isEmpty()) {
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Escape);
         } else {
             GTMenu::clickMenuItemByText(os, activePopupMenu, QStringList() << groupToSelect);
         }
@@ -505,7 +505,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
 //    3. Enter "tel".
-            GTKeyboardDriver::keySequence(os, "tel");
+            GTKeyboardDriver::keySequence("tel");
             GTGlobals::sleep(500);
 
 //    Expected state: "Telomere" type is selected. Cancel the dialog.
@@ -533,9 +533,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
 //    5. Click to the annotation type combobox. Enter "tel". Click "Enter".
             GTWidget::click(os, GTWidget::findExactWidget<QComboBox *>(os, "cbAnnotationType", dialog));
-            GTKeyboardDriver::keySequence(os, "tel");
+            GTKeyboardDriver::keySequence("tel");
             GTGlobals::sleep();
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Enter);
             GTGlobals::sleep();
 
 //    Expected state: "Telomere" type is selected. Cancel the dialog.
@@ -558,9 +558,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 //    7. Click to the annotation type combobox. Enter "tel". Click "Enter".
 //    Expected state: "Telomere" type is selected. Cancel the dialog.
     GTWidget::click(os, GTWidget::findExactWidget<QComboBox *>(os, "cbAnnotationType"));
-    GTKeyboardDriver::keySequence(os, "tel");
+    GTKeyboardDriver::keySequence("tel");
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter);
     GTGlobals::sleep();
 
     const QString type = getTypeFromOptionsPanelWidget(os);
@@ -2024,8 +2024,8 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
 
 //    5. Select "NC_001363 annotations" object.
                     const QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, "NC_001363 annotations", documentIndex);
-                    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
-                    GTMouseDriver::click(os);
+                    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
+                    GTMouseDriver::click();
 
                     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
                 }
@@ -2137,8 +2137,8 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
 //    5. Select "NC_001363 annotations" object.
                     const QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, "NC_001363 annotations", documentIndex);
-                    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
-                    GTMouseDriver::click(os);
+                    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
+                    GTMouseDriver::click();
 
                     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
                 }
@@ -2244,8 +2244,8 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 //    5. Select "NC_001363 annotations" object.
             const QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, "NC_001363 annotations", documentIndex);
-            GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
+            GTMouseDriver::click();
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -2702,7 +2702,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
 //    14. Select "GenBank/EMBL format" location style. Set location "300..400".
             setGenbankLocation(os, "300..400", dialog);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
 
 //    Expected state: simple location widgets contains non-complemented region "(300..400)".
             CHECK_SET_ERR("300" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2")
@@ -2713,7 +2713,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
 //    15. Set location "join(500..600,700..800)".
             setGenbankLocation(os, "join(500..600,700..800)", dialog);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
 
 //    Expected state: simple location widgets contains non-complemented region "(500..600)".
             CHECK_SET_ERR("500" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2")
@@ -2724,7 +2724,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
 //    16. Set location "join(1..100,200..199950)".
             setGenbankLocation(os, "join(1..100,200..199950)", dialog);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
 
 //    Expected state: simple location widgets contains non-complemented region "(1..100)".
             CHECK_SET_ERR("1" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2")
@@ -2735,7 +2735,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
 //    17. Set location "complement(200..300)".
             setGenbankLocation(os, "complement(200..300)", dialog);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
 
 //    Expected state: simple location widgets contains complemented region "(200..300)".
             CHECK_SET_ERR("200" == leRegionStart->text(), QString("Unexpected simple location region start: expect %1, got %2")
@@ -2758,7 +2758,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
 //    19. Set location "400..500qwerty".
             setGenbankLocation(os, "400..500qwerty", dialog);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
 
 //    Expected state: simple location widgets are empty, GenBank location string is empty.
             CHECK_SET_ERR(leRegionStart->text().isEmpty(), QString("Unexpected simple location region start: expect an empty string, got %1")

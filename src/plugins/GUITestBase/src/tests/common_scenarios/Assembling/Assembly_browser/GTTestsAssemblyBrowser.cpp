@@ -25,8 +25,6 @@
 
 #include <U2Designer/PropertyWidget.h>
 
-#include <U2View/AssemblyNavigationWidget.h>
-
 #include "GTTestsAssemblyBrowser.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "utils/GTUtilsApp.h"
@@ -76,16 +74,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 //2. Zoom in until overview selection transforms to cross-hair
     for (int i = 0;i < 24;i++){
-        GTKeyboardDriver::keyClick(os, '=', GTKeyboardDriver::key["shift"]);
+        GTKeyboardDriver::keyClick( '=', Qt::ShiftModifier);
         GTGlobals::sleep(100);
     }
     GTGlobals::sleep(2000);
 //3. Move it to the very left
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["home"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Home);
     GTGlobals::sleep(2000);
 //4. Try to zoom out
     for (int i = 0;i < 24;i++){
-        GTKeyboardDriver::keyClick(os, '-');
+        GTKeyboardDriver::keyClick( '-');
         GTGlobals::sleep(100);
     }
 //Expected state: coordinates is not negative
@@ -247,9 +245,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "/chrM_coverage.bedgrap.gz"));
 
 //    15. Set format "Histogram".
-//    Expected state: the file extension is ".histogram.gz".
+//    Expected state: the file extension is ".bedgrap.histogram.gz".
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SetFormat, "Histogram");
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::CheckFilePath, QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "/chrM_coverage.histogram.gz"));
+    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::CheckFilePath, QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "/chrM_coverage.bedgrap.histogram.gz"));
 
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant());
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
@@ -285,7 +283,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     QDir().mkpath(sandBoxDir + "common_assembly_browser/test_0012");
 
-    GTFile::setReadOnly(os, sandBoxDir + "common_assembly_browser/test_0012");
+    //GTFile::setReadOnly(os, sandBoxDir + "common_assembly_browser/test_0012");
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0012/test_0012.txt"));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, "");
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
@@ -345,7 +343,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTFile::copy(os, testDir + "_common_data/text/text.txt", sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
     const qint64 fileSizeBefore = GTFile::getSize(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
     actions.clear();
-    coreLog.error("Filepath to enter: " + QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt"));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt"));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
@@ -453,7 +450,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 //    Expected state: a popup completer appears, it contains extensions for the compressed format.
     GTUtilsWorkflowDesigner::clickParameter(os, "Output file");
     URLWidget *urlWidget = qobject_cast<URLWidget *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<URLWidget *>());
-    GTKeyboardDriver::keySequence(os, "aaa");
+    GTKeyboardDriver::keySequence("aaa");
     GTGlobals::sleep(1000);
     CHECK_SET_ERR(NULL != urlWidget, "Output file url widget was not found");
     QTreeWidget *completer = urlWidget->findChild<QTreeWidget *>();
@@ -611,9 +608,9 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Set reference");
 
     //6. Add the "human_T1" object to the selection.
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsProjectTreeView::click(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 
     //7. Click the "Set reference sequence" actions menu item.
     //Expected: message box about two sequences appears.
@@ -767,7 +764,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //	  3. Check expected coverage values
-    CoveredRegionsLabel *coveredRegionsLabel = qobject_cast<CoveredRegionsLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel *coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -792,7 +789,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //	  3. Check expected coverage values
-    CoveredRegionsLabel *coveredRegionsLabel = qobject_cast<CoveredRegionsLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -814,7 +811,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //	  3. Check expected coverage values
-    CoveredRegionsLabel *coveredRegionsLabel = qobject_cast<CoveredRegionsLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();

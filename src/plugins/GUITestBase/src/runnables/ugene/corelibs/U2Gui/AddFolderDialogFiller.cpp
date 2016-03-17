@@ -58,7 +58,7 @@ void AddFolderDialogFiller::commonScenario() {
         break;
     case GTGlobals::UseKey :
     case GTGlobals::UseKeyBoard :
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Enter);
         break;
     }
 }

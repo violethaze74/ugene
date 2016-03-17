@@ -192,8 +192,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001_4) {
     QWidget* activeMDIWindow = GTUtilsMdi::activeWindow(os, false);
     CHECK_SET_ERR(activeMDIWindow == NULL, "there is active MDI window");
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "se2"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "se2"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
     toolbar = GTWidget::findWidget(os, "views_tool_bar_se2");

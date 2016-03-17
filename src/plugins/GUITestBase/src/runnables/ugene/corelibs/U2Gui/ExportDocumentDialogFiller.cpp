@@ -19,17 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-#include <QDialogButtonBox>
-#include <QDir>
-#include <QPushButton>
-
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTWidget.h>
-
 #include "ExportDocumentDialogFiller.h"
+#include <primitives/GTWidget.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTCheckBox.h>
+
+#include <QtCore/QDir>
+#if (QT_VERSION < 0x050000) //Qt 5
+#include <QtGui/QApplication>
+#include <QtGui/QPushButton>
+#include <QtGui/QDialogButtonBox>
+#else
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QDialogButtonBox>
+#endif
 
 namespace U2 {
 
@@ -47,7 +52,7 @@ path(_path), name(_name), useMethod(method), format(_format), compressFile(compr
     }
 
     if (!path.isEmpty()) {
-        path = QDir::toNativeSeparators(__path);
+        path = __path;
     }
 
     comboBoxItems[Genbank] = "Genbank";
