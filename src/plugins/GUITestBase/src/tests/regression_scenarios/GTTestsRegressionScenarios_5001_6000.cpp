@@ -184,7 +184,7 @@ GUI_TEST_CLASS_DEFINITION(test_5012_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_5018) {
 #ifdef Q_OS_WIN
-    const QString homePlaceholder = "%HOME_DIR%";
+    const QString homePlaceholder = "%UserProfile%";
 #else
     const QString homePlaceholder = "~";
 #endif
@@ -210,7 +210,9 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
 
 //    Expected state: "test_5018.fa" appears in the home dir.
     CHECK_SET_ERR(GTFile::check(os, homePath + "/test_5018.fa"), "File was not created");
+    GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     QFile(homePath + "/test_5018.fa").remove();
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5027_1) {
