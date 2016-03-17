@@ -741,7 +741,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     // 3. Open context menu on sequence area
     // Expected state: { Edit -> Annotation } action is disabled
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
-                                                      PopupChecker::IsDisabled, GTGlobals::UseMouse));
+                                                      PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     // 3. Open context menu on sequence area
