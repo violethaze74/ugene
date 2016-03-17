@@ -381,6 +381,24 @@ GUI_TEST_CLASS_DEFINITION(test_5128) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5137) {
+    //    1. Open document test/_common_data/clustal/big.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //    2. Add big sequence 
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa");
+    GTUtilsDialog::waitForDialog(os, ob);
+
+    QAbstractButton *align = GTAction::button(os, "Align sequence to this alignment");
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    GTWidget::click(os, align);
+    GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during adding sequences. The multiple alignment is no more available.");
+    GTGlobals::sleep();
+    GTUtilsProjectTreeView::click(os, "COI");
+    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTGlobals::sleep(6000);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5138_1) {
     //1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
