@@ -44,7 +44,7 @@ BAMFormat::BAMFormat()
 : DbiDocumentFormat(
     BAM_DBI_ID,
     BaseDocumentFormats::BAM,
-    tr("BAM File"),
+    tr("BAM"),
     QStringList("bam"),
     DocumentFormatFlags(DocumentFormatFlag_NoPack) | DocumentFormatFlag_NoFullMemoryLoad
     | DocumentFormatFlag_Hidden | DocumentFormatFlag_SupportWriting)
