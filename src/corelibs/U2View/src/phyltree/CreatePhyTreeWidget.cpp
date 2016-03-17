@@ -43,7 +43,7 @@ bool CreatePhyTreeWidget::checkMemoryEstimation(QString &, const MAlignment &, c
     return true;
 }
 
-bool CreatePhyTreeWidget::insertOutputOptionWidget(PhyTreeDisplayOptionsWidget *outputOptionsWidget) {
+bool CreatePhyTreeWidget::insertOutputOptionWidget(PhyTreeDisplayOptionsWidget *) {
     return false;
 }
 

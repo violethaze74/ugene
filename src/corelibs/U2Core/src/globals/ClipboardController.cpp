@@ -38,6 +38,10 @@ PasteTask::PasteTask()
     :Task(tr("Paste data"), TaskFlag_None){
 }
 
+void PasteTask::processDocument(Document *) {
+
+}
+
 ///////////////////
 ///PasteUtils
 QList<DNASequence> PasteUtils::getSequences(const QList<Document*>& docs, U2OpStatus& os){
