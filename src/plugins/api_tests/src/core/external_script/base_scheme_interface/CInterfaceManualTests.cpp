@@ -708,14 +708,10 @@ IMPLEMENT_TEST( CInterfaceManualTests, chip_seq ) {
     error = setSchemeElementAttribute( scheme, conductGoId, L"output-dir", L"tools_output" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeAnnotations, L"document-format", L"bed" );
-    CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeAnnotations, L"url-out", L"genes.bed" );
+    error = setSchemeElementAttribute( scheme, writeAnnotations, L"url-out", L"genes.gb" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeAnnotations1, L"document-format", L"bed" );
-    CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeAnnotations1, L"url-out", L"peaks.bed" );
+    error = setSchemeElementAttribute( scheme, writeAnnotations1, L"url-out", L"peaks.gb" );
     CHECK_U2_ERROR( error );
 
     error = addFlowToScheme( scheme, readAnnotations, L"out-url", macsId, L"in-data" );
@@ -755,7 +751,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, chip_seq ) {
     error = addSchemeActorsBinding( scheme, macsId, L"peak-summits", peak2GeneId,
         L"in-data._treat-ann" );
     CHECK_U2_ERROR( error );
-    error = addSchemeActorsBinding( scheme, peak2GeneId, L"gene-annotation", conductGoId,
+    error = addSchemeActorsBinding( scheme, peak2GeneId, L"gene-annotation-url", conductGoId,
         L"in-data.in-ann" );
     CHECK_U2_ERROR( error );
     error = addSchemeActorsBinding( scheme, peak2GeneId, L"gene-annotation", writeAnnotations,
@@ -830,14 +826,10 @@ IMPLEMENT_TEST( CInterfaceManualTests, chip_seq_with_control ) {
     error = setSchemeElementAttribute( scheme, conductGoId, L"output-dir", L"tools_output" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeAnnotations, L"document-format", L"bed" );
-    CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeAnnotations, L"url-out", L"genes.bed" );
+    error = setSchemeElementAttribute( scheme, writeAnnotations, L"url-out", L"genes.gb" );
     CHECK_U2_ERROR( error );
 
-    error = setSchemeElementAttribute( scheme, writeAnnotations1, L"document-format", L"bed" );
-    CHECK_U2_ERROR( error );
-    error = setSchemeElementAttribute( scheme, writeAnnotations1, L"url-out", L"peaks.bed" );
+    error = setSchemeElementAttribute( scheme, writeAnnotations1, L"url-out", L"peaks.gb" );
     CHECK_U2_ERROR( error );
 
     error = addFlowToScheme( scheme, readAnnotations1, L"out-url", multiplexer, L"input-data-1" );
@@ -884,7 +876,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, chip_seq_with_control ) {
     error = addSchemeActorsBinding( scheme, macsId, L"peak-summits", peak2GeneId,
         L"in-data._treat-ann" );
     CHECK_U2_ERROR( error );
-    error = addSchemeActorsBinding( scheme, peak2GeneId, L"gene-annotation", conductGoId,
+    error = addSchemeActorsBinding( scheme, peak2GeneId, L"gene-annotation-url", conductGoId,
         L"in-data.in-ann" );
     CHECK_U2_ERROR( error );
     error = addSchemeActorsBinding( scheme, peak2GeneId, L"gene-annotation", writeAnnotations,

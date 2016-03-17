@@ -97,7 +97,7 @@ QString SaveDocumentController::SimpleFormatsInfo::getFirstExtensionByName(const
 #if defined(Q_OS_LINUX) | defined (Q_OS_MAC)
 const QString SaveDocumentController::HOME_DIR_IDENTIFIER = "~/";
 #else
-const QString SaveDocumentController::HOME_DIR_IDENTIFIER = "%HOME%/";
+const QString SaveDocumentController::HOME_DIR_IDENTIFIER = "%UserProfile%/";
 #endif
 
 SaveDocumentController::SaveDocumentController(const SaveDocumentControllerConfig &config,

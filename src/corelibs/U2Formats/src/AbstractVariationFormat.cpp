@@ -69,7 +69,7 @@ namespace {
         QByteArray result;
         bool terminatorFound = false;
         do {
-            qint64 length = io->readLine(buffer, LOCAL_READ_BUFF_SIZE, &terminatorFound);
+            qint64 length = io->readLine(buffer, bufferSize, &terminatorFound);
             CHECK(-1 != length, result);
             result += QByteArray(buffer, length);
         } while (!terminatorFound && !io->isEof());
