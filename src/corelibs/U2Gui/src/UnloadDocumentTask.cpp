@@ -24,6 +24,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GObjectUtils.h>
@@ -51,6 +52,7 @@ UnloadDocumentTask::UnloadDocumentTask(Document* _doc, bool save)
       saveTask(NULL),
       lock(NULL)
 {
+    GCOUNTER(cvar, tvar, "UnloadDocumentTask");
     lock = new StateLock(Document::UNLOAD_LOCK_NAME, StateLockFlag_LiveLock);
     lock->setParent(this);
     doc->lockState(lock);
@@ -185,7 +187,7 @@ ReloadDocumentTask::ReloadDocumentTask( Document *d )
     : Task( "Reloading given document", TaskFlags_NR_FOSE_COSC ), doc( d ), url( d->getURL( ) ),
     removeDocTask( NULL ), openDocTask( NULL )
 {
-
+    GCOUNTER(cvar, tvar, "ReloadDocumentTask");
 }
 
 void ReloadDocumentTask::prepare( ) {
