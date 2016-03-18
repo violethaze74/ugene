@@ -194,8 +194,10 @@ void DownloadRemoteFileDialog::accept()
     QVariantMap hints;
     hints.insert(FORCE_DOWNLOAD_SEQUENCE_HINT, ui->chbForceDownloadSequence->isVisible() && ui->chbForceDownloadSequence->isChecked());
 
+    int taskCount = 0;
     foreach (const QString &resId, resIds) {
-        tasks.append(new LoadRemoteDocumentAndOpenViewTask(resId, dbId, fullPath, fileFormat, hints));
+        tasks.append(new LoadRemoteDocumentAndAddToProjectTask(resId, dbId, fullPath, fileFormat, hints, taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS));
+        taskCount++;
     }
 
     AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask(tr("Download remote documents"), tasks));
