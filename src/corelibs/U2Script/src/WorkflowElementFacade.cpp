@@ -212,8 +212,8 @@ U2ErrorType WorkflowElementFacade::getWriteElementTypeForSlot( const QString &sl
         QList <ActorPrototype*> ::iterator currElement = currGroup.begin();
         while( currElement != currGroup.end() ) {
             QList<PortDescriptor*> currPorts = (*currElement)->getPortDesciptors();
-            Workflow::PortDescriptor *port = currPorts.first();
-            if( port->isInput() ) {
+            Workflow::PortDescriptor *port = currPorts.isEmpty() ? NULL : currPorts.first();
+            if (NULL != port && port->isInput()) {
                 QList<Descriptor> slotList = port->getOwnTypeMap( ).keys( );
                 foreach ( Descriptor slotDescriptor, slotList ) {
                     if( slotDescriptor.getId() == slotId ){
