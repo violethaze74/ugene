@@ -54,6 +54,10 @@ public:
     static const QString LOCUS_TAG_CIRCULAR;
     static const QString LOCUS_TAG_LINEAR;
 
+    static const QString REMOTE_ENTRY_WARNING_MESSAGE;
+    static const QString JOIN_COMPLEMENT_WARNING_MESSAGE;
+    static const QString LOCATION_PARSING_ERROR_MESSAGE;
+
     // move to utils??
     static QString genObjectName(QSet<QString>& usedNames, const QString& name, const QVariantMap& info, int n, const GObjectType& t);
 
@@ -64,7 +68,10 @@ protected:
 
     virtual int     readMultilineQualifier(IOAdapter* io, char* cbuff, int maxSize, bool prevLineHasMaxSize, int lenFirstQualLine, U2OpStatus& os);
     virtual SharedAnnotationData readAnnotation(IOAdapter* io, char* cbuff, int contentLen, int bufSize, U2OpStatus& si, int offset, int seqLen = -1);
-    virtual bool    readSequence(ParserState*, U2SequenceImporter& , int&, int&, U2OpStatus&);
+
+    void skipInvalidAnnotation(int len, IOAdapter* io, char* cbuff, int READ_BUFF_SIZE);
+
+    virtual bool    readSequence(ParserState*, U2SequenceImporter&, int&, int&, U2OpStatus&);
 
     virtual bool readEntry(ParserState*, U2SequenceImporter& ,int& seqSize,int& fullSeqSize,bool merge, int gapSize,U2OpStatus&) = 0;
     virtual void readAnnotations(ParserState*, int offset);
@@ -111,12 +118,14 @@ class ParserState {
 public:
     ParserState(int off, IOAdapter* io, EMBLGenbankDataEntry* e, U2OpStatus& si)
         : valOffset(off), entry(e), io(io), buff(NULL), len(0), si(si) {}
+
     const int valOffset;
     EMBLGenbankDataEntry* entry;
     IOAdapter* io;
     char* buff;
     int len;
     U2OpStatus& si;
+
     QString value() const;
     QString key () const;
     bool hasKey(const char*, int slen) const;
@@ -125,6 +134,7 @@ public:
     bool hasValue() const {return len > valOffset;}
     bool readNextLine(bool emptyOK = false);
     bool isNull() const {return entry->name.isNull();}
+
     static const int LOCAL_READ_BUFFER_SIZE;
 };
 
