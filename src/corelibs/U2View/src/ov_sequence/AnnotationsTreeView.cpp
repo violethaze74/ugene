@@ -1811,6 +1811,7 @@ void AnnotationsTreeView::editAnnotationItem(AVAnnotationItem *ai) {
     m.description = oldDescription;
     m.hideAnnotationTableOption = true;
     m.hideGroupName = true;
+    m.useAminoAnnotationTypes = so->getAminoTT() == NULL;
 
     m.annotationObjectRef = GObjectReference(ai->getAnnotationTableObject());
     m.sequenceLen = so->getSequenceLength();
@@ -1838,10 +1839,10 @@ void AnnotationsTreeView::editAnnotationItem(AVAnnotationItem *ai) {
             ai->annotation->setType(newType);
         }
 
-        if (!m.description.isEmpty() && oldDescription == QString::null) {
-            ai->annotation->addQualifier(U2Qualifier(GBFeatureUtils::QUALIFIER_NOTE, m.description));
-        } else if (m.description != oldDescription) {
+        if ((m.description.isEmpty() && oldDescription != QString::null) || (m.description != oldDescription)) {
             ai->annotation->removeQualifier(U2Qualifier(GBFeatureUtils::QUALIFIER_NOTE, oldDescription));
+        }
+        if (!m.description.isEmpty() && m.description != oldDescription) {
             ai->annotation->addQualifier(U2Qualifier(GBFeatureUtils::QUALIFIER_NOTE, m.description));
         }
 
