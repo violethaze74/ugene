@@ -733,5 +733,36 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     CHECK_SET_ERR(3 == GTUtilsPcr::productsCount(os), "Wrong results count");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0016) {
+    //    Import primers with degenerated symbols
+
+    //    1. Open the library, clear it.
+        GTUtilsPrimerLibrary::openLibrary(os);
+        GTUtilsPrimerLibrary::clearLibrary(os);
+
+    //    2. Click "Import".
+    //    3. Fill the dialog:
+    //        Import from: "Local file(s)";
+    //        Files: "_common_data/cmdline/primers/primer_degenerated_1.fasta",
+    //               "_common_data/cmdline/primers/primer_degenerated_2.fasta"
+    //    and accept the dialog.
+        class ImportFromSeveralFiles : public CustomScenario {
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+                ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
+                ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/cmdline/primers/primer_degenerated_1.fasta");
+                ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/cmdline/primers/primer_degenerated_2.fasta");
+                GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+            }
+        };
+
+        GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, new ImportFromSeveralFiles));
+        GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Import);
+
+        const int librarySize = GTUtilsPrimerLibrary::librarySize(os);
+        CHECK_SET_ERR(2 == librarySize, QString("An unexpected library size: expect %1, got %2").arg(2).arg(librarySize));
+}
+
 } // GUITest_common_scenarios_primer_library
 } // U2
