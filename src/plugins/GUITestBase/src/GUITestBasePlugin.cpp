@@ -2703,6 +2703,8 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0015);
+    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
+
 /////////////////////////////////////////////////////////////////////////
 // common_scenarios/start_page
 /////////////////////////////////////////////////////////////////////////
