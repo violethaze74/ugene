@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 3.4)
 project(samtools)
 
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOMOC_MOC_OPTIONS -nn) # do not display notes.
 
-find_package(Qt5 REQUIRED Core)
+find_package(Qt5 REQUIRED Core LinguistTools)
 
 include_directories(src)
 include_directories(src/samtools)
@@ -18,13 +17,16 @@ add_definitions(
 
 file(GLOB_RECURSE SRCS src/*.cpp src/*.c)
 file(GLOB_RECURSE HDRS src/*.h)
+file(GLOB TS_FILES transl/*.ts)
+
+qt5_add_translation(QM_FILES ${TS_FILES})
 
 # Supress original samtools warnings
 if (CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
 endif (CMAKE_COMPILER_IS_GNUCC)
 
-add_library(samtools STATIC ${HDRS} ${SRCS})
+add_library(samtools STATIC ${HDRS} ${SRCS} ${QM_FILES})
 
 target_link_libraries(samtools
         Qt5::Core
