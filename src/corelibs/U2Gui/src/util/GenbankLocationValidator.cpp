@@ -52,13 +52,14 @@ le(_le)
 
 QValidator::State GenbankLocationValidator::validate( QString &str, int &/*ii*/ ) const {
     U2Location loc;
-    QString parseError;
-    if(isCircular){
-        parseError = Genbank::LocationParser::parseLocation(str.toLatin1().constData(), str.length(), loc, seqLen );
-    }else{
-        parseError = Genbank::LocationParser::parseLocation(str.toLatin1().constData(), str.length(), loc, -1 );
+    Genbank::LocationParser::ParsingResult parsingResult = Genbank::LocationParser::Success;
+    if (isCircular) {
+        parsingResult = Genbank::LocationParser::parseLocation(str.toLatin1().constData(), str.length(), loc, seqLen );
+    } else {
+        parsingResult = Genbank::LocationParser::parseLocation(str.toLatin1().constData(), str.length(), loc, -1 );
     }
-    if(parseError.isEmpty()){
+
+    if (Genbank::LocationParser::Success == parsingResult) {
         if (loc.data()->isEmpty()){
             return failValidate();
         }
