@@ -414,6 +414,11 @@ int main(int argc, char **argv)
         trOK = translator.load(QString("transl_") + envTranslation, AppContext::getWorkingDirectoryPath());
         settings->setValue("UGENE_CURR_TRANSL", envTranslation);
     }
+    QString envTranslationFile = findKey(envList, "UGENE_TRANSLATION_FILE");
+    if (!envTranslationFile.isEmpty()) {
+        trOK = translator.load(envTranslationFile);
+        settings->setValue("UGENE_CURR_TRANSL", QFileInfo(envTranslationFile).fileName().right(2));
+    }
 
     if (!trOK) {
         // set translations

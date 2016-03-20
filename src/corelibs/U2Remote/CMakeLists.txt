@@ -3,7 +3,6 @@ project(U2Remote)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOMOC_MOC_OPTIONS -nn) # do not display notes.
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 

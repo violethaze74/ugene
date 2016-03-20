@@ -1,10 +1,14 @@
 # CMake build is not officially supported by UGENE and
 # can only be used for developement (for example to enable CLion IDE integration)
 #
-# For CLion developers: add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
+# For CLion developers:
+#   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
+#   * add UGENE_TRANSLATION_FILE environment variable and point it to *.qm file produced by qmake build
 
 cmake_minimum_required(VERSION 3.4)
 project(ugene)
+
+#set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(UGENE_VERSION 1.22.0-dev)
 set(UGENE_VER_MAJOR 1)
