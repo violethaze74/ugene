@@ -147,7 +147,7 @@
         <translation>Service to support UGENE GUI testing</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestService.cpp" line="255"/>
+        <location filename="../src/gui_tests/GUITestService.cpp" line="256"/>
         <source>Can&apos;t connect external tool manager signal</source>
         <translation>Can&apos;t connect external tool manager signal</translation>
     </message>

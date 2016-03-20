@@ -376,7 +376,7 @@
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="712"/>
+        <location filename="../src/BAMUtils.cpp" line="715"/>
         <source>Wrong line in a SAM file.</source>
         <translation>Wrong line in a SAM file.</translation>
     </message>
@@ -406,7 +406,7 @@
     <message>
         <location filename="../src/BedFormat.cpp" line="729"/>
         <source>The file does not contain valid annotations!</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл не содержит корректных аннотаций!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="976"/>
@@ -1467,76 +1467,76 @@ The following sequences are empty:</translation>
 <context>
     <name>U2::Genbank::LocationParser</name>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="308"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="309"/>
         <source>Ignoring remote entry: %1.%2</source>
         <translation>Ignoring remote entry: %1.%2</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="339"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="409"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="344"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="414"/>
         <source>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</source>
         <translation>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="342"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="347"/>
         <source>Ignoring &apos;&lt;&apos; at start position</source>
         <translation>Ignoring &apos;&lt;&apos; at start position</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="412"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="417"/>
         <source>Ignoring &apos;&gt;&apos; at end position</source>
         <translation>Ignoring &apos;&gt;&apos; at end position</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="474"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="479"/>
         <source>Wrong token after JOIN %1</source>
         <translation>Wrong token after JOIN %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="479"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="484"/>
         <source>Wrong token after JOIN  - order %1</source>
         <translation>Wrong token after JOIN  - order %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="487"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="492"/>
         <source>Can&apos;t parse location on JOIN</source>
         <translation>Can&apos;t parse location on JOIN</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="493"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="517"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="537"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="558"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="498"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="522"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="542"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="578"/>
         <source>Must be RIGHT_PARENTHESIS instead of %1</source>
         <translation>Must be RIGHT_PARENTHESIS instead of %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="499"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="504"/>
         <source>Wrong token after ORDER %1</source>
         <translation>Wrong token after ORDER %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="511"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="516"/>
         <source>Can&apos;t parse location on ORDER</source>
         <translation>Can&apos;t parse location on ORDER</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="523"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="528"/>
         <source>Wrong token after BOND %1</source>
         <translation>Wrong token after BOND %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="531"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="536"/>
         <source>Can&apos;t parse location on BONDs</source>
         <translation>Can&apos;t parse location on BONDs</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="544"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="562"/>
         <source>Must be LEFT_PARENTHESIS instead of %1</source>
         <translation>Must be LEFT_PARENTHESIS instead of %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="552"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="572"/>
         <source>Can&apos;t parse location on COMPLEMENT</source>
         <translation>Can&apos;t parse location on COMPLEMENT</translation>
     </message>
@@ -2013,9 +2013,10 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/RawDNASequenceFormat.cpp" line="49"/>
         <source>Raw sequence file - a whole content of the file is treated either as a single/multiple nucleotide or peptide sequence(s). UGENE will remove all non-alphabetic chars from the result sequence. By default the characters in the file are considered a single sequence.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сырой файл последовательности - все содержимое файла рассматривается как один нуклеотид или пептидная последовательность. UGENE удалит все символы не принадлежащие алфавиту из результирующей последовательности.</translation>
     </message>
     <message>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="132"/>
         <source>Raw sequence file - a whole content of the file is treated either as a single nucleotide or peptide sequence UGENE will remove all non-alphabetic chars from the result sequence</source>
         <translation>Сырой файл последовательности - все содержимое файла рассматривается как один нуклеотид или пептидная последовательность. UGENE удалит все символы не принадлежащие алфавиту из результирующей последовательности</translation>
     </message>

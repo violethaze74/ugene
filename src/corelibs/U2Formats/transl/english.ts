@@ -2,43 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>Document</name>
-    <message>
-        <source>Document is empty.</source>
-        <translation type="vanished">Document is empty.</translation>
-    </message>
-</context>
-<context>
-    <name>DocumentFormat</name>
-    <message>
-        <source>DatabaseConnection</source>
-        <translation type="vanished">DatabaseConnection</translation>
-    </message>
-    <message>
-        <source>A fake format that was added to implement shared database connection within existing document model.</source>
-        <translation type="vanished">A fake format that was added to implement shared database connection within existing document model.</translation>
-    </message>
-    <message>
-        <source>You have no permissions to modify the content of this database</source>
-        <translation type="vanished">You have no permissions to modify the content of this database</translation>
-    </message>
-    <message>
-        <source>Empty object name</source>
-        <translation type="vanished">Empty object name</translation>
-    </message>
-</context>
-<context>
-    <name>L10N</name>
-    <message>
-        <source>Line is too long</source>
-        <translation type="vanished">Line is too long</translation>
-    </message>
-    <message>
-        <source>Incorrect number of columns in the file</source>
-        <translation type="vanished">Incorrect number of columns in the file</translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../src/BAMUtils.cpp" line="99"/>
@@ -376,7 +339,7 @@
         <translation>Build index for bam file: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="712"/>
+        <location filename="../src/BAMUtils.cpp" line="715"/>
         <source>Wrong line in a SAM file.</source>
         <translation>Wrong line in a SAM file.</translation>
     </message>
@@ -406,7 +369,7 @@
     <message>
         <location filename="../src/BedFormat.cpp" line="729"/>
         <source>The file does not contain valid annotations!</source>
-        <translation type="unfinished"></translation>
+        <translation>The file does not contain valid annotations!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="976"/>
@@ -1467,76 +1430,76 @@ The following sequences are empty:</translation>
 <context>
     <name>U2::Genbank::LocationParser</name>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="308"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="309"/>
         <source>Ignoring remote entry: %1.%2</source>
         <translation>Ignoring remote entry: %1.%2</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="339"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="409"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="344"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="414"/>
         <source>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</source>
         <translation>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="342"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="347"/>
         <source>Ignoring &apos;&lt;&apos; at start position</source>
         <translation>Ignoring &apos;&lt;&apos; at start position</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="412"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="417"/>
         <source>Ignoring &apos;&gt;&apos; at end position</source>
         <translation>Ignoring &apos;&gt;&apos; at end position</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="474"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="479"/>
         <source>Wrong token after JOIN %1</source>
         <translation>Wrong token after JOIN %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="479"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="484"/>
         <source>Wrong token after JOIN  - order %1</source>
         <translation>Wrong token after JOIN  - order %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="487"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="492"/>
         <source>Can&apos;t parse location on JOIN</source>
         <translation>Can&apos;t parse location on JOIN</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="493"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="517"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="537"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="558"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="498"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="522"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="542"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="578"/>
         <source>Must be RIGHT_PARENTHESIS instead of %1</source>
         <translation>Must be RIGHT_PARENTHESIS instead of %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="499"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="504"/>
         <source>Wrong token after ORDER %1</source>
         <translation>Wrong token after ORDER %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="511"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="516"/>
         <source>Can&apos;t parse location on ORDER</source>
         <translation>Can&apos;t parse location on ORDER</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="523"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="528"/>
         <source>Wrong token after BOND %1</source>
         <translation>Wrong token after BOND %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="531"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="536"/>
         <source>Can&apos;t parse location on BONDs</source>
         <translation>Can&apos;t parse location on BONDs</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="544"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="562"/>
         <source>Must be LEFT_PARENTHESIS instead of %1</source>
         <translation>Must be LEFT_PARENTHESIS instead of %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="552"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="572"/>
         <source>Can&apos;t parse location on COMPLEMENT</source>
         <translation>Can&apos;t parse location on COMPLEMENT</translation>
     </message>
@@ -2013,14 +1976,10 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/RawDNASequenceFormat.cpp" line="49"/>
         <source>Raw sequence file - a whole content of the file is treated either as a single/multiple nucleotide or peptide sequence(s). UGENE will remove all non-alphabetic chars from the result sequence. By default the characters in the file are considered a single sequence.</source>
-        <translation type="unfinished"></translation>
+        <translation>Raw sequence file - a whole content of the file is treated either as a single/multiple nucleotide or peptide sequence(s). UGENE will remove all non-alphabetic chars from the result sequence. By default the characters in the file are considered a single sequence.</translation>
     </message>
     <message>
-        <source>Raw sequence file - a whole content of the file is treated either as a single nucleotide or peptide sequence UGENE will remove all non-alphabetic chars from the result sequence</source>
-        <translation type="vanished">Raw sequence file - a whole content of the file is treated either as a single nucleotide or peptide sequence UGENE will remove all non-alphabetic chars from the result sequence</translation>
-    </message>
-    <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="131"/>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="132"/>
         <source>Sequence is empty</source>
         <translation>Sequence is empty</translation>
     </message>
@@ -2701,377 +2660,6 @@ The following sequences are empty:</translation>
         <location filename="../src/VectorNtiSequenceFormat.cpp" line="329"/>
         <source>Error writing document</source>
         <translation>Error writing document</translation>
-    </message>
-</context>
-<context>
-    <name>U2DbiL10n</name>
-    <message>
-        <source>There is no assembly object with the specified id.</source>
-        <translation type="vanished">There is no assembly object with the specified id.</translation>
-    </message>
-    <message>
-        <source>Unsupported attribute type: %1</source>
-        <translation type="vanished">Unsupported attribute type: %1</translation>
-    </message>
-    <message>
-        <source>Required attribute is not found</source>
-        <translation type="vanished">Required attribute is not found</translation>
-    </message>
-    <message>
-        <source>Database url is incorrect</source>
-        <translation type="vanished">Database url is incorrect</translation>
-    </message>
-    <message>
-        <source>User login is not specified</source>
-        <translation type="vanished">User login is not specified</translation>
-    </message>
-    <message>
-        <source>Host is not specified</source>
-        <translation type="vanished">Host is not specified</translation>
-    </message>
-    <message>
-        <source>Database name is not specified</source>
-        <translation type="vanished">Database name is not specified</translation>
-    </message>
-    <message>
-        <source>Error opening MySQL database: %1</source>
-        <translation type="vanished">Error opening MySQL database: %1</translation>
-    </message>
-    <message>
-        <source>Not a %1 MySQL database: %2, %3</source>
-        <translation type="vanished">Not a %1 MySQL database: %2, %3</translation>
-    </message>
-    <message>
-        <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
-        <translation type="vanished">Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</translation>
-    </message>
-    <message>
-        <source>Illegal database state: %1</source>
-        <translation type="vanished">Illegal database state: %1</translation>
-    </message>
-    <message>
-        <source>Can&apos;t synchronize database state</source>
-        <translation type="vanished">Can&apos;t synchronize database state</translation>
-    </message>
-    <message>
-        <source>Annotation table object is not found.</source>
-        <translation type="vanished">Annotation table object is not found.</translation>
-    </message>
-    <message>
-        <source>Feature is not found.</source>
-        <translation type="vanished">Feature is not found.</translation>
-    </message>
-    <message>
-        <source>An object single modification step not found</source>
-        <translation type="vanished">An object single modification step not found</translation>
-    </message>
-    <message>
-        <source>Failed to find user step ID</source>
-        <translation type="vanished">Failed to find user step ID</translation>
-    </message>
-    <message>
-        <source>Not main thread</source>
-        <translation type="vanished">Not main thread</translation>
-    </message>
-    <message>
-        <source>Can&apos;t create a common user modifications step, previous one is not complete</source>
-        <translation type="vanished">Can&apos;t create a common user modifications step, previous one is not complete</translation>
-    </message>
-    <message>
-        <source>Can&apos;t create a common multiple modifications step, previous one is not complete</source>
-        <translation type="vanished">Can&apos;t create a common multiple modifications step, previous one is not complete</translation>
-    </message>
-    <message>
-        <source>Failed to create a common user modifications step</source>
-        <translation type="vanished">Failed to create a common user modifications step</translation>
-    </message>
-    <message>
-        <source>Failed to create a common multiple modifications step</source>
-        <translation type="vanished">Failed to create a common multiple modifications step</translation>
-    </message>
-    <message>
-        <source>Msa object not found</source>
-        <translation type="vanished">Msa object not found</translation>
-    </message>
-    <message>
-        <source>Msa row not found</source>
-        <translation type="vanished">Msa row not found</translation>
-    </message>
-    <message>
-        <source>Unexpected modification type &apos;%1&apos;</source>
-        <translation type="vanished">Unexpected modification type &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Invalid row position: %1</source>
-        <translation type="vanished">Invalid row position: %1</translation>
-    </message>
-    <message>
-        <source>An error occurred during updating an alignment alphabet</source>
-        <translation type="vanished">An error occurred during updating an alignment alphabet</translation>
-    </message>
-    <message>
-        <source>An error occurred during reverting adding of rows</source>
-        <translation type="vanished">An error occurred during reverting adding of rows</translation>
-    </message>
-    <message>
-        <source>An error occurred during reverting addition of a row</source>
-        <translation type="vanished">An error occurred during reverting addition of a row</translation>
-    </message>
-    <message>
-        <source>An error occurred during reverting removing of rows</source>
-        <translation type="vanished">An error occurred during reverting removing of rows</translation>
-    </message>
-    <message>
-        <source>An error occurred during reverting removing of a row</source>
-        <translation type="vanished">An error occurred during reverting removing of a row</translation>
-    </message>
-    <message>
-        <source>An error occurred during updating an alignment gaps</source>
-        <translation type="vanished">An error occurred during updating an alignment gaps</translation>
-    </message>
-    <message>
-        <source>An error occurred during updating an alignment row order</source>
-        <translation type="vanished">An error occurred during updating an alignment row order</translation>
-    </message>
-    <message>
-        <source>An error occurred during updating a row info</source>
-        <translation type="vanished">An error occurred during updating a row info</translation>
-    </message>
-    <message>
-        <source>An error occurred during updating an msa length</source>
-        <translation type="vanished">An error occurred during updating an msa length</translation>
-    </message>
-    <message>
-        <source>An error occurred during addition of a row</source>
-        <translation type="vanished">An error occurred during addition of a row</translation>
-    </message>
-    <message>
-        <source>Can&apos;t undo an operation for the object</source>
-        <translation type="vanished">Can&apos;t undo an operation for the object</translation>
-    </message>
-    <message>
-        <source>Can&apos;t redo an operation for the object</source>
-        <translation type="vanished">Can&apos;t redo an operation for the object</translation>
-    </message>
-    <message>
-        <source>Object not found</source>
-        <translation type="vanished">Object not found</translation>
-    </message>
-    <message>
-        <source>Folder not found: %1 (canonical: %2)</source>
-        <translation type="vanished">Folder not found: %1 (canonical: %2)</translation>
-    </message>
-    <message>
-        <source>Not an object, id: %1, type: %2</source>
-        <translation type="vanished">Not an object, id: %1, type: %2</translation>
-    </message>
-    <message>
-        <source>Unknown object type! Id: %1, type: %2</source>
-        <translation type="vanished">Unknown object type! Id: %1, type: %2</translation>
-    </message>
-    <message>
-        <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
-        <translation type="vanished">Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
-        <translation type="vanished">Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>An error occurred during updating an object name</source>
-        <translation type="vanished">An error occurred during updating an object name</translation>
-    </message>
-    <message>
-        <source>An error occurred during updating an object name!</source>
-        <translation type="vanished">An error occurred during updating an object name!</translation>
-    </message>
-    <message>
-        <source>Sequence object not found</source>
-        <translation type="vanished">Sequence object not found</translation>
-    </message>
-    <message>
-        <source>Exception was thrown</source>
-        <translation type="obsolete">Exception was thrown</translation>
-    </message>
-    <message>
-        <source>Internal error occurred during the sequence processing</source>
-        <translation type="vanished">Internal error occurred during the sequence processing</translation>
-    </message>
-    <message>
-        <source>An exception was thrown during reading sequence data from dbi</source>
-        <translation type="vanished">An exception was thrown during reading sequence data from dbi</translation>
-    </message>
-    <message>
-        <source>An error occurred during reverting replacing sequence data</source>
-        <translation type="vanished">An error occurred during reverting replacing sequence data</translation>
-    </message>
-    <message>
-        <source>An error occurred during replacing sequence data</source>
-        <translation type="vanished">An error occurred during replacing sequence data</translation>
-    </message>
-    <message>
-        <source>Invalid variant track type: %1</source>
-        <translation type="vanished">Invalid variant track type: %1</translation>
-    </message>
-    <message>
-        <source>Sequence name is not set</source>
-        <translation type="vanished">Sequence name is not set</translation>
-    </message>
-    <message>
-        <source>New variant public ID is empty</source>
-        <translation type="vanished">New variant public ID is empty</translation>
-    </message>
-    <message>
-        <source>New variant track ID is empty</source>
-        <translation type="vanished">New variant track ID is empty</translation>
-    </message>
-    <message>
-        <source>Packed data is empty</source>
-        <translation type="vanished">Packed data is empty</translation>
-    </message>
-    <message>
-        <source>Packing method prefix is not supported: %1</source>
-        <translation type="vanished">Packing method prefix is not supported: %1</translation>
-    </message>
-    <message>
-        <source>Data is corrupted, no name end marker found: %1</source>
-        <translation type="vanished">Data is corrupted, no name end marker found: %1</translation>
-    </message>
-    <message>
-        <source>Data is corrupted, no sequence end marker found: %1</source>
-        <translation type="vanished">Data is corrupted, no sequence end marker found: %1</translation>
-    </message>
-    <message>
-        <source>Data is corrupted, no CIGAR end marker found: %1</source>
-        <translation type="vanished">Data is corrupted, no CIGAR end marker found: %1</translation>
-    </message>
-    <message>
-        <source>Data is corrupted, no rnext end marker found: %1</source>
-        <translation type="vanished">Data is corrupted, no rnext end marker found: %1</translation>
-    </message>
-    <message>
-        <source>Can not convert pnext to a number: %1</source>
-        <translation type="vanished">Can not convert pnext to a number: %1</translation>
-    </message>
-    <message>
-        <source>Bound values: </source>
-        <translation type="vanished">Bound values: </translation>
-    </message>
-    <message>
-        <source>Cannot start a transaction</source>
-        <translation type="vanished">Cannot start a transaction</translation>
-    </message>
-    <message>
-        <source>Failed to detect assembly storage format: %1</source>
-        <translation type="vanished">Failed to detect assembly storage format: %1</translation>
-    </message>
-    <message>
-        <source>Failed to parse range: %1, full: %2</source>
-        <translation type="vanished">Failed to parse range: %1, full: %2</translation>
-    </message>
-    <message>
-        <source>Failed to parse packed row range info %1</source>
-        <translation type="vanished">Failed to parse packed row range info %1</translation>
-    </message>
-    <message>
-        <source>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</source>
-        <translation type="vanished">Error during RTree index creation: %1! Check if SQLite library has RTree index support!</translation>
-    </message>
-    <message>
-        <source>Unsupported reads storage type: %1</source>
-        <translation type="vanished">Unsupported reads storage type: %1</translation>
-    </message>
-    <message>
-        <source>Packing method is not supported: %1</source>
-        <translation type="vanished">Packing method is not supported: %1</translation>
-    </message>
-    <message>
-        <source>Packed data is empty!</source>
-        <translation type="vanished">Packed data is empty!</translation>
-    </message>
-    <message>
-        <source>Error checking SQLite database: %1!</source>
-        <translation type="vanished">Error checking SQLite database: %1!</translation>
-    </message>
-    <message>
-        <source>Error creating table: %1, error: %2</source>
-        <translation type="vanished">Error creating table: %1, error: %2</translation>
-    </message>
-    <message>
-        <source>Not a %1 SQLite database: %2</source>
-        <translation type="vanished">Not a %1 SQLite database: %2</translation>
-    </message>
-    <message>
-        <source>Database is already opened!</source>
-        <translation type="vanished">Database is already opened!</translation>
-    </message>
-    <message>
-        <source>URL is not specified</source>
-        <translation type="vanished">URL is not specified</translation>
-    </message>
-    <message>
-        <source>Error opening SQLite database: %1!</source>
-        <translation type="vanished">Error opening SQLite database: %1!</translation>
-    </message>
-    <message>
-        <source>Database is already closed!</source>
-        <translation type="vanished">Database is already closed!</translation>
-    </message>
-    <message>
-        <source>Illegal database state %1!</source>
-        <translation type="vanished">Illegal database state %1!</translation>
-    </message>
-    <message>
-        <source>Failed to close database: %1, err: %2</source>
-        <translation type="vanished">Failed to close database: %1, err: %2</translation>
-    </message>
-    <message>
-        <source>Annotation table object not found.</source>
-        <translation type="vanished">Annotation table object not found.</translation>
-    </message>
-    <message>
-        <source>An object single modification step not found!</source>
-        <translation type="vanished">An object single modification step not found!</translation>
-    </message>
-    <message>
-        <source>Msa object not found!</source>
-        <translation type="vanished">Msa object not found!</translation>
-    </message>
-    <message>
-        <source>Msa row not found!</source>
-        <translation type="vanished">Msa row not found!</translation>
-    </message>
-    <message>
-        <source>Not an object! Id: %1, type: %2</source>
-        <translation type="vanished">Not an object! Id: %1, type: %2</translation>
-    </message>
-    <message>
-        <source>Can&apos;t undo an operation for the object!</source>
-        <translation type="vanished">Can&apos;t undo an operation for the object!</translation>
-    </message>
-    <message>
-        <source>Can&apos;t redo an operation for the object!</source>
-        <translation type="vanished">Can&apos;t redo an operation for the object!</translation>
-    </message>
-    <message>
-        <source>Object not found!</source>
-        <translation type="vanished">Object not found!</translation>
-    </message>
-    <message>
-        <source>Object not found.</source>
-        <translation type="vanished">Object not found.</translation>
-    </message>
-    <message>
-        <source>Folder not found: %1</source>
-        <translation type="vanished">Folder not found: %1</translation>
-    </message>
-    <message>
-        <source>Sequence object not found.</source>
-        <translation type="vanished">Sequence object not found.</translation>
-    </message>
-    <message>
-        <source>Sequence name is not set!</source>
-        <translation type="vanished">Sequence name is not set!</translation>
     </message>
 </context>
 </TS>

@@ -2,13 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>HRSchemaSerializer</name>
-    <message>
-        <source>Undefined data-flow link: &apos;%1&apos;. Define it in actor-bindings</source>
-        <translation type="vanished">Undefined data-flow link: &apos;%1&apos;. Define it in actor-bindings</translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../src/model/QDConstraint.cpp" line="34"/>
@@ -1393,32 +1386,32 @@
 <context>
     <name>U2::RunCmdlineWorkflowTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="536"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="564"/>
         <source>Workflow process</source>
         <translation>Workflow process</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="587"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="615"/>
         <source>Cannot start process &apos;%1&apos;</source>
         <translation>Cannot start process &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="594"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="622"/>
         <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
         <translation>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="598"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="626"/>
         <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
         <translation>The process &apos;%1&apos; crashed some time after starting successfully</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="602"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="630"/>
         <source>Error occurred while reading from or writing to channel</source>
         <translation>Error occurred while reading from or writing to channel</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="605"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="633"/>
         <source>Unknown error occurred</source>
         <translation>Unknown error occurred</translation>
     </message>
@@ -1907,42 +1900,42 @@
 <context>
     <name>U2::WorkflowIterationRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="200"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="228"/>
         <source>Workflow run</source>
         <translation>Workflow run</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="216"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="244"/>
         <source>Unknown domain %1</source>
         <translation>Unknown domain %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="266"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="294"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>Failed to preprocess the workflow. Some of included files are broken</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="274"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="302"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>Failed to create worker %1 %2 in domain %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="282"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="310"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>Failed to create connection %1 %2 in domain %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="295"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="323"/>
         <source>Failed to create a workflow context</source>
         <translation>Failed to create a workflow context</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="383"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="411"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>No workers are ready, while not all workers are done. Workflow is broken?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="301"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="329"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Failed to create scheduler in domain %1</translation>
     </message>
@@ -2171,21 +2164,6 @@
         <location filename="../src/model/url_attribute/URLAttribute.cpp" line="134"/>
         <source>Required parameter %1 has empty dataset: %2</source>
         <translation>Required parameter %1 has empty dataset: %2</translation>
-    </message>
-</context>
-<context>
-    <name>WorkflowUtils</name>
-    <message>
-        <source>Required parameter has no datasets specified: %1</source>
-        <translation type="vanished">Required parameter has no datasets specified: %1</translation>
-    </message>
-    <message>
-        <source>Required parameter has no input urls specified: %1</source>
-        <translation type="vanished">Required parameter has no input urls specified: %1</translation>
-    </message>
-    <message>
-        <source>Required parameter %1 has empty dataset: %2</source>
-        <translation type="vanished">Required parameter %1 has empty dataset: %2</translation>
     </message>
 </context>
 </TS>

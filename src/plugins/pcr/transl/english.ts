@@ -458,87 +458,100 @@
 <context>
     <name>U2::InSilicoPcrOptionPanelWidget</name>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="61"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="64"/>
         <source>Forward primer</source>
         <translation>Forward primer</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="62"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="65"/>
         <source>Reverse primer</source>
         <translation>Reverse primer</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="63"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="66"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="64"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="67"/>
         <source>Inner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="65"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="68"/>
         <source>All intersected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="66"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="69"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="79"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="85"/>
         <source>Show primers details</source>
         <translation>Show primers details</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="126"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="132"/>
         <source>Find product(s)</source>
         <translation>Find product(s)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="129"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="135"/>
         <source>Warning: </source>
         <translation>Warning: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="130"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="136"/>
         <source>Find product(s) anyway</source>
         <translation>Find product(s) anyway</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="207"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="213"/>
         <source>Extract In Silico PCR products</source>
         <translation>Extract In Silico PCR products</translation>
     </message>
 </context>
 <context>
+    <name>U2::InSilicoPcrProductsTable</name>
+    <message>
+        <location filename="../src/InSilicoPcrProductsTable.cpp" line="78"/>
+        <source>N/A</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::InSilicoPcrTask</name>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="50"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="52"/>
         <source>In Silico PCR</source>
         <translation>In Silico PCR</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="103"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="106"/>
         <source>Forward primers found: %1</source>
         <translation>Forward primers found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="104"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="107"/>
         <source>Reverse primers found: %1</source>
         <translation>Reverse primers found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="187"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="191"/>
         <source>Products found: %1</source>
         <translation>Products found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="191"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="195"/>
         <source>Primers details:</source>
         <translation>Primers details:</translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrTask.cpp" line="199"/>
+        <source>Products found: %1. &lt;br&gt;&lt;br&gt;The detailed information about primers is not available as primers or sequence contain a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -915,12 +928,17 @@
 <context>
     <name>U2::PrimerGroupBox</name>
     <message>
-        <location filename="../src/PrimerGroupBox.cpp" line="51"/>
+        <location filename="../src/PrimerGroupBox.cpp" line="139"/>
+        <source>N/A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerGroupBox.cpp" line="192"/>
         <source>-mer</source>
         <translation>-mer</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.cpp" line="91"/>
+        <location filename="../src/PrimerGroupBox.cpp" line="140"/>
         <source>Tm = </source>
         <translation>Tm = </translation>
     </message>
@@ -979,6 +997,12 @@
         <source>Incorrect primer number</source>
         <translation>Incorrect primer number</translation>
     </message>
+    <message>
+        <location filename="../src/PrimerLibraryTable.cpp" line="134"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="136"/>
+        <source>N/A</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::PrimerLibrarySelector</name>
@@ -1029,62 +1053,77 @@ Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library
 <context>
     <name>U2::PrimerStatistics</name>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="161"/>
+        <location filename="../src/PrimerStatistics.cpp" line="41"/>
+        <source>The primers contain a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerStatistics.cpp" line="43"/>
+        <source>The forward primer contains a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerStatistics.cpp" line="45"/>
+        <source>The reverse primer contains a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerStatistics.cpp" line="216"/>
         <source>low GC-content</source>
         <translation>low GC-content</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="162"/>
+        <location filename="../src/PrimerStatistics.cpp" line="217"/>
         <source>high GC-content</source>
         <translation>high GC-content</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="168"/>
+        <location filename="../src/PrimerStatistics.cpp" line="223"/>
         <source>low melting temperature</source>
         <translation>low melting temperature</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="169"/>
+        <location filename="../src/PrimerStatistics.cpp" line="224"/>
         <source>high melting temperature</source>
         <translation>high melting temperature</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="175"/>
+        <location filename="../src/PrimerStatistics.cpp" line="230"/>
         <source>low GC clamp</source>
         <translation>low GC clamp</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="181"/>
+        <location filename="../src/PrimerStatistics.cpp" line="236"/>
         <source>high base runs value</source>
         <translation>high base runs value</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="188"/>
+        <location filename="../src/PrimerStatistics.cpp" line="243"/>
         <source>forward primer has %1.</source>
         <translation>forward primer has %1.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="190"/>
+        <location filename="../src/PrimerStatistics.cpp" line="245"/>
         <source>reverse primer has %1.</source>
         <translation>reverse primer has %1.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="259"/>
+        <location filename="../src/PrimerStatistics.cpp" line="315"/>
         <source>Criteria</source>
         <translation>Criteria</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="260"/>
+        <location filename="../src/PrimerStatistics.cpp" line="316"/>
         <source>Valid Values</source>
         <translation>Valid Values</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="261"/>
+        <location filename="../src/PrimerStatistics.cpp" line="317"/>
         <source>Forward</source>
         <translation>Forward</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="262"/>
+        <location filename="../src/PrimerStatistics.cpp" line="318"/>
         <source>Reverse</source>
         <translation>Reverse</translation>
     </message>

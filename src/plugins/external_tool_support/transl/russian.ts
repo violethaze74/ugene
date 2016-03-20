@@ -6479,17 +6479,17 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="156"/>
         <source>The directory to store Conduct GO results.</source>
-        <translation>Директория для сохранения выходных Conduct GO файлов.</translation>
+        <translation>директория для сохранения выходных Conduct GO файлов.</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="158"/>
         <source>Title</source>
-        <translation>Название</translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="159"/>
         <source>Title is used to name the output files - so make it meaningful.</source>
-        <translation>Название выходных файлов.</translation>
+        <translation>имя для выходных файлов.</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="161"/>
@@ -6499,7 +6499,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="162"/>
         <source>Select a gene universe.</source>
-        <translation>Выберите множество генов.</translation>
+        <translation>выберите множество генов.</translation>
     </message>
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="197"/>
@@ -6509,7 +6509,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/conduct_go/ConductGOWorker.cpp" line="198"/>
         <source>Given a list of genes, using Bioconductor (GO, GOstats) and  DAVID at NIH.</source>
-        <translation>Выдает список генов, используя Bioconductor (GO, GOstats) и  DAVID в NIH.</translation>
+        <translation>этот элемент выдает список генов, используя Bioconductor (GO, GOstats) и  DAVID в NIH.</translation>
     </message>
 </context>
 <context>
@@ -8055,7 +8055,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="333"/>
         <source> to annotate with genes nearby from &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation> для аннотации генов рядом с  to &lt;u&gt;%1&lt;/u&gt;.</translation>
+        <translation> для аннотации генов рядом с &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
 </context>
 <context>
@@ -8138,7 +8138,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="240"/>
         <source>Select which type of genes need to output. &lt;b&gt;up&lt;/b&gt; for genes upstream to peak summit, &lt;b&gt;down&lt;/b&gt; for genes downstream to peak summit, &lt;b&gt;all&lt;/b&gt; for both &lt;b&gt;up&lt;/b&gt; and &lt;b&gt;down&lt;/b&gt; (--op).</source>
-        <translation>Выберите тип генов для выходных файлов &lt;b&gt;up&lt;/b&gt; для вышележащих генов, &lt;b&gt;down&lt;/b&gt; для нижележащих генов, &lt;b&gt;all&lt;/b&gt; для обоих &lt;b&gt;up&lt;/b&gt; и &lt;b&gt;down&lt;/b&gt; (--op).</translation>
+        <translation>выберите тип генов для выходных файлов &lt;b&gt;up&lt;/b&gt; для вышележащих генов, &lt;b&gt;down&lt;/b&gt; для нижележащих генов, &lt;b&gt;all&lt;/b&gt; для обоих &lt;b&gt;up&lt;/b&gt; и &lt;b&gt;down&lt;/b&gt;. Соответствует опции --op.</translation>
     </message>
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="245"/>
@@ -8148,7 +8148,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="246"/>
         <source>Output &lt;b&gt;official gene symbol&lt;/b&gt; instead of &lt;b&gt;refseq name&lt;/b&gt; (--symbol).</source>
-        <translation>Выходной &lt;b&gt;официальный символ гена&lt;/b&gt; вместо &lt;b&gt;имени refseq&lt;/b&gt; (--symbol).</translation>
+        <translation>выходной &lt;b&gt;официальный символ гена&lt;/b&gt; вместо &lt;b&gt;имени refseq&lt;/b&gt;. Соответствует опции --symbol.</translation>
     </message>
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="248"/>
@@ -8158,7 +8158,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="249"/>
         <source>Set a number which unit is base. It will get the refGenes in n bases from peak center (--distance).</source>
-        <translation>Установите число, которое является базовым. Он будет получать refGenes в n базах из центра пика (--distance).</translation>
+        <translation>установите число, которое является базовым. Он будет получать refGenes в n базах из центра пика. Соответствует опции --distance.</translation>
     </message>
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="251"/>
@@ -8168,7 +8168,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="252"/>
         <source>Select a genome file (sqlite3 file) to search refGenes (--genome).</source>
-        <translation>Выберите файл генома для (sqlite3 файл) для поиска refGenes (--genome).</translation>
+        <translation>выберите файл генома для (sqlite3 файл) для поиска refGenes. Соответствует опции --genome.</translation>
     </message>
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="307"/>
@@ -8178,7 +8178,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/peak2gene/Peak2GeneWorker.cpp" line="308"/>
         <source>Gets refGenes near the ChIP regions identified by a peak-caller.</source>
-        <translation>Получает refGenes рядом с регионами ChIP найденными поиском пиков.</translation>
+        <translation>этот элемент получает refGenes рядом с регионами ChIP найденными поиском пиков.</translation>
     </message>
 </context>
 <context>
@@ -10059,6 +10059,25 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
 </context>
 <context>
+    <name>U2::SnpEffParser</name>
+    <message>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="59"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="81"/>
+        <source>A problem occurred during allocating memory for running SnpEff. Check the &quot;Tasks memory limit&quot; parameter in the UGENE Application Settings.It is recommended to set this value to the available RAM on the computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="75"/>
+        <source>There is not enough memory to complete the SnpEff execution.It is recommended to run SnpEff on a computer with RAM 4Gb or more.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="86"/>
+        <source>Failed to download SnpEff database. Check your internet connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::SnpEffSupport</name>
     <message>
         <location filename="../src/snpeff/SnpEffSupport.cpp" line="49"/>
@@ -10069,7 +10088,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SnpEffTask</name>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="171"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="198"/>
         <source>SNPEff dataDir is not initialized.</source>
         <translation>SNPEff dataDir is not initialized.</translation>
     </message>

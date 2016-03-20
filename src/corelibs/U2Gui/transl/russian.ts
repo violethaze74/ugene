@@ -556,10 +556,6 @@
         <source>Force download the appropriate sequence</source>
         <translation>Принудительно скачать соответствующую последовательность</translation>
     </message>
-    <message>
-        <source>DAS features</source>
-        <translation type="vanished">DAS аннотации</translation>
-    </message>
 </context>
 <context>
     <name>EditConnectionDialog</name>
@@ -797,10 +793,6 @@
         <location filename="../src/util/ExportImageDialog.ui" line="78"/>
         <source>...</source>
         <translation>...</translation>
-    </message>
-    <message>
-        <source>Export settings</source>
-        <translation type="vanished">Настройки экспорта</translation>
     </message>
     <message>
         <location filename="../src/util/ExportImageDialog.ui" line="56"/>
@@ -1090,24 +1082,24 @@ Remove it from the project first.</source>
         <translation>Error! No object DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1098"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1079"/>
         <source>Confirm Deletion</source>
         <translation>Подтверждение удаления</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1099"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1080"/>
         <source>Are you sure you want to delete items in Recycle Bin?
 The items cannot be recovered once deleted.</source>
         <translation>Вы уверены, что хотите удалить элементы в корзину?
 Элементы не могут быть восстановлены после удаления.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1112"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1093"/>
         <source>Unable to Remove</source>
         <translation>Невозможно удалить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="1113"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="1094"/>
         <source>Some of selected objects are being used by the other users of the database. Try to remove them later.</source>
         <translation>Некоторые из выбранных объектов используются другими пользователями базы данных. Попробуйте удалить их позже.</translation>
     </message>
@@ -1392,7 +1384,7 @@ The items cannot be recovered once deleted.</source>
     <message>
         <location filename="../src/util/SeqPasterWidget.ui" line="87"/>
         <source>Replace unknown symbols with</source>
-        <translation>Заменять незивестные символы на</translation>
+        <translation>Заменять неизвестные символы на</translation>
     </message>
 </context>
 <context>
@@ -1685,22 +1677,6 @@ complement(5..15)</translation>
         <translation>Путь не задан</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="vanished">Ошибка</translation>
-    </message>
-    <message>
-        <source>The project cannot be created</source>
-        <translation type="vanished">Проект не может быть создан</translation>
-    </message>
-    <message>
-        <source>warning</source>
-        <translation type="vanished">Внимание</translation>
-    </message>
-    <message>
-        <source>The document already in the project</source>
-        <translation type="vanished">Документ уже открыт в проекте</translation>
-    </message>
-    <message>
         <location filename="../src/util/CreateDocumentFromTextDialogController.cpp" line="103"/>
         <source>Sequence name is empty</source>
         <translation>Имя последовательности пусто</translation>
@@ -1729,12 +1705,12 @@ complement(5..15)</translation>
     <message>
         <location filename="../src/util/CreateSequenceFromTextAndOpenViewTask.cpp" line="40"/>
         <source>Create sequence from raw data</source>
-        <translation type="unfinished"></translation>
+        <translation>Create sequence from raw data</translation>
     </message>
     <message>
         <location filename="../src/util/CreateSequenceFromTextAndOpenViewTask.cpp" line="55"/>
         <source>Can&apos;t create a project</source>
-        <translation type="unfinished"></translation>
+        <translation>Can&apos;t create a project</translation>
     </message>
 </context>
 <context>
@@ -2026,10 +2002,6 @@ complement(5..15)</translation>
         <translation>Путь до изображения пуст.</translation>
     </message>
     <message>
-        <source>The image file cannot be created. This can be caused that the file name contains illegal characters or it&apos;s too long.</source>
-        <translation type="obsolete">Ошибка в имени файла: нелегальные символы или слишком длинное имя.</translation>
-    </message>
-    <message>
         <location filename="../src/util/ExportImageDialog.cpp" line="108"/>
         <source>The image file cannot be created. No write permissions.</source>
         <translation>Файл не может быть создан. Недостаточно прав.</translation>
@@ -2185,7 +2157,7 @@ complement(5..15)</translation>
     <message>
         <location filename="../src/util/ImportSequenceFromRawDataTask.cpp" line="31"/>
         <source>Import sequence from raw data</source>
-        <translation type="unfinished"></translation>
+        <translation>Import sequence from raw data</translation>
     </message>
 </context>
 <context>
@@ -2317,37 +2289,6 @@ complement(5..15)</translation>
 </source>
         <translation>Документ:
 </translation>
-    </message>
-</context>
-<context>
-    <name>U2::LoadDASDocumentsAndOpenViewTask</name>
-    <message>
-        <source>Load DAS documents and open view</source>
-        <translation type="vanished">Загрузить и открыть документы DAS</translation>
-    </message>
-    <message>
-        <source>Resource ID: %1</source>
-        <translation type="vanished">Идентификатор: %1</translation>
-    </message>
-    <message>
-        <source>Converted resource ID: %2</source>
-        <translation type="vanished">Конвертированный идентификатор ресурса: %2</translation>
-    </message>
-    <message>
-        <source>Resolution: </source>
-        <translation type="vanished">Заключение:</translation>
-    </message>
-    <message>
-        <source>&lt;font color=&apos;%1&apos;&gt;cancelled&lt;/font&gt;</source>
-        <translation type="vanished">&lt;font color=&apos;%1&apos;&gt;отменено&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;font color=&apos;%1&apos;&gt;error&lt;/font&gt;</source>
-        <translation type="vanished">&lt;font color=&apos;%1&apos;&gt;ошибка&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;font color=&apos;%1&apos;&gt;success&lt;/font&gt;</source>
-        <translation type="vanished">&lt;font color=&apos;%1&apos;&gt;успешно&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -2511,12 +2452,12 @@ complement(5..15)</translation>
     <message>
         <location filename="../src/PasteController.cpp" line="73"/>
         <source>Unable to handle so huge data in clipboard.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unable to handle so huge data in clipboard.</translation>
     </message>
     <message>
         <location filename="../src/PasteController.cpp" line="77"/>
         <source>UGENE can not recognize current clipboard content as one of supported formats.</source>
-        <translation type="unfinished"></translation>
+        <translation>UGENE can not recognize current clipboard content as one of supported formats.</translation>
     </message>
 </context>
 <context>
@@ -2524,7 +2465,7 @@ complement(5..15)</translation>
     <message>
         <location filename="../src/PasteController.cpp" line="204"/>
         <source>Cannot detect file format</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot detect file format</translation>
     </message>
 </context>
 <context>
@@ -2532,7 +2473,7 @@ complement(5..15)</translation>
     <message>
         <location filename="../src/PasteController.cpp" line="178"/>
         <source>Pasting of directories is not supported:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pasting of directories is not supported:</translation>
     </message>
 </context>
 <context>
@@ -2603,17 +2544,17 @@ complement(5..15)</translation>
 <context>
     <name>U2::ProjectTreeController</name>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="962"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="942"/>
         <source>Load selected documents</source>
         <translation>Загрузить выбранные документы</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="544"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="545"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="969"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="949"/>
         <source>Unload selected document</source>
         <translation>Выгрузить выбранные документы</translation>
     </message>
@@ -2628,83 +2569,78 @@ complement(5..15)</translation>
         <translation>Импортировать в папку...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="726"/>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="760"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="722"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="756"/>
         <source>Unable to Restore</source>
         <translation>Невозможно восстановить</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="727"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="723"/>
         <source>UGENE is unable to restore some object from Recycle Bin because its original location does not exist. You can still restore the objects by dragging them with mouse from Recycle Bin.</source>
         <translation>UGENE не может восстановить некоторые объекты из корзины потому, что их изначальное местоположение не существует. Вы можете восстановить объекты путем перетаскивания мышью из корзины.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="761"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="757"/>
         <source>UGENE is unable to restore some folder from Recycle Bin because its original location does not exist. You can still restore the folders by dragging them with mouse from Recycle Bin.</source>
         <translation>UGENE не может восстановить некоторые папки из корзины потому, что их изначальное местоположение не существует. Вы можете восстановить папки путем перетаскивания мышью из корзины.</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="827"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="823"/>
         <source>Select a database to import anything</source>
         <translation>Выберите базу данных для того, чтобы что-то импортировать</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="868"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="864"/>
         <source>No object to add to view</source>
         <translation>Нет объектов для добавления</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="874"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="870"/>
         <source>No object to remove from view</source>
         <translation>Нет объектов для удаления</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="952"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="932"/>
         <source>Add object to document...</source>
         <translation>Добавить объект в документ...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="957"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="937"/>
         <source>Import...</source>
         <translation>Импорт...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="984"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="965"/>
         <source>Remove selected items</source>
         <translation>Удалить выбранные элементы</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="990"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="971"/>
         <source>Add folder...</source>
         <translation>Добавить папку...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="995"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="976"/>
         <source>Restore selected items</source>
         <translation>Восстановить выбранные элементы</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="999"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="980"/>
         <source>Empty recycle bin</source>
         <translation>Очистить корзину</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="980"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="960"/>
         <source>Rename...</source>
         <translation>Переименовать...</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="559"/>
-        <source>Edit</source>
-        <translation>Редактировать</translation>
-    </message>
-    <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="972"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="952"/>
         <source>Lock document for editing</source>
         <translation>Заблокировать внесение изменений</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="976"/>
+        <location filename="../src/util/project/ProjectTreeController.cpp" line="956"/>
         <source>Unlock document for editing</source>
         <translation>Снять блокировку изменений</translation>
     </message>
@@ -2770,44 +2706,44 @@ complement(5..15)</translation>
 <context>
     <name>U2::RegionSelector</name>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="293"/>
+        <location filename="../src/util/RegionSelector.cpp" line="297"/>
         <source>Set minimum</source>
         <translation>Установить минимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="298"/>
+        <location filename="../src/util/RegionSelector.cpp" line="302"/>
         <source>Set maximum</source>
         <translation>Установить максимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="305"/>
-        <location filename="../src/util/RegionSelector.cpp" line="326"/>
+        <location filename="../src/util/RegionSelector.cpp" line="309"/>
+        <location filename="../src/util/RegionSelector.cpp" line="330"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="313"/>
-        <location filename="../src/util/RegionSelector.cpp" line="332"/>
+        <location filename="../src/util/RegionSelector.cpp" line="317"/>
+        <location filename="../src/util/RegionSelector.cpp" line="336"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="174"/>
+        <location filename="../src/util/RegionSelector.cpp" line="178"/>
         <source>Invalid sequence region!</source>
         <translation>Некорректный регион последовательности!</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="180"/>
+        <location filename="../src/util/RegionSelector.cpp" line="184"/>
         <source>Invalid Start position of region</source>
         <translation>Некорректная стартовая позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="189"/>
+        <location filename="../src/util/RegionSelector.cpp" line="193"/>
         <source>Invalid End position of region</source>
         <translation>Некорректная конечная позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="197"/>
+        <location filename="../src/util/RegionSelector.cpp" line="201"/>
         <source>Start position is greater than End position</source>
         <translation>Начальная позичия больше чем конечная</translation>
     </message>
@@ -2977,10 +2913,6 @@ complement(5..15)</translation>
         <translation>Некоторые из символов, которые не соответствали алфавиту были</translation>
     </message>
     <message>
-        <source>Some of symbols, which doesn&apos;t match alphabet has been </source>
-        <translation type="obsolete">Некоторые из символов, которые не соответствали алфавиту были</translation>
-    </message>
-    <message>
         <location filename="../src/util/SeqPasterWidgetController.cpp" line="148"/>
         <source>replaced</source>
         <translation>переписаны</translation>
@@ -3062,42 +2994,42 @@ check connection settings</translation>
 <context>
     <name>U2::ToolsMenu</name>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="108"/>
+        <location filename="../src/ToolsMenu.cpp" line="107"/>
         <source>Sanger data analysis</source>
         <translation>Анализ данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="118"/>
+        <location filename="../src/ToolsMenu.cpp" line="117"/>
         <source>NGS data analysis</source>
         <translation>Анализ данных NGS</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="145"/>
+        <location filename="../src/ToolsMenu.cpp" line="144"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="159"/>
+        <location filename="../src/ToolsMenu.cpp" line="158"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="171"/>
+        <location filename="../src/ToolsMenu.cpp" line="170"/>
         <source>Cloning</source>
         <translation>Клонирование</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="179"/>
+        <location filename="../src/ToolsMenu.cpp" line="178"/>
         <source>Primer</source>
         <translation>Подбор праймеров</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="185"/>
+        <location filename="../src/ToolsMenu.cpp" line="184"/>
         <source>Search for TFBS</source>
         <translation>Поиск сайтов связывания транскрипционных факторов (TFBS)</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="194"/>
+        <location filename="../src/ToolsMenu.cpp" line="193"/>
         <source>HMMER tools</source>
         <translation>Инструменты HMMER</translation>
     </message>
@@ -3187,13 +3119,6 @@ check connection settings</translation>
         <location filename="../src/util/imageExport/WidgetScreenshotExportTask.cpp" line="115"/>
         <source>Screenshot</source>
         <translation>Скриншот</translation>
-    </message>
-</context>
-<context>
-    <name>U2::WidgetScreenshotImageExportTaskFactory</name>
-    <message>
-        <source>Screenshot</source>
-        <translation type="obsolete">Скриншот</translation>
     </message>
 </context>
 </TS>
