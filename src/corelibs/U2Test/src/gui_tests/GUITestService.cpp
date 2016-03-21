@@ -166,7 +166,7 @@ GUITestService::LaunchOptions GUITestService::getLaunchOptions(CMDLineRegistry* 
 }
 
 bool GUITestService::isGuiTestServiceNeeded() {
-    return GUITestService::getLaunchOptions(AppContext::getCMDLineRegistry()) != GUITestService::LaunchOptions::NONE;
+    return getLaunchOptions(AppContext::getCMDLineRegistry()) != NONE;
 }
 
 void GUITestService::registerAllTestsTask() {
