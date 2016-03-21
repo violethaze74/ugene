@@ -1571,7 +1571,7 @@ void AnnotationsTreeView::sl_itemClicked(QTreeWidgetItem *i, int column) {
     }
     QString fileUrl = item->getFileUrl(column);
     if (!fileUrl.isEmpty()) {
-        Task *task = new LoadRemoteDocumentAndOpenViewTask(fileUrl);
+        Task *task = new LoadRemoteDocumentAndAddToProjectTask(fileUrl);
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     } else {
         GUIUtils::runWebBrowser(item->buildLinkURL(column));

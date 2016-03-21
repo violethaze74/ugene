@@ -113,6 +113,11 @@ void TaskSchedulerImpl::cancelAllTasks() {
     }
 }
 
+namespace {
+    void onBadAlloc(Task *task) {
+        task->setError(TaskSchedulerImpl::tr("There is not enough memory to finish the task."));
+    }
+}
 
 void TaskSchedulerImpl::propagateStateToParent(Task* task) {
     Task* parentTask = task->getParentTask();
@@ -186,9 +191,13 @@ bool TaskSchedulerImpl::processFinishedTasks() {
         }
 
         if (ti->wasPrepared) {
-            Task::ReportResult res = ti->task->report();
-            if (res == Task::ReportResult_CallMeAgain) {
-                continue;
+            try {
+                Task::ReportResult res = ti->task->report();
+                if (res == Task::ReportResult_CallMeAgain) {
+                    continue;
+                }
+            } catch (const std::bad_alloc &) {
+                onBadAlloc(ti->task);
             }
         }
 
@@ -328,7 +337,11 @@ void TaskSchedulerImpl::runReady() {
         }
         setTaskStateDesc(ti->task, "");
         if(ti->task->hasFlags(TaskFlag_RunInMainThread)) {
-            ti->task->run();
+            try {
+                ti->task->run();
+            } catch (const std::bad_alloc &) {
+                onBadAlloc(ti->task);
+            }
             assert(Task::State_Running == ti->task->getState());
             ti->selfRunFinished = true;
         } else {
@@ -559,8 +572,12 @@ bool TaskSchedulerImpl::addToPriorityQueue(Task* task, TaskInfo* pti) {
     priorityQueue.append(ti);
     if (runPrepare) {
         setTaskInsidePrepare(task, true);
-        task->prepare();
-          setTaskInsidePrepare(task, false);
+        try {
+            task->prepare();
+        } catch (const std::bad_alloc &) {
+            onBadAlloc(task);
+        }
+        setTaskInsidePrepare(task, false);
         ti->wasPrepared = true;
     }
     promoteTask(ti, Task::State_Prepared);
@@ -979,7 +996,11 @@ void TaskSchedulerImpl::onSubTaskFinished(TaskThread *thread, Task *subtask) {
         && !thread->newSubtasksObtained)
     {
         thread->subtasksLocker.lock();
-        thread->unconsideredNewSubtasks = onSubTaskFinished(thread->ti->task, subtask);
+        try {
+            thread->unconsideredNewSubtasks = onSubTaskFinished(thread->ti->task, subtask);
+        } catch (const std::bad_alloc &) {
+            onBadAlloc(thread->ti->task);
+        }
         thread->newSubtasksObtained = true;
         thread->subtasksLocker.unlock();
     }
@@ -1018,8 +1039,12 @@ void TaskThread::run() {
 
     updateThreadPriority(ti);
     if(!ti->task->hasFlags(TaskFlag_RunMessageLoopOnly)) {
-        ti->task->run();
-        assert(ti->task->getState()== Task::State_Running);
+        try {
+            ti->task->run();
+            assert(ti->task->getState()== Task::State_Running);
+        } catch (const std::bad_alloc &) {
+            onBadAlloc(ti->task);
+        }
     }
     ti->selfRunFinished = true;
     if(ti->task->hasFlags(TaskFlag_RunMessageLoopOnly)) {

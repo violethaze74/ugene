@@ -408,8 +408,6 @@ bool ProjectLoaderImpl::detectFormat(const GUrl &url, QList<FormatDetectionResul
     return true;
 }
 
-#define MAX_DOCS_TO_OPEN_VIEWS 5
-
 Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVariantMap& hints) {
     QList<GUrl> urls = _urls;
     // detect if we open real UGENE project file
@@ -531,7 +529,7 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                         if(hints.value(ProjectLoaderHint_LoadWithoutView, false).toBool() == true){
                             info.openView = false;
                         }else{
-                            info.openView = nViews++ < MAX_DOCS_TO_OPEN_VIEWS;
+                            info.openView = nViews++ < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS;
                         }
                         if(hints.value(ProjectLoaderHint_LoadUnloadedDocument, true).toBool() == false){
                             info.loadDocuments = false;
@@ -554,7 +552,7 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                         if(hints.value(ProjectLoaderHint_LoadWithoutView, false).toBool() == true){
                             info.openView = false;
                         }else{
-                            info.openView = nViews++ < MAX_DOCS_TO_OPEN_VIEWS;
+                            info.openView = nViews++ < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS;
                         }
                         QVariantMap hints;
                         info.dp = dr.importer->createImportTask(dr, true, hints);
