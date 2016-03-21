@@ -53,7 +53,7 @@ path(_path), name(_name), useMethod(method), format(_format), compressFile(compr
     comboBoxItems[Genbank] = "Genbank";
     comboBoxItems[GFF] = "GFF";
     comboBoxItems[CLUSTALW] = "CLUSTALW";
-    comboBoxItems[BAM] = "BAM File";
+    comboBoxItems[BAM] = "BAM";
     comboBoxItems[VCF] = "VCFv4";
     comboBoxItems[TEXT] = "Plain text";
     comboBoxItems[NWK] = "Newick Standard";
