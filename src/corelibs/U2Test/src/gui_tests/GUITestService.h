@@ -52,6 +52,10 @@ public:
 
     static GUITestService * getGuiTestService();    // the service should be already created and registered
 
+    static void setEnvVariablesForGuiTesting();
+    static LaunchOptions getLaunchOptions(CMDLineRegistry* cmdLine);
+    static bool isGuiTestServiceNeeded();
+
     static const QString GUITESTING_REPORT_PREFIX;
     static const qint64 TIMER_INTERVAL;
 
@@ -80,8 +84,6 @@ private:
     static void clearSandbox();
     static void removeDir(QString dirName);
 
-    LaunchOptions getLaunchOptions(CMDLineRegistry* cmdLine) const;
-
     void registerAllTestsTask();
     void registerAllTestsTaskNoIgnored();
     void registerTestSuiteTask();
@@ -90,8 +92,6 @@ private:
     Task* createTestLauncherTask(int suiteNumber = 0, bool noIgnored = false) const;
     Task* createTestSuiteLauncherTask() const;
     static void writeTestResult(const QString &result);
-
-    void setQtFileDialogView();
 
     QAction *runTestsAction;
     Task *testLauncher;

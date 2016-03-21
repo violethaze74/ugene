@@ -2248,7 +2248,7 @@ void WorkflowView::sl_loadScene() {
     QString filter = DesignerUtils::getSchemaFileFilter(true, true);
     QString url;
 #ifdef Q_OS_MAC
-    if (qgetenv("UGENE_GUI_TEST").toInt() == 1 && qgetenv("UGENE_USE_NATIVE_DIALOGS").toInt() == 0) {
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         url = U2FileDialog::getOpenFileName(0, tr("Open workflow file"), dir, filter, 0, QFileDialog::DontUseNativeDialog);
     }else
 #endif

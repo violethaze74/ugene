@@ -195,7 +195,7 @@ void GenomeAssemblyDialog::sl_onAddShortReadsButtonClicked() {
     LastUsedDirHelper lod("AssemblyReads");
     QStringList fileNames;
 #ifdef Q_OS_MAC
-    if (qgetenv("UGENE_GUI_TEST").toInt() == 1 && qgetenv("UGENE_USE_NATIVE_DIALOGS").toInt() == 0) {
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         fileNames = U2FileDialog::getOpenFileNames(this, tr("Add short reads"), lod.dir, QString(), 0, QFileDialog::DontUseNativeDialog );
     } else
 #endif

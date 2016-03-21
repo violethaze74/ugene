@@ -81,7 +81,7 @@ void FileLineEdit::sl_onBrowse() {
 
     QFileDialog::Options options = 0;
 #if defined(Q_OS_MAC) || (QT_VERSION >= 0x050000)
-    if (qgetenv("UGENE_GUI_TEST").toInt() == 1 && qgetenv("UGENE_USE_NATIVE_DIALOGS").toInt() == 0) {
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         options |= QFileDialog::DontUseNativeDialog;
     }
 #endif
