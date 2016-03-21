@@ -43,6 +43,7 @@
 #define U2_ORGANIZATION_NAME    "Unipro"
 #define U2_USER_INI             "UGENE_USER_INI"
 #define U2_SYSTEM_INI           "UGENE_SYSTEM_INI"
+#define U2_PRINT_TO_FILE        "UGENE_PRINT_TO_FILE"
 
 #define U2_VFS_URL_PREFIX       "VFS"
 #define U2_VFS_FILE_SEPARATOR   "!@#$"
@@ -113,6 +114,7 @@
 #define ENV_TEST_CRASH_HANDLER "TEST_CRASH_HANDLER"
 #define ENV_UGENE_DEV "UGENE_DEV"
 #define ENV_GUI_TEST "UGENE_GUI_TEST"
+#define ENV_USE_NATIVE_DIALOGS "UGENE_USE_NATIVE_DIALOGS"
 
 #ifdef __GNUC__
   #define ATTR_UNUSED __attribute__((unused))
