@@ -166,6 +166,9 @@ Task::ReportResult LoadUnloadedDocumentTask::report() {
             unloadedDoc->loadFrom(sourceDoc); // get all data from source doc;
             assert(!unloadedDoc->isTreeItemModified());
             assert(unloadedDoc->isLoaded());
+            if (sourceDoc->getGHintsMap().value(DocumentReadingMode_LoadAsModified, false).toBool()) {
+                unloadedDoc->setModified(true);
+            }
         }
     }
     if (res == ReportResult_Finished) {

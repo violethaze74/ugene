@@ -78,6 +78,7 @@ Document* EMBLGenbankAbstractDocument::loadDocument(IOAdapter* io, const U2DbiRe
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
 
     DocumentFormatUtils::updateFormatHints(objects, fs);
+    fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings();
     Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, writeLockReason);
     return doc;
 }
