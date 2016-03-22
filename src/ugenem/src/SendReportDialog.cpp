@@ -358,11 +358,12 @@ QString ReportSender::getOSVersion() {
     case QSysInfo::WV_WINDOWS7:
         result += "7, Server 2008 R2 (operating system version 6.1)";
         break;
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     case QSysInfo::WV_WINDOWS8:
         result += "8 (operating system version 6.2)";
         break;
-#endif
+    case 0x00C0:
+        result += "10 (operating system version 10.0)";
+        break;
     default:
         result += "unknown";
         break;
@@ -410,6 +411,9 @@ QString ReportSender::getOSVersion() {
         break;
     case 0x000C:
         result += "OS X 10.10";
+        break;
+    case 0x000D:
+        result += "OS X 10.11";
         break;
     default:
         result += "unknown";
