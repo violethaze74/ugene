@@ -698,7 +698,7 @@ int main(int argc, char **argv)
 
     // Register all Options Panel groups on the required GObjectViews
     initOptionsPanels();
-
+#ifndef HI_EXCLUDED
     if (GUITestService::isGuiTestServiceNeeded()) {
         QStringList urls = CMDLineRegistryUtils::getPureValues();
 
@@ -714,7 +714,7 @@ int main(int argc, char **argv)
             app.openAfterPluginsLoaded(urls, TaskStarter::NoProject);
         }
     }
-
+#endif //HI_EXCLUDED
     registerCoreServices();
 
 #ifndef HI_EXCLUDED
