@@ -5393,19 +5393,15 @@ GUI_TEST_CLASS_DEFINITION(test_4990) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
+    GTWidget::click(os, GTAction::button(os, "Show overview"));
 
     //2. Open "Export Consensus" OP tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 
     //3. Press "Export" button 3x times
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
+    for(int i = 0; i < 24; i++){
+        GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
+    }
 
     //4. Remove "big.aln" document
     GTUtilsDocument::removeDocument(os, "big.aln");
