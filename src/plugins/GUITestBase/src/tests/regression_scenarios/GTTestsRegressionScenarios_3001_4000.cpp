@@ -5890,6 +5890,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
 
     GTUtilsWorkflowDesigner::click(os, "File List");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "nrsf-chr21.fastq");
+    GTUtilsWorkflowDesigner::createDataset(os);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "control-chr21.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align reads with BWA MEM");
