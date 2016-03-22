@@ -2168,7 +2168,7 @@ GUI_TEST_CLASS_DEFINITION(test_3321){
 
 GUI_TEST_CLASS_DEFINITION(test_3328) {
 //    1. Open "test/_common_data/fasta/human_T1_cutted.fa".
-    GTFileDialog::openFile(os, testDir + "/_common_data/fasta/", "human_T1_cutted.fa");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Click the "Find restriction sites" button on the main toolbar.
@@ -2178,7 +2178,7 @@ GUI_TEST_CLASS_DEFINITION(test_3328) {
         void run(HI::GUITestOpStatus &os) {
             //3. Press "Select by length"
             //4. Input "7" and press "Ok"
-            GTUtilsDialog::waitForDialog(os, new InputIntFiller(os, 6));
+            GTUtilsDialog::waitForDialog(os, new InputIntFiller(os, 8));
             GTWidget::click(os, GTWidget::findWidget(os, "selectByLengthButton"));
 
             //5. Run search
@@ -2195,9 +2195,11 @@ GUI_TEST_CLASS_DEFINITION(test_3328) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTGlobals::sleep(2000);
 
-    QString s = GTUtilsTaskTreeView::getTaskStatus(os, "Auto-annotations update task");
-//    Expected state: the task is canceled.
-    CHECK_SET_ERR(s == "Canceling...", "Unexpected task status: " + s);
+    if(GTUtilsTaskTreeView::getTopLevelTasksCount(os) != 0){
+        QString s = GTUtilsTaskTreeView::getTaskStatus(os, "Auto-annotations update task");
+    //    Expected state: the task is canceled.
+        CHECK_SET_ERR(s == "Canceling...", "Unexpected task status: " + s);
+    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3332) {
@@ -5888,6 +5890,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
 
     GTUtilsWorkflowDesigner::click(os, "File List");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "nrsf-chr21.fastq");
+    GTUtilsWorkflowDesigner::createDataset(os);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "control-chr21.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align reads with BWA MEM");

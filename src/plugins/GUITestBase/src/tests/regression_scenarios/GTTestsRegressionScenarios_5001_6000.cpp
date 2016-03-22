@@ -453,24 +453,6 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTGlobals::sleep();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5160) {
-    //    1. Open document test/_common_data/clustal/big.aln
-    GTUtilsNotifications::waitForNotification(os, false);
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5160", "short.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Open report widget and check warnings
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    QWidget *reportWidget = GTWidget::findWidget(os, "qt_scrollarea_viewport");
-    GTMouseDriver::moveTo(os, reportWidget->rect().center());
-    GTMouseDriver::click(os);
-
-    GTKeyboardDriver::keyClick(os, 'a', GTKeyboardDriver::key["ctrl"]);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
-    QString reportText = GTClipboard::text(os);
-
-    CHECK_SET_ERR(reportText.contains("features of another remote GenBank file. These features will be skipped."), "report didn't contain expected text");
-}
-
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
