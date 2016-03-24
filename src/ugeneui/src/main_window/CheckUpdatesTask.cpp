@@ -126,7 +126,7 @@ void CheckUpdatesTask::sl_registerInTaskScheduler(){
 /************************************************************************/
 UpdateMessage::UpdateMessage(const QString &newVersion) {
     QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
-    const QString message = tr("UGENE %1 is available for downloading. Would you like to download and install it?").arg(newVersion);
+    const QString message = tr("UGENE %1 is available for downloading.\nWould you like to download and install it?").arg(newVersion);
     const QString title = tr("New Updates");
 
     dialog = new QMessageBox(QMessageBox::Question, title, message, QMessageBox::NoButton, parent);
