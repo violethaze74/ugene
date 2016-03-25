@@ -24,15 +24,9 @@
 #include <QtGui/QFontMetrics>
 #include <QtGui/QPainter>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QDialog>
-#include <QtGui/QGridLayout>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QGridLayout>
-#endif
+#include <QApplication>
+#include <QDialog>
+#include <QGridLayout>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AnnotationSettings.h>
@@ -53,6 +47,7 @@
 #include "CircularItems.h"
 #include "CircularView.h"
 #include "CircularViewPlugin.h"
+#include <U2Core/Timer.h>
 
 
 namespace U2 {
@@ -264,7 +259,6 @@ QList<AnnotationSelectionData> CircularView::selectAnnotationByCoord(const QPoin
             }
 
             res.append(AnnotationSelectionData(item->getAnnotation(), indx));
-            return res;
         }
     }
     foreach(CircularAnnotationItem* item, renderArea->circItems) {
@@ -278,7 +272,6 @@ QList<AnnotationSelectionData> CircularView::selectAnnotationByCoord(const QPoin
                     indx << item->getAnnotation()->getRegions().indexOf(r->getJoinedRegion());
                 }
                 res.append(AnnotationSelectionData(item->getAnnotation(), indx));
-                return res;
             }
         }
     }
@@ -497,17 +490,8 @@ CircularViewRenderArea::CircularViewRenderArea(CircularView* d)
 
     setMouseTracking(true);
 
-    ADVSequenceObjectContext* ctx = view->getSequenceContext();
-
     //build annotation items to get number of region levels for proper resize
-    AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
-    QSet<AnnotationTableObject *> anns = ctx->getAnnotationObjects(true);
-    foreach (AnnotationTableObject *ao, anns) {
-        foreach (Annotation *a, ao->getAnnotations()) {
-            AnnotationSettings *as = asr->getAnnotationSettings(a->getName());
-            buildAnnotationItem(DrawAnnotationPass_DrawFill, a, false, as);
-        }
-    }
+    buildItems(QFont());
 }
 
 void CircularViewRenderArea::adaptNumberOfLabels(int h) {
@@ -888,32 +872,11 @@ void CircularViewRenderArea::drawRulerCoordinates(QPainter &p, int startPos, int
 }
 
 void CircularViewRenderArea::drawAnnotations(QPainter &p) {
-    ADVSequenceObjectContext *ctx = view->getSequenceContext();
-
-    foreach (CircularAnnotationItem *item, circItems) {
-        delete item;
-    }
-    circItems.clear();
-    labelList.clear();
-    engagedLabelPositionToLabel.clear();
-    annotationYLevel.clear();
-    regionY.clear();
+    qint64 startAnnotationsDrawing = GTimer::currentTimeMicros();
 
     QFont font = p.font();
     font.setPointSize(settings->labelFontSize);
-
-    AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
-    //TODO: there need const order of annotation tables
-    QSet<AnnotationTableObject *> anns = ctx->getAnnotationObjects(true);
-    QSet<AnnotationTableObject *> autoAnns = ctx->getAutoAnnotationObjects();
-    foreach (AnnotationTableObject *ao, anns) {
-        bool isAutoAnnotation = autoAnns.contains(ao);
-        foreach (Annotation *a, ao->getAnnotations()) {
-            AnnotationSettings *as = asr->getAnnotationSettings(a->getData());
-            buildAnnotationItem(DrawAnnotationPass_DrawFill, a, false, as);
-            buildAnnotationLabel(font, a, as, isAutoAnnotation);
-        }
-    }
+    buildItems(font);
 
     CircularAnnotationLabel::setLabelsVisible(labelList);
     evaluateLabelPositions(font);
@@ -921,6 +884,8 @@ void CircularViewRenderArea::drawAnnotations(QPainter &p) {
     foreach (CircularAnnotationItem* item, circItems) {
         item->paint(&p, NULL, this);
     }
+    qint64 drawiwngTime = GTimer::currentTimeMicros() - startAnnotationsDrawing;
+    coreLog.details(tr("Draw annotations in CV: %1 seconds").arg((drawiwngTime) / 1000000.0));
 
     if (settings->labelMode == CircularViewSettings::None) {
         return;
@@ -941,10 +906,10 @@ void CircularViewRenderArea::redraw() {
 
 bool isGreater(const U2Region &r1, const U2Region &r2) {
     return r1.startPos > r2.startPos;
-};
+}
 
 #define REGION_MIN_LEN 3
-void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annotation *a, bool selected /* = false */,
+void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annotation *a, int predefinedOrbit /* = -1*/, bool selected /* = false */,
     const AnnotationSettings* as /* = NULL */)
 {
     const SharedAnnotationData &aData = a->getData();
@@ -961,7 +926,7 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
     removeRegionsOutOfRange(location, seqLen);
 
     qStableSort(location.begin(), location.end(), isGreater);
-    int yLevel = findOrbit(location, a);
+    int yLevel = predefinedOrbit == -1 ? findOrbit(location, a) : predefinedOrbit;
 
     QPair<U2Region, U2Region> mergedRegions = mergeCircularJunctoinRegion(location, seqLen);
 
@@ -985,6 +950,47 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
 
     CircularAnnotationItem* item = new CircularAnnotationItem(a, regions, this);
     circItems[a] = item;
+}
+
+void CircularViewRenderArea::buildItems(QFont labelFont) {
+    ADVSequenceObjectContext *ctx = view->getSequenceContext();
+
+    foreach (CircularAnnotationItem *item, circItems) {
+        delete item;
+    }
+    circItems.clear();
+    labelList.clear();
+    engagedLabelPositionToLabel.clear();
+    annotationYLevel.clear();
+    regionY.clear();
+
+    labelFont.setPointSize(settings->labelFontSize);
+
+    AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
+    QSet<AnnotationTableObject *> anns = ctx->getAnnotationObjects(true);
+    QSet<AnnotationTableObject *> autoAnns = ctx->getAutoAnnotationObjects();
+    foreach (AnnotationTableObject *ao, anns) {
+        bool isAutoAnnotation = autoAnns.contains(ao);
+        if (isAutoAnnotation) {
+            continue;
+        }
+        foreach (Annotation *a, ao->getAnnotations()) {
+            AnnotationSettings *as = asr->getAnnotationSettings(a->getData());
+            buildAnnotationItem(DrawAnnotationPass_DrawFill, a, -1, false, as);
+            buildAnnotationLabel(labelFont, a, as, isAutoAnnotation);
+        }
+    }
+
+    // TODO: filter only restriction sites
+    foreach (AnnotationTableObject* ao, autoAnns) {
+        regionY.append(QVector<U2Region>());
+        foreach (Annotation *a, ao->getAnnotations()) {
+            AnnotationSettings *as = asr->getAnnotationSettings(a->getData());
+            buildAnnotationItem(DrawAnnotationPass_DrawFill, a, regionY.count() - 1, false, as);
+            buildAnnotationLabel(labelFont, a, as, true);
+        }
+    }
+
 }
 
 int CircularViewRenderArea::findOrbit(const QVector<U2Region> &location, Annotation *a) {
