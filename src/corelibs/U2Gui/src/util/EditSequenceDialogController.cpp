@@ -68,7 +68,7 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
 {
     ui = new Ui_EditSequenceDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17467556");
+    new HelpButton(this, ui->buttonBox, "17468760");
 
     addSeqpasterWidget();
     w->disableCustomSettings();
