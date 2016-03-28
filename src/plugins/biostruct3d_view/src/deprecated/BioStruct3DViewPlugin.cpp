@@ -217,7 +217,7 @@ bool BioStruct3DViewContext::checkGl() {
 #if (QT_VERSION < QT_VERSION_CHECK(5, 3, 0))
     isGlValid = QGLFormat::hasOpenGL();
 #else
-    isGlValid = QOpenGLContext::openGLModuleHandle() != NULL;
+    validGL = QOpenGLContext::openGLModuleHandle() != NULL;
 #endif
 
     if (!isGlValid) {
