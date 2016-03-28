@@ -49,6 +49,9 @@ public:
 
     static const QString            CSV_FORMAT_ID;
 
+private slots:
+    void sl_formatChanged(const QString &newFormatId);
+
 private:
     void                            initSaveController(const QString &filename);
 

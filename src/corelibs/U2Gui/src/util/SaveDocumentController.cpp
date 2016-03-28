@@ -253,7 +253,10 @@ void SaveDocumentController::initFormatComboBox() {
     currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
     CHECK(conf.formatCombo != NULL, );
 
+    QSignalBlocker signalBlocker(conf.formatCombo);
+    Q_UNUSED(signalBlocker);
     conf.formatCombo->clear();
+
     QStringList items = formatsInfo.getNames();
     items.sort(Qt::CaseInsensitive);
     conf.formatCombo->addItems(items);

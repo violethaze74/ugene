@@ -48,6 +48,7 @@ ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidg
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     initSaveController(filename);
+    sl_formatChanged(saveController->getFormatIdToSave());
 
     window()->resize(window()->width(), 0);
 }
@@ -75,6 +76,8 @@ void ExportAnnotationsDialog::initSaveController(const QString &filename) {
 
     saveController = new SaveDocumentController(config, formatConstraints, this);
     saveController->addFormat(CSV_FORMAT_ID, QString(CSV_FORMAT_ID).toUpper(), QStringList() << CSV_FORMAT_ID);
+
+    connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
 }
 
 QString ExportAnnotationsDialog::filePath( ) const {
@@ -93,6 +96,12 @@ void ExportAnnotationsDialog::setExportSequenceVisible( bool value ) {
     ui->exportSequenceCheck->setVisible( value );
     ui->exportSequenceNameCheck->setVisible( value );
     window()->resize(window()->width(), 0);
+}
+
+void ExportAnnotationsDialog::sl_formatChanged(const QString &newFormatId) {
+    const bool isCsvFormat = (CSV_FORMAT_ID == newFormatId);
+    ui->exportSequenceCheck->setEnabled(isCsvFormat);
+    ui->exportSequenceNameCheck->setEnabled(isCsvFormat);
 }
 
 QString ExportAnnotationsDialog::fileFormat( ) const {
