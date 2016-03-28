@@ -214,7 +214,7 @@ void BioStruct3DViewContext::sl_windowClosing(MWMDIWindow* w) {
 bool BioStruct3DViewContext::checkGl() {
     bool isGlValid = false;
 
-#if (QT_VERSION < QT_VERSION_CHECK(5, 3, 0))
+#if (QT_VERSION < 0x053000)
     isGlValid = QGLFormat::hasOpenGL();
 #else
     validGL = QOpenGLContext::openGLModuleHandle() != NULL;
