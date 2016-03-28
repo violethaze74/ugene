@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>691</width>
-    <height>309</height>
+    <width>816</width>
+    <height>392</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -20,6 +20,9 @@
    <string>HMM3 Build</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_11">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinAndMaxSize</enum>
+   </property>
    <item>
     <widget class="QTabWidget" name="dlgMainTabWidget">
      <property name="cursor">
