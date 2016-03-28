@@ -56,8 +56,8 @@ namespace U2 {
 const QString ExportPrimersDialog::LOCAL_FILE = QObject::tr("Local file");
 const QString ExportPrimersDialog::SHARED_DB = QObject::tr("Shared database");
 
-ExportPrimersDialog::ExportPrimersDialog(const QList<Primer> &primers) :
-    QDialog(NULL),
+ExportPrimersDialog::ExportPrimersDialog(const QList<Primer> &primers, QWidget *parent) :
+    QDialog(parent),
     primers(primers)
 {
     setupUi(this);
