@@ -1243,12 +1243,8 @@ void SinchronizedObjectView::removeObject( QWidget *obj )
         widgetSizes[i] = widgetSizes[i] * baseSize / widgetsWidth;
     }
     foreach(QWidget *curObj, objects) {
-        disconnect(obj,     SIGNAL(si_selectionChanged(const QList<QString>&)), curObj, SLOT(sl_selectionChanged(const QList<QString>&)));
-        disconnect(obj,    SIGNAL(si_aligmentChanged(const QList<QString>&)),   curObj, SLOT(sl_aligmentChanged(const QList<QString>&)));
-        disconnect(obj,    SIGNAL(si_zoomChanged(double)),                      curObj, SLOT(sl_zoomChanged(double)));
-        disconnect(curObj, SIGNAL(si_selectionChanged(const QList<QString>&)),  obj,    SLOT(sl_selectionChanged(const QList<QString>&)));
-        disconnect(curObj, SIGNAL(si_aligmentChanged(const QList<QString>&)),   obj,    SLOT(sl_aligmentChanged(const QList<QString>&)));
-        disconnect(curObj, SIGNAL(sl_zoomChanged(double)),                      obj,    SLOT(si_zoomChanged(double)));
+        curObj->disconnect(obj);
+        obj->disconnect(curObj);
     }
     objects.removeAll(obj);
     obj->setParent(NULL);
