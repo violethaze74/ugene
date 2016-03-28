@@ -35,7 +35,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
-#include <U2Gui/Notification.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/AnnotatedDNAView.h>
@@ -43,9 +42,13 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 
-#include <QMessageBox>
-#include <QMenu>
-
+#if (QT_VERSION < 0x050000) //Qt 5
+#include <QtGui/QMessageBox>
+#include <QtGui/QMenu>
+#else
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QMenu>
+#endif
 
 namespace U2 {
 
@@ -122,13 +125,13 @@ void BioStruct3DViewContext::initViewContext(GObjectView* v) {
 
 bool BioStruct3DViewContext::canHandle(GObjectView* v, GObject* o) {
     Q_UNUSED(v);
-
     bool res = qobject_cast<BioStruct3DObject*>(o) != NULL;
     return res;
 }
 
 void BioStruct3DViewContext::onObjectAdded(GObjectView* view, GObject* obj) {
     //todo: add sequence & all objects associated with sequence to the view?
+
     BioStruct3DObject* obj3d = qobject_cast<BioStruct3DObject*>(obj);
     if (obj3d == NULL || view == NULL) {
         return;
@@ -148,16 +151,16 @@ void BioStruct3DViewContext::onObjectAdded(GObjectView* view, GObject* obj) {
 }
 
 void BioStruct3DViewContext::onObjectRemoved(GObjectView* v, GObject* obj) {
-    BioStruct3DObject* obj3d = qobject_cast<BioStruct3DObject*>(obj);
-    if (obj3d == NULL) {
-        return;
-    }
-    BioStruct3DSplitter* splitter = splitterMap.value(v);
-    bool close = splitter->removeObject(obj3d);
-    if (close) {
-        splitter->close();
-        //unregister3DView(v,splitter);
-    }
+     BioStruct3DObject* obj3d = qobject_cast<BioStruct3DObject*>(obj);
+     if (obj3d == NULL) {
+         return;
+     }
+     BioStruct3DSplitter* splitter = splitterMap.value(v);
+     bool close = splitter->removeObject(obj3d);
+     if (close) {
+         splitter->close();
+         //unregister3DView(v,splitter);
+     }
 }
 
 void BioStruct3DViewContext::unregister3DView(GObjectView* view, BioStruct3DSplitter* splitter) {
@@ -204,6 +207,7 @@ void BioStruct3DViewContext::sl_windowClosing(MWMDIWindow* w) {
 
     GObjectViewWindowContext::sl_windowClosing(w);
 }
+
 
 
 }//namespace
