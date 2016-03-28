@@ -35,7 +35,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
-#include <U2Gui/Notification.h>
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/AnnotatedDNAView.h>
@@ -43,9 +42,13 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 
-#include <QMenu>
-#include <QMessageBox>
-
+#if (QT_VERSION < 0x050000) //Qt 5
+#include <QtGui/QMessageBox>
+#include <QtGui/QMenu>
+#else
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QMenu>
+#endif
 
 namespace U2 {
 
@@ -106,7 +109,6 @@ void BioStruct3DViewContext::initViewContext(GObjectView* v) {
     QList<GObject *> targetBiostructs = GObjectUtils::findObjectsRelatedToObjectByRole(dna,
         GObjectTypes::BIOSTRUCTURE_3D, ObjectRole_Sequence, allBiostructs, UOF_LoadedOnly);
     CHECK(!targetBiostructs.isEmpty(), );
-    CHECK(checkGl(), );
 
     QList<ADVSequenceWidget*> seqWidgets = av->getSequenceWidgets();
     foreach(ADVSequenceWidget* w, seqWidgets) {
@@ -123,15 +125,12 @@ void BioStruct3DViewContext::initViewContext(GObjectView* v) {
 
 bool BioStruct3DViewContext::canHandle(GObjectView* v, GObject* o) {
     Q_UNUSED(v);
-    CHECK(checkGl(), false);
-
     bool res = qobject_cast<BioStruct3DObject*>(o) != NULL;
     return res;
 }
 
 void BioStruct3DViewContext::onObjectAdded(GObjectView* view, GObject* obj) {
     //todo: add sequence & all objects associated with sequence to the view?
-    CHECK(checkGl(), );
 
     BioStruct3DObject* obj3d = qobject_cast<BioStruct3DObject*>(obj);
     if (obj3d == NULL || view == NULL) {
@@ -207,19 +206,6 @@ void BioStruct3DViewContext::sl_windowClosing(MWMDIWindow* w) {
     }
 
     GObjectViewWindowContext::sl_windowClosing(w);
-}
-
-bool BioStruct3DViewContext::checkGl() {
-    if (!QGLFormat::hasOpenGL()) {
-        const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-        SAFE_POINT(notificationStack != NULL, "NotificatoinStack is NULL", false);
-        notificationStack->addNotification(tr("Unfortunately, your system does not have OpenGL Support.\n"
-                                              "The 3D Structure Viewer is not available.\n"
-                                              "You may try to upgrade your system by updating the video card driver."),
-                                           Warning_Not);
-        return false;
-    }
-    return true;
 }
 
 
