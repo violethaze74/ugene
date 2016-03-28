@@ -67,7 +67,7 @@ void ImportPrimerFromObjectTask::run() {
 
 QString ImportPrimerFromObjectTask::generateReport() const {
     const QString docName = (NULL == sequenceObject->getDocument() ? tr("Without document") : sequenceObject->getDocument()->getName());
-    QString report = QString("<b>%1</b>%2: <font color='%3'>%4</font>").arg(docName).arg(sequenceObject->getGObjectName());
+    QString report = QString("<b>%1</b> %2: <font color='%3'>%4</font>").arg(docName).arg(sequenceObject->getGObjectName());
     if (isCanceled()) {
         return report.arg(L10N::errorColorLabelHtmlStr()).arg(tr("cancelled"));
     }
