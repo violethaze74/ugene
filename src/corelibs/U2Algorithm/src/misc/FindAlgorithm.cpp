@@ -406,7 +406,7 @@ static char* createAmbiguousBaseMap() {
 }
 
 
-inline bool cmpAmbiguous( char a, char b){
+bool FindAlgorithm::cmpAmbiguous( char a, char b) {
     static char* charMap = createAmbiguousBaseMap();
 
     SAFE_POINT( a >= 0 && b >= 0, "Invalid characters supplied!", false );
@@ -433,7 +433,7 @@ inline bool match_pattern_ambiguous(const char* seq, const char* p, int start, i
     bool match = true;
     curErr = 0;
     for ( int j = 0; j < patternLen; j++ ) {
-        if( !cmpAmbiguous(seq[start+j],p[j]) && ++curErr > maxErr ) {
+        if( !FindAlgorithm::cmpAmbiguous(seq[start+j],p[j]) && ++curErr > maxErr ) {
             match = false;
             break;
         }
