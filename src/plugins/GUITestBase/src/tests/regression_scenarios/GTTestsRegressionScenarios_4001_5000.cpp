@@ -620,9 +620,10 @@ GUI_TEST_CLASS_DEFINITION(test_4065) {
 /* 1. Open _common_data/scenarios/_regression/4065/example_bam.bam
  * 2. Check log for error: "No bam index given, preparing sequential import"
 */
+    GTFile::copy(os, testDir + "_common_data/scenarios/_regression/4065/example_bam.bam", sandBoxDir + "example_bam.bam");
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_4065.ugenedb"));
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4065/example_bam.bam");
+    GTFileDialog::openFile(os, sandBoxDir + "example_bam.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

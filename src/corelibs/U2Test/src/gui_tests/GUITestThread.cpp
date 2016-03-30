@@ -58,11 +58,19 @@ void GUITestThread::run() {
 
     clearSandbox();
 
+    QTimer* timer = new QTimer(this);
+    timer->connect(timer, SIGNAL(timeout()), this, SLOT(sl_getMemory()));
+    timer->start(1000);
+
     const QString error = launchTest(tests);
 
     if(needCleanup){
         cleanup();
     }
+
+    timer->stop();
+
+    saveMemoryInfo();
 
     testResult = error.isEmpty() ? GUITestTeamcityLogger::successResult : error;
     writeTestResult();
@@ -217,6 +225,30 @@ void GUITestThread::cleanup() {
 
 void GUITestThread::writeTestResult() {
     printf("%s\n", (GUITestService::GUITESTING_REPORT_PREFIX + ": " + testResult).toUtf8().data());
+}
+
+void GUITestThread::sl_getMemory(){
+    qint64 appPid = QApplication::applicationPid();
+    QProcess memTracer;
+    memTracer.start("bash", QStringList() << "-c" << QString("top -b -p%1 -n 1 | grep %1").arg(appPid));
+    memTracer.waitForFinished();
+    QByteArray memOutput = memTracer.readAllStandardOutput();
+    QString s = QString(memOutput);
+    s.replace("    ", " ").replace("   ", " ").replace("  ", " ");
+    QStringList splitted = s.split(' ');
+    int memValue = splitted.at(6).toInt();
+    memoryList << memValue;
+}
+
+void GUITestThread::saveMemoryInfo(){
+    int max = *std::max_element(memoryList.begin(), memoryList.end());
+    QString filename="memFolder/memory.txt";
+    QDir().mkpath("memFolder");
+    QFile file( filename );
+    if ( file.open(QIODevice::ReadWrite | QIODevice::Append) ){
+        file.write(QString("%1_%2 %3\n").arg(test->getSuite()).arg(test->getName()).arg(max).toUtf8());
+        file.close();
+    }
 }
 
 }   // namespace U2
