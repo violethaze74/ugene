@@ -76,7 +76,6 @@ add-library breakpad
 if [ "$1" == "-test" ]
    then
       add-library humimit
-      add-library gtest
 fi
 
 #install_name_tool -change @executable_path/../Frameworks/Breakpad.framework/Versions/A/Breakpad @executable_path/../../../../includes/breakpad/Breakpad.framework/Versions/A/BreakPad ${TARGET_EXE_DIR}/libU2Privated.1.dylib
