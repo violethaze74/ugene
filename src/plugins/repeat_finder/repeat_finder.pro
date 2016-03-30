@@ -18,7 +18,7 @@ HEADERS += src/FindRepeatsDialog.h \
            src/RFTaskFactory.h \
            src/RepeatQuery.h \
            src/TandemQuery.h
-FORMS += src/ui/FindRepeatsDialog.ui src/ui/FindTandemsDialog.ui
+FORMS += src/FindRepeatsDialog.ui src/FindTandemsDialog.ui
 SOURCES += src/FindRepeatsDialog.cpp \
            src/FindRepeatsTask.cpp \
            src/FindTandemsDialog.cpp \
