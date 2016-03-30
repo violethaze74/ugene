@@ -165,8 +165,8 @@ bool InSilicoPcrTask::checkPerfectMatch(const U2Region &region, QByteArray prime
     SAFE_POINT(sequence.length() == primer.length(), L10N::internalError("Wrong match length"), false);
 
     int perfectMatch = qMin(sequence.length(), int(settings.perfectMatch));
-    for (int i=0; i<perfectMatch; i++) {
-        if (sequence.at(sequence.length() - 1 - i) != primer.at(primer.length() - 1 - i)) {
+    for (int i = 0; i < perfectMatch; i++) {
+        if (!FindAlgorithm::cmpAmbiguous(sequence.at(sequence.length() - 1 - i), primer.at(primer.length() - 1 - i))) {
             return false;
         }
     }
