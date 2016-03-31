@@ -57,6 +57,7 @@ private:
     static void cleanup();
     void writeTestResult();
     void saveMemoryInfo();
+    int countMemForProcessTree(int pid);
 
     HI::GUITest *test;
     Logger &log;

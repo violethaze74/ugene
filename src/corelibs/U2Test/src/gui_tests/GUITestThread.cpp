@@ -230,15 +230,71 @@ void GUITestThread::writeTestResult() {
 void GUITestThread::sl_getMemory(){
 #ifdef Q_OS_LINUX
     qint64 appPid = QApplication::applicationPid();
+
+    int memValue =countMemForProcessTree(appPid);
+
+    memoryList << memValue;
+#endif
+}
+
+int GUITestThread::countMemForProcessTree(int pid){
+#ifdef Q_OS_LINUX
+    int result = 0;
+    //getting child processes
+    QProcess pgrep;
+    pgrep.start(QString("pgrep -P %1").arg(pid/*appPid*/));
+    pgrep.waitForFinished();
+    QByteArray pgrepOut = pgrep.readAllStandardOutput();
+    QStringList childPidsStringList = QString(pgrepOut).split("\n");
+    QList<int> childPids;
+    foreach (QString s, childPidsStringList) {
+        bool ok;
+        int childPid = s.toInt(&ok);
+        if(ok){
+            childPids<<childPid;
+        }
+    }
+
+    //getting memory of process by pid
     QProcess memTracer;
-    memTracer.start("bash", QStringList() << "-c" << QString("top -b -p%1 -n 1 | grep %1").arg(appPid));
+    memTracer.start("bash", QStringList() << "-c" << QString("top -b -p%1 -n 1 | grep %1").arg(pid));
     memTracer.waitForFinished();
     QByteArray memOutput = memTracer.readAllStandardOutput();
     QString s = QString(memOutput);
     s.replace("    ", " ").replace("   ", " ").replace("  ", " ");
     QStringList splitted = s.split(' ');
-    int memValue = splitted.at(6).toInt();
-    memoryList << memValue;
+    int memValue;
+    if(splitted.size()>=5){
+        QString memString = splitted.at(5);
+        if(memString.at(memString.length()-1) == 'g'){
+            //section for gigabytes
+            memString.chop(1);
+            bool ok;
+            memString.toDouble(&ok);
+            if(ok){
+                memValue = memString.toDouble()*1000*1000;
+            }else{
+                coreLog.trace("String " + memString + " could not be converted to double");
+            }
+        }else{
+            bool ok;
+            memString.toInt(&ok);
+            if(ok){
+                memValue = memString.toInt();
+            }else{
+                coreLog.trace("String " + memString + "could not be converted to int");
+            }
+        }
+    }else{
+        memValue = 0;
+    }
+    result+=memValue;
+
+    foreach (int childPid, childPids) {
+        result+=countMemForProcessTree(childPid);
+    }
+
+    return result;
 #endif
 }
 
