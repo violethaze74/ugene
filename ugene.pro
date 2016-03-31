@@ -144,13 +144,14 @@ win32 : UGENE_DEV_NULL = nul
 unix : UGENE_DEV_NULL = /dev/null
 
 UGENE_LRELEASE =
-UGENE_LUPDATE = 
-system(lrelease-qt5 -version > $$UGENE_DEV_NULL 2> $$UGENE_DEV_NULL) {
-    UGENE_LRELEASE = lrelease-qt5
-    UGENE_LUPDATE = lupdate-qt5
-} else : system(lrelease -version > $$UGENE_DEV_NULL 2> $$UGENE_DEV_NULL) {
-    UGENE_LRELEASE = lrelease
-    UGENE_LUPDATE = lupdate
+UGENE_LUPDATE =
+message(Using QT from $$[QT_INSTALL_BINS])
+system($$[QT_INSTALL_BINS]/lrelease-qt5 -version > $$UGENE_DEV_NULL 2> $$UGENE_DEV_NULL) {
+    UGENE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease-qt5
+    UGENE_LUPDATE = $$[QT_INSTALL_BINS]/lupdate-qt5
+} else : system($$[QT_INSTALL_BINS]/lrelease -version > $$UGENE_DEV_NULL 2> $$UGENE_DEV_NULL) {
+    UGENE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+    UGENE_LUPDATE = $$[QT_INSTALL_BINS]/lupdate
 }
 
 #foreach 'language'
