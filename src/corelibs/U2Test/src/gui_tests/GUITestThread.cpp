@@ -228,6 +228,7 @@ void GUITestThread::writeTestResult() {
 }
 
 void GUITestThread::sl_getMemory(){
+#ifdef Q_OS_LINUX
     qint64 appPid = QApplication::applicationPid();
     QProcess memTracer;
     memTracer.start("bash", QStringList() << "-c" << QString("top -b -p%1 -n 1 | grep %1").arg(appPid));
@@ -238,9 +239,11 @@ void GUITestThread::sl_getMemory(){
     QStringList splitted = s.split(' ');
     int memValue = splitted.at(6).toInt();
     memoryList << memValue;
+#endif
 }
 
 void GUITestThread::saveMemoryInfo(){
+#ifdef Q_OS_LINUX
     int max = *std::max_element(memoryList.begin(), memoryList.end());
     QString filename="memFolder/memory.txt";
     QDir().mkpath("memFolder");
@@ -249,6 +252,7 @@ void GUITestThread::saveMemoryInfo(){
         file.write(QString("%1_%2 %3\n").arg(test->getSuite()).arg(test->getName()).arg(max).toUtf8());
         file.close();
     }
+#endif
 }
 
 }   // namespace U2
