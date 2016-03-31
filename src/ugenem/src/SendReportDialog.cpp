@@ -26,6 +26,8 @@
 #include <windows.h>
 #include <Psapi.h>
 #include <Winbase.h> //for IsProcessorFeaturePresent
+
+#include "DetectWin10.h"
 #endif
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #include <unistd.h> // for sysconf(3)
@@ -321,67 +323,6 @@ void SendReportDialog::sl_onOkClicked() {
     accept();
 }
 
-#ifdef Q_OS_WIN
-
-// Determine Windows versions >= 8 by querying the version of kernel32.dll.
-static inline bool determineWinOsVersionPost8(OSVERSIONINFO *result) {
-    typedef WORD(WINAPI* PtrGetFileVersionInfoSizeW)(LPCWSTR, LPDWORD);
-    typedef BOOL(WINAPI* PtrVerQueryValueW)(LPCVOID, LPCWSTR, LPVOID, PUINT);
-    typedef BOOL(WINAPI* PtrGetFileVersionInfoW)(LPCWSTR, DWORD, DWORD, LPVOID);
-
-    QSystemLibrary versionLib(QStringLiteral("version"));
-    if (!versionLib.load())
-        return false;
-    PtrGetFileVersionInfoSizeW getFileVersionInfoSizeW = (PtrGetFileVersionInfoSizeW)versionLib.resolve("GetFileVersionInfoSizeW");
-    PtrVerQueryValueW verQueryValueW = (PtrVerQueryValueW)versionLib.resolve("VerQueryValueW");
-    PtrGetFileVersionInfoW getFileVersionInfoW = (PtrGetFileVersionInfoW)versionLib.resolve("GetFileVersionInfoW");
-    if (!getFileVersionInfoSizeW || !verQueryValueW || !getFileVersionInfoW)
-        return false;
-
-    const wchar_t kernel32Dll[] = L"kernel32.dll";
-    DWORD handle;
-    const DWORD size = getFileVersionInfoSizeW(kernel32Dll, &handle);
-    if (!size)
-        return false;
-    QScopedArrayPointer<BYTE> versionInfo(new BYTE[size]);
-    if (!getFileVersionInfoW(kernel32Dll, handle, size, versionInfo.data()))
-        return false;
-    UINT uLen;
-    VS_FIXEDFILEINFO *fileInfo = Q_NULLPTR;
-    if (!verQueryValueW(versionInfo.data(), L"\\", (LPVOID *)&fileInfo, &uLen))
-        return false;
-    const DWORD fileVersionMS = fileInfo->dwFileVersionMS;
-    const DWORD fileVersionLS = fileInfo->dwFileVersionLS;
-    result->dwMajorVersion = HIWORD(fileVersionMS);
-    result->dwMinorVersion = LOWORD(fileVersionMS);
-    result->dwBuildNumber = HIWORD(fileVersionLS);
-    return true;
-}
-
-// Fallback for determining Windows versions >= 8 by looping using the
-// version check macros. Note that it will return build number=0 to avoid
-// inefficient looping.
-static inline void determineWinOsVersionFallbackPost8(OSVERSIONINFO *result) {
-    result->dwBuildNumber = 0;
-    DWORDLONG conditionMask = 0;
-    VER_SET_CONDITION(conditionMask, VER_MAJORVERSION, VER_GREATER_EQUAL);
-    VER_SET_CONDITION(conditionMask, VER_PLATFORMID, VER_EQUAL);
-    OSVERSIONINFOEX checkVersion = { sizeof(OSVERSIONINFOEX), result->dwMajorVersion, 0,
-        result->dwBuildNumber, result->dwPlatformId, { '\0' }, 0, 0, 0, 0, 0 };
-    for (; VerifyVersionInfo(&checkVersion, VER_MAJORVERSION | VER_PLATFORMID, conditionMask); ++checkVersion.dwMajorVersion)
-        result->dwMajorVersion = checkVersion.dwMajorVersion;
-    conditionMask = 0;
-    checkVersion.dwMajorVersion = result->dwMajorVersion;
-    checkVersion.dwMinorVersion = 0;
-    VER_SET_CONDITION(conditionMask, VER_MAJORVERSION, VER_EQUAL);
-    VER_SET_CONDITION(conditionMask, VER_MINORVERSION, VER_GREATER_EQUAL);
-    VER_SET_CONDITION(conditionMask, VER_PLATFORMID, VER_EQUAL);
-    for (; VerifyVersionInfo(&checkVersion, VER_MAJORVERSION | VER_MINORVERSION | VER_PLATFORMID, conditionMask); ++checkVersion.dwMinorVersion)
-        result->dwMinorVersion = checkVersion.dwMinorVersion;
-}
-
-#  endif // !Q_OS_WIN
-
 QString ReportSender::getOSVersion() {
     QString result;
 #if defined(Q_OS_WIN32)
@@ -421,14 +362,10 @@ QString ReportSender::getOSVersion() {
         result += "8 (operating system version 6.2)";
         break;
     default:
-        OSVERSIONINFO osver;
-        if (!determineWinOsVersionPost8(&osver)) {
-            determineWinOsVersionFallbackPost8(&osver);
-        }
-        if (osver.dwMajorVersion == 10 && osver.dwMinorVersion == 0) {
+        if (DetectWindowsVersion::isWindows10()) {
             result += "10 (operating system version 10)";
         } else {
-            result += "unknown";
+            result += QString("unknown (operating system version %1)").arg(DetectWindowsVersion::getVersionString());
         }
         break;
     }
