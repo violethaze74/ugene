@@ -63,7 +63,7 @@ ComboboxDependentHelpButton::ComboboxDependentHelpButton( QObject *parent, QDial
 
 void ComboboxDependentHelpButton::sl_buttonClicked(){
     QString pageId = pageMap[cb->currentText()];
-    GUIUtils::runWebBrowser("https://ugene.unipro.ru/wiki/pages/viewpage.action?pageId="+pageId+"&from=ugene");
+    GUIUtils::runWebBrowser("http://ugene.net/wiki/pages/viewpage.action?pageId="+pageId+"&from=ugene");
 }
 
 }
