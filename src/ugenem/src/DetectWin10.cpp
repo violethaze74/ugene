@@ -23,6 +23,8 @@
 
 #include <QScopedArrayPointer>
 
+#if defined (Q_OS_WIN)
+
 bool DetectWindowsVersion::isWindows10() {
     OSVERSIONINFO osver;
     detectWinVersion(&osver);
@@ -97,3 +99,5 @@ void DetectWindowsVersion::determineWinOsVersionFallbackPost8(OSVERSIONINFO *res
     for (; VerifyVersionInfo(&checkVersion, VER_MAJORVERSION | VER_MINORVERSION | VER_PLATFORMID, conditionMask); ++checkVersion.dwMinorVersion)
         result->dwMinorVersion = checkVersion.dwMinorVersion;
 }
+
+#endif

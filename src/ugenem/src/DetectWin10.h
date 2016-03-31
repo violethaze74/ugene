@@ -22,10 +22,12 @@
 #ifndef _DETECT_WIN_10_H_
 #define _DETECT_WIN_10_H_
 
+#include <QString>
+
+#if defined (Q_OS_WIN)
+
 #include <windows.h>
 #include <winnt.h>
-
-#include <QString>
 
 class DetectWindowsVersion {
 public:
@@ -84,5 +86,7 @@ private:
     QString m_libraryName;
     bool m_didLoad;
 };
+
+#endif
 
 #endif
