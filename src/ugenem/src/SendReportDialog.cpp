@@ -26,6 +26,8 @@
 #include <windows.h>
 #include <Psapi.h>
 #include <Winbase.h> //for IsProcessorFeaturePresent
+
+#include "DetectWin10.h"
 #endif
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #include <unistd.h> // for sysconf(3)
@@ -321,7 +323,6 @@ void SendReportDialog::sl_onOkClicked() {
     accept();
 }
 
-
 QString ReportSender::getOSVersion() {
     QString result;
 #if defined(Q_OS_WIN32)
@@ -357,13 +358,15 @@ QString ReportSender::getOSVersion() {
     case QSysInfo::WV_WINDOWS7:
         result += "7, Server 2008 R2 (operating system version 6.1)";
         break;
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     case QSysInfo::WV_WINDOWS8:
         result += "8 (operating system version 6.2)";
         break;
-#endif
     default:
-        result += "unknown";
+        if (DetectWindowsVersion::isWindows10()) {
+            result += "10 (operating system version 10)";
+        } else {
+            result += QString("unknown (operating system version %1)").arg(DetectWindowsVersion::getVersionString());
+        }
         break;
     }
 
