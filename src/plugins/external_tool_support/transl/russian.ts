@@ -4,63 +4,63 @@
 <context>
     <name>BlastAllSupportDialog</name>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="20"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="20"/>
         <source>Request to Local BLAST Database</source>
         <translation>Запрос к локальной базе данных BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="42"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="42"/>
         <source>General options</source>
         <translation>Основные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="53"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="53"/>
         <source>Select search:</source>
         <translation>Тип поиска:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="61"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="61"/>
         <source>blastn</source>
         <extracomment>qwe</extracomment>
         <translation>blastn</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="66"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="66"/>
         <source>blastp</source>
         <translation>blastp</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="76"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="76"/>
         <source>blastx</source>
         <translation>blastx</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="81"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="81"/>
         <source>tblastn</source>
         <translation>tblastn</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="86"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="86"/>
         <source>tblastx</source>
         <translation>tblastx</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="94"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="94"/>
         <source>Search for short, nearly exact matches</source>
         <translation>Поиск коротких последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="101"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="101"/>
         <source>Expectation value </source>
         <translation>Математическое ожидание</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="108"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="108"/>
         <source>Megablast</source>
         <translation>Megablast</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="125"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="125"/>
         <source>Off</source>
         <translation>Выключить</translation>
     </message>
@@ -69,97 +69,97 @@
         <translation type="vanished">Базовое имя для файлов БД:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="230"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="230"/>
         <source>Number of CPUs being used</source>
         <translation>Использовать процессоров</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="268"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="268"/>
         <source>Advanced options</source>
         <translation>Дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="391"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="391"/>
         <source>Word size</source>
         <translation>Размер слова</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="528"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="528"/>
         <source>Gap costs</source>
         <translation>Вес пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="307"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="307"/>
         <source>Match scores</source>
         <translation>Веса совпадений</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="337"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="337"/>
         <source>1 -3</source>
         <translation>1 -3</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="159"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="159"/>
         <source>Both strands</source>
         <translation>Обе цепи</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="169"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="169"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="176"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="176"/>
         <source>Complement</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="342"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="342"/>
         <source>1 -4</source>
         <translation>1 -4</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="347"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="347"/>
         <source>1 -2</source>
         <translation>1 -2</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="352"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="352"/>
         <source>1 -1</source>
         <translation>1 -1</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="357"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="357"/>
         <source>2 -7</source>
         <translation>2 -7</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="362"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="362"/>
         <source>2 -5</source>
         <translation>2 -5</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="367"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="367"/>
         <source>2 -3</source>
         <translation>2 -3</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="372"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="372"/>
         <source>4 -5</source>
         <translation>4 -5</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="377"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="377"/>
         <source>5 -4</source>
         <translation>5 -4</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="404"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="404"/>
         <source>Matrix</source>
         <translation>Матрица</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="71"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="71"/>
         <source>gpu-blastp</source>
         <translation>gpu-blastp</translation>
     </message>
@@ -173,162 +173,162 @@ a database file</source>
         <translation type="vanished">Выберите файл базы данных</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="412"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="412"/>
         <source>BLOSUM62</source>
         <translation>BLOSUM62</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="417"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="417"/>
         <source>BLOSUM45</source>
         <translation>BLOSUM45</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="422"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="422"/>
         <source>BLOSUM80</source>
         <translation>BLOSUM80</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="427"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="427"/>
         <source>PAM30</source>
         <translation>PAM30</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="432"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="432"/>
         <source>PAM70</source>
         <translation>PAM70</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="320"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="320"/>
         <source>Service</source>
         <translation>Сервис</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="115"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="115"/>
         <source>Max hits:</source>
         <translation>Макс. число совпадений:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="283"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="283"/>
         <source>plain</source>
         <translation>простой</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="288"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="288"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="293"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="293"/>
         <source>phi</source>
         <translation>phi</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="443"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="443"/>
         <source>PHI pattern</source>
         <translation>Шаблон PHI</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="483"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="483"/>
         <source>Threshold for extending hits</source>
         <translation>Порог для расширенных совпадений</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="486"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="486"/>
         <source>Threshold</source>
         <translation>Порог</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="535"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="535"/>
         <source>Composition-based statistics</source>
         <translation>Статистика состава</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="543"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="543"/>
         <source>D or d: default (equivalent to 2 )</source>
         <translation>D или d: по умолчанию (равно 2)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="548"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="548"/>
         <source>0 or F or f: No composition-based statistics</source>
         <translation>0 или F или f: Нет статистики состава</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="553"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="553"/>
         <source>1: Composition-based statistics as in NAR 29:2994-3005, 2001</source>
         <translation>1: Статистика состава как в NAR 29:2994-3005, 2001</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="558"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="558"/>
         <source>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</source>
         <translation>2 или T или t : Статистика как в in Bioinformatics 21:902-911, 2005, основанная на свойствах последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="563"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="563"/>
         <source>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</source>
         <translation>3: Статистика как в Bioinformatics 21:902-911, 2005, безусловная</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="575"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="575"/>
         <source>Filters</source>
         <translation>Фильтры</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="581"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="581"/>
         <source>Low complexity filter</source>
         <translation>Фильтр низкой сложности</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="588"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="588"/>
         <source>Human repeats filter</source>
         <translation>Фильтр человеческих повторов</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="598"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="598"/>
         <source>Masks</source>
         <translation>Маски</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="604"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="604"/>
         <source>Mask for lookup table only</source>
         <translation>Только маска таблицы поиска</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="614"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="614"/>
         <source>Mask lower case letters</source>
         <translation>Маска символов нижн. регистра</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="640"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="640"/>
         <source>Extension options</source>
         <translation>Возможности расширения</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="648"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="648"/>
         <source>X dropoff value (in bits)</source>
         <translation>X dropoff значение (в битах)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="654"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="654"/>
         <source>For gapped alignment</source>
         <translation>Для выравниваний с пробелами</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="668"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="668"/>
         <source>For ungapped extensions</source>
         <translation>Для расширений без пробелов</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="675"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="675"/>
         <source>For final gapped alignment</source>
         <translation>Для финального выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="699"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="699"/>
         <source>Multiple Hits window size</source>
         <translation>Множественные пересечения окна</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="711"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="711"/>
         <source>Perform gapped alignment</source>
         <translation>Выполнить выравнивание</translation>
     </message>
@@ -336,22 +336,22 @@ a database file</source>
 <context>
     <name>BlastDBCmdDialog</name>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="26"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="26"/>
         <source>Fetch Sequence from BLAST Database</source>
         <translation>Извлечь последовательность из базы данных BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="44"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="44"/>
         <source>Entery query ID:</source>
         <translation>Идентификатор запроса:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="54"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="54"/>
         <source>Select database :</source>
         <translation>Выберите базу данных:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="104"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="104"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -368,12 +368,12 @@ a database file</source>
         <translation type="vanished">белки</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="88"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="88"/>
         <source>Output path:</source>
         <translation>Выходной путь:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="116"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="116"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -381,23 +381,23 @@ a database file</source>
 <context>
     <name>BlastDBSelectorWidget</name>
     <message>
-        <location filename="../src/ui/BlastDBSelectorWidget.ui" line="14"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBSelectorWidget.ui" line="34"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="34"/>
         <source>Database path:</source>
         <translation type="unfinished">Путь к БД:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBSelectorWidget.ui" line="58"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="58"/>
         <source>Select
 a database file</source>
         <translation type="unfinished">Выберите файл базы данных</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBSelectorWidget.ui" line="68"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="68"/>
         <source>Base name for BLAST DB files:</source>
         <translation type="unfinished">Базовое имя для файлов БД:</translation>
     </message>
@@ -405,159 +405,159 @@ a database file</source>
 <context>
     <name>Bowtie2Settings</name>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="41"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="41"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="60"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="76"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="60"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="76"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;By default, Bowtie2 performs end-to-end read alignment. That is, it searches for alignments involving all of the read characters. This is also called an &amp;quot;untrimmed&amp;quot; or &amp;quot;unclipped&amp;quot; alignment.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;When the --local option is specified, Bowtie2 performs local read alignment. In this mode, Bowtie2 might &amp;quot;trim&amp;quot; or &amp;quot;clip&amp;quot; some read characters from one or both ends of the alignment if doing so maximizes the alignment score.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;По умолчанию, Bowtie2 выполняет end-to-end выравнивание. Т.е. он ищет выравнивания с с участием всех символов. Это также называется &amp;quot;необрезное&amp;quot; или &amp;quot;необрезаемое&amp;quot; выравнивание.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Когда опция --local установлена, Bowtie2 выполняет локальное выравнивание. В этом режиме Bowtie2 может &amp;quot;обрезать&amp;quot; или &amp;quot;отсечь&amp;quot; некоторые символы одного или обоих концов выравнивания если это увеличит качество выравнивания.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="63"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="63"/>
         <source>Mode</source>
         <translation>Режим</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="86"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="86"/>
         <source>--end-to-end</source>
         <translation>--end-to-end</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="91"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="91"/>
         <source>--local</source>
         <translation>--local</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="106"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="174"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="106"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="174"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&amp;quot;Pads&amp;quot; dynamic programming problems by specified number of columns on either side to allow gaps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&amp;quot;Подкладки&amp;quot; проблем динамического программирования по указанному числу столбцов с обеих сторон для разрешения пробелов.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="109"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="109"/>
         <source>Add columns to allow gaps (--dpad)</source>
         <translation>Добавляет столбцы, чтобы допустить пробелы (--dpad)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="119"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="187"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="119"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="187"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1. Setting this higher makes alignment slower (often much slower) but increases sensitivity.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Задает количество несовпадений с разрешенным в выравнивании. Может быть 0 или 1. Повышение этого параметра делает выранивание более медленным (чаще всего очень медленным) но повышает точность.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="132"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="197"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="132"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="197"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Запуск определенного количество параллельных потоков поиска. Потоки будут работать на отдельных процессорах/ ядрах и синхронизоваться при разборе ридов и выводе выравнивания.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="148"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="252"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="148"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="252"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Disallow gaps within specified number of positions of the beginning or end of the read.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Запретить пробелы в указанных позициях в начале или в конце рида.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="161"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="229"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="161"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="229"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Use specified value as the seed for pseudo-random number generator.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Использовать указанное значение в качестве источника для псевдо-генератора случайных чисел.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="164"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="164"/>
         <source>Seed (--seed)</source>
         <translation>Затравка (--seed)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="190"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="190"/>
         <source>Number of mismatches</source>
         <translation>Число несоответствий</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="200"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="200"/>
         <source>Threads</source>
         <translation>Потоки</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="210"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="239"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="210"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="239"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Sets the length of the seed substrings to align. Smaller values make alignment slower but more senstive.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Устанавливает длину подстрок затравки для выравнивания. Меньшие значения делают выравнивание медленнее, но более чувствительны.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="242"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="242"/>
         <source>Seed length (--L)</source>
         <translation>Длина затравки (--L)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="255"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="255"/>
         <source>Disallow gaps (--gbar)</source>
         <translation>Запретить пробелы (--gbar)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="284"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="284"/>
         <source>Flags</source>
         <translation>Флаги</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="296"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="296"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments for the constituent mates. This is called &amp;quot;mixed mode.&amp;quot; To disable mixed mode, set this option.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bowtie2 runs a little faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Если Bowtie2 не сможет найти пару для выполнения парного выравнивания по умолчанию будет сделано непарное выравнивание. Это называется &amp;quot;смешанным режимом.&amp;quot; Чтобы отключить смешанный режим, установите эту опцию.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bowtie2 запустится немного быстрее в смешанном режиме чем для парного выравнивания.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="299"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="299"/>
         <source>No unpaired alignments (--no-mixed)</source>
         <translation>Только парное выравнивание (--no-mixed)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="306"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="306"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;По умолчанию, Bowtie2 ищет несогласованные выравнивания, если он не может найти какие-либо согласованные выравнивания. Несогласованное выравнивание это выравнивание, в котором оба рида выровнены однозначно, но они не удовлетворяют условию парности. Это опция отключает это поведение.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="309"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="309"/>
         <source>No discordant alignments (--no-discordant)</source>
         <translation>Только согласованные выравнивания (--no-discordant)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="316"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="316"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the forward reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Если выбрана эта опция, Bowtie2 не будет пытаться выровнять прямую цепь.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="319"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="319"/>
         <source>No forward orientation (--nofw)</source>
         <translation>Не прямая ориентация (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="326"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="326"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the reverse-complement reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Если выбрана эта опция, Bowtie2 не будет пытаться выровнять обратно-комплементарную цепь.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="329"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="329"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>Не обратно-комплементарная ориентация (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="336"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="336"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Если один участник выравнивания перекрывается с другим, то это несогласованное выравни вание. По умолчанию: участники могут перекрываться в согласованном выравнивании.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="339"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="339"/>
         <source>No overlapping mates (--no-overlap)</source>
         <translation>Без перекрытий (--no-overlap)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="346"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="346"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the other in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Если один участник выравнивания содержит другой, то это несогласованное выравнивание. По умолчанию одна часть выравнивания может содержать другую в согласованном выравнивании.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="349"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="349"/>
         <source>No mates containing one another (--no-contain)</source>
         <translation>Без вложений (--no-contain)</translation>
     </message>
@@ -565,12 +565,12 @@ a database file</source>
 <context>
     <name>BowtieBuildSettings</name>
     <message>
-        <location filename="../src/ui/BowtieBuildSettings.ui" line="20"/>
+        <location filename="../src/bowtie/BowtieBuildSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieBuildSettings.ui" line="29"/>
+        <location filename="../src/bowtie/BowtieBuildSettings.ui" line="29"/>
         <source>Colorspace</source>
         <translation>Цвета</translation>
     </message>
@@ -578,12 +578,12 @@ a database file</source>
 <context>
     <name>BowtieSettings</name>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="41"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="41"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="110"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="110"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -604,12 +604,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;округление может быть отключено при помощи --nomaqround.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="121"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="121"/>
         <source>Maq error (--maqerr)</source>
         <translation>Ошибка Maq (--maqerr)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="144"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="144"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -626,7 +626,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Наименьшее допустимое значение 5, по умолчанию 28. Большие значения -l увеличивают скорость.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="176"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="176"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -651,7 +651,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;По умолчанию: 250.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="215"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="215"/>
         <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. 
 Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost. 
 Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases. 
@@ -666,17 +666,17 @@ Bowtie пытается свести к минимуму воздействие 
 Значение по умолчанию: 64.</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="246"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="246"/>
         <source>Use &lt;int&gt; as the seed for pseudo-random number generator</source>
         <translation>Используйте &lt;int&gt; в качестве затравки для псевдо-случайного генератора</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="60"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="60"/>
         <source>Mode:  </source>
         <translation>Режим:  </translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="67"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="67"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -697,82 +697,82 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;В режиме-v, выравнивание может иметь не более чем V несовпадений, где V может быть числом от 0 до 3. Опция -v является взаимоисключающей с опцией -n&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="82"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="82"/>
         <source>-n mode</source>
         <translation>режим -n</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="87"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="87"/>
         <source>-v mode</source>
         <translation>режим -v</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="153"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="153"/>
         <source>Seed length (--seedlen)</source>
         <translation>Длина затравки (--seedlen)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="189"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="189"/>
         <source>Maximum of backtracks (--maxbts)</source>
         <translation>Максимальное число отступов (--maxbts)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="223"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="223"/>
         <source>Descriptors memory usage (--chunkmbs)</source>
         <translation>Использование памяти дескрипторами (--chunkmbs)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="249"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="249"/>
         <source>Seed (--seed)</source>
         <translation>Затравка (--seed)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="266"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="266"/>
         <source>Threads</source>
         <translation>Потоки</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="300"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="300"/>
         <source>Flags</source>
         <translation>Флаги</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="312"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="312"/>
         <source>Colorspace (--color)</source>
         <translation>Цвета (--color)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="329"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="329"/>
         <source>No Maq rounding (--nomaqround)</source>
         <translation>Без округления Maq (--nomaqround)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="339"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="339"/>
         <source>No forward orientation (--nofw)</source>
         <translation>Не прямая ориентация (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="349"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="349"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>Не обратно-комплементарная ориентация (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="369"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="369"/>
         <source>Try as hard (--tryhard)</source>
         <translation>Упорно пытаться (--tryhard)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="383"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="383"/>
         <source>Best alignments (--best)</source>
         <translation>Лучшие выравнивания (--best)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="393"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="393"/>
         <source>All alignments (--all)</source>
         <translation>Все выравнивания (--all)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="319"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="319"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -791,17 +791,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;По умолчанию, bowtie также вокруг этих значений. --nomaqround препятствует этому округлению в bowtie.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="336"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="336"/>
         <source>If --nofw is specified, bowtie will not attempt to align against the forward reference strand.</source>
         <translation>Если установлена опция --nofw, bowtie  не будет пытаться выровнять прямую цепь.</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="346"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="346"/>
         <source>If --norc is specified, bowtie will not attempt to align against the reverse-complement reference strand.</source>
         <translation>Если установлена опция --norc, bowtie не будет пытаться выровнять обратно-комплементарную цепь.</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="356"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="356"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -826,7 +826,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;или (c) не очень много ридов имеют подходящее выравнивание.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="376"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="376"/>
         <source>Make Bowtie guarantee that reported singleton alignments are &quot;best&quot; in terms of stratum
 (i.e. number of mismatches, or mismatches in the seed in the case of -n mode)
 and in terms of the quality values at the mismatched position(s).
@@ -838,7 +838,7 @@ bowtie is somewhat slower when --best is specified.
 bowtie медленнее, когда указан режим --best.</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="390"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="390"/>
         <source>Report all valid alignments per read or pair.</source>
         <translation>Сообщить о всех допустимых выравниваниях для рида или пары.</translation>
     </message>
@@ -846,27 +846,27 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>BwaBuildSettings</name>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="20"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="54"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="54"/>
         <source>Index algorithm (-a)</source>
         <translation>Алгоритм (-а)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="68"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="68"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="73"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="73"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="78"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="78"/>
         <source>is</source>
         <translation>is</translation>
     </message>
@@ -874,212 +874,212 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>BwaMemSettings</name>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="20"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="36"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="36"/>
         <source>Base Options</source>
         <translation>Основные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="441"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="441"/>
         <source>Penalty for a mismatch</source>
         <translation>Штраф за несовпадение</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="409"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="409"/>
         <source>Score for a sequence match</source>
         <translation>Вес совпадения</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="393"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="393"/>
         <source>Score for a match (-A)</source>
         <translation>Веса совпадений (-A)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="425"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="425"/>
         <source>Mismatch penalty (-B)</source>
         <translation>Штраф за несовпадение (-B)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="454"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="454"/>
         <source>Gap open penalty (-O)</source>
         <translation>Штраф за открытие пробела (-O)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="557"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="557"/>
         <source>Penalty for an unpaired read pair</source>
         <translation>Штраф за непарные риды</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="586"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="586"/>
         <source>Minimum score to output</source>
         <translation>Минимальная оценка для вывода</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="541"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="541"/>
         <source>Penalty unpaired (-U)</source>
         <translation>Штраф за непарные риды (-U)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="528"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="528"/>
         <source>Penalty for clipping </source>
         <translation>Штраф за отсечение</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="470"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="470"/>
         <source>Gap open penalty</source>
         <translation>Штраф за открывающий пропуск</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="499"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="499"/>
         <source>Gap extension penalty; a gap of size k cost {-O} + {-E}*k</source>
         <translation>Штраф за расширение пробела; пробел размера k стоит {-O} + {-E}*k</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="512"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="512"/>
         <source>Penalty for clipping (-L)</source>
         <translation>Штраф за отсечение (-L)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="483"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="483"/>
         <source>Gap extention penalty (-E)</source>
         <translation>Штраф за расширение пробела (-E)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="570"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="570"/>
         <source>Score threshold (-T)</source>
         <translation>Порог оценки (-T)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="209"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="209"/>
         <source>Internall seeds length (-r)</source>
         <translation>Внутренняя длина затравки (-r)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="107"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="107"/>
         <source>Min seed length (-k)</source>
         <translation>Минимальная длина затравки (-k)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="69"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="69"/>
         <source>Look for internal seeds inside a seed longer than {-k} * FLOAT</source>
         <translation>Поиск внутренние затравки внутри затравки длиннее чем {-k} * FLOAT</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="56"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="56"/>
         <source>Number of threads</source>
         <translation>Число потоков</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="193"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="193"/>
         <source>Off-diagonal X-dropoff</source>
         <translation>Снижение</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="161"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="161"/>
         <source>Band width for banded alignment</source>
         <translation>Ширина полосы для выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="145"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="145"/>
         <source>Band width (-w)</source>
         <translation>Ширина полосы (-w)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="123"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="123"/>
         <source>Minimum seed length</source>
         <translation>Минимальная длина затравки</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="88"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="88"/>
         <source>Number of threads (-t)</source>
         <translation>Число потоков (-t)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="177"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="177"/>
         <source>Dropoff (-d)</source>
         <translation>Снижение (-d)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="228"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="228"/>
         <source>Skip seeds threshold (-c)</source>
         <translation>Порог затравки (-c)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="244"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="244"/>
         <source>Skip seeds with more than INT occurrences </source>
         <translation>Пропускает затравки с более чем с указанным количеством вхождений</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="266"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="266"/>
         <source>Drop chain threshold (-D)</source>
         <translation>Порог снижения цепи (-D)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="282"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="282"/>
         <source>Drop chains shorter than FLOAT fraction of the longest overlapping chain</source>
         <translation>Снижение цепи короче FLOAT фракции самого длинного перекрытия цепи</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="308"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="308"/>
         <source>Index algorithm (-a)</source>
         <translation>Алгоритм (-a)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="325"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="325"/>
         <source>autodetect</source>
         <translation>autodetect</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="330"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="330"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="335"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="335"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="340"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="340"/>
         <source>is</source>
         <translation>is</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="599"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="599"/>
         <source>Rounds of mate rescues (-m)</source>
         <translation>Округление за освобождение участника (-m)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="615"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="615"/>
         <source>Perform at most INT rounds of mate rescues for each read</source>
         <translation>Выполняет для большинства INT округлений освобождений участников для каждого рида</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="348"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="348"/>
         <source>Skip mate rescue</source>
         <translation>Пропустить освобождение участника</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="351"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="351"/>
         <source>Skip mate rescue (-S)</source>
         <translation>Пропустить освобождение участника (-S)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="358"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="358"/>
         <source>Skip pairing; mate rescue performed unless -S also in use</source>
         <translation>Пропустить спаривание; участник освобождается кроме случая когда -S также используется</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="361"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="361"/>
         <source>Skip pairing (-P)</source>
         <translation>Пропустить спаривание (-P)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="633"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="633"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1095,137 +1095,137 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BwaSettings</name>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="20"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="135"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="135"/>
         <source>  Best hits (-R)</source>
         <translation>Лучшие попытки (-R)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="336"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="336"/>
         <source>Max gap extensions (-e)</source>
         <translation>Максимальное расширение пробела (-e)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="346"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="346"/>
         <source>Indel offset (-i)</source>
         <translation>Смещение (-i)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="263"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="263"/>
         <source>Max long deletion extensions (-d)</source>
         <translation>Максимальная длина сокрашения пропуска (-d)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="194"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="194"/>
         <source>Seed length (-l)</source>
         <translation>Длина затравки (-l)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="482"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="482"/>
         <source>Max seed differences (-k)</source>
         <translation>Максимальное различие затравок (-k)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="283"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="283"/>
         <source>Max queue entries (-m)</source>
         <translation>Максимальное число записей в очереди (-m)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="356"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="356"/>
         <source>Enable long gaps</source>
         <translation>Допустимы длинные пробелы</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="171"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="171"/>
         <source>Missing prob (-n)</source>
         <translation>Доля потери (-n)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="154"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="154"/>
         <source>Max #diff (-n)</source>
         <translation>Максимальное расстояние редактирования (-n)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="42"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="42"/>
         <source>Long-scaled gap penalty for long deletions (-L)</source>
         <translation>Долгосрочный штраф за длительный пробел (-L)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="241"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="241"/>
         <source>Advanced</source>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="395"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="395"/>
         <source>Gap open penalty (-O)</source>
         <translation>Штраф за открытие пробела (-O)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="303"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="303"/>
         <source>Barcode length (-B)</source>
         <translation>Длина штрих-кода (-B)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="435"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="435"/>
         <source>Quality threshold (-q)</source>
         <translation>Порог качества (-q)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="375"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="375"/>
         <source>Mismatch penalty (-M)</source>
         <translation>Штраф за несовпадение (-M)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="415"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="415"/>
         <source>Gap extension penalty (-E)</source>
         <translation>Штраф за расширение пробела (-E)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="462"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="462"/>
         <source>Threads (-t)</source>
         <translation>Потоки (-t)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="49"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="49"/>
         <source>Non-iterative mode (-N)</source>
         <translation>Неитеративный режим (-N)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="72"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="72"/>
         <source>Max gap opens (-o)</source>
         <translation>Максимальное число пробелов (-o)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="30"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="30"/>
         <source>Base Options</source>
         <translation>Основные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="85"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="85"/>
         <source>Index algorithm (-a)</source>
         <translation>Алгоритм (-а)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="102"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="102"/>
         <source>autodetect</source>
         <translation>autodetect</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="107"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="107"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="112"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="112"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="117"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="117"/>
         <source>is</source>
         <translation>is</translation>
     </message>
@@ -1233,107 +1233,107 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BwaSwSettings</name>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="14"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="30"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="30"/>
         <source>Base Options</source>
         <translation>Основные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="288"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="288"/>
         <source>Score threshold (divided by match score) (-T)</source>
         <translation>Порог оценки (-T)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="233"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="233"/>
         <source>Number of threads (-t)</source>
         <translation>Число потоков (-t)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="334"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="334"/>
         <source>Number of seeds to start rev alginment (-N)</source>
         <translation>Число затравок, чтобы начать обратное выравнивание (-N)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="311"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="311"/>
         <source>Z-best (-z)</source>
         <translation>Лучшие (-z)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="393"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="393"/>
         <source>Prefer hard clipping in SAM output (-H)</source>
         <translation>Строгое отсечение в выходном SAM файле (-H)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="256"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="256"/>
         <source>Size of chunk of reads (-s)</source>
         <translation>Размер куска ридов (-s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="90"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="90"/>
         <source>Score for a match (-a)</source>
         <translation>Веса совпадений (-a)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="159"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="159"/>
         <source>Gap extention penalty (-r)</source>
         <translation>Штраф за расширение пробела (-r)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="113"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="113"/>
         <source>Mismatch penalty (-b)</source>
         <translation>Штраф за несовпадение (-b)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="64"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="64"/>
         <source>autodetect</source>
         <translation>autodetect</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="69"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="69"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="74"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="74"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="79"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="79"/>
         <source>is</source>
         <translation>is</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="136"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="136"/>
         <source>Gap open penalty (-q)</source>
         <translation>Штраф за открытие пробела (-q)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="182"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="182"/>
         <source>Band width (-w)</source>
         <translation>Ширина полосы (-w)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="208"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="208"/>
         <source>Index algorithm (-a)</source>
         <translation>Алгоритм (-а)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="380"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="380"/>
         <source>Mask level (-c)</source>
         <translation>Уровень маски (-c)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="347"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="347"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of seed to trigger reverse alignment&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Число затравок, чтобы начать обратное выравнивание&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="405"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="405"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1349,22 +1349,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CAP3SupportDialog</name>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="20"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="20"/>
         <source>Contig Assembly with CAP3</source>
         <translation>Сборка контигов с помощью CAP3</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="30"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="30"/>
         <source>Base</source>
         <translation>Основа</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="36"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="36"/>
         <source>Input files (long DNA reads to assembly)</source>
         <translation>Входные файлы (длинные ДНК риды)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="45"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="45"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1379,132 +1379,132 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Значения качества для последовательностей в формате FASTA будут записаны в соответствующий файл. Этот файл будет сохранен в ту же директорию, что и оригинальные последовательности и будет назван как файл FASTA, но с другим расширением: &lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;.qual&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="57"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="57"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="64"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="64"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="71"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="71"/>
         <source>Remove All</source>
         <translation>Удалить все</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="93"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="93"/>
         <source>Result contig</source>
         <translation>Результирующий контиг</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="102"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="102"/>
         <source>Path to result contig alignment in ACE format.</source>
         <translation>Путь до результирующего контига в формате ACE.</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="128"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="128"/>
         <source>Clipping for poor regions</source>
         <translation>Отсечение пустых регионов</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="134"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="134"/>
         <source>Base quality cutoff for clipping (-c)</source>
         <translation>Размер среза (-c)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="151"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="151"/>
         <source>Clipping range (-y)</source>
         <translation>Диапазон обрезания (-y)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="174"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="174"/>
         <source>Length and percent identity of an overlap</source>
         <translation>Длина и процент идентичности перекрытия</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="180"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="180"/>
         <source>Overlap length cutoff (-o)</source>
         <translation>Обрезная длина перекрытия (-o)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="200"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="200"/>
         <source>Overlap percent identity cutoff (-p)</source>
         <translation>Обрезной процент идентичности перекрытия (-p)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="223"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="223"/>
         <source>Quality difference score of an overlap</source>
         <translation>Оценка качества различия перекрытия</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="229"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="229"/>
         <source>Base quality cutoff for differences (-b)</source>
         <translation>Базовый срез для различий (-b)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="259"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="259"/>
         <source>Max qscore sum at differences (-d)</source>
         <translation>Максимальная сумма оценок для различий (-d)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="269"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="269"/>
         <source>Other parameters</source>
         <translation>Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="275"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="275"/>
         <source>Max number of word matches (-t)</source>
         <translation>Максимальное число совпадений (-t)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="295"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="295"/>
         <source>Band expansion size (-a)</source>
         <translation>Размер расширения диапазона (-a)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="318"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="318"/>
         <source>Max gap length in any overlap (-f)</source>
         <translation>Максимальная длина пробела в перекрытии (-f)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="338"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="338"/>
         <source>Assembly reverse reads (-r)</source>
         <translation>Сборка обратных прочтений (-r)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="364"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="364"/>
         <source>Similarity score of an overlap</source>
         <translation>Оценка схожести перекрытия</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="370"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="370"/>
         <source>Mismatch score factor (-n)</source>
         <translation>Фактор оценки несовпадения (-n)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="390"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="390"/>
         <source>Overlap similarity score cutoff (-s)</source>
         <translation>Срез оценки схожести перекрытия (-s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="410"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="410"/>
         <source>Gap penalty factor (-g)</source>
         <translation>Фактор штрафа за пробел (-g)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="417"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="417"/>
         <source>Match score factor (-m)</source>
         <translation>Фактор оценки совпадений (-m)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="112"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="112"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="122"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="122"/>
         <source>Advanced</source>
         <translation>Дополнительно</translation>
     </message>
@@ -1512,58 +1512,58 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ClustalOSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="26"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="26"/>
         <source>Align with Clustal Omega</source>
         <translation>Выравнивание с помощью ClustalO</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="42"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="42"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="52"/>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="69"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="52"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="69"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="59"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="59"/>
         <source>Output file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="81"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="81"/>
         <source>Iteration</source>
         <translation>Итерация</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="91"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="91"/>
         <source>Number of iterations</source>
         <translation>Количество итераций</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="137"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="137"/>
         <source>Max number guidetree iterations</source>
         <translation>Максимальное число итераций дерева</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="180"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="180"/>
         <source>Max number of HMM iterations</source>
         <translation>Максимальное число итераций HMM</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="217"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="217"/>
         <source>Miscellaneous</source>
         <translation>Смешанные</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="227"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="227"/>
         <source>Number of CPUs being used</source>
         <translation>Использовать процессоров</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="265"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="265"/>
         <source>Set options automatically</source>
         <translation>Установить параметры автоматически</translation>
     </message>
@@ -1571,118 +1571,118 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ClustalWSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="26"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="26"/>
         <source>Align with ClustalW</source>
         <translation>Выравнивание с помощью ClustalW</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="42"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="42"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="52"/>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="76"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="52"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="76"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="59"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="59"/>
         <source>Output file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="88"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="88"/>
         <source>Advanced options</source>
         <translation>Дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="98"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="98"/>
         <source>Gap opening penalty</source>
         <translation>Штраф за открытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="141"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="141"/>
         <source>Gap extension penalty</source>
         <translation>Штраф за промежуточный пробел</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="184"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="184"/>
         <source>Weight matrix</source>
         <translation>Весовая матрица</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="214"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="214"/>
         <source>IUB</source>
         <translation>IUB</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="219"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="219"/>
         <source>CLUSTALW</source>
         <translation>CLUSTALW</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="289"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="289"/>
         <source>Max iterations</source>
         <translation>Количество итераций</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="261"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="261"/>
         <source>NONE</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="266"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="266"/>
         <source>TREE</source>
         <translation>Дерево</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="271"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="271"/>
         <source>ALIGNMENT</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="231"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="231"/>
         <source>Iteration type</source>
         <translation>Тип итераций</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="335"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="335"/>
         <source>Out sequences order</source>
         <translation>Порядок последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="365"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="365"/>
         <source>Input</source>
         <translation>Входные</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="370"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="370"/>
         <source>Aligned</source>
         <translation>Выровненные</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="388"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="388"/>
         <source>Protein gap parameters</source>
         <translation>Параметры для белковых последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="398"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="398"/>
         <source>Gap separation distance</source>
         <translation>Расстояние между пробелами</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="456"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="456"/>
         <source>Residue-specific gaps off</source>
         <translation>Откл. специфические для остатков пробелы</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="442"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="442"/>
         <source>Hydrophilic gaps off</source>
         <translation>Отключить гидрофильные пробелы</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="449"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="449"/>
         <source>No end gap separation penalty</source>
         <translation>Не вводить штраф за разделение пробелов</translation>
     </message>
@@ -1690,52 +1690,52 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ETSSettingsWidget</name>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="26"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="26"/>
         <source>Resource settings</source>
         <translation>Настройки ресурсов</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="40"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="40"/>
         <source>You can select path for</source>
         <translation>Вы можете выбрать путь для</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="47"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="47"/>
         <source>Check lastest version of external tools package</source>
         <translation>Проверить наличие новой версии пакета внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="50"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="50"/>
         <source>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;пакет внешних инструментов&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="70"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="70"/>
         <source>Browse...</source>
         <translation>Открыть...</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="86"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="86"/>
         <source>Supported tools</source>
         <translation>Поддерживаемые программы</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="102"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="102"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="107"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="107"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="142"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="142"/>
         <source>Additional information</source>
         <translation>Дополнительная информация</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="177"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="177"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1748,12 +1748,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Выберите внешний инструмент, чтобы просмотреть дополнительную информацию о нем.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="197"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="197"/>
         <source>Binary path:</source>
         <translation>Путь:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="207"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="207"/>
         <source>Version info</source>
         <translation>Информация о версии</translation>
     </message>
@@ -1761,89 +1761,89 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FormatDBSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="20"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="20"/>
         <source>Format Database</source>
         <translation>Форматирование базы данных</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="29"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="29"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="35"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="35"/>
         <source>Select input file(s) for formatting database:</source>
         <translation>Выберите входной файл(ы) для форматирования базы данных:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="53"/>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="84"/>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="190"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="53"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="84"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="190"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="62"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="62"/>
         <source>Or select directory with input files:</source>
         <translation>Или выберите директорию со входными файлами:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="96"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="96"/>
         <source>File filter</source>
         <translation>Фильтр</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="104"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="104"/>
         <source>Include files filter</source>
         <translation>Включающий фильтр</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="114"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="114"/>
         <source>*.fa;*.fasta</source>
         <translation>*.fa;*.fasta</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="121"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="121"/>
         <source>Exclude files filter</source>
         <translation>Исключающий фильтр</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="131"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="131"/>
         <source>*.pal</source>
         <translation>*.pal</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="143"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="143"/>
         <source>Type of file(s)</source>
         <translation>Тип файла(ов)</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="149"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="149"/>
         <source>protein</source>
         <translation>белки</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="159"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="159"/>
         <source>nucleotide</source>
         <translation>нуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="172"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="172"/>
         <source>Output settings</source>
         <translation>Выходные настройки</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="178"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="178"/>
         <source>Select the path to save the database into:</source>
         <translation>Выберите путь для сохранения базы данных:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="201"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="201"/>
         <source>Base name for BLAST files:</source>
         <translation>Базовое имя для файлов BLAST:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="211"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="211"/>
         <source>Title for database file:</source>
         <translation>Название для файла базы данных:</translation>
     </message>
@@ -1878,43 +1878,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MAFFTSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="20"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="20"/>
         <source>Align with MAFFT</source>
         <translation>Выравнивание с помощью MAFFT</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="36"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="36"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="46"/>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="63"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="46"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="63"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="53"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="53"/>
         <source>Output file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="75"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="75"/>
         <source>Advanced options</source>
         <translation>Дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="85"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="85"/>
         <source>Gap opening penalty</source>
         <translation>Штраф за открывающий пропуск</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="131"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="131"/>
         <source>Offset (works like gap extension penalty)</source>
         <translation>Смещение (работает как штраф за промежуточный пробел)</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="174"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="174"/>
         <source>Maximum number of iterative refinement</source>
         <translation>Максимальное число итераций</translation>
     </message>
@@ -1926,62 +1926,62 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Настройки метода MrBayes</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="60"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="60"/>
         <source>Model</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="78"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="78"/>
         <source>ModelType</source>
         <translation>ModelType</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="95"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="95"/>
         <source>Rate</source>
         <translation>Показатель</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="118"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="118"/>
         <source>Gamma</source>
         <translation>Гамма</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="151"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="151"/>
         <source>MCMC</source>
         <translation>MCMC</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="163"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="163"/>
         <source>Chain length</source>
         <translation>Длина цепи</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="189"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="189"/>
         <source>Subsampling frequence</source>
         <translation>Размер выборки</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="221"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="221"/>
         <source>Burn-in length</source>
         <translation>Длина прожига</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="250"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="250"/>
         <source>Heated chains</source>
         <translation>Подогретые цепи</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="279"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="279"/>
         <source>Heated chain temp</source>
         <translation>Температура подогрева цепей</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="321"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="321"/>
         <source>Random seed</source>
         <translation>Затравка</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="329"/>
+        <location filename="../src/mybayes/MrBayesDialog.ui" line="329"/>
         <source>Display Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1989,119 +1989,119 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PhyMLDialog</name>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="77"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="77"/>
         <source>Substitution model</source>
         <translation>Модель замен</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="98"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="98"/>
         <source>Equilibrium frequencies</source>
         <translation>Равновесные частоты</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="112"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="112"/>
         <source>optimized</source>
         <translation>оптимизированные</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="119"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="119"/>
         <source>empirical</source>
         <translation>эмпирические</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="293"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="293"/>
         <source>Transition / transversion ratio </source>
         <translation>Коэффициент перехода/трансверсии</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="139"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="171"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="289"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="139"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="171"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="289"/>
         <source>Check to set user value. 
 Uncheck to get the maximum likelihood estimate.</source>
         <translation>Установите галочку, чтобы задать значение пользователя.
 Снимите галочку, чтобы получить максимальную оценку правдоподобия.</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="190"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="212"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="243"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="265"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="190"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="212"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="243"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="265"/>
         <source>estimated </source>
         <translation>оценка</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="143"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="143"/>
         <source>Proportion of invariable sites</source>
         <translation>Доля неизменяемых сайтов</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="63"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="63"/>
         <source>Substitution Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="154"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="154"/>
         <source>Number of substitution rate categories</source>
         <translation>Число категорий коэффициента замещения</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="175"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="175"/>
         <source>Gamma shape parameter</source>
         <translation>Параметр формы Гамма</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="303"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="303"/>
         <source>Branch Support</source>
         <translation>Поддержка ветви</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="321"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="321"/>
         <source>Use fast likelihood-based method</source>
         <translation>Использовать быстрый метод максимального правдоподобия</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="353"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="353"/>
         <source>Perform bootstrap</source>
         <translation>Выполнить начальную загрузку</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="369"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="369"/>
         <source>It is the number of bootstrap replicates.</source>
         <translation>Это число начальных загрузок.</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="380"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="380"/>
         <source>Tree Searching</source>
         <translation>Поиск дерева</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="470"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="470"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="482"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="482"/>
         <source>Type of tree improvement</source>
         <translation>Тип улучшения дерева</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="499"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="499"/>
         <source>Set number of random starting tree</source>
         <translation>Установить число случайных начал дерева</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="515"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="515"/>
         <source>Optimise topology</source>
         <translation>Оптимизировать топологию</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="525"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="525"/>
         <source>Optimise branch lengths</source>
         <translation>Оптимизировать длину ветвей</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="546"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="546"/>
         <source>Display Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2237,73 +2237,73 @@ Uncheck to get the maximum likelihood estimate.</source>
 <context>
     <name>SpadesSettings</name>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="20"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="30"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="30"/>
         <source>Base Options</source>
         <translation>Основные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="45"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="45"/>
         <source>Running mode</source>
         <translation>Режим запуска</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="59"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="59"/>
         <source>Error Correction and Assembly</source>
         <translation>Исправление ошибок и сборка</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="64"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="64"/>
         <source>Assembly only</source>
         <translation>Только сборка</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="69"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="69"/>
         <source>Error correction only</source>
         <translation>Только исправление ошибок</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="80"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="80"/>
         <source>k-mer sizes (-k)</source>
         <translation>размеры k-mer (-k)</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="99"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="99"/>
         <source>Dataset type</source>
         <translation>Тип набора данных</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="112"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="112"/>
         <source>auto</source>
         <translation>авто</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="120"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="120"/>
         <source>Multi Cell</source>
         <translation>Сложная ячейка</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="125"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="125"/>
         <source>Single Cell</source>
         <translation>Одиночная ячейка</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="142"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="142"/>
         <source>Memory limit GB (-m)</source>
         <translation>Предел памяти GB (-m)</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="158"/>
-        <location filename="../src/ui/SpadesSettings.ui" line="190"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="158"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="190"/>
         <source>Number of threads</source>
         <translation>Число потоков</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="174"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="174"/>
         <source>Number of threads (-t)</source>
         <translation>Число потоков (-t)</translation>
     </message>
@@ -2311,43 +2311,43 @@ Uncheck to get the maximum likelihood estimate.</source>
 <context>
     <name>TCoffeeSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="20"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="20"/>
         <source>Align with T-Coffee</source>
         <translation>Выравнивание с помощью T-Coffee</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="36"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="36"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="46"/>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="63"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="46"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="63"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="53"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="53"/>
         <source>Output file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="75"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="75"/>
         <source>Advanced options</source>
         <translation>Дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="83"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="83"/>
         <source>Gap opening penalty</source>
         <translation>Штраф за открывающий пропуск</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="122"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="122"/>
         <source>Gap extension penalty</source>
         <translation>Штраф за промежуточный пробел</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="158"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="158"/>
         <source>Number of iterations</source>
         <translation>Количество итераций</translation>
     </message>
