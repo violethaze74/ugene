@@ -583,5 +583,52 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     CHECK_SET_ERR(primerLineEdit->text() == "XNVHDBMRSWYKACGT", "Incorrect reverse-complement primer translation");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0015) {
+    // Degenerated character in perfect match region
+
+    // 1. Open murine.gb
+    GTUtilsPcr::clearPcrDir(os);
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Go to the PCR OP tab and add primers:
+    //    Forward: ACCCGTAGGTGGCAAGCTAGCTTAA
+    //    Reverse: TTTTCTATTCTCAGTTATGTATTTTT
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "ACCCGTAGGTGGCAAGCTAGCTTAA");
+    GTGlobals::sleep();
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "TTTTCTATTCTCAGTTATGTATTTTT");
+    GTGlobals::sleep();
+
+    // 3. Find products
+    //    Expected state: there are two results
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(2 == GTUtilsPcr::productsCount(os), "Wrong results count 1");
+
+    // 4. Replace reverse primer with TTTTCTATTCTCAGTTATGTATTTTA
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "TTTTCTATTCTCAGTTATGTATTTTA");
+    GTGlobals::sleep();
+
+    // 5. Set mismatches to 1
+    GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 1);
+
+    // 6. Find products
+    //    Expected state: there no products because the mismatch is located in 'Perfect Match' area
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(0 == GTUtilsPcr::productsCount(os), "Wrong results count 2");
+
+    // 7. Replace reverse primer with ATTTCTATTCTCAGTTATGTATTTTW
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "ATTTCTATTCTCAGTTATGTATTTTW");
+    GTGlobals::sleep();
+
+    // 8. Find products
+    //    Expected state: there are two results, because W= {A, T}
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(2 == GTUtilsPcr::productsCount(os), "Wrong results count 3");
+}
+
 } // GUITest_common_scenarios_in_silico_pcr
 } // U2
