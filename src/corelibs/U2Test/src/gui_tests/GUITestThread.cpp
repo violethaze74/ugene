@@ -231,7 +231,7 @@ void GUITestThread::sl_getMemory(){
 #ifdef Q_OS_LINUX
     qint64 appPid = QApplication::applicationPid();
 
-    int memValue =countMemForProcessTree(appPid);
+    int memValue = countMemForProcessTree(appPid);
 
     memoryList << memValue;
 #endif
@@ -261,8 +261,9 @@ int GUITestThread::countMemForProcessTree(int pid){
     memTracer.waitForFinished();
     QByteArray memOutput = memTracer.readAllStandardOutput();
     QString s = QString(memOutput);
-    s.replace("    ", " ").replace("   ", " ").replace("  ", " ");
     QStringList splitted = s.split(' ');
+    splitted.removeAll("");
+
     int memValue;
     if(splitted.size()>=5){
         QString memString = splitted.at(5);
@@ -293,7 +294,6 @@ int GUITestThread::countMemForProcessTree(int pid){
     foreach (int childPid, childPids) {
         result+=countMemForProcessTree(childPid);
     }
-
     return result;
 #else
     return -1;
