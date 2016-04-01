@@ -295,6 +295,8 @@ int GUITestThread::countMemForProcessTree(int pid){
     }
 
     return result;
+#else
+    return -1;
 #endif
 }
 
