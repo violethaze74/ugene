@@ -64,6 +64,12 @@ private:
     QString currentDatasetName;
     bool useDatasets;
 
+    enum ReferenceSource {
+        FromPort,
+        FromFile
+    };
+    ReferenceSource referenceSource;
+
 private:
     void initDatasetMode();
     void takeAssembly(U2OpStatus &os);
@@ -72,8 +78,8 @@ private:
     void processError(const U2OpStatus& os);
     void checkState(U2OpStatus& os);
     bool hasAssembly() const;
-    bool hasReference() const;
-}; 
+    bool hasReferenceInPort() const;
+};
 
 class CallVariantsWorkerFactory : public DomainFactory {
 public:
