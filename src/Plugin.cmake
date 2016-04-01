@@ -12,7 +12,9 @@ find_package(Qt5 REQUIRED Core Gui Widgets Xml Network PrintSupport Test)
 include_directories(src)
 include_directories(../../include)
 
-file(GLOB_RECURSE SRCS src/*.cpp src/*.c src/*.h)
+if (NOT DEFINED SRCS)
+    file(GLOB_RECURSE SRCS src/*.cpp src/*.c src/*.h)
+endif()
 
 if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${UGENE_PLUGIN_NAME}.qrc)
     qt5_add_resources(RCC_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/${UGENE_PLUGIN_NAME}.qrc)

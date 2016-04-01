@@ -85,10 +85,10 @@ SOURCES += src/AnaglyphRenderer.cpp \
            src/gl2ps/gl2ps.cpp
 }
 
-FORMS += src/ui/BioStruct3DSubsetEditor.ui \
-         src/ui/SelectModelsDialog.ui \
-         src/ui/SettingsDialog.ui \
-         src/ui/StructuralAlignmentDialog.ui
+FORMS += src/BioStruct3DSubsetEditor.ui \
+         src/SelectModelsDialog.ui \
+         src/SettingsDialog.ui \
+         src/StructuralAlignmentDialog.ui
 
 RESOURCES += biostruct3d_view.qrc
 

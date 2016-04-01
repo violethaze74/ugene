@@ -158,26 +158,26 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcftools/VcfConsensusSupportTask.h \
            src/vcftools/VcfConsensusWorker.h \
            src/vcfutils/VcfutilsSupport.h
-FORMS += src/ui/BlastAllSupportDialog.ui \
-         src/ui/BlastDBCmdDialog.ui \
-         src/ui/BlastDBSelectorWidget.ui \
-         src/ui/BowtieBuildSettings.ui \
-         src/ui/BowtieSettings.ui \
-         src/ui/Bowtie2Settings.ui \
-         src/ui/BwaBuildSettings.ui \
-         src/ui/BwaSettings.ui \
-         src/ui/BwaMemSettings.ui \
-         src/ui/BwaSwSettings.ui \
-         src/ui/CAP3SupportDialog.ui \
-         src/ui/ClustalOSupportRunDialog.ui \
-         src/ui/ClustalWSupportRunDialog.ui \
-         src/ui/ETSSettingsWidget.ui \
-         src/ui/FormatDBSupportRunDialog.ui \
-         src/ui/MAFFTSupportRunDialog.ui \
-         src/ui/MrBayesDialog.ui \
-         src/ui/PhyMLDialog.ui \
-         src/ui/TCoffeeSupportRunDialog.ui \
-         src/ui/SpadesSettings.ui
+FORMS += src/blast/FormatDBSupportRunDialog.ui \
+         src/blast_plus/BlastDBCmdDialog.ui \
+         src/bowtie/BowtieBuildSettings.ui \
+         src/bowtie/BowtieSettings.ui \
+         src/bowtie2/Bowtie2Settings.ui \
+         src/bwa/BwaBuildSettings.ui \
+         src/bwa/BwaSettings.ui \
+         src/bwa/BwaMemSettings.ui \
+         src/bwa/BwaSwSettings.ui \
+         src/cap3/CAP3SupportDialog.ui \
+         src/clustalo/ClustalOSupportRunDialog.ui \
+         src/clustalw/ClustalWSupportRunDialog.ui \
+         src/ETSSettingsWidget.ui \
+         src/mafft/MAFFTSupportRunDialog.ui \
+         src/mrbayes/MrBayesDialog.ui \
+         src/phyml/PhyMLDialog.ui \
+         src/tcoffee/TCoffeeSupportRunDialog.ui \
+         src/spades/SpadesSettings.ui \
+         src/utils/BlastAllSupportDialog.ui \
+         src/utils/BlastDBSelectorWidget.ui
 SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/ExternalToolManager.cpp \
            src/ExternalToolSupportPlugin.cpp \
