@@ -261,6 +261,7 @@ int GUITestThread::countMemForProcessTree(int pid){
     memTracer.waitForFinished();
     QByteArray memOutput = memTracer.readAllStandardOutput();
     QString s = QString(memOutput);
+    uiLog.trace("top outpup: |" + s + "|");
     QStringList splitted = s.split(' ');
     splitted.removeAll("");
 
