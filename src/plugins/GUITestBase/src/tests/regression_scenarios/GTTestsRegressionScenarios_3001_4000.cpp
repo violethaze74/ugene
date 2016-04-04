@@ -3047,7 +3047,7 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
 #ifndef Q_OS_MAC
     GTKeyboardDriver::keyClick( Qt::Key_Home);
 #else
-    GTKeyboardDriver::keyClick( Qt::LeftArrow, GTKeyboardDriver::key["cmd"]);
+    GTKeyboardDriver::keyClick( Qt::LeftArrow, Qt::ControlModifier);
 #endif
     GTGlobals::sleep();
 
@@ -3069,7 +3069,7 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
 #ifndef Q_OS_MAC
     GTKeyboardDriver::keyClick( Qt::Key_Home);
 #else
-    GTKeyboardDriver::keyClick( Qt::LeftArrow, GTKeyboardDriver::key["cmd"]);
+    GTKeyboardDriver::keyClick( Qt::LeftArrow, Qt::ControlModifier);
 #endif
     GTGlobals::sleep();
 

@@ -97,11 +97,7 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario(){
     options.depth = GTGlobals::FindOptions::INFINITE_DEPTH;
 
     if (Separate == mode) {
-#ifdef Q_OS_MAC
-        GTKeyboardDriver::keyPress(GTKeyboardDriver::key["cmd"]);
-#else
         GTKeyboardDriver::keyPress(Qt::Key_Control);
-#endif
     }
 
     bool firstIsSelected = false;
@@ -128,11 +124,7 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario(){
 
     switch (mode) {
     case Separate:
-#ifdef Q_OS_MAC
-        GTKeyboardDriver::keyClick( GTKeyboardDriver::key["cmd"]);
-#else
         GTKeyboardDriver::keyClick( Qt::Key_Control);
-#endif
         break;
     case Continuous:
         GTKeyboardDriver::keyClick( Qt::Key_Shift);

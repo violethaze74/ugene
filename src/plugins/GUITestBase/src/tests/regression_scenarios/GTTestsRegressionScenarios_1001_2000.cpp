@@ -1505,7 +1505,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113){//commit AboutDialogController.cpp
 
             GTGlobals::sleep();
 #ifdef Q_OS_MAC
-            GTKeyboardDriver::keyRelease(GTKeyboardDriver::key["f1"]);
+            GTKeyboardDriver::keyRelease(GTKeyboardDriver::key[Qt::Key_F1]);
 #endif
 
             QWidget* dialog = QApplication::activeModalWidget();

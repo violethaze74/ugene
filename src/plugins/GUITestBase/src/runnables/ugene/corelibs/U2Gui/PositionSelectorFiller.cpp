@@ -44,9 +44,6 @@ void GoToDialogFiller::commonScenario()
     QLineEdit *posEdit = dialog->findChild<QLineEdit*>("go_to_pos_line_edit");
     GT_CHECK(posEdit != NULL, "Line edit not found");
 
-#ifdef Q_OS_MAC
-    GTKeyboardDriver::keyRelease(GTKeyboardDriver::key["cmd"]);
-#endif
     GTLineEdit::setText(os, posEdit, QString::number(goTo));
 
     GTWidget::click(os, GTWidget::findButtonByText(os, "Go!", dialog));
