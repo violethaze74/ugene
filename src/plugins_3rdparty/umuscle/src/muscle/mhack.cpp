@@ -32,8 +32,10 @@ void MHackStart(SeqVect &v)
 			{
 			M[uId] = true;
 			s[0] = 'X';
-			}
-		}
+			}else{
+            M[uId] = false;
+            }
+		} 
 	}
 
 void MHackEnd(MSA &msa)
