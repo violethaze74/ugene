@@ -69,6 +69,7 @@
 #endif
 
 #include <QProcess>
+//#include <P
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include <U2Lang/WorkflowSettings.h>
 #include <QtCore/QFileInfo>
@@ -625,6 +626,63 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::equals(os, QDir(sandBoxDir).absolutePath() + "/wd_test_0060", QDir(testDir).absolutePath() + "/_common_data/bedtools/out17.bed"), "Output is incorrect");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0061) {
+    // UGENE-5162
+    // 1. Open WD
+    // 2. Add element "Call variants with SAM tools" on the scene
+    // Expected state: the parameter "Use reference from" is set to File, the element has one port and parameter "Reference"
+    // 3. Open "Call variants with SAM tools" sample
+    // Expected state: "Call variants" element has two ports, "Use reference from" is set to "Port", there is no parameter "Reference"
+    // 4. Set "Use reference from" to "Port"
+    // Expected state: the second port and its link disappeared
+    // 5. Remove "Read seqeunce" elements
+    // 6. Set input data:
+    //    Reference: /sampls/Assembly/chrM.fa
+    //    Input assembly dataset 1: /sampls/Assembly/chrM.sam
+    //    Input assembly dataset 2: /sampls/Assembly/chrM.sam
+    // 7. Run the workflow
+    // Expected state: there are two result files (for each dataset)
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    WorkflowProcessItem* item = GTUtilsWorkflowDesigner::addElement(os, "Call Variants with SAMtools");
+    CHECK_SET_ERR(item != NULL, "Failed to add Call variants element");
+    GTUtilsWorkflowDesigner::click(os, "Call Variants with SAMtools");
+
+    WorkflowPortItem* port = GTUtilsWorkflowDesigner::getPortById(os, item, "in-sequence");
+    CHECK_SET_ERR(port != NULL, "Cannot get in-sequence port 1");
+    CHECK_SET_ERR(!port->isVisible(), "In-sequence port is unexpectedly visible");
+    CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterVisible(os, "Reference"), "Reference parameter is not visible");
+
+    GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
+    GTUtilsWorkflowDesigner::click(os, "Call Variants");
+    CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isParameterVisible(os, "Reference"), "Reference parameter is unexpectedly visible");
+    item = GTUtilsWorkflowDesigner::getWorker(os, "Call Variants");
+    CHECK_SET_ERR(item != NULL, "Cannot find Call variants with SAMtools element");
+    port = GTUtilsWorkflowDesigner::getPortById(os, item, "in-sequence");
+    CHECK_SET_ERR(port != NULL, "Cannot get in-sequence port 2");
+    CHECK_SET_ERR(port->isVisible(), "In-sequence port is enexpectedly not visible");
+
+    GTUtilsWorkflowDesigner::removeItem(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::removeItem(os, "To FASTA");
+
+    GTUtilsWorkflowDesigner::click(os, "Call Variants");
+    GTUtilsWorkflowDesigner::setParameter(os, "Use reference from", "File", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Reference", QDir().absoluteFilePath(dataDir + "samples/Assembly/chrM.fa"), GTUtilsWorkflowDesigner::lineEditWithFileSelector);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir().absoluteFilePath(sandBoxDir + "/test_ugene_5162.vcf"), GTUtilsWorkflowDesigner::lineEditWithFileSelector);
+
+    GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly", "chrM.sam");
+
+    GTUtilsWorkflowDesigner::createDataset(os);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly", "chrM.sam");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "/test_ugene_5162.vcf"), "No resut file 1");
+    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "/test_ugene_5162_1.vcf"), "No resut file 2");
 }
 
 } // namespace GUITest_common_scenarios_workflow_designer

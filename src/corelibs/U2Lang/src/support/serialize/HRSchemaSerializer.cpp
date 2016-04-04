@@ -1260,7 +1260,30 @@ QString HRSchemaSerializer::string2Schema(const QString & bytes, Schema * schema
     } catch (...) {
         return Constants::UNKNOWN_ERROR;
     }
+    postProcessing(schema);
     return Constants::NO_ERROR;
+}
+
+void HRSchemaSerializer::postProcessing(Schema *schema) {
+    CHECK(schema != NULL, );
+
+    foreach (Actor* a, schema->getProcesses()) {
+        CHECK(a != NULL, );
+        ActorPrototype* proto = a->getProto();
+        CHECK(proto != NULL, );
+        foreach (Attribute* attr, proto->getAttributes()) {
+            CHECK(attr != NULL, );
+            foreach (const PortRelationDescriptor& pd, attr->getPortRelations()) {
+                Port* p = a->getPort(pd.portId);
+                CHECK(p != NULL, );
+                CHECK(a->hasParameter(attr->getId()), );
+                QVariant value = a->getParameter(attr->getId())->getAttributePureValue();
+                if (!p->getLinks().isEmpty() && !pd.valuesWithEnabledPort.contains(value)) {
+                    a->setParameter(attr->getId(), pd.valuesWithEnabledPort.first());
+                }
+            }
+        }
+    }
 }
 
 void HRSchemaSerializer::parsePorts(Tokenizer & tokenizer, QList<DataConfig>& ports) {
