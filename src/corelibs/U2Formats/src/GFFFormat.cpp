@@ -55,13 +55,17 @@ GFFFormat::GFFFormat(QObject* p):DocumentFormat(p, DocumentFormatFlag_SupportWri
 }
 
 
-Document* GFFFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+Document* GFFFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& _fs, U2OpStatus& os) {
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
+    QVariantMap fs = _fs;
     QList<GObject*> objects;
 
     load(io, dbiRef, objects, fs, os);
 
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    
+    DocumentFormatUtils::updateFormatHints(objects, fs);
+    fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings();
 
     Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
     return doc;
@@ -246,6 +250,8 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     QMap<AnnotationData *, QString> annotationGroups;
     QMap<AnnotationData *, AnnotationTableObject *> annotationTables;
     bool fastaSectionStarts = false;
+    bool anyNamelessSequence = false;
+    bool isNameModified = false;
     QString fastaHeaderName(DEFAULT_EMPTY_FASTA_SEQUENCE_NAME), objName;
     QByteArray seq;
     QSet<QString> names;
@@ -272,8 +278,13 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
         //retrieving annotations from  document
         if (fastaSectionStarts) {
-            if (words[0].startsWith(">") && fastaHeaderName == DEFAULT_EMPTY_FASTA_SEQUENCE_NAME) {
-                objName = extractSeqObjectName(fastaHeaderName, words, names);
+            bool firstFasta = fastaHeaderName == DEFAULT_EMPTY_FASTA_SEQUENCE_NAME;
+            if (firstFasta) {
+                objName = extractSeqObjectName(fastaHeaderName, words, names, isNameModified);
+                anyNamelessSequence = isNameModified || anyNamelessSequence;
+                if (isNameModified && firstFasta) {
+                    seq.append(words[0]);
+                }
             } else if(words[0].startsWith(">")) {
                 CHECK_OBJECT_COUNT();
                 DNASequence sequence(objName, seq);
@@ -283,9 +294,11 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
                 SAFE_POINT(seqObj != NULL, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error",);
                 dbiObjects.objects << seqObj->getSequenceRef().entityId;
+
                 seqMap.insert(objName, seqObj);
                 addAnnotations(seqImporter.getCaseAnnotations(), objects, atoSet, fastaHeaderName, dbiRef, hints);
-                objName = extractSeqObjectName(fastaHeaderName, words, names);
+                objName = extractSeqObjectName(fastaHeaderName, words, names, isNameModified);
+                anyNamelessSequence = isNameModified || anyNamelessSequence;
                 seq = "";
             } else {
                 if(words.size() > 1){
@@ -446,6 +459,10 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
     //handling last fasta sequence
     if(fastaSectionStarts){
+        if (fastaHeaderName == DEFAULT_EMPTY_FASTA_SEQUENCE_NAME) {
+            objName = extractSeqObjectName(fastaHeaderName, words, names, isNameModified);
+            anyNamelessSequence = isNameModified || anyNamelessSequence;
+        }
         DNASequence sequence(objName, seq);
         sequence.info.insert(DNAInfo::FASTA_HDR, objName);
         sequence.info.insert(DNAInfo::ID, objName);
@@ -471,6 +488,10 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             sequenceRef.objName = objName;
             ob->addObjectRelation(GObjectRelation(sequenceRef, ObjectRole_Sequence));
         }
+    }
+
+    if (anyNamelessSequence) {
+        os.addWarning(tr("One or more sequences in this file don't have names. Their names are generated automatically."));
     }
 }
 
@@ -678,17 +699,21 @@ void GFFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
     }
 }
 
-QString GFFFormat::extractSeqObjectName(QString &fastaHeaderName, const QStringList &words, QSet<QString> &names){
+QString GFFFormat::extractSeqObjectName(QString &fastaHeaderName, const QStringList &words, QSet<QString> &names, bool &isNameModified){
     fastaHeaderName = words.join(" ").remove(">");
     bool addSeqTag = true;
-    if(fastaHeaderName.isEmpty()){
+    bool notFastaHeaderMark = !words[0].startsWith(">");
+    if (fastaHeaderName.isEmpty() || notFastaHeaderMark) {
         fastaHeaderName = "Sequence";
         addSeqTag = false;
+        isNameModified = true;
+    } else {
+        isNameModified = false;
     }
     fastaHeaderName = TextUtils::variate(fastaHeaderName, "_", names);
     names.insert(fastaHeaderName);
-    if (addSeqTag){
-        return fastaHeaderName + SEQUENCE_TAG;
+    if (addSeqTag) {
+        fastaHeaderName += SEQUENCE_TAG;
     }
     return fastaHeaderName;
 }
