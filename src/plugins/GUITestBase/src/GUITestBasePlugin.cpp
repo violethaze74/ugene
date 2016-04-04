@@ -1072,7 +1072,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4116);
     REGISTER_TEST(GUITest_regression_scenarios::test_4117);
     REGISTER_TEST(GUITest_regression_scenarios::test_4118);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4120);
     REGISTER_TEST(GUITest_regression_scenarios::test_4121);
     REGISTER_TEST(GUITest_regression_scenarios::test_4122);
     REGISTER_TEST(GUITest_regression_scenarios::test_4124);
@@ -1233,7 +1232,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4969_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4983);
     REGISTER_TEST(GUITest_regression_scenarios::test_4986);
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_4990, "Required \"slow\" machine");
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5012);
     REGISTER_TEST(GUITest_regression_scenarios::test_5012_1);
@@ -1247,7 +1245,10 @@ if(QSysInfo::WordSize == 64){
     REGISTER_TEST(GUITest_regression_scenarios::test_5052);
     REGISTER_TEST(GUITest_regression_scenarios::test_5079);
     REGISTER_TEST(GUITest_regression_scenarios::test_5082);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5090);
+
     REGISTER_TEST(GUITest_regression_scenarios::test_5128);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5137);
 if (QSysInfo::WordSize == 32) {
     REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
     REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
@@ -2699,6 +2700,8 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0015);
+    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
+
 /////////////////////////////////////////////////////////////////////////
 // common_scenarios/start_page
 /////////////////////////////////////////////////////////////////////////

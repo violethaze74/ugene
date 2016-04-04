@@ -22,6 +22,7 @@
 #include <limits.h>
 
 #include <QBuffer>
+#include <QCoreApplication>
 #include <QScopedPointer>
 
 #include <U2Core/AnnotationTableObject.h>
@@ -52,8 +53,9 @@ namespace U2 {
 
 const int ParserState::LOCAL_READ_BUFFER_SIZE = 40000;
 
-/* TRANSLATOR U2::EMBLGenbankAbstractDocument */
-//TODO: local8bit or ascii??
+const QString EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains features of another remote GenBank file. These features have been skipped.");
+const QString EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
+const QString EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "Location parsing error.");
 
 EMBLGenbankAbstractDocument::EMBLGenbankAbstractDocument(const DocumentFormatId& _id, const QString& _formatName, int mls,
                                                          DocumentFormatFlags flags, QObject* p)
@@ -76,6 +78,7 @@ Document* EMBLGenbankAbstractDocument::loadDocument(IOAdapter* io, const U2DbiRe
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
 
     DocumentFormatUtils::updateFormatHints(objects, fs);
+    fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings();
     Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, writeLockReason);
     return doc;
 }
@@ -526,6 +529,45 @@ static void checkQuotes(const char* str, int len, bool& outerQuotes, bool& doubl
         }
     }
 }
+namespace {
+
+enum AnnotationProcessStatus {
+    ProcessAnnotation,
+    SkipAnnotation
+};
+
+void addUniqueWarning(U2OpStatus &si, const QString &warning) {
+    const QStringList warnings = si.getWarnings();
+    if (!warnings.contains(warning)) {
+        si.addWarning(warning);
+    }
+}
+
+AnnotationProcessStatus processParsingResult(const U2Location &location, Genbank::LocationParser::ParsingResult parsingResult, const QStringList &parsingMessages, U2OpStatus &si) {
+    switch (parsingResult) {
+    case Genbank::LocationParser::Success:
+        return ProcessAnnotation;
+    case Genbank::LocationParser::ParsedWithWarnings:
+        foreach (const QString &message, parsingMessages) {
+            if (message.contains(Genbank::LocationParser::REMOTE_ENTRY_WARNING)) {
+                addUniqueWarning(si, EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE);
+            } else if (message.contains(Genbank::LocationParser::JOIN_COMPLEMENT_WARNING)) {
+                addUniqueWarning(si, EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE);
+            } else {
+                si.addWarning(message);
+            }
+        }
+        return location->isEmpty() ? SkipAnnotation : ProcessAnnotation;
+    case Genbank::LocationParser::Failure:
+        si.setError(parsingMessages.isEmpty() ? EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE : parsingMessages.last());
+        return SkipAnnotation;
+    default:
+        assert(false);
+        return ProcessAnnotation;
+    }
+}
+
+}
 
 SharedAnnotationData EMBLGenbankAbstractDocument::readAnnotation(IOAdapter* io, char* cbuff, int len,
                                                                  int READ_BUFF_SIZE, U2OpStatus& si, int offset, int seqLen)
@@ -547,15 +589,13 @@ SharedAnnotationData EMBLGenbankAbstractDocument::readAnnotation(IOAdapter* io, 
         return SharedAnnotationData();
     }
 
-    QString errorReport = Genbank::LocationParser::parseLocation(cbuff+21, qlen-21, a->location, seqLen);
-    if (a->location->isEmpty()) {
-        si.setError(errorReport);
+    QStringList messages;
+    Genbank::LocationParser::ParsingResult parsingResult = Genbank::LocationParser::parseLocation(cbuff + 21, qlen - 21, a->location, messages, seqLen);
+    if (SkipAnnotation == processParsingResult(a->location, parsingResult, messages, si)) {
+        skipInvalidAnnotation(len, io, cbuff, READ_BUFF_SIZE);
         return SharedAnnotationData();
     }
-    // omit sorting because of splitted annotations
-    /*if (a->location->isMultiRegion()) {
-        qSort(a->location->regions);
-    }*/
+
     if (offset>0) {
         U2Region::shift(offset, a->location->regions);
     }
@@ -731,6 +771,9 @@ void EMBLGenbankAbstractDocument::readAnnotations(ParserState* st, int offset) {
         }
         //parsing feature;
         SharedAnnotationData f = readAnnotation(st->io, st->buff, st->len, ParserState::LOCAL_READ_BUFFER_SIZE, st->si, offset, st->entry->seqLen);
+        if (f == NULL) {
+            continue;
+        }
         st->entry->features.push_back(f);
     } while (st->readNextLine());
 }
@@ -757,6 +800,28 @@ U2Qualifier EMBLGenbankAbstractDocument::createQualifier(const QString &qualifie
 
 bool EMBLGenbankAbstractDocument::breakQualifierOnSpaceOnly(const QString & /*qualifierName*/) const {
     return true;
+}
+
+void EMBLGenbankAbstractDocument::skipInvalidAnnotation(int len, IOAdapter* io, char* cbuff, int READ_BUFF_SIZE) {
+    bool lineOk = true;
+    bool isQuotesOpened = false;
+    while ((len = io->readUntil(cbuff, READ_BUFF_SIZE, TextUtils::LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0) {
+        QByteArray line(cbuff, len);
+        bool isOpenedOnThisLine = line.count('"') % 2 == 1;
+        if (isQuotesOpened || isOpenedOnThisLine) {
+            if (isQuotesOpened && isOpenedOnThisLine) {
+                isQuotesOpened = false;
+            } else {
+                isQuotesOpened = true;
+            }
+            continue;
+        }
+        if (len == 0 || len < QN_COL + 1 || cbuff[K_COL] != ' ' || cbuff[A_COL] != '/' || cbuff[0] != fPrefix[0] || cbuff[1] != fPrefix[1]) {
+            io->skip(-len);
+            break;
+        }
+    }
+    return;
 }
 
 bool ParserState::hasKey( const char* key, int slen ) const {

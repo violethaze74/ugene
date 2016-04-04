@@ -829,12 +829,12 @@ bowtie index file</source>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="401"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="402"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="410"/>
@@ -853,12 +853,12 @@ bowtie index file</source>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="46"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="47"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="84"/>
@@ -1461,7 +1461,7 @@ bowtie index file</source>
     <message>
         <location filename="../src/MarkerEditor.cpp" line="181"/>
         <source>Marker Group</source>
-        <translation>Группа маркеров</translation>
+        <translation>Группа маркера</translation>
     </message>
     <message>
         <location filename="../src/MarkerEditor.cpp" line="183"/>
@@ -1490,13 +1490,6 @@ bowtie index file</source>
         <location filename="../src/DesignerUtils.cpp" line="35"/>
         <source>UGENE workflow documents</source>
         <translation>Вычислительные схемы UGENE</translation>
-    </message>
-</context>
-<context>
-    <name>WorkflowUtils</name>
-    <message>
-        <source>UGENE workflow documents</source>
-        <translation type="vanished">Вычислительные схемы UGENE</translation>
     </message>
 </context>
 </TS>

@@ -2167,24 +2167,19 @@ GUI_TEST_CLASS_DEFINITION(test_3321){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3328) {
-    class TestBody_3328 : public QRunnable {
-    public:
-        TestBody_3328(HI::GUITestOpStatus &os, QEventLoop *waiter) :
-            QRunnable(),
-            os(os),
-            waiter(waiter) {}
-        ~TestBody_3328() {
-            waiter->exit();
-        }
-
-        void run() {
-        //    1. Open "test/_common_data/fasta/human_T1_cutted.fa".
-            GTFileDialog::openFile(os, testDir + "/_common_data/fasta/", "human_T1_cutted.fa");
+//    1. Open "test/_common_data/fasta/human_T1_cutted.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-        //    2. Click the "Find restriction sites" button on the main toolbar.
-        //    3. Select a single enzyme: "AbaBGI". Start the search.
-            GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AbaBGI"));
+//    2. Click the "Find restriction sites" button on the main toolbar.
+//    3. Select a single enzyme: "AbaBGI". Start the search.
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            //3. Press "Select by length"
+            //4. Input "7" and press "Ok"
+            GTUtilsDialog::waitForDialog(os, new InputIntFiller(os, 8));
+            GTWidget::click(os, GTWidget::findWidget(os, "selectByLengthButton"));
 
             GTWidget::click(os, GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites..."));
             GTGlobals::sleep(2000);
@@ -2204,9 +2199,11 @@ GUI_TEST_CLASS_DEFINITION(test_3328) {
     QThreadPool threadPool(this);
     QEventLoop waiter(this);
 
-    TestBody_3328 *testBody = new TestBody_3328(os, &waiter);
-    threadPool.start(testBody);
-    waiter.exec();
+    if(GTUtilsTaskTreeView::getTopLevelTasksCount(os) != 0){
+        QString s = GTUtilsTaskTreeView::getTaskStatus(os, "Auto-annotations update task");
+    //    Expected state: the task is canceled.
+        CHECK_SET_ERR(s == "Canceling...", "Unexpected task status: " + s);
+    }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3332) {
@@ -5875,6 +5872,7 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
 
     GTUtilsWorkflowDesigner::click(os, "File List");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "nrsf-chr21.fastq");
+    GTUtilsWorkflowDesigner::createDataset(os);
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "control-chr21.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align reads with BWA MEM");

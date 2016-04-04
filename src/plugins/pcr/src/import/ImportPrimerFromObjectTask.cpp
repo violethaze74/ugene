@@ -31,6 +31,7 @@
 #include "Primer.h"
 #include "PrimerLibrary.h"
 #include "ImportPrimerFromObjectTask.h"
+#include "PrimerLineEdit.h"
 
 namespace U2 {
 
@@ -43,7 +44,7 @@ ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject *object) :
     sequenceObject = qobject_cast<U2SequenceObject *>(object);
     SAFE_POINT_EXT(NULL != sequenceObject, setError(L10N::nullPointerError("sequence object")), );
     SAFE_POINT_EXT(sequenceObject->getAlphabet(), setError(L10N::nullPointerError("sequence alphabet")), );
-    CHECK_EXT(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() == sequenceObject->getAlphabet()->getId(), setError(tr("The sequence has an unsupported alphabet: only standard nucleotide alphabet is supported")), );
+    CHECK_EXT(sequenceObject->getAlphabet()->isDNA(), setError(tr("The sequence has an unsupported alphabet: only nucleotide alphabet is supported")), );
     CHECK_EXT(sequenceObject->getSequenceLength() < Primer::MAX_LEN, setError(tr("Can't convert a sequence to primer: the sequence is too long")), );
 }
 
@@ -52,8 +53,9 @@ void ImportPrimerFromObjectTask::run() {
     primer.sequence = sequenceObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
 
-    QRegExp regExp("[^ACGT]");
-    if (primer.sequence.contains(regExp)) {
+    PrimerValidator validator(this);
+    int pos = 0;
+    if (validator.validate(primer.sequence, pos) == QValidator::Invalid) {
         setError(tr("The primer sequence contains non-ACGT symbols"));
         return;
     }
@@ -65,7 +67,7 @@ void ImportPrimerFromObjectTask::run() {
 
 QString ImportPrimerFromObjectTask::generateReport() const {
     const QString docName = (NULL == sequenceObject->getDocument() ? tr("Without document") : sequenceObject->getDocument()->getName());
-    QString report = QString("<b>%1</b>%2: <font color='%3'>%4</font>").arg(docName).arg(sequenceObject->getGObjectName());
+    QString report = QString("<b>%1</b> %2: <font color='%3'>%4</font>").arg(docName).arg(sequenceObject->getGObjectName());
     if (isCanceled()) {
         return report.arg(L10N::errorColorLabelHtmlStr()).arg(tr("cancelled"));
     }

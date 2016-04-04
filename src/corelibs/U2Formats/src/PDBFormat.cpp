@@ -261,7 +261,7 @@ const QString MOLECULE_TAG = "MOLECULE";
 const QString CHAIN_TAG = "CHAIN";
 }
 
-void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2OpStatus& ti) {
+void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2OpStatus&) {
     /*
     Record Format
     COLUMNS       DATA TYPE       FIELD         DEFINITION

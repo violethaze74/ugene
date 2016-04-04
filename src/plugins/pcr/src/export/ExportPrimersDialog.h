@@ -33,7 +33,7 @@ class SaveDocumentController;
 class ExportPrimersDialog : public QDialog, private Ui_ExportPrimersDialog {
     Q_OBJECT
 public:
-    ExportPrimersDialog(const QList<Primer> &primers);
+    ExportPrimersDialog(const QList<Primer> &primers, QWidget *parent);
 
 private slots:
     void sl_updateState();

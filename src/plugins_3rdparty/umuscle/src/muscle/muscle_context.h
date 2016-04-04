@@ -6,6 +6,8 @@
 #include <time.h>
 #include <QVector>
 
+#define EDGE_ARRAY_SIZE 10000
+
 class MuscleException {
 public:
     MuscleException();
@@ -469,8 +471,8 @@ public:
     struct refinehoriz_struct {
         unsigned g_uRefineHeightSubtree;
         unsigned g_uRefineHeightSubtreeTotal;
-        unsigned Edges1[10000];
-        unsigned Edges2[10000];
+        unsigned Edges1[EDGE_ARRAY_SIZE];
+        unsigned Edges2[EDGE_ARRAY_SIZE];
     } refinehoriz;
 
     //spfast.cpp

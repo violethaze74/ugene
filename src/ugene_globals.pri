@@ -129,13 +129,16 @@ defineTest( unix_not_mac ) {
 }
 
 
-# By default, UGENE uses bundled zlib (libs_3rdparty/zlib).
-# To switch to OS default version set UGENE_USE_BUNDLED_ZLIB = 0
+# By default, UGENE uses bundled zlib on Windows (libs_3rdparty/zlib) and OS version on Linux.
+# To use bundled version on any platform set UGENE_USE_BUNDLED_ZLIB = 1
 
 defineTest( use_bundled_zlib ) {
     contains( UGENE_USE_BUNDLED_ZLIB, 1 ) : return (true)
     contains( UGENE_USE_BUNDLED_ZLIB, 0 ) : return (false)
-    return (true)
+    win32 {
+        return (true)
+    }
+    return (false)
 }
 
 use_bundled_zlib() {

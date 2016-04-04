@@ -38,3 +38,7 @@ ugene
 # Directories with tests and QSpec
 /test
 /src/libs_3rdparty/QSpec/
+
+
+# QtCreator files
+ugene.pro.user

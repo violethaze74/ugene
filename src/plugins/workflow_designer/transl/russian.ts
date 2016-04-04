@@ -4,12 +4,12 @@
 <context>
     <name>ChooseItemDialog</name>
     <message>
-        <location filename="../src/ui/ChooseItemDialog.ui" line="14"/>
+        <location filename="../src/ChooseItemDialog.ui" line="14"/>
         <source>Choose task type</source>
         <translation>Выбор типа задачи</translation>
     </message>
     <message>
-        <location filename="../src/ui/ChooseItemDialog.ui" line="20"/>
+        <location filename="../src/ChooseItemDialog.ui" line="20"/>
         <source>Add a task of the following type:</source>
         <translation>Возможно создать объект для следующих задач:</translation>
     </message>
@@ -17,67 +17,27 @@
 <context>
     <name>CreateExternalProcessWorkerDialog</name>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="14"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="14"/>
         <source>Create Element with Command Line Tool</source>
         <translation>Создать элемент при помощи инструмента командной строки</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="49"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="49"/>
         <source>Element description</source>
         <translation>Описание элемента</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="65"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="65"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="77"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="77"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="84"/>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="349"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:12pt;&quot;&gt;Name and description for new workflow element.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:12pt; font-weight:600;&quot;&gt;Status:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:12pt; font-weight:600;&quot;&gt;%1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">
-          &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-          &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-          p, li { white-space: pre-wrap; }
-          &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-          &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Имя и описание нового элемента.&lt;/span&gt;&lt;/p&gt;
-          &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Status:&lt;/span&gt;&lt;/p&gt;
-          &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;%1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:12pt;&quot;&gt;Input and output data for external tool. Name is  a command line parameter for input/output data in external tool. Set data type and format in which external tool reads/writes input/output data. You also can set description for workflow designer. Each input data will be represented as port in workflow designer. Each output data will be represented as slot of single slot.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">
-          &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-          &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-          p, li { white-space: pre-wrap; }
-          &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-          &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Входные и выходные данные для внешнего инструмента. Имя это параметр командной строки для входных/выходных данных во внешнем инструменте. Установите тип и формат данных в которых внешний инструмент будет читать/писать входные/выходные данные. Вы также можете задать описание для дизайнера вычислительных схем. Каждые входные данные будут представлены как порт в дизайнере вычислительных схем. Каждые выходные данныебудут представлены как слот простого слота.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="36"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="36"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -88,7 +48,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="105"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="84"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="349"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="105"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -97,34 +67,34 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="116"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="116"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="151"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="151"/>
         <source>Add input</source>
         <translation>Добавить входные данные</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="158"/>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="209"/>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="281"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="158"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="209"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="281"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="167"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="167"/>
         <source>Output data</source>
         <translation>Выходные данные</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="202"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="202"/>
         <source>Add output</source>
         <translation>Добавить выходные данные</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="228"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="228"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -133,63 +103,36 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="300"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Execution string and element&apos;s description. To substitute input, output data or parameter, use it&apos;s name with prefix $ in execution string. You can set parameterized description for new element(description that appears not in property editor but on element itself). In parameterized description you also can use parameters substitution with prefix $. If file paths in the execution string contain spaces, they must be enclosed with quotes.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:12pt;&quot;&gt;Another parameters for external tool. You must set name for parameter and its type. You also can set description for workflow designer. Each parameter will be represented as  parameter of workflow element.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">
-          &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-          &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-          p, li { white-space: pre-wrap; }
-          &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-          &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Остальные параметры для внешнего инструмента. Необходимо задать имя и тип параметра. Также вы можете задать описание для дизайнера вычислительных схем. Каждый параметр будет представлен как параметр элемента.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-</translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:12pt;&quot;&gt;Execution string and element&apos;s description. To substitute input, output data or parameter, use it&apos;s name with prefix $ in execution string. You can set parameterized description for new element(description that appears not in property editor but on element itself). In parameterized description you also can use parameters  substitution with prefix $.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">
-          &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-          &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-          p, li { white-space: pre-wrap; }
-          &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-          &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Строка выполнения и описание элемента. Чтобы заменить входные, выходные данные или параметр используйте его имя с префиксом $ в строке выполнения. Вы можете установить параметризованное описание для нового элемента (описание которое появляется на элементе). В параметризованном описании вы также можете использовать замену с префиксом $.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="239"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="239"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="274"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="274"/>
         <source>Add attribute</source>
         <translation>Добавить атрибут</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="311"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="300"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Execution string and element&apos;s description. To substitute input, output data or parameter, use it&apos;s name with prefix $ in execution string. You can set parameterized description for new element(description that appears not in property editor but on element itself). In parameterized description you also can use parameters substitution with prefix $. If file paths in the execution string contain spaces, they must be enclosed with single quotes.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="311"/>
         <source>Command line template</source>
         <translation>Заготовка для командной строки</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="330"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="330"/>
         <source>Execution string</source>
         <translation>Строка выполнения</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="342"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="342"/>
         <source>Parameterized description</source>
         <translation>Описание</translation>
     </message>
@@ -197,27 +140,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CreateScriptBlockDialog</name>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="14"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="14"/>
         <source>Create Element with Script</source>
         <translation>Создать элемент используя скрипт</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="22"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="22"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="29"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="29"/>
         <source>ScriptBlock</source>
         <translation>Скриптовый блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="38"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="38"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="45"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="45"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -232,62 +175,62 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="58"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="58"/>
         <source>Input Port</source>
         <translation>Входной порт</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="65"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="65"/>
         <source>Add input slot</source>
         <translation>Добавить входной слот</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="72"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="72"/>
         <source>Delete input slot</source>
         <translation>Удалить входной слот</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="79"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="79"/>
         <source>Output Port</source>
         <translation>Выходной порт</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="86"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="86"/>
         <source>Add output slot</source>
         <translation>Добавить выходной слот</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="93"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="93"/>
         <source>Delete output slot</source>
         <translation>Удалить выходной слот</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="110"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="110"/>
         <source>Attributes</source>
         <translation>Атрибуты</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="117"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="117"/>
         <source>Add Attribute</source>
         <translation>Добавить атрибут</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="124"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="124"/>
         <source>Delete Attribute</source>
         <translation>Удалить атрибут</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="149"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="149"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="164"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="164"/>
         <source>Error occured while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</source>
         <translation>Произошла ошибка во время сохранения нового актера. Невозможно записать в текущем каталоге. Выберите другой каталог</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="182"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="182"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -295,32 +238,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DashboardsManagerDialog</name>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="14"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="14"/>
         <source>Dashboards Manager</source>
         <translation>Управление панелями</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="20"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="20"/>
         <source>Check dashboards to show:</source>
         <translation>Выбрать панели для отображения:</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="60"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="60"/>
         <source>Check selected</source>
         <translation>Отметить выделенные</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="67"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="67"/>
         <source>Uncheck selected</source>
         <translation>Снять метки с выделенных</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="74"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="74"/>
         <source>Remove selected</source>
         <translation>Удалить выделенные</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="81"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="81"/>
         <source>Select all</source>
         <translation>Выделить все</translation>
     </message>
@@ -328,39 +271,39 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GalaxyConfigConfigurationDialog</name>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="14"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="14"/>
         <source>Create Galaxy config</source>
         <translation>Создать конфигурацию с Galaxy</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="54"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="54"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="67"/>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="164"/>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="177"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="67"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="164"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="177"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="80"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="80"/>
         <source>UGENE directory</source>
         <translation>Каталог UGENE</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="93"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="93"/>
         <source>Destination directory</source>
         <translation>Расположение каталога</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="106"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="106"/>
         <source>Galaxy directory</source>
         <translation>Каталог Galaxy</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="119"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="119"/>
         <source>Create</source>
         <translation>Создать</translation>
     </message>
@@ -368,12 +311,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ImportSchemaDialog</name>
     <message>
-        <location filename="../src/ui/ImportSchemaDialog.ui" line="14"/>
+        <location filename="../src/ImportSchemaDialog.ui" line="14"/>
         <source>Import Workflow to Element</source>
         <translation>Импортировать схему в элемент</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportSchemaDialog.ui" line="22"/>
+        <location filename="../src/ImportSchemaDialog.ui" line="22"/>
         <source>Input new element name:</source>
         <translation>Имя нового элемента:</translation>
     </message>
@@ -381,7 +324,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PaletteWidget</name>
     <message>
-        <location filename="../src/ui/PaletteWidget.ui" line="14"/>
+        <location filename="../src/PaletteWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
@@ -389,42 +332,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PortAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="17"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="17"/>
         <source>Configure Port and Slot Aliases</source>
         <translation> Конфигурация интерфейса командной строки для портов и слотов</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="37"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="37"/>
         <source>Workflow ports</source>
         <translation>Порты схемы</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="72"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="72"/>
         <source>Available slot</source>
         <translation>Доступный слот</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="77"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="77"/>
         <source>Slot alias</source>
         <translation>Алиас слота</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="86"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="86"/>
         <source>Port alias</source>
         <translation>Алиас порта</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="95"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="95"/>
         <source>Port type:</source>
         <translation>Тип порта:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="109"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="109"/>
         <source>Port alias:</source>
         <translation>Алиас порта:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="119"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="119"/>
         <source>Port description:</source>
         <translation>Описание порта:</translation>
     </message>
@@ -655,27 +598,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SchemaAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="17"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="17"/>
         <source>Configure Parameter Aliases</source>
         <translation>Конфигурация алиасов параметров</translation>
     </message>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="34"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="34"/>
         <source>Workflow elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="69"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="69"/>
         <source>Schema parameter</source>
         <translation>Параметр схемы</translation>
     </message>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="74"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="74"/>
         <source>Parameter alias</source>
         <translation>Алиас параметра</translation>
     </message>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="79"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="79"/>
         <source>Help message</source>
         <translation>Вспомогательное сообщение</translation>
     </message>
@@ -683,17 +626,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>StartupDialog</name>
     <message>
-        <location filename="../src/ui/StartupDialog.ui" line="14"/>
+        <location filename="../src/StartupDialog.ui" line="14"/>
         <source>Choose Output Directory</source>
         <translation>Выбор директории для сохранения выходных данных</translation>
     </message>
     <message>
-        <location filename="../src/ui/StartupDialog.ui" line="20"/>
+        <location filename="../src/StartupDialog.ui" line="20"/>
         <source>Output Directory</source>
         <translation>Выходная директория</translation>
     </message>
     <message>
-        <location filename="../src/ui/StartupDialog.ui" line="33"/>
+        <location filename="../src/StartupDialog.ui" line="33"/>
         <source>Note: you can change this option in the UGENE Application Settings
 (Settings &gt; Preferences &gt; Workflow Designer)</source>
         <translation>Замечание: вы можете изменить эти настройки в общих настройках UGENE
@@ -821,90 +764,90 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CreateExternalProcessDialog</name>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="313"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="323"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="314"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="324"/>
         <source>You have changed the structure of the element (name, slots, attributes&apos; names and types). All elements on the scene would be removed. Do you really want to change it?
 You could also reset the dialog to the initial state.</source>
         <translation>Вы изменили структуру элемента (имя, слоты, имена или типы аттрибутов&apos;). Все элементы на сцене будут удалены. Вы действительно хотите сделать это? Также вы можете вернуть диалог к изначальному состоянию.</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="343"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="353"/>
         <source>Create Element</source>
         <translation>Создание элемента</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="345"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="355"/>
         <source>Please set the input/output data.</source>
         <translation>Установите входные и выходные данные.</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="350"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="360"/>
         <source>Please set the command line to run external tool.</source>
         <translation>Установите параметры командной строки чтобы запустить внутренний инструмент.</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="355"/>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="454"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="365"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="464"/>
         <source>Please set the name for the new element.</source>
         <translation>Установите имя для нового элемента.</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="361"/>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="466"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="371"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="476"/>
         <source>Invalid symbols in the element name.</source>
         <translation>Некорректные символы в имени элемента.</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="366"/>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="471"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="376"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="481"/>
         <source>Element with this name already exists.</source>
         <translation>Элемент с таким именем уже существует.</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="374"/>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="385"/>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="396"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="384"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="395"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="406"/>
         <source>For one or more parameter name was not set.</source>
         <translation>Для одного или более парваметров не задано имя.</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="378"/>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="389"/>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="400"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="388"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="399"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="410"/>
         <source>Invalid symbols in a name.</source>
         <translation>Некорректные символы в имени.</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="407"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="417"/>
         <source>The same name of element parameters was found</source>
         <translation>Параметр с таким именем уже существует</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="415"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="425"/>
         <source>You don&apos;t use parameter %1 in template string. Continue?</source>
         <translation>Вы не можете использовать параметр %1 в шаблонной строке. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="416"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="426"/>
         <source>Continue</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="417"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="427"/>
         <source>Abort</source>
         <translation>Вернуться</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="460"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="470"/>
         <source>Spaces in the element name.</source>
         <translation>Пробелы в имени элемента.</translation>
     </message>
     <message>
-        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="486"/>
+        <location filename="../src/library/CreateExternalProcessDialog.cpp" line="496"/>
         <source>It is the correct name</source>
         <translation>Это корректное имя</translation>
     </message>
@@ -1821,238 +1764,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/library/ConvertFilesFormatWorker.cpp" line="112"/>
         <source>Converts the file to selected format if it is not excluded.</source>
         <translation>Преобразовывает файл в выбранный формат если он не исключен.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::DASAnnotationPrompter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">не указан</translation>
-    </message>
-    <message>
-        <source> from &lt;u&gt;%1&lt;/u&gt;</source>
-        <translation type="vanished">из &lt;u&gt;%1&lt;/u&gt;</translation>
-    </message>
-    <message>
-        <source>For each protein sequence %1, finds IDs of similar sequences using remote BLAST.&lt;br&gt;Loads annotations for DAS sources using the first %2 ID(s).</source>
-        <translation type="vanished">Для каждой протеиновой последовательности %1, ищутся идентификаторы похожих последовательносетй используя удаленный BLAST.&lt;br&gt;Загружает аннотации для DAS используя первые %2 идентификаторы.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::DASAnnotationWorker</name>
-    <message>
-        <source>Input sequences</source>
-        <translation type="vanished">Входные последовательности</translation>
-    </message>
-    <message>
-        <source>Protein sequences for annotation. Nucleotide sequences are skipped.</source>
-        <translation type="vanished">Протеиновые последовательности для аннотации. Нуклеотидные последовательности будут проигнорированы.</translation>
-    </message>
-    <message>
-        <source>DAS annotations</source>
-        <translation type="vanished">DAS аннотации</translation>
-    </message>
-    <message>
-        <source>A set of annotations loaded from DAS sources using IDs of similar sequences.</source>
-        <translation type="vanished">Набор аннотаций загружаемый из DAS источников используя идентификаторы похожих последовательностей.</translation>
-    </message>
-    <message>
-        <source>Max result IDs</source>
-        <translation type="vanished">Максимальное количество идентификаторов</translation>
-    </message>
-    <message>
-        <source>Use first IDs of similar sequences to load annotations.</source>
-        <translation type="vanished">Использовать первый идентификатор похожей последовательности для загрузки аннотаций.</translation>
-    </message>
-    <message>
-        <source>Database</source>
-        <translation type="vanished">База данных</translation>
-    </message>
-    <message>
-        <source>Database against which the search is performed: UniProtKB or clusters of sequences with 100%, 90% or 50% identity.</source>
-        <translation type="vanished">База данных, по которым выполняется поиск: UniProtKB или кластеры последовательностей с 100%, 90% или 50% идентичностью.</translation>
-    </message>
-    <message>
-        <source>Min identity</source>
-        <translation type="vanished">Минимальная идентификация</translation>
-    </message>
-    <message>
-        <source>Minimum identity of a BLAST result and an input sequence.</source>
-        <translation type="vanished">Минимальная идентификация результатов BLAST и входная последовательность.</translation>
-    </message>
-    <message>
-        <source>Feature sources</source>
-        <translation type="vanished">Тематические источники</translation>
-    </message>
-    <message>
-        <source>The DAS sources to read features from.</source>
-        <translation type="vanished">DAS источники для чтения тем.</translation>
-    </message>
-    <message>
-        <source>Threshold</source>
-        <translation type="vanished">Порог</translation>
-    </message>
-    <message>
-        <source>The expectation value (E) threshold is a statistical measure of the number of expected matches in a random database. The lower the e-value, the more likely the match is to be significant.</source>
-        <translation type="vanished">Среднее значение (E) порога является статистической мерой из числа ожидаемых соответствий в случайной базе данных. Чем ниже это значение, тем больше вероятность того, что соответствие должно быть значимым.</translation>
-    </message>
-    <message>
-        <source>Matrix</source>
-        <translation type="vanished">Матрица</translation>
-    </message>
-    <message>
-        <source>The matrix assigns a probability score for each position in an alignment.</source>
-        <translation type="vanished">Матрица определяет счет вероятности для каждой позиции в выравнивании. </translation>
-    </message>
-    <message>
-        <source>Filtering</source>
-        <translation type="vanished">Фильтрация</translation>
-    </message>
-    <message>
-        <source>Low-complexity regions (e.g. stretches of cysteine in Q03751, or hydrophobic regions in membrane proteins) tend to producespurious, insignificant matches with sequences in the database which have the same kind of low-complexity regions, but are unrelated biologically. If &apos;Filter low complexity regions&apos; is selected, the query sequence will be run through the program SEG, and all amino acids in low-complexity regions will be replaced by X&apos;s.</source>
-        <translation type="vanished">Регионы простой сложности (т.е. участки цистеина в Q03751, или гидрофобные регионы в мембранах белков) как правило производят ложные, незначительные по поиску с последовательностями в базе данных, которые имеют тот же самый вид с простыми регионами, но не имеют биологического смысла. Если &apos;Фильтр простых регионов&apos; выбран, поиск последовательности будет работать в рамках программы SEG, и все аминокислоты в простых регионах будут заменены на X.</translation>
-    </message>
-    <message>
-        <source>Gapped</source>
-        <translation type="vanished">Пробелы</translation>
-    </message>
-    <message>
-        <source>This will allow gaps to be introduced in the sequences when the comparison is done.</source>
-        <translation type="vanished">Это позволит ввести пробелы в последовательность, когда сравнение будет завершено.</translation>
-    </message>
-    <message>
-        <source>Hits</source>
-        <translation type="vanished">Попадания</translation>
-    </message>
-    <message>
-        <source>Limits the number of returned alignments.</source>
-        <translation type="vanished">Ограничивает число возвращенных выравниваний.</translation>
-    </message>
-    <message>
-        <source>Annotate with DAS</source>
-        <translation type="vanished">Аннотирование с помощью DAS</translation>
-    </message>
-    <message>
-        <source>Finds similar protein sequence using remote BLAST.&lt;p&gt;Using IDs of sequences found loads annotation for DAS sources.&lt;p&gt;Nucleotide sequences are skipped if any supplied to input.&lt;/p&gt;</source>
-        <translation type="vanished">Ищет схожие протеиновые последовательности используя удаленный remote BLAST.&lt;p&gt;Используя идентификаторы последовательностей находятся аннотации для источников DAS.&lt;p&gt;Нуклеотидные последовательности игнориурются если есть другие входные последовательности.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>No DAS registry</source>
-        <translation type="vanished">Нет DAS реестра</translation>
-    </message>
-    <message>
-        <source>No DAS feature sources</source>
-        <translation type="vanished">Нет источников DAS тем</translation>
-    </message>
-    <message>
-        <source>Internal error: no DAS Registry.</source>
-        <translation type="vanished">Внутренняя ошибка: нет DAS реестра.</translation>
-    </message>
-    <message>
-        <source>Sequence %1 is %2 amino acids long. Only sequences from %3 to %4 amino acids are processed.</source>
-        <translation type="vanished">Последовательность %1 это %2 длинная аминокслотная. Только последовательности из %3 в %4 аминокислоты обрабатываются.</translation>
-    </message>
-    <message>
-        <source>Bad sequence supplied to DASAnnotationWorker: %1</source>
-        <translation type="vanished">Плохая последовательность прилагаемая в DAS елементе: %1</translation>
-    </message>
-    <message>
-        <source>Number of similar sequences: %1.</source>
-        <translation type="vanished">Число схожих последовательностей: %1.</translation>
-    </message>
-    <message>
-        <source> IDs: </source>
-        <translation type="vanished">Идентификаторы:</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::DASFetcherPrompter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">не указан</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::DASFetcherWorker</name>
-    <message>
-        <source>sequences identified with</source>
-        <translation type="vanished">последовательности с идентификаторами</translation>
-    </message>
-    <message>
-        <source>sequence identified with</source>
-        <translation type="vanished">последовательность с идентификатором</translation>
-    </message>
-    <message>
-        <source>Save result to &lt;u&gt;%1&lt;/u&gt; directory.</source>
-        <translation type="vanished">Сохранить результат в директорию &lt;u&gt;%1&lt;/u&gt;.</translation>
-    </message>
-    <message>
-        <source>Reads %1 %2 from &lt;u&gt;%3&lt;/u&gt; DAS source. %4</source>
-        <translation type="vanished">Риды %1 %2 из &lt;u&gt;%3&lt;/u&gt; DAS источник. %4</translation>
-    </message>
-    <message>
-        <source>Cannot create directory &apos;%1&apos;</source>
-        <translation type="vanished">Не удается создать директорию &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>failed to load item from DAS source : %3</source>
-        <translation type="vanished">ошибка при загрузке элемента из DAS источника: %3</translation>
-    </message>
-    <message>
-        <source>Read from DAS</source>
-        <translation type="vanished">Чтение аннотаций из DAS</translation>
-    </message>
-    <message>
-        <source>Reads sequences and annotations if any from the Distributed Annotation System.</source>
-        <translation type="vanished">Читает последовательности и аннотации из распределенной системы аннотаций.</translation>
-    </message>
-    <message>
-        <source>Sequence</source>
-        <translation type="vanished">Последовательность</translation>
-    </message>
-    <message>
-        <source>No DAS registry</source>
-        <translation type="vanished">Нет DAS реестра</translation>
-    </message>
-    <message>
-        <source>No DAS sources</source>
-        <translation type="vanished">Нет DAS источника</translation>
-    </message>
-    <message>
-        <source>No DAS feature sources</source>
-        <translation type="vanished">Нет источника тем DAS</translation>
-    </message>
-    <message>
-        <source>Feature Sources</source>
-        <translation type="vanished">Источники тем</translation>
-    </message>
-    <message>
-        <source>The DAS sources to read features from.</source>
-        <translation type="vanished">Источники DAS для чтения тем.</translation>
-    </message>
-    <message>
-        <source>Reference Source</source>
-        <translation type="vanished">Референсный источник</translation>
-    </message>
-    <message>
-        <source>The DAS source to read reference from.</source>
-        <translation type="vanished">DAS источник для чтения референса.</translation>
-    </message>
-    <message>
-        <source>Resource ID(s)</source>
-        <translation type="vanished">Идентификаторы</translation>
-    </message>
-    <message>
-        <source>Semicolon-separated list of resource ID`s in the source.</source>
-        <translation type="vanished">источник - список идентификаторов через точку с запятой.</translation>
-    </message>
-    <message>
-        <source>Save file to directory</source>
-        <translation type="vanished">Сохранить в директорию</translation>
-    </message>
-    <message>
-        <source>The directory to store sequence files loaded from the source.</source>
-        <translation type="vanished">папка для сохранения файлов последовательностей из источника.</translation>
     </message>
 </context>
 <context>
@@ -5566,10 +5277,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reports only sequences containing the specified regular expression.&lt;p&gt;&lt;i&gt;Leave it empty to switch off this filter. Use &lt;b&gt;*&lt;/b&gt; to mask many symbols and &lt;b&gt;?&lt;/b&gt; to mask one symbol.&lt;/i&gt;&lt;/p&gt;</source>
-        <translation type="vanished">выбирает только те последовательности, названия которых содержат указанное регулярное выражение. &lt;p&gt;&lt;i&gt;Оставьте его пустым, чтобы отключить этот фильтр. Используйте &lt;b&gt;*&lt;/b&gt; чтобы заменить несколько символов и &lt;b&gt;?&lt;/b&gt; чтобы заменить один символ.&lt;/i&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/library/GenericReadActor.cpp" line="113"/>
         <source>Sequence count limit</source>
         <translation>Ограничение количества последовательностей</translation>
@@ -6468,32 +6175,32 @@ Do you want to save changes?</source>
 <context>
     <name>WorkflowEditorWidget</name>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="14"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="65"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="65"/>
         <source>Property Editor</source>
         <translation>Редактор объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="97"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="97"/>
         <source>TextLabel</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="179"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="179"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="273"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="273"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="320"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="320"/>
         <source>Output data</source>
         <translation>Выходные данные</translation>
     </message>
@@ -6501,27 +6208,27 @@ Do you want to save changes?</source>
 <context>
     <name>WorkflowMetaDialog</name>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="20"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="20"/>
         <source>Workflow Properties</source>
         <translation>Описание схемы</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="28"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="28"/>
         <source>Location</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="38"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="38"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="45"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="45"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="55"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="55"/>
         <source>Comment</source>
         <translation>Комментарий</translation>
     </message>
@@ -6529,86 +6236,79 @@ Do you want to save changes?</source>
 <context>
     <name>WorkflowSettingsWidget</name>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="14"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="14"/>
         <source>Resource settings</source>
         <translation>Источник настроек</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="20"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="20"/>
         <source>Scene appearance</source>
         <translation>Сцена</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="42"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="42"/>
         <source>Element style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="56"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="56"/>
         <source>Element font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="70"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="70"/>
         <source>Element background color</source>
         <translation>Цвет фона</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="105"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="105"/>
         <source>Enable debugger</source>
         <translation>Включить отладку</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="124"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="124"/>
         <source>Use directory for output files</source>
         <translation>Использовать директорию для выходных файлов</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="145"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="145"/>
         <source>Directory for custom elements with scripts</source>
         <translation>Директория для элементов пользователя со скриптами</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="166"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="166"/>
         <source>Directory for custom elements with command line tools</source>
         <translation>Директория для элементов пользователя с внешними утилитами</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="187"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="187"/>
         <source>Directory for included schema elements</source>
         <translation>Директория для включенных элементов схемы</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="26"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="26"/>
         <source>Show grid</source>
         <translation>Показывать сетку</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="98"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="98"/>
         <source>Track running progress</source>
         <translation>Отображать прогресс выполнения схемы</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="118"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="118"/>
         <source>Directories</source>
         <translation>Директории</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="33"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="33"/>
         <source>Snap to grid</source>
         <translation>Привязываться к сетке</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="92"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="92"/>
         <source>Runtime settings</source>
         <translation>Исполнение схем</translation>
-    </message>
-</context>
-<context>
-    <name>WorkflowUtils</name>
-    <message>
-        <source>UGENE workflow element</source>
-        <translation type="vanished">UGENE элемент </translation>
     </message>
 </context>
 <context>

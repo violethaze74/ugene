@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 3.4)
 project(U2View)
 
 set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOMOC_MOC_OPTIONS -nn) # do not display notes.
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 

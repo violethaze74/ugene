@@ -132,7 +132,7 @@ void PrimerLibraryWidget::sl_importPrimers() {
 void PrimerLibraryWidget::sl_exportPrimers() {
     const QList<Primer> selection = primerTable->getSelection();
     SAFE_POINT(!selection.isEmpty(), L10N::nullPointerError("Selection"), );
-    QObjectScopedPointer<ExportPrimersDialog> exportDialog = new ExportPrimersDialog(selection);
+    QObjectScopedPointer<ExportPrimersDialog> exportDialog = new ExportPrimersDialog(selection, this);
     exportDialog->exec();
 }
 

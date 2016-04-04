@@ -67,7 +67,7 @@ void SequenceExportSettings::setType(SequenceExportType t) {
 /* CurrentViewPainter */
 /************************************************************************/
 void CurrentViewPainter::paint(QPainter &p, CustomExportSettings* /*settings*/) const {
-    QPixmap screenshot = QPixmap::grabWidget(seqWidget, seqWidget->rect());
+    QPixmap screenshot = seqWidget->grab();
     p.drawPixmap(screenshot.rect(), screenshot);
 }
 

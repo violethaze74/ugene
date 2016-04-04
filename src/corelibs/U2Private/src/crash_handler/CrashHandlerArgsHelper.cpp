@@ -77,7 +77,7 @@ QStringList CrashHandlerArgsHelper::getArguments() const {
         args << report.toUtf8().toBase64();
     }
 
-    if (qgetenv("UGENE_GUI_TEST").toInt() == 1) {
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
         CMDLineRegistry* cmdLine = AppContext::getCMDLineRegistry();
         if (NULL != cmdLine) {
             QString testName = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST);

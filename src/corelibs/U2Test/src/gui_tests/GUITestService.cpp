@@ -77,7 +77,6 @@ GUITestService::GUITestService(QObject *) :
     needTeamcityLog(false)
 {
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_allStartUpPluginsLoaded()));
-    setQtFileDialogView();
 }
 
 GUITestService::~GUITestService() {
@@ -131,39 +130,43 @@ void GUITestService::sl_serviceRegistered() {
     }
 }
 
-GUITestService::LaunchOptions GUITestService::getLaunchOptions(CMDLineRegistry* cmdLine) const {
+void GUITestService::setEnvVariablesForGuiTesting() {
+    qputenv(ENV_GUI_TEST, "1");
+    qputenv(ENV_USE_NATIVE_DIALOGS, "0");
+    qputenv(ENV_UGENE_DEV, "1");
+}
+
+GUITestService::LaunchOptions GUITestService::getLaunchOptions(CMDLineRegistry* cmdLine) {
     CHECK(cmdLine, NONE);
 
+    LaunchOptions result = NONE;
+
     if(cmdLine->hasParameter(CMDLineCoreOptions::CREATE_GUI_TEST)){
-        return CREATE_GUI_TEST;
-    }
-
-
-    if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST)) {
+        result = CREATE_GUI_TEST;
+    } else if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST)) {
         QString paramValue = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST);
         if (!paramValue.isEmpty()) {
-            return RUN_ONE_TEST;
+            result = RUN_ONE_TEST;
+        } else {
+            result = RUN_ALL_TESTS;
         }
-        return RUN_ALL_TESTS;
+    } else if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH)) {
+        result = RUN_ALL_TESTS_BATCH;
+    } else if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE)) {
+        result = RUN_TEST_SUITE;
+    } else if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_NO_IGNORED)) {
+        result = RUN_ALL_TESTS_NO_IGNORED;
+    } else if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_CRAZY_USER)) {
+        result = RUN_CRAZY_USER_MODE;
     }
-
-    if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH)) {
-        return RUN_ALL_TESTS_BATCH;
+    if (result !=  NONE) {
+        setEnvVariablesForGuiTesting();
     }
+    return result;
+}
 
-    if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE)) {
-        return RUN_TEST_SUITE;
-    }
-
-    if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_NO_IGNORED)) {
-        return RUN_ALL_TESTS_NO_IGNORED;
-    }
-
-    if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_CRAZY_USER)) {
-        return RUN_CRAZY_USER_MODE;
-    }
-
-    return NONE;
+bool GUITestService::isGuiTestServiceNeeded() {
+    return getLaunchOptions(AppContext::getCMDLineRegistry()) != NONE;
 }
 
 void GUITestService::registerAllTestsTask() {
@@ -395,21 +398,6 @@ void GUITestService::sl_taskStateChanged(Task* t) {
 
 void GUITestService::writeTestResult(const QString& result) {
     printf("%s\n", (QString(GUITESTING_REPORT_PREFIX) + ": " + result).toUtf8().data());
-}
-
-void GUITestService::setQtFileDialogView()
-{
-#ifdef Q_OS_LINUX
-#if (QT_VERSION < 0x050000) //Qt 5
-    if (!qgetenv("UGENE_USE_NATIVE_DIALOGS").isEmpty()) {//this condition does not controls native dialogs
-    //if (qgetenv("UGENE_GUI_TEST").toInt() == 1 && qgetenv("UGENE_USE_NATIVE_DIALOGS").toInt() == 0) {
-        qt_filedialog_open_filename_hook = 0;
-        qt_filedialog_open_filenames_hook = 0;
-        qt_filedialog_save_filename_hook = 0;
-        qt_filedialog_existing_directory_hook = 0;
-    }
-#endif
-#endif
 }
 
 void GUITestService::clearSandbox()

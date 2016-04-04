@@ -4,17 +4,17 @@
 <context>
     <name>EditPrimerDialog</name>
     <message>
-        <location filename="../src/ui/EditPrimerDialog.ui" line="14"/>
+        <location filename="../src/EditPrimerDialog.ui" line="14"/>
         <source>Create New Primer</source>
         <translation>Создать новый праймер</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditPrimerDialog.ui" line="29"/>
+        <location filename="../src/EditPrimerDialog.ui" line="29"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditPrimerDialog.ui" line="36"/>
+        <location filename="../src/EditPrimerDialog.ui" line="36"/>
         <source>New Primer</source>
         <translation>Новый праймер</translation>
     </message>
@@ -22,43 +22,43 @@
 <context>
     <name>ExportPrimersDialog</name>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="20"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="20"/>
         <source>Export Primers</source>
         <translation>Экспорт праймеров</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="31"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="31"/>
         <source>Export to:</source>
         <translation>Экспортировать в:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="59"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="59"/>
         <source>Format:</source>
         <translation>Формат:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="76"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="76"/>
         <source>File path:</source>
         <translation>Путь:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="88"/>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="153"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="88"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="153"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="109"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="109"/>
         <source>Database:</source>
         <translation>База данных:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="116"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="116"/>
         <source>Destination folder:</source>
         <translation>Папка для сохранения:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="135"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="135"/>
         <source>Connect</source>
         <translation>Подключиться</translation>
     </message>
@@ -74,43 +74,43 @@
 <context>
     <name>ImportPrimersDialog</name>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="20"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="20"/>
         <source>Import Primers</source>
         <translation>Импорт праймеров</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="31"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="31"/>
         <source>Import from:</source>
         <translation>Импортировать из:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="57"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="57"/>
         <source>Connect to database</source>
         <translation>Подключиться к базе данных</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="75"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="75"/>
         <source>Files:</source>
         <translation>Файлы:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="100"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="100"/>
         <source>Add file(s)</source>
         <translation>Добавить файл(ы)</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="107"/>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="173"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="107"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="173"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="141"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="141"/>
         <source>Objects:</source>
         <translation>Объекты:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="166"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="166"/>
         <source>Add object(s)</source>
         <translation>Добавить объект(ы)</translation>
     </message>
@@ -118,63 +118,63 @@
 <context>
     <name>InSilicoPcrOptionPanelWidget</name>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="14"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="121"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="121"/>
         <source>Maximum product</source>
         <translation>Максимальный продукт</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="105"/>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="137"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="105"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="137"/>
         <source> bp</source>
         <translation> нк</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="89"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="89"/>
         <source>3&apos; perfect match</source>
         <translation>3&apos; идеальное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="153"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="153"/>
         <source>Extract annotations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="174"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="174"/>
         <source>&lt;a href=&quot;details&quot;&gt;Show primers details&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;details&quot;&gt;Показать информацию о праймерах&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="235"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="235"/>
         <source>Find product(s)</source>
         <translation>Найти продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="330"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="330"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="335"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="335"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="340"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="340"/>
         <source>Ta</source>
         <translation>Ta</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="369"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="369"/>
         <source>Extract product(s)</source>
         <translation>Извлечь продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="383"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="383"/>
         <source>Info: choose a nucleic sequence for running In Silico PCR</source>
         <translation>Информация: выберите нуклеотидную последовательность для запуска In Silico PCR</translation>
     </message>
@@ -182,27 +182,27 @@
 <context>
     <name>PrimerGroupBox</name>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="14"/>
+        <location filename="../src/PrimerGroupBox.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="69"/>
+        <location filename="../src/PrimerGroupBox.ui" line="69"/>
         <source>Reverse-complement sequence</source>
         <translation>Обратно-комплементарная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="98"/>
+        <location filename="../src/PrimerGroupBox.ui" line="98"/>
         <source>Choose a primer from the primer library</source>
         <translation>Выберите праймер из библиотеки праймеров</translation>
     </message>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="125"/>
+        <location filename="../src/PrimerGroupBox.ui" line="125"/>
         <source>Mismatches</source>
         <translation>Несоответствия</translation>
     </message>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="132"/>
+        <location filename="../src/PrimerGroupBox.ui" line="132"/>
         <source> bp</source>
         <translation> нк</translation>
     </message>
@@ -210,7 +210,7 @@
 <context>
     <name>PrimerLibrarySelector</name>
     <message>
-        <location filename="../src/ui/PrimerLibrarySelector.ui" line="14"/>
+        <location filename="../src/PrimerLibrarySelector.ui" line="14"/>
         <source>Choose Primer</source>
         <translation>Выберите праймер</translation>
     </message>
@@ -218,7 +218,7 @@
 <context>
     <name>PrimerLibraryWidget</name>
     <message>
-        <location filename="../src/ui/PrimerLibraryWidget.ui" line="14"/>
+        <location filename="../src/PrimerLibraryWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
@@ -226,7 +226,7 @@
 <context>
     <name>PrimersDetailsDialog</name>
     <message>
-        <location filename="../src/ui/PrimersDetailsDialog.ui" line="14"/>
+        <location filename="../src/PrimersDetailsDialog.ui" line="14"/>
         <source>Primers Details</source>
         <translation>Информация о праймерах</translation>
     </message>
@@ -458,87 +458,100 @@
 <context>
     <name>U2::InSilicoPcrOptionPanelWidget</name>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="61"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="64"/>
         <source>Forward primer</source>
         <translation>Прямой праймер</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="62"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="65"/>
         <source>Reverse primer</source>
         <translation>Обратный праймер</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="63"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="66"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="64"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="67"/>
         <source>Inner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="65"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="68"/>
         <source>All intersected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="66"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="69"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="79"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="85"/>
         <source>Show primers details</source>
         <translation>Показать информацию о праймерах</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="126"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="132"/>
         <source>Find product(s)</source>
         <translation>Найти продукт(ы)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="129"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="135"/>
         <source>Warning: </source>
         <translation>Предупреждение: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="130"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="136"/>
         <source>Find product(s) anyway</source>
         <translation>Найти продукт(ы) в любом случае</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="207"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="213"/>
         <source>Extract In Silico PCR products</source>
         <translation>Извлечь продукты ПЦР in silico</translation>
     </message>
 </context>
 <context>
+    <name>U2::InSilicoPcrProductsTable</name>
+    <message>
+        <location filename="../src/InSilicoPcrProductsTable.cpp" line="78"/>
+        <source>N/A</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::InSilicoPcrTask</name>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="50"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="52"/>
         <source>In Silico PCR</source>
         <translation>In Silico PCR</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="103"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="106"/>
         <source>Forward primers found: %1</source>
         <translation>Forward primers found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="104"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="107"/>
         <source>Reverse primers found: %1</source>
         <translation>Reverse primers found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="187"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="191"/>
         <source>Products found: %1</source>
         <translation>Products found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="191"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="195"/>
         <source>Primers details:</source>
         <translation>Информация о праймерах:</translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrTask.cpp" line="199"/>
+        <source>Products found: %1. &lt;br&gt;&lt;br&gt;The detailed information about primers is not available as primers or sequence contain a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -915,12 +928,17 @@
 <context>
     <name>U2::PrimerGroupBox</name>
     <message>
-        <location filename="../src/PrimerGroupBox.cpp" line="51"/>
+        <location filename="../src/PrimerGroupBox.cpp" line="139"/>
+        <source>N/A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerGroupBox.cpp" line="192"/>
         <source>-mer</source>
         <translation>-mer</translation>
     </message>
     <message>
-        <location filename="../src/PrimerGroupBox.cpp" line="91"/>
+        <location filename="../src/PrimerGroupBox.cpp" line="140"/>
         <source>Tm = </source>
         <translation>Tm = </translation>
     </message>
@@ -979,6 +997,12 @@
         <source>Incorrect primer number</source>
         <translation>Incorrect primer number</translation>
     </message>
+    <message>
+        <location filename="../src/PrimerLibraryTable.cpp" line="134"/>
+        <location filename="../src/PrimerLibraryTable.cpp" line="136"/>
+        <source>N/A</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::PrimerLibrarySelector</name>
@@ -1029,62 +1053,77 @@ Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library
 <context>
     <name>U2::PrimerStatistics</name>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="161"/>
+        <location filename="../src/PrimerStatistics.cpp" line="41"/>
+        <source>The primers contain a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerStatistics.cpp" line="43"/>
+        <source>The forward primer contains a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerStatistics.cpp" line="45"/>
+        <source>The reverse primer contains a character from the Extended DNA alphabet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerStatistics.cpp" line="216"/>
         <source>low GC-content</source>
         <translation>low GC-content</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="162"/>
+        <location filename="../src/PrimerStatistics.cpp" line="217"/>
         <source>high GC-content</source>
         <translation>high GC-content</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="168"/>
+        <location filename="../src/PrimerStatistics.cpp" line="223"/>
         <source>low melting temperature</source>
         <translation>low melting temperature</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="169"/>
+        <location filename="../src/PrimerStatistics.cpp" line="224"/>
         <source>high melting temperature</source>
         <translation>high melting temperature</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="175"/>
+        <location filename="../src/PrimerStatistics.cpp" line="230"/>
         <source>low GC clamp</source>
         <translation>low GC clamp</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="181"/>
+        <location filename="../src/PrimerStatistics.cpp" line="236"/>
         <source>high base runs value</source>
         <translation>high base runs value</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="188"/>
+        <location filename="../src/PrimerStatistics.cpp" line="243"/>
         <source>forward primer has %1.</source>
         <translation>прямой праймер имеет %1.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="190"/>
+        <location filename="../src/PrimerStatistics.cpp" line="245"/>
         <source>reverse primer has %1.</source>
         <translation>обратный праймер имеет %1.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="259"/>
+        <location filename="../src/PrimerStatistics.cpp" line="315"/>
         <source>Criteria</source>
         <translation>Критерий</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="260"/>
+        <location filename="../src/PrimerStatistics.cpp" line="316"/>
         <source>Valid Values</source>
         <translation>Допустимые значения</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="261"/>
+        <location filename="../src/PrimerStatistics.cpp" line="317"/>
         <source>Forward</source>
         <translation>Прямой</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="262"/>
+        <location filename="../src/PrimerStatistics.cpp" line="318"/>
         <source>Reverse</source>
         <translation>Обратный</translation>
     </message>

@@ -49,12 +49,14 @@ unix {
 
 unix_not_mac() : LIBS += -lX11
 
-HEADERS += src/SendReportDialog.h \
-           src/Utils.h
+HEADERS += src/DetectWin10.h \
+           src/SendReportDialog.h \
+           src/Utils.h 
 
 FORMS += src/ui/SendReportDialog.ui
 
-SOURCES += src/main.cpp \
+SOURCES += src/DetectWin10.cpp \
+           src/main.cpp \
            src/SendReportDialog.cpp \
            src/Utils.cpp \
            src/getMemorySize.c

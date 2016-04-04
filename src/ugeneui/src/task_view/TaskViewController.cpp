@@ -443,14 +443,14 @@ QString TVReportWindow::prepareReportHTML(Task* t) {
 
     report+="<table>";
     QString status = t->hasError() ? tr("Failed") : t->isCanceled() ? tr("Canceled") : tr("Finished");
-    report+="<tr><td width=200><b>"+tr("status")+"</b></td><td>" +status+ "</td></tr>";
+    report+="<tr><td width=200><b>"+tr("Status")+"</b></td><td>" +status+ "</td></tr>";
     if (t->hasError()) {
-    report+="<tr><td><b>"+tr("error:")+"</b></td><td>" + t->getError().replace('|',"&#124;") + "</td></tr>";
+        report +="<tr><td><b>"+tr("Error:")+"</b></td><td>" + t->getError().replace('|',"&#124;") + "</td></tr>";
     }
 
     int msecs = GTimer::millisBetween(t->getTimeInfo().startTime, t->getTimeInfo().finishTime);
 
-    report+="<tr><td><b>"+tr("time")+"</b></td><td>" + convertTime(msecs) + "</td></tr>";
+    report+="<tr><td><b>"+tr("Time")+"</b></td><td>" + convertTime(msecs) + "</td></tr>";
     report+="</td></tr>";
     report+="</table>";
 
@@ -537,7 +537,7 @@ QString TVReportWindow::convertTime(int msecs) {
     msecs /= 60;
     int hours = msecs;
 
-    return QString("%1.%2.%3.%4").
+    return QString("%1h %2m %3.%4s").
             arg(hours).
             arg(minutes, 2, 10, QLatin1Char('0')).
             arg(seconds, 2, 10, QLatin1Char('0')).

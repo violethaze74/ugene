@@ -2,119 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>GObject</name>
-    <message>
-        <source>Unknown</source>
-        <translation type="vanished">Unknown</translation>
-    </message>
-    <message>
-        <source>Unloaded</source>
-        <translation type="vanished">Unloaded</translation>
-    </message>
-    <message>
-        <source>Text</source>
-        <translation type="vanished">Text</translation>
-    </message>
-    <message>
-        <source>Sequence</source>
-        <translation type="vanished">Sequence</translation>
-    </message>
-    <message>
-        <source>Sequences</source>
-        <translation type="vanished">Sequences</translation>
-    </message>
-    <message>
-        <source>Annotation</source>
-        <translation type="vanished">Annotation</translation>
-    </message>
-    <message>
-        <source>Annotations</source>
-        <translation type="vanished">Annotations</translation>
-    </message>
-    <message>
-        <source>Variation</source>
-        <translation type="vanished">Variation</translation>
-    </message>
-    <message>
-        <source>Variations</source>
-        <translation type="vanished">Variations</translation>
-    </message>
-    <message>
-        <source>Chromatogram</source>
-        <translation type="vanished">Chromatogram</translation>
-    </message>
-    <message>
-        <source>Chromatograms</source>
-        <translation type="vanished">Chromatograms</translation>
-    </message>
-    <message>
-        <source>Alignment</source>
-        <translation type="vanished">Alignment</translation>
-    </message>
-    <message>
-        <source>Alignments</source>
-        <translation type="vanished">Alignments</translation>
-    </message>
-    <message>
-        <source>Tree</source>
-        <translation type="vanished">Tree</translation>
-    </message>
-    <message>
-        <source>Trees</source>
-        <translation type="vanished">Trees</translation>
-    </message>
-    <message>
-        <source>3D model</source>
-        <translation type="vanished">3D model</translation>
-    </message>
-    <message>
-        <source>3D models</source>
-        <translation type="vanished">3D models</translation>
-    </message>
-    <message>
-        <source>Assembly</source>
-        <translation type="vanished">Assembly</translation>
-    </message>
-    <message>
-        <source>Assemblies</source>
-        <translation type="vanished">Assemblies</translation>
-    </message>
-</context>
-<context>
-    <name>L10N</name>
-    <message>
-        <source>Failed to detect IO adapter for %1</source>
-        <translation type="vanished">Failed to detect IO adapter for %1</translation>
-    </message>
-</context>
-<context>
-    <name>MAlignmentObject</name>
-    <message>
-        <source>Unexpected gap start</source>
-        <translation type="vanished">Unexpected gap start</translation>
-    </message>
-    <message>
-        <source>Unexpected gap start (too small)</source>
-        <translation type="vanished">Unexpected gap start (too small)</translation>
-    </message>
-    <message>
-        <source>Unexpected gap start (too big)</source>
-        <translation type="vanished">Unexpected gap start (too big)</translation>
-    </message>
-    <message>
-        <source> Incorrect gap splitting</source>
-        <translation type="vanished"> Incorrect gap splitting</translation>
-    </message>
-    <message>
-        <source> Alignment walker is ended</source>
-        <translation type="vanished"> Alignment walker is ended</translation>
-    </message>
-    <message>
-        <source> Alignment changed</source>
-        <translation type="vanished"> Alignment changed</translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="525"/>
@@ -740,25 +627,6 @@
     </message>
 </context>
 <context>
-    <name>U2::AddSequencesToAlignmentTask</name>
-    <message>
-        <source>Object is empty.</source>
-        <translation type="vanished">Object is empty.</translation>
-    </message>
-    <message>
-        <source>Object is locked for modifications.</source>
-        <translation type="vanished">Object is locked for modifications.</translation>
-    </message>
-    <message>
-        <source>Some sequences have wrong alphabet: </source>
-        <translation type="vanished">Some sequences have wrong alphabet: </translation>
-    </message>
-    <message>
-        <source> and others</source>
-        <translation type="vanished"> and others</translation>
-    </message>
-</context>
-<context>
     <name>U2::AppResourcePool</name>
     <message>
         <location filename="../src/globals/AppResources.cpp" line="56"/>
@@ -957,36 +825,6 @@ The session database file is removed after closing of UGENE.</translation>
     </message>
 </context>
 <context>
-    <name>U2::ConvertDasIdTask</name>
-    <message>
-        <source>Convert resource id: %1</source>
-        <translation type="vanished">Convert resource id: %1</translation>
-    </message>
-    <message>
-        <source>undefined error (code %1)</source>
-        <translation type="vanished">undefined error (code %1)</translation>
-    </message>
-    <message>
-        <source>Remote server does not respond</source>
-        <translation type="vanished">Remote server does not respond</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ConvertIdAndLoadDasFeaturesTask</name>
-    <message>
-        <source>Convert ID and load DAS features for: %1</source>
-        <translation type="vanished">Convert ID and load DAS features for: %1</translation>
-    </message>
-    <message>
-        <source>Convert IDs task</source>
-        <translation type="vanished">Convert IDs task</translation>
-    </message>
-    <message>
-        <source>&quot;%1&quot; was converted into &quot;%2&quot;</source>
-        <translation type="vanished">&quot;%1&quot; was converted into &quot;%2&quot;</translation>
-    </message>
-</context>
-<context>
     <name>U2::CopyDataTask</name>
     <message>
         <location filename="../src/tasks/CopyDataTask.cpp" line="33"/>
@@ -1026,103 +864,6 @@ The session database file is removed after closing of UGENE.</translation>
     </message>
 </context>
 <context>
-    <name>U2::DASSourceRegistry</name>
-    <message>
-        <source>UniProt (DAS)</source>
-        <translation type="vanished">UniProt (DAS)</translation>
-    </message>
-    <message>
-        <source>http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/</source>
-        <translation type="vanished">http://www.ebi.ac.uk/das-srv/uniprot/das/uniprot/</translation>
-    </message>
-    <message>
-        <source>Use Swiss-Prot, TrEMBL, UniProt, IPI or UniParc accession number. For example: %1</source>
-        <translation type="vanished">Use Swiss-Prot, TrEMBL, UniProt, IPI or UniParc accession number. For example: %1</translation>
-    </message>
-    <message>
-        <source>UniProt database of protein sequences and features.</source>
-        <translation type="vanished">UniProt database of protein sequences and features.</translation>
-    </message>
-    <message>
-        <source>UniProt</source>
-        <translation type="vanished">UniProt</translation>
-    </message>
-    <message>
-        <source>DAS 1 reference server for sequence and features from UniProt.
-UniProt (Universal Protein Resource) is the worlds most comprehensive catalog of information on proteins.
-It is a central repository of protein sequence and function created by joining the information contained
-in Swiss-Prot, TrEMBL, and PIR.</source>
-        <translation type="vanished">DAS 1 reference server for sequence and features from UniProt.
-UniProt (Universal Protein Resource) is the worlds most comprehensive catalog of information on proteins.
-It is a central repository of protein sequence and function created by joining the information contained
-in Swiss-Prot, TrEMBL, and PIR.</translation>
-    </message>
-    <message>
-        <source>Pride DAS 1.6</source>
-        <translation type="vanished">Pride DAS 1.6</translation>
-    </message>
-    <message>
-        <source>http://www.ebi.ac.uk/pride-das/das/PrideDataSource/</source>
-        <translation type="vanished">http://www.ebi.ac.uk/pride-das/das/PrideDataSource/</translation>
-    </message>
-    <message>
-        <source>The PRIDE database is a centralized, public data repository for proteomics data. 
-It has been developed to provide the proteomics community with a public repository 
-for protein and peptide identifications together with the evidence supporting these 
-identifications. In addition to identifications, PRIDE is able to capture details of 
-post-translational modifications coordinated relative to the peptides in which they have been found.</source>
-        <translation type="vanished">The PRIDE database is a centralized, public data repository for proteomics data. 
-It has been developed to provide the proteomics community with a public repository 
-for protein and peptide identifications together with the evidence supporting these 
-identifications. In addition to identifications, PRIDE is able to capture details of 
-post-translational modifications coordinated relative to the peptides in which they have been found.</translation>
-    </message>
-    <message>
-        <source>cbs_sort</source>
-        <translation type="vanished">cbs_sort</translation>
-    </message>
-    <message>
-        <source>http://das.cbs.dtu.dk:9000/das/cbs_sort/</source>
-        <translation type="vanished">http://das.cbs.dtu.dk:9000/das/cbs_sort/</translation>
-    </message>
-    <message>
-        <source>The combined result of the signalp, secretomep, targetp, netnes &amp; lipop server for the given id.</source>
-        <translation type="vanished">The combined result of the signalp, secretomep, targetp, netnes &amp; lipop server for the given id.</translation>
-    </message>
-    <message>
-        <source>signalp</source>
-        <translation type="vanished">signalp</translation>
-    </message>
-    <message>
-        <source>http://das.cbs.dtu.dk:9000/das/signalp/</source>
-        <translation type="vanished">http://das.cbs.dtu.dk:9000/das/signalp/</translation>
-    </message>
-    <message>
-        <source>SignalP (http://www.cbs.dtu.dk/services/SignalP) predictions for UniProt.</source>
-        <translation type="vanished">SignalP (http://www.cbs.dtu.dk/services/SignalP) predictions for UniProt.</translation>
-    </message>
-    <message>
-        <source>InterPro-Matches-Overview</source>
-        <translation type="vanished">InterPro-Matches-Overview</translation>
-    </message>
-    <message>
-        <source>http://www.ebi.ac.uk/das-srv/interpro/das/InterPro-matches-overview/</source>
-        <translation type="vanished">http://www.ebi.ac.uk/das-srv/interpro/das/InterPro-matches-overview/</translation>
-    </message>
-    <message>
-        <source>Shows the maximum extent of the matches from all signatures that are 
-integrated into a single InterPro entry against UniProtKB protein sequences 
-(i.e. if an InterPro entry contains 2 signatures, A and B, and both of 
-these match a protein, A between residue 3 and 125 and B between residue 
-5 and 127, the overview supermatch of these signatures is between 3 and 127).</source>
-        <translation type="vanished">Shows the maximum extent of the matches from all signatures that are 
-integrated into a single InterPro entry against UniProtKB protein sequences 
-(i.e. if an InterPro entry contains 2 signatures, A and B, and both of 
-these match a protein, A between residue 3 and 125 and B between residue 
-5 and 127, the overview supermatch of these signatures is between 3 and 127).</translation>
-    </message>
-</context>
-<context>
     <name>U2::DBXRefRegistry</name>
     <message>
         <location filename="../src/globals/DBXRefRegistry.cpp" line="42"/>
@@ -1138,13 +879,9 @@ these match a protein, A between residue 3 and 125 and B between residue
 <context>
     <name>U2::DNAAlphabetRegistryImpl</name>
     <message>
-        <source>All symbols</source>
-        <translation type="vanished">All symbols</translation>
-    </message>
-    <message>
         <location filename="../src/datatype/BaseAlphabets.cpp" line="63"/>
         <source>Raw</source>
-        <translation type="unfinished"></translation>
+        <translation>Raw</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseAlphabets.cpp" line="71"/>
@@ -1169,20 +906,12 @@ these match a protein, A between residue 3 and 125 and B between residue
     <message>
         <location filename="../src/datatype/BaseAlphabets.cpp" line="114"/>
         <source>Standard amino acid</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard amino acid</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseAlphabets.cpp" line="133"/>
         <source>Extended amino acid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Standard amino</source>
-        <translation type="vanished">Standard amino</translation>
-    </message>
-    <message>
-        <source>Extended amino</source>
-        <translation type="vanished">Extended amino</translation>
+        <translation>Extended amino acid</translation>
     </message>
     <message>
         <location filename="../src/datatype/BaseTranslations.cpp" line="270"/>
@@ -1554,27 +1283,27 @@ these match a protein, A between residue 3 and 125 and B between residue
         <translation> tool</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="114"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="115"/>
         <source>Can not run %1 tool.</source>
         <translation>Can not run %1 tool.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="116"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="117"/>
         <source>Can not run %1 tool. May be tool path &apos;%2&apos; not valid?</source>
         <translation>Can not run %1 tool. May be tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="125"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="126"/>
         <source>Tool %1 is cancelled</source>
-        <translation type="unfinished"></translation>
+        <translation>Tool %1 is cancelled</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="133"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="139"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 tool exited with code %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="135"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="141"/>
         <source>Tool %1 finished successfully</source>
         <translation>Tool %1 finished successfully</translation>
     </message>
@@ -1582,47 +1311,47 @@ these match a protein, A between residue 3 and 125 and B between residue
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="329"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="348"/>
         <source>Can not remove temporary directory: path is empty.</source>
         <translation>Can not remove temporary directory: path is empty.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="335"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="354"/>
         <source>Can not remove files from temporary directory.</source>
         <translation>Can not remove files from temporary directory.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="340"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="359"/>
         <source>Can not remove directory for temporary files.</source>
         <translation>Can not remove directory for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="353"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="372"/>
         <source>Can not create directory for temporary files: %1</source>
         <translation>Can not create directory for temporary files: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="384"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="403"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="400"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="419"/>
         <source>Undefined tool: &apos;%1&apos;</source>
         <translation>Undefined tool: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="404"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="423"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Path for &apos;%1&apos; tool not set</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="448"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="467"/>
         <source>Working directory is &quot;%1&quot;</source>
         <translation>Working directory is &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="457"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="476"/>
         <source>Launching %1 tool: %2 %3</source>
         <translation>Launching %1 tool: %2 %3</translation>
     </message>
@@ -1802,17 +1531,6 @@ these match a protein, A between residue 3 and 125 and B between residue
         <location filename="../src/util/GUrlUtils.h" line="133"/>
         <source>Output URL</source>
         <translation>Output URL</translation>
-    </message>
-</context>
-<context>
-    <name>U2::GetDasIdsBySequenceTask</name>
-    <message>
-        <source>Get an ID for the sequence</source>
-        <translation type="vanished">Get an ID for the sequence</translation>
-    </message>
-    <message>
-        <source>undefined error (code %1)</source>
-        <translation type="vanished">undefined error (code %1)</translation>
     </message>
 </context>
 <context>
@@ -2190,59 +1908,6 @@ these match a protein, A between residue 3 and 125 and B between residue
     </message>
 </context>
 <context>
-    <name>U2::LoadDasDocumentTask</name>
-    <message>
-        <source>Cannot load cached document: %1</source>
-        <translation type="vanished">Cannot load cached document: %1</translation>
-    </message>
-    <message>
-        <source>Cannot save document: %1</source>
-        <translation type="vanished">Cannot save document: %1</translation>
-    </message>
-    <message>
-        <source>Cannot find DAS reference sequence: %1</source>
-        <translation type="vanished">Cannot find DAS reference sequence: %1</translation>
-    </message>
-    <message>
-        <source>Cannot find DAS features for &apos;%1&apos; on %2</source>
-        <translation type="vanished">Cannot find DAS features for &apos;%1&apos; on %2</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LoadDasFeaturesTask</name>
-    <message>
-        <source>Load DAS annotations for current sequence</source>
-        <translation type="vanished">Load DAS annotations for current sequence</translation>
-    </message>
-    <message>
-        <source>Can not receive response from the server &quot;</source>
-        <translation type="vanished">Can not receive response from the server</translation>
-    </message>
-    <message>
-        <source>&lt;font size=&quot;5&quot; color=&quot;green&quot;&gt;Received %1 annotations from the server &quot;%2&quot;&lt;/font&gt;&lt;br&gt;</source>
-        <translation type="vanished">&lt;font size=&quot;5&quot; color=&quot;green&quot;&gt;Received %1 annotations from the server &quot;%2&quot;&lt;/font&gt;&lt;br&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LoadDasObjectTask</name>
-    <message>
-        <source>Load DAS data for &apos;%1&apos; from %2</source>
-        <translation type="vanished">Load DAS data for &apos;%1&apos; from %2</translation>
-    </message>
-    <message>
-        <source>Sequence with ID=%1 is not found.</source>
-        <translation type="vanished">Sequence with ID=%1 is not found.</translation>
-    </message>
-    <message>
-        <source>undefined error (code %1)</source>
-        <translation type="vanished">undefined error (code %1)</translation>
-    </message>
-    <message>
-        <source>Remote server does not respond</source>
-        <translation type="vanished">Remote server does not respond</translation>
-    </message>
-</context>
-<context>
     <name>U2::LoadDataFromEntrezTask</name>
     <message>
         <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="424"/>
@@ -2496,7 +2161,7 @@ these match a protein, A between residue 3 and 125 and B between residue
     <message>
         <location filename="../src/globals/ClipboardController.cpp" line="38"/>
         <source>Paste data</source>
-        <translation type="unfinished"></translation>
+        <translation>Paste data</translation>
     </message>
 </context>
 <context>
@@ -2541,29 +2206,6 @@ these match a protein, A between residue 3 and 125 and B between residue
         <location filename="../src/tasks/RemoveDocumentTask.cpp" line="94"/>
         <source>Cannot remove document %1, since it is locked by some task.</source>
         <translation>Cannot remove document %1, since it is locked by some task.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ReplyHandler</name>
-    <message>
-        <source>Can&apos;t receive result from the server: nothing to download</source>
-        <translation type="vanished">Can&apos;t receive result from the server: nothing to download</translation>
-    </message>
-    <message>
-        <source>Unexpected server response</source>
-        <translation type="vanished">Unexpected server response</translation>
-    </message>
-    <message>
-        <source>undefined error (code %1)</source>
-        <translation type="vanished">undefined error (code %1)</translation>
-    </message>
-    <message>
-        <source>Network error: %1</source>
-        <translation type="vanished">Network error: %1</translation>
-    </message>
-    <message>
-        <source>Remote server doesn&apos;t respond</source>
-        <translation type="vanished">Remote server doesn&apos;t respond</translation>
     </message>
 </context>
 <context>
@@ -2941,39 +2583,9 @@ UGENE contains unsaved modifications.</translation>
     </message>
 </context>
 <context>
-    <name>U2::UniprotBlastAndLoadDASAnnotations</name>
-    <message>
-        <source>BLAST IDs and DAS annotations</source>
-        <translation type="vanished">BLAST IDs and DAS annotations</translation>
-    </message>
-    <message>
-        <source>Server &quot;%1&quot; is not available!</source>
-        <translation type="vanished">Server &quot;%1&quot; is not available!</translation>
-    </message>
-</context>
-<context>
-    <name>U2::UniprotBlastTask</name>
-    <message>
-        <source>Get an ID for the sequence</source>
-        <translation type="vanished">Get an ID for the sequence</translation>
-    </message>
-    <message>
-        <source>Reply from the BLAST server is empty. Similar sequences not found</source>
-        <translation type="vanished">Reply from the BLAST server is empty. Similar sequences not found</translation>
-    </message>
-    <message>
-        <source>An empty sequence is searched</source>
-        <translation type="vanished">An empty sequence is searched</translation>
-    </message>
-    <message>
-        <source>Settings are invalid</source>
-        <translation type="vanished">Settings are invalid</translation>
-    </message>
-</context>
-<context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/globals/UserApplicationsSettings.cpp" line="79"/>
+        <location filename="../src/globals/UserApplicationsSettings.cpp" line="81"/>
         <source>Cleaning temp dir: %1</source>
         <translation>Cleaning temp dir: %1</translation>
     </message>

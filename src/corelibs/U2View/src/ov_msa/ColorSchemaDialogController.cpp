@@ -28,6 +28,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/U2FileDialog.h>
+#include <QPushButton>
 
 #include "ColorSchemaDialogController.h"
 
@@ -45,6 +46,8 @@ ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor>& col
 int ColorSchemaDialogController::adjustAlphabetColors(){
     setupUi(this);
     new HelpButton(this, buttonBox, "17467624");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     alphabetColorsView = new QPixmap(alphabetColorsFrame->size());
     connect(clearButton, SIGNAL(clicked()), SLOT(sl_onClear()));
     connect(restoreButton, SIGNAL(clicked()), SLOT(sl_onRestore()));
@@ -187,6 +190,8 @@ CreateColorSchemaDialog::CreateColorSchemaDialog(CustomColorSchema* _newSchema, 
 
     connect(schemeName, SIGNAL(textEdited ( const QString&)), SLOT(sl_schemaNameEdited(const QString&)));
 
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ok"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     QPushButton *createButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 

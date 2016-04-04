@@ -43,6 +43,7 @@ public:
 
 private slots:
     void sl_testTimeOut();
+    void sl_getMemory();
 
 private:
     QString launchTest(const GUITests &tests);
@@ -55,11 +56,15 @@ private:
     void saveScreenshot();
     static void cleanup();
     void writeTestResult();
+    void saveMemoryInfo();
+    int countMemForProcessTree(int pid);
 
     HI::GUITest *test;
     Logger &log;
     bool needCleanup;
     QString testResult;
+
+    QList<int> memoryList;
 };
 
 }   // namespace U2

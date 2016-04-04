@@ -4,12 +4,14 @@ MODULE_ID=U2Formats
 include( ../../ugene_lib_common.pri )
 
 use_bundled_zlib() {
-    INCLUDEPATH += ../../libs_3rdparty/zlib/src
+    macx: LIBS += -lzlib
+} else {
+    macx: LIBS += -lz
 }
 
 UGENE_RELATIVE_DESTDIR = ''
 
-DEFINES+= QT_FATAL_ASSERT BUILDING_U2FORMATS_DLL
+DEFINES += QT_FATAL_ASSERT BUILDING_U2FORMATS_DLL
 
 LIBS += -L../../_release -lU2Core -lU2Algorithm
 LIBS += -lugenedb -lsamtools
@@ -42,6 +44,13 @@ INCLUDEPATH += ../../libs_3rdparty/sqlite3/src
         win32-msvc2013 {
             LIBS -= -lzlib
             LIBS += -lzlibd
+        }
+
+        macx {
+            use_bundled_zlib() {
+                LIBS -= -lzlib
+                LIBS += -lzlibd
+            }
         }
 
         unix:POST_TARGETDEPS -= ../../_release/libsamtools.a

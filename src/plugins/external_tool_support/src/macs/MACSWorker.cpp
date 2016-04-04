@@ -189,11 +189,12 @@ U2::MACSSettings MACSWorker::createMACSSettings( U2OpStatus & /*os*/ ){
 
     QString locStr = getValue<QString>(MODEL_FOLD_ATTR_ID);
     U2Location l;
-    QString err = Genbank::LocationParser::parseLocation(qPrintable(locStr), locStr.size(), l);
-    if (!err.isEmpty()){
-        algoLog.error(tr("Bad model fold region: %1. Default region is used").arg(err));
-    }else{
-        if(!l->regions.isEmpty()){
+    QStringList messages;
+    Genbank::LocationParser::ParsingResult parsingResult = Genbank::LocationParser::parseLocation(qPrintable(locStr), locStr.size(), l, messages);
+    if (Genbank::LocationParser::Failure == parsingResult || !messages.isEmpty()){
+        algoLog.error(tr("Bad model fold region: %1. Default region is used").arg(messages.isEmpty() ? tr("unrecognized parsing error") : messages.last()));
+    } else {
+        if (!l->regions.isEmpty()) {
             settings.modelFold = l->regions.first();
         }
     }

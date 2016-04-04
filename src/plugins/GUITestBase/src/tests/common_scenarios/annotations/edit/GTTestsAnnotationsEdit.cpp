@@ -38,6 +38,8 @@
 #include "runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"
 
+#include <U2View/ADVConstants.h>
+
 namespace U2 {
 
 namespace GUITest_common_scenarios_annotations_edit {
@@ -745,9 +747,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTMouseDriver::click();
 
     // 3. Open context menu on sequence area
-    // Expected state: 'Rename item' action is disabled
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "rename_item",
-                                                      PopupChecker::IsDisabled, GTGlobals::UseMouse));
+    // Expected state: { Edit -> Annotation } action is disabled
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
+                                                      PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     // 3. Open context menu on sequence area

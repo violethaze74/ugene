@@ -90,6 +90,12 @@ void BaseShortReadsAlignerWorker::init() {
     inPairedChannel = ports.value(IN_PORT_DESCR_PAIRED);
     output = ports.value(OUT_PORT_DESCR);
     pairedReadsInput = getValue<QString>(LIBRARY) == "Paired-end";
+    readsFetcher = DatasetFetcher(this, inChannel, context);
+    pairedReadsFetcher = DatasetFetcher(this, inPairedChannel, context);
+
+    // Aligners output data keep context (e.g. dataset info) of upstream reads
+    output->addComplement(inChannel);
+    inChannel->addComplement(output);
 }
 
 DnaAssemblyToRefTaskSettings BaseShortReadsAlignerWorker::getSettings(U2OpStatus &os) {
@@ -123,44 +129,41 @@ DnaAssemblyToRefTaskSettings BaseShortReadsAlignerWorker::getSettings(U2OpStatus
 }
 
 Task *BaseShortReadsAlignerWorker::tick() {
-    bool pairedReadsInput = getValue<QString>(LIBRARY) == "Paired-end";
+    readsFetcher.processInputMessage();
+    if (pairedReadsInput) {
+        pairedReadsFetcher.processInputMessage();
+    }
 
-    bool bothData = inChannel->hasMessage() && inPairedChannel->hasMessage();
-
-    if ((!pairedReadsInput && inChannel->hasMessage()) || (pairedReadsInput && bothData)) {
+    if (isReadyToRun()) {
         U2OpStatus2Log os;
-
-        Message m = getMessageAndSetupScriptValues(inChannel);
-        QVariantMap data = m.getData().toMap();
-
         DnaAssemblyToRefTaskSettings settings = getSettings(os);
         if (os.hasError()) {
             return new FailTask(os.getError());
         }
+        settings.pairedReads = pairedReadsInput;
 
-        QString readsUrl = data[READS_URL_SLOT_ID].toString();
-
-        if(pairedReadsInput){
-            //paired
-            Message m2 = getMessageAndSetupScriptValues(inPairedChannel);
-            QVariantMap data2 = m2.getData().toMap();
-
-            QString readsPairedUrl = data2[READS_PAIRED_URL_SLOT_ID].toString();
-            settings.shortReadSets.append(ShortReadSet(readsUrl, ShortReadSet::PairedEndReads, ShortReadSet::UpstreamMate));
-            settings.shortReadSets.append(ShortReadSet(readsPairedUrl, ShortReadSet::PairedEndReads, ShortReadSet::DownstreamMate));
-            settings.pairedReads = true;
-        }else {
-            //single
-            settings.shortReadSets.append(ShortReadSet(readsUrl, ShortReadSet::SingleEndReads, ShortReadSet::UpstreamMate));
-            settings.pairedReads = false;
+        if (pairedReadsInput) {
+            settings.shortReadSets << toUrls(readsFetcher.takeFullDataset(), READS_URL_SLOT_ID, ShortReadSet::PairedEndReads, ShortReadSet::UpstreamMate);
+            settings.shortReadSets << toUrls(pairedReadsFetcher.takeFullDataset(), READS_PAIRED_URL_SLOT_ID, ShortReadSet::PairedEndReads, ShortReadSet::DownstreamMate);
+        } else {
+            settings.shortReadSets << toUrls(readsFetcher.takeFullDataset(), READS_URL_SLOT_ID, ShortReadSet::SingleEndReads, ShortReadSet::UpstreamMate);
         }
 
         DnaAssemblyToReferenceTask* t = getTask(settings);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
-    }else if (inChannel->isEnded()) {
+    }
+
+    if (dataFinished()) {
         setDone();
         output->setEnded();
+    }
+
+    if (pairedReadsInput) {
+        const QString error = checkPairedReads();
+        if (!error.isEmpty()) {
+            return new FailTask(error);
+        }
     }
     return NULL;
 }
@@ -207,11 +210,37 @@ void BaseShortReadsAlignerWorker::sl_taskFinished() {
     output->put(Message(output->getBusType(), data));
 
     context->getMonitor()->addOutputFile(url, getActor()->getId());
+}
 
-    if (inChannel->isEnded() && !inChannel->hasMessage()) {
-        setDone();
-        output->setEnded();
+QList<ShortReadSet> BaseShortReadsAlignerWorker::toUrls(const QList<Message> &messages, const QString &urlSlotId, ShortReadSet::LibraryType libType, ShortReadSet::MateOrder order) const {
+    QList<ShortReadSet> result;
+    foreach (const Message &message, messages) {
+        const QVariantMap data = message.getData().toMap();
+        if (data.contains(urlSlotId)) {
+            const QString url = data.value(urlSlotId).value<QString>();
+            result << ShortReadSet(url, libType, order);
+        }
     }
+    return result;
+}
+
+bool BaseShortReadsAlignerWorker::isReadyToRun() const {
+    return readsFetcher.hasFullDataset() && (!pairedReadsInput || pairedReadsFetcher.hasFullDataset());
+}
+
+bool BaseShortReadsAlignerWorker::dataFinished() const {
+    return readsFetcher.isDone() && (!pairedReadsInput || pairedReadsFetcher.isDone());
+}
+
+QString BaseShortReadsAlignerWorker::checkPairedReads() const {
+    CHECK(pairedReadsInput, "");
+    if (readsFetcher.isDone() && pairedReadsFetcher.hasFullDataset()) {
+        return tr("Not enough upstream reads datasets");
+    }
+    if (pairedReadsFetcher.isDone() && readsFetcher.hasFullDataset()) {
+        return tr("Not enough downstream reads datasets");
+    }
+    return "";
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -309,7 +338,7 @@ QList<PortDescriptor*> BaseShortReadsAlignerWorkerFactory::getPortDescriptors() 
     DataTypePtr inTypeSet(new MapDataType(IN_TYPE_ID, inTypeMap));
     DataTypePtr inTypeSetPaired(new MapDataType(IN_TYPE_ID, inTypeMapPaired));
     PortDescriptor* readsDescriptor = new PortDescriptor(inPortDesc, inTypeSet, true);
-    PortDescriptor* readsDescriptor2 = new PortDescriptor(inPortDescPaired, inTypeSetPaired, true);
+    PortDescriptor* readsDescriptor2 = new PortDescriptor(inPortDescPaired, inTypeSetPaired, true, false, IntegralBusPort::BLIND_INPUT);
     portDescs << readsDescriptor2;
     portDescs << readsDescriptor;
 
@@ -353,7 +382,6 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
 
     return res;
 }
-
 
 } //LocalWorkflow
 } //U2

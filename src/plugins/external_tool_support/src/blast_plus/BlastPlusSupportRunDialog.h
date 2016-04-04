@@ -25,7 +25,6 @@
 #include <QDialog>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Gui/DialogUtils.h>
-#include <ui_BlastAllSupportDialog.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include "BlastPlusSupportCommonTask.h"
 #include "utils/BlastRunCommonDialog.h"

@@ -3,7 +3,6 @@ project(U2Lang)
 
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOMOC_MOC_OPTIONS -nn) # do not display notes.
 
 find_package(Qt5 REQUIRED Core Xml Script)
 
@@ -14,9 +13,9 @@ include_directories(../../include)
 
 file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)
-qt5_add_resources(RCC_SRCS src/U2Lang.qrc)
+qt5_add_resources(RCC_SRCS U2Lang.qrc)
 
-add_library(U2Lang SHARED ${HDRS} ${SRCS})
+add_library(U2Lang SHARED ${HDRS} ${SRCS} ${RCC_SRCS})
 
 target_link_libraries(U2Lang
         Qt5::Core Qt5::Xml Qt5::Script

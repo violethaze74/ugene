@@ -202,7 +202,7 @@ void URLLineEdit::browse(bool addFiles) {
             this->checkExtension(name);
         } else {
             #ifdef Q_OS_MAC
-                if (qgetenv("UGENE_GUI_TEST").toInt() == 1 && qgetenv("UGENE_USE_NATIVE_DIALOGS").toInt() == 0) {
+                if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
                     lod.url = name = U2FileDialog::getOpenFileName(NULL, tr("Select a file"), lastDir, FileFilter, 0, QFileDialog::DontUseNativeDialog );
                 } else
             #endif
