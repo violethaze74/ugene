@@ -418,7 +418,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during adding sequences. The multiple alignment is no more available.");
     GTGlobals::sleep();
     GTUtilsProjectTreeView::click(os, "COI");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(6000);
 }
 
