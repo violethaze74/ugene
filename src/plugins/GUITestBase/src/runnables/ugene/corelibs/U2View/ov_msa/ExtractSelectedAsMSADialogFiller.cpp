@@ -122,8 +122,8 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
     p.setY(p.y()+2);
     p=dialog->mapToGlobal(p);
 
-    GTMouseDriver::moveTo(os,p);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::click();
     for(int i=0; i<table->rowCount() ;i++){
         foreach(QString s, list){
             QCheckBox *box = qobject_cast<QCheckBox*>(table->cellWidget(i,0));

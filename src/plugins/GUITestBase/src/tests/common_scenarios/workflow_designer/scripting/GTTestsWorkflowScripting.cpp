@@ -92,8 +92,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 //    5. Paste "#$%not a script asdasd321 123" at the script text area. Click "Check syntax" button
 //    Expected state: messagebox "Script syntax check failed!" appears.
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "wd_scripting_test_0001"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "wd_scripting_test_0001"));
+    GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "#$%not a script asdasd321 123", "Script syntax check failed!"));
     GTWidget::click(os, GTAction::button(os, "editScriptAction"));
@@ -116,8 +116,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 //
 //  3. Paste "#$%not a script asdasd321 123" at the script text area. Click "Check syntax" button
 //  Expected state: messagebox "Script syntax check failed!" appears.
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os,"Write FASTA"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Write FASTA"));
+    GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", "#$%not a script asdasd321 123", true, "Script syntax check failed! Line: 1, error: Expected `end of file'"));
     GTUtilsWorkflowDesigner::setParameterScripting(os, "output file", "user script");
@@ -137,15 +137,15 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Show scripting options"));
     GTWidget::click(os, GTAction::button(os, GTAction::findActionByText(os, "Scripting mode")));
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os,"Write FASTA"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Write FASTA"));
+    GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", "url_out = url + \".result.fa\";"));
     GTUtilsWorkflowDesigner::setParameterScripting(os, "Output file", "user script", true);
     GTGlobals::sleep(3000);
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os,"Read Sequence"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Read Sequence"));
+    GTMouseDriver::click();
 
     QString dirPath = dataDir + "samples/FASTA/";
     GTUtilsWorkflowDesigner::setDatasetInputFile( os, dirPath, "human_T1.fa" );
@@ -164,8 +164,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "workflow_scripting_test_0004"));
     GTWidget::click(os, GTAction::button(os, "createScriptAction"));
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os,"workflow_scripting_test_0004"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"workflow_scripting_test_0004"));
+    GTMouseDriver::click();
 
     const QString scriptText = "if(size(in_seq) >= 10000) {out_seq = in_seq;}";
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", scriptText));

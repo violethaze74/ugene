@@ -19,24 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-#include <QDialogButtonBox>
-#include <QDir>
-#include <QGroupBox>
-#include <QPushButton>
+#include "EditSequenceDialogFiller.h"
+#include <drivers/GTMouseDriver.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTWidget.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTPlainTextEdit.h>
+#include <primitives/GTSpinBox.h>
 
 #include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTPlainTextEdit.h>
-#include <primitives/GTRadioButton.h>
-#include <primitives/GTSpinBox.h>
-#include <primitives/GTWidget.h>
 
-#include "EditSequenceDialogFiller.h"
+#include <QtCore/QDir>
+#include <QApplication>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QGroupBox>
 
 namespace U2 {
 using namespace HI;
@@ -52,7 +52,6 @@ InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus &_os, const QStri
     if (!documentLocation.isEmpty()) {
         documentLocation = QDir::cleanPath(QDir::currentPath() + "/" + documentLocation);
     }
-    documentLocation = QDir::toNativeSeparators(documentLocation);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "Genbank";
     mergeAnnotations = _mergeAnnotations;
@@ -101,12 +100,12 @@ void InsertSequenceFiller::commonScenario() {
         switch(useMethod) {
         case GTGlobals::UseMouse:
             checkPos = QPoint(checkButton->rect().left() + 12, checkButton->rect().top() + 12);
-            GTMouseDriver::moveTo(os, checkButton->mapToGlobal(checkPos));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(checkButton->mapToGlobal(checkPos));
+            GTMouseDriver::click();
             break;
         case GTGlobals::UseKey:
             GTWidget::setFocus(os, checkButton);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Space);
             break;
         default:
             break;

@@ -73,8 +73,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             GT_CHECK(btn != NULL, "Radio button not found");
 
             if (! btn->isEnabled()) {
-                GTMouseDriver::moveTo(os, btn->mapToGlobal(btn->rect().topLeft()));
-                GTMouseDriver::click(os);
+                GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));
+                GTMouseDriver::click();
             }
 
             QComboBox *comboBox = dialog->findChild<QComboBox*>();
@@ -99,16 +99,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "1.gb");
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTGlobals::sleep(200);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep(200);
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
 
     GTGlobals::sleep(2000);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnnotationDialogComboBoxChecker(os, ""));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep(1000);
 }
 
@@ -127,8 +127,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002)
             GT_CHECK(btn != NULL, "Radio button not found");
 
             if (! btn->isEnabled()) {
-                GTMouseDriver::moveTo(os, btn->mapToGlobal(btn->rect().topLeft()));
-                GTMouseDriver::click(os);
+                GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));
+                GTMouseDriver::click();
             }
 
             QComboBox *comboBox = dialog->findChild<QComboBox*>();
@@ -162,15 +162,15 @@ GUI_TEST_CLASS_DEFINITION(test_0002)
     GTGlobals::sleep(100);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "action_open_view"));
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
     QIcon itemIconBefore = qvariant_cast<QIcon>(item.data(Qt::DecorationRole));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_DOCUMENT__UNLOCK));
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__edit_menu" << ACTION_DOCUMENT__UNLOCK));
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::click(Qt::RightButton);
 
     QIcon itemIconAfter = qvariant_cast<QIcon>(item.data(Qt::DecorationRole));
     if (itemIconBefore.cacheKey() == itemIconAfter.cacheKey() && !os.hasError()) {
@@ -178,12 +178,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002)
     }
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnnotationDialogComboBoxChecker(os, ""));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep(1000);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_DOCUMENT__LOCK));
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__edit_menu" << ACTION_DOCUMENT__LOCK));
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::click(Qt::RightButton);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Close project");
     GTGlobals::sleep();
@@ -199,8 +199,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/project/proj2.uprj");
     GTUtilsDocument::checkDocument(os, "1.gb");
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
 
     QModelIndex item = GTUtilsProjectTreeView::findIndex(os, "1.gb");
@@ -211,9 +211,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     QImage expectedImage = documentIcon.pixmap(32,32).toImage();
     CHECK_SET_ERR(expectedImage == foundImage, "Icon is locked");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<< ACTION_DOCUMENT__LOCK));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<< "action_project__edit_menu" << ACTION_DOCUMENT__LOCK));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
+    GTMouseDriver::click(Qt::RightButton);
 
     icon = GTUtilsProjectTreeView::getIcon(os, item);
     foundImage = icon.pixmap(32,32).toImage();

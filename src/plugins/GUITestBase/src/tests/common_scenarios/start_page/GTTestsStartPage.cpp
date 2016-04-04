@@ -80,7 +80,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
 //    Expected state: File added to "Resent files" list
 //    Remove file from project
     GTUtilsProjectTreeView::click(os, "COI.aln");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    Go to Start page
     GTUtilsStartPage::openStartPage(os);
 //    Click file name in "Resent files" list

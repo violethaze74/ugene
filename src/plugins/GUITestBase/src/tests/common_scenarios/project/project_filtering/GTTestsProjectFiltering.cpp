@@ -266,8 +266,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(1 == objectIndexes.size(), QString("Unexpected filtered object count: %1").arg(objectIndexes.size()));
 
     // 5. Double click it
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
+    GTMouseDriver::doubleClick();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: Sequence view has opened
@@ -278,8 +278,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     // 7. Call right click menu on the item and select { Open view -> Open new view: Sequence View }
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Sequence View"));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
+    GTMouseDriver::click(Qt::RightButton);
 
     // Expected: Sequence view has opened
     CHECK_SET_ERR(NULL != GTUtilsMdi::findWindow(os, " [s] NC_001363"), "Sequence view hasn't opened");
@@ -296,8 +296,8 @@ void checkEditMenu(HI::GUITestOpStatus &os, const QString &groupName, const QStr
     GTUtilsProjectTreeView::getTreeView(os)->scrollTo(objectIndexes.first());
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Edit", PopupChecker::NotExists));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 void checkDeleteButton(HI::GUITestOpStatus &os, const QString &groupName, const QString &objectName) {
@@ -310,9 +310,9 @@ void checkDeleteButton(HI::GUITestOpStatus &os, const QString &groupName, const 
     CHECK_SET_ERR(!objectIndexes.isEmpty(), QString("Expected a single object named '%1' in the '%2' group").arg(objectName, groupName));
     GTUtilsProjectTreeView::getTreeView(os)->scrollTo(objectIndexes.first());
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(200);
 
     groupIndexes = GTUtilsProjectTreeView::findFilteredIndexes(os, groupName);
@@ -325,8 +325,8 @@ void makeRightClick(HI::GUITestOpStatus &os, const QString &groupName) {
     CHECK_SET_ERR(groupIndexes.size() == 1, QString("Expected a single '%1' filter group in the project view").arg(groupName));
     GTUtilsProjectTreeView::getTreeView(os)->scrollTo(groupIndexes.first());
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, groupIndexes.first()));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, groupIndexes.first()));
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 }
@@ -395,8 +395,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "U2__ExportMSA2SequencesDialog", QDialogButtonBox::Cancel));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export alignment to sequence format..."));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, objectIndex));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndex));
+    GTMouseDriver::click(Qt::RightButton);
 
     // 7. Type to the project filter field "acacacacac"
     GTUtilsProjectTreeView::filterProject(os, "acacacacac");
@@ -416,8 +416,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "U2__ExportSequencesDialog", QDialogButtonBox::Cancel));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export sequences..."));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, objectIndex));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndex));
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
@@ -505,7 +505,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     // 6. Remove typed word using a backspace
     for (int i = 0; i < 3; ++i) {
-        GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["backspace"]);
+        GTKeyboardDriver::keyPress(Qt::Key_Backspace);
         GTGlobals::sleep(100);
     }
     GTGlobals::sleep(3000);

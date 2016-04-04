@@ -55,16 +55,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Create annotation using menu {Actions->Add->New Annotation}
@@ -74,7 +74,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
 // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -94,16 +94,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Create annotation using menu {Actions->Add->New Annotation}
@@ -113,7 +113,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
 
 // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
 // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -133,16 +133,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Create annotation using menu {Actions->Add->New Annotation}
@@ -152,7 +152,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
 
 // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
 // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -172,16 +172,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 //
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 //
 // 3. Do menu {Actions->Add->New Annotation}
@@ -207,16 +207,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 //
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 //
 // 3. Do menu {Actions->Add->New Annotation}
@@ -242,16 +242,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 //
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 //
 // 3. Do menu {Actions->Add->New Annotation}
@@ -277,16 +277,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Create annotation using menu {Actions->Add->New Annotation}
@@ -296,7 +296,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
 // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
 // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -316,16 +316,16 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Create 2 annotations:
@@ -341,8 +341,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 // 4. Toggle highlight for a1.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
-    GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
+    GTMouseDriver::click(Qt::RightButton);
 
 // Expected state: both annotations (a1) and groups (a1, a2) looks muted (grayed out)
 }
@@ -352,16 +352,16 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Create 2 annotations:
@@ -377,8 +377,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
 
 // 4. Toggle highlight for a1.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
-    GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
+    GTMouseDriver::click(Qt::RightButton);
 
 // Expected state: both annotations (a1) and groups (a1, a2) looks muted (grayed out)
 }
@@ -388,16 +388,16 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Create 2 annotations:
@@ -413,8 +413,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
 
 // 4. Toggle highlight for a1.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
-    GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
+    GTMouseDriver::click(Qt::RightButton);
 
 // Expected state: both annotations (a1) and groups (a1, a2) looks muted (grayed out)
 }
@@ -424,16 +424,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -448,7 +448,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
 // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
 // Expected state: there is three new annotations on sequence created by threee different ways
@@ -463,16 +463,16 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 //
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 //
 // 3. Do menu {Actions->Add->New Annotation}
@@ -498,16 +498,16 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Create 2 annotations:
@@ -523,8 +523,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
 // 4. Toggle highlight for a1.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
-    GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "a1"));
+    GTMouseDriver::click(Qt::RightButton);
 
 // Expected state: both annotations (a1) and groups (a1, a2) looks muted (grayed out)
 }
@@ -534,16 +534,16 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 //
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 //
 // 3. Do menu {Actions->Add->New Annotation}
@@ -569,16 +569,16 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 //
 // Steps:
 //
-// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+// 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 // Expected state:
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
@@ -593,7 +593,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
 // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
 // Expected state: there is three new annotations on sequence created by threee different ways
@@ -639,7 +639,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_1.bed",
                                                                  ExportAnnotationsFiller::bed, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
@@ -691,7 +691,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_2.gff",
                                                                  ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
@@ -752,7 +752,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_3.gtf",
                                                                  ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
@@ -794,7 +794,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf",
                                                                  ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     CHECK_SET_ERR(l.hasError(), "No error in the log");
@@ -825,7 +825,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf",
                                                                  ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     CHECK_SET_ERR(l.hasError(), "No erro in the log");
@@ -858,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf",
                                                                  ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     GTUtilsLog::check(os, l);
@@ -901,7 +901,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_1.bed",
                                                                  ExportAnnotationsFiller::bed, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     GTUtilsDocument::removeDocument(os, "sars.gb");
@@ -951,7 +951,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_2.gff",
                                                                  ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     GTUtilsDocument::removeDocument(os, "sars.gb");
@@ -1007,7 +1007,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_3.gtf",
                                                                  ExportAnnotationsFiller::gtf, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
@@ -1024,16 +1024,16 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}, with description field filled
@@ -1046,8 +1046,8 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
 
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "ann1  (0, 1)");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
+    GTMouseDriver::doubleClick();
     GTUtilsAnnotationsTreeView::findItem(os, "note");
 }
 

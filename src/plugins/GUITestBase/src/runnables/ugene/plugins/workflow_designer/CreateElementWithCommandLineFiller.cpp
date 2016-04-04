@@ -129,13 +129,13 @@ QString CreateElementWithCommandLineToolFiller::dataTypeToString(const Parameter
 void CreateElementWithCommandLineToolFiller::processDataType(QTableView *table, int row, const InOutDataType &type) {
     setType(table, row, type.first);
     {
-        GTMouseDriver::moveTo(os, GTTableView::getCellPosition(os, table, 2, row));
-        GTMouseDriver::doubleClick(os);
+        GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 2, row));
+        GTMouseDriver::doubleClick();
 
         QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         GTComboBox::setIndexWithText(os, box, type.second);
 #ifdef Q_OS_WIN
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Enter);
 #endif
     }
 }

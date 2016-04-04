@@ -19,24 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-#include <QDialogButtonBox>
-#include <QDir>
-#include <QGroupBox>
-#include <QPushButton>
-#include <QRadioButton>
-
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTGroupBox.h>
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTPlainTextEdit.h>
+#include "CreateDocumentFromTextDialogFiller.h"
 #include <primitives/GTWidget.h>
-#include <utils/GTThread.h>
+#include <primitives/GTPlainTextEdit.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTGroupBox.h>
 
 #include <U2Core/Log.h>
 
-#include "CreateDocumentFromTextDialogFiller.h"
+#include <QtCore/QDir>
+#if (QT_VERSION < 0x050000) //Qt 5
+#include <QtGui/QApplication>
+#include <QtGui/QPushButton>
+#include <QtGui/QRadioButton>
+#include <QGroupBox>
+#include <QtGui/QDialogButtonBox>
+#else
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QDialogButtonBox>
+#endif
 
 namespace U2 {
 
@@ -52,7 +58,7 @@ Filler(_os, "CreateDocumentFromTextDialog"), customSettings(_customSettings), al
     sequenceName = _sequenceName;
     pasteDataHere = _pasteDataHere;
     QString __documentLocation = QDir::cleanPath(QDir::currentPath() + "/" + _documentLocation);
-    documentLocation = QDir::toNativeSeparators(__documentLocation);
+    documentLocation = __documentLocation;
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "Genbank";
     comboBoxAlphabetItems[StandardDNA] = "Standard DNA";
@@ -134,7 +140,6 @@ void CreateDocumentFiller::commonScenario()
         }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-    GTThread::waitForMainThread(os);
 }
 
 #undef GT_METHOD_NAME

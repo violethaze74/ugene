@@ -34,7 +34,7 @@ EscapeClicker::EscapeClicker(HI::GUITestOpStatus &os, const QString &name, Custo
 
 void EscapeClicker::commonScenario() {
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Escape);
 }
 
 }

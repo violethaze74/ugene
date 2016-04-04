@@ -19,11 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/qglobal.h>
-
 #include <QApplication>
-#include <QGraphicsItem>
-#include <QMainWindow>
+#include <QtCore/qglobal.h>
+#if (QT_VERSION < 0x050000) //Qt 5
+#include <QtGui/QGraphicsItem>
+#include <QtGui/QMainWindow>
+#else
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QMainWindow>
+#endif
 
 #include "GTTestsOptionPanelMSA.h"
 
@@ -183,14 +187,14 @@ GUI_TEST_CLASS_DEFINITION(general_test_0005){
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 //    3. Delete Hetrodes_pupus_EF540832
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Hetrodes_pupus_EF540832");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(300);
 //    Expected state: Sequence number is 17
     int height = GTUtilsOptionPanelMsa::getHeight(os);
     CHECK_SET_ERR( height == 17, QString("wrong height. expected 17, found %1").arg(height));
 //    4. Select one column. Press delete
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 0), QPoint(5,17));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(300);
 //    Expected state: Length is 603
     int length = GTUtilsOptionPanelMsa::getLength(os);
@@ -1117,14 +1121,14 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0004){
     GTLineEdit::setText(os, line1, "wrong name");
     CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Escape);
 
     QLineEdit* line2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
     CHECK_SET_ERR(line2 != NULL, "lineEdit 2 not found");
     GTLineEdit::setText(os, line2, "wrong name");
     CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Escape);
 //    Expected state: empty popup helper appeared
 }
 
@@ -1393,7 +1397,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009){
     bool created = f.open(QFile::ReadWrite);
     CHECK_SET_ERR(created, "file not created");
     f.close();
-    GTFile::setReadOnly(os, s);
+    //GTFile::setReadOnly(os, s);
 
     setOutputPath(os, sandBoxDir,  fileName);
     align(os);
@@ -1423,7 +1427,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010){
     bool ok = QDir().mkpath(s);
     CHECK_SET_ERR(ok, "subdirectory not created");
 
-    GTFile::setReadOnly(os, s);
+    //GTFile::setReadOnly(os, s);
 
     setOutputPath(os, sandBoxDir + dirName,  fileName);
     align(os);
@@ -1450,9 +1454,9 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011){
     QString initialText = outputFileLineEdit->text();
     CHECK_SET_ERR(!initialText.isEmpty(), "line edit is empty");
     GTWidget::click(os, outputFileLineEdit);
-    GTKeyboardDriver::keyClick(os, 'a', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
     GTGlobals::sleep(300);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(300);
     QString finalText = outputFileLineEdit->text();
 //Expected state: empty path can not be set
@@ -1718,7 +1722,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006){
     QComboBox* fontComboBox = GTWidget::findExactWidget<QComboBox*>(os, "fontComboBox");
     QLineEdit* l = fontComboBox->findChild<QLineEdit*>();
     GTLineEdit::setText(os, l, "Serif");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter);
     GTGlobals::sleep(500);
 //    Expected: font changed
     QGraphicsSimpleTextItem* label = GTUtilsPhyTree::getVisiableLabels(os).at(0);
@@ -1730,7 +1734,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006){
 
     QLineEdit* fontLineedit = fontSizeSpinBox->findChild<QLineEdit*>();
     GTLineEdit::setText(os, fontLineedit, "20");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter);
 //    Expected: size changed
     int pointSize = label->font().pointSize();
     CHECK_SET_ERR(pointSize == 20, QString("unexpected point size: %1").arg(pointSize));
@@ -1924,7 +1928,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002){
     CHECK_SET_ERR(created, "file not created");
     f.close();
 
-    GTFile::setReadOnly(os, s);
+    //GTFile::setReadOnly(os, s);
 
     setConsensusOutputPath(os, sandBoxDir + fileName);
 //    4. Press export button
@@ -1950,7 +1954,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003){
     QString s = sandBoxDir + dirName;
     bool ok = QDir().mkpath(s);
     CHECK_SET_ERR(ok, "subdirectory not created");
-    GTFile::setReadOnly(os, s);
+    //GTFile::setReadOnly(os, s);
 
     setConsensusOutputPath(os, sandBoxDir + dirName + '/' + fileName);
 //    4. Press export button
@@ -2084,7 +2088,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0003){
 //    5. delete symbol at point (0,0)
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,0));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(500);
 //    Expected state: similarity changed, updateButton ins disablec
     QString s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
@@ -2102,7 +2106,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0003){
 //    5. delete symbol at point (0,0)
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,0));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(500);
 //    Expected state: similarity not changed
     s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
@@ -2171,9 +2175,9 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0002){
     GTCheckBox::setChecked(os, useDots, true);
 
     //close and open option panel
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     GTGlobals::sleep(500);
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     GTGlobals::sleep(500);
 
     //checks
@@ -2327,7 +2331,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004){
 #else
     GTLineEdit::setText(os, l, "Tahoma");
 #endif
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter);
 
     QSpinBox* fontSizeSpinBox = GTWidget::findExactWidget<QSpinBox*>(os, "fontSizeSpinBox");
     GTSpinBox::setValue(os, fontSizeSpinBox, 14);

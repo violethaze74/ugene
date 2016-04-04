@@ -187,7 +187,7 @@ void NcbiSearchDialogFiller::clickResultByNum(const QVariant &actionData) {
     GTTreeWidget::click(os, resultItems[actionData.toInt()]);
 
     GTGlobals::sleep();
-    GTMouseDriver::click(os);
+    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 
@@ -225,12 +225,12 @@ void NcbiSearchDialogFiller::clickResultBySize(const QVariant &actionData) {
 void NcbiSearchDialogFiller::selectResultsByNumbers(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QList<int> >(), "Can't get the list of result numbers from the action data");
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     const QList<int> numbers = actionData.value<QList<int> >();
     foreach (int number, numbers) {
         clickResultByNum(number);
     }
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 }
 #undef GT_METHOD_NAME
 
@@ -238,11 +238,11 @@ void NcbiSearchDialogFiller::selectResultsByNumbers(const QVariant &actionData) 
 void NcbiSearchDialogFiller::selectResultsByIds(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QStringList>(), "Can't get the list of result IDs from the action data");
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     foreach (const QString &id, actionData.toStringList()) {
         clickResultById(id);
     }
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 }
 #undef GT_METHOD_NAME
 
@@ -250,11 +250,11 @@ void NcbiSearchDialogFiller::selectResultsByIds(const QVariant &actionData) {
 void NcbiSearchDialogFiller::selectResultsByDescs(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QStringList>(), "Can't get the list of result descriptions from the action data");
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     foreach (const QString &desc, actionData.toStringList()) {
         clickResultByDesc(desc);
     }
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 }
 #undef GT_METHOD_NAME
 
@@ -262,12 +262,12 @@ void NcbiSearchDialogFiller::selectResultsByDescs(const QVariant &actionData) {
 void NcbiSearchDialogFiller::selectResultsBySizes(const QVariant &actionData) {
     CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QList<int> >(), "Can't get the list of result sizes from the action data");
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     const QList<int> sizes = actionData.value<QList<int> >();
     foreach (int size, sizes) {
         clickResultBySize(size);
     }
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 }
 #undef GT_METHOD_NAME
 

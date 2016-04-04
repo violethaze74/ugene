@@ -69,9 +69,9 @@ void ReplaceSubsequenceDialogFiller::commonScenario()
 
     QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
     GT_CHECK(plainText != NULL, "plain text not found");
-    //GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["a"], GTKeyboardDriver::key["ctrl"]);
+    //GTKeyboardDriver::keyClick( GTKeyboardDriver::key["a"], Qt::ControlModifier);
     //GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep();
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 

@@ -211,8 +211,8 @@ void GTUtilsAssemblyBrowser::goToPosition(HI::GUITestOpStatus &os, qint64 positi
     GT_CHECK(NULL != positionLineEdit, "Can't find the position line edit");
 
     GTWidget::click(os, positionLineEdit);
-    GTKeyboardDriver::keySequence(os, QString::number(position));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTKeyboardDriver::keySequence(QString::number(position));
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
 

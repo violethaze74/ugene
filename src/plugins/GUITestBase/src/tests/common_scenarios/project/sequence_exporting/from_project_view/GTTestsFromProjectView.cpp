@@ -67,8 +67,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 // 2. Double click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // Expected result: NC_001363 sequence has been opened in sequence view
@@ -95,8 +95,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os,child));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,child));
+    GTMouseDriver::click(Qt::RightButton);
 
 
     GTGlobals::sleep(3000);
@@ -115,8 +115,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 // 2. Double click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 // Expected result: NC_001363 sequence has been opened in sequence view
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
@@ -134,7 +134,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         false
     );
     GTUtilsDialog::waitForDialog(os, filler);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
 // 5. Open file _common_data/scenarios/sandbox/exp2.aln
@@ -148,8 +148,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/multiple.fa");
     GTGlobals::sleep(1000);
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "multiple.fa"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "multiple.fa"));
+    GTMouseDriver::click();
 
     GTKeyboardUtils::selectAll(os);
     GTGlobals::sleep(1000);
@@ -163,7 +163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         GTGlobals::UseMouse
         );
     GTUtilsDialog::waitForDialog(os, filler);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     GTUtilsProject::openFiles(os, testDir+"_common_data/scenarios/sandbox/exp2.aln");
@@ -179,19 +179,19 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa", ExportToSequenceFormatFiller::FASTA, true, true));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "HIV-1.aln"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "HIV-1.aln"));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "export1.fa");
     GTUtilsProjectTreeView::scrollTo(os, "ru131");
 
-    GTKeyboardDriver::keyClick(os, 'w', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'w', Qt::ControlModifier);
     GTGlobals::sleep(1000);
 
     itemPos = GTUtilsProjectTreeView::getItemCenter(os, "ru131");
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep(1000);
 
     QWidget *activeWindow =  GTUtilsMdi::activeWindow(os);
@@ -220,16 +220,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa",
                                 ExportToSequenceFormatFiller::FASTA, true, false));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "Open New View", GTGlobals::UseMouse));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Zychia_baranovi"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Zychia_baranovi"));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 
     QWidget *activeWindow =  GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(activeWindow->windowTitle().contains("Zychia_baranovi"), "fasta file with sequences has been not opened");
@@ -253,16 +253,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa",
         ExportToSequenceFormatFiller::FASTA, true, true));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "Open New View", GTGlobals::UseMouse));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Zychia_baranovi"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Zychia_baranovi"));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
@@ -292,16 +292,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa",
         ExportToSequenceFormatFiller::FASTA, true, false));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "COI"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI"));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View" << "Open New View", GTGlobals::UseMouse));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Zychia_baranovi"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Zychia_baranovi"));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(1000);
 
     GTGlobals::sleep(1000);
@@ -336,8 +336,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
 // 2. Double click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // Expected result: NC_001363 sequence has been opened in sequence view
@@ -359,8 +359,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, child));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
+    GTMouseDriver::click(Qt::RightButton);
 
 // 5. Open file _common_data/scenarios/sandbox/exp2.msf
     GTGlobals::sleep();
@@ -395,8 +395,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     // 2. Double click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
@@ -418,8 +418,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, child));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
+    GTMouseDriver::click(Qt::RightButton);
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
     GTGlobals::sleep();
@@ -454,8 +454,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
 
     // 2. Double click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
@@ -477,8 +477,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, child));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
+    GTMouseDriver::click(Qt::RightButton);
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
     GTGlobals::sleep();
@@ -513,8 +513,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
 
     // 2. Double click on [a] Annotations sequence object, in project view tree
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
-    GTMouseDriver::moveTo(os, itemPos);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(itemPos);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
@@ -536,8 +536,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, child));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
+    GTMouseDriver::click(Qt::RightButton);
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
     GTGlobals::sleep();
@@ -563,8 +563,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsDialog::waitForDialog(os, filler);
     GTGlobals::sleep(1000);
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "A01.abi"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "A01.abi"));
+    GTMouseDriver::click(Qt::RightButton);
 
     }
 GUI_TEST_CLASS_DEFINITION(test_0008_1) {
@@ -580,8 +580,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     GTUtilsDialog::waitForDialog(os, filler);
     GTGlobals::sleep(1000);
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "A01.abi"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "A01.abi"));
+    GTMouseDriver::click(Qt::RightButton);
     }
 GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTFileDialog::openFile(os, dataDir + "samples/ABIF/", "A01.abi");
@@ -596,8 +596,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
     GTUtilsDialog::waitForDialog(os, filler);
     GTGlobals::sleep(1000);
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "A01.abi"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "A01.abi"));
+    GTMouseDriver::click(Qt::RightButton);
     }
 
 } // namespace

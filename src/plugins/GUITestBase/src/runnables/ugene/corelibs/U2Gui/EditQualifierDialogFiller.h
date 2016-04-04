@@ -28,27 +28,23 @@ namespace U2 {
 using namespace HI;
 class EditQualifierFiller : public Filler {
 public:
-    EditQualifierFiller(HI::GUITestOpStatus &_os, const QString &_qualifierName, const QString &_valueName,
-                        bool _noCheck = false, bool _closeErrorMessageBox = false)
-        : Filler(_os, "EditQualifierDialog"),
-          qualifierName(_qualifierName),
-          valueName(_valueName),
-          noCheck(_noCheck),
-          closeErrormessageBox(_closeErrorMessageBox) {}
-
-    EditQualifierFiller(HI::GUITestOpStatus &_os, const QString &_qualifierName,
-                        bool _noCheck = false, bool _closeErrorMessageBox = false)
-        : Filler(_os, "EditQualifierDialog"),
-          qualifierName(_qualifierName),
-          noCheck(_noCheck),
-          closeErrormessageBox(_closeErrorMessageBox) {}
-
+    EditQualifierFiller(HI::GUITestOpStatus &_os, const QString &_qualifierName, const QString &_valueName, bool _noCheck = false, bool _closeErrorMessageBox = false)
+        :Filler(_os, "EditQualifierDialog"), qualifierName(_qualifierName), valueName(_valueName), noCheck(_noCheck), closeErrormessageBox(_closeErrorMessageBox){}
     void commonScenario();
 private:
     QString qualifierName;
     QString valueName;
     bool noCheck;
     bool closeErrormessageBox;
+};
+
+class RenameQualifierFiller : public Filler {
+public:
+    RenameQualifierFiller(HI::GUITestOpStatus &_os, const QString &_newName)
+        :Filler(_os, ""), newName(_newName) {}
+    void commonScenario();
+private:
+    QString newName;
 };
 
 }

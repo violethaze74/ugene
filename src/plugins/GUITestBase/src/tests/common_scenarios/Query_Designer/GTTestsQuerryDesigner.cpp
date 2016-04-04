@@ -58,39 +58,39 @@ void test1(HI::GUITestOpStatus &os, QString s="") {
     if (s=="arr"){
         GTUtilsQueryDesigner::addAlgorithm(os,array[i]);
 
-        GTMouseDriver::moveTo(os,GTUtilsQueryDesigner::getItemCenter(os, array[i]));
+        GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(os, array[i]));
         p = GTMouseDriver::getMousePosition();
         p.setX(GTUtilsQueryDesigner::getItemRight(os, array[i]));
     }
     else{
         GTUtilsQueryDesigner::addAlgorithm(os,s);
 
-        GTMouseDriver::moveTo(os,GTUtilsQueryDesigner::getItemCenter(os, s));
+        GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(os, s));
         p = GTMouseDriver::getMousePosition();
         p.setX(GTUtilsQueryDesigner::getItemRight(os, s));
     }
-    GTMouseDriver::moveTo(os,p);
+    GTMouseDriver::moveTo(p);
 
-    GTMouseDriver::press(os);
+    GTMouseDriver::press();
     if (s=="arr"){
         p.setX(GTUtilsQueryDesigner::getItemLeft(os,array[i])+100);
     }
     else{
         p.setX(GTUtilsQueryDesigner::getItemLeft(os,s)+100);
     }
-    GTMouseDriver::moveTo(os,p);
+    GTMouseDriver::moveTo(p);
 
-    GTMouseDriver::release(os);
+    GTMouseDriver::release();
 
 //4. Select the resized element and press <Del>
     if (s=="arr"){
-        GTMouseDriver::moveTo(os,GTUtilsQueryDesigner::getItemCenter(os, array[i]));
+        GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(os, array[i]));
     }
     else{
-        GTMouseDriver::moveTo(os,GTUtilsQueryDesigner::getItemCenter(os, s));
+        GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(os, s));
     }
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os,GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(500);
     //check no elements on scene
     QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));

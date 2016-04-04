@@ -58,6 +58,11 @@
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
+#include <runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h>
+#include <runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h>
+#include <runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h>
+#include <runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h>
+#include <runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTThread.h>
@@ -90,11 +95,7 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
-#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+
 
 namespace U2 {
 
@@ -203,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
 //    3. Call context menu on the sequence object in the Project View, select {Export/Import -> Export sequences...} item.
 //    4. Set output path to "~/test_5018.fa" for *nix and "%HOME_DIR%\test_5018.fa" for Windows. Accept the dialog.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export sequences..."));
-    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, homePlaceholder + "/test_5018.fa"));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, homePlaceholder + "/test_5018.fa", ""));
     GTUtilsProjectTreeView::click(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)", Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -246,7 +247,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf", "valid.vcf");
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -286,7 +287,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf", "valid.vcf");
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -417,7 +418,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during adding sequences. The multiple alignment is no more available.");
     GTGlobals::sleep();
     GTUtilsProjectTreeView::click(os, "COI");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(6000);
 }
 

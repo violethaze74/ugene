@@ -19,18 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-#include <QDialogButtonBox>
-#include <QDir>
-#include <QPushButton>
-
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
+#include "ExportAnnotationsDialogFiller.h"
+#include <primitives/GTWidget.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
-#include <primitives/GTWidget.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTCheckBox.h>
 
-#include "ExportAnnotationsDialogFiller.h"
+#include <QtCore/QDir>
+#if (QT_VERSION < 0x050000) //Qt 5
+#include <QtGui/QApplication>
+#include <QtGui/QPushButton>
+#include <QtGui/QDialogButtonBox>
+#else
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QDialogButtonBox>
+#endif
 
 namespace U2 {
 
@@ -50,13 +55,13 @@ Filler(_os, "U2__ExportAnnotationsDialog"), softMode(false), format(_format), sa
 }
 
 void ExportAnnotationsFiller::init(const QString &exportToFile) {
-    this->exportToFile = QDir::toNativeSeparators(QDir::cleanPath(QDir::currentPath() + "/" + exportToFile));
+    this->exportToFile = QDir::cleanPath(QDir::currentPath() + "/" + exportToFile);
 
-    comboBoxItems[bed] = "BED";
-    comboBoxItems[genbank] = "Genbank";
-    comboBoxItems[gff] = "GFF";
-    comboBoxItems[gtf] = "GTF";
-    comboBoxItems[csv] = "CSV";
+    comboBoxItems[bed] = "bed";
+    comboBoxItems[genbank] = "genbank";
+    comboBoxItems[gff] = "gff";
+    comboBoxItems[gtf] = "gtf";
+    comboBoxItems[csv] = "csv";
 }
 
 #define GT_METHOD_NAME "commonScenario"

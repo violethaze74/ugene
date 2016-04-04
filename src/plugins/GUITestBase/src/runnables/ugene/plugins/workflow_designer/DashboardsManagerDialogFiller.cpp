@@ -49,9 +49,9 @@ void DashboardsManagerDialogFiller::selectDashboards(HI::GUITestOpStatus &os, QS
     QTreeWidget* listWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "listWidget", dialog);
     foreach (QString name, names) {
         QTreeWidgetItem* item = GTTreeWidget::findItem(os, listWidget, name);
-        GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+        GTKeyboardDriver::keyPress(Qt::Key_Control);
         GTTreeWidget::click(os, item);
-        GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+        GTKeyboardDriver::keyRelease( Qt::Key_Control);
     }
 }
 #undef GT_METHOD_NAME

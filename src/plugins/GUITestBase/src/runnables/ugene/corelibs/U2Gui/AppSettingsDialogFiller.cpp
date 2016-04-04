@@ -94,8 +94,8 @@ void AppSettingsDialogFiller::commonScenario(){
     QList<QTreeWidgetItem*> items = GTTreeWidget::getItems(tree->invisibleRootItem());
     foreach (QTreeWidgetItem* item,items){
         if(item->text(0)=="  Workflow Designer"){
-            GTMouseDriver::moveTo(os,GTTreeWidget::getItemCenter(os,item));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os,item));
+            GTMouseDriver::click();
         }
     }
     if(itemStyle!=none){
@@ -170,7 +170,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus &os, const
     foreach (QTreeWidgetItem* item, listOfItems){
         if(item->text(0) == toolName){
             GTTreeWidget::click(os, item);
-            GTMouseDriver::doubleClick(os);
+            GTMouseDriver::doubleClick();
             QTextBrowser *descriptionTextBrowser = GTWidget::findExactWidget<QTextBrowser*>(os, "descriptionTextBrowser", dialog);
             return descriptionTextBrowser->toPlainText().contains("Version:");
         }
@@ -240,8 +240,8 @@ void NewColorSchemeCreator::commonScenario() {
     QList<QTreeWidgetItem*> items = GTTreeWidget::getItems(tree->invisibleRootItem());
     foreach (QTreeWidgetItem* item,items){
         if(item->text(0)=="  Alignment Color Scheme"){
-            GTMouseDriver::moveTo(os,GTTreeWidget::getItemCenter(os,item));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os,item));
+            GTMouseDriver::click();
         }
     }
     if(act == Delete){
@@ -319,7 +319,7 @@ void ColorSchemeDialogFiller::commonScenario(){
             return;
         }
     }
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);//if ok button not found
+    GTKeyboardDriver::keyClick( Qt::Key_Enter);//if ok button not found
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

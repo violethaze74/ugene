@@ -90,8 +90,8 @@ void clickConnection(HI::GUITestOpStatus &os, QListWidget *list, const QString &
 
     QRect rect = list->visualItemRect(item);
     QPoint point = list->mapToGlobal(rect.center());
-    GTMouseDriver::moveTo(os, point);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(point);
+    GTMouseDriver::click();
 }
 
 void checkDocument(HI::GUITestOpStatus &os, const QString &name, bool mustBe) {

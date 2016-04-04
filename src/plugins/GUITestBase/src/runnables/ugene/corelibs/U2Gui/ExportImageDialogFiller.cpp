@@ -23,20 +23,18 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDialogButtonBox>
-#include <QDir>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QTableWidget>
 
-#include <drivers/GTMouseDriver.h>
+#include "ExportImageDialogFiller.h"
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
-
-#include "ExportImageDialogFiller.h"
 
 namespace U2 {
 using namespace HI;
@@ -45,7 +43,7 @@ using namespace HI;
 
 ExportImage::ExportImage(HI::GUITestOpStatus &os, const QString &filePath, const QString &comboValue, int spinValue) :
     Filler(os, "ImageExportForm"),
-    filePath(QDir::toNativeSeparators(filePath)),
+    filePath(filePath),
     comboValue(comboValue),
     spinValue(spinValue)
 {
@@ -244,8 +242,8 @@ void SelectSubalignmentFiller::commonScenario() {
     p.setY(p.y() + 2);
     p = dialog->mapToGlobal(p);
 
-    GTMouseDriver::moveTo(os,p);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::click();
     for(int i = 0; i < table->rowCount();i++){
         foreach (QString s, msaRegion.sequences){
             QCheckBox *box = qobject_cast<QCheckBox*>(table->cellWidget(i,0));
@@ -288,7 +286,7 @@ void ImageExportFormFiller::commonScenario() {
 
     QLineEdit* fileNameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit", dialog));
     GT_CHECK(fileNameEdit, "fileNameEdit is NULL");
-    GTLineEdit::setText(os, fileNameEdit, QDir::toNativeSeparators(parameters.fileName));
+    GTLineEdit::setText(os, fileNameEdit, parameters.fileName);
 
     QComboBox* formatsBox = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "formatsBox", dialog));
     GT_CHECK(formatsBox, "formatsBox is NULL");

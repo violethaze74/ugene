@@ -64,7 +64,7 @@ void checkAlignedRegion(HI::GUITestOpStatus& os, QRect selectionRect, const QStr
     selectionRect.adjust(-leftOffset, 0, -leftOffset, 0);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, selectionRect.topLeft(), selectionRect.bottomRight());
-    GTKeyboardDriver::keyClick(os, 'c',GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c',Qt::ControlModifier);
 
     GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
@@ -92,7 +92,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
     GTWidget::click( os, align);
 
     GTUtilsProjectTreeView::click(os, "tub1.txt");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep();
 
     const bool hasMessage = logTracer.checkMessage("Cannot remove document tub1.txt");
@@ -123,7 +123,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002){
     GTWidget::click( os, align);
 
     GTUtilsProjectTreeView::click(os, "3000_sequences.aln");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep();
 
     const bool hasMessage = logTracer.checkMessage("Cannot remove document 3000_sequences.aln");

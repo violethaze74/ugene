@@ -114,8 +114,8 @@ void GTUtilsAnnotHighlightingTreeView::click(HI::GUITestOpStatus &os, const QStr
     tree->scrollToItem(item);
 
     QPoint p = getItemCenter(os, itemName);
-    GTMouseDriver::moveTo(os, p);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::click();
 }
 
 #define GT_METHOD_NAME "getItemCenter"

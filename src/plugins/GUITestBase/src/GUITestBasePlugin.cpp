@@ -1213,7 +1213,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4852);
     REGISTER_TEST(GUITest_regression_scenarios::test_4860);
     REGISTER_TEST(GUITest_regression_scenarios::test_4871);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4881);
+    //REGISTER_TEST(GUITest_regression_scenarios::test_4881);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_3);
@@ -2428,7 +2428,7 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0017);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0018);
+    //REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0018);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0058);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0059);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0060);

@@ -45,7 +45,7 @@ void GoToDialogFiller::commonScenario()
     GT_CHECK(posEdit != NULL, "Line edit not found");
 
 #ifdef Q_OS_MAC
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["cmd"]);
+    GTKeyboardDriver::keyRelease(GTKeyboardDriver::key["cmd"]);
 #endif
     GTLineEdit::setText(os, posEdit, QString::number(goTo));
 

@@ -240,13 +240,13 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 
     QPoint point=GTMouseDriver::getMousePosition();
 
-    GTMouseDriver::moveTo(os, point - QPoint(15,0));//move 15 pix left
-    GTMouseDriver::press(os);
+    GTMouseDriver::moveTo(point - QPoint(15,0));//move 15 pix left
+    GTMouseDriver::press();
 
-    GTMouseDriver::moveTo(os,point + QPoint(80,0));//move 80 pix right
-    GTMouseDriver::release(os);
+    GTMouseDriver::moveTo(point + QPoint(80,0));//move 80 pix right
+    GTMouseDriver::release();
 
-    GTKeyboardDriver::keyClick(os,'c',GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick('c',Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     QString text = QString("A:  \n"
@@ -303,8 +303,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 sequence"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 sequence"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Press ctrl+f. Check focus. Find subsequence TA
@@ -312,9 +312,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTGlobals::sleep(500);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     GTGlobals::sleep();
 
@@ -330,14 +330,14 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTGlobals::sleep(500);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep();
 }
