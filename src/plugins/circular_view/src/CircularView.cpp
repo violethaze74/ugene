@@ -47,7 +47,6 @@
 #include "CircularItems.h"
 #include "CircularView.h"
 #include "CircularViewPlugin.h"
-#include <U2Core/Timer.h>
 
 
 namespace U2 {
@@ -259,6 +258,10 @@ QList<AnnotationSelectionData> CircularView::selectAnnotationByCoord(const QPoin
             }
 
             res.append(AnnotationSelectionData(item->getAnnotation(), indx));
+            if (item->getAnnotation()->getType() != U2FeatureTypes::RestrictionSite) {
+                // only restriction sites can intersect
+                return res;
+            }
         }
     }
     foreach(CircularAnnotationItem* item, renderArea->circItems) {
@@ -272,6 +275,7 @@ QList<AnnotationSelectionData> CircularView::selectAnnotationByCoord(const QPoin
                     indx << item->getAnnotation()->getRegions().indexOf(r->getJoinedRegion());
                 }
                 res.append(AnnotationSelectionData(item->getAnnotation(), indx));
+                return res;
             }
         }
     }
@@ -872,8 +876,6 @@ void CircularViewRenderArea::drawRulerCoordinates(QPainter &p, int startPos, int
 }
 
 void CircularViewRenderArea::drawAnnotations(QPainter &p) {
-    qint64 startAnnotationsDrawing = GTimer::currentTimeMicros();
-
     QFont font = p.font();
     font.setPointSize(settings->labelFontSize);
     buildItems(font);
@@ -884,9 +886,6 @@ void CircularViewRenderArea::drawAnnotations(QPainter &p) {
     foreach (CircularAnnotationItem* item, circItems) {
         item->paint(&p, NULL, this);
     }
-    qint64 drawiwngTime = GTimer::currentTimeMicros() - startAnnotationsDrawing;
-    coreLog.details(tr("Draw annotations in CV: %1 seconds").arg((drawiwngTime) / 1000000.0));
-
     if (settings->labelMode == CircularViewSettings::None) {
         return;
     }
@@ -955,9 +954,7 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
 void CircularViewRenderArea::buildItems(QFont labelFont) {
     ADVSequenceObjectContext *ctx = view->getSequenceContext();
 
-    foreach (CircularAnnotationItem *item, circItems) {
-        delete item;
-    }
+    qDeleteAll(circItems);
     circItems.clear();
     labelList.clear();
     engagedLabelPositionToLabel.clear();
@@ -969,28 +966,27 @@ void CircularViewRenderArea::buildItems(QFont labelFont) {
     AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
     QSet<AnnotationTableObject *> anns = ctx->getAnnotationObjects(true);
     QSet<AnnotationTableObject *> autoAnns = ctx->getAutoAnnotationObjects();
+    QSet<Annotation*> restrictionSites;
     foreach (AnnotationTableObject *ao, anns) {
         bool isAutoAnnotation = autoAnns.contains(ao);
-        if (isAutoAnnotation) {
-            continue;
-        }
         foreach (Annotation *a, ao->getAnnotations()) {
+            if (a->getType() == U2FeatureTypes::RestrictionSite) {
+                restrictionSites << a;
+                continue;
+            }
             AnnotationSettings *as = asr->getAnnotationSettings(a->getData());
             buildAnnotationItem(DrawAnnotationPass_DrawFill, a, -1, false, as);
             buildAnnotationLabel(labelFont, a, as, isAutoAnnotation);
         }
     }
 
-    // TODO: filter only restriction sites
-    foreach (AnnotationTableObject* ao, autoAnns) {
-        regionY.append(QVector<U2Region>());
-        foreach (Annotation *a, ao->getAnnotations()) {
-            AnnotationSettings *as = asr->getAnnotationSettings(a->getData());
-            buildAnnotationItem(DrawAnnotationPass_DrawFill, a, regionY.count() - 1, false, as);
-            buildAnnotationLabel(labelFont, a, as, true);
-        }
+    regionY.append(QVector<U2Region>());
+    foreach (Annotation* a, restrictionSites) {
+        AnnotationSettings *as = asr->getAnnotationSettings(a->getData());
+        buildAnnotationItem(DrawAnnotationPass_DrawFill, a,
+                            regionY.count() - 1, false, as);
+        buildAnnotationLabel(labelFont, a, as, true);
     }
-
 }
 
 int CircularViewRenderArea::findOrbit(const QVector<U2Region> &location, Annotation *a) {

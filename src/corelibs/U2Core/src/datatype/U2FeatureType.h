@@ -213,8 +213,7 @@ public:
         Virion                      = 181,
         ZincFinger                  = 182,
         ZincFingerDomain            = 183,
-        FIRST_FEATURE_TYPE          = AaRich,
-        LAST_FEATURE_TYPE           = ZincFingerDomain
+        RestrictionSite             = 184
     };
 
     enum Alphabet {
