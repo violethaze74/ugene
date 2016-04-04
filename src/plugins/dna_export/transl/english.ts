@@ -641,23 +641,23 @@
 <context>
     <name>U2::BaseContentDialog</name>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="163"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="171"/>
         <source>Save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="246"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="269"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="254"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="277"/>
         <source>Base content</source>
         <translation>Base content</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="246"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="254"/>
         <source>Incorrect GC Skew value</source>
         <translation>Incorrect GC Skew value</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="269"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="277"/>
         <source>Total percentage has to be 100 %</source>
         <translation>Total percentage has to be 100 %</translation>
     </message>
@@ -723,44 +723,44 @@
 <context>
     <name>U2::DNASequenceGeneratorDialog</name>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="59"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="61"/>
         <source>Generate</source>
         <translation>Generate</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="60"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="62"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="78"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="96"/>
         <source>Save sequences</source>
         <translation>Save sequences</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="103"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="111"/>
         <source>Open file</source>
         <translation>Open file</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="130"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="139"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="144"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="138"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="147"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="152"/>
         <source>DNA Sequence Generator</source>
         <translation>DNA Sequence Generator</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="130"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="138"/>
         <source>Windows size bigger than sequence length</source>
         <translation>Windows size bigger than sequence length</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="139"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="147"/>
         <source>Reference url is not specified.</source>
         <translation>Reference url is not specified.</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="144"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="152"/>
         <source>Output file is no specified.</source>
         <translation>Output file is no specified.</translation>
     </message>
@@ -838,17 +838,17 @@
 <context>
     <name>U2::ExportBlastResultDialog</name>
     <message>
-        <location filename="../src/ExportBlastResultDialog.cpp" line="47"/>
+        <location filename="../src/ExportBlastResultDialog.cpp" line="43"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.cpp" line="48"/>
+        <location filename="../src/ExportBlastResultDialog.cpp" line="44"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ExportBlastResultDialog.cpp" line="76"/>
+        <location filename="../src/ExportBlastResultDialog.cpp" line="59"/>
         <source>File name is empty!</source>
         <translation>File name is empty!</translation>
     </message>
@@ -856,22 +856,22 @@
 <context>
     <name>U2::ExportChromatogramDialog</name>
     <message>
-        <location filename="../src/ExportChromatogramDialog.cpp" line="53"/>
+        <location filename="../src/ExportChromatogramDialog.cpp" line="49"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.cpp" line="54"/>
+        <location filename="../src/ExportChromatogramDialog.cpp" line="50"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.cpp" line="68"/>
+        <location filename="../src/ExportChromatogramDialog.cpp" line="65"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
     <message>
-        <location filename="../src/ExportChromatogramDialog.cpp" line="79"/>
+        <location filename="../src/ExportChromatogramDialog.cpp" line="74"/>
         <source>File name is empty!</source>
         <translation>File name is empty!</translation>
     </message>
@@ -932,22 +932,22 @@
         <translation>Selected rows</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.cpp" line="49"/>
+        <location filename="../src/ExportMSA2MSADialog.cpp" line="46"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.cpp" line="50"/>
+        <location filename="../src/ExportMSA2MSADialog.cpp" line="47"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.cpp" line="63"/>
+        <location filename="../src/ExportMSA2MSADialog.cpp" line="99"/>
         <source>Export alignment</source>
         <translation>Export alignment</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.cpp" line="97"/>
+        <location filename="../src/ExportMSA2MSADialog.cpp" line="83"/>
         <source>File is empty</source>
         <translation>File is empty</translation>
     </message>
@@ -1013,17 +1013,17 @@
         <translation>Trim</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="47"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="43"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="48"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="44"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="68"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
         <source>File name is empty!</source>
         <translation>File name is empty!</translation>
     </message>
@@ -1225,17 +1225,17 @@
         <translation>Use Genbank &quot;SOURCE&quot; tags as a name of sequences (for Genbank sequences only)</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.cpp" line="47"/>
+        <location filename="../src/ExportSequences2MSADialog.cpp" line="43"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.cpp" line="48"/>
+        <location filename="../src/ExportSequences2MSADialog.cpp" line="44"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequences2MSADialog.cpp" line="70"/>
+        <location filename="../src/ExportSequences2MSADialog.cpp" line="55"/>
         <source>File name is empty!</source>
         <translation>File name is empty!</translation>
     </message>
@@ -1358,32 +1358,32 @@
         <translation>Merge sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="52"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="54"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="53"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="55"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="65"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="187"/>
         <source>Export Sequences</source>
         <translation>Export Sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="160"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="149"/>
         <source>Select organism</source>
         <translation>Select organism</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="229"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="234"/>
         <source>File is empty</source>
         <translation>File is empty</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.cpp" line="234"/>
+        <location filename="../src/ExportSequencesDialog.cpp" line="239"/>
         <source>Organism for back translation not specified</source>
         <translation>Organism for back translation not specified</translation>
     </message>
@@ -1481,12 +1481,12 @@
 <context>
     <name>U2::ImportAnnotationsFromCSVDialog</name>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="84"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="244"/>
         <source>Save imported annotations to</source>
         <translation>Save imported annotations to</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="113"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="105"/>
         <source>//The script parses input line
  // and returns an array of parsed elements as the result
 var %1; //input line
@@ -1497,132 +1497,131 @@ var %1; //input line
 var %2; //parsed line number</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="158"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="150"/>
         <source>Invalid start position/end position/length configuration!</source>
         <translation>Invalid start position/end position/length configuration!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="162"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="154"/>
         <source>Multiple columns are used as a name!</source>
         <translation>Multiple columns are used as a name!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="308"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="316"/>
         <source>Column separator value: [%1], hex: [%2], length: %3</source>
         <translation>Column separator value: [%1], hex: [%2], length: %3</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="374"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="382"/>
         <source>Script is empty</source>
         <translation>Script is empty</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="389"/>
         <source>Output file format is not set!</source>
-        <translation>Output file format is not set!</translation>
+        <translation type="vanished">Output file format is not set!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="384"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="392"/>
         <source>Output file name is not set!</source>
         <translation>Output file name is not set!</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="65"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="66"/>
         <source>Run</source>
         <translation>Run</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="66"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="67"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="166"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="158"/>
         <source>Invalid default annotation name!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="285"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="293"/>
         <source>Failed to guess separator sequence!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="306"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="314"/>
         <source>Column separator</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="326"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="334"/>
         <source>CSV Files</source>
         <translation>CSV Files</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="327"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="335"/>
         <source>Select CSV file to read</source>
         <translation>Select CSV file to read</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="341"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="349"/>
         <source>Enter input CSV file name</source>
         <translation>Enter input CSV file name</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="368"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="376"/>
         <source>Separator value is not set</source>
         <translation>Separator value is not set</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="471"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="475"/>
         <source>[ignored]</source>
         <translation>[ignored]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="474"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="478"/>
         <source>[qualifier %1]</source>
         <translation>[qualifier %1]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="477"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="481"/>
         <source>[name]</source>
         <translation>[name]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="481"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="485"/>
         <source>[start position with offset %1]</source>
         <translation>[start position with offset %1]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="483"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="487"/>
         <source>[start position]</source>
         <translation>[start position]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="488"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="492"/>
         <source>[end position (inclusive)]</source>
         <translation>[end position (inclusive)]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="490"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="494"/>
         <source>[end position]</source>
         <translation>[end position]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="494"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="498"/>
         <source>[length]</source>
         <translation>[length]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="498"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="502"/>
         <source>[complement]</source>
         <translation>[complement]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="500"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="504"/>
         <source>[complement if &apos;%1&apos;]</source>
         <translation>[complement if &apos;%1&apos;]</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="504"/>
+        <location filename="../src/ImportAnnotationsFromCSVDialog.cpp" line="508"/>
         <source>[group]</source>
         <translation>[group]</translation>
     </message>
@@ -1635,12 +1634,12 @@ var %2; //parsed line number</translation>
         <translation>Import annotations from CSV</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="132"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="130"/>
         <source>Annotations can&apos;t be added to the document %1</source>
         <translation>Annotations can&apos;t be added to the document %1</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="136"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="134"/>
         <source>Document is locked and can&apos;t be modified %1</source>
         <translation>Document is locked and can&apos;t be modified %1</translation>
     </message>
@@ -1971,42 +1970,42 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</trans
 <context>
     <name>U2::ReadCSVAsAnnotationsTask</name>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="190"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="193"/>
         <source>Parse CSV file %1</source>
         <translation>Parse CSV file %1</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="246"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="249"/>
         <source>Invalid annotation name: &apos;%1&apos;</source>
         <translation>Invalid annotation name: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="254"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="257"/>
         <source>Start offset is not numeric: &apos;%1&apos;</source>
         <translation>Start offset is not numeric: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="261"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="264"/>
         <source>End offset is not numeric: &apos;%1&apos;</source>
         <translation>End offset is not numeric: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="268"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="271"/>
         <source>Length is not numeric: &apos;%1&apos;</source>
         <translation>Length is not numeric: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="307"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="310"/>
         <source>Invalid location: start: %1  len: %2, in line :%3, ignoring</source>
         <translation>Invalid location: start: %1  len: %2, in line :%3, ignoring</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="315"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="318"/>
         <source>Can&apos;t parse line: &apos;%1&apos;, error = %2, ignoring</source>
         <translation>Can&apos;t parse line: &apos;%1&apos;, error = %2, ignoring</translation>
     </message>
     <message>
-        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="396"/>
+        <location filename="../src/ImportAnnotationsFromCSVTask.cpp" line="399"/>
         <source>Script result is not an array of strings!</source>
         <translation>Script result is not an array of strings!</translation>
     </message>
@@ -2037,11 +2036,10 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</trans
 <context>
     <name>getSequenceByIdDialog</name>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="22"/>
         <source>The sequences from selected BLAST results will be downloaded from
  NCBI Genbank by their GI identifier
 </source>
-        <translation>The sequences from selected BLAST results will be downloaded from
+        <translation type="vanished">The sequences from selected BLAST results will be downloaded from
  NCBI Genbank by their GI identifie</translation>
     </message>
     <message>
@@ -2050,17 +2048,24 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</trans
         <translation>Get Sequences by ID</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="33"/>
+        <location filename="../src/GetSequenceByIdDialog.ui" line="34"/>
+        <source>The sequences from selected BLAST results will be downloaded from
+NCBI Genbank by their GI identifier
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>
         <source>Save to directory:</source>
         <translation>Save to directory:</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="43"/>
+        <location filename="../src/GetSequenceByIdDialog.ui" line="58"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/GetSequenceByIdDialog.ui" line="52"/>
+        <location filename="../src/GetSequenceByIdDialog.ui" line="67"/>
         <source>Add to project</source>
         <translation>Add to project</translation>
     </message>

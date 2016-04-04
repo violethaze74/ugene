@@ -473,37 +473,37 @@
 <context>
     <name>U2::UHMM3BuildDialogImpl</name>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="69"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="63"/>
         <source>Build</source>
         <translation>Построить</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="70"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="64"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="109"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="119"/>
         <source>Select multiple alignment file</source>
         <translation>Выберите файл множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="118"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="78"/>
         <source>Select hmm file to create</source>
         <translation>Выберите файл HMM профайла</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="184"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="185"/>
         <source>input file is empty</source>
         <translation>Входной файл не выбран</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="187"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="188"/>
         <source>output hmm file is empty</source>
         <translation>Выходной HMM файл не выбран</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="196"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="197"/>
         <source>Error: bad arguments!</source>
         <translation>Ошибка: неверные входные параметры!</translation>
     </message>
@@ -1616,23 +1616,23 @@
 <context>
     <name>UHMM3BuildDialog</name>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="59"/>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="76"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="62"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="79"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="123"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="126"/>
         <source>assign cols w/ &gt;= symfrac residues as consensus</source>
         <translation>assign cols w/ &gt;= symfrac residues as consensus</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="126"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="129"/>
         <source>fast</source>
         <translation>Быстрая</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="39"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="42"/>
         <source>Input and output</source>
         <translation>Ввод и вывод</translation>
     </message>
@@ -1642,167 +1642,167 @@
         <translation>Построить профиль с помощью HMMER3</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="49"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="52"/>
         <source>Input alignment file</source>
         <translation>Файл выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="66"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="69"/>
         <source>Build to profile</source>
         <translation>HMM профайл</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="101"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="104"/>
         <source>Construction strategies</source>
         <translation>Стратегии построения</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="139"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="142"/>
         <source>Sym fraction</source>
         <translation>Доля</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="161"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="164"/>
         <source>Manual construction</source>
         <translation>Ручное построение</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="164"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="167"/>
         <source>Hand (requires reference annotation)</source>
         <translation>Ручная</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="182"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="185"/>
         <source>Tag sequence as a fragment, if L &lt; x*&lt;L&gt;, where x is:</source>
         <translation>Tag sequence as a fragment, if L &lt; x*&lt;L&gt;, where x is:</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="223"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="226"/>
         <source>Relative weighting</source>
         <translation>Относительные веса</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="231"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="234"/>
         <source>Henikoff position-based weights</source>
         <translation>Веса Henikoff основанные на позициях</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="247"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="250"/>
         <source>Gerstein/Sonnhammer/Chothia tree weights</source>
         <translation>Gerstein/Sonnhammer/Chothia веса</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="271"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="274"/>
         <source>Henikoff simple filter weights</source>
         <translation>Простой фильтр весов Henikoff</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="281"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="284"/>
         <source>Identity cutoff</source>
         <translation>Отсечки идентичности</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="306"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="309"/>
         <source>Skip relative weighting; set all to 1</source>
         <translation>Не использовать относительные веса</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="313"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="316"/>
         <source>Use weights given in alignment file</source>
         <translation>Использовать веса из файла выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="336"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="339"/>
         <source>Effective weighting</source>
         <translation>Эффективные веса</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="344"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="347"/>
         <source>Adjust effective sequence number to achieve relative entropy target</source>
         <translation>Отрегулируйте эффективный порядковый номер, чтобы достичь цель энтропии</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="378"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="381"/>
         <source>Minimum relative entropy/position</source>
         <translation>Минимальнеая относительная энтрпия</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="430"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="433"/>
         <source>Sigma parameter</source>
         <translation>Сигма-параметр</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="463"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="466"/>
         <source>Use number of single linkage clusters as effective</source>
         <translation>Использовать число единичных кластеров как эффективное</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="473"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="476"/>
         <source>Fractional identity cutoff</source>
         <translation>Долевая отсечка идентичности</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="498"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="501"/>
         <source>Use number of sequences as effective</source>
         <translation>Использовать число последовательностей как эффективное</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="513"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="516"/>
         <source>Effective sequence number for all models to</source>
         <translation>Установить эффективное число последовательностей для всех моделей</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="551"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="554"/>
         <source>E-value calibration</source>
         <translation>Калибрация E-value</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="570"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="573"/>
         <source>Length of sequences for MSV Gumbel mu fit</source>
         <translation>Длина последовательностей для MSV Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="606"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="609"/>
         <source>Number of sequences for MSV Gumbel mu fit</source>
         <translation>Число последовательностей для MSV Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="639"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="642"/>
         <source>Length of sequences for Viterbi Gumbel mu fit</source>
         <translation>Длина последовательностей для Viterbi Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="669"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="672"/>
         <source>Number of sequences for Viterbi Gumbel mu fit</source>
         <translation>Число последовательностей для MSV Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="699"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="702"/>
         <source>Length of sequences for Forward exp tail mu fit</source>
         <translation>Длина последовательностей для Forward exp tail mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="729"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="732"/>
         <source>Number of sequences for Forward exp tail mu fit</source>
         <translation>Число последовательностей для Forward exp tail mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="759"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="762"/>
         <source>Tail mass for Forward exponential tail mu fit</source>
         <translation>Масса для прямого экспоненциального хвоста mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="800"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="803"/>
         <source>Other</source>
         <translation>Разное</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="816"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="819"/>
         <source>Random generator seed</source>
         <translation>Затравка генератора случайных чисел</translation>
     </message>
     <message>
-        <location filename="../src/build/UHMM3BuildDialog.ui" line="859"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="862"/>
         <source>* 0 means that one-time arbitrary seed will be used</source>
         <translation>* 0 - означает, что один раз будет использована случайная затравка</translation>
     </message>

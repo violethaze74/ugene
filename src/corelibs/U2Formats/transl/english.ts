@@ -2,6 +2,37 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>EMBLGenbankAbstractDocument</name>
+    <message>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="56"/>
+        <source>The file contains features of another remote GenBank file. These features have been skipped.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="57"/>
+        <source>The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="58"/>
+        <source>Location parsing error.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LocationParser</name>
+    <message>
+        <location filename="../src/GenbankLocationParser.cpp" line="635"/>
+        <source>Ignoring remote entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GenbankLocationParser.cpp" line="636"/>
+        <source>Ignoring different strands in JOIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../src/BAMUtils.cpp" line="99"/>
@@ -735,7 +766,7 @@
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="260"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="263"/>
         <location filename="../src/FastaFormat.cpp" line="272"/>
         <location filename="../src/FastqFormat.cpp" line="337"/>
         <location filename="../src/PDWFormat.cpp" line="154"/>
@@ -769,7 +800,7 @@
 <context>
     <name>U2::DocumentFormatUtils</name>
     <message>
-        <location filename="../src/DocumentFormatUtils.cpp" line="231"/>
+        <location filename="../src/DocumentFormatUtils.cpp" line="232"/>
         <source>Undefined sequence alphabet</source>
         <translation>Undefined sequence alphabet</translation>
     </message>
@@ -946,90 +977,90 @@
 <context>
     <name>U2::EMBLGenbankAbstractDocument</name>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="124"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="127"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="141"/>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="310"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="144"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="313"/>
         <source>Reading entry header</source>
         <translation>Reading entry header</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="215"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="218"/>
         <source>Merge error: found annotations without sequence</source>
         <translation>Merge error: found annotations without sequence</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="466"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="469"/>
         <source>The file contains an incorrect data that describes a qualifier value. </source>
         <translation>The file contains an incorrect data that describes a qualifier value. </translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="467"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="470"/>
         <source>The value cannot contain a single quote character. The qualifier is &apos;%1&apos;</source>
         <translation>The value cannot contain a single quote character. The qualifier is &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="537"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="579"/>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="315"/>
         <source>Annotation name is empty</source>
         <translation>Annotation name is empty</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="546"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="588"/>
         <source>Error parsing location</source>
         <translation>Error parsing location</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="574"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="614"/>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="369"/>
         <source>Unexpected line format</source>
         <translation>Unexpected line format</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="628"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="668"/>
         <source>Reading sequence %1</source>
         <translation>Reading sequence %1</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="647"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="687"/>
         <source>Error parsing sequence: unexpected empty line</source>
         <translation>Error parsing sequence: unexpected empty line</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="674"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="714"/>
         <source>Error reading sequence: invalid sequence format</source>
         <translation>Error reading sequence: invalid sequence format</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="692"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="732"/>
         <source>Error reading sequence: memory allocation failed</source>
         <translation>Error reading sequence: memory allocation failed</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="707"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="747"/>
         <source>Sequence is truncated</source>
         <translation>Sequence is truncated</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="714"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="754"/>
         <source>Reading annotations %1</source>
         <translation>Reading annotations %1</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="724"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="764"/>
         <source>Invalid format of feature table</source>
         <translation>Invalid format of feature table</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="787"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="852"/>
         <source>Line is too long.</source>
         <translation>Line is too long.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="789"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="854"/>
         <source>IO error.</source>
         <translation>IO error.</translation>
     </message>
@@ -1430,76 +1461,80 @@ The following sequences are empty:</translation>
 <context>
     <name>U2::Genbank::LocationParser</name>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="309"/>
         <source>Ignoring remote entry: %1.%2</source>
-        <translation>Ignoring remote entry: %1.%2</translation>
+        <translation type="vanished">Ignoring remote entry: %1.%2</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="344"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="414"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="359"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="431"/>
         <source>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</source>
         <translation>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="347"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="362"/>
         <source>Ignoring &apos;&lt;&apos; at start position</source>
         <translation>Ignoring &apos;&lt;&apos; at start position</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="417"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="434"/>
         <source>Ignoring &apos;&gt;&apos; at end position</source>
         <translation>Ignoring &apos;&gt;&apos; at end position</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="479"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="498"/>
         <source>Wrong token after JOIN %1</source>
         <translation>Wrong token after JOIN %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="484"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="503"/>
         <source>Wrong token after JOIN  - order %1</source>
         <translation>Wrong token after JOIN  - order %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="492"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="512"/>
         <source>Can&apos;t parse location on JOIN</source>
         <translation>Can&apos;t parse location on JOIN</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="498"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="522"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="542"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="578"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="518"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="544"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="565"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="611"/>
         <source>Must be RIGHT_PARENTHESIS instead of %1</source>
         <translation>Must be RIGHT_PARENTHESIS instead of %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="504"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="524"/>
         <source>Wrong token after ORDER %1</source>
         <translation>Wrong token after ORDER %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="516"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="529"/>
+        <source>Wrong token after ORDER - join %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GenbankLocationParser.cpp" line="538"/>
         <source>Can&apos;t parse location on ORDER</source>
         <translation>Can&apos;t parse location on ORDER</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="528"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="550"/>
         <source>Wrong token after BOND %1</source>
         <translation>Wrong token after BOND %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="536"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="559"/>
         <source>Can&apos;t parse location on BONDs</source>
         <translation>Can&apos;t parse location on BONDs</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="562"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="587"/>
         <source>Must be LEFT_PARENTHESIS instead of %1</source>
         <translation>Must be LEFT_PARENTHESIS instead of %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="572"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="604"/>
         <source>Can&apos;t parse location on COMPLEMENT</source>
         <translation>Can&apos;t parse location on COMPLEMENT</translation>
     </message>

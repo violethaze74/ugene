@@ -54,9 +54,7 @@
         <translation>Исплользуйте уникальный идентификатор %1.</translation>
     </message>
     <message>
-        <location filename="../src/util/FormatUtils.cpp" line="139"/>
-        <location filename="../src/util/FormatUtils.cpp" line="178"/>
-        <location filename="../src/util/FormatUtils.cpp" line="197"/>
+        <location filename="../src/util/FormatUtils.cpp" line="123"/>
         <source>All files</source>
         <translation>Все файлы</translation>
     </message>
@@ -66,14 +64,14 @@
         <translation>Загруженные последовательности имеют разные алфавиты. Поэтому создано несколько объектов типа последовательность для каждого алфавита. Все последовательности одного объекта имеют одинаковый афлфавит и последовательности из разных объектов имеют разные алфавиты.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="593"/>
-        <location filename="../src/datatype/Annotation.cpp" line="596"/>
+        <location filename="../src/datatype/Annotation.cpp" line="607"/>
+        <location filename="../src/datatype/Annotation.cpp" line="610"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="604"/>
-        <location filename="../src/datatype/Annotation.cpp" line="607"/>
+        <location filename="../src/datatype/Annotation.cpp" line="618"/>
+        <location filename="../src/datatype/Annotation.cpp" line="621"/>
         <source>Translation</source>
         <translation>Трансляция</translation>
     </message>
@@ -1222,27 +1220,27 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="546"/>
+        <location filename="../src/models/DocumentModel.cpp" line="550"/>
         <source>Document is not loaded</source>
         <translation>Документ не загружен</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="559"/>
+        <location filename="../src/models/DocumentModel.cpp" line="563"/>
         <source>IO adapter does not support write operation</source>
         <translation>Адаптер ввода/вывода не поддерживает запись</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="565"/>
+        <location filename="../src/models/DocumentModel.cpp" line="569"/>
         <source>No write support for document format</source>
         <translation>Запись для данного формата не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="635"/>
+        <location filename="../src/models/DocumentModel.cpp" line="639"/>
         <source>Locked by user</source>
         <translation>Заблокирован пользователем</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="659"/>
+        <location filename="../src/models/DocumentModel.cpp" line="663"/>
         <source>Lock is NULL</source>
         <translation>Lock is NULL</translation>
     </message>
@@ -1921,43 +1919,43 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="227"/>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="242"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="230"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="245"/>
         <source>Read document: &apos;%1&apos;</source>
         <translation>Чтение документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="263"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="266"/>
         <source>Document format is NULL!</source>
         <translation>Формат документа NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="264"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="267"/>
         <source>IO adapter factory is NULL!</source>
         <translation>IO адаптер NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="444"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="447"/>
         <source>Document not found %1</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="464"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="467"/>
         <source>Not enough memory to load document %1</source>
         <translation>Недостаточно памяти для загрузки документа %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="480"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="483"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Максимальное количество объектов в документе достигнуто для %1. Попробуйте другие способы для открытия документа!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="510"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="513"/>
         <source>Object not found: %1</source>
         <translation>Объект не найден: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="517"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="520"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Невозможно добавить объект. Проверка ограничений формата завершилась неудачно: %1</translation>
     </message>
@@ -1983,7 +1981,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Документ был удалён</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="179"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="182"/>
         <source>Project Document:</source>
         <translation>Документ проекта:</translation>
     </message>
@@ -2008,7 +2006,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Документ не найден</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="197"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="200"/>
         <source>Annotation object not found</source>
         <translation>Не найдена таблица аннотаций</translation>
     </message>

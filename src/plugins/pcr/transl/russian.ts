@@ -234,12 +234,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.cpp" line="55"/>
+        <location filename="../src/export/ExportPrimersDialog.cpp" line="56"/>
         <source>Local file</source>
         <translation>Локальный файл</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.cpp" line="56"/>
+        <location filename="../src/export/ExportPrimersDialog.cpp" line="57"/>
         <location filename="../src/import/ImportPrimersDialog.cpp" line="45"/>
         <source>Shared database</source>
         <translation>Общая база данных</translation>
@@ -261,7 +261,7 @@
 <context>
     <name>U2::ExportPrimersDialog</name>
     <message>
-        <location filename="../src/export/ExportPrimersDialog.cpp" line="93"/>
+        <location filename="../src/export/ExportPrimersDialog.cpp" line="190"/>
         <source>Export to</source>
         <translation>Экспортировать в</translation>
     </message>
@@ -324,47 +324,51 @@
 <context>
     <name>U2::ImportPrimerFromObjectTask</name>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="38"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="39"/>
         <source>Import primer from the shared database object: %1</source>
         <translation>Import primer from the shared database object: %1</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="42"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="43"/>
         <source>A non-sequence object was provided</source>
         <translation>A non-sequence object was provided</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="46"/>
         <source>The sequence has an unsupported alphabet: only standard nucleotide alphabet is supported</source>
-        <translation>The sequence has an unsupported alphabet: only standard nucleotide alphabet is supported</translation>
+        <translation type="vanished">The sequence has an unsupported alphabet: only standard nucleotide alphabet is supported</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="47"/>
+        <source>The sequence has an unsupported alphabet: only nucleotide alphabet is supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="48"/>
         <source>Can&apos;t convert a sequence to primer: the sequence is too long</source>
         <translation>Can&apos;t convert a sequence to primer: the sequence is too long</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="57"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="59"/>
         <source>The primer sequence contains non-ACGT symbols</source>
         <translation>The primer sequence contains non-ACGT symbols</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="67"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="69"/>
         <source>Without document</source>
         <translation>Без документа</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="70"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="72"/>
         <source>cancelled</source>
         <translation>cancelled</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="73"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="75"/>
         <source>error</source>
         <translation>error</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="75"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="77"/>
         <source>success</source>
         <translation>success</translation>
     </message>

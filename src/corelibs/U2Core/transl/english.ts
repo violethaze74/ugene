@@ -54,9 +54,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/util/FormatUtils.cpp" line="139"/>
-        <location filename="../src/util/FormatUtils.cpp" line="178"/>
-        <location filename="../src/util/FormatUtils.cpp" line="197"/>
+        <location filename="../src/util/FormatUtils.cpp" line="123"/>
         <source>All files</source>
         <translation>All files</translation>
     </message>
@@ -66,14 +64,14 @@
         <translation>Loaded sequences have different alphabets. That&apos;s why several sequence objects are created, each for specified alphabet. All sequences at one object have the same alphabet and sequences from different objects have different alphabets.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="593"/>
-        <location filename="../src/datatype/Annotation.cpp" line="596"/>
+        <location filename="../src/datatype/Annotation.cpp" line="607"/>
+        <location filename="../src/datatype/Annotation.cpp" line="610"/>
         <source>Sequence</source>
         <translation>Sequence</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="604"/>
-        <location filename="../src/datatype/Annotation.cpp" line="607"/>
+        <location filename="../src/datatype/Annotation.cpp" line="618"/>
+        <location filename="../src/datatype/Annotation.cpp" line="621"/>
         <source>Translation</source>
         <translation>Translation</translation>
     </message>
@@ -1220,27 +1218,27 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="546"/>
+        <location filename="../src/models/DocumentModel.cpp" line="550"/>
         <source>Document is not loaded</source>
         <translation>Document is not loaded</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="559"/>
+        <location filename="../src/models/DocumentModel.cpp" line="563"/>
         <source>IO adapter does not support write operation</source>
         <translation>IO adapter does not support write operation</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="565"/>
+        <location filename="../src/models/DocumentModel.cpp" line="569"/>
         <source>No write support for document format</source>
         <translation>No write support for document format</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="635"/>
+        <location filename="../src/models/DocumentModel.cpp" line="639"/>
         <source>Locked by user</source>
         <translation>Locked by user</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="659"/>
+        <location filename="../src/models/DocumentModel.cpp" line="663"/>
         <source>Lock is NULL</source>
         <translation>Lock is NULL</translation>
     </message>
@@ -1918,43 +1916,43 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::LoadDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="227"/>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="242"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="230"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="245"/>
         <source>Read document: &apos;%1&apos;</source>
         <translation>Read document: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="263"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="266"/>
         <source>Document format is NULL!</source>
         <translation>Document format is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="264"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="267"/>
         <source>IO adapter factory is NULL!</source>
         <translation>IO adapter factory is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="444"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="447"/>
         <source>Document not found %1</source>
         <translation>Document not found %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="464"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="467"/>
         <source>Not enough memory to load document %1</source>
         <translation>Not enough memory to load document %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="480"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="483"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="510"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="513"/>
         <source>Object not found: %1</source>
         <translation>Object not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="517"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="520"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Can&apos;t add object. Document format constraints check failed: %1</translation>
     </message>
@@ -2000,12 +1998,12 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>Document is locked</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="179"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="182"/>
         <source>Project Document:</source>
         <translation>Project Document:</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="197"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="200"/>
         <source>Annotation object not found</source>
         <translation>Annotation object not found</translation>
     </message>

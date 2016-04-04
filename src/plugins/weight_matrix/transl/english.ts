@@ -690,27 +690,27 @@
 <context>
     <name>U2::PFMatrixBuildTask</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="329"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="334"/>
         <source>Build Frequency Matrix</source>
         <translation>Build Frequency Matrix</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="337"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="342"/>
         <source>Sequences in alignment have various lengths</source>
         <translation>Sequences in alignment have various lengths</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="341"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="346"/>
         <source>Alignment is empty</source>
         <translation>Alignment is empty</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="345"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="350"/>
         <source>Alignment is not nucleic</source>
         <translation>Alignment is not nucleic</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="348"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="353"/>
         <source>Calculating frequencies of nucleotids</source>
         <translation>Calculating frequencies of nucleotids</translation>
     </message>
@@ -718,27 +718,27 @@
 <context>
     <name>U2::PFMatrixBuildToFileTask</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="362"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="367"/>
         <source>Build Weight Matrix</source>
         <translation>Build Weight Matrix</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="373"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="378"/>
         <source>Input format error</source>
         <translation>Input format error</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="398"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="403"/>
         <source>Loading alignment</source>
         <translation>Loading alignment</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="431"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="436"/>
         <source>Wrong sequence alphabet</source>
         <translation>Wrong sequence alphabet</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="441"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="446"/>
         <source>No alignments or sequences found</source>
         <translation>No alignments or sequences found</translation>
     </message>
@@ -800,101 +800,111 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMBuildDialogController</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="92"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="88"/>
         <source>Select file with alignment</source>
         <translation>Select file with alignment</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="152"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="148"/>
         <source>Wrong sequence alphabet</source>
         <translation>Wrong sequence alphabet</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="188"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="289"/>
         <source>Select file to save frequency matrix to...</source>
         <translation>Select file to save frequency matrix to...</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="190"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="292"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="310"/>
+        <source>Frequency matrices</source>
+        <translation type="unfinished">Frequency matrices</translation>
+    </message>
+    <message>
+        <location filename="../src/PWMBuildDialogController.cpp" line="293"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="311"/>
+        <source>Weight matrices</source>
+        <translation type="unfinished">Weight matrices</translation>
+    </message>
+    <message>
+        <location filename="../src/PWMBuildDialogController.cpp" line="307"/>
         <source>Select file to save weight matrix to...</source>
         <translation>Select file to save weight matrix to...</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="217"/>
         <source>Overwrite existing file</source>
-        <translation>Overwrite existing file</translation>
+        <translation type="vanished">Overwrite existing file</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="218"/>
         <source>File with this name already exists.
 Do you want to write over this file?</source>
-        <translation>File with this name already exists.
+        <translation type="vanished">File with this name already exists.
 Do you want to write over this file?</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="240"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="210"/>
         <source>Illegal input file name</source>
         <translation>Illegal input file name</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="247"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="217"/>
         <source>Illegal output file name</source>
         <translation>Illegal output file name</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="277"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="247"/>
         <source>Counting frequency statistics</source>
         <translation>Counting frequency statistics</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="280"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="250"/>
         <source>Hide</source>
         <translation>Hide</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="73"/>
-        <location filename="../src/PWMBuildDialogController.cpp" line="281"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="69"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="251"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="125"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="121"/>
         <source>Could not detect the format of the file. Files must be in supported multiple alignment or sequence formats.</source>
         <translation>Could not detect the format of the file. Files must be in supported multiple alignment or sequence formats.</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="144"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="140"/>
         <source>There are no sequences in the file.</source>
         <translation>There are no sequences in the file.</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="294"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="263"/>
         <source>Build finished with errors: %1</source>
         <translation>Build finished with errors: %1</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="297"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="266"/>
         <source>Build canceled</source>
         <translation>Build canceled</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="300"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="269"/>
         <source>Build finished successfuly</source>
         <translation>Build finished successfuly</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="72"/>
-        <location filename="../src/PWMBuildDialogController.cpp" line="303"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="68"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="272"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="304"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="273"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="310"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="279"/>
         <source>Running state %1 progress %2%</source>
         <translation>Running state %1 progress %2%</translation>
     </message>
@@ -1014,28 +1024,28 @@ Maybe model data is not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMatrixBuildTask</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="453"/>
-        <location filename="../src/PWMBuildDialogController.cpp" line="460"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="458"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="465"/>
         <source>Build Weight Matrix</source>
         <translation>Build Weight Matrix</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="469"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="474"/>
         <source>Can&apos;t convert mononucleotide matrix to dinucleotide one</source>
         <translation>Can&apos;t convert mononucleotide matrix to dinucleotide one</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="481"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="486"/>
         <source>Sequences in alignment have various lengths</source>
         <translation>Sequences in alignment have various lengths</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="485"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="490"/>
         <source>Alignment is empty</source>
         <translation>Alignment is empty</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="489"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="494"/>
         <source>Alignment is not nucleic</source>
         <translation>Alignment is not nucleic</translation>
     </message>
@@ -1043,27 +1053,27 @@ Maybe model data is not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMatrixBuildToFileTask</name>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="512"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="517"/>
         <source>Build Weight Matrix</source>
         <translation>Build Weight Matrix</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="523"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="528"/>
         <source>Input format error</source>
         <translation>Input format error</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="531"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="536"/>
         <source>Loading alignment</source>
         <translation>Loading alignment</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="563"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="568"/>
         <source>Wrong sequence alphabet</source>
         <translation>Wrong sequence alphabet</translation>
     </message>
     <message>
-        <location filename="../src/PWMBuildDialogController.cpp" line="574"/>
+        <location filename="../src/PWMBuildDialogController.cpp" line="579"/>
         <source>No alignments or sequences found</source>
         <translation>No alignments or sequences found</translation>
     </message>

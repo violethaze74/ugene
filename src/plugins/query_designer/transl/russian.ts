@@ -315,44 +315,44 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="296"/>
+        <location filename="../src/QDRunDialog.cpp" line="297"/>
         <source>Search</source>
         <translation>Искать</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="297"/>
+        <location filename="../src/QDRunDialog.cpp" line="298"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="337"/>
+        <location filename="../src/QDRunDialog.cpp" line="338"/>
         <source>Select query</source>
         <translation>Выбор схемы запроса</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="353"/>
-        <location filename="../src/QDRunDialog.cpp" line="360"/>
+        <location filename="../src/QDRunDialog.cpp" line="354"/>
+        <location filename="../src/QDRunDialog.cpp" line="361"/>
         <source>Can not load %1</source>
         <translation>Не удаётся загрузить схему %1</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="390"/>
+        <location filename="../src/QDRunDialog.cpp" line="391"/>
         <source>File with query is not selected!</source>
         <translation>Не выбран файл схемы!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="395"/>
+        <location filename="../src/QDRunDialog.cpp" line="396"/>
         <source>Error in schema!</source>
         <translation>Ошибка в схеме!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="401"/>
-        <location filename="../src/QDRunDialog.cpp" line="413"/>
+        <location filename="../src/QDRunDialog.cpp" line="402"/>
+        <location filename="../src/QDRunDialog.cpp" line="414"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="413"/>
+        <location filename="../src/QDRunDialog.cpp" line="414"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -738,32 +738,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRunDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="107"/>
+        <location filename="../src/QDRunDialog.cpp" line="130"/>
         <source>Select output file</source>
         <translation>Выбрать выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="104"/>
+        <location filename="../src/QDRunDialog.cpp" line="106"/>
         <source>Select input file</source>
         <translation>Выбрать входной файл</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="77"/>
+        <location filename="../src/QDRunDialog.cpp" line="83"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="78"/>
+        <location filename="../src/QDRunDialog.cpp" line="84"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="141"/>
+        <location filename="../src/QDRunDialog.cpp" line="142"/>
         <source>The sequence is not specified!</source>
         <translation>Не задана последовательность!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="145"/>
+        <location filename="../src/QDRunDialog.cpp" line="146"/>
         <source>The output file is not selected!</source>
         <translation>Не задан выходной файл!</translation>
     </message>
@@ -771,17 +771,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRunDialogTask</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="159"/>
+        <location filename="../src/QDRunDialog.cpp" line="160"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="210"/>
+        <location filename="../src/QDRunDialog.cpp" line="211"/>
         <source>Sequence not found!</source>
         <translation>Последовательность не найдена!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="219"/>
+        <location filename="../src/QDRunDialog.cpp" line="220"/>
         <source>Sequence not found, document: %1</source>
         <translation>Последовательность не найдена, документ: %1</translation>
     </message>

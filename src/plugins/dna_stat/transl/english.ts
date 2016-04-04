@@ -143,27 +143,25 @@
 <context>
     <name>U2::DNAStatMSAProfileDialog</name>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="59"/>
         <source>CSV files</source>
-        <translation>CSV files</translation>
+        <translation type="vanished">CSV files</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="61"/>
         <source>HTML files</source>
-        <translation>HTML files</translation>
+        <translation type="vanished">HTML files</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="63"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="73"/>
         <source>Select file to save report to..</source>
         <translation>Select file to save report to..</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="106"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="102"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="106"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="102"/>
         <source>File URL is empty</source>
         <translation>File URL is empty</translation>
     </message>
@@ -171,57 +169,68 @@
 <context>
     <name>U2::DNAStatMSAProfileTask</name>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="119"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="115"/>
         <source>Generate alignment profile</source>
         <translation>Generate alignment profile</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="131"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="127"/>
         <source>No output file name specified</source>
         <translation>No output file name specified</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="149"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="155"/>
         <source>Alignment file:</source>
         <translation>Alignment file:</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="150"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="156"/>
         <source>Table content:</source>
         <translation>Table content:</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="150"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="156"/>
         <source>symbol percents</source>
         <translation>symbol percents</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="150"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="156"/>
         <source>symbol counts</source>
         <translation>symbol counts</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="246"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="136"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="247"/>
         <source>Can&apos;t open file for write: %1</source>
         <translation>Can&apos;t open file for write: %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="258"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="238"/>
+        <source>There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="240"/>
+        <source>There is not enough memory to generate this grid profile in UGENE.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="283"/>
         <source>Alignment profile</source>
         <translation>Alignment profile</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="258"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="283"/>
         <source>Alignment profile for %1</source>
         <translation>Alignment profile for %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="146"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="152"/>
         <source>Multiple Sequence Alignment Grid Profile</source>
         <translation>Multiple Sequence Alignment Grid Profile</translation>
     </message>
     <message>
-        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="214"/>
+        <location filename="../src/DNAStatMSAProfileDialog.cpp" line="222"/>
         <source>Legend:</source>
         <translation>Legend:</translation>
     </message>
@@ -343,37 +352,35 @@
 <context>
     <name>U2::DistanceMatrixMSAProfileDialog</name>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="55"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="56"/>
         <source>Generate</source>
         <translation>Generate</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="56"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="57"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="80"/>
         <source>CSV files</source>
-        <translation>CSV files</translation>
+        <translation type="vanished">CSV files</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="82"/>
         <source>HTML files</source>
-        <translation>HTML files</translation>
+        <translation type="vanished">HTML files</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="84"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="81"/>
         <source>Select file to save report to..</source>
         <translation>Select file to save report to..</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="129"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="112"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="129"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="112"/>
         <source>File URL is empty</source>
         <translation>File URL is empty</translation>
     </message>
@@ -381,57 +388,64 @@
 <context>
     <name>U2::DistanceMatrixMSAProfileTask</name>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="142"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="138"/>
         <source>Generate distance matrix</source>
         <translation>Generate distance matrix</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="170"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="166"/>
         <source>No output file name specified</source>
         <translation>No output file name specified</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="184"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="188"/>
         <source>Multiple Sequence Alignment Distance Matrix</source>
         <translation>Multiple Sequence Alignment Distance Matrix</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="187"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="191"/>
         <source>Alignment file:</source>
         <translation>Alignment file:</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="188"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="192"/>
         <source>Table content:</source>
         <translation>Table content:</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="199"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="202"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="234"/>
+        <source>There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="209"/>
         <source>Group statistics of multiple alignment</source>
         <translation>Group statistics of multiple alignment</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="225"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="241"/>
         <source>Legend:</source>
         <translation>Legend:</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="265"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="174"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="260"/>
         <source>Can&apos;t open file for write: %1</source>
         <translation>Can&apos;t open file for write: %1</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="282"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="302"/>
         <source>There is not enough groups to create distance matrix!</source>
         <translation>There is not enough groups to create distance matrix!</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="335"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="356"/>
         <source>Distance matrix</source>
         <translation>Distance matrix</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="335"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="356"/>
         <source>Distance matrix for %1</source>
         <translation>Distance matrix for %1</translation>
     </message>

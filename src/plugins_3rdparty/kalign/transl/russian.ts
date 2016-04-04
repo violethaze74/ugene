@@ -95,17 +95,17 @@
 <context>
     <name>U2::KalignAlignWithExtFileSpecifyDialogController</name>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="133"/>
+        <location filename="../src/KalignDialogController.cpp" line="128"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="134"/>
+        <location filename="../src/KalignDialogController.cpp" line="129"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="150"/>
+        <location filename="../src/KalignDialogController.cpp" line="146"/>
         <source>Open an alignment file</source>
         <translation>Открыть выравнивание</translation>
     </message>
@@ -115,18 +115,18 @@
         <translation>Сохранить выранивание</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="200"/>
-        <location filename="../src/KalignDialogController.cpp" line="203"/>
+        <location filename="../src/KalignDialogController.cpp" line="193"/>
+        <location filename="../src/KalignDialogController.cpp" line="196"/>
         <source>Kalign with Align</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="201"/>
+        <location filename="../src/KalignDialogController.cpp" line="194"/>
         <source>Input file is not set!</source>
         <translation>Входной файл не выбран!</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="204"/>
+        <location filename="../src/KalignDialogController.cpp" line="197"/>
         <source>Output file is not set!</source>
         <translation>Выходной файл не указан!</translation>
     </message>
@@ -134,12 +134,12 @@
 <context>
     <name>U2::KalignDialogController</name>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="70"/>
+        <location filename="../src/KalignDialogController.cpp" line="63"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="71"/>
+        <location filename="../src/KalignDialogController.cpp" line="64"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>

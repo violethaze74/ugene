@@ -458,102 +458,107 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMMBuildDialogController</name>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="58"/>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="175"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="55"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="163"/>
         <source>Build</source>
         <translation>Build</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="59"/>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="176"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="56"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="164"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="80"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="77"/>
         <source>Select file with alignment</source>
         <translation>Select file with alignment</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="92"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="183"/>
         <source>Select file with HMM profile</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="112"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="100"/>
         <source>Incorrect alignment file!</source>
         <translation>Incorrect alignment file!</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="117"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="105"/>
         <source>Incorrect HMM file!</source>
         <translation>Incorrect HMM file!</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="133"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="121"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="142"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="130"/>
         <source>Starting build process</source>
         <translation>Starting build process</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="145"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="133"/>
         <source>Hide</source>
         <translation>Hide</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="146"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="134"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="169"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="157"/>
         <source>HMM build finished with errors: %1</source>
         <translation>HMM build finished with errors: %1</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="171"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="159"/>
         <source>HMM build canceled</source>
         <translation>HMM build canceled</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="173"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="161"/>
         <source>HMM build finished successfuly!</source>
         <translation>HMM build finished successfuly!</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="185"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="173"/>
         <source>Progress: %1%</source>
         <translation>Progress: %1%</translation>
+    </message>
+    <message>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="186"/>
+        <source>HMM models</source>
+        <translation type="unfinished">HMM models</translation>
     </message>
 </context>
 <context>
     <name>U2::HMMBuildTask</name>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="325"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="327"/>
         <source>Build HMM profile &apos;%1&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="342"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="344"/>
         <source>Multiple alignment is empty</source>
         <translation>Multiple alignment is empty</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="346"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="348"/>
         <source>Multiple alignment is of 0 length</source>
         <translation>Multiple alignment is of 0 length</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="351"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="353"/>
         <source>Invalid alphabet! Only amino and nucleic alphabets are supported</source>
         <translation>Invalid alphabet! Only amino and nucleic alphabets are supported</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="359"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="361"/>
         <source>Error creating MSA structure</source>
         <translation>Error creating MSA structure</translation>
     </message>
@@ -561,57 +566,57 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMMBuildToFileTask</name>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="310"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="312"/>
         <source>none</source>
         <translation>none</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="196"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="198"/>
         <source>Build HMM profile &apos;%1&apos; -&gt; &apos;%2&apos;</source>
         <translation>Build HMM profile &apos;%1&apos; -&gt; &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="209"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="211"/>
         <source>Error reading alignment file</source>
         <translation>Error reading alignment file</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="226"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="228"/>
         <source>Build HMM profile to &apos;%1&apos;</source>
         <translation>Build HMM profile to &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="251"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="253"/>
         <source>Incorrect input file</source>
         <translation>Incorrect input file</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="256"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="258"/>
         <source>Alignment object not found!</source>
         <translation>Alignment object not found!</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="298"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="300"/>
         <source>Source alignment</source>
         <translation>Source alignment</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="299"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="301"/>
         <source>Profile name</source>
         <translation>Profile name</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="301"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="303"/>
         <source>Task was not finished</source>
         <translation>Task was not finished</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="306"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="308"/>
         <source>Profile file</source>
         <translation>Profile file</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="307"/>
+        <location filename="../src/u_build/HMMBuildDialogController.cpp" line="309"/>
         <source>Expert options</source>
         <translation>Expert options</translation>
     </message>
@@ -619,77 +624,82 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMMCalibrateDialogController</name>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="51"/>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="160"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="46"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="145"/>
         <source>Calibrate</source>
         <translation>Calibrate</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="52"/>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="161"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="47"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="146"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="65"/>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="74"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="59"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="163"/>
         <source>Select file with HMM model</source>
         <translation>Select file with HMM model</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="95"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="80"/>
         <source>Incorrect HMM file!</source>
         <translation>Incorrect HMM file!</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="101"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="86"/>
         <source>Illegal fixed length value!</source>
         <translation>Illegal fixed length value!</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="118"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="103"/>
         <source>Invalid output file name</source>
         <translation>Invalid output file name</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="124"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="109"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="134"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="119"/>
         <source>Starting calibration process</source>
         <translation>Starting calibration process</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="137"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="122"/>
         <source>Hide</source>
         <translation>Hide</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="138"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="123"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="154"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="139"/>
         <source>Calibration finished with errors: %1</source>
         <translation>Calibration finished with errors: %1</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="156"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="141"/>
         <source>Calibration was cancelled</source>
         <translation>Calibration was cancelled</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="158"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="143"/>
         <source>Calibration finished successfuly!</source>
         <translation>Calibration finished successfuly!</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="168"/>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="153"/>
         <source>Progress: %1%</source>
         <translation>Progress: %1%</translation>
+    </message>
+    <message>
+        <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="166"/>
+        <source>HMM models</source>
+        <translation type="unfinished">HMM models</translation>
     </message>
 </context>
 <context>

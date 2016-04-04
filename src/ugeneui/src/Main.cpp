@@ -424,7 +424,7 @@ int main(int argc, char **argv)
         // set translations
         QString transFile[] = {
             userAppSettings->getTranslationFile(),
-            "transl_" + QLocale::system().name().left(2),
+            "transl_ru",
             "transl_en"
         };
         for (int i = transFile[0].isEmpty() ? 1 : 0; i < 3; ++i) {

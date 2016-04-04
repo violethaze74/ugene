@@ -2675,7 +2675,7 @@ Uncheck to get the maximum likelihood estimate.</translation>
         <translation type="vanished">Select a database file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="80"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="84"/>
         <source>Set a result FASTA file name</source>
         <translation>Set a result FASTA file name</translation>
     </message>
@@ -3228,22 +3228,22 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::CAP3SupportDialog</name>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="47"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="44"/>
         <source>Run</source>
         <translation>Run</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="89"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="97"/>
         <source>List of input files is empty!</source>
         <translation>List of input files is empty!</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="101"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="109"/>
         <source>Result contig file name is not set!</source>
         <translation>Result contig file name is not set!</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="107"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="115"/>
         <source>Destination file already exists.
 To overwrite the file, press &apos;Replace&apos;.
 To save under other name press &apos;Cancel&apos; and change name in &apos;Result contig&apos; field.</source>
@@ -3252,30 +3252,29 @@ To overwrite the file, press &apos;Replace&apos;.
 To save under other name press &apos;Cancel&apos; and change name in &apos;Result contig&apos; field.</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="110"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="118"/>
         <source>Replace</source>
         <translation>Replace</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="139"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="147"/>
         <source>Add Sequences to Assembly</source>
         <translation>Add Sequences to Assembly</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="170"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="86"/>
         <source>Set Result Contig File Name</source>
         <translation>Set Result Contig File Name</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="48"/>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="111"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="45"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="119"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="170"/>
         <source>ACE format (*.ace)</source>
-        <translation>ACE format (*.ace)</translation>
+        <translation type="vanished">ACE format (*.ace)</translation>
     </message>
 </context>
 <context>
@@ -3356,12 +3355,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOSupportRunDialog</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="55"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="49"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="56"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="50"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -3422,38 +3421,38 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="91"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="84"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="92"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="85"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="108"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="96"/>
         <source>Open an alignment file</source>
         <translation>Open an alignment file</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="118"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="110"/>
         <source>Save an multiple alignment file</source>
         <translation>Save an multiple alignment file</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="143"/>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="146"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="135"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="138"/>
         <source>Kalign with Align</source>
         <translation>Align with Kalign</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="144"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="136"/>
         <source>Input file is not set!</source>
         <translation>Input file is not set!</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="147"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="139"/>
         <source>Output file is not set!</source>
         <translation>Output file is not set!</translation>
     </message>
@@ -3505,12 +3504,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalWSupportRunDialog</name>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="52"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="46"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="53"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="47"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -3566,38 +3565,38 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalWWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="131"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="124"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="132"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="125"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="154"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="141"/>
         <source>Open an alignment file</source>
         <translation>Open an alignment file</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="164"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="155"/>
         <source>Save an multiple alignment file</source>
         <translation>Save an multiple alignment file</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="215"/>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="218"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="201"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="204"/>
         <source>Kalign with Align</source>
         <translation>Align with Kalign</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="216"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="202"/>
         <source>Input file is not set!</source>
         <translation>Input file is not set!</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="219"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="205"/>
         <source>Output file is not set!</source>
         <translation>Output file is not set!</translation>
     </message>
@@ -3866,7 +3865,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Tool does not start.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="156"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="158"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -3874,7 +3873,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSearchAndValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="347"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="349"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -4107,12 +4106,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsInstallTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="391"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="393"/>
         <source>Installing external tools</source>
         <translation>Installing external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="396"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="398"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -4134,13 +4133,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="362"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="364"/>
         <source>Checking external tools</source>
         <translation>Checking external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="380"/>
         <location filename="../src/utils/ExternalToolValidateTask.cpp" line="382"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="384"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -4323,98 +4322,108 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BaseShortReadsAlignerWorker</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="247"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="238"/>
+        <source>Not enough upstream reads datasets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="241"/>
+        <source>Not enough downstream reads datasets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="276"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="248"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="277"/>
         <source>Directory to save output files.</source>
         <translation>Directory to save output files.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="251"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="280"/>
         <source>Reference genome</source>
         <translation>Reference genome</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="252"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="281"/>
         <source>Path to indexed reference genome.</source>
         <translation>Path to indexed reference genome.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="255"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="284"/>
         <source>Library</source>
         <translation>Library</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="256"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="285"/>
         <source>Is this library mate-paired?</source>
         <translation>Is this library mate-paired?</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="259"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="288"/>
         <source>Output file name</source>
         <translation>Output file name</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="260"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="289"/>
         <source>Base name of the output file. &apos;out.sam&apos; by default</source>
         <translation>Base name of the output file. &apos;out.sam&apos; by default</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="292"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="321"/>
         <source>URL of a file with reads</source>
         <translation>URL of a file with reads</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="293"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="303"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="322"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="332"/>
         <source>Input reads to be aligned.</source>
         <translation>Input reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="295"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="324"/>
         <source>URL of a file with mate reads</source>
         <translation>URL of a file with mate reads</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="296"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="325"/>
         <source>Input mate reads to be aligned.</source>
         <translation>Input mate reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="302"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="331"/>
         <source>Input data</source>
         <translation>Input data</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="306"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="335"/>
         <source>Reverse FASTQ file</source>
         <translation>Reverse FASTQ file</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="307"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="336"/>
         <source>Reverse paired reads to be aligned.</source>
         <translation>Reverse paired reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="319"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="348"/>
         <source>Assembly URL</source>
         <translation>Assembly URL</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="320"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="349"/>
         <source>Output assembly URL.</source>
         <translation>Output assembly URL.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="323"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="352"/>
         <source>Output data</source>
         <translation>Output data</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="324"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="353"/>
         <source>Output assembly files.</source>
         <translation>Output assembly files.</translation>
     </message>
@@ -7557,32 +7566,32 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::MACSPrompter</name>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="570"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="571"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="577"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="578"/>
         <source>Uses &lt;u&gt;%1&lt;/u&gt; as treatment</source>
         <translation>Uses &lt;u&gt;%1&lt;/u&gt; as treatment</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="579"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="580"/>
         <source> and &lt;u&gt;%1&lt;/u&gt; as control</source>
         <translation> and &lt;u&gt;%1&lt;/u&gt; as control</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="582"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="583"/>
         <source> to call peaks.</source>
         <translation> to call peaks.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="584"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="585"/>
         <source> Outputs all files to &lt;u&gt;%1&lt;/u&gt; directory</source>
         <translation> Outputs all files to &lt;u&gt;%1&lt;/u&gt; directory</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="586"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="587"/>
         <source> and pileup with &lt;u&gt;%1&lt;/u&gt; span</source>
         <translation> and pileup with &lt;u&gt;%1&lt;/u&gt; span</translation>
     </message>
@@ -7590,262 +7599,267 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::MACSWorker</name>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="194"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="195"/>
         <source>Bad model fold region: %1. Default region is used</source>
         <translation>Bad model fold region: %1. Default region is used</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="261"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="195"/>
+        <source>unrecognized parsing error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/macs/MACSWorker.cpp" line="262"/>
         <source>Input control and treatment annotations are the same</source>
         <translation>Input control and treatment annotations are the same</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="275"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="276"/>
         <source>Treatment features</source>
         <translation>Treatment features</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="276"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="277"/>
         <source>ChIP-seq treatment features.</source>
         <translation>ChIP-seq treatment features.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="278"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="279"/>
         <source>Control features</source>
         <translation>Control features</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="279"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="280"/>
         <source>Control features (Optional).</source>
         <translation>Control features (Optional).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="284"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="285"/>
         <source>MACS data</source>
         <translation>MACS data</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="285"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="286"/>
         <source>ChIP-seq treatment features and control features (optional) to call peaks with MACS.</source>
         <translation>ChIP-seq treatment features and control features (optional) to call peaks with MACS.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="293"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="294"/>
         <source>Peak regions</source>
         <translation>Peak regions</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="294"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="295"/>
         <source>Peak locations. Typically used in gene association study like CEAS, or correlation calculation.</source>
         <translation>Peak locations. Typically used in gene association study like CEAS, or correlation calculation.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="296"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="297"/>
         <source>Peak summits</source>
         <translation>Peak summits</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="297"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="298"/>
         <source>Peak summits locations for every peaks. Typically used in DNA motif analysis or conservation check.</source>
         <translation>Peak summits locations for every peaks. Typically used in DNA motif analysis or conservation check.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="299"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="300"/>
         <source>Treatment fragments pileup (wiggle)</source>
         <translation>Treatment fragments pileup (wiggle)</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="300"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="301"/>
         <source>Wiggle format files which can be imported to UCSC genome browser/GMOD/Affy IGB.</source>
         <translation>Wiggle format files which can be imported to UCSC genome browser/GMOD/Affy IGB.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="303"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="304"/>
         <source>MACS output data</source>
         <translation>MACS output data</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="304"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="305"/>
         <source>ChIP-seq peaks and summits. Pileup data (optional)</source>
         <translation>ChIP-seq peaks and summits. Pileup data (optional)</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="317"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="318"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="318"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="319"/>
         <source>Directory to save MACS output files.</source>
         <translation>Directory to save MACS output files.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="320"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="321"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="321"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="322"/>
         <source>The name string of the experiment. MACS will use this string NAME to create output files like &apos;NAME_peaks.xls&apos;, &apos;NAME_negative_peaks.xls&apos;, &apos;NAME_peaks.bed&apos;, &apos;NAME_summits.bed&apos;, &apos;NAME_model.r&apos; and so on. So please avoid any confliction between these filenames and your existing files (--name).</source>
         <translation>The name string of the experiment. MACS will use this string NAME to create output files like &apos;NAME_peaks.xls&apos;, &apos;NAME_negative_peaks.xls&apos;, &apos;NAME_peaks.bed&apos;, &apos;NAME_summits.bed&apos;, &apos;NAME_model.r&apos; and so on. So please avoid any confliction between these filenames and your existing files (--name).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="325"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="326"/>
         <source>Wiggle output</source>
         <translation>Wiggle output</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="326"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="327"/>
         <source>If this flag is on, MACS will store the fragment pileup in wiggle format for the whole genome data instead of for every chromosomes (--wig) (--single-profile).</source>
         <translation>If this flag is on, MACS will store the fragment pileup in wiggle format for the whole genome data instead of for every chromosomes (--wig) (--single-profile).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="328"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="329"/>
         <source>Wiggle space</source>
         <translation>Wiggle space</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="329"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="330"/>
         <source>By default, the resolution for saving wiggle files is 10 bps,i.e., MACS will save the raw tag count every 10 bps. You can change it along with &apos;--wig&apos; option (--space).</source>
         <translation>By default, the resolution for saving wiggle files is 10 bps,i.e., MACS will save the raw tag count every 10 bps. You can change it along with &apos;--wig&apos; option (--space).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="332"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="333"/>
         <source>Genome size (Mbp)</source>
         <translation>Genome size (Mbp)</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="333"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="334"/>
         <source>Homo sapience - 2700 Mbp&lt;br&gt;Mus musculus - 1870 Mbp&lt;br&gt;Caenorhabditis elegans - 90 Mbp&lt;br&gt;Drosophila melanogaster  - 120 Mbp&lt;br&gt; It&apos;s the mappable genome size or effective genome size which is defined as the genome size which can be sequenced. Because of the repetitive features on the chromosomes, the actual mappable genome size will be smaller than the original size, about 90% or 70% of the genome size (--gsize).</source>
         <translation>Homo sapience - 2700 Mbp&lt;br&gt;Mus musculus - 1870 Mbp&lt;br&gt;Caenorhabditis elegans - 90 Mbp&lt;br&gt;Drosophila melanogaster  - 120 Mbp&lt;br&gt; It&apos;s the mappable genome size or effective genome size which is defined as the genome size which can be sequenced. Because of the repetitive features on the chromosomes, the actual mappable genome size will be smaller than the original size, about 90% or 70% of the genome size (--gsize).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="342"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="343"/>
         <source>P-value</source>
         <translation>P-value</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="343"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="344"/>
         <source>P-value cutoff. Default is 0.00001, for looser results, try 0.001 instead (--pvalue).</source>
         <translation>P-value cutoff. Default is 0.00001, for looser results, try 0.001 instead (--pvalue).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="345"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="346"/>
         <source>Q-value</source>
         <translation>Q-value</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="346"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="347"/>
         <source>Minimum FDR (q-value) cutoff for peak detection.</source>
         <translation>Minimum FDR (q-value) cutoff for peak detection.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="348"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="349"/>
         <source>Use model</source>
         <translation>Use model</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="349"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="350"/>
         <source>Whether or not to use MACS paired peaks model (--nomodel).</source>
         <translation>Whether or not to use MACS paired peaks model (--nomodel).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="351"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="352"/>
         <source>Model fold</source>
         <translation>Model fold</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="352"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="353"/>
         <source>Select the regions within MFOLD range of high-confidence enrichment ratio against. &lt;b&gt;Model fold&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is true, which is the foldchange to chose paired peaks to build paired peaks model. Users need to set a lower(smaller) and upper(larger) number for fold change so that MACS will only use the peaks within these foldchange range to build model (--mfold).</source>
         <translation>Select the regions within MFOLD range of high-confidence enrichment ratio against. &lt;b&gt;Model fold&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is true, which is the foldchange to chose paired peaks to build paired peaks model. Users need to set a lower(smaller) and upper(larger) number for fold change so that MACS will only use the peaks within these foldchange range to build model (--mfold).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="357"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="358"/>
         <source>Shift size</source>
         <translation>Shift size</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="358"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="359"/>
         <source>An arbitrary shift value used as a half of the fragment size when model is not built. &lt;b&gt;Shift size&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is false, which will represent the HALF of the fragment size of your sample. If your sonication and size selection size is 300 bps, after you trim out nearly 100 bps adapters, the fragment size is about 200 bps, so you can specify 100 here (--shiftsize).</source>
         <translation>An arbitrary shift value used as a half of the fragment size when model is not built. &lt;b&gt;Shift size&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is false, which will represent the HALF of the fragment size of your sample. If your sonication and size selection size is 300 bps, after you trim out nearly 100 bps adapters, the fragment size is about 200 bps, so you can specify 100 here (--shiftsize).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="363"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="364"/>
         <source>Keep duplicates</source>
         <translation>Keep duplicates</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="364"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="365"/>
         <source>It controls the MACS behavior towards duplicate tags at the exact same location -- the same coordination and the same strand. The default &lt;b&gt;auto&lt;/b&gt; option makes MACS calculate the maximum tags at the exact same location based on binomal distribution using 1e-5 as pvalue cutoff; and the &lt;b&gt;all&lt;/b&gt; option keeps every tags. If an &lt;b&gt;integer&lt;/b&gt; is given, at most this number of tags will be kept at the same location (--keep-dup).</source>
         <translation>It controls the MACS behavior towards duplicate tags at the exact same location -- the same coordination and the same strand. The default &lt;b&gt;auto&lt;/b&gt; option makes MACS calculate the maximum tags at the exact same location based on binomal distribution using 1e-5 as pvalue cutoff; and the &lt;b&gt;all&lt;/b&gt; option keeps every tags. If an &lt;b&gt;integer&lt;/b&gt; is given, at most this number of tags will be kept at the same location (--keep-dup).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="368"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="369"/>
         <source>Band width</source>
         <translation>Band width</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="369"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="370"/>
         <source>The band width which is used to scan the genome for model building. You can set this parameter as the sonication fragment size expected from wet experiment. Used only while building the shifting model (--bw).</source>
         <translation>The band width which is used to scan the genome for model building. You can set this parameter as the sonication fragment size expected from wet experiment. Used only while building the shifting model (--bw).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="373"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="374"/>
         <source>Extended fragment pileup</source>
         <translation>Extended fragment pileup</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="374"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="375"/>
         <source>Whether or not to generate extended fragment pileup, local lambda and score tracks at every bp.</source>
         <translation>Whether or not to generate extended fragment pileup, local lambda and score tracks at every bp.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="378"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="379"/>
         <source>Tag size (optional)</source>
         <translation>Tag size (optional)</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="379"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="380"/>
         <source>Length of reads. Determined from first 10 reads if not specified (input &lt;b&gt;0&lt;/b&gt;) (--tsize).</source>
         <translation>Length of reads. Determined from first 10 reads if not specified (input &lt;b&gt;0&lt;/b&gt;) (--tsize).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="383"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="384"/>
         <source>Use lambda</source>
         <translation>Use lambda</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="384"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="385"/>
         <source>Whether to use local lambda model which can use the local bias at peak regions to throw out false positives (--nolambda).</source>
         <translation>Whether to use local lambda model which can use the local bias at peak regions to throw out false positives (--nolambda).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="386"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="387"/>
         <source>Small nearby region</source>
         <translation>Small nearby region</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="387"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="388"/>
         <source>The small nearby region in basepairs to calculate dynamic lambda. This is used to capture the bias near the peak summit region. Invalid if there is no control data (--slocal).</source>
         <translation>The small nearby region in basepairs to calculate dynamic lambda. This is used to capture the bias near the peak summit region. Invalid if there is no control data (--slocal).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="390"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="391"/>
         <source>Large nearby region</source>
         <translation>Large nearby region</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="391"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="392"/>
         <source>The large nearby region in basepairs to calculate dynamic lambda.  This is used to capture the surround bias (--llocal).</source>
         <translation>The large nearby region in basepairs to calculate dynamic lambda.  This is used to capture the surround bias (--llocal).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="394"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="395"/>
         <source>Auto bimodal</source>
         <translation>Auto bimodal</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="395"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="396"/>
         <source>Whether turn on the auto pair model process.If set, when MACS failed to build paired model, it will use the nomodelsettings, the “Shift size” parameter to shift and extend each tags (--on-auto).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7869,62 +7883,62 @@ Default: 64.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="399"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="400"/>
         <source>Scale to large</source>
         <translation>Scale to large</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="400"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="401"/>
         <source> When set, scale the small sample up to the bigger sample.By default, the bigger dataset will be scaled down towards the smaller dataset,which will lead to smaller p/qvalues and more specific results.Keep in mind that scaling down will bring down background noise more (--to-large).</source>
         <translation> When set, scale the small sample up to the bigger sample.By default, the bigger dataset will be scaled down towards the smaller dataset,which will lead to smaller p/qvalues and more specific results.Keep in mind that scaling down will bring down background noise more (--to-large).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="405"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="406"/>
         <source>Shift control</source>
         <translation>Shift control</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="406"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="407"/>
         <source>When set, control tags will be shifted just as ChIP tags according to their strand before the extension of d, slocal and llocal. By default, control tags are extended centeredat their current positions regardless of strand. You may consider to turn this option on whilecomparing two ChIP datasets of different condition but the same factor.</source>
         <translation>When set, control tags will be shifted just as ChIP tags according to their strand before the extension of d, slocal and llocal. By default, control tags are extended centeredat their current positions regardless of strand. You may consider to turn this option on whilecomparing two ChIP datasets of different condition but the same factor.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="411"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="412"/>
         <source>Half-extend</source>
         <translation>Half-extend</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="412"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="413"/>
         <source>When set, MACS extends 1/2 d size for each fragment centered at its middle point.</source>
         <translation>When set, MACS extends 1/2 d size for each fragment centered at its middle point.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="414"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="415"/>
         <source>Broad</source>
         <translation>Broad</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="415"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="416"/>
         <source>If set, MACS will try to call broad peaks by linking nearby highly enriched regions.The linking region is controlled by another cutoff through “Broad cutoff”.The maximum linking region length is 4 times of d from MACS.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="419"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="420"/>
         <source>Broad cutoff</source>
         <translation>Broad cutoff</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="420"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="421"/>
         <source>Cutoff for broad region. This option is not available unless “Broad” is set.If “P-value” is set, this is a pvalue cutoff, otherwise, it&apos;s a qvalue cutoff.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="548"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="549"/>
         <source>Find Peaks with MACS</source>
         <translation>Find Peaks with MACS</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="549"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="550"/>
         <source>Performs peak calling for ChIP-Seq data.</source>
         <translation>Performs peak calling for ChIP-Seq data.</translation>
     </message>
@@ -8324,22 +8338,22 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::ShortReadsAlignerPrompter</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="340"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="369"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="346"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="375"/>
         <source>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </source>
         <translation>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="348"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="377"/>
         <source>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </source>
         <translation>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="352"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="381"/>
         <source> to reference genome &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> to reference genome &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -9466,12 +9480,12 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::MAFFTSupportRunDialog</name>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="52"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="46"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="53"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="47"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -9543,38 +9557,38 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::MAFFTWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="84"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="76"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="85"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="77"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="100"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="86"/>
         <source>Open an alignment file</source>
         <translation>Open an alignment file</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="110"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="100"/>
         <source>Save an multiple alignment file</source>
         <translation>Save an multiple alignment file</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="134"/>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="137"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="119"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="122"/>
         <source>Kalign with Align</source>
         <translation>Align with Kalign</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="135"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="120"/>
         <source>Input file is not set!</source>
         <translation>Input file is not set!</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="138"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="123"/>
         <source>Output file is not set!</source>
         <translation>Output file is not set!</translation>
     </message>
@@ -10222,12 +10236,12 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::TCoffeeSupportRunDialog</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="52"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="47"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="53"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="48"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -10293,38 +10307,38 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::TCoffeeWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="83"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="76"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="84"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="77"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="98"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="86"/>
         <source>Open an alignment file</source>
         <translation>Open an alignment file</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="108"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="100"/>
         <source>Save an multiple alignment file</source>
         <translation>Save an multiple alignment file</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="132"/>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="135"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="119"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="122"/>
         <source>Kalign with Align</source>
         <translation>Align with Kalign</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="133"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="120"/>
         <source>Input file is not set!</source>
         <translation>Input file is not set!</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="136"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="123"/>
         <source>Output file is not set!</source>
         <translation>Output file is not set!</translation>
     </message>
@@ -10496,9 +10510,9 @@ Set it empty if you want to run Tophat once for all input reads</translation>
         <translation type="unfinished">Only one of these slots must be binded: &apos;%1&apos;, &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="235"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="236"/>
         <location filename="../src/spades/SpadesWorker.cpp" line="189"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="224"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="253"/>
         <source>The slot must be not empty: &apos;%1&apos;</source>
         <translation type="unfinished">The slot must be not empty: &apos;%1&apos;</translation>
     </message>

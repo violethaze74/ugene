@@ -41,6 +41,9 @@ ProjectTreeItemSelectorDialogImpl::ProjectTreeItemSelectorDialogImpl(QWidget* p,
     : QDialog(p)
 {
     setupUi(this);
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+
     controller = new ProjectTreeController(treeView, s, this);
     connect(controller, SIGNAL(si_doubleClicked(GObject*)), this, SLOT(sl_objectClicked(GObject*)));
     acceptByDoubleClick = false;

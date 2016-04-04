@@ -46,6 +46,9 @@ EditBreakpointLabelsDialog::EditBreakpointLabelsDialog(const QStringList &existi
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "17468146");
 
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+
     ui->addLabelButton->setEnabled(false);
     initExistingLabelsList(existingLabels);
 

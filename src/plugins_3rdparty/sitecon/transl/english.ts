@@ -679,74 +679,79 @@
 <context>
     <name>U2::SiteconBuildDialogController</name>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="63"/>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="162"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="59"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="148"/>
         <source>Build</source>
         <translation>Build</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="64"/>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="143"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="60"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="129"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="116"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="102"/>
         <source>Illegal alignment file</source>
         <translation>Illegal alignment file</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="121"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="107"/>
         <source>Illegal SITECON model file</source>
         <translation>Illegal SITECON model file</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="127"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="113"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="139"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="125"/>
         <source>Starting calibration process</source>
         <translation>Starting calibration process</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="142"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="128"/>
         <source>Hide</source>
         <translation>Hide</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="156"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="142"/>
         <source>Build finished with error: %1</source>
         <translation>Build finished with error: %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="158"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="144"/>
         <source>Build canceled</source>
         <translation>Build canceled</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="160"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="146"/>
         <source>Build finished successfully</source>
         <translation>Build finished successfully</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="163"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="149"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="169"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="155"/>
         <source>Running... State :%1 Progress: %2</source>
         <translation>Running... State :%1 Progress: %2</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="80"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="168"/>
+        <source>Sitecon models</source>
+        <translation type="unfinished">Sitecon models</translation>
+    </message>
+    <message>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="75"/>
         <source>Select file with alignment</source>
         <translation>Select file with alignment</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="90"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="165"/>
         <source>Select file to save model to...</source>
         <translation>Select file to save model to...</translation>
     </message>
@@ -754,52 +759,52 @@
 <context>
     <name>U2::SiteconBuildTask</name>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="184"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="185"/>
         <source>Build SITECON model</source>
         <translation>Build SITECON model</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="194"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="195"/>
         <source>Alignment contains gaps</source>
         <translation>Alignment contains gaps</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="198"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="199"/>
         <source>Alignment is empty</source>
         <translation>Alignment is empty</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="202"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="203"/>
         <source>Alignment must have at least 2 sequences</source>
         <translation>Alignment must have at least 2 sequences</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="206"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="207"/>
         <source>Alignment is not nucleic</source>
         <translation>Alignment is not nucleic</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="210"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="211"/>
         <source>Window size is greater than alignment length</source>
         <translation>Window size is greater than alignment length</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="224"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="225"/>
         <source>Calculating average and dispersion matrixes</source>
         <translation>Calculating average and dispersion matrixes</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="229"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="230"/>
         <source>Calculating weights</source>
         <translation>Calculating weights</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="235"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="236"/>
         <source>Calibrating first type error</source>
         <translation>Calibrating first type error</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="241"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="242"/>
         <source>Calibrating second type error</source>
         <translation>Calibrating second type error</translation>
     </message>
@@ -807,22 +812,22 @@
 <context>
     <name>U2::SiteconBuildToFileTask</name>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="249"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="250"/>
         <source>Build SITECON model to file</source>
         <translation>Build SITECON model to file</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="260"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="261"/>
         <source>Unknown alignment format</source>
         <translation>Unknown alignment format</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="268"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="269"/>
         <source>Loading alignment</source>
         <translation>Loading alignment</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildDialogController.cpp" line="287"/>
+        <location filename="../src/SiteconBuildDialogController.cpp" line="288"/>
         <source>No alignment found</source>
         <translation>No alignment found</translation>
     </message>

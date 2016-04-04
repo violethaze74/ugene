@@ -5926,7 +5926,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowMetaDialog</name>
     <message>
-        <location filename="../src/WorkflowMetaDialog.cpp" line="86"/>
+        <location filename="../src/WorkflowMetaDialog.cpp" line="93"/>
         <source>Save workflow to file</source>
         <translation>Save workflow to file</translation>
     </message>

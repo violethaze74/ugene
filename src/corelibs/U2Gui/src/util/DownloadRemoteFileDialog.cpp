@@ -42,6 +42,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
+#include <QPushButton>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 
@@ -60,6 +61,8 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget *p):QDialog(p), isQue
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "17467516");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     ui->formatBox->hide();
     ui->formatLabel->hide();

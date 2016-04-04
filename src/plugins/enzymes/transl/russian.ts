@@ -597,52 +597,51 @@ p, li { white-space: pre-wrap; }
         <translation>Выберите фрагменты, составляющие новую молекулу.</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="114"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="284"/>
         <source>Set new molecule file name</source>
         <translation>Задайте имя файла</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="114"/>
         <source>Genbank (*.gb )</source>
-        <translation>Genbank (*.gb )</translation>
+        <translation type="vanished">Genbank (*.gb )</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="203"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="192"/>
         <source>Blunt</source>
         <translation>&quot;Срез&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="204"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="193"/>
         <source>Fwd</source>
         <translation>Прям</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="205"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="194"/>
         <source>Rev</source>
         <translation>Обр</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="222"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="211"/>
         <source>Left end</source>
         <translation>Левый конец</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="231"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="220"/>
         <source>Right end</source>
         <translation>Правый конец</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="233"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="222"/>
         <source>yes</source>
         <translation>да</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="233"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="222"/>
         <source>no</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="234"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="223"/>
         <source>Make fragment reverse complement</source>
         <translation>Сделать фрагмент обратно-комплементарным</translation>
     </message>
