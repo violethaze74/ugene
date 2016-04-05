@@ -186,6 +186,7 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
                     continue;
                 }
                 SharedAnnotationData ad(new AnnotationData);
+                ad->type = U2FeatureTypes::RestrictionSite;
                 ad->name = r.enzyme->id;
                 ad->location->regions << U2Region(r.pos, seqlen - r.pos);
                 ad->location->regions << U2Region(0, r.enzyme->seq.size() - (seqlen - r.pos));
@@ -199,6 +200,7 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
                 res.append(ad);
             } else {
                 SharedAnnotationData ad(new AnnotationData);
+                ad->type = U2FeatureTypes::RestrictionSite;
                 ad->name = r.enzyme->id;
                 ad->location->regions << U2Region(r.pos, r.enzyme->seq.size());
                 ad->setStrand(r.strand);
