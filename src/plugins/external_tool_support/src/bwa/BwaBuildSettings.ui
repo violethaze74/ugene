@@ -23,14 +23,23 @@
    <property name="sizeConstraint">
     <enum>QLayout::SetMinAndMaxSize</enum>
    </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <property name="horizontalSpacing">
     <number>0</number>
    </property>
    <property name="verticalSpacing">
     <number>6</number>
-   </property>
-   <property name="margin">
-    <number>0</number>
    </property>
    <item row="1" column="0" colspan="2">
     <widget class="QLabel" name="infoLabel">
@@ -61,8 +70,13 @@
    <item row="0" column="1">
     <widget class="QComboBox" name="indexAlgorithmComboBox">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
+     <item>
+      <property name="text">
+       <string>autodetect</string>
+      </property>
+     </item>
      <item>
       <property name="text">
        <string>bwtsw</string>

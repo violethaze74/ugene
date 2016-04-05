@@ -42,7 +42,7 @@ const QString IS_BUILD_INDEX_ALGO_WARNING =          QObject::tr( "NOTE: \"is\" 
     "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
     "\"bwtsw\"" );
 const QString BWTSW_BUILD_INDEX_ALGO_WARNING =       QObject::tr( "NOTE: \"bwtsw\" index algorithm"
-    " is not supposed to work with reference sequences having size smaller than 10 MB. In order "
+    " is not supposed to work with reference sequences having size smaller than 10 MB.\nIn order "
     "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
     "\"is\"" );
 
@@ -132,27 +132,7 @@ BwaSettingsWidget::BwaSettingsWidget(QWidget *parent)
 QMap<QString,QVariant> BwaSettingsWidget::getDnaAssemblyCustomSettings() const {
     QMap<QString, QVariant> settings;
 
-    {
-        QString algorithm;
-        switch(indexAlgorithmComboBox->currentIndex()) {
-        case 0:
-            algorithm = "autodetect";
-            break;
-        case 1:
-            algorithm = "bwtsw";
-            break;
-        case 2:
-            algorithm = "div";
-            break;
-        case 3:
-            algorithm = "is";
-            break;
-        default:
-            assert(false);
-            break;
-        }
-        settings.insert(BwaTask::OPTION_INDEX_ALGORITHM, algorithm);
-    }
+    settings.insert(BwaTask::OPTION_INDEX_ALGORITHM, indexAlgorithmComboBox->currentText());
     if(maxDiffRadioButton->isChecked()) {
         settings.insert(BwaTask::OPTION_N, maxDiffSpinBox->value());
     } else {
@@ -199,27 +179,7 @@ BwaBuildSettingsWidget::BwaBuildSettingsWidget(QWidget *parent)
 
 QMap<QString,QVariant> BwaBuildSettingsWidget::getBuildIndexCustomSettings() {
     QMap<QString, QVariant> settings;
-    {
-        QString algorithm;
-        switch(indexAlgorithmComboBox->currentIndex()) {
-        case 0:
-            algorithm = "autodetect";
-            break;
-        case 1:
-            algorithm = "bwtsw";
-            break;
-        case 2:
-            algorithm = "div";
-            break;
-        case 3:
-            algorithm = "is";
-            break;
-        default:
-            assert(false);
-            break;
-        }
-        settings.insert(BwaTask::OPTION_INDEX_ALGORITHM, algorithm);
-    }
+    settings.insert(BwaTask::OPTION_INDEX_ALGORITHM, indexAlgorithmComboBox->currentText());
     return settings;
 }
 
