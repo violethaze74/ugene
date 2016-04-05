@@ -45,7 +45,7 @@ public:
     virtual void setRegion(const U2Region& region) = 0;
 
     virtual void reset() {
-        setRegion(U2Region(1, maxLen));
+        setRegion(U2Region(0, maxLen));
     }
 
 protected:
