@@ -3,7 +3,7 @@
 #
 # For CLion developers:
 #   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
-#   * add UGENE_TRANSLATION_FILE environment variable and point it to *.qm file produced by qmake build
+#   * add UGENE_TRANSLATION_FILE environment variable to the RUN configuration and point it to *.qm file produced by qmake build
 
 cmake_minimum_required(VERSION 3.4)
 project(ugene)
