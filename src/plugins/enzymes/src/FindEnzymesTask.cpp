@@ -138,6 +138,9 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& regi
 }
 
 void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) {
+    if (pos > seqlen) {
+        pos %= seqlen;
+    }
     foreach (const U2Region &r, excludedRegions) {
         if (U2Region(pos, enzyme->seq.length()).intersects(r)) {
             return;
@@ -242,8 +245,13 @@ void FindEnzymesTask::cleanup() {
 // find single enzyme task
 FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& _seqRef, const U2Region& region, const SEnzymeData& _enzyme,
                                            FindEnzymesAlgListener* l, bool _circular, int mr)
-: Task(tr("Find enzyme '%1'").arg(_enzyme->id), TaskFlag_NoRun),
-dnaSeqRef(_seqRef), region(region), enzyme(_enzyme), maxResults(mr), resultListener(l), circular(_circular)
+    : Task(tr("Find enzyme '%1'").arg(_enzyme->id), TaskFlag_NoRun),
+      dnaSeqRef(_seqRef),
+      region(region),
+      enzyme(_enzyme),
+      maxResults(mr),
+      resultListener(l),
+      circular(_circular)
 {
     U2SequenceObject dnaSeq("sequence", dnaSeqRef);
 
@@ -251,19 +259,18 @@ dnaSeqRef(_seqRef), region(region), enzyme(_enzyme), maxResults(mr), resultListe
     if (resultListener == NULL) {
         resultListener = this;
     }
-    if (region.length != dnaSeq.getSequenceLength()) {
-        circular = false;
-    }
-    SequenceDbiWalkerConfig swc;
 
     const int BLOCK_READ_FROM_DB = 128000;
     static const int chunkSize = BLOCK_READ_FROM_DB;
 
+    SequenceDbiWalkerConfig swc;
     swc.seqRef = dnaSeqRef;
     swc.range = region;
     swc.chunkSize = qMax(enzyme->seq.size(), chunkSize);
     swc.lastChunkExtraLen = swc.chunkSize/2;
-    swc.overlapSize = enzyme->seq.size()-1;
+    swc.overlapSize = enzyme->seq.size() - 1;
+    swc.walkCircular = circular;
+    swc.walkCircularDistance = swc.overlapSize;
 
     addSubTask(new SequenceDbiWalkerTask(swc, this, tr("Find enzyme '%1' parallel").arg(enzyme->id)));
 }
@@ -288,7 +295,8 @@ void FindSingleEnzymeTask::onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& 
         return;
     }
     U2SequenceObject dnaSequenceObject("sequence", dnaSeqRef);
-    if (dnaSequenceObject.getSequenceLength() < enzyme->seq.length()) {
+    qint64 sequenceLen = dnaSequenceObject.getSequenceLength();
+    if (sequenceLen < enzyme->seq.length()) {
         return;
     }
     SAFE_POINT(enzyme->alphabet != NULL, tr("No enzyme alphabet"), );
@@ -306,8 +314,18 @@ void FindSingleEnzymeTask::onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& 
                                 || seqAlphabet->getId() == BaseDNAAlphabetIds::NUCL_RNA_EXTENDED();
 
     U2Region chunkRegion = t->getGlobalRegion();
-    DNASequence dnaSeq = dnaSequenceObject.getSequence(chunkRegion, ti);
+    DNASequence dnaSeq;
+    if (U2Region(0, sequenceLen).contains(chunkRegion)) {
+        dnaSeq = dnaSequenceObject.getSequence(chunkRegion, ti);
+    } else {
+        U2Region partOne = U2Region(0, sequenceLen).intersect(chunkRegion);
+        dnaSeq = dnaSequenceObject.getSequence(partOne, ti);
+        CHECK_OP(ti, );
+        U2Region partTwo = U2Region(0, chunkRegion.endPos() % sequenceLen);
+        dnaSeq.seq.append(dnaSequenceObject.getSequence(partTwo, ti).seq);
+    }
     CHECK_OP(ti, );
+
     // Note that enzymes algorithm filters N symbols in sequence by itself
     if (useExtendedComparator) {
         FindEnzymesAlgorithm<ExtendedDNAlphabetComparator> algo;
