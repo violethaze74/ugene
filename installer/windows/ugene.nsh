@@ -93,9 +93,9 @@ FunctionEnd
     CRCCheck On
 
     !ifndef UGENE_DISTRIB_FILE_NAME
-        OutFile "build/ugene_${ProductVersion}_win_${TargetPlatform}.exe"
+        OutFile "ugene_${ProductVersion}_win_${TargetPlatform}.exe"
     !else
-        OutFile "build/${UGENE_DISTRIB_FILE_NAME}"
+        OutFile "${UGENE_DISTRIB_FILE_NAME}"
     !endif
 
 

@@ -253,7 +253,9 @@ void SaveDocumentController::initFormatComboBox() {
     currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
     CHECK(conf.formatCombo != NULL, );
 
+    conf.formatCombo->blockSignals(true);
     conf.formatCombo->clear();
+
     QStringList items = formatsInfo.getNames();
     items.sort(Qt::CaseInsensitive);
     conf.formatCombo->addItems(items);
@@ -265,6 +267,7 @@ void SaveDocumentController::initFormatComboBox() {
 
     connect(conf.formatCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_formatChanged(const QString&)), Qt::UniqueConnection);
     sl_formatChanged(conf.formatCombo->currentText());
+    conf.formatCombo->blockSignals(false);
 }
 
 bool SaveDocumentController::cutGzExtension(QString &path) const {

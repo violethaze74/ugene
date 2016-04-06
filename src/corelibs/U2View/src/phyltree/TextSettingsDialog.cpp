@@ -37,7 +37,7 @@ TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap& settin
 : BaseSettingsDialog(parent) {
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "17467707");
+    new HelpButton(this, buttonBox, "17468915");
 
     curColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
 

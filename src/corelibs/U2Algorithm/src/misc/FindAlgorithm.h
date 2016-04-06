@@ -161,6 +161,8 @@ public:
 
     static int estimateRamUsageInMbytes(const FindAlgorithmPatternSettings patternSettings,
         const bool searchInAminoTT, const int patternLength, const int maxError);
+
+    static bool cmpAmbiguous( char a, char b);
 };
 
 

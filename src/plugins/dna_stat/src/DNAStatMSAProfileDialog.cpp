@@ -46,7 +46,7 @@ DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MSAEditor* _c)
       ctx(_c),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17467665");
+    new HelpButton(this, buttonBox, "17468873");
 
     initSaveController();
 }
