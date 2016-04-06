@@ -1078,8 +1078,7 @@ public:
 GUI_TEST_CLASS_DEFINITION(test_3165){
 //    1. Set file read-only: "test/_common_data/scenarios/msa/ma.aln".
     GTFile::copy(os, testDir + "_common_data/scenarios/msa/ma.aln", sandBoxDir + "ma.aln");
-    //GTFile::setReadOnly(os, sandBoxDir + "ma.aln");
-    //GTFile::setPermissions(sandBoxDir + "ma.aln"
+    GTFile::setReadOnly(os, sandBoxDir + "ma.aln");
 //    2. Open it with UGENE.
     GTFileDialog::openFile(os, sandBoxDir, "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);

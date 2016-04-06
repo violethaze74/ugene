@@ -5354,7 +5354,7 @@ GUI_TEST_CLASS_DEFINITION(test_1528){
 //    4. Drag and drop "chrM.fa" sequence object to the assembly
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "This action requires changing file:"));
     GTUtilsProjectTreeView::click(os, "chrM", "chrM.fa");
-    //GTFile::setReadOnly(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
+    GTFile::setReadOnly(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Set reference");
 
 //    Expected state: This action requires changing file:
@@ -8219,7 +8219,7 @@ GUI_TEST_CLASS_DEFINITION( test_1859 ) {
     GTGlobals::sleep( );
 
     // 6) Block file for writing
-    //GTFile::setReadOnly(os, outputFilePath);
+    GTFile::setReadOnly(os, outputFilePath);
 
     // 7) Run workflow again
     GTWidget::click( os,GTAction::button( os,"Run workflow" ) );

@@ -49,7 +49,7 @@ ImportAnnotationsToCsvFiller::ImportAnnotationsToCsvFiller(HI::GUITestOpStatus &
         bool _columnSeparator, const QString &_separator, int _numberOfLines,
         const QString &_skipAllLinesStartsWith, bool _interpretMultipleAsSingle,
         bool _removeQuotesButton, const QString &_defaultAnnotationName, const RoleParameters& _roleParameters, GTGlobals::UseMethod method):
-Filler(_os, "ImportAnnotationsFromCSVDialog"), fileToRead(_fileToRead), resultFile(_resultFile), format(_format),
+Filler(_os, "ImportAnnotationsFromCSVDialog"), fileToRead(_fileToRead), resultFile(QDir::toNativeSeparators(_resultFile)), format(_format),
        addResultFileToProject(_addResultFileToProject), columnSeparator(_columnSeparator),
        numberOfLines(_numberOfLines), separator(_separator),
        skipAllLinesStartsWith(_skipAllLinesStartsWith), interpretMultipleAsSingle(_interpretMultipleAsSingle),
@@ -170,14 +170,14 @@ void ImportAnnotationsToCsvFiller::commonScenario()
 
     if (columnSeparator) {
         QRadioButton* columnSeparator = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "columnSeparatorRadioButton", dialog));
-        columnSeparator->setChecked(true);
+        GTRadioButton::click(os, columnSeparator);
 
         QLineEdit *separatorEdit = GTWidget::findExactWidget<QLineEdit *>(os, "separatorEdit", dialog);
-        GTLineEdit::setText(os, separatorEdit, "");
+        GTLineEdit::setText(os, separatorEdit, separator, false, true);
 
-        GTClipboard::setText(os, separator);
-        GTWidget::click(os, separatorEdit);
-        GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
+//        GTClipboard::setText(os, separator);
+//        GTWidget::click(os, separatorEdit);
+//        GTKeyboardDriver::keyClick(os, 'v', GTKeyboardDriver::key["ctrl"]);
     } else {
         QRadioButton* scriptRadioButton = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "scriptRadioButton", dialog));
         scriptRadioButton->setChecked(true);
