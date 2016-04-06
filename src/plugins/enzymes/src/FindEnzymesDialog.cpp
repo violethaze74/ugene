@@ -530,11 +530,11 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* sctx)
 
     excludeRegionSelector = new SimpleRegionSelector(this, sctx->getSequenceLength(), sctx->getSequenceObject()->isCircular());
     excludeRegionSelector->setEnabled(false);
-    excludeRangeLayout->addWidget(excludeRegionSelector);
-    connect(excludeRegionBox,SIGNAL(toggled(bool)),excludeRegionSelector,SLOT(setEnabled(bool)));
+    excludeRegionLayout->addWidget(excludeRegionSelector);
+    connect(excludeRegionBox, SIGNAL(toggled(bool)), excludeRegionSelector, SLOT(setEnabled(bool)));
 
-    searchRegionSelector = new SimpleRegionSelector(this, sctx->getSequenceLength(), sctx->getSequenceObject()->isCircular());
-    searchRegionLayout->addWidget(searchRegionSelector);
+    searchRegionSelector = new RegionSelector(this, sctx->getSequenceLength(), false, sctx->getSequenceSelection(), sctx->getSequenceObject()->isCircular());
+    searchRegionLayout->insertWidget(0, searchRegionSelector);
 
     initSettings();
 
@@ -612,7 +612,7 @@ void FindEnzymesDialog::initSettings()
 
     U2Region searchRegion = AppContext::getSettings()->getValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(U2Region())).value<U2Region>();
     if (!searchRegion.isEmpty() && U2Region(0, seqCtx->getSequenceLength()).contains(searchRegion)) {
-        searchRegionSelector->setRegion(searchRegion);
+        searchRegionSelector->setCustomRegion(searchRegion);
     }
 
     QString exludedRegionStr = AppContext::getSettings()->getValue(EnzymeSettings::EXCLUDED_REGION, "").toString();
