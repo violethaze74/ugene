@@ -19,25 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#include "ProjectViewDocTree.h"
+#ifndef _U2_MULTI_CLICK_MENU_H_
+#define _U2_MULTI_CLICK_MENU_H_
 
-#include <U2Core/BunchMimeData.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObject.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Core/global.h>
 
-#include <U2Gui/ProjectTreeController.h>
+class QMenu;
 
 namespace U2 {
 
-ProjectViewDocTree::ProjectViewDocTree(QWidget* w) : QTreeView(w) 
-{
-    setDragDropMode(QAbstractItemView::DragDrop);
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    setDragEnabled(true);
-    setAcceptDrops(true);
-    setDropIndicatorShown(true);
-    setDragDropOverwriteMode(true);
-}
+/**
+ * Keeps a menu opened after clicking an action or pressing Enter on it.
+ * Becomes a child of a menu and don't need to be deleted.
+ */
+class U2GUI_EXPORT MultiClickMenu : public QObject {
+public:
+    MultiClickMenu(QMenu *menu);
 
-} //namespace
+private:
+    bool eventFilter(QObject *watched, QEvent *event);
+    bool isSelectEvent(QEvent *event);
+
+    QMenu *menu;
+};
+
+} // U2
+
+#endif // _U2_MULTI_CLICK_MENU_H_

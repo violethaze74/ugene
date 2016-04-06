@@ -71,16 +71,18 @@ namespace U2 {
 
 CreateAnnotationModel::CreateAnnotationModel()
     : defaultIsNewDoc(false),
-    hideLocation(false),
-    hideAnnotationType(false),
-    hideAnnotationName(false),
-    hideDescription(false),
-    hideUsePatternNames(true),
-    useUnloadedObjects(false),
-    useAminoAnnotationTypes(false),
-    data(new AnnotationData),
-    hideAutoAnnotationsOption(true),
-    hideAnnotationParameters(false)
+      hideGroupName(false),
+      hideLocation(false),
+      hideAnnotationType(false),
+      hideAnnotationName(false),
+      hideDescription(false),
+      hideUsePatternNames(true),
+      useUnloadedObjects(false),
+      useAminoAnnotationTypes(false),
+      data(new AnnotationData),
+      hideAnnotationTableOption(false),
+      hideAutoAnnotationsOption(true),
+      hideAnnotationParameters(false)
 {
 
 }
@@ -157,12 +159,13 @@ void CreateAnnotationWidgetController::commonWidgetUpdate(const CreateAnnotation
 
     if (model.annotationObjectRef.isValid()) {
         occ->setSelectedObject(model.annotationObjectRef);
-    } 
+    }
 
     //default field values
 
     w->setAnnotationName(model.data->name);
     w->setGroupName(model.groupName.isEmpty() ? GROUP_NAME_AUTO : model.groupName);
+    w->setDescription(model.description);
 
     if (!model.data->location->isEmpty()) {
         w->setLocation(model.data->location);
@@ -176,11 +179,13 @@ void CreateAnnotationWidgetController::commonWidgetUpdate(const CreateAnnotation
         w->setExistingTableOptionEnable(true);
     }
 
+    w->setAnnotationTableOptionVisible(!model.hideAnnotationTableOption);
     w->setAutoTableOptionVisible(!model.hideAutoAnnotationsOption);
     if (!model.hideAutoAnnotationsOption) {
         w->selectAutoTableOption();
     }
 
+    w->setGroupNameVisible(!model.hideGroupName);
     w->setDescriptionVisible(!model.hideDescription);
     w->setAnnotationTypeVisible(!model.hideAnnotationType);
     w->setAnnotationParametersVisible(!model.hideAnnotationParameters);
@@ -243,7 +248,7 @@ QString CreateAnnotationWidgetController::validate() {
         }
     }
 
-    if (!w->isUsePatternNamesChecked() && !model.hideAnnotationName && model.data->name.isEmpty()) {
+    if (!w->isUsePatternNamesChecked() && !model.hideAnnotationName && !Annotation::isValidAnnotationName(model.data->name)) {
         return tr("Illegal annotation name");
     }
 
@@ -251,9 +256,9 @@ QString CreateAnnotationWidgetController::validate() {
         w->focusGroupName();
         return tr("Illegal group name");
     }
-    
+
     static const QString INVALID_LOCATION = tr("Invalid location! Location must be in GenBank format.\nSimple examples:\n1..10\njoin(1..10,15..45)\ncomplement(5..15)");
-    
+
     if (!model.hideLocation && model.data->location->isEmpty()) {
         w->focusLocation();
         return INVALID_LOCATION;
@@ -283,7 +288,7 @@ void CreateAnnotationWidgetController::updateModel(bool forValidation) {
     }
 
     model.data->location->reset();
-    
+
     if (!model.hideLocation) {
         QByteArray locEditText = w->getLocationString().toLatin1();
         Genbank::LocationParser::parseLocation(locEditText.constData(),
@@ -383,7 +388,7 @@ bool CreateAnnotationWidgetController::prepareAnnotationObject() {
 
 void CreateAnnotationWidgetController::sl_groupName() {
     GObject* obj = occ->getSelectedObject();
-    QStringList groupNames; 
+    QStringList groupNames;
     groupNames << GROUP_NAME_AUTO;
     if (NULL != obj && !obj->isUnloaded()) {
         AnnotationTableObject* ao = qobject_cast<AnnotationTableObject *>(obj);

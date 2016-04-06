@@ -7,7 +7,9 @@ PLUGIN_VENDOR=Unipro
 include( ../../ugene_plugin_common.pri )
 
 use_bundled_zlib() {
-    INCLUDEPATH += ../../libs_3rdparty/zlib/src
+    macx: LIBS += -lzlib
+} else {
+    macx: LIBS += -lz
 }
 
 LIBS += -lugenedb -lsamtools
@@ -35,6 +37,13 @@ win32:DEFINES += _USE_MATH_DEFINES "inline=__inline" "__func__=__FUNCTION__" "R_
         win32-msvc2013 {
             LIBS -= -lzlib
             LIBS += -lzlibd
+        }
+
+        macx {
+            use_bundled_zlib() {
+                LIBS -= -lzlib
+                LIBS += -lzlibd
+            }
         }
 
         unix:POST_TARGETDEPS -= ../../_release/libsamtools.a

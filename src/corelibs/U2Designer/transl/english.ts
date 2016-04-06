@@ -829,12 +829,12 @@ bowtie index file</translation>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="401"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="402"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="410"/>
@@ -853,12 +853,12 @@ bowtie index file</translation>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="46"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="47"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="84"/>
@@ -1489,13 +1489,6 @@ bowtie index file</translation>
         <location filename="../src/DesignerUtils.cpp" line="35"/>
         <source>UGENE workflow documents</source>
         <translation>UGENE workflow documents</translation>
-    </message>
-</context>
-<context>
-    <name>WorkflowUtils</name>
-    <message>
-        <source>UGENE workflow documents</source>
-        <translation type="vanished">UGENE workflow documents</translation>
     </message>
 </context>
 </TS>

@@ -1,9 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 project(U2Private)
 
-set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOMOC_MOC_OPTIONS -nn) # do not display notes.
 
 find_package(Qt5 REQUIRED Core Gui Widgets Xml)
 
@@ -34,7 +32,7 @@ endif ()
 add_library(U2Private SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Private
-        U2Core U2Algorithm U2Formats
+        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml
         breakpad
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml)
+        U2Core U2Algorithm U2Formats)
 

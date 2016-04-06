@@ -197,7 +197,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_0700);
     REGISTER_TEST(GUITest_regression_scenarios::test_0702);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_0703, "Drag&drop from project to assembly browser doesn't work");
+    REGISTER_TEST(GUITest_regression_scenarios::test_0703);
     REGISTER_TEST(GUITest_regression_scenarios::test_0729);
     REGISTER_TEST(GUITest_regression_scenarios::test_0733);
     REGISTER_TEST(GUITest_regression_scenarios::test_0734);
@@ -216,7 +216,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_0798);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_0801);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_0807, "UGENE-4436");
+    REGISTER_TEST(GUITest_regression_scenarios::test_0807);
     REGISTER_TEST(GUITest_regression_scenarios::test_0808);
     REGISTER_TEST(GUITest_regression_scenarios::test_0812);
     REGISTER_TEST(GUITest_regression_scenarios::test_0814);
@@ -226,7 +226,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_0829);
     REGISTER_TEST(GUITest_regression_scenarios::test_0830);
     REGISTER_TEST(GUITest_regression_scenarios::test_0834);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_0835, "Drag&drop from project to sequence view doesn't work");
+    REGISTER_TEST(GUITest_regression_scenarios::test_0835);
     REGISTER_TEST(GUITest_regression_scenarios::test_0839);
     REGISTER_TEST(GUITest_regression_scenarios::test_0840);
     REGISTER_TEST(GUITest_regression_scenarios::test_0842);
@@ -315,8 +315,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1058);
     REGISTER_TEST(GUITest_regression_scenarios::test_1059);
     REGISTER_TEST(GUITest_regression_scenarios::test_1061);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1063,
-        "The test causes a dead-lock in the task scheduler. See test scenario in the 'Strange' folder");
+    REGISTER_TEST(GUITest_regression_scenarios::test_1063);
     REGISTER_TEST(GUITest_regression_scenarios::test_1064);
     REGISTER_TEST(GUITest_regression_scenarios::test_1065_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_1065_2);
@@ -604,7 +603,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2021_8);
     REGISTER_TEST(GUITest_regression_scenarios::test_2021_9);
     REGISTER_TEST(GUITest_regression_scenarios::test_2024);
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_2026, "holding 'shift' does not work (at least on Windows)");
+    REGISTER_TEST(GUITest_regression_scenarios::test_2026);
     REGISTER_TEST(GUITest_regression_scenarios::test_2030);
     REGISTER_TEST(GUITest_regression_scenarios::test_2032);
     REGISTER_TEST(GUITest_regression_scenarios::test_2049);
@@ -745,7 +744,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2701);
     REGISTER_TEST(GUITest_regression_scenarios::test_2709);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2711);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2713, "test_2713");
+    REGISTER_TEST(GUITest_regression_scenarios::test_2713);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_2721);// no cistrome data on windows servers
     REGISTER_TEST(GUITest_regression_scenarios::test_2726);
     REGISTER_TEST(GUITest_regression_scenarios::test_2729);
@@ -881,7 +880,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3313);
     REGISTER_TEST(GUITest_regression_scenarios::test_3318);
     REGISTER_TEST(GUITest_regression_scenarios::test_3321);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3328, "Test crashes: it must work in another thread");
+    REGISTER_TEST(GUITest_regression_scenarios::test_3328);
     REGISTER_TEST(GUITest_regression_scenarios::test_3332);
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3333, "drag and drop");
     REGISTER_TEST(GUITest_regression_scenarios::test_3335);
@@ -1073,7 +1072,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4116);
     REGISTER_TEST(GUITest_regression_scenarios::test_4117);
     REGISTER_TEST(GUITest_regression_scenarios::test_4118);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4120);
     REGISTER_TEST(GUITest_regression_scenarios::test_4121);
     REGISTER_TEST(GUITest_regression_scenarios::test_4122);
     REGISTER_TEST(GUITest_regression_scenarios::test_4124);
@@ -1215,6 +1213,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4852);
     REGISTER_TEST(GUITest_regression_scenarios::test_4860);
     REGISTER_TEST(GUITest_regression_scenarios::test_4871);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4881);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_3);
@@ -1247,10 +1246,13 @@ if(QSysInfo::WordSize == 64){
     REGISTER_TEST(GUITest_regression_scenarios::test_5052);
     REGISTER_TEST(GUITest_regression_scenarios::test_5079);
     REGISTER_TEST(GUITest_regression_scenarios::test_5082);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5090);
+
     REGISTER_TEST(GUITest_regression_scenarios::test_5128);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5137);
 if (QSysInfo::WordSize == 32) {
-    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5160_1, 420000);
-    REGISTER_TEST(GUITest_regression_scenarios::test_5160_2);
+    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1433,7 +1435,6 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0047);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0048);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0050);
-    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0050_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0051);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0052);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0052_1);
@@ -1460,6 +1461,7 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0069);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0070);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0071);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0075);
 
 //////////////////////////////////////////////////////////////////////////
 // Common scenarios/sequence edit/
@@ -2680,6 +2682,7 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0012);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0014);
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0015);
 
 /////////////////////////////////////////////////////////////////////////
 // common_scenarios/pcr/primer_library
@@ -2699,6 +2702,8 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0015);
+    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
+
 /////////////////////////////////////////////////////////////////////////
 // common_scenarios/start_page
 /////////////////////////////////////////////////////////////////////////

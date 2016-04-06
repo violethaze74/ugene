@@ -205,7 +205,7 @@ static void initLogsCache(LogCacheExt& logsCache, const QStringList& ) {
     QString consoleOutVal = qgetenv("UGENE_PRINT_TO_CONSOLE");
     logsCache.setConsoleOutputEnabled(consoleOutVal == "true" || consoleOutVal == "1");
 #endif
-    QString file = qgetenv("UGENE_PRINT_TO_FILE");
+    QString file = qgetenv(U2_PRINT_TO_FILE);
     if (!file.isEmpty()) {
         logsCache.setFileOutputEnabled(file);
         return;
@@ -413,6 +413,11 @@ int main(int argc, char **argv)
     if (!envTranslation.isEmpty()) {
         trOK = translator.load(QString("transl_") + envTranslation, AppContext::getWorkingDirectoryPath());
         settings->setValue("UGENE_CURR_TRANSL", envTranslation);
+    }
+    QString envTranslationFile = findKey(envList, "UGENE_TRANSLATION_FILE");
+    if (!envTranslationFile.isEmpty()) {
+        trOK = translator.load(envTranslationFile);
+        settings->setValue("UGENE_CURR_TRANSL", QFileInfo(envTranslationFile).fileName().right(2));
     }
 
     if (!trOK) {
@@ -693,8 +698,8 @@ int main(int argc, char **argv)
 
     // Register all Options Panel groups on the required GObjectViews
     initOptionsPanels();
-
-    if(!cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST)) {
+#ifndef HI_EXCLUDED
+    if (GUITestService::isGuiTestServiceNeeded()) {
         QStringList urls = CMDLineRegistryUtils::getPureValues();
 
         if(urls.isEmpty() && AppContext::getAppSettings()->getUserAppsSettings()->openLastProjectAtStartup()) {
@@ -709,12 +714,12 @@ int main(int argc, char **argv)
             app.openAfterPluginsLoaded(urls, TaskStarter::NoProject);
         }
     }
-
+#endif //HI_EXCLUDED
     registerCoreServices();
+
 #ifndef HI_EXCLUDED
-    if ( envList.contains(ENV_GUI_TEST+QString("=1")) ) {
+    if (GUITestService::isGuiTestServiceNeeded()) {
         GUITestService *guiTestService = new GUITestService();
-        Q_UNUSED(guiTestService);
     }
 #endif //HI_EXCLUDED
 

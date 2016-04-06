@@ -39,7 +39,7 @@ BranchSettingsDialog::BranchSettingsDialog(QWidget *parent, const OptionsMap& se
     changedSettings[BRANCH_COLOR] = settings[BRANCH_COLOR];
     changedSettings[BRANCH_THICKNESS] = settings[BRANCH_THICKNESS];
     setupUi(this);
-    new HelpButton(this, buttonBox, "17467702");
+    new HelpButton(this, buttonBox, "17468910");
 
     thicknessSpinBox->setValue(changedSettings[BRANCH_THICKNESS].toInt());
 
@@ -66,7 +66,7 @@ void BranchSettingsDialog::updateColorButton() {
 void BranchSettingsDialog::sl_colorButton() {
     QColorDialog::ColorDialogOptions options;
 #ifdef Q_OS_MAC
-    if (qgetenv("UGENE_GUI_TEST").toInt() == 1 && qgetenv("UGENE_USE_NATIVE_DIALOGS").toInt() == 0) {
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         options |= QColorDialog::DontUseNativeDialog;
     }
 #endif

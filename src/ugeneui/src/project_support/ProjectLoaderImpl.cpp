@@ -224,7 +224,7 @@ void ProjectLoaderImpl::sl_openProject() {
     QStringList files;
 
 #if defined(Q_OS_MAC) || (QT_VERSION >= 0x050000)
-    if (qgetenv("UGENE_GUI_TEST").toInt() == 1 && qgetenv("UGENE_USE_NATIVE_DIALOGS").toInt() == 0) {
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         files = U2FileDialog::getOpenFileNames(QApplication::activeWindow(), tr("Select files to open"), h.dir,  filter, 0, QFileDialog::DontUseNativeDialog);
     } else
 #endif
@@ -408,8 +408,6 @@ bool ProjectLoaderImpl::detectFormat(const GUrl &url, QList<FormatDetectionResul
     return true;
 }
 
-#define MAX_DOCS_TO_OPEN_VIEWS 5
-
 Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVariantMap& hints) {
     QList<GUrl> urls = _urls;
     // detect if we open real UGENE project file
@@ -531,7 +529,7 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                         if(hints.value(ProjectLoaderHint_LoadWithoutView, false).toBool() == true){
                             info.openView = false;
                         }else{
-                            info.openView = nViews++ < MAX_DOCS_TO_OPEN_VIEWS;
+                            info.openView = nViews++ < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS;
                         }
                         if(hints.value(ProjectLoaderHint_LoadUnloadedDocument, true).toBool() == false){
                             info.loadDocuments = false;
@@ -554,7 +552,7 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                         if(hints.value(ProjectLoaderHint_LoadWithoutView, false).toBool() == true){
                             info.openView = false;
                         }else{
-                            info.openView = nViews++ < MAX_DOCS_TO_OPEN_VIEWS;
+                            info.openView = nViews++ < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS;
                         }
                         QVariantMap hints;
                         info.dp = dr.importer->createImportTask(dr, true, hints);
@@ -823,7 +821,7 @@ void SaveProjectDialogController::sl_clicked(QAbstractButton *button) {
 //////////////////////////////////////////////////////////////////////////
 ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m, QWidget *p):QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17467496");
+    new HelpButton(this, buttonBox, "17468698");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

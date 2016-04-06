@@ -22,18 +22,21 @@
 #ifndef _U2_EXPORT_HIGHLIGHTING_DIALOG_CONTROLLER_H_
 #define _U2_EXPORT_HIGHLIGHTING_DIALOG_CONTROLLER_H_
 
-#include <ui/ui_ExportHighlightedDialog.h>
+#include <QDialog>
 
 #include "MSAEditor.h"
+
+class Ui_ExportHighlightedDialog;
 
 namespace U2 {
 
 class SaveDocumentController;
 
-class ExportHighligtingDialogController : public QDialog , Ui_ExportHighlightedDialog{
+class ExportHighligtingDialogController : public QDialog{
     Q_OBJECT
 public:
     ExportHighligtingDialogController(MSAEditorUI *msaui_, QWidget* p);
+    ~ExportHighligtingDialogController();
 
     virtual void accept();
     void lockKeepGaps();
@@ -54,6 +57,7 @@ private:
 
     MSAEditorUI *msaui;
     SaveDocumentController *saveController;
+    Ui_ExportHighlightedDialog* ui;
 };
 
 }

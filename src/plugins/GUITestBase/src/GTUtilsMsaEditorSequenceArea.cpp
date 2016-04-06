@@ -20,6 +20,8 @@
  */
 
 #include <QMainWindow>
+#include <QStyle>
+#include <QStyleOptionSlider>
 
 #include <U2Core/AppContext.h>
 

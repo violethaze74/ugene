@@ -61,7 +61,7 @@ float DetViewMultiLineRenderer::posToXCoordF(qint64 p, const QSize &canvasSize, 
 }
 
 U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize& canvasSize, const U2Region& visibleRange) const {
-    if (qgetenv("UGENE_GUI_TEST").toInt() == 1) {
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
         U2Region res = singleLinePainter->getAnnotationYRange(a, r, as, QSize(canvasSize.width(), getOneLineHeight()), visibleRange);
         res.startPos += INDENT_BETWEEN_LINES / 2;
         return res;

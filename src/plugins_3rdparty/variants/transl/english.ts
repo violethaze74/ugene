@@ -584,27 +584,27 @@
         <translation>Print filtered variants into the log (varFilter) (-p).</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="781"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="785"/>
         <source>Assembly URL slot is empty. Please, specify the URL slot</source>
         <translation>Assembly URL slot is empty. Please, specify the URL slot</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="800"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="810"/>
         <source>Ref sequence URL slot is empty. Please, specify the URL slot</source>
         <translation>Ref sequence URL slot is empty. Please, specify the URL slot</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="872"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="882"/>
         <source>Not enough references</source>
         <translation>Not enough references</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="877"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="887"/>
         <source>The dataset slot is not binded, only the first reference sequence against all assemblies was processed.</source>
         <translation>The dataset slot is not binded, only the first reference sequence against all assemblies was processed.</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="880"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="890"/>
         <source>Not enough assemblies</source>
         <translation>Not enough assemblies</translation>
     </message>

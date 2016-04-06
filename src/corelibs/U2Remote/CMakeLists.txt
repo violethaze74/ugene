@@ -3,7 +3,6 @@ project(U2Remote)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOMOC_MOC_OPTIONS -nn) # do not display notes.
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 
@@ -21,6 +20,6 @@ file(GLOB_RECURSE HDRS src/*.h)
 add_library(U2Remote SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Remote
-        U2Core U2Lang U2Gui U2Private
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network)
+        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Network
+        U2Core U2Lang U2Gui U2Private)
 

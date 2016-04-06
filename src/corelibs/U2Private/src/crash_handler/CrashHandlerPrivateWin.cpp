@@ -94,7 +94,9 @@ bool CrashHandlerPrivateWin::breakpadCallback(const wchar_t *dump_path,
     }
 
     CrashHandlerPrivateWin *privateHandler = static_cast<CrashHandlerPrivateWin *>(context);
+#ifdef Q_OS_WIN64
     privateHandler->walkStack(exinfo);
+#endif
     privateHandler->dumpWasSuccessfullySaved = succeeded;
 
     handleException(privateHandler->getExceptionText(exinfo), dumpPath);

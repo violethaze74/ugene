@@ -1,9 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 project(U2Core)
 
-set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOMOC_MOC_OPTIONS -nn) # do not display notes.
 
 find_package(Qt5 REQUIRED Core Gui Widgets)
 
@@ -22,6 +20,7 @@ file(GLOB_RECURSE HDRS src/*.h)
 add_library(U2Core SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Core
-        ugenedb zlib
-        Qt5::Core Qt5::Gui Qt5::Widgets)
+        proc
+        Qt5::Core Qt5::Gui Qt5::Widgets
+        ugenedb zlib)
 

@@ -50,7 +50,7 @@ AddNewDocumentDialogImpl::AddNewDocumentDialogImpl(QWidget* p, AddNewDocumentDia
       model(m)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17467599");
+    new HelpButton(this, buttonBox, "17468804");
     if (model.format.isEmpty()) {
         model.format = AppContext::getSettings()->getValue(SETTINGS_LASTFORMAT, QString("")).toString();
     }
@@ -76,7 +76,7 @@ AddNewDocumentDialogImpl::AddNewDocumentDialogImpl(QWidget* p, AddNewDocumentDia
 }
 
 void AddNewDocumentDialogImpl::accept() {
-    model.format = formatController->getActiveFormatId();
+    model.format = saveController->getFormatIdToSave();
     model.url = saveController->getSaveFileName();
     if (model.url.isEmpty()) {
         QMessageBox::critical(this, tr("Invalid Document Location"), tr("Document location is empty"));

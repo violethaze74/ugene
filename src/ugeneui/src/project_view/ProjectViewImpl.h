@@ -35,7 +35,7 @@
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ObjectViewTreeController.h>
 
-#include "../_tmp/ui/ui_ProjectViewWidget.h"
+#include "ui_ProjectViewWidget.h"
 
 namespace U2 {
 

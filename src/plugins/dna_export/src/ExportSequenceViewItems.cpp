@@ -756,7 +756,7 @@ void ADVExportContext::fetchSequencesFromRemoteDB(const QString & listId) {
         QString dir = dlg->getDirectory();
         Task *t;
         if(dlg->isAddToProject()) {
-            t = new LoadRemoteDocumentAndOpenViewTask(listId, db, dir);
+            t = new LoadRemoteDocumentAndAddToProjectTask(listId, db, dir);
         } else {
             t = new LoadRemoteDocumentTask(listId, db, dir);
         }

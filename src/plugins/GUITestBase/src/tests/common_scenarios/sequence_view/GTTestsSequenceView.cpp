@@ -900,8 +900,8 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "YkrI"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Find restriction sites"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Analyze" << "Find restriction sites..."));
+    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os)->getDetView(), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
@@ -1356,7 +1356,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042){
     QString selected = GTUtilsAnnotationsTreeView::getSelectedItem(os);
     CHECK_SET_ERR(selected == "misc_feature", "Unexpected selected anntoation: " + selected);
 //    Click on annotation on seq view with right button
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList()<<"rename_item", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled));
     GTMouseDriver::click(os, Qt::RightButton);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_REMOVE
                                                       << "Selected annotations and qualifiers", PopupChecker::IsEnabled));
@@ -1545,11 +1545,12 @@ GUI_TEST_CLASS_DEFINITION(test_0050){
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Wrong annotation name"));
-            QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameEdit", dialog);
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal annotation name"));
+            QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "leAnnotationName", dialog);
             GTLineEdit::setText(os, nameEdit, "//");
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
 
@@ -1559,19 +1560,26 @@ GUI_TEST_CLASS_DEFINITION(test_0050){
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
-            QLabel* statusLabel = GTWidget::findExactWidget<QLabel*>(os, "statusLabel", dialog);
-            QLineEdit* locationEdit = GTWidget::findExactWidget<QLineEdit*>(os, "locationEdit", dialog);
+            QRadioButton* gbFormatLocation = dialog->findChild<QRadioButton*>("rbGenbankFormat");
+            CHECK_SET_ERR(gbFormatLocation != NULL, "radio button rbGenbankFormat not found");
+            GTRadioButton::click(os, gbFormatLocation);
 
+            QLineEdit* locationEdit = GTWidget::findExactWidget<QLineEdit*>(os, "leLocation", dialog);
             GTLineEdit::clear(os, locationEdit);
-            CHECK_SET_ERR(statusLabel->text() == "<b><font color=\"#A6392E\">Location is empty!</font></b>", QString("1 Unexpected status: %1").arg(statusLabel->text()));
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location"));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             GTLineEdit::setText(os, locationEdit, "1..");
-            CHECK_SET_ERR(statusLabel->text() == "<b><font color=\"#A6392E\">Invalid location!</font><b>", QString("2 Unexpected status: %1").arg(statusLabel->text()));
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location"));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             GTLineEdit::setText(os, locationEdit, "1..0");
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "New annotation locations is out of sequence bounds!"));
-
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
 
@@ -1586,32 +1594,6 @@ GUI_TEST_CLASS_DEFINITION(test_0050){
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new WrongDistanceChecker));
     GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
     GTGlobals::sleep(1000);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0050_1){
-    class custom : public CustomScenario {
-    public:
-        virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-            GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Genes" << "promoter"));
-            GTWidget::click(os, GTWidget::findWidget(os, "showNameGroupsButton", dialog));
-            QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameEdit", dialog);
-            CHECK_SET_ERR(nameEdit->text() == "promoter", "unexpected name: " + nameEdit->text());
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem*>() << GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
-
-    GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new custom));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
-    GTGlobals::sleep(1000);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0051){
@@ -2314,6 +2296,36 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 
     QPixmap p(sandBoxDir + "seq_image_0071");
     CHECK_SET_ERR(p.size() != QSize() && p.size() !=  seqWgt->getDetView()->getDetViewRenderArea()->size(), "Exported image size is incorrect");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0075) {
+    //1. Open "data/samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+
+    //2. Click the translations toolbar button.
+    GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
+
+    //Expected: the menu appears.
+    QMenu *menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+    CHECK_SET_ERR(NULL != menu, "No menu");
+
+    //3. Click "Show/hide translations".
+    GTMenu::clickMenuItem(os, menu, "translation_action");
+
+    //Expected: the menu doesn't disappear.
+    CHECK_SET_ERR(NULL != QApplication::activePopupWidget(), "Menu disappeared 1");
+
+    //4. Click "Show all".
+    GTMenu::clickMenuItemByText(os, menu, QStringList() << "Show all");
+
+    //Expected: the menu doesn't disappear.
+    CHECK_SET_ERR(NULL != QApplication::activePopupWidget(), "Menu disappeared 2");
+
+    //5. Click somewhere else.
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
+
+    //Expected: the menu disappears.
+    CHECK_SET_ERR(NULL == QApplication::activePopupWidget(), "Menu is shown");
 }
 
 } // namespace GUITest_common_scenarios_sequence_view

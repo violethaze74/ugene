@@ -31,7 +31,7 @@ namespace U2 {
 
 ImportSchemaDialog::ImportSchemaDialog(QWidget* p) : QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17467927");
+    new HelpButton(this, buttonBox, "17469136");
 }
 
 void ImportSchemaDialog::accept() {

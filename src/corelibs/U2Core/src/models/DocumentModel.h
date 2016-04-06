@@ -111,6 +111,7 @@ typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;
 #define DocumentReadingMode_SequenceAsSeparateHint          "sequences-separate-mode"
 #define DocumentReadingMode_MaxObjectsInDoc                 "max-objects-in-doc"
 #define DocumentReadingMode_DontMakeUniqueNames             "no-unique-names"
+#define DocumentReadingMode_LoadAsModified                  "load-as-modified"
 
 /** Set of hints that can be processed during document storing */
 #define DocumentWritingMode_SimpleNames                     "simple-names"

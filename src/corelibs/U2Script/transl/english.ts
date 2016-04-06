@@ -2,13 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US" sourcelanguage="en">
 <context>
-    <name>AppContextImpl</name>
-    <message>
-        <source>UGENE script environment initialization started</source>
-        <translation type="vanished">UGENE script environment initialization started</translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../src/CommonDbi.cpp" line="84"/>

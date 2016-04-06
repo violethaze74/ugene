@@ -22,10 +22,11 @@
 #ifndef _U2_BASE_SHORT_READS_ALIGNER_WORKER_H_
 #define _U2_BASE_SHORT_READS_ALIGNER_WORKER_H_
 
+#include <U2Lang/DatasetFetcher.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 #include <U2Core/GUrl.h>
-
+#include <U2Algorithm/DnaAssemblyTask.h>
 
 namespace U2 {
 
@@ -53,7 +54,10 @@ protected:
     virtual QString getDefaultFileName() const = 0;
     virtual QString getBaseSubdir() const = 0;
     virtual DnaAssemblyToReferenceTask* getTask(const DnaAssemblyToRefTaskSettings &settings) const = 0;
-
+    QList<ShortReadSet> toUrls(const QList<Message> &messages, const QString &urlSlotId, ShortReadSet::LibraryType libType, ShortReadSet::MateOrder order) const;
+    bool isReadyToRun() const;
+    bool dataFinished() const;
+    QString checkPairedReads() const;
 
 protected:
     QString      algName;
@@ -61,6 +65,9 @@ protected:
     IntegralBus *inPairedChannel;
     IntegralBus *output;
     bool pairedReadsInput;
+
+    DatasetFetcher readsFetcher;
+    DatasetFetcher pairedReadsFetcher;
 
 public slots:
     void sl_taskFinished();

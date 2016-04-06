@@ -64,6 +64,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/LabelClickTransmitter.h \
            src/util/LastUsedDirHelper.h \
            src/util/LocalToolbar.h \
+           src/util/MultiClickMenu.h \
            src/util/ObjectViewTreeController.h \
            src/util/OrderedToolbar.h \
            src/util/PositionSelector.h \
@@ -99,6 +100,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/project/filter_tasks/TextContentFilterTask.h \
            src/util/project/ConnectionHelper.h \
            src/util/project/DocumentFolders.h \
+           src/util/project/EditableTreeView.h \
            src/util/project/FilteredProjectItemDelegate.h \
            src/util/project/FilteredProjectGroup.h \
            src/util/project/FolderNameDialog.h \
@@ -154,6 +156,7 @@ SOURCES += src/MainWindow.cpp \
            src/ObjectViewModel.cpp \
            src/ObjectViewTasks.cpp \
            src/OpenViewTask.cpp \
+           src/PasteController.cpp \
            src/ProjectParsing.cpp \
            src/ToolsMenu.cpp \
            src/UnloadDocumentTask.cpp \
@@ -205,9 +208,9 @@ SOURCES += src/MainWindow.cpp \
            src/util/LabelClickTransmitter.cpp \
            src/util/LastUsedDirHelper.cpp \
            src/util/LocalToolbar.cpp \
+           src/util/MultiClickMenu.cpp \
            src/util/ObjectViewTreeController.cpp \
            src/util/OrderedToolbar.cpp \
-           src/PasteController.cpp \
            src/util/PositionSelector.cpp \
            src/util/ProjectDocumentComboBoxController.cpp \
            src/util/ProjectTreeItemSelectorDialog.cpp \
@@ -240,6 +243,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/project/filter_tasks/TextContentFilterTask.cpp \
            src/util/project/ConnectionHelper.cpp \
            src/util/project/DocumentFolders.cpp \
+           src/util/project/EditableTreeView.cpp \
            src/util/project/FilteredProjectItemDelegate.cpp \
            src/util/project/FilteredProjectGroup.cpp \
            src/util/project/FolderNameDialog.cpp \

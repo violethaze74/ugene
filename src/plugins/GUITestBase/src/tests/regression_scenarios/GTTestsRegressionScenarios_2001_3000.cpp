@@ -1212,7 +1212,7 @@ GUI_TEST_CLASS_DEFINITION( test_2138 )
     GTGlobals::sleep(1000);
     //Expected state: alignment has been opened and whole msa alphabet is amino
     bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(os);
-    CHECK_SET_ERR(true == isAmino, "Aligment has wrong alphabet type");
+    CHECK_SET_ERR(false == isAmino, "Aligment has wrong alphabet type");
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2140 )
@@ -1488,7 +1488,7 @@ GUI_TEST_CLASS_DEFINITION( test_2187 ) {
     GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick(os);
 
-    Runnable *filler = new EditAnnotationChecker(os, "repeat_unit", "join(251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259)");
+    Runnable *filler = new EditAnnotationChecker(os, "repeat_unit", "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259");
     GTUtilsDialog::waitForDialog(os, filler);
 
     GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
@@ -2405,9 +2405,9 @@ GUI_TEST_CLASS_DEFINITION( test_2360 ) {
 
     // 3. Choose the context menu {Export/Import->Export nucleic alignment to amino translation}.
     // Expected state: Export dialog appears.
-    // 4. Set "File format to use" to PHYLIP Sequantial.
+    // 4. Set "File format to use" to PHYLIP Sequential.
     // 5. Click "Export".
-    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, "PHYLIP Sequantial"));
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, "PHYLIP Sequential"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_TO_AMINO_ACTION));
     GTMouseDriver::click(os, Qt::RightButton);
 }
@@ -4745,13 +4745,15 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 //    Expected state: annotations has appeared on the sequence view
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, GTUtilsProjectTreeView::findIndex(os, "NC_001363 features"), GTUtilsAnnotationsTreeView::getTreeWidget(os));
+    GTGlobals::sleep();
 
 //    5. Open file {data/samples/Genbank/murine.gb} with text editor, then make some identical modification (i.e. delete and type the same character) and save file
 //    Expected state: dialog about detected file modification has appeared in UGENE window
 //    6. Press "Yes"
 //    Expected state: "human_T1" view has disappeared from the "Bookmarks" list, "murine.gb" has been reloaded.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
 
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QFile murineFile(sandBoxDir + "test_2713/murine.gb");
     const bool opened = murineFile.open(QFile::Append);
     CHECK_SET_ERR(opened, "Can't open the file: " + sandBoxDir + "test_2713/murine.gb");
@@ -4763,7 +4765,7 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 //    7. Open "human_T1" sequence view
 //    Expected state: annotations from "murine.gb" present on the sequence view
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
-       GTGlobals::sleep(5000);
+    GTGlobals::sleep(5000);
     GTUtilsAnnotationsTreeView::findFirstAnnotation(os);
 }
 

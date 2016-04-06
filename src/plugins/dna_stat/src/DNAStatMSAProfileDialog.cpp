@@ -46,7 +46,7 @@ DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MSAEditor* _c)
       ctx(_c),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17467665");
+    new HelpButton(this, buttonBox, "17468873");
 
     initSaveController();
 }
@@ -234,10 +234,19 @@ void DNAStatMSAProfileTask::run() {
             char2index.clear();
             unusedChars.clear();
             resultText.clear();
-            setError(tr("There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser."));
+            if (s.outFormat == DNAStatMSAProfileOutputFormat_Show) {
+                setError(tr("There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser."));
+            } else {
+                setError(tr("There is not enough memory to generate this grid profile in UGENE."));
+            }
             return;
         }
     } else {
+        f = new QFile(s.outURL);
+        if (!f->open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+            setError(tr("Can't open file for write: %1").arg(s.outURL));
+            return;
+        }
         //out char freqs
         QByteArray aChars = s.ma.getAlphabet()->getAlphabetChars();
         for (int i = 0; i < aChars.size(); i++) {

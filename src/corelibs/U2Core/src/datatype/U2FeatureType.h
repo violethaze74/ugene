@@ -152,7 +152,7 @@ public:
         PrecursorRna                = 120,
         Primer                      = 121,
         PrimerBindingSite           = 122,
-        PrimeryTranscript           = 123,
+        PrimaryTranscript           = 123,
         ProcessedActivePeptide      = 124,
         Promoter                    = 125,
         PromoterEukaryotic          = 126,

@@ -10058,6 +10058,25 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
 </context>
 <context>
+    <name>U2::SnpEffParser</name>
+    <message>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="59"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="81"/>
+        <source>A problem occurred during allocating memory for running SnpEff. Check the &quot;Tasks memory limit&quot; parameter in the UGENE Application Settings.It is recommended to set this value to the available RAM on the computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="75"/>
+        <source>There is not enough memory to complete the SnpEff execution.It is recommended to run SnpEff on a computer with RAM 4Gb or more.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="86"/>
+        <source>Failed to download SnpEff database. Check your internet connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::SnpEffSupport</name>
     <message>
         <location filename="../src/snpeff/SnpEffSupport.cpp" line="49"/>
@@ -10068,7 +10087,7 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::SnpEffTask</name>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="171"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="198"/>
         <source>SNPEff dataDir is not initialized.</source>
         <translation>SNPEff dataDir is not initialized.</translation>
     </message>

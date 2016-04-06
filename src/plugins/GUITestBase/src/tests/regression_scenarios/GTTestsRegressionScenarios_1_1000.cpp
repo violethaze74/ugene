@@ -1206,6 +1206,7 @@ GUI_TEST_CLASS_DEFINITION(test_0703) {
     GTUtilsProjectTreeView::dragAndDrop(os, GTUtilsProjectTreeView::findIndex(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "1.fa")),
         GTUtilsMdi::activeWindow(os));
 
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTUtilsDocument::removeDocument(os, "1.fa");
     GTUtilsDocument::removeDocument(os, "1.ugenedb");
 
@@ -1216,7 +1217,6 @@ GUI_TEST_CLASS_DEFINITION(test_0703) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : UGENE not crashes
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0729){
@@ -2056,7 +2056,7 @@ GUI_TEST_CLASS_DEFINITION(test_0835) {
 
     //3. Enable Circular View for one of the sequences(for example, "murine.gb").
     // = > The Circular View with the Restriction Site Map is shown.
-    GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
+    GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction", GTWidget::findWidget(os, "views_tool_bar_NC_004718")));
 
     QWidget *restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget");
     CHECK_SET_ERR(NULL != restrictionMapTreeWidget && restrictionMapTreeWidget->isVisible(),
@@ -2065,11 +2065,12 @@ GUI_TEST_CLASS_DEFINITION(test_0835) {
     //4. Delete the sequence with the Circular View from the Project View.
     // = > The sequence has been deleted, the Circular View is not shown.
     //!= > The Restriction Site Map is NOT still shown.
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "sars.gb"));
+    GTUtilsProjectTreeView::click(os, "sars.gb");
     GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
-    GTGlobals::sleep(100);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTThread::waitForMainThread(os);
 
-    restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget");
+    restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget", NULL, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(NULL == restrictionMapTreeWidget, "Restriction map widget is visible unexpectedly");
 }
 

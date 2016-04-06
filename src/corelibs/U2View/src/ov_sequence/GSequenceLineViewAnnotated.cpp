@@ -443,7 +443,7 @@ QString GSequenceLineViewAnnotated::createToolTip(QHelpEvent *e) {
 }
 
 void GSequenceLineViewAnnotated::sl_onAnnotationsModified(const AnnotationModification& md) {
-    if (md.type == AnnotationModification_LocationChanged || md.type == AnnotationModification_NameChanged) {
+    if (md.type == AnnotationModification_LocationChanged || md.type == AnnotationModification_NameChanged || md.type == AnnotationModification_TypeChanged) {
         addUpdateFlags(GSLV_UF_AnnotationsChanged);
         update();
     }

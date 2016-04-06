@@ -102,7 +102,7 @@ void MSAOverviewContextMenu::sl_graphOrientationActionTriggered(QAction *action)
 void MSAOverviewContextMenu::sl_colorActionTriggered() {
     QObjectScopedPointer<QColorDialog> colorDialog = new QColorDialog(graphOverview->getCurrentColor(), this);
 #ifdef Q_OS_MAC
-    if (qgetenv("UGENE_GUI_TEST").toInt() == 1 && qgetenv("UGENE_USE_NATIVE_DIALOGS").toInt() == 0) {
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         colorDialog->setOption(QColorDialog::DontUseNativeDialog);
     }
 #endif

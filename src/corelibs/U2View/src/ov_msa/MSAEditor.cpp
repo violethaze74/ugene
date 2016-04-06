@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QEvent>
 #include <QFontDialog>
 #include <QGridLayout>
@@ -784,6 +785,7 @@ void MSAEditor::alignSequencesFromObjectsToAlignment(const QList<GObject*>& obje
 
     if(!extractor.getSequenceRefs().isEmpty()) {
         AlignSequencesToAlignmentTask* task = new AlignSequencesToAlignmentTask(msaObject, extractor);
+        TaskWatchdog::trackResourceExistence(msaObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
 }
@@ -794,7 +796,7 @@ void MSAEditor::alignSequencesFromFilesToAlignment() {
     LastUsedDirHelper lod;
     QStringList urls;
 #ifdef Q_OS_MAC
-    if (qgetenv("UGENE_GUI_TEST").toInt() == 1 && qgetenv("UGENE_USE_NATIVE_DIALOGS").toInt() == 0) {
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         urls = U2FileDialog::getOpenFileNames(ui, tr("Open file with sequences"), lod.dir, filter, 0, QFileDialog::DontUseNativeDialog );
     } else
 #endif
@@ -803,6 +805,7 @@ void MSAEditor::alignSequencesFromFilesToAlignment() {
     if (!urls.isEmpty()) {
         lod.url = urls.first();
         LoadSequencesAndAlignToAlignmentTask * task = new LoadSequencesAndAlignToAlignmentTask(msaObject, urls);
+        TaskWatchdog::trackResourceExistence(msaObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
 }

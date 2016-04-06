@@ -88,6 +88,7 @@ GUITestRunner::~GUITestRunner()
 }
 
 void GUITestRunner::sl_runSelected(){
+    GUITestService::setEnvVariablesForGuiTesting();
     QList<QTreeWidgetItem*> selectedItems = tree->selectedItems();
     foreach (QTreeWidgetItem* item, selectedItems) {
         if(item->childCount() == 0){ // single test, not suite
@@ -104,6 +105,7 @@ void GUITestRunner::sl_runSelected(){
     }
 }
 void GUITestRunner::sl_runAllGUITests(){
+    GUITestService::setEnvVariablesForGuiTesting();
     if(GUITestService::getGuiTestService()->isEnabled()){
         hide();
         GUITestService::getGuiTestService()->runAllGUITests();

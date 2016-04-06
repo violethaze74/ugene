@@ -41,15 +41,22 @@ void TopHatInputData::cleanupReads() {
 }
 
 TopHatSettings::TopHatSettings()
-    : noNovelJunctions(false),
-      fusionSearch(false),
-      transcriptomeOnly(false),
-      prefilterMultihits(false),
-      solexa13quals(false),
-      bowtieMode(vMode),
-      useBowtie1(false)
-{
-}
+    : mateInnerDistance(0),
+    mateStandardDeviation(0),
+    noNovelJunctions(false),
+    maxMultihits(0),
+    segmentLength(0),
+    fusionSearch(false),
+    transcriptomeOnly(false),
+    transcriptomeMaxHits(0),
+    prefilterMultihits(false),
+    minAnchorLength(0),
+    spliceMismatches(0),
+    readMismatches(0),
+    segmentMismatches(0),
+    solexa13quals(false),
+    bowtieMode(vMode),
+    useBowtie1(false){}
 
 void TopHatSettings::cleanupReads() {
     data.cleanupReads();

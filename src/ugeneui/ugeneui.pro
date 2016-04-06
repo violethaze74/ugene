@@ -31,7 +31,6 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/project_support/ProjectLoaderImpl.h \
            src/project_support/ProjectServiceImpl.h \
            src/project_support/ProjectTasksGui.h \
-           src/project_view/ProjectViewDocTree.h \
            src/project_view/ProjectViewImpl.h \
            src/project_view/ProjectViewSearchBox.h \
            src/shtirlitz/Shtirlitz.h \
@@ -43,25 +42,25 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/welcome_page/WelcomePageController.h \
            src/welcome_page/WelcomePageMdi.h \
            src/welcome_page/WelcomePageWidget.h
-FORMS += src/app_settings/directories_settings/ui/DirectoriesSettingsWidget.ui \
-         src/app_settings/format_settings/ui/FormatSettingsWidget.ui \
-         src/app_settings/logview_settings/ui/LogSettingsWidget.ui \
-         src/app_settings/network_settings/ui/NetworkSettingsWidget.ui \
-         src/app_settings/resource_settings/ui/ResourceSettingsWidget.ui \
-         src/app_settings/ui/AppSettingsDialog.ui \
-         src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui \
-         src/main_window/ui/AboutDialog.ui \
-         src/main_window/ui/TmpDirChangeDialog.ui \
-         src/plugin_viewer/ui/PluginViewerWidget.ui \
-         src/project_support/ui/CreateNewProjectWidget.ui \
-         src/project_support/ui/DocumentFormatSelectorDialog.ui \
-         src/project_support/ui/DocumentProviderSelectorDialog.ui \
-         src/project_support/ui/ExportProjectDialog.ui \
-         src/project_support/ui/MultipleSequenceFilesReadingMode.ui \
-         src/project_support/ui/SequenceReadingModeSelectorDialog.ui \
-         src/project_support/ui/SaveProjectDialog.ui \
-         src/project_view/ui/ProjectViewWidget.ui \
-         src/shtirlitz/ui/StatisticalReport.ui
+FORMS += src/app_settings/directories_settings/DirectoriesSettingsWidget.ui \
+         src/app_settings/format_settings/FormatSettingsWidget.ui \
+         src/app_settings/logview_settings/LogSettingsWidget.ui \
+         src/app_settings/network_settings/NetworkSettingsWidget.ui \
+         src/app_settings/resource_settings/ResourceSettingsWidget.ui \
+         src/app_settings/AppSettingsDialog.ui \
+         src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui \
+         src/main_window/AboutDialog.ui \
+         src/main_window/TmpDirChangeDialog.ui \
+         src/plugin_viewer/PluginViewerWidget.ui \
+         src/project_support/CreateNewProjectWidget.ui \
+         src/project_support/DocumentFormatSelectorDialog.ui \
+         src/project_support/DocumentProviderSelectorDialog.ui \
+         src/project_support/ExportProjectDialog.ui \
+         src/project_support/MultipleSequenceFilesReadingMode.ui \
+         src/project_support/SequenceReadingModeSelectorDialog.ui \
+         src/project_support/SaveProjectDialog.ui \
+         src/project_view/ProjectViewWidget.ui \
+         src/shtirlitz/StatisticalReport.ui
 SOURCES += src/Main.cpp \
            src/app_settings/AppSettingsDialogController.cpp \
            src/app_settings/AppSettingsGUIImpl.cpp \
@@ -93,7 +92,6 @@ SOURCES += src/Main.cpp \
            src/project_support/ProjectServiceImpl.cpp \
            src/project_support/ProjectTasksGui.cpp \
            src/project_view/BuiltInObjectViews.cpp \
-           src/project_view/ProjectViewDocTree.cpp \
            src/project_view/ProjectViewImpl.cpp \
            src/project_view/ProjectViewSearchBox.cpp \
            src/shtirlitz/Shtirlitz.cpp \

@@ -38,6 +38,9 @@
 #include "runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"
 
+#include <U2View/ADVConstants.h>
+
+
 namespace U2 {
 
 namespace GUITest_common_scenarios_annotations_edit {
@@ -660,7 +663,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //Check rename annotation action at popup menu (UGENE-3449)
+    // Check rename annotation action at popup menu (UGENE-3449)
     // Rename annotation
     // Steps:
     // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
@@ -675,14 +678,14 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTMouseDriver::doubleClick(os);
     GTGlobals::sleep();
 
-    // 3. Check that menu item "Rename item" is disabled at popup menu of sequence view.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "rename_item",
-                                                      PopupChecker::IsDisabled, GTGlobals::UseMouse));
+    // 3. Check that menu item { Edit -> Annotation } is absent at popup menu of sequence view.
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
+                                                      PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
-    // 4. Check that menu item "Rename item" is disabled at popup menu of annotations view.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "rename_item",
-                                                      PopupChecker::IsDisabled, GTGlobals::UseMouse));
+    // 4. Check that menu item { Edit -> Annotation } is absent at popup menu of annotations view.
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
+                                                      PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
 
 }
@@ -711,13 +714,13 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click(os);
 
-    // 4. Check that menu item "Rename item" is enabled at popup menu of sequence view.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "rename_item",
+    // 4. Check that menu item { Edit -> Annotation } is enabled at popup menu of sequence view.
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
                                                       PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
-    // 5. Check that menu item "Rename item" is enabled at popup menu of annotations view.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "rename_item",
+    // 5. Check that menu item { Edit -> Annotation } is enabled at popup menu of annotations view.
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
                                                       PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
 }
@@ -736,14 +739,14 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTMouseDriver::click(os);
 
     // 3. Open context menu on sequence area
-    // Expected state: 'Rename item' action is disabled
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "rename_item",
-                                                      PopupChecker::IsDisabled, GTGlobals::UseMouse));
+    // Expected state: { Edit -> Annotation } action is disabled
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
+                                                      PopupChecker::NotExists, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     // 3. Open context menu on sequence area
-    // Expected state: 'Rename item' action is enabled
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "rename_item",
+    // Expected state: { Edit -> Annotation } action is enabled
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item",
                                                       PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "annotations_tree_widget"));
 }

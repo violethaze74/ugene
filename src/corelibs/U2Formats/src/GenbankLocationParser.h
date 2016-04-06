@@ -33,7 +33,17 @@ namespace Genbank {
 class U2FORMATS_EXPORT LocationParser : public QObject {
     Q_OBJECT
 public:
-    static QString parseLocation(const char* str, int len, U2Location& location, qint64 seqlenForCircular = -1);
+    enum ParsingResult {
+        Success,
+        ParsedWithWarnings,
+        Failure
+    };
+
+    static const QString REMOTE_ENTRY_WARNING;
+    static const QString JOIN_COMPLEMENT_WARNING;
+
+    static ParsingResult parseLocation(const char* str, int len, U2Location& location, qint64 seqlenForCircular = -1);
+    static ParsingResult parseLocation(const char* str, int len, U2Location& location, QStringList &messages, qint64 seqlenForCircular = -1);
 };
 
 

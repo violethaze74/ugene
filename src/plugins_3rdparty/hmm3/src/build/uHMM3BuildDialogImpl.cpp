@@ -59,7 +59,7 @@ void UHMM3BuildDialogImpl::setSignalsAndSlots() {
 
 void UHMM3BuildDialogImpl::initialize() {
     setupUi( this );
-    new HelpButton(this, buttonBox, "17467766");
+    new HelpButton(this, buttonBox, "17468974");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

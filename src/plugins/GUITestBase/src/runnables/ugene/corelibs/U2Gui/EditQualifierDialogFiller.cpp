@@ -60,13 +60,15 @@ void EditQualifierFiller::commonScenario()
 
     QTextEdit *valueEdit = dialog->findChild<QTextEdit*>("valueEdit");
     GT_CHECK(valueEdit != NULL, "value line edit not found");
-    GTTextEdit::setText(os, valueEdit, valueName);
+    if (!valueName.isEmpty()) {
+        GTTextEdit::setText(os, valueEdit, valueName);
+    }
 
     QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
     GT_CHECK(box != NULL, "buttonBox is NULL");
     QPushButton* button = box->button(QDialogButtonBox::Ok);
     GT_CHECK(button !=NULL, "ok button is NULL");
-    
+
     if(closeErrormessageBox){
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
         GTGlobals::sleep();
@@ -77,24 +79,7 @@ void EditQualifierFiller::commonScenario()
         GTTextEdit::setText(os, valueEdit, "nice_val");
     }
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-    
-}
-#undef GT_METHOD_NAME
-#undef GT_CLASS_NAME
 
-#define GT_CLASS_NAME "GTUtilsDialog::RenameQualifierFiller"
-#define GT_METHOD_NAME "commonScenario"
-void RenameQualifierFiller::commonScenario()
-{
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
-
-    QLineEdit *nameEdit = dialog->findChild<QLineEdit*>();
-    GT_CHECK(nameEdit != NULL, "line edit not found");
-    GTLineEdit::setText(os, nameEdit, newName);
-
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["Enter"]);
-    GTGlobals::sleep();
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QFile>
 #include <QListWidget>
 #include <QPlainTextEdit>
@@ -183,7 +184,7 @@ GUI_TEST_CLASS_DEFINITION(test_5012_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_5018) {
 #ifdef Q_OS_WIN
-    const QString homePlaceholder = "%HOME_DIR%";
+    const QString homePlaceholder = "%UserProfile%";
 #else
     const QString homePlaceholder = "~";
 #endif
@@ -209,7 +210,9 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
 
 //    Expected state: "test_5018.fa" appears in the home dir.
     CHECK_SET_ERR(GTFile::check(os, homePath + "/test_5018.fa"), "File was not created");
+    GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     QFile(homePath + "/test_5018.fa").remove();
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5027_1) {
@@ -366,6 +369,28 @@ GUI_TEST_CLASS_DEFINITION(test_5082) {
     CHECK_SET_ERR(l.checkMessage("Not enough resources for the task, resource name:"), "No default error in log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5090) {
+//    1. Open "_common_data/genbank/join_complement_ann.gb".
+//    Expected state: the file is successfully opened;
+//                    a warning appears. It contains next message: "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand."
+//                    there are two annotations: 'just_an_annotation' (40..50) and 'join_complement' (join(10..15,20..25)). // the second one should have another location after UGENE-3423 will be done
+
+    GTLogTracer logTracer;
+    GTUtilsNotifications::waitForNotification(os, false, "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
+
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/join_complement_ann.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsLog::checkContainsError(os, logTracer, "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
+
+    GTUtilsMdi::activateWindow(os, "join_complement_ann [s] A_SEQ_1");
+
+    const QString simpleAnnRegion = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "just_an_annotation");
+    CHECK_SET_ERR("40..50" == simpleAnnRegion, QString("An incorrect annotation region: expected '%1', got '%2'").arg("40..50").arg(simpleAnnRegion));
+    const QString joinComplementAnnRegion = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "join_complement");
+    CHECK_SET_ERR("join(10..15,20..25)" == joinComplementAnnRegion, QString("An incorrect annotation region: expected '%1', got '%2'").arg("join(10..15,20..25)").arg(simpleAnnRegion));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5128) {
     //1. Open any 3D structure.
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
@@ -378,7 +403,25 @@ GUI_TEST_CLASS_DEFINITION(test_5128) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5160_1) {
+GUI_TEST_CLASS_DEFINITION(test_5137) {
+    //    1. Open document test/_common_data/clustal/big.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //    2. Add big sequence 
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa");
+    GTUtilsDialog::waitForDialog(os, ob);
+
+    QAbstractButton *align = GTAction::button(os, "Align sequence to this alignment");
+    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence to this alignment\" action not found");
+    GTWidget::click(os, align);
+    GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during adding sequences. The multiple alignment is no more available.");
+    GTGlobals::sleep();
+    GTUtilsProjectTreeView::click(os, "COI");
+    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTGlobals::sleep(6000);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5138_1) {
     //1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "big_aln.fa");
@@ -395,9 +438,9 @@ GUI_TEST_CLASS_DEFINITION(test_5160_1) {
     GTGlobals::sleep();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5160_2) {
+GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     //    1. Open document test/_common_data/clustal/big.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5138", "big_5138.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Do MSA area context menu->Statistics->generate grid profile
     //    Expected state: notification about low memory has appeared

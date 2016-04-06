@@ -59,7 +59,7 @@ QString DownloadRemoteFileDialog::defaultDB("");
 DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget *p):QDialog(p), isQueryDB(false) {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17467516");
+    new HelpButton(this, ui->buttonBox, "17468720");
 
     ui->formatBox->hide();
     ui->formatLabel->hide();
@@ -94,7 +94,7 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog( const QString& id, const QSt
 {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17467529");
+    new HelpButton(this, ui->buttonBox, "17468733");
 
     ui->formatBox->addItem(GENBANK_FORMAT);
     ui->formatBox->addItem(FASTA_FORMAT);
@@ -194,8 +194,10 @@ void DownloadRemoteFileDialog::accept()
     QVariantMap hints;
     hints.insert(FORCE_DOWNLOAD_SEQUENCE_HINT, ui->chbForceDownloadSequence->isVisible() && ui->chbForceDownloadSequence->isChecked());
 
+    int taskCount = 0;
     foreach (const QString &resId, resIds) {
-        tasks.append(new LoadRemoteDocumentAndOpenViewTask(resId, dbId, fullPath, fileFormat, hints));
+        tasks.append(new LoadRemoteDocumentAndAddToProjectTask(resId, dbId, fullPath, fileFormat, hints, taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS));
+        taskCount++;
     }
 
     AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask(tr("Download remote documents"), tasks));

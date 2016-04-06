@@ -217,11 +217,11 @@ QProcessEnvironment GUITestLauncher::getProcessEnvironment(QString testName) {
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 
     QDir().mkpath(testOutDir + "/logs");
-    env.insert("UGENE_DEV", "1");
-    env.insert("UGENE_GUI_TEST", "1");
-    env.insert("UGENE_USE_NATIVE_DIALOGS", "0");
-    env.insert("UGENE_PRINT_TO_FILE", testOutDir + "/logs/" + testOutFile(testName));
-    env.insert("UGENE_USER_INI", testOutDir + "/inis/" + testName.replace(':', '_') + "_UGENE.ini");
+    env.insert(ENV_UGENE_DEV, "1");
+    env.insert(ENV_GUI_TEST, "1");
+    env.insert(ENV_USE_NATIVE_DIALOGS, "0");
+    env.insert(U2_PRINT_TO_FILE, testOutDir + "/logs/" + testOutFile(testName));
+    env.insert(U2_USER_INI, testOutDir + "/inis/" + testName.replace(':', '_') + "_UGENE.ini");
 
     return env;
 }

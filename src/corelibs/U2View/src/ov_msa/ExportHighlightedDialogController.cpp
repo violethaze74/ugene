@@ -21,6 +21,7 @@
 
 #include <QPushButton>
 #include <QMessageBox>
+#include <ui_ExportHighlightedDialog.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -39,13 +40,14 @@ namespace U2{
 ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI *msaui_, QWidget* p )
     : QDialog(p),
       msaui(msaui_),
-      saveController(NULL)
+      saveController(NULL),
+      ui(new Ui_ExportHighlightedDialog())
 {
-    setupUi(this);
-    new HelpButton(this, buttonBox, "17467629");
+    ui->setupUi(this);
+    new HelpButton(this, ui->buttonBox, "17468834");
 
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     CHECK(AppContext::getAppSettings(), );
     CHECK(AppContext::getAppSettings()->getUserAppsSettings(), );
@@ -54,7 +56,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI
 
     initSaveController();
 
-    connect(endPosBox, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
+    connect(ui->endPosBox, SIGNAL(valueChanged(int)), SLOT(endPosValueChanged()));
 
     int alignLength = msaui->getEditor()->getMSAObject()->getLength();
     QRect selection = msaui->getSequenceArea()->getSelection().getRect();
@@ -69,20 +71,23 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI
         endPos = selection.x() + selection.width();
     }
 
-    startPosBox->setMaximum(endPos);
-    endPosBox->setMaximum(alignLength);
+    ui->startPosBox->setMaximum(endPos);
+    ui->endPosBox->setMaximum(alignLength);
 
-    startPosBox->setMinimum(1);
-    endPosBox->setMinimum(2);
+    ui->startPosBox->setMinimum(1);
+    ui->endPosBox->setMinimum(2);
 
-    startPosBox->setValue(startPos);
-    endPosBox->setValue(endPos);
+    ui->startPosBox->setValue(startPos);
+    ui->endPosBox->setValue(endPos);
+}
+ExportHighligtingDialogController::~ExportHighligtingDialogController(){
+    delete ui;
 }
 
 void ExportHighligtingDialogController::accept(){
-    startPos = startPosBox->value();
-    endPos = endPosBox->value();
-    if(oneIndexRB->isChecked()){
+    startPos = ui->startPosBox->value();
+    endPos = ui->endPosBox->value();
+    if(ui->oneIndexRB->isChecked()){
         startingIndex = 1;
     }else{
         startingIndex = 0;
@@ -91,29 +96,29 @@ void ExportHighligtingDialogController::accept(){
         QMessageBox::warning(this, tr("Warning"), tr("Export to file URL is empty!"));
         return;
     }
-    keepGaps = keepGapsBox->isChecked();
-    dots = dotsBox->isChecked();
-    transpose = transposeBox->isChecked();
+    keepGaps = ui->keepGapsBox->isChecked();
+    dots = ui->dotsBox->isChecked();
+    transpose = ui->transposeBox->isChecked();
     url = GUrl(saveController->getSaveFileName());
 
     QDialog::accept();
 }
 
 void ExportHighligtingDialogController::lockKeepGaps(){
-    keepGapsBox->setChecked(true);
-    keepGapsBox->setDisabled(true);
+    ui->keepGapsBox->setChecked(true);
+    ui->keepGapsBox->setDisabled(true);
 }
 
 void ExportHighligtingDialogController::endPosValueChanged(){
-    startPosBox->setMaximum(endPosBox->value() - 1);
+    ui->startPosBox->setMaximum(ui->endPosBox->value() - 1);
 }
 
 void ExportHighligtingDialogController::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultFileName = GUrlUtils::getDefaultDataPath() + "/" + msaui->getEditor()->getMSAObject()->getGObjectName() + "_highlighting.txt";
     config.defaultFormatId = BaseDocumentFormats::PLAIN_TEXT;
-    config.fileDialogButton = fileButton;
-    config.fileNameEdit = fileNameEdit;
+    config.fileDialogButton = ui->fileButton;
+    config.fileNameEdit = ui->fileNameEdit;
     config.parentWidget = this;
     config.saveTitle = tr("Select file to save...");
 

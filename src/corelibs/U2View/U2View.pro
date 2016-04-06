@@ -124,7 +124,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/AutoAnnotationUtils.h \
            src/ov_sequence/CreateRulerDialogController.h \
            src/ov_sequence/DetView.h \
-           src/ov_sequence/EditAnnotationDialogController.h \
            src/ov_sequence/GSequenceGraphView.h \
            src/ov_sequence/GSequenceGraphViewWithFactory.h \
            src/ov_sequence/GSequenceLineView.h \
@@ -210,7 +209,6 @@ FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/ov_sequence/find_pattern/FindPatternForm.ui \
          src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui \
          src/ov_sequence/CreateRulerDialog.ui \
-         src/ov_sequence/EditAnnotationDialog.ui \
          src/ov_sequence/SaveGraphCutoffsDialog.ui \
          src/ov_sequence/SearchQualifierDialog.ui \
          src/phyltree/BranchSettingsDialog.ui \
@@ -344,7 +342,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_sequence/AutoAnnotationUtils.cpp \
            src/ov_sequence/CreateRulerDialogController.cpp \
            src/ov_sequence/DetView.cpp \
-           src/ov_sequence/EditAnnotationDialogController.cpp \
            src/ov_sequence/GraphLabelModel.cpp \
            src/ov_sequence/GraphLabelsSelectDialog.cpp \
            src/ov_sequence/GraphMenu.cpp \

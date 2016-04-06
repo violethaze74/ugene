@@ -17,19 +17,9 @@ LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2View -lU
     CONFIG(release, debug|release) {
         DESTDIR=../../_release/plugins
     }
-    
-    # The directory 'plugins' must exist for plugin desc file   
-    unix {
-    !exists( $$CONFDIR/plugins/*.plugin ) {
-            system( mkdir $$CONFDIR/plugins )
-        }
-    }
-    
-    win32 {
-    !exists( $$CONFDIR/plugins/*.plugin ) {
-            system( mkdir $$CONFDIR\\plugins )
-        }
-    }
+
+    # Plugin output dir must exist before *.plugin/*.license files generation
+    mkpath($$OUT_PWD)
 
     include (./ugene_plugin_descriptor.pri)
 }

@@ -523,7 +523,7 @@ GUI_TEST_CLASS_DEFINITION(save_uwl_gui_test_0002) {
     createTestConnection(os);
 
     QMap<QString, QStringList> doc2Objects;
-    doc2Objects["ugene_gui_test"] << "et0002_features" << "view_test_0001";
+    doc2Objects["ugene_gui_test"] /*<< "et0002_features"*/ << "view_test_0001";
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, doc2Objects, QSet<GObjectType>(),
         ProjectTreeItemSelectorDialogFiller::Separate));
 

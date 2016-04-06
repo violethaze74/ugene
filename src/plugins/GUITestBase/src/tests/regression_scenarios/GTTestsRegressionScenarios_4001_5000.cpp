@@ -20,6 +20,7 @@
  */
 
 #include <QFile>
+#include <QGroupBox>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QPlainTextEdit>
@@ -228,17 +229,18 @@ GUI_TEST_CLASS_DEFINITION(test_4009) {
 
     //4. Remove "big.aln" document
     GTUtilsDocument::removeDocument(os, "big.aln");
-
+    GTGlobals::sleep();
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==0, "some tasks were not cancelled")
 
     //Current state: the task hangs, debug error occured with message "Infinite wait has timed out"
-    class Scenario : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Cancel);
-        }
-    };
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario()));
-    GTGlobals::sleep();
+//    class Scenario : public CustomScenario {
+//    public:
+//        void run(HI::GUITestOpStatus &os) {
+//            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Cancel);
+//        }
+//    };
+//    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario()));
+//    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4010) {
@@ -1214,24 +1216,6 @@ GUI_TEST_CLASS_DEFINITION(test_4118){
     GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
     GTUtilsLog::check(os, l);
 
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4120) {
-//    1. Open primer library.
-    GTUtilsPrimerLibrary::openLibrary(os);
-    const int expectedCount = GTUtilsPrimerLibrary::librarySize(os);
-
-//    2. Import a file to the library: "_common_data/fasta/illumina.fa".
-//    Expected state: there are no additional primers in the library, task generates a report that notifies about an error: "there are no applicable sequences".
-    GTUtilsNotifications::waitForNotification(os, false, testDir + "_common_data/fasta/illumina.fa: error: there are no applicable sequences");
-
-    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, QStringList() << testDir + "_common_data/fasta/illumina.fa"));
-    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Import);
-
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    const int count = GTUtilsPrimerLibrary::librarySize(os);
-    CHECK_SET_ERR(expectedCount == count, "Primer was unexpectedly imported");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4121) {
@@ -2925,7 +2909,7 @@ GUI_TEST_CLASS_DEFINITION(test_4486) {
 //    Expected state: UGENE doesn't crash.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export" << "Visible reads"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export" << "Visible reads as sequences"));
     GTUtilsDialog::waitForDialog(os, new ExportReadsDialogFiller(os, sandBoxDir + "test_4486/reads.fa"));
     GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
 
@@ -4997,6 +4981,37 @@ GUI_TEST_CLASS_DEFINITION(test_4871) {
     CHECK_SET_ERR(!undo->isEnabled(), "Button should be disabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4881) {
+    // Check Enter shortcut on object
+    // 1. Open murine.gb
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Close the view
+    GTUtilsMdi::closeAllWindows(os);
+
+    // 3. Select the sequence object and press Enter
+    GTUtilsProjectTreeView::click(os, "NC_001363");
+    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: the sequence is opened
+    CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle(os).contains("NC_001363"), "No opened sequence view");
+
+    // 4. Close the view again
+    GTUtilsMdi::closeAllWindows(os);
+
+    // 3. Select the sequence object and press F2 and Enter
+    GTUtilsProjectTreeView::click(os, "NC_001363");
+    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["f2"]);
+    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: no view opened
+    CHECK_SET_ERR(GTUtilsMdi::findWindow(os, "NC_001363", GTGlobals::FindOptions(false, Qt::MatchContains)) == NULL, "Some window is opened");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4885_1) {
 //    1. Open "data/samples/CLUSTALW/ty3.aln.gz".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
@@ -5204,7 +5219,7 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
 
     GTUtilsLog::checkContainsError(os, l, "Object 'ty3.aln.gz' removed");
     int errorNum = GTUtilsLog::getErrors(os, l).size();
-    CHECK_SET_ERR(errorNum==1, QString("Too many errors in log: %1").arg(errorNum));
+    CHECK_SET_ERR(errorNum == 1, QString("Too many errors in log: %1").arg(errorNum));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4936) {
@@ -5378,19 +5393,15 @@ GUI_TEST_CLASS_DEFINITION(test_4990) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
+    GTWidget::click(os, GTAction::button(os, "Show overview"));
 
     //2. Open "Export Consensus" OP tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
 
     //3. Press "Export" button 3x times
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
+    for(int i = 0; i < 24; i++){
+        GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
+    }
 
     //4. Remove "big.aln" document
     GTUtilsDocument::removeDocument(os, "big.aln");

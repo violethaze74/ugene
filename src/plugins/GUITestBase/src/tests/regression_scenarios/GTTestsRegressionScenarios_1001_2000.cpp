@@ -1148,12 +1148,13 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
         }
     };
 
-    GTLogTracer lt;
+
 
     //1) Set "Enable debugger" in Settings->WD
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new EnableWdDebuggerFiller()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
 
+    GTLogTracer lt;
     //2) Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -1179,9 +1180,12 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
     CHECK_SET_ERR(pauseButton->isVisible() && !pauseButton->isEnabled(), "'Pause workflow' button is either invisible or active unexpectedly");
 
     //6) Click "Run schema" button
+    GTUtilsNotifications::waitForNotification(os, true, "The task 'Execute workflow' has been finished");
     GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTThread::waitForMainThread(os);
     //Expected state : run finished successfully
-    GTUtilsLog::check(os, lt);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1064) {
@@ -1819,12 +1823,9 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok,
-        "Please fix issues listed in the error list (located under workflow)."));
     GTGlobals::sleep(100);
     GTUtilsWorkflowDesigner::runWorkflow(os);
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
@@ -5086,6 +5087,7 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
 
     // 6) Click the "Sort alignment by tree" button on the Tree View toolbar.
     // = > UGENE does not crash.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTMouseDriver::moveTo(os, GTUtilsMsaEditor::getSequenceNameRect(os, "Zychia_baranovi").center());
     GTMouseDriver::click(os);
     GTGlobals::sleep(1000);

@@ -132,7 +132,7 @@ void BrowserSupportPlugin::sl_clipboardCheck() {
             QString ensId = noOpen.left(idLength);
             ensId = ensId.simplified();
 
-            Task* task = new LoadRemoteDocumentAndOpenViewTask(ensId, "ENSEMBL", fullPath);
+            Task* task = new LoadRemoteDocumentAndAddToProjectTask(ensId, "ENSEMBL", fullPath);
             AppContext::getTaskScheduler()->registerTopLevelTask(task);
             QApplication::clipboard()->setText("");
         }
@@ -143,7 +143,7 @@ void BrowserSupportPlugin::sl_clipboardCheck() {
             QString ensId = noOpen.left(idLength);
             ensId = ensId.simplified();
 
-            Task* task = new LoadRemoteDocumentAndOpenViewTask(ensId, "PDB", fullPath);
+            Task* task = new LoadRemoteDocumentAndAddToProjectTask(ensId, "PDB", fullPath);
             AppContext::getTaskScheduler()->registerTopLevelTask(task);
             QApplication::clipboard()->setText("");
         }

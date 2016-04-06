@@ -200,12 +200,11 @@ void SWAlgorithmTask::setupTask(int maxScore) {
 }
 
 void SWAlgorithmTask::prepare() {
-    const SequenceWalkerConfig & config = t->getConfig();
-
     if( SW_cuda == algType ) {
         cudaGpu = AppContext::getCudaGpuRegistry()->acquireAnyReadyGpu();
         assert( cudaGpu );
 #ifdef SW2_BUILD_WITH_CUDA
+        const SequenceWalkerConfig & config = t->getConfig();
         quint64 needMemBytes = SmithWatermanAlgorithmCUDA::estimateNeededGpuMemory(
                 sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(config.chunkSize * config.nThreads), sWatermanConfig.resultView);
         quint64 gpuMemBytes = cudaGpu->getGlobalMemorySizeBytes();
@@ -231,6 +230,7 @@ void SWAlgorithmTask::prepare() {
         openClGpu = AppContext::getOpenCLGpuRegistry()->acquireAnyReadyGpu();
         assert(openClGpu);
 #ifdef SW2_BUILD_WITH_OPENCL
+        const SequenceWalkerConfig & config = t->getConfig();
         const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
             sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(config.chunkSize * config.nThreads));
         const quint64 gpuMemBytes = openClGpu->getGlobalMemorySizeBytes();
@@ -487,8 +487,13 @@ void SWResultsPostprocessingTask::run(){
 }
 
 PairwiseAlignmentSmithWatermanTaskSettings::PairwiseAlignmentSmithWatermanTaskSettings(const PairwiseAlignmentTaskSettings &s) :
-    PairwiseAlignmentTaskSettings(s) {
-}
+    PairwiseAlignmentTaskSettings(s), 
+    reportCallback(NULL),
+    resultListener(NULL),
+    resultFilter(NULL), 
+    gapOpen(0),
+    gapExtd(0),
+    percentOfScore(0) {}
 
 PairwiseAlignmentSmithWatermanTaskSettings::~PairwiseAlignmentSmithWatermanTaskSettings() {
     //all dynamic objects in the world will be destroyed by the task
@@ -784,12 +789,11 @@ int PairwiseAlignmentSmithWatermanTask::calculateMatrixLength(const QByteArray &
 }
 
 void PairwiseAlignmentSmithWatermanTask::prepare() {
-    const SequenceWalkerConfig & config = t->getConfig();
-
     if( SW_cuda == algType ) {
         cudaGpu = AppContext::getCudaGpuRegistry()->acquireAnyReadyGpu();
         assert( cudaGpu );
 #ifdef SW2_BUILD_WITH_CUDA
+        const SequenceWalkerConfig & config = t->getConfig();
         quint64 needMemBytes = SmithWatermanAlgorithmCUDA::estimateNeededGpuMemory(
                 settings->sMatrix, *ptrn, sqnc->left(config.chunkSize * config.nThreads), SmithWatermanSettings::MULTIPLE_ALIGNMENT);
         quint64 gpuMemBytes = cudaGpu->getGlobalMemorySizeBytes();
@@ -815,6 +819,7 @@ void PairwiseAlignmentSmithWatermanTask::prepare() {
         openClGpu = AppContext::getOpenCLGpuRegistry()->acquireAnyReadyGpu();
         assert(openClGpu);
 #ifdef SW2_BUILD_WITH_OPENCL
+        const SequenceWalkerConfig & config = t->getConfig();
         const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
             settings->sMatrix, *ptrn, sqnc->left(config.chunkSize * config.nThreads));
         const quint64 gpuMemBytes = openClGpu->getGlobalMemorySizeBytes();

@@ -33,7 +33,7 @@
 #include <U2Formats/SQLiteDbi.h>
 
 #include "ExtractAssemblyRegionTask.h"
-#include "ui/ui_ExtractAssemblyRegionDialog.h"
+#include "ui_ExtractAssemblyRegionDialog.h"
 
 namespace U2 {
 

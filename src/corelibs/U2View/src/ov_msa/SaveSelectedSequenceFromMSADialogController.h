@@ -26,16 +26,17 @@
 
 #include <U2Core/global.h>
 
-#include "ui/ui_SaveSelectedSequenceFromMSADialog.h"
+class Ui_SaveSelectedSequenceFromMSADialog;
 
 namespace U2 {
 
 class SaveDocumentController;
 
-class SaveSelectedSequenceFromMSADialogController : public QDialog, private Ui_SaveSelectedSequenceFromMSADialog {
+class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
     SaveSelectedSequenceFromMSADialogController(QWidget* p);
+    ~SaveSelectedSequenceFromMSADialogController();
 
     virtual void accept();
 
@@ -48,6 +49,7 @@ private:
     void initSaveController();
 
     SaveDocumentController* saveController;
+    Ui_SaveSelectedSequenceFromMSADialog* ui;
 };
 
 }

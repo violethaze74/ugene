@@ -47,7 +47,7 @@ AceImportDialog::AceImportDialog(const QVariantMap& _settings) :
     saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17467699");
+    new HelpButton(this, buttonBox, "17468907");
 
     QString src = settings.value(AceImporter::SRC_URL).toString();
     leSource->setText(src);

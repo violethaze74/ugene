@@ -88,7 +88,7 @@ GraphSettingsDialog::GraphSettingsDialog( GSequenceGraphDrawer* d, const U2Regio
 
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
-    new HelpButton(this, buttonBox, "17467604");
+    new HelpButton(this, buttonBox, "17468809");
 
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_onCancelClicked()));
     connect(okButton, SIGNAL(clicked()), SLOT(sl_onOkClicked()));
@@ -106,7 +106,7 @@ void GraphSettingsDialog::sl_onPickColorButtonClicked()
     QColor initial = colorMap.value(colorName);
 
     QObjectScopedPointer<QColorDialog> CD = new QColorDialog(initial, this);
-    CD->setOption(QColorDialog::DontUseNativeDialog, qgetenv("UGENE_GUI_TEST") == "1");
+    CD->setOption(QColorDialog::DontUseNativeDialog, qgetenv(ENV_GUI_TEST) == "1");
     CD->exec();
     CHECK(!CD.isNull(), );
 
