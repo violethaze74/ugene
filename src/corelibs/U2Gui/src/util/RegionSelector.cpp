@@ -157,7 +157,7 @@ void RegionSelector::removePreset(const QString &itemName) {
 }
 
 void RegionSelector::showErrorMessage() {
-    QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon, L10N::errorTitle(), tr("Invalid sequence region!"), QMessageBox::Ok);
+    QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon, L10N::errorTitle(), tr("Invalid sequence region!"), QMessageBox::Ok, this);
 
     //set focus to error field
     bool ok = false;
@@ -481,38 +481,45 @@ void SimpleRegionSelector::setMaxRegion() {
     endEdit->setText(QString::number(maxLen)); //! add '-1' ???
 }
 
-void SimpleRegionSelector::showErrorMessage() {
-    QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon, L10N::errorTitle(), tr("Invalid sequence region!"), QMessageBox::Ok);
+bool SimpleRegionSelector::hasError() const {
+    return !getErrorMessage().isEmpty();
+}
 
-    //set focus to error field
+const QString START_IS_INVALID = SimpleRegionSelector::tr("Invalid Start position of region");
+const QString END_IS_INVALID = SimpleRegionSelector::tr("Invalid End position of region");
+const QString REGION_IS_INVALID = SimpleRegionSelector::tr("Start position is greater than End position");
+
+QString SimpleRegionSelector::getErrorMessage() const {
     bool ok = false;
     qint64 v1 = startEdit->text().toLongLong(&ok) - 1;
-    if (!ok || v1 <= 0 || v1 > maxLen) {
-        msgBox->setInformativeText(tr("Invalid Start position of region"));
-        msgBox->exec();
-        CHECK(!msgBox.isNull(), );
-        startEdit->setFocus();
-        return;
+    if (!ok || v1 < 0 || v1 > maxLen) {
+        return START_IS_INVALID;
     }
 
     int v2 = endEdit->text().toLongLong(&ok);
     if (!ok || v2 <= 0 || v2 > maxLen) {
-        msgBox->setInformativeText(tr("Invalid End position of region"));
-        msgBox->exec();
-        CHECK(!msgBox.isNull(), );
-        endEdit->setFocus();
-        return;
+        return END_IS_INVALID;
     }
 
     if (v1 > v2 && !isCircularSelectionAvailable) { // start > end
-        msgBox->setInformativeText(tr("Start position is greater than End position"));
-        msgBox->exec();
-        CHECK(!msgBox.isNull(), );
-        startEdit->setFocus();
-        return;
+        return REGION_IS_INVALID;
     }
 
+    return QString();
+}
+
+void SimpleRegionSelector::showErrorMessage() const {
+    QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon, L10N::errorTitle(), tr("Invalid sequence region!"), QMessageBox::Ok);
+
+    QString message = getErrorMessage();
+    msgBox->setInformativeText(message);
     msgBox->exec();
+    CHECK(!msgBox.isNull(), );
+    if (message != END_IS_INVALID) {
+        startEdit->setFocus();
+    } else {
+        endEdit->setFocus();
+    }
 }
 
 void SimpleRegionSelector::sl_onRegionChanged() {

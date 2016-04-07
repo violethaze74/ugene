@@ -24,41 +24,36 @@
 #include "EnzymesIO.h"
 #include <limits>
 
-#include <U2Core/GObjectReference.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/Settings.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceSelection.h>
+#include <U2Core/GObjectReference.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/Settings.h>
 #include <U2Core/Timer.h>
-#include <U2Gui/HelpButton.h>
+#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/HelpButton.h>
+#include <U2Gui/LastUsedDirHelper.h>
+
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/AutoAnnotationUtils.h>
-#include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DNASequenceObject.h>
+
 #include <U2Formats/GenbankLocationParser.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtCore/QTextStream>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QMessageBox>
-#include <QtGui/QInputDialog>
-#include <QtGui/QHeaderView>
-#else
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QInputDialog>
-#include <QtWidgets/QHeaderView>
-#endif
+#include <QVBoxLayout>
+#include <QTreeWidget>
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QHeaderView>
 
 
 //TODO: group by TYPE, ORGANIZM
@@ -559,19 +554,36 @@ void FindEnzymesDialog::sl_onSelectionModified(int total, int nChecked) {
 void FindEnzymesDialog::accept() {
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
 
+    bool isRegionOk = false;
+    U2Region searchRegion = searchRegionSelector->getRegion(&isRegionOk);
+    if (!isRegionOk) {
+        // TODO: make the behaviour similar to ExcludeRegion search
+        searchRegionSelector->showErrorMessage();
+        return;
+    }
+
     if (excludeRegionBox->isChecked()){
-        bool isRegionOk=false;
-        excludeRegionSelector->getRegion(&isRegionOk);
-        if(!isRegionOk){
-            excludeRegionSelector->showErrorMessage();
+        if (excludeRegionSelector->hasError()) {
+            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon, L10N::errorTitle(), tr("Invalid 'Exclude' region!"), QMessageBox::Ok, this);
+            msgBox->setInformativeText(excludeRegionSelector->getErrorMessage());
+            msgBox->exec();
+            CHECK(!msgBox.isNull(), );
+            return;
+        }
+        U2Region excluded = excludeRegionSelector->getRegion();
+        if (excluded.contains(searchRegion)) {
+            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon, L10N::errorTitle(), tr("Invalid region to search in!"), QMessageBox::Ok, this);
+            msgBox->setInformativeText(tr("'Exclude'' region contains 'Search In' region. Search region is empty."));
+            msgBox->exec();
+            CHECK(!msgBox.isNull(), );
             return;
         }
     }
+
     if (selectedEnzymes.isEmpty()) {
         int ret = QMessageBox::question(this, windowTitle(),
-            tr("<html><body align=\"center\">No enzymes are selected!\
-                Do you want to turn off <br>enzymes annotations highlighting?</body></html>"),
-            QMessageBox::Yes, QMessageBox::No );
+            tr("<html><body align=\"center\">No enzymes are selected!\Do you want to turn off <br>enzymes annotations highlighting?</body></html>"),
+            QMessageBox::Yes, QMessageBox::No);
         if (ret == QMessageBox::Yes) {
             QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(seqCtx, ANNOTATION_GROUP_ENZYME);
             if (toggleAction) {

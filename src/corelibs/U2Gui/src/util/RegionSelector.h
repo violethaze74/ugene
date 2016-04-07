@@ -86,7 +86,9 @@ public:
     void setMaxLength(qint64 length);
     void setMaxRegion();
 
-    void showErrorMessage();
+    bool hasError() const;
+    QString getErrorMessage() const;
+    void showErrorMessage() const;
 
 signals:
     void si_regionChanged(const U2Region& newRegion);
