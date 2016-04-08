@@ -19,6 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
+#include <QFileInfo>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
@@ -36,12 +39,13 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 //MergeBamTask
-MergeBamTask::MergeBamTask(const QStringList& urls, const QString &dir, const QString & outName)
+MergeBamTask::MergeBamTask(const QStringList& urls, const QString &dir, const QString & outName, bool sortInputBams)
 : Task(DocumentFormatUtils::tr("Merge BAM files with SAMTools merge"), TaskFlags_FOSCOE)
 , outputName(outName)
 , workingDir(dir)
 , targetUrl("")
 , bamUrls(urls)
+, sortInputBams(sortInputBams)
 {
     if (!workingDir.endsWith("/") && !workingDir.endsWith("\\")) {
         this->workingDir += "/";
@@ -60,8 +64,22 @@ void MergeBamTask::run(){
         stateInfo.setError("No BAM files to merge");
         return;
     }
+    if (sortInputBams) {
+        QStringList sortedNamesList;
+        foreach(const QString& url, bamUrls) {
+            QFileInfo fi(url);
+            QString sortedName = fi.baseName() + "_sorted";
+            BAMUtils::sortBam(url, sortedName, stateInfo);
+            if (stateInfo.isCoR()) {
+                return;
+            }
+            sortedNamesList.append(fi.dir().canonicalPath() + "/" + sortedName);
+        }
+        BAMUtils::mergeBam(sortedNamesList, workingDir + outputName, stateInfo);
+    } else {
+        BAMUtils::mergeBam(bamUrls, workingDir + outputName, stateInfo);
+    }
 
-    BAMUtils::mergeBam(bamUrls, workingDir + outputName, stateInfo);
     CHECK_OP(stateInfo, );
 
     targetUrl = workingDir + outputName;

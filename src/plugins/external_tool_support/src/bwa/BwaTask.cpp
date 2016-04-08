@@ -26,6 +26,8 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/AppResources.h>
 
+#include <U2Formats/MergeBamTask.h>
+
 #include "BwaSupport.h"
 #include "BwaTask.h"
 
@@ -76,7 +78,9 @@ BwaAlignTask::BwaAlignTask(const QString &indexPath, const QList<ShortReadSet>& 
     readSets(shortReadSets),
     resultPath(resultPath),
     settings(settings),
-    alignmentPerformed(false)
+    alignmentPerformed(false),
+    samingStarted(false),
+    resultPartsCounter(0)
 {
 }
 
@@ -171,27 +175,38 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
 
     alignTasks.removeOne(subTask);
+    samTasks.removeOne(subTask);
 
-    if(alignTasks.size() == 0 && !alignmentPerformed) {
-        QStringList arguments;
+    if (alignTasks.size() == 0) {
+        if (!alignmentPerformed) {
+            foreach(const ShortReadSet& set, readSets) {
+                QStringList arguments;
 
-        settings.pairedReads ? arguments.append("sampe") : arguments.append("samse");
+                settings.pairedReads ? arguments.append("sampe") : arguments.append("samse");
 
-        arguments.append("-f");
-        arguments.append(resultPath);
-        arguments.append(indexPath);
+                arguments.append("-f");
+                if (readSets.size() == 1) {
+                    arguments.append(resultPath);
+                } else {
+                    QString pathToSort = resultPath + "." + QString::number(resultPartsCounter++);
+                    urlsToMerge.append(pathToSort);
+                    arguments.append(pathToSort);
+                }
+                arguments.append(indexPath);
+                arguments.append(getSAIPath(set.url.getURLString()));
+                arguments.append(set.url.getURLString());
 
-        foreach (const ShortReadSet& set, readSets) {
-            arguments.append( getSAIPath( set.url.getURLString() ) );
+                alignmentPerformed = true;
+                ExternalToolRunTask *task = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
+                result.append(task);
+                samTasks.append(task);
+                samingStarted = true;
+            }
+        } else if (samTasks.size() == 0 && resultPartsCounter > 1) {
+            //join all resulting sams to one
+            QFileInfo fi(resultPath);
+            result.append(new MergeBamTask(urlsToMerge, fi.dir().canonicalPath(), fi.canonicalPath(), true));
         }
-
-        foreach(const ShortReadSet& set, readSets) {
-            arguments.append(set.url.getURLString());
-        }
-
-        alignmentPerformed = true;
-        ExternalToolRunTask *task = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
-        result.append(task);
     }
 
     return result;

@@ -67,11 +67,16 @@ protected slots:
 private:
 
     QList<Task*> alignTasks;
+    QList<Task*> samTasks;
+    QStringList urlsToMerge;
+    Task* mergeResultTask;
     QString indexPath;
     QList<ShortReadSet> readSets;
     QString resultPath;
     DnaAssemblyToRefTaskSettings settings;
     bool alignmentPerformed;
+    bool samingStarted;
+    int resultPartsCounter;
     inline QString getSAIPath(const QString& pathToReads);
 };
 
