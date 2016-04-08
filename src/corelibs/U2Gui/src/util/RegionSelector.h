@@ -35,6 +35,7 @@ class QComboBox;
 namespace U2 {
 
 class AbstractRegionSelector : public QWidget {
+    Q_OBJECT
 public:
     AbstractRegionSelector(QWidget* parent, qint64 maxLen, bool isCircularSelectionAvailable = false)
         : QWidget(parent),
@@ -44,9 +45,22 @@ public:
     virtual U2Region getRegion(bool *ok = NULL) const = 0;
     virtual void setRegion(const U2Region& region) = 0;
 
+    bool isWholeSequenceSelected() const {
+        // TODO: move to cpp
+        return getRegion().length == maxLen;
+    }
+
     virtual void reset() {
         setRegion(U2Region(0, maxLen));
     }
+
+    bool hasError() const {
+        return !getErrorMessage().isEmpty();
+    }
+    virtual QString getErrorMessage() const = 0;
+
+signals:
+    void si_regionChanged(const U2Region& newRegion);
 
 protected:
     qint64  maxLen;
@@ -81,17 +95,13 @@ public:
     U2Region getRegion(bool *ok = NULL) const;
     void setRegion(const U2Region& value);
 
-    bool isWholeSequenceSelected() const; // check if it is needed
-
     void setMaxLength(qint64 length);
     void setMaxRegion();
 
+    //?? move to parent??
     bool hasError() const;
     QString getErrorMessage() const;
     void showErrorMessage() const;
-
-signals:
-    void si_regionChanged(const U2Region& newRegion);
 
 private slots:
     void sl_onRegionChanged();
@@ -112,6 +122,42 @@ struct RegionPreset {
           region(region) {}
     QString text;
     U2Region region;
+};
+
+class U2GUI_EXPORT RegionSelectorWithPresets : public AbstractRegionSelector {
+    Q_OBJECT
+public:
+    static const QString WHOLE_SEQUENCE;
+    static const QString SELECTED_REGION;
+    static const QString CUSTOM_REGION;
+
+    RegionSelectorWithPresets(QWidget* p, qint64 maxLen, bool isCircularSelectionAvailable,
+                              Qt::Orientation orientation,
+                              DNASequenceSelection* selection = NULL,
+                              QList<RegionPreset> presetRegions = QList<RegionPreset>(),
+                              QString defaultPreset = WHOLE_SEQUENCE);
+
+    U2Region getRegion(bool *ok = NULL) const;
+    void setRegion(const U2Region &region);
+
+    QString getErrorMessage() const;
+
+private slots:
+    void sl_regionChanged(const U2Region& newRegion);
+    void sl_onPresetChanged(int index);
+
+private:
+    void initLayout(Qt::Orientation orientation);
+    void setupPresets(const QList<RegionPreset> presets, const QString& defaultPreset);
+    void connectSignals();
+
+    // Returns circular region or the first selected. If none is selected, returns full sequence range.
+    U2Region getOneRegionFromSelection() const;
+
+    DNASequenceSelection *  selection;
+
+    SimpleRegionSelector*   startEndSelector;
+    QComboBox *             presetsComboBox;
 };
 
 class U2GUI_EXPORT RegionSelector : public QWidget {

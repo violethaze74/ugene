@@ -104,7 +104,7 @@ private:
     void saveSettings();
     ADVSequenceObjectContext*           seqCtx;
     EnzymesSelectorWidget*              enzSel;
-    RegionSelector*                     searchRegionSelector;
+    RegionSelectorWithPresets*          searchRegionSelector;
     SimpleRegionSelector*               excludeRegionSelector;
 };
 

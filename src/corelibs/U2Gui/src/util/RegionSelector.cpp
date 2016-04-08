@@ -453,10 +453,6 @@ U2Region SimpleRegionSelector::getRegion(bool *_ok) const {
     }
 }
 
-bool SimpleRegionSelector::isWholeSequenceSelected() const {
-    return getRegion().length == maxLen;
-}
-
 void SimpleRegionSelector::setMaxLength(qint64 length) {
     maxLen = length;
 }
@@ -581,7 +577,7 @@ void SimpleRegionSelector::initLayout() {
 
     startEdit->setObjectName("start_edit_line");
     endEdit->setObjectName("end_edit_line");
-    setObjectName("range_selector");
+    setObjectName("simple_range_selector");
 }
 
 void SimpleRegionSelector::connectSignals() {
@@ -592,6 +588,153 @@ void SimpleRegionSelector::connectSignals() {
     connect(endEdit,   SIGNAL(editingFinished()),                  SLOT(sl_onRegionChanged()));
     connect(endEdit,   SIGNAL(textEdited(const QString &)),        SLOT(sl_onValueEdited()));
     connect(endEdit,   SIGNAL(textChanged(QString)),               SLOT(sl_onRegionChanged()));
+}
+
+
+const QString RegionSelectorWithPresets::WHOLE_SEQUENCE = QApplication::translate("RegionSelectorWithPresets", "Whole sequence");
+const QString RegionSelectorWithPresets::SELECTED_REGION = QApplication::translate("RegionSelectorWithPresets", "Selected region");
+const QString RegionSelectorWithPresets::CUSTOM_REGION = QApplication::translate("RegionSelectorWithPresets", "Custom region");
+
+RegionSelectorWithPresets::RegionSelectorWithPresets(QWidget *p, qint64 maxLen, bool isCircularSelectionAvailable,
+                                                     Qt::Orientation orientation, DNASequenceSelection *selection, QList<RegionPreset> presetRegions,
+                                                     QString defaultPreset)
+    : AbstractRegionSelector(p, maxLen, isCircularSelectionAvailable),
+      selection(selection),
+      startEndSelector(NULL),
+      presetsComboBox(NULL) {
+
+    initLayout(orientation);
+
+    if (selection != NULL && !selection->isEmpty()) {
+        U2Region region = getOneRegionFromSelection();
+        presetRegions.prepend(RegionPreset(SELECTED_REGION, region));
+//        defaultItemText = SELECTED_REGION; //? doubtfull thing
+    }
+    presetRegions.prepend(RegionPreset(WHOLE_SEQUENCE, U2Region(0, maxLen)));
+    presetRegions.prepend(RegionPreset(CUSTOM_REGION, U2Region()));
+
+    setupPresets(presetRegions, defaultPreset);
+
+    connectSignals();
+}
+
+U2Region RegionSelectorWithPresets::getRegion(bool *ok) const {
+    return startEndSelector->getRegion(ok);
+}
+
+void RegionSelectorWithPresets::setRegion(const U2Region &region) {
+    startEndSelector->setRegion(region);
+}
+
+QString RegionSelectorWithPresets::getErrorMessage() const {
+    return startEndSelector->getErrorMessage();
+}
+
+void RegionSelectorWithPresets::sl_regionChanged(const U2Region &newRegion) {
+    disconnect(presetsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_onPresetChanged(int)));
+    presetsComboBox->setCurrentIndex(presetsComboBox->findText(CUSTOM_REGION));
+    connect(presetsComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onPresetChanged(int)));
+
+    emit si_regionChanged(newRegion);
+}
+
+void RegionSelectorWithPresets::sl_onPresetChanged(int index) {
+    disconnect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged(U2Region)));
+
+    // set the region
+    if (index == presetsComboBox->findText(CUSTOM_REGION)) {
+        connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged(U2Region)));
+        return;
+    }
+
+    if (index == presetsComboBox->findText(SELECTED_REGION)) {
+        setRegion(getOneRegionFromSelection());
+    } else {
+        const U2Region region = presetsComboBox->itemData(index).value<U2Region>();
+        startEndSelector->setRegion(region);
+    }
+    connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged(U2Region)));
+}
+
+void RegionSelectorWithPresets::initLayout(Qt::Orientation orientation) {
+    startEndSelector = new SimpleRegionSelector(this, maxLen, isCircularSelectionAvailable);
+    presetsComboBox = new QComboBox(this);
+    presetsComboBox->setObjectName("region_type_combo");
+
+    switch (orientation) {
+    case Qt::Vertical:
+    {
+        QGroupBox* gb = new QGroupBox(this);
+        gb->setTitle(tr("Region"));
+
+        QHBoxLayout* l = new QHBoxLayout(gb);
+        l->setSizeConstraint(QLayout::SetMinAndMaxSize);
+        gb->setLayout(l);
+
+        l->addWidget(presetsComboBox);
+        l->addWidget(startEndSelector);
+
+        QVBoxLayout* rootLayout = new QVBoxLayout(this);
+        rootLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+        rootLayout->setMargin(0);
+        setLayout(rootLayout);
+        rootLayout->addWidget(gb);
+        break;
+    }
+    case Qt::Horizontal:
+    {
+        QHBoxLayout* l = new QHBoxLayout(this);
+        l->setMargin(0);
+        setLayout(l);
+
+        QLabel* rangeLabel = new QLabel(tr("Region"), this);
+        rangeLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+
+        l->addWidget(rangeLabel);
+        l->addWidget(presetsComboBox);
+        l->addWidget(startEndSelector);
+
+        break;
+    }
+    }
+
+    setObjectName("range_selector_with_presets");
+}
+
+void RegionSelectorWithPresets::setupPresets(const QList<RegionPreset> presets, const QString& defaultPreset) {
+    foreach(const RegionPreset &presetRegion, presets) {
+        presetsComboBox->addItem(presetRegion.text, qVariantFromValue(presetRegion.region));
+    }
+
+    presetsComboBox->setCurrentText(defaultPreset);
+    const U2Region region = presetsComboBox->itemData(presetsComboBox->findText(defaultPreset)).value<U2Region>();
+    startEndSelector->setRegion(region);
+}
+
+void RegionSelectorWithPresets::connectSignals() {
+    connect(startEndSelector, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged(U2Region)));
+    connect(presetsComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onPresetChanged(int)));
+}
+
+U2Region RegionSelectorWithPresets::getOneRegionFromSelection() const {
+    U2Region region = selection->getSelectedRegions().isEmpty()
+            ? U2Region(0, maxLen)
+            : selection->getSelectedRegions().first();
+    if (selection->getSelectedRegions().size() == 2) {
+        U2Region secondReg = selection->getSelectedRegions().last();
+        bool circularSelection = (region.startPos == 0 && secondReg.endPos() == maxLen)
+                || (region.endPos() == maxLen && secondReg.startPos == 0);
+        if (circularSelection) {
+            if (secondReg.startPos == 0) {
+                region.length += secondReg.length;
+            } else {
+                region.startPos = secondReg.startPos;
+                region.length += secondReg.length;
+            }
+        }
+    }
+
+    return region;
 }
 
 } //namespace
