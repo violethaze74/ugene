@@ -3598,11 +3598,11 @@ GUI_TEST_CLASS_DEFINITION(test_0039_1){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039_2){
-    test_0039_function(os, 2, "msf");
+    test_0039_function(os, 2, "meg");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039_3){
-    test_0039_function(os, 3, "meg");
+    test_0039_function(os, 3, "msf");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039_4){
@@ -4861,7 +4861,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072){
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5,4), QPoint(5,4)));
 
-    GTKeyboardDriver::keyClick( Qt::LeftArrow);
+    GTKeyboardDriver::keyClick( Qt::Key_Left);
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4,4), QPoint(4,4)));
 
@@ -4869,7 +4869,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072){
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4,5), QPoint(4,5)));
 
-    GTKeyboardDriver::keyClick( Qt::RightArrow);
+    GTKeyboardDriver::keyClick( Qt::Key_Right);
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5,5), QPoint(5,5)));
 
@@ -4879,7 +4879,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072){
     GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5,4), QPoint(5,5)));
 
-    GTKeyboardDriver::keyClick( Qt::LeftArrow);
+    GTKeyboardDriver::keyClick( Qt::Key_Left);
     GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4,4), QPoint(5,5)));
 
@@ -4887,7 +4887,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072){
     GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4,5), QPoint(5,5)));
 
-    GTKeyboardDriver::keyClick( Qt::RightArrow);
+    GTKeyboardDriver::keyClick( Qt::Key_Right);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5,5), QPoint(5,5)));
