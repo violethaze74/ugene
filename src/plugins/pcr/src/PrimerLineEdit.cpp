@@ -89,6 +89,8 @@ PrimerValidator::PrimerValidator(QObject *parent, bool allowExtended)
     const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(
                 allowExtended ? BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() : BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     QByteArray alphabetChars = alphabet->getAlphabetChars(true);
+    // Gaps are not allowed
+    alphabetChars.remove(alphabetChars.indexOf('-'), 1);
     setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
 }
 

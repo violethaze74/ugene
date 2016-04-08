@@ -630,5 +630,25 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     CHECK_SET_ERR(2 == GTUtilsPcr::productsCount(os), "Wrong results count 3");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0016) {
+    // Gaps are not allowed for primers
+    // 1. Open murine.gb
+    GTUtilsPcr::clearPcrDir(os);
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Go to the PCR OP tab
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    // 3. Try to input gap symbol '-'
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "---");
+    GTGlobals::sleep();
+
+    // Expected state: '-' pressing is ignored
+    QLineEdit *primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
+    CHECK_SET_ERR(primerEdit != NULL, "Cannot find primer line edit");
+    CHECK_SET_ERR(primerEdit->text().isEmpty(), "There are unexpected characters in PrimerLineEdit");
+}
+
 } // GUITest_common_scenarios_in_silico_pcr
 } // U2
