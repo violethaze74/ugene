@@ -20,21 +20,8 @@
  */
 
 #include "GTTestsSequenceView.h"
-#include "system/GTClipboard.h"
-#include <primitives/GTComboBox.h>
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTScrollBar.h>
-#include <drivers/GTMouseDriver.h>
+
 #include "GTGlobals.h"
-#include <primitives/GTWidget.h>
-#include "primitives/GTAction.h"
-#include "primitives/GTMenu.h"
-#include "system/GTFile.h"
-#include <base_dialogs/GTFileDialog.h>
-#include "api/GTSequenceReadingModeDialog.h"
-#include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTRadioButton.h>
-#include <primitives/GTTreeWidget.h>
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAnnotationsHighlightingTreeView.h"
 #include "GTUtilsCircularView.h"
@@ -43,10 +30,12 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsToolTip.h"
-#include <base_dialogs/ColorDialogFiller.h>
-#include <base_dialogs/DefaultDialogFiller.h>
-#include "primitives/PopupChooser.h"
+
+#include "api/GTSequenceReadingModeDialog.h"
+
+#include "system/GTClipboard.h"
+#include "system/GTFile.h"
+
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateRulerDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
@@ -63,23 +52,42 @@
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
+
+#include "utils/GTUtilsToolTip.h"
+
+#include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/ColorDialogFiller.h>
+#include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include <U2View/DetView.h>
+#include <base_dialogs/MessageBoxFiller.h>
+
+#include <drivers/GTMouseDriver.h>
+#include <drivers/GTKeyboardDriver.h>
+
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTScrollBar.h>
+#include <primitives/GTWidget.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTMenu.h>
+#include <primitives/PopupChooser.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTTreeWidget.h>
+
 #include <U2Core/AppContext.h>
+
 #include <U2View/ADVConstants.h>
-#include <U2View/Overview.h>
+#include <U2View/DetView.h>
 #include <U2View/GSequenceLineView.h>
 #include <U2View/GSequenceGraphView.h>
+#include <U2View/Overview.h>
 
+#include <QApplication>
 #include <QGroupBox>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
 
 namespace U2 {
 
@@ -2352,6 +2360,129 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
 
     //Expected: the menu disappears.
     CHECK_SET_ERR(NULL == QApplication::activePopupWidget(), "Menu is shown");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0076) {
+    // UGENE-3267: Specifying a region when searching for restriction sites
+    // 1. Open /_common_data/genbank/pBR322.gb
+    // 2. Search the defauult set of the restriction site: "EcoRI"
+    // Expected state: the EcoRI restriction site is found on the zero-end position
+    // 4. Remove the circular mark
+    // 5. Search for the restriction site again
+    // Expected state: restriciton sites were recalculated and the is no annotation on zero position
+
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "EcoRI"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
+    CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "SYNPBR322"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "EcoRI"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", GTGlobals::FindOptions(false)) == NULL, "EcoRI is unexpectedly found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0077) {
+    // UGENE-3267: Specifying a region when searching for restriction sites
+    // 1. Open /_common_data/genbank/pBR322.gb
+    // 2. Open Find enzymes dialog
+    // 3. Set search region: 4200..10 and find restriction sites
+    // Expected state: there is only one result
+    // 4. Open Find enzymes dialog
+    // 6. Set search region: 3900..900 and exclude region 4300..10, find restriction sites
+    // Expected state: no annotations on zero position
+
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const QStringList defaultEnzymes = QStringList() << "ClaI" << "DraI" << "EcoRI";
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", GTGlobals::FindOptions(false)) == NULL, "ClaI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI", GTGlobals::FindOptions(false)) == NULL, "DraI is unexpectedly found");
+    QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
+    CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", GTGlobals::FindOptions(false)) == NULL, "EcoRI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI") != NULL, "ClaI is unexpectedly not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI") != NULL, "DraI is unexpectedly not found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0078) {
+    // UGENE-3267: Specifying a region when searching for restriction sites
+    // 1. Open /samples/Genbank/murine.gb
+    // 2. Open Find enzymes dialog
+    // 3. Set start search position to 5000, end position to 1000
+    // Expected state: the line edits are red
+    // 4. Click Ok
+    // Expected state: message box appears
+    // 5. Set start search postion back to 1
+    // 6. Check the exclude checkbox
+    // 7. Click Ok
+    // Expected state: message box appears
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class RegionSelectorChecker : public Filler {
+    public:
+        RegionSelectorChecker(HI::GUITestOpStatus &os)
+            : Filler(os, "FindEnzymesDialog") {}
+
+        void run() {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            QWidget* regionSelector = GTWidget::findWidget(os, "range_selector");
+            CHECK_SET_ERR(regionSelector != NULL, "range_selector not found");
+
+            QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "start_edit_line", regionSelector);
+            CHECK_SET_ERR(start != NULL, "start_edit_line of 'Search In' region not found");
+            GTLineEdit::setText(os, start, "5000");
+
+            QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "end_edit_line", regionSelector);
+            CHECK_SET_ERR(end != NULL, "end_edit_line of 'Search In' region not found");
+            GTLineEdit::setText(os, end, "1000");
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTLineEdit::setText(os, start, "1");
+
+            QCheckBox* exclude = GTWidget::findExactWidget<QCheckBox*>(os, "excludeRegionBox");
+            GTCheckBox::setChecked(os, exclude);
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new RegionSelectorChecker(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 }
 
 } // namespace GUITest_common_scenarios_sequence_view
