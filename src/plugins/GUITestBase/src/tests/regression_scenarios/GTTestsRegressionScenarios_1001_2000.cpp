@@ -1148,8 +1148,6 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
         }
     };
 
-    GTLogTracer lt;
-
     //1) Set "Enable debugger" in Settings->WD
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new EnableWdDebuggerFiller()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
@@ -1179,9 +1177,12 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
     CHECK_SET_ERR(pauseButton->isVisible() && !pauseButton->isEnabled(), "'Pause workflow' button is either invisible or active unexpectedly");
 
     //6) Click "Run schema" button
+    GTUtilsNotifications::waitForNotification(os, true, "The task 'Execute workflow' has been finished");
     GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTThread::waitForMainThread();
     //Expected state : run finished successfully
-    GTUtilsLog::check(os, lt);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1064) {
@@ -1819,11 +1820,10 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok,
-        "Please fix issues listed in the error list (located under workflow)."));
+
     GTGlobals::sleep(100);
     GTUtilsWorkflowDesigner::runWorkflow(os);
-
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
@@ -6468,12 +6468,12 @@ GUI_TEST_CLASS_DEFINITION(test_1640) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(4, 3), QPoint(4, 3));
 
     //3. Press ctrl+left arrow to remove the selection.
-    GTKeyboardDriver::keyClick( Qt::LeftArrow, Qt::ControlModifier);
+    GTKeyboardDriver::keyClick( Qt::Key_Left, Qt::ControlModifier);
 
     //4. Press and hold a bit shift+right arrow.
     //Qt::Key_Shift
     for (int i=0; i<12; i++) {
-        GTKeyboardDriver::keyClick( Qt::RightArrow, Qt::ShiftModifier);
+        GTKeyboardDriver::keyClick( Qt::Key_Right, Qt::ShiftModifier);
     }
     //GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 

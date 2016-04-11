@@ -626,8 +626,9 @@ GUI_TEST_CLASS_DEFINITION( test_2026 ) {
     GTUtilsMSAEditorSequenceArea::selectSequence(os, QString("Montana_montana"));
 
     // 3. Press shift, click down_arrow 4 times. Release shift.
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
     for (int i = 0; i < 4; ++i) {
-        GTKeyboardDriver::keyClick(Qt::Key_Down );
+        GTKeyboardDriver::keyClick(Qt::Key_Down);
         GTGlobals::sleep( 500 );
     }
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
@@ -726,8 +727,7 @@ GUI_TEST_CLASS_DEFINITION( test_2049 ){
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Codon table"));
-    GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Codon table"));
     GTGlobals::sleep(500);
     QWidget* w = GTWidget::findWidget(os, "Codon table widget");
     int ititHeight = GTWidget::findWidget(os, "Leucine (Leu, L)",w)->geometry().height();
@@ -2983,7 +2983,7 @@ GUI_TEST_CLASS_DEFINITION( test_2415 ) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
 
     // 3. Click the menu {Edit -> Rename}.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_document_lock" << "Rename"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename"));
     GTMouseDriver::click(Qt::RightButton);
 
     // 4. Enter the new name: "name".

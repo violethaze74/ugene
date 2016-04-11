@@ -229,16 +229,10 @@ GUI_TEST_CLASS_DEFINITION(test_4009) {
     //4. Remove "big.aln" document
     GTUtilsDocument::removeDocument(os, "big.aln");
 
+    GTGlobals::sleep();
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==0, "some tasks were not cancelled")
 
     //Current state: the task hangs, debug error occured with message "Infinite wait has timed out"
-    class Scenario : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Cancel);
-        }
-    };
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario()));
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4010) {
@@ -619,10 +613,10 @@ GUI_TEST_CLASS_DEFINITION(test_4065) {
  * 2. Check log for error: "No bam index given, preparing sequential import"
 */
     GTFile::copy(os, testDir + "_common_data/scenarios/_regression/4065/example_bam.bam", sandBoxDir + "example_bam.bam");
+    GTFile::copy(os, testDir + "_common_data/scenarios/_regression/4065/example_bam.bam.bai", sandBoxDir + "example_bam.bam.bai");
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_4065.ugenedb"));
     GTFileDialog::openFile(os, sandBoxDir + "example_bam.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool hasMessage = l.checkMessage("No bam index given");
@@ -1234,9 +1228,9 @@ GUI_TEST_CLASS_DEFINITION(test_4121) {
             CHECK_SET_ERR(cbFormat != NULL, "cbFormat not found");
 
             if (isRawPresent) {
-                CHECK_SET_ERR(cbFormat->findText("raw") != -1, "raw format is present");
+                CHECK_SET_ERR(cbFormat->findText("Raw sequence") != -1, "raw format is present");
             } else {
-                CHECK_SET_ERR(cbFormat->findText("raw") == -1, "raw format is present");
+                CHECK_SET_ERR(cbFormat->findText("Raw sequence") == -1, "raw format is present");
             }
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -3530,20 +3524,21 @@ GUI_TEST_CLASS_DEFINITION(test_4674_1) {
     int seqNumber = GTUtilsMsaEditor::getSequencesCount(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTKeyboardDriver::keyClick( 'z', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::undo(os);
+    GTThread::waitForMainThread();
 
     MSAEditorTreeViewerUI* ui = qobject_cast<MSAEditorTreeViewerUI*>( GTUtilsPhyTree::getTreeViewerUi(os) );
     CHECK_SET_ERR(ui != NULL, "Cannot find the tree");
     CHECK_SET_ERR(ui->isCurTreeViewerSynchronized(), "The connection with the tree is lost");
-    CHECK_SET_ERR(seqNumber == GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone");
+    CHECK_SET_ERR(seqNumber == GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone 1");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTKeyboardDriver::keyClick( 'z', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::undo(os);
+    GTThread::waitForMainThread();
 
     CHECK_SET_ERR(!ui->isCurTreeViewerSynchronized(), "The connection with the tree is still there");
-    CHECK_SET_ERR(seqNumber != GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone");
+    CHECK_SET_ERR(seqNumber != GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4674_2) {

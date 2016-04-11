@@ -4244,22 +4244,16 @@ GUI_TEST_CLASS_DEFINITION(test_3640) {
     QModelIndex humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, humanT1Doc));
     GTMouseDriver::click();
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "genomes"));
-    int key = Qt::ControlModifier;
-//#ifdef Q_OS_MAC
-//    key = GTKeyboardDriver::key["cmd"];
-//#else
-//    key = Qt::ControlModifier;
-//#endif
-    GTKeyboardDriver::keyPress(key);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "genomes"));;
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::click();
-    GTKeyboardDriver::keyRelease(key);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     //4. Remove selected items via "del" key.
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     //Expected state: the document is removed, the folder is not removed.
-    CHECK_SET_ERR(!logTracer.hasError(), "Error message");
+    CHECK_SET_ERR(!logTracer.hasError(), "Error message " + logTracer.getError());
     GTUtilsProjectTreeView::findIndex(os, "genomes");
     options.failIfNotFound = false;
     humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
