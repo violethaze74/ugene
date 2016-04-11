@@ -1461,6 +1461,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0070);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0071);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0075);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0076);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0077);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0078);
 
 //////////////////////////////////////////////////////////////////////////
 // Common scenarios/sequence edit/

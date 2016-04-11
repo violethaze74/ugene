@@ -564,7 +564,7 @@ void FindEnzymesDialog::accept() {
 
     if (excludeRegionBox->isChecked()){
         if (excludeRegionSelector->hasError()) {
-            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon, L10N::errorTitle(), tr("Invalid 'Exclude' region!"), QMessageBox::Ok, this);
+            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Critical, L10N::errorTitle(), tr("Invalid 'Exclude' region!"), QMessageBox::Ok, this);
             msgBox->setInformativeText(excludeRegionSelector->getErrorMessage());
             msgBox->exec();
             CHECK(!msgBox.isNull(), );
@@ -572,7 +572,7 @@ void FindEnzymesDialog::accept() {
         }
         U2Region excluded = excludeRegionSelector->getRegion();
         if (excluded.contains(searchRegion)) {
-            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::NoIcon, L10N::errorTitle(), tr("Invalid region to search in!"), QMessageBox::Ok, this);
+            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Critical, L10N::errorTitle(), tr("Invalid region to search in!"), QMessageBox::Ok, this);
             msgBox->setInformativeText(tr("'Exclude'' region contains 'Search In' region. Search region is empty."));
             msgBox->exec();
             CHECK(!msgBox.isNull(), );

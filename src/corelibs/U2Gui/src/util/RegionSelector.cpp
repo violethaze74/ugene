@@ -581,7 +581,7 @@ void SimpleRegionSelector::initLayout() {
 
     startEdit->setObjectName("start_edit_line");
     endEdit->setObjectName("end_edit_line");
-    setObjectName("range_selector");
+    setObjectName("simple_range_selector");
 }
 
 void SimpleRegionSelector::connectSignals() {

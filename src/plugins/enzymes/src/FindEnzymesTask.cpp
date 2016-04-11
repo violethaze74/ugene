@@ -64,25 +64,9 @@ QList<Task *> FindEnzymesToAnnotationsTask::onSubTaskFinished(Task *subTask) {
     CHECK_EXT(!aObj->isStateLocked(), stateInfo.setError(tr("Annotation table is read-only")), result);
 
     bool useSubgroups = enzymes.size() > 1 || cfg.groupName.isEmpty();
-    bool useWholeSequenceRange = cfg.excludedRegions.isEmpty();
     QMap<QString, QList<SharedAnnotationData> > resultMap;
     foreach (const SEnzymeData &ed, enzymes) {
         QList<SharedAnnotationData> anns = fTask->getResultsAsAnnotations(ed->id);
-        bool inRegion = false;
-        if (!useWholeSequenceRange) {
-            // filter
-            foreach (const SharedAnnotationData &data, anns) {
-                const U2Region &annRegion = data->location->regions.first();
-                if (annRegion.findOverlappingRegion(cfg.excludedRegions) != -1) {
-                    inRegion = true;
-                    break;
-                }
-            }
-            if (inRegion) {
-                continue;
-            }
-        }
-
         if (anns.size() >= cfg.minHitCount && anns.size() <= cfg.maxHitCount) {
             QString group = useSubgroups ? cfg.groupName + "/" + ed->id : cfg.groupName;
             resultMap[group].append(anns);
