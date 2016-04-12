@@ -4787,13 +4787,13 @@ GUI_TEST_CLASS_DEFINITION(test_0069){
 //    Check keys:
 //    right,
     for(int i = 0; i<3; i++){
-        GTKeyboardDriver::keyClick( Qt::RightArrow);
+        GTKeyboardDriver::keyClick(Qt::Key_Right);
         GTGlobals::sleep(100);
     }
     CHECK_SET_ERR(hscroll->value() == 3, QString("right key works wrong. Scrollbar has value: %1").arg(hscroll->value()));
 //    left
     for(int i = 0; i<2; i++){
-        GTKeyboardDriver::keyClick( Qt::LeftArrow);
+        GTKeyboardDriver::keyClick(Qt::Key_Left);
         GTGlobals::sleep(100);
     }
     CHECK_SET_ERR(hscroll->value() == 1, QString("left key works wrong. Scrollbar has value: %1").arg(hscroll->value()));\

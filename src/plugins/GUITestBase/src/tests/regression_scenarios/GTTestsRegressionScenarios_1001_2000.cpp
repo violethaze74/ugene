@@ -6755,7 +6755,7 @@ GUI_TEST_CLASS_DEFINITION(test_1664){
 //    2. Select something in the sequence area.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(5,5));
 //    3. Try to modify the selection with SHIFT+arrows.
-    GTKeyboardDriver::keyClick( Qt::RightArrow, Qt::ShiftModifier);
+    GTKeyboardDriver::keyClick( Qt::Key_Right, Qt::ShiftModifier);
     GTGlobals::sleep();
 //    Expected state: selection changes its size.
     QRect expected = QRect(0, 0, 7, 6);

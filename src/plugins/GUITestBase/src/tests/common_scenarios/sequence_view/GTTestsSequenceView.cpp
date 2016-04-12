@@ -54,6 +54,7 @@
 #include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
 
 #include "utils/GTUtilsToolTip.h"
+#include "utils/GTThread.h"
 
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/ColorDialogFiller.h>
@@ -966,6 +967,14 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     qint64 fileSize = GTFile::getSize(os, sandBoxDir + "/seq_view_test_0030.svg");
     CHECK_SET_ERR(fileSize > 15 * 1024 * 1024, QString("SVG file is too small: %1").arg(fileSize));
+    //remove document
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
+    GTGlobals::sleep(100);
+
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031){
