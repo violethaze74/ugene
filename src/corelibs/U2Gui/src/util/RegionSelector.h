@@ -35,6 +35,7 @@ class QComboBox;
 namespace U2 {
 
 class AbstractRegionSelector : public QWidget {
+    Q_OBJECT
 public:
     AbstractRegionSelector(QWidget* parent, qint64 maxLen, bool isCircularSelectionAvailable = false)
         : QWidget(parent),
