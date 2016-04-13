@@ -89,10 +89,16 @@ GUITestMap& UGUITestBase::getMap(TestType testType) {
     }
 }
 
-GUITests UGUITestBase::getTests(TestType testType) {
+GUITests UGUITestBase::getTests(TestType testType, QString label) {
 
     GUITests testList = getMap(testType).values();
-
+    int size = testList.size();
+    foreach (GUITest* t, testList) {
+        if(t->getLabel() != label){
+            testList.takeAt(testList.indexOf(t));
+        }
+    }
+    size = testList.size();
     return testList;
 }
 

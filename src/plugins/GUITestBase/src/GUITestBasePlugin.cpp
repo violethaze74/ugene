@@ -91,6 +91,12 @@
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h"
 
 #define REGISTER_TEST(X) if (guiTestBase) guiTestBase->registerTest(new X())
+#define REGISTER_TEST_LABEL(X, LABEL) \
+    if (guiTestBase) { \
+        HI::GUITest *test = new X(); \
+        test->setLabel(LABEL); \
+        guiTestBase->registerTest(test); \
+    }
 #define REGISTER_TEST_WITH_TIMEOUT(X, TIMEOUT) \
     if (guiTestBase) { \
         HI::GUITest *test = new X(); \
@@ -347,7 +353,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1157);
     REGISTER_TEST(GUITest_regression_scenarios::test_1163);
     REGISTER_TEST(GUITest_regression_scenarios::test_1165);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1166);
+    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_1166, "mem");
     REGISTER_TEST(GUITest_regression_scenarios::test_1172);
     REGISTER_TEST(GUITest_regression_scenarios::test_1175);
     REGISTER_TEST(GUITest_regression_scenarios::test_1180);
@@ -520,7 +526,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1658);
     REGISTER_TEST(GUITest_regression_scenarios::test_1660);
     REGISTER_TEST(GUITest_regression_scenarios::test_1661);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1662);
+    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_1662, "mem");
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1664);
     REGISTER_TEST(GUITest_regression_scenarios::test_1668);
     REGISTER_TEST(GUITest_regression_scenarios::test_1672);
@@ -794,7 +800,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2951);
     REGISTER_TEST(GUITest_regression_scenarios::test_2962_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_2962_2);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2971);
+    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_2971, "mem");
     REGISTER_TEST(GUITest_regression_scenarios::test_2972);
     REGISTER_TEST(GUITest_regression_scenarios::test_2975);
     REGISTER_TEST(GUITest_regression_scenarios::test_2981);
@@ -1085,7 +1091,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4153);
     REGISTER_TEST(GUITest_regression_scenarios::test_4156);
     REGISTER_TEST(GUITest_regression_scenarios::test_4160);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4164);
+    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_4164, "mem");
     REGISTER_TEST(GUITest_regression_scenarios::test_4170);
     REGISTER_TEST(GUITest_regression_scenarios::test_4179);
     REGISTER_TEST(GUITest_regression_scenarios::test_4194);
@@ -1410,7 +1416,7 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0027);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0028);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0029);
-    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0030);
+    REGISTER_TEST_LABEL(GUITest_common_scenarios_sequence_view::test_0030, "mem");
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0031);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0031_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0031_2);

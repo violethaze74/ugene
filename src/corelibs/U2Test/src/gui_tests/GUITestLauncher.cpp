@@ -130,7 +130,8 @@ void GUITestLauncher::firstTestRunCheck(const QString& testName) {
 bool GUITestLauncher::initGUITestBase() {
     UGUITestBase* b = AppContext::getGUITestBase();
     SAFE_POINT(NULL != b, "Test base is NULL", false);
-    QList<HI::GUITest *> list = b->getTests();
+    QString label = qgetenv("UGENE_GUI_TEST_LABEL");
+    QList<HI::GUITest *> list = b->getTests(UGUITestBase::Normal, label);
     if (list.isEmpty()) {
         setError(tr("No tests to run"));
         return false;
