@@ -2962,15 +2962,16 @@ GUI_TEST_CLASS_DEFINITION(test_4505) {
     GTLogTracer l;
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/Chikungunya_E1.fasta");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Delete any column
     GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 1);
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTThread::waitForMainThread();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     //GTUtilsTaskTreeView::waitTaskFinished(os);
 //    3. Press "Undo"
     GTUtilsMsaEditor::undo(os);
     GTThread::waitForMainThread();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Bug state: Error appeared in log: "[ERROR][19:02] Failed to create a multiple alignment row!"
     GTUtilsLog::check(os, l);
 //    4. Click right button on MSA
