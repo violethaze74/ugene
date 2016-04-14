@@ -33,7 +33,7 @@ float infinity() {
 }
 
 bool isfin( float x ) {
-    return !isnan( x ) && !isinf( x );
+    return !std::isnan( x ) && !std::isinf( x );
 }
 
 const char TERM_SYM = '\0';
