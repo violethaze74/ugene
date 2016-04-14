@@ -14,6 +14,7 @@ extern float    roundf( float x );
 
 #else // if not Windows -> we have all functions and defines in math.h
 #include <math.h>
+#include <cmath>
 #endif // _WINDOWS
 
 extern float infinity();
