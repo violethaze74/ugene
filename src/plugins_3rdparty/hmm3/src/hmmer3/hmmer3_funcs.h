@@ -14,8 +14,8 @@ extern float    roundf( float x );
 
 #else // if not Windows -> we have all functions and defines in math.h
 #include <math.h>
-#include <cmath>
 #endif // _WINDOWS
+#include <cmath>
 
 extern float infinity();
 extern bool isfin( float x ); // sure that number is finite
