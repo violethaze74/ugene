@@ -707,6 +707,8 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     GTMouseDriver::moveTo(p);
     GTMouseDriver::release();
 
+    GTThread::waitForMainThread();
+
     CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the botton of name list area is invisible");
 
 
@@ -1036,15 +1038,16 @@ GUI_TEST_CLASS_DEFINITION(test_4106){
 
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down );
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Down );
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(200);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, endPos-1, 1234, 3 ) );
 
+    GTGlobals::sleep(200);
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down );
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(200);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, endPos-1, 1234, 4 ) );
 

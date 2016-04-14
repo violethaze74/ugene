@@ -31,6 +31,7 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/PopupChooser.h>
+#include <utils/GTThread.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -167,6 +168,7 @@ void GTUtilsMsaEditor::replaceSequence(HI::GUITestOpStatus &os, const QString &s
     GTMouseDriver::press();
     GTMouseDriver::moveTo(dragTo);
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
