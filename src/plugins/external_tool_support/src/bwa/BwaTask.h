@@ -74,8 +74,9 @@ private:
     QList<ShortReadSet> readSets;
     QString resultPath;
     DnaAssemblyToRefTaskSettings settings;
-    bool alignmentPerformed;
+    bool alignmentStarted;
     bool samingStarted;
+    bool mergingStarted;
     int resultPartsCounter;
     inline QString getSAIPath(const QString& pathToReads);
 };
@@ -97,8 +98,17 @@ public:
     BwaMemAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings);
     void prepare();
 
+protected slots:
+    QList<Task *> onSubTaskFinished(Task *subTask);
 private:
+    QList<Task*> alignTasks;
+    Task* mergeResultTask;
     const QString indexPath;
+    QString resultPath;
+    bool alignmentStarted;
+    bool samingStarted;
+    bool mergingStarted;
+    int resultPartsCounter;
     DnaAssemblyToRefTaskSettings settings;
 };
 

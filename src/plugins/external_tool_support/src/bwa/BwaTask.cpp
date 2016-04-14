@@ -26,6 +26,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/AppResources.h>
 
+#include <U2Formats/BAMUtils.h>
 #include <U2Formats/MergeBamTask.h>
 
 #include "BwaSupport.h"
@@ -78,8 +79,9 @@ BwaAlignTask::BwaAlignTask(const QString &indexPath, const QList<ShortReadSet>& 
     readSets(shortReadSets),
     resultPath(resultPath),
     settings(settings),
-    alignmentPerformed(false),
+    alignmentStarted(false),
     samingStarted(false),
+    mergingStarted(false),
     resultPartsCounter(0)
 {
 }
@@ -178,7 +180,8 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
     samTasks.removeOne(subTask);
 
     if (alignTasks.size() == 0) {
-        if (!alignmentPerformed) {
+        QFileInfo resultPathFileInfo(resultPath);
+        if (!alignmentStarted) {
             foreach(const ShortReadSet& set, readSets) {
                 QStringList arguments;
 
@@ -188,7 +191,7 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
                 if (readSets.size() == 1) {
                     arguments.append(resultPath);
                 } else {
-                    QString pathToSort = resultPath + "." + QString::number(resultPartsCounter++);
+                    QString pathToSort = resultPathFileInfo.dir().canonicalPath() + "/" + resultPathFileInfo.baseName() + QString::number(resultPartsCounter++);
                     urlsToMerge.append(pathToSort);
                     arguments.append(pathToSort);
                 }
@@ -196,16 +199,32 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
                 arguments.append(getSAIPath(set.url.getURLString()));
                 arguments.append(set.url.getURLString());
 
-                alignmentPerformed = true;
+                alignmentStarted = true;
                 ExternalToolRunTask *task = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
                 result.append(task);
                 samTasks.append(task);
                 samingStarted = true;
             }
-        } else if (samTasks.size() == 0 && resultPartsCounter > 1) {
-            //join all resulting sams to one
-            QFileInfo fi(resultPath);
-            result.append(new MergeBamTask(urlsToMerge, fi.dir().canonicalPath(), fi.canonicalPath(), true));
+        } else if (samTasks.size() == 0 && resultPartsCounter > 1 && !mergingStarted) {
+            //converting SAM -> BAM
+            QStringList bamUrlstoMerge;
+            foreach(const QString &url, urlsToMerge) {
+                QFileInfo urlToConvertFileInfo(url);
+                QString convertedBamUrl = urlToConvertFileInfo.dir().canonicalPath() + "/" + urlToConvertFileInfo.baseName() + ".bam";
+                BAMUtils::ConvertOption options(true);
+                BAMUtils::convertToSamOrBam(url, convertedBamUrl, options, stateInfo);
+                if (stateInfo.isCoR()) {
+                    return result;
+                }
+                bamUrlstoMerge.append(convertedBamUrl);
+            }
+            result.append(new MergeBamTask(bamUrlstoMerge, resultPathFileInfo.dir().canonicalPath(), resultPathFileInfo.baseName() + ".bam", true));
+            mergingStarted = true;
+        } else if (samTasks.size() == 0 && resultPartsCounter > 1 && mergingStarted) {
+            //converting BAM -> SAM
+            QString bamResultPath = resultPathFileInfo.dir().canonicalPath() + "/" + resultPathFileInfo.baseName() + ".bam";
+            BAMUtils::ConvertOption options(false);
+            BAMUtils::convertToSamOrBam(resultPath, bamResultPath, options, stateInfo);
         }
     }
 
@@ -248,6 +267,11 @@ void BwaAlignTask::LogParser::parseErrOutput(const QString &partOfLog) {
 BwaMemAlignTask::BwaMemAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings):
     Task("BWA MEM reads assembly", TaskFlags_NR_FOSCOE),
     indexPath(indexPath),
+    resultPath(settings.resultFileName.getURLString()),
+    alignmentStarted(false),
+    samingStarted(false),
+    mergingStarted(false),
+    resultPartsCounter(1),
     settings(settings)
 {
 }
@@ -258,86 +282,133 @@ void BwaMemAlignTask::prepare() {
         return;
     }
 
+    QList<ShortReadSet> downStreamList;
+    QList<ShortReadSet> upStreamList;
+
+    foreach(const ShortReadSet& srSet, settings.shortReadSets) {
+        if (srSet.order == ShortReadSet::DownstreamMate) {
+            downStreamList.append(srSet);
+        } else {
+            upStreamList.append(srSet);
+        }
+    }
+    if (upStreamList.size() != downStreamList.size()) {
+        setError(tr("Please, provide same number of files with downstream and upstream reads."));
+    }
+
     const ShortReadSet& readSet = settings.shortReadSets.at(0);
 
     settings.pairedReads = readSet.type == ShortReadSet::PairedEndReads;
 
-    if (settings.pairedReads && settings.shortReadSets.size() != 2) {
-        setError(tr("Wrong settings of paired reads. For paired-read alignment by BWA MEM only a single pair of reads is acceptable."));
-        return;
+    QFileInfo resultFileInfo(settings.resultFileName.getURLString());
+    for (; resultPartsCounter <= downStreamList.size(); resultPartsCounter++) {
+        QStringList arguments;
+
+        arguments.append("mem");
+
+        arguments.append("-t");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_THREADS, 1).toString());
+
+        arguments.append("-k");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_MIN_SEED, 19).toString());
+
+        arguments.append("-w");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_BAND_WIDTH, 100).toString());
+
+        arguments.append("-d");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_DROPOFF, 100).toString());
+
+        arguments.append("-r");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_INTERNAL_SEED_LOOKUP, float(1.5)).toString());
+
+        arguments.append("-c");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_SKIP_SEED_THRESHOLD, 10000).toString());
+
+        //TODO
+        //doesn't work for bwa mem 0.7.4
+        /*
+        arguments.append("-D");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_DROP_CHAINS_THRESHOLD, float(0.5)).toString());
+
+        arguments.append("-m");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_MAX_MATE_RESCUES, 100).toString());
+        */
+        if (settings.getCustomValue(BwaTask::OPTION_SKIP_MATE_RESCUES, false).toBool()) {
+            arguments.append("-S");
+        }
+
+        if (settings.getCustomValue(BwaTask::OPTION_SKIP_PAIRING, false).toBool()) {
+            arguments.append("-P");
+        }
+
+        arguments.append("-A");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_MATCH_SCORE, 1).toString());
+
+        arguments.append("-B");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_MISMATCH_PENALTY, 4).toString());
+
+        arguments.append("-O");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_GAP_OPEN_PENALTY, 6).toString());
+
+        arguments.append("-E");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_GAP_EXTENSION_PENALTY, 1).toString());
+
+        arguments.append("-L");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_CLIPPING_PENALTY, 5).toString());
+
+        arguments.append("-U");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_UNPAIRED_PENALTY, 17).toString());
+
+        arguments.append("-T");
+        arguments.append(settings.getCustomValue(BwaTask::OPTION_SCORE_THRESHOLD, 30).toString());
+
+        arguments.append(indexPath);
+        arguments.append(readSet.url.getURLString());
+
+        ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new BwaAlignTask::LogParser(), NULL);
+        if (downStreamList.size() > 1) {
+            QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" + 
+                QString::number(resultPartsCounter) + "." + resultFileInfo.completeSuffix();
+            alignTask->setStandartOutputFile(resultFilePathWithpartNumber);
+        } else {
+            alignTask->setStandartOutputFile(settings.resultFileName.getURLString());
+        }
+        addSubTask(alignTask);
+        alignTasks.append(alignTask);
     }
-    QStringList arguments;
-
-    arguments.append("mem");
-
-    arguments.append("-t");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_THREADS, 1).toString());
-
-    arguments.append("-k");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_MIN_SEED, 19).toString());
-
-    arguments.append("-w");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_BAND_WIDTH, 100).toString());
-
-    arguments.append("-d");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_DROPOFF, 100).toString());
-
-    arguments.append("-r");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_INTERNAL_SEED_LOOKUP, float(1.5)).toString());
-
-    arguments.append("-c");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_SKIP_SEED_THRESHOLD, 10000).toString());
-
-    //TODO
-    //doesn't work for bwa mem 0.7.4
-    /*
-    arguments.append("-D");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_DROP_CHAINS_THRESHOLD, float(0.5)).toString());
-
-    arguments.append("-m");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_MAX_MATE_RESCUES, 100).toString());
-    */
-    if(settings.getCustomValue(BwaTask::OPTION_SKIP_MATE_RESCUES, false).toBool()){
-        arguments.append("-S");
-    }
-
-    if(settings.getCustomValue(BwaTask::OPTION_SKIP_PAIRING, false).toBool()){
-        arguments.append("-P");
-    }
-
-    arguments.append("-A");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_MATCH_SCORE, 1).toString());
-
-    arguments.append("-B");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_MISMATCH_PENALTY, 4).toString());
-
-    arguments.append("-O");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_GAP_OPEN_PENALTY, 6).toString());
-
-    arguments.append("-E");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_GAP_EXTENSION_PENALTY, 1).toString());
-
-    arguments.append("-L");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_CLIPPING_PENALTY, 5).toString());
-
-    arguments.append("-U");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_UNPAIRED_PENALTY, 17).toString());
-
-    arguments.append("-T");
-    arguments.append(settings.getCustomValue(BwaTask::OPTION_SCORE_THRESHOLD, 30).toString());
-
-    arguments.append( indexPath );
-    arguments.append( readSet.url.getURLString() );
-    if(settings.pairedReads && settings.shortReadSets.size() == 2){
-        const ShortReadSet& readSetPaired = settings.shortReadSets.at(1);
-        arguments.append( readSetPaired.url.getURLString() );
-    }
-
-    ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new BwaAlignTask::LogParser(), NULL);
-    alignTask->setStandartOutputFile(settings.resultFileName.getURLString() );
-    addSubTask(alignTask);
 }
 
+
+QList<Task *> BwaMemAlignTask::onSubTaskFinished(Task *subTask) {
+    QList<Task *> result;
+    alignTasks.removeOne(subTask);
+    if (alignTasks.size() == 0) {
+        QFileInfo resultFileInfo(settings.resultFileName.getURLString());
+        if (resultPartsCounter >= 1 && !mergingStarted) {
+            //converting SAM -> BAM
+            QStringList bamUrlstoMerge;
+            for (int i = 1; i < resultPartsCounter; i++) {
+                QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" +
+                    QString::number(i) + "." + resultFileInfo.completeSuffix();
+                QString bamFilePath = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + ".bam";
+                BAMUtils::ConvertOption options(true);
+                BAMUtils::convertToSamOrBam(resultFilePathWithpartNumber, bamFilePath, options, stateInfo);
+                if (stateInfo.isCoR()) {
+                    return result;
+                }
+                bamUrlstoMerge.append(bamFilePath);
+            }
+            result.append(new MergeBamTask(bamUrlstoMerge, resultFileInfo.dir().canonicalPath(), resultFileInfo.baseName() + ".bam", true));
+            mergingStarted = true;
+        } else if (resultPartsCounter > 1 && mergingStarted) {
+            //converting BAM -> SAM
+            QString bamResultPath = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + ".bam";
+            BAMUtils::ConvertOption options(false);
+            BAMUtils::convertToSamOrBam(resultPath, bamResultPath, options, stateInfo);
+        }
+    }
+    return result;
+}
 
 // BwaSwAlignTask
 
@@ -488,6 +559,15 @@ void BwaTask::prepare() {
     if(!settings.prebuiltIndex) {
         buildIndexTask = new BwaBuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName, settings);
     }
+    int upStreamCount = 0;
+    int downStreamCount = 0;
+    foreach(const ShortReadSet& srSet, settings.shortReadSets) {
+        if (srSet.order == ShortReadSet::DownstreamMate) {
+            downStreamCount++;
+        } else {
+            upStreamCount++;
+        }
+    }
     if(!justBuildIndex) {
         if (settings.getCustomValue(OPTION_SW_ALIGNMENT, false) == true) {
             if(settings.shortReadSets.size() > 1) {
@@ -496,13 +576,11 @@ void BwaTask::prepare() {
             }
             alignTask = new BwaSwAlignTask(indexFileName, settings);
         } else  if (settings.getCustomValue(OPTION_MEM_ALIGNMENT, false) == true) {
-            if(!settings.pairedReads && settings.shortReadSets.size() > 1) {
-                setError(tr("Multiple read files are not supported by bwa-mem. Please combine your reads into single FASTA file."));
-                return;
-            }else if(settings.pairedReads && settings.shortReadSets.size() != 2) {
-                setError(tr("Please, provide two files with paired reads."));
+            if (downStreamCount != upStreamCount) {
+                setError(tr("Please, provide same number of files with downstream and upstream reads."));
                 return;
             }
+            
             alignTask = new BwaMemAlignTask(indexFileName, settings);
         }else{
             alignTask = new BwaAlignTask(indexFileName, settings.shortReadSets, settings.resultFileName.getURLString(), settings);

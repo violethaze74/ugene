@@ -64,25 +64,24 @@ void MergeBamTask::run(){
         stateInfo.setError("No BAM files to merge");
         return;
     }
+    targetUrl = workingDir + outputName;
     if (sortInputBams) {
         QStringList sortedNamesList;
         foreach(const QString& url, bamUrls) {
             QFileInfo fi(url);
-            QString sortedName = fi.baseName() + "_sorted";
+            QString sortedName = fi.dir().canonicalPath() + "/" + fi.completeBaseName() + "_sorted.bam";
             BAMUtils::sortBam(url, sortedName, stateInfo);
             if (stateInfo.isCoR()) {
                 return;
             }
-            sortedNamesList.append(fi.dir().canonicalPath() + "/" + sortedName);
+            sortedNamesList.append(sortedName);
         }
-        BAMUtils::mergeBam(sortedNamesList, workingDir + outputName, stateInfo);
+        BAMUtils::mergeBam(sortedNamesList, targetUrl, stateInfo);
     } else {
-        BAMUtils::mergeBam(bamUrls, workingDir + outputName, stateInfo);
+        BAMUtils::mergeBam(bamUrls, targetUrl, stateInfo);
     }
 
     CHECK_OP(stateInfo, );
-
-    targetUrl = workingDir + outputName;
 
     //TODO: bam merge assumes that a BAM files is sorted. Otherwise the sorting step can be added here
 
