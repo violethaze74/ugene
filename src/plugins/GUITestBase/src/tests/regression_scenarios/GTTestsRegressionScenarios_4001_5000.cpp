@@ -4137,6 +4137,7 @@ GUI_TEST_CLASS_DEFINITION(test_4728) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(endPos);
     GTMouseDriver::release();
+    GTGlobals::sleep(200);
 
     //Expected state: all 4 symbols are selected
     QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);

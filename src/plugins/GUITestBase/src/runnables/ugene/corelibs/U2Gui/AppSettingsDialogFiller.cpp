@@ -28,6 +28,7 @@
 #include <primitives/GTLineEdit.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTListWidget.h>
+#include <utils/GTThread.h>
 
 #include <U2Core/Log.h>
 
@@ -128,6 +129,7 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus &os, const
             QWidget *itemWid = treeWidget->itemWidget(item, 1);
             QLineEdit *lineEdit = itemWid->findChild<QLineEdit*>("PathLineEdit");
             treeWidget->scrollToItem(item);
+            GTThread::waitForMainThread();
             GTLineEdit::setText(os, lineEdit, toolPath);
             GTTreeWidget::click(os, item, 0);
             set = true;
@@ -194,6 +196,7 @@ void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus &os, const QStri
             QToolButton* clearPathButton = itemWid->findChild<QToolButton*>("ClearToolPathButton");
             CHECK_SET_ERR(clearPathButton != NULL, "Clear path button not found");
             treeWidget->scrollToItem(item);
+            GTThread::waitForMainThread();
             if (clearPathButton->isEnabled()) {
                 GTWidget::click(os, clearPathButton);
             }

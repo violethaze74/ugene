@@ -2694,6 +2694,7 @@ GUI_TEST_CLASS_DEFINITION(test_3414){
 
     GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTGlobals::sleep(200);
 
     //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);

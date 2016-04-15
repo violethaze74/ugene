@@ -1314,6 +1314,7 @@ GUI_TEST_CLASS_DEFINITION(test_1069) {
 
     //3. Close the sequence view
     GTKeyboardDriver::keyClick( 'w', Qt::ControlModifier);
+    GTThread::waitForMainThread();
 
     //4. Open human_t1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
