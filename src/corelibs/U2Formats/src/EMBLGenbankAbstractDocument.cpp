@@ -671,13 +671,8 @@ bool EMBLGenbankAbstractDocument::readSequence(ParserState* st, U2SequenceImport
     char* buff  = readBuffer.data();
 
     //reading sequence
-    QBuffer writer(&res);
-    writer.open( QIODevice::WriteOnly);
-    bool ok = true;
     int len;
-    int dataOffset = 0;
-    bool numIsPrefix = isNcbiLikeFormat();
-    while (ok && (len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE)) > 0) {
+    while ((len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE)) > 0) {
         if (si.isCoR()) {
             res.clear();
             break;
@@ -692,61 +687,20 @@ bool EMBLGenbankAbstractDocument::readSequence(ParserState* st, U2SequenceImport
             break;
         }
 
-        //compute data offset
-        bool foundNum = false;
-        bool foundSpaceAfterNum = false;
-        for(dataOffset = 0 ; dataOffset < len; dataOffset++) {
-            char c = numIsPrefix ? buff[dataOffset] : buff[len - dataOffset - 1];
-            bool isNum = c >= '0' && c <= '9';
-            bool isSpace = c == ' ' || c == '\t';
-            if (!isSpace && (!isNum || foundSpaceAfterNum)) {
-                if (!foundSpaceAfterNum) {
-                    //unknown character -> stop iteration
-                    dataOffset = len;
-                }
-                break;
-            }
-            foundNum = foundNum || isNum;
-            foundSpaceAfterNum = foundSpaceAfterNum || (isSpace && foundNum);
-        }
+        len = TextUtils::remove(buff, len, TextUtils::WHITES | TextUtils::NUMS);
+        seqImporter.addBlock(buff, len, os);
 
-        if (dataOffset == len) {
-            si.setError(tr("Error reading sequence: invalid sequence format"));
-            break;
-        }
-
-        bool isSeek = writer.seek(0);
-                assert(isSeek);Q_UNUSED(isSeek);
-
-        //add buffer to result
-        for (int i= (numIsPrefix ? dataOffset : 0), n = (numIsPrefix ? len : len -  dataOffset) ; i < n; i++) {
-            char c = buff[i];
-            if (c != ' ' && c != '\t') {
-                ok = writer.putChar(c);
-                if (!ok) {
-                    break;
-                }
-            }
-        }
-        if (!ok) {
-            si.setError(tr("Error reading sequence: memory allocation failed"));
-            break;
-        }
-
-        seqImporter.addBlock(res.data(),res.size(),os);
         if(os.isCoR()){
             break;
         }
-        sequenceLen += res.size();
-        fullSequenceLen += res.size();
-        res.clear();
+        sequenceLen += len;
+        fullSequenceLen += len;
 
         si.setProgress(io->getProgress());
     }
     if (!si.isCoR() && buff[0] != '/') {
         si.setError(tr("Sequence is truncated"));
     }
-    writer.close();
     return true; //FIXME
 }
 
