@@ -166,42 +166,6 @@ private:
     
 }; // UHMM3SWSearchTask
 
-/*********************************************************************
-* HMMER3 search to annotations task. Sequence walker version used here
-**********************************************************************/
-class UHMM3SWSearchToAnnotationsTask : public Task {
-    Q_OBJECT
-public:
-    UHMM3SWSearchToAnnotationsTask(const QString & hmmfile, const DNASequence & seq, AnnotationTableObject *obj,
-        const QString & group, const QString &annDescription, U2FeatureType aType, const QString & aname, const UHMM3SearchTaskSettings & settings);
-    
-    UHMM3SWSearchToAnnotationsTask(const QString & hmmfile, const QString & seqFile, AnnotationTableObject *obj,
-        const QString & group, const QString &annDescription, U2FeatureType aType, const QString & aname, const UHMM3SearchTaskSettings & settings);
-    
-    QList< Task* > onSubTaskFinished(Task * subTask);
-    
-    QString generateReport() const;
-    
-private:
-    void checkArgs();
-    void setSequence();
-    
-private:
-    QString                             hmmfile;
-    DNASequence                         sequence;
-    QString                             agroup;
-    const QString                       annDescription;
-    U2FeatureType                       aType;
-    QString                             aname;
-    UHMM3SearchTaskSettings             searchSettings;
-    QPointer<AnnotationTableObject>     annotationObj;
-    LoadDocumentTask *                  loadSequenceTask;
-    UHMM3SWSearchTask *                 searchTask;
-    CreateAnnotationsTask *             createAnnotationsTask;
-    QMutex                              mtx;
-    
-}; // UHMM3SWSearchToAnnotationsTask
-
 } // U2
 
 #endif // _GB2_UHMM3_SEARCH_TASK_H_

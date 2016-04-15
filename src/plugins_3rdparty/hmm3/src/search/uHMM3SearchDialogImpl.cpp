@@ -179,9 +179,6 @@ void UHMM3SearchDialogImpl::sl_okButtonClicked() {
     }
 
     SAFE_POINT(!model.sequence.isNull(), L10N::nullPointerError("sequence object"), );
-    U2OpStatusImpl os;
-    const DNASequence sequence = model.sequence->getWholeSequence(os);
-    CHECK_OP_EXT(os, QMessageBox::warning(this, tr("Error"), os.getError()), );
 
     bool objectPrepared = annotationsWidgetController->prepareAnnotationObject();
     if (!objectPrepared) {

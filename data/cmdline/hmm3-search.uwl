@@ -28,9 +28,9 @@ workflow "HMMER 3 search"{
     }
 
     .actor-bindings {
-        hmm3-read-profile.out-hmm3->hmm3-search.in-hmm3
         read-sequence.out-sequence->hmm3-search.in-sequence
         hmm3-search.out-annotations->write-annotations.in-annotations
+        hmm3-read-profile.out-hmm3->hmm3-search.in-hmm3
     }
 
     hmm3-read-profile.hmm3-profile->hmm3-search.in-hmm3.hmm3-profile
@@ -41,11 +41,41 @@ workflow "HMMER 3 search"{
 
     .meta {
         parameter-aliases {
+            hmm3-search.F1 {
+                alias:F1;
+            }
+            hmm3-search.F2 {
+                alias:F2;
+            }
+            hmm3-search.F3 {
+                alias:F3;
+            }
+            hmm3-search.domZ {
+                alias:domZ;
+            }
+            hmm3-search.e-val {
+                alias:domE;
+            }
+            hmm3-search.max {
+                alias:max;
+            }
+            hmm3-search.nobias {
+                alias:nobias;
+            }
+            hmm3-search.nonull2 {
+                alias:nonull2;
+            }
             hmm3-search.result-name {
                 alias:annotation-name;
             }
+            hmm3-search.score {
+                alias:domT;
+            }
             hmm3-search.seed {
                 alias:seed;
+            }
+            hmm3-search.threshold-type {
+                alias:threshold-type;
             }
             hmm3-read-profile.url-in {
                 alias:hmm;
@@ -62,13 +92,13 @@ workflow "HMMER 3 search"{
         }
         visual {
             hmm3-read-profile {
-                pos:"-1005 -735";
+                pos:"-960 -690";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 out-hmm3.angle:360;
             }
             hmm3-search {
-                pos:"-765 -645";
+                pos:"-720 -600";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-hmm3.angle:150;
@@ -76,13 +106,13 @@ workflow "HMMER 3 search"{
                 out-annotations.angle:360;
             }
             read-sequence {
-                pos:"-1005 -585";
+                pos:"-960 -540";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 out-sequence.angle:360;
             }
             write-annotations {
-                pos:"-465 -645";
+                pos:"-420 -600";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-annotations.angle:180;

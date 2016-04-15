@@ -22,11 +22,13 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/U1AnnotationUtils.h>
-#include <U2Lang/SimpleWorkflowTask.h>
+#include <workers/HMM3SearchWorker.h>
 
 #include "Hmmer3SearchWorkflowTask.h"
 
 namespace U2 {
+
+using namespace LocalWorkflow;
 
 Hmmer3SearchWorfklowTask::Hmmer3SearchWorfklowTask(const QString &profileUrl, U2SequenceObject *sequenceObject, AnnotationTableObject *annotationsObject,
     const QString &group, const QString &description, U2FeatureType type, const QString &name, const UHMM3SearchTaskSettings &settings)
@@ -38,24 +40,15 @@ group(group), description(description), type(type), name(name), settings(setting
 }
 
 void Hmmer3SearchWorfklowTask::prepare() {
-    SimpleInOutWorkflowTaskConfig config;
-    U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
+    SimpleInOutWorkflowTaskConfig config = getConfig();
     CHECK_OP(stateInfo, );
-    config.objects << sequenceObject->clone(dbiRef, stateInfo);
-    CHECK_OP(stateInfo, );
-    config.inFormat = BaseDocumentFormats::PLAIN_GENBANK;
-    config.outFormat = BaseDocumentFormats::PLAIN_GENBANK;
-    config.schemaName = "hmm3-search";
-
-    config.extraArgs << QString("--hmm=%1").arg(profileUrl);
-    config.extraArgs << QString("--seed=%1").arg(settings.inner.seed);
-    config.extraArgs << QString("--annotation-name=%1").arg(name);
 
     workflowTask = new SimpleInOutWorkflowTask(config);
     addSubTask(workflowTask);
 }
 
 Task::ReportResult Hmmer3SearchWorfklowTask::report() {
+    CHECK_OP(stateInfo, ReportResult_Finished);
     Document *doc = workflowTask->getDocument();
     QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
     if (objects.isEmpty()) {
@@ -66,6 +59,7 @@ Task::ReportResult Hmmer3SearchWorfklowTask::report() {
     QList<SharedAnnotationData> data;
     foreach (Annotation *annotation, hmmerObject->getAnnotations()) {
         SharedAnnotationData annData = annotation->getData();
+        annData->name = name;
         annData->type = type;
         data << annData;
     }
@@ -93,6 +87,46 @@ QString Hmmer3SearchWorfklowTask::generateReport() const {
     res += "<tr><td><b>" + tr("Results count") + "</b></td><td>" + QString::number(resultCount) + "</td></tr>";
     res += "</table>";
     return res;
+}
+
+SimpleInOutWorkflowTaskConfig Hmmer3SearchWorfklowTask::getConfig() {
+    SimpleInOutWorkflowTaskConfig config;
+    U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
+    CHECK_OP(stateInfo, config);
+    config.objects << sequenceObject->clone(dbiRef, stateInfo);
+    CHECK_OP(stateInfo, config);
+    config.inFormat = BaseDocumentFormats::PLAIN_GENBANK;
+    config.outFormat = BaseDocumentFormats::PLAIN_GENBANK;
+    config.schemaName = "hmm3-search";
+
+    config.extraArgs << "--hmm=" + profileUrl;
+    config.extraArgs << "--seed=" + QString::number(settings.inner.seed);
+
+    if (p7H_GA == settings.inner.useBitCutoffs) {
+        config.extraArgs << "--threshold-type=" + HMM3SearchWorker::CUT_GA_THRESHOLD;
+    } else if (p7H_NC == settings.inner.useBitCutoffs) {
+        config.extraArgs << "--threshold-type=" + HMM3SearchWorker::CUT_NC_THRESHOLD;
+    } else if (p7H_TC == settings.inner.useBitCutoffs) {
+        config.extraArgs << "--threshold-type=" + HMM3SearchWorker::CUT_TC_THRESHOLD;
+    } else if (OPTION_NOT_SET == settings.inner.domT) {
+        config.extraArgs << "--domE=" + QString::number(log10(settings.inner.domE));
+    } else {
+        config.extraArgs << "--domT=" + QString::number(settings.inner.domT);
+    }
+    if (settings.inner.domZ > 0) {
+        config.extraArgs << "--domZ=" + QString::number(settings.inner.domZ);
+    }
+
+    config.extraArgs << "--nobias=" + QString::number(settings.inner.noBiasFilter);
+    config.extraArgs << "--nonull2=" + QString::number(settings.inner.noNull2);
+    config.extraArgs << "--max=" + QString::number(settings.inner.doMax);
+
+    if (!settings.inner.doMax) {
+        config.extraArgs << "--F1=" + QString::number(settings.inner.f1);
+        config.extraArgs << "--F2=" + QString::number(settings.inner.f2);
+        config.extraArgs << "--F3=" + QString::number(settings.inner.f3);
+    }
+    return config;
 }
 
 } // U2

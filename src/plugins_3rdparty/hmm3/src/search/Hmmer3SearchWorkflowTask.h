@@ -22,8 +22,8 @@
 #ifndef _U2_HMMER3_SEARCH_WORKFLOW_TASK_H_
 #define _U2_HMMER3_SEARCH_WORKFLOW_TASK_H_
 
-#include <U2Core/Task.h>
 #include <U2Core/U2FeatureType.h>
+#include <U2Lang/SimpleWorkflowTask.h>
 #include <search/uHMM3SearchTask.h>
 
 namespace U2 {
@@ -41,6 +41,9 @@ public:
     void prepare();
     ReportResult report();
     QString generateReport() const;
+
+private:
+    SimpleInOutWorkflowTaskConfig getConfig();
 
 private:
     QString profileUrl;
