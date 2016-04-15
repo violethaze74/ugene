@@ -38,6 +38,8 @@
 
 #include <U2Remote/DistributedComputingUtil.h>
 
+#include <search/Hmmer3SearchWorkflowTask.h>
+
 #include "uHMM3SearchDialogImpl.h"
 #include "gobject/uHMMObject.h"
 
@@ -177,9 +179,6 @@ void UHMM3SearchDialogImpl::sl_okButtonClicked() {
     }
 
     SAFE_POINT(!model.sequence.isNull(), L10N::nullPointerError("sequence object"), );
-    U2OpStatusImpl os;
-    const DNASequence sequence = model.sequence->getWholeSequence(os);
-    CHECK_OP_EXT(os, QMessageBox::warning(this, tr("Error"), os.getError()), );
 
     bool objectPrepared = annotationsWidgetController->prepareAnnotationObject();
     if (!objectPrepared) {
@@ -188,7 +187,7 @@ void UHMM3SearchDialogImpl::sl_okButtonClicked() {
     }
 
     const CreateAnnotationModel &annModel = annotationsWidgetController->getModel();
-    UHMM3SWSearchToAnnotationsTask *searchTask = new UHMM3SWSearchToAnnotationsTask(model.hmmfile, sequence, annModel.getAnnotationObject(),
+    Hmmer3SearchWorfklowTask *searchTask = new Hmmer3SearchWorfklowTask(model.hmmfile, model.sequence, annModel.getAnnotationObject(),
         annModel.groupName, annModel.description, annModel.data->type, annModel.data->name, model.searchSettings);
     AppContext::getTaskScheduler()->registerTopLevelTask(searchTask);
 

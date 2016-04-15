@@ -58,9 +58,23 @@ namespace LocalWorkflow {
 static const QString HMM3_PORT("in-hmm3");
 
 static const QString NAME_ATTR("result-name");
+static const QString THRESHOLD_ATTR("threshold-type");
 static const QString DOM_E_ATTR("e-val");
 static const QString DOM_T_ATTR("score");
+static const QString DOM_Z_ATTR("domZ");
 static const QString SEED_ATTR("seed");
+static const QString BIAS_FILTER_ATTR("nobias");
+static const QString SCORE_CORRECTION_ATTR("nonull2");
+static const QString HEURISTIC_FILTER_ATTR("max");
+static const QString F1_ATTR("F1");
+static const QString F2_ATTR("F2");
+static const QString F3_ATTR("F3");
+
+const QString HMM3SearchWorker::E_THRESHOLD = "domE";
+const QString HMM3SearchWorker::T_THRESHOLD = "domT";
+const QString HMM3SearchWorker::CUT_GA_THRESHOLD = "cut_ga";
+const QString HMM3SearchWorker::CUT_NC_THRESHOLD = "cut_nc";
+const QString HMM3SearchWorker::CUT_TC_THRESHOLD = "cut_tc";
 
 const QString HMM3SearchWorkerFactory::ACTOR("hmm3-search");
 
@@ -88,13 +102,40 @@ void HMM3SearchWorkerFactory::init() {
     {
         Descriptor nd(NAME_ATTR, HMM3SearchWorker::tr("Result annotation"), HMM3SearchWorker::tr("A name of the result annotations."));
         Descriptor nsd(SEED_ATTR, HMM3SearchWorker::tr("Seed"), HMM3SearchWorker::tr("Random generator seed. 0 - means that one-time arbitrary seed will be used."));
+        Descriptor td(THRESHOLD_ATTR, HMM3SearchWorker::tr("Threshold type"), HMM3SearchWorker::tr("Controlling reporting and  model-specific thresholds."));
         Descriptor ded(DOM_E_ATTR, HMM3SearchWorker::tr("Filter by high E-value"), HMM3SearchWorker::tr("Report domains with e-value less than."));
         Descriptor dtd(DOM_T_ATTR, HMM3SearchWorker::tr("Filter by low score"), HMM3SearchWorker::tr("Report domains with score greater than."));
+        Descriptor dzd(DOM_Z_ATTR, HMM3SearchWorker::tr("Significant sequences"), HMM3SearchWorker::tr("Number of significant sequences, for domain E-value calculation."));
+        Descriptor bfd(BIAS_FILTER_ATTR, HMM3SearchWorker::tr("No bias"), HMM3SearchWorker::tr("Turn off composition bias filter."));
+        Descriptor scd(SCORE_CORRECTION_ATTR, HMM3SearchWorker::tr("No score corrections"), HMM3SearchWorker::tr("Turn off biased composition score corrections."));
+        Descriptor hfd(HEURISTIC_FILTER_ATTR, HMM3SearchWorker::tr("No heuristic filters"), HMM3SearchWorker::tr("Turn all heuristic filters off (less speed, more power)."));
+        Descriptor f1d(F1_ATTR, HMM3SearchWorker::tr("MSV threshold"), HMM3SearchWorker::tr("Stage 1 (MSV) threshold: promote hits w/ P <= F1."));
+        Descriptor f2d(F2_ATTR, HMM3SearchWorker::tr("Vit threshold"), HMM3SearchWorker::tr("Stage 2 (Vit) threshold: promote hits w/ P <= F2."));
+        Descriptor f3d(F3_ATTR, HMM3SearchWorker::tr("Fwd threshold"), HMM3SearchWorker::tr("Stage 3 (Fwd) threshold: promote hits w/ P <= F3."));
 
-         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("hmm_signal"));
-         a << new Attribute(nsd, BaseTypes::NUM_TYPE(), false, QVariant(0));
-         a << new Attribute(ded, BaseTypes::NUM_TYPE(), false, QVariant(-1));
-         a << new Attribute(dtd, BaseTypes::NUM_TYPE(), false, QVariant((double)0.0));
+        a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, "hmm_signal");
+        a << new Attribute(nsd, BaseTypes::NUM_TYPE(), false, 0.0);
+        a << new Attribute(td, BaseTypes::STRING_TYPE(), true, HMM3SearchWorker::E_THRESHOLD);
+        Attribute *domEAttr = new Attribute(ded, BaseTypes::NUM_TYPE(), false, -1);
+        Attribute *domTAttr = new Attribute(dtd, BaseTypes::NUM_TYPE(), false, 0.0);
+        a << domEAttr;
+        a << domTAttr;
+        a << new Attribute(dzd, BaseTypes::NUM_TYPE(), false, 0);
+        a << new Attribute(bfd, BaseTypes::BOOL_TYPE(), false, false);
+        a << new Attribute(scd, BaseTypes::BOOL_TYPE(), false, false);
+        a << new Attribute(hfd, BaseTypes::BOOL_TYPE(), false, false);
+        Attribute *f1Attr = new Attribute(f1d, BaseTypes::NUM_TYPE(), false, 0.02);
+        Attribute *f2Attr = new Attribute(f2d, BaseTypes::NUM_TYPE(), false, 0.001);
+        Attribute *f3Attr = new Attribute(f3d, BaseTypes::NUM_TYPE(), false, 0.00001);
+        a << f1Attr;
+        a << f2Attr;
+        a << f3Attr;
+
+        domEAttr->addRelation(new VisibilityRelation(THRESHOLD_ATTR, HMM3SearchWorker::E_THRESHOLD));
+        domTAttr->addRelation(new VisibilityRelation(THRESHOLD_ATTR, HMM3SearchWorker::T_THRESHOLD));
+        f1Attr->addRelation(new VisibilityRelation(HEURISTIC_FILTER_ATTR, false));
+        f2Attr->addRelation(new VisibilityRelation(HEURISTIC_FILTER_ATTR, false));
+        f3Attr->addRelation(new VisibilityRelation(HEURISTIC_FILTER_ATTR, false));
     }
 
     Descriptor desc(HMM3SearchWorkerFactory::ACTOR, HMM3SearchWorker::tr("HMM3 Search"),
@@ -102,7 +143,15 @@ void HMM3SearchWorkerFactory::init() {
         " In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence."));
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     QMap<QString, PropertyDelegate*> delegates;
-
+    {
+        QVariantMap map;
+        map[HMM3SearchWorker::tr("<= E-value")] = HMM3SearchWorker::E_THRESHOLD;
+        map[HMM3SearchWorker::tr(">= score")] = HMM3SearchWorker::T_THRESHOLD;
+        map[HMM3SearchWorker::tr("Use profile's GA gathering cutoffs")] = HMM3SearchWorker::CUT_GA_THRESHOLD;
+        map[HMM3SearchWorker::tr("Use profile's NC noise cutoffs")] = HMM3SearchWorker::CUT_NC_THRESHOLD;
+        map[HMM3SearchWorker::tr("Use profile's TC trusted cutoffs")] = HMM3SearchWorker::CUT_TC_THRESHOLD;
+        delegates[THRESHOLD_ATTR] = new ComboBoxDelegate(map);
+    }
     {
         QVariantMap eMap; eMap["prefix"]= ("1e"); eMap["minimum"] = (-99); eMap["maximum"] = (0);
         delegates[DOM_E_ATTR] = new SpinBoxDelegate(eMap);
@@ -115,6 +164,16 @@ void HMM3SearchWorkerFactory::init() {
         QVariantMap tMap; tMap["decimals"]= (2); tMap["minimum"] = (-1e+09); tMap["maximum"] = (1e+09);
         tMap["singleStep"] = (0.1);
         delegates[DOM_T_ATTR] = new DoubleSpinBoxDelegate(tMap);
+    }
+    {
+        QVariantMap map; map["decimals"] = 2; map["minimum"] = 0.0; map["maximum"] = 1000000000.0;
+        delegates[DOM_Z_ATTR] = new DoubleSpinBoxDelegate(map);
+    }
+    {
+        QVariantMap map; map["decimals"] = 5; map["minimum"] = -1000000000.0; map["maximum"] = 1000000000.0;
+        delegates[F1_ATTR] = new DoubleSpinBoxDelegate(map);
+        delegates[F2_ATTR] = new DoubleSpinBoxDelegate(map);
+        delegates[F3_ATTR] = new DoubleSpinBoxDelegate(map);
     }
 
     proto->setEditor(new DelegateEditor(delegates));
@@ -162,20 +221,7 @@ void HMM3SearchWorker::init() {
     seqPort->addComplement(output);
     output->addComplement(seqPort);
 
-
-    float domENum = actor->getParameter(DOM_E_ATTR)->getAttributeValue<int>(context);
-    if(domENum > 0) {
-        algoLog.details(tr("Power of e-value must be less or equal to zero. Using default value: 1e-1"));
-        domENum = -1;
-    }
-    cfg.domE = pow(10, domENum);
-
-    cfg.domT = (float)actor->getParameter(DOM_T_ATTR)->getAttributeValue<double>(context);
-    if(cfg.domT <= 0) {
-        algoLog.details(tr("Score must be greater than zero. Using default value: 0.01"));
-        cfg.domT = 0.01;
-    }
-    cfg.seed = actor->getParameter(SEED_ATTR)->getAttributeValue<int>(context);
+    initConfig();
     resultName = actor->getParameter(NAME_ATTR)->getAttributeValue<QString>(context);
     if(resultName.isEmpty()){
         algoLog.details(tr("Value for attribute name is empty, default name used"));
@@ -262,6 +308,47 @@ void HMM3SearchWorker::sl_taskFinished(Task *t) {
 }
 
 void HMM3SearchWorker::cleanup() {
+}
+
+void HMM3SearchWorker::initConfig() {
+    const QString thresholdType = getValue<QString>(THRESHOLD_ATTR);
+    if (E_THRESHOLD == thresholdType) {
+        int domENum = actor->getParameter(DOM_E_ATTR)->getAttributeValue<int>(context);
+        if (domENum > 0) {
+            algoLog.details(tr("Power of e-value must be less or equal to zero. Using default value: 1e-1"));
+            domENum = -1;
+        }
+        cfg.domE = pow(10, domENum);
+    } else if (T_THRESHOLD == thresholdType) {
+        cfg.domT = (float)actor->getParameter(DOM_T_ATTR)->getAttributeValue<double>(context);
+        if (cfg.domT <= 0) {
+            algoLog.details(tr("Score must be greater than zero. Using default value: 0.01"));
+            cfg.domT = 0.01;
+        }
+    } else if (CUT_GA_THRESHOLD == thresholdType) {
+        cfg.useBitCutoffs = p7H_GA;
+    } else if (CUT_NC_THRESHOLD == thresholdType) {
+        cfg.useBitCutoffs = p7H_NC;
+    } else if (CUT_TC_THRESHOLD == thresholdType) {
+        cfg.useBitCutoffs = p7H_TC;
+    }
+
+    double domZValue = getValue<double>(DOM_Z_ATTR);
+    if (domZValue > 0) {
+        cfg.domZ = domZValue;
+    }
+
+    cfg.noBiasFilter = getValue<bool>(BIAS_FILTER_ATTR);
+    cfg.noNull2 = getValue<bool>(SCORE_CORRECTION_ATTR);
+    cfg.doMax = getValue<bool>(HEURISTIC_FILTER_ATTR);
+
+    if (!cfg.doMax) {
+        cfg.f1 = getValue<double>(F1_ATTR);
+        cfg.f2 = getValue<double>(F1_ATTR);
+        cfg.f3 = getValue<double>(F1_ATTR);
+    }
+
+    cfg.seed = actor->getParameter(SEED_ATTR)->getAttributeValue<int>(context);
 }
 
 } //namespace LocalWorkflow

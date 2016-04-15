@@ -60,7 +60,7 @@ static QString findWorkflowPath(const QString & schemaName) {
 SimpleInOutWorkflowTask::SimpleInOutWorkflowTask(const SimpleInOutWorkflowTaskConfig& _conf)
 : DocumentProviderTask(tr("Run workflow: %1").arg(_conf.schemaName), TaskFlags_NR_FOSCOE), conf(_conf)
 {
-    inDoc = new Document(BaseDocumentFormats::get(BaseDocumentFormats::FASTA), IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE),
+    inDoc = new Document(BaseDocumentFormats::get(conf.inFormat), IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE),
                         GUrl("unused"), U2DbiRef(), conf.objects, conf.inDocHints);
     inDoc->setParent(this);
 }
