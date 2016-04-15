@@ -21,10 +21,14 @@
 
 #include <QtCore/QDir>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/AppResources.h>
+#include <U2Core/MultiTask.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Formats/BAMUtils.h>
 #include <U2Formats/MergeBamTask.h>
@@ -73,16 +77,21 @@ void BwaBuildIndexTask::LogParser::parseErrOutput(const QString &partOfLog) {
 
 // BwaAlignTask
 
+void cleanupTempDir(const QStringList &tempDirFiles) {
+    foreach(const QString& url, tempDirFiles) {
+        QFile toDelete(url);
+        if (toDelete.exists(url)) {
+            toDelete.remove(url);
+        }
+    }
+}
+
 BwaAlignTask::BwaAlignTask(const QString &indexPath, const QList<ShortReadSet>& shortReadSets, const QString &resultPath, const DnaAssemblyToRefTaskSettings &settings):
     Task("Bwa reads assembly", TaskFlags_NR_FOSCOE),
     indexPath(indexPath),
     readSets(shortReadSets),
     resultPath(resultPath),
-    settings(settings),
-    alignmentStarted(false),
-    samingStarted(false),
-    mergingStarted(false),
-    resultPartsCounter(0)
+    settings(settings)
 {
 }
 
@@ -105,7 +114,7 @@ void BwaAlignTask::prepare() {
         setError(tr("In paired-end mode it possible to analyze only 2 read sets using BWA"));
         return;
     }
-
+    QList<Task*> alignTasks;
     foreach (const ShortReadSet& readSet, readSets) {
         QStringList arguments;
         arguments.append("aln");
@@ -168,64 +177,65 @@ void BwaAlignTask::prepare() {
         arguments.append(indexPath);
         arguments.append(readSet.url.getURLString());
         Task* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
-        addSubTask(alignTask);
         alignTasks.append(alignTask);
     }
+    alignMultiTask = new MultiTask(tr("Align reads with BWA Multitask"), alignTasks);
+    addSubTask(alignMultiTask);
 }
 
 QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
+    QList<Task*> result;    
+    QFileInfo resultPathFileInfo(resultPath);
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    if (alignMultiTask == subTask) {
+        QList<Task*> samTasks;
+        int resultPartsCounter = 0;
+        foreach(const ShortReadSet& set, readSets) {
+            QStringList arguments;
 
-    alignTasks.removeOne(subTask);
-    samTasks.removeOne(subTask);
+            settings.pairedReads ? arguments.append("sampe") : arguments.append("samse");
 
-    if (alignTasks.size() == 0) {
-        QFileInfo resultPathFileInfo(resultPath);
-        if (!alignmentStarted) {
-            foreach(const ShortReadSet& set, readSets) {
-                QStringList arguments;
-
-                settings.pairedReads ? arguments.append("sampe") : arguments.append("samse");
-
-                arguments.append("-f");
-                if (readSets.size() == 1) {
-                    arguments.append(resultPath);
-                } else {
-                    QString pathToSort = resultPathFileInfo.dir().canonicalPath() + "/" + resultPathFileInfo.baseName() + QString::number(resultPartsCounter++);
-                    urlsToMerge.append(pathToSort);
-                    arguments.append(pathToSort);
-                }
-                arguments.append(indexPath);
-                arguments.append(getSAIPath(set.url.getURLString()));
-                arguments.append(set.url.getURLString());
-
-                alignmentStarted = true;
-                ExternalToolRunTask *task = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
-                result.append(task);
-                samTasks.append(task);
-                samingStarted = true;
+            arguments.append("-f");
+            if (readSets.size() == 1) {
+                arguments.append(resultPath);
+            } else {
+                QString pathToSort = tmpDirPath + "/" + resultPathFileInfo.baseName() + QString::number(resultPartsCounter++);
+                urlsToMerge.append(pathToSort);
+                arguments.append(pathToSort);
             }
-        } else if (samTasks.size() == 0 && resultPartsCounter > 1 && !mergingStarted) {
-            //converting SAM -> BAM
-            QStringList bamUrlstoMerge;
-            foreach(const QString &url, urlsToMerge) {
-                QFileInfo urlToConvertFileInfo(url);
-                QString convertedBamUrl = urlToConvertFileInfo.dir().canonicalPath() + "/" + urlToConvertFileInfo.baseName() + ".bam";
-                BAMUtils::ConvertOption options(true);
-                BAMUtils::convertToSamOrBam(url, convertedBamUrl, options, stateInfo);
-                if (stateInfo.isCoR()) {
-                    return result;
-                }
-                bamUrlstoMerge.append(convertedBamUrl);
-            }
-            result.append(new MergeBamTask(bamUrlstoMerge, resultPathFileInfo.dir().canonicalPath(), resultPathFileInfo.baseName() + ".bam", true));
-            mergingStarted = true;
-        } else if (samTasks.size() == 0 && resultPartsCounter > 1 && mergingStarted) {
-            //converting BAM -> SAM
-            QString bamResultPath = resultPathFileInfo.dir().canonicalPath() + "/" + resultPathFileInfo.baseName() + ".bam";
-            BAMUtils::ConvertOption options(false);
-            BAMUtils::convertToSamOrBam(resultPath, bamResultPath, options, stateInfo);
+            arguments.append(indexPath);
+            arguments.append(getSAIPath(set.url.getURLString()));
+            arguments.append(set.url.getURLString());
+
+            ExternalToolRunTask *task = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
+            samTasks.append(task);
         }
+        samMultiTask = new MultiTask(tr("Align reads with BWA Multitask"), samTasks);
+        result.append(samMultiTask);
+    } 
+    if (subTask == samMultiTask && readSets.size() > 1) {
+        //converting SAM -> BAM
+        QStringList bamUrlstoMerge;
+        foreach(const QString &url, urlsToMerge) {
+            QFileInfo urlToConvertFileInfo(url);
+            QString convertedBamUrl = urlToConvertFileInfo.dir().canonicalPath() + "/" + urlToConvertFileInfo.baseName() + ".bam";
+            BAMUtils::ConvertOption options(true);
+            BAMUtils::convertToSamOrBam(url, convertedBamUrl, options, stateInfo);
+            bamUrlstoMerge.append(convertedBamUrl);
+            if (stateInfo.isCoR()) {
+                cleanupTempDir(urlsToMerge);
+                return result;
+            }
+        }
+        mergeTask = new MergeBamTask(bamUrlstoMerge, resultPathFileInfo.dir().canonicalPath(), resultPathFileInfo.baseName() + ".bam", true);
+        result.append(mergeTask);
+    } 
+    if (subTask == mergeTask) {
+        //converting BAM -> SAM
+        QString bamResultPath = resultPathFileInfo.dir().canonicalPath() + "/" + resultPathFileInfo.baseName() + ".bam";
+        BAMUtils::ConvertOption options(false);
+        BAMUtils::convertToSamOrBam(resultPath, bamResultPath, options, stateInfo);
+        cleanupTempDir(urlsToMerge);
     }
 
     return result;
@@ -268,10 +278,6 @@ BwaMemAlignTask::BwaMemAlignTask(const QString &indexPath, const DnaAssemblyToRe
     Task("BWA MEM reads assembly", TaskFlags_NR_FOSCOE),
     indexPath(indexPath),
     resultPath(settings.resultFileName.getURLString()),
-    alignmentStarted(false),
-    samingStarted(false),
-    mergingStarted(false),
-    resultPartsCounter(1),
     settings(settings)
 {
 }
@@ -301,7 +307,8 @@ void BwaMemAlignTask::prepare() {
     settings.pairedReads = readSet.type == ShortReadSet::PairedEndReads;
 
     QFileInfo resultFileInfo(settings.resultFileName.getURLString());
-    for (; resultPartsCounter <= downStreamList.size(); resultPartsCounter++) {
+    QList<Task*> alignTasks;
+    for (int resultPartsCounter = 0; resultPartsCounter < downStreamList.size(); resultPartsCounter++) {
         QStringList arguments;
 
         arguments.append("mem");
@@ -324,15 +331,6 @@ void BwaMemAlignTask::prepare() {
         arguments.append("-c");
         arguments.append(settings.getCustomValue(BwaTask::OPTION_SKIP_SEED_THRESHOLD, 10000).toString());
 
-        //TODO
-        //doesn't work for bwa mem 0.7.4
-        /*
-        arguments.append("-D");
-        arguments.append(settings.getCustomValue(BwaTask::OPTION_DROP_CHAINS_THRESHOLD, float(0.5)).toString());
-
-        arguments.append("-m");
-        arguments.append(settings.getCustomValue(BwaTask::OPTION_MAX_MATE_RESCUES, 100).toString());
-        */
         if (settings.getCustomValue(BwaTask::OPTION_SKIP_MATE_RESCUES, false).toBool()) {
             arguments.append("-S");
         }
@@ -373,39 +371,39 @@ void BwaMemAlignTask::prepare() {
         } else {
             alignTask->setStandartOutputFile(settings.resultFileName.getURLString());
         }
-        addSubTask(alignTask);
         alignTasks.append(alignTask);
     }
+    alignMultiTask = new MultiTask(tr("Align reads with BWA-MEM Multitask"), alignTasks);
+    addSubTask(alignMultiTask);
 }
-
 
 QList<Task *> BwaMemAlignTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
-    alignTasks.removeOne(subTask);
-    if (alignTasks.size() == 0) {
-        QFileInfo resultFileInfo(settings.resultFileName.getURLString());
-        if (resultPartsCounter >= 1 && !mergingStarted) {
-            //converting SAM -> BAM
-            QStringList bamUrlstoMerge;
-            for (int i = 1; i < resultPartsCounter; i++) {
-                QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" +
-                    QString::number(i) + "." + resultFileInfo.completeSuffix();
-                QString bamFilePath = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + ".bam";
-                BAMUtils::ConvertOption options(true);
-                BAMUtils::convertToSamOrBam(resultFilePathWithpartNumber, bamFilePath, options, stateInfo);
-                if (stateInfo.isCoR()) {
-                    return result;
-                }
-                bamUrlstoMerge.append(bamFilePath);
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    QFileInfo resultFileInfo(settings.resultFileName.getURLString());
+    if (alignMultiTask == subTask) {
+        //converting SAM -> BAM
+        for (int i = 0; i < settings.shortReadSets.size() / 2; i++) {
+            QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" +
+                QString::number(i) + "." + resultFileInfo.completeSuffix();
+            QString bamFilePath = tmpDirPath + "/" + resultFileInfo.baseName() + ".bam";
+            BAMUtils::ConvertOption options(true);
+            BAMUtils::convertToSamOrBam(resultFilePathWithpartNumber, bamFilePath, options, stateInfo);
+            bamUrlstoMerge.append(bamFilePath);
+            if (stateInfo.isCoR()) {
+                cleanupTempDir(bamUrlstoMerge);
+                return result;
             }
-            result.append(new MergeBamTask(bamUrlstoMerge, resultFileInfo.dir().canonicalPath(), resultFileInfo.baseName() + ".bam", true));
-            mergingStarted = true;
-        } else if (resultPartsCounter > 1 && mergingStarted) {
-            //converting BAM -> SAM
-            QString bamResultPath = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + ".bam";
-            BAMUtils::ConvertOption options(false);
-            BAMUtils::convertToSamOrBam(resultPath, bamResultPath, options, stateInfo);
         }
+        mergeTask = new MergeBamTask(bamUrlstoMerge, resultFileInfo.dir().canonicalPath(), resultFileInfo.baseName() + ".bam", true);
+        result.append(mergeTask);
+    } 
+    if (mergeTask == subTask) {
+        //converting BAM -> SAM
+        cleanupTempDir(bamUrlstoMerge);
+        QString bamResultPath = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + ".bam";
+        BAMUtils::ConvertOption options(false);
+        BAMUtils::convertToSamOrBam(resultPath, bamResultPath, options, stateInfo);
     }
     return result;
 }
