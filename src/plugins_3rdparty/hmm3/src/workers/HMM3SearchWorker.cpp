@@ -116,7 +116,7 @@ void HMM3SearchWorkerFactory::init() {
         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, "hmm_signal");
         a << new Attribute(nsd, BaseTypes::NUM_TYPE(), false, 0.0);
         a << new Attribute(td, BaseTypes::STRING_TYPE(), true, HMM3SearchWorker::E_THRESHOLD);
-        Attribute *domEAttr = new Attribute(ded, BaseTypes::NUM_TYPE(), false, -1);
+        Attribute *domEAttr = new Attribute(ded, BaseTypes::NUM_TYPE(), false, 1);
         Attribute *domTAttr = new Attribute(dtd, BaseTypes::NUM_TYPE(), false, 0.0);
         a << domEAttr;
         a << domTAttr;
@@ -314,9 +314,9 @@ void HMM3SearchWorker::initConfig() {
     const QString thresholdType = getValue<QString>(THRESHOLD_ATTR);
     if (E_THRESHOLD == thresholdType) {
         int domENum = actor->getParameter(DOM_E_ATTR)->getAttributeValue<int>(context);
-        if (domENum > 0) {
-            algoLog.details(tr("Power of e-value must be less or equal to zero. Using default value: 1e-1"));
-            domENum = -1;
+        if (domENum > 1) {
+            algoLog.details(tr("Power of e-value must be less or equal to zero. Using default value: 1e+1"));
+            domENum = 1;
         }
         cfg.domE = pow(10, domENum);
     } else if (T_THRESHOLD == thresholdType) {
