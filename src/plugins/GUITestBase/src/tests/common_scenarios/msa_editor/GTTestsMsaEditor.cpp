@@ -3654,12 +3654,14 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5,0));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     // Expected state: alignment moved to 5 bases to the right.
 
     // 4. Drag the selection with mouse to one base to the left.
     GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(4,0));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     // Expected state: alignment  moved to one bases to the left.
 
     // Check results
@@ -5046,6 +5048,7 @@ GUI_TEST_CLASS_DEFINITION(test_0076){
     GTMouseDriver::press();
     GTMouseDriver::moveTo(QPoint(10, GTMouseDriver::getMousePosition().y()));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 //    Expected state: visible range dragged
     QColor finalColor1 = GTWidget::getColor(os, simple, simple->geometry().topLeft() + QPoint(5, 5));
     QString finalColorS1 = finalColor1.name();

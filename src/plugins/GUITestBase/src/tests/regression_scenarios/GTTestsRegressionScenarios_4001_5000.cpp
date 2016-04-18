@@ -2662,7 +2662,9 @@ GUI_TEST_CLASS_DEFINITION(test_4383) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(msaOffsetRight->mapToGlobal(QPoint(msaOffsetRight->rect().left() - 52, 50)));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTKeyboardDriver::keyClick( Qt::Key_Space);
+    GTThread::waitForMainThread();
 
     GTGlobals::sleep();
     activeWindow = GTUtilsMdi::activeWindow(os);
@@ -4137,6 +4139,7 @@ GUI_TEST_CLASS_DEFINITION(test_4728) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(endPos);
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTGlobals::sleep(200);
 
     //Expected state: all 4 symbols are selected

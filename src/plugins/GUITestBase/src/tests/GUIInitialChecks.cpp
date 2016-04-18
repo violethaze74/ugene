@@ -148,7 +148,7 @@ GUI_TEST_CLASS_DEFINITION(post_check_0001) {
 GUI_TEST_CLASS_DEFINITION(post_action_0000) {
     const Qt::KeyboardModifiers modifiers = QGuiApplication::queryKeyboardModifiers();
     if (modifiers & Qt::ShiftModifier) {
-        GTKeyboardDriver::keyRelease(Qt::ShiftModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     }
 
     if (modifiers & Qt::ControlModifier) {
@@ -156,7 +156,7 @@ GUI_TEST_CLASS_DEFINITION(post_action_0000) {
     }
 
     if (modifiers & Qt::AltModifier) {
-        GTKeyboardDriver::keyRelease(Qt::AltModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     }
 
     uiLog.trace(QString("post_action_0000: next keyboard modifiers are pressed after test: %1").arg(QGuiApplication::queryKeyboardModifiers()));

@@ -304,6 +304,7 @@ void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os){
         p.setX(p.x()+200);
         GTMouseDriver::moveTo(p);
         GTMouseDriver::release();
+        GTThread::waitForMainThread();
     }
 }
 #undef GT_METHOD_NAME

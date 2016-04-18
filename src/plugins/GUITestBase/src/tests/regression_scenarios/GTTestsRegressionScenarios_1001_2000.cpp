@@ -1031,6 +1031,7 @@ GUI_TEST_CLASS_DEFINITION(test_1059) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(workerCenterPos + QPoint(100, 0));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "nameEdit"), "Write Sequence 1");
 
@@ -1984,6 +1985,7 @@ GUI_TEST_CLASS_DEFINITION(test_1166) {
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(40,7));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     //3. Drag the region you selected to its original place
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(43,7));
@@ -1991,6 +1993,7 @@ GUI_TEST_CLASS_DEFINITION(test_1166) {
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(46,7));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     //4. Press right mouse button, choose "Align"->"Align with T-Coffee"
     //Expected state: UGENE not crashes
@@ -2224,6 +2227,7 @@ GUI_TEST_CLASS_DEFINITION(test_1189_1){
     p.setX(p.x() + 200);
     GTMouseDriver::moveTo(p);
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
 //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -3669,6 +3673,7 @@ public:
             GTMouseDriver::press();
             GTMouseDriver::moveTo(newBottomRight);
             GTMouseDriver::release();
+            GTThread::waitForMainThread();
             CHECK_SET_ERR(prevSize == dialog->size(), "size should not change");
             GTWidget::click(os, GTWidget::findButtonByText(os,"Cancel"));
         }
@@ -5177,6 +5182,7 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(0, -200));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(readSeq != NULL, "\'Read Sequence 1\' element not found");
     GTGlobals::sleep(500);
     GTUtilsWorkflowDesigner::connect(os, readSeq, toBam);
@@ -5788,6 +5794,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
     GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(6, 9), QPoint(13, 12), selection1);
 
@@ -5800,6 +5807,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
     GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(11, 9));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(8, 9), QPoint(13, 10), "GTCTAT\nGCTTAT");
 
@@ -7415,7 +7423,7 @@ GUI_TEST_CLASS_DEFINITION( test_1704 ){
     GTFileDialog::openFile(os, sandBoxDir, "1704_exported.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::doubleClickItem(os, "1704_exported.gb");
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(10000000);
 //    Expected state: all the annotations of the new file are identical to annotations of the old file
     GTUtilsAnnotationsTreeView::findItem(os, "hmm_signal  (0, 27)");
 //    Bug state: only the first annotations without qualifiers is opened

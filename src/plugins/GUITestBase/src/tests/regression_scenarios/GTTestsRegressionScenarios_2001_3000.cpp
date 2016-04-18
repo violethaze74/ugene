@@ -219,6 +219,7 @@ GUI_TEST_CLASS_DEFINITION( test_2006 )
     GTGlobals::sleep( 200 );
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition + QPoint( 0, 0 ) );
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTGlobals::sleep( 200 );
 
     // 4. Check that the content has not been changed
@@ -257,6 +258,7 @@ GUI_TEST_CLASS_DEFINITION( test_2007 )
     GTGlobals::sleep( 200 );
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition - QPoint( 1, 0 ) );
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTGlobals::sleep( 200 );
 
     // Expected state: nothing happens
@@ -1373,6 +1375,7 @@ GUI_TEST_CLASS_DEFINITION( test_2160 )
     GTGlobals::sleep( 200 );
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition + QPoint( 3, 0 ) );
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTGlobals::sleep( 200 );
 
     // 4. Press "Delete" key
@@ -2109,7 +2112,9 @@ GUI_TEST_CLASS_DEFINITION( test_2306 ) {
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition + QPoint( 3, 0 ) );
     GTGlobals::sleep( 200 );
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTKeyboardDriver::keyClick( Qt::Key_Escape);
+    GTThread::waitForMainThread();
     GTGlobals::sleep( 200 );
 
     // 4. Call context menu
@@ -4345,6 +4350,7 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
 
 GUI_TEST_CLASS_DEFINITION(test_2640){
 //    0. Set CPU optimisation in settings dialog
+    GTGlobals::sleep();
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
@@ -4385,6 +4391,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640){
 
     GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTThread::waitForMainThread();
 
     //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);

@@ -1426,6 +1426,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044_1){
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(100, 0));
     GTMouseDriver::release();
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTThread::waitForMainThread();
 
     QVector<U2Region> selectionVector = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(selectionVector.size() == 1, QString("unexpected number of selected regions: %1").arg(selectionVector.size()));
@@ -2178,6 +2179,7 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p1);
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on reduce at the bottom");
 
     QWidget* topSplitterHandle = GTWidget::findWidget(os, "qt_splithandle_det_view_NC_004718");
@@ -2194,6 +2196,7 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p1);
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on reduce at the top");
 }
 
@@ -2290,6 +2293,7 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p2);
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection(os).isEmpty(), "Nothing is selected");
 }

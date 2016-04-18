@@ -53,6 +53,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"
+#include <utils/GTThread.h>
 
 namespace U2 {
 
@@ -245,6 +246,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 
     GTMouseDriver::moveTo(point + QPoint(80,0));//move 80 pix right
     GTMouseDriver::release();
+
+    GTThread::waitForMainThread();
 
     GTKeyboardDriver::keyClick('c',Qt::ControlModifier);
     GTGlobals::sleep(500);

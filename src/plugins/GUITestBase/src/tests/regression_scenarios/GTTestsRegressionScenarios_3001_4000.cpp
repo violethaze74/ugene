@@ -2137,6 +2137,7 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     GTGlobals::sleep(200);
     //GTUtilsMSAEditorSequenceArea::moveTo(os, mouseDragPosition + QPoint(0, -10));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTGlobals::sleep(200);
 
     // Expected result: the highlighting mode is the same, human_T1 is still the reference.
@@ -2515,6 +2516,7 @@ GUI_TEST_CLASS_DEFINITION(test_3384){
     GTMouseDriver::press();
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(0,40));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 //    Current state: SAFE_POINT triggers and selection is "beautiful" (see the attachment)
     GTUtilsLog::check(os, l);
 }
@@ -6113,6 +6115,7 @@ GUI_TEST_CLASS_DEFINITION(test_3996) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(chromaView->mapToGlobal(chromaViewRect.center() + QPoint(20, 0)));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     GTUtilsLog::check(os, l);
 }

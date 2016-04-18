@@ -1991,7 +1991,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004){
 
     QLineEdit* pathLe = GTWidget::findExactWidget<QLineEdit*>(os, "pathLe");
     QString pathLeText = pathLe->text();
-    CHECK_SET_ERR(!pathLeText.isEmpty() && pathLeText.contains("COI_consensus.txt"), "wrong lineEdit text");
+    CHECK_SET_ERR(!pathLeText.isEmpty() && pathLeText.contains("COI_consensus.txt"), "wrong lineEdit text: " + pathLeText);
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0005){
