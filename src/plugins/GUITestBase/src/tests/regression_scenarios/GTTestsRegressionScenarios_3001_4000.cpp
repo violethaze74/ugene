@@ -2189,10 +2189,6 @@ GUI_TEST_CLASS_DEFINITION(test_3328) {
         //    Expected state: the task is canceled.
             CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "There are unfinished tasks");
         }
-
-    private:
-        HI::GUITestOpStatus &os;
-        QEventLoop *waiter;
     };
 
     QThreadPool threadPool(this);
