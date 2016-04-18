@@ -573,7 +573,7 @@ void FindEnzymesDialog::accept() {
         U2Region excluded = excludeRegionSelector->getRegion();
         if (excluded.contains(searchRegion)) {
             QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Critical, L10N::errorTitle(), tr("Invalid region to search in!"), QMessageBox::Ok, this);
-            msgBox->setInformativeText(tr("'Exclude'' region contains 'Search In' region. Search region is empty."));
+            msgBox->setInformativeText(tr("'Exclude' region contains 'Search In' region. Search region is empty."));
             msgBox->exec();
             CHECK(!msgBox.isNull(), );
             return;
@@ -582,7 +582,7 @@ void FindEnzymesDialog::accept() {
 
     if (selectedEnzymes.isEmpty()) {
         int ret = QMessageBox::question(this, windowTitle(),
-            tr("<html><body align=\"center\">No enzymes are selected!\Do you want to turn off <br>enzymes annotations highlighting?</body></html>"),
+            tr("<html><body align=\"center\">No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?</body></html>"),
             QMessageBox::Yes, QMessageBox::No);
         if (ret == QMessageBox::Yes) {
             QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(seqCtx, ANNOTATION_GROUP_ENZYME);

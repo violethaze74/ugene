@@ -108,8 +108,8 @@ Task::ReportResult FindEnzymesToAnnotationsTask::report() {
 FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int mr, bool _circular, QVector<U2Region> excludedRegions)
     : Task(tr("Find Enzymes"), TaskFlags_NR_FOSCOE),
       maxResults(mr),
-      circular(_circular),
-      excludedRegions(excludedRegions)
+      excludedRegions(excludedRegions),
+      circular(_circular)
 {
     U2SequenceObject seq("sequence", seqRef);
 

@@ -56,6 +56,7 @@ const int ParserState::LOCAL_READ_BUFFER_SIZE = 40000;
 const QString EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains features of another remote GenBank file. These features have been skipped.");
 const QString EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
 const QString EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "Location parsing error.");
+const QString EMBLGenbankAbstractDocument::NUMBER_IN_SEQUENCE_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The numerals are forbidden in the sequence. They were removed.");
 
 EMBLGenbankAbstractDocument::EMBLGenbankAbstractDocument(const DocumentFormatId& _id, const QString& _formatName, int mls,
                                                          DocumentFormatFlags flags, QObject* p)
@@ -78,7 +79,7 @@ Document* EMBLGenbankAbstractDocument::loadDocument(IOAdapter* io, const U2DbiRe
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
 
     DocumentFormatUtils::updateFormatHints(objects, fs);
-    fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings();
+    fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings() && checkFlags(DocumentFormatFlag_SupportWriting);
     Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, writeLockReason);
     return doc;
 }
