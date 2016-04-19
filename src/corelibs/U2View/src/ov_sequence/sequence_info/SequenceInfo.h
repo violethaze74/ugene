@@ -77,6 +77,7 @@ private:
 
     /** Show or hide widgets depending on the alphabet of the sequence in focus */
     void updateLayout(); // calls the following update functions
+    void updateCommonStatisticsLayout();
     void updateCharOccurLayout();
     void updateDinuclLayout();
 
@@ -101,13 +102,18 @@ private:
      */
     void launchCalculations(QString subgroupId = QString(""));
 
-    QString  formTableRow(const QString& caption, QString value) const;
+    void resizeEvent(QResizeEvent *event);
+
+    int getAvailableSpace(DNAAlphabetType alphabetType) const;
+
+    QString  formTableRow(const QString& caption, const QString &value, int availableSpace) const;
 
     AnnotatedDNAView* annotatedDnaView;
 
     ShowHideSubgroupWidget* statsWidget;
     QLabel* statisticLabel;
     BackgroundTaskRunner< DNAStatistics > dnaStatisticsTaskRunner;
+    DNAStatistics currentCommonStatistics;
 
     ShowHideSubgroupWidget* charOccurWidget;
     QLabel* charOccurLabel;
@@ -121,7 +127,7 @@ private:
 
     U2SavableWidget savableWidget;
 
-    static const int COMMON_STATISTICS_VALUE_MAX_WIDTH;
+    static const int COMMON_STATISTICS_TABLE_CELLSPACING;
     static const QString CAPTION_SEQ_REGION_LENGTH;
 
     //nucl
