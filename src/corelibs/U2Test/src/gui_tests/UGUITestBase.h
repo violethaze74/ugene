@@ -28,7 +28,7 @@ public:
     HI::GUITest *getTest(const QString &suite, const QString &name, TestType testType = Normal);
     HI::GUITest *takeTest(const QString &suite, const QString &name, TestType testType = Normal); // removes item from UGUITestBase
 
-    GUITests getTests(TestType testType = Normal);
+    GUITests getTests(TestType testType = Normal, QString label = "");
     GUITests takeTests(TestType testType = Normal); // removes items from UGUITestBase
 
     GUITests getTestsWithoutRemoving(TestType testType = Normal);

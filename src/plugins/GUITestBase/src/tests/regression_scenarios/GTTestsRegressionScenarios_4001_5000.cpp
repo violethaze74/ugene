@@ -229,16 +229,10 @@ GUI_TEST_CLASS_DEFINITION(test_4009) {
     //4. Remove "big.aln" document
     GTUtilsDocument::removeDocument(os, "big.aln");
 
+    GTGlobals::sleep();
+    CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os)==0, "some tasks were not cancelled")
 
     //Current state: the task hangs, debug error occured with message "Infinite wait has timed out"
-    class Scenario : public CustomScenario {
-    public:
-        void run(HI::GUITestOpStatus &os) {
-            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Cancel);
-        }
-    };
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new Scenario()));
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4010) {
@@ -619,10 +613,10 @@ GUI_TEST_CLASS_DEFINITION(test_4065) {
  * 2. Check log for error: "No bam index given, preparing sequential import"
 */
     GTFile::copy(os, testDir + "_common_data/scenarios/_regression/4065/example_bam.bam", sandBoxDir + "example_bam.bam");
+    GTFile::copy(os, testDir + "_common_data/scenarios/_regression/4065/example_bam.bam.bai", sandBoxDir + "example_bam.bam.bai");
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_4065.ugenedb"));
     GTFileDialog::openFile(os, sandBoxDir + "example_bam.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     bool hasMessage = l.checkMessage("No bam index given");
@@ -712,6 +706,8 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p);
     GTMouseDriver::release();
+
+    GTThread::waitForMainThread();
 
     CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the botton of name list area is invisible");
 
@@ -1042,15 +1038,16 @@ GUI_TEST_CLASS_DEFINITION(test_4106){
 
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down );
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(200);
     GTKeyboardDriver::keyClick(Qt::Key_Down );
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(200);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, endPos-1, 1234, 3 ) );
 
+    GTGlobals::sleep(200);
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick(Qt::Key_Down );
-    GTGlobals::sleep(50);
+    GTGlobals::sleep(200);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, endPos-1, 1234, 4 ) );
 
@@ -1234,9 +1231,9 @@ GUI_TEST_CLASS_DEFINITION(test_4121) {
             CHECK_SET_ERR(cbFormat != NULL, "cbFormat not found");
 
             if (isRawPresent) {
-                CHECK_SET_ERR(cbFormat->findText("raw") != -1, "raw format is present");
+                CHECK_SET_ERR(cbFormat->findText("Raw sequence") != -1, "raw format is present");
             } else {
-                CHECK_SET_ERR(cbFormat->findText("raw") == -1, "raw format is present");
+                CHECK_SET_ERR(cbFormat->findText("Raw sequence") == -1, "raw format is present");
             }
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -2665,7 +2662,9 @@ GUI_TEST_CLASS_DEFINITION(test_4383) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(msaOffsetRight->mapToGlobal(QPoint(msaOffsetRight->rect().left() - 52, 50)));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTKeyboardDriver::keyClick( Qt::Key_Space);
+    GTThread::waitForMainThread();
 
     GTGlobals::sleep();
     activeWindow = GTUtilsMdi::activeWindow(os);
@@ -2968,15 +2967,16 @@ GUI_TEST_CLASS_DEFINITION(test_4505) {
     GTLogTracer l;
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/Chikungunya_E1.fasta");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Delete any column
     GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 1);
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTThread::waitForMainThread();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     //GTUtilsTaskTreeView::waitTaskFinished(os);
 //    3. Press "Undo"
     GTUtilsMsaEditor::undo(os);
     GTThread::waitForMainThread();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Bug state: Error appeared in log: "[ERROR][19:02] Failed to create a multiple alignment row!"
     GTUtilsLog::check(os, l);
 //    4. Click right button on MSA
@@ -3530,20 +3530,21 @@ GUI_TEST_CLASS_DEFINITION(test_4674_1) {
     int seqNumber = GTUtilsMsaEditor::getSequencesCount(os);
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTKeyboardDriver::keyClick( 'z', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::undo(os);
+    GTThread::waitForMainThread();
 
     MSAEditorTreeViewerUI* ui = qobject_cast<MSAEditorTreeViewerUI*>( GTUtilsPhyTree::getTreeViewerUi(os) );
     CHECK_SET_ERR(ui != NULL, "Cannot find the tree");
     CHECK_SET_ERR(ui->isCurTreeViewerSynchronized(), "The connection with the tree is lost");
-    CHECK_SET_ERR(seqNumber == GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone");
+    CHECK_SET_ERR(seqNumber == GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone 1");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTKeyboardDriver::keyClick( 'z', Qt::ControlModifier);
-    GTGlobals::sleep();
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::undo(os);
+    GTThread::waitForMainThread();
 
     CHECK_SET_ERR(!ui->isCurTreeViewerSynchronized(), "The connection with the tree is still there");
-    CHECK_SET_ERR(seqNumber != GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone");
+    CHECK_SET_ERR(seqNumber != GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone 2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4674_2) {
@@ -4138,6 +4139,8 @@ GUI_TEST_CLASS_DEFINITION(test_4728) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(endPos);
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(200);
 
     //Expected state: all 4 symbols are selected
     QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);

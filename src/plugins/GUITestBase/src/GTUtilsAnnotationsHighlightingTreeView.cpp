@@ -33,6 +33,7 @@
 #include "GTUtilsTaskTreeView.h"
 #include <drivers/GTKeyboardDriver.h>
 #include "utils/GTKeyboardUtils.h"
+#include <utils/GTThread.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
@@ -112,6 +113,7 @@ void GTUtilsAnnotHighlightingTreeView::click(HI::GUITestOpStatus &os, const QStr
     QTreeWidgetItem* item = findItem(os, itemName);
     QTreeWidget* tree = getTreeWidget(os);
     tree->scrollToItem(item);
+    GTThread::waitForMainThread();
 
     QPoint p = getItemCenter(os, itemName);
     GTMouseDriver::moveTo(p);

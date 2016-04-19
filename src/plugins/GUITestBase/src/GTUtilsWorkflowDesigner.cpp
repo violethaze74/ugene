@@ -304,6 +304,7 @@ void GTUtilsWorkflowDesigner::expandTabs(HI::GUITestOpStatus &os){
         p.setX(p.x()+200);
         GTMouseDriver::moveTo(p);
         GTMouseDriver::release();
+        GTThread::waitForMainThread();
     }
 }
 #undef GT_METHOD_NAME
@@ -452,6 +453,7 @@ void GTUtilsWorkflowDesigner::click(HI::GUITestOpStatus &os, QGraphicsItem* item
     if (Qt::RightButton == button) {
         GTMouseDriver::click(Qt::RightButton);
     }
+    GTGlobals::sleep(200);
 }
 #undef GT_METHOD_NAME
 
@@ -935,6 +937,7 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget* par
         break;
     }
     }
+    GTGlobals::sleep(200);
 }
 #undef GT_METHOD_NAME
 

@@ -54,8 +54,13 @@ public:
 class FindEnzymesTask;
 
 struct FindEnzymesTaskConfig {
-    FindEnzymesTaskConfig(): maxResults(0x7FFFFFFF), minHitCount(1),
-        maxHitCount(INT_MAX), circular(false), isAutoAnnotationUpdateTask(false) {}
+    FindEnzymesTaskConfig()
+        : maxResults(0x7FFFFFFF),
+          minHitCount(1),
+          maxHitCount(INT_MAX),
+          circular(false),
+          isAutoAnnotationUpdateTask(false) {}
+    U2Region            searchRegion;
     QVector<U2Region>   excludedRegions;
     QString             groupName;
     int                 maxResults;
@@ -78,7 +83,6 @@ public:
 private:
     U2EntityRef                         dnaSeqRef;
     QList<SEnzymeData>                  enzymes;
-    U2Region                            seqRange;
     QPointer<AnnotationTableObject>     aObj;
     FindEnzymesTaskConfig               cfg;
     FindEnzymesTask *                   fTask;
@@ -87,7 +91,8 @@ private:
 class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
     Q_OBJECT
 public:
-    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false);
+    FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF,
+                    bool _circular = false, QVector<U2Region> excludedRegions = QVector<U2Region>());
 
     QList<FindEnzymesAlgResult>  getResults() const {return results;}
 
@@ -103,6 +108,7 @@ private:
     void registerResult(const FindEnzymesAlgResult& r);
 
     int                                 maxResults;
+    QVector<U2Region>                   excludedRegions;
     bool                                circular;
     int                                 seqlen;
     QList<FindEnzymesAlgResult>         results;

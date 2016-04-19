@@ -81,6 +81,7 @@ void test1(HI::GUITestOpStatus &os, QString s="") {
     GTMouseDriver::moveTo(p);
 
     GTMouseDriver::release();
+    GTGlobals::sleep(500);
 
 //4. Select the resized element and press <Del>
     if (s=="arr"){

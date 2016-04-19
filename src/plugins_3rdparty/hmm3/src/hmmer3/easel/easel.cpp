@@ -1275,8 +1275,8 @@ esl_strdealign(char *s, const char *aseq, const char *gapchars, int64_t *opt_rle
 int
 esl_DCompare(double a, double b, double tol)
 {
-    if (isinf(a) && isinf(b))                 return eslOK;
-    if (isnan(a) && isnan(b))                 return eslOK;
+    if (std::isinf(a) && std::isinf(b))                 return eslOK;
+    if (std::isnan(a) && std::isnan(b))                 return eslOK;
     if (!isfin( a ) || !isfin( b ) )          return eslFAIL;
     if (a == b)                               return eslOK;
     if (fabs(a) == 0. && fabs(b) <= tol)      return eslOK;
@@ -1287,8 +1287,8 @@ esl_DCompare(double a, double b, double tol)
 int
 esl_FCompare(float a, float b, float tol)
 { 
-    if (isinf(a) && isinf(b))                 return eslOK;
-    if (isnan(a) && isnan(b))                 return eslOK;
+    if (std::isinf(a) && std::isinf(b))                 return eslOK;
+    if (std::isnan(a) && std::isnan(b))                 return eslOK;
     if (!isfin( a ) || !isfin( b ) )          return eslFAIL;
     if (a == b)                               return eslOK;
     if (fabs(a) == 0. && fabs(b) <= tol)      return eslOK;

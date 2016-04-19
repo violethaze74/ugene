@@ -719,7 +719,7 @@ int main(int argc, char **argv)
 
 #ifndef HI_EXCLUDED
     if (GUITestService::isGuiTestServiceNeeded()) {
-        GUITestService *guiTestService = new GUITestService();
+        new GUITestService();
     }
 #endif //HI_EXCLUDED
 

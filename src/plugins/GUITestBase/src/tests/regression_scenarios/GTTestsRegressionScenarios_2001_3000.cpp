@@ -219,6 +219,7 @@ GUI_TEST_CLASS_DEFINITION( test_2006 )
     GTGlobals::sleep( 200 );
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition + QPoint( 0, 0 ) );
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTGlobals::sleep( 200 );
 
     // 4. Check that the content has not been changed
@@ -257,6 +258,7 @@ GUI_TEST_CLASS_DEFINITION( test_2007 )
     GTGlobals::sleep( 200 );
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition - QPoint( 1, 0 ) );
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTGlobals::sleep( 200 );
 
     // Expected state: nothing happens
@@ -626,8 +628,9 @@ GUI_TEST_CLASS_DEFINITION( test_2026 ) {
     GTUtilsMSAEditorSequenceArea::selectSequence(os, QString("Montana_montana"));
 
     // 3. Press shift, click down_arrow 4 times. Release shift.
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
     for (int i = 0; i < 4; ++i) {
-        GTKeyboardDriver::keyClick(Qt::Key_Down );
+        GTKeyboardDriver::keyClick(Qt::Key_Down);
         GTGlobals::sleep( 500 );
     }
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
@@ -726,8 +729,7 @@ GUI_TEST_CLASS_DEFINITION( test_2049 ){
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Codon table"));
-    GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Codon table"));
     GTGlobals::sleep(500);
     QWidget* w = GTWidget::findWidget(os, "Codon table widget");
     int ititHeight = GTWidget::findWidget(os, "Leucine (Leu, L)",w)->geometry().height();
@@ -1373,6 +1375,7 @@ GUI_TEST_CLASS_DEFINITION( test_2160 )
     GTGlobals::sleep( 200 );
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition + QPoint( 3, 0 ) );
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTGlobals::sleep( 200 );
 
     // 4. Press "Delete" key
@@ -1486,7 +1489,7 @@ GUI_TEST_CLASS_DEFINITION( test_2187 ) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick();
 
-    Runnable *filler = new EditAnnotationChecker(os, "repeat_unit", "join(251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259)");
+    Runnable *filler = new EditAnnotationChecker(os, "repeat_unit", "251..251,252..252,253..253,254..254,255..255,256..256,257..257,258..258,259..259");
     GTUtilsDialog::waitForDialog(os, filler);
 
     GTKeyboardDriver::keyClick( Qt::Key_F2);
@@ -2109,7 +2112,9 @@ GUI_TEST_CLASS_DEFINITION( test_2306 ) {
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition + QPoint( 3, 0 ) );
     GTGlobals::sleep( 200 );
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTKeyboardDriver::keyClick( Qt::Key_Escape);
+    GTThread::waitForMainThread();
     GTGlobals::sleep( 200 );
 
     // 4. Call context menu
@@ -2983,7 +2988,7 @@ GUI_TEST_CLASS_DEFINITION( test_2415 ) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
 
     // 3. Click the menu {Edit -> Rename}.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_document_lock" << "Rename"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename"));
     GTMouseDriver::click(Qt::RightButton);
 
     // 4. Enter the new name: "name".
@@ -3577,8 +3582,7 @@ GUI_TEST_CLASS_DEFINITION( test_2542 ) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Lock the document
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__edit_menu"
-        << "action_document_lock"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_document_lock"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -4327,6 +4331,7 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
 
     GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTGlobals::sleep(200);
 
     //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -4345,6 +4350,7 @@ GUI_TEST_CLASS_DEFINITION(test_2638){
 
 GUI_TEST_CLASS_DEFINITION(test_2640){
 //    0. Set CPU optimisation in settings dialog
+    GTGlobals::sleep();
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
@@ -4385,6 +4391,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640){
 
     GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTThread::waitForMainThread();
 
     //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -6008,7 +6015,7 @@ GUI_TEST_CLASS_DEFINITION(test_2945){
     GTMouseDriver::moveTo(bottomLeftToolBar);
     GTMouseDriver::release();
     GTThread::waitForMainThread();
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep(15000);
     QPoint handlePosition = splitterHandler->pos();
 
     QAbstractButton* cvButton = GTAction::button(os, "CircularViewAction");
@@ -6028,7 +6035,7 @@ GUI_TEST_CLASS_DEFINITION(test_2945){
     GTMouseDriver::moveTo(p + QPoint(0, 50));
     GTMouseDriver::release();
     GTThread::waitForMainThread();
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep(15000);
 
     CHECK_SET_ERR(handlePosition == splitterHandler->pos(), QString("Handler was moved: expected: %1, actual: %2").arg(splitter->pos().y()).arg(handlePosition.y()));
 }

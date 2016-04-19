@@ -253,6 +253,7 @@ void GTUtilsMdi::selectRandomRegion(HI::GUITestOpStatus &os, const QString& wind
     GTMouseDriver::press();
     GTMouseDriver::moveTo(w->mapToGlobal(r.center()));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

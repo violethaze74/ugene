@@ -2137,6 +2137,7 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     GTGlobals::sleep(200);
     //GTUtilsMSAEditorSequenceArea::moveTo(os, mouseDragPosition + QPoint(0, -10));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     GTGlobals::sleep(200);
 
     // Expected result: the highlighting mode is the same, human_T1 is still the reference.
@@ -2189,10 +2190,6 @@ GUI_TEST_CLASS_DEFINITION(test_3328) {
         //    Expected state: the task is canceled.
             CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "There are unfinished tasks");
         }
-
-    private:
-        HI::GUITestOpStatus &os;
-        QEventLoop *waiter;
     };
 
     QThreadPool threadPool(this);
@@ -2515,6 +2512,7 @@ GUI_TEST_CLASS_DEFINITION(test_3384){
     GTMouseDriver::press();
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(0,40));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 //    Current state: SAFE_POINT triggers and selection is "beautiful" (see the attachment)
     GTUtilsLog::check(os, l);
 }
@@ -2694,6 +2692,7 @@ GUI_TEST_CLASS_DEFINITION(test_3414){
 
     GTUtilsWorkflowDesigner::click(os, "Assemble Transcripts with Cufflinks");
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTGlobals::sleep(200);
 
     //    Launch pipeline
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -4244,22 +4243,16 @@ GUI_TEST_CLASS_DEFINITION(test_3640) {
     QModelIndex humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, humanT1Doc));
     GTMouseDriver::click();
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "genomes"));
-    int key = Qt::ControlModifier;
-//#ifdef Q_OS_MAC
-//    key = GTKeyboardDriver::key["cmd"];
-//#else
-//    key = Qt::ControlModifier;
-//#endif
-    GTKeyboardDriver::keyPress(key);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "genomes"));;
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::click();
-    GTKeyboardDriver::keyRelease(key);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     //4. Remove selected items via "del" key.
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     //Expected state: the document is removed, the folder is not removed.
-    CHECK_SET_ERR(!logTracer.hasError(), "Error message");
+    CHECK_SET_ERR(!logTracer.hasError(), "Error message " + logTracer.getError());
     GTUtilsProjectTreeView::findIndex(os, "genomes");
     options.failIfNotFound = false;
     humanT1Doc = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", options);
@@ -6118,6 +6111,7 @@ GUI_TEST_CLASS_DEFINITION(test_3996) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(chromaView->mapToGlobal(chromaViewRect.center() + QPoint(20, 0)));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     GTUtilsLog::check(os, l);
 }

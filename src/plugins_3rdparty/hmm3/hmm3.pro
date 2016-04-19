@@ -14,6 +14,7 @@ HEADERS += src/uHMM3Plugin.h \
            src/phmmer/uhmm3phmmer.h \
            src/phmmer/uHMM3PhmmerDialogImpl.h \
            src/phmmer/uhmm3PhmmerTask.h \
+           src/search/Hmmer3SearchWorkflowTask.h \
            src/search/uhmm3search.h \
            src/search/uHMM3SearchDialogImpl.h \
            src/search/uhmm3SearchResult.h \
@@ -95,6 +96,7 @@ SOURCES += src/uHMM3Plugin.cpp \
            src/phmmer/uhmm3phmmer.cpp \
            src/phmmer/uHMM3PhmmerDialogImpl.cpp \
            src/phmmer/uhmm3PhmmerTask.cpp \
+           src/search/Hmmer3SearchWorkflowTask.cpp \
            src/search/uhmm3search.cpp \
            src/search/uHMM3SearchDialogImpl.cpp \
            src/search/uhmm3SearchResult.cpp \

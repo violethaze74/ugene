@@ -58,6 +58,7 @@ void GTUtilsTaskTreeView::waitTaskFinished(HI::GUITestOpStatus &os, long timeout
            break;
        }
     }
+    GTGlobals::sleep(1000);
 }
 
 QString GTUtilsTaskTreeView::getTasksInfo(QList<Task *> tasks, int level){

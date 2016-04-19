@@ -204,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
 //    3. Call context menu on the sequence object in the Project View, select {Export/Import -> Export sequences...} item.
 //    4. Set output path to "~/test_5018.fa" for *nix and "%HOME_DIR%\test_5018.fa" for Windows. Accept the dialog.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export sequences..."));
-    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, homePlaceholder + "/test_5018.fa", ""));
+    GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, homePlaceholder + "/test_5018.fa"));
     GTUtilsProjectTreeView::click(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)", Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);

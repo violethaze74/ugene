@@ -3598,11 +3598,11 @@ GUI_TEST_CLASS_DEFINITION(test_0039_1){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039_2){
-    test_0039_function(os, 2, "msf");
+    test_0039_function(os, 2, "meg");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039_3){
-    test_0039_function(os, 3, "meg");
+    test_0039_function(os, 3, "msf");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039_4){
@@ -3654,12 +3654,14 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5,0));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     // Expected state: alignment moved to 5 bases to the right.
 
     // 4. Drag the selection with mouse to one base to the left.
     GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(4,0));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
     // Expected state: alignment  moved to one bases to the left.
 
     // Check results
@@ -4787,13 +4789,13 @@ GUI_TEST_CLASS_DEFINITION(test_0069){
 //    Check keys:
 //    right,
     for(int i = 0; i<3; i++){
-        GTKeyboardDriver::keyClick( Qt::RightArrow);
+        GTKeyboardDriver::keyClick(Qt::Key_Right);
         GTGlobals::sleep(100);
     }
     CHECK_SET_ERR(hscroll->value() == 3, QString("right key works wrong. Scrollbar has value: %1").arg(hscroll->value()));
 //    left
     for(int i = 0; i<2; i++){
-        GTKeyboardDriver::keyClick( Qt::LeftArrow);
+        GTKeyboardDriver::keyClick(Qt::Key_Left);
         GTGlobals::sleep(100);
     }
     CHECK_SET_ERR(hscroll->value() == 1, QString("left key works wrong. Scrollbar has value: %1").arg(hscroll->value()));\
@@ -4861,7 +4863,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072){
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5,4), QPoint(5,4)));
 
-    GTKeyboardDriver::keyClick( Qt::LeftArrow);
+    GTKeyboardDriver::keyClick( Qt::Key_Left);
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4,4), QPoint(4,4)));
 
@@ -4869,7 +4871,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072){
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4,5), QPoint(4,5)));
 
-    GTKeyboardDriver::keyClick( Qt::RightArrow);
+    GTKeyboardDriver::keyClick( Qt::Key_Right);
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5,5), QPoint(5,5)));
 
@@ -4879,7 +4881,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072){
     GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5,4), QPoint(5,5)));
 
-    GTKeyboardDriver::keyClick( Qt::LeftArrow);
+    GTKeyboardDriver::keyClick( Qt::Key_Left);
     GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4,4), QPoint(5,5)));
 
@@ -4887,7 +4889,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072){
     GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(4,5), QPoint(5,5)));
 
-    GTKeyboardDriver::keyClick( Qt::RightArrow);
+    GTKeyboardDriver::keyClick( Qt::Key_Right);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(300);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(5,5), QPoint(5,5)));
@@ -5046,6 +5048,7 @@ GUI_TEST_CLASS_DEFINITION(test_0076){
     GTMouseDriver::press();
     GTMouseDriver::moveTo(QPoint(10, GTMouseDriver::getMousePosition().y()));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 //    Expected state: visible range dragged
     QColor finalColor1 = GTWidget::getColor(os, simple, simple->geometry().topLeft() + QPoint(5, 5));
     QString finalColorS1 = finalColor1.name();

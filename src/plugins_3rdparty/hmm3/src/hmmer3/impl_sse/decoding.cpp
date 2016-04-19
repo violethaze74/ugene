@@ -134,7 +134,7 @@ p7_Decoding(const P7_OPROFILE *om, const P7_OMX *oxf, P7_OMX *oxb, P7_OMX *pp)
         if (oxb->has_own_scales) scaleproduct *= oxf->xmx[i*p7X_NXCELLS+p7X_SCALE] /  oxb->xmx[i*p7X_NXCELLS+p7X_SCALE];
     }
 
-    if (isinf(scaleproduct)) return eslERANGE;
+    if (std::isinf(scaleproduct)) return eslERANGE;
     else                     return eslOK;
 }
 
@@ -188,7 +188,7 @@ p7_DomainDecoding(const P7_OPROFILE *om, const P7_OMX *oxf, const P7_OMX *oxb, P
     }
     ddef->L = oxf->L;
 
-    if (isinf(scaleproduct)) return eslERANGE;
+    if (std::isinf(scaleproduct)) return eslERANGE;
     else                     return eslOK;
 }
 /*------------------ end, posterior decoding --------------------*/

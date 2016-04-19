@@ -149,7 +149,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
     GTMouseDriver::click();
 
-    Runnable *filler = new RenameQualifierFiller(os, "qu");
+    Runnable *filler = new EditQualifierFiller(os, "qu");
     GTUtilsDialog::waitForDialog(os, filler);
     GTKeyboardDriver::keyClick( Qt::Key_F2);
     GTGlobals::sleep();
@@ -172,7 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
     GTMouseDriver::click();
 
-    Runnable *filler = new RenameQualifierFiller(os, "qu");
+    Runnable *filler = new EditQualifierFiller(os, "qu");
     GTUtilsDialog::waitForDialog(os, filler);
     GTKeyboardDriver::keyClick( Qt::Key_F2);
     GTGlobals::sleep();
@@ -195,7 +195,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
     GTMouseDriver::click();
 
-    Runnable *filler = new RenameQualifierFiller(os, "qu");
+    Runnable *filler = new EditQualifierFiller(os, "qu");
     GTUtilsDialog::waitForDialog(os, filler);
     GTKeyboardDriver::keyClick( Qt::Key_F2);
     GTGlobals::sleep();
@@ -204,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
     GTMouseDriver::click();
 
-    Runnable *filler1 = new RenameQualifierFiller(os, "qu1");
+    Runnable *filler1 = new EditQualifierFiller(os, "qu1");
     GTUtilsDialog::waitForDialog(os, filler1);
     GTKeyboardDriver::keyClick( Qt::Key_F2);
     GTGlobals::sleep();

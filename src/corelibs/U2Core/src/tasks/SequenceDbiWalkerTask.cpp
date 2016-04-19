@@ -44,15 +44,20 @@ SequenceDbiWalkerTask::SequenceDbiWalkerTask(const SequenceDbiWalkerConfig& c, S
 QList<SequenceDbiWalkerSubtask*> SequenceDbiWalkerTask::prepareSubtasks() {
     QList<SequenceDbiWalkerSubtask*> res;
 
-    if (config.range.isEmpty()) {
-        return res; // error
-    }
-
     U2SequenceObject sequenceObject("sequence", config.seqRef);
 
-    U2Region wholeSeqReg(0, sequenceObject.getSequenceLength());
-    assert(wholeSeqReg.contains(config.range));
-    config.range = wholeSeqReg.intersect(config.range);
+    if (config.range.isEmpty()) {
+        config.range = U2Region(0, sequenceObject.getSequenceLength());
+    } else {
+        U2Region wholeSeqReg(0, sequenceObject.getSequenceLength());
+        if (!config.walkCircular) {
+            assert(wholeSeqReg.contains(config.range));
+        }
+    }
+
+    if (config.walkCircular && static_cast<quint64>(config.range.length) == sequenceObject.getSequenceLength()) {
+        config.range.length += config.walkCircularDistance * (config.aminoTrans == NULL ? 1 : 3);
+    }
 
     if (config.aminoTrans == NULL ) {
         //try walk direct and complement strands

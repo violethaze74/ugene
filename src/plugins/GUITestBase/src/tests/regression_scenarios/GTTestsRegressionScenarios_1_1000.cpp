@@ -1206,6 +1206,7 @@ GUI_TEST_CLASS_DEFINITION(test_0703) {
     GTUtilsProjectTreeView::dragAndDrop(os, GTUtilsProjectTreeView::findIndex(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "1.fa")),
         GTUtilsMdi::activeWindow(os));
 
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTUtilsDocument::removeDocument(os, "1.fa");
     GTUtilsDocument::removeDocument(os, "1.ugenedb");
 
@@ -1216,7 +1217,6 @@ GUI_TEST_CLASS_DEFINITION(test_0703) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state : UGENE not crashes
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0729){
@@ -1304,8 +1304,8 @@ GUI_TEST_CLASS_DEFINITION(test_0746) {
     GTWidget::click(os, toggleViewButton);
     GTGlobals::sleep();
 
-    QAbstractButton* translation = GTAction::button(os, "translation_action");
-    CHECK_SET_ERR(translation -> isEnabled() == true, "button is not enabled");
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "translation_action", PopupChecker::IsEnabled));
+    GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
     GTGlobals::sleep();
     QAbstractButton* complement = GTAction::button(os, "complement_action");
     CHECK_SET_ERR(complement -> isEnabled() == true, "button is not enabled");
@@ -2055,7 +2055,7 @@ GUI_TEST_CLASS_DEFINITION(test_0835) {
 
     //3. Enable Circular View for one of the sequences(for example, "murine.gb").
     // = > The Circular View with the Restriction Site Map is shown.
-    GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
+    GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction", GTWidget::findWidget(os, "views_tool_bar_NC_004718")));
 
     QWidget *restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget");
     CHECK_SET_ERR(NULL != restrictionMapTreeWidget && restrictionMapTreeWidget->isVisible(),
@@ -2064,11 +2064,12 @@ GUI_TEST_CLASS_DEFINITION(test_0835) {
     //4. Delete the sequence with the Circular View from the Project View.
     // = > The sequence has been deleted, the Circular View is not shown.
     //!= > The Restriction Site Map is NOT still shown.
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "sars.gb"));
-    GTKeyboardDriver::keyClick( Qt::Key_Delete);
-    GTGlobals::sleep(100);
+    GTUtilsProjectTreeView::click(os, "sars.gb");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTThread::waitForMainThread();
 
-    restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget");
+    restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget", NULL, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(NULL == restrictionMapTreeWidget, "Restriction map widget is visible unexpectedly");
 }
 
@@ -3308,9 +3309,9 @@ GUI_TEST_CLASS_DEFINITION(test_0986) {
     GTUtilsDialog::waitForDialog(os, filler);
 
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyPress(Qt::ShiftModifier);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
-    GTKeyboardDriver::keyRelease(Qt::ShiftModifier);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(3000);
 
     GTGlobals::sleep(5000);

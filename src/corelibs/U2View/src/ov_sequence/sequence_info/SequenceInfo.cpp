@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-const int SequenceInfo::COMMON_STATISTICS_VALUE_MAX_WIDTH = 90;
+const int SequenceInfo::COMMON_STATISTICS_TABLE_CELLSPACING = 5;
 const QString SequenceInfo::CAPTION_SEQ_REGION_LENGTH = "Length: ";
 
 //nucl
@@ -82,8 +82,15 @@ void SequenceInfo::initLayout()
     setLayout(mainLayout);
 
     // Common statistics
+    QWidget *statisticLabelContainer = new QWidget;
+    statisticLabelContainer->setLayout(new QHBoxLayout);
+    statisticLabelContainer->layout()->setContentsMargins(0, 0, 0, 0);
+
     statisticLabel = new QLabel(this);
-    statsWidget = new ShowHideSubgroupWidget(STAT_GROUP_ID, tr("Common Statistics"), statisticLabel, true);
+    statisticLabel->setMinimumWidth(1);
+    statisticLabelContainer->layout()->addWidget(statisticLabel);
+
+    statsWidget = new ShowHideSubgroupWidget(STAT_GROUP_ID, tr("Common Statistics"), statisticLabelContainer, true);
     statsWidget->setObjectName("Common Statistics");
 
     mainLayout->addWidget(statsWidget);
@@ -120,6 +127,62 @@ void SequenceInfo::updateLayout()
     updateDinuclLayout();
 }
 
+namespace {
+
+/** Formats long number by separating each three digits */
+QString getFormattedLongNumber(qint64 num)
+{
+    QString result;
+
+    int DIVIDER = 1000;
+    do {
+        int lastThreeDigits = num % DIVIDER;
+
+        QString digitsStr = QString::number(lastThreeDigits);
+
+        // Fill with zeros if the digits are in the middle of the number
+        if (num / DIVIDER != 0) {
+            digitsStr = QString("%1").arg(digitsStr, 3, '0');
+        }
+
+        result = digitsStr + " " + result;
+
+        num /= DIVIDER;
+    } while (num != 0);
+
+    return result;
+}
+
+}
+
+void SequenceInfo::updateCommonStatisticsLayout() {
+    ADVSequenceWidget *wgt = annotatedDnaView->getSequenceWidgetInFocus();
+    CHECK(wgt != NULL, );
+    ADVSequenceObjectContext *ctx = wgt->getActiveSequenceContext();
+    SAFE_POINT(ctx != NULL, tr("Sequence context is NULL"), );
+    SAFE_POINT(ctx->getAlphabet() != NULL, tr("Sequence alphbet is NULL"), );
+
+    int availableSpace = getAvailableSpace(ctx->getAlphabet()->getType());
+
+    QString statsInfo = QString("<table cellspacing=%1>").arg(COMMON_STATISTICS_TABLE_CELLSPACING);
+    statsInfo += formTableRow(CAPTION_SEQ_REGION_LENGTH, getFormattedLongNumber(currentCommonStatistics.length), availableSpace);
+    if (ctx->getAlphabet()->isNucleic()) {
+        statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, QString::number(currentCommonStatistics.gcContent, 'f', 2) + "%", availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_WEIGHT, QString::number(currentCommonStatistics.molarWeight, 'f', 2) + " Da", availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_EXT_COEF, QString::number(currentCommonStatistics.molarExtCoef) + " I/mol", availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TM, QString::number(currentCommonStatistics.meltingTm, 'f', 2) + " C", availableSpace);
+
+        statsInfo += formTableRow(CAPTION_SEQ_NMOLE_OD, QString::number(currentCommonStatistics.nmoleOD260, 'f', 2), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MG_OD, QString::number(currentCommonStatistics.mgOD260, 'f', 2), availableSpace);
+    } else if (ctx->getAlphabet()->isAmino()) {
+        statsInfo += formTableRow(CAPTION_SEQ_MOLECULAR_WEIGHT, QString::number(currentCommonStatistics.molecularWeight, 'f', 2), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_ISOELECTIC_POINT, QString::number(currentCommonStatistics.isoelectricPoint, 'f', 2), availableSpace);
+    }
+
+    statsInfo += "</table>";
+
+    statisticLabel->setText(statsInfo);
+}
 
 void SequenceInfo::updateCharOccurLayout()
 {
@@ -287,31 +350,6 @@ void SequenceInfo::updateCurrentRegion()
     }
 }
 
-/** Formats long number by separating each three digits */
-QString getFormattedLongNumber(qint64 num)
-{
-    QString result;
-
-    int DIVIDER = 1000;
-    do {
-        int lastThreeDigits = num % DIVIDER;
-
-        QString digitsStr = QString::number(lastThreeDigits);
-
-        // Fill with zeros if the digits are in the middle of the number
-        if (num / DIVIDER != 0) {
-            digitsStr = QString("%1").arg(digitsStr, 3, '0');
-        }
-
-        result = digitsStr + " " + result;
-
-        num /= DIVIDER;
-    } while (num != 0);
-
-    return result;
-}
-
-
 void SequenceInfo::launchCalculations(QString subgroupId)
 {
     // Launch the statistics, characters and dinucleotides calculation tasks,
@@ -354,6 +392,45 @@ void SequenceInfo::launchCalculations(QString subgroupId)
     }
 }
 
+void SequenceInfo::resizeEvent(QResizeEvent *event) {
+    updateCommonStatisticsLayout();
+    QWidget::resizeEvent(event);
+}
+
+int SequenceInfo::getAvailableSpace(DNAAlphabetType alphabetType) const {
+    QStringList captions;
+    switch (alphabetType) {
+    case DNAAlphabet_NUCL:
+        captions << CAPTION_SEQ_REGION_LENGTH
+                 << CAPTION_SEQ_GC_CONTENT
+                 << CAPTION_SEQ_MOLAR_WEIGHT
+                 << CAPTION_SEQ_MOLAR_EXT_COEF
+                 << CAPTION_SEQ_MELTING_TM;
+// Two captions are ignored because of HTML tags within them
+//                 << CAPTION_SEQ_NMOLE_OD
+//                 << CAPTION_SEQ_MG_OD;
+        break;
+    case DNAAlphabet_AMINO:
+        captions << CAPTION_SEQ_REGION_LENGTH
+                 << CAPTION_SEQ_MOLECULAR_WEIGHT
+                 << CAPTION_SEQ_ISOELECTIC_POINT;
+        break;
+    default:
+        captions << CAPTION_SEQ_REGION_LENGTH;
+        break;
+    }
+
+    QFont font = statisticLabel->font();
+    font.setBold(true);
+    QFontMetrics fontMetrics(font);
+
+    int availableSize = INT_MAX;
+    foreach (const QString &caption, captions) {
+        availableSize = qMin(availableSize, statisticLabel->width() - fontMetrics.boundingRect(caption).width() - 3 * COMMON_STATISTICS_TABLE_CELLSPACING);
+    }
+
+    return availableSize;
+}
 
 void SequenceInfo::sl_updateCharOccurData()
 {
@@ -397,44 +474,18 @@ void SequenceInfo::sl_updateDinuclData()
 
 void SequenceInfo::sl_updateStatData() {
     statsWidget->hideProgress();
-
-    DNAStatistics stats = dnaStatisticsTaskRunner.getResult();
-
-    ADVSequenceWidget *wgt = annotatedDnaView->getSequenceWidgetInFocus();
-    CHECK(wgt != NULL, );
-    ADVSequenceObjectContext *ctx = wgt->getActiveSequenceContext();
-    SAFE_POINT(ctx != NULL, tr("Sequence context is NULL"), );
-    SAFE_POINT(ctx->getAlphabet() != NULL, tr("Sequence alphbet is NULL"), );
-
-    QString statsInfo = "<table cellspacing=5>";
-    statsInfo += formTableRow( CAPTION_SEQ_REGION_LENGTH,  getFormattedLongNumber(stats.length) );
-    if (ctx->getAlphabet()->isNucleic()) {
-        statsInfo += formTableRow( CAPTION_SEQ_GC_CONTENT, QString::number(stats.gcContent, 'f', 2) + "%");
-        statsInfo += formTableRow( CAPTION_SEQ_MOLAR_WEIGHT, QString::number(stats.molarWeight, 'f', 2) + " Da");
-        statsInfo += formTableRow( CAPTION_SEQ_MOLAR_EXT_COEF, QString::number(stats.molarExtCoef) + " I/mol");
-        statsInfo += formTableRow( CAPTION_SEQ_MELTING_TM, QString::number(stats.meltingTm, 'f', 2) + " C");
-
-        statsInfo += formTableRow( CAPTION_SEQ_NMOLE_OD, QString::number(stats.nmoleOD260, 'f', 2));
-        statsInfo += formTableRow( CAPTION_SEQ_MG_OD, QString::number(stats.mgOD260, 'f', 2));
-    } else if (ctx->getAlphabet()->isAmino()) {
-        statsInfo += formTableRow( CAPTION_SEQ_MOLECULAR_WEIGHT, QString::number(stats.molecularWeight, 'f', 2));
-        statsInfo += formTableRow( CAPTION_SEQ_ISOELECTIC_POINT, QString::number(stats.isoelectricPoint, 'f', 2));
-    }
-
-    statsInfo += "</table>";
-
-    statisticLabel->setText(statsInfo);
+    currentCommonStatistics = dnaStatisticsTaskRunner.getResult();
+    updateCommonStatisticsLayout();
 }
 
-QString SequenceInfo::formTableRow(const QString& caption, QString value) const {
+QString SequenceInfo::formTableRow(const QString& caption, const QString &value, int availableSpace) const {
     QString result;
 
     QFontMetrics metrics = statisticLabel->fontMetrics();
     result = "<tr><td><b>" + tr("%1").arg(caption) + "</b></td><td>"
-            + metrics.elidedText(value, Qt::ElideRight, COMMON_STATISTICS_VALUE_MAX_WIDTH)
+            + metrics.elidedText(value, Qt::ElideRight, availableSpace)
             + "</td></tr>";
     return result;
 }
-
 
 } // namespace

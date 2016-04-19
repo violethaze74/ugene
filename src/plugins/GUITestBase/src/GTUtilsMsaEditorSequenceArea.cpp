@@ -275,7 +275,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibaleNames(HI::GUITestOpStatus &
 #define GT_METHOD_NAME "removeSequence"
 void GTUtilsMSAEditorSequenceArea::removeSequence(HI::GUITestOpStatus &os, const QString &sequenceName) {
     selectSequence(os, sequenceName);
-    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME

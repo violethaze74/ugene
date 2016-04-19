@@ -247,7 +247,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 //    15. Set format "Histogram".
 //    Expected state: the file extension is ".bedgrap.histogram.gz".
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SetFormat, "Histogram");
-    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::CheckFilePath, QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "/chrM_coverage.bedgrap.histogram.gz"));
+    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::CheckFilePath, QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "/chrM_coverage.histogram.gz"));
 
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant());
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));

@@ -114,7 +114,7 @@ GUI_TEST_CLASS_DEFINITION(pre_action_0004) {
 
 GUI_TEST_CLASS_DEFINITION(pre_action_0005) {
     if(QDir(sandBoxDir).exists()){
-        //GTFile::setReadWrite(os, sandBoxDir);
+        GTFile::setReadWrite(os, sandBoxDir);
         GTGlobals::sleep();
         QDir sandBox = QDir(sandBoxDir);
         foreach (QString path, sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
@@ -148,7 +148,7 @@ GUI_TEST_CLASS_DEFINITION(post_check_0001) {
 GUI_TEST_CLASS_DEFINITION(post_action_0000) {
     const Qt::KeyboardModifiers modifiers = QGuiApplication::queryKeyboardModifiers();
     if (modifiers & Qt::ShiftModifier) {
-        GTKeyboardDriver::keyRelease(Qt::ShiftModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     }
 
     if (modifiers & Qt::ControlModifier) {
@@ -156,7 +156,7 @@ GUI_TEST_CLASS_DEFINITION(post_action_0000) {
     }
 
     if (modifiers & Qt::AltModifier) {
-        GTKeyboardDriver::keyRelease(Qt::AltModifier);
+        GTKeyboardDriver::keyRelease(Qt::Key_Alt);
     }
 
     uiLog.trace(QString("post_action_0000: next keyboard modifiers are pressed after test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
@@ -220,7 +220,7 @@ GUI_TEST_CLASS_DEFINITION(post_action_0003) {
         GTFile::restore(os, testDir + "_common_data/scenarios/project/proj5.uprj");
     }
     if(QDir(sandBoxDir).exists()){
-        //GTFile::setReadWrite(os, sandBoxDir);
+        GTFile::setReadWrite(os, sandBoxDir);
         GTGlobals::sleep();
         QDir sandBox = QDir(sandBoxDir);
         foreach (QString path, sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {

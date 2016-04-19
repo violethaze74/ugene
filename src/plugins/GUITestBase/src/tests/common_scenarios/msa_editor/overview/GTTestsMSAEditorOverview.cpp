@@ -38,6 +38,7 @@
 #include <primitives/GTWidget.h>
 #include <base_dialogs/ColorDialogFiller.h>
 #include "primitives/PopupChooser.h"
+#include <utils/GTThread.h>
 
 namespace U2 {
 
@@ -260,6 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008){
     CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
 #endif
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009){

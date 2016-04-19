@@ -206,6 +206,9 @@ bool EMBLPlainTextFormat::readEntry(ParserState* st,U2SequenceImporter& seqImpor
                 CHECK_OP(os,false);
             }
             readSequence(st,seqImporter,sequenceLen,fullSequenceLen,os);
+            if (fullSequenceLen != st->entry->seqLen && !si.getWarnings().contains(EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE)) {
+                si.addWarning(EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE);
+            }
             return true;
         }
 

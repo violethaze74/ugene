@@ -70,7 +70,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){//DIFFERENCE: lock document is checked
     }
 //4. lock document
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"COI.aln"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"action_project__edit_menu"<<ACTION_DOCUMENT__LOCK));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList() << ACTION_DOCUMENT__LOCK));
     GTMouseDriver::click(Qt::RightButton);
 
 //Expected state: Undo and redo buttons are disabled
@@ -79,7 +79,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){//DIFFERENCE: lock document is checked
 
 //5. Unlock document
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"COI.aln"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"action_project__edit_menu"<<ACTION_DOCUMENT__UNLOCK));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList() << ACTION_DOCUMENT__UNLOCK));
     GTMouseDriver::click(Qt::RightButton);
 
 //Expected state: undo and redo buttons are enebled and work properly
@@ -646,7 +646,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009){//rename msa is tested
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //rename msa
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"action_project__edit_menu"<<"Rename"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Rename"));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "ma2_gap_col"));
     GTMouseDriver::click(Qt::RightButton);
     GTKeyboardDriver::keySequence("some_name");

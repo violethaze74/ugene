@@ -529,7 +529,7 @@ qint64 U2SequenceImporter::getCurrentLength() const {
 }
 
 void U2MemorySequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) {
-    if (qstrlen(data) > len) {
+    if (qstrlen(data) < len) {
         os.setError("Wrong data length in addBlock");
         return;
     }
