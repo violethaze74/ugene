@@ -67,6 +67,8 @@ public:
 protected slots:
     QList<Task *> onSubTaskFinished(Task *subTask);
 private:
+    QList<ShortReadSet> downStreamList;
+    QList<ShortReadSet> upStreamList;
     MultiTask *samMultiTask;
     QStringList urlsToMerge;
     MultiTask *alignMultiTask;
