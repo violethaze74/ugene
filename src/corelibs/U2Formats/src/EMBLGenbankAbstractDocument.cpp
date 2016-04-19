@@ -56,7 +56,7 @@ const int ParserState::LOCAL_READ_BUFFER_SIZE = 40000;
 const QString EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains features of another remote GenBank file. These features have been skipped.");
 const QString EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
 const QString EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "Location parsing error.");
-const QString EMBLGenbankAbstractDocument::NUMBER_IN_SEQUENCE_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The numerals are forbidden in the sequence. They were removed.");
+const QString EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The number of valid sequence characters does not coincide with the declared size in the sequence header.");
 
 EMBLGenbankAbstractDocument::EMBLGenbankAbstractDocument(const DocumentFormatId& _id, const QString& _formatName, int mls,
                                                          DocumentFormatFlags flags, QObject* p)
@@ -667,12 +667,13 @@ bool EMBLGenbankAbstractDocument::readSequence(ParserState* st, U2SequenceImport
     IOAdapter* io = st->io;
     U2OpStatus& si = st->si;
     si.setDescription(tr("Reading sequence %1").arg(st->entry->name));
-    //res.reserve(res.size() + headerSeqLen);
     QByteArray readBuffer(DocumentFormat::READ_BUFF_SIZE, '\0');
     char* buff  = readBuffer.data();
 
     //reading sequence
     int len;
+    sequenceLen = 0;
+    fullSequenceLen = 0;
     while ((len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE)) > 0) {
         if (si.isCoR()) {
             res.clear();

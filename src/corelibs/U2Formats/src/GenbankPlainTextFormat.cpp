@@ -236,8 +236,8 @@ bool GenbankPlainTextFormat::readEntry(ParserState* st, U2SequenceImporter& seqI
                     CHECK_OP(os,false);
                 }
                 readSequence(st,seqImporter,sequenceLen,fullSequenceLen,os);
-                if (fullSequenceLen != st->entry->seqLen && !si.getWarnings().contains(EMBLGenbankAbstractDocument::NUMBER_IN_SEQUENCE_MESSAGE)) {
-                    si.addWarning(EMBLGenbankAbstractDocument::NUMBER_IN_SEQUENCE_MESSAGE);
+                if (fullSequenceLen != st->entry->seqLen && !si.getWarnings().contains(EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE)) {
+                    si.addWarning(EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE);
                 }
             }
             return true;

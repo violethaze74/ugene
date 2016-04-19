@@ -57,7 +57,7 @@ public:
     static const QString REMOTE_ENTRY_WARNING_MESSAGE;
     static const QString JOIN_COMPLEMENT_WARNING_MESSAGE;
     static const QString LOCATION_PARSING_ERROR_MESSAGE;
-    static const QString NUMBER_IN_SEQUENCE_MESSAGE;
+    static const QString SEQ_LEN_WARNING_MESSAGE;
 
     // move to utils??
     static QString genObjectName(QSet<QString>& usedNames, const QString& name, const QVariantMap& info, int n, const GObjectType& t);
