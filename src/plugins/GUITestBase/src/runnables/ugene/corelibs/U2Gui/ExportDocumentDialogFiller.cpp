@@ -52,7 +52,7 @@ path(_path), name(_name), useMethod(method), format(_format), compressFile(compr
     }
 
     if (!path.isEmpty()) {
-        path = __path;
+        path = QDir::toNativeSeparators(__path);
     }
 
     comboBoxItems[Genbank] = "Genbank";

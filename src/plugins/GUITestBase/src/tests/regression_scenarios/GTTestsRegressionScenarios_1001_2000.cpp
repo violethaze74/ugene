@@ -7423,7 +7423,6 @@ GUI_TEST_CLASS_DEFINITION( test_1704 ){
     GTFileDialog::openFile(os, sandBoxDir, "1704_exported.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::doubleClickItem(os, "1704_exported.gb");
-    GTGlobals::sleep(10000000);
 //    Expected state: all the annotations of the new file are identical to annotations of the old file
     GTUtilsAnnotationsTreeView::findItem(os, "hmm_signal  (0, 27)");
 //    Bug state: only the first annotations without qualifiers is opened
