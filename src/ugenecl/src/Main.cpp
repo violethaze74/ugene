@@ -78,8 +78,6 @@
 #include <U2Lang/WorkflowEnvImpl.h>
 #include <U2Lang/WorkflowRunTask.h>
 
-#include <U2Remote/DistributedComputingUtil.h>
-
 #include <U2Test/GTestFrameworkComponents.h>
 #include <U2Test/TestRunnerTask.h>
 
@@ -385,8 +383,6 @@ int main(int argc, char **argv)
     RecentlyDownloadedCache* rdc = new RecentlyDownloadedCache();
     appContext->setRecentlyDownloadedCache(rdc);
 
-    DistributedComputingUtil * distrUtil = new DistributedComputingUtil();
-
     VirtualFileSystemRegistry * vfsReg = new VirtualFileSystemRegistry();
     appContext->setVirtualFileSystemRegistry( vfsReg );
 
@@ -486,8 +482,6 @@ int main(int argc, char **argv)
     Workflow::WorkflowEnv::shutdown();
 
     delete tsbc;
-
-    delete distrUtil;
 
     appContext->setCredentialsAsker(NULL);
     delete credentialsAsker;

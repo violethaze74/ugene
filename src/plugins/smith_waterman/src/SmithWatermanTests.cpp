@@ -41,7 +41,6 @@
 #define PERCENT_OF_SCORE_ATTR "percent_of_score"
 #define EXPECTED_RESULT_ATTR "expected_res"
 #define ENV_IMPL_ATTR "IMPL"
-#define REMOTE_MACHINE "MACHINE"
 #define IMPL_ATTR "impl"
 
 using namespace std;
@@ -139,11 +138,6 @@ void GTest_SmithWatermnan::init(XMLTestFormat *, const QDomElement& el) {
     if (impl.isEmpty()) {
         failMissingValue(ENV_IMPL_ATTR);
         return;
-    }
-
-    machinePath = env->getVar( REMOTE_MACHINE );
-    if( !machinePath.isEmpty() ) {
-        machinePath = env->getVar( "COMMON_DATA_DIR" ) + "/" + machinePath;
     }
 }
 

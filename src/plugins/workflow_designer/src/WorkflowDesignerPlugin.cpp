@@ -120,12 +120,7 @@ void WorkflowDesignerPlugin::processCMDLineOptions() {
 
     bool consoleMode = !AppContext::isGUIMode(); // only in console mode we run workflows by default. Otherwise we show them
     if (cmdlineReg->hasParameter( RUN_WORKFLOW ) || (consoleMode && !CMDLineRegistryUtils::getPureValues().isEmpty()) ) {
-        Task * t = NULL;
-        if( cmdlineReg->hasParameter(REMOTE_MACHINE) ) {
-            t = new WorkflowRemoteRunFromCMDLineTask();
-        } else {
-            t = new WorkflowRunFromCMDLineTask();
-        }
+        Task * t = new WorkflowRunFromCMDLineTask();
         connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
     }
     else{

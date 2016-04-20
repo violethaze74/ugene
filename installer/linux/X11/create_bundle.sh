@@ -104,7 +104,6 @@ add-core-library U2Formats
 add-core-library U2Gui
 add-core-library U2Lang
 add-core-library U2Private
-add-core-library U2Remote
 add-core-library U2Test
 add-core-library U2View
 add-core-library ugenedb
@@ -205,7 +204,6 @@ add-plugin smith_waterman
 add-plugin umuscle
 add-plugin workflow_designer
 add-plugin weight_matrix
-add-plugin remote_service
 add-plugin variants
 
 if [ "$1" == "-test" ]; then

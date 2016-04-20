@@ -74,11 +74,6 @@
 #else
 #   define U2LANG_EXPORT Q_DECL_IMPORT
 #endif
-#ifdef BUILDING_U2REMOTE_DLL
-#   define U2REMOTE_EXPORT Q_DECL_EXPORT
-#else
-#   define U2REMOTE_EXPORT Q_DECL_IMPORT
-#endif
 #ifdef BUILDING_U2GUI_DLL
 #   define U2GUI_EXPORT Q_DECL_EXPORT
 #else

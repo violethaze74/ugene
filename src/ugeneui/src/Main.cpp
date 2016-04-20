@@ -100,8 +100,6 @@
 #include <U2Lang/WorkflowEnvImpl.h>
 #include <U2Lang/WorkflowSettings.h>
 
-#include <U2Remote/DistributedComputingUtil.h>
-
 #include <U2Test/GTestFrameworkComponents.h>
 #ifndef HI_EXCLUDED
 #include <U2Test/UGUITestBase.h>
@@ -677,8 +675,6 @@ int main(int argc, char **argv)
     RecentlyDownloadedCache* rdc = new RecentlyDownloadedCache();
     appContext->setRecentlyDownloadedCache(rdc);
 
-    DistributedComputingUtil * dcu = new DistributedComputingUtil();
-
     AutoAnnotationsSupport* aaSupport = new AutoAnnotationsSupport();
     appContext->setAutoAnnotationsSupport(aaSupport);
 #ifndef HI_EXCLUDED
@@ -768,8 +764,6 @@ int main(int argc, char **argv)
     }
 
     delete wpc;
-
-    delete dcu;
 
     appContext->setPasteFactory(NULL);
     delete pasteFactory;

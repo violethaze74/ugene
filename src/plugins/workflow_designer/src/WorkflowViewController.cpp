@@ -91,11 +91,6 @@
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include <U2Remote/DistributedComputingUtil.h>
-#include <U2Remote/RemoteMachine.h>
-#include <U2Remote/RemoteMachineMonitorDialogController.h>
-#include <U2Remote/RemoteWorkflowRunTask.h>
-
 #include "BreakpointManagerView.h"
 #include "ChooseItemDialog.h"
 #include "CreateScriptWorker.h"
@@ -1522,25 +1517,6 @@ void WorkflowView::localHostLaunch() {
         tabView->addDashboard(m, meta.name);
         showDashboards();
     }
-}
-
-void WorkflowView::remoteLaunch() {
-    if( !sl_validate(false) ) {
-        return;
-    }
-    if (schema->getDomain().isEmpty() ) {
-        schema->setDomain(WorkflowEnv::getDomainRegistry()->getAllIds().value(0));
-    }
-
-    RemoteMachineMonitor * rmm = AppContext::getRemoteMachineMonitor();
-    assert( NULL != rmm );
-    RemoteMachineSettingsPtr settings = RemoteMachineMonitorDialogController::selectRemoteMachine(rmm, true);
-    if (settings == NULL) {
-        return;
-    }
-    assert(settings->getMachineType() == RemoteMachineType_RemoteService);
-    const Schema *s = getSchema();
-    AppContext::getTaskScheduler()->registerTopLevelTask(new RemoteWorkflowRunTask(settings, *s));
 }
 
 void WorkflowView::sl_launch() {

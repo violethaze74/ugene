@@ -33,16 +33,16 @@
 
 namespace U2 {
 
-class U2REMOTE_EXPORT SyncHTTP : public QNetworkAccessManager {
+class U2CORE_EXPORT SyncHttp : public QNetworkAccessManager {
     Q_OBJECT
 public:
-    SyncHTTP(U2OpStatus &os, QObject* parent = 0);
-    ~SyncHTTP();
+    SyncHttp(U2OpStatus &os, QObject* parent = 0);
+    ~SyncHttp();
     QString syncGet(const QUrl& url);
     QString syncPost(const QUrl & url, QIODevice * data);
-    QNetworkReply::NetworkError error() {return err;}
-    QString errorString() {return errString;}
-protected slots:
+    QNetworkReply::NetworkError error() { return err; }
+    QString errorString() { return errString; }
+    protected slots:
     virtual void finished(QNetworkReply*);
     virtual void onProxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
     void sl_taskCancellingCheck();

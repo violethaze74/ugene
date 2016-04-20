@@ -19,7 +19,6 @@ HEADERS += src/AnnotationTableObjectTest.h \
            src/LoadRemoteDocumentTests.h \
            src/PWMatrixTests.h \
            src/PhyTreeObjectTests.h \
-           src/PingRemoteServiceTests.h \
            src/SMatrixTests.h \
            src/SecStructPredictTests.h \
            src/SequenceWalkerTests.h \
@@ -44,7 +43,6 @@ SOURCES += src/AnnotationTableObjectTest.cpp \
            src/LoadRemoteDocumentTests.cpp \
            src/PWMatrixTests.cpp \
            src/PhyTreeObjectTests.cpp \
-           src/PingRemoteServiceTests.cpp \
            src/SMatrixTests.cpp \
            src/SecStructPredictTests.cpp \
            src/SequenceWalkerTests.cpp \

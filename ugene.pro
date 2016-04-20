@@ -32,7 +32,6 @@ SUBDIRS += \
           src/corelibs/U2Lang \
           src/corelibs/U2Private \
           src/corelibs/U2Gui \
-          src/corelibs/U2Remote \
           src/corelibs/U2View \
           src/corelibs/U2Designer \
           src/corelibs/U2Script \
@@ -74,7 +73,6 @@ SUBDIRS += \
           src/plugins/dotplot \
           src/plugins/query_designer \
           src/plugins/external_tool_support \
-          src/plugins/remote_service \
           src/plugins/CoreTests \
           src/plugins/api_tests \
           src/plugins/GUITestBase \
