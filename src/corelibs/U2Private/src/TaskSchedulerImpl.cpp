@@ -1048,8 +1048,9 @@ void TaskThread::run() {
     }
     ti->selfRunFinished = true;
     if(ti->task->hasFlags(TaskFlag_RunMessageLoopOnly)) {
-        startTimer(1);
+        int timerId = startTimer(1);
         exec();
+        killTimer(timerId);
     }
     lock.lock();
     AppContext::getTaskScheduler()->removeThreadId(ti->task->getTaskId());
@@ -1074,7 +1075,6 @@ bool TaskThread::event(QEvent *event) {
         if(ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && (ti->task->isCanceled()
             || ti->task->hasError()))
         {
-            killTimer(timerEvent->timerId());
             exit();
         }
         break;
