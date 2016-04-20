@@ -59,7 +59,7 @@ const DocumentFormatId BaseDocumentFormats::SRF("srfasta");
 const DocumentFormatId BaseDocumentFormats::STOCKHOLM("stockholm");
 const DocumentFormatId BaseDocumentFormats::UGENEDB("usqlite");
 const DocumentFormatId BaseDocumentFormats::VCF4("vcf");
-const DocumentFormatId BaseDocumentFormats::VECTOR_NTI_SEQUENCE("Vector NTI sequence");
+const DocumentFormatId BaseDocumentFormats::VECTOR_NTI_SEQUENCE("vector_nti_sequence");
 
 DocumentFormat* BaseDocumentFormats::get(const DocumentFormatId& formatId) {
     return AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
