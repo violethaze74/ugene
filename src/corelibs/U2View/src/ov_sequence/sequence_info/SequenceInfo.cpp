@@ -88,10 +88,10 @@ void SequenceInfo::initLayout()
 
     statisticLabel = new QLabel(this);
     statisticLabel->setMinimumWidth(1);
+    statisticLabel->setObjectName("Common Statistics");
     statisticLabelContainer->layout()->addWidget(statisticLabel);
 
     statsWidget = new ShowHideSubgroupWidget(STAT_GROUP_ID, tr("Common Statistics"), statisticLabelContainer, true);
-    statsWidget->setObjectName("Common Statistics");
 
     mainLayout->addWidget(statsWidget);
 
