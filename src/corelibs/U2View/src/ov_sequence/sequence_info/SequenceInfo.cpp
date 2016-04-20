@@ -82,11 +82,11 @@ void SequenceInfo::initLayout()
     setLayout(mainLayout);
 
     // Common statistics
-    QWidget *statisticLabelContainer = new QWidget;
+    QWidget *statisticLabelContainer = new QWidget(this);
     statisticLabelContainer->setLayout(new QHBoxLayout);
     statisticLabelContainer->layout()->setContentsMargins(0, 0, 0, 0);
 
-    statisticLabel = new QLabel(this);
+    statisticLabel = new QLabel(statisticLabelContainer);
     statisticLabel->setMinimumWidth(1);
     statisticLabel->setObjectName("Common Statistics");
     statisticLabelContainer->layout()->addWidget(statisticLabel);
