@@ -419,7 +419,7 @@ Document* FastqFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const
     load(io, dbiRef, _hints, io->getURL(), objects, os, gapSize, predictedSize, lockReason, skippedLines);
     if (skippedLines.size() > 0){
         QMapIterator<QString, QString> i(skippedLines);
-        QList<QString> errors;
+        QStringList errors;
         while (i.hasNext()) {
             i.next();
             QString msg = i.key() + ": " + i.value();
