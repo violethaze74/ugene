@@ -87,12 +87,11 @@ void CrashHandlerPrivateMac::storeStackTrace() {
     sprintf(pid_buf, "%d", getpid());
     char name_buf[512];
     name_buf[readlink(path.toLatin1().constData(), name_buf, 511)] = 0;
-    FILE *fp = NULL;
-    fp = freopen(stacktraceFilePath.toLocal8Bit().constData(), "w+", stdout);
+    FILE *fp = fopen(stacktraceFilePath.toLocal8Bit().constData(), "w+");
     stacktraceFileSucessfullyCreated = (NULL != fp);
     void * stackTrace[1024];
     int frames = backtrace(stackTrace, 1024);
-    backtrace_symbols_fd(stackTrace, frames, STDOUT_FILENO);
+    backtrace_symbols_fd(stackTrace, frames, fileno(fp));
     const int closed = fclose(fp);
     stacktraceFileWasSucessfullyClosed = (closed == 0);
 }
