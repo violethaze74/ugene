@@ -50,6 +50,7 @@ void Hmmer3SearchWorfklowTask::prepare() {
 Task::ReportResult Hmmer3SearchWorfklowTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
     Document *doc = workflowTask->getDocument();
+    CHECK(NULL != doc, ReportResult_Finished);
     QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
     if (objects.isEmpty()) {
         setError(tr("No annotations objects found"));
@@ -98,6 +99,7 @@ SimpleInOutWorkflowTaskConfig Hmmer3SearchWorfklowTask::getConfig() {
     config.inFormat = BaseDocumentFormats::PLAIN_GENBANK;
     config.outFormat = BaseDocumentFormats::PLAIN_GENBANK;
     config.schemaName = "hmm3-search";
+    config.emptyResultPossible = true;
 
     config.extraArgs << "--hmm=" + profileUrl;
     config.extraArgs << "--seed=" + QString::number(settings.inner.seed);
