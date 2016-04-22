@@ -19,36 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_FACTORY_H_
-#define _U2_MSA_EDITOR_FACTORY_H_
+#ifndef _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_GRAYSCALE_H_
+#define _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_GRAYSCALE_H_
 
-#include <U2Gui/ObjectViewModel.h>
+#include "MsaColorSchemePercentageIdentity.h"
 
 namespace U2 {
 
-class MultiGSelection;
-class MsaColorSchemeRegistry;
-
-class U2VIEW_EXPORT MSAEditorFactory : public GObjectViewFactory {
-    Q_OBJECT
+class U2ALGORITHM_EXPORT MsaColorSchemePercentageIdententityGrayscale : public MsaColorSchemePercentageIdentity {
 public:
-    MSAEditorFactory();
-
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
-
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
-
-    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
-
-    virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
-
-    virtual bool supportsSavedStates() const {return true;}
-
-    static const GObjectViewFactoryId ID;
+    MsaColorSchemePercentageIdententityGrayscale(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj);
 };
 
+class MsaColorSchemePercentageIdententityGrayscaleFactory : public MsaColorSchemeFactory {
+    Q_OBJECT
+public:
+    MsaColorSchemePercentageIdententityGrayscaleFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
 
+    MsaColorScheme * create(QObject *parent, MAlignmentObject *maObj) const;
+};
 
-} // namespace
+}   // namespace U2
 
-#endif
+#endif // _U2_MSA_COLOR_SCHEME_PERCENTAGE_IDENTENTITY_GRAYSCALE_H_

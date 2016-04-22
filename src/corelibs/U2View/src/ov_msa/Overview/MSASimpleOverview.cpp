@@ -19,18 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSASimpleOverview.h"
-#include "MSAGraphCalculationTask.h"
+#include <QMouseEvent>
+#include <QPainter>
+
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <U2Algorithm/MSAColorScheme.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include <QtGui/QPainter>
-#include <QtGui/QMouseEvent>
-
+#include "MSASimpleOverview.h"
+#include "MSAGraphCalculationTask.h"
 
 namespace U2 {
 

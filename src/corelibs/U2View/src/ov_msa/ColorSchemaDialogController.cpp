@@ -19,16 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#include <QPainter>
 #include <QColorDialog>
+#include <QPainter>
+#include <QPushButton>
+
+#include <U2Algorithm/ColorSchemeUtils.h>
 
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
+
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/U2FileDialog.h>
-#include <QPushButton>
 
 #include "ColorSchemaDialogController.h"
 
@@ -173,7 +176,7 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent * event){
 
 /*Create MSA scheme dialog*/
 
-CreateColorSchemaDialog::CreateColorSchemaDialog(CustomColorSchema* _newSchema, QStringList _usedNames) : usedNames(_usedNames), newSchema(_newSchema) {
+CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData* _newSchema, QStringList _usedNames) : usedNames(_usedNames), newSchema(_newSchema) {
     setupUi(this);
     new HelpButton(this, buttonBox, "17468829");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
@@ -294,7 +297,7 @@ void CreateColorSchemaDialog::sl_createSchema(){
         }
     }
 
-    QMap<char, QColor> alpColors = ColorSchemaSettingsUtils::getDefaultSchemaColors(type, defaultAlpType);
+    QMap<char, QColor> alpColors = ColorSchemeUtils::getDefaultSchemaColors(type, defaultAlpType);
 
     QObjectScopedPointer<ColorSchemaDialogController> controller = new ColorSchemaDialogController(alpColors);
     const int r = controller->adjustAlphabetColors();
@@ -338,7 +341,7 @@ void ColorSchemaSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
     customSchemas = state->customSchemas;
     colorSchemas->clear();
 
-    foreach(const CustomColorSchema& customSchema, customSchemas){
+    foreach(const ColorSchemeData& customSchema, customSchemas){
         colorSchemas->addItem(new QListWidgetItem(customSchema.name, colorSchemas));
     }
     update();
@@ -368,11 +371,11 @@ void ColorSchemaSettingsPageWidget::sl_onColorsDirButton() {
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         colorsDirEdit->setText(dir);
-        ColorSchemaSettingsUtils::setColorsDir(dir);
+        ColorSchemeUtils::setColorsDir(dir);
         customSchemas.clear();
         colorSchemas->clear();
-        customSchemas = ColorSchemaSettingsUtils::getSchemas();
-        foreach(CustomColorSchema schema, customSchemas){
+        customSchemas = ColorSchemeUtils::getSchemas();
+        foreach(ColorSchemeData schema, customSchemas){
             colorSchemas->addItem(new QListWidgetItem(schema.name, colorSchemas));
         }
     }
@@ -381,10 +384,10 @@ void ColorSchemaSettingsPageWidget::sl_onColorsDirButton() {
 void ColorSchemaSettingsPageWidget::sl_onAddColorSchema(){
 
     QStringList usedNames;
-    foreach(const CustomColorSchema& customScheme, customSchemas){
+    foreach(const ColorSchemeData& customScheme, customSchemas){
         usedNames << customScheme.name;
     }
-    CustomColorSchema schema;
+    ColorSchemeData schema;
 
     QObjectScopedPointer<CreateColorSchemaDialog> d = new CreateColorSchemaDialog(&schema, usedNames);
     const int r = d->createNewScheme();
@@ -406,7 +409,7 @@ void ColorSchemaSettingsPageWidget::sl_onChangeColorSchema(){
 
     QString schemaName = item->text();
     for(int i = 0; i < customSchemas.size(); ++i){
-        CustomColorSchema& customSchema = customSchemas[i];
+        ColorSchemeData& customSchema = customSchemas[i];
         if(customSchema.name == schemaName){
             alpColors = customSchema.alpColors;
             QObjectScopedPointer<ColorSchemaDialogController> controller = new ColorSchemaDialogController(alpColors);
@@ -433,7 +436,7 @@ void ColorSchemaSettingsPageWidget::sl_onDeleteColorSchema(){
 
     QString schemaName = item->text();
     for(int i = 0; i < customSchemas.size(); ++i){
-        CustomColorSchema& customSchema = customSchemas[i];
+        ColorSchemeData& customSchema = customSchemas[i];
         if(customSchema.name == schemaName){
             customSchemas.removeAt(i);
             colorSchemas->removeItemWidget(item);

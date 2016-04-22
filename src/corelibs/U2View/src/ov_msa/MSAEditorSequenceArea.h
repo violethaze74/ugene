@@ -53,15 +53,15 @@ namespace U2 {
 class MSAEditor;
 class MSAEditorUI;
 class GObjectView;
-class MSAColorScheme;
-class MSAHighlightingScheme;
+class MsaColorScheme;
+class MsaHighlightingScheme;
 class MAlignment;
 class MAlignmentModInfo;
 class MAlignmentObject;
-class MSAColorSchemeFactory;
-class MSAHighlightingSchemeFactory;
-class MSAColorSchemeRegistry;
-class MSAHighlightingSchemeRegistry;
+class MsaColorSchemeFactory;
+class MsaHighlightingSchemeFactory;
+class MsaColorSchemeRegistry;
+class MsaHighlightingSchemeRegistry;
 class Settings;
 
 class ModificationType {
@@ -315,8 +315,8 @@ public:
 
     QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
-    MSAColorScheme * getCurrentColorScheme() const;
-    MSAHighlightingScheme * getCurrentHighlightingScheme() const;
+    MsaColorScheme * getCurrentColorScheme() const;
+    MsaHighlightingScheme * getCurrentHighlightingScheme() const;
     bool getUseDotsCheckedState() const;
 
     void onVisibleRangeChanged();
@@ -418,9 +418,9 @@ private:
     void buildMenu(QMenu* m);
     void updateColorAndHighlightSchemes();
 
-    void initColorSchemes(MSAColorSchemeFactory* csf, DNAAlphabetType atype);
-    void initHighlightSchemes(MSAHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
-    void initCustomSchemeActions(MSAColorSchemeFactory* csf, DNAAlphabetType type);
+    void initColorSchemes(MsaColorSchemeFactory* csf, DNAAlphabetType atype);
+    void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
+    void initCustomSchemeActions(MsaColorSchemeFactory* csf, DNAAlphabetType type);
 
     void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
 
@@ -519,8 +519,8 @@ private:
     QPixmap*        cachedView;
     bool            completeRedraw;
 
-    MSAColorScheme* colorScheme;
-    MSAHighlightingScheme* highlightingScheme;
+    MsaColorScheme* colorScheme;
+    MsaHighlightingScheme* highlightingScheme;
     bool            highlightSelection;
 
     QList<QAction*> colorSchemeMenuActions;

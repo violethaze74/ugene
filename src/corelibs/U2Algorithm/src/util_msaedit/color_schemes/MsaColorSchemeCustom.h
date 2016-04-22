@@ -19,36 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_FACTORY_H_
-#define _U2_MSA_EDITOR_FACTORY_H_
+#ifndef _U2_MSA_COLOR_SCHEME_CUSTOM_H_
+#define _U2_MSA_COLOR_SCHEME_CUSTOM_H_
 
-#include <U2Gui/ObjectViewModel.h>
+#include <QColor>
+#include <QVector>
+
+#include "MsaColorScheme.h"
 
 namespace U2 {
 
-class MultiGSelection;
-class MsaColorSchemeRegistry;
-
-class U2VIEW_EXPORT MSAEditorFactory : public GObjectViewFactory {
+class U2ALGORITHM_EXPORT MsaColorSchemeCustomFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MSAEditorFactory();
+    MsaColorSchemeCustomFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType, const QVector<QColor> & colorsPerChar);
 
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
+    MsaColorScheme * create(QObject *p, MAlignmentObject *obj) const;
+    bool isEqualTo(const ColorSchemeData& schema) const;
+    static QVector<QColor> colorMapToColorVector(const QMap<char, QColor> &map);
 
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
-
-    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
-
-    virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
-
-    virtual bool supportsSavedStates() const {return true;}
-
-    static const GObjectViewFactoryId ID;
+private:
+    QVector<QColor> colorsPerChar;
 };
 
+}   // namespace U2
 
-
-} // namespace
-
-#endif
+#endif // _U2_MSA_COLOR_SCHEME_CUSTOM_H_

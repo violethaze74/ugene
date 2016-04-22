@@ -82,7 +82,21 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.h \
            src/util_msaedit/CreateSubalignmentTask.h \
            src/util_msaedit/MAlignmentUtilTasks.h \
-           src/util_msaedit/MSAColorScheme.h \
+           src/util_msaedit/color_schemes/ColorSchemeUtils.h \
+           src/util_msaedit/color_schemes/MsaColorScheme.h \
+           src/util_msaedit/color_schemes/MsaColorSchemeClustalX.h \
+           src/util_msaedit/color_schemes/MsaColorSchemeCustom.h \
+           src/util_msaedit/color_schemes/MsaColorSchemePercentageIdententityGrayscale.h \
+           src/util_msaedit/color_schemes/MsaColorSchemePercentageIdentity.h \
+           src/util_msaedit/color_schemes/MsaColorSchemeStatic.h \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.h \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeAgreements.h \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeConservation.h \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeDisagreements.h \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeGaps.h \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeNoColors.h \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeTransitions.h \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeTransversions.h \
            src/util_orf/ORFAlgorithmTask.h \
            src/util_orf/ORFFinder.h \
            src/util_sarray/SArrayBasedFindTask.h \
@@ -96,7 +110,8 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_weight_matrix/PWMConversionAlgorithmNLG.h \
            src/util_weight_matrix/PWMConversionAlgorithmRegistry.h \
            src/util_gpu/opencl/OpenCLHelper.h \
-           src/util_gpu/opencl/OpenCLUtils.h 
+           src/util_gpu/opencl/OpenCLUtils.h
+
 SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/misc/BitsTable.cpp \
            src/misc/DnaAssemblyMultiTask.cpp \
@@ -166,7 +181,21 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.cpp \
            src/util_msaedit/CreateSubalignmentTask.cpp \
            src/util_msaedit/MAlignmentUtilTasks.cpp \
-           src/util_msaedit/MSAColorScheme.cpp \
+           src/util_msaedit/color_schemes/ColorSchemeUtils.cpp \
+           src/util_msaedit/color_schemes/MsaColorScheme.cpp \
+           src/util_msaedit/color_schemes/MsaColorSchemeClustalX.cpp \
+           src/util_msaedit/color_schemes/MsaColorSchemeCustom.cpp \
+           src/util_msaedit/color_schemes/MsaColorSchemePercentageIdententityGrayscale.cpp \
+           src/util_msaedit/color_schemes/MsaColorSchemePercentageIdentity.cpp \
+           src/util_msaedit/color_schemes/MsaColorSchemeStatic.cpp \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeAgreements.cpp \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeConservation.cpp \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeDisagreements.cpp \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeGaps.cpp \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeNoColors.cpp \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeTransitions.cpp \
+           src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeTransversions.cpp \
            src/util_orf/ORFAlgorithmTask.cpp \
            src/util_orf/ORFFinder.cpp \
            src/util_sarray/SArrayBasedFindTask.cpp \
@@ -180,7 +209,7 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_weight_matrix/PWMConversionAlgorithmNLG.cpp \
            src/util_weight_matrix/PWMConversionAlgorithmRegistry.cpp \
            src/util_gpu/opencl/OpenCLHelper.cpp \
-           src/util_gpu/opencl/OpenCLUtils.cpp 
+           src/util_gpu/opencl/OpenCLUtils.cpp
 RESOURCES += U2Algorithm.qrc
 TRANSLATIONS += transl/english.ts transl/russian.ts
 

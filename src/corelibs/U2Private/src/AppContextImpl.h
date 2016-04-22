@@ -157,9 +157,9 @@ public:
 
     void setSWMulAlignResultNamesTagsRegistry (SWMulAlignResultNamesTagsRegistry * _swmarntr) { assert( swmarntr == NULL || _swmarntr == NULL ); swmarntr = _swmarntr; }
 
-    void setMSAColorSchemeRegistry(MSAColorSchemeRegistry* _mcsr) {assert( mcsr == NULL || _mcsr == NULL ); mcsr = _mcsr;}
+    void setMsaColorSchemeRegistry(MsaColorSchemeRegistry* _mcsr) {assert( mcsr == NULL || _mcsr == NULL ); mcsr = _mcsr;}
 
-    void setMSAHighlightingSchemeRegistry(MSAHighlightingSchemeRegistry* _mhsr) {assert( mhsr == NULL || _mhsr == NULL ); mhsr = _mhsr;}
+    void setMsaHighlightingSchemeRegistry(MsaHighlightingSchemeRegistry* _mhsr) {assert( mhsr == NULL || _mhsr == NULL ); mhsr = _mhsr;}
 
     void setSecStructPedictAlgRegistry(SecStructPredictAlgRegistry* _sspar) {assert( secStructPredictRegistry == NULL || _sspar == NULL ); secStructPredictRegistry = _sspar;}
 
@@ -370,8 +370,8 @@ protected:
     virtual MolecularSurfaceFactoryRegistry*   _getMolecularSurfaceFactoryRegistry() const {return msfr;}
     virtual SWResultFilterRegistry*     _getSWResultFilterRegistry() const {return swrfr;}
     virtual SWMulAlignResultNamesTagsRegistry * _getSWMulAlignResultNamesTagsRegistry() const {return swmarntr;}
-    virtual MSAColorSchemeRegistry*     _getMSAColorSchemeRegistry() const {return mcsr;}
-    virtual MSAHighlightingSchemeRegistry* _getMSAHighlightingSchemeRegistry() const {return mhsr;}
+    virtual MsaColorSchemeRegistry*     _getMsaColorSchemeRegistry() const {return mcsr;}
+    virtual MsaHighlightingSchemeRegistry* _getMsaHighlightingSchemeRegistry() const {return mhsr;}
     virtual SecStructPredictAlgRegistry* _getSecStructPredictAlgRegistry() const {return secStructPredictRegistry;}
     virtual CudaGpuRegistry *            _getCudaGpuRegistry() const { return cgr; }
     virtual OpenCLGpuRegistry *          _getOpenCLGpuRegistry() const { return oclgr; }
@@ -446,8 +446,8 @@ private:
     SWResultFilterRegistry*  swrfr;
     SWMulAlignResultNamesTagsRegistry * swmarntr;
     AppSettingsGUI* asg;
-    MSAColorSchemeRegistry* mcsr;
-    MSAHighlightingSchemeRegistry *mhsr;
+    MsaColorSchemeRegistry* mcsr;
+    MsaHighlightingSchemeRegistry *mhsr;
     SecStructPredictAlgRegistry* secStructPredictRegistry;
     CudaGpuRegistry * cgr;
     OpenCLGpuRegistry * oclgr;

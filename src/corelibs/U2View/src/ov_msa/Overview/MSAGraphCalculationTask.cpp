@@ -19,21 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAGraphCalculationTask.h"
+#include <QPolygonF>
 
-#include <U2Core/U2SafePoints.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/U2OpStatusUtils.h>
-
-#include <U2View/MSAEditor.h>
-#include <U2Algorithm/MSAColorScheme.h>
-
-#include <U2Algorithm/MSAConsensusAlgorithmStrict.h>
 #include <U2Algorithm/MSAConsensusAlgorithmClustal.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MSAConsensusAlgorithmStrict.h>
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
 
-#include <QtGui/QPolygonF>
+#include <U2Core/MAlignmentObject.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
+#include <U2View/MSAEditor.h>
+
+#include "MSAGraphCalculationTask.h"
 
 namespace U2 {
 
@@ -197,23 +197,23 @@ MSAHighlightingOverviewCalculationTask::MSAHighlightingOverviewCalculationTask(M
                                                                                int width, int height)
     : MSAGraphCalculationTask(editor->getMSAObject(), width, height) {
 
-    SAFE_POINT_EXT(AppContext::getMSAHighlightingSchemeRegistry() != NULL,
+    SAFE_POINT_EXT(AppContext::getMsaHighlightingSchemeRegistry() != NULL,
                    setError(tr("MSA highlighting scheme registry is NULL")), );
-    MSAHighlightingSchemeFactory* f_hs = AppContext::getMSAHighlightingSchemeRegistry()->getMSAHighlightingSchemeFactoryById( highlightingSchemeId );
+    MsaHighlightingSchemeFactory* f_hs = AppContext::getMsaHighlightingSchemeRegistry()->getMsaHighlightingSchemeFactoryById( highlightingSchemeId );
     SAFE_POINT_EXT(f_hs != NULL, setError(tr("MSA highlighting scheme factory with '%1' id is NULL").arg(highlightingSchemeId)), );
 
     highlightingScheme = f_hs->create(this, editor->getMSAObject());
     schemeId = f_hs->getId();
 
-    MSAColorSchemeFactory* f_cs = AppContext::getMSAColorSchemeRegistry()->getMSAColorSchemeFactoryById( colorSchemeId );
+    MsaColorSchemeFactory* f_cs = AppContext::getMsaColorSchemeRegistry()->getMsaColorSchemeFactoryById( colorSchemeId );
     colorScheme = f_cs->create(this, editor->getMSAObject());
 
     U2OpStatusImpl os;
     refSequenceId = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
 }
 
-bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MAlignment &ma, MSAHighlightingScheme *highlightingScheme,
-                                                               MSAColorScheme *colorScheme,
+bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MAlignment &ma, MsaHighlightingScheme *highlightingScheme,
+                                                               MsaColorScheme *colorScheme,
                                                                int seq, int pos,
                                                                int refSeq)
 {
@@ -263,11 +263,11 @@ int MSAHighlightingOverviewCalculationTask::getGraphValue(int pos) const {
 }
 
 bool MSAHighlightingOverviewCalculationTask::isGapScheme(const QString &schemeId) {
-    return (schemeId == MSAHighlightingScheme::GAPS_AMINO || schemeId == MSAHighlightingScheme::GAPS_NUCL);
+    return (schemeId == MsaHighlightingScheme::GAPS_AMINO || schemeId == MsaHighlightingScheme::GAPS_NUCL);
 }
 
 bool MSAHighlightingOverviewCalculationTask::isEmptyScheme(const QString &schemeId) {
-    return (schemeId == MSAHighlightingScheme::EMPTY_AMINO || schemeId == MSAHighlightingScheme::EMPTY_NUCL);
+    return (schemeId == MsaHighlightingScheme::EMPTY_AMINO || schemeId == MsaHighlightingScheme::EMPTY_NUCL);
 }
 
 bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(int seq, int pos) const {
