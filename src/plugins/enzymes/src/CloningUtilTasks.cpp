@@ -330,8 +330,22 @@ QString DigestSequenceTask::generateReport() const
 
 }
 
+bool compareAnnotationsbyLength(const SharedAnnotationData &a1, const SharedAnnotationData& a2) {
+    int length1 = 0;
+    foreach(const U2Region &reg, a1->getRegions()) {
+        length1 += reg.length;
+    }
+
+    int length2 = 0;
+    foreach(const U2Region &reg, a2->getRegions()) {
+        length2 += reg.length;
+    }
+    return length1 > length2;
+}
+
 void DigestSequenceTask::checkForConservedAnnotations()
 {
+    qSort(results.begin(), results.end(), compareAnnotationsbyLength);
     QMap<QString, U2Region>::const_iterator it = cfg.conservedRegions.constBegin();
     for(; it != cfg.conservedRegions.constEnd(); ++it) {
         bool found = false;

@@ -62,6 +62,8 @@
 #include <runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h>
 #include <runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h>
 #include <runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h>
+#include <runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h>
+#include <runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h>
 #include <runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
@@ -452,6 +454,26 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5278) {
+    //1. Open file PBR322.gb from samples
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "PBR322.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Find next restriction sites "AaaI" and "AagI"
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AaaI" << "AagI"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    GTUtilsNotifications::waitForNotification(os, false);
+    //3. Open report and be sure fragments sorted by length (longest first)
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTGlobals::sleep();
+    QTextEdit *textEdit = dynamic_cast<QTextEdit*>(GTWidget::findWidget(os, "reportTextEdit", GTUtilsMdi::activeWindow(os)));
+    CHECK_SET_ERR(textEdit->toPlainText().contains("1:    From AaaI (940) To AagI (24) - 3446 bp "), "Expected message is not found in the report text");
 }
 
 } // namespace GUITest_regression_scenarios
