@@ -32,13 +32,16 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemeCustomFactory : public MsaColorSchemeFactory {
     Q_OBJECT
 public:
-    MsaColorSchemeCustomFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType, const QVector<QColor> & colorsPerChar);
+    MsaColorSchemeCustomFactory(QObject *parent, const ColorSchemeData& scheme);
 
     MsaColorScheme * create(QObject *p, MAlignmentObject *obj) const;
-    bool isEqualTo(const ColorSchemeData& schema) const;
-    static QVector<QColor> colorMapToColorVector(const QMap<char, QColor> &map);
+    bool isEqualTo(const ColorSchemeData& scheme) const;
+
+    void setScheme(const ColorSchemeData& scheme);
 
 private:
+    static QVector<QColor> colorMapToColorVector(const QMap<char, QColor> &map);
+
     QVector<QColor> colorsPerChar;
 };
 

@@ -53,13 +53,12 @@ private slots:
     void sl_updateHint();
     void sl_exportHighlightningClicked();
     void sl_highlightingParametersChanged();
-    void sl_actionsChanged();
+    void sl_customSchemesListChanged();
 
 private:
     QWidget* createColorGroup();
     QWidget* createHighlightingGroup();
     void initColorCB();
-    void customColorSchemesChangeCheck();
 
     MSAEditor *msa;
     MSAEditorSequenceArea *seqArea;

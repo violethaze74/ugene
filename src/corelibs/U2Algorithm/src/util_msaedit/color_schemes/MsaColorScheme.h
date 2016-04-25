@@ -26,11 +26,14 @@
 
 namespace U2 {
 
-class MsaColorSchemeFactory;
 class MAlignmentObject;
+class MsaColorSchemeCustomFactory;
+class MsaColorSchemeFactory;
 
 class U2ALGORITHM_EXPORT ColorSchemeData {
 public:
+    ColorSchemeData();
+
     QString name;
     DNAAlphabetType type;
     bool defaultAlpType;
@@ -85,7 +88,10 @@ public:
     const QString & getName() const;
     DNAAlphabetType getAlphabetType() const;
 
-private:
+signals:
+    void si_factoryChanged();
+
+protected:
     QString         id;
     QString         name;
     DNAAlphabetType alphabetType;
@@ -98,16 +104,13 @@ public:
     ~MsaColorSchemeRegistry();
 
     const QList<MsaColorSchemeFactory *> & getMsaColorSchemes() const;
-    const QList<MsaColorSchemeFactory *> & getCustomColorSchemes() const;
+    const QList<MsaColorSchemeCustomFactory *> &getCustomColorSchemes() const;
 
     QList<MsaColorSchemeFactory *> getMsaColorSchemes(DNAAlphabetType alphabetType) const;
     QList<MsaColorSchemeFactory *> getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const;
 
-    MsaColorSchemeFactory * getMsaColorSchemeFactoryById(const QString& id) const;
-
-    void addCustomSchema(const ColorSchemeData& schema);
-    void addMsaColorSchemeFactory(MsaColorSchemeFactory *commonFactory);
-    void addMsaCustomColorSchemeFactory(MsaColorSchemeFactory *customFactory);
+    MsaColorSchemeCustomFactory * getMsaCustomColorSchemeFactoryById(const QString &id) const;
+    MsaColorSchemeFactory * getMsaColorSchemeFactoryById(const QString &id) const;
 
 signals:
     void si_customSettingsChanged();
@@ -116,12 +119,16 @@ private slots:
     void sl_onCustomSettingsChanged();
 
 private:
+    void addCustomScheme(const ColorSchemeData& scheme);
+    void addMsaColorSchemeFactory(MsaColorSchemeFactory *commonFactory);
+    void addMsaCustomColorSchemeFactory(MsaColorSchemeCustomFactory *customFactory);
+
     void deleteOldCustomFactories();
     void initBuiltInSchemes();
     void initCustomSchema();
 
     QList<MsaColorSchemeFactory *> colorers;
-    QList<MsaColorSchemeFactory *> customColorers;
+    QList<MsaColorSchemeCustomFactory *> customColorers;
 };
 
 }   // namespace U2

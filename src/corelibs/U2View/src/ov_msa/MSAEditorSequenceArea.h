@@ -268,8 +268,6 @@ public:
 
     int getHeight();
 
-    QStringList getAvailableColorSchemes() const;
-
     QStringList getAvailableHighlightingSchemes() const;
 
     bool hasAminoAlphabet();
@@ -332,7 +330,6 @@ signals:
     void si_startMsaChanging();
     void si_stopMsaChanging(bool msaUpdated);
     void si_copyFormattedChanging(bool enabled);
-    void si_highlightingAndColorActionsChanged();
 
 public slots:
     void sl_changeColorSchemeOutside(const QString &name);
@@ -385,6 +382,9 @@ private slots:
 
     void sl_saveSequence();
 
+    void sl_registerCustomColorSchemes();
+    void sl_colorSchemeFactoryUpdated();
+    void sl_setDefaultColorScheme();
     void sl_changeColorScheme();
     void sl_changeHighlightScheme();
 
@@ -392,7 +392,6 @@ private slots:
 
     void sl_modelChanged();
 
-    void sl_customColorSettingsChanged();
     void sl_showCustomSettings();
     void sl_referenceSeqChanged(qint64);
 
@@ -418,11 +417,13 @@ private:
     void buildMenu(QMenu* m);
     void updateColorAndHighlightSchemes();
 
-    void initColorSchemes(MsaColorSchemeFactory* csf, DNAAlphabetType atype);
+    void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
+    void registerCommonColorSchemes();
     void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
-    void initCustomSchemeActions(MsaColorSchemeFactory* csf, DNAAlphabetType type);
 
+    MsaColorSchemeFactory * getDefaultColorSchemeFactory();
     void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
+    void applyColorScheme(const QString &id);
 
     void exitFromEditCharacterMode();
 
@@ -526,8 +527,6 @@ private:
     QList<QAction*> colorSchemeMenuActions;
     QList<QAction* > customColorSchemeMenuActions;
     QList<QAction* > highlightingSchemeMenuActions;
-
-    QString prevSchemeName;
 
     // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
     // that does not fit into one method, e.g. shifting MSA region with mouse.

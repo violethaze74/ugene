@@ -76,8 +76,8 @@ QByteArray uniteAlphabetChars(const QByteArray &firstAlphabetChars, const QByteA
 bool ColorSchemeUtils::getSchemaColors(ColorSchemeData &customScheme) {
     QMap<char, QColor> &alphColors = customScheme.alpColors;
     const QString &file = customScheme.name + COLOR_SCHEME_NAME_FILTERS;
-    DNAAlphabetType type = customScheme.type;
-    bool defaultAlpType = customScheme.defaultAlpType = true;
+    DNAAlphabetType &type = customScheme.type;
+    bool &defaultAlpType = customScheme.defaultAlpType = true;
 
     QString dirPath = getColorsDir();
     QDir dir(dirPath);

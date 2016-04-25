@@ -19,19 +19,17 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/U2SafePoints.h>
+
 #include "ColorSchemeUtils.h"
 #include "MsaColorSchemeCustom.h"
 #include "MsaColorSchemeStatic.h"
 
 namespace U2 {
 
-MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject *parent,
-                                                         const QString &id,
-                                                         const QString &name,
-                                                         DNAAlphabetType alphabetType,
-                                                         const QVector<QColor> &colorsPerChar)
-    : MsaColorSchemeFactory(parent, id, name, alphabetType),
-      colorsPerChar(colorsPerChar)
+MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject *parent, const ColorSchemeData &scheme)
+    : MsaColorSchemeFactory(parent, scheme.name, scheme.name, scheme.type),
+      colorsPerChar(colorMapToColorVector(scheme.alpColors))
 {
 
 }
@@ -45,8 +43,15 @@ bool MsaColorSchemeCustomFactory::isEqualTo(const ColorSchemeData &scheme) const
     result &= getName() == scheme.name;
     result &= getAlphabetType() == scheme.type;
     result &= colorsPerChar == colorMapToColorVector(scheme.alpColors);
-
     return result;
+}
+
+void MsaColorSchemeCustomFactory::setScheme(const ColorSchemeData &scheme) {
+    CHECK(!isEqualTo(scheme), );
+    name = scheme.name;
+    alphabetType = scheme.type;
+    colorsPerChar = colorMapToColorVector(scheme.alpColors);
+    emit si_factoryChanged();
 }
 
 QVector<QColor> MsaColorSchemeCustomFactory::colorMapToColorVector(const QMap<char, QColor> &map) {
@@ -59,6 +64,5 @@ QVector<QColor> MsaColorSchemeCustomFactory::colorMapToColorVector(const QMap<ch
     }
     return colorsPerChar;
 }
-
 
 }   // namespace U2

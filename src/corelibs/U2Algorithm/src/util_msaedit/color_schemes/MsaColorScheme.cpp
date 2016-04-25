@@ -102,7 +102,7 @@ const QList<MsaColorSchemeFactory *> & MsaColorSchemeRegistry::getMsaColorScheme
     return colorers;
 }
 
-const QList<MsaColorSchemeFactory *> & MsaColorSchemeRegistry::getCustomColorSchemes() const {
+const QList<MsaColorSchemeCustomFactory *> & MsaColorSchemeRegistry::getCustomColorSchemes() const {
     return customColorers;
 }
 
@@ -126,15 +126,9 @@ QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaCustomColorSchemes(
     return res;
 }
 
-MsaColorSchemeFactory * MsaColorSchemeRegistry::getMsaColorSchemeFactoryById(const QString& id) const {
-    foreach (MsaColorSchemeFactory *commonFactory, colorers) {
-        if (commonFactory->getId() == id) {
-            return commonFactory;
-        }
-    }
-
-    foreach (MsaColorSchemeFactory *customFactory, customColorers) {
-        if(customFactory->getId() == id) {
+MsaColorSchemeCustomFactory * MsaColorSchemeRegistry::getMsaCustomColorSchemeFactoryById(const QString &id) const {
+    foreach (MsaColorSchemeCustomFactory *customFactory, customColorers) {
+        if (customFactory->getId() == id) {
             return customFactory;
         }
     }
@@ -142,12 +136,18 @@ MsaColorSchemeFactory * MsaColorSchemeRegistry::getMsaColorSchemeFactoryById(con
     return NULL;
 }
 
-void MsaColorSchemeRegistry::addCustomSchema(const ColorSchemeData &schema) {
-    addMsaCustomColorSchemeFactory(new MsaColorSchemeCustomFactory(NULL,
-                                                                   schema.name,
-                                                                   schema.name,
-                                                                   schema.type,
-                                                                   MsaColorSchemeCustomFactory::colorMapToColorVector(schema.alpColors)));
+MsaColorSchemeFactory * MsaColorSchemeRegistry::getMsaColorSchemeFactoryById(const QString& id) const {
+    foreach (MsaColorSchemeFactory *commonFactory, colorers) {
+        if (commonFactory->getId() == id) {
+            return commonFactory;
+        }
+    }
+
+    return getMsaCustomColorSchemeFactoryById(id);
+}
+
+void MsaColorSchemeRegistry::addCustomScheme(const ColorSchemeData &scheme) {
+    addMsaCustomColorSchemeFactory(new MsaColorSchemeCustomFactory(NULL, scheme));
 }
 
 namespace {
@@ -182,43 +182,36 @@ void MsaColorSchemeRegistry::addMsaColorSchemeFactory(MsaColorSchemeFactory *com
     qStableSort(colorers.begin(), colorers.end(), compareNames);
 }
 
-void MsaColorSchemeRegistry::addMsaCustomColorSchemeFactory(MsaColorSchemeFactory *customFactory) {
+void MsaColorSchemeRegistry::addMsaCustomColorSchemeFactory(MsaColorSchemeCustomFactory *customFactory) {
     assert(getMsaColorSchemeFactoryById(customFactory->getId()) == NULL);
     customColorers.append(customFactory);
     qStableSort(colorers.begin(), colorers.end(), compareNames);
 }
 
 void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {
-    QList<MsaColorSchemeFactory *> factoriesToRemove = customColorers;
-    foreach (const ColorSchemeData &schema, ColorSchemeUtils::getSchemas()) {
-        bool factoryExist = false;
-        foreach (MsaColorSchemeFactory *factory, customColorers) {
-            MsaColorSchemeCustomFactory *customSchemaFactory = qobject_cast<MsaColorSchemeCustomFactory *>(factory);
-            SAFE_POINT(customSchemaFactory != NULL,
-                       "Failed to convert MsaColorSchemeFactory to MSAColorSchemeCustomSettingsFactory", );
+    bool schemesListChanged = false;
 
-            if (customSchemaFactory->isEqualTo(schema)) {
-                factoryExist = true;
-                factoriesToRemove.removeOne(factory);
-                break;
-            }
-        }
-
-        if (factoryExist) {
-            // no need to delete the factory if it was not changed
-            continue;
+    QList<MsaColorSchemeCustomFactory *> factoriesToRemove = customColorers;
+    foreach (const ColorSchemeData &scheme, ColorSchemeUtils::getSchemas()) {
+        MsaColorSchemeCustomFactory *customSchemeFactory = getMsaCustomColorSchemeFactoryById(scheme.name);
+        if (NULL == customSchemeFactory) {
+            addCustomScheme(scheme);
+            schemesListChanged |= true;
         } else {
-            // new schema
-            addCustomSchema(schema);
+            customSchemeFactory->setScheme(scheme);
+            factoriesToRemove.removeOne(customSchemeFactory);
         }
     }
 
-    foreach (MsaColorSchemeFactory *factory, factoriesToRemove) {
+    schemesListChanged |= !factoriesToRemove.isEmpty();
+    CHECK(schemesListChanged, );
+
+    foreach (MsaColorSchemeCustomFactory *factory, factoriesToRemove) {
         customColorers.removeOne(factory);
-        delete factory;
     }
 
     emit si_customSettingsChanged();
+    qDeleteAll(factoriesToRemove);
 }
 
 void MsaColorSchemeRegistry::deleteOldCustomFactories() {
@@ -561,8 +554,15 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
 
 void MsaColorSchemeRegistry::initCustomSchema(){
     foreach (const ColorSchemeData &schema, ColorSchemeUtils::getSchemas()) {
-        addCustomSchema(schema);
+        addCustomScheme(schema);
     }
+}
+
+ColorSchemeData::ColorSchemeData() :
+    type(DNAAlphabet_RAW),
+    defaultAlpType(false)
+{
+
 }
 
 }   // namespace U2
