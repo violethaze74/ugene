@@ -697,23 +697,21 @@ int main(int argc, char **argv)
 
     // Register all Options Panel groups on the required GObjectViews
     initOptionsPanels();
-#ifndef HI_EXCLUDED
-    if (GUITestService::isGuiTestServiceNeeded()) {
-        QStringList urls = CMDLineRegistryUtils::getPureValues();
 
-        if(urls.isEmpty() && AppContext::getAppSettings()->getUserAppsSettings()->openLastProjectAtStartup()) {
-            QString lastProject = ProjectLoaderImpl::getLastProjectURL();
-            if (!lastProject.isEmpty()) {
-                urls << lastProject;
-            }
-        }
+    QStringList urls = CMDLineRegistryUtils::getPureValues();
 
-        if( !urls.isEmpty() ) {
-            // defer loading until all plugins/services loaded
-            app.openAfterPluginsLoaded(urls, TaskStarter::NoProject);
+    if (urls.isEmpty() && AppContext::getAppSettings()->getUserAppsSettings()->openLastProjectAtStartup()) {
+        QString lastProject = ProjectLoaderImpl::getLastProjectURL();
+        if (!lastProject.isEmpty()) {
+            urls << lastProject;
         }
     }
-#endif //HI_EXCLUDED
+
+    if (!urls.isEmpty()) {
+        // defer loading until all plugins/services loaded
+        app.openAfterPluginsLoaded(urls, TaskStarter::NoProject);
+    }
+
     registerCoreServices();
 
 #ifndef HI_EXCLUDED
