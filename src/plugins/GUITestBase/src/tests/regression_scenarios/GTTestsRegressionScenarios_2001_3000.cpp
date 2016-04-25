@@ -4499,6 +4499,7 @@ GUI_TEST_CLASS_DEFINITION( test_2656 ) {
 
     GTUtilsDialog::waitForDialog(os, new DotplotLoadSequenceFiller(os, testDir + "_common_data/fasta", "empty_2.fa"));
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
+    GTThread::waitForMainThread();
 
     CHECK_SET_ERR( l.hasError(), "An error should be in the log");
 }
