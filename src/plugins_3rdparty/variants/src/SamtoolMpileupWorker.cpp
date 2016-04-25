@@ -686,11 +686,18 @@ void CallVariantsWorkerFactory::init() {
 
 
 QString CallVariantsPrompter::composeRichDoc() {
-    Actor* assemblyProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
-    Actor* seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
-
+    QString reference;
     QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
-    QString seqName = tr("For reference sequence from <u>%1</u>,").arg(seqProducer ? seqProducer->getLabel() : unsetStr);
+    Port* refPort = target->getPort(BasePorts::IN_SEQ_PORT_ID());
+    if (refPort->isEnabled()) {
+        Actor* seqProducer = qobject_cast<IntegralBusPort*>(refPort)->getProducer(BaseSlots::URL_SLOT().getId());
+        reference = seqProducer ? seqProducer->getLabel() : unsetStr;
+    } else {
+        reference = getHyperlink(REF_URL, getURL(REF_URL));
+    }
+    QString seqName = tr("For reference sequence from <u>%1</u>,").arg(reference);
+
+    Actor* assemblyProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
     QString assemblyName = tr("with assembly data provided by <u>%1</u>").arg(assemblyProducer ? assemblyProducer->getLabel() : unsetStr);
 
     QString doc = tr("%1 call variants %2.")
