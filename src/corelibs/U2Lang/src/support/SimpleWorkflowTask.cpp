@@ -42,6 +42,11 @@ namespace U2 {
 
 using namespace Workflow;
 
+SimpleInOutWorkflowTaskConfig::SimpleInOutWorkflowTaskConfig()
+: emptyResultPossible(false)
+{
+}
+
 /***************************
  * WorkflowRunSchemaForTask
  ***************************/
@@ -109,6 +114,12 @@ QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
         runWorkflowTask = new RunCmdlineWorkflowTask(monitorConf);
         res << runWorkflowTask;
     } else if (subTask == runWorkflowTask) {
+        if (0 == QFileInfo(resultTmpFile.fileName()).size()) {
+            if (!conf.emptyResultPossible) {
+                setError(tr("An error occurred during the task. See the log for details."));
+            }
+            return res;
+        }
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
         ioLog.details(tr("Loading result file '%1'").arg(resultTmpFile.fileName()));
         loadResultTask = new LoadDocumentTask(conf.outFormat, resultTmpFile.fileName(), iof, conf.outDocHints);
