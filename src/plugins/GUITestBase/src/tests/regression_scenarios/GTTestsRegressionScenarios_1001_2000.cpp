@@ -2501,6 +2501,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
     GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "P1_human_T1_5.aln"));
 
     GTUtilsProjectTreeView::doubleClickItem(os, "P1_human_T1_1");
+
     const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     const QStringList expectedNames = QStringList() << "human_T1_39_45" << "P1_1_7";
     CHECK_SET_ERR(expectedNames == names, QString("There are unexpected sequence names in the msa: expect '%1', got '%2'").arg(expectedNames.join(", ")).arg(names.join(", ")));

@@ -235,6 +235,7 @@ void GTUtilsAssemblyBrowser::callContextMenu(HI::GUITestOpStatus &os, GTUtilsAss
     }
 
     GTWidget::click(os, GTWidget::findWidget(os, widgetName), Qt::RightButton);
+    GTGlobals::sleep(300);
 }
 #undef GT_METHOD_NAME
 

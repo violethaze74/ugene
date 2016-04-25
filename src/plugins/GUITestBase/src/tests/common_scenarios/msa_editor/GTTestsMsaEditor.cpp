@@ -4781,7 +4781,6 @@ GUI_TEST_CLASS_DEFINITION(test_0069){
 //    Open COI.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Press on some sequence in nameList
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 2));
     QScrollBar* hscroll = GTWidget::findExactWidget<QScrollBar*>(os, "horizontal_names_scroll");
@@ -4790,42 +4789,50 @@ GUI_TEST_CLASS_DEFINITION(test_0069){
 //    right,
     for(int i = 0; i<3; i++){
         GTKeyboardDriver::keyClick(Qt::Key_Right);
-        GTGlobals::sleep(100);
+        GTGlobals::sleep(500);
+        GTThread::waitForMainThread();
     }
     CHECK_SET_ERR(hscroll->value() == 3, QString("right key works wrong. Scrollbar has value: %1").arg(hscroll->value()));
 //    left
     for(int i = 0; i<2; i++){
         GTKeyboardDriver::keyClick(Qt::Key_Left);
-        GTGlobals::sleep(100);
+        GTGlobals::sleep(500);
+        GTThread::waitForMainThread();
     }
     CHECK_SET_ERR(hscroll->value() == 1, QString("left key works wrong. Scrollbar has value: %1").arg(hscroll->value()));\
 //    page down
     GTKeyboardDriver::keyClick( Qt::Key_PageDown);
     GTGlobals::sleep(500);
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(vscroll->value() > 20, QString("page down key works wrong: %1").arg(vscroll->value()));
 //    page up
     GTKeyboardDriver::keyClick( Qt::Key_PageUp);
     GTGlobals::sleep(500);
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(vscroll->value() == 0, QString("page up key works wrong: %1").arg(vscroll->value()));
 //    end
     GTKeyboardDriver::keyClick( Qt::Key_End);
     GTGlobals::sleep(500);
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(vscroll->value() > 1650, QString("end key works wrong: %1").arg(vscroll->value()));
 //    home
     GTKeyboardDriver::keyClick( Qt::Key_Home);
     GTGlobals::sleep(500);
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(vscroll->value() == 0, QString("end key works wrong: %1").arg(vscroll->value()));
 //    mouse wheel
     for(int i = 0; i<3; i++){
         GTMouseDriver::scroll(-1);
         GTGlobals::sleep(100);
+        GTThread::waitForMainThread();
     }
     CHECK_SET_ERR(vscroll->value() == 3, QString("scroll down works wrong. Scrollbar has value: %1").arg(vscroll->value()));
     GTGlobals::sleep(500);
 
     for(int i = 0; i<2; i++){
         GTMouseDriver::scroll(1);
-        GTGlobals::sleep(100);
+        GTGlobals::sleep(500);
+        GTThread::waitForMainThread();
     }
     CHECK_SET_ERR(vscroll->value() == 1, QString("scroll up works wrong. Scrollbar has value: %1").arg(vscroll->value()));
 }

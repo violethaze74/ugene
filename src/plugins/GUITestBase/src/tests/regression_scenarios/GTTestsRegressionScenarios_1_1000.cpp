@@ -309,6 +309,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057_4) {
     GTUtilsDialog::waitForDialog(os, new FindQualifierFiller(os, settings));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "find_qualifier_action"));
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, featuresItem);
+    GTThread::waitForMainThread();
 
     QStringList qualValues;
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
