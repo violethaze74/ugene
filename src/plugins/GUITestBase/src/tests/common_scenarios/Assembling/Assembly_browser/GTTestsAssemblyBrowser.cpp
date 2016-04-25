@@ -487,6 +487,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsAssemblyBrowser::zoomToMax(os);
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
     GTUtilsAssemblyBrowser::callExportCoverageDialog(os, GTUtilsAssemblyBrowser::Reads);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {

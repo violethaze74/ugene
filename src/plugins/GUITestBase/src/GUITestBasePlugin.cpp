@@ -2304,7 +2304,7 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-3504");
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0005);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007);
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007, "UGENE-5188");
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0008);
 
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::export_consensus_test_0001);

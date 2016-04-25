@@ -44,6 +44,7 @@ class MAlignmentObject;
 
 class U2LANG_EXPORT SimpleInOutWorkflowTaskConfig {
 public:
+    SimpleInOutWorkflowTaskConfig();
     QList<GObject*>     objects;
     DocumentFormatId    inFormat;
     QVariantMap         inDocHints;
@@ -51,6 +52,7 @@ public:
     QVariantMap         outDocHints;
     QStringList         extraArgs;
     QString             schemaName;
+    bool                emptyResultPossible;
 };
 
 /**

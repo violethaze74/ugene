@@ -181,6 +181,7 @@ void GTUtilsProjectTreeView::doubleClickItem(HI::GUITestOpStatus &os, const QMod
 
     GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
     GTMouseDriver::doubleClick();
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
