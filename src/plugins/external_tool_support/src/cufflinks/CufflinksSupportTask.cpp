@@ -134,6 +134,8 @@ ExternalToolRunTask * CufflinksSupportTask::runCufflinks() {
     // Init the arguments list
     QStringList arguments;
 
+    arguments << "--no-update-check";
+
     arguments << "-p" << QString::number(TopHatSettings::getThreadsCount());
     arguments << "--output-dir" << settings.outDir;
 
