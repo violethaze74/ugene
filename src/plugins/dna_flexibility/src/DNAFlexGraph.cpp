@@ -80,7 +80,7 @@ QList<QSharedPointer<GSequenceGraphData> > DNAFlexGraphFactory::createGraphs(GSe
  */
 GSequenceGraphDrawer* DNAFlexGraphFactory::getDrawer(GSequenceGraphView* view)
 {
-    GSequenceGraphWindowData wd(DEFAULT_WINDOW_STEP, DEFAULT_WINDOW_SIZE);
+    GSequenceGraphWindowData wd(DEFAULT_WINDOW_STEP, qMin(DEFAULT_WINDOW_SIZE, view->getSequenceLength()));
     return new GSequenceGraphDrawer(view, wd);
 }
 

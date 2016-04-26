@@ -44,7 +44,7 @@ public:
 
 private:
     /** Default size of "window" on a graph */
-    static const int DEFAULT_WINDOW_SIZE = 100;
+    static const qint64 DEFAULT_WINDOW_SIZE = 100;
 
     /** Default size of "step" on a graph */
     static const int DEFAULT_WINDOW_STEP = 1;
