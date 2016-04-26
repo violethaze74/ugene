@@ -76,7 +76,7 @@ namespace U2 {
         ////////////////////////////
         // Refine
         ////////////////////////////
-        void refineConstructot();
+        void refineConstructor();
         void refineClear();
         void reset();
 

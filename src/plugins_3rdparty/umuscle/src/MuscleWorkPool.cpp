@@ -28,10 +28,11 @@ namespace U2 {
 
     MuscleWorkPool::MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings  &_config, TaskStateInfo& _ti, int _nThreads, const MAlignment& _ma, MAlignment& _res, bool _mhack)
         :ctx(_ctx), config(_config), ma(_ma), res(_res), mhack(_mhack), Weights(NULL), ProgNodes(NULL), ph(NULL), ti(_ti),
-        treeNodeStatus(NULL), treeNodeIndexes(NULL), nThreads(_nThreads), uJoin(0), ptrbOscillating(false), bAnyAccepted(false), InternalNodeIndexes(NULL), uInternalNodeCount(0),
+        treeNodeStatus(NULL), treeNodeIndexes(NULL), nThreads(_nThreads), uJoin(0), bAnyAccepted(false), InternalNodeIndexes(NULL), uInternalNodeCount(0),
         bReversed(false), bRight(false), History(NULL), bLockLeft(NULL), bLockRight(false), msaIn(NULL)
     {
-            refineConstructot();
+        *ptrbOscillating = false;
+        refineConstructor();
     }
     MuscleWorkPool::~MuscleWorkPool() {
         delete[] Weights;
@@ -92,7 +93,7 @@ namespace U2 {
     ////////////////////////////
     // Refine
     ////////////////////////////
-    void MuscleWorkPool::refineConstructot() {
+    void MuscleWorkPool::refineConstructor() {
         refineTI = NULL;
         uRangeCount = 1;
         uRangeIndex = 0;
