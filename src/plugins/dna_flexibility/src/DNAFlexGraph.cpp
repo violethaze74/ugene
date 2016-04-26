@@ -32,6 +32,9 @@
 
 namespace U2 {
 
+const qint64 DNAFlexGraphFactory::DEFAULT_WINDOW_SIZE = 100;
+
+const int DNAFlexGraphFactory::DEFAULT_WINDOW_STEP = 1;
 
 /**
  * Name of the graph (shown to a user)
