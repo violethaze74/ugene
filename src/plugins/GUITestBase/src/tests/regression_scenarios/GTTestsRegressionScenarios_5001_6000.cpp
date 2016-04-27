@@ -478,6 +478,43 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5227) {
+    GTUtilsPcr::clearPcrDir(os);
+
+    //1. Open "samples/Genbank/CVU55762.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "CVU55762.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the PCR OP.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
+
+    //3. Set next parameters:
+    // the first primer : TTCTGGATTCA
+    // the first primer mismatches : 15
+    // the second primer : CGGGTAG
+    // the second primer mismatches : 12
+    // 3' perfect match: 10
+    // Maximum product : 100 bp
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "TTCTGGATTCA");
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CGGGTAG");
+
+    GTUtilsPcr::setMismatches(os, U2Strand::Direct, 15);
+    GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 12);
+
+    QSpinBox *perfectSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
+    GTSpinBox::setValue(os, perfectSpinBox, 10, GTGlobals::UseKeyBoard);
+
+    QSpinBox *productSizeSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "productSizeSpinBox"));
+    GTSpinBox::setValue(os, productSizeSpinBox, 100, GTGlobals::UseKeyBoard);
+
+    //4. Find products
+    //Expected state: log shouldn't contain errors
+    GTLogTracer lt;
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5278) {
     //1. Open file PBR322.gb from samples
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "PBR322.gb");
