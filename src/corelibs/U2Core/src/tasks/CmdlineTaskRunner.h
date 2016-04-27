@@ -48,9 +48,6 @@ private:
     void writeLog(QStringList &lines);
     QString readStdout();
 
-signals:
-    void si_logRead();
-
 private slots:
     void sl_onError(QProcess::ProcessError);
     void sl_onReadStandardOutput();
@@ -68,7 +65,7 @@ public:
     ReportResult report();
 
 protected:
-    virtual QString getTaskError() const = 0;
+    virtual QString getTaskError() const;
 
 private slots:
     void sl_outputProgressAndState();

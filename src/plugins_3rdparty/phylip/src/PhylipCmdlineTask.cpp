@@ -59,11 +59,15 @@ void PhylipCmdlineTask::prepare() {
 }
 
 Task::ReportResult PhylipCmdlineTask::report() {
+    CHECK_OP(stateInfo, ReportResult_Finished);
     Document *doc = cmdlineTask->getDocument();
-    CHECK(NULL != doc, ReportResult_Finished);
+    if (NULL == doc) {
+        setError(tr("Can't read the result file."));
+        return ReportResult_Finished;
+    }
     QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
     if (objects.isEmpty()) {
-        setError(tr("No tree objects found"));
+        setError(tr("No tree objects found."));
         return ReportResult_Finished;
     }
     PhyTreeObject *treeObject = qobject_cast<PhyTreeObject*>(objects.first());

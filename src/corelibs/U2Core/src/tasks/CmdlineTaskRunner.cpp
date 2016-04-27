@@ -24,6 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineUtils.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -43,11 +44,9 @@ CmdlineTaskConfig::CmdlineTaskConfig()
 /************************************************************************/
 /* CmdlineTaskRunner */
 /************************************************************************/
-
 namespace {
     const QString OUTPUT_ERROR_ARG = "ugene-output-error";
     const QString OUTPUT_PROGRESS_ARG = "ugene-output-progress-state";
-    const QString LOG_PREFIX = "process:?>";
     const QString OUTPUT_PROGRESS_TAG = "task-progress=";
     const QString ERROR_KEYWORD = "#%*ugene-finished-with-error#%*";
 
@@ -105,7 +104,6 @@ void CmdlineTaskRunner::prepare() {
     args << config.command;
     args << "--log-no-task-progress";
     args << QString("--%1").arg(OUTPUT_PROGRESS_ARG);
-    args << "--lang=en";
     args << QString("--%1").arg(OUTPUT_ERROR_ARG);
     args << QString("--ini-file=\"%1\"").arg(AppContext::getSettings()->fileName());
     args << config.arguments;
@@ -124,7 +122,7 @@ void CmdlineTaskRunner::prepare() {
     process->start(cmdlineUgenePath, args);
 #if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
     QString processId = NULL != process->pid() ? QString::number(process->pid()->dwProcessId) : "unknown";
-    processLogPrefix = QString("process: %1>").arg(processId);
+    processLogPrefix = QString("process:%1>").arg(processId);
 #else
     processLogPrefix = QString("process:%1>").arg(process->pid());
 #endif
@@ -138,7 +136,7 @@ Task::ReportResult CmdlineTaskRunner::report() {
         return ReportResult_Finished;
     }
     if (isCanceled()) {
-        process->kill();
+        ExternalToolRunTask::killProcess(process);
         return ReportResult_Finished;
     }
     QProcess::ProcessState state = process->state();
@@ -238,7 +236,6 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
             }
         }
     }
-    emit si_logRead();
 }
 
 /************************************************************************/
@@ -264,12 +261,19 @@ CmdlineTask::CmdlineTask(const QString &name, TaskFlags flags)
 
 Task::ReportResult CmdlineTask::report() {
     if (AppContext::getCMDLineRegistry()->hasParameter(OUTPUT_ERROR_ARG)) {
-        logError(getTaskError());
+        QString error = getTaskError();
+        if (!error.isEmpty()) {
+            logError(error);
+        }
     }
     if (AppContext::getCMDLineRegistry()->hasParameter(OUTPUT_PROGRESS_ARG)) {
         sl_outputProgressAndState();
     }
     return ReportResult_Finished;
+}
+
+QString CmdlineTask::getTaskError() const {
+    return getError();
 }
 
 void CmdlineTask::sl_outputProgressAndState() {

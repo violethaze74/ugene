@@ -83,10 +83,6 @@ PhylipPlugin::PhylipPlugin()
     processCmdlineOptions();
 }
 
-PhylipPlugin::~PhylipPlugin() {
-    //nothing to do
-}
-
 namespace {
     CreatePhyTreeSettings fetchSettings() {
         CreatePhyTreeSettings settings;

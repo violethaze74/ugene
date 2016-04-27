@@ -43,8 +43,6 @@ public:
 private:
     MAlignmentObject * getLoadedAlignment();
     Task * createSaveTreeTask();
-    // CmdlineTask
-    QString getTaskError() const;
 
 private:
     QString msaUrl;

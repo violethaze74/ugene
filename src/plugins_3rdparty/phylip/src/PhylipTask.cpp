@@ -19,7 +19,7 @@
 * MA 02110-1301, USA.
 */
 
-#include <NeighborJoinAdapter.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
@@ -30,6 +30,7 @@
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
+#include "NeighborJoinAdapter.h"
 
 #include "PhylipTask.h"
 
@@ -93,10 +94,6 @@ Task * PhylipTask::createSaveTreeTask() {
     doc->setParent(this);
 
     return new SaveDocumentTask(doc);
-}
-
-QString PhylipTask::getTaskError() const {
-    return getError();
 }
 
 } // U2
