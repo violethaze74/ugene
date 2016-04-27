@@ -22,7 +22,9 @@
 #include "PhylipPlugin.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CMDLineRegistry.h>
 #include <U2Core/Task.h>
+#include <U2Core/TaskStarter.h>
 #include <U2Core/MAlignmentObject.h>
 #include <U2Core/GObjectTypes.h>
 
@@ -43,6 +45,8 @@
 #endif
 
 #include "PhylipPluginTests.h"
+#include "PhylipCmdlineTask.h"
+#include "PhylipTask.h"
 #include "NeighborJoinAdapter.h"
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 
@@ -75,11 +79,61 @@ PhylipPlugin::PhylipPlugin()
         Q_UNUSED(res);
         assert(res);
     }
+
+    processCmdlineOptions();
 }
 
 PhylipPlugin::~PhylipPlugin() {
     //nothing to do
 }
 
+namespace {
+    CreatePhyTreeSettings fetchSettings() {
+        CreatePhyTreeSettings settings;
+        CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::MATRIX_ARG)) {
+            settings.matrixId = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::MATRIX_ARG);
+        }
+        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::GAMMA_ARG)) {
+            settings.useGammaDistributionRates = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::GAMMA_ARG).toInt();
+        }
+        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::ALPHA_ARG)) {
+            settings.alphaFactor = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::ALPHA_ARG).toDouble();
+        }
+        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::TT_RATIO_ARG)) {
+            settings.ttRatio = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::TT_RATIO_ARG).toDouble();
+        }
+        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::BOOTSTRAP_ARG)) {
+            settings.bootstrap = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::BOOTSTRAP_ARG).toInt();
+        }
+        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::REPLICATES_ARG)) {
+            settings.replicates = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::REPLICATES_ARG).toInt();
+        }
+        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::SEED_ARG)) {
+            settings.seed = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::SEED_ARG).toInt();
+        }
+        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::FRACTION_ARG)) {
+            settings.fraction = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::FRACTION_ARG).toDouble();
+        }
+        if (cmdLineRegistry->hasParameter(PhylipCmdlineTask::CONSENSUS_ARG)) {
+            settings.consensusID = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::CONSENSUS_ARG);
+        }
+        return settings;
+    }
+}
+
+void PhylipPlugin::processCmdlineOptions() {
+    CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
+    CHECK(cmdLineRegistry->hasParameter(PhylipCmdlineTask::PHYLIP_CMDLINE), );
+    CHECK(cmdLineRegistry->hasParameter(PhylipCmdlineTask::MSA_ARG), );
+    CHECK(cmdLineRegistry->hasParameter(PhylipCmdlineTask::TREE_ARG), );
+
+    QString msaUrl = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::MSA_ARG);
+    QString treeUrl = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::TREE_ARG);
+    CreatePhyTreeSettings settings = fetchSettings();
+
+    Task *t = new PhylipTask(msaUrl, treeUrl, settings);
+    connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
+}
 
 }//namespace

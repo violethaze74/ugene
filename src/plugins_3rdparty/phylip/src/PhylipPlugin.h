@@ -35,6 +35,8 @@ public:
     static const QString PHYLIP_NEIGHBOUR_JOIN;
     PhylipPlugin();
 	~PhylipPlugin();
+private:
+    void processCmdlineOptions();
 };
 
 

@@ -168,6 +168,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/tasks/BackgroundTaskRunner.h \
            src/tasks/CleanupFileStorageTask.h \
            src/tasks/CloneObjectTask.h \
+           src/tasks/CmdlineInOutTaskRunner.h \
+           src/tasks/CmdlineTaskRunner.h \
            src/tasks/ConnectSharedDatabaseTask.h \
            src/tasks/ConsoleShutdownTask.h \
            src/tasks/CopyDataTask.h \
@@ -364,6 +366,8 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/tasks/BackgroundTaskRunner.cpp \
            src/tasks/CleanupFileStorageTask.cpp \
            src/tasks/CloneObjectTask.cpp \
+           src/tasks/CmdlineInOutTaskRunner.cpp \
+           src/tasks/CmdlineTaskRunner.cpp \
            src/tasks/ConnectSharedDatabaseTask.cpp \
            src/tasks/ConsoleShutdownTask.cpp \
            src/tasks/CopyDataTask.cpp \
