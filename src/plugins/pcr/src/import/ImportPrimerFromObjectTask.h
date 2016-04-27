@@ -25,6 +25,7 @@
 #include <U2Core/Task.h>
 
 #include "Primer.h"
+#include "PrimerLineEdit.h"
 
 namespace U2 {
 
@@ -40,6 +41,7 @@ public:
     QString generateReport() const;
 
 private:
+    PrimerValidator validator;
     U2SequenceObject *sequenceObject;
     Primer primer;
 };

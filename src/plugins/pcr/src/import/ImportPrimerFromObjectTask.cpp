@@ -31,13 +31,12 @@
 #include "Primer.h"
 #include "PrimerLibrary.h"
 #include "ImportPrimerFromObjectTask.h"
-#include "PrimerLineEdit.h"
 
 namespace U2 {
 
 ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject *object) :
     Task(tr("Import primer from the shared database object: %1").arg(NULL == object ? "N/A" : object->getGObjectName()),
-         TaskFlags(TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported))
+    TaskFlags(TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)), validator(this)
 {
     SAFE_POINT_EXT(NULL != object, setError(L10N::nullPointerError("an input object")), );
     SAFE_POINT_EXT(GObjectTypes::SEQUENCE == object->getGObjectType(), setError(tr("A non-sequence object was provided")), );
@@ -53,7 +52,6 @@ void ImportPrimerFromObjectTask::run() {
     primer.sequence = sequenceObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
 
-    PrimerValidator validator(this);
     int pos = 0;
     if (validator.validate(primer.sequence, pos) == QValidator::Invalid) {
         setError(tr("The primer sequence contains non-ACGT symbols"));
