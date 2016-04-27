@@ -64,6 +64,7 @@
 #include <runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h>
 #include <runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h>
 #include <runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h>
+#include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include <runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
@@ -476,6 +477,35 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5208) {
+    //    1. Open the library, clear it.
+    GTUtilsPrimerLibrary::openLibrary(os);
+    GTUtilsPrimerLibrary::clearLibrary(os);
+
+    //    2. Click "Import".
+    //    3. Fill the dialog:
+    //        Import from: "Local file(s)";
+    //        Files: "_common_data/fasta/random_primers.fa"
+    //    and accept the dialog.
+    class ImportFromMultifasta : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
+            ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, new ImportFromMultifasta));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Import);
+
+    //    4. Check the library.
+    //    Expected state: the library contains four primers.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5227) {
