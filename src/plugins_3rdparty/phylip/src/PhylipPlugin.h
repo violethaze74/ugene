@@ -34,7 +34,8 @@ class PhylipPlugin : public Plugin {
 public:
     static const QString PHYLIP_NEIGHBOUR_JOIN;
     PhylipPlugin();
-	~PhylipPlugin();
+private:
+    void processCmdlineOptions();
 };
 
 

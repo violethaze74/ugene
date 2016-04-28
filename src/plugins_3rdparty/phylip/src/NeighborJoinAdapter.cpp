@@ -30,6 +30,7 @@
 #include "DistanceMatrix.h"
 #include "NeighborJoinAdapter.h"
 #include "NeighborJoinWidget.h"
+#include "PhylipCmdlineTask.h"
 #include "SeqBootAdapter.h"
 
 #include "dnadist.h"
@@ -97,7 +98,7 @@ void replacePhylipRestrictedSymbols(QByteArray& name) {
 }
 
 Task* NeighborJoinAdapter::createCalculatePhyTreeTask(const MAlignment& ma, const CreatePhyTreeSettings& s){
-    return new NeighborJoinCalculateTreeTask(ma, s);
+    return new PhylipCmdlineTask(ma, s);
 }
 
 CreatePhyTreeWidget * NeighborJoinAdapter::createPhyTreeSettingsWidget(const MAlignment &ma, QWidget *parent) {

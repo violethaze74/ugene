@@ -67,9 +67,10 @@ public:
     void setStandartOutputFile(const QString& file) { outputFile = file; }
     void setAdditionalEnvVariables(const  QMap<QString, QString> &envVariable) {additionalEnvVariables = envVariable; }
 
+    static void killProcess(QProcess *process, QString childProcesses = "");
+
 private:
-    void killProcess() const;
-    QList<long> getChildPidsRecursive(long parentPid) const;
+    static QList<long> getChildPidsRecursive(long parentPid);
     void parseStandartOutputFile(QString &filepath);
 
     QStringList             arguments;

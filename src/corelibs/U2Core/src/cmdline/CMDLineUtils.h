@@ -41,6 +41,8 @@ public:
     // search starts at startWithIdx, stops at first (paramKey, paramValue) pair
     // by default, search starts at 1 because at params[0] is usually ("", programName) pair
     static QStringList getPureValues( int startWithIdx = 1 );
+    // Returns the path to the UGENE command line executable
+    static QString getCmdlineUgenePath();
 
 private:
     static void setCMDLineParams( QList<StringPair> & to );

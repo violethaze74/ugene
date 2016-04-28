@@ -122,7 +122,7 @@ void ExternalToolRunTask::run(){
     }
     while(!externalToolProcess->waitForFinished(1000)){
         if (isCanceled()) {
-            killProcess();
+            killProcess(externalToolProcess, additionalProcessToKill);
             algoLog.details(tr("Tool %1 is cancelled").arg(toolName));
             return;
         }
@@ -143,19 +143,19 @@ void ExternalToolRunTask::run(){
     }
 }
 
-void ExternalToolRunTask::killProcess() const{
+void ExternalToolRunTask::killProcess(QProcess *process, QString childProcesses) {
 #if (!defined(Q_OS_WIN32) && !defined(Q_OS_WINCE)) || defined(qdoc)
-            long numPid = externalToolProcess->pid();
+            long numPid = process->pid();
             Q_UNUSED(numPid);
 #else
-            Q_PID pid = externalToolProcess->pid();
+            Q_PID pid = process->pid();
             long numPid = pid->dwProcessId;
             Q_UNUSED(numPid);
 #endif
 #ifdef Q_OS_WIN
             QProcess::execute(QString("taskkill /PID %1 /T /F").arg(numPid));
-            if (!additionalProcessToKill.isEmpty()) {
-                QProcess::execute(QString("taskkill /IM %1 /T /F").arg(additionalProcessToKill));
+            if (!childProcesses.isEmpty()) {
+                QProcess::execute(QString("taskkill /IM %1 /T /F").arg(childProcesses));
             }
 #endif
 #ifdef Q_OS_UNIX
@@ -168,7 +168,7 @@ void ExternalToolRunTask::killProcess() const{
 #endif
 }
 
-QList<long> ExternalToolRunTask::getChildPidsRecursive(long parentPid) const{
+QList<long> ExternalToolRunTask::getChildPidsRecursive(long parentPid) {
     QList<long> res;
 
     QProcess p;
