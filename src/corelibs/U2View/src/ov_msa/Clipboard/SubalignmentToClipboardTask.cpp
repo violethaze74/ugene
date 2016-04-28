@@ -19,16 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QClipboard>
+#include <QApplication>
+#include <QClipboard>
 #include <QMimeData>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
-
-#include <U2Algorithm/MSAColorScheme.h>
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -50,11 +46,9 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-
 #include "SubalignmentToClipboardTask.h"
 #include "ov_msa/MSACollapsibleModel.h"
 #include "ov_msa/MSAEditorSequenceArea.h"
-
 
 namespace U2{
 
@@ -175,22 +169,22 @@ void RichTextMsaClipboardTask::run(){
     SAFE_POINT(NULL != s, "RTFMSA entry storing: NULL settings object", );
 
     DNAAlphabetType atype = al->getType();
-    MSAColorSchemeRegistry* csr = AppContext::getMSAColorSchemeRegistry();
+    MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
         QString csid = atype == DNAAlphabet_AMINO ?
-            s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MSAColorScheme::UGENE_AMINO).toString()
-          : s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MSAColorScheme::UGENE_NUCL).toString();
+            s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString()
+          : s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
 
-    MSAColorSchemeFactory* csf = csr->getMSAColorSchemeFactoryById(csid);
+    MsaColorSchemeFactory* csf = csr->getMsaColorSchemeFactoryById(csid);
     if (csf == NULL) {
-        csf = csr->getMSAColorSchemeFactoryById(atype == DNAAlphabet_AMINO ? MSAColorScheme::UGENE_AMINO : MSAColorScheme::UGENE_NUCL);
+        csf = csr->getMsaColorSchemeFactoryById(atype == DNAAlphabet_AMINO ? MsaColorScheme::UGENE_AMINO : MsaColorScheme::UGENE_NUCL);
     }
-    SAFE_POINT(csf!=NULL, "RTFMSA entry storing: NULL MSAColorSchemeFactory object", );
-    MSAColorScheme* colorScheme = csf->create(this, obj);
+    SAFE_POINT(csf!=NULL, "RTFMSA entry storing: NULL MsaColorSchemeFactory object", );
+    MsaColorScheme* colorScheme = csf->create(this, obj);
 
     QString fontFamily = s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString();
     int pointSize = s->getValue(MOBJECT_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt();
 
-    MSAHighlightingScheme* highlightingScheme = context->getUI()->getSequenceArea()->getCurrentHighlightingScheme();
+    MsaHighlightingScheme* highlightingScheme = context->getUI()->getSequenceArea()->getCurrentHighlightingScheme();
     SAFE_POINT(highlightingScheme!=NULL, "RTFMSA entry storing: NULL highlightingScheme object", );
 
     QString schemeName = highlightingScheme->metaObject()->className();

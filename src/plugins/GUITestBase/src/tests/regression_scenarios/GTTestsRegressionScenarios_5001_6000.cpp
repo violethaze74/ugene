@@ -545,6 +545,41 @@ GUI_TEST_CLASS_DEFINITION(test_5227) {
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5268) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+
+//    2. Create a custom color scheme for the alignment with aan ppropriate alphabet.
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+
+//    3. Open "Highlighting" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+
+//    4. Select the custom color scheme.
+    GTUtilsOptionPanelMsa::setColorScheme(os, "test_5268");
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+//    5. Open {Settings -> Preferences -> Alignment Color Scheme}.
+//    6. Change color of the custom color scheme and click ok.
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+
+    GTGlobals::sleep(500);
+
+//    Expected state: the settings dialog closed, new colors are applied for the opened MSA.
+    const QString opColorScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
+    CHECK_SET_ERR(opColorScheme == "test_5268",
+                  QString("An incorrect color scheme is set in option panel: expect '%1', got '%2'")
+                  .arg("test_5268").arg(opColorScheme));
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    GTGlobals::sleep(500);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5278) {
     //1. Open file PBR322.gb from samples
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "PBR322.gb");
@@ -553,7 +588,7 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AaaI" << "AagI"));
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     GTUtilsNotifications::waitForNotification(os, false);
     //3. Open report and be sure fragments sorted by length (longest first)
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));

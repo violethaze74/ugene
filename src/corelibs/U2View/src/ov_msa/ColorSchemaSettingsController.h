@@ -24,7 +24,7 @@
 
 #include <U2Gui/AppSettingsGUI.h>
 
-#include <U2Algorithm/MSAColorScheme.h>
+#include <U2Algorithm/MsaColorScheme.h>
 
 namespace U2 {
 
@@ -34,7 +34,7 @@ const QString ColorSchemaSettingsPageId = "ColorSchemaSettings";
 class U2VIEW_EXPORT ColorSchemaSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    ColorSchemaSettingsPageController(MSAColorSchemeRegistry* mcsr, QObject* p = NULL);
+    ColorSchemaSettingsPageController(MsaColorSchemeRegistry* mcsr, QObject* p = NULL);
 
     virtual AppSettingsGUIPageState* getSavedState();
 

@@ -30,10 +30,11 @@
 #include <U2Algorithm/CudaGpuRegistry.h>
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
-#include <U2Algorithm/MSAColorScheme.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/OpenCLGpuRegistry.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
@@ -85,12 +86,12 @@
 #include <U2Gui/FeatureKeyFilterTask.h>
 #include <U2Gui/ImportDialogsFactories.h>
 #include <U2Gui/LogView.h>
-#include <U2Gui/PasteController.h>
 #include <U2Gui/MsaContentFilterTask.h>
 #include <U2Gui/MsaSeqNameFilterTask.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/ObjectNameFilterTask.h>
 #include <U2Gui/ObjectViewModel.h>
+#include <U2Gui/PasteController.h>
 #include <U2Gui/SequenceAccFilterTask.h>
 #include <U2Gui/TextContentFilterTask.h>
 #include <U2Gui/ToolsMenu.h>
@@ -538,13 +539,13 @@ int main(int argc, char **argv)
     DBXRefRegistry* dbxr = new DBXRefRegistry();
     appContext->setDBXRefRegistry(dbxr);
 
-    MSAColorSchemeRegistry* mcsr = new MSAColorSchemeRegistry();
-    appContext->setMSAColorSchemeRegistry(mcsr);
+    MsaColorSchemeRegistry* mcsr = new MsaColorSchemeRegistry();
+    appContext->setMsaColorSchemeRegistry(mcsr);
 
     AppContext::getAppSettingsGUI()->registerPage(new ColorSchemaSettingsPageController(mcsr));
 
-    MSAHighlightingSchemeRegistry* mhsr = new MSAHighlightingSchemeRegistry();
-    appContext->setMSAHighlightingSchemeRegistry(mhsr);
+    MsaHighlightingSchemeRegistry* mhsr = new MsaHighlightingSchemeRegistry();
+    appContext->setMsaHighlightingSchemeRegistry(mhsr);
 
     MSAConsensusAlgorithmRegistry* msaConsReg = new MSAConsensusAlgorithmRegistry();
     appContext->setMSAConsensusAlgorithmRegistry(msaConsReg);
@@ -891,10 +892,10 @@ int main(int argc, char **argv)
     appContext->setMSAConsensusAlgorithmRegistry(NULL);
     delete msaConsReg;
 
-    appContext->setMSAHighlightingSchemeRegistry(NULL);
+    appContext->setMsaHighlightingSchemeRegistry(NULL);
     delete mhsr;
 
-    appContext->setMSAColorSchemeRegistry(NULL);
+    appContext->setMsaColorSchemeRegistry(NULL);
     delete mcsr;
 
     appContext->setDBXRefRegistry(NULL);

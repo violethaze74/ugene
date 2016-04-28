@@ -19,36 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_FACTORY_H_
-#define _U2_MSA_EDITOR_FACTORY_H_
+#ifndef _U2_MSA_HIGHLIGHTING_SCHEME_DISAGREEMENTS_H_
+#define _U2_MSA_HIGHLIGHTING_SCHEME_DISAGREEMENTS_H_
 
-#include <U2Gui/ObjectViewModel.h>
+#include "MsaHighlightingScheme.h"
 
 namespace U2 {
 
-class MultiGSelection;
-class MsaColorSchemeRegistry;
-
-class U2VIEW_EXPORT MSAEditorFactory : public GObjectViewFactory {
+class MsaHighlightingSchemeDisagreements : public MsaHighlightingScheme{
     Q_OBJECT
 public:
-    MSAEditorFactory();
+    MsaHighlightingSchemeDisagreements(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj);
 
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
-
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
-
-    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
-
-    virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
-
-    virtual bool supportsSavedStates() const {return true;}
-
-    static const GObjectViewFactoryId ID;
+    void process(const char refChar, char &seqChar, bool &color, int refCharColumn, int refCharRow) const;
 };
 
+class U2ALGORITHM_EXPORT MsaHighlightingSchemeDisagreementsFactory : public MsaHighlightingSchemeFactory {
+public:
+    MsaHighlightingSchemeDisagreementsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
 
+    MsaHighlightingScheme * create(QObject *parent, MAlignmentObject *maObj) const;
+};
 
-} // namespace
+}   // nmaespace U2
 
-#endif
+#endif // _U2_MSA_HIGHLIGHTING_SCHEME_DISAGREEMENTS_H_
