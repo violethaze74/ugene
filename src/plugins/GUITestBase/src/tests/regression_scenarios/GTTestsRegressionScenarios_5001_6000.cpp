@@ -502,8 +502,8 @@ GUI_TEST_CLASS_DEFINITION(test_5208) {
     GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, new ImportFromMultifasta));
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Import);
 
-    //    4. Check the library.
-    //    Expected state: the library contains four primers.
+    //    4. Check log.
+    //    Expected state: the library contains four primers, log contains no errors.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
 }
