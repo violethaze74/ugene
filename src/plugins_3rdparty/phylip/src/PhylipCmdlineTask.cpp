@@ -84,6 +84,8 @@ void PhylipCmdlineTask::createCmdlineTask() {
     config.inputObjects << msaObject;
     config.inputFormat = BaseDocumentFormats::CLUSTAL_ALN;
     config.outputFormat = BaseDocumentFormats::NEWICK;
+    config.withPluginList = true;
+    config.pluginList << PLUGIN_ID;
     config.command = "--" + PHYLIP_CMDLINE;
     QString argString = "--%1=\"%2\"";
     config.arguments << argString.arg(MATRIX_ARG).arg(settings.matrixId);

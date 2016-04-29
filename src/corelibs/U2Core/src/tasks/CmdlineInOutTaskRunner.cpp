@@ -34,7 +34,7 @@
 namespace U2 {
 
 CmdlineInOutTaskConfig::CmdlineInOutTaskConfig()
-: emptyOutputPossible(true)
+: emptyOutputPossible(true), withPluginList(false)
 {
 }
 
@@ -68,6 +68,8 @@ QList<Task*> CmdlineInOutTaskRunner::onSubTaskFinished(Task *subTask) {
         CmdlineTaskConfig cmdlineConfig;
         cmdlineConfig.command = config.command;
         cmdlineConfig.arguments = config.arguments;
+        cmdlineConfig.withPluginList = config.withPluginList;
+        cmdlineConfig.pluginList = config.pluginList;
         cmdlineTask = new CmdlineTaskRunner(cmdlineConfig);
         cmdlineTask->setSubtaskProgressWeight(0.85f);
         result << cmdlineTask;
