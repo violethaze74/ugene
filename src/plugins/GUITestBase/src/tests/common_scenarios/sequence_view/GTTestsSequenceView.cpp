@@ -682,7 +682,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
     GTWidget::click(os, wgt, Qt::RightButton);
 
-    GTGlobals::sleep(30000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<U2Region> pair32 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 32  (0, 2)");
     CHECK_SET_ERR( pair32.contains(U2Region(36311, 20)), "No 36312..36331 region");

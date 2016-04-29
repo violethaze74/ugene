@@ -42,7 +42,7 @@ public:
 
     // MSAEditorNameList
     static QStringList getNameList(HI::GUITestOpStatus &os);
-    static QStringList getVisibaleNames(HI::GUITestOpStatus &os);
+    static QStringList getVisibleNames(HI::GUITestOpStatus &os);
     static QString getSimilarityValue(HI::GUITestOpStatus &os, int row);
     static void clickCollapceTriangle(HI::GUITestOpStatus &os, QString seqName);
     static bool isCollapsed(HI::GUITestOpStatus &os, QString seqName);

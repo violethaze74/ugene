@@ -24,6 +24,8 @@
 
 #include <U2Core/global.h>
 
+class QColor;
+
 namespace U2 {
 
 class MAlignmentObject;
@@ -34,7 +36,7 @@ class U2ALGORITHM_EXPORT MsaHighlightingScheme : public QObject {
 public:
     MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj);
 
-    virtual void process(const char refChar, char &seqChar, bool &color, int refCharColumn, int refCharRow) const;
+    virtual void process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const;
     const MsaHighlightingSchemeFactory * getFactory() const;
 
     void setUseDots(bool use);

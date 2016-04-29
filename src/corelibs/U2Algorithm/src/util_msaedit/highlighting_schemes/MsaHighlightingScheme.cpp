@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QColor>
+
 #include "MsaHighlightingScheme.h"
 #include "MsaHighlightingSchemeAgreements.h"
 #include "MsaHighlightingSchemeConservation.h"
@@ -57,8 +59,8 @@ MsaHighlightingScheme::MsaHighlightingScheme(QObject *parent, const MsaHighlight
 
 }
 
-void MsaHighlightingScheme::process(const char /*refChar*/, char &seqChar, bool &color, int /*refCharColumn*/, int /*refCharRow*/) const {
-    if (useDots && !color){
+void MsaHighlightingScheme::process(const char /*refChar*/, char &seqChar, QColor &/*color*/, bool &highlight, int /*refCharColumn*/, int /*refCharRow*/) const {
+    if (useDots && !highlight){
         seqChar = '.';
     }
 }

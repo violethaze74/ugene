@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QColor>
+
 #include "MsaHighlightingSchemeAgreements.h"
 
 namespace U2 {
@@ -29,9 +31,12 @@ MsaHighlightingSchemeAgreements::MsaHighlightingSchemeAgreements(QObject *parent
 
 }
 
-void MsaHighlightingSchemeAgreements::process(const char refChar, char &seqChar, bool &color, int refCharColumn, int refCharRow) const {
-    color = (refChar == seqChar);
-    MsaHighlightingScheme::process(refChar, seqChar, color, refCharColumn, refCharRow);
+void MsaHighlightingSchemeAgreements::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
+    highlight = (refChar == seqChar);
+    if (!highlight) {
+        color = QColor();
+    }
+    MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
 MsaHighlightingSchemeAgreementsFactory::MsaHighlightingSchemeAgreementsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)

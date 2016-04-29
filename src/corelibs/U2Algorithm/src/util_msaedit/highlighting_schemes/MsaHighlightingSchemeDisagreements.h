@@ -31,7 +31,7 @@ class MsaHighlightingSchemeDisagreements : public MsaHighlightingScheme{
 public:
     MsaHighlightingSchemeDisagreements(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj);
 
-    void process(const char refChar, char &seqChar, bool &color, int refCharColumn, int refCharRow) const;
+    void process(const char refChar, char &seqChar, QColor &color, bool &hightlight, int refCharColumn, int refCharRow) const;
 };
 
 class U2ALGORITHM_EXPORT MsaHighlightingSchemeDisagreementsFactory : public MsaHighlightingSchemeFactory {

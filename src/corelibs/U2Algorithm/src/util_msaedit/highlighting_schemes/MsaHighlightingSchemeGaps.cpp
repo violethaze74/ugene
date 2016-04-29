@@ -19,11 +19,15 @@
  * MA 02110-1301, USA.
  */
 
+#include <QColor>
+
 #include <U2Core/MAlignment.h>
 
 #include "MsaHighlightingSchemeGaps.h"
 
 namespace U2 {
+
+const QColor MsaHighlightingSchemeGaps::gapColor = QColor(192, 192, 192);
 
 MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj)
@@ -31,9 +35,15 @@ MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject *parent, const MsaH
 
 }
 
-void MsaHighlightingSchemeGaps::process(const char refChar, char &seqChar, bool &color, int refCharColumn, int refCharRow) const {
-    color = (seqChar == MAlignment_GapChar);
-    MsaHighlightingScheme::process(refChar, seqChar, color, refCharColumn, refCharRow);
+void MsaHighlightingSchemeGaps::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
+    if (seqChar == MAlignment_GapChar) {
+        color = gapColor;
+        highlight = true;
+    } else {
+        color = QColor();
+        highlight = false;
+    }
+    MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
 MsaHighlightingSchemeGapsFactory::MsaHighlightingSchemeGapsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)

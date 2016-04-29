@@ -133,7 +133,7 @@ QRect GTUtilsMsaEditor::getSequenceNameRect(HI::GUITestOpStatus &os, const QStri
     GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
 
     const int rowHeight = GTUtilsMSAEditorSequenceArea::getRowHeight(os);
-    const QStringList names = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os);
+    const QStringList names = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     const int rowNumber = names.indexOf(sequenceName);
     GT_CHECK_RESULT(0 <= rowNumber, QString("Sequence '%1' not found").arg(sequenceName), QRect());
 
@@ -215,7 +215,7 @@ void GTUtilsMsaEditor::toggleCollapsingMode(HI::GUITestOpStatus &os) {
 bool GTUtilsMsaEditor::isSequenceCollapsed(HI::GUITestOpStatus &os, const QString &seqName){
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     GT_CHECK_RESULT(names.contains(seqName), "sequence " + seqName + " not found in name list", false);
-    QStringList visiablenames = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os);
+    QStringList visiablenames = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
 
     return !visiablenames.contains(seqName);
 }

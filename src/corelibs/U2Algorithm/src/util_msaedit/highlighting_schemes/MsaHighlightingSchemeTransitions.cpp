@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QColor>
+
 #include "MsaHighlightingSchemeTransitions.h"
 
 namespace U2 {
@@ -29,28 +31,33 @@ MsaHighlightingSchemeTransitions::MsaHighlightingSchemeTransitions(QObject *pare
 
 }
 
-void MsaHighlightingSchemeTransitions::process(const char refChar, char &seqChar, bool &color, int refCharColumn, int refCharRow) const {
+void MsaHighlightingSchemeTransitions::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
     switch (refChar) {
     case 'N':
-        color = true;
+        highlight = true;
         break;
     case 'A':
-        color = (seqChar == 'G');
+        highlight = (seqChar == 'G');
         break;
     case 'C':
-        color = (seqChar == 'T');
+        highlight = (seqChar == 'T');
         break;
     case 'G':
-        color = (seqChar == 'A');
+        highlight = (seqChar == 'A');
         break;
     case 'T':
-        color = (seqChar == 'C');
+        highlight = (seqChar == 'C');
         break;
     default:
-        color = false;
+        highlight = false;
         break;
     }
-    MsaHighlightingScheme::process(refChar, seqChar, color, refCharColumn, refCharRow);
+
+    if (!highlight) {
+        color = QColor();
+    }
+
+    MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
 MsaHighlightingSchemeTransitionsFactory::MsaHighlightingSchemeTransitionsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)

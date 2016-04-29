@@ -229,24 +229,24 @@ bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MAlignment 
             return true;
         }
     }
-    else  {
+    else {
         char refChar;
         if (isGapScheme(schemeId) || highlightingScheme->getFactory()->isRefFree()) {
-            refChar = 'z';
+            refChar = '\n';
         } else {
             refChar = ma.charAt(refSeq, pos);
         }
-        bool drawColor;
-        char c = ma.charAt(seq, pos);
 
-        highlightingScheme->process(refChar, c, drawColor, pos, seq);
-        if (drawColor) {
+        char c = ma.charAt(seq, pos);
+        bool highlight = false;
+        QColor unused;
+        highlightingScheme->process(refChar, c, unused, highlight, pos, seq);
+        if (highlight) {
             return true;
         }
     }
 
     return false;
-
 }
 
 int MSAHighlightingOverviewCalculationTask::getGraphValue(int pos) const {

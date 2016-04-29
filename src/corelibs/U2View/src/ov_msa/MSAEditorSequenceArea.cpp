@@ -708,40 +708,23 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
             QRect cr(baseXRange.startPos, baseYRange.startPos, baseXRange.length + 1, baseYRange.length);
             char c = msa.charAt(seq, pos);
 
+            bool highlight = false;
             QColor color = colorScheme->getColor(seq, pos, c);
-            bool drawColor = false;
-            if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()){ //schemes which applied without reference
-                const char refChar = 'z';
-                highlightingScheme->process(refChar, c, drawColor, pos, seq);
-                if(isGapsScheme){
-                    color = QColor(192, 192, 192);
-                }
-                if (color.isValid() && drawColor) {
-                    p.fillRect(cr, color);
-                }
-                if (editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent) {
-                    p.drawText(cr, Qt::AlignCenter, QString(c));
-                }
-            }else if(seq == refSeq || refSeqName.isEmpty()){
-                if (color.isValid()) {
-                    p.fillRect(cr, color);
-                }
-                if (isResizeMode) {
-                    p.drawText(cr, Qt::AlignCenter, QString(c));
-                }
-            }else{
+            if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
+                const char refChar = '\n';
+                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
+            } else if (seq == refSeq || refSeqName.isEmpty()) {
+                highlight = true;
+            } else {
                 const char refChar = r->charAt(pos);
-                highlightingScheme->process(refChar, c, drawColor, pos, seq);
+                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
+            }
 
-                if(isGapsScheme){
-                    color = QColor(192, 192, 192);
-                }
-                if (color.isValid() && drawColor) {
-                    p.fillRect(cr, color);
-                }
-                if (isResizeMode) {
-                    p.drawText(cr, Qt::AlignCenter, QString(c));
-                }
+            if (color.isValid() && highlight) {
+                p.fillRect(cr, color);
+            }
+            if (isResizeMode) {
+                p.drawText(cr, Qt::AlignCenter, QString(c));
             }
         }
         baseYRange.startPos += editor->getRowHeight();
@@ -2985,30 +2968,33 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
             char c = msa.charAt(seq, pos);
 
             const char refChar = r->charAt(pos);
-            if (refChar == '-' && !keepGaps) continue;
-            bool drawColor = false;
-            highlightingScheme->setUseDots(useDotsAction->isChecked());
-            highlightingScheme->process(refChar, c, drawColor, pos, seq);
+            if (refChar == '-' && !keepGaps) {
+                continue;
+            }
 
-            if (drawColor) {
+            QColor unused;
+            bool highlight = false;
+            highlightingScheme->setUseDots(useDotsAction->isChecked());
+            highlightingScheme->process(refChar, c, unused, highlight, pos, seq);
+
+            if (highlight) {
                 rowStr.append(c);
                 informative = true;
-            }else{
-                if (dots){
+            } else {
+                if (dots) {
                     rowStr.append(".");
-                }else{
+                } else {
                     rowStr.append(" ");
                 }
             }
             rowStr.append("\t");
         }
         if(informative){
-            header.remove(rowStr.length()-1,1);
+            header.remove(rowStr.length() - 1, 1);
             result.append(rowStr);
         }
         posInResult++;
     }
-
 
     if (!transpose){
         QStringList transposedRows = TextUtils::transposeCSVRows(result, "\t");

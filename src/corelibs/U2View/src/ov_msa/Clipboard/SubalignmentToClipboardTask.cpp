@@ -202,39 +202,35 @@ void RichTextMsaClipboardTask::run(){
         const MAlignment& ma = obj->getMAlignment();
         int numRows = ma.getNumRows();
         for (int seq = 0; seq < numRows; seq++){
-                QString res;
-                const MAlignmentRow& row = ma.getRow(seq);
-                if (!names.contains(row.getName())){
-                    continue;
-                }
-                result.append("<p>");
-                for (int pos = window.startPos; pos < window.endPos(); pos++){
-                    char c = row.charAt(pos);
-                    QColor color = colorScheme->getColor(seq, pos, c);
-                    bool drawColor = false;
-                    if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()){ //schemes which applied without reference
-                        const char refChar = 'z';
-                        highlightingScheme->process(refChar, c, drawColor, pos, seq);
-                        if(isGapsScheme){
-                            color = QColor(192, 192, 192);
-                        }
-                    }else if(seq == refSeq || MAlignmentRow::invalidRowId() == refSeq){
-                        drawColor = true;
-                    }else{
-                        const char refChar = r->charAt(pos);
-                        highlightingScheme->process(refChar, c, drawColor, pos, seq);
+            QString res;
+            const MAlignmentRow& row = ma.getRow(seq);
+            if (!names.contains(row.getName())){
+                continue;
+            }
 
-                        if(isGapsScheme){
-                            color = QColor(192, 192, 192);
-                        }
-                    }
-                    if (color.isValid() && drawColor){
-                        res.append(QString("<span style=\"background-color:%1;\">%2</span>").arg(color.name()).arg(c));
-                    }else{
-                        res.append(QString("%1").arg(c));
-                    }
+            result.append("<p>");
+            for (int pos = window.startPos; pos < window.endPos(); pos++){
+                char c = row.charAt(pos);
+                bool highlight = false;
+                QColor color = colorScheme->getColor(seq, pos, c);
+                if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
+                    const char refChar = '\n';
+                    highlightingScheme->process(refChar, c, color, highlight, pos, seq);
+                } else if (seq == refSeq || MAlignmentRow::invalidRowId() == refSeq) {
+                    highlight = true;
+                } else {
+                    const char refChar = r->charAt(pos);
+                    highlightingScheme->process(refChar, c, color, highlight, pos, seq);
                 }
-                result.append(res.toLatin1());
+
+                if (color.isValid() && highlight) {
+                    res.append(QString("<span style=\"background-color:%1;\">%2</span>").arg(color.name()).arg(c));
+                } else {
+                    res.append(QString("%1").arg(c));
+                }
+            }
+
+            result.append(res.toLatin1());
             result.append("</p>\n");
         }
     result.append("</span>");

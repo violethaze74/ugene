@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QColor>
+
 #include "MsaHighlightingSchemeTransversions.h"
 
 namespace U2 {
@@ -29,28 +31,33 @@ MsaHighlightingSchemeTransversions::MsaHighlightingSchemeTransversions(QObject *
 
 }
 
-void MsaHighlightingSchemeTransversions::process(const char refChar, char &seqChar, bool &color, int refCharColumn, int refCharRow) const {
+void MsaHighlightingSchemeTransversions::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
     switch (refChar) {
     case 'N':
-        color = true;
+        highlight = true;
         break;
     case 'A':
-        color = (seqChar == 'C' || seqChar == 'T');
+        highlight = (seqChar == 'C' || seqChar == 'T');
         break;
     case 'C':
-        color = (seqChar == 'A' || seqChar == 'G');
+        highlight = (seqChar == 'A' || seqChar == 'G');
         break;
     case 'G':
-        color = (seqChar == 'C' || seqChar == 'T');
+        highlight = (seqChar == 'C' || seqChar == 'T');
         break;
     case 'T':
-        color = (seqChar == 'A' || seqChar == 'G');
+        highlight = (seqChar == 'A' || seqChar == 'G');
         break;
     default:
-        color = false;
+        highlight = false;
         break;
     }
-    MsaHighlightingScheme::process(refChar, seqChar, color, refCharColumn, refCharRow);
+
+    if (!highlight) {
+        color = QColor();
+    }
+
+    MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
 MsaHighlightingSchemeTransversionsFactory::MsaHighlightingSchemeTransversionsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)

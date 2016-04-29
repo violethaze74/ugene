@@ -2426,12 +2426,12 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os);
+    QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
 // 2. Press button Enable collapsing
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
 // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
-    QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os);
+    QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(preList.size() == postList.size() + 1, "Name lists differs not by 1");
 }
 
@@ -2442,12 +2442,12 @@ GUI_TEST_CLASS_DEFINITION(test_0019_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os);
+    QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
 // 2. Press button Enable collapsing
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
 // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
-    QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os);
+    QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(preList.size() == postList.size() + 1, "Name lists differs not by 1");
 }
 
@@ -2458,12 +2458,12 @@ GUI_TEST_CLASS_DEFINITION(test_0019_2) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os);
+    QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
 // 2. Press button Enable collapsing
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 
 // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
-    QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os);
+    QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(preList.size() == postList.size() + 1, "Name lists differs not by 1");
 }
 
@@ -3300,20 +3300,18 @@ GUI_TEST_CLASS_DEFINITION(test_0036){
 //Expected state: tree appeared
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0036_1){
+GUI_TEST_CLASS_DEFINITION(test_0036_1) {
 //1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
+
 //2. Press "build tree" button on toolbar
 //Expected state: build tree dialog appeared
     //3. Fill dialog:
     //    Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //    Press "Build"
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk",1));
-    QAbstractButton *tree= GTAction::button(os,"Build Tree");
-    GTWidget::click(os,tree);
-
+    GTWidget::click(os, GTAction::button(os,"Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //Expected state: tree appeared
@@ -3321,55 +3319,53 @@ GUI_TEST_CLASS_DEFINITION(test_0036_1){
     CHECK_SET_ERR(treeView!=NULL,"TreeView not found")
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0036_2){
+GUI_TEST_CLASS_DEFINITION(test_0036_2) {
 //1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
+
 //2. Press "build tree" button on toolbar
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk",2));
-    QAbstractButton *tree= GTAction::button(os,"Build Tree");
-    GTWidget::click(os,tree);
-    GTGlobals::sleep(500);
+    GTWidget::click(os, GTAction::button(os,"Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //Expected state: build tree dialog appeared
 
 //3. Fill dialog:
 //    Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
 //    Press "Build"
     QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView!=NULL,"TreeView not found")
+    CHECK_SET_ERR(treeView != NULL,"TreeView not found")
 //Expected state: tree appeared
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0036_3){
+GUI_TEST_CLASS_DEFINITION(test_0036_3) {
 //1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
+
 //2. Press "build tree" button on toolbar
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk",3));
-    QAbstractButton *tree= GTAction::button(os,"Build Tree");
-    GTWidget::click(os,tree);
-    GTGlobals::sleep(500);
+    GTWidget::click(os, GTAction::button(os,"Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //Expected state: build tree dialog appeared
 
 //3. Fill dialog:
 //    Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
 //    Press "Build"
     QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView!=NULL,"TreeView not found")
+    CHECK_SET_ERR(treeView != NULL,"TreeView not found")
 //Expected state: tree appeared
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0037){
+GUI_TEST_CLASS_DEFINITION(test_0037) {
 //1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //2. Press "build tree" button on toolbar
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk",0,0.5));
-    QAbstractButton *tree= GTAction::button(os,"Build Tree");
-    GTWidget::click(os,tree);
-    GTGlobals::sleep(500);
+    GTWidget::click(os, GTAction::button(os,"Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //Expected state: build tree dialog appeared
 
 //3. Fill dialog:
@@ -3382,15 +3378,15 @@ GUI_TEST_CLASS_DEFINITION(test_0037){
 //Expected state: tree appeared
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0037_1){
+GUI_TEST_CLASS_DEFINITION(test_0037_1) {
 //1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //2. Press "build tree" button on toolbar
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk",0,50));
-    QAbstractButton *tree= GTAction::button(os,"Build Tree");
-    GTWidget::click(os,tree);
-    GTGlobals::sleep();
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk", 0, 50));
+    GTWidget::click(os, GTAction::button(os,"Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //Expected state: build tree dialog appeared
 
 //3. Fill dialog:
@@ -3399,19 +3395,19 @@ GUI_TEST_CLASS_DEFINITION(test_0037_1){
 //    Coefficient of variation: 0.50(50.00/99.00)
 //    Press "Build"
     QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView!=NULL,"TreeView not found")
+    CHECK_SET_ERR(treeView != NULL,"TreeView not found")
 //Expected state: tree appeared
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0037_2){
+GUI_TEST_CLASS_DEFINITION(test_0037_2) {
 //1. open document samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //2. Press "build tree" button on toolbar
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk",0,99));
-    QAbstractButton *tree= GTAction::button(os,"Build Tree");
-    GTWidget::click(os,tree);
-    GTGlobals::sleep();
+    GTWidget::click(os, GTAction::button(os,"Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //Expected state: build tree dialog appeared
 
 //3. Fill dialog:
@@ -5067,22 +5063,23 @@ GUI_TEST_CLASS_DEFINITION(test_0077){
 //    Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    Open tree with msa
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI.nwk", 0, 0, true));
-    QAbstractButton *tree= GTAction::button(os,"Build Tree");
-    GTWidget::click(os,tree);
-    GTGlobals::sleep(500);
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    Press "refresh tree" button on tree view toolbar
     QWidget* button = GTAction::button(os, "Refresh tree");
     bool vis = button->isVisible();
-    if(vis){
+    if (vis) {
         GTWidget::click(os, button);
-    }else{
+    } else {
         QWidget* extButton = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "msa_editor_tree_view_container_widget"));
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Refresh tree"));
         GTWidget::click(os, extButton);
     }
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 //    Expected state: tree refreshed
 }
 

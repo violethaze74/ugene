@@ -34,18 +34,21 @@ MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *pa
     connect(maObj, SIGNAL(si_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)), SLOT(sl_resetMap()));
 }
 
-void MsaHighlightingSchemeConservation::process(const char refChar, char &seqChar, bool &color, int refCharColumn, int refCharRow) const {
+void MsaHighlightingSchemeConservation::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
     if (!msaCharCountMap.contains(refCharColumn)) {
         calculateStatisticForColumn(refCharColumn);
     }
 
     int neededThr = (int)((float)(threshold * maObj->getNumRows())/100.0 + 0.5);
     if (lessThenThreshold) {
-        color = (msaCharCountMap[refCharColumn][seqChar] <= neededThr) ? true : false;
+        highlight = (msaCharCountMap[refCharColumn][seqChar] <= neededThr);
     } else {
-        color = (msaCharCountMap[refCharColumn][seqChar] >= neededThr) ? true : false;
+        highlight = (msaCharCountMap[refCharColumn][seqChar] >= neededThr);
     }
-    MsaHighlightingScheme::process(refChar, seqChar, color, refCharColumn, refCharRow);
+    if (!highlight) {
+        color = QColor();
+    }
+    MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
 void MsaHighlightingSchemeConservation::applySettings(const QVariantMap &settings){

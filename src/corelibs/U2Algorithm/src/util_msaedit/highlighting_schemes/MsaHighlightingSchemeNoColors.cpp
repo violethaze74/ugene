@@ -29,9 +29,9 @@ MsaHighlightingSchemeNoColors::MsaHighlightingSchemeNoColors(QObject *parent, co
 
 }
 
-void MsaHighlightingSchemeNoColors::process(const char refChar, char &seqChar, bool &color, int refCharColumn, int refCharRow) const {
-    color = true;
-    MsaHighlightingScheme::process(refChar, seqChar, color, refCharColumn, refCharRow);
+void MsaHighlightingSchemeNoColors::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
+    highlight = true;
+    MsaHighlightingScheme::process(refChar, seqChar, color, highlight, refCharColumn, refCharRow);
 }
 
 MsaHighlightingSchemeNoColorsFactory::MsaHighlightingSchemeNoColorsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType)
