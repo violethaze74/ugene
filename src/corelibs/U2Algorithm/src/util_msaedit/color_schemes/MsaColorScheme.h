@@ -22,6 +22,7 @@
 #ifndef _U2_MSA_COLOR_SCHEME_H_
 #define _U2_MSA_COLOR_SCHEME_H_
 
+#include <QColor>
 #include <U2Core/global.h>
 
 namespace U2 {
