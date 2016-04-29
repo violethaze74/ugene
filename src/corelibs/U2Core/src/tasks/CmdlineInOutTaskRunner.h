@@ -46,6 +46,8 @@ public:
 
     QString             command;
     QStringList         arguments;
+    bool                withPluginList;
+    QStringList         pluginList;
 };
 
 class U2CORE_EXPORT CmdlineInOutTaskRunner : public DocumentProviderTask {

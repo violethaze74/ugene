@@ -34,6 +34,8 @@ public:
     QString             command;
     QStringList         arguments;
     LogLevel            logLevel;
+    bool                withPluginList;
+    QStringList         pluginList;
 };
 
 class U2CORE_EXPORT CmdlineTaskRunner : public Task {
@@ -43,6 +45,8 @@ public:
 
     void prepare();
     ReportResult report();
+
+    static const QString PLUGINS_ARG;
 
 private:
     void writeLog(QStringList &lines);
