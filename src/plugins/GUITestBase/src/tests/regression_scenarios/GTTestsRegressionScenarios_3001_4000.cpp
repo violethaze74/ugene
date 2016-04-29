@@ -4357,7 +4357,7 @@ GUI_TEST_CLASS_DEFINITION(test_3675){
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "some_not_existing_folder/COI.nwk", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, GTAction::findAction(os, "Build Tree")));
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(QFile::exists(sandBoxDir + "some_not_existing_folder/COI.nwk"), "File sandBoxDir/some_not_existing_folder/COI.nwk does not exist");
 }
 
