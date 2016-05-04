@@ -26,20 +26,21 @@
 
 namespace U2 {
 
-class MAlignmentObject;
 class CmdlineInOutTaskRunner;
+class MAlignmentObject;
+class PhyTreeObject;
+class TmpDbiHandle;
 
 class PhylipCmdlineTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
     PhylipCmdlineTask(const MAlignment &msa, const CreatePhyTreeSettings &settings);
+    ~PhylipCmdlineTask();
 
     void prepare();
     ReportResult report();
 
     static const QString PHYLIP_CMDLINE;
-    static const QString MSA_ARG;
-    static const QString TREE_ARG;
     static const QString MATRIX_ARG;
     static const QString GAMMA_ARG;
     static const QString ALPHA_ARG;
@@ -52,10 +53,14 @@ public:
 
 private:
     void createCmdlineTask();
+    void prepareTempDbi();
 
 private:
     CmdlineInOutTaskRunner *cmdlineTask;
     MAlignmentObject *msaObject;
+    PhyTreeObject *treeObject;
+    QString dbiPath;
+    U2DbiRef dbiRef;
 };
 
 } // U2

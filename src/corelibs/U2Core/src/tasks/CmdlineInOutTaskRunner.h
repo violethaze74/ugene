@@ -22,51 +22,48 @@
 #ifndef _U2_CMDLINE_IO_OUT_TASK_RUNNER_H_
 #define _U2_CMDLINE_IO_OUT_TASK_RUNNER_H_
 
-#include <QTemporaryFile>
-#include <U2Core/DocumentProviderTask.h>
+#include <U2Core/U2Type.h>
+#include <U2Core/CmdlineTaskRunner.h>
 
 namespace U2 {
 
-class CmdlineTaskRunner;
 class GObject;
-class LoadDocumentTask;
-class SaveDocumentTask;
 
-class U2CORE_EXPORT CmdlineInOutTaskConfig {
+class U2CORE_EXPORT CmdlineInOutTaskConfig : public CmdlineTaskConfig {
 public:
     CmdlineInOutTaskConfig();
 
     QList<GObject*>     inputObjects;
-    DocumentFormatId    inputFormat;
-    QVariantMap         inputDocHints;
-
-    DocumentFormatId    outputFormat;
-    QVariantMap         outputDocHints;
+    U2DbiRef            outDbiRef;
     bool                emptyOutputPossible;
-
-    QString             command;
-    QStringList         arguments;
-    bool                withPluginList;
-    QStringList         pluginList;
 };
 
-class U2CORE_EXPORT CmdlineInOutTaskRunner : public DocumentProviderTask {
+class U2CORE_EXPORT CmdlineInOutTaskRunner : public CmdlineTaskRunner {
     Q_OBJECT
 public:
     CmdlineInOutTaskRunner(const CmdlineInOutTaskConfig &config);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
+
+    ReportResult report();
+
+    const QList<U2DataId> & getOutputObjects() const;
+
+    static QString toString(const U2DbiRef &dbiRef);
+    static U2DbiRef parseDbiRef(const QString &string, U2OpStatus &os);
+    static QString toString(const U2DataId &id);
+    static U2DataId parseDataId(const QString &string, const U2DbiRef &dbiRef, U2OpStatus &os);
+    static void logOutputObject(const U2DataId &id);
+    static const QString IN_DB_ARG;
+    static const QString IN_ID_ARG;
+    static const QString OUT_DB_ARG;
 
 private:
-    void prepareTmpFile(const QString &format, QTemporaryFile &tmpFile);
+    // CmdlineTaskRunner
+    bool isCommandLogLine(const QString &logLine) const;
+    bool parseCommandLogWord(const QString &logWord);
 
-    CmdlineInOutTaskConfig  config;
-    Document*               inputDoc;
-    QTemporaryFile          inputTmpFile;
-    QTemporaryFile          outputTmpFile;
-    SaveDocumentTask*       saveTask;
-    CmdlineTaskRunner*      cmdlineTask;
-    LoadDocumentTask*       loadTask;
+private:
+    CmdlineInOutTaskConfig config;
+    QList<U2DataId> outputObjects;
 };
 
 } // U2

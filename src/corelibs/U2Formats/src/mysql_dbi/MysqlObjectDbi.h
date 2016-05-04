@@ -46,6 +46,11 @@ public:
     */
     virtual void getObject(U2Object& object, const U2DataId& id, U2OpStatus& os);
 
+    /**
+    Retrieves database object by objectId.
+    */
+    virtual U2DataId getObject(qint64 objectId, U2OpStatus& os);
+
     virtual QHash<U2DataId, QString> getObjectNames(qint64 offset, qint64 count, U2OpStatus& os);
 
     /** Lists database top-level objects, starts with 'offset' and limits by 'count' */

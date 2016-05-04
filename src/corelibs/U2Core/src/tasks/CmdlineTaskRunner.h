@@ -48,6 +48,10 @@ public:
 
     static const QString PLUGINS_ARG;
 
+protected:
+    virtual bool isCommandLogLine(const QString &logLine) const;
+    virtual bool parseCommandLogWord(const QString &logWord);
+
 private:
     void writeLog(QStringList &lines);
     QString readStdout();

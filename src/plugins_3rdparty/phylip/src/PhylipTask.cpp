@@ -19,16 +19,9 @@
 * MA 02110-1301, USA.
 */
 
-
-#include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/LoadDocumentTask.h>
+#include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/MAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
-#include <U2Core/SaveDocumentTask.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
 #include "NeighborJoinAdapter.h"
 
@@ -36,64 +29,34 @@
 
 namespace U2 {
 
-PhylipTask::PhylipTask(const QString &msaUrl, const QString &treeUrl, const CreatePhyTreeSettings &settings)
-: CmdlineTask(tr("PHYLIP task"), TaskFlags_NR_FOSE_COSC), msaUrl(msaUrl), treeUrl(treeUrl), settings(settings), loadTask(NULL), treeTask(NULL)
+PhylipTask::PhylipTask(const U2EntityRef &msaRef, const U2DbiRef &outDbiRef, const CreatePhyTreeSettings &settings)
+: CmdlineTask(tr("PHYLIP task"), TaskFlags_NR_FOSE_COSC), msaRef(msaRef), outDbiRef(outDbiRef), settings(settings), treeTask(NULL)
 {
 }
 
 void PhylipTask::prepare() {
-    loadTask = LoadDocumentTask::getDefaultLoadDocTask(msaUrl);
-    if (NULL == loadTask) {
-        setError(tr("Cannot detect alignment file format."));
-        return;
-    }
-    addSubTask(loadTask);
-}
+    MAlignmentObject *msaObject = new MAlignmentObject("msa", msaRef);
+    msaObject->setParent(this);
 
-QList<Task*> PhylipTask::onSubTaskFinished(Task *subTask) {
-    QList<Task*> result;
-    if (loadTask == subTask) {
-        MAlignmentObject *msaObject = getLoadedAlignment();
-        CHECK_OP(stateInfo, result);
-        treeTask = new NeighborJoinCalculateTreeTask(msaObject->getMAlignment(), settings);
-        result << treeTask;
-    } else if (treeTask == subTask) {
-        Task *saveTask = createSaveTreeTask();
-        CHECK_OP(stateInfo, result);
-        result << saveTask;
-    }
-    return result;
+    treeTask = new NeighborJoinCalculateTreeTask(msaObject->getMAlignment(), settings);
+    addSubTask(treeTask);
 }
 
 Task::ReportResult PhylipTask::report() {
     CmdlineTask::report();
+    CHECK_OP(stateInfo, ReportResult_Finished);
+
+    CmdlineInOutTaskRunner::logOutputObject(saveTree());
     return ReportResult_Finished;
 }
 
-MAlignmentObject * PhylipTask::getLoadedAlignment() {
-    Document *doc = loadTask->getDocument();
-    QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
-    if (objects.isEmpty()) {
-        setError(tr("There are no multiple alignments in the file"));
-        return NULL;
-    }
+U2DataId PhylipTask::saveTree() {
+    PhyTreeObject *treeObject = PhyTreeObject::createInstance(treeTask->getResult(), "Tree", outDbiRef, stateInfo);
+    CHECK_OP(stateInfo, U2DataId());
 
-    return qobject_cast<MAlignmentObject*>(objects.first());
-}
-
-Task * PhylipTask::createSaveTreeTask() {
-    PhyTree tree = treeTask->getResult();
-    U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
-    CHECK_OP(stateInfo, NULL);
-
-    QList<GObject*> objects;
-    objects << PhyTreeObject::createInstance(tree, "tree", dbiRef, stateInfo);
-    CHECK_OP(stateInfo, NULL);
-
-    Document *doc = new Document(BaseDocumentFormats::get(BaseDocumentFormats::NEWICK), IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), treeUrl, U2DbiRef(), objects);
-    doc->setParent(this);
-
-    return new SaveDocumentTask(doc);
+    U2DataId treeId = treeObject->getEntityRef().entityId;
+    delete treeObject;
+    return treeId;
 }
 
 } // U2
