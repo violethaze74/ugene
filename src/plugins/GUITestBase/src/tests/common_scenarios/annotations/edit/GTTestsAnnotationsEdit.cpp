@@ -50,8 +50,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //
     // Steps:
     //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -93,8 +93,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     //
     // Steps:
     //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -141,8 +141,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     //
     // Steps:
     //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -189,8 +189,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //
     // Steps:
     //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -219,8 +219,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     //
     // Steps:
     //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -262,8 +262,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     //
     // Steps:
     //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -305,8 +305,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //
     // Steps:
     //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -338,8 +338,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     //
     // Steps:
     //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -383,8 +383,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     //
     // Steps:
     //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -426,8 +426,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //Rename annotation
 
     // Steps:
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -459,8 +459,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     //Rename annotation
 
     // Steps:
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -492,8 +492,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     //Rename annotation
 
     // Steps:
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -674,8 +674,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //Check rename annotation action at popup menu (UGENE-3449)
     // Rename annotation
     // Steps:
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened
@@ -701,8 +701,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     //Check rename annotation action at popup menu (UGENE-3449)
     // Rename annotation
     // Steps:
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/1.gb
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state:
     //     1) Project view with document "1.gb" has been opened

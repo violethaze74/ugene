@@ -39,7 +39,12 @@ public:
         Reads
     };
 
-    static AssemblyBrowserUi *getView(HI::GUITestOpStatus &os, const QString& viewTitle);
+    enum Method {
+        Button,
+        Hotkey
+    };
+
+    static AssemblyBrowserUi *getView(HI::GUITestOpStatus &os, const QString& viewTitle = "");
 
     static void addRefFromProject(HI::GUITestOpStatus &os, QString docName, QModelIndex parent = QModelIndex());
 
@@ -52,14 +57,17 @@ public:
 
     static bool isWelcomeScreenVisible(HI::GUITestOpStatus &os);
 
-    static void zoomIn(HI::GUITestOpStatus& os);
+    static void zoomIn(HI::GUITestOpStatus& os, Method method = Button);
     static void zoomToMax(HI::GUITestOpStatus& os);
     static void zoomToMin(HI::GUITestOpStatus& os);
+    static void zoomToReads(HI::GUITestOpStatus& os);
 
-    static void goToPosition(HI::GUITestOpStatus &os, qint64 position);
+    static void goToPosition(HI::GUITestOpStatus &os, qint64 position, Method method = Hotkey);
 
     static void callContextMenu(HI::GUITestOpStatus &os, Area area = Consensus);
     static void callExportCoverageDialog(HI::GUITestOpStatus &os, Area area = Consensus);
+
+    static QScrollBar* getScrollBar(HI::GUITestOpStatus &os, Qt::Orientation orientation);
 };
 
 }   // namespace U2
