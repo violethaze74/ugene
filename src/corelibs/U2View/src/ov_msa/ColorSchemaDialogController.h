@@ -22,7 +22,7 @@
 #ifndef _U2_COLOR_SCHEMA_DIALOG_CONTROLLER_H_
 #define _U2_COLOR_SCHEMA_DIALOG_CONTROLLER_H_
 
-#include <U2Algorithm/MSAColorScheme.h>
+#include <U2Algorithm/MsaColorScheme.h>
 #include <U2Gui/AppSettingsGUI.h>
 #include <U2View/ColorSchemaSettingsController.h>
 
@@ -66,7 +66,7 @@ class ColorSchemaSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
     QString colorsDir;
-    QList<CustomColorSchema> customSchemas;
+    QList<ColorSchemeData> customSchemas;
 };
 
 class ColorSchemaSettingsPageWidget: public AppSettingsGUIPageWidget, public Ui_ColorSchemaSettingsWidget {
@@ -86,14 +86,14 @@ private slots:
     void sl_schemaChanged(int);
 
 private:
-    QList<CustomColorSchema> customSchemas;
+    QList<ColorSchemeData> customSchemas;
 };
 
 
 class CreateColorSchemaDialog: public QDialog, public Ui_CreateMSAScheme{
     Q_OBJECT
 public:
-    CreateColorSchemaDialog(CustomColorSchema*, QStringList usedNames);
+    CreateColorSchemaDialog(ColorSchemeData*, QStringList usedNames);
     int createNewScheme();
 
 private slots:
@@ -107,7 +107,7 @@ private:
     bool isSchemaNameValid(const QString&, QString&);
 
     QStringList usedNames;
-    CustomColorSchema* newSchema;
+    ColorSchemeData* newSchema;
 };
 
 

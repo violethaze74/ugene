@@ -670,7 +670,7 @@ GUI_TEST_CLASS_DEFINITION(test_4071) {
     GTUtilsDocument::unloadDocument(os, "human_T1.fa", false);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-    GTKeyboardDriver::keyClick( Qt::Key_Enter);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     //Expected: no safe points are triggered.
     CHECK_SET_ERR(!l.hasError(), "Errors in log");
@@ -5378,4 +5378,3 @@ GUI_TEST_CLASS_DEFINITION(test_4990) {
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
-

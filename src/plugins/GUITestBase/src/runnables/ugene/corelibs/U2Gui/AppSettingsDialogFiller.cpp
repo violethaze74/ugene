@@ -247,7 +247,9 @@ void NewColorSchemeCreator::commonScenario() {
             GTMouseDriver::click();
         }
     }
-    if(act == Delete){
+
+    switch (act) {
+    case Delete: {
         QListWidget* colorSchemas = qobject_cast<QListWidget*>(GTWidget::findWidget(os, "colorSchemas", dialog));
         GT_CHECK(colorSchemas != NULL, "colorSchemas list widget not found");
         GTListWidget::click(os, colorSchemas, schemeName);
@@ -260,21 +262,37 @@ void NewColorSchemeCreator::commonScenario() {
             GTGlobals::sleep(100);
         }
         GTWidget::click(os, deleteSchemaButton);
-
-
-    }else if(act == Create){
+        break;
+    }
+    case Create: {
         QWidget* addSchemaButton = GTWidget::findWidget(os, "addSchemaButton");
         GT_CHECK (addSchemaButton, "addSchemaButton not found");
 
         GTUtilsDialog::waitForDialog(os, new CreateAlignmentColorSchemeDialogFiller(os, schemeName, al));
         GTWidget::click(os, addSchemaButton);
+        break;
+    }
+    case Change: {
+        GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "colorSchemas", dialog), schemeName);
+
+        class Scenario : public CustomScenario {
+        public:
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                GT_CHECK(NULL != dialog, "Active modal widget is NULL");
+                GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
+                GTWidget::click(os, GTWidget::findWidget(os, "alphabetColorsFrame", dialog), Qt::LeftButton, QPoint(5, 5));
+
+                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            }
+        };
+
+        GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os, new Scenario));
+        GTWidget::click(os, GTWidget::findWidget(os, "changeSchemaButton", dialog));
+    }
     }
 
-    QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
-    QPushButton* button = cancel ? box->button(QDialogButtonBox::Cancel) : box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button !=NULL, "button is NULL");
-    GTWidget::click(os, button);
+    GTUtilsDialog::clickButtonBox(os, dialog, cancel ? QDialogButtonBox::Cancel : QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

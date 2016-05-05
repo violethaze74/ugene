@@ -26,10 +26,15 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
+
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
-#include <U2Algorithm/MSAColorScheme.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
@@ -154,14 +159,20 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 
     initColorCB();
     sl_sync();
+
+    connect(colorScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
+    connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
     connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_doUseDots()));
 
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
 
-    connect(seqArea, SIGNAL(si_highlightingAndColorActionsChanged()), SLOT(sl_actionsChanged()));
+    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
+    connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_customSchemesListChanged()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
+    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MAlignmentModInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
 
+    connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
     connect(thresholdSlider, SIGNAL(valueChanged(int)), SLOT(sl_highlightingParametersChanged()));
     connect(thresholdMoreRb, SIGNAL(toggled(bool)), SLOT(sl_highlightingParametersChanged()));
@@ -171,43 +182,57 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     sl_highlightingParametersChanged();
 }
 
-void MSAHighlightingTab::initColorCB(){
-    disconnect(colorScheme, 0, 0, 0);
-    disconnect(highlightingScheme, 0, 0, 0);
+void MSAHighlightingTab::initColorCB() {
+    colorScheme->blockSignals(true);
+    highlightingScheme->blockSignals(true);
+
+    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
+    QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(msa->getMSAObject()->getAlphabet()->getType());
+    colorSchemesFactories << msaColorSchemeRegistry->getMsaCustomColorSchemes(msa->getMSAObject()->getAlphabet()->getType());
+
     colorScheme->clear();
-    colorScheme->addItems(seqArea->getAvailableColorSchemes());
+    foreach (MsaColorSchemeFactory *factory, colorSchemesFactories) {
+        colorScheme->addItem(factory->getName());
+    }
+
+    MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
+    QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMSAObject()->getAlphabet()->getType());
 
     highlightingScheme->clear();
-    highlightingScheme->addItems(seqArea->getAvailableHighlightingSchemes());
-    connect(colorScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea,
-        SLOT(sl_changeColorSchemeOutside(const QString &)));
-    connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea,
-        SLOT(sl_changeColorSchemeOutside(const QString &)));
-    connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
+    foreach (MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
+        highlightingScheme->addItem(factory->getName());
+    }
+
+    colorScheme->blockSignals(false);
+    highlightingScheme->blockSignals(false);
 }
 
-void MSAHighlightingTab::sl_sync(){
-    customColorSchemesChangeCheck();
-
-    MSAColorScheme *s = seqArea->getCurrentColorScheme();
+void MSAHighlightingTab::sl_sync() {
+    MsaColorScheme *s = seqArea->getCurrentColorScheme();
     SAFE_POINT(s != NULL, "Current scheme is NULL", );
     SAFE_POINT(s->getFactory() != NULL, "Current scheme color factory is NULL", );
-    colorScheme->setCurrentIndex(colorScheme->findText(s->getFactory()->getName()));
 
-    MSAHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();
+    colorScheme->blockSignals(true);
+    colorScheme->setCurrentIndex(colorScheme->findText(s->getFactory()->getName()));
+    colorScheme->blockSignals(false);
+
+    MsaHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();
     SAFE_POINT(sh != NULL, "Current highlighting scheme is NULL!", );
     SAFE_POINT(sh->getFactory() != NULL, "Current highlighting scheme factory is NULL!", );
+
+    highlightingScheme->blockSignals(true);
     highlightingScheme->setCurrentIndex(highlightingScheme->findText(sh->getFactory()->getName()));
+    highlightingScheme->blockSignals(false);
 
-
-    disconnect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_doUseDots())); //disconnect-connect to prevent infinite loop
+    useDots->blockSignals(true);
     useDots->setChecked(seqArea->getUseDotsCheckedState());
-    connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_doUseDots()));
+    useDots->blockSignals(false);
+
     sl_updateHint();
 }
 
 void MSAHighlightingTab::sl_updateHint() {
-    MSAHighlightingScheme *s = seqArea->getCurrentHighlightingScheme();
+    MsaHighlightingScheme *s = seqArea->getCurrentHighlightingScheme();
     SAFE_POINT(s->getFactory() != NULL, "Highlighting factory is NULL!", );
 
     QVariantMap highlightingSettings;
@@ -218,14 +243,14 @@ void MSAHighlightingTab::sl_updateHint() {
         thresholdMoreRb->show();
         lessMoreLabel->show();
         bool ok = false;
-        int thresholdValue = s->getSettings().value(MSAHighlightingScheme::THRESHOLD_PARAMETER_NAME).toInt(&ok);
+        int thresholdValue = s->getSettings().value(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME).toInt(&ok);
         assert(ok);
         thresholdSlider->setValue(thresholdValue);
-        bool lessThenThreshold = s->getSettings().value(MSAHighlightingScheme::LESS_THEN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked()).toBool();
+        bool lessThenThreshold = s->getSettings().value(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked()).toBool();
         thresholdLessRb->setChecked(lessThenThreshold);
         thresholdMoreRb->setChecked(!lessThenThreshold);
-        highlightingSettings.insert(MSAHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdValue);
-        highlightingSettings.insert(MSAHighlightingScheme::LESS_THEN_THRESHOLD_PARAMETER_NAME, lessThenThreshold);
+        highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdValue);
+        highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, lessThenThreshold);
     }else{
         thresholdLabel->hide();
         thresholdSlider->hide();
@@ -259,24 +284,16 @@ void MSAHighlightingTab::sl_exportHighlightningClicked(){
 void MSAHighlightingTab::sl_highlightingParametersChanged() {
     QVariantMap highlightingSettings;
     thresholdLabel->setText(tr("Threshold: %1%").arg(thresholdSlider->value()));
-    MSAHighlightingScheme *s = seqArea->getCurrentHighlightingScheme();
-    highlightingSettings.insert(MSAHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdSlider->value());
-    highlightingSettings.insert(MSAHighlightingScheme::LESS_THEN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
+    MsaHighlightingScheme *s = seqArea->getCurrentHighlightingScheme();
+    highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdSlider->value());
+    highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
     seqArea->sl_changeColorSchemeOutside(colorScheme->currentText());
 }
 
-void MSAHighlightingTab::sl_actionsChanged() {
+void MSAHighlightingTab::sl_customSchemesListChanged() {
     initColorCB();
     sl_sync();
-}
-
-void MSAHighlightingTab::customColorSchemesChangeCheck() {
-    if (seqArea->getAvailableColorSchemes().size() != colorScheme->count()) {
-        disconnect(colorScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
-        initColorCB();
-        connect(colorScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
-    }
 }
 
 }//ns

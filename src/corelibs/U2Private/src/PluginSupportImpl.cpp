@@ -23,6 +23,8 @@
 #include "ServiceRegistryImpl.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CMDLineRegistry.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Log.h>
 #include <U2Core/L10n.h>
@@ -272,16 +274,31 @@ Task::ReportResult LoadAllPluginsTask::report()
     return ReportResult_Finished;
 }
 
+namespace {
+    QStringList getCmdlinePlugins() {
+        CMDLineRegistry *reg = AppContext::getCMDLineRegistry();
+        if (reg->hasParameter(CmdlineTaskRunner::PLUGINS_ARG)) {
+            QString pluginsToLoad = reg->getParameterValue(CmdlineTaskRunner::PLUGINS_ARG);
+            return pluginsToLoad.split(";");
+        }
+        return QStringList();
+    }
+}
+
 static QStringList findAllPluginsInDefaultPluginsDir() {
     QDir d = PluginSupportImpl::getDefaultPluginsDir();
     QStringList filter; filter << QString("*.") + PLUGIN_FILE_EXT;
     QStringList fileNames = d.entryList(filter, QDir::Readable | QDir::Files, QDir::NoSort);
     QStringList res;
+    bool hasCmdlinePlugins = AppContext::getCMDLineRegistry()->hasParameter(CmdlineTaskRunner::PLUGINS_ARG);
+    QStringList cmdlinePlugins = getCmdlinePlugins();
     foreach(const QString& name, fileNames) {
         GUrl filePath(d.absolutePath() + "/" + name);
-        QString path = filePath.getURLString();
-        res.append(path);
-        coreLog.trace(QString("Found plugin candidate in default dir: %1").arg(path));
+        if (!hasCmdlinePlugins || cmdlinePlugins.contains(filePath.baseFileName())) {
+            QString path = filePath.getURLString();
+            res.append(path);
+            coreLog.trace(QString("Found plugin candidate in default dir: %1").arg(path));
+        }
     }
     return res;
 }
@@ -430,7 +447,12 @@ QSet<QString> PluginSupportImpl::getPluginPaths(){
     Settings* settings = AppContext::getSettings();
     QString pluginListSettingsDir = settings->toVersionKey(PLUGINS_LIST_SETTINGS);
 
-    QStringList pluginsIds = settings->getAllKeys(pluginListSettingsDir);
+    QStringList pluginsIds;
+    if (AppContext::getCMDLineRegistry()->hasParameter(CmdlineTaskRunner::PLUGINS_ARG)) {
+        pluginsIds = getCmdlinePlugins();
+    } else {
+        pluginsIds = settings->getAllKeys(pluginListSettingsDir);
+    }
 
     QSet<QString> pluginFiles;
     versionAppendix = Version::buildDate;

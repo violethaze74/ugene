@@ -34,6 +34,8 @@
 
 #include <U2Algorithm/MSADistanceAlgorithm.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 
@@ -77,13 +79,13 @@
 #include <U2Gui/ProjectView.h>
 #include <U2Gui/U2FileDialog.h>
 
-#include <U2Algorithm/MSAColorScheme.h>
 #include <U2View/UndoRedoFramework.h>
 
+#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
+#include "Export/MSAImageExportTask.h"
 #include "ExportHighlightedDialogController.h"
 #include "MSAEditor.h"
 #include "MSAEditorConsensusArea.h"
-#include "MsaEditorSimilarityColumn.h"
 #include "MSAEditorFactory.h"
 #include "MSAEditorNameList.h"
 #include "MSAEditorOffsetsView.h"
@@ -93,10 +95,9 @@
 #include "MSAEditorStatusBar.h"
 #include "MSAEditorTasks.h"
 #include "MSAEditorUndoFramework.h"
+#include "MsaEditorSimilarityColumn.h"
 #include "PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "PhyTrees/MSAEditorTreeViewer.h"
-#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
-#include "Export/MSAImageExportTask.h"
 #include "ov_msa/TreeOptions//TreeOptionsWidgetFactory.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "ov_phyltree/TreeViewerTasks.h"

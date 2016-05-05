@@ -1922,15 +1922,16 @@ GUI_TEST_CLASS_DEFINITION(test_2292) {
     GTGlobals::sleep();
 }
 
-GUI_TEST_CLASS_DEFINITION( test_2298 ){
+GUI_TEST_CLASS_DEFINITION(test_2298) {
 //    1. Open the file "data/samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Build the tree and make it view together with msa
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/2298.nwk", 0, 0, true));
-    QAbstractButton *tree = GTAction::button(os,"Build Tree");
-    GTWidget::click(os, tree);
-    GTGlobals::sleep();
+    GTWidget::click(os, GTAction::button(os,"Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    3. Collapse any node on the tree
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QGraphicsItem* node = GTUtilsPhyTree::getNodes(os).at(1);
@@ -1940,13 +1941,13 @@ GUI_TEST_CLASS_DEFINITION( test_2298 ){
     GTMouseDriver::moveTo(GTUtilsPhyTree::getGlobalCoord(os, node));
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
+
 //    Expected state: the appropriate sequences on the msa has collapsed into a group as well
-    QStringList l = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os);
+    QStringList l = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     int num = l.count();
     CHECK_SET_ERR(num == 3, QString("Unexpected visiable sequences number. Expected: 3, actual: %1").arg(num));
     GTGlobals::sleep();
 }
-
 
 GUI_TEST_CLASS_DEFINITION( test_2293 ){
 //    0. Ensure that Bowtie2 Build index tool is not set. Remove it, if it is.
@@ -2062,7 +2063,7 @@ GUI_TEST_CLASS_DEFINITION( test_2285 ){
 //    2. Click the "Switch on/off collapsing" button on the toolbar.
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
 //    Expected state: Collapsed mode is switched on, there are one collapsed group.
-    int visableNamesNum = GTUtilsMSAEditorSequenceArea::getVisibaleNames(os).count();
+    int visableNamesNum = GTUtilsMSAEditorSequenceArea::getVisibleNames(os).count();
     CHECK_SET_ERR(visableNamesNum == 17,
                   QString("unexpected visable sequences number. Expected 17, actual: %1").arg(visableNamesNum));
 //    3. Expand the collapsed group ("Mecopoda_elongata__Ishigaki__J" is the head sequence).
@@ -2123,51 +2124,48 @@ GUI_TEST_CLASS_DEFINITION( test_2306 ) {
     GTGlobals::sleep( 200 );
     const QString finalMsaContent = GTClipboard::text( os );
     CHECK_SET_ERR("---\n---\n---\n---\n---\n---" == finalMsaContent, "Unexpected MSA content has occurred"  + finalMsaContent);
+}
 
-
-
-    }
-GUI_TEST_CLASS_DEFINITION( test_2309 ) {
+GUI_TEST_CLASS_DEFINITION(test_2309) {
     // 1. Open file "data/samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir+"samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Build tree for the alignment
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/2309.nwk", 0, 0, true));
-    QAbstractButton *tree= GTAction::button(os,"Build Tree");
-    GTWidget::click(os, tree);
-    GTGlobals::sleep(500);
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList initialNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    QAbstractButton *refresh= GTAction::button(os,"Refresh tree");
+    QAbstractButton *refresh= GTAction::button(os, "Refresh tree");
 
     CHECK(NULL != refresh, );
-    if(refresh->isVisible()){
+    if (refresh->isVisible()) {
         GTWidget::click(os, refresh);
-    }else{
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Refresh tree"));
+    } else {
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Refresh tree"));
         QToolBar* toolBar = qobject_cast<QToolBar*>(refresh->parent());
         GTMouseDriver::moveTo(toolBar->mapToGlobal(toolBar->geometry().bottomRight())-QPoint(5,15));
         GTMouseDriver::click();
     }
 
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QStringList newNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(newNames == initialNames, "Wrong sequences order");
 
-        GTGlobals::sleep();
-        GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
-        GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
-        GTGlobals::sleep(100);
+    GTGlobals::sleep();
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
+    GTGlobals::sleep(100);
 
-        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::NoToAll));
-        GTGlobals::sleep(200);
-        GTKeyboardDriver::keyClick( Qt::Key_Delete);
-        GTGlobals::sleep();
-
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::NoToAll));
+    GTGlobals::sleep(200);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTGlobals::sleep();
 }
+
 GUI_TEST_CLASS_DEFINITION( test_2318 ) {
     class FirstItemPopupChooser : public PopupChooser {
     public:
@@ -2941,41 +2939,39 @@ GUI_TEST_CLASS_DEFINITION(test_2407) {
 
     }
 
-GUI_TEST_CLASS_DEFINITION( test_2410 ) {
-    GTFileDialog::openFile( os, dataDir + "samples/FASTA/", "human_T1.fa" );
+GUI_TEST_CLASS_DEFINITION(test_2410) {
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep( );
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 166740, 166755));
 
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller( os, 166740, 166755 ) );
+    QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    CHECK_SET_ERR(NULL != sequenceWidget, "sequenceWidget is not present");
 
-    QWidget *sequenceWidget = GTWidget::findWidget( os, "ADV_single_sequence_widget_0" );
-    CHECK_SET_ERR( NULL != sequenceWidget, "sequenceWidget is not present" );
+    GTWidget::click(os, sequenceWidget);
+    GTKeyboardUtils::selectAll(os);
 
-    GTWidget::click( os, sequenceWidget );
-    GTKeyboardUtils::selectAll( os );
+    QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
+    Runnable *chooser = new PopupChooser(os, QStringList() << "GC Content (%)");
+    GTUtilsDialog::waitForDialog(os, chooser);
 
-    QWidget *graphAction = GTWidget::findWidget( os, "GraphMenuAction", sequenceWidget, false );
-    Runnable *chooser = new PopupChooser( os, QStringList( ) << "GC Content (%)" );
-    GTUtilsDialog::waitForDialog( os, chooser );
+    GTWidget::click(os, graphAction);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click( os, graphAction );
-    GTGlobals::sleep(500);
+    GTWidget::click(os, GTAction::button(os,
+        "action_zoom_in_human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
 
-    GTWidget::click( os, GTAction::button( os,
-        "action_zoom_in_human_T1 (UCSC April 2002 chr7:115977709-117855134)" ) );
+    QWidget *renderArea = GTWidget::findWidget(os, "GSequenceGraphViewRenderArea", sequenceWidget);
+    const QPoint mouseInitialPos(4 * renderArea->width() / 7, renderArea->height() / 2);
+    GTWidget::click(os, renderArea, Qt::LeftButton, mouseInitialPos);
+    GTGlobals::sleep(200);
 
-    QWidget *renderArea = GTWidget::findWidget( os, "GSequenceGraphViewRenderArea", sequenceWidget );
-    const QPoint mouseInitialPos( 4 * renderArea->width( ) / 7, renderArea->height( ) / 2 );
-    GTWidget::click(os, renderArea, Qt::LeftButton, mouseInitialPos );
-    GTGlobals::sleep( 200 );
+    const QPoint mouseInitialAbsPos = GTMouseDriver::getMousePosition();
+    const int rightMouseLimit = mouseInitialAbsPos.x() * 1.3;
 
-    const QPoint mouseInitialAbsPos = GTMouseDriver::getMousePosition( );
-    const int rightMouseLimit = mouseInitialAbsPos.x( ) * 1.3;
-
-    for ( int x = mouseInitialAbsPos.x( ); x < rightMouseLimit; x += 5 ) {
-        const QPoint currentPos( x, mouseInitialAbsPos.y( ) );
-        GTMouseDriver::moveTo(currentPos );
+    for (int x = mouseInitialAbsPos.x(); x < rightMouseLimit; x += 5) {
+        const QPoint currentPos(x, mouseInitialAbsPos.y());
+        GTMouseDriver::moveTo(currentPos);
     }
 }
 

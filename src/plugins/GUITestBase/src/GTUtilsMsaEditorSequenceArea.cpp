@@ -247,8 +247,8 @@ QStringList GTUtilsMSAEditorSequenceArea::getNameList(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getVisibaleNames"
-QStringList GTUtilsMSAEditorSequenceArea::getVisibaleNames(HI::GUITestOpStatus &os){
+#define GT_METHOD_NAME "getVisibleNames"
+QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(HI::GUITestOpStatus &os){
     Q_UNUSED(os);
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor* editor = mw->findChild<MSAEditor*>();
@@ -297,7 +297,7 @@ void GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(HI::GUITestOpStatus &os
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     GT_CHECK(msaEditArea != NULL, "MsaEditorSequenceArea not found");
 
-    int rowNum = getVisibaleNames(os).indexOf(seqName);
+    int rowNum = getVisibleNames(os).indexOf(seqName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
     QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
     QPoint localCoord = QPoint(15, msaEditArea->getYBySequenceNum(rowNum));
@@ -310,7 +310,7 @@ void GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(HI::GUITestOpStatus &os
 #define GT_METHOD_NAME "isCollapsed"
 bool GTUtilsMSAEditorSequenceArea::isCollapsed(HI::GUITestOpStatus &os, QString seqName){
     QStringList names = getNameList(os);
-    QStringList visiable = getVisibaleNames(os);
+    QStringList visiable = getVisibleNames(os);
     GT_CHECK_RESULT(names.contains(seqName), "sequence " + seqName + " not found", false);
     return !visiable.contains(seqName);
 }
@@ -319,7 +319,7 @@ bool GTUtilsMSAEditorSequenceArea::isCollapsed(HI::GUITestOpStatus &os, QString 
 #define GT_METHOD_NAME "collapsingMode"
 bool GTUtilsMSAEditorSequenceArea::collapsingMode(HI::GUITestOpStatus &os){
     QAbstractButton* collapce = GTAction::button(os, "Enable collapsing");
-    bool nameLists = getVisibaleNames(os)==getNameList(os);
+    bool nameLists = getVisibleNames(os)==getNameList(os);
     if(nameLists && !collapce->isChecked()){
         return false;
     }else if (!nameLists && collapce->isChecked()) {
@@ -410,7 +410,7 @@ void GTUtilsMSAEditorSequenceArea::selectSequence(HI::GUITestOpStatus &os, const
             (GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(msaEditArea != NULL, "MsaEditorSequenceArea not found");
 
-    QStringList names = getVisibaleNames(os);
+    QStringList names = getVisibleNames(os);
     int row = 0;
     while (names[row] != seqName) {
         row++;
@@ -453,7 +453,7 @@ int GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(HI::GUITestOpStatus &o
 
 #define GT_METHOD_NAME "isSequenceVisible"
 bool GTUtilsMSAEditorSequenceArea::isSequenceVisible(HI::GUITestOpStatus &os, const QString &seqName) {
-    QStringList visiableRowNames = getVisibaleNames(os);
+    QStringList visiableRowNames = getVisibleNames(os);
     return visiableRowNames.contains(seqName);
 }
 #undef GT_METHOD_NAME
@@ -513,7 +513,7 @@ bool GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(HI::GUITestOpStatus &os)
 
 #define GT_METHOD_NAME "isSequenceHightighted"
 bool GTUtilsMSAEditorSequenceArea::isSequenceHightighted(HI::GUITestOpStatus &os, const QString &seqName){
-    QStringList names = getVisibaleNames(os);
+    QStringList names = getVisibleNames(os);
     GT_CHECK_RESULT(names.contains(seqName), QString("sequence with name %1 not found").arg(seqName), false);
 
     int row = 0;
@@ -574,7 +574,7 @@ int GTUtilsMSAEditorSequenceArea::getRowHeight(HI::GUITestOpStatus &os){
 
 #define GT_METHOD_NAME "renameSequence"
 void GTUtilsMSAEditorSequenceArea::renameSequence(HI::GUITestOpStatus &os, const QString &seqToRename, const QString &newName){
-    int num = getVisibaleNames(os).indexOf(seqToRename);
+    int num = getVisibleNames(os).indexOf(seqToRename);
     GT_CHECK(num != -1, "sequence not found");
 
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, newName, seqToRename));

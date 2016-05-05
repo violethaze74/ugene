@@ -22,30 +22,20 @@
 #ifndef _U2_FLOWTASK_H_
 #define _U2_FLOWTASK_H_
 
-#include <U2Core/Task.h>
-
-#include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/DbiDataStorage.h>
-#include <U2Lang/Schema.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Lang/WorkflowManager.h>
-#include <U2Lang/WorkflowIOTasks.h>
 #include <U2Lang/WorkflowDebugStatus.h>
-
-#include <QtCore/QUrl>
-#include <QtCore/QTemporaryFile>
-#include <QtCore/QProcess>
-#include <QtCore/QEventLoop>
-#include <QtCore/QTimer>
 
 namespace U2 {
 
 namespace Workflow {
     class CommunicationChannel;
+    class Schema;
     class WorkflowMonitor;
 }
 using namespace Workflow;
 
-class U2LANG_EXPORT WorkflowAbstractRunner : public Task {
+class U2LANG_EXPORT WorkflowAbstractRunner : public CmdlineTask {
     Q_OBJECT
 public:
     WorkflowAbstractRunner(const QString &name, TaskFlags flags);
@@ -82,20 +72,16 @@ class U2LANG_EXPORT WorkflowRunTask : public WorkflowAbstractRunner {
 public:
     WorkflowRunTask(const Schema&, const ActorMap& rmap = ActorMap(),
         WorkflowDebugStatus *debugInfo = new WorkflowDebugStatus());
-    virtual ReportResult report();
     virtual QList<WorkerState> getState(Actor*);
     virtual int getMsgNum(const Link*);
     virtual int getMsgPassed(const Link*);
 
+private:
+    // CmdlineTask
+    QString getTaskError() const;
+
 signals:
     void si_ticked();
-
-private slots:
-    void sl_outputProgressAndState();
-
-private:
-    QString getFirstError() const;
-    void logErrors() const;
 
 private:
     QMap<ActorId, ActorId> rmap;
@@ -146,49 +132,6 @@ private:
     WorkflowDebugStatus *debugInfo;
     bool isNextTickRestoring;
 };
-
-class RunCmdlineWorkflowTaskConfig {
-public:
-    RunCmdlineWorkflowTaskConfig(const QString& _schemaPath = QString(), const QStringList& _args = QStringList())
-        : schemaPath(_schemaPath), args(_args), logLevel2Commute(LogLevel_TRACE) {}
-
-    QString         schemaPath;
-    QStringList     args;
-    LogLevel        logLevel2Commute;
-};
-
-class RunCmdlineWorkflowTask : public Task {
-    Q_OBJECT
-public:
-    RunCmdlineWorkflowTask(const RunCmdlineWorkflowTaskConfig& conf);
-
-    void prepare();
-    virtual ReportResult report();
-    WorkerState getState(const ActorId & id);
-    int getMsgNum(const QString & ids);
-    int getMsgPassed(const QString & ids);
-    void writeLog(QStringList &lines);
-    QStringList getActorLinks(const ActorId &id);
-
-signals:
-    void si_logRead();
-
-private slots:
-    void sl_onError(QProcess::ProcessError);
-    void sl_onReadStandardOutput();
-
-private:
-    RunCmdlineWorkflowTaskConfig   conf;
-    QProcess*                               proc;
-    QMap<ActorId, WorkerState>              states;
-    QMap<QString, int>                      msgNums;
-    QMap<QString, int>                      msgPassed;
-    QString                                 processLogPrefix;
-
-private:
-    QString readStdout();
-}; // RunCmdlineWorkflowTask
-
 
 } //namespace U2
 

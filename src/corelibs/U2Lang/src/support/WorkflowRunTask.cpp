@@ -19,61 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include "WorkflowRunTask.h"
-#include <U2Lang/DbiDataStorage.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/WorkflowManager.h>
-#include <U2Lang/Schema.h>
+#include <QCoreApplication>
+#include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Lang/HRSchemaSerializer.h>
-#include <U2Lang/WorkflowUtils.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/LocalDomain.h>
+#include <U2Lang/WorkflowDebugMessageParser.h>
+#include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include <U2Core/Counter.h>
-#include <U2Core/CMDLineRegistry.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/Version.h>
-#include <U2Core/Settings.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GUrlUtils.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/U2SafePoints.h>
-
-#include <QtCore/QDir>
-#include <QCoreApplication>
-
-#include <U2Lang/DbiDataStorage.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/WorkflowManager.h>
-#include <U2Lang/Schema.h>
-#include <U2Lang/HRSchemaSerializer.h>
-#include <U2Lang/WorkflowUtils.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/WorkflowSettings.h>
-#include <U2Lang/LocalDomain.h>
-
-#include "WorkflowDebugMessageParser.h"
 #include "WorkflowRunTask.h"
-
-#if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
-#include <Windows.h>
-#endif
 
 namespace U2 {
 
-static const QString OUTPUT_PROGRESS_OPTION("ugene-output-progress-state");
-static const QString OUTPUT_ERROR_OPTION("ugene-output-error");
-static const int UPDATE_PROGRESS_INTERVAL = 500;
-static const QString OUTPUT_PROGRESS_TAG("task-progress=");
-static const QString ERROR_KEYWORD("#%*ugene-finished-with-error#%*");
-static const QString STATE_KEYWORD("#%&state#%&");
-static const QString MSG_NUM_KEYWORD("#%$msgnum#%$");
-static const QString MSG_PASSED_KEYWORD("#%$msgpassed#%$");
-
 WorkflowAbstractRunner::WorkflowAbstractRunner(const QString &name, TaskFlags flags)
-: Task(name, flags)
+: CmdlineTask(name, flags)
 {
 
 }
@@ -92,10 +53,9 @@ WorkflowAbstractIterationRunner::WorkflowAbstractIterationRunner(const QString &
  * WorkflowRunTask
  *******************************************/
 WorkflowRunTask::WorkflowRunTask(const Schema& sh, const QMap<ActorId, ActorId>& remap, WorkflowDebugStatus *debugInfo)
-    : WorkflowAbstractRunner(tr("Execute workflow"),
+: WorkflowAbstractRunner(tr("Execute workflow"),
     TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_OnlyNotificationReport), rmap(remap), flows(sh.getFlows())
 {
-
     GCOUNTER( cvar, tvar, "WorkflowRunTask" );
     Q_ASSERT(NULL != debugInfo);
     if (NULL == debugInfo->parent()) {
@@ -111,35 +71,6 @@ WorkflowRunTask::WorkflowRunTask(const Schema& sh, const QMap<ActorId, ActorId>&
     addSubTask(t);
 
     setMaxParallelSubtasks(MAX_PARALLEL_SUBTASKS_AUTO);
-    if(AppContext::getCMDLineRegistry()->hasParameter(OUTPUT_PROGRESS_OPTION)) {
-        QTimer * timer = new QTimer(this);
-        connect(timer, SIGNAL(timeout()), SLOT(sl_outputProgressAndState()));
-        timer->start(UPDATE_PROGRESS_INTERVAL);
-    }
-}
-
-void WorkflowRunTask::sl_outputProgressAndState() {
-    coreLog.info(QString("%1%2").arg(OUTPUT_PROGRESS_TAG).arg(getProgress()));
-    foreach(const ActorId & id, rmap.values()) {
-        QList<WorkerState> ret;
-        foreach(Task* t, getSubtasks()) {
-            WorkflowIterationRunTask* rt = qobject_cast<WorkflowIterationRunTask*>(t);
-            ret << rt->getState(id);
-        }
-        if(!rmap.key(id).isEmpty()) {
-            assert(ret.size() == 1);
-            coreLog.info(QString("%1:%2:%3").arg(STATE_KEYWORD).arg(rmap.key(id)).arg((int)ret.first()));
-        }
-    }
-    foreach(Link * l, flows) {
-        ActorId srcId = rmap.key(l->source()->owner()->getId());
-        ActorId dstId = rmap.key(l->destination()->owner()->getId());
-
-        if(!srcId.isEmpty() && !dstId.isEmpty()){
-            coreLog.info(QString("%1:%2:%3:%4").arg(MSG_NUM_KEYWORD).arg(srcId).arg(dstId).arg(getMsgNum(l)));
-            coreLog.info(QString("%1:%2:%3:%4").arg(MSG_PASSED_KEYWORD).arg(srcId).arg(dstId).arg(getMsgPassed(l)));
-        }
-    }
 }
 
 inline bool isValidFile(const QString &link, const qint64 &processStartTime) {
@@ -180,20 +111,13 @@ int WorkflowRunTask::getMsgPassed(const Link* l) {
     return ret;
 }
 
-Task::ReportResult WorkflowRunTask::report() {
-    propagateSubtaskError();
-    if (AppContext::getCMDLineRegistry()->hasParameter(OUTPUT_ERROR_OPTION)) {
-        logErrors();
+QString WorkflowRunTask::getTaskError() const {
+    if (hasError()) {
+        return getError();
     }
-    if(AppContext::getCMDLineRegistry()->hasParameter(OUTPUT_PROGRESS_OPTION)) {
-        sl_outputProgressAndState();
-    }
-    return ReportResult_Finished;
-}
 
-QString WorkflowRunTask::getFirstError() const {
-    foreach (WorkflowMonitor *monitor, monitors) {
-        foreach (const Problem &problem, monitor->getProblems()) {
+    foreach(WorkflowMonitor *monitor, monitors) {
+        foreach(const Problem &problem, monitor->getProblems()) {
             if (Problem::U2_ERROR == problem.type) {
                 return problem.message;
             }
@@ -202,26 +126,12 @@ QString WorkflowRunTask::getFirstError() const {
     return "";
 }
 
-namespace {
-    void logError(const QString &error) {
-        coreLog.info(QString("%1%2%1").arg(ERROR_KEYWORD).arg(error));
-    }
-}
-
-void WorkflowRunTask::logErrors() const {
-    if (hasError()) {
-        logError(getError());
-    } else {
-        const QString firstError = getFirstError();
-        if (!firstError.isEmpty()) {
-            logError(firstError);
-        }
-    }
-}
-
 /*******************************************
 * WorkflowIterationRunTask
 *******************************************/
+namespace {
+    const int UPDATE_PROGRESS_INTERVAL = 500;
+}
 
 WorkflowIterationRunTask::WorkflowIterationRunTask(const Schema& sh,
     WorkflowDebugStatus *initDebugInfo)
@@ -376,32 +286,6 @@ QList<Task*> WorkflowIterationRunTask::onSubTaskFinished(Task* subTask) {
     return tasks;
 }
 
-DocumentFormat *getDocumentFormatByProtoId(QString protoId) {
-    DocumentFormatId formatId;
-    if (CoreLibConstants::WRITE_TEXT_PROTO_ID == protoId) {
-        formatId = BaseDocumentFormats::PLAIN_TEXT;
-    }
-    else if (CoreLibConstants::WRITE_FASTA_PROTO_ID == protoId) {
-        formatId = BaseDocumentFormats::FASTA;
-    }
-    else if (CoreLibConstants::WRITE_GENBANK_PROTO_ID == protoId) {
-        formatId = BaseDocumentFormats::PLAIN_GENBANK;
-    }
-    else if (CoreLibConstants::WRITE_CLUSTAL_PROTO_ID == protoId) {
-        formatId = BaseDocumentFormats::CLUSTAL_ALN;
-    }
-    else if (CoreLibConstants::WRITE_STOCKHOLM_PROTO_ID == protoId) {
-        formatId = BaseDocumentFormats::STOCKHOLM;
-    }
-    else if (CoreLibConstants::WRITE_FASTQ_PROTO_ID == protoId ) {
-        formatId = BaseDocumentFormats::FASTQ;
-    } else {
-        return NULL;
-    }
-
-    return AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-}
-
 Task::ReportResult WorkflowIterationRunTask::report() {
     context->getMonitor()->pause();
     if (scheduler) {
@@ -546,275 +430,6 @@ void WorkflowIterationRunTask::sl_convertMessages2Documents( const Workflow::Lin
             parser->convertMessagesToDocuments( messageType, schemeName, messageNumber );
         }
     }
-}
-
-/***********************************
- * RunCmdlineWorkflowTask
- ***********************************/
-static bool containsPrefix(const QStringList& list, const QString& prefix) {
-    foreach(const QString& listItem, list) {
-        if (listItem.startsWith(prefix)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-RunCmdlineWorkflowTask::RunCmdlineWorkflowTask(const RunCmdlineWorkflowTaskConfig& _conf)
-: Task(tr("Workflow process"), TaskFlag_NoRun), conf(_conf), proc(new QProcess(this))
-{
-    processLogPrefix = "process:?>";
-}
-
-static QString getLogLevelName(LogLevel l) {
-    switch(l) {
-        case LogLevel_TRACE: return "TRACE";
-        case LogLevel_DETAILS: return "DETAILS";
-        case LogLevel_INFO: return "INFO";
-        case LogLevel_ERROR: return "ERROR";
-        default:
-            assert(0);
-    }
-    return "";
-}
-
-void RunCmdlineWorkflowTask::prepare() {
-    QStringList args;
-    // FIXME: use defined constants!
-    args << QString("--task=%1").arg(conf.schemaPath);
-    args << "--log-no-task-progress";
-    args << QString("--%1").arg(OUTPUT_PROGRESS_OPTION);
-    args << "--lang=en";
-    args << QString("--%1").arg(OUTPUT_ERROR_OPTION);
-    args << QString("--ini-file=\"%1\"").arg(AppContext::getSettings()->fileName());
-    args << conf.args;
-
-    if (!containsPrefix(args, "--log-level")) {
-        QString logLevel = getLogLevelName(conf.logLevel2Commute).toLower();
-        args << ("--log-level-" + logLevel);
-    }
-
-    connect(proc, SIGNAL(error(QProcess::ProcessError)), SLOT(sl_onError(QProcess::ProcessError)));
-    connect(proc, SIGNAL(readyReadStandardOutput()), SLOT(sl_onReadStandardOutput()));
-    QString cmdlineUgenePath(WorkflowSettings::getCmdlineUgenePath());
-    SAFE_POINT(!cmdlineUgenePath.isEmpty(), "ugenecl cmdline is empty!?", );
-    QString line = cmdlineUgenePath;
-    foreach(const QString& arg, args ) {
-        line+=" " + arg;
-    }
-    coreLog.details("Starting UGENE workflow: " + line);
-
-    proc->start(cmdlineUgenePath, args);
-#if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
-    QString processId = NULL != proc->pid() ? QString::number(proc->pid()->dwProcessId) : "unknown";
-    processLogPrefix = QString("process: %1>").arg(processId);
-#else
-    processLogPrefix = QString("process:%1>").arg(proc->pid());
-#endif
-    bool startedSuccessfully = proc->waitForStarted();
-    CHECK_EXT(startedSuccessfully, setError(tr("Cannot start process '%1'").arg(cmdlineUgenePath)), );
-}
-
-void RunCmdlineWorkflowTask::sl_onError(QProcess::ProcessError err) {
-    QString msg;
-    switch(err) {
-    case QProcess::FailedToStart:
-        msg = tr("The process '%1' failed to start. Either the invoked program is missing, "
-            "or you may have insufficient permissions to invoke the program").arg(WorkflowSettings::getCmdlineUgenePath());
-        break;
-    case QProcess::Crashed:
-        msg = tr("The process '%1' crashed some time after starting successfully").arg(WorkflowSettings::getCmdlineUgenePath());
-        break;
-    case QProcess::WriteError:
-    case QProcess::ReadError:
-        msg = tr("Error occurred while reading from or writing to channel");
-        break;
-    default:
-        msg = tr("Unknown error occurred");
-    }
-    setError(msg);
-}
-
-/**
- * Returns the position of the last symbol of @nameCandidate in the @line.
- * Or returns -1 if the @line is not a log line
- */
-inline static int getLogNameCandidate(const QString &line, QString &nameCandidate) {
-    if ("" == line) {
-        return -1;
-    }
-
-    if (!line.startsWith("[")) {
-        return -1;
-    }
-
-    // maybe, @line is "[time][loglevel] log"
-    int openPos = line.indexOf("[", 1); // 1 because it is needed to skip first [time] substring
-    if (-1 == openPos) {
-        return -1;
-    }
-    int closePos = line.indexOf("]", openPos);
-    if (-1 == closePos) {
-        return -1;
-    }
-    nameCandidate = line.mid(openPos+1, closePos - openPos - 1);
-    return closePos;
-}
-
-void RunCmdlineWorkflowTask::writeLog(QStringList &lines) {
-    QStringList::Iterator it = lines.begin();
-    for (; it != lines.end(); it++) {
-        QString &line = *it;
-        line = line.trimmed();
-        QString nameCandidate;
-        int closePos = getLogNameCandidate(line, nameCandidate);
-        if (-1 == closePos) {
-            continue;
-        }
-
-
-        for (int i = conf.logLevel2Commute; i < LogLevel_NumLevels; i++) {
-            QString logLevelName = getLogLevelName((LogLevel)i);
-
-            if (logLevelName != nameCandidate) {
-                continue;
-            }
-
-            QString logLine = line.mid(closePos + 1);
-            logLine = logLine.trimmed();
-            bool commandToken = logLine.startsWith(OUTPUT_PROGRESS_TAG)
-                || logLine.startsWith(ERROR_KEYWORD)
-                || logLine.startsWith(STATE_KEYWORD)
-                || logLine.startsWith(MSG_NUM_KEYWORD)
-                || logLine.startsWith(MSG_PASSED_KEYWORD);
-
-            if (commandToken)  {
-                continue;
-            }
-            taskLog.message((LogLevel)i, processLogPrefix + logLine);
-        }
-    }
-}
-
-QString RunCmdlineWorkflowTask::readStdout() {
-    QByteArray charSet;
-#ifdef Q_OS_WIN32
-    charSet = "CP866";
-#else
-    charSet = "UTF-8";
-#endif
-    QTextCodec *codec = QTextCodec::codecForName(charSet);
-    return codec->toUnicode(proc->readAllStandardOutput());
-}
-
-void RunCmdlineWorkflowTask::sl_onReadStandardOutput() {
-    QString data = readStdout();
-    QStringList lines = data.split(QChar('\n'));
-    writeLog(lines);
-
-    int errInd = data.indexOf(ERROR_KEYWORD);
-    if (errInd >= 0) {
-        int errIndEnd = data.indexOf(ERROR_KEYWORD, errInd + 1);
-        assert(errIndEnd > errInd);
-        if(errIndEnd > errInd) {
-            setError(data.mid(errInd + ERROR_KEYWORD.size(), errIndEnd - errInd - ERROR_KEYWORD.size()));
-        } else {
-            assert(false);
-            setError(data.mid(errInd + ERROR_KEYWORD.size() + 1));
-        }
-        return;
-    }
-
-    foreach (const QString &line, lines) {
-        QStringList words = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        int sz = words.size();
-        for(int i = 0; i < sz; ++i) {
-            QString &word = words[i];
-            if(word.startsWith(OUTPUT_PROGRESS_TAG)) {
-                QString numStr = word.mid(OUTPUT_PROGRESS_TAG.size());
-                bool ok = false;
-                int num = numStr.toInt(&ok);
-                if(ok && num >= 0) {
-                    stateInfo.progress = qMin(num, 100);
-                }
-                break;
-            } else if(word.startsWith(STATE_KEYWORD)) {
-                QStringList stWords = word.split(":");
-                if(stWords.size() == 3) {
-                    bool ok = false;
-                    int num = stWords[2].toInt(&ok);
-                    if(ok && num >= 0) {
-                        WorkerState st = (WorkerState)num;
-                        states[stWords[1]] = st;
-                    }
-                }
-                break;
-            } else if(word.startsWith(MSG_NUM_KEYWORD)) {
-                QStringList msgNumWords = word.split(":");
-                if(msgNumWords.size() == 4) {
-                    bool ok = false;
-                    int num = msgNumWords[3].toInt(&ok);
-                    if(ok && num >= 0) {
-                        msgNums[QString("%1:%2").arg(msgNumWords[1]).arg(msgNumWords[2])] = num;
-                    }
-                }
-                break;
-            } else if(word.startsWith(MSG_PASSED_KEYWORD)) {
-                QStringList msgPassedWords = word.split(":");
-                if(msgPassedWords.size() == 4) {
-                    bool ok = false;
-                    int num = msgPassedWords[3].toInt(&ok);
-                    if(ok && num >= 0) {
-                        msgPassed[QString("%1:%2").arg(msgPassedWords[1]).arg(msgPassedWords[2])] = num;
-                    }
-                }
-                break;
-            }
-        }
-    }
-    emit si_logRead();
-}
-
-Task::ReportResult RunCmdlineWorkflowTask::report() {
-    assert(proc != NULL);
-    if (hasError()) {
-        return ReportResult_Finished;
-    }
-    if (isCanceled()) {
-        proc->kill();
-        return ReportResult_Finished;
-    }
-    QProcess::ProcessState st = proc->state();
-    if (st == QProcess::Running) {
-        return ReportResult_CallMeAgain;
-    }
-    return ReportResult_Finished;
-}
-
-WorkerState RunCmdlineWorkflowTask::getState(const ActorId& id) {
-    return states.value(id, WorkerWaiting);
-}
-
-int RunCmdlineWorkflowTask::getMsgNum(const QString & ids) {
-    return msgNums.value(ids, 0);
-}
-
-int RunCmdlineWorkflowTask::getMsgPassed(const QString & ids) {
-    return msgPassed.value(ids, 0);
-}
-
-QStringList RunCmdlineWorkflowTask::getActorLinks(const ActorId &id) {
-    QStringList result;
-    foreach (const QString &ids, msgNums.keys()) {
-        QStringList link = ids.split(":");
-        if (2 != link.size()) {
-            continue;
-        }
-        if (link[0] == id) {
-            result << ids;
-        }
-    }
-    return result;
 }
 
 }//namespace

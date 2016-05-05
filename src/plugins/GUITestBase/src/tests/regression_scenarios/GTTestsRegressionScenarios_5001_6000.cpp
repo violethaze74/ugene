@@ -64,6 +64,7 @@
 #include <runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h>
 #include <runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h>
 #include <runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h>
+#include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include <runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
@@ -478,6 +479,107 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5208) {
+    //    1. Open the library, clear it.
+    GTUtilsPrimerLibrary::openLibrary(os);
+    GTUtilsPrimerLibrary::clearLibrary(os);
+
+    //    2. Click "Import".
+    //    3. Fill the dialog:
+    //        Import from: "Local file(s)";
+    //        Files: "_common_data/fasta/random_primers.fa"
+    //    and accept the dialog.
+    class ImportFromMultifasta : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
+            ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, new ImportFromMultifasta));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Import);
+
+    //    4. Check log.
+    //    Expected state: the library contains four primers, log contains no errors.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5227) {
+    GTUtilsPcr::clearPcrDir(os);
+
+    //1. Open "samples/Genbank/CVU55762.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "CVU55762.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the PCR OP.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
+
+    //3. Set next parameters:
+    // the first primer : TTCTGGATTCA
+    // the first primer mismatches : 15
+    // the second primer : CGGGTAG
+    // the second primer mismatches : 12
+    // 3' perfect match: 10
+    // Maximum product : 100 bp
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "TTCTGGATTCA");
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CGGGTAG");
+
+    GTUtilsPcr::setMismatches(os, U2Strand::Direct, 15);
+    GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 12);
+
+    QSpinBox *perfectSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
+    GTSpinBox::setValue(os, perfectSpinBox, 10, GTGlobals::UseKeyBoard);
+
+    QSpinBox *productSizeSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "productSizeSpinBox"));
+    GTSpinBox::setValue(os, productSizeSpinBox, 100, GTGlobals::UseKeyBoard);
+
+    //4. Find products
+    //Expected state: log shouldn't contain errors
+    GTLogTracer lt;
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5268) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+
+//    2. Create a custom color scheme for the alignment with aan ppropriate alphabet.
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+
+//    3. Open "Highlighting" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+
+//    4. Select the custom color scheme.
+    GTUtilsOptionPanelMsa::setColorScheme(os, "test_5268");
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+//    5. Open {Settings -> Preferences -> Alignment Color Scheme}.
+//    6. Change color of the custom color scheme and click ok.
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+
+    GTGlobals::sleep(500);
+
+//    Expected state: the settings dialog closed, new colors are applied for the opened MSA.
+    const QString opColorScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
+    CHECK_SET_ERR(opColorScheme == "test_5268",
+                  QString("An incorrect color scheme is set in option panel: expect '%1', got '%2'")
+                  .arg("test_5268").arg(opColorScheme));
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    GTGlobals::sleep(500);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5278) {
     //1. Open file PBR322.gb from samples
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "PBR322.gb");
@@ -486,7 +588,7 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AaaI" << "AagI"));
     GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     GTUtilsNotifications::waitForNotification(os, false);
     //3. Open report and be sure fragments sorted by length (longest first)
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));

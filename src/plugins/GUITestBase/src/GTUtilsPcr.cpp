@@ -43,7 +43,7 @@ void GTUtilsPcr::setPrimer(HI::GUITestOpStatus &os, U2Strand::Direction directio
 
 void GTUtilsPcr::setMismatches(HI::GUITestOpStatus &os, U2Strand::Direction direction, int mismatches) {
     QSpinBox *mismatchesSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "mismatchesSpinBox", primerBox(os, direction)));
-    GTSpinBox::setValue(os, mismatchesSpinBox, mismatches);
+    GTSpinBox::setValue(os, mismatchesSpinBox, mismatches, GTGlobals::UseKeyBoard);
 }
 
 void GTUtilsPcr::setPerfectMatch(HI::GUITestOpStatus &os, int number) {

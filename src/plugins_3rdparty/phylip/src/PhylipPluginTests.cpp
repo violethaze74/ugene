@@ -140,6 +140,10 @@ void GTest_NeighborJoin::prepare() {
 Task::ReportResult GTest_NeighborJoin::report() {
     if (!task->hasError()) {
         const PhyTree computedTree = task->getResult();
+        if (NULL == computedTree) {
+            stateInfo.setError("Result tree is NULL");
+            return ReportResult_Finished;
+        }
         const PhyTree& treeFromDoc = treeObjFromDoc->getTree(); 
         bool same = PhyTreeObject::treesAreAlike(computedTree, treeFromDoc);
         if(!same){

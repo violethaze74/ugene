@@ -21,6 +21,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
@@ -105,13 +106,16 @@ QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
         conf.extraArgs << "--in=" + inputTmpFile.fileName();
         conf.extraArgs << "--out=" + resultTmpFile.fileName();
         conf.extraArgs << "--format=" + conf.outFormat;
-        RunCmdlineWorkflowTaskConfig monitorConf(schemaPath, conf.extraArgs);
+
+        CmdlineTaskConfig monitorConf;
+        monitorConf.command = "--task=" + schemaPath;
+        monitorConf.arguments = conf.extraArgs;
 #ifdef _DEBUG
-        monitorConf.logLevel2Commute = LogLevel_TRACE;
+        monitorConf.logLevel = LogLevel_TRACE;
 #else
-        monitorConf.logLevel2Commute = LogLevel_DETAILS;
+        monitorConf.logLevel = LogLevel_DETAILS;
 #endif
-        runWorkflowTask = new RunCmdlineWorkflowTask(monitorConf);
+        runWorkflowTask = new CmdlineTaskRunner(monitorConf);
         res << runWorkflowTask;
     } else if (subTask == runWorkflowTask) {
         if (0 == QFileInfo(resultTmpFile.fileName()).size()) {

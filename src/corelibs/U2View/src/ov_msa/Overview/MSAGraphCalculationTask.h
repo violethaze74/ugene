@@ -36,8 +36,8 @@ namespace U2 {
 class MSAEditor;
 class MAlignmentObject;
 class MSAConsensusAlgorithm;
-class MSAColorScheme;
-class MSAHighlightingScheme;
+class MsaColorScheme;
+class MsaHighlightingScheme;
 
 class MSAGraphCalculationTask : public BackgroundTask<QPolygonF> {
     Q_OBJECT
@@ -100,8 +100,8 @@ public:
                                            int width, int height);
 
     static bool isCellHighlighted(const MAlignment &msa,
-                                  MSAHighlightingScheme* highlightingScheme,
-                                  MSAColorScheme* colorScheme,
+                                  MsaHighlightingScheme* highlightingScheme,
+                                  MsaColorScheme* colorScheme,
                                   int seq, int pos,
                                   int refSeq);
 
@@ -115,8 +115,8 @@ private:
 
     int refSequenceId;
 
-    MSAColorScheme*         colorScheme;
-    MSAHighlightingScheme*  highlightingScheme;
+    MsaColorScheme*         colorScheme;
+    MsaHighlightingScheme*  highlightingScheme;
     QString                 schemeId;
 };
 
