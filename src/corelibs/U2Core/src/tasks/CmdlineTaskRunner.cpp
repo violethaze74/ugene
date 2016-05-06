@@ -151,6 +151,14 @@ Task::ReportResult CmdlineTaskRunner::report() {
     return ReportResult_Finished;
 }
 
+bool CmdlineTaskRunner::isCommandLogLine(const QString &/*logLine*/) const {
+    return false;
+}
+
+bool CmdlineTaskRunner::parseCommandLogWord(const QString &/*logWord*/) {
+    return false;
+}
+
 void CmdlineTaskRunner::writeLog(QStringList &lines) {
     QStringList::Iterator it = lines.begin();
     for (; it != lines.end(); it++) {
@@ -170,7 +178,7 @@ void CmdlineTaskRunner::writeLog(QStringList &lines) {
 
             QString logLine = line.mid(closePos + 1);
             logLine = logLine.trimmed();
-            bool commandToken = logLine.startsWith(OUTPUT_PROGRESS_TAG) || logLine.startsWith(ERROR_KEYWORD);
+            bool commandToken = logLine.startsWith(OUTPUT_PROGRESS_TAG) || logLine.startsWith(ERROR_KEYWORD) || isCommandLogLine(logLine);
             if (commandToken)  {
                 continue;
             }
@@ -237,6 +245,8 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
                 if (ok && num >= 0) {
                     stateInfo.progress = qMin(num, 100);
                 }
+                break;
+            } else if (parseCommandLogWord(word)) {
                 break;
             }
         }

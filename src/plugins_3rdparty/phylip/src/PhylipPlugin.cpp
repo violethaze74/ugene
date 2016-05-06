@@ -19,42 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#include "PhylipPlugin.h"
-
+#include <QDialog>
+#include <QMenu>
+#include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineRegistry.h>
-#include <U2Core/Task.h>
-#include <U2Core/TaskStarter.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/GObjectTypes.h>
-
+#include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Gui/GUIUtils.h>
-#include <U2Gui/DialogUtils.h>
-
+#include <U2Core/TaskStarter.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Test/XMLTestFormat.h>
-#include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialog>
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QMenu>
-#endif
-
 #include "PhylipPluginTests.h"
 #include "PhylipCmdlineTask.h"
 #include "PhylipTask.h"
 #include "NeighborJoinAdapter.h"
-#include <U2Algorithm/PhyTreeGeneratorRegistry.h>
+
+#include "PhylipPlugin.h"
 
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-	PhylipPlugin * plug = new PhylipPlugin();
-	return plug;
+    PhylipPlugin *plug = new PhylipPlugin();
+    return plug;
 }
 
 const QString PhylipPlugin::PHYLIP_NEIGHBOUR_JOIN("PHYLIP Neighbor Joining");
@@ -121,14 +108,24 @@ namespace {
 void PhylipPlugin::processCmdlineOptions() {
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
     CHECK(cmdLineRegistry->hasParameter(PhylipCmdlineTask::PHYLIP_CMDLINE), );
-    CHECK(cmdLineRegistry->hasParameter(PhylipCmdlineTask::MSA_ARG), );
-    CHECK(cmdLineRegistry->hasParameter(PhylipCmdlineTask::TREE_ARG), );
+    CHECK(cmdLineRegistry->hasParameter(CmdlineInOutTaskRunner::OUT_DB_ARG), );
+    CHECK(cmdLineRegistry->hasParameter(CmdlineInOutTaskRunner::IN_DB_ARG), );
+    CHECK(cmdLineRegistry->hasParameter(CmdlineInOutTaskRunner::IN_ID_ARG), );
 
-    QString msaUrl = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::MSA_ARG);
-    QString treeUrl = cmdLineRegistry->getParameterValue(PhylipCmdlineTask::TREE_ARG);
     CreatePhyTreeSettings settings = fetchSettings();
+    QString outDbString = cmdLineRegistry->getParameterValue(CmdlineInOutTaskRunner::OUT_DB_ARG);
+    QString inDbString = cmdLineRegistry->getParameterValue(CmdlineInOutTaskRunner::IN_DB_ARG);
+    QString idString = cmdLineRegistry->getParameterValue(CmdlineInOutTaskRunner::IN_ID_ARG);
 
-    Task *t = new PhylipTask(msaUrl, treeUrl, settings);
+    U2OpStatus2Log os;
+    U2DbiRef outDbiRef = CmdlineInOutTaskRunner::parseDbiRef(outDbString, os);
+    CHECK_OP(os, );
+    U2DbiRef inDbiRef = CmdlineInOutTaskRunner::parseDbiRef(inDbString, os);
+    CHECK_OP(os, );
+    U2DataId dataId = CmdlineInOutTaskRunner::parseDataId(idString, inDbiRef, os);
+    CHECK_OP(os, );
+
+    Task *t = new PhylipTask(U2EntityRef(inDbiRef, dataId), outDbiRef, settings);
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), new TaskStarter(t), SLOT(registerTask()));
 }
 

@@ -24,32 +24,28 @@
 
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 #include <U2Core/CmdlineTaskRunner.h>
+#include <U2Core/U2Type.h>
 
 namespace U2 {
 
-class LoadDocumentTask;
-class MAlignmentObject;
 class NeighborJoinCalculateTreeTask;
 
 class PhylipTask : public CmdlineTask {
     Q_OBJECT
 public:
-    PhylipTask(const QString &msaUrl, const QString &treeUrl, const CreatePhyTreeSettings &settings);
+    PhylipTask(const U2EntityRef &msaRef, const U2DbiRef &outDbiRef, const CreatePhyTreeSettings &settings);
 
     void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
     ReportResult report();
 
 private:
-    MAlignmentObject * getLoadedAlignment();
-    Task * createSaveTreeTask();
+    U2DataId saveTree();
 
 private:
-    QString msaUrl;
-    QString treeUrl;
+    U2EntityRef msaRef;
+    U2DbiRef outDbiRef;
     CreatePhyTreeSettings settings;
 
-    LoadDocumentTask *loadTask;
     NeighborJoinCalculateTreeTask *treeTask;
 };
 

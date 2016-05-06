@@ -19,22 +19,23 @@
 * MA 02110-1301, USA.
 */
 
+#include <QFile>
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/CmdlineInOutTaskRunner.h>
-#include <U2Core/DocumentModel.h>
+#include <U2Core/DeleteObjectsTask.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/MAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2DbiRegistry.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include "PhylipCmdlineTask.h"
 
 namespace U2 {
 
 const QString PhylipCmdlineTask::PHYLIP_CMDLINE = "phylip";
-const QString PhylipCmdlineTask::MSA_ARG = "in";
-const QString PhylipCmdlineTask::TREE_ARG = "out";
 const QString PhylipCmdlineTask::MATRIX_ARG = "matrix";
 const QString PhylipCmdlineTask::GAMMA_ARG = "gamma";
 const QString PhylipCmdlineTask::ALPHA_ARG = "alpha-factor";
@@ -46,13 +47,21 @@ const QString PhylipCmdlineTask::FRACTION_ARG = "fraction";
 const QString PhylipCmdlineTask::CONSENSUS_ARG = "consensus";
 
 PhylipCmdlineTask::PhylipCmdlineTask(const MAlignment &msa, const CreatePhyTreeSettings &settings)
-: PhyTreeGeneratorTask(msa, settings), cmdlineTask(NULL), msaObject(NULL)
+: PhyTreeGeneratorTask(msa, settings), cmdlineTask(NULL), msaObject(NULL), treeObject(NULL)
 {
     setTaskName(tr("PHYLIP command line wrapper task"));
     tpm = Progress_SubTasksBased;
 }
 
+PhylipCmdlineTask::~PhylipCmdlineTask() {
+    if (!dbiPath.isEmpty()) {
+        QFile::remove(dbiPath);
+    }
+}
+
 void PhylipCmdlineTask::prepare() {
+    prepareTempDbi();
+    CHECK_OP(stateInfo, );
     createCmdlineTask();
     CHECK_OP(stateInfo, );
     addSubTask(cmdlineTask);
@@ -60,30 +69,26 @@ void PhylipCmdlineTask::prepare() {
 
 Task::ReportResult PhylipCmdlineTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
-    Document *doc = cmdlineTask->getDocument();
-    if (NULL == doc) {
-        setError(tr("Can't read the result file."));
-        return ReportResult_Finished;
-    }
-    QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
+    QList<U2DataId> objects = cmdlineTask->getOutputObjects();
     if (objects.isEmpty()) {
         setError(tr("No tree objects found."));
         return ReportResult_Finished;
     }
-    PhyTreeObject *treeObject = qobject_cast<PhyTreeObject*>(objects.first());
+    CHECK_OP(stateInfo, ReportResult_Finished);
+    treeObject = new PhyTreeObject("tree", U2EntityRef(dbiRef, objects.first()));
+    treeObject->setParent(this);
     result = treeObject->getTree();
     return ReportResult_Finished;
 }
 
 void PhylipCmdlineTask::createCmdlineTask() {
     CmdlineInOutTaskConfig config;
-    U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
     CHECK_OP(stateInfo, );
     msaObject = MAlignmentImporter::createAlignment(dbiRef, const_cast<MAlignment&>(inputMA), stateInfo);
     CHECK_OP(stateInfo, );
+    msaObject->setParent(this);
     config.inputObjects << msaObject;
-    config.inputFormat = BaseDocumentFormats::CLUSTAL_ALN;
-    config.outputFormat = BaseDocumentFormats::NEWICK;
+    config.outDbiRef = dbiRef;
     config.withPluginList = true;
     config.pluginList << PLUGIN_ID;
     config.command = "--" + PHYLIP_CMDLINE;
@@ -99,6 +104,17 @@ void PhylipCmdlineTask::createCmdlineTask() {
     config.arguments << argString.arg(CONSENSUS_ARG).arg(settings.consensusID);
 
     cmdlineTask = new CmdlineInOutTaskRunner(config);
+}
+
+void PhylipCmdlineTask::prepareTempDbi() {
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    dbiPath = GUrlUtils::prepareTmpFileLocation(tmpDirPath, "phylip", "ugenedb", stateInfo);
+    CHECK_OP(stateInfo, );
+
+    dbiRef = U2DbiRef(DEFAULT_DBI_ID, dbiPath);
+    QHash<QString, QString> properties;
+    properties[U2DbiOptions::U2_DBI_LOCKING_MODE] = "normal";
+    DbiConnection(dbiRef, true, stateInfo, properties);
 }
 
 } // U2

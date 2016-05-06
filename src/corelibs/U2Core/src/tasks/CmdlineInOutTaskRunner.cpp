@@ -19,89 +19,110 @@
 * MA 02110-1301, USA.
 */
 
-#include <QDir>
-#include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/CmdlineTaskRunner.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/LoadDocumentTask.h>
-#include <U2Core/SaveDocumentTask.h>
+#include <U2Core/DbiConnection.h>
+#include <U2Core/GObject.h>
+#include <U2Core/U2DbiUtils.h>
+#include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "CmdlineInOutTaskRunner.h"
 
 namespace U2 {
 
+const QString CmdlineInOutTaskRunner::IN_DB_ARG = "input-db";
+const QString CmdlineInOutTaskRunner::IN_ID_ARG = "input-id";
+const QString CmdlineInOutTaskRunner::OUT_DB_ARG = "output-db";
+
 CmdlineInOutTaskConfig::CmdlineInOutTaskConfig()
-: emptyOutputPossible(true), withPluginList(false)
+: CmdlineTaskConfig(), emptyOutputPossible(true)
 {
+}
+
+namespace {
+    CmdlineTaskConfig prepareConfig(const CmdlineInOutTaskConfig &config) {
+        CmdlineTaskConfig result = config;
+
+        QStringList dbList;
+        QStringList idList;
+        foreach (GObject *object, config.inputObjects) {
+            U2EntityRef entityRef = object->getEntityRef();
+            dbList << CmdlineInOutTaskRunner::toString(entityRef.dbiRef);
+            idList << QString::number(U2DbiUtils::toDbiId(entityRef.entityId));
+        }
+
+        QString argString = "--%1=\"%2\"";
+        result.arguments << argString.arg(CmdlineInOutTaskRunner::IN_DB_ARG).arg(dbList.join(";"));
+        result.arguments << argString.arg(CmdlineInOutTaskRunner::IN_ID_ARG).arg(idList.join(";"));
+        result.arguments << argString.arg(CmdlineInOutTaskRunner::OUT_DB_ARG).arg(CmdlineInOutTaskRunner::toString(config.outDbiRef));
+        return result;
+    }
 }
 
 CmdlineInOutTaskRunner::CmdlineInOutTaskRunner(const CmdlineInOutTaskConfig &config)
-: DocumentProviderTask(tr("Run input/output UGENE command line: %1").arg(config.command), TaskFlags_NR_FOSE_COSC),
-config(config), inputDoc(NULL), saveTask(NULL), cmdlineTask(NULL), loadTask(NULL)
+: CmdlineTaskRunner(prepareConfig(config)), config(config)
 {
-    inputDoc = new Document(BaseDocumentFormats::get(config.inputFormat), IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE),
-        GUrl("unused"), U2DbiRef(), config.inputObjects, config.inputDocHints);
-    inputDoc->setParent(this);
 }
 
-void CmdlineInOutTaskRunner::prepare() {
-    prepareTmpFile(config.inputFormat, inputTmpFile);
-    CHECK_OP(stateInfo, );
-    prepareTmpFile(config.outputFormat, outputTmpFile);
-    CHECK_OP(stateInfo, );
+Task::ReportResult CmdlineInOutTaskRunner::report() {
+    ReportResult result = CmdlineTaskRunner::report();
+    CHECK_OP(stateInfo, result);
 
-    saveTask = new SaveDocumentTask(inputDoc, IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), inputTmpFile.fileName());
-    saveTask->setSubtaskProgressWeight(0.1f);
-    addSubTask(saveTask);
-}
-
-QList<Task*> CmdlineInOutTaskRunner::onSubTaskFinished(Task *subTask) {
-    QList<Task*> result;
-
-    if (subTask == saveTask) {
-        config.arguments << "--in=" + inputTmpFile.fileName();
-        config.arguments << "--out=" + outputTmpFile.fileName();
-
-        CmdlineTaskConfig cmdlineConfig;
-        cmdlineConfig.command = config.command;
-        cmdlineConfig.arguments = config.arguments;
-        cmdlineConfig.withPluginList = config.withPluginList;
-        cmdlineConfig.pluginList = config.pluginList;
-        cmdlineTask = new CmdlineTaskRunner(cmdlineConfig);
-        cmdlineTask->setSubtaskProgressWeight(0.85f);
-        result << cmdlineTask;
-    } else if (subTask == cmdlineTask) {
-        if (0 == QFileInfo(outputTmpFile.fileName()).size()) {
-            if (!config.emptyOutputPossible) {
-                setError(tr("An error occurred during the task. See the log for details."));
-            }
-            return result;
+    if (ReportResult_Finished == result) {
+        if (outputObjects.isEmpty() && !config.emptyOutputPossible) {
+            setError(tr("An error occurred during the task. See the log for details."));
         }
-        IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-        ioLog.details(tr("Loading result file '%1'").arg(outputTmpFile.fileName()));
-        loadTask = new LoadDocumentTask(config.outputFormat, outputTmpFile.fileName(), iof, config.outputDocHints);
-        loadTask->setSubtaskProgressWeight(0.05f);
-        result << loadTask;
-    } else if (subTask == loadTask) {
-        resultDocument = loadTask->takeDocument();
     }
-
     return result;
 }
 
-void CmdlineInOutTaskRunner::prepareTmpFile(const QString &format, QTemporaryFile &tmpFile) {
-    tmpFile.setFileTemplate(QString("%1/XXXXXX.%2").arg(QDir::tempPath()).arg(format));
-    if (!tmpFile.open()) {
-        setError(tr("Cannot create temporary file for writing."));
-        return;
+const QList<U2DataId> & CmdlineInOutTaskRunner::getOutputObjects() const {
+    return outputObjects;
+}
+
+QString CmdlineInOutTaskRunner::toString(const U2DbiRef &dbiRef) {
+    return dbiRef.dbiFactoryId + ">" + dbiRef.dbiId;
+}
+
+U2DbiRef CmdlineInOutTaskRunner::parseDbiRef(const QString &string, U2OpStatus &os) {
+    QStringList dbTokens = string.split(">");
+    if (1 == dbTokens.size()) {
+        return U2DbiRef(DEFAULT_DBI_ID, string);
     }
-#ifdef _DEBUG
-    tmpFile.setAutoRemove(false);
-#endif
-    tmpFile.close();
+    if (2 != dbTokens.size()) {
+        os.setError(tr("Wrong database string: ") + string);
+        return U2DbiRef();
+    }
+    return U2DbiRef(dbTokens[0], dbTokens[1]);
+}
+
+U2DataId CmdlineInOutTaskRunner::parseDataId(const QString &string, const U2DbiRef &dbiRef, U2OpStatus &os) {
+    DbiConnection con(dbiRef, os);
+    CHECK_OP(os, U2DataId());
+    return con.dbi->getObjectDbi()->getObject(string.toLongLong(), os);
+}
+
+namespace {
+    const QString OUTPUT_OBJECT_TAG = "ugene-output-object-id=";
+}
+
+void CmdlineInOutTaskRunner::logOutputObject(const U2DataId &id) {
+    coreLog.info(OUTPUT_OBJECT_TAG + QString::number(U2DbiUtils::toDbiId(id)));
+}
+
+bool CmdlineInOutTaskRunner::isCommandLogLine(const QString &logLine) const {
+    return logLine.startsWith(OUTPUT_OBJECT_TAG);
+}
+
+bool CmdlineInOutTaskRunner::parseCommandLogWord(const QString &logWord) {
+    if (logWord.startsWith(OUTPUT_OBJECT_TAG)) {
+        QString idString = logWord.mid(OUTPUT_OBJECT_TAG.size());
+        U2DataId objectId = parseDataId(idString, config.outDbiRef, stateInfo);
+        CHECK_OP(stateInfo, true);
+        outputObjects << objectId;
+        return true;
+    }
+    return false;
 }
 
 } // U2
