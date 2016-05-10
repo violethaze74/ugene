@@ -22,6 +22,7 @@
 #include "WorkflowSettings.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CMDLineUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -252,43 +253,10 @@ void WorkflowSettings::setScriptingMode(bool md) {
     AppContext::getSettings()->setValue(SCRIPT_MODE, md);
 }
 
-static QStringList generateCandidatesWithExt(const QString & path) {
-    QStringList res;
-    res << path;
-    res << path + ".exe";
-    return res;
-}
-
-static QStringList generateCandidates(const QString & prefix) {
-    QStringList res;
-    res << generateCandidatesWithExt(prefix + "/" + "ugene");
-    res << generateCandidatesWithExt(prefix + "/" + "ugened");
-    res << generateCandidatesWithExt(prefix + "/" + "ugenecl");
-    res << generateCandidatesWithExt(prefix + "/" + "ugenecld");
-    return res;
-}
-
-static QString lookupCmdlineUgenePath() {
-    QString executableDir = AppContext::getWorkingDirectoryPath();
-    QStringList candidates(generateCandidates(executableDir));
-    foreach(const QString & candidate, candidates) {
-        if(QFile::exists(candidate)) {
-            return candidate;
-        }
-    }
-    return QString();
-}
-
-static bool lookupDone = false;
-
 QString WorkflowSettings::getCmdlineUgenePath() {
-    if (lookupDone) {
-        return QString();
-    }
-    QString path = lookupCmdlineUgenePath();
+    QString path = CMDLineRegistryUtils::getCmdlineUgenePath();
     if (path.isEmpty()) {
         coreLog.info(tr("Command line UGENE path not found, a possibility to run in separate process will be disabled"));
-        return QString();
     }
     return path;
 }

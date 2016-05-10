@@ -20,35 +20,27 @@
  */
 
 #include <QApplication>
-#include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QMainWindow>
-#else
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QMainWindow>
-#endif
+#include <QGraphicsItem>
+#include <QMainWindow>
 
-#include "GTTestsOptionPanelMSA.h"
-
-#include "primitives/GTAction.h"
-#include "api/GTBaseCompleter.h"
-#include <primitives/GTComboBox.h>
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTDoubleSpinBox.h>
-#include "system/GTFile.h"
+#include <base_dialogs/ColorDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTDoubleSpinBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <system/GTFile.h>
 
-#include <base_dialogs/MessageBoxFiller.h>
-#include <base_dialogs/ColorDialogFiller.h>
-#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
-#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
+#include <U2Core/AppContext.h>
 
+#include "GTTestsOptionPanelMSA.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -56,8 +48,9 @@
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-
-#include <U2Core/AppContext.h>
+#include "api/GTBaseCompleter.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 
 namespace U2{
 
@@ -837,22 +830,30 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006){
 //    1. Open file test/_common_data/alphabets/extended_amino.aln
     GTFileDialog::openFile(os, testDir + "_common_data/alphabets", "extended_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Create custom color scheme
     const QString scheme = getName() + "_scheme";
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::amino);
+
 //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+
 //    4. Select custom scheme
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     GTComboBox::setIndexWithText(os, colorScheme, scheme);
+
 //    5. Delete scheme which is selected
     GTUtilsMSAEditorSequenceArea::deleteColorScheme(os, scheme);
     GTGlobals::sleep(500);
-//    UGENE not crashess
-    for(int i = 0; i<29; i++){
-        GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(i,0), "#ffffff");
-    }
 
+//    UGENE doesn't crash
+    const QString currentScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
+    CHECK_SET_ERR(currentScheme == "UGENE", QString("An unexpected color scheme is set: expect '%1', got '%2'")
+            .arg("UGENE").arg(currentScheme));
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "UGENE", PopupChecker::IsChecked));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTGlobals::sleep(500);
 }
 
 namespace {
@@ -947,27 +948,33 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0009_1){
 //    1. Open file test/_common_data/scenarios/msa/ty3.aln.gz
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+
 //    3. Select Phaneroptera_falcata as reference.
     GTUtilsOptionPanelMsa::addReference(os, "CfT-1_Cladosporium_fulvum");
+
 //    4. Check Disagreements highlighting type
     setHighlightingType(os, "Disagreements");
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,1), "#ffffff");
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7,1), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 1), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(7, 1), "#ffffff");
 }
 
-GUI_TEST_CLASS_DEFINITION(highlighting_test_0010){
+GUI_TEST_CLASS_DEFINITION(highlighting_test_0010) {
 //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+
 //    3. Select Phaneroptera_falcata as reference.
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
+
 //    4. Check Gaps highlighting type
     setHighlightingType(os, "Gaps");
-    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4,2), "#c0c0c0");
+    GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(4, 2), "#c0c0c0");
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0010_1){
@@ -1585,11 +1592,12 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005){
 //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QCheckBox* showNamesCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "showNamesCheck"));
     CHECK_SET_ERR(showNamesCheck != NULL, "showNamesCheck not found");
@@ -1605,32 +1613,41 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005){
     QList<QGraphicsSimpleTextItem*> initDistanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
     int initNamesNumber =initNames.count();
     int initDistansesNumber = initDistanses.count();
+
 //    3. Uncheck "show names" checkbox.
     GTCheckBox::setChecked(os, showNamesCheck, false);
     GTGlobals::sleep(500);
+
 //    Expected state: names are not shown, align labels checkbox is disabled
     QList<QGraphicsSimpleTextItem*> names = GTUtilsPhyTree::getVisiableLabels(os, treeView);
     CHECK_SET_ERR(names.count() == 0, QString("unexpected number of names: %1").arg(names.count()));
     CHECK_SET_ERR(!alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectidly enabled");
+
 //    4. Check "show names" checkbox.
     GTCheckBox::setChecked(os, showNamesCheck, true);
     GTGlobals::sleep(500);
+
 //    Expected state: names are shown, align labels checkbox is enabled
     names = GTUtilsPhyTree::getVisiableLabels(os, treeView);
     CHECK_SET_ERR(names.count() == initNamesNumber, QString("unexpected number of names: %1").arg(names.count()));
     CHECK_SET_ERR(alignLabelsCheck->isEnabled(), "align labels checkbox is unexpectidly disabled");
+
 //    5. Uncheck "show distanses" checkbox.
     GTCheckBox::setChecked(os, showDistancesCheck, false);
     GTGlobals::sleep(500);
+
 //    Expected state: distanses are not shown
     QList<QGraphicsSimpleTextItem*> distanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
     CHECK_SET_ERR(distanses.count() == 0, QString("unexpected number of distanses: %1").arg(names.count()));
+
 //    6. Check "show distanses" checkbox.
     GTCheckBox::setChecked(os, showDistancesCheck, true);
     GTGlobals::sleep(500);
+
 //    Expected state: distanses are shown
     distanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);
     CHECK_SET_ERR(distanses.count() == initDistansesNumber, QString("unexpected number of distanses: %1").arg(names.count()));
+
 //    7. Check "align labels" checkbox.
     //saving init image
     GTCheckBox::setChecked(os, alignLabelsCheck, false);
@@ -1640,12 +1657,15 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005){
     QImage initImg = initPixmap.toImage();//initial state
 
     GTCheckBox::setChecked(os, alignLabelsCheck, true);
+
 //    Expected state: labels are aligned
     QPixmap alignedPixmap = QPixmap::grabWidget(w, w->rect());
     QImage alignedImg = alignedPixmap.toImage();//initial state
     CHECK_SET_ERR(alignedImg != initImg, "labels not aligned");
+
 //    8. Uncheck "align labels" checkbox.
     GTCheckBox::setChecked(os, alignLabelsCheck, false);
+
 //    Expected state: labels are not aligned
     QPixmap finalPixmap = QPixmap::grabWidget(w, w->rect());
     QImage finalImg = finalPixmap.toImage();//initial state
@@ -2310,7 +2330,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004){
 //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //set some values
     expandFontSettings(os);
@@ -2382,7 +2402,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1){
 //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //find widgets
     QCheckBox* showNamesCheck = GTWidget::findExactWidget<QCheckBox*>(os, "showNamesCheck");

@@ -8512,6 +8512,7 @@ GUI_TEST_CLASS_DEFINITION( test_1919 )
 GUI_TEST_CLASS_DEFINITION( test_1921 )
 {
 //    1. Click rapidly on the "Show/hide log" button several (20) times (or use the Alt+3 hotkey).
+    Q_UNUSED(os);
     GTGlobals::sleep(2000);
     for (int i = 0; i < 20; i++) {
         GTKeyboardDriver::keyClick( '3', Qt::AltModifier);

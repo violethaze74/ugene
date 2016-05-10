@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QFile>
 #include <U2Core/AppContext.h>
 #include "CMDLineUtils.h"
 #include "CMDLineCoreOptions.h"
@@ -83,6 +84,35 @@ QStringList CMDLineRegistryUtils::getPureValues( int startWithIdx ) {
         }
     }
     return res;
+}
+
+namespace {
+    QStringList generateCandidatesWithExt(const QString &path) {
+        QStringList res;
+        res << path;
+        res << path + ".exe";
+        return res;
+    }
+
+    QStringList generateCandidates(const QString &prefix) {
+        QStringList res;
+        res << generateCandidatesWithExt(prefix + "/" + "ugene");
+        res << generateCandidatesWithExt(prefix + "/" + "ugened");
+        res << generateCandidatesWithExt(prefix + "/" + "ugenecl");
+        res << generateCandidatesWithExt(prefix + "/" + "ugenecld");
+        return res;
+    }
+}
+
+QString CMDLineRegistryUtils::getCmdlineUgenePath() {
+    QString executableDir = AppContext::getWorkingDirectoryPath();
+    QStringList candidates(generateCandidates(executableDir));
+    foreach(const QString & candidate, candidates) {
+        if (QFile::exists(candidate)) {
+            return candidate;
+        }
+    }
+    return "";
 }
 
 void CMDLineRegistryUtils::setCMDLineParams( QList<StringPair> & to ) {

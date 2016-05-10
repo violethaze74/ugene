@@ -22,7 +22,8 @@
 #include <QMouseEvent>
 #include <QPainter>
 
-#include <U2Algorithm/MSAColorScheme.h>
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/Settings.h>
 
@@ -188,10 +189,10 @@ void MSAGraphOverview::sl_drawGraph() {
                                                                      width(), FIXED_HEIGHT);
         break;
     case Highlighting:
-        MSAHighlightingScheme* hScheme = sequenceArea->getCurrentHighlightingScheme();
+        MsaHighlightingScheme* hScheme = sequenceArea->getCurrentHighlightingScheme();
         QString hSchemeId = hScheme->getFactory()->getId();
 
-        MSAColorScheme* cScheme = sequenceArea->getCurrentColorScheme();
+        MsaColorScheme* cScheme = sequenceArea->getCurrentColorScheme();
         QString cSchemeId = cScheme->getFactory()->getId();
 
         graphCalculationTask = new MSAHighlightingOverviewCalculationTask(editor,

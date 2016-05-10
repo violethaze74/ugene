@@ -1263,8 +1263,8 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5208);
     REGISTER_TEST(GUITest_regression_scenarios::test_5246);
     REGISTER_TEST(GUITest_regression_scenarios::test_5227);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5268);
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
-
 
 //////////////////////////////////////////////////////////////////////////
 // Common scenarios/project/
@@ -2370,6 +2370,12 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_Assembly_browser::test_0026_1);
     REGISTER_TEST(GUITest_Assembly_browser::test_0026_2);
     REGISTER_TEST(GUITest_Assembly_browser::test_0026_3);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0027);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0028);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0029);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0030);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0031);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0032);
 
 /////////////////////////////////////////////////////////////////////////
 // Common scenarios/Assembling/bowtie2

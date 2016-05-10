@@ -54,7 +54,7 @@ private:
 class NewColorSchemeCreator: public Filler{
 public:
     enum alphabet{amino,nucl};
-    enum Action{Create, Delete};
+    enum Action{Create, Delete, Change};
     NewColorSchemeCreator(HI::GUITestOpStatus &_os, QString _schemeName, alphabet _al, Action _act = Create, bool cancel = false);
     NewColorSchemeCreator(HI::GUITestOpStatus &os, CustomScenario* c);
     virtual void commonScenario();

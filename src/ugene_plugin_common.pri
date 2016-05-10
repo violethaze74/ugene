@@ -24,6 +24,8 @@ LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2View -lU
     include (./ugene_plugin_descriptor.pri)
 }
 
+DEFINES += PLUGIN_ID=\\\"$${PLUGIN_ID}\\\"
+
 win32 {
     QMAKE_MSVC_PROJECT_NAME=plugin_$${PLUGIN_ID}
     LIBS += psapi.lib

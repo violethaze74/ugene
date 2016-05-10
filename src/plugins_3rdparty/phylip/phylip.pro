@@ -7,8 +7,10 @@ HEADERS += src/SeqBootAdapter.h \
            src/DistanceMatrix.h \
            src/NeighborJoinAdapter.h \
            src/NeighborJoinWidget.h \
+           src/PhylipCmdlineTask.h \
            src/PhylipPlugin.h \
            src/PhylipPluginTests.h \
+           src/PhylipTask.h \
            src/dist.h \
            src/dnadist.h \
            src/neighbor.h \
@@ -22,8 +24,10 @@ SOURCES += src/SeqBootAdapter.cpp \
            src/DistanceMatrix.cpp \
            src/NeighborJoinAdapter.cpp \
            src/NeighborJoinWidget.cpp \
+           src/PhylipCmdlineTask.cpp \
            src/PhylipPlugin.cpp \
            src/PhylipPluginTests.cpp \
+           src/PhylipTask.cpp \
            src/dist.cpp \
            src/dnadist.cpp \
            src/neighbor.cpp \

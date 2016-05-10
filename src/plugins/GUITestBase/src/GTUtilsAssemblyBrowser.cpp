@@ -20,6 +20,8 @@
  */
 
 #include <QtCore/QSharedPointer>
+#include <QApplication>
+#include <QScrollBar>
 
 #include <QtCore/qglobal.h>
 #if (QT_VERSION < 0x050000) //Qt 5
@@ -39,9 +41,12 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTGlobals.h"
 #include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include "primitives/PopupChooser.h"
+#include <utils/GTThread.h>
+
 
 namespace U2 {
 using namespace HI;
@@ -51,10 +56,16 @@ using namespace HI;
 #define GT_METHOD_NAME "getView"
 AssemblyBrowserUi *GTUtilsAssemblyBrowser::getView(HI::GUITestOpStatus& os, const QString &viewTitle) {
     Q_UNUSED(os);
+    AssemblyBrowserUi* view;
 
-    const QString objectName = "assembly_browser_" + viewTitle;
-    AssemblyBrowserUi* view = qobject_cast<AssemblyBrowserUi*>(GTWidget::findWidget(os, objectName));
-    GT_CHECK_RESULT(NULL != view, "Assembly browser wasn't found", NULL);
+    if(viewTitle.isEmpty()){
+        view = GTUtilsMdi::activeWindow(os)->findChild<AssemblyBrowserUi*>();
+        GT_CHECK_RESULT(NULL != view, "Active windows is not assembly browser", NULL);
+    }else {
+        const QString objectName = "assembly_browser_" + viewTitle;
+        view = qobject_cast<AssemblyBrowserUi*>(GTWidget::findWidget(os, objectName));
+        GT_CHECK_RESULT(NULL != view, "Assembly browser wasn't found", NULL);
+    }
 
     return view;
 }
@@ -163,8 +174,20 @@ bool GTUtilsAssemblyBrowser::isWelcomeScreenVisible(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "zoomIn"
-void GTUtilsAssemblyBrowser::zoomIn(HI::GUITestOpStatus &os) {
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Zoom in");
+void GTUtilsAssemblyBrowser::zoomIn(HI::GUITestOpStatus &os, Method method) {
+    switch (method) {
+    case Button:
+        GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Zoom in");
+        break;
+    case Hotkey:
+        if(!GTWidget::findWidget(os, "assembly_reads_area")->hasFocus()){
+            GTWidget::click(os, GTWidget::findWidget(os, "assembly_reads_area"));
+        }
+        GTKeyboardDriver::keyClick('+');
+        break;
+    default:
+        break;
+    }
 }
 #undef GT_METHOD_NAME
 
@@ -200,19 +223,33 @@ void GTUtilsAssemblyBrowser::zoomToMin(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "zoomToReads"
+void GTUtilsAssemblyBrowser::zoomToReads(GUITestOpStatus &os){
+    QWidget* coveredRegionsLabel = GTWidget::findWidget(os, "CoveredRegionsLabel");
+    GTWidget::click(os, coveredRegionsLabel, Qt::LeftButton, QPoint(coveredRegionsLabel->width()/2 - 100, 75));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "goToPosition"
-void GTUtilsAssemblyBrowser::goToPosition(HI::GUITestOpStatus &os, qint64 position) {
+void GTUtilsAssemblyBrowser::goToPosition(HI::GUITestOpStatus &os, qint64 position, Method method) {
     Q_UNUSED(os);
 
     QToolBar* toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(NULL != toolbar, "Can't find the toolbar");
 
-    QWidget* positionLineEdit = GTWidget::findWidget(os, "go_to_pos_line_edit", toolbar);
-    GT_CHECK(NULL != positionLineEdit, "Can't find the position line edit");
+    QLineEdit* positionLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "go_to_pos_line_edit", toolbar);
+    GTLineEdit::setText(os, positionLineEdit,QString::number(position));
 
-    GTWidget::click(os, positionLineEdit);
-    GTKeyboardDriver::keySequence(QString::number(position));
-    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+    switch (method) {
+    case Button:
+        GTWidget::click(os, GTWidget::findWidget(os, "Go!"));
+        break;
+    default:
+        GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        break;
+    }
+    GTGlobals::sleep(1000);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
@@ -261,6 +298,23 @@ void GTUtilsAssemblyBrowser::callExportCoverageDialog(HI::GUITestOpStatus &os, A
     callContextMenu(os, area);
 }
 #undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getScrollBar"
+QScrollBar* GTUtilsAssemblyBrowser::getScrollBar(GUITestOpStatus &os, Qt::Orientation orientation){
+    AssemblyBrowserUi* ui = GTUtilsMdi::activeWindow(os)->findChild<AssemblyBrowserUi*>();
+    GT_CHECK_RESULT(ui != NULL, "Assembly browser not found", NULL);
+
+    QList<QScrollBar*> scrollBars = ui->findChildren<QScrollBar*>();
+    foreach (QScrollBar* bar, scrollBars) {
+        if(bar->orientation() == orientation){
+            return bar;
+        }
+    }
+
+    GT_CHECK_RESULT(false, QString("Scrollbar with orientation %1 not found").arg(orientation), NULL);
+}
+#undef GT_METHOD_NAME
+
 
 #undef GT_CLASS_NAME
 

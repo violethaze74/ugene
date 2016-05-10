@@ -3259,7 +3259,7 @@ GUI_TEST_CLASS_DEFINITION(test_0969) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0970) {
-
+Q_UNUSED(os);
     // 1. Enable Auto Annotations. Open human_T1.fa
     // 2. Open context menu for the Auto annotation in annotation tree view
     // Expected state: "Disable 'annotation' highlighting" item not presents in menu

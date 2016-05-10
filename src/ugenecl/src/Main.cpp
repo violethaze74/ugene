@@ -340,7 +340,7 @@ int main(int argc, char **argv)
     DNAAlphabetRegistry* dal = new DNAAlphabetRegistryImpl(dtr);
     appContext->setDNAAlphabetRegistry(dal);
 
-    // unlike ugene's main.cpp we don't create ScriptManagerView, MSAColorSchemeRegistry
+    // unlike ugene's main.cpp we don't create ScriptManagerView, MsaColorSchemeRegistry
     DBXRefRegistry *dbxrr = new DBXRefRegistry();
     appContext->setDBXRefRegistry(dbxrr);
 
