@@ -63,7 +63,7 @@ AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
 
     updateMenu();
 
-    aaObj->update();
+    aaObj->updateAll();
 }
 
 #define MAX_SEQ_SIZE_TO_ENABLE_AUTO_ANNOTATIONS 10000
