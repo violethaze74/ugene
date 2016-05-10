@@ -38,9 +38,9 @@ public:
 
     void run();
 
-    virtual Document* getDocument() const {return doc.data();}
-
-    MAlignment& getMAlignment() {return ma;}
+    virtual Document* getDocument() const;
+    const MAlignment & getMAlignment() const;
+    const QString & getUrl() const;
 
 private:
     MAlignment              ma;

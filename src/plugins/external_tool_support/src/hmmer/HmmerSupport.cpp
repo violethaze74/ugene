@@ -1,0 +1,273 @@
+/**
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * http://ugene.unipro.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
+
+#include <QMainWindow>
+#include <QMessageBox>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/QObjectScopedPointer.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/ToolsMenu.h>
+
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/ADVUtils.h>
+#include <U2View/AnnotatedDNAView.h>
+#include <U2View/AnnotatedDNAViewFactory.h>
+#include <U2View/MSAEditor.h>
+#include <U2View/MSAEditorFactory.h>
+
+#include "HmmerBuildDialog.h"
+#include "HmmerSearchDialog.h"
+#include "HmmerSupport.h"
+
+namespace U2 {
+
+const QString HmmerSupport::BUILD_TOOL = "HMMER build";
+const QString HmmerSupport::SEARCH_TOOL = "HMMER search";
+
+HmmerSupport::HmmerSupport(const QString &name)
+    : ExternalTool(name)
+{
+    if (AppContext::getMainWindow()) {
+        icon = QIcon(":external_tool_support/images/cmdline.png");
+        grayIcon = QIcon(":external_tool_support/images/cmdline_gray.png");
+        warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
+    }
+
+    toolKitName = "HMMER";
+    versionRegExp = QRegExp("HMMER (\\d+.\\d+.\\d+\\w?)");
+
+    if (name == BUILD_TOOL) {
+        initBuild();
+    }
+
+    if (name == SEARCH_TOOL) {
+        initSearch();
+    }
+}
+
+void HmmerSupport::sl_buildProfile() {
+    MAlignment ma;
+    MWMDIWindow *activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
+    if (NULL != activeWindow) {
+        GObjectViewWindow *objectViewWindow = qobject_cast<GObjectViewWindow *>(activeWindow);
+        if (NULL != objectViewWindow) {
+            MSAEditor *msaEditor = qobject_cast<MSAEditor *>(objectViewWindow->getObjectView());
+            if (NULL != msaEditor) {
+                MAlignmentObject *maObj = msaEditor->getMSAObject();
+                if (maObj != NULL) {
+                    ma = maObj->getMAlignment();
+                }
+            }
+        }
+    }
+    QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
+
+    QObjectScopedPointer<HmmerBuildDialog> buildDialog = new HmmerBuildDialog(ma, parent);
+    buildDialog->exec();
+}
+
+U2SequenceObject * getDnaSequenceObject() {
+    U2SequenceObject * seqObj = NULL;
+//    GObjectViewWindow * activeWnd = qobject_cast< GObjectViewWindow* >( AppContext::getMainWindow()->getMDIManager()->getActiveWindow() );
+//    if( NULL != activeWnd ) {
+//        AnnotatedDNAView * dnaView = qobject_cast< AnnotatedDNAView* >( activeWnd->getObjectView() );
+//        seqObj = NULL != dnaView ? dnaView->getSequenceInFocus()->getSequenceObject() : NULL;
+//    }
+//    if( NULL == seqObj ) {
+//        ProjectView * projView = AppContext::getProjectView();
+//        if( NULL != projView ) {
+//            const GObjectSelection * objSelection = projView->getGObjectSelection();
+//            GObject* obj = objSelection->getSelectedObjects().size() == 1 ? objSelection->getSelectedObjects().first() : NULL;
+//            seqObj = qobject_cast< U2SequenceObject* >( obj );
+//        }
+//    }
+    return seqObj;
+}
+
+void HmmerSupport::sl_search() {
+
+    U2SequenceObject *seqObj = getDnaSequenceObject();
+    if( NULL == seqObj ) {
+        QMessageBox::critical( NULL, tr( "Error!" ), tr( "Target sequence not selected: no opened annotated dna view" ) );
+        return;
+    }
+    QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
+    QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog( seqObj, p );
+    searchDlg->exec();
+}
+
+void HmmerSupport::initBuild() {
+#ifdef Q_OS_WIN
+    executableFileName = "hmmbuild.exe";
+#elif defined(Q_OS_UNIX)
+    executableFileName = "hmmbuild";
+#endif
+
+    validationArguments << "-h";
+    validMessage = "hmmbuild";
+    description = tr("<i>HMMER build</i> constructs HMM profiles from multiple sequence alignments.");
+
+    MainWindow *mainWindow = AppContext::getMainWindow();
+    if (NULL != mainWindow) {
+        QAction *buildAction = new QAction(tr("Build HMM3 profile..."), this);
+        buildAction->setObjectName(ToolsMenu::HMMER_BUILD3);
+        connect(buildAction, SIGNAL(triggered()), SLOT(sl_buildProfile()));
+        ToolsMenu::addAction(ToolsMenu::HMMER_MENU, buildAction);
+    }
+}
+
+void HmmerSupport::initSearch() {
+#ifdef Q_OS_WIN
+    executableFileName = "hmmsearch.exe";
+#elif defined(Q_OS_UNIX)
+    executableFileName = "hmmsearch";
+#endif
+
+    validationArguments << "-h";
+    validMessage = "hmmsearch";
+    description = tr("<i>HMMER search</i> searches profile(s) against a sequence database.");
+
+    MainWindow *mainWindow = AppContext::getMainWindow();
+    if (NULL != mainWindow) {
+        QAction *searchAction = new QAction(tr("Search with HMMER3..."), this);
+        searchAction->setObjectName(ToolsMenu::HMMER_SEARCH3);
+        connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
+        ToolsMenu::addAction(ToolsMenu::HMMER_MENU, searchAction);
+    }
+}
+
+HmmerMsaEditorContext::HmmerMsaEditorContext(QObject *parent)
+    : GObjectViewWindowContext(parent, MSAEditorFactory::ID)
+{
+
+}
+
+void HmmerMsaEditorContext::initViewContext(GObjectView *view) {
+    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
+    SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
+    CHECK(NULL != msaEditor->getMSAObject(), );
+
+    GObjectViewAction *action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
+    action->setObjectName("Build HMMER3 profile");
+    action->setIcon(QIcon(":/hmm3/images/hmmer_16.png"));
+    connect(action, SIGNAL(triggered()), SLOT(sl_build()));
+    addViewAction(action);
+}
+
+void HmmerMsaEditorContext::buildMenu(GObjectView *view, QMenu *menu) {
+    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
+    SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
+    SAFE_POINT(NULL != menu, "Menu is NULL", );
+    CHECK(NULL != msaEditor->getMSAObject(), );
+
+    QList<GObjectViewAction *> list = getViewActions(view);
+    SAFE_POINT(1 == list.size(), "List size is incorrect", );
+    QMenu *advancedMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_ADVANCED);
+    SAFE_POINT(advancedMenu != NULL, "menu 'Advanced' is NULL", );
+    advancedMenu->addAction(list.first());
+}
+
+void HmmerMsaEditorContext::sl_build() {
+    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
+    SAFE_POINT(NULL != action, "action is NULL", );
+    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(action->getObjectView());
+    SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
+
+    MAlignmentObject *obj = msaEditor->getMSAObject();
+    if (obj != NULL) {
+        QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getMAlignment());
+        buildDlg->exec();
+        CHECK(!buildDlg.isNull(), );
+    }
+}
+
+HmmerAdvContext::HmmerAdvContext(QObject *parent) :
+    GObjectViewWindowContext(parent, AnnotatedDNAViewFactory::ID) {
+
+}
+
+void HmmerAdvContext::initViewContext(GObjectView * view) {
+    AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(view);
+    SAFE_POINT(NULL != adv, "AnnotatedDNAView is NULL", );
+
+    ADVGlobalAction *searchAction = new ADVGlobalAction(adv, QIcon(":/hmm3/images/hmmer_16.png"), tr("Find HMM signals with HMMER3..."), 70);
+    searchAction->setObjectName("Find HMM signals with HMMER3");
+    connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
+}
+
+void HmmerAdvContext::sl_search() {
+    QWidget *parent = getParentWidget(sender());
+    assert(NULL != parent);
+    U2SequenceObject *seqObj = getSequenceInFocus(sender());
+    if (NULL == seqObj) {
+        QMessageBox::critical(parent, tr("error"), tr("No sequence in focus found"));
+        return;
+    }
+
+    QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqObj, parent);
+    searchDlg->exec();
+}
+
+QWidget * HmmerAdvContext::getParentWidget(QObject *sender) {
+    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender);
+    SAFE_POINT(NULL != action, "action is NULL", NULL);
+    AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
+    SAFE_POINT(NULL != adv, "AnnotatedDNAView is NULL", NULL);
+
+    if (adv->getWidget()) {
+        return adv->getWidget();
+    } else {
+        return AppContext::getMainWindow()->getQMainWindow();
+    }
+}
+
+U2SequenceObject * HmmerAdvContext::getSequenceInFocus(QObject *sender) {
+    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender);
+    SAFE_POINT(NULL != action, "action is NULL", NULL);
+    AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
+    SAFE_POINT(NULL != adv, "AnnotatedDNAView is NULL", NULL);
+    ADVSequenceObjectContext *seqCtx = adv->getSequenceInFocus();
+    if (NULL == seqCtx) {
+        return NULL;
+    }
+    return seqCtx->getSequenceObject();
+}
+
+HmmerContext::HmmerContext(QObject *parent) :
+    QObject(parent),
+    msaEditorContext(NULL),
+    advContext(NULL)
+{
+
+}
+
+void HmmerContext::init() {
+    msaEditorContext = new HmmerMsaEditorContext(this);
+    advContext = new HmmerAdvContext(this);
+
+    msaEditorContext->init();
+    advContext->init();
+}
+
+}   // namespace U2

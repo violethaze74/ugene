@@ -19,42 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
-#define _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
+#ifndef _U2_CONVERT_ALIGNMENT_2_STOCKHOLM_TASK_H_
+#define _U2_CONVERT_ALIGNMENT_2_STOCKHOLM_TASK_H_
 
-#include <U2Core/PluginModel.h>
-#include <U2Core/ServiceModel.h>
-
-#include "ExternalToolManager.h"
+#include <U2Core/Task.h>
 
 namespace U2 {
-class ETSProjectViewItemsContoller;
 
-class ExternalToolSupportPlugin : public Plugin  {
-    Q_OBJECT
+class LoadDocumentTask;
+class SaveAlignmentTask;
+
+class ConvertAlignment2Stockholm : public Task {
 public:
-    ExternalToolSupportPlugin();
-    ~ExternalToolSupportPlugin();
+    ConvertAlignment2Stockholm(const QString &msaUrl);
+
+    const QString & getResultUrl() const;
 
 private:
-    void registerSettingsController();
-    void registerWorkers();
+    void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
 
-    ExternalToolManagerImpl validationManager;
+    void prepareResultUrl();
+    void prepareSaveTask();
+
+    LoadDocumentTask *loadTask;
+    SaveAlignmentTask *saveTask;
+
+    const QString msaUrl;
+    QString resultUrl;
 };
 
-class ExternalToolSupportService: public Service {
-    Q_OBJECT
-public:
-    ExternalToolSupportService();
+}   // namespace U2
 
-protected:
-    virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
-
-    ETSProjectViewItemsContoller*    projectViewController;
-};
-
-}
-
-
-#endif
+#endif // _U2_CONVERT_ALIGNMENT_2_STOCKHOLM_TASK_H_

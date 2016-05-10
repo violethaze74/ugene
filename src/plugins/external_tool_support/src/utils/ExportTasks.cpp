@@ -83,6 +83,18 @@ void SaveAlignmentTask::run() {
     f->storeDocument(doc.data(), stateInfo);
 }
 
+Document * SaveAlignmentTask::getDocument() const {
+    return doc.data();
+}
+
+const MAlignment & SaveAlignmentTask::getMAlignment() const {
+    return ma;
+}
+
+const QString &SaveAlignmentTask::getUrl() const {
+    return fileName;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format

@@ -19,42 +19,38 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
-#define _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
+#ifndef _U2_HMMER_BUILD_FROM_FILE_TASK_H_
+#define _U2_HMMER_BUILD_FROM_FILE_TASK_H_
 
-#include <U2Core/PluginModel.h>
-#include <U2Core/ServiceModel.h>
-
-#include "ExternalToolManager.h"
+#include "HmmerBuildTask.h"
 
 namespace U2 {
-class ETSProjectViewItemsContoller;
 
-class ExternalToolSupportPlugin : public Plugin  {
-    Q_OBJECT
+class ConvertAlignment2Stockholm;
+
+class HmmerBuildFromFileTask : public ExternalToolSupportTask {
 public:
-    ExternalToolSupportPlugin();
-    ~ExternalToolSupportPlugin();
+    HmmerBuildFromFileTask(const HmmerBuildSettings &settigngs, const QString &msaUrl);
+
+    const QString & getHmmProfileUrl() const;
 
 private:
-    void registerSettingsController();
-    void registerWorkers();
+    void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
+    ReportResult report();
+    QString generateReport() const;
 
-    ExternalToolManagerImpl validationManager;
+    bool isStockholm();
+    void prepareConvertTask();
+    void prepareBuildTask(const QString &stockholmMsaUrl);
+
+    ConvertAlignment2Stockholm *convertTask;
+    HmmerBuildTask *buildTask;
+
+    const HmmerBuildSettings settings;
+    const QString msaUrl;
 };
 
-class ExternalToolSupportService: public Service {
-    Q_OBJECT
-public:
-    ExternalToolSupportService();
+}   // namespace U2
 
-protected:
-    virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
-
-    ETSProjectViewItemsContoller*    projectViewController;
-};
-
-}
-
-
-#endif
+#endif // _U2_HMMER_BUILD_FROM_FILE_TASK_H_
