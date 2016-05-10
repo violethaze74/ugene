@@ -33,14 +33,16 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+
 #include "AutoAnnotationsSupport.h"
 
 namespace U2 {
 
 const QString AutoAnnotationObject::AUTO_ANNOTATION_HINT( "auto-annotation object" );
 
-AutoAnnotationsUpdater::AutoAnnotationsUpdater( const QString &nm, const QString &gName, bool alwaysOff )
-    : groupName( gName ), name( nm ), alwaysOffByDefault(alwaysOff)
+AutoAnnotationsUpdater::AutoAnnotationsUpdater(const QString &nm, const QString &gName, bool alwaysOff, bool translationDependent)
+    : groupName(gName), name(nm), alwaysOffByDefault(alwaysOff), translationDependent(translationDependent)
 {
     checkedByDefault = alwaysOffByDefault ? false : AppContext::getSettings( )
         ->getValue( AUTO_ANNOTATION_SETTINGS + groupName, false, true ).toBool( );
@@ -50,7 +52,11 @@ AutoAnnotationsUpdater::~AutoAnnotationsUpdater( ) {
     AppContext::getSettings( )->setValue( AUTO_ANNOTATION_SETTINGS + groupName, checkedByDefault, true );
 }
 
-QList<AutoAnnotationsUpdater *> AutoAnnotationsSupport::getAutoAnnotationUpdaters( ) {
+bool AutoAnnotationsUpdater::isTranslationDependent() {
+    return translationDependent;
+}
+
+QList<AutoAnnotationsUpdater *> AutoAnnotationsSupport::getAutoAnnotationUpdaters() {
     return aaUpdaters;
 }
 
@@ -98,8 +104,8 @@ bool AutoAnnotationsSupport::isAutoAnnotation( const GObject* obj ) {
 
 //////////////////////////////////////////////////////////////////////////
 
-AutoAnnotationObject::AutoAnnotationObject( U2SequenceObject *obj, QObject *parent )
-    : QObject( parent ), dnaObj( obj )
+AutoAnnotationObject::AutoAnnotationObject(U2SequenceObject *obj, DNATranslation *aminoTT, QObject *parent)
+    : QObject(parent), dnaObj(obj), aminoTT(aminoTT)
 {
     QVariantMap hints;
     hints.insert(AUTO_ANNOTATION_HINT, true);
@@ -126,9 +132,20 @@ AutoAnnotationObject::~AutoAnnotationObject( ) {
     SAFE_POINT_OP( os, );
 }
 
-void AutoAnnotationObject::update( ) {
+void AutoAnnotationObject::updateAll( ) {
     QList<AutoAnnotationsUpdater *> aaUpdaters = aaSupport->getAutoAnnotationUpdaters( );
     handleUpdate( aaUpdaters );
+}
+
+void AutoAnnotationObject::updateTranslationDependent(DNATranslation *newAminoTT) {
+    aminoTT = newAminoTT;
+    QList<AutoAnnotationsUpdater *> aaUpdaters;
+    foreach(AutoAnnotationsUpdater *updater, aaSupport->getAutoAnnotationUpdaters()) {
+        if (updater->isTranslationDependent()) {
+            aaUpdaters.append(updater);
+        }
+    }
+    handleUpdate(aaUpdaters);
 }
 
 void AutoAnnotationObject::updateGroup( const QString &groupName ) {
@@ -256,7 +273,11 @@ void AutoAnnotationObject::emitStateChange( bool started ) {
     }
 }
 
-AutoAnnotationConstraints::AutoAnnotationConstraints( )
+DNATranslation* AutoAnnotationObject::getAminoTT() const {
+    return aminoTT;
+}
+
+AutoAnnotationConstraints::AutoAnnotationConstraints()
     : alphabet( NULL ), hints( NULL )
 {
 

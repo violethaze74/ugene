@@ -545,6 +545,31 @@ GUI_TEST_CLASS_DEFINITION(test_5227) {
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5246) {
+    //1. Open file human_t1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Show ORFs
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Show ORFs"));
+    GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QTreeWidget *widget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(widget->invisibleRootItem());
+    CHECK_SET_ERR(839 == treeItems.size(), "Unexpected annotation count");   
+
+    //3. Change amino translation
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton", GTWidget::findWidget(os, "ADV_single_sequence_widget_0")));
+    QMenu *menu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
+    GTMenu::clickMenuItemByName(os, menu, QStringList() << "14. The Alternative Flatworm Mitochondrial Code");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //Expected state: orfs recalculated
+    treeItems = GTTreeWidget::getItems(widget->invisibleRootItem());
+    CHECK_SET_ERR(2023 == treeItems.size(), "Unexpected annotation count");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5278) {
     //1. Open file PBR322.gb from samples
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "PBR322.gb");
