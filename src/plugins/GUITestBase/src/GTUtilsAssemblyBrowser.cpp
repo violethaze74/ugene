@@ -21,6 +21,7 @@
 
 #include <QtCore/QSharedPointer>
 #include <QApplication>
+#include <QLabel>
 #include <QScrollBar>
 
 #include <QtCore/qglobal.h>
@@ -46,7 +47,6 @@
 #include <primitives/GTWidget.h>
 #include "primitives/PopupChooser.h"
 #include <utils/GTThread.h>
-
 
 namespace U2 {
 using namespace HI;
@@ -225,8 +225,9 @@ void GTUtilsAssemblyBrowser::zoomToMin(HI::GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "zoomToReads"
 void GTUtilsAssemblyBrowser::zoomToReads(GUITestOpStatus &os){
-    QWidget* coveredRegionsLabel = GTWidget::findWidget(os, "CoveredRegionsLabel");
-    GTWidget::click(os, coveredRegionsLabel, Qt::LeftButton, QPoint(coveredRegionsLabel->width()/2 - 100, 75));
+    QLabel* coveredRegionsLabel = GTWidget::findExactWidget<QLabel*>(os, "CoveredRegionsLabel");
+    emit coveredRegionsLabel->linkActivated("zoom");
+    GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
 

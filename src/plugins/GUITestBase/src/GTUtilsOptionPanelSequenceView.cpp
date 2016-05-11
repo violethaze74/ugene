@@ -161,6 +161,7 @@ void GTUtilsOptionPanelSequenceView::clickPrev(HI::GUITestOpStatus &os){
 void GTUtilsOptionPanelSequenceView::clickGetAnnotation(HI::GUITestOpStatus &os){
     QPushButton *getAnnotations = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTWidget::click(os, getAnnotations);
+    GTThread::waitForMainThread();
 }
 
 #undef GT_METHOD_NAME

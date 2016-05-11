@@ -78,6 +78,7 @@ void CreateDocumentFiller::commonScenario()
     QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit*>("sequenceEdit");
     GT_CHECK(plainText != NULL, "plain text not found");
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
+    GTGlobals::sleep();
 
     if (customSettings){
         QGroupBox* customSettingsCheckBox = qobject_cast<QGroupBox*>(GTWidget::findWidget(os, "groupBox", dialog));

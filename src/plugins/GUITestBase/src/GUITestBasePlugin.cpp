@@ -2375,6 +2375,11 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_Assembly_browser::test_0030);
     REGISTER_TEST(GUITest_Assembly_browser::test_0031);
     REGISTER_TEST(GUITest_Assembly_browser::test_0032);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0033);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0034);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0035);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0036);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0037);
 
 /////////////////////////////////////////////////////////////////////////
 // Common scenarios/Assembling/bowtie2
