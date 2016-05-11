@@ -368,7 +368,7 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&)
     char chainIdentifier = currentPDBLine.at(21).toLatin1();
 
     ResidueIndex residueIndex(resId,insCode);
-    bool atomIsInChain = !isHetero || seqResContains(chainIdentifier, residueIndex.toInt(), residueAcronym);
+    bool atomIsInChain = !isHetero && seqResContains(chainIdentifier, residueIndex.toInt(), residueAcronym);
 
     QByteArray elementName = currentPDBLine.mid(76,2).toLatin1().trimmed();
 
