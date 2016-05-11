@@ -30,6 +30,7 @@
 
 namespace U2 {
 
+class ADVSequenceObjectContext;
 class GObject;
 class GHints;
 class U2SequenceObject;
@@ -49,14 +50,16 @@ class U2CORE_EXPORT AutoAnnotationObject : public QObject
 {
     Q_OBJECT
 public:
-                                AutoAnnotationObject( U2SequenceObject *obj, QObject *parent );
-                                ~AutoAnnotationObject( );
+    AutoAnnotationObject(U2SequenceObject *obj, DNATranslation *aminoTT, QObject *parent);
+    ~AutoAnnotationObject();
     AnnotationTableObject *     getAnnotationObject( ) const { return aobj; }
     U2SequenceObject *          getSeqObject( ) const { return dnaObj; }
     void                        setGroupEnabled( const QString &groupName, bool enabled );
-    void                        update( );
+    void                        updateAll( );
+    void                        updateTranslationDependent(DNATranslation *newAminoTT);
     void                        updateGroup( const QString &groupName );
     void                        emitStateChange( bool started );
+    DNATranslation*             getAminoTT() const;
 
     static const QString        AUTO_ANNOTATION_HINT;
 
@@ -74,6 +77,7 @@ private:
     bool                        cancelRunningUpdateTasks(AutoAnnotationsUpdater *updater);
 
     U2SequenceObject *          dnaObj;
+    DNATranslation              *aminoTT;
     AnnotationTableObject *     aobj;
     AutoAnnotationsSupport *    aaSupport;
     QSet<QString>               enabledGroups;
@@ -94,11 +98,12 @@ struct U2CORE_EXPORT AutoAnnotationConstraints {
 class U2CORE_EXPORT AutoAnnotationsUpdater : public QObject {
     Q_OBJECT
 public:
-    AutoAnnotationsUpdater( const QString &nm, const QString &gName, bool offByDefault = false );
+    AutoAnnotationsUpdater(const QString &nm, const QString &gName, bool offByDefault = false, bool translationDependant = false);
     virtual             ~AutoAnnotationsUpdater( );
     const QString &     getGroupName( ) { return groupName; }
     const QString &     getName( ) { return name; }
     bool                isCheckedByDefault( ) { return checkedByDefault; }
+    bool                isTranslationDependent();
     void                setCheckedByDefault( bool checked )  { checkedByDefault = alwaysOffByDefault ? false : checked; }
     virtual bool        checkConstraints( const AutoAnnotationConstraints &constraints ) = 0;
     virtual Task *      createAutoAnnotationsUpdateTask( const AutoAnnotationObject *aa ) = 0;
@@ -108,6 +113,7 @@ private:
     QString             name;
     bool                checkedByDefault;
     bool                alwaysOffByDefault;
+    bool                translationDependent;
 };
 
 class U2CORE_EXPORT AutoAnnotationsSupport : public QObject {

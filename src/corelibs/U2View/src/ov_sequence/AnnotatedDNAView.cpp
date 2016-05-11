@@ -220,6 +220,7 @@ QWidget* AnnotatedDNAView::createWidget() {
         ADVSequenceObjectContext* seqCtx = seqContexts[i];
         ADVSingleSequenceWidget* block = new ADVSingleSequenceWidget(seqCtx, this);
         connect(block, SIGNAL(si_titleClicked(ADVSequenceWidget*)), SLOT(sl_onSequenceWidgetTitleClicked(ADVSequenceWidget*)));
+        connect(seqCtx, SIGNAL(si_aminoTranslationChanged()), SLOT(sl_aminoTranslationChanged()));
         block->setObjectName("ADV_single_sequence_widget_"+QString::number(i));
         addSequenceWidget(block);
         block->addAction(createPasteAction());
@@ -978,7 +979,7 @@ void AnnotatedDNAView::addRelatedAnnotations(ADVSequenceObjectContext *seqCtx) {
 }
 
 void AnnotatedDNAView::addAutoAnnotations(ADVSequenceObjectContext* seqCtx) {
-    AutoAnnotationObject *aa = new AutoAnnotationObject(seqCtx->getSequenceObject(), seqCtx);
+    AutoAnnotationObject *aa = new AutoAnnotationObject(seqCtx->getSequenceObject(), seqCtx->getAminoTT(), seqCtx);
     seqCtx->addAutoAnnotationObject(aa->getAnnotationObject());
     autoAnnotationsMap.insert(seqCtx, aa);
 
@@ -1277,7 +1278,7 @@ QList<AnnotationTableObject *> AnnotatedDNAView::getAnnotationObjects(bool inclu
 void AnnotatedDNAView::updateAutoAnnotations() {
     QList<AutoAnnotationObject *> autoAnnotations = autoAnnotationsMap.values();
     foreach (AutoAnnotationObject *aa, autoAnnotations) {
-        aa->update();
+        aa->updateAll();
     }
 }
 
@@ -1425,6 +1426,17 @@ void AnnotatedDNAView::sl_selectionChanged() {
         replaceSequencePart->setEnabled(true);
     } else {
         replaceSequencePart->setEnabled(false);
+    }
+}
+
+void AnnotatedDNAView::sl_aminoTranslationChanged() {
+    ADVSequenceObjectContext *seqCtx = getSequenceInFocus();
+    U2SequenceObject *seqObj = seqCtx->getSequenceObject();
+    QList<AutoAnnotationObject *> autoAnnotations = autoAnnotationsMap.values();
+    foreach(AutoAnnotationObject *aa, autoAnnotations) {
+        if (aa->getSeqObject() == seqObj) {
+            aa->updateTranslationDependent(seqCtx->getAminoTT());
+        }
     }
 }
 

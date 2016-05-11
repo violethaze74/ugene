@@ -116,7 +116,7 @@ GUI_TEST_CLASS_DEFINITION(test_5004) {
     GTWidget::click(os, sequenceWidget);
 
     GTLogTracer lt;
-    // 2. Show DNA Flexibility graph 
+    // 2. Show DNA Flexibility graph
     // Expected state: no errors in log
     QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     Runnable *chooser = new PopupChooser(os, QStringList() << "DNA Flexibility");
@@ -433,7 +433,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     //    1. Open document test/_common_data/clustal/big.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Add big sequence 
+    //    2. Add big sequence
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa");
     GTUtilsDialog::waitForDialog(os, ob);
 
@@ -543,6 +543,43 @@ GUI_TEST_CLASS_DEFINITION(test_5227) {
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_5246) {
+    //1. Open file human_t1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Show ORFs
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Show ORFs"));
+    GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QTreeWidget *widget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(widget->invisibleRootItem());
+    CHECK_SET_ERR(839 == treeItems.size(), "Unexpected annotation count");
+
+    //3. Change amino translation
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton", GTWidget::findWidget(os, "ADV_single_sequence_widget_0")));
+    QMenu *menu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
+    GTMenu::clickMenuItemByName(os, menu, QStringList() << "14. The Alternative Flatworm Mitochondrial Code");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //Expected state: orfs recalculated
+    treeItems = GTTreeWidget::getItems(widget->invisibleRootItem());
+    CHECK_SET_ERR(2023 == treeItems.size(), "Unexpected annotation count");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5249) {
+    // 1. Open file "_common_data/pdb/1atp.pdb"
+    // Expected state: no crash and no errors in the log
+    GTLogTracer l;
+
+    GTFileDialog::openFile(os, testDir + "_common_data/pdb/1atp.pdb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(!l.hasError(), "Error in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5268) {
