@@ -116,7 +116,7 @@ GUI_TEST_CLASS_DEFINITION(test_5004) {
     GTWidget::click(os, sequenceWidget);
 
     GTLogTracer lt;
-    // 2. Show DNA Flexibility graph 
+    // 2. Show DNA Flexibility graph
     // Expected state: no errors in log
     QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     Runnable *chooser = new PopupChooser(os, QStringList() << "DNA Flexibility");
@@ -433,7 +433,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     //    1. Open document test/_common_data/clustal/big.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Add big sequence 
+    //    2. Add big sequence
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa");
     GTUtilsDialog::waitForDialog(os, ob);
 
@@ -569,6 +569,17 @@ GUI_TEST_CLASS_DEFINITION(test_5246) {
     //Expected state: orfs recalculated
     treeItems = GTTreeWidget::getItems(widget->invisibleRootItem());
     CHECK_SET_ERR(2023 == treeItems.size(), "Unexpected annotation count");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5249) {
+    // 1. Open file "_common_data/pdb/1atp.pdb"
+    // Expected state: no crash and no errors in the log
+    GTLogTracer l;
+
+    GTFileDialog::openFile(os, testDir + "_common_data/pdb/1atp.pdb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(!l.hasError(), "Error in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5268) {
