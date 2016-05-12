@@ -247,7 +247,6 @@ void WormsGLRenderer::createWorms()
 
 void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule> &moleculeMap, QMap<int, BioPolymer> &bioPolymerMap) {
     const char* alphaCarbonTag = "CA";
-    const char* phosophorTag = "P";
     const char* carbonylOxygenTag = "O";
 
     QMapIterator<int, SharedMolecule> i(moleculeMap);
@@ -261,7 +260,7 @@ void WormsGLRenderer::createBioPolymerMap(const QMap<int, SharedMolecule> &molec
             QMap<int, QPair<bool, bool> > checkList;
             foreach (const SharedAtom atom, model.atoms) {
                 int residueIdx = atom->residueIndex.toInt();
-                if ((atom->name.trimmed() == alphaCarbonTag) || (atom->name.trimmed() == phosophorTag)) {
+                if ((atom->name.trimmed() == alphaCarbonTag)) {
 
                     if (checkList.contains(residueIdx)) {
                         QPair<bool, bool> check = checkList.value(residueIdx);

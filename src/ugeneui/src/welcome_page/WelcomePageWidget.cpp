@@ -44,7 +44,7 @@ namespace {
 }
 
 WelcomePageWidget::WelcomePageWidget(QWidget *parent, WelcomePageController *controller)
-    : MultilingualHtmlView(":ugene/html/welcome_page.html", parent),
+    : MultilingualHtmlView("qrc:///ugene/html/welcome_page.html", parent),
       controller(controller)
 {
     installEventFilter(this);
