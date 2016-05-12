@@ -33,6 +33,7 @@
 namespace U2 {
 
 class DNASequenceSelection;
+class GSelection;
 
 struct RegionSelectorGui {
     RegionSelectorGui()
@@ -57,6 +58,10 @@ struct RegionPreset {
           region(region) {}
     QString text;
     U2Region region;
+
+    bool operator ==(const RegionPreset& other) {
+        return (text == other.text);
+    }
 };
 
 struct RegionSelectorSettings {
@@ -91,6 +96,12 @@ public:
     U2Region getRegion(bool *ok = NULL) const;
     void setRegion(const U2Region& region);
 
+    QString getPresetName() const;
+    void setPreset(QString preset);
+    void removePreset(QString preset);
+
+    void reset();
+
     bool hasError() const;
     QString getErrorMessage() const;
 
@@ -102,6 +113,7 @@ private slots:
     void sl_regionChanged(const U2Region& newRegion);
     void sl_onPresetChanged(int index);
     void sl_onRegionChanged();
+    void sl_onSelectionChanged(GSelection* selection);
     void sl_onValueEdited();
 
 private:
