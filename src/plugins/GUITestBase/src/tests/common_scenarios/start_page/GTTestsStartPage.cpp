@@ -36,6 +36,7 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 
 #include "GTTestsStartPage.h"
+#include "GTUtilsLog.h"
 #include "GTUtilsTaskTreeView.h"
 
 namespace U2 {
@@ -45,10 +46,15 @@ using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001){
 //    Start UGENE
 //    Press "Open file(s)" button on start page
+    GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
     GTUtilsStartPage::clickButton(os, GTUtilsStartPage::OpenFile);
 //    Expected state: File dialog is opened.
     GTGlobals::sleep(500);
+    bool hasWindowsWarning = l.checkMessage("ShellExecute '#' failed");
+    bool hasUnixWarning = l.checkMessage("gvfs-open: #: error opening location");
+    CHECK_SET_ERR(!hasWindowsWarning, "Windows warning");
+    CHECK_SET_ERR(!hasUnixWarning, "Unix warning");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002){

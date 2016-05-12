@@ -110,7 +110,7 @@ QList<Task*> Shtirlitz::wakeup() {
     if(minorVersionFirstLaunch) {
         MainWindow *mainWindow = AppContext::getMainWindow();
         CHECK(NULL != mainWindow, result);
-        QObjectScopedPointer<StatisticalReportController> dialog = new StatisticalReportController(":ugene/html/version_news.html", mainWindow->getQMainWindow());
+        QObjectScopedPointer<StatisticalReportController> dialog = new StatisticalReportController("qrc:///ugene/html/version_news.html", mainWindow->getQMainWindow());
         dialog->exec();
         CHECK(!dialog.isNull(), result);
 
