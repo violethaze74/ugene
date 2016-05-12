@@ -56,8 +56,10 @@ void FeatureKeyFilterTask::filterDocument(Document *doc) {
     CHECK(doc->isLoaded(), );
 
     const U2DbiRef dbiRef = doc->getDbiRef();
+    SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("DbiRef is invalid")), );
     if (!dbiRef2AnnotationTables.contains(dbiRef)) {
         DbiConnection connection(dbiRef, stateInfo);
+        CHECK_OP(stateInfo, );
         SAFE_POINT_EXT(NULL != connection.dbi, stateInfo.setError(L10N::nullPointerError("Database connection")), );
         U2FeatureDbi *featureDbi = connection.dbi->getFeatureDbi();
         SAFE_POINT_EXT(NULL != featureDbi, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );

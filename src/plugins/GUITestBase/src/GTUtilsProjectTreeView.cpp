@@ -350,6 +350,20 @@ void GTUtilsProjectTreeView::filterProject(HI::GUITestOpStatus &os, const QStrin
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "filterProjectSequental"
+void GTUtilsProjectTreeView::filterProjectSequental(HI::GUITestOpStatus &os, const QStringList &searchField, bool waitUntilSearchEnd) {
+    openView(os);
+    QLineEdit *nameFilterEdit = GTWidget::findExactWidget<QLineEdit *>(os, "nameFilterEdit");
+    foreach(const QString& str, searchField) {
+        GTLineEdit::setText(os, nameFilterEdit, str);
+        GTGlobals::sleep(3000);
+    }
+    if (waitUntilSearchEnd) {
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    }
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "findFilteredIndexes"
 QModelIndexList GTUtilsProjectTreeView::findFilteredIndexes(HI::GUITestOpStatus &os, const QString &substring, const QModelIndex &parentIndex) {
     QModelIndexList result;

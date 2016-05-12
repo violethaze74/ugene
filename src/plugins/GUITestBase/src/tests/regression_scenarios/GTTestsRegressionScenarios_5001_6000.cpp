@@ -66,6 +66,7 @@
 #include <runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h>
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include <runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h>
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTThread.h>
@@ -506,6 +507,19 @@ GUI_TEST_CLASS_DEFINITION(test_5208) {
     //    Expected state: the library contains four primers, log contains no errors.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5216) {
+    // 1. Connect to the public database
+    //GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
+    GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+
+    GTLogTracer lt;
+    // 2. Type to the project filter field "acct" then "acctt"
+    GTUtilsProjectTreeView::filterProjectSequental(os, QStringList() << "acct" << "accttt", true);
+    GTGlobals::sleep(3500);
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+    //GTUtilsProjectTreeView::filterProject(os, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5227) {

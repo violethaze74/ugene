@@ -76,6 +76,7 @@ public:
                                         const GTGlobals::FindOptions& options = GTGlobals::FindOptions());
 
     static void filterProject(HI::GUITestOpStatus &os, const QString &searchField);
+    static void filterProjectSequental(HI::GUITestOpStatus &os, const QStringList &searchField, bool waitUntilSearchEnd);
     static QModelIndexList findFilteredIndexes(HI::GUITestOpStatus &os, const QString &substring, const QModelIndex &parentIndex = QModelIndex());
     static void checkFilteredGroup(HI::GUITestOpStatus &os, const QString &groupName, const QStringList &namesToCheck, const QStringList &alternativeNamesToCheck,
         const QStringList &excludedNames);
