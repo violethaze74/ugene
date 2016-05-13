@@ -111,7 +111,7 @@ void DbObjUrlContainer::accept(URLContainerVisitor *visitor) {
 }
 
 bool DbObjUrlContainer::validateUrl(ProblemList &problemList) {
-    return WorkflowUtils::validateInputDbObjects(url, problemList);
+    return WorkflowUtils::validateInputDbObject(url, problemList);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -220,7 +220,7 @@ bool DbFolderUrlContainer::validateUrl(ProblemList &problemList) {
     SAFE_POINT(NULL != it, "Invalid DB object iterator", false);
     while (it->hasNext()) {
         QString fileUrl = it->getNextFile();
-        bool urlIsValid = WorkflowUtils::validateInputDbObjects(fileUrl, problemList);
+        bool urlIsValid = WorkflowUtils::validateInputDbObject(fileUrl, problemList);
         res = res && urlIsValid;
     }
     return res;
