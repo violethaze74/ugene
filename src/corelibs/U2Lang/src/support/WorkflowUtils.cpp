@@ -1107,30 +1107,21 @@ bool WorkflowUtils::checkSharedDbConnection(const QString &fullDbUrl) {
     return connection.isOpen();
 }
 
-bool WorkflowUtils::validateInputDbObjects(QString urls, ProblemList &problemList) {
-    normalizeUrls(urls);
-    if (urls.isEmpty()) {
-        return true;
+bool WorkflowUtils::validateInputDbObject(const QString &url, ProblemList &problemList) {
+    const QString dbUrl = SharedDbUrlUtils::getDbUrlFromEntityUrl(url);
+    const U2DataId objId = SharedDbUrlUtils::getObjectIdByUrl(url);
+    const QString objName = SharedDbUrlUtils::getDbObjectNameByUrl(url);
+    const QString shortDbName = SharedDbUrlUtils::getDbShortNameFromEntityUrl(url);
+    if (dbUrl.isEmpty() || objId.isEmpty() || objName.isEmpty()) {
+        problemList << Problem(L10N::errorWrongDbObjUrlFormat(url));
+        return false;
+    } else if (!checkDbConnectionAndFixProblems(dbUrl, problemList, Problem(L10N::errorDbInacsessible(shortDbName)))) {
+        return false;
+    } else if (!checkObjectInDb(url)) {
+        problemList << Problem(L10N::errorDbObjectInaccessible(shortDbName, objName));
+        return false;
     }
-
-    QStringList urlsList = urls.split(';');
-    bool res = true;
-    foreach (const QString &url, urlsList) {
-        const QString dbUrl = SharedDbUrlUtils::getDbUrlFromEntityUrl(url);
-        const U2DataId objId = SharedDbUrlUtils::getObjectIdByUrl(url);
-        const QString objName = SharedDbUrlUtils::getDbObjectNameByUrl(url);
-        const QString shortDbName = SharedDbUrlUtils::getDbShortNameFromEntityUrl(url);
-        if (dbUrl.isEmpty() || objId.isEmpty() || objName.isEmpty()) {
-            problemList << Problem(L10N::errorWrongDbObjUrlFormat(url));
-            res = false;
-        } else if (!checkDbConnectionAndFixProblems(dbUrl, problemList, Problem(L10N::errorDbInacsessible(shortDbName)))) {
-            res = false;
-        } else if (!checkObjectInDb(url)) {
-            problemList << Problem(L10N::errorDbObjectInaccessible(shortDbName, objName));
-            res = false;
-        }
-    }
-    return res;
+    return true;
 }
 
 bool WorkflowUtils::validateInputDbFolders(QString urls, ProblemList &problemList) {
