@@ -38,6 +38,7 @@ public:
                                     qint64 maxLen,
                                     DNASequenceSelection* selection = NULL,
                                     bool isCircularAvailable = false);
+    ~RegionSelectorWithExludedRegion();
 
     U2Region getIncludeRegion(bool *ok = NULL) const;
     U2Region getExcludeRegion(bool *ok = NULL) const;

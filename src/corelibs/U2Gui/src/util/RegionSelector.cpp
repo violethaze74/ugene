@@ -79,7 +79,6 @@ bool RegionSelector::isWholeSequenceSelected() const {
 
 void RegionSelector::setCustomRegion(const U2Region& value) {
     controller->setRegion(value);
-    return;
 }
 
 void RegionSelector::setWholeRegionSelected() {
@@ -104,7 +103,6 @@ void RegionSelector::showErrorMessage() {
         msgBox->setInformativeText(controller->getErrorMessage());
         msgBox->exec();
         CHECK(!msgBox.isNull(), );
-        msgBox->exec();
     }
 }
 

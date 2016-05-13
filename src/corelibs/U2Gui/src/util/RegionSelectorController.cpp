@@ -44,14 +44,13 @@ RegionSelectorSettings::RegionSelectorSettings(qint64 maxLen,
                                                QString defaultPreset)
     : maxLen(maxLen),
       selection(selection),
-      isCircularSelectionAvailable(isCircularSelectionAvailable),
+      circular(isCircularSelectionAvailable),
       presetRegions(_presetRegions),
       defaultPreset(defaultPreset) {
 
     if (selection != NULL && !selection->isEmpty()) {
         U2Region region = getOneRegionFromSelection();
         presetRegions.prepend(RegionPreset(SELECTED_REGION, region));
-        //        defaultItemText = SELECTED_REGION; //? doubtfull thing
     }
     presetRegions.prepend(RegionPreset(WHOLE_SEQUENCE, U2Region(0, maxLen)));
     presetRegions.prepend(RegionPreset(CUSTOM_REGION, U2Region()));
@@ -110,7 +109,7 @@ U2Region RegionSelectorController::getRegion(bool *_ok) const {
         return U2Region();
     }
 
-    if (v1 > v2 && !settings.isCircularSelectionAvailable) { // start > end
+    if (v1 > v2 && !settings.circular) { // start > end
         if (_ok != NULL) {
             *_ok = false;
         }
@@ -129,16 +128,20 @@ U2Region RegionSelectorController::getRegion(bool *_ok) const {
 }
 
 void RegionSelectorController::setRegion(const U2Region &region) {
-    if (region.startPos < 0 || region.length > settings.maxLen) {
-        return;
-    }
+    CHECK(region != getRegion(), );
+    SAFE_POINT(region.startPos >=0 && region.startPos < settings.maxLen && region.length <= settings.maxLen, tr("Region is not in sequence range"), );
 
-    if (region == getRegion()) {
-        return;
+    qint64 end = region.endPos();
+    if (end > settings.maxLen) {
+        if (settings.circular) {
+            end = region.endPos() % settings.maxLen;
+        } else {
+            end = settings.maxLen;
+        }
     }
 
     gui.startLineEdit->setText(QString::number(region.startPos + 1));
-    gui.endLineEdit->setText(QString::number(region.endPos()));
+    gui.endLineEdit->setText(QString::number(end));
 
     emit si_regionChanged(region);
 }
@@ -148,12 +151,12 @@ QString RegionSelectorController::getPresetName() const {
     return gui.presetsComboBox->currentText();
 }
 
-void RegionSelectorController::setPreset(QString preset) {
+void RegionSelectorController::setPreset(const QString& preset) {
     SAFE_POINT(gui.presetsComboBox != NULL, tr("Cannot set preset, ComboBox is NULL"), );
     gui.presetsComboBox->setCurrentText(preset);
 }
 
-void RegionSelectorController::removePreset(QString preset) {
+void RegionSelectorController::removePreset(const QString& preset) {
     gui.presetsComboBox->removeItem(gui.presetsComboBox->findText(preset));
     RegionPreset settingsPreset;
     foreach (const RegionPreset &r, settings.presetRegions) {
@@ -166,6 +169,7 @@ void RegionSelectorController::removePreset(QString preset) {
 }
 
 void RegionSelectorController::reset() {
+    SAFE_POINT(gui.presetsComboBox != NULL, tr("Cannot set preset, ComboBox is NULL"), );
     gui.presetsComboBox->setCurrentText(settings.defaultPreset);
 }
 
@@ -173,9 +177,11 @@ bool RegionSelectorController::hasError() const {
     return !getErrorMessage().isEmpty();
 }
 
+namespace {
 const QString START_IS_INVALID = RegionSelectorController::tr("Invalid Start position of region");
 const QString END_IS_INVALID = RegionSelectorController::tr("Invalid End position of region");
 const QString REGION_IS_INVALID = RegionSelectorController::tr("Start position is greater than End position");
+}
 
 QString RegionSelectorController::getErrorMessage() const {
     bool ok = false;
@@ -189,7 +195,7 @@ QString RegionSelectorController::getErrorMessage() const {
         return END_IS_INVALID;
     }
 
-    if (v1 > v2 && !settings.isCircularSelectionAvailable) { // start > end
+    if (v1 > v2 && !settings.circular) { // start > end
         return REGION_IS_INVALID;
     }
 
@@ -197,11 +203,11 @@ QString RegionSelectorController::getErrorMessage() const {
 }
 
 void RegionSelectorController::sl_onPresetChanged(int index) {
-    disconnect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged(U2Region)));
+    blockSignals(true);
 
     // set the region
     if (index == gui.presetsComboBox->findText(RegionSelectorSettings::CUSTOM_REGION)) {
-        connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged(U2Region)));
+        connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged()));
         return;
     }
 
@@ -211,13 +217,13 @@ void RegionSelectorController::sl_onPresetChanged(int index) {
         const U2Region region = gui.presetsComboBox->itemData(index).value<U2Region>();
         setRegion(region);
     }
-    connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged(U2Region)));
+    blockSignals(false);
 }
 
-void RegionSelectorController::sl_regionChanged(const U2Region &/*newRegion*/) {
-    disconnect(gui.presetsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_onPresetChanged(int)));
+void RegionSelectorController::sl_regionChanged() {
+    gui.presetsComboBox->blockSignals(true);
     gui.presetsComboBox->setCurrentIndex(gui.presetsComboBox->findText(RegionSelectorSettings::CUSTOM_REGION));
-    connect(gui.presetsComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onPresetChanged(int)));
+    gui.presetsComboBox->blockSignals(false);
 }
 
 void RegionSelectorController::sl_onRegionChanged() {
@@ -234,7 +240,7 @@ void RegionSelectorController::sl_onRegionChanged() {
     if (!ok || v2 < 1 || v2 > settings.maxLen) {
         return;
     }
-    if (!settings.isCircularSelectionAvailable && v2 < v1) {
+    if (!settings.circular && v2 < v1) {
         return;
     }
 
@@ -249,6 +255,8 @@ void RegionSelectorController::sl_onRegionChanged() {
 }
 
 void RegionSelectorController::sl_onSelectionChanged(GSelection *selection) {
+    CHECK(gui.presetsComboBox != NULL, ); // no combobox - no selection dependency
+
     SAFE_POINT(settings.selection == selection, "Invalid sequence selection", );
     int selectedRegionIndex = gui.presetsComboBox->findText(RegionSelectorSettings::SELECTED_REGION);
     if (-1 == selectedRegionIndex) {
@@ -280,6 +288,8 @@ void RegionSelectorController::sl_onValueEdited() {
 }
 
 void RegionSelectorController::init() {
+    SAFE_POINT(gui.startLineEdit != NULL && gui.endLineEdit != NULL, tr("Region lineEdit is NULL"), );
+
     int w = qMax(((int)log10((double)settings.maxLen))*10, 50);
 
     gui.startLineEdit->setValidator(new QIntValidator(1, settings.maxLen, gui.startLineEdit));
@@ -296,8 +306,15 @@ void RegionSelectorController::init() {
 void RegionSelectorController::setupPresets() {
     CHECK(gui.presetsComboBox != NULL, );
 
+    bool foundDefaultPreset = false;
     foreach(const RegionPreset &presetRegion, settings.presetRegions) {
-        gui.presetsComboBox->addItem(presetRegion.text, qVariantFromValue(presetRegion.region));
+        gui.presetsComboBox->addItem(presetRegion.text, QVariant::fromValue(presetRegion.region));
+        if (presetRegion.text == settings.defaultPreset) {
+            foundDefaultPreset = true;
+        }
+    }
+    if (!foundDefaultPreset) {
+        settings.defaultPreset = RegionSelectorSettings::WHOLE_SEQUENCE;
     }
 
     gui.presetsComboBox->setCurrentText(settings.defaultPreset);
@@ -318,7 +335,7 @@ void RegionSelectorController::connectSlots() {
 
     if (gui.presetsComboBox != NULL) {
         connect(gui.presetsComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onPresetChanged(int)));
-        connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged(U2Region)));
+        connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged()));
     }
 
     if (settings.selection != NULL) {

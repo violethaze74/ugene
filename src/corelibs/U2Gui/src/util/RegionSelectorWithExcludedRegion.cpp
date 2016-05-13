@@ -43,6 +43,12 @@ RegionSelectorWithExludedRegion::RegionSelectorWithExludedRegion(QWidget* parent
     excludeController = new RegionSelectorController(excludeGui, settings, this);
 
     connectSlots();
+
+    setObjectName("region_selector_with_excluded");
+}
+
+RegionSelectorWithExludedRegion::~RegionSelectorWithExludedRegion() {
+    delete ui;
 }
 
 U2Region RegionSelectorWithExludedRegion::getIncludeRegion(bool *ok) const {
@@ -86,7 +92,7 @@ QString RegionSelectorWithExludedRegion::getErrorMessage() const {
             return excludeController->getErrorMessage();
         } else {
             if (excludeController->getRegion().contains(includeController->getRegion())) {
-                return tr("'Exclude'' region contains 'Search In' region. Search region is empty.");
+                return tr("'Exclude' region contains 'Search In' region. Search region is empty.");
             }
         }
     }

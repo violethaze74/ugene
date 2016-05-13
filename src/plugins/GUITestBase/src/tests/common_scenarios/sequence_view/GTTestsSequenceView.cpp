@@ -2467,15 +2467,15 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
 
-            QWidget* regionSelector = GTWidget::findWidget(os, "range_selector");
-            CHECK_SET_ERR(regionSelector != NULL, "range_selector not found");
+            QWidget* regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
+            CHECK_SET_ERR(regionSelector != NULL, "region_selector_with_excluded not found");
 
-            QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "start_edit_line", regionSelector);
-            CHECK_SET_ERR(start != NULL, "start_edit_line of 'Search In' region not found");
+            QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", regionSelector);
+            CHECK_SET_ERR(start != NULL, "startLineEdit of 'Search In' region not found");
             GTLineEdit::setText(os, start, "5000");
 
-            QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "end_edit_line", regionSelector);
-            CHECK_SET_ERR(end != NULL, "end_edit_line of 'Search In' region not found");
+            QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", regionSelector);
+            CHECK_SET_ERR(end != NULL, "endLineEdit of 'Search In' region not found");
             GTLineEdit::setText(os, end, "1000");
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
@@ -2483,7 +2483,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
 
             GTLineEdit::setText(os, start, "1");
 
-            QCheckBox* exclude = GTWidget::findExactWidget<QCheckBox*>(os, "excludeRegionBox");
+            QCheckBox* exclude = GTWidget::findExactWidget<QCheckBox*>(os, "excludeCheckBox");
             GTCheckBox::setChecked(os, exclude);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));

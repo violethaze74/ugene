@@ -59,7 +59,7 @@ struct RegionPreset {
     QString text;
     U2Region region;
 
-    bool operator ==(const RegionPreset& other) {
+    bool operator ==(const RegionPreset& other) const {
         return (text == other.text);
     }
 };
@@ -70,14 +70,14 @@ struct RegionSelectorSettings {
     static const QString CUSTOM_REGION;
 
     RegionSelectorSettings(qint64 maxLen,
-                           bool isCircularSelectionAvailable = false,
+                           bool circular = false,
                            DNASequenceSelection* selection = NULL,
                            QList<RegionPreset> presetRegions = QList<RegionPreset>(),
-                           QString defaultPreset = WHOLE_SEQUENCE);
+                           QString defaultPreset = SELECTED_REGION);
 
     qint64                  maxLen;
     DNASequenceSelection*   selection;
-    bool                    isCircularSelectionAvailable;
+    bool                    circular;
 
     QList<RegionPreset>     presetRegions;
     QString                 defaultPreset;
@@ -97,8 +97,8 @@ public:
     void setRegion(const U2Region& region);
 
     QString getPresetName() const;
-    void setPreset(QString preset);
-    void removePreset(QString preset);
+    void setPreset(const QString& preset);
+    void removePreset(const QString& preset);
 
     void reset();
 
@@ -108,9 +108,9 @@ public:
 signals:
     void si_regionChanged(const U2Region& newRegion);
 
-
 private slots:
-    void sl_regionChanged(const U2Region& newRegion);
+    //! rename
+    void sl_regionChanged();
     void sl_onPresetChanged(int index);
     void sl_onRegionChanged();
     void sl_onSelectionChanged(GSelection* selection);
