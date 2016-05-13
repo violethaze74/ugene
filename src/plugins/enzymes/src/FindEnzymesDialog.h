@@ -23,26 +23,21 @@
 #define _U2_ENZYMES_DIALOG_H_
 
 #include <U2Gui/MainWindow.h>
-#include <U2Gui/RegionSelector.h>
 
 #include <ui_EnzymesSelectorWidget.h>
 #include <ui_FindEnzymesDialog.h>
 
 #include <U2Algorithm/EnzymeModel.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
-#else
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QTreeWidgetItem>
-#endif
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 namespace U2 {
 
 class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
+class RegionSelectorWithExludedRegion;
 
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
@@ -104,8 +99,7 @@ private:
     void saveSettings();
     ADVSequenceObjectContext*           seqCtx;
     EnzymesSelectorWidget*              enzSel;
-    RegionSelector*                     searchRegionSelector;
-    SimpleRegionSelector*               excludeRegionSelector;
+    RegionSelectorWithExludedRegion*    regionSelector;
 };
 
 class EnzymeTreeItem;

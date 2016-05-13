@@ -31,28 +31,10 @@
 
 class QComboBox;
 
+#include "RegionSelectorController.h"
+
 
 namespace U2 {
-
-class AbstractRegionSelector : public QWidget {
-    Q_OBJECT
-public:
-    AbstractRegionSelector(QWidget* parent, qint64 maxLen, bool isCircularSelectionAvailable = false)
-        : QWidget(parent),
-          maxLen(maxLen),
-          isCircularSelectionAvailable(isCircularSelectionAvailable) {}
-
-    virtual U2Region getRegion(bool *ok = NULL) const = 0;
-    virtual void setRegion(const U2Region& region) = 0;
-
-    virtual void reset() {
-        setRegion(U2Region(0, maxLen));
-    }
-
-protected:
-    qint64  maxLen;
-    bool    isCircularSelectionAvailable;
-};
 
 class RegionLineEdit : public QLineEdit {
     Q_OBJECT
@@ -72,47 +54,6 @@ private slots:
 private:
     const QString actionName;
     qint64 defaultValue;
-};
-
-class U2GUI_EXPORT SimpleRegionSelector : public AbstractRegionSelector {
-    Q_OBJECT
-public:
-    SimpleRegionSelector(QWidget* p, qint64 maxLen, bool isCircularSelectionAvailable = false);
-
-    U2Region getRegion(bool *ok = NULL) const;
-    void setRegion(const U2Region& value);
-
-    bool isWholeSequenceSelected() const; // check if it is needed
-
-    void setMaxLength(qint64 length);
-    void setMaxRegion();
-
-    bool hasError() const;
-    QString getErrorMessage() const;
-    void showErrorMessage() const;
-
-signals:
-    void si_regionChanged(const U2Region& newRegion);
-
-private slots:
-    void sl_onRegionChanged();
-    void sl_onValueEdited();
-
-protected:
-    void initLayout();
-    void connectSignals();
-
-    RegionLineEdit*       startEdit;
-    RegionLineEdit*       endEdit;
-};
-
-struct RegionPreset {
-    RegionPreset() {}
-    RegionPreset(const QString &text, const U2Region &region)
-        : text(text),
-          region(region) {}
-    QString text;
-    U2Region region;
 };
 
 class U2GUI_EXPORT RegionSelector : public QWidget {
@@ -141,28 +82,16 @@ public:
 signals:
     void si_regionChanged(const U2Region& newRegion);
 
-private slots:
-    void sl_onComboBoxIndexChanged(int index);
-    void sl_onRegionChanged();
-    void sl_onValueEdited();
-    void sl_onSelectionChanged(GSelection* selection);
-
 private:
     void initLayout();
-    void init(const QList<RegionPreset> &presetRegions);
-    void connectSignals();
 
-    // Returns circular region or the first selected. If none is selected, returns full sequence range.
-    U2Region getOneRegionFromSelection() const;
+    RegionSelectorController* controller;
 
     qint64                maxLen;
     RegionLineEdit *      startEdit;
     RegionLineEdit *      endEdit;
     QComboBox *           comboBox;
     bool                  isVertical;
-    QString               defaultItemText;
-    DNASequenceSelection *selection;
-    bool                  isCircularSelectionAvailable;
 };
 
 }//namespace
