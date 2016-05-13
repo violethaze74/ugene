@@ -32,9 +32,9 @@
 
 namespace U2 {
 
-const QString RegionSelectorSettings::WHOLE_SEQUENCE = QApplication::translate("RegionSelector", "Whole sequence");
-const QString RegionSelectorSettings::SELECTED_REGION = QApplication::translate("RegionSelector", "Selected region");
-const QString RegionSelectorSettings::CUSTOM_REGION = QApplication::translate("RegionSelector", "Custom region");
+const QString RegionSelectorSettings::WHOLE_SEQUENCE = QApplication::translate("RegionSelectorController", "Whole sequence");
+const QString RegionSelectorSettings::SELECTED_REGION = QApplication::translate("RegionSelectorController", "Selected region");
+const QString RegionSelectorSettings::CUSTOM_REGION = QApplication::translate("RegionSelectorController", "Custom region");
 
 
 RegionSelectorSettings::RegionSelectorSettings(qint64 maxLen,
@@ -178,9 +178,9 @@ bool RegionSelectorController::hasError() const {
 }
 
 namespace {
-const QString START_IS_INVALID = RegionSelectorController::tr("Invalid Start position of region");
-const QString END_IS_INVALID = RegionSelectorController::tr("Invalid End position of region");
-const QString REGION_IS_INVALID = RegionSelectorController::tr("Start position is greater than End position");
+const QString START_IS_INVALID = QApplication::translate("RegionSelectorController", "Invalid Start position of region");
+const QString END_IS_INVALID = QApplication::translate("RegionSelectorController", "Invalid End position of region");
+const QString REGION_IS_INVALID = QApplication::translate("RegionSelectorController", "Start position is greater than End position");
 }
 
 QString RegionSelectorController::getErrorMessage() const {
