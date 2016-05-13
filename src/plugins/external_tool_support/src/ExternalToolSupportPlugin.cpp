@@ -442,6 +442,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL));
     etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL));
+    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL));
 
     if (AppContext::getMainWindow()) {
         ExternalToolSupportAction* formatDBAction= new ExternalToolSupportAction(tr("BLAST make database..."), this, QStringList(ET_FORMATDB));

@@ -19,29 +19,33 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFileInfo>
+#include <QFileInfo>
 
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/CloneObjectTask.h>
+#include <U2Core/Counter.h>
+#include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DNATranslationImpl.h>
-#include <U2Formats/SCFFormat.h>
-#include <U2Core/Counter.h>
+#include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
-#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/AddDocumentTask.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/U2DbiRegistry.h>
+#include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Formats/SCFFormat.h>
 
 #include "ExportTasks.h"
 
@@ -130,5 +134,51 @@ void SaveMSA2SequencesTask::run() {
     f->storeDocument(doc.data(), stateInfo);
 }
 
-}//namespace
+SaveSequenceTask::SaveSequenceTask(const QPointer<U2SequenceObject> &sequence, const QString &url, const DocumentFormatId &formatId):
+    Task(tr("Save temporary sequence"), TaskFlags_NR_FOSE_COSC),
+    sequence(sequence),
+    url(url),
+    formatId(formatId),
+    locker(NULL),
+    cloneTask(NULL)
+{
+    SAFE_POINT_EXT(NULL != sequence, setError("Sequence is NULL"), );
+    SAFE_POINT_EXT(!url.isEmpty(), setError("URL is empty"), );
+}
 
+void SaveSequenceTask::prepare() {
+    locker = new StateLocker(sequence);
+    cloneTask = new CloneObjectTask(sequence, AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo), U2ObjectDbi::ROOT_FOLDER);
+    CHECK_OP(stateInfo, );
+    cloneTask->setSubtaskProgressWeight(50);
+    addSubTask(cloneTask);
+}
+
+QList<Task *> SaveSequenceTask::onSubTaskFinished(Task *subTask) {
+    QList<Task *> result;
+
+    if (subTask == cloneTask) {
+        delete locker;
+        locker = NULL;
+    }
+
+    CHECK_OP(stateInfo, result);
+
+    if (subTask == cloneTask) {
+        DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
+        SAFE_POINT_EXT(NULL != format, setError(tr("'%' format is not registered").arg(formatId)), result);
+
+        Document *document = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), url, stateInfo);
+        CHECK_OP(stateInfo, result);
+        document->setDocumentOwnsDbiResources(true);
+        document->addObject(cloneTask->takeResult());
+
+        SaveDocumentTask *saveTask = new SaveDocumentTask(document, NULL, GUrl(), SaveDocFlags(SaveDoc_Overwrite) | SaveDoc_DestroyAfter);
+        saveTask->setSubtaskProgressWeight(50);
+        result << saveTask;
+    }
+
+    return result;
+}
+
+}   // namespace U2

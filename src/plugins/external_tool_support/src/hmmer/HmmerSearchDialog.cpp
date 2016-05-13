@@ -152,7 +152,8 @@ void HmmerSearchDialog::getModelValues() {
     const CreateAnnotationModel &annModel = annotationsWidgetController->getModel();
 
     model.searchSettings.hmmProfileUrl = queryHmmFileEdit->text();
-    model.searchSettings.sequenceUrl = model.sequence->getDocument()->getURLString();
+    model.searchSettings.sequence = model.sequence;
+//    model.searchSettings.sequenceUrl = model.sequence->getDocument()->getURLString();
     model.searchSettings.annotationTable = annModel.getAnnotationObject();
 
     model.searchSettings.pattern.groupName = annModel.groupName;
@@ -164,16 +165,18 @@ void HmmerSearchDialog::getModelValues() {
 QString HmmerSearchDialog::checkModel() {
     QString ret;
 
+    if (model.searchSettings.hmmProfileUrl.isEmpty()) {
+        ret = tr("HMM profile is not set");
+        queryHmmFileEdit->setFocus();
+        return ret;
+    }
+
     if (!model.searchSettings.validate()) {
         ret = tr("Settings are invalid");
         return ret;
     }
 
     ret = annotationsWidgetController->validate();
-    if (!ret.isEmpty()) {
-        return ret;
-    }
-
     return ret;
 }
 

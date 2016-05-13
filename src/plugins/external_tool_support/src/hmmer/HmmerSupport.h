@@ -37,14 +37,17 @@ public:
 
     static const QString BUILD_TOOL;
     static const QString SEARCH_TOOL;
+    static const QString PHMMER_TOOL;
 
 private slots:
     void sl_buildProfile();
     void sl_search();
+    void sl_phmmerSearch();
 
 private:
     void initBuild();
     void initSearch();
+    void initPhmmer();
 };
 
 class HmmerMsaEditorContext : public GObjectViewWindowContext {

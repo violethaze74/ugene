@@ -19,54 +19,54 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HMMER_SEARCH_DIALOG_H_
-#define _U2_HMMER_SEARCH_DIALOG_H_
+#ifndef _U2_PHMMER_SEARCH_DIALOG_H_
+#define _U2_PHMMER_SEARCH_DIALOG_H_
+
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequence.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
 
-#include "HmmerSearchTask.h"
-#include "ui/Ui_HmmerSearchDialog.h"
+#include "PhmmerSearchSettings.h"
+#include "ui/ui_PhmmerSearchDialog.h"
 
 namespace U2 {
 
-class U2SequenceObject;
-
-class HmmerSearchDialogModel {
+class PhmmerSearchDialogModel {
 public:
-    HmmerSearchSettings         searchSettings;
-    QPointer<U2SequenceObject>  sequence;
+    PhmmerSearchSettings phmmerSettings;
+    QPointer<U2SequenceObject> dbSequence;
 };
 
-class HmmerSearchDialog : public QDialog, public Ui_HmmerSearchDialog {
+class PhmmerSearchDialog : public QDialog, public Ui_PhmmerSearchDialog {
     Q_OBJECT
 public:
-    HmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = NULL);
-
-    static const QString DOM_E_PLUS_PREFIX;
-    static const QString DOM_E_MINUS_PREFIX;
-    static const QString HMM_FILES_DIR_ID;
-    static const QString ANNOTATIONS_DEFAULT_NAME;
+    PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = NULL);
     
 private slots:
-    void sl_okButtonClicked();
+    void accept();
+    void sl_queryToolButtonClicked();
     void sl_useEvalTresholdsButtonChanged(bool checked);
     void sl_useScoreTresholdsButtonChanged(bool checked);
-    void sl_useExplicitScoreTresholdButton(bool checked);
+    void sl_domZCheckBoxChanged(int state);
     void sl_maxCheckBoxChanged(int state);
     void sl_domESpinBoxChanged(int newVal);
-    void sl_queryHmmFileToolButtonClicked();
-    void sl_domZCheckBoxChanged(int state);
     
 private:
     void setModelValues();
     void getModelValues();
     QString checkModel();
 
-    QButtonGroup                        useScoreTresholdGroup;
-    CreateAnnotationWidgetController *  annotationsWidgetController;
-    HmmerSearchDialogModel              model;
+    PhmmerSearchDialogModel model;
+    CreateAnnotationWidgetController *annotationsWidgetController;
+
+    static const QString    QUERY_FILES_DIR;
+    static const QString    DOM_E_PLUS_PREFIX;
+    static const QString    DOM_E_MINUS_PREFIX;
+    static const QString    ANNOTATIONS_DEFAULT_NAME;
+    static const int        ANNOTATIONS_WIDGET_LOCATION = 1;
 };
 
 }   // namespace U2
 
-#endif // _U2_HMMER_SEARCH_DIALOG_H_
+#endif // _U2_PHMMER_SEARCH_DIALOG_H_

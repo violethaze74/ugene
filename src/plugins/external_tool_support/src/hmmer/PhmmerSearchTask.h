@@ -19,33 +19,49 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HMMER_BUILD_TASK_H_
-#define _U2_HMMER_BUILD_TASK_H_
+#ifndef _U2_PHMMER_SEARCH_TASK_H_
+#define _U2_PHMMER_SEARCH_TASK_H_
 
+#include <U2Core/AnnotationCreationPattern.h>
 #include <U2Core/ExternalToolRunTask.h>
 
-#include "HmmerBuildSettings.h"
+#include "PhmmerSearchSettings.h"
 
 namespace U2 {
 
-class SaveAlignmentTask;
+class AnnotationTableObject;
+class HmmerParseSearchResultsTask;
+class SaveSequenceTask;
 
-class HmmerBuildTask : public ExternalToolRunTask {
+class PhmmerSearchTask : public ExternalToolSupportTask {
 public:
-    HmmerBuildTask(const HmmerBuildSettings &settings, const QString &stockholmMsaUrl);
+    PhmmerSearchTask(const PhmmerSearchSettings &settings);
 
-    const QString & getHmmProfileUrl() const;
-    static QString getReport(const Task *task, const HmmerBuildSettings &settings, const QString &msaUrl);
+    QList<SharedAnnotationData> getAnnotations() const;
 
 private:
+    void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
     QString generateReport() const;
 
-    static QStringList getArguments(const HmmerBuildSettings &settings, const QString &stockholmMsaUrl);
+    void prepareWorkingDir();
+    void removeTempDir() const;
+    QStringList getArguments() const;
 
-    HmmerBuildSettings settings;
-    const QString stockholmMsaUrl;
+    void prepareSequenceSaveTask();
+    void preparePhmmerTask();
+
+    PhmmerSearchSettings settings;
+
+    SaveSequenceTask *saveSequenceTask;
+    ExternalToolRunTask *phmmerTask;
+    HmmerParseSearchResultsTask *parseTask;
+    bool removeWorkingDir;
+
+    static const QString INPUT_SEQUENCE_FILENAME;
+    static const QString PER_DOMAIN_HITS_FILENAME;
 };
 
 }   // namespace U2
 
-#endif // _U2_HMMER_BUILD_TASK_H_
+#endif // _U2_PHMMER_SEARCH_TASK_H_

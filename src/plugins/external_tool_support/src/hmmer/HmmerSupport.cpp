@@ -24,9 +24,11 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/GObjectSelection.h>
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/ProjectView.h>
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -39,11 +41,13 @@
 #include "HmmerBuildDialog.h"
 #include "HmmerSearchDialog.h"
 #include "HmmerSupport.h"
+#include "PhmmerSearchDialog.h"
 
 namespace U2 {
 
 const QString HmmerSupport::BUILD_TOOL = "HMMER build";
 const QString HmmerSupport::SEARCH_TOOL = "HMMER search";
+const QString HmmerSupport::PHMMER_TOOL = "PHMMER search";
 
 HmmerSupport::HmmerSupport(const QString &name)
     : ExternalTool(name)
@@ -63,6 +67,10 @@ HmmerSupport::HmmerSupport(const QString &name)
 
     if (name == SEARCH_TOOL) {
         initSearch();
+    }
+
+    if (name == PHMMER_TOOL) {
+        initPhmmer();
     }
 }
 
@@ -87,34 +95,51 @@ void HmmerSupport::sl_buildProfile() {
     buildDialog->exec();
 }
 
+namespace {
+
 U2SequenceObject * getDnaSequenceObject() {
-    U2SequenceObject * seqObj = NULL;
-//    GObjectViewWindow * activeWnd = qobject_cast< GObjectViewWindow* >( AppContext::getMainWindow()->getMDIManager()->getActiveWindow() );
-//    if( NULL != activeWnd ) {
-//        AnnotatedDNAView * dnaView = qobject_cast< AnnotatedDNAView* >( activeWnd->getObjectView() );
-//        seqObj = NULL != dnaView ? dnaView->getSequenceInFocus()->getSequenceObject() : NULL;
-//    }
-//    if( NULL == seqObj ) {
-//        ProjectView * projView = AppContext::getProjectView();
-//        if( NULL != projView ) {
-//            const GObjectSelection * objSelection = projView->getGObjectSelection();
-//            GObject* obj = objSelection->getSelectedObjects().size() == 1 ? objSelection->getSelectedObjects().first() : NULL;
-//            seqObj = qobject_cast< U2SequenceObject* >( obj );
-//        }
-//    }
+    U2SequenceObject *seqObj = NULL;
+    GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
+    if (NULL != activeWindow) {
+        AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(activeWindow->getObjectView());
+        seqObj = (NULL != dnaView ? dnaView->getSequenceInFocus()->getSequenceObject() : NULL);
+    }
+
+    if (NULL == seqObj) {
+        ProjectView *projectView = AppContext::getProjectView();
+        if (NULL != projectView) {
+            const GObjectSelection *objSelection = projectView->getGObjectSelection();
+            GObject *obj = (objSelection->getSelectedObjects().size() == 1 ? objSelection->getSelectedObjects().first() : NULL);
+            seqObj = qobject_cast<U2SequenceObject *>(obj);
+        }
+    }
+
     return seqObj;
 }
 
-void HmmerSupport::sl_search() {
+}
 
+void HmmerSupport::sl_search() {
     U2SequenceObject *seqObj = getDnaSequenceObject();
-    if( NULL == seqObj ) {
-        QMessageBox::critical( NULL, tr( "Error!" ), tr( "Target sequence not selected: no opened annotated dna view" ) );
+    if (NULL == seqObj) {
+        QMessageBox::critical(NULL, tr("Error!"), tr("Target sequence not selected: no opened annotated dna view"));
         return;
     }
-    QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog( seqObj, p );
+
+    QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
+    QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqObj, parent);
     searchDlg->exec();
+}
+
+void HmmerSupport::sl_phmmerSearch() {
+    U2SequenceObject *seqObj = getDnaSequenceObject();
+    if (NULL == seqObj) {
+        QMessageBox::critical(NULL, tr("Error!"), tr("Target sequence not selected: no opened annotated dna view"));
+        return;
+    }
+    QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
+    QObjectScopedPointer<PhmmerSearchDialog> phmmerDialog = new PhmmerSearchDialog(seqObj, parent);
+    phmmerDialog->exec();
 }
 
 void HmmerSupport::initBuild() {
@@ -153,6 +178,26 @@ void HmmerSupport::initSearch() {
         QAction *searchAction = new QAction(tr("Search with HMMER3..."), this);
         searchAction->setObjectName(ToolsMenu::HMMER_SEARCH3);
         connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
+        ToolsMenu::addAction(ToolsMenu::HMMER_MENU, searchAction);
+    }
+}
+
+void HmmerSupport::initPhmmer() {
+#ifdef Q_OS_WIN
+    executableFileName = "phmmer.exe";
+#elif defined(Q_OS_UNIX)
+    executableFileName = "phmmer";
+#endif
+
+    validationArguments << "-h";
+    validMessage = "phmmer";
+    description = tr("<i>PHMMER search</i> searches a protein sequence against a protein database.");
+
+    MainWindow *mainWindow = AppContext::getMainWindow();
+    if (NULL != mainWindow) {
+        QAction *searchAction = new QAction(tr("Search with phmmer..."), this);
+        searchAction->setObjectName(ToolsMenu::HMMER_SEARCH3P);
+        connect(searchAction, SIGNAL(triggered()), SLOT(sl_phmmerSearch()));
         ToolsMenu::addAction(ToolsMenu::HMMER_MENU, searchAction);
     }
 }

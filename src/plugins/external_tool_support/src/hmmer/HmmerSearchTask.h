@@ -24,63 +24,13 @@
 
 #include <U2Core/ExternalToolRunTask.h>
 
+#include "HmmerSearchSettings.h"
+
 namespace U2 {
 
 class AnnotationTableObject;
 class HmmerParseSearchResultsTask;
-
-class AnnotationCreationPattern {
-public:
-    AnnotationCreationPattern();
-
-    QString annotationName;
-    QString groupName;
-    QString description;
-    U2FeatureType type;
-};
-
-class HmmerSearchSettings {
-public:
-    enum BitCutoffs {
-        None,                   // disabled
-        p7H_GA,                 // gathering thresholds available
-        p7H_TC,                 // trusted cutoffs available
-        p7H_NC                  // noise cutoffs available
-    };
-
-    HmmerSearchSettings();
-
-    bool validate() const;
-
-    double e;                   // -E: report sequences <= this e-value treshold in output
-    double t;                   // -T: report sequences >= this score treshold in output
-    double z;                   // -Z: set # of camparisons done, for e-value calculation
-    double domE;                // --domE: report domains <= this e-value treshold in output
-    double domT;                // --domT: report domains >= this score cutoff in output
-    double domZ;                // --domZ: set number of significant seqs, for domain e-value calibration
-    BitCutoffs useBitCutoffs;   // --cut_ga: use profile's GA gathering cutoffs to set -T, --domT
-                                // --cut_nc: use profile's NC noising cutoffs to set -T, --domT
-                                // --cut_tc: use profile's TC trusted cutoffs to set -T, --domT
-
-    double f1;                  // --F1: Stage 1 (MSV) threshold: promote hits w/ P <= F1
-    double f2;                  // --F2: Stage 2 (Vit) threshold: promote hits w/ P <= F2
-    double f3;                  // --F3: Stage 3 (Fwd) threshold: promote hits w/ P <= F3
-
-    bool doMax;                 // --max: Turn all heuristic filters off ( less speed more power )
-    bool noBiasFilter;          // --nobias: turn off composition bias filter
-    bool noNull2;               // --nonull2: turn off biased composition score corrections
-
-    int seed;                   // --seed : set RNG seed ( if 0: one-time arbitrary seed )
-
-    QString workingDir;
-    QString hmmProfileUrl;
-    QString sequenceUrl;
-
-    AnnotationTableObject *annotationTable;
-    AnnotationCreationPattern pattern;
-
-    static const double OPTION_NOT_SET;
-};
+class SaveSequenceTask;
 
 class HmmerSearchTask : public ExternalToolSupportTask {
 public:
@@ -94,14 +44,21 @@ private:
     QString generateReport() const;
 
     void prepareWorkingDir();
+    void removeTempDir() const;
     QStringList getArguments() const;
+
+    void prepareSequenceSaveTask();
+    void prepareHmmerTask();
+    void prepareParseTask();
 
     HmmerSearchSettings settings;
 
+    SaveSequenceTask *saveSequenceTask;
     ExternalToolRunTask *hmmerTask;
     HmmerParseSearchResultsTask *parseTask;
+    bool removeWorkingDir;
 
-    static const QString PER_SEQUENCE_HITS_FILENAME;
+    static const QString INPUT_SEQUENCE_FILENAME;
     static const QString PER_DOMAIN_HITS_FILENAME;
 };
 

@@ -22,33 +22,32 @@
 #include <QCoreApplication>
 #include <QDir>
 
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/CreateAnnotationTask.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "HmmerParseSearchResultsTask.h"
-#include "HmmerSearchTask.h"
 #include "HmmerSupport.h"
+#include "PhmmerSearchTask.h"
 #include "utils/ExportTasks.h"
 
 namespace U2 {
 
-const QString HmmerSearchTask::INPUT_SEQUENCE_FILENAME = "input_sequence.fa";
-const QString HmmerSearchTask::PER_DOMAIN_HITS_FILENAME = "per_domain_hits.txt";
+const QString PhmmerSearchTask::INPUT_SEQUENCE_FILENAME = "input_sequence.fa";
+const QString PhmmerSearchTask::PER_DOMAIN_HITS_FILENAME = "per_domain_hits.txt";
 
-HmmerSearchTask::HmmerSearchTask(const HmmerSearchSettings &settings)
-    : ExternalToolSupportTask(tr("HMMER search"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
+PhmmerSearchTask::PhmmerSearchTask(const PhmmerSearchSettings &settings)
+    : ExternalToolSupportTask(tr("Search with phmmer"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
-      saveSequenceTask(NULL),
-      hmmerTask(NULL),
+      phmmerTask(NULL),
       parseTask(NULL),
       removeWorkingDir(false)
 {
@@ -56,33 +55,34 @@ HmmerSearchTask::HmmerSearchTask(const HmmerSearchSettings &settings)
     SAFE_POINT_EXT(settings.validate(), setError("Settings are invalid"), );
 }
 
-QList<SharedAnnotationData> HmmerSearchTask::getAnnotations() const {
+QList<SharedAnnotationData> PhmmerSearchTask::getAnnotations() const {
     CHECK(NULL != parseTask, QList<SharedAnnotationData>());
     return parseTask->getAnnotations();
 }
 
-void HmmerSearchTask::prepare() {
+void PhmmerSearchTask::prepare() {
     prepareWorkingDir();
 
-    if (settings.sequenceUrl.isEmpty()) {
-        SAFE_POINT_EXT(NULL != settings.sequence, setError(L10N::nullPointerError("sequence object")), );
+    if (settings.targetSequenceUrl.isEmpty()) {
+        SAFE_POINT_EXT(NULL != settings.targetSequence, setError(L10N::nullPointerError("sequence object")), );
         prepareSequenceSaveTask();
         addSubTask(saveSequenceTask);
     } else {
-        prepareHmmerTask();
-        addSubTask(hmmerTask);
+        preparePhmmerTask();
+        addSubTask(phmmerTask);
     }
 }
 
-QList<Task *> HmmerSearchTask::onSubTaskFinished(Task *subTask) {
+QList<Task *> PhmmerSearchTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> result;
     CHECK_OP(stateInfo, result);
 
     if (subTask == saveSequenceTask) {
-        prepareHmmerTask();
-        result << hmmerTask;
-    } else if (subTask == hmmerTask) {
-        prepareParseTask();
+        preparePhmmerTask();
+        result << phmmerTask;
+    } else if (subTask == phmmerTask) {
+        parseTask = new HmmerParseSearchResultsTask(settings.workingDir + "/" + PER_DOMAIN_HITS_FILENAME, settings.pattern);
+        parseTask->setSubtaskProgressWeight(5);
         result << parseTask;
     } else if (subTask == parseTask) {
         removeTempDir();
@@ -94,10 +94,10 @@ QList<Task *> HmmerSearchTask::onSubTaskFinished(Task *subTask) {
     return result;
 }
 
-QString HmmerSearchTask::generateReport() const {
+QString PhmmerSearchTask::generateReport() const {
     QString res;
     res += "<table>";
-    res += "<tr><td><b>" + tr("HMM profile used: ") + "</b></td><td>" + QFileInfo(settings.hmmProfileUrl).absoluteFilePath() + "</td></tr>";
+    res += "<tr><td><b>" + tr("Query sequence: ") + "</b></td><td>" + QFileInfo(settings.querySequenceUrl).absoluteFilePath() + "</td></tr>";
 
     if (hasError() || isCanceled()) {
         res += "<tr><td><b>" + tr("Task was not finished") + "</b></td><td></td></tr>";
@@ -118,7 +118,7 @@ QString HmmerSearchTask::generateReport() const {
 
 namespace {
 
-const QString HMMER_TEMP_DIR = "hmmer";
+const QString PHMMER_TEMP_DIR = "phmmer";
 
 QString getTaskTempDirName(const QString &prefix, Task *task) {
     return prefix + QString::number(task->getTaskId()) + "_" +
@@ -129,10 +129,10 @@ QString getTaskTempDirName(const QString &prefix, Task *task) {
 
 }
 
-void HmmerSearchTask::prepareWorkingDir() {
+void PhmmerSearchTask::prepareWorkingDir() {
     if (settings.workingDir.isEmpty()) {
-        QString tempDirName = getTaskTempDirName("hmmer_search_", this);
-        settings.workingDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(HMMER_TEMP_DIR) + "/" + tempDirName;
+        QString tempDirName = getTaskTempDirName("phmmer_search_", this);
+        settings.workingDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(PHMMER_TEMP_DIR) + "/" + tempDirName;
         removeWorkingDir = true;
     }
 
@@ -148,47 +148,31 @@ void HmmerSearchTask::prepareWorkingDir() {
     }
 }
 
-void HmmerSearchTask::removeTempDir() const {
+void PhmmerSearchTask::removeTempDir() const {
     CHECK(removeWorkingDir, );
     U2OpStatusImpl os;
     ExternalToolSupportUtils::removeTmpDir(settings.workingDir, os);
 }
 
-QStringList HmmerSearchTask::getArguments() const {
+QStringList PhmmerSearchTask::getArguments() const {
     QStringList arguments;
 
     arguments << "-E" << QString::number(settings.e);
-    if (HmmerSearchSettings::OPTION_NOT_SET != settings.t) {
+    if (PhmmerSearchSettings::OPTION_NOT_SET != settings.t) {
         arguments << "-T" << QString::number(settings.t);
     }
 
-    if (HmmerSearchSettings::OPTION_NOT_SET != settings.z) {
+    if (PhmmerSearchSettings::OPTION_NOT_SET != settings.z) {
         arguments << "-Z" << QString::number(settings.z);
     }
 
     arguments << "--domE" << QString::number(settings.domE);
-    if (HmmerSearchSettings::OPTION_NOT_SET != settings.domT) {
+    if (PhmmerSearchSettings::OPTION_NOT_SET != settings.domT) {
         arguments << "--domT" << QString::number(settings.domT);
     }
 
-    if (HmmerSearchSettings::OPTION_NOT_SET != settings.domZ) {
+    if (PhmmerSearchSettings::OPTION_NOT_SET != settings.domZ) {
         arguments << "--domZ" << QString::number(settings.domZ);
-    }
-
-    switch (settings.useBitCutoffs) {
-    case HmmerSearchSettings::None:
-        break;
-    case HmmerSearchSettings::p7H_GA:
-        arguments << "--cut_ga";
-        break;
-    case HmmerSearchSettings::p7H_TC:
-        arguments << "--cut_nc";
-        break;
-    case HmmerSearchSettings::p7H_NC:
-        arguments << "--cut_tc";
-        break;
-    default:
-        FAIL(tr("Unknown option controlling model-specific thresholding"), arguments);
     }
 
     arguments << "--F1" << QString::number(settings.f1);
@@ -207,32 +191,38 @@ QStringList HmmerSearchTask::getArguments() const {
         arguments << "--nonull2";
     }
 
+    arguments << "--EmL" << QString::number(settings.eml);
+    arguments << "--EmN" << QString::number(settings.emn);
+    arguments << "--EvL" << QString::number(settings.evl);
+    arguments << "--EvN" << QString::number(settings.evn);
+    arguments << "--EfL" << QString::number(settings.efl);
+    arguments << "--EfN" << QString::number(settings.efn);
+    arguments << "--Eft" << QString::number(settings.eft);
+
+    arguments << "--popen" << QString::number(settings.popen);
+    arguments << "--pextend" << QString::number(settings.pextend);
+
     arguments << "--seed" << QString::number(settings.seed);
     arguments << "--cpu" << QString::number(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
     arguments << "--noali";
     arguments << "--domtblout" << settings.workingDir + "/" + PER_DOMAIN_HITS_FILENAME;
 
-    arguments << settings.hmmProfileUrl;
-    arguments << settings.sequenceUrl;
+    arguments << settings.querySequenceUrl;
+    arguments << settings.targetSequenceUrl;
 
     return arguments;
 }
 
-void HmmerSearchTask::prepareSequenceSaveTask() {
-    settings.sequenceUrl = settings.workingDir + "/" + INPUT_SEQUENCE_FILENAME;
-    saveSequenceTask = new SaveSequenceTask(settings.sequence, settings.sequenceUrl, BaseDocumentFormats::FASTA);
+void PhmmerSearchTask::prepareSequenceSaveTask() {
+    settings.targetSequenceUrl = settings.workingDir + "/" + INPUT_SEQUENCE_FILENAME;
+    saveSequenceTask = new SaveSequenceTask(settings.targetSequence, settings.targetSequenceUrl, BaseDocumentFormats::FASTA);
     saveSequenceTask->setSubtaskProgressWeight(5);
 }
 
-void HmmerSearchTask::prepareHmmerTask() {
-    hmmerTask = new ExternalToolRunTask(HmmerSupport::SEARCH_TOOL, getArguments(), new ExternalToolLogParser);
-    hmmerTask->setSubtaskProgressWeight(85);
-}
-
-void HmmerSearchTask::prepareParseTask() {
-    parseTask = new HmmerParseSearchResultsTask(settings.workingDir + "/" + PER_DOMAIN_HITS_FILENAME, settings.pattern);
-    parseTask->setSubtaskProgressWeight(5);
+void PhmmerSearchTask::preparePhmmerTask() {
+    phmmerTask = new ExternalToolRunTask(HmmerSupport::PHMMER_TOOL, getArguments(), new ExternalToolLogParser);
+    phmmerTask->setSubtaskProgressWeight(85);
 }
 
 }   // namespace U2

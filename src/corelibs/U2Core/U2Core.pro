@@ -237,7 +237,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/U2SequenceUtils.h \
            src/util/U2VariationUtils.h \
            src/util/VariationPropertiesUtils.h \
-    src/dbi/DbiConnection.h
+    src/dbi/DbiConnection.h \
+    src/util/AnnotationCreationPattern.h
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
            src/cmdline/CMDLineUtils.cpp \
@@ -430,6 +431,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/U2ObjectTypeUtils.cpp \
            src/util/U2SequenceUtils.cpp \
            src/util/U2VariationUtils.cpp \
-    src/dbi/DbiConnection.cpp
+    src/dbi/DbiConnection.cpp \
+    src/util/AnnotationCreationPattern.cpp
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

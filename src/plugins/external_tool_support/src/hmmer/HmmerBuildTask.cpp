@@ -29,49 +29,6 @@
 
 namespace U2 {
 
-HmmerBuildSettings::HmmerBuildSettings()
-    : modelConstructionStrategy(p7_ARCH_FAST),
-      relativeSequenceWeightingStrategy(p7_WGT_PB),
-      effectiveSequenceWeightingStrategy(p7_EFFN_ENTROPY),
-      eset(-1.0),
-      seed(42),
-      symfrac(0.5),
-      fragtresh(0.5),
-      wid(0.62),
-      ere(-1.0),
-      esigma(45.0),
-      eid(0.62),
-      eml(200),
-      emn(200),
-      evl(200),
-      evn(200),
-      efl(100),
-      efn(200),
-      eft(0.04)
-{
-
-}
-
-bool HmmerBuildSettings::validate() const {
-    CHECK(0 <= symfrac && symfrac <= 1, false);
-    CHECK(0 <= wid && wid <= 1, false);
-    CHECK( 0 < eset, false);
-    CHECK(-1 == ere || 0 < ere, false);
-    CHECK(0 <= fragtresh && fragtresh <= 1, false);
-    CHECK(0 < esigma, false);
-    CHECK(0 <= eid && eid <= 1, false);
-    CHECK(0 < eml, false);
-    CHECK(0 < emn, false);
-    CHECK(0 < evl, false);
-    CHECK(0 < evn, false);
-    CHECK(0 < efl, false);
-    CHECK(0 < efn, false);
-    CHECK(0 < wid && wid < 1, false);
-    CHECK(0 < seed, false);
-
-    return true;
-}
-
 HmmerBuildTask::HmmerBuildTask(const HmmerBuildSettings &settings, const QString &msaUrl)
     : ExternalToolRunTask(HmmerSupport::BUILD_TOOL, getArguments(settings, msaUrl), new ExternalToolLogParser()),
       settings(settings),

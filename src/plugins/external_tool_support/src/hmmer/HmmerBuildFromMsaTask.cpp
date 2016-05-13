@@ -47,7 +47,7 @@ const QString & HmmerBuildFromMsaTask::getHmmUrl() const {
 
 namespace {
 
-const QString HMMER_TEMP_DIR = "hmmer";
+const QString PHMMER_TEMP_DIR = "hmmer";
 
 QString getTaskTempDirName(const QString &prefix, Task *task) {
     return prefix + QString::number(task->getTaskId()) + "_" +
@@ -60,7 +60,7 @@ QString getTaskTempDirName(const QString &prefix, Task *task) {
 
 void HmmerBuildFromMsaTask::prepare() {
     QString tempDirName = getTaskTempDirName("hmmer_build_", this);
-    QString tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(HMMER_TEMP_DIR) + "/" + tempDirName;
+    QString tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(PHMMER_TEMP_DIR) + "/" + tempDirName;
     QString msaUrl = tempDirPath + "/" + GUrlUtils::fixFileName(msa.getName()) + ".sto";
 
     QDir tempDir(tempDirPath);

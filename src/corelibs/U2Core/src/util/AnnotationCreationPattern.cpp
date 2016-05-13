@@ -19,33 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HMMER_BUILD_TASK_H_
-#define _U2_HMMER_BUILD_TASK_H_
-
-#include <U2Core/ExternalToolRunTask.h>
-
-#include "HmmerBuildSettings.h"
+#include "AnnotationCreationPattern.h"
 
 namespace U2 {
 
-class SaveAlignmentTask;
+AnnotationCreationPattern::AnnotationCreationPattern()
+    : type(U2FeatureTypes::MiscFeature)
+{
 
-class HmmerBuildTask : public ExternalToolRunTask {
-public:
-    HmmerBuildTask(const HmmerBuildSettings &settings, const QString &stockholmMsaUrl);
-
-    const QString & getHmmProfileUrl() const;
-    static QString getReport(const Task *task, const HmmerBuildSettings &settings, const QString &msaUrl);
-
-private:
-    QString generateReport() const;
-
-    static QStringList getArguments(const HmmerBuildSettings &settings, const QString &stockholmMsaUrl);
-
-    HmmerBuildSettings settings;
-    const QString stockholmMsaUrl;
-};
+}
 
 }   // namespace U2
-
-#endif // _U2_HMMER_BUILD_TASK_H_
