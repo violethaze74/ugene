@@ -73,33 +73,30 @@ void FindEnzymesDialogFiller::commonScenario() {
     }
 
     if (searchStart != -1 && searchEnd != -1) {
-        QWidget* regionSelector = GTWidget::findWidget(os, "range_selector");
+        QWidget* regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
         GT_CHECK(regionSelector != NULL, "range_selector not found");
 
-        QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "start_edit_line", regionSelector);
-        GT_CHECK(start != NULL, "start_edit_line of 'Search In' region not found");
+        QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", regionSelector);
+        GT_CHECK(start != NULL, "startLineEdit of 'Search In' region not found");
         GTLineEdit::setText(os, start, QString::number(searchStart));
 
-        QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "end_edit_line", regionSelector);
+        QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", regionSelector);
         GTWidget::click(os, end);
-        GT_CHECK(end != NULL, "end_edit_line of 'Search In' region not found");
+        GT_CHECK(end != NULL, "endLineEdit of 'Search In' region not found");
         GTLineEdit::setText(os, end, QString::number(searchEnd));
     }
 
     if (excludeStart != -1 && excludeEnd != -1) {
-        QCheckBox* exclude = GTWidget::findExactWidget<QCheckBox*>(os, "excludeRegionBox");
+        QCheckBox* exclude = GTWidget::findExactWidget<QCheckBox*>(os, "excludeCheckBox");
         GTCheckBox::setChecked(os, exclude);
 
-        QWidget* regionSelector = GTWidget::findWidget(os, "simple_range_selector");
-        GT_CHECK(regionSelector != NULL, "simple_range_selector not found");
-
-        QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "start_edit_line", regionSelector);
-        GT_CHECK(start != NULL, "start_edit_line of 'Exclude' region not found");
+        QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "excludeStartLineEdit");
+        GT_CHECK(start != NULL, "excludeStartLineEdit of 'Exclude' region not found");
         GTLineEdit::setText(os, start, QString::number(excludeStart));
 
-        QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "end_edit_line", regionSelector);
+        QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "excludeEndLinEdit");
         GTWidget::click(os, end);
-        GT_CHECK(end != NULL, "end_edit_line of 'Exclude' region not found");
+        GT_CHECK(end != NULL, "excludeEndLinEdit of 'Exclude' region not found");
         GTLineEdit::setText(os, end, QString::number(excludeEnd));
     }
 

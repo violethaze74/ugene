@@ -39,6 +39,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/RegionSelectorWithExcludedRegion.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
@@ -523,13 +524,11 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* sctx)
     maxHitSB->setMinimum(ANY_VALUE);
     minHitSB->setMinimum(ANY_VALUE);
 
-    excludeRegionSelector = new SimpleRegionSelector(this, sctx->getSequenceLength(), sctx->getSequenceObject()->isCircular());
-    excludeRegionSelector->setEnabled(false);
-    excludeRegionLayout->addWidget(excludeRegionSelector);
-    connect(excludeRegionBox, SIGNAL(toggled(bool)), excludeRegionSelector, SLOT(setEnabled(bool)));
-
-    searchRegionSelector = new RegionSelector(this, sctx->getSequenceLength(), false, sctx->getSequenceSelection(), sctx->getSequenceObject()->isCircular());
-    searchRegionLayout->insertWidget(0, searchRegionSelector);
+    regionSelector = new RegionSelectorWithExludedRegion(this,
+                                                         sctx->getSequenceLength(),
+                                                         sctx->getSequenceSelection(),
+                                                         sctx->getSequenceObject()->isCircular());
+    searchRegionLayout->addWidget(regionSelector);
 
     initSettings();
 
@@ -554,30 +553,12 @@ void FindEnzymesDialog::sl_onSelectionModified(int total, int nChecked) {
 void FindEnzymesDialog::accept() {
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
 
-    bool isRegionOk = false;
-    U2Region searchRegion = searchRegionSelector->getRegion(&isRegionOk);
-    if (!isRegionOk) {
-        // TODO: make the behaviour similar to ExcludeRegion search
-        searchRegionSelector->showErrorMessage();
+    if (regionSelector->hasError()) {
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search' region!"), QMessageBox::Ok, this);
+        msgBox->setInformativeText(regionSelector->getErrorMessage());
+        msgBox->exec();
+        CHECK(!msgBox.isNull(), );
         return;
-    }
-
-    if (excludeRegionBox->isChecked()){
-        if (excludeRegionSelector->hasError()) {
-            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Critical, L10N::errorTitle(), tr("Invalid 'Exclude' region!"), QMessageBox::Ok, this);
-            msgBox->setInformativeText(excludeRegionSelector->getErrorMessage());
-            msgBox->exec();
-            CHECK(!msgBox.isNull(), );
-            return;
-        }
-        U2Region excluded = excludeRegionSelector->getRegion();
-        if (excluded.contains(searchRegion)) {
-            QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Critical, L10N::errorTitle(), tr("Invalid region to search in!"), QMessageBox::Ok, this);
-            msgBox->setInformativeText(tr("'Exclude' region contains 'Search In' region. Search region is empty."));
-            msgBox->exec();
-            CHECK(!msgBox.isNull(), );
-            return;
-        }
     }
 
     if (selectedEnzymes.isEmpty()) {
@@ -624,7 +605,7 @@ void FindEnzymesDialog::initSettings()
 
     U2Region searchRegion = AppContext::getSettings()->getValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(U2Region())).value<U2Region>();
     if (!searchRegion.isEmpty() && U2Region(0, seqCtx->getSequenceLength()).contains(searchRegion)) {
-        searchRegionSelector->setCustomRegion(searchRegion);
+        regionSelector->setIncludeRegion(searchRegion);
     }
 
     QString exludedRegionStr = AppContext::getSettings()->getValue(EnzymeSettings::EXCLUDED_REGION, "").toString();
@@ -635,11 +616,11 @@ void FindEnzymesDialog::initSettings()
         if (!location->isEmpty()) {
             excludeRegionOn = true;
             const U2Region& range = location->regions.first();
-            excludeRegionSelector->setRegion(range);
+            regionSelector->setExcludeRegion(range);
         }
     }
 
-    excludeRegionBox->setChecked(excludeRegionOn);
+    regionSelector->setExcludedCheckboxChecked(excludeRegionOn);
 
     filterGroupBox->setChecked(useHitCountControl);
     if (useHitCountControl) {
@@ -663,14 +644,11 @@ void FindEnzymesDialog::saveSettings()
     }
 
     QVector<U2Region> range;
-    if (excludeRegionBox->isChecked()) {
-        U2Region r = excludeRegionSelector->getRegion();//todo add check on wrong region
-        if (r.length != 0) {
-            range.append(r);
-        }
+    if (regionSelector->getExcludeRegion() != U2Region()) {
+        range.append(regionSelector->getExcludeRegion());
     }
     AppContext::getSettings()->setValue(EnzymeSettings::EXCLUDED_REGION, QVariant::fromValue(range) );
-    AppContext::getSettings()->setValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(searchRegionSelector->getRegion()) );
+    AppContext::getSettings()->setValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(regionSelector->getIncludeRegion()) );
 
     enzSel->saveSettings();
 

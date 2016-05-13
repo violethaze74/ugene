@@ -73,6 +73,8 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/ProjectTreeItemSelectorDialogImpl.h \
            src/util/RangeSelector.h \
            src/util/RegionSelector.h \
+           src/util/RegionSelectorController.h \
+           src/util/RegionSelectorWithExcludedRegion.h \
            src/util/RemovePartFromSequenceDialogController.h \
            src/util/SaveDocumentController.h \
            src/util/ScaleBar.h \
@@ -139,6 +141,7 @@ FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/MultipartDocFormatConfiguratorWidget.ui \
          src/util/ProjectTreeItemSelectorDialogBase.ui \
          src/util/RangeSelectionDialog.ui \
+         src/util/RegionSelectorWithExcludedRegion.ui \
          src/util/RemovePartFromSequenceDialog.ui \
          src/util/ScriptEditorDialog.ui \
          src/util/SearchGenbankSequenceDialog.ui \
@@ -216,6 +219,8 @@ SOURCES += src/MainWindow.cpp \
            src/util/ProjectTreeItemSelectorDialog.cpp \
            src/util/RangeSelector.cpp \
            src/util/RegionSelector.cpp \
+           src/util/RegionSelectorController.cpp \
+           src/util/RegionSelectorWithExcludedRegion.cpp \
            src/util/RemovePartFromSequenceDialogController.cpp \
            src/util/SaveDocumentController.cpp \
            src/util/ScaleBar.cpp \
