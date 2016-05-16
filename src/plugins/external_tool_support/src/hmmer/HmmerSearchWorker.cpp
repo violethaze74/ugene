@@ -126,7 +126,7 @@ void HmmerSearchWorkerFactory::init() {
     }
 
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setIconPath(":/hmm3/images/hmmer_16.png");
+    proto->setIconPath(":/external_tool_support/images/hmmer.png");
     proto->setPrompter(new HmmerSearchPrompter());
     proto->addExternalTool(HmmerSupport::SEARCH_TOOL);
     WorkflowEnv::getProtoRegistry()->registerProto(Descriptor("hmmer3", HmmerSearchWorker::tr("HMMER3 Tools"), ""), proto);

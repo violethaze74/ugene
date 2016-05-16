@@ -215,7 +215,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectView *view) {
 
     GObjectViewAction *action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
     action->setObjectName("Build HMMER3 profile");
-    action->setIcon(QIcon(":/hmm3/images/hmmer_16.png"));
+    action->setIcon(QIcon(":/external_tool_support/images/hmmer.png"));
     connect(action, SIGNAL(triggered()), SLOT(sl_build()));
     addViewAction(action);
 }
@@ -256,7 +256,7 @@ void HmmerAdvContext::initViewContext(GObjectView * view) {
     AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(view);
     SAFE_POINT(NULL != adv, "AnnotatedDNAView is NULL", );
 
-    ADVGlobalAction *searchAction = new ADVGlobalAction(adv, QIcon(":/hmm3/images/hmmer_16.png"), tr("Find HMM signals with HMMER3..."), 70);
+    ADVGlobalAction *searchAction = new ADVGlobalAction(adv, QIcon(":/external_tool_support/images/hmmer.png"), tr("Find HMM signals with HMMER3..."), 70);
     searchAction->setObjectName("Find HMM signals with HMMER3");
     connect(searchAction, SIGNAL(triggered()), SLOT(sl_search()));
 }
