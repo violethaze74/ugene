@@ -150,15 +150,10 @@ void HmmerSearchDialog::getModelValues() {
     model.searchSettings.seed = seedSpinBox->value();
 
     const CreateAnnotationModel &annModel = annotationsWidgetController->getModel();
-
+    model.searchSettings.pattern = annotationsWidgetController->getAnnotationPattern();
     model.searchSettings.hmmProfileUrl = queryHmmFileEdit->text();
     model.searchSettings.sequence = model.sequence;
     model.searchSettings.annotationTable = annModel.getAnnotationObject();
-
-    model.searchSettings.pattern.groupName = annModel.groupName;
-    model.searchSettings.pattern.annotationName = annModel.data->name;
-    model.searchSettings.pattern.type = annModel.data->type;
-    model.searchSettings.pattern.description = annModel.description;
 }
 
 QString HmmerSearchDialog::checkModel() {

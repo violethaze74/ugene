@@ -145,13 +145,10 @@ void PhmmerSearchDialog::getModelValues() {
     model.phmmerSettings.seed = seedSpinBox->value();
 
     const CreateAnnotationModel &annModel = annotationsWidgetController->getModel();
+    model.phmmerSettings.pattern = annotationsWidgetController->getAnnotationPattern();
     model.phmmerSettings.annotationTable = annModel.getAnnotationObject();
     model.phmmerSettings.querySequenceUrl = queryLineEdit->text();
     model.phmmerSettings.targetSequence = model.dbSequence;
-
-    model.phmmerSettings.pattern.annotationName = annModel.data->name;
-    model.phmmerSettings.pattern.type = annModel.data->type;
-    model.phmmerSettings.pattern.description = annModel.description;
     model.phmmerSettings.pattern.groupName = annModel.groupName;
 }
 

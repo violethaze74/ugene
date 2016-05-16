@@ -96,7 +96,7 @@ void HmmerSearchWorkerFactory::init() {
          a << new Attribute(dtd, BaseTypes::NUM_TYPE(), false, QVariant((double)0.0));
     }
 
-    Descriptor desc(HmmerSearchWorkerFactory::ACTOR, HmmerSearchWorker::tr("HMMER Search"),
+    Descriptor desc(HmmerSearchWorkerFactory::ACTOR, HmmerSearchWorker::tr("HMM3 Search"),
         HmmerSearchWorker::tr("Searches each input sequence for significantly similar sequence matches to all specified HMM profiles."
         " In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
