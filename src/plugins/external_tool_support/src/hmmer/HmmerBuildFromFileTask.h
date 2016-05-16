@@ -44,6 +44,8 @@ private:
     void prepareConvertTask();
     void prepareBuildTask(const QString &stockholmMsaUrl);
 
+    void removeTempDir();
+
     ConvertAlignment2Stockholm *convertTask;
     HmmerBuildTask *buildTask;
 

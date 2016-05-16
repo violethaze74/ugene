@@ -74,6 +74,7 @@ public:
     int efn;                            // --EfN. number of sequences for forward exp tail mu fit
     double eft;                         // --Eft. tail mass for forward exponential tail mu fit
 
+    QString workingDir;
     QString profileUrl;
 };
 

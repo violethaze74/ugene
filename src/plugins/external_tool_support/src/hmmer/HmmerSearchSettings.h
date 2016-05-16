@@ -23,6 +23,7 @@
 #define _U2_HMMER_SEARCH_SETTINGS_H_
 
 #include <U2Core/AnnotationCreationPattern.h>
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNASequenceObject.h>
 
 namespace U2 {
@@ -67,7 +68,7 @@ public:
     QString sequenceUrl;
     QPointer<U2SequenceObject> sequence;
 
-    AnnotationTableObject *annotationTable;
+    QPointer<AnnotationTableObject> annotationTable;
     AnnotationCreationPattern pattern;
 
     static const double OPTION_NOT_SET;

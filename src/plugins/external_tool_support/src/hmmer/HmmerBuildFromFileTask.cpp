@@ -21,6 +21,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ConvertAlignment2StockholmTask.h"
@@ -59,6 +60,8 @@ QList<Task *> HmmerBuildFromFileTask::onSubTaskFinished(Task *subTask) {
     if (subTask == convertTask) {
         prepareBuildTask(convertTask->getResultUrl());
         result << buildTask;
+    } else if (subTask == buildTask) {
+        removeTempDir();
     }
 
     return result;
@@ -82,13 +85,21 @@ bool HmmerBuildFromFileTask::isStockholm() {
 }
 
 void HmmerBuildFromFileTask::prepareConvertTask() {
-    convertTask = new ConvertAlignment2Stockholm(msaUrl);
+    convertTask = new ConvertAlignment2Stockholm(msaUrl, settings.workingDir);
     convertTask->setSubtaskProgressWeight(10);
 }
 
 void HmmerBuildFromFileTask::prepareBuildTask(const QString &stockholmMsaUrl) {
     buildTask = new HmmerBuildTask(settings, stockholmMsaUrl);
+    setListenerForTask(buildTask);
     buildTask->setSubtaskProgressWeight(90);
+}
+
+void HmmerBuildFromFileTask::removeTempDir() {
+    if (settings.workingDir.isEmpty()) {
+        U2OpStatusImpl os;
+        ExternalToolSupportUtils::removeTmpDir(settings.workingDir, os);
+    }
 }
 
 }   // namespace U2

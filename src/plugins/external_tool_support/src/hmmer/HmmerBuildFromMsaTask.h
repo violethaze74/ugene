@@ -29,8 +29,9 @@
 namespace U2 {
 
 class HmmerBuildFromMsaTask : public ExternalToolSupportTask {
+    Q_OBJECT
 public:
-    HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, MAlignment &msa);
+    HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MAlignment &msa);
 
     const QString & getHmmUrl() const;
 
@@ -39,11 +40,15 @@ private:
     QList<Task *> onSubTaskFinished(Task *subTask);
     QString generateReport() const;
 
-    const HmmerBuildSettings settings;
+    void prepareWorkingDir();
+    void removeTempDir();
+
+    HmmerBuildSettings settings;
     const MAlignment msa;
 
     SaveAlignmentTask *saveTask;
     HmmerBuildTask *hmmerTask;
+    bool removeWorkingDir;
 };
 
 }   // namespace U2

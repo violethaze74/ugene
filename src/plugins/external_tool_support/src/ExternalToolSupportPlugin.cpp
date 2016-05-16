@@ -107,6 +107,8 @@
 #include "cutadapt/CutadaptWorker.h"
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
+#include "hmmer/HmmerBuildWorker.h"
+#include "hmmer/HmmerSearchWorker.h"
 #include "hmmer/HmmerSupport.h"
 #include "java/JavaSupport.h"
 #include "macs/MACSSupport.h"
@@ -639,7 +641,8 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::FastQCFactory::init();
     LocalWorkflow::CutAdaptFastqWorkerFactory::init();
     LocalWorkflow::BedtoolsIntersectWorkerFactory::init();
-
+    LocalWorkflow::HmmerBuildWorkerFactory::init();
+    LocalWorkflow::HmmerSearchWorkerFactory::init();
 }
 
 //////////////////////////////////////////////////////////////////////////

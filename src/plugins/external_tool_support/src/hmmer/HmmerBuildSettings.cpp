@@ -51,7 +51,7 @@ HmmerBuildSettings::HmmerBuildSettings()
 bool HmmerBuildSettings::validate() const {
     CHECK(0 <= symfrac && symfrac <= 1, false);
     CHECK(0 <= wid && wid <= 1, false);
-    CHECK( 0 < eset, false);
+    CHECK(0 < eset || effectiveSequenceWeightingStrategy != p7_EFFN_SET, false);
     CHECK(-1 == ere || 0 < ere, false);
     CHECK(0 <= fragtresh && fragtresh <= 1, false);
     CHECK(0 < esigma, false);
@@ -63,7 +63,7 @@ bool HmmerBuildSettings::validate() const {
     CHECK(0 < efl, false);
     CHECK(0 < efn, false);
     CHECK(0 < wid && wid < 1, false);
-    CHECK(0 < seed, false);
+    CHECK(0 <= seed, false);
 
     return true;
 }

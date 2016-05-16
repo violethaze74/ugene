@@ -38,6 +38,7 @@ public:
     static QString getReport(const Task *task, const HmmerBuildSettings &settings, const QString &msaUrl);
 
 private:
+    void prepare();
     QString generateReport() const;
 
     static QStringList getArguments(const HmmerBuildSettings &settings, const QString &stockholmMsaUrl);

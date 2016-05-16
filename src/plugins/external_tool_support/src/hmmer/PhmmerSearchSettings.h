@@ -23,11 +23,10 @@
 #define _U2_PHMMER_SEARCH_SETTINGS_H_
 
 #include <U2Core/AnnotationCreationPattern.h>
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNASequenceObject.h>
 
 namespace U2 {
-
-class AnnotationTableObject;
 
 class PhmmerSearchSettings {
 public:
@@ -68,7 +67,7 @@ public:
     QString targetSequenceUrl;
     QPointer<U2SequenceObject> targetSequence;
 
-    AnnotationTableObject *annotationTable;
+    QPointer<AnnotationTableObject> annotationTable;
     AnnotationCreationPattern pattern;
 
     static const double OPTION_NOT_SET;

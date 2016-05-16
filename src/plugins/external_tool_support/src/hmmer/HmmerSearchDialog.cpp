@@ -153,7 +153,6 @@ void HmmerSearchDialog::getModelValues() {
 
     model.searchSettings.hmmProfileUrl = queryHmmFileEdit->text();
     model.searchSettings.sequence = model.sequence;
-//    model.searchSettings.sequenceUrl = model.sequence->getDocument()->getURLString();
     model.searchSettings.annotationTable = annModel.getAnnotationObject();
 
     model.searchSettings.pattern.groupName = annModel.groupName;

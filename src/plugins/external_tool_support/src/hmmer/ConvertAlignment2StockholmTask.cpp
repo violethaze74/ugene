@@ -36,11 +36,12 @@
 
 namespace U2 {
 
-ConvertAlignment2Stockholm::ConvertAlignment2Stockholm(const QString &msaUrl)
+ConvertAlignment2Stockholm::ConvertAlignment2Stockholm(const QString &msaUrl, const QString &workingDir)
     : Task(tr("Convert alignment to Stockholm format"), TaskFlags_NR_FOSE_COSC),
       loadTask(NULL),
       saveTask(NULL),
-      msaUrl(msaUrl)
+      msaUrl(msaUrl),
+      workingDir(workingDir)
 {
     SAFE_POINT_EXT(!msaUrl.isEmpty(), setError("Msa URL is empty"), );
 }
@@ -86,16 +87,18 @@ QString getTaskTempDirName(const QString &prefix, Task *task) {
 }
 
 void ConvertAlignment2Stockholm::prepareResultUrl() {
-    QString tempDirName = getTaskTempDirName("convert_", this);
-    QString tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(TEMP_DIR) + "/" + tempDirName;
-    resultUrl = tempDirPath + "/" + QFileInfo(msaUrl).baseName() + ".sto";
+    if (workingDir.isEmpty()) {
+        QString tempDirName = getTaskTempDirName("convert_", this);
+        workingDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(TEMP_DIR) + "/" + tempDirName;
+    }
+    resultUrl = workingDir + "/" + QFileInfo(msaUrl).baseName() + ".sto";
 
-    QDir tempDir(tempDirPath);
+    QDir tempDir(workingDir);
     if (tempDir.exists()){
-        ExternalToolSupportUtils::removeTmpDir(tempDirPath, stateInfo);
+        ExternalToolSupportUtils::removeTmpDir(workingDir, stateInfo);
         CHECK_OP(stateInfo, );
     }
-    if (!tempDir.mkpath(tempDirPath)){
+    if (!tempDir.mkpath(workingDir)){
         setError(tr("Cannot create a directory for temporary files."));
         return;
     }

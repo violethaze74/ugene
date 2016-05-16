@@ -26,6 +26,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "HmmerBuildFromMsaTask.h"
@@ -33,10 +34,13 @@
 
 namespace U2 {
 
-HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, MAlignment &msa)
+HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MAlignment &msa)
     : ExternalToolSupportTask(tr("Build HMMER profile from msa"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
-      msa(msa)
+      msa(msa),
+      saveTask(NULL),
+      hmmerTask(NULL),
+      removeWorkingDir(false)
 {
     SAFE_POINT_EXT(!settings.profileUrl.isEmpty(), setError(tr("HMM profile URL is empty")), );
 }
@@ -59,20 +63,10 @@ QString getTaskTempDirName(const QString &prefix, Task *task) {
 }
 
 void HmmerBuildFromMsaTask::prepare() {
-    QString tempDirName = getTaskTempDirName("hmmer_build_", this);
-    QString tempDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(PHMMER_TEMP_DIR) + "/" + tempDirName;
-    QString msaUrl = tempDirPath + "/" + GUrlUtils::fixFileName(msa.getName()) + ".sto";
+    prepareWorkingDir();
+    CHECK_OP(stateInfo, );
 
-    QDir tempDir(tempDirPath);
-    if (tempDir.exists()){
-        ExternalToolSupportUtils::removeTmpDir(tempDirPath, stateInfo);
-        CHECK_OP(stateInfo, );
-    }
-    if (!tempDir.mkpath(tempDirPath)){
-        setError(tr("Cannot create a directory for temporary files."));
-        return;
-    }
-
+    QString msaUrl = settings.workingDir + "/" + GUrlUtils::fixFileName(msa.getName()) + ".sto";
     saveTask = new SaveAlignmentTask(msa, msaUrl, BaseDocumentFormats::STOCKHOLM);
     saveTask->setSubtaskProgressWeight(5);
     addSubTask(saveTask);
@@ -83,6 +77,7 @@ QList<Task *> HmmerBuildFromMsaTask::onSubTaskFinished(Task *subTask) {
     CHECK_OP(stateInfo, result);
     if (saveTask == subTask) {
         hmmerTask = new HmmerBuildTask(settings, saveTask->getUrl());
+        setListenerForTask(hmmerTask);
         hmmerTask->setSubtaskProgressWeight(95);
         result << hmmerTask;
     }
@@ -91,6 +86,31 @@ QList<Task *> HmmerBuildFromMsaTask::onSubTaskFinished(Task *subTask) {
 
 QString HmmerBuildFromMsaTask::generateReport() const {
     return HmmerBuildTask::getReport(this, settings, "");
+}
+
+void HmmerBuildFromMsaTask::prepareWorkingDir() {
+    if (settings.workingDir.isEmpty()) {
+        QString tempDirName = getTaskTempDirName("hmmer_build_", this);
+        settings.workingDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(PHMMER_TEMP_DIR) + "/" + tempDirName;
+        removeWorkingDir = true;
+    }
+
+    QDir workingDir(settings.workingDir);
+    if (workingDir.exists()){
+        ExternalToolSupportUtils::removeTmpDir(settings.workingDir, stateInfo);
+        CHECK_OP(stateInfo, );
+    }
+    if (!workingDir.mkpath(settings.workingDir)){
+        setError(tr("Cannot create a directory for temporary files."));
+        return;
+    }
+}
+
+void HmmerBuildFromMsaTask::removeTempDir() {
+    if (removeWorkingDir) {
+        U2OpStatusImpl os;
+        ExternalToolSupportUtils::removeTmpDir(settings.workingDir, os);
+    }
 }
 
 }   // namespace U2

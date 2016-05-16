@@ -166,7 +166,14 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcftools/VcfConsensusSupport.h \
            src/vcftools/VcfConsensusSupportTask.h \
            src/vcftools/VcfConsensusWorker.h \
-           src/vcfutils/VcfutilsSupport.h
+           src/vcfutils/VcfutilsSupport.h \
+    src/hmmer/PhmmerSearchTask.h \
+    src/hmmer/HmmerBuildSettings.h \
+    src/hmmer/HmmerSearchSettings.h \
+    src/hmmer/PhmmerSearchSettings.h \
+    src/hmmer/PhmmerSearchDialog.h \
+    src/hmmer/HmmerBuildWorker.h \
+    src/hmmer/HmmerSearchWorker.h
 
 FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/blast_plus/BlastDBCmdDialog.ui \
@@ -189,7 +196,8 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/tcoffee/TCoffeeSupportRunDialog.ui \
          src/spades/SpadesSettings.ui \
          src/utils/BlastAllSupportDialog.ui \
-         src/utils/BlastDBSelectorWidget.ui
+         src/utils/BlastDBSelectorWidget.ui \
+    src/hmmer/PhmmerSearchDialog.ui
 
 SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/ExternalToolManager.cpp \
@@ -355,7 +363,14 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/vcftools/VcfConsensusSupport.cpp \
            src/vcftools/VcfConsensusSupportTask.cpp \
            src/vcftools/VcfConsensusWorker.cpp \
-           src/vcfutils/VcfutilsSupport.cpp
+           src/vcfutils/VcfutilsSupport.cpp \
+    src/hmmer/PhmmerSearchTask.cpp \
+    src/hmmer/HmmerBuildSettings.cpp \
+    src/hmmer/HmmerSearchSettings.cpp \
+    src/hmmer/PhmmerSearchSettings.cpp \
+    src/hmmer/PhmmerSearchDialog.cpp \
+    src/hmmer/HmmerBuildWorker.cpp \
+    src/hmmer/HmmerSearchWorker.cpp
 
 RESOURCES += external_tool_support.qrc
 TRANSLATIONS += transl/english.ts \

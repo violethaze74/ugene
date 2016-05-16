@@ -31,7 +31,7 @@ class SaveAlignmentTask;
 
 class ConvertAlignment2Stockholm : public Task {
 public:
-    ConvertAlignment2Stockholm(const QString &msaUrl);
+    ConvertAlignment2Stockholm(const QString &msaUrl, const QString &workingDir);
 
     const QString & getResultUrl() const;
 
@@ -46,6 +46,7 @@ private:
     SaveAlignmentTask *saveTask;
 
     const QString msaUrl;
+    QString workingDir;
     QString resultUrl;
 };
 

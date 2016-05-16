@@ -23,6 +23,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/Counter.h>
+#include <U2Core/GUrlUtils.h>
 
 #include "HmmerSupport.h"
 #include "HmmerBuildTask.h"
@@ -116,6 +117,10 @@ QString HmmerBuildTask::getReport(const Task *task, const HmmerBuildSettings &se
     res += "</table>";
 
     return res;
+}
+
+void HmmerBuildTask::prepare() {
+    GUrlUtils::prepareFileLocation(settings.profileUrl, stateInfo);
 }
 
 QString HmmerBuildTask::generateReport() const {
