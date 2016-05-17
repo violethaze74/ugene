@@ -101,10 +101,12 @@ class AddPluginTask : public Task {
     Q_OBJECT
 public:
     AddPluginTask(PluginSupportImpl* ps, const PluginDesc& desc);
+    void prepare();
     ReportResult report();
 
 
 private:
+    QScopedPointer<QLibrary> lib;
     PluginSupportImpl*  ps;
     PluginDesc          desc;
     bool                verificationMode;

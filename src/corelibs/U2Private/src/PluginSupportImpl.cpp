@@ -43,6 +43,7 @@
 #include <windows.h>
 #endif
 
+
 namespace U2 {
 
 /* TRANSLATOR U2::PluginSupportImpl */
@@ -129,7 +130,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString& url) {
     }
 
     // now check plugin compatibility
-    bool isUIMode = AppContext::getMainWindow() != NULL;
+    bool isUIMode = AppContext::getMainWindow() != NULL || AppContext::isGUIMode(); // isGUIMode - for pluginChecker!
     bool modeIsOk = false;
     if (isUIMode) {
         modeIsOk = desc.mode.testFlag(PluginMode_UI);
@@ -406,10 +407,7 @@ QSet<QString> PluginSupportImpl::getPluginPaths(){
         }
     }
     //read all plugins from the current folder and from ./plugins folder
-    // use SKIP list to learn which plugin should not be loaded
-    QStringList skipFiles = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS), QStringList()).toStringList();
     pluginFiles.unite(findAllPluginsInDefaultPluginsDir().toSet());
-    pluginFiles.subtract(skipFiles.toSet());
 
     return pluginFiles;
 }
@@ -419,6 +417,7 @@ QSet<QString> PluginSupportImpl::getPluginPaths(){
 /// Tasks
 AddPluginTask::AddPluginTask(PluginSupportImpl* _ps, const PluginDesc& _desc)
     : Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlag_NoRun),
+      lib(NULL),
       ps(_ps),
       desc(_desc),
       verificationMode(false),
@@ -426,22 +425,13 @@ AddPluginTask::AddPluginTask(PluginSupportImpl* _ps, const PluginDesc& _desc)
 {
     CMDLineRegistry *reg = AppContext::getCMDLineRegistry();
     verificationMode = reg->hasParameter(CMDLineRegistry::VERIFY_ARG);
-
-    //! this implementaion will load EVERY plugin separately on new Ugene version launch (BAAAD!)
-    Settings* settings = AppContext::getSettings();
-    SAFE_POINT(settings != NULL, tr("Settings is NULL"), );
-    QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
-    if (checkVersion != Version::appVersion().text && !verificationMode) {
-        verifyTask = new VerifyPluginTask(ps, desc);
-        addSubTask(verifyTask);
-    }
 }
 
-Task::ReportResult AddPluginTask::report() {
+void AddPluginTask::prepare() {
     PluginRef* ref = ps->findRefById(desc.id);
     if (ref != NULL) {
         stateInfo.setError(  tr("Plugin is already loaded: %1").arg(desc.id) );
-        return ReportResult_Finished;
+        return;
     }
 
     //check that plugin we depends on is already loaded
@@ -449,24 +439,36 @@ Task::ReportResult AddPluginTask::report() {
         PluginRef* ref = ps->findRefById(desc.id);
         if (ref == NULL) {
             stateInfo.setError(  tr("Plugin %1 depends on %2 which is not loaded").arg(desc.id).arg(di.id) );
-            return ReportResult_Finished;
+            return;
         }
         if (ref->pluginDesc.pluginVersion < di.version) {
             stateInfo.setError(  tr("Plugin %1 depends on %2 which is available, but the version is too old").arg(desc.id).arg(di.id) );
-            return ReportResult_Finished;
+            return;
         }
     }
 
     //load library
     QString libUrl = desc.libraryUrl.getURLString();
-    QScopedPointer<QLibrary> lib(new QLibrary(libUrl));
+    lib.reset(new QLibrary(libUrl));
     bool loadOk = lib->load();
 
     if (!loadOk) {
         stateInfo.setError(  tr("Plugin loading error: %1, Error string %2").arg(libUrl).arg(lib->errorString()) );
-        return ReportResult_Finished;
+        return;
     }
 
+    Settings* settings = AppContext::getSettings();
+    SAFE_POINT(settings != NULL, tr("Settings is NULL"), );
+    QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
+
+    PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
+    if (verify_func && checkVersion != Version::appVersion().text && !verificationMode) {
+        verifyTask = new VerifyPluginTask(ps, desc);
+        addSubTask(verifyTask);
+    }
+}
+
+Task::ReportResult AddPluginTask::report() {
     // verify plugin
     PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
     if (verify_func && verificationMode) {
@@ -474,17 +476,31 @@ Task::ReportResult AddPluginTask::report() {
     }
 
     // check if verification failed
+    Settings* settings = AppContext::getSettings();
+    QString libUrl = desc.libraryUrl.getURLString();
     PLUG_FAIL_MESSAGE_FUNC message_func = PLUG_FAIL_MESSAGE_FUNC(lib->resolve(U2_PLUGIN_FAIL_MASSAGE_NAME));
     if (!verificationMode && verifyTask != NULL) {
-        // check when some of these is abcenst
-        if (message_func && !verifyTask->isCorrectPlugin()) {
+        if (!verifyTask->isCorrectPlugin()) {
             MainWindow* mw = AppContext::getMainWindow();
             CHECK(mw != NULL, ReportResult_Finished);
-            QString message = message_func();
+            QString message = message_func ? message_func() : tr("Plugin loading error: %1. Verification failed.").arg(libUrl);
             mw->addNotification(message, Warning_Not);
             stateInfo.setError(message);
+            settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
             return ReportResult_Finished;
+        } else {
+            QStringList skipFiles = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS), QStringList()).toStringList();
+            if (skipFiles.contains(desc.descriptorUrl.getURLString())) {
+                skipFiles.removeOne(desc.descriptorUrl.getURLString());
+                settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS), skipFiles);
+            }
+            settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
         }
+    }
+
+    QStringList skipFiles = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS), QStringList()).toStringList();
+    if (skipFiles.contains(desc.descriptorUrl.getURLString())) {
+        return ReportResult_Finished;
     }
 
     //instantiate plugin
@@ -499,9 +515,6 @@ Task::ReportResult AddPluginTask::report() {
         stateInfo.setError(  tr("Plugin initialization failed: %1").arg(libUrl) );
         return ReportResult_Finished;
     }
-
-    Settings* settings = AppContext::getSettings();
-    settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
 
     p->setId(desc.id);
     p->setLicensePath(desc.licenseUrl.getURLString());
@@ -521,7 +534,7 @@ Task::ReportResult AddPluginTask::report() {
         }
     }
 
-    ref = new PluginRef(p, lib.take(), desc);
+    PluginRef* ref = new PluginRef(p, lib.take(), desc);
     ps->registerPlugin(ref);
 
     return ReportResult_Finished;
@@ -532,24 +545,22 @@ VerifyPluginTask::VerifyPluginTask(PluginSupportImpl* ps, const PluginDesc& desc
 {
 }
 void VerifyPluginTask::run() {
-    Settings* settings = AppContext::getSettings();
-
     QString executableDir = AppContext::getWorkingDirectoryPath();
-    QString ugenePath = executableDir + "/plugins_checker";
+    QString pluginCheckerPath = executableDir + "/plugins_checker";
     if(Version::appVersion().debug) {
-        ugenePath += 'd';
+        pluginCheckerPath += 'd';
     }
     #ifdef Q_OS_WIN
-        ugenePath += ".exe";
+        pluginCheckerPath += ".exe";
     #endif
 
-    if(!QFileInfo(ugenePath).exists()) {
-        coreLog.error(QString("Can not find file: \"%1\"").arg(ugenePath));
+    if(!QFileInfo(pluginCheckerPath).exists()) {
+        coreLog.error(QString("Can not find file: \"%1\"").arg(pluginCheckerPath));
         return;
     }
     proc = new QProcess();
-    proc->start(ugenePath, QStringList()
-                << QString("--%1=\"%2\"").arg(CMDLineRegistry::PLUGINS_ARG).arg(desc.id)
+    proc->start(pluginCheckerPath, QStringList()
+                << QString("--%1=%2").arg(CMDLineRegistry::PLUGINS_ARG).arg(desc.id)
                 << "--" + CMDLineRegistry::VERIFY_ARG);
 
     int elapsedTime = 0;
@@ -560,11 +571,7 @@ void VerifyPluginTask::run() {
         elapsedTime += 1000;
     }
     QString errorMessage = proc->readAllStandardError();
-
-    if(0 != proc->exitCode() || !errorMessage.isEmpty()) {
-        settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
-    }
-    else {
+    if (proc->exitStatus() == QProcess::NormalExit && errorMessage.isEmpty()) {
         pluginIsCorrect = true;
     }
 }
