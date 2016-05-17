@@ -76,6 +76,8 @@ int BioStruct3DGLWidget::widgetCount = 0;
 
 void BioStruct3DGLWidget::tryGL() {
     QGLWidget wgt;
+    QString *s = NULL;
+    s->trimmed();
     Q_UNUSED(wgt);
 }
 

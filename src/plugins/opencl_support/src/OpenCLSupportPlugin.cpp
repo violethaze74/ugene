@@ -41,7 +41,9 @@ extern "C" Q_DECL_EXPORT Plugin * U2_PLUGIN_INIT_FUNC() {
 }
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
-    // should crash
+    QString *s = NULL;
+    s->trimmed();
+
     OpenCLSupportPlugin * plug = new OpenCLSupportPlugin();
     delete plug;
     return true;
