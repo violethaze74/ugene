@@ -74,6 +74,11 @@ namespace U2 {
 
 int BioStruct3DGLWidget::widgetCount = 0;
 
+void BioStruct3DGLWidget::tryGL() {
+    QOpenGLWidget wgt;
+    Q_UNUSED(wgt);
+}
+
 static QColor DEFAULT_BACKGROUND_COLOR = Qt::black;
 static QColor DEFAULT_SELECTION_COLOR = Qt::yellow;
 

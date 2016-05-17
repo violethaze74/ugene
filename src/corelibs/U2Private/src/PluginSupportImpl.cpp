@@ -49,9 +49,9 @@ namespace U2 {
 #define PLUGINS_LIST_SETTINGS QString("plugin_support/list/")
 #define SKIP_LIST_SETTINGS QString("plugin_support/skip_list/")
 #define PLUGINS_ACCEPTED_LICENSE_LIST QString("plugin_support/accepted_list/")
+#define PLUGIN_VERIFICATION QString("plugin_support/verification/")
 
 QString PluginSupportImpl::versionAppendix("");
-const QString PluginSupportImpl::OPENCL_CHECKED_SETTINGS("plugin_support/opencl/");
 static QStringList findAllPluginsInDefaultPluginsDir();
 
 
@@ -60,40 +60,10 @@ PluginRef::PluginRef(Plugin* _plugin, QLibrary* _library, const PluginDesc& desc
 {
 }
 
-PluginSupportImpl::PluginSupportImpl(bool testingMode): allLoaded(false) {
-    //read plugin names from settings
-    Settings* settings = AppContext::getSettings();
-
-    QSet<QString> pluginFiles = getPluginPaths();
-
+PluginSupportImpl::PluginSupportImpl(): allLoaded(false) {
     connect(this, SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_registerServices()));
 
-    if(testingMode) {
-        foreach(const QString& pluginFile, pluginFiles) {
-            if(pluginFile.contains("opencl_support")) {
-                Task* loadStartUpPlugins = new LoadAllPluginsTask(this, QStringList(pluginFile));
-                AppContext::getTaskScheduler()->registerTopLevelTask(loadStartUpPlugins);
-                return;
-            }
-        }
-    }
-
-    QString openclCheckingVersion = settings->getValue(OPENCL_CHECKED_SETTINGS, "").toString();
-
-    Task* loadStartUpPlugins = NULL;
-#ifndef Q_OS_MAC
-    if(openclCheckingVersion != Version::appVersion().text && !testingMode) {
-        loadStartUpPlugins = new LoadAllPluginsTask(this, pluginFiles.toList(), QStringList("opencl_support"));
-    }
-    else {
-        loadStartUpPlugins = new LoadAllPluginsTask(this, pluginFiles.toList(), QStringList());
-        settings->setValue(OPENCL_CHECKED_SETTINGS, Version::appVersion().text);
-    }
-#else
-    Q_UNUSED(openclCheckingVersion);
-    loadStartUpPlugins = new LoadAllPluginsTask(this, pluginFiles.toList(), QStringList());
-#endif
-
+    Task* loadStartUpPlugins = new LoadAllPluginsTask(this, getPluginPaths().toList());
     AppContext::getTaskScheduler()->registerTopLevelTask(loadStartUpPlugins);
 }
 
@@ -108,8 +78,10 @@ bool PluginSupportImpl::isAllPluginsLoaded() const {
     return allLoaded;
 }
 
-LoadAllPluginsTask::LoadAllPluginsTask(PluginSupportImpl* _ps, const QStringList& _pluginFiles, const QStringList& verifiedPlugins)
-: Task(tr("Loading start up plugins"), TaskFlag_NoRun), ps(_ps), pluginFiles(_pluginFiles), verifiedPlugins(verifiedPlugins)
+LoadAllPluginsTask::LoadAllPluginsTask(PluginSupportImpl* _ps, const QStringList& _pluginFiles)
+    : Task(tr("Loading start up plugins"), TaskFlag_NoRun),
+      ps(_ps),
+      pluginFiles(_pluginFiles)
 {
     coreLog.trace("List of the plugins to be loaded:");
     foreach(const QString& path, pluginFiles) {
@@ -131,41 +103,9 @@ void LoadAllPluginsTask::prepare() {
         return;
     }
 
-    if(!orderedPluginsWithVerification.isEmpty()) {
-        orderedPluginsWithVerification = PluginDescriptorHelper::orderPlugins(orderedPluginsWithVerification, err);
-
-        if (!err.isEmpty()) {
-            setError(err);
-            return;
-        }
-        foreach(const PluginDesc& desc, orderedPluginsWithVerification) {
-            addSubTask(new VerifyPluginTask(ps, desc));
-        }
-    }
-
     foreach(const PluginDesc& desc, orderedPlugins) {
         addSubTask(new AddPluginTask(ps, desc));
     }
-}
-
-QList<Task*> LoadAllPluginsTask::onSubTaskFinished(Task* subTask) {
-    QList<Task*> res;
-    VerifyPluginTask* verifyTask = qobject_cast<VerifyPluginTask*>(subTask);
-    if(NULL != verifyTask) {
-        if(verifyTask->isCorrectPlugin()) {
-            res << new AddPluginTask(ps, verifyTask->getPluginDescriptor());
-        }
-        else {
-            MainWindow* mw = AppContext::getMainWindow();
-            if(NULL == mw) {
-                return res;
-            }
-            mw->addNotification(tr("Problem occurred loading the OpenCL driver. Please try to update drivers if \
-                                   you're going to make calculations on your video card. For details see this page: \
-                                   <a href=\"%1\">%1</a>").arg("http://ugene.unipro.ru/using-video-cards.html"), Warning_Not);
-        }
-    }
-    return res;
 }
 
 void LoadAllPluginsTask::addToOrderingQueue(const QString& url) {
@@ -254,12 +194,6 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString& url) {
     }
 #endif
 
-    foreach(const QString& verifiedPlugin, verifiedPlugins) {
-        if(url.contains(verifiedPlugin) && !verifiedPlugin.isEmpty()) {
-            orderedPluginsWithVerification.append(desc);
-            return;
-        }
-    }
     orderedPlugins.append(desc);
 }
 
@@ -277,8 +211,8 @@ Task::ReportResult LoadAllPluginsTask::report()
 namespace {
     QStringList getCmdlinePlugins() {
         CMDLineRegistry *reg = AppContext::getCMDLineRegistry();
-        if (reg->hasParameter(CmdlineTaskRunner::PLUGINS_ARG)) {
-            QString pluginsToLoad = reg->getParameterValue(CmdlineTaskRunner::PLUGINS_ARG);
+        if (reg->hasParameter(CMDLineRegistry::PLUGINS_ARG)) {
+            QString pluginsToLoad = reg->getParameterValue(CMDLineRegistry::PLUGINS_ARG);
             return pluginsToLoad.split(";");
         }
         return QStringList();
@@ -290,7 +224,7 @@ static QStringList findAllPluginsInDefaultPluginsDir() {
     QStringList filter; filter << QString("*.") + PLUGIN_FILE_EXT;
     QStringList fileNames = d.entryList(filter, QDir::Readable | QDir::Files, QDir::NoSort);
     QStringList res;
-    bool hasCmdlinePlugins = AppContext::getCMDLineRegistry()->hasParameter(CmdlineTaskRunner::PLUGINS_ARG);
+    bool hasCmdlinePlugins = AppContext::getCMDLineRegistry()->hasParameter(CMDLineRegistry::PLUGINS_ARG);
     QStringList cmdlinePlugins = getCmdlinePlugins();
     foreach(const QString& name, fileNames) {
         GUrl filePath(d.absolutePath() + "/" + name);
@@ -448,7 +382,7 @@ QSet<QString> PluginSupportImpl::getPluginPaths(){
     QString pluginListSettingsDir = settings->toVersionKey(PLUGINS_LIST_SETTINGS);
 
     QStringList pluginsIds;
-    if (AppContext::getCMDLineRegistry()->hasParameter(CmdlineTaskRunner::PLUGINS_ARG)) {
+    if (AppContext::getCMDLineRegistry()->hasParameter(CMDLineRegistry::PLUGINS_ARG)) {
         pluginsIds = getCmdlinePlugins();
     } else {
         pluginsIds = settings->getAllKeys(pluginListSettingsDir);
@@ -483,11 +417,24 @@ QSet<QString> PluginSupportImpl::getPluginPaths(){
 
 //////////////////////////////////////////////////////////////////////////
 /// Tasks
-
-//todo: improve task naming
 AddPluginTask::AddPluginTask(PluginSupportImpl* _ps, const PluginDesc& _desc)
-: Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlag_NoRun), ps(_ps), desc(_desc)
+    : Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlag_NoRun),
+      ps(_ps),
+      desc(_desc),
+      verificationMode(false),
+      verifyTask(NULL)
 {
+    CMDLineRegistry *reg = AppContext::getCMDLineRegistry();
+    verificationMode = reg->hasParameter(CMDLineRegistry::VERIFY_ARG);
+
+    //! this implementaion will load EVERY plugin separately on new Ugene version launch (BAAAD!)
+    Settings* settings = AppContext::getSettings();
+    SAFE_POINT(settings != NULL, tr("Settings is NULL"), );
+    QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
+    if (checkVersion != Version::appVersion().text && !verificationMode) {
+        verifyTask = new VerifyPluginTask(ps, desc);
+        addSubTask(verifyTask);
+    }
 }
 
 Task::ReportResult AddPluginTask::report() {
@@ -520,8 +467,28 @@ Task::ReportResult AddPluginTask::report() {
         return ReportResult_Finished;
     }
 
+    // verify plugin
+    PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
+    if (verify_func && verificationMode) {
+        verify_func();
+    }
+
+    // check if verification failed
+    PLUG_FAIL_MESSAGE_FUNC message_func = PLUG_FAIL_MESSAGE_FUNC(lib->resolve(U2_PLUGIN_FAIL_MASSAGE_NAME));
+    if (!verificationMode && verifyTask != NULL) {
+        // check when some of these is abcenst
+        if (message_func && !verifyTask->isCorrectPlugin()) {
+            MainWindow* mw = AppContext::getMainWindow();
+            CHECK(mw != NULL, ReportResult_Finished);
+            QString message = message_func();
+            mw->addNotification(message, Warning_Not);
+            stateInfo.setError(message);
+            return ReportResult_Finished;
+        }
+    }
+
     //instantiate plugin
-    PLUG_INIT_FUNC init_fn = PLUG_INIT_FUNC((lib->resolve(U2_PLUGIN_INIT_FUNC_NAME)));
+    PLUG_INIT_FUNC init_fn = PLUG_INIT_FUNC(lib->resolve(U2_PLUGIN_INIT_FUNC_NAME));
     if (!init_fn) {
         stateInfo.setError(  tr("Plugin initialization routine was not found: %1").arg(libUrl) );
         return ReportResult_Finished;
@@ -532,6 +499,10 @@ Task::ReportResult AddPluginTask::report() {
         stateInfo.setError(  tr("Plugin initialization failed: %1").arg(libUrl) );
         return ReportResult_Finished;
     }
+
+    Settings* settings = AppContext::getSettings();
+    settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
+
     p->setId(desc.id);
     p->setLicensePath(desc.licenseUrl.getURLString());
 
@@ -564,20 +535,22 @@ void VerifyPluginTask::run() {
     Settings* settings = AppContext::getSettings();
 
     QString executableDir = AppContext::getWorkingDirectoryPath();
-    QString openclCheckerPath = executableDir + "/plugins_checker";
+    QString ugenePath = executableDir + "/plugins_checker";
     if(Version::appVersion().debug) {
-        openclCheckerPath += 'd';
+        ugenePath += 'd';
     }
     #ifdef Q_OS_WIN
-        openclCheckerPath += ".exe";
+        ugenePath += ".exe";
     #endif
 
-    if(!QFileInfo(openclCheckerPath).exists()) {
-        coreLog.error(QString("Can not find file: \"%1\"").arg(openclCheckerPath));
+    if(!QFileInfo(ugenePath).exists()) {
+        coreLog.error(QString("Can not find file: \"%1\"").arg(ugenePath));
         return;
     }
     proc = new QProcess();
-    proc->start(openclCheckerPath, QStringList());
+    proc->start(ugenePath, QStringList()
+                << QString("--%1=\"%2\"").arg(CMDLineRegistry::PLUGINS_ARG).arg(desc.id)
+                << "--" + CMDLineRegistry::VERIFY_ARG);
 
     int elapsedTime = 0;
     while(!proc->waitForFinished(1000) && elapsedTime < timeOut) {

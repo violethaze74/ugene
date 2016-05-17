@@ -56,7 +56,7 @@ class U2PRIVATE_EXPORT PluginSupportImpl : public PluginSupport {
     friend class AddPluginTask;
 
 public:
-    PluginSupportImpl(bool testingMode = false);
+    PluginSupportImpl();
     ~PluginSupportImpl();
 
     virtual const QList<Plugin*>& getPlugins() {return plugins;}
@@ -92,12 +92,11 @@ protected:
 
 private:
     static QString       versionAppendix;
-    static const QString OPENCL_CHECKED_SETTINGS;
     QList<PluginRef*>    plugRefs;
     QList<Plugin*>       plugins;
 };
 
-
+class VerifyPluginTask;
 class AddPluginTask : public Task {
     Q_OBJECT
 public:
@@ -108,6 +107,8 @@ public:
 private:
     PluginSupportImpl*  ps;
     PluginDesc          desc;
+    bool                verificationMode;
+    VerifyPluginTask*   verifyTask;
 };
 
 class VerifyPluginTask : public Task {
@@ -128,10 +129,9 @@ private:
 class LoadAllPluginsTask : public Task {
     Q_OBJECT
 public:
-    LoadAllPluginsTask(PluginSupportImpl* ps,const QStringList& pluginFiles, const QStringList& verifiedPlugins = QStringList());
+    LoadAllPluginsTask(PluginSupportImpl* ps,const QStringList& pluginFiles);
     void prepare();
     ReportResult report();
-    QList<Task*> onSubTaskFinished(Task* subTask);
 
 
 private:
@@ -139,9 +139,7 @@ private:
 
     PluginSupportImpl*  ps;
     QStringList         pluginFiles;
-    QStringList         verifiedPlugins;
     QList<PluginDesc>   orderedPlugins; // plugins ordered by desc
-    QList<PluginDesc>   orderedPluginsWithVerification;
 };
 
 

@@ -86,7 +86,6 @@ int main(int argc, char **argv)
     SettingsImpl * settings = new SettingsImpl( QSettings::UserScope );
     appContext->setSettings( settings );
 
-
     AppSettings* appSettings = new AppSettingsImpl();
     appContext->setAppSettings(appSettings);
 
@@ -98,7 +97,7 @@ int main(int argc, char **argv)
     TaskSchedulerImpl* ts = new TaskSchedulerImpl(appSettings->getAppResourcePool());
     appContext->setTaskScheduler(ts);
 
-    PluginSupportImpl* psp = new PluginSupportImpl(true);
+    PluginSupportImpl* psp = new PluginSupportImpl();
     appContext->setPluginSupport(psp);
 
     ServiceRegistryImpl* sreg = new ServiceRegistryImpl() ;
