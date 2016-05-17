@@ -135,7 +135,6 @@ static Logger algoLog(ULOG_CAT_ALGORITHM);
 static Logger cmdLog(ULOG_CAT_CONSOLE);
 static Logger coreLog(ULOG_CAT_CORE_SERVICES);
 static Logger ioLog(ULOG_CAT_IO);
-static Logger rsLog(ULOG_CAT_REMOTE_SERVICE);
 static Logger perfLog(ULOG_CAT_PERFORMANCE);
 static Logger scriptLog(ULOG_CAT_SCRIPTS);
 static Logger taskLog(ULOG_CAT_TASKS);
