@@ -127,7 +127,6 @@ private:
     OpenCLGpuRegistry *                     oclgr;
 #endif
     RecentlyDownloadedCache *               rdc;
-    DistributedComputingUtil *              distrUtil;
     VirtualFileSystemRegistry *             vfsReg;
     DnaAssemblyAlgRegistry *                assemblyReg;
     GenomeAssemblyAlgRegistry *             genomeAssemblyReg;

@@ -67,7 +67,6 @@ add-library U2Formats
 add-library U2Gui
 add-library U2Lang
 add-library U2Private
-add-library U2Remote
 add-library U2Script
 add-library U2Test
 add-library U2View
@@ -111,7 +110,6 @@ add-plugin psipred
 add-plugin ptools
 add-plugin query_designer
 add-plugin remote_blast
-add-plugin remote_service
 add-plugin repeat_finder
 add-plugin sitecon
 add-plugin smith_waterman

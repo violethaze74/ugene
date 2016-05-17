@@ -28,8 +28,6 @@
 
 #include <U2Gui/WelcomePageAction.h>
 
-#include <U2Remote/RemoteWorkflowRunTask.h>
-
 #include "SampleActionsManager.h"
 
 class QAction;

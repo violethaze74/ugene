@@ -142,7 +142,6 @@ Section "Build"
     !insertmacro AddLibrary U2Gui
     !insertmacro AddLibrary U2Lang
     !insertmacro AddLibrary U2Private
-    !insertmacro AddLibrary U2Remote
     !insertmacro AddLibrary U2Script
     !insertmacro AddLibrary U2Test
     !insertmacro AddLibrary U2View
@@ -230,7 +229,6 @@ Section "Build"
     !insertmacro AddPlugin ptools
     !insertmacro AddPlugin query_designer
     !insertmacro AddPlugin remote_blast
-    !insertmacro AddPlugin remote_service
     !insertmacro AddPlugin repeat_finder
     !insertmacro AddPlugin smith_waterman
     !insertmacro AddPlugin sitecon

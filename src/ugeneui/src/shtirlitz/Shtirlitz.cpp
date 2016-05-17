@@ -35,14 +35,13 @@
 #include <U2Core/Log.h>
 #include <U2Core/NetworkConfiguration.h>
 #include <U2Core/Settings.h>
+#include <U2Core/SyncHttp.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/Version.h>
 
 #include <U2Gui/MainWindow.h>
 #include <U2Core/QObjectScopedPointer.h>
-
-#include <U2Remote/SynchHttp.h>
 
 #include "Shtirlitz.h"
 #include "StatisticalReportController.h"
@@ -276,7 +275,7 @@ void ShtirlitzTask::run() {
     stateInfo.setDescription( tr("Connecting to remote server") );
 
     //Creating SyncHttp object and enabling proxy if needed.
-    SyncHTTP http(stateInfo, this);
+    SyncHttp http(stateInfo, this);
     NetworkConfiguration * nc = AppContext::getAppSettings()->getNetworkConfiguration();
     bool isProxy = nc->isProxyUsed( QNetworkProxy::HttpProxy );
     bool isException = nc->getExceptionsList().contains( QUrl(DESTINATION_URL_KEEPER_SRV).host() );
@@ -301,7 +300,7 @@ void ShtirlitzTask::run() {
     }
 
     //Checking proxy again, for the new url
-    SyncHTTP http2(stateInfo, this);
+    SyncHttp http2(stateInfo, this);
     isException = nc->getExceptionsList().contains( QUrl(reportsPath).host() );
     if( isProxy && !isException ) {
         http2.setProxy( nc->getProxy(QNetworkProxy::HttpProxy) );

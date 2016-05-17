@@ -76,8 +76,6 @@
 #include <U2Lang/WorkflowEnvImpl.h>
 #include <U2Lang/WorkflowSettings.h>
 
-#include <U2Remote/DistributedComputingUtil.h>
-
 #include <U2Test/GTestFrameworkComponents.h>
 
 #include <AppContextImpl.h>
@@ -262,8 +260,6 @@ UgeneContextWrapper::UgeneContextWrapper( const QString &workingDirectoryPath )
     rdc = new RecentlyDownloadedCache( );
     appContext->setRecentlyDownloadedCache( rdc );
 
-    distrUtil = new DistributedComputingUtil( );
-
     vfsReg = new VirtualFileSystemRegistry( );
     appContext->setVirtualFileSystemRegistry( vfsReg );
 
@@ -315,8 +311,6 @@ UgeneContextWrapper::UgeneContextWrapper( const QString &workingDirectoryPath )
 
 UgeneContextWrapper::~UgeneContextWrapper( ) {
     Workflow::WorkflowEnv::shutdown( );
-
-    delete distrUtil;
 
     delete dpr;
     appContext->setDataPathRegistry( NULL );

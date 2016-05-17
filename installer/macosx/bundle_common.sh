@@ -86,7 +86,6 @@ changeCoreInstallNames () {
         install_name_tool -change libU2Gui.1.dylib  @executable_path/libU2Gui.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2Lang.1.dylib  @executable_path/libU2Lang.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2Private.1.dylib  @executable_path/libU2Private.1.dylib "$TARGET_EXE_DIR"/$1
-        install_name_tool -change libU2Remote.1.dylib  @executable_path/libU2Remote.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2Script.1.dylib  @executable_path/libU2Script.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2Test.1.dylib  @executable_path/libU2Test.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2View.1.dylib  @executable_path/libU2View.1.dylib "$TARGET_EXE_DIR"/$1

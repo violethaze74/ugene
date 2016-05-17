@@ -119,8 +119,6 @@ private:
 #define ULOG_CAT_CORE_SERVICES      "Core Services"
 // Log category for IO events
 #define ULOG_CAT_IO                 "Input/Output"
-// Log category for remote service messages
-#define ULOG_CAT_REMOTE_SERVICE     "Remote Service"
 // Log category for performance tracking
 #define ULOG_CAT_PERFORMANCE        "Performance"
 // Log category for scripting related logs

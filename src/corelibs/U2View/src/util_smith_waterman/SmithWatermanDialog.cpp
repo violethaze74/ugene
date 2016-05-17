@@ -44,8 +44,6 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
-#include <U2Remote/RemoteMachineMonitorDialogController.h>
-
 #include <U2View/ADVSequenceObjectContext.h>
 
 #include "SmithWatermanDialogImpl.h"
