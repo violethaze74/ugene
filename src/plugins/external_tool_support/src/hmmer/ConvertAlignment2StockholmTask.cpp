@@ -110,7 +110,7 @@ void ConvertAlignment2Stockholm::prepareSaveTask() {
     CHECK_EXT(!objects.isEmpty(), setError(tr("File doesn't contain any multiple alignmnets.")), );
 
     if (1 < objects.size()) {
-        stateInfo.addWarning(tr("File contains several multiple alignments. Onyl the first one is saved to the result file."));
+        stateInfo.addWarning(tr("File contains several multiple alignments. Only the first one is saved to the result file."));
     }
 
     MAlignmentObject *maObject = qobject_cast<MAlignmentObject *>(objects.first());

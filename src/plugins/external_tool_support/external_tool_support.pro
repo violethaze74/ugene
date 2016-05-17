@@ -101,7 +101,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/hmmer/HmmerSearchDialog.h \
            src/hmmer/HmmerSearchSettings.h \
            src/hmmer/HmmerSearchTask.h \
-           src/hmmer/HmmerSearchWorker.h
+           src/hmmer/HmmerSearchWorker.h \
            src/hmmer/HmmerSupport.h \
            src/hmmer/PhmmerSearchDialog.h \
            src/hmmer/PhmmerSearchSettings.h \

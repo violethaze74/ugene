@@ -135,7 +135,7 @@ void SaveMSA2SequencesTask::run() {
 }
 
 SaveSequenceTask::SaveSequenceTask(const QPointer<U2SequenceObject> &sequence, const QString &url, const DocumentFormatId &formatId):
-    Task(tr("Save temporary sequence"), TaskFlags_NR_FOSE_COSC),
+    Task(tr("Save sequence"), TaskFlags_NR_FOSE_COSC),
     sequence(sequence),
     url(url),
     formatId(formatId),
