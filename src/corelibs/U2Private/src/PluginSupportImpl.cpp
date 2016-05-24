@@ -480,6 +480,7 @@ Task::ReportResult AddPluginTask::report() {
     QString libUrl = desc.libraryUrl.getURLString();
     PLUG_FAIL_MESSAGE_FUNC message_func = PLUG_FAIL_MESSAGE_FUNC(lib->resolve(U2_PLUGIN_FAIL_MASSAGE_NAME));
     if (!verificationMode && verifyTask != NULL) {
+        settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
         if (!verifyTask->isCorrectPlugin()) {
             MainWindow* mw = AppContext::getMainWindow();
             CHECK(mw != NULL, ReportResult_Finished);
@@ -489,17 +490,16 @@ Task::ReportResult AddPluginTask::report() {
             settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
             return ReportResult_Finished;
         } else {
-            QStringList skipFiles = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS), QStringList()).toStringList();
-            if (skipFiles.contains(desc.descriptorUrl.getURLString())) {
-                skipFiles.removeOne(desc.descriptorUrl.getURLString());
-                settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS), skipFiles);
+            QString skipFile = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id, QString()).toString();
+            if (skipFile == desc.descriptorUrl.getURLString()) {
+                settings->remove(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id);
             }
-            settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
         }
     }
 
-    QStringList skipFiles = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS), QStringList()).toStringList();
-    if (skipFiles.contains(desc.descriptorUrl.getURLString())) {
+    settings->sync();
+    QString skipFile = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id, QString()).toString();
+    if (skipFile == desc.descriptorUrl.getURLString()) {
         return ReportResult_Finished;
     }
 
