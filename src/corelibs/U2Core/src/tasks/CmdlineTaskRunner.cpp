@@ -36,7 +36,6 @@
 
 namespace U2 {
 
-const QString CmdlineTaskRunner::PLUGINS_ARG = "plugins";
 
 CmdlineTaskConfig::CmdlineTaskConfig()
 : logLevel(LogLevel_DETAILS), withPluginList(false)
@@ -110,7 +109,7 @@ void CmdlineTaskRunner::prepare() {
     args << QString("--ini-file=\"%1\"").arg(AppContext::getSettings()->fileName());
     args << config.arguments;
     if (config.withPluginList) {
-        args << QString("--%1=\"%2\"").arg(PLUGINS_ARG).arg(config.pluginList.join(";"));
+        args << QString("--%1=\"%2\"").arg(CMDLineRegistry::PLUGINS_ARG).arg(config.pluginList.join(";"));
     }
 
     if (!containsPrefix(args, "--log-level")) {

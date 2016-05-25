@@ -41,6 +41,9 @@ class CMDLineHelpProvider;
 class U2CORE_EXPORT CMDLineRegistry : public QObject {
     Q_OBJECT
 public:
+    static const QString PLUGINS_ARG;
+    static const QString VERIFY_ARG;
+
     CMDLineRegistry(const QStringList& arguments);
     virtual ~CMDLineRegistry();
 

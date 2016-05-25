@@ -83,6 +83,17 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     return NULL;
 }
 
+extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
+    BioStruct3DGLWidget::tryGL();
+    return true;
+}
+
+extern "C" Q_DECL_EXPORT QString U2_PLUGIN_FAIL_MASSAGE_FUNC() {
+    return BioStruct3DViewPlugin::tr("Unfortunately, your system does not have OpenGL Support.\n"
+             "The 3D Structure Viewer is not available.\n"
+             "You may try to upgrade your system by updating the video card driver.");
+}
+
 BioStruct3DViewPlugin::BioStruct3DViewPlugin()
     : Plugin(tr("3D Structure Viewer"), tr("Visualizes 3D structures of biological molecules."))
 {

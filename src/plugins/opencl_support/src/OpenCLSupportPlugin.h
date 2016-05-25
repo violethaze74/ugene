@@ -41,6 +41,8 @@ public:
 
     OpenCLSupportPlugin();
     ~OpenCLSupportPlugin();
+
+    OpenCLSupportError getError() const;
 private:
     OpenCLSupportError obtainGpusInfo( QString & err );
     void loadGpusSettings();
@@ -51,7 +53,9 @@ private:
     static QString getSettingsErrorString( OpenCLSupportError err );
 
     QList<OpenCLGpuModel *> gpus;
-    OpenCLHelper openCLHelper;
+    OpenCLHelper            openCLHelper;
+
+    OpenCLSupportError      err;
 };
 
 }

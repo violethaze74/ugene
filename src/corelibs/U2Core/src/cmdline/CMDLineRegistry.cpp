@@ -28,6 +28,8 @@ namespace U2 {
 /***************************************************
  * CMDLineRegistry
  ***************************************************/
+const QString CMDLineRegistry::PLUGINS_ARG = "plugins";
+const QString CMDLineRegistry::VERIFY_ARG = "verify";
 
 const QString SINGLE_DASH   = "-";
 const QString DOUBLE_DASH   = "--";
