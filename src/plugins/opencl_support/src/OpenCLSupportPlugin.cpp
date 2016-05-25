@@ -42,14 +42,15 @@ extern "C" Q_DECL_EXPORT Plugin * U2_PLUGIN_INIT_FUNC() {
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
     OpenCLSupportPlugin * plug = new OpenCLSupportPlugin();
+    bool res = plug->getError() == OpenCLSupportPlugin::Error_NoError;
     delete plug;
-    return true;
+    return res;
 }
 
 extern "C" Q_DECL_EXPORT QString U2_PLUGIN_FAIL_MASSAGE_FUNC() {
     return OpenCLSupportPlugin::tr("Problem occurred loading the OpenCL driver. Please try to update drivers if \
               you're going to make calculations on your video card. For details see this page: \
-              <a href=\"%1\">%1</a>").arg("http://ugene.unipro.ru/using-video-cards.html");
+              <a href=\"%1\">%1</a>").arg("http://ugene.net/using-video-cards.html");
 }
 
 const static char * RESOURCE_OPENCL_GPU_NAME = "OpenCLGpu";
@@ -61,7 +62,7 @@ OpenCLSupportPlugin::OpenCLSupportPlugin() : Plugin(tr("OpenCL Support"),
     OpenCLGpuRegistry* registry = AppContext::getOpenCLGpuRegistry();
     registry->setOpenCLHelper(&openCLHelper);
 
-    OpenCLSupportError err = obtainGpusInfo( err_str );
+    err = obtainGpusInfo( err_str );
     if( err_str.isEmpty() && gpus.empty() ) {
         err_str = "No OpenCL-enabled GPUs found.";
     }
@@ -88,6 +89,10 @@ OpenCLSupportPlugin::~OpenCLSupportPlugin() {
     OpenCLGpuRegistry* registry = AppContext::getOpenCLGpuRegistry();
     CHECK(NULL != registry, );
     registry->setOpenCLHelper(NULL);
+}
+
+OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::getError() const {
+    return err;
 }
 
 

@@ -281,7 +281,7 @@ QString PluginSupportImpl::getPluginFileURL(Plugin* p) const {
 Task* PluginSupportImpl::addPluginTask(const QString& pathToPlugin) {
     QString err;
     PluginDesc desc = PluginDescriptorHelper::readPluginDescriptor(pathToPlugin, err);
-    Task* res = new AddPluginTask(this, desc);
+    Task* res = new AddPluginTask(this, desc, true);
     if (!err.isEmpty()) {
         res->setError(err);
     }
@@ -415,11 +415,12 @@ QSet<QString> PluginSupportImpl::getPluginPaths(){
 
 //////////////////////////////////////////////////////////////////////////
 /// Tasks
-AddPluginTask::AddPluginTask(PluginSupportImpl* _ps, const PluginDesc& _desc)
+AddPluginTask:: AddPluginTask(PluginSupportImpl* _ps, const PluginDesc& _desc, bool forceVerification)
     : Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlag_NoRun),
       lib(NULL),
       ps(_ps),
       desc(_desc),
+      forceVerification(forceVerification),
       verificationMode(false),
       verifyTask(NULL)
 {
@@ -462,7 +463,7 @@ void AddPluginTask::prepare() {
     QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
 
     PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
-    if (verify_func && checkVersion != Version::appVersion().text && !verificationMode) {
+    if (verify_func && !verificationMode && (checkVersion != Version::appVersion().text || forceVerification)) {
         verifyTask = new VerifyPluginTask(ps, desc);
         addSubTask(verifyTask);
     }
@@ -472,7 +473,10 @@ Task::ReportResult AddPluginTask::report() {
     // verify plugin
     PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
     if (verify_func && verificationMode) {
-        verify_func();
+        if (!verify_func()) {
+            // verification mode is exclusively for crash check!
+            FAIL("Plugin is not verified!", ReportResult_Finished);
+        }
     }
 
     // check if verification failed
@@ -482,12 +486,12 @@ Task::ReportResult AddPluginTask::report() {
     if (!verificationMode && verifyTask != NULL) {
         settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
         if (!verifyTask->isCorrectPlugin()) {
+            settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
+            QString message = message_func ? message_func() : tr("Plugin loading error: %1. Verification failed.").arg(libUrl);
+            stateInfo.setError(message);
             MainWindow* mw = AppContext::getMainWindow();
             CHECK(mw != NULL, ReportResult_Finished);
-            QString message = message_func ? message_func() : tr("Plugin loading error: %1. Verification failed.").arg(libUrl);
             mw->addNotification(message, Warning_Not);
-            stateInfo.setError(message);
-            settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
             return ReportResult_Finished;
         } else {
             QString skipFile = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id, QString()).toString();
