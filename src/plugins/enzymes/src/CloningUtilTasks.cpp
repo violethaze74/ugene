@@ -81,11 +81,6 @@ void DigestSequenceTask::prepare() {
 
 SharedAnnotationData DigestSequenceTask::createFragment(int pos1, const DNAFragmentTerm& leftTerm, int pos2, const DNAFragmentTerm& rightTerm) {
     SharedAnnotationData ad(new AnnotationData);
-    if (pos1 < leftTerm.overhang.size()) {
-        pos1 = seqRange.endPos() - (leftTerm.overhang.size() - pos1);
-    } else {
-        pos1 = pos1 - leftTerm.overhang.size();
-    }
     if (pos1  < pos2) {
         ad->location->regions.append(U2Region(pos1, pos2 - pos1));
     } else {
