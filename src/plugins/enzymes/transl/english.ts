@@ -562,16 +562,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="118"/>
+        <source>Search  in:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Enzymes must not cut in the following region</source>
-        <translation>Enzymes must not cut in the following region</translation>
+        <translation type="vanished">Enzymes must not cut in the following region</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="121"/>
         <source>Exclude region:</source>
-        <translation>Exclude region:</translation>
+        <translation type="vanished">Exclude region:</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="141"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="128"/>
         <source>&lt;status label&gt;</source>
         <translation>&lt;status label&gt;</translation>
     </message>
@@ -720,42 +723,42 @@ Choose another region.</translation>
 <context>
     <name>U2::DigestSequenceTask</name>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="131"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="136"/>
         <source>Can&apos;t use restriction site %1 for digestion,  cleavage site is unknown </source>
         <translation>Can&apos;t use restriction site %1 for digestion,  cleavage site is unknown </translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="200"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="218"/>
         <source>Unable to digest into fragments: intersecting restriction sites %1 (%2..%3) and %4 (%5..%6)</source>
         <translation>Unable to digest into fragments: intersecting restriction sites %1 (%2..%3) and %4 (%5..%6)</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="306"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="324"/>
         <source>circular</source>
         <translation>circular</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="306"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="324"/>
         <source>linear</source>
         <translation>linear</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="307"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="325"/>
         <source>&lt;h3&gt;&lt;br&gt;Digest into fragments %1 (%2)&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;&lt;br&gt;Digest into fragments %1 (%2)&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="308"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="326"/>
         <source>&lt;br&gt;Generated %1 fragments.</source>
         <translation>&lt;br&gt;Generated %1 fragments.</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="317"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="335"/>
         <source>&lt;br&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;%1:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;From %3 (%2) To %5 (%4) - %6 bp </source>
         <translation>&lt;br&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;%1:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;From %3 (%2) To %5 (%4) - %6 bp </translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="343"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="361"/>
         <source>Conserved annotation %1 (%2) is disrupted by the digestion. Try changing the restriction sites.</source>
         <translation>Conserved annotation %1 (%2) is disrupted by the digestion. Try changing the restriction sites.</translation>
     </message>
@@ -933,102 +936,102 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::EnzymesSelectorWidget</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="157"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="153"/>
         <source>File not exists: %1</source>
         <translation>File not exists: %1</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="164"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="202"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="160"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="198"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="208"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="204"/>
         <source>New enzymes database has been saved.</source>
         <translation>New enzymes database has been saved.</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="209"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="205"/>
         <source>Do you want to work with new database?</source>
         <translation>Do you want to work with new database?</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="312"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="514"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="308"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="510"/>
         <source>Select enzyme database file</source>
         <translation>Select enzyme database file</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="348"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="344"/>
         <source>Minimum length</source>
         <translation>Minimum length</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="348"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="344"/>
         <source>Enter minimum length of recognition sites</source>
         <translation>Enter minimum length of recognition sites</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="389"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="398"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="385"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="394"/>
         <source>Save selection</source>
         <translation>Save selection</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="389"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="385"/>
         <source>Can not save empty selection!</source>
         <translation>Can not save empty selection!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="394"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="462"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="390"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="458"/>
         <source>Select enzymes selection</source>
         <translation>Select enzymes selection</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="398"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="394"/>
         <source>Failed to open %1 for writing</source>
         <translation>Failed to open %1 for writing</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="411"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="407"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="411"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="407"/>
         <source>No enzyme selected!</source>
         <translation>No enzyme selected!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="416"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="412"/>
         <source>Selected enzyme has no ID!</source>
         <translation>Selected enzyme has no ID!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="462"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="458"/>
         <source>Selection files</source>
         <translation>Selection files</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="467"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="482"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="463"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="478"/>
         <source>Load selection</source>
         <translation>Load selection</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="467"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="463"/>
         <source>Failed to open selection file %1</source>
         <translation>Failed to open selection file %1</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="482"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="478"/>
         <source>Enzymes selection is empty!</source>
         <translation>Enzymes selection is empty!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="506"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="502"/>
         <source>Failed to load %1 from selection.</source>
         <translation>Failed to load %1 from selection.</translation>
     </message>
@@ -1036,7 +1039,7 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::FindEnzymesAutoAnnotationUpdater</name>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="319"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="331"/>
         <source>Restriction Sites</source>
         <translation>Restriction Sites</translation>
     </message>
@@ -1044,22 +1047,31 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::FindEnzymesDialog</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="553"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="550"/>
         <source>Total number of enzymes: %1, selected %2</source>
         <translation>Total number of enzymes: %1, selected %2</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="569"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected!                Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected!                Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected!                Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="591"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="557"/>
+        <source>Invalid &apos;Search&apos; region!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="566"/>
+        <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="587"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="591"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="587"/>
         <source>Minimum hit value must be lesser or equal then maximum!</source>
         <translation>Minimum hit value must be lesser or equal then maximum!</translation>
     </message>
@@ -1067,18 +1079,18 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::FindEnzymesTask</name>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="126"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="109"/>
         <source>Find Enzymes</source>
         <translation>Find Enzymes</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="142"/>
-        <location filename="../src/FindEnzymesTask.cpp" line="268"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="137"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="269"/>
         <source>Number of results exceed %1, stopping</source>
         <translation>Number of results exceed %1, stopping</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="220"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="217"/>
         <source>Found %1 restriction sites</source>
         <translation>Number of results exceed %1, stopping</translation>
     </message>
@@ -1091,17 +1103,17 @@ To start ligation create a project or open an existing.</translation>
         <translation>Find and store enzymes</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="54"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="52"/>
         <source>No enzymes selected.</source>
         <translation>No enzymes selected.</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="64"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="63"/>
         <source>Annotation table does not exist</source>
         <translation>Annotation table does not exist</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="65"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="64"/>
         <source>Annotation table is read-only</source>
         <translation>Annotation table is read-only</translation>
     </message>
@@ -1109,27 +1121,27 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::FindSingleEnzymeTask</name>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="235"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="232"/>
         <source>Find enzyme &apos;%1&apos;</source>
         <translation>Find enzyme &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="258"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="259"/>
         <source>Find enzyme &apos;%1&apos; parallel</source>
         <translation>Find enzyme &apos;%1&apos; parallel</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="284"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="286"/>
         <source>No enzyme alphabet</source>
         <translation>No enzyme alphabet</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="286"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="288"/>
         <source>Non-nucleic enzyme alphabet: %1, enzyme: %2, skipping..</source>
         <translation>Non-nucleic enzyme alphabet: %1, enzyme: %2, skipping..</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="291"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="293"/>
         <source>Failed to get sequence alphabet</source>
         <translation>Failed to get sequence alphabet</translation>
     </message>
@@ -1137,22 +1149,22 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::LigateFragmentsTask</name>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="365"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="383"/>
         <source>Fragments %1 and  %2 are inconsistent. Blunt and sticky ends incompatibility</source>
         <translation>Fragments %1 and  %2 are inconsistent. Blunt and sticky ends incompatibility</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="375"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="393"/>
         <source>Right overhang from %1 and left overhang from %2 are inconsistent.</source>
         <translation>Right overhang from %1 and left overhang from %2 are inconsistent.</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="421"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="439"/>
         <source>Unknown DNA alphabet in fragment %1 of %2</source>
         <translation>Unknown DNA alphabet in fragment %1 of %2</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="488"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="506"/>
         <source>Add constructed molecule</source>
         <translation>Add constructed molecule</translation>
     </message>

@@ -96,17 +96,17 @@
 <context>
     <name>U2::GTest_SmithWatermnan</name>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="229"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="223"/>
         <source>**</source>
         <translation>**</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="232"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="226"/>
         <source>,</source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="239"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="233"/>
         <source>..</source>
         <translation>..</translation>
     </message>

@@ -99,7 +99,7 @@
 <context>
     <name>U2::DNAFlexGraphFactory</name>
     <message>
-        <location filename="../src/DNAFlexGraph.cpp" line="40"/>
+        <location filename="../src/DNAFlexGraph.cpp" line="43"/>
         <source>DNA Flexibility</source>
         <translation>DNA Flexibility</translation>
     </message>

@@ -1128,6 +1128,21 @@ The items cannot be recovered once deleted.</source>
         <source>Failed to export image to %1.</source>
         <translation>Невозможно экспортировать изображение %1.</translation>
     </message>
+    <message>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="56"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="56"/>
+        <source>Gene name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/SearchGenbankSequenceDialogController.h" line="56"/>
+        <source>Organism</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RangeSelectionDialog</name>
@@ -1193,6 +1208,69 @@ The items cannot be recovered once deleted.</source>
         <location filename="../src/util/RegionSelector.cpp" line="52"/>
         <source>Custom region</source>
         <translation>Заданный регион</translation>
+    </message>
+</context>
+<context>
+    <name>RegionSelectorController</name>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="35"/>
+        <source>Whole sequence</source>
+        <translation type="unfinished">Вся последовательность</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="36"/>
+        <source>Selected region</source>
+        <translation type="unfinished">Выбранный регион</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="37"/>
+        <source>Custom region</source>
+        <translation type="unfinished">Заданный регион</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="181"/>
+        <source>Invalid Start position of region</source>
+        <translation type="unfinished">Некорректная стартовая позиция в регионе</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="182"/>
+        <source>Invalid End position of region</source>
+        <translation type="unfinished">Некорректная конечная позиция в регионе</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="183"/>
+        <source>Start position is greater than End position</source>
+        <translation type="unfinished">Начальная позичия больше чем конечная</translation>
+    </message>
+</context>
+<context>
+    <name>RegionSelectorWithExcludedRegion</name>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Форма</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="27"/>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="73"/>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="34"/>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="80"/>
+        <source>-</source>
+        <translation type="unfinished">-</translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="112"/>
+        <source>Exclude</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.ui" line="129"/>
+        <source>Region</source>
+        <translation type="unfinished">Регион</translation>
     </message>
 </context>
 <context>
@@ -2037,7 +2115,7 @@ complement(5..15)</translation>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="68"/>
+        <location filename="../src/util/ExportAnnotationsDialog.cpp" line="69"/>
         <source>Select file to save annotations</source>
         <translation>Выберите файл для сохранения аннотаций</translation>
     </message>
@@ -2094,6 +2172,14 @@ complement(5..15)</translation>
         <location filename="../src/util/ExportImageDialog.cpp" line="146"/>
         <source>Export</source>
         <translation>Экспорт</translation>
+    </message>
+</context>
+<context>
+    <name>U2::FeatureKeyFilterTask</name>
+    <message>
+        <location filename="../src/util/project/filter_tasks/FeatureKeyFilterTask.cpp" line="59"/>
+        <source>DbiRef is invalid</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2815,46 +2901,78 @@ complement(5..15)</translation>
 <context>
     <name>U2::RegionSelector</name>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="301"/>
+        <location filename="../src/util/RegionSelector.cpp" line="114"/>
         <source>Set minimum</source>
         <translation>Установить минимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="306"/>
+        <location filename="../src/util/RegionSelector.cpp" line="119"/>
         <source>Set maximum</source>
         <translation>Установить максимум</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="313"/>
-        <location filename="../src/util/RegionSelector.cpp" line="334"/>
+        <location filename="../src/util/RegionSelector.cpp" line="126"/>
+        <location filename="../src/util/RegionSelector.cpp" line="147"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="321"/>
-        <location filename="../src/util/RegionSelector.cpp" line="340"/>
+        <location filename="../src/util/RegionSelector.cpp" line="134"/>
+        <location filename="../src/util/RegionSelector.cpp" line="153"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="182"/>
+        <location filename="../src/util/RegionSelector.cpp" line="102"/>
         <source>Invalid sequence region!</source>
         <translation>Некорректный регион последовательности!</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="188"/>
         <source>Invalid Start position of region</source>
-        <translation>Некорректная стартовая позиция в регионе</translation>
+        <translation type="vanished">Некорректная стартовая позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="197"/>
         <source>Invalid End position of region</source>
-        <translation>Некорректная конечная позиция в регионе</translation>
+        <translation type="vanished">Некорректная конечная позиция в регионе</translation>
     </message>
     <message>
-        <location filename="../src/util/RegionSelector.cpp" line="205"/>
         <source>Start position is greater than End position</source>
-        <translation>Начальная позичия больше чем конечная</translation>
+        <translation type="vanished">Начальная позичия больше чем конечная</translation>
+    </message>
+</context>
+<context>
+    <name>U2::RegionSelectorController</name>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="132"/>
+        <source>Region is not in sequence range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="150"/>
+        <source>Cannot get preset name, ComboBox is NULL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="155"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="172"/>
+        <source>Cannot set preset, ComboBox is NULL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/RegionSelectorController.cpp" line="230"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="277"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="291"/>
+        <location filename="../src/util/RegionSelectorController.cpp" line="326"/>
+        <source>Region lineEdit is NULL</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::RegionSelectorWithExludedRegion</name>
+    <message>
+        <location filename="../src/util/RegionSelectorWithExcludedRegion.cpp" line="95"/>
+        <source>&apos;Exclude&apos; region contains &apos;Search In&apos; region. Search region is empty.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

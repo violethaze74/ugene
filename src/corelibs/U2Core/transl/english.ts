@@ -650,7 +650,7 @@
 <context>
     <name>U2::AutoAnnotationsSupport</name>
     <message>
-        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="106"/>
+        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="112"/>
         <source>Auto-annotations [%1 | %2]</source>
         <translation>Auto-annotations [%1 | %2]</translation>
     </message>
@@ -658,7 +658,7 @@
 <context>
     <name>U2::AutoAnnotationsUpdateTask</name>
     <message>
-        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="284"/>
+        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="305"/>
         <source>Empty auto-annotation object</source>
         <translation>Empty auto-annotation object</translation>
     </message>
@@ -776,6 +776,52 @@ The session database file is removed after closing of UGENE.</translation>
         <location filename="../src/tasks/CloneObjectTask.cpp" line="70"/>
         <source>The object has been removed</source>
         <translation>The object has been removed</translation>
+    </message>
+</context>
+<context>
+    <name>U2::CmdlineInOutTaskRunner</name>
+    <message>
+        <location filename="../src/tasks/CmdlineInOutTaskRunner.cpp" line="73"/>
+        <source>An error occurred during the task. See the log for details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CmdlineInOutTaskRunner.cpp" line="93"/>
+        <source>Wrong database string: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::CmdlineTaskRunner</name>
+    <message>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="99"/>
+        <source>Run UGENE command line: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="135"/>
+        <source>Cannot start process &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="205"/>
+        <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="209"/>
+        <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="213"/>
+        <source>Error occurred while reading from or writing to channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="216"/>
+        <source>Unknown error occurred</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2368,7 +2414,7 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2::SequenceDbiWalkerSubtask</name>
     <message>
-        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="135"/>
+        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="140"/>
         <source>Sequence walker subtask</source>
         <translation>Sequence walker subtask</translation>
     </message>

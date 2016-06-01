@@ -453,17 +453,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="734"/>
+        <location filename="../src/Main.cpp" line="728"/>
         <source>UGENE started</source>
         <translation>UGENE готов к работе</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="735"/>
+        <location filename="../src/Main.cpp" line="729"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>Версия UGENE: %1 %2-бит</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="736"/>
+        <location filename="../src/Main.cpp" line="730"/>
         <source>UGENE distribution: %1</source>
         <translation>Распределение UGENE: %1</translation>
     </message>
@@ -689,7 +689,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/Main.cpp" line="477"/>
+        <location filename="../src/Main.cpp" line="475"/>
         <source>Style not available %1</source>
         <translation type="unfinished">Стиль не доступен: %1</translation>
     </message>
@@ -697,8 +697,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppSettingsDialogController</name>
     <message>
-        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="76"/>
-        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="78"/>
+        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="43"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="44"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="80"/>
+        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="82"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -714,24 +724,24 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CheckUpdatesTask</name>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="44"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="43"/>
         <source>Check for updates</source>
         <translation>Проверить обновления</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="55"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="54"/>
         <source>Connecting to updates server</source>
         <translation>Соединение с сервером</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="68"/>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="70"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="67"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="69"/>
         <source>Cannot load the current version.</source>
         <translation>Cannot load the current version.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="79"/>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="81"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="78"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="80"/>
         <source>Connection error while checking for updates: %1</source>
         <translation>Connection error while checking for updates: %1</translation>
     </message>
@@ -1948,7 +1958,7 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::ShtirlitzStartupTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="318"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="317"/>
         <source>Shtirlitz Startup Task</source>
         <translation>Shtirlitz Startup Task</translation>
     </message>
@@ -1956,32 +1966,32 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::ShtirlitzTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="122"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="121"/>
         <source>Shtirlitz is sending the first-time report</source>
         <translation>Отправляется отчет о системе</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="134"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="133"/>
         <source>%1 days passed passed since previous Shtirlitz&apos;s report. Shtirlitz is sending the new one.</source>
         <translation>%1 дней прошло со времени отправки последнего отчета. Отправляется новый отчет.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="276"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="275"/>
         <source>Connecting to remote server</source>
         <translation>Соединение с удаленным сервером</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="295"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="294"/>
         <source>Cannot resolve destination path for statistical reports</source>
         <translation>Невозможно определить адрес сервера статистики</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="299"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="298"/>
         <source>Network error while resolving destination URL: </source>
         <translation>Ошибка сети при определении адреса сервера статистики:</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="312"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="311"/>
         <source>Network error while sending report: </source>
         <translation>Ошибка сети при отправке отчета:</translation>
     </message>
@@ -2076,18 +2086,30 @@ Do you want view online documentation?</source>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="446"/>
-        <source>status</source>
-        <translation>состояние</translation>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="448"/>
-        <source>error:</source>
-        <translation>ошибка:</translation>
+        <source>Error:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="453"/>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>status</source>
+        <translation type="vanished">состояние</translation>
+    </message>
+    <message>
+        <source>error:</source>
+        <translation type="vanished">ошибка:</translation>
+    </message>
+    <message>
         <source>time</source>
-        <translation>время выполнения</translation>
+        <translation type="vanished">время выполнения</translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="513"/>
@@ -2243,27 +2265,28 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::UpdateMessage</name>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="129"/>
-        <source>UGENE %1 is available for downloading. Would you like to download and install it?</source>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="128"/>
+        <source>UGENE %1 is available for downloading.
+Would you like to download and install it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="130"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="129"/>
         <source>New Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="134"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="133"/>
         <source>Update now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="135"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="134"/>
         <source>Ask later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="136"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="135"/>
         <source>Skip this update</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2323,7 +2346,7 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="455"/>
+        <location filename="../src/Main.cpp" line="453"/>
         <source>UGENE initialization started</source>
         <translation type="unfinished">Инициализация UGENE</translation>
     </message>
@@ -2331,27 +2354,27 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::VersionMessage</name>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="158"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="157"/>
         <source>Version Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="164"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="163"/>
         <source>Update Now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="181"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="180"/>
         <source>Your version:</source>
         <translation type="unfinished">Локальная версия:</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="181"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="180"/>
         <source>Latest version:</source>
         <translation type="unfinished">Последняя версия:</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="183"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="182"/>
         <source>You have the latest version</source>
         <translation type="unfinished">У вас установлена самая последняя версия</translation>
     </message>

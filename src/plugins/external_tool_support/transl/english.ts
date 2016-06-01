@@ -854,22 +854,27 @@ bowtie is somewhat slower when --best is specified.
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="54"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="63"/>
         <source>Index algorithm (-a)</source>
         <translation>Index algorithm (-a)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="68"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="77"/>
+        <source>autodetect</source>
+        <translation type="unfinished">autodetect</translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="82"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="73"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="87"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaBuildSettings.ui" line="78"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="92"/>
         <source>is</source>
         <translation>is</translation>
     </message>
@@ -1352,22 +1357,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CAP3SupportDialog</name>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="20"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="14"/>
         <source>Contig Assembly with CAP3</source>
         <translation>Contig Assembly with CAP3</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="30"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="27"/>
         <source>Base</source>
         <translation>Base</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="36"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="33"/>
         <source>Input files (long DNA reads to assembly)</source>
         <translation>Input files (long DNA reads to assembly)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="45"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="42"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1382,132 +1387,132 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The quality scores for FASTA sequences can be provided in an additional file. The file must be located in the same folder as the original sequences and have the same name as FASTA file, but another extention: &lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;.qual&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="57"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="54"/>
         <source>Add</source>
         <translation>Add</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="64"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="61"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="71"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="68"/>
         <source>Remove All</source>
         <translation>Remove All</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="93"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="90"/>
         <source>Result contig</source>
         <translation>Result contig</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="102"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="99"/>
         <source>Path to result contig alignment in ACE format.</source>
         <translation>Path to result contig alignment in ACE format.</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="128"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="125"/>
         <source>Clipping for poor regions</source>
         <translation>Clipping for poor regions</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="134"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="131"/>
         <source>Base quality cutoff for clipping (-c)</source>
         <translation>Base quality cutoff for clipping (-c)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="151"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="148"/>
         <source>Clipping range (-y)</source>
         <translation>Clipping range (-y)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="174"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="171"/>
         <source>Length and percent identity of an overlap</source>
         <translation>Length and percent identity of an overlap</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="180"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="177"/>
         <source>Overlap length cutoff (-o)</source>
         <translation>Overlap length cutoff (-o)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="200"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="197"/>
         <source>Overlap percent identity cutoff (-p)</source>
         <translation>Overlap percent identity cutoff (-p)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="223"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="220"/>
         <source>Quality difference score of an overlap</source>
         <translation>Quality difference score of an overlap</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="229"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="226"/>
         <source>Base quality cutoff for differences (-b)</source>
         <translation>Base quality cutoff for differences (-b)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="259"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="256"/>
         <source>Max qscore sum at differences (-d)</source>
         <translation>Max qscore sum at differences (-d)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="269"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="266"/>
         <source>Other parameters</source>
         <translation>Other parameters</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="275"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="272"/>
         <source>Max number of word matches (-t)</source>
         <translation>Max number of word matches (-t)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="295"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="292"/>
         <source>Band expansion size (-a)</source>
         <translation>Band expansion size (-a)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="318"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="315"/>
         <source>Max gap length in any overlap (-f)</source>
         <translation>Max gap length in any overlap (-f)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="338"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="335"/>
         <source>Assembly reverse reads (-r)</source>
         <translation>Assembly reverse reads (-r)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="364"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="361"/>
         <source>Similarity score of an overlap</source>
         <translation>Similarity score of an overlap</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="370"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="367"/>
         <source>Mismatch score factor (-n)</source>
         <translation>Mismatch score factor (-n)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="390"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="387"/>
         <source>Overlap similarity score cutoff (-s)</source>
         <translation>Overlap similarity score cutoff (-s)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="410"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="407"/>
         <source>Gap penalty factor (-g)</source>
         <translation>Gap penalty factor (-g)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="417"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="414"/>
         <source>Match score factor (-m)</source>
         <translation>Match score factor (-m)</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="112"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="109"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.ui" line="122"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="119"/>
         <source>Advanced</source>
         <translation>Advanced</translation>
     </message>
@@ -2233,8 +2238,13 @@ Uncheck to get the maximum likelihood estimate.</translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaSettingsWidget.cpp" line="44"/>
+        <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB.
+In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
-        <translation>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</translation>
+        <translation type="vanished">NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</translation>
     </message>
 </context>
 <context>
@@ -3104,22 +3114,36 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="92"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="105"/>
         <source>Short reads are not provided</source>
         <translation>Short reads are not provided</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="99"/>
         <source>In paired-end mode it possible to analyze only 2 read sets using BWA</source>
-        <translation>In paired-end mode it possible to analyze only 2 read sets using BWA</translation>
+        <translation type="vanished">In paired-end mode it possible to analyze only 2 read sets using BWA</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="217"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="123"/>
+        <source>Please, provide same number of files with downstream and upstream reads.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="194"/>
+        <source>Align reads with BWA Multitask</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="235"/>
+        <source>Saming reads with BWA Multitask</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="286"/>
         <source>Log is incomplete</source>
         <translation>Log is incomplete</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="220"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="289"/>
         <source>Log is incorrect</source>
         <translation>Log is incorrect</translation>
     </message>
@@ -3127,20 +3151,29 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaMemAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="242"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="312"/>
         <source>Short reads are not provided</source>
         <translation>Short reads are not provided</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="251"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="331"/>
+        <source>Please, provide same number of files with downstream and upstream reads.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="420"/>
+        <source>Align reads with BWA-MEM Multitask</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Wrong settings of paired reads. For paired-read alignment by BWA MEM only a single pair of reads is acceptable.</source>
-        <translation>Wrong settings of paired reads. For paired-read alignment by BWA MEM only a single pair of reads is acceptable.</translation>
+        <translation type="vanished">Wrong settings of paired reads. For paired-read alignment by BWA MEM only a single pair of reads is acceptable.</translation>
     </message>
 </context>
 <context>
     <name>U2::BwaMemSettingsWidget</name>
     <message>
-        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="338"/>
+        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="298"/>
         <source>NOTE: bwa mem accepts reads only in FASTA or FASTQ format. Reads should be compiled into a single file for each mate end.</source>
         <translation>NOTE: bwa mem accepts reads only in FASTA or FASTQ format. Reads should be compiled into a single file for each mate end.</translation>
     </message>
@@ -3156,12 +3189,12 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaSwAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="338"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="470"/>
         <source>Short reads are not provided</source>
         <translation>Short reads are not provided</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="348"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="480"/>
         <source>BWA SW can not align paired reads</source>
         <translation>BWA SW can not align paired reads</translation>
     </message>
@@ -3169,7 +3202,7 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaSwSettingsWidget</name>
     <message>
-        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="270"/>
+        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="230"/>
         <source>NOTE: bwa-sw performs alignment of long sequencing reads (Sanger or 454). It accepts reads only in FASTA or FASTQ format. Reads should be compiled into single file.</source>
         <translation>NOTE: bwa-sw performs alignment of long sequencing reads (Sanger or 454). It accepts reads only in FASTA or FASTQ format. Reads should be compiled into single file.</translation>
     </message>
@@ -3177,19 +3210,22 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="479"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="620"/>
         <source>Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file.</source>
         <translation>Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="485"/>
-        <source>Multiple read files are not supported by bwa-mem. Please combine your reads into single FASTA file.</source>
-        <translation>Multiple read files are not supported by bwa-mem. Please combine your reads into single FASTA file.</translation>
+        <location filename="../src/bwa/BwaTask.cpp" line="626"/>
+        <source>Please, provide same number of files with downstream and upstream reads.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="488"/>
+        <source>Multiple read files are not supported by bwa-mem. Please combine your reads into single FASTA file.</source>
+        <translation type="vanished">Multiple read files are not supported by bwa-mem. Please combine your reads into single FASTA file.</translation>
+    </message>
+    <message>
         <source>Please, provide two files with paired reads.</source>
-        <translation>Please, provide two files with paired reads.</translation>
+        <translation type="vanished">Please, provide two files with paired reads.</translation>
     </message>
 </context>
 <context>
@@ -3763,7 +3799,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Unable to get an assembly object.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CufflinksSupportTask.cpp" line="233"/>
+        <location filename="../src/cufflinks/CufflinksSupportTask.cpp" line="235"/>
         <source>An internal error occurred during getting annotations from a %1 output file!</source>
         <translation>An internal error occurred during getting annotations from a %1 output file!</translation>
     </message>
@@ -10408,7 +10444,12 @@ Set it empty if you want to run Tophat once for all input reads</translation>
         <translation>Preparing TopHatSupportTask internal error: unable to get a sequence object!</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="280"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="262"/>
+        <source>TopHat was not able to map reads to the reference.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="284"/>
         <source>There are no accepted hits in the result</source>
         <translation>There are no accepted hits in the result</translation>
     </message>
