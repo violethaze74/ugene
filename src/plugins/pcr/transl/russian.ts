@@ -324,12 +324,12 @@
 <context>
     <name>U2::ImportPrimerFromObjectTask</name>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="39"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="38"/>
         <source>Import primer from the shared database object: %1</source>
         <translation>Import primer from the shared database object: %1</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="43"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="42"/>
         <source>A non-sequence object was provided</source>
         <translation>A non-sequence object was provided</translation>
     </message>
@@ -338,37 +338,37 @@
         <translation type="vanished">The sequence has an unsupported alphabet: only standard nucleotide alphabet is supported</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="47"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="46"/>
         <source>The sequence has an unsupported alphabet: only nucleotide alphabet is supported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="48"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="47"/>
         <source>Can&apos;t convert a sequence to primer: the sequence is too long</source>
         <translation>Can&apos;t convert a sequence to primer: the sequence is too long</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="59"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="57"/>
         <source>The primer sequence contains non-ACGT symbols</source>
         <translation>The primer sequence contains non-ACGT symbols</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="69"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="67"/>
         <source>Without document</source>
         <translation>Без документа</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="72"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="70"/>
         <source>cancelled</source>
         <translation>cancelled</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="75"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="73"/>
         <source>error</source>
         <translation>error</translation>
     </message>
     <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="77"/>
+        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="75"/>
         <source>success</source>
         <translation>success</translation>
     </message>
@@ -543,17 +543,17 @@
         <translation>Reverse primers found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="191"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="197"/>
         <source>Products found: %1</source>
         <translation>Products found: %1</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="195"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="201"/>
         <source>Primers details:</source>
         <translation>Информация о праймерах:</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrTask.cpp" line="199"/>
+        <location filename="../src/InSilicoPcrTask.cpp" line="205"/>
         <source>Products found: %1. &lt;br&gt;&lt;br&gt;The detailed information about primers is not available as primers or sequence contain a character from the Extended DNA alphabet.</source>
         <translation type="unfinished"></translation>
     </message>

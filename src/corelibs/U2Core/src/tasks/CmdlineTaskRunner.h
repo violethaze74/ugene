@@ -46,8 +46,6 @@ public:
     void prepare();
     ReportResult report();
 
-    static const QString PLUGINS_ARG;
-
 protected:
     virtual bool isCommandLogLine(const QString &logLine) const;
     virtual bool parseCommandLogWord(const QString &logWord);

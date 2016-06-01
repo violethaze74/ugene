@@ -862,27 +862,27 @@
         <translation>Grouper out slot: empty in-slot</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1644"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1667"/>
         <source>Error: element name in the workflow file contains spaces</source>
         <translation>Error: element name in the workflow file contains spaces</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2006"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2029"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2030"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2053"/>
         <source>Name attribute is not set for the marker</source>
         <translation>Name attribute is not set for the marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2033"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2056"/>
         <source>Type attribute is not set for %1 marker</source>
         <translation>Type attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2042"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2065"/>
         <source>Qualifier name attribute is not set for %1 marker</source>
         <translation>Qualifier name attribute is not set for %1 marker</translation>
     </message>
@@ -1358,19 +1358,19 @@
 <context>
     <name>U2::PrompterBaseImpl</name>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1359"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1379"/>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1416"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1350"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1370"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1407"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1394"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1385"/>
         <source>file(s) alongside of input sources of &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>файл(ы) рядом с исходным(и) &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1362"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1353"/>
         <source>the list of files</source>
         <translation>список файлов</translation>
     </message>
@@ -1386,34 +1386,28 @@
 <context>
     <name>U2::RunCmdlineWorkflowTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="564"/>
         <source>Workflow process</source>
-        <translation>Процесс схемы</translation>
+        <translation type="vanished">Процесс схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="615"/>
         <source>Cannot start process &apos;%1&apos;</source>
-        <translation>Cannot start process &apos;%1&apos;</translation>
+        <translation type="vanished">Cannot start process &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="622"/>
         <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
-        <translation>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</translation>
+        <translation type="vanished">The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="626"/>
         <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
-        <translation>The process &apos;%1&apos; crashed some time after starting successfully</translation>
+        <translation type="vanished">The process &apos;%1&apos; crashed some time after starting successfully</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="630"/>
         <source>Error occurred while reading from or writing to channel</source>
-        <translation>Error occurred while reading from or writing to channel</translation>
+        <translation type="vanished">Error occurred while reading from or writing to channel</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="633"/>
         <source>Unknown error occurred</source>
-        <translation>Unknown error occurred</translation>
+        <translation type="vanished">Unknown error occurred</translation>
     </message>
 </context>
 <context>
@@ -1435,22 +1429,27 @@
 <context>
     <name>U2::SimpleInOutWorkflowTask</name>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="61"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="67"/>
         <source>Run workflow: %1</source>
         <translation>Запуск схемы: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="71"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="77"/>
         <source>Cannot create temporary file for writing</source>
         <translation>Невозможно создать временный файл для записи</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="88"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="94"/>
         <source>Internal error: cannot find workflow %1</source>
         <translation>Внутренняя ошибка: невозможно найти схему %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="113"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="123"/>
+        <source>An error occurred during the task. See the log for details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="128"/>
         <source>Loading result file &apos;%1&apos;</source>
         <translation>Loading result file &apos;%1&apos;</translation>
     </message>
@@ -1458,29 +1457,29 @@
 <context>
     <name>U2::SimpleMSAWorkflow4GObjectTask</name>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="164"/>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="184"/>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="200"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="179"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="199"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="215"/>
         <source>Object &apos;%1&apos; removed</source>
         <translation>Object &apos;%1&apos; removed</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="185"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="200"/>
         <source>Object &apos;%1&apos; is locked</source>
         <translation>Object &apos;%1&apos; is locked</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="212"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="227"/>
         <source>Result document not found!</source>
         <translation>Result document not found!</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="213"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="228"/>
         <source>Result document content not matched! %1</source>
         <translation>Result document content not matched! %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="215"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="230"/>
         <source>Result document contains no MSA! %1</source>
         <translation>Result document contains no MSA! %1</translation>
     </message>
@@ -1900,42 +1899,42 @@
 <context>
     <name>U2::WorkflowIterationRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="228"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="138"/>
         <source>Workflow run</source>
         <translation>Запуск схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="244"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="154"/>
         <source>Unknown domain %1</source>
         <translation>Неизвестное имя среды исполнения: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="294"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="204"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>Не удалось предварительно обработать схему. Некоторые из включенных файлов некорректны</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="302"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="212"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>Не удалось создать процесс %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="310"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="220"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>Не удалось создать соединение процессов %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="323"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="233"/>
         <source>Failed to create a workflow context</source>
         <translation>Невозможно создать контекст схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="411"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="295"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>Все процессы находятся в состоянии &quot;не готовы&quot; (обработали входные данные), но не все процессы находятся в состоянии &quot;завершил исполнение&quot;. Пожалуйста, проверьте схему?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="329"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="239"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Не удалось создать планировщик для среды исполнения %1</translation>
     </message>
@@ -1951,7 +1950,7 @@
 <context>
     <name>U2::WorkflowRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="95"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="56"/>
         <source>Execute workflow</source>
         <translation>Выполнение схемы</translation>
     </message>
@@ -2048,7 +2047,7 @@
 <context>
     <name>U2::WorkflowSettings</name>
     <message>
-        <location filename="../src/support/WorkflowSettings.cpp" line="290"/>
+        <location filename="../src/support/WorkflowSettings.cpp" line="259"/>
         <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
         <translation>Command line UGENE path not found, a possibility to run in separate process will be disabled</translation>
     </message>
@@ -2131,22 +2130,22 @@
         <translation>External tool &quot;%1&quot; is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1214"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1205"/>
         <source>Can&apos;t access output file path: &apos;%1&apos;</source>
         <translation>Can&apos;t access output file path: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1233"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1224"/>
         <source>Can&apos;t output directory path: &apos;%1&apos;, check permissions</source>
         <translation>Can&apos;t output directory path: &apos;%1&apos;, check permissions</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1252"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1243"/>
         <source>Empty shared database URL specified</source>
         <translation>Empty shared database URL specified</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowUtils.cpp" line="1324"/>
+        <location filename="../src/support/WorkflowUtils.cpp" line="1315"/>
         <source>Wrong samples map string</source>
         <translation>Wrong samples map string</translation>
     </message>

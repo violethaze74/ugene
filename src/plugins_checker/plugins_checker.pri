@@ -8,8 +8,7 @@ use_opencl(){
 
 UGENE_RELATIVE_DESTDIR = ''
 
-QT += xml network script webkit
-QT -= gui
+QT += xml network script webkit widgets
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release console
 CONFIG -= app_bundle
@@ -35,9 +34,8 @@ LIBS += -L../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2Private -lu
         DESTDIR=../_release
         DEFINES+=NDEBUG
         MOC_DIR=_tmp/moc/release
-        OBJECTS_DIR=_tmp/obj/release   
+        OBJECTS_DIR=_tmp/obj/release
     }
-
 }
 
 UI_DIR=_tmp/ui

@@ -40,7 +40,15 @@ class Task;
 #define U2_PLUGIN_INIT_FUNC ugene_plugin_init
 #define U2_PLUGIN_INIT_FUNC_NAME "ugene_plugin_init"
 
-typedef Plugin*(*PLUG_INIT_FUNC) ();
+#define U2_PLUGIN_VERIFY_FUNC ugene_plugin_verify
+#define U2_PLUGIN_VERIFY_NAME "ugene_plugin_verify"
+
+#define U2_PLUGIN_FAIL_MASSAGE_FUNC ugene_plugin_fail_message
+#define U2_PLUGIN_FAIL_MASSAGE_NAME "ugene_plugin_fail_message"
+
+typedef Plugin* (*PLUG_INIT_FUNC) ();
+typedef bool (*PLUG_VERIFY_FUNC) ();
+typedef QString (*PLUG_FAIL_MESSAGE_FUNC) ();
 
 enum PluginState {
     PluginState_Loaded,

@@ -337,30 +337,23 @@
 <context>
     <name>U2::BioStruct3DViewContext</name>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="180"/>
-        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="186"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="183"/>
+        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="183"/>
         <source>Close 3D Structure Viewer</source>
         <translation>Close 3D Structure Viewer</translation>
-    </message>
-    <message>
-        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="226"/>
-        <source>Unfortunately, your system does not have OpenGL Support.
-The 3D Structure Viewer is not available.
-You may try to upgrade your system by updating the video card driver.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::BioStruct3DViewPlugin</name>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="84"/>
-        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="84"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="87"/>
+        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="87"/>
         <source>3D Structure Viewer</source>
         <translation>3D Structure Viewer</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="84"/>
-        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="84"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="87"/>
+        <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="87"/>
         <source>Visualizes 3D structures of biological molecules.</source>
         <translation>Visualizes 3D structures of biological molecules.</translation>
     </message>

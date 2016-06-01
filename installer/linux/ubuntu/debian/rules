@@ -113,6 +113,8 @@ install-arch:
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/query_designer.plugin
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_blast.license
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_blast.plugin
+	rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_service.license
+	rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_service.plugin
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/repeat_finder.license
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/repeat_finder.plugin
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/sitecon.license

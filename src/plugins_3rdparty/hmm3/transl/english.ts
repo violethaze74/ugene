@@ -117,6 +117,44 @@
     </message>
 </context>
 <context>
+    <name>U2::Hmmer3SearchWorfklowTask</name>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="56"/>
+        <source>No annotations objects found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="76"/>
+        <source>HMM profile used</source>
+        <translation type="unfinished">HMM profile used</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="79"/>
+        <source>Task was not finished</source>
+        <translation type="unfinished">Task was not finished</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="84"/>
+        <source>Result annotation table</source>
+        <translation type="unfinished">Result annotation table</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="85"/>
+        <source>Result annotation group</source>
+        <translation type="unfinished">Result annotation group</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="86"/>
+        <source>Result annotation name</source>
+        <translation type="unfinished">Result annotation name</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="88"/>
+        <source>Results count</source>
+        <translation type="unfinished">Results count</translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::HMM3BuildPrompter</name>
     <message>
         <location filename="../src/workers/HMM3BuildWorker.cpp" line="109"/>
@@ -255,17 +293,17 @@
 <context>
     <name>U2::LocalWorkflow::HMM3SearchPrompter</name>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="136"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="195"/>
         <source>For each sequence from &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>For each sequence from &lt;u&gt;%1&lt;/u&gt;,</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="137"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="196"/>
         <source>using all profiles provided by &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>using all profiles provided by &lt;u&gt;%1&lt;/u&gt;,</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="141"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="200"/>
         <source>%1 search HMM3 signals %2. &lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%4&lt;/u&gt;.</source>
         <translation>%1 search HMM3 signals %2. &lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%4&lt;/u&gt;.</translation>
     </message>
@@ -273,112 +311,221 @@
 <context>
     <name>U2::LocalWorkflow::HMM3SearchWorker</name>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="71"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="85"/>
         <source>HMM3 profile</source>
         <translation>HMM3 profile</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="71"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="85"/>
         <source>HMM3 profile(s) to search with.</source>
         <translation>HMM3 profile(s) to search with.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="72"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="86"/>
         <source>Input sequence</source>
         <translation>Input sequence</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="73"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="87"/>
         <source>An input sequence (nucleotide or protein) to search in.</source>
         <translation>An input sequence (nucleotide or protein) to search in.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="74"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="88"/>
         <source>HMM3 annotations</source>
         <translation>HMM3 annotations</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="75"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="89"/>
         <source>Annotations marking found similar sequence regions.</source>
         <translation>Annotations marking found similar sequence regions.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="89"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="103"/>
         <source>Result annotation</source>
         <translation>Result annotation</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="89"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="103"/>
         <source>A name of the result annotations.</source>
         <translation>A name of the result annotations.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="90"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="104"/>
         <source>Seed</source>
         <translation>Seed</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="90"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="104"/>
         <source>Random generator seed. 0 - means that one-time arbitrary seed will be used.</source>
         <translation>Random generator seed. 0 - means that one-time arbitrary seed will be used.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="91"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="105"/>
+        <source>Threshold type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="105"/>
+        <source>Controlling reporting and  model-specific thresholds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="106"/>
         <source>Filter by high E-value</source>
         <translation>Filter by high E-value</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="91"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="106"/>
         <source>Report domains with e-value less than.</source>
         <translation>Report domains with e-value less than.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="92"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="107"/>
         <source>Filter by low score</source>
         <translation>Filter by low score</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="92"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="107"/>
         <source>Report domains with score greater than.</source>
         <translation>Report domains with score greater than.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="100"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="108"/>
+        <source>Significant sequences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="108"/>
+        <source>Number of significant sequences, for domain E-value calculation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="109"/>
+        <source>No bias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="109"/>
+        <source>Turn off composition bias filter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="110"/>
+        <source>No score corrections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="110"/>
+        <source>Turn off biased composition score corrections.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="111"/>
+        <source>No heuristic filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="111"/>
+        <source>Turn all heuristic filters off (less speed, more power).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="112"/>
+        <source>MSV threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="112"/>
+        <source>Stage 1 (MSV) threshold: promote hits w/ P &lt;= F1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="113"/>
+        <source>Vit threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="113"/>
+        <source>Stage 2 (Vit) threshold: promote hits w/ P &lt;= F2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="114"/>
+        <source>Fwd threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="114"/>
+        <source>Stage 3 (Fwd) threshold: promote hits w/ P &lt;= F3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="141"/>
         <source>HMM3 Search</source>
         <translation>HMM3 Search</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="101"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="142"/>
         <source>Searches each input sequence for significantly similar sequence matches to all specified HMM profiles. In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence.</source>
         <translation>Searches each input sequence for significantly similar sequence matches to all specified HMM profiles. In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="168"/>
-        <source>Power of e-value must be less or equal to zero. Using default value: 1e-1</source>
-        <translation>Power of e-value must be less or equal to zero. Using default value: 1e-1</translation>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="318"/>
+        <source>Power of e-value must be less or equal to zero. Using default value: 1e+1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="175"/>
+        <source>Power of e-value must be less or equal to zero. Using default value: 1e-1</source>
+        <translation type="vanished">Power of e-value must be less or equal to zero. Using default value: 1e-1</translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="325"/>
         <source>Score must be greater than zero. Using default value: 0.01</source>
         <translation>Score must be greater than zero. Using default value: 0.01</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="181"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="227"/>
         <source>Value for attribute name is empty, default name used</source>
         <translation>Value for attribute name is empty, default name used</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="227"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="148"/>
+        <source>&lt;= E-value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="149"/>
+        <source>&gt;= score</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="150"/>
+        <source>Use profile&apos;s GA gathering cutoffs</source>
+        <translation type="unfinished">Use profile&apos;s GA gathering cutoffs</translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="151"/>
+        <source>Use profile&apos;s NC noise cutoffs</source>
+        <translation type="unfinished">Use profile&apos;s NC noise cutoffs</translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="152"/>
+        <source>Use profile&apos;s TC trusted cutoffs</source>
+        <translation type="unfinished">Use profile&apos;s TC trusted cutoffs</translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="273"/>
         <source>Find HMM3 signals in %1</source>
         <translation>Find HMM3 signals in %1</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="231"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="277"/>
         <source>Bad sequence supplied to input: %1</source>
         <translation>Bad sequence supplied to input: %1</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="260"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="306"/>
         <source>Found %1 HMM3 signals</source>
         <translation>Found %1 HMM3 signals</translation>
     </message>
@@ -1189,101 +1336,80 @@
 <context>
     <name>U2::UHMM3SWSearchToAnnotationsTask</name>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="557"/>
         <source>hmm profile filename</source>
-        <translation>Profile HMM file path</translation>
+        <translation type="vanished">Profile HMM file path</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="561"/>
         <source>annotation object</source>
-        <translation>Annotation object</translation>
+        <translation type="vanished">Annotation object</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="565"/>
         <source>annotations group name</source>
-        <translation>Annotations group name</translation>
+        <translation type="vanished">Annotations group name</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="569"/>
         <source>annotations name</source>
-        <translation>Annotations name</translation>
+        <translation type="vanished">Annotations name</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="586"/>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="612"/>
         <source>HMMER3 search task</source>
-        <translation>HMM3 search task</translation>
+        <translation type="vanished">HMM3 search task</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="589"/>
         <source>dna sequence</source>
-        <translation>Sequence to search in</translation>
+        <translation type="vanished">Sequence to search in</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="594"/>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="620"/>
         <source>HMMER3 search task with &apos;%1&apos; profile</source>
-        <translation>HMMER3 search task with &apos;%1&apos; profile</translation>
+        <translation type="vanished">HMMER3 search task with &apos;%1&apos; profile</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="615"/>
         <source>Sequence file</source>
-        <translation>Sequence file path</translation>
+        <translation type="vanished">Sequence file path</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="634"/>
         <source>HMM profile used</source>
-        <translation>HMM profile used</translation>
+        <translation type="vanished">HMM profile used</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="637"/>
         <source>Task was not finished</source>
-        <translation>Task was not finished</translation>
+        <translation type="vanished">Task was not finished</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="642"/>
         <source>Result annotation table</source>
-        <translation>Result annotation table</translation>
+        <translation type="vanished">Result annotation table</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="643"/>
         <source>Result annotation group</source>
-        <translation>Result annotation group</translation>
+        <translation type="vanished">Result annotation group</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="644"/>
         <source>Result annotation name</source>
-        <translation>Result annotation name</translation>
+        <translation type="vanished">Result annotation name</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="647"/>
         <source>Results count</source>
-        <translation>Results count</translation>
+        <translation type="vanished">Results count</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="657"/>
         <source>Cannot load sequence document</source>
-        <translation>Cannot load sequence document</translation>
+        <translation type="vanished">Cannot load sequence document</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="662"/>
         <source>No sequence objects loaded</source>
-        <translation>No sequence objects found in document</translation>
+        <translation type="vanished">No sequence objects found in document</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="666"/>
         <source>Unknown sequence type loaded</source>
-        <translation>No sequence objects found in document</translation>
+        <translation type="vanished">No sequence objects found in document</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="670"/>
         <source>Empty sequence loaded</source>
-        <translation>Empty sequence loaded</translation>
+        <translation type="vanished">Empty sequence loaded</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="686"/>
         <source>Annotation object removed</source>
-        <translation>Choosed annotation object removed</translation>
+        <translation type="vanished">Choosed annotation object removed</translation>
     </message>
 </context>
 <context>
@@ -1363,18 +1489,17 @@
         <translation>Error: bad arguments!</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="182"/>
-        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="186"/>
+        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="183"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="186"/>
+        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="183"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="236"/>
+        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="233"/>
         <source>Select query HMM profile</source>
         <translation>Select query HMM profile</translation>
     </message>
