@@ -251,6 +251,13 @@ int DNAFragment::getLength() const
     foreach (const U2Region& r, regions) {
         len += r.length;
     }
+    if (annotatedFragment->findFirstQualifierValue(QUALIFIER_RIGHT_STRAND) == OVERHANG_STRAND_DIRECT) {
+        len += annotatedFragment->findFirstQualifierValue(QUALIFIER_RIGHT_OVERHANG).length();
+    }
+    if (annotatedFragment->findFirstQualifierValue(QUALIFIER_LEFT_STRAND) == OVERHANG_STRAND_DIRECT) {
+        len += annotatedFragment->findFirstQualifierValue(QUALIFIER_LEFT_OVERHANG).length();
+    }
+    
     return len;
 }
 
