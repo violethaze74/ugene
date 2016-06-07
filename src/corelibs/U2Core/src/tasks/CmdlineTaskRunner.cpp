@@ -120,6 +120,7 @@ void CmdlineTaskRunner::prepare() {
     process = new QProcess(this);
     connect(process, SIGNAL(error(QProcess::ProcessError)), SLOT(sl_onError(QProcess::ProcessError)));
     connect(process, SIGNAL(readyReadStandardOutput()), SLOT(sl_onReadStandardOutput()));
+    connect(process, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, &CmdlineTaskRunner::sl_onFinish);
 
     QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
     coreLog.details("Starting UGENE command line: " + cmdlineUgenePath + " " + args.join(" "));
@@ -249,6 +250,16 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
                 break;
             }
         }
+    }
+}
+
+void CmdlineTaskRunner::sl_onFinish(int exitCode, QProcess::ExitStatus exitStatus) {
+    CHECK(!hasError(), ); // !do not overwrite previous error!
+
+    // On Windows, if the process was terminated with TerminateProcess() from another application,
+    // this function will still return NormalExit unless the exit code is less than 0.
+    if (exitStatus != QProcess::NormalExit || exitCode != 0) {
+        setError(tr("An error occurred. Process is not finished successfully."));
     }
 }
 

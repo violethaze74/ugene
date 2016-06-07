@@ -57,6 +57,7 @@ private:
 private slots:
     void sl_onError(QProcess::ProcessError);
     void sl_onReadStandardOutput();
+    void sl_onFinish(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
     CmdlineTaskConfig       config;
