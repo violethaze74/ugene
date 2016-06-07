@@ -35,7 +35,7 @@ const QString CmdlineInOutTaskRunner::IN_ID_ARG = "input-id";
 const QString CmdlineInOutTaskRunner::OUT_DB_ARG = "output-db";
 
 CmdlineInOutTaskConfig::CmdlineInOutTaskConfig()
-: CmdlineTaskConfig(), emptyOutputPossible(true)
+: CmdlineTaskConfig(), emptyOutputPossible(false)
 {
 }
 
