@@ -27,6 +27,7 @@
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ProjectView.h>
 #include <U2Gui/ToolsMenu.h>
@@ -38,6 +39,7 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorFactory.h>
 
+#include "ExternalToolSupportSettingsController.h"
 #include "HmmerBuildDialog.h"
 #include "HmmerSearchDialog.h"
 #include "HmmerSupport.h"
@@ -75,6 +77,10 @@ HmmerSupport::HmmerSupport(const QString &name)
 }
 
 void HmmerSupport::sl_buildProfile() {
+    if (!isToolSet(BUILD_TOOL)) {
+        return;
+    }
+
     MAlignment ma;
     MWMDIWindow *activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (NULL != activeWindow) {
@@ -120,6 +126,10 @@ U2SequenceObject * getDnaSequenceObject() {
 }
 
 void HmmerSupport::sl_search() {
+    if (!isToolSet(SEARCH_TOOL)) {
+        return;
+    }
+
     U2SequenceObject *seqObj = getDnaSequenceObject();
     if (NULL == seqObj) {
         QMessageBox::critical(NULL, tr("Error!"), tr("Target sequence not selected: no opened annotated dna view"));
@@ -132,6 +142,10 @@ void HmmerSupport::sl_search() {
 }
 
 void HmmerSupport::sl_phmmerSearch() {
+    if (!isToolSet(PHMMER_TOOL)) {
+        return;
+    }
+
     U2SequenceObject *seqObj = getDnaSequenceObject();
     if (NULL == seqObj) {
         QMessageBox::critical(NULL, tr("Error!"), tr("Target sequence not selected: no opened annotated dna view"));
@@ -202,6 +216,37 @@ void HmmerSupport::initPhmmer() {
     }
 }
 
+bool HmmerSupport::isToolSet(const QString &name) const {
+    if (path.isEmpty()){
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
+        msgBox->setWindowTitle(name);
+        msgBox->setText(tr("Path for %1 tool not selected.").arg(name));
+        msgBox->setInformativeText(tr("Do you want to select it now?"));
+        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox->setDefaultButton(QMessageBox::Yes);
+        const int ret = msgBox->exec();
+        CHECK(!msgBox.isNull(), false);
+
+        switch (ret) {
+           case QMessageBox::Yes:
+               AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+               break;
+           case QMessageBox::No:
+               return false;
+               break;
+           default:
+               assert(false);
+               break;
+         }
+    }
+
+    if (path.isEmpty()) {
+        return false;
+    }
+
+    return true;
+}
+
 HmmerMsaEditorContext::HmmerMsaEditorContext(QObject *parent)
     : GObjectViewWindowContext(parent, MSAEditorFactory::ID)
 {
@@ -252,7 +297,7 @@ HmmerAdvContext::HmmerAdvContext(QObject *parent) :
 
 }
 
-void HmmerAdvContext::initViewContext(GObjectView * view) {
+void HmmerAdvContext::initViewContext(GObjectView *view) {
     AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(view);
     SAFE_POINT(NULL != adv, "AnnotatedDNAView is NULL", );
 

@@ -48,6 +48,8 @@ private:
     void initBuild();
     void initSearch();
     void initPhmmer();
+
+    bool isToolSet(const QString &name) const;
 };
 
 class HmmerMsaEditorContext : public GObjectViewWindowContext {
