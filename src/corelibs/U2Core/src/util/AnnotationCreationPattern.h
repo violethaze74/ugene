@@ -19,42 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
-#define _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
+#ifndef _U2_ANNOTATION_CREATION_PATTERN_H_
+#define _U2_ANNOTATION_CREATION_PATTERN_H_
 
-#include <U2Core/PluginModel.h>
-#include <U2Core/ServiceModel.h>
-
-#include "ExternalToolManager.h"
+#include <U2Core/U2FeatureType.h>
 
 namespace U2 {
-class ETSProjectViewItemsContoller;
 
-class ExternalToolSupportPlugin : public Plugin  {
-    Q_OBJECT
+class U2CORE_EXPORT AnnotationCreationPattern {
 public:
-    ExternalToolSupportPlugin();
-    ~ExternalToolSupportPlugin();
+    AnnotationCreationPattern();
 
-private:
-    void registerSettingsController();
-    void registerWorkers();
-
-    ExternalToolManagerImpl validationManager;
+    QString annotationName;
+    QString groupName;
+    QString description;
+    U2FeatureType type;
 };
 
-class ExternalToolSupportService: public Service {
-    Q_OBJECT
-public:
-    ExternalToolSupportService();
+}   // namespace U2
 
-protected:
-    virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
-
-    ETSProjectViewItemsContoller*    projectViewController;
-};
-
-}
-
-
-#endif
+#endif // _U2_ANNOTATION_CREATION_PATTERN_H_
