@@ -91,6 +91,28 @@ private:
     HmmerAdvContext *advContext;
 };
 
+/*
+class Hmmer3LogParser : public ExternalToolLogParser {
+    Q_OBJECT
+    Q_DISABLE_COPY(Hmmer3LogParser)
+public:
+    Hmmer3LogParser(int countSequencesInMSA, int countRefinementIter, const QString& outputFileName);
+    ~Hmmer3LogParser() { cleanup(); }
+    int getProgress();
+    void parseOutput(const QString& partOfLog);
+    void parseErrOutput(const QString& partOfLog);
+
+    bool isOutFileCreated() { return isOutputFileCreated; }
+    void cleanup();
+
+signals:
+    void si_progressUndefined();
+
+private:
+    bool isOutputFileCreated;
+};
+*/
+
 }   // namespace U2
 
 #endif // _U2_HMMER_SUPPORT_H_
