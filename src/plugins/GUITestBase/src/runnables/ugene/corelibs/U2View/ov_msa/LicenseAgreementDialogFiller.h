@@ -27,9 +27,9 @@
 namespace U2 {
 using namespace HI;
 
-class LicenseAgreemntDialogFiller : public Filler {
+class LicenseAgreementDialogFiller : public Filler {
 public:
-    LicenseAgreemntDialogFiller(HI::GUITestOpStatus &os);
+    LicenseAgreementDialogFiller(HI::GUITestOpStatus &os);
 
     void commonScenario();
 };

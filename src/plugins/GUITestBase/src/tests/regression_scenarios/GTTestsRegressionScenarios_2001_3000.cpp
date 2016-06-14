@@ -3612,7 +3612,7 @@ GUI_TEST_CLASS_DEFINITION( test_2543 ) {
                 GTLineEdit::setText(os,saveLineEdit, saveTree);
             }
 
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot( os, new LicenseAgreemntDialogFiller( os ) );
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot( os, new LicenseAgreementDialogFiller( os ) );
             //Expected state: UGENE does not allow to create tree, the message dialog appears
             GTUtilsNotifications::waitForNotification(os, true);
 

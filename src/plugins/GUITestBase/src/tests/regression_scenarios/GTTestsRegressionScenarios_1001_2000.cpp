@@ -3166,7 +3166,7 @@ GUI_TEST_CLASS_DEFINITION(test_1295) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreemntDialogFiller(os));
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
             GTComboBox::setIndexWithText(os, algorithmBox, "MrBayes");
@@ -3425,7 +3425,7 @@ GUI_TEST_CLASS_DEFINITION(test_1310) {
             CHECK_SET_ERR(NULL != algorithmBox, "algorithmBox is NULL");
             GTComboBox::setIndexWithText(os, algorithmBox, "PHYLIP Neighbor Joining");
 
-            GTUtilsDialog::waitForDialog(os, new LicenseAgreemntDialogFiller(os));
+            GTUtilsDialog::waitForDialog(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -5058,7 +5058,7 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreemntDialogFiller(os));
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
             GTComboBox::setIndexWithText(os, algorithmBox, "MrBayes");
