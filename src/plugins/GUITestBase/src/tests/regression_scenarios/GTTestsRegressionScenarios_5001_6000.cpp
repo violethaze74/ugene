@@ -58,15 +58,6 @@
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
-#include <runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h>
-#include <runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h>
-#include <runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h>
-#include <runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h>
-#include <runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h>
-#include <runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h>
-#include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
-#include <runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h>
-#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTThread.h>
@@ -99,7 +90,15 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-
+#include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -649,6 +648,44 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
     GTGlobals::sleep();
     QTextEdit *textEdit = dynamic_cast<QTextEdit*>(GTWidget::findWidget(os, "reportTextEdit", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(textEdit->toPlainText().contains("1:    From AaaI (940) To AagI (24) - 3446 bp "), "Expected message is not found in the report text");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5295) {
+//    1. Open "_common_data/pdb/Helix.pdb".
+    GTFileDialog::openFile(os, testDir + "_common_data/pdb/Helix.pdb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: UGENE doesn't crash, the 3d structure is shown.
+    QWidget *biostructWidget = GTWidget::findWidget(os, "1-");
+    const QImage image1 = GTWidget::getImage(os, biostructWidget);
+    QSet<QRgb> colors;
+    for (int i = 0; i < image1.width(); i++) {
+        for (int j = 0; j < image1.height(); j++) {
+            colors << image1.pixel(i, j);
+        }
+    }
+    CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn");
+
+//    2. Call a context menu, open "Render Style" submenu.
+//    Expected state: "Ball-and-Stick" renderer is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Render Style" << "Ball-and-Stick", PopupChecker::CheckOptions(PopupChecker::IsChecked)));
+    GTWidget::click(os, biostructWidget, Qt::RightButton);
+
+//    3. Select "Model" renderer. Select "Ball-and-Stick" again.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style" << "Model"));
+    GTWidget::click(os, biostructWidget, Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style" << "Ball-and-Stick"));
+    GTWidget::click(os, biostructWidget, Qt::RightButton);
+
+//    Expected state: UGENE doesn't crash, the 3d structure is shown.
+    const QImage image2 = GTWidget::getImage(os, biostructWidget);
+    colors.clear();
+    for (int i = 0; i < image2.width(); i++) {
+        for (int j = 0; j < image2.height(); j++) {
+            colors << image2.pixel(i, j);
+        }
+    }
+    CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn after renderer change");
 }
 
 } // namespace GUITest_regression_scenarios
