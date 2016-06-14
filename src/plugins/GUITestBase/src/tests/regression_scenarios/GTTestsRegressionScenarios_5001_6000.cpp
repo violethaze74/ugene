@@ -24,6 +24,7 @@
 #include <QListWidget>
 #include <QPlainTextEdit>
 #include <QTableView>
+#include <QTableWidget>
 #include <QWebElement>
 
 #include <U2Core/BaseDocumentFormats.h>
@@ -90,8 +91,10 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
+#include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
@@ -476,6 +479,43 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5199) {
+//    1. Open "data/samples/PDB/1CF7.PDB".
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Set focus to the first sequence.
+    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+
+//    3. Click "Predict secondary structure" button on the toolbar;
+//    4. Select "PsiPred" algorithm.
+//    5. Click "OK" button.
+//    Expected state: UGENE doesn't crash, 4 results are found.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreemntDialogFiller(os));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+
+            QTableWidget *resultsTable = GTWidget::findExactWidget<QTableWidget *>(os, "resultsTable", dialog);
+            CHECK_SET_ERR(NULL != resultsTable, "resultsTable is NULL");
+            const int resultsCount = resultsTable->rowCount();
+            CHECK_SET_ERR(4 == resultsCount, QString("Unexpected results count: expected %1, got %2").arg(4).arg(resultsCount));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Predict secondary structure");
     GTGlobals::sleep();
 }
 
