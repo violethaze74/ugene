@@ -41,30 +41,18 @@ QMutex BallAndStickGLRenderer::mutex;
 #define MAX_OPEN_VIEWS_NUMBER 8086
 
 BallAndStickGLRenderer::BallAndStickGLRenderer(const BioStruct3D& struc, const BioStruct3DColorScheme* s, const QList<int> &shownModels, const BioStruct3DRendererSettings *settings)
-    : BioStruct3DGLRenderer(struc,s,shownModels,settings)
+    : BioStruct3DGLRenderer(struc,s,shownModels,settings),
+      inited(false)
 {
-    {
-        QOpenGLFunctions_2_0 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_2_0>();
-        f->initializeOpenGLFunctions();
-        QMutexLocker lock(&mutex);
-        if (dlIndexStorage.size() == 0) {
-            dl = f->glGenLists(MAX_OPEN_VIEWS_NUMBER);
-            for (GLuint idx = dl+1; idx <= dl + MAX_OPEN_VIEWS_NUMBER; ++idx) {
-                dlIndexStorage.push_back(idx);
-            }
-        } else {
-            dl = dlIndexStorage.takeFirst();
-        }
 
-    }
-
-    create();
 }
 
 BallAndStickGLRenderer::~BallAndStickGLRenderer() {
-    QOpenGLFunctions_2_0 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_2_0>();
-    if (f->glIsList(dl)) {
-        f->glDeleteLists(dl, 1);
+    if (!inited) {
+        return;
+    }
+    if (glIsList(dl)) {
+        glDeleteLists(dl, 1);
     }
 
     QMutexLocker lock(&mutex);
@@ -73,38 +61,60 @@ BallAndStickGLRenderer::~BallAndStickGLRenderer() {
 }
 
 void BallAndStickGLRenderer::create() {
+    init();
     createDisplayList();
 }
 
 void BallAndStickGLRenderer::drawBioStruct3D() {
-    QOpenGLFunctions_2_0 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_2_0>();
-    f->glCallList(dl);
+    init();
+    glCallList(dl);
     CHECK_GL_ERROR;
 }
 
 void BallAndStickGLRenderer::update() {
+    init();
     createDisplayList();
 }
 
 void BallAndStickGLRenderer::updateColorScheme() {
+    init();
     createDisplayList();
 }
 
 void BallAndStickGLRenderer::updateShownModels() {
+    init();
     createDisplayList();
 }
 
 void BallAndStickGLRenderer::updateSettings() {
+    init();
     createDisplayList();
+}
+
+void BallAndStickGLRenderer::init() {
+    if (inited) {
+        return;
+    }
+
+    QMutexLocker lock(&mutex);
+    if (dlIndexStorage.size() == 0) {
+        dl = glGenLists(MAX_OPEN_VIEWS_NUMBER);
+        for (GLuint idx = dl+1; idx <= dl + MAX_OPEN_VIEWS_NUMBER; ++idx) {
+            dlIndexStorage.push_back(idx);
+        }
+    } else {
+        dl = dlIndexStorage.takeFirst();
+    }
+    inited = true;
+    create();
 }
 
 static void drawAtomsBonds(const Color4f &viewAtomColor, float renderDetailLevel, const Molecule3DModel &model, const BioStruct3DColorScheme* colorScheme)
 {
-    QOpenGLFunctions_2_0 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_2_0>();
     GLUquadricObj *pObj = gluNewQuadric();
     gluQuadricNormals(pObj, GLU_SMOOTH);
 
-    f->glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, viewAtomColor.getConstData());
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, viewAtomColor.getConstData());
 
     static float bondThickness = 0.15f;
     float radius = 0.35f;
@@ -116,9 +126,9 @@ static void drawAtomsBonds(const Color4f &viewAtomColor, float renderDetailLevel
         {
             Vector3D pos = atom->coord3d;
             //glPushMatrix();
-            f->glTranslatef(pos.x, pos.y, pos.z);
+            glTranslatef(pos.x, pos.y, pos.z);
             gluSphere(pObj, radius, numSlices, numSlices);
-            f->glTranslatef(-pos.x, -pos.y, -pos.z);
+            glTranslatef(-pos.x, -pos.y, -pos.z);
             //glPopMatrix();
         }
     }
@@ -157,16 +167,15 @@ static void drawAtomsBonds(const Color4f &viewAtomColor, float renderDetailLevel
 
 void BallAndStickGLRenderer::createDisplayList()
 {
-    QOpenGLFunctions_2_0 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_2_0>();
-    if (f->glIsList(dl)) {
-        f->glDeleteLists(dl, 1);
+    if (glIsList(dl)) {
+        glDeleteLists(dl, 1);
     }
 
     float renderDetailLevel = settings->detailLevel;
 
     QList<Color4f> colors;
 
-    f->glNewList(dl, GL_COMPILE);
+    glNewList(dl, GL_COMPILE);
 
     foreach (const SharedMolecule mol, bioStruct.moleculeMap) {
         foreach (int index, shownModels) {
@@ -190,7 +199,7 @@ void BallAndStickGLRenderer::createDisplayList()
         }
     }
 
-    f->glEndList();
+    glEndList();
 
     CHECK_GL_ERROR;
 }

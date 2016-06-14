@@ -43,9 +43,11 @@ public:
     virtual void updateSettings();
 
 private:
+    void init();
     void createDisplayList();
 
 private:
+    bool inited;
     GLuint dl;
     static QList<GLuint> dlIndexStorage;
     static QMutex mutex;
