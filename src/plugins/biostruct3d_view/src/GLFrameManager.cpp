@@ -19,7 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <QOpenGLFunctions_2_0>
 #include <QOpenGLWidget>
 
 #include <U2Core/Vector3D.h>
@@ -92,12 +91,11 @@ void GLFrame::setCameraClip(float clipNear, float clipFar) {
 
 void GLFrame::rotateCamera(const Vector3D& rotAxis, float rotAngle )
 {
-    QOpenGLFunctions_2_0 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_2_0>();
-    f->glMatrixMode(GL_MODELVIEW);
-    f->glLoadIdentity();
-    f->glRotatef(rotAngle, rotAxis.x, rotAxis.y, rotAxis.z );
-    f->glMultMatrixf(rotMatrix.data());
-    f->glGetFloatv( GL_MODELVIEW_MATRIX, rotMatrix.data());
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRotatef(rotAngle, rotAxis.x, rotAxis.y, rotAxis.z );
+    glMultMatrixf(rotMatrix.data());
+    glGetFloatv( GL_MODELVIEW_MATRIX, rotMatrix.data());
 }
 
 #define ZOOM_FACTOR_ID "ZOOM_FACTOR"
@@ -129,10 +127,9 @@ void GLFrame::writeStateToMap( QVariantMap& state )
 
 void GLFrame::updateViewPort( int width, int height )
 {
-    QOpenGLFunctions_2_0 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_2_0>();
-    f->glViewport(0, 0, width, height);
-    f->glMatrixMode(GL_PROJECTION);
-    f->glLoadIdentity();
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
     // Set view settings
     GLfloat aspect = GLfloat(width) / height;
     gluPerspective(zoomFactor, aspect, cameraClipNear, cameraClipFar);
