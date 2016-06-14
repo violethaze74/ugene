@@ -41,25 +41,16 @@ QMutex BallAndStickGLRenderer::mutex;
 #define MAX_OPEN_VIEWS_NUMBER 8086
 
 BallAndStickGLRenderer::BallAndStickGLRenderer(const BioStruct3D& struc, const BioStruct3DColorScheme* s, const QList<int> &shownModels, const BioStruct3DRendererSettings *settings)
-    : BioStruct3DGLRenderer(struc,s,shownModels,settings)
+    : BioStruct3DGLRenderer(struc,s,shownModels,settings),
+      inited(false)
 {
-    {
-        QMutexLocker lock(&mutex);
-        if (dlIndexStorage.size() == 0) {
-            dl = glGenLists(MAX_OPEN_VIEWS_NUMBER);
-            for (GLuint idx = dl+1; idx <= dl + MAX_OPEN_VIEWS_NUMBER; ++idx) {
-                dlIndexStorage.push_back(idx);
-            }
-        } else {
-            dl = dlIndexStorage.takeFirst();
-        }
 
-    }
-
-    create();
 }
 
 BallAndStickGLRenderer::~BallAndStickGLRenderer() {
+    if (!inited) {
+        return;
+    }
     if (glIsList(dl)) {
         glDeleteLists(dl, 1);
     }
@@ -70,28 +61,52 @@ BallAndStickGLRenderer::~BallAndStickGLRenderer() {
 }
 
 void BallAndStickGLRenderer::create() {
+    init();
     createDisplayList();
 }
 
 void BallAndStickGLRenderer::drawBioStruct3D() {
+    init();
     glCallList(dl);
     CHECK_GL_ERROR;
 }
 
 void BallAndStickGLRenderer::update() {
+    init();
     createDisplayList();
 }
 
 void BallAndStickGLRenderer::updateColorScheme() {
+    init();
     createDisplayList();
 }
 
 void BallAndStickGLRenderer::updateShownModels() {
+    init();
     createDisplayList();
 }
 
 void BallAndStickGLRenderer::updateSettings() {
+    init();
     createDisplayList();
+}
+
+void BallAndStickGLRenderer::init() {
+    if (inited) {
+        return;
+    }
+
+    QMutexLocker lock(&mutex);
+    if (dlIndexStorage.size() == 0) {
+        dl = glGenLists(MAX_OPEN_VIEWS_NUMBER);
+        for (GLuint idx = dl+1; idx <= dl + MAX_OPEN_VIEWS_NUMBER; ++idx) {
+            dlIndexStorage.push_back(idx);
+        }
+    } else {
+        dl = dlIndexStorage.takeFirst();
+    }
+    inited = true;
+    create();
 }
 
 static void drawAtomsBonds(const Color4f &viewAtomColor, float renderDetailLevel, const Molecule3DModel &model, const BioStruct3DColorScheme* colorScheme)
