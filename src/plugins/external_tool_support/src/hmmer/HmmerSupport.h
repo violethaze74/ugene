@@ -23,6 +23,7 @@
 #define _U2_HMMER_SUPPORT_H_
 
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include <U2Gui/ObjectViewModel.h>
 
@@ -91,27 +92,15 @@ private:
     HmmerAdvContext *advContext;
 };
 
-/*
 class Hmmer3LogParser : public ExternalToolLogParser {
     Q_OBJECT
     Q_DISABLE_COPY(Hmmer3LogParser)
 public:
-    Hmmer3LogParser(int countSequencesInMSA, int countRefinementIter, const QString& outputFileName);
-    ~Hmmer3LogParser() { cleanup(); }
-    int getProgress();
-    void parseOutput(const QString& partOfLog);
+    Hmmer3LogParser();
     void parseErrOutput(const QString& partOfLog);
-
-    bool isOutFileCreated() { return isOutputFileCreated; }
-    void cleanup();
-
-signals:
-    void si_progressUndefined();
-
 private:
-    bool isOutputFileCreated;
+    QString lastErrLine;
 };
-*/
 
 }   // namespace U2
 

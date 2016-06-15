@@ -360,4 +360,21 @@ void HmmerContext::init() {
     advContext->init();
 }
 
+Hmmer3LogParser::Hmmer3LogParser() {
+
+}
+
+void Hmmer3LogParser::parseErrOutput(const QString& partOfLog) {
+    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
+    lastErrLine = lastPartOfLog.takeLast();
+
+    foreach(const QString &buf, lastPartOfLog) {
+        if (!buf.isEmpty()) {
+            algoLog.error("Hmmer3: " + buf);
+            setLastError(buf);
+        }
+    }
+}
+
 }   // namespace U2

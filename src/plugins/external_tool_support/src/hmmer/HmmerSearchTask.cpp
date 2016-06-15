@@ -226,7 +226,7 @@ void HmmerSearchTask::prepareSequenceSaveTask() {
 }
 
 void HmmerSearchTask::prepareHmmerTask() {
-    hmmerTask = new ExternalToolRunTask(HmmerSupport::SEARCH_TOOL, getArguments(), new ExternalToolLogParser);
+    hmmerTask = new ExternalToolRunTask(HmmerSupport::SEARCH_TOOL, getArguments(), new Hmmer3LogParser());
     setListenerForTask(hmmerTask);
     hmmerTask->setSubtaskProgressWeight(85);
 }

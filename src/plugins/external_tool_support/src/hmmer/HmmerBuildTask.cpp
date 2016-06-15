@@ -31,7 +31,7 @@
 namespace U2 {
 
 HmmerBuildTask::HmmerBuildTask(const HmmerBuildSettings &settings, const QString &msaUrl)
-    : ExternalToolRunTask(HmmerSupport::BUILD_TOOL, getArguments(settings, msaUrl), new ExternalToolLogParser()),
+    : ExternalToolRunTask(HmmerSupport::BUILD_TOOL, getArguments(settings, msaUrl), new Hmmer3LogParser()),
       settings(settings),
       stockholmMsaUrl(msaUrl)
 {
