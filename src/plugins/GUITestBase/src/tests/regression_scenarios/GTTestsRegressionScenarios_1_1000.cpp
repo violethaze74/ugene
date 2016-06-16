@@ -3514,7 +3514,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreemntDialogFiller(os));
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
 
             //    4. Press "Start prediction".
