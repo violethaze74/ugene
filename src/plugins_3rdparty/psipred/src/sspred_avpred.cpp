@@ -60,7 +60,12 @@ PsiPassOne::PsiPassOne(QTemporaryFile* matFile, const QStringList& weightFiles) 
      activation = (float*) malloc(TOTAL*sizeof(float));
      bias = (float*) malloc(TOTAL*sizeof(float));
      weight = (float**) malloc(TOTAL*sizeof(float*));
-};
+
+     profile = (int **)malloc(MAXSEQLEN * sizeof(int *));
+     for (int i = 0; i < MAXSEQLEN; i++) {
+         profile[i] = (int *)malloc(20 * sizeof(int));
+     }
+}
 
 PsiPassOne::~PsiPassOne()
 {
@@ -71,7 +76,10 @@ PsiPassOne::~PsiPassOne()
     free(bias);
     free(weight);
 
-
+    for (int i = 0; i < MAXSEQLEN; i++) {
+        delete profile[i];
+    }
+    delete profile;
 }
 
 void PsiPassOne::compute_output(void)
