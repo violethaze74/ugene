@@ -55,7 +55,7 @@ void AddSequenceObjectsToAlignmentTask::prepare() {
         return;
     }
 
-    stateLock = new StateLock("Adding_files_to_alignment", StateLockFlag_LiveLock);
+    stateLock = new StateLock("Adding_files_to_alignment");
     maObj->lockState(stateLock);
     processObjectsAndSetResultingAlphabet();
 
