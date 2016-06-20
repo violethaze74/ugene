@@ -487,7 +487,7 @@ Task::ReportResult AddPluginTask::report() {
         settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
         if (!verifyTask->isCorrectPlugin()) {
             settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
-            QString message = message_func ? message_func() : tr("Plugin loading error: %1. Verification failed.").arg(libUrl);
+            QString message = message_func ? *(QScopedPointer<QString>(message_func())) : tr("Plugin loading error: %1. Verification failed.").arg(libUrl);
             stateInfo.setError(message);
             MainWindow* mw = AppContext::getMainWindow();
             CHECK(mw != NULL, ReportResult_Finished);
