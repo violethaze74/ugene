@@ -48,7 +48,7 @@ ScriptEditorDialog::ScriptEditorDialog(QWidget* w, const QString& roHeaderText, 
 : QDialog(w), ui(new Ui_ScriptEditorDialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17469124");
+    new HelpButton(this, ui->buttonBox, "17470841");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Done"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

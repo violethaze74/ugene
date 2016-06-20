@@ -48,7 +48,7 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
       saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17468951");
+    new HelpButton(this, buttonBox, "17470676");
 
     tabWidget->setCurrentIndex(0);
 
