@@ -48,7 +48,7 @@ class Task;
 
 typedef Plugin* (*PLUG_INIT_FUNC) ();
 typedef bool (*PLUG_VERIFY_FUNC) ();
-typedef QString (*PLUG_FAIL_MESSAGE_FUNC) ();
+typedef QString * (*PLUG_FAIL_MESSAGE_FUNC) ();
 
 enum PluginState {
     PluginState_Loaded,

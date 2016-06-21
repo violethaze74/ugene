@@ -13,7 +13,7 @@ class QTemporaryFile;
 class PsiPassOne {
     int     *fwt_to, *lwt_to;
     float   *activation, *bias, **weight;
-    int     profile[MAXSEQLEN][20];
+    int     **profile;
     int     seqlen;
     QTemporaryFile* matrixFile;
     QByteArray seq;
