@@ -52,7 +52,6 @@ namespace U2 {
 #define PLUGINS_ACCEPTED_LICENSE_LIST QString("plugin_support/accepted_list/")
 #define PLUGIN_VERIFICATION QString("plugin_support/verification/")
 
-QString PluginSupportImpl::versionAppendix("");
 static QStringList findAllPluginsInDefaultPluginsDir();
 
 
@@ -352,7 +351,7 @@ void PluginSupportImpl::updateSavedState(PluginRef* ref) {
             }
         }
     } else {
-        settings->setValue(pluginListSettingsDir + versionAppendix + pluginId, descUrl);
+        settings->setValue(pluginListSettingsDir + pluginId, descUrl);
 
         //remove from skip-list if present
         if (isDefaultPluginsDir(descUrl)) {
@@ -364,7 +363,7 @@ void PluginSupportImpl::updateSavedState(PluginRef* ref) {
     }
 
     if (!ref->plugin->isFree()){
-        settings->setValue(pluginAcceptedLicenseSettingsDir + versionAppendix + pluginId + "license",ref->plugin->isLicenseAccepted());
+        settings->setValue(pluginAcceptedLicenseSettingsDir + pluginId + "license",ref->plugin->isLicenseAccepted());
     }
 }
 
@@ -390,18 +389,8 @@ QSet<QString> PluginSupportImpl::getPluginPaths(){
     }
 
     QSet<QString> pluginFiles;
-    versionAppendix = Version::buildDate;
-    if (!Version::appVersion().isDevVersion){
-        versionAppendix.clear();
-    }else{
-        versionAppendix.replace(" ", ".");
-        versionAppendix.append("-");
-        if (pluginsIds.size() > 150){
-            settings->remove(pluginListSettingsDir);
-        }
-    }
     foreach (const QString& pluginId, pluginsIds) {
-        QString file = settings->getValue(pluginListSettingsDir + versionAppendix + pluginId).toString();
+        QString file = settings->getValue(pluginListSettingsDir + pluginId).toString();
         if(!file.isEmpty()) {
             pluginFiles.insert(file);
         }
@@ -470,6 +459,8 @@ void AddPluginTask::prepare() {
 }
 
 Task::ReportResult AddPluginTask::report() {
+    CHECK_OP(stateInfo, ReportResult_Finished);
+
     // verify plugin
     PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
     if (verify_func && verificationMode) {

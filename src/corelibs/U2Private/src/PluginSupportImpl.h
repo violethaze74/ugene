@@ -91,7 +91,6 @@ protected:
     static QSet<QString> getPluginPaths();
 
 private:
-    static QString       versionAppendix;
     QList<PluginRef*>    plugRefs;
     QList<Plugin*>       plugins;
 };
