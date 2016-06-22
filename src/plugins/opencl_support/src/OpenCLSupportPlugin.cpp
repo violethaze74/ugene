@@ -41,16 +41,17 @@ extern "C" Q_DECL_EXPORT Plugin * U2_PLUGIN_INIT_FUNC() {
 }
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
-    OpenCLSupportPlugin * plug = new OpenCLSupportPlugin();
-    bool res = plug->getError() == OpenCLSupportPlugin::Error_NoError;
-    delete plug;
-    return res;
+    {
+        volatile OpenCLSupportPlugin plug();
+        Q_UNUSED(plug);
+    }
+    return true;
 }
 
-extern "C" Q_DECL_EXPORT QString U2_PLUGIN_FAIL_MASSAGE_FUNC() {
-    return OpenCLSupportPlugin::tr("Problem occurred loading the OpenCL driver. Please try to update drivers if \
-              you're going to make calculations on your video card. For details see this page: \
-              <a href=\"%1\">%1</a>").arg("http://ugene.net/using-video-cards.html");
+extern "C" Q_DECL_EXPORT QString * U2_PLUGIN_FAIL_MASSAGE_FUNC() {
+    return new QString(OpenCLSupportPlugin::tr("Problem occurred loading the OpenCL driver. Please try to update drivers if \
+                                               you're going to make calculations on your video card. For details see this page: \
+                                               <a href=\"%1\">%1</a>").arg("http://ugene.net/using-video-cards.html"));
 }
 
 const static char * RESOURCE_OPENCL_GPU_NAME = "OpenCLGpu";
