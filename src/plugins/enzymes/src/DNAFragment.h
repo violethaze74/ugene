@@ -85,7 +85,7 @@ public:
     QString getSequenceDocName() const;
     QVector<U2Region> getFragmentRegions() const;
     QByteArray getSequence(U2OpStatus &os) const;
-    int getLength() const;
+    int getLength(bool coreLength = false) const;
     bool isInverted() const { return reverseCompl; }
     const DNAAlphabet* getAlphabet() const;
     QByteArray getSourceSequence(U2OpStatus &os) const;

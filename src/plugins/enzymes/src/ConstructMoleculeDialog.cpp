@@ -42,20 +42,23 @@
 
 namespace U2 {
 
-ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragmentList,  QWidget* p )
+ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragmentList, QWidget* p)
     : QDialog(p),
-      fragments(fragmentList),
-      saveController(NULL)
-{
+    fragments(fragmentList),
+    saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17470676");
+    new HelpButton(this, buttonBox, "17468951");
 
     tabWidget->setCurrentIndex(0);
+    const QString coreLengthStr = ConstructMoleculeDialog::tr("core length");
 
-    foreach (const DNAFragment& frag, fragments) {
-        QString fragItem = QString("%1 (%2) %3 [%4 bp]").arg(frag.getSequenceName())
+    foreach(const DNAFragment& frag, fragments) {
+        QString fragItem = QString("%1 (%2) %3 [%4 - %5 bp]")
+            .arg(frag.getSequenceName())
             .arg(frag.getSequenceDocName())
-            .arg(frag.getName()).arg(frag.getLength());
+            .arg(frag.getName())
+            .arg(coreLengthStr)
+            .arg(frag.getLength(true));
         fragmentListWidget->addItem(fragItem);
     }
 
