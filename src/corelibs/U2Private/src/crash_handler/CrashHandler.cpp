@@ -54,7 +54,7 @@ bool CrashHandler::isEnabled() {
     return false;
 #endif
 
-    static QString useCrashHandlerValue = qgetenv(ENV_USE_CRASHHANDLER);
+    static QString useCrashHandlerValue = qgetenv(ENV_USE_CRASH_HANDLER);
 
     if ("0" == useCrashHandlerValue) {
         return false;

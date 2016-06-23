@@ -193,6 +193,11 @@ int main(int argc, char **argv)
     if (CrashHandler::isEnabled()) {
         CrashHandler::setupHandler();
     }
+
+    if (qgetenv(ENV_SEND_CRASH_REPORTS) == "0") {
+        CrashHandler::setSendCrashReports(false);
+    }
+
     const char* build = QT_VERSION_STR, *runtime = qVersion();
     if (strcmp(build, runtime) > 0){
         printf("Installed Qt version must be %s or greater \r\n", QT_VERSION_STR);
