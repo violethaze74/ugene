@@ -28,7 +28,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/MAlignmentInfo.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -593,7 +593,7 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
 
         U2OpStatus2Log os;
         const QString folder = fs.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-        MAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
+        MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
         CHECK_OP(os, );
         obj->setIndexInfo(annMap);
         l.append( obj );
@@ -705,7 +705,7 @@ Document* StockholmFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, c
 void StockholmFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
     try {
         foreach( GObject* p_obj, doc->getObjects() ) {
-            const MAlignmentObject* aln_obj = qobject_cast<const MAlignmentObject*>( p_obj );
+            const MultipleSequenceAlignmentObject* aln_obj = qobject_cast<const MultipleSequenceAlignmentObject*>( p_obj );
             assert( NULL != aln_obj );
             save( io, aln_obj->getMAlignment(), aln_obj->getGObjectName(), os );
             CHECK_OP(os, );

@@ -32,7 +32,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MAlignmentWalker.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
@@ -186,7 +186,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
     CHECK_EXT(al.getAlphabet()!=NULL, os.setError( ClustalWAlnFormat::tr("Alphabet is unknown")), );
 
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, al, os);
     CHECK_OP(os, );
     objects.append(obj);
 }
@@ -208,7 +208,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
     const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "Clustal entry storing: alignment objects count error", );
 
-    const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());
+    const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "Clustal entry storing: NULL alignment object", );
 
     const MultipleSequenceAlignment& ma = obj->getMAlignment();
@@ -295,9 +295,9 @@ void ClustalWAlnFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os
     CHECK_EXT(d!=NULL, os.setError(L10N::badArgument("doc")), );
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
-    MAlignmentObject *obj = NULL;
+    MultipleSequenceAlignmentObject *obj = NULL;
     if( (d->getObjects().size() != 1)
-        || ((obj = qobject_cast<MAlignmentObject*>(d->getObjects().first())) == NULL)) {
+        || ((obj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first())) == NULL)) {
             os.setError("No data to write;");
             return;
     }

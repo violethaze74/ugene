@@ -29,7 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/Log.h>

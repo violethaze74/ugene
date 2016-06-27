@@ -37,7 +37,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -131,7 +131,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
 
     QList<GObject*> mobjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (!mobjs.isEmpty()) {
-        MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
+        MultipleSequenceAlignmentObject* mobj =  qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
         const MultipleSequenceAlignment &ma = mobj->getMAlignment();
         replaceLogo(ma);
     } else {
@@ -419,7 +419,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         assert(d != NULL);
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
-            MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
+            MultipleSequenceAlignmentObject* mobj =  qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
             const MultipleSequenceAlignment &ma = mobj->getMAlignment();
             buildTask = new PFMatrixBuildTask(settings, ma);
             res.append(buildTask);
@@ -552,7 +552,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         assert(d != NULL);
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
-            MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
+            MultipleSequenceAlignmentObject* mobj =  qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
             const MultipleSequenceAlignment &ma = mobj->getMAlignment();
             buildTask = new PWMatrixBuildTask(settings, ma);
             res.append(buildTask);

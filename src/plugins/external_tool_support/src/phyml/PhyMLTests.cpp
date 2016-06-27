@@ -30,7 +30,7 @@
 #include <U2Core/Log.h>
 
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/PhyTreeObject.h>
 
@@ -123,7 +123,7 @@ void GTest_PhyML::prepare() {
         return;
     }
     assert(obj != NULL);
-    MAlignmentObject* ma = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(ma == NULL){
         stateInfo.setError(  QString("error can't cast to multiple alignment from GObject") );
         return;

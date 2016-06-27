@@ -36,7 +36,7 @@
 
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/DNASequenceObject.h>
 
 #include <U2Core/U2OpStatusUtils.h>
@@ -164,7 +164,7 @@ void GTest_uMuscle::prepare() {
         return;
     }
     assert(obj!=NULL);
-    MAlignmentObject* ma = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(ma==NULL){
         stateInfo.setError(  QString("error can't cast to multiple alignment from GObject") );
         return;
@@ -251,8 +251,8 @@ Task::ReportResult GTest_CompareMAlignment::report() {
 
     int listSize = objs1.size();
     for (int i=0;i<listSize;i++) {
-        MAlignmentObject* ma1 = qobject_cast<MAlignmentObject*>(objs1.at(i));
-        MAlignmentObject* ma2 = qobject_cast<MAlignmentObject*>(objs2.at(i));
+        MultipleSequenceAlignmentObject* ma1 = qobject_cast<MultipleSequenceAlignmentObject*>(objs1.at(i));
+        MultipleSequenceAlignmentObject* ma2 = qobject_cast<MultipleSequenceAlignmentObject*>(objs2.at(i));
         const QList<MAlignmentRow> alignedSeqs1 = ma1->getMAlignment().getRows();
         const QList<MAlignmentRow> alignedSeqs2 = ma2->getMAlignment().getRows();
         if(ma1->objectName()!=ma2->objectName()) {
@@ -348,7 +348,7 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
         stateInfo.setError(  QString("no alignment object found in doc: %1").arg(aliDoc->getURLString()) );
         return;
     }
-    aliObj = qobject_cast<MAlignmentObject*>(aliObjs[0]);
+    aliObj = qobject_cast<MultipleSequenceAlignmentObject*>(aliObjs[0]);
     origAliSeqs = aliObj->getNumRows();
 
     QList<GObject*> seqObjs = seqDoc->findGObjectByType(GObjectTypes::SEQUENCE);

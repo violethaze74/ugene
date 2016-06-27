@@ -22,14 +22,14 @@
 #ifndef _U2_PROFILE_TO_PROFILE_WORKER_H_
 #define _U2_PROFILE_TO_PROFILE_WORKER_H_
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 namespace LocalWorkflow {
 
@@ -49,7 +49,7 @@ private:
     IntegralBus *inPort;
     IntegralBus *outPort;
 
-    QList<MAlignmentObject*> objects;
+    QList<MultipleSequenceAlignmentObject*> objects;
 };
 
 class ProfileToProfileWorkerFactory : public DomainFactory {

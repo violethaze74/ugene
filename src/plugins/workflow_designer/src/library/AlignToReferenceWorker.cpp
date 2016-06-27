@@ -323,7 +323,7 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
 
     result.trim(false);
 
-    QScopedPointer<MAlignmentObject> msaObject(MAlignmentImporter::createAlignment(storage->getDbiRef(), result, stateInfo));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(MAlignmentImporter::createAlignment(storage->getDbiRef(), result, stateInfo));
     CHECK_OP(stateInfo, result);
     msa = storage->getDataHandler(msaObject->getEntityRef());
 
@@ -523,7 +523,7 @@ void KAlignSubTask::prepare() {
 }
 
 void KAlignSubTask::run() {
-    QScopedPointer<MAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
     CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object")), );
     int rowCount = msaObject->getNumRows();
     CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
@@ -621,13 +621,13 @@ void KAlignSubTask::createAlignment() {
     alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
     CHECK_OP(stateInfo, );
 
-    QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
     CHECK_OP(stateInfo, );
     msa = storage->getDataHandler(msaObj->getEntityRef());
 }
 
 PairwiseAlignmentTaskSettings * KAlignSubTask::createSettings(DbiDataStorage *storage, const SharedDbiDataHandler &msa, U2OpStatus &os) {
-    QScopedPointer<MAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
     CHECK_EXT(!msaObject.isNull(), os.setError(L10N::nullPointerError("MSA object")), NULL);
 
     U2DataId referenceId = msaObject->getRow(0).getRowDBInfo().sequenceId;
@@ -694,7 +694,7 @@ QList<Task*> PairwiseAlignmentTask::onSubTaskFinished(Task *subTask) {
 
 void PairwiseAlignmentTask::run() {
     CHECK_OP(stateInfo, );
-    QScopedPointer<MAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
     CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object")), );
     int rowCount = msaObject->getNumRows();
     CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
@@ -839,7 +839,7 @@ void PairwiseAlignmentTask::createSWAlignment(KAlignSubTask *task) {
     alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
     CHECK_OP(stateInfo, );
 
-    QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
     CHECK_OP(stateInfo, );
     msa = storage->getDataHandler(msaObj->getEntityRef());
     offset = task->getCoreRegion().startPos;

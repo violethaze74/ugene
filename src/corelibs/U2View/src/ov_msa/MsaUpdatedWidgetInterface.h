@@ -23,7 +23,7 @@
 #define _U2_MSA_UPDATED_WIDGET_INTERFACE_H_
 
 #include <qglobal.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include "MSAEditor.h"
 
 namespace U2 {
@@ -32,7 +32,7 @@ class UpdatedWidgetSettings {
 public:
     UpdatedWidgetSettings()
         : ma(NULL), ui(NULL), autoUpdate(true) {}
-    const MAlignmentObject* ma;
+    const MultipleSequenceAlignmentObject* ma;
     MSAEditorUI*            ui;
     bool                    autoUpdate;
 };

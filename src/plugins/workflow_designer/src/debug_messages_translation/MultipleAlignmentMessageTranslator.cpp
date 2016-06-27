@@ -21,7 +21,7 @@
 
 #include <QtCore/QScopedPointer>
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Lang/WorkflowContext.h>
 #include <U2Lang/DbiDataHandler.h>
 
@@ -43,7 +43,7 @@ MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(
 {
     SAFE_POINT( source.canConvert<SharedDbiDataHandler>( ), "Invalid MSA data supplied!", );
     SharedDbiDataHandler malignmentId = source.value<SharedDbiDataHandler>( );
-    QScopedPointer<MAlignmentObject> malignmentObject( StorageUtils::getMsaObject(
+    QScopedPointer<MultipleSequenceAlignmentObject> malignmentObject( StorageUtils::getMsaObject(
         context->getDataStorage( ), malignmentId ) );
     SAFE_POINT( !malignmentObject.isNull( ), "Invalid MSA object detected!", );
     malignment = malignmentObject->getMAlignment( );

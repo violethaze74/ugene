@@ -26,7 +26,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -138,20 +138,20 @@ QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
 
 //////////////////////////////////////////////////////////////////////////
 // RunSimpleMSAWorkflow4GObject
-SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName, MAlignmentObject* _maObj, const SimpleMSAWorkflowTaskConfig& _conf)
+SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName, MultipleSequenceAlignmentObject* _maObj, const SimpleMSAWorkflowTaskConfig& _conf)
 : Task(taskName, TaskFlags_NR_FOSCOE),
   obj(_maObj),
   lock(NULL),
   conf(_conf)
 {
-    SAFE_POINT(NULL != obj, "NULL MAlignmentObject!",);
+    SAFE_POINT(NULL != obj, "NULL MultipleSequenceAlignmentObject!",);
 
     U2OpStatus2Log os;
     userModStep = new U2UseCommonUserModStep(obj->getEntityRef(), os);
 
     MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames( obj->getMAlignment() );
 
-    MAlignmentObject *msaObject = MAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
+    MultipleSequenceAlignmentObject *msaObject = MAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os,);
 
     SimpleInOutWorkflowTaskConfig sioConf;
@@ -226,7 +226,7 @@ MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
     Document* d = runWorkflowTask->getDocument();
     CHECK_EXT(d!=NULL, setError(tr("Result document not found!")), res);
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
-    MAlignmentObject* maObj = qobject_cast<MAlignmentObject*>(d->getObjects().first());
+    MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first());
     CHECK_EXT(maObj!=NULL, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
     return maObj->getMAlignment();
 }

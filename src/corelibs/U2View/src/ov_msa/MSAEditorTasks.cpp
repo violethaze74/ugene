@@ -42,7 +42,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/UnloadedObject.h>
 
@@ -60,7 +60,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 /// open new view
 
-OpenMSAEditorTask::OpenMSAEditorTask(MAlignmentObject* _obj)
+OpenMSAEditorTask::OpenMSAEditorTask(MultipleSequenceAlignmentObject* _obj)
 : ObjectViewTask(MSAEditorFactory::ID), msaObject(_obj)
 {
     assert(!msaObject.isNull());
@@ -94,11 +94,11 @@ void OpenMSAEditorTask::open() {
         if (unloadedReference.isValid()) {
             GObject* obj = doc->findGObjectByName(unloadedReference.objName);
             if (obj!=NULL && obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
-                msaObject = qobject_cast<MAlignmentObject*>(obj);
+                msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
             }
         } else {
             QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, UOF_LoadedAndUnloaded);
-            msaObject = objects.isEmpty() ? NULL : qobject_cast<MAlignmentObject*>(objects.first());
+            msaObject = objects.isEmpty() ? NULL : qobject_cast<MultipleSequenceAlignmentObject*>(objects.first());
         }
         if (msaObject.isNull()) {
             stateInfo.setError(tr("Multiple alignment object not found"));
@@ -119,7 +119,7 @@ void OpenMSAEditorTask::updateTitle(MSAEditor* msaEd) {
     const QString& oldViewName = msaEd->getName();
     GObjectViewWindow* w = GObjectViewUtils::findViewByName(oldViewName);
     if (w != NULL) {
-        MAlignmentObject* msaObject = msaEd->getMSAObject();
+        MultipleSequenceAlignmentObject* msaObject = msaEd->getMSAObject();
         QString newViewName = GObjectViewUtils::genUniqueViewName(msaObject->getDocument(), msaObject);
         msaEd->setName(newViewName);
         w->setWindowTitle(newViewName);
@@ -167,7 +167,7 @@ void OpenSavedMSAEditorTask::open() {
         stateInfo.setError(tr("Alignment object not found: %1").arg(ref.objName));
         return;
     }
-    MAlignmentObject* msaObject = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     assert(msaObject!=NULL);
 
     MSAEditor* v = new MSAEditor(viewName, msaObject);

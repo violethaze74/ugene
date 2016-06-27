@@ -119,9 +119,9 @@ void GTest_CreateSubalignimentTask::prepare(){
         return;
     }
 
-    expectedMaobj = (MAlignmentObject*)expList.first();
+    expectedMaobj = (MultipleSequenceAlignmentObject*)expList.first();
 
-    maobj = (MAlignmentObject*)list.first();
+    maobj = (MultipleSequenceAlignmentObject*)list.first();
     t = new CreateSubalignmentTask(maobj, CreateSubalignmentSettings(window, seqNames, doc->getURL(), false,false, DocumentFormatId()));
     addSubTask(t);
 }
@@ -257,9 +257,9 @@ void GTest_RemoveAlignmentRegion::prepare(){
         return;
     }
 
-    expectedMaobj = (MAlignmentObject*)expList.first();
+    expectedMaobj = (MultipleSequenceAlignmentObject*)expList.first();
 
-    maobj = (MAlignmentObject*)list.first();
+    maobj = (MultipleSequenceAlignmentObject*)list.first();
 
 }
 
@@ -336,8 +336,8 @@ void GTest_AddSequenceToAlignment::prepare(){
         return;
     }
 
-    expectedMaobj = (MAlignmentObject*)expList.first();
-    maobj = (MAlignmentObject*)list.first();
+    expectedMaobj = (MultipleSequenceAlignmentObject*)expList.first();
+    maobj = (MultipleSequenceAlignmentObject*)list.first();
 
     if (seqFileName.isEmpty()) {
         stateInfo.setError(GTest::tr("File with sequences has empty name"));
@@ -395,7 +395,7 @@ void GTest_RemoveColumnsOfGaps::prepare(){
     }
     assert(NULL != obj);
 
-    MAlignmentObject *maObj = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (NULL == maObj) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;

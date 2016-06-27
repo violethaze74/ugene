@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "../ProjectFilterNames.h"
@@ -39,7 +39,7 @@ MsaSeqNameFilterTask::MsaSeqNameFilterTask(const ProjectTreeControllerModeSettin
 }
 
 bool MsaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
-    MAlignmentObject *msaObj = qobject_cast<MAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject *msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
     CHECK(NULL != msaObj, false);
 
     for (int i = 0, n = msaObj->getNumRows(); i < n; ++i) {

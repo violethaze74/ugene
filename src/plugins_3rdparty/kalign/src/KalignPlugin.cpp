@@ -32,7 +32,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/TaskSignalMapper.h>
 
@@ -175,7 +175,7 @@ void KalignMSAEditorContext::sl_align() {
     KalignAction* action = qobject_cast<KalignAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
 
     KalignTaskSettings s;
     QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMAlignment(), s);

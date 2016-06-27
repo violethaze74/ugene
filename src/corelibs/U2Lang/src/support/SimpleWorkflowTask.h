@@ -40,7 +40,7 @@ using namespace Workflow;
 
 class CmdlineTaskRunner;
 class LoadDocumentTask;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class U2LANG_EXPORT SimpleInOutWorkflowTaskConfig {
 public:
@@ -99,7 +99,7 @@ class U2LANG_EXPORT SimpleMSAWorkflow4GObjectTask : public Task {
     Q_OBJECT
 
 public:
-    SimpleMSAWorkflow4GObjectTask(const QString& taskName, MAlignmentObject* maObj, const SimpleMSAWorkflowTaskConfig& conf);
+    SimpleMSAWorkflow4GObjectTask(const QString& taskName, MultipleSequenceAlignmentObject* maObj, const SimpleMSAWorkflowTaskConfig& conf);
     ~SimpleMSAWorkflow4GObjectTask();
 
     void prepare();
@@ -109,7 +109,7 @@ public:
 private:
     void releaseModStep(const QString error = QString());
 
-    QPointer<MAlignmentObject>  obj;
+    QPointer<MultipleSequenceAlignmentObject>  obj;
     QPointer<StateLock>         lock;
     QString                     docName;
     SimpleMSAWorkflowTaskConfig conf;

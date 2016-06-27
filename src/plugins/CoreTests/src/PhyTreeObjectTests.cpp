@@ -23,7 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/PhyTreeObject.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorTask.h>
@@ -76,7 +76,7 @@ void GTest_CalculateTreeFromAligment::prepare() {
         return;
     }
 
-    MAlignmentObject* maObj = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(maObj==NULL){
         stateInfo.setError(QString("can't cast to multimple alignment object from: %1").arg(obj->getGObjectName()));
         return;

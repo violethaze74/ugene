@@ -26,7 +26,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -85,7 +85,7 @@ void DNAStatMSAProfileDialog::initSaveController() {
 
 void DNAStatMSAProfileDialog::accept() {
     DNAStatMSAProfileTaskSettings s;
-    MAlignmentObject* msaObj = ctx->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMSAObject();
     if (msaObj == NULL) {
         return;
     }

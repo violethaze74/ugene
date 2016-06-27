@@ -28,7 +28,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/UnloadedObject.h>
 
 #include <U2Core/SelectionUtils.h>
@@ -88,7 +88,7 @@ Task* MSAEditorFactory::createViewTask(const MultiGSelection& multiSelection, bo
                 resTasks.append(new OpenMSAEditorTask(qobject_cast<UnloadedObject*>(o)));
             } else {
                 assert(o->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
-                resTasks.append(new OpenMSAEditorTask(qobject_cast<MAlignmentObject*>(o)));
+                resTasks.append(new OpenMSAEditorTask(qobject_cast<MultipleSequenceAlignmentObject*>(o)));
             }
         }
     }

@@ -32,7 +32,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -81,7 +81,7 @@ ClustalOSupportTask::~ClustalOSupportTask() {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (NULL != obj) {
-                MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 CHECK(NULL != alObj, );
                 if(alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -99,8 +99,8 @@ void ClustalOSupportTask::prepare(){
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (NULL != obj) {
-            MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
-            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MAlignmentObject during applying ClustalW results!",);
+            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!",);
             lock = new StateLock("ClustalWAligment");
             alObj->lockState(lock);
         }
@@ -200,8 +200,8 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(tmpDoc->getObjects().length()==1, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
         // Get the result alignment
-        MAlignmentObject* newMAligmentObject = qobject_cast<MAlignmentObject*>(tmpDoc->getObjects().first());
-        SAFE_POINT(newMAligmentObject!=NULL, "newDocument->getObjects().first() is not a MAlignmentObject", res);
+        MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
+        SAFE_POINT(newMAligmentObject!=NULL, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
         resultMA=newMAligmentObject->getMAlignment();
         bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa.getRowNames());
@@ -211,8 +211,8 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (NULL != obj) {
-                MAlignmentObject* alObj = dynamic_cast<MAlignmentObject*>(obj);
-                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MAlignmentObject during applying ClustalO results!", res);
+                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalO results!", res);
 
                 QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
@@ -355,7 +355,7 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         SAFE_POINT(currentDocument != NULL, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
 
-        mAObject = qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
@@ -364,7 +364,7 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
     }
     else if (subTask == clustalOSupportTask) {
         // Set the result alignment to the alignment object of the current document
-        mAObject=qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         mAObject->copyGapModel(clustalOSupportTask->resultMA.getRows());
 

@@ -31,7 +31,7 @@
 
 #include <QtCore/QMap>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/PhyTree.h>
 #include <U2Core/Task.h>

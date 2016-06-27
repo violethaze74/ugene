@@ -25,7 +25,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/DocumentUtils.h>
 
@@ -175,7 +175,7 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
         stateInfo.setError(GTest::tr(" container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MAlignmentObject* alObj = qobject_cast<MAlignmentObject*>(list.first());
+    MultipleSequenceAlignmentObject* alObj = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
     srcAl = MultipleSequenceAlignment(alObj->getMAlignment());
 
     QList<DNATranslation*> trans;
@@ -212,7 +212,7 @@ QList<Task*> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task* su
             stateInfo.setError(GTest::tr("container  of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return res;
         }
-        MAlignmentObject * resAlign = qobject_cast<MAlignmentObject*>(reslist.first());
+        MultipleSequenceAlignmentObject * resAlign = qobject_cast<MultipleSequenceAlignmentObject*>(reslist.first());
         resAl = resAlign->getMAlignment();
     }
     return res;
@@ -235,7 +235,7 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         stateInfo.setError(GTest::tr("container of  object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return ReportResult_Finished;
     }
-    MAlignmentObject * expAlign = qobject_cast<MAlignmentObject*>(explist.first());
+    MultipleSequenceAlignmentObject * expAlign = qobject_cast<MultipleSequenceAlignmentObject*>(explist.first());
     const MultipleSequenceAlignment &expAl = expAlign->getMAlignment();
 
     if (resAl.getLength() != expAl.getLength()) {

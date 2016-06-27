@@ -21,7 +21,7 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 
 #include "../ProjectFilterNames.h"
@@ -41,7 +41,7 @@ MsaContentFilterTask::MsaContentFilterTask(const ProjectTreeControllerModeSettin
 }
 
 bool MsaContentFilterTask::filterAcceptsObject(GObject *obj) {
-    MAlignmentObject *msaObject = qobject_cast<MAlignmentObject *>(obj);
+    MultipleSequenceAlignmentObject *msaObject = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
     CHECK(NULL != msaObject, false);
 
     foreach(const QString &pattern, settings.tokensToShow) {
@@ -52,7 +52,7 @@ bool MsaContentFilterTask::filterAcceptsObject(GObject *obj) {
     return false;
 }
 
-bool MsaContentFilterTask::patternFitsMsaAlphabet(MAlignmentObject *msaObject, const QString &pattern) {
+bool MsaContentFilterTask::patternFitsMsaAlphabet(MultipleSequenceAlignmentObject *msaObject, const QString &pattern) {
     SAFE_POINT(NULL != msaObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
@@ -63,7 +63,7 @@ bool MsaContentFilterTask::patternFitsMsaAlphabet(MAlignmentObject *msaObject, c
     return alphabet->containsAll(searchStr.constData(), searchStr.length());
 }
 
-bool MsaContentFilterTask::msaContainsPattern(MAlignmentObject *msaObject, const QString &pattern) {
+bool MsaContentFilterTask::msaContainsPattern(MultipleSequenceAlignmentObject *msaObject, const QString &pattern) {
     SAFE_POINT(NULL != msaObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 

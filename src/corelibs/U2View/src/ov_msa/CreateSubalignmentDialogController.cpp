@@ -45,7 +45,7 @@
 
 namespace U2{
 
-CreateSubalignmentDialogController::CreateSubalignmentDialogController(MAlignmentObject *_mobj, const QRect& selection, QWidget *p)
+CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *_mobj, const QRect& selection, QWidget *p)
 : QDialog(p), mobj(_mobj), saveController(NULL){
     setupUi(this);
     new HelpButton(this, buttonBox, "17468859");
@@ -231,7 +231,7 @@ void CreateSubalignmentDialogController::selectSeqNames(){
 }
 
 
-CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask( MAlignmentObject* maObj, const CreateSubalignmentSettings& settings )
+CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask( MultipleSequenceAlignmentObject* maObj, const CreateSubalignmentSettings& settings )
 :Task(tr("Create sub-alignment and open view: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE)
 {
     csTask = new CreateSubalignmentTask(maObj, settings);

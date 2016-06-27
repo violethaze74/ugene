@@ -30,7 +30,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/DialogUtils.h>
@@ -257,7 +257,7 @@ QList<Task*> HMMBuildToFileTask::onSubTaskFinished(Task* subTask) {
         if (list.isEmpty()) {
             stateInfo.setError(  tr("Alignment object not found!") );
         } else {
-            MAlignmentObject* msa = qobject_cast<MAlignmentObject*>(list.first());
+            MultipleSequenceAlignmentObject* msa = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
             const MultipleSequenceAlignment &ma = msa->getMAlignment();
             if (settings.name.isEmpty()) {
                 settings.name = msa->getGObjectName() == MA_OBJECT_NAME ? doc->getName() : msa->getGObjectName();

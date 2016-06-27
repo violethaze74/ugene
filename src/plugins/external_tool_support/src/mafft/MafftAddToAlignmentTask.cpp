@@ -40,7 +40,7 @@
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/MAlignmentExporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/IOAdapterUtils.h>

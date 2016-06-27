@@ -57,7 +57,7 @@ class MsaColorScheme;
 class MsaHighlightingScheme;
 class MultipleSequenceAlignment;
 class MAlignmentModInfo;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class MsaColorSchemeFactory;
 class MsaHighlightingSchemeFactory;
 class MsaColorSchemeRegistry;

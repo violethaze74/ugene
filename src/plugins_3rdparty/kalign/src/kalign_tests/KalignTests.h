@@ -33,7 +33,7 @@
 namespace U2 {
 
 class KalignGObjectTask;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class LoadDocumentTask;
 class MultipleSequenceAlignment;
 
@@ -60,8 +60,8 @@ private:
 	LoadDocumentTask*           loadTask2;
 	Task*                       kalignTask; 
 	KalignTaskSettings          config;
-	MAlignmentObject*           ma1;
-	MAlignmentObject*           ma2;
+	MultipleSequenceAlignmentObject*           ma1;
+	MultipleSequenceAlignmentObject*           ma2;
 };
 
 class GTest_Kalign_Load_Align_Compare: public GTest {
@@ -101,8 +101,8 @@ private:
 	LoadDocumentTask*           loadTask2;
 	Task*                       kalignTask; 
 	KalignTaskSettings          config;
-	MAlignmentObject*           ma1;
-	MAlignmentObject*           ma2;
+	MultipleSequenceAlignmentObject*           ma1;
+	MultipleSequenceAlignmentObject*           ma2;
 };
 
 class KalignTests {

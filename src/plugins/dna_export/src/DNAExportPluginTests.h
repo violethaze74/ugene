@@ -32,7 +32,7 @@
 namespace U2 {
 
 class U2SequenceObject;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class GTest_ImportPhredQualityScoresTask : public GTest {
     Q_OBJECT

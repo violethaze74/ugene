@@ -119,10 +119,10 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
         SharedDbiDataHandler alId1 = data1.value<SharedDbiDataHandler>();
         SharedDbiDataHandler alId2 = data2.value<SharedDbiDataHandler>();
 
-        QScopedPointer<MAlignmentObject> alObj1(StorageUtils::getMsaObject(context->getDataStorage(), alId1));
+        QScopedPointer<MultipleSequenceAlignmentObject> alObj1(StorageUtils::getMsaObject(context->getDataStorage(), alId1));
         SAFE_POINT(NULL != alObj1.data(), "NULL MSA Object!", false);
 
-        QScopedPointer<MAlignmentObject> alObj2(StorageUtils::getMsaObject(context->getDataStorage(), alId2));
+        QScopedPointer<MultipleSequenceAlignmentObject> alObj2(StorageUtils::getMsaObject(context->getDataStorage(), alId2));
         SAFE_POINT(NULL != alObj2.data(), "NULL MSA Object!", false);
 
 
@@ -333,7 +333,7 @@ MergerMSAPerformer::MergerMSAPerformer(const QString &outSlot, const GrouperSlot
 
 bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     SharedDbiDataHandler newAlId = newData.value<SharedDbiDataHandler>();
-    QScopedPointer<MAlignmentObject> newAlObj(StorageUtils::getMsaObject(context->getDataStorage(), newAlId));
+    QScopedPointer<MultipleSequenceAlignmentObject> newAlObj(StorageUtils::getMsaObject(context->getDataStorage(), newAlId));
     SAFE_POINT(NULL != newAlObj.data(), "NULL MSA Object!", false);
     const MultipleSequenceAlignment &newAl = newAlObj->getMAlignment();
 

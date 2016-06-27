@@ -33,13 +33,13 @@
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class MAlignmentModInfo;
 
 class U2VIEW_EXPORT MSAEditorUndoFramework : protected QUndoStack {
     Q_OBJECT
 public:
-    MSAEditorUndoFramework(QObject* p, MAlignmentObject* ma);
+    MSAEditorUndoFramework(QObject* p, MultipleSequenceAlignmentObject* ma);
     void applyUndoRedoAction(const MultipleSequenceAlignment& ma);
 
     QAction* getUndoAction() const {return uAction;}
@@ -51,7 +51,7 @@ public slots:
     void sl_completeStateChanged(bool complete);
 
 private:
-    MAlignmentObject*   maObj;
+    MultipleSequenceAlignmentObject*   maObj;
     int                 lastSavedObjectVersion;
     int                 maxMemUse;//in bytes;
     bool                stateComplete;

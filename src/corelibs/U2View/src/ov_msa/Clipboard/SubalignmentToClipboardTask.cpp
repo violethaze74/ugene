@@ -81,7 +81,7 @@ QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MSAEditor *context,
     QStringList names;
     MSACollapsibleItemModel* m = context->getUI()->getCollapseModel();
     U2Region sel(m->mapToRow(selection.y()), m->mapToRow(selection.y() + selection.height()) - m->mapToRow(selection.y()));
-    MAlignmentObject* msaObj = context->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = context->getMSAObject();
     for (int i = sel.startPos; i < sel.endPos(); ++i) {
         if (m->rowToMap(i, true) < 0) {
             continue;
@@ -91,7 +91,7 @@ QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MSAEditor *context,
     return names;
 }
 
-FormatsMsaClipboardTask::FormatsMsaClipboardTask(MAlignmentObject *msaObj, const U2Region &window, const QStringList &names, const DocumentFormatId &formatId)
+FormatsMsaClipboardTask::FormatsMsaClipboardTask(MultipleSequenceAlignmentObject *msaObj, const U2Region &window, const QStringList &names, const DocumentFormatId &formatId)
     :PrepareMsaClipboardDataTask(window, names), createSubalignmentTask(NULL), msaObj(msaObj), formatId(formatId){
 
 }
@@ -160,7 +160,7 @@ RichTextMsaClipboardTask::RichTextMsaClipboardTask(MSAEditor *context, const U2R
 }
 
 void RichTextMsaClipboardTask::run(){
-    MAlignmentObject* obj = context->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = context->getMSAObject();
     const DNAAlphabet* al = obj->getAlphabet();
     if (!al){
         return;

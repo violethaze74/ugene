@@ -127,7 +127,7 @@ void SelectSubalignmentDialog::init() {
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
-    MAlignmentObject *mobj = ui->getEditor()->getMSAObject();
+    MultipleSequenceAlignmentObject *mobj = ui->getEditor()->getMSAObject();
     SAFE_POINT(mobj != NULL, tr("MSA Object is NULL"), );
 
     int rowNumber = mobj->getNumRows();

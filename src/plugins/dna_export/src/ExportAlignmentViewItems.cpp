@@ -30,7 +30,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
@@ -93,7 +93,7 @@ void MSAExportContext::updateActions() {
 void MSAExportContext::buildMenu(QMenu* m) {
     QMenu* exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != NULL, "exportMenu", );
-    MAlignmentObject* mObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* mObject = editor->getMSAObject();
     if (mObject->getAlphabet()->isNucleic()) {
         exportMenu->addAction(translateMSAAction);
     }

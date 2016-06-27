@@ -40,7 +40,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiRegistry.h>

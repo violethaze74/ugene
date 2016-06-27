@@ -23,7 +23,7 @@
 #include "MSAEditorSequenceArea.h"
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 
 #if (QT_VERSION < 0x050000) //Qt 5
@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-MSAEditorStatusWidget::MSAEditorStatusWidget(MAlignmentObject* mobj, MSAEditorSequenceArea* sa)
+MSAEditorStatusWidget::MSAEditorStatusWidget(MultipleSequenceAlignmentObject* mobj, MSAEditorSequenceArea* sa)
 : aliObj(mobj), seqArea(sa),
 lockedIcon(":core/images/lock.png"), unlockedIcon(":core/images/lock_open.png")
 {

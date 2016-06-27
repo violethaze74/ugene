@@ -35,7 +35,7 @@
 #include <U2View/MSAEditor.h>
 #include <U2Gui/OptionsPanel.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/DNASequence.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>

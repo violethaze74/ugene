@@ -28,7 +28,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/GObjectReference.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 
@@ -131,7 +131,7 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
-    MAlignmentObject*           mAObject;
+    MultipleSequenceAlignmentObject*           mAObject;
     Document*                   currentDocument;
     bool                        cleanDoc;
 

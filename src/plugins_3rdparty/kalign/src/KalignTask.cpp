@@ -138,7 +138,7 @@ TLSContext* KalignTask::createContextInstance()
 //////////////////////////////////////////////////////////////////////////
 // KalignGObjectTask
 
-KalignGObjectTask::KalignGObjectTask(MAlignmentObject* _obj, const KalignTaskSettings& _config)
+KalignGObjectTask::KalignGObjectTask(MultipleSequenceAlignmentObject* _obj, const KalignTaskSettings& _config)
 : AlignGObjectTask("", TaskFlags_NR_FOSCOE, _obj), lock(NULL), kalignTask(NULL), config(_config)
 {
     QString aliName = obj->getDocument()->getName();
@@ -235,7 +235,7 @@ Task::ReportResult KalignGObjectTask::report() {
 //KalignGObjectRunFromSchemaTask
 
 
-KalignGObjectRunFromSchemaTask::KalignGObjectRunFromSchemaTask(MAlignmentObject * obj, const KalignTaskSettings & c)
+KalignGObjectRunFromSchemaTask::KalignGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject * obj, const KalignTaskSettings & c)
 : AlignGObjectTask("", TaskFlags_NR_FOSCOE,obj), config(c)
 {
     setMAObject(obj);
@@ -255,7 +255,7 @@ void KalignGObjectRunFromSchemaTask::prepare() {
     addSubTask(new SimpleMSAWorkflow4GObjectTask(tr("Workflow wrapper '%1'").arg(getTaskName()), obj, conf));
 }
 
-void KalignGObjectRunFromSchemaTask::setMAObject(MAlignmentObject* maobj) {
+void KalignGObjectRunFromSchemaTask::setMAObject(MultipleSequenceAlignmentObject* maobj) {
     SAFE_POINT_EXT(maobj != NULL, setError("Invalid MSA object detected"),);
     const Document* maDoc = maobj->getDocument();
     SAFE_POINT_EXT(NULL != maDoc, setError("Invalid MSA document detected"),);
@@ -322,7 +322,7 @@ QList<Task*> KalignWithExtFileSpecifySupportTask::onSubTaskFinished( Task* subTa
         currentDocument = loadDocumentTask->takeDocument();
         SAFE_POINT(currentDocument != NULL, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject=qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         kalignGObjectTask = new KalignGObjectRunFromSchemaTask(mAObject, config);

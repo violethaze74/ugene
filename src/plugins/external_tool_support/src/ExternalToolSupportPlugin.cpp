@@ -29,7 +29,7 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorFactory.h>
 #include <U2View/DnaAssemblyUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2Core/GAutoDeleteList.h>
 #include <U2View/AnnotatedDNAView.h>

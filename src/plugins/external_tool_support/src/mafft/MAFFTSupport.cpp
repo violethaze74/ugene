@@ -24,7 +24,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -183,7 +183,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MAlignmentObject* alignmentObject = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* alignmentObject = ed->getMSAObject();
     SAFE_POINT(NULL != alignmentObject, "Alignment object is NULL during aligning with MAFFT!",);
     SAFE_POINT(!alignmentObject->isStateLocked(), "Alignment object is locked during aligning with MAFFT!",);
 

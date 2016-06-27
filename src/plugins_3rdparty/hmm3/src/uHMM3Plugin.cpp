@@ -26,7 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/GObjectSelection.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/MainWindow.h>
@@ -130,7 +130,7 @@ void UHMM3Plugin::sl_buildProfile() {
             GObjectView* ov = ow->getObjectView();
             MSAEditor * av = qobject_cast< MSAEditor* >( ov );
             if( NULL != av ) {
-                MAlignmentObject* maObj = av->getMSAObject();
+                MultipleSequenceAlignmentObject* maObj = av->getMSAObject();
                 if (maObj != NULL)
                     ma = maObj->getMAlignment();
             }
@@ -224,7 +224,7 @@ void UHMM3MSAEditorContext::sl_build() {
     assert( NULL != action );
     MSAEditor * ed = qobject_cast< MSAEditor* >( action->getObjectView() );
     assert( NULL != ed );
-    MAlignmentObject * obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject * obj = ed->getMSAObject(); 
     if (obj != NULL) {
         QObjectScopedPointer<UHMM3BuildDialogImpl> buildDlg = new UHMM3BuildDialogImpl( obj->getMAlignment() );
         buildDlg->exec();

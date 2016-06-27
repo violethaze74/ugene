@@ -39,7 +39,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2DbiUtils.h>

@@ -20,7 +20,7 @@
  */
 
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -34,11 +34,11 @@
 
 namespace U2 {
 
-MAlignmentObject * MAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, MultipleSequenceAlignment& al, U2OpStatus& os) {
+MultipleSequenceAlignmentObject * MAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, MultipleSequenceAlignment& al, U2OpStatus& os) {
     return createAlignment(dbiRef, U2ObjectDbi::ROOT_FOLDER, al, os);
 }
 
-MAlignmentObject * MAlignmentImporter::createAlignment(const U2DbiRef &dbiRef, const QString &folder, MultipleSequenceAlignment &al,
+MultipleSequenceAlignmentObject * MAlignmentImporter::createAlignment(const U2DbiRef &dbiRef, const QString &folder, MultipleSequenceAlignment &al,
     U2OpStatus &os, const QList<U2Sequence> &alignedSeqs)
 {
     if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al.getNumRows()) {
@@ -86,7 +86,7 @@ MAlignmentObject * MAlignmentImporter::createAlignment(const U2DbiRef &dbiRef, c
         al.getRow(i).setRowDbInfo(rows.at(i));
     }
 
-    return new MAlignmentObject(al.getName(), U2EntityRef(dbiRef, msa.id), QVariantMap(), al);
+    return new MultipleSequenceAlignmentObject(al.getName(), U2EntityRef(dbiRef, msa.id), QVariantMap(), al);
 }
 
 void MAlignmentImporter::setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os) {

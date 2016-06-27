@@ -23,7 +23,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/MAlignmentExporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MSAUtils.h>
 #include "SimpleAddingToAlignment.h"

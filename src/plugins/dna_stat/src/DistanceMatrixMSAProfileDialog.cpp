@@ -31,7 +31,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 
 #include <U2Gui/HelpButton.h>
@@ -59,7 +59,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
     QStringList algo = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds();
     algoCombo->addItems(algo);
 
-    MAlignmentObject* msaObj = ctx->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMSAObject();
     if (msaObj != NULL) {
         QVector<U2Region> unitedRows;
         MultipleSequenceAlignment ma = msaObj->getMAlignment();
@@ -93,7 +93,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
 
 void DistanceMatrixMSAProfileDialog::accept() {
     DistanceMatrixMSAProfileTaskSettings s;
-    MAlignmentObject* msaObj = ctx->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMSAObject();
     if (msaObj == NULL) {
         return;
     }

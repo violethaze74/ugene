@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-MsaColorSchemePercentageIdententityGrayscale::MsaColorSchemePercentageIdententityGrayscale(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj)
+MsaColorSchemePercentageIdententityGrayscale::MsaColorSchemePercentageIdententityGrayscale(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
     : MsaColorSchemePercentageIdentity(parent, factory, maObj)
 {
     colorsByRange[0] = QColor("#646464");
@@ -37,7 +37,7 @@ MsaColorSchemePercentageIdententityGrayscaleFactory::MsaColorSchemePercentageIde
 
 }
 
-MsaColorScheme * MsaColorSchemePercentageIdententityGrayscaleFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemePercentageIdententityGrayscaleFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
     return new MsaColorSchemePercentageIdententityGrayscale(parent, this, maObj);
 }
 

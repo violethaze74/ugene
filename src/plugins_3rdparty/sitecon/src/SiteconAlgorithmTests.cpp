@@ -31,7 +31,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <QtXml/QDomElement>
 
@@ -101,9 +101,9 @@ void GTest_CalculateACGTContent::prepare(){
         stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MAlignmentObject from GObject") );
+        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
     ma = mao->getMAlignment();
@@ -196,9 +196,9 @@ void GTest_CalculateDispersionAndAverage::prepare() {
         stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MAlignmentObject from GObject") );
+        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
     ma = mao->getMAlignment();
@@ -284,9 +284,9 @@ void GTest_CalculateFirstTypeError::prepare() {
         stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MAlignmentObject from GObject") );
+        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
     ma = mao->getMAlignment();
@@ -365,9 +365,9 @@ void GTest_CalculateSecondTypeError::prepare() {
         stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MAlignmentObject from GObject") );
+        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
     ma = mao->getMAlignment();

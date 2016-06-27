@@ -30,7 +30,7 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -321,7 +321,7 @@ static QList< MultipleSequenceAlignment > getMalignments( const QList< GObject* 
     QList< MultipleSequenceAlignment > res;
     
     foreach( GObject* obj, objList ) {
-        MAlignmentObject* msaObj = qobject_cast< MAlignmentObject* >( obj );
+        MultipleSequenceAlignmentObject* msaObj = qobject_cast< MultipleSequenceAlignmentObject* >( obj );
         assert( NULL != msaObj );
         res << msaObj->getMAlignment();
     }

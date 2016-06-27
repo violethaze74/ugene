@@ -29,7 +29,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -44,7 +44,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 /// TranslateMSA2AminoTask
 
-TranslateMSA2AminoTask::TranslateMSA2AminoTask( MAlignmentObject* obj )
+TranslateMSA2AminoTask::TranslateMSA2AminoTask( MultipleSequenceAlignmentObject* obj )
 : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), maObj(obj)
 {
     SAFE_POINT_EXT(NULL != maObj, setError(tr("Invalid MSA object detected")),);
@@ -57,7 +57,7 @@ TranslateMSA2AminoTask::TranslateMSA2AminoTask( MAlignmentObject* obj )
     translation = AppContext::getDNATranslationRegistry()->getStandardGeneticCodeTranslation(maObj->getAlphabet());
 }
 
-TranslateMSA2AminoTask::TranslateMSA2AminoTask( MAlignmentObject* obj, const QString& translationId )
+TranslateMSA2AminoTask::TranslateMSA2AminoTask( MultipleSequenceAlignmentObject* obj, const QString& translationId )
 : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), maObj(obj)
 {
     SAFE_POINT_EXT(NULL != maObj, setError(tr("Invalid MSA object detected")),);
@@ -95,7 +95,7 @@ Task::ReportResult TranslateMSA2AminoTask::report() {
 //////////////////////////////////////////////////////////////////////////
 /// AlignInAminoFormTask
 
-AlignInAminoFormTask::AlignInAminoFormTask( MAlignmentObject* obj, AlignGObjectTask* t, const QString& trId )
+AlignInAminoFormTask::AlignInAminoFormTask( MultipleSequenceAlignmentObject* obj, AlignGObjectTask* t, const QString& trId )
 : Task (tr("Align in amino form"), TaskFlags_FOSE_COSC), alignTask(t), maObj(obj), clonedObj(NULL), traslId(trId), tmpDoc(NULL)
 {
     setMaxParallelSubtasks(1);

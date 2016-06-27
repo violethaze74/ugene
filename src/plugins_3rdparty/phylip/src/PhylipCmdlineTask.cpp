@@ -26,7 +26,7 @@
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/UserApplicationsSettings.h>

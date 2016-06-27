@@ -30,7 +30,7 @@
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2View/UndoRedoFramework.h>
 
@@ -49,7 +49,7 @@
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class PhyTreeObject;
 class MSAEditorUI;
 class MSAEditorSequenceArea;
@@ -136,7 +136,7 @@ public:
 
     virtual OptionsPanel* getOptionsPanel(){return optionsPanel;}
 
-    MAlignmentObject* getMSAObject() const {return msaObject;}
+    MultipleSequenceAlignmentObject* getMSAObject() const {return msaObject;}
 
     MSAEditorUI* getUI() const {return ui;}
 
@@ -244,7 +244,7 @@ private:
     void alignSequencesFromObjectsToAlignment(const QList<GObject*>& objects);
     void alignSequencesFromFilesToAlignment();
 
-    MAlignmentObject* msaObject;
+    MultipleSequenceAlignmentObject* msaObject;
     MSAEditorUI*      ui;
     QFont             font;
     ResizeMode        resizeMode;

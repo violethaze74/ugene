@@ -21,13 +21,13 @@
 
 #include <U2Algorithm/MSAConsensusUtils.h>
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include "MsaColorSchemeClustalX.h"
 
 namespace U2 {
 
-MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj)
+MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
     : MsaColorScheme(parent, factory, maObj),
       objVersion(1),
       cacheVersion(0),
@@ -257,7 +257,7 @@ MsaColorSchemeClustalXFactory::MsaColorSchemeClustalXFactory(QObject *parent, co
 
 }
 
-MsaColorScheme * MsaColorSchemeClustalXFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemeClustalXFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
     return new MsaColorSchemeClustalX(parent, this, maObj);
 }
 

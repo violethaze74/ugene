@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MALIGNMENT_OBJECT_H_
-#define _U2_MALIGNMENT_OBJECT_H_
+#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_
+#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_
 
 #include <U2Core/GObject.h>
 #include <U2Core/U2Region.h>
@@ -85,7 +85,7 @@ class MSAMemento{
 public:
     ~MSAMemento(){}
 private:
-    friend class MAlignmentObject;
+    friend class MultipleSequenceAlignmentObject;
     MSAMemento();
     MultipleSequenceAlignment getState() const;
     void setState(const MultipleSequenceAlignment&);
@@ -93,13 +93,13 @@ private:
     MultipleSequenceAlignment lastState;
 };
 
-class U2CORE_EXPORT MAlignmentObject : public GObject {
+class U2CORE_EXPORT MultipleSequenceAlignmentObject : public GObject {
     Q_OBJECT
 
 public:
-    MAlignmentObject(const QString& name, const U2EntityRef& msaRef, const QVariantMap& hintsMap = QVariantMap(),
+    MultipleSequenceAlignmentObject(const QString& name, const U2EntityRef& msaRef, const QVariantMap& hintsMap = QVariantMap(),
         const MultipleSequenceAlignment &alnData = MultipleSequenceAlignment());
-    ~MAlignmentObject();
+    ~MultipleSequenceAlignmentObject();
 
     /** Sets type of modifications tracking for the alignment */
     void setTrackMod(U2TrackModType trackMod, U2OpStatus& os);

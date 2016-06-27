@@ -94,13 +94,13 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpS
 
 namespace {
 
-MAlignmentObject * prepareSequenceHeadersList(const QList<GObject *> &list, bool useGenbankHeader, QList<U2SequenceObject *> &dnaList,
+MultipleSequenceAlignmentObject * prepareSequenceHeadersList(const QList<GObject *> &list, bool useGenbankHeader, QList<U2SequenceObject *> &dnaList,
     QList<QString> &nameList)
 {
     foreach (GObject *obj, list) {
         U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(obj);
         if (dnaObj == NULL) {
-            if (MAlignmentObject *maObj = qobject_cast<MAlignmentObject *>(obj)) {
+            if (MultipleSequenceAlignmentObject *maObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj)) {
                 return maObj;
             }
             continue;
@@ -141,7 +141,7 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
     QList<U2SequenceObject *> dnaList;
     QStringList nameList;
 
-    MAlignmentObject *obj = prepareSequenceHeadersList(list, useGenbankHeader, dnaList, nameList);
+    MultipleSequenceAlignmentObject *obj = prepareSequenceHeadersList(list, useGenbankHeader, dnaList, nameList);
     if (NULL != obj) {
         return obj->getMAlignment();
     }
@@ -281,7 +281,7 @@ QList<U2Sequence> getDbSequences(const QList<GObject *> &objects) {
 
 }
 
-MAlignmentObject * MSAUtils::seqObjs2msaObj(const QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os, bool shallowCopy) {
+MultipleSequenceAlignmentObject * MSAUtils::seqObjs2msaObj(const QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os, bool shallowCopy) {
     CHECK(!objects.isEmpty(), NULL);
 
     int firstSeqObjPos = -1;
@@ -305,7 +305,7 @@ MAlignmentObject * MSAUtils::seqObjs2msaObj(const QList<GObject *> &objects, con
     return MAlignmentImporter::createAlignment(dbiRef, dstFolder, ma, os, sequencesInDB);
 }
 
-MAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs, const QVariantMap& hints, U2OpStatus& os){
+MultipleSequenceAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs, const QVariantMap& hints, U2OpStatus& os){
     CHECK(!docs.isEmpty(), NULL);
     QList<GObject*> objects;
     foreach(Document* doc, docs){
@@ -377,7 +377,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
 }
 
 
-void MSAUtils::copyRowFromSequence(MAlignmentObject *msaObj, U2SequenceObject *seqObj, U2OpStatus &os) {
+void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2SequenceObject *seqObj, U2OpStatus &os) {
     CHECK_EXT(NULL != msaObj, os.setError("NULL msa object"), );
 
     U2MsaRow row = copyRowFromSequence(seqObj, msaObj->getEntityRef().dbiRef, os);

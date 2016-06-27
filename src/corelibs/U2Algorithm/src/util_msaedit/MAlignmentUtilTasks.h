@@ -24,7 +24,7 @@
 
 #include <U2Core/global.h>
 #include <U2Core/Task.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
 
@@ -37,14 +37,14 @@ class DNATranslation;
 class U2ALGORITHM_EXPORT TranslateMSA2AminoTask : public Task {
     Q_OBJECT
 public:
-    TranslateMSA2AminoTask(MAlignmentObject* obj);
-    TranslateMSA2AminoTask(MAlignmentObject* obj, const QString& trId );
+    TranslateMSA2AminoTask(MultipleSequenceAlignmentObject* obj);
+    TranslateMSA2AminoTask(MultipleSequenceAlignmentObject* obj, const QString& trId );
     const MultipleSequenceAlignment& getTaskResult() { return resultMA; }
     void run();
     ReportResult report();
 private:
     MultipleSequenceAlignment resultMA;
-    MAlignmentObject* maObj;
+    MultipleSequenceAlignmentObject* maObj;
     DNATranslation* translation;
 };
 
@@ -56,12 +56,12 @@ private:
 class U2ALGORITHM_EXPORT AlignGObjectTask : public Task {
     Q_OBJECT
 public:
-    AlignGObjectTask(const QString& taskName, TaskFlags f, MAlignmentObject* maobj)
+    AlignGObjectTask(const QString& taskName, TaskFlags f, MultipleSequenceAlignmentObject* maobj)
         : Task(taskName, f), obj(maobj) {}
-    virtual void setMAObject(MAlignmentObject* maobj) { obj = maobj; }
-    MAlignmentObject* getMAObject() { return obj; }
+    virtual void setMAObject(MultipleSequenceAlignmentObject* maobj) { obj = maobj; }
+    MultipleSequenceAlignmentObject* getMAObject() { return obj; }
 protected:
-    QPointer<MAlignmentObject> obj;
+    QPointer<MultipleSequenceAlignmentObject> obj;
 };
 
 
@@ -76,7 +76,7 @@ class U2ALGORITHM_EXPORT AlignInAminoFormTask : public Task {
     Q_OBJECT
     Q_DISABLE_COPY(AlignInAminoFormTask)
 public:
-    AlignInAminoFormTask(MAlignmentObject* obj, AlignGObjectTask* alignTask, const QString& traslId);
+    AlignInAminoFormTask(MultipleSequenceAlignmentObject* obj, AlignGObjectTask* alignTask, const QString& traslId);
     ~AlignInAminoFormTask();
 
     virtual void prepare();
@@ -84,7 +84,7 @@ public:
     virtual ReportResult report();
 protected:
     AlignGObjectTask* alignTask;
-    MAlignmentObject *maObj, *clonedObj;
+    MultipleSequenceAlignmentObject *maObj, *clonedObj;
     //MultipleSequenceAlignment bufMA;
     QString traslId;
     Document* tmpDoc;

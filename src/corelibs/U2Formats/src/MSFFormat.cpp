@@ -24,7 +24,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MAlignmentWalker.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
@@ -221,7 +221,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
     U2OpStatus2Log os;
     const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, al, os);
     CHECK_OP(os, );
     objects.append(obj);
 }
@@ -244,8 +244,8 @@ static bool writeBlock(IOAdapter *io, U2OpStatus& ti, const QByteArray& buf) {
 }
 
 void MSFFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
-    MAlignmentObject* obj = NULL;
-    if((d->getObjects().size() != 1) || ((obj = qobject_cast<MAlignmentObject*>(d->getObjects().first())) == NULL)) {
+    MultipleSequenceAlignmentObject* obj = NULL;
+    if((d->getObjects().size() != 1) || ((obj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first())) == NULL)) {
         os.setError("No data to write;");
         return;
     }
@@ -262,7 +262,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "MSF entry storing: alignment objects count error", );
 
-    const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());
+    const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "MSF entry storing: NULL alignment object", );
 
     const MultipleSequenceAlignment& ma = obj->getMAlignment();

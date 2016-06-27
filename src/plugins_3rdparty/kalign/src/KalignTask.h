@@ -24,7 +24,7 @@
 
 
 #include <U2Core/Task.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TLSTask.h>
 #include <U2Algorithm/MAlignmentUtilTasks.h>
@@ -38,7 +38,7 @@ struct kalign_context;
 namespace U2 {
 
 class StateLock;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class LoadDocumentTask;
 
 class KalignContext : public TLSContext {
@@ -84,7 +84,7 @@ protected:
 class  KalignGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    KalignGObjectTask(MAlignmentObject* obj, const KalignTaskSettings& config);
+    KalignGObjectTask(MultipleSequenceAlignmentObject* obj, const KalignTaskSettings& config);
     ~KalignGObjectTask();     
 
     virtual void prepare();
@@ -112,10 +112,10 @@ public:
 class KalignGObjectRunFromSchemaTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    KalignGObjectRunFromSchemaTask(MAlignmentObject * obj, const KalignTaskSettings & config);
+    KalignGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject * obj, const KalignTaskSettings & config);
 
     void prepare();
-    void setMAObject(MAlignmentObject* maobj);
+    void setMAObject(MultipleSequenceAlignmentObject* maobj);
 private:
     KalignTaskSettings      config;
 };
@@ -130,7 +130,7 @@ public:
     void prepare();
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
-    MAlignmentObject*   mAObject;
+    MultipleSequenceAlignmentObject*   mAObject;
     Document*           currentDocument;
     bool                cleanDoc;
     SaveDocumentTask*   saveDocumentTask;

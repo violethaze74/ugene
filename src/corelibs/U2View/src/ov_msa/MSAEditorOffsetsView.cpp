@@ -25,7 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -55,7 +55,7 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEd
     connect(seqArea, SIGNAL(si_startChanged(const QPoint&,const QPoint&)), SLOT(sl_startChanged(const QPoint&,const QPoint&)));
     connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_fontChanged()));
 
-    MAlignmentObject *mobj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *mobj = editor->getMSAObject();
     SAFE_POINT(NULL != mobj, L10N::nullPointerError("multiple alignment object"), );
     connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
         SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));

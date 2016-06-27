@@ -83,8 +83,8 @@ void SequenceObjectsExtractor::extractSequencesFromObjects(const QList<GObject*>
 
         if(object->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
             extractFromMsa = true;
-            MAlignmentObject* curObj = qobject_cast<MAlignmentObject*>(object);
-            SAFE_POINT(curObj != NULL, "MAlignmentObject is null",);
+            MultipleSequenceAlignmentObject* curObj = qobject_cast<MultipleSequenceAlignmentObject*>(object);
+            SAFE_POINT(curObj != NULL, "MultipleSequenceAlignmentObject is null",);
 
             checkAlphabet(curObj->getAlphabet(), curObj->getGObjectName());
             sequencesMaxLength = qMax(sequencesMaxLength, curObj->getLength());
@@ -221,7 +221,7 @@ const SequenceObjectsExtractor& LoadSequencesTask::getExtractor() const {
 /************************************************************************/
 /* AlignSequencesToAlignmentTask */
 /************************************************************************/
-AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MAlignmentObject* obj, const SequenceObjectsExtractor& extractor)
+AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor)
     : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObj(obj), stateLock(NULL), docStateLock(NULL), 
     sequencesMaxLength(extractor.getMaxSequencesLength()), extr(extractor)
 {
@@ -306,9 +306,9 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 /************************************************************************/
 /* LoadSequencesAndAlignToAlignmentTask */
 /************************************************************************/
-LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MAlignmentObject* obj, const QStringList& urls)
+LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls)
 : Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun), urls(urls), maObj(obj), loadSequencesTask(NULL) {
-    SAFE_POINT_EXT(obj != NULL, setError("MAlignmentObject is null"), );
+    SAFE_POINT_EXT(obj != NULL, setError("MultipleSequenceAlignmentObject is null"), );
     loadSequencesTask = new LoadSequencesTask(obj->getAlphabet(), urls);
     loadSequencesTask->setSubtaskProgressWeight(5);
     addSubTask(loadSequencesTask);

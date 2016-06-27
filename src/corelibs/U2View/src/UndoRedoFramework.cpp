@@ -22,7 +22,7 @@
 #include "UndoRedoFramework.h"
 #include "ov_msa/MSACollapsibleModel.h"
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MAlignmentObject *_maObj)
+MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleSequenceAlignmentObject *_maObj)
 : QObject(p),
   maObj(_maObj),
   undoStepsAvailable(0),

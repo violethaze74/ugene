@@ -34,7 +34,7 @@
 namespace U2 {
 
 class MSAEditor;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class MSAConsensusAlgorithm;
 class MsaColorScheme;
 class MsaHighlightingScheme;
@@ -42,7 +42,7 @@ class MsaHighlightingScheme;
 class MSAGraphCalculationTask : public BackgroundTask<QPolygonF> {
     Q_OBJECT
 public:
-    MSAGraphCalculationTask(MAlignmentObject* msa, int width, int height);
+    MSAGraphCalculationTask(MultipleSequenceAlignmentObject* msa, int width, int height);
 
     void run();
 signals:
@@ -63,7 +63,7 @@ protected:
 class MSAConsensusOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAConsensusOverviewCalculationTask(MAlignmentObject* msa,
+    MSAConsensusOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
                                         int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -74,7 +74,7 @@ private:
 class MSAGapOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAGapOverviewCalculationTask(MAlignmentObject* msa,
+    MSAGapOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
                                   int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -83,7 +83,7 @@ private:
 class MSAClustalOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAClustalOverviewCalculationTask(MAlignmentObject* msa,
+    MSAClustalOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
                                       int width, int height);
 private:
     int getGraphValue(int pos) const;

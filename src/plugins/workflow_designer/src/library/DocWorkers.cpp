@@ -37,7 +37,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QVariantUtils.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -844,7 +844,7 @@ void MSAWriter::data2doc(Document* doc, const QVariantMap& data) {
 
 void MSAWriter::data2document(Document* doc, const QVariantMap& data, WorkflowContext* context) {
     SharedDbiDataHandler msaId = data.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
-    QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
     SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", );
     MultipleSequenceAlignment ma = msaObj->getMAlignment();
 
@@ -857,7 +857,7 @@ void MSAWriter::data2document(Document* doc, const QVariantMap& data, WorkflowCo
     }
 
     U2OpStatus2Log os;
-    MAlignmentObject* obj = MAlignmentImporter::createAlignment(doc->getDbiRef(), ma, os);
+    MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(doc->getDbiRef(), ma, os);
     CHECK_OP(os, );
 
     doc->addObject(obj);

@@ -33,7 +33,7 @@ namespace U2 {
 
 class BwaGObjectTask;
 class DnaAssemblyMultiTask;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class MultipleSequenceAlignment;
 
 class GTest_Bwa : public GTest {

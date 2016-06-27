@@ -22,7 +22,7 @@
 #include "MSAEditorUndoFramework.h"
 #include "MSACollapsibleModel.h"
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 
 #if (QT_VERSION < 0x050000) //Qt 5
@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-MSAEditorUndoFramework::MSAEditorUndoFramework(QObject* p, MAlignmentObject* ma)
+MSAEditorUndoFramework::MSAEditorUndoFramework(QObject* p, MultipleSequenceAlignmentObject* ma)
 : QUndoStack(p), maObj(ma), lastSavedObjectVersion(0), maxMemUse(20*1024*1024), stateComplete(true)
 {
     if (maObj!=NULL) {

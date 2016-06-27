@@ -19,14 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MsaHighlightingSchemeConservation.h"
 
 namespace U2 {
 
-MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj)
+MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj),
       threshold(50),
       lessThenThreshold(false)
@@ -94,7 +94,7 @@ MsaHighlightingSchemeConservationFactory::MsaHighlightingSchemeConservationFacto
 
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeConservationFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaHighlightingScheme * MsaHighlightingSchemeConservationFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeConservation(parent, this, maObj);
 }
 

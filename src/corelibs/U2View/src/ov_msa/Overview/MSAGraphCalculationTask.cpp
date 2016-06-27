@@ -27,7 +27,7 @@
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-MSAGraphCalculationTask::MSAGraphCalculationTask(MAlignmentObject* msa, int width, int height)
+MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleSequenceAlignmentObject* msa, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
       memLocker(stateInfo),
       msaLength(0),
@@ -125,7 +125,7 @@ void MSAGraphCalculationTask::constructPolygon(QPolygonF &polygon) {
     emit si_progressChanged();
 }
 
-MSAConsensusOverviewCalculationTask::MSAConsensusOverviewCalculationTask(MAlignmentObject* msa,
+MSAConsensusOverviewCalculationTask::MSAConsensusOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
                                     int width, int height)
     : MSAGraphCalculationTask(msa, width, height)
 {
@@ -146,7 +146,7 @@ int MSAConsensusOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(score * 100. / seqNumber);
 }
 
-MSAGapOverviewCalculationTask::MSAGapOverviewCalculationTask(MAlignmentObject* msa, int width, int height)
+MSAGapOverviewCalculationTask::MSAGapOverviewCalculationTask(MultipleSequenceAlignmentObject* msa, int width, int height)
     : MSAGraphCalculationTask(msa, width, height) {}
 
 int MSAGapOverviewCalculationTask::getGraphValue(int pos) const {
@@ -164,7 +164,7 @@ int MSAGapOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(gapCounter * 100. / seqNumber);
 }
 
-MSAClustalOverviewCalculationTask::MSAClustalOverviewCalculationTask(MAlignmentObject *msa, int width, int height)
+MSAClustalOverviewCalculationTask::MSAClustalOverviewCalculationTask(MultipleSequenceAlignmentObject *msa, int width, int height)
     : MSAGraphCalculationTask(msa, width, height) {
     SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != NULL, setError(tr("MSAConsensusAlgorithmRegistry is NULL!")), );
 

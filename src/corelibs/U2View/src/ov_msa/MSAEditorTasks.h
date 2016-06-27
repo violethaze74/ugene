@@ -27,14 +27,14 @@
 #include <U2Core/DocumentProviderTask.h>
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class UnloadedObject;
 class MSAEditor;
 
 class OpenMSAEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenMSAEditorTask(MAlignmentObject* obj);
+    OpenMSAEditorTask(MultipleSequenceAlignmentObject* obj);
     OpenMSAEditorTask(UnloadedObject* obj);
     OpenMSAEditorTask(Document* doc);
 
@@ -43,7 +43,7 @@ public:
     static void updateTitle(MSAEditor* msaEd);
 
 private:
-    QPointer<MAlignmentObject>  msaObject;
+    QPointer<MultipleSequenceAlignmentObject>  msaObject;
     GObjectReference            unloadedReference;
 };
 

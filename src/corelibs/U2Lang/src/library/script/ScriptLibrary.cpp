@@ -138,7 +138,7 @@ static MultipleSequenceAlignment getAlignment(QScriptContext *ctx, QScriptEngine
     CHECK(NULL != wse, MultipleSequenceAlignment());
 
     SharedDbiDataHandler msaId = ScriptEngineUtils::getDbiId(engine, ctx->argument(argNum));
-    QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(wse->getWorkflowContext()->getDataStorage(), msaId));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(wse->getWorkflowContext()->getDataStorage(), msaId));
     CHECK(!msaObj.isNull(), MultipleSequenceAlignment());
     return msaObj->getMAlignment();
 }

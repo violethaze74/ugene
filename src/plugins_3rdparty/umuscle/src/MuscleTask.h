@@ -24,7 +24,7 @@
 
 #include <QtCore/QPointer>
 #include <U2Core/Task.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Algorithm/MAlignmentUtilTasks.h>
 #include <U2Core/U2Mod.h>
@@ -34,7 +34,7 @@ class MuscleContext;
 namespace U2 {
 
 class StateLock;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class LoadDocumentTask;
 class MuscleParallelTask;
 
@@ -104,13 +104,13 @@ class MuscleAddSequencesToProfileTask : public Task {
     Q_OBJECT
 public:
     enum MMode {Profile2Profile, Sequences2Profile};
-    MuscleAddSequencesToProfileTask(MAlignmentObject* obj, const QString& fileWithSequencesOrProfile, MMode mode);
+    MuscleAddSequencesToProfileTask(MultipleSequenceAlignmentObject* obj, const QString& fileWithSequencesOrProfile, MMode mode);
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 
     ReportResult report();
     
-    QPointer<MAlignmentObject>  maObj;
+    QPointer<MultipleSequenceAlignmentObject>  maObj;
     LoadDocumentTask*           loadTask;
     MMode                       mode;
 };
@@ -119,7 +119,7 @@ public:
 class  MuscleGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectTask(MAlignmentObject* obj, const MuscleTaskSettings& config);
+    MuscleGObjectTask(MultipleSequenceAlignmentObject* obj, const MuscleTaskSettings& config);
     ~MuscleGObjectTask();
 
     virtual void prepare();
@@ -141,7 +141,7 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
-    MAlignmentObject*   mAObject;
+    MultipleSequenceAlignmentObject*   mAObject;
     Document*           currentDocument;
     bool                cleanDoc;
 
@@ -166,10 +166,10 @@ private:
 class MuscleGObjectRunFromSchemaTask : public AlignGObjectTask {
     Q_OBJECT
 public:
-    MuscleGObjectRunFromSchemaTask(MAlignmentObject * obj, const MuscleTaskSettings & config);
+    MuscleGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject * obj, const MuscleTaskSettings & config);
 
     void prepare();
-    void setMAObject(MAlignmentObject* maobj);
+    void setMAObject(MultipleSequenceAlignmentObject* maobj);
 private:
     MuscleTaskSettings config;
 };

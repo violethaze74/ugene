@@ -28,7 +28,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -317,7 +317,7 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc( Document *source )
         msa.addRow( seqName, seqContent, sequenceNum, stateInfo );
         CHECK_OP( stateInfo, );
     }
-    MAlignmentObject *alnObject = MAlignmentImporter::createAlignment( source->getDbiRef( ), msa, stateInfo );
+    MultipleSequenceAlignmentObject *alnObject = MAlignmentImporter::createAlignment( source->getDbiRef( ), msa, stateInfo );
     CHECK_OP( stateInfo, );
     source->addObject( alnObject );
 }
@@ -385,7 +385,7 @@ void EvaluateBaseContentTask::run() {
         alp = dnaObj->getAlphabet();
         DNASequenceGenerator::evaluateBaseContent(dnaObj->getWholeSequence(stateInfo), result);
     } else if (_obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
-        MAlignmentObject* maObj = qobject_cast<MAlignmentObject*>(_obj);
+        MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(_obj);
         alp = maObj->getAlphabet();
         DNASequenceGenerator::evaluateBaseContent(maObj->getMAlignment(), result);
     } else {

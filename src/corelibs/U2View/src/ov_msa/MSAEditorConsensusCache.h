@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class MultipleSequenceAlignment;
 class MAlignmentModInfo;
 class MSAConsensusAlgorithm;
@@ -39,7 +39,7 @@ class MSAEditorConsensusCache : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusCache)
 public:
-    MSAEditorConsensusCache(QObject* p, MAlignmentObject* aliObj, MSAConsensusAlgorithmFactory* algo);
+    MSAEditorConsensusCache(QObject* p, MultipleSequenceAlignmentObject* aliObj, MSAConsensusAlgorithmFactory* algo);
     ~MSAEditorConsensusCache();
 
     char getConsensusChar(int pos);
@@ -71,7 +71,7 @@ private:
     int                     curCacheSize;
     QVector<CacheItem>      cache;
     QBitArray               updateMap;
-    MAlignmentObject*       aliObj;
+    MultipleSequenceAlignmentObject*       aliObj;
     MSAConsensusAlgorithm*  algorithm;
 };
 

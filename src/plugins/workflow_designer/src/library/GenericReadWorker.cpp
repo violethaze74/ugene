@@ -36,7 +36,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -261,7 +261,7 @@ void LoadMSATask::run() {
     } else {
         MultipleSequenceAlignment ma = MSAUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
 
-        QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
         CHECK_OP(stateInfo,);
 
         SharedDbiDataHandler handler = storage->getDataHandler(msaObj->getEntityRef());
@@ -409,7 +409,7 @@ void LoadSeqTask::run() {
         //             int gaps = cfg.value(mergeToken).toInt();
         U2OpStatus2Log os;
         foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
-            foreach(const DNASequence& s, MSAUtils::ma2seq(((MAlignmentObject*)go)->getMAlignment(), false)) {
+            foreach(const DNASequence& s, MSAUtils::ma2seq(((MultipleSequenceAlignmentObject*)go)->getMAlignment(), false)) {
                 if (!selector->matches(s)) {
                     continue;
                 }

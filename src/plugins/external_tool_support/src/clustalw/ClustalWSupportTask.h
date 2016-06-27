@@ -105,7 +105,7 @@ private:
     QPointer<StateLock>         lock;
 };
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class ClustalWWithExtFileSpecifySupportTask : public Task {
     Q_OBJECT
@@ -118,7 +118,7 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
-    MAlignmentObject*           mAObject;
+    MultipleSequenceAlignmentObject*           mAObject;
     Document*                   currentDocument;
     bool                        cleanDoc;
 

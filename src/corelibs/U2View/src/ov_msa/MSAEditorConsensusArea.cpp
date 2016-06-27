@@ -29,7 +29,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Gui/GraphUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OPWidgetFactory.h>

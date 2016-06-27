@@ -43,7 +43,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/ProjectModel.h>
@@ -246,7 +246,7 @@ void MSAEditorSequenceArea::updateColorAndHighlightSchemes() {
     if (!s || !editor){
         return;
     }
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (!maObj){
         return;
     }
@@ -288,7 +288,7 @@ void MSAEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* h
     highlightingSchemeMenuActions.clear();
     SAFE_POINT(hsf != NULL, "Highlight scheme factory is NULL", );
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     delete highlightingScheme;
 
     highlightingScheme = hsf->create(this, maObj);
@@ -443,8 +443,8 @@ void MSAEditorSequenceArea::setCopyFormatedAlgorithmId(const QString& algoId){
 }
 
 bool MSAEditorSequenceArea::hasAminoAlphabet() {
-    MAlignmentObject* maObj = editor->getMSAObject();
-    SAFE_POINT(NULL != maObj, tr("MAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()"), false);
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
+    SAFE_POINT(NULL != maObj, tr("MultipleSequenceAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()"), false);
     const DNAAlphabet* alphabet = maObj->getAlphabet();
     SAFE_POINT(NULL != maObj, tr("DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()"), false);
     return DNAAlphabet_AMINO == alphabet->getType();
@@ -592,7 +592,7 @@ void MSAEditorSequenceArea::exitFromEditCharacterMode() {
 }
 
 void MSAEditorSequenceArea::updateActions() {
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     assert(maObj != NULL);
     bool readOnly = maObj->isStateLocked();
 
@@ -678,7 +678,7 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
     p.setPen(Qt::black);
     p.setFont(editor->getFont());
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     SAFE_POINT(maObj != NULL, tr("Alignment object is NULL"), false);
     const MultipleSequenceAlignment &msa = maObj->getMAlignment();
 
@@ -990,7 +990,7 @@ void MSAEditorSequenceArea::onVisibleRangeChanged() {
 }
 
 bool MSAEditorSequenceArea::isAlignmentLocked() {
-    MAlignmentObject* obj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = editor->getMSAObject();
     SAFE_POINT(NULL != obj, tr("Alignment object is not available"), true);
     return obj->isStateLocked();
 }
@@ -1760,7 +1760,7 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
         topLeftCornerOfRemovedRegion.setX(0);
     }
 
-    MAlignmentObject *maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *maObj = editor->getMSAObject();
     if (NULL == maObj || maObj->isStateLocked()) {
         return;
     }
@@ -2007,7 +2007,7 @@ void MSAEditorSequenceArea::sl_delCol() {
         // then shifting should be canceled
         cancelShiftTracking();
 
-        MAlignmentObject* msaObj = editor->getMSAObject();
+        MultipleSequenceAlignmentObject* msaObj = editor->getMSAObject();
         int gapCount = GAP_COLUMN_ONLY;
         switch(deleteMode) {
         case DeleteByAbsoluteVal:
@@ -2091,7 +2091,7 @@ void MSAEditorSequenceArea::wheelEvent (QWheelEvent * we) {
 }
 
 void MSAEditorSequenceArea::sl_removeAllGaps() {
-    MAlignmentObject* msa = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msa = editor->getMSAObject();
     SAFE_POINT(NULL != msa, tr("NULL msa object!"), );
     assert(!msa->isStateLocked());
 
@@ -2128,7 +2128,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
 
 bool MSAEditorSequenceArea::checkState() const {
 #ifdef _DEBUG
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     int aliLen = maObj->getLength();
     int nSeqs = maObj->getNumRows();
 
@@ -2370,7 +2370,7 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
     assert(isInRange(selection.topLeft()));
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (selection.isNull()) {
         return;
     }
@@ -2403,7 +2403,7 @@ void MSAEditorSequenceArea::sl_copyFormattedSelection(){
 }
 
 void MSAEditorSequenceArea::sl_paste(){
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -2419,7 +2419,7 @@ void MSAEditorSequenceArea::sl_paste(){
 }
 
 void MSAEditorSequenceArea::sl_pasteFinished(Task* _pasteTask){
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -2439,7 +2439,7 @@ bool MSAEditorSequenceArea::shiftSelectedRegion(int shift) {
         return true;
     }
 
-    MAlignmentObject *maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *maObj = editor->getMSAObject();
     if (!maObj->isStateLocked()) {
         const U2Region rows = getSelectedRows();
         const int x = selection.x();
@@ -2479,7 +2479,7 @@ void MSAEditorSequenceArea::deleteCurrentSelection() {
     }
     assert(isInRange(selection.topLeft()));
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj == NULL || maObj->isStateLocked()) {
         return;
     }
@@ -2544,7 +2544,7 @@ void MSAEditorSequenceArea::replaceSelectedCharacter(char newCharacter) {
         return;
     }
     SAFE_POINT(isInRange(selection.topLeft()), "Incorrect selection is detected!", );
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj == NULL || maObj->isStateLocked()) {
         return;
     }
@@ -2576,7 +2576,7 @@ void MSAEditorSequenceArea::clearSelection() {
 
 void MSAEditorSequenceArea::sl_addSeqFromFile()
 {
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -2604,7 +2604,7 @@ void MSAEditorSequenceArea::sl_addSeqFromFile()
 
 void MSAEditorSequenceArea::sl_addSeqFromProject()
 {
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -2630,7 +2630,7 @@ void MSAEditorSequenceArea::sl_addSeqFromProject()
 }
 
 void MSAEditorSequenceArea::sl_sortByName() {
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -2650,7 +2650,7 @@ void MSAEditorSequenceArea::sl_sortByName() {
 void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
     GCOUNTER(cvar, tvar, "Switch collapsing mode");
 
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     int prevNumVisibleSequences = getNumVisibleSequences(false);
     if (msaObject == NULL  || msaObject->isStateLocked()) {
         if (collapseModeSwitchAction->isChecked()) {
@@ -2685,7 +2685,7 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
     GCOUNTER(cvar, tvar, "Update collapsing mode");
 
     CHECK(ui->isCollapsibleMode(), );
-    MAlignmentObject *msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *msaObject = editor->getMSAObject();
     SAFE_POINT(NULL != msaObject, tr("NULL Msa Object!"), );
 
     MSACollapsibleItemModel *collapsibleModel = ui->getCollapseModel();
@@ -2722,7 +2722,7 @@ void MSAEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps)
     // then shifting should be canceled
     cancelShiftTracking();
 
-    MAlignmentObject *maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *maObj = editor->getMSAObject();
     if (NULL == maObj || maObj->isStateLocked()) {
         return;
     }
@@ -2745,7 +2745,7 @@ void MSAEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps)
 void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type) {
     if (type == ModificationType::NoType)
         return;
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj == NULL || maObj->isStateLocked()) {
         return;
     }
@@ -2878,7 +2878,7 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
     SAFE_POINT(NULL != m, tr("Incorrect pointer to MSACollapsibleItemModel"),);
     m->reset();
 
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     const MultipleSequenceAlignment &ma = msaObject->getMAlignment();
     QStringList rowNames = ma.getRowNames();
     QVector<U2Region> collapsedRegions;
@@ -2928,7 +2928,7 @@ int MSAEditorSequenceArea::getHeight(){
 QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
     QStringList result;
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     assert(maObj!=NULL);
 
     const MultipleSequenceAlignment& msa = maObj->getMAlignment();

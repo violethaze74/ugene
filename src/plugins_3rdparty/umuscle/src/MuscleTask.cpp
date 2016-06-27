@@ -247,7 +247,7 @@ Task::ReportResult MuscleTask::report() {
 //////////////////////////////////////////////////////////////////////////
 // MuscleAddSequencesToProfileTask
 
-MuscleAddSequencesToProfileTask::MuscleAddSequencesToProfileTask(MAlignmentObject* _obj, const QString& fileWithSequencesOrProfile, MMode _mode)
+MuscleAddSequencesToProfileTask::MuscleAddSequencesToProfileTask(MultipleSequenceAlignmentObject* _obj, const QString& fileWithSequencesOrProfile, MMode _mode)
 : Task("", TaskFlags_NR_FOSCOE), maObj(_obj), mode(_mode)
 {
     setUseDescriptionFromSubtask(true);
@@ -315,7 +315,7 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
     if (seqObjects.isEmpty()) {
         QList<GObject*> maObjects = loadTask->getDocument()->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!maObjects.isEmpty()) {
-            MAlignmentObject* maObj = qobject_cast<MAlignmentObject*>(maObjects.first());
+            MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(maObjects.first());
             s.profile = maObj->getMAlignment();
         }
     }
@@ -342,7 +342,7 @@ Task::ReportResult MuscleAddSequencesToProfileTask::report() {
 //////////////////////////////////////////////////////////////////////////
 // MuscleGObjectTask
 
-MuscleGObjectTask::MuscleGObjectTask(MAlignmentObject* _obj, const MuscleTaskSettings& _config)
+MuscleGObjectTask::MuscleGObjectTask(MultipleSequenceAlignmentObject* _obj, const MuscleTaskSettings& _config)
 : AlignGObjectTask("", TaskFlags_NR_FOSCOE,_obj), lock(NULL), muscleTask(NULL), config(_config)
 {
     QString aliName;
@@ -541,7 +541,7 @@ QList<Task*> MuscleWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTas
         currentDocument = loadDocumentTask->takeDocument();
         SAFE_POINT(currentDocument != NULL, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject=qobject_cast<MAlignmentObject*>(currentDocument->getObjects().first());
+        mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         if (config.alignRegion) {
             if((config.regionToAlign.startPos > mAObject->getLength())
@@ -574,7 +574,7 @@ Task::ReportResult MuscleWithExtFileSpecifySupportTask::report(){
 
 //////////////////////////////////
 //MuscleGObjectRunFromSchemaTask
-MuscleGObjectRunFromSchemaTask::MuscleGObjectRunFromSchemaTask(MAlignmentObject * obj, const MuscleTaskSettings & c)
+MuscleGObjectRunFromSchemaTask::MuscleGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject * obj, const MuscleTaskSettings & c)
 : AlignGObjectTask("", TaskFlags_NR_FOSCOE, obj), config(c)
 {
     setMAObject(obj);
@@ -597,7 +597,7 @@ void MuscleGObjectRunFromSchemaTask::prepare() {
     addSubTask(new SimpleMSAWorkflow4GObjectTask(tr("Workflow wrapper '%1'").arg(getTaskName()), obj, conf));
 }
 
-void MuscleGObjectRunFromSchemaTask::setMAObject(MAlignmentObject* maobj) {
+void MuscleGObjectRunFromSchemaTask::setMAObject(MultipleSequenceAlignmentObject* maobj) {
     SAFE_POINT_EXT(maobj != NULL, setError("Invalid MSA object detected"),);
     const Document* maDoc = maobj->getDocument();
     SAFE_POINT_EXT(NULL != maDoc, setError("Invalid MSA document detected"),);

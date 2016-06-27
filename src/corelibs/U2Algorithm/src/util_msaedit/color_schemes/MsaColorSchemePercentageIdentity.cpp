@@ -24,13 +24,13 @@
 #include <U2Algorithm/MSAConsensusUtils.h>
 
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include "MsaColorSchemePercentageIdentity.h"
 
 namespace U2 {
 
-MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj)
+MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
     : MsaColorScheme(parent, factory, maObj),
       cacheVersion(0),
       objVersion(1)
@@ -87,7 +87,7 @@ MsaColorSchemePercentageIdentityFactory::MsaColorSchemePercentageIdentityFactory
 
 }
 
-MsaColorScheme * MsaColorSchemePercentageIdentityFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemePercentageIdentityFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
     return new MsaColorSchemePercentageIdentity(parent, this, maObj);
 }
 

@@ -29,7 +29,7 @@ namespace U2 {
 
 const QColor MsaHighlightingSchemeGaps::gapColor = QColor(192, 192, 192);
 
-MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj)
+MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj)
 {
 
@@ -52,7 +52,7 @@ MsaHighlightingSchemeGapsFactory::MsaHighlightingSchemeGapsFactory(QObject *pare
 
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeGapsFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaHighlightingScheme * MsaHighlightingSchemeGapsFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeGaps(parent, this, maObj);
 }
 

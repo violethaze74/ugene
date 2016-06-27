@@ -146,7 +146,7 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
 
     QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
 
-    MAlignmentObject* mAlignmentObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* mAlignmentObj = editor->getMSAObject();
     SAFE_POINT(NULL != mAlignmentObj, tr("Incorrect multiple alignment object!"), );
     const MultipleSequenceAlignment &mAlignment = mAlignmentObj->getMAlignment();
 

@@ -26,7 +26,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -179,7 +179,7 @@ void MuscleMSAEditorContext::sl_align() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
 
     const QRect selection = action->getMSAEditor()->getCurrentSelection();
     MuscleTaskSettings s;
@@ -222,7 +222,7 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());
@@ -255,7 +255,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());

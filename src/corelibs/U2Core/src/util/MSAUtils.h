@@ -25,7 +25,7 @@
 #include <U2Core/global.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
 
@@ -57,8 +57,8 @@ public:
     //checks that alignment is not empty and all packed sequence parts has equal length
     static bool checkPackedModelSymmetry(MultipleSequenceAlignment& ali, U2OpStatus& ti);
 
-    static MAlignmentObject * seqDocs2msaObj(QList<Document*> doc, const QVariantMap& hints, U2OpStatus& os);
-    static MAlignmentObject * seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy = false);
+    static MultipleSequenceAlignmentObject * seqDocs2msaObj(QList<Document*> doc, const QVariantMap& hints, U2OpStatus& os);
+    static MultipleSequenceAlignmentObject * seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy = false);
 
     /**
      * Compares rows in the 'origMsa' and 'newMsa' by names of the sequences.
@@ -71,7 +71,7 @@ public:
      * (e.g. ClustalO may decrease the number of sequences after the alignment).
      */
     static QList<qint64> compareRowsAfterAlignment(const MultipleSequenceAlignment& origMsa, MultipleSequenceAlignment& newMsa, U2OpStatus& os);
-    static void copyRowFromSequence(MAlignmentObject *msaObj, U2SequenceObject *seqObj, U2OpStatus &os);
+    static void copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2SequenceObject *seqObj, U2OpStatus &os);
     static U2MsaRow copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef &dstDbi, U2OpStatus &os);
     static U2MsaRow copyRowFromSequence(DNASequence seq, const U2DbiRef &dstDbi, U2OpStatus &os);
 

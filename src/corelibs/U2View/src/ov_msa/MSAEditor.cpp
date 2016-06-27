@@ -112,7 +112,7 @@ const float MSAEditor::zoomMult = 1.25;
 MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
 : GObjectView(MSAEditorFactory::ID, viewName), ui(NULL), alignSequencesToAlignmentAction(NULL), treeManager(this) {
 
-    msaObject = qobject_cast<MAlignmentObject*>(obj);
+    msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
 
     objects.append(msaObject);
     onObjectAdded(msaObject);
@@ -752,7 +752,7 @@ void MSAEditor::sl_align(){
 }
 
 void MSAEditor::sl_addToAlignment() {
-    MAlignmentObject* msaObject = getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }

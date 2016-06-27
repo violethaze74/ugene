@@ -106,7 +106,7 @@ MultipleSequenceAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus &os) {
         return MultipleSequenceAlignment();
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()].value<SharedDbiDataHandler>();
-    const MAlignmentObject *obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
+    const MultipleSequenceAlignmentObject *obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
     if (NULL == obj) {
         os.setError(tr("Error with msa object"));
         return MultipleSequenceAlignment();

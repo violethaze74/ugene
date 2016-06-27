@@ -21,13 +21,13 @@
 
 #include "MSAEditorConsensusCache.h"
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 namespace U2 {
 
-MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MAlignmentObject* o, MSAConsensusAlgorithmFactory* factory)
+MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MultipleSequenceAlignmentObject* o, MSAConsensusAlgorithmFactory* factory)
 : QObject(p), curCacheSize(0), aliObj(o), algorithm(NULL)
 {
     setConsensusAlgorithm(factory);

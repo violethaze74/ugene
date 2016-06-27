@@ -58,7 +58,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PasswordStorage.h>
 #include <U2Core/QVariantUtils.h>
 #include <U2Core/Settings.h>
@@ -622,7 +622,7 @@ void WorkflowUtils::print(const QString &slotString, const QVariant &data, DataT
         CHECK(NULL != obj.data(),);
         data2text(context, BaseDocumentFormats::FASTA, obj.data(), text);
     } else if (BaseTypes::MULTIPLE_ALIGNMENT_TYPE() == type) {
-        QScopedPointer<MAlignmentObject> obj(StorageUtils::getMsaObject(storage, data.value<SharedDbiDataHandler>()));
+        QScopedPointer<MultipleSequenceAlignmentObject> obj(StorageUtils::getMsaObject(storage, data.value<SharedDbiDataHandler>()));
         CHECK(NULL != obj.data(),);
         data2text(context, BaseDocumentFormats::CLUSTAL_ALN, obj.data(), text);
     } else if (BaseTypes::ANNOTATION_TABLE_TYPE() == type || BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type) {

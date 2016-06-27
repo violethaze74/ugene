@@ -12,7 +12,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -127,7 +127,7 @@ QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) {
 
             MultipleSequenceAlignment resultMa = kalignSubTask->resultMA;
 
-            MAlignmentObject * docObject = MAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
+            MultipleSequenceAlignmentObject * docObject = MAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
             CHECK_OP(localStateInfo, res);
 
             alignmentDoc->addObject(docObject);

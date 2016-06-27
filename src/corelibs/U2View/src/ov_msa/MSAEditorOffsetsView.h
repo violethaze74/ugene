@@ -27,7 +27,7 @@
 namespace U2 {
 
 class MSAEditor;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class MultipleSequenceAlignment;
 class MAlignmentModInfo;
 class MSAEditorSequenceArea;

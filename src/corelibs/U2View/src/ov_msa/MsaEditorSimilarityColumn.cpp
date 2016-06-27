@@ -24,7 +24,7 @@
 #include "MSAEditorSequenceArea.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>

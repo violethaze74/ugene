@@ -26,7 +26,7 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/Task.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -104,13 +104,13 @@ private:
 class AlignSequencesToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentTask(MAlignmentObject* obj, const SequenceObjectsExtractor& extractor);
+    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor);
     void prepare();
     ReportResult report();
 private:
     void fillSettingsByDefault();
 
-    QPointer<MAlignmentObject>  maObj;
+    QPointer<MultipleSequenceAlignmentObject>  maObj;
     QStringList                 urls;
     StateLock*                  stateLock;
     StateLock*                  docStateLock;
@@ -124,12 +124,12 @@ private:
 class LoadSequencesAndAlignToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    LoadSequencesAndAlignToAlignmentTask(MAlignmentObject* obj, const QStringList& urls);
+    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls);
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
     QStringList                 urls;
-    QPointer<MAlignmentObject>  maObj;
+    QPointer<MultipleSequenceAlignmentObject>  maObj;
     LoadSequencesTask*  loadSequencesTask;
 };
 

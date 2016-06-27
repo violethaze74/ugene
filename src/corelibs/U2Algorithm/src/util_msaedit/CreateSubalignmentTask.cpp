@@ -51,7 +51,7 @@
 
 namespace U2{
 
-CreateSubalignmentTask::CreateSubalignmentTask(MAlignmentObject *maObj, const CreateSubalignmentSettings &settings)
+CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject *maObj, const CreateSubalignmentSettings &settings)
     : DocumentProviderTask(tr("Create sub-alignment: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE),
     origMAObj(maObj), cfg(settings)
 {

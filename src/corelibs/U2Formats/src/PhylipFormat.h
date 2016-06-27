@@ -25,7 +25,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 
 namespace U2 {
@@ -37,7 +37,7 @@ public:
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
 protected:
-    MAlignmentObject* load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap &fs, U2OpStatus& os);
+    MultipleSequenceAlignmentObject* load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap &fs, U2OpStatus& os);
     bool parseHeader(QByteArray data, int &species, int &characters) const;
     void removeSpaces(QByteArray &data) const;
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);

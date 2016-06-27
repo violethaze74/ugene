@@ -36,7 +36,7 @@
 
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/DNASequenceObject.h>
 
 #include <QtCore/QDir>
