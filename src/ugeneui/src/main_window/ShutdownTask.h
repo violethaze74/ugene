@@ -42,12 +42,32 @@ protected:
     virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
+    void cancelShutdown();
+
     MainWindowImpl* mw;
     bool docsToRemoveAreFetched;
     QList<Document *> docsToRemove;
 };
 
+class CloseWindowsTask : public Task {
+public:
+    CloseWindowsTask();
 
-}//namespace
+private:
+    void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
+    ReportResult report();
+};
 
-#endif
+class CancelAllTask : public Task {
+public:
+    CancelAllTask();
+
+private:
+    void prepare();
+    ReportResult report();
+};
+
+}   // namespace U2
+
+#endif // _U2_SHUTDOWN_TASK_H_
