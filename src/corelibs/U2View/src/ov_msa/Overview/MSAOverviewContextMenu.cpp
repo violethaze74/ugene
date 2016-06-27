@@ -61,6 +61,7 @@ void MSAOverviewContextMenu::connectSlots() {
     connect(showSimpleOverviewAction, SIGNAL(toggled(bool)), simpleOverview, SLOT(setVisible(bool)));
 
     connect(exportAsImage, SIGNAL(triggered()), SLOT(sl_exportAsImageTriggered()));
+    connect(graphOverview, SIGNAL(si_renderingStateChanged(bool)), exportAsImage, SLOT(setDisabled(bool)));
 
     connect(graphTypeActionGroup, SIGNAL(triggered(QAction*)), SLOT(sl_graphTypeActionTriggered(QAction*)));
 

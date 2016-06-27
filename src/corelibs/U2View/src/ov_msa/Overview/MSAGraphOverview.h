@@ -76,13 +76,15 @@ public:
     const static int FIXED_HEIGHT = 70;
 
     void cancelRendering();
-    bool isReadyToClose() { return !isRendering; }
 
     QColor getCurrentColor() const { return displaySettings->color; }
     MSAGraphOverviewDisplaySettings::GraphType getCurrentGraphType() const { return displaySettings->type; }
     MSAGraphOverviewDisplaySettings::OrientationMode getCurrentOrientationMode() const
     { return displaySettings->orientation; }
     MSAGraphCalculationMethod getCurrentCalculationMethod() const { return method; }
+
+signals:
+    void si_renderingStateChanged(bool isRendering);
 
 public slots:
     void sl_visibleRangeChanged();
