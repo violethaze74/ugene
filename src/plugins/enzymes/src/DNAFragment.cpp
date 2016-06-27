@@ -250,7 +250,7 @@ int DNAFragment::getLength(bool coreLength) const {
     foreach(const U2Region& r, regions) {
         len += r.length;
     }
-    if (coreLength) {
+    if (!coreLength) {
         if (annotatedFragment->findFirstQualifierValue(QUALIFIER_RIGHT_STRAND) == OVERHANG_STRAND_DIRECT) {
             len += annotatedFragment->findFirstQualifierValue(QUALIFIER_RIGHT_OVERHANG).length();
         }
