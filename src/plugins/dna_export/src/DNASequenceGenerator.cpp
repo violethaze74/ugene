@@ -57,7 +57,7 @@ const QString DNASequenceGenerator::ID("dna_generator");
 
 QString DNASequenceGenerator::prepareReferenceFileFilter() {
     QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true) +
-        ";;" + DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, false);
+        ";;" + DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
     return filter;
 }
 
@@ -158,7 +158,7 @@ void DNASequenceGenerator::evaluateBaseContent(const MAlignment& ma, QMap<char, 
 EvaluateBaseContentTask* DNASequenceGeneratorTask::createEvaluationTask(Document* doc, QString& err) {
     assert(doc->isLoaded());
     QList<GObject*> gobjects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
-    gobjects << doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    gobjects << doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (!gobjects.isEmpty()) {
         return new EvaluateBaseContentTask(gobjects.first());
     }
@@ -262,7 +262,7 @@ QList<Task*> DNASequenceGeneratorTask::onGenerateTaskFinished( ) {
         if (  isSequenceFormat) {
             addSequencesToSeqDoc( doc );
         } else { // consider alignment format
-            SAFE_POINT( supportedFormats.contains( GObjectTypes::MULTIPLE_ALIGNMENT ),
+            SAFE_POINT( supportedFormats.contains( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT ),
                 "Unexpected format encountered", resultTasks );
             addSequencesToMsaDoc( doc );
         }
@@ -294,7 +294,7 @@ QList<Task*> DNASequenceGeneratorTask::onGenerateTaskFinished( ) {
 void DNASequenceGeneratorTask::addSequencesToMsaDoc( Document *source )
 {
     const QSet<QString> &supportedFormats = source->getDocumentFormat( )->getSupportedObjectTypes( );
-    SAFE_POINT( supportedFormats.contains( GObjectTypes::MULTIPLE_ALIGNMENT ),
+    SAFE_POINT( supportedFormats.contains( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT ),
         "Invalid document format", );
     SAFE_POINT( NULL != generateTask, "Invalid generate task", );
     const U2DbiRef dbiRef = generateTask->getDbiRef( );
@@ -384,7 +384,7 @@ void EvaluateBaseContentTask::run() {
         U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(_obj);
         alp = dnaObj->getAlphabet();
         DNASequenceGenerator::evaluateBaseContent(dnaObj->getWholeSequence(stateInfo), result);
-    } else if (_obj->getGObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT) {
+    } else if (_obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
         MAlignmentObject* maObj = qobject_cast<MAlignmentObject*>(_obj);
         alp = maObj->getAlphabet();
         DNASequenceGenerator::evaluateBaseContent(maObj->getMAlignment(), result);

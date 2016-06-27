@@ -320,7 +320,7 @@ static GObject * getObject(Document *d, GObjectType t, U2OpStatus &os) {
 }
 
 static SharedDbiDataHandler getAlignment(Document *d, WorkflowContext *context, U2OpStatus &os) {
-    GObject *obj = getObject(d, GObjectTypes::MULTIPLE_ALIGNMENT, os);
+    GObject *obj = getObject(d, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, os);
     CHECK_OP(os, SharedDbiDataHandler());
 
     MAlignmentObject *msaObj =  static_cast<MAlignmentObject*>(obj);

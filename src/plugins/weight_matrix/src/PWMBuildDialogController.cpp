@@ -86,7 +86,7 @@ PWMBuildDialogController::PWMBuildDialogController(QWidget* w)
 void PWMBuildDialogController::sl_inFileButtonClicked() {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with alignment"), lod,
-        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true).append("\n").append(
+        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true).append("\n").append(
         DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, false)));
     if (lod.url.isEmpty()) {
         return;
@@ -102,7 +102,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
 
     DocumentFormat* format = NULL;
     foreach(const FormatDetectionResult& i, formats) {
-        if (i.format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        if (i.format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             format = i.format;
             break;
         }
@@ -129,7 +129,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
     Document *doc = format->loadDocument(iof, inFile, hints, ti);
     CHECK_OP_EXT(ti, reportError(ti.getError()), );
 
-    QList<GObject*> mobjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> mobjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (!mobjs.isEmpty()) {
         MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
         const MAlignment &ma = mobj->getMAlignment();
@@ -370,7 +370,7 @@ PFMatrixBuildToFileTask::PFMatrixBuildToFileTask(const QString& inFile, const QS
 
     DocumentFormatConstraints c;
     c.checkRawData = true;
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     c.supportedObjectTypes += GObjectTypes::SEQUENCE;
     c.rawData = IOAdapterUtils::readFileHeader(inFile);
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(inFile);
@@ -381,7 +381,7 @@ PFMatrixBuildToFileTask::PFMatrixBuildToFileTask(const QString& inFile, const QS
 
     DocumentFormatId format = "";
     foreach(const FormatDetectionResult& i, formats) {
-        if (i.format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        if (i.format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             format = i.format->getFormatId();
             break;
         }
@@ -417,7 +417,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         setUseDescriptionFromSubtask(true);
         Document* d = loadTask->getDocument();
         assert(d != NULL);
-        QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
             MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
             const MAlignment &ma = mobj->getMAlignment();
@@ -520,7 +520,7 @@ PWMatrixBuildToFileTask::PWMatrixBuildToFileTask(const QString& inFile, const QS
 
     DocumentFormatConstraints c;
     c.checkRawData = true;
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     c.supportedObjectTypes += GObjectTypes::SEQUENCE;
     c.rawData = IOAdapterUtils::readFileHeader(inFile);
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(inFile);
@@ -550,7 +550,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         setUseDescriptionFromSubtask(true);
         Document* d = loadTask->getDocument();
         assert(d != NULL);
-        QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
             MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
             const MAlignment &ma = mobj->getMAlignment();

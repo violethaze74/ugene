@@ -656,7 +656,7 @@ void ADVExportContext::selectionToAlignment(const QString& title, bool annotatio
 
     DocumentFormatConstraints c;
     c.addFlagToSupport(DocumentFormatFlag_SupportWriting);
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 
     QObjectScopedPointer<ExportSequences2MSADialog> d = new ExportSequences2MSADialog(view->getWidget());
     d->setWindowTitle(title);
@@ -768,7 +768,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment()
 {
     DocumentFormatConstraints c;
     c.addFlagToSupport(DocumentFormatFlag_SupportWriting);
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 
     QObjectScopedPointer<ExportBlastResultDialog> d = new ExportBlastResultDialog(view->getWidget());
     const int rc = d->exec();

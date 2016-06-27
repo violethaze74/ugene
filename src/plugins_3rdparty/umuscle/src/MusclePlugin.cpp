@@ -228,7 +228,7 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     assert(!obj->isStateLocked());
 
     DocumentFormatConstraints c;
-    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, false);
+    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
     QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
     QString filter = f2 + "\n" + f1;
 
@@ -264,11 +264,11 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
 #ifdef Q_OS_MAC
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with alignment"), lod,
-            DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true), 0, QFileDialog::DontUseNativeDialog );
+            DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true), 0, QFileDialog::DontUseNativeDialog );
     } else
 #endif
     lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with alignment"), lod,
-        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
 
     if (lod.url.isEmpty()) {
         return;

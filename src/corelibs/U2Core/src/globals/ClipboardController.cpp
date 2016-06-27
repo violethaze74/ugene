@@ -62,7 +62,7 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document*>& docs, U2OpSt
 
         }
 
-        foreach(GObject *msaObj, doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        foreach(GObject *msaObj, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             MAlignmentObject* casted = qobject_cast<MAlignmentObject*>(msaObj);
             if (casted == NULL){
                 continue;

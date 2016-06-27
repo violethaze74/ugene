@@ -49,7 +49,7 @@ NEXUSFormat::NEXUSFormat(QObject *p) :
 {
     formatName = tr("NEXUS");
     formatDescription = tr("Nexus is a multiple alignment and phylogenetic trees file format");
-    supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     supportedObjectTypes += GObjectTypes::PHYLOGENETIC_TREE;
 }
 

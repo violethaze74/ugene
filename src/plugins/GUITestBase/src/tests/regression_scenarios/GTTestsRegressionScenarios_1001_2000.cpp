@@ -2493,7 +2493,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
     GTUtilsDocument::checkDocument(os, "P1_human_T1_6.aln", GTUtilsDocument::DocumentUnloaded);
     GTUtilsDocument::checkDocument(os, "P1_human_T1_7.aln", GTUtilsDocument::DocumentUnloaded);
 
-    const QSet<GObjectType> acceptableTypes = QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT;
+    const QSet<GObjectType> acceptableTypes = QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "P1_human_T1_1.aln"));
     GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "P1_human_T1_2.aln"));
     GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "P1_human_T1_3.aln"));
@@ -3965,7 +3965,7 @@ GUI_TEST_CLASS_DEFINITION(test_1371) {
     GTUtilsProjectTreeView::checkItem(os, "Contig1");
     GTUtilsProjectTreeView::checkItem(os, "Contig2");
     GTUtilsProjectTreeView::checkObjectTypes(os,
-                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT,
+                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
                                              GTUtilsProjectTreeView::findIndex(os, "BL060C3.ace"));
 
 //    2. Open file "data/samples/ACE/BL060C3.ace" as assembly.

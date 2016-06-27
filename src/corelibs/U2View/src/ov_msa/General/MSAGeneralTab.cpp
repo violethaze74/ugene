@@ -179,7 +179,7 @@ void MSAGeneralTab::initializeParameters() {
 
     //Copy formatted
     DocumentFormatConstraints constr;
-    constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_ALIGNMENT );
+    constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT );
     constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
     DocumentFormatRegistry* freg = AppContext::getDocumentFormatRegistry();

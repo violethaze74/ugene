@@ -154,7 +154,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             }
         }
     } else {
-        set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_ALIGNMENT, &ms, UOF_LoadedOnly);
+        set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly);
         if (set.size() == 1) {
             sub = new QMenu(tr("Export/Import"));
             sub->addAction(exportAlignmentAsSequencesAction);
@@ -199,7 +199,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
     const bool exportedObjectsFound = (1 == os->getSelectedObjects().size()) &&
         (  1 == SelectionUtils::findObjects(GObjectTypes::TEXT, &ms, UOF_LoadedOnly).size()
         || 1 == SelectionUtils::findObjects(GObjectTypes::VARIANT_TRACK, &ms, UOF_LoadedOnly).size()
-        || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_ALIGNMENT, &ms, UOF_LoadedOnly).size()
+        || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly).size()
         || 1 == SelectionUtils::findObjects(GObjectTypes::PHYLOGENETIC_TREE, &ms, UOF_LoadedOnly).size()
         || 1 == SelectionUtils::findObjects(GObjectTypes::ASSEMBLY, &ms, UOF_LoadedOnly).size());
     if (exportedObjectsFound) {
@@ -418,7 +418,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     assert(pv!=NULL);
 
     MultiGSelection ms; ms.addSelection(pv->getGObjectSelection()); ms.addSelection(pv->getDocumentSelection());
-    QList<GObject*> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_ALIGNMENT, &ms, UOF_LoadedOnly);
+    QList<GObject*> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly);
     if (set.size()!=1) {
         QMessageBox::critical(NULL, L10N::errorTitle(), tr("Select one alignment object to export"));
         return;
@@ -443,7 +443,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     assert(pv!=NULL);
 
     MultiGSelection ms; ms.addSelection(pv->getGObjectSelection()); ms.addSelection(pv->getDocumentSelection());
-    QList<GObject*> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_ALIGNMENT, &ms, UOF_LoadedOnly);
+    QList<GObject*> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly);
     if (set.size()!=1) {
         QMessageBox::critical(NULL, L10N::errorTitle(), tr("Select one alignment object to export"));
         return;

@@ -58,7 +58,7 @@ ClustalWAlnFormat::ClustalWAlnFormat(QObject* p) : DocumentFormat(p, DocumentFor
 {
     formatName = tr("CLUSTALW");
     formatDescription = tr("Clustalw is a format for storing multiple sequence alignments");
-    supportedObjectTypes+=GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
 void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& fs, U2OpStatus& os) {
@@ -204,8 +204,8 @@ Document* ClustalWAlnFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef,
 #define SEQ_ALIGNMENT    5
 
 void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &ti) {
-    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_ALIGNMENT), "Clustal entry storing: no alignment", );
-    const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_ALIGNMENT];
+    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "Clustal entry storing: no alignment", );
+    const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "Clustal entry storing: alignment objects count error", );
 
     const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());
@@ -304,7 +304,7 @@ void ClustalWAlnFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os
 
     QList<GObject*> als; als << obj;
     QMap< GObjectType, QList<GObject*> > objectsMap;
-    objectsMap[GObjectTypes::MULTIPLE_ALIGNMENT] = als;
+    objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT] = als;
     storeEntry(io, objectsMap, os);
     CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(d->getURL())), );
 }

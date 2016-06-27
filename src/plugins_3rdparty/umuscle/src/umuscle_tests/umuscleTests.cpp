@@ -152,15 +152,15 @@ void GTest_uMuscle::prepare() {
         return;
     }
 
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
 
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     assert(obj!=NULL);
@@ -241,8 +241,8 @@ Task::ReportResult GTest_CompareMAlignment::report() {
         return ReportResult_Finished;
     }
 
-    QList<GObject*> objs1 = doc1->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
-    QList<GObject*> objs2 = doc2->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> objs1 = doc1->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject*> objs2 = doc2->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
 
     if(objs1.size()!=objs2.size()) {
         stateInfo.setError(  QString("MAlignmentObjects count not matched %1, expected %2").arg(objs1.size()).arg(objs2.size()) );
@@ -343,7 +343,7 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
         stateInfo.setError(  QString("sequence document not found in context: %1").arg(seqDocName) );
         return;
     }
-    QList<GObject*> aliObjs = aliDoc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> aliObjs = aliDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (aliObjs.isEmpty()) {
         stateInfo.setError(  QString("no alignment object found in doc: %1").arg(aliDoc->getURLString()) );
         return;

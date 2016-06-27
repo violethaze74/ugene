@@ -152,9 +152,9 @@ Task::ReportResult GTest_PFMCreateTest::report() {
             return ReportResult_Finished;
         }
 
-        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (list.size() == 0) {
-            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return ReportResult_Finished;
         }
         MAlignmentObject * myAlign = (MAlignmentObject*)list.first();
@@ -177,7 +177,7 @@ Task::ReportResult GTest_PFMCreateTest::report() {
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
         if (list.size() == 0 || list.size() < size) {
-            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty or less than %2").arg(GObjectTypes::MULTIPLE_ALIGNMENT).arg(size));
+            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty or less than %2").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).arg(size));
             return ReportResult_Finished;
         }
         QList<DNASequence*> data;
@@ -322,9 +322,9 @@ Task::ReportResult GTest_PWMCreateTest::report() {
             return ReportResult_Finished;
         }
 
-        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (list.size() == 0) {
-            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT));
+            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return ReportResult_Finished;
         }
         MAlignmentObject * myAlign = (MAlignmentObject*)list.first();
@@ -342,7 +342,7 @@ Task::ReportResult GTest_PWMCreateTest::report() {
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
         if (list.size() == 0 || list.size() < size) {
-            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty or less than %2").arg(GObjectTypes::MULTIPLE_ALIGNMENT).arg(size));
+            stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty or less than %2").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).arg(size));
             return ReportResult_Finished;
         }
         QList<DNASequence*> data;

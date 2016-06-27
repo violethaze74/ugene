@@ -118,7 +118,7 @@ QString DocumentProviderSelectorController::getViewName(const GObjectType &objec
     QString id;
     if (GObjectTypes::ASSEMBLY == objectType) {
         id = AssemblyBrowserFactory::ID;
-    } else if (GObjectTypes::MULTIPLE_ALIGNMENT == objectType) {
+    } else if (GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT == objectType) {
         id = MSAEditorFactory::ID;
     }
 
@@ -130,7 +130,7 @@ QString DocumentProviderSelectorController::getViewName(const GObjectType &objec
 QString DocumentProviderSelectorController::getTypeName(const GObjectType &objectType) {
     if (GObjectTypes::ASSEMBLY == objectType) {
         return "Short reads assembly";
-    } else if (GObjectTypes::MULTIPLE_ALIGNMENT == objectType) {
+    } else if (GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT == objectType) {
         return "Multiple sequence alignment";
     }
     FAIL("An unexpected type", "");

@@ -94,8 +94,8 @@ void tryToAppendSlash( QString &path ) {
 }
 
 void GalaxyConfigTask::fillGObjectTypeMap() {
-    portGObjectTypeMap[BasePorts::OUT_MSA_PORT_ID()]             = GObjectTypes::MULTIPLE_ALIGNMENT;
-    portGObjectTypeMap[BasePorts::IN_MSA_PORT_ID()]              = GObjectTypes::MULTIPLE_ALIGNMENT;
+    portGObjectTypeMap[BasePorts::OUT_MSA_PORT_ID()]             = GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
+    portGObjectTypeMap[BasePorts::IN_MSA_PORT_ID()]              = GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     portGObjectTypeMap[BasePorts::OUT_SEQ_PORT_ID()]             = GObjectTypes::SEQUENCE;
     portGObjectTypeMap[BasePorts::IN_SEQ_PORT_ID()]              = GObjectTypes::SEQUENCE;
     portGObjectTypeMap[BasePorts::OUT_ANNOTATIONS_PORT_ID()]     = GObjectTypes::ANNOTATION_TABLE;

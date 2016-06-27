@@ -46,7 +46,7 @@ PhylipFormat::PhylipFormat(QObject *p)
     : DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject,
                      QStringList() << "phy" << "ph"){
     formatDescription = tr("PHYLIP multiple alignment format for phylogenetic applications.");
-    supportedObjectTypes+=GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
 void PhylipFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
@@ -60,7 +60,7 @@ void PhylipFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
     QList<GObject*> als;
     als << obj;
     QMap< GObjectType, QList<GObject*> > objectsMap;
-    objectsMap[GObjectTypes::MULTIPLE_ALIGNMENT] = als;
+    objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT] = als;
     storeEntry(io, objectsMap, os);
     CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(d->getURL())), );
 }
@@ -122,8 +122,8 @@ PhylipSequentialFormat::PhylipSequentialFormat(QObject *p)
 
 void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *> > &objectsMap, U2OpStatus &os) {
     SAFE_POINT(io != NULL, "IO adapter is NULL!", );
-    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_ALIGNMENT), "PHYLIP entry storing: no alignment", );
-    const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_ALIGNMENT];
+    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "PHYLIP entry storing: no alignment", );
+    const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "PHYLIP entry storing: alignment objects count error", );
 
     const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());
@@ -241,8 +241,8 @@ PhylipInterleavedFormat::PhylipInterleavedFormat(QObject *p)
 
 void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *> > &objectsMap, U2OpStatus &os) {
     SAFE_POINT(io != NULL, "IO adapter is NULL!", );
-    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_ALIGNMENT), "PHYLIP entry storing: no alignment", );
-    const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_ALIGNMENT];
+    SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "PHYLIP entry storing: no alignment", );
+    const QList<GObject*> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "PHYLIP entry storing: alignment objects count error", );
 
     const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());

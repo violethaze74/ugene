@@ -74,15 +74,15 @@ void GTest_MrBayes::prepare() {
         return;
     }
 
-    QList<GObject*> list = maDoc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = maDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
 
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     assert(obj!=NULL);
@@ -102,7 +102,7 @@ void GTest_MrBayes::prepare() {
 
     QList<GObject*> list2 = treeDoc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
     if (list2.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
 

@@ -75,7 +75,7 @@ HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const MAl
 void HMMBuildDialogController::sl_msaFileClicked() {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with alignment"),
-        lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        lod, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
     
     if (lod.url.isEmpty()) {
         return;
@@ -203,7 +203,7 @@ HMMBuildToFileTask::HMMBuildToFileTask(const QString& inFile, const QString& _ou
 
     DocumentFormatConstraints c;
     c.checkRawData = true;
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     c.rawData = IOAdapterUtils::readFileHeader(inFile);
     c.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     QList<DocumentFormatId> formats = AppContext::getDocumentFormatRegistry()->selectFormats(c);
@@ -253,7 +253,7 @@ QList<Task*> HMMBuildToFileTask::onSubTaskFinished(Task* subTask) {
             stateInfo.setError(tr("Incorrect input file"));
             return res;
         }
-        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (list.isEmpty()) {
             stateInfo.setError(  tr("Alignment object not found!") );
         } else {

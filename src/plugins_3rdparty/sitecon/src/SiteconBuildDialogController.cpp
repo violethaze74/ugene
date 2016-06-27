@@ -73,7 +73,7 @@ SiteconBuildDialogController::SiteconBuildDialogController(SiteconPlugin* pl, QW
 void SiteconBuildDialogController::sl_inFileButtonClicked() {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Select file with alignment"), lod,
-                                                DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+                                                DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
     if (lod.url.isEmpty()) {
         return;
     }
@@ -253,7 +253,7 @@ SiteconBuildToFileTask::SiteconBuildToFileTask(const QString& inFile, const QStr
     
     DocumentFormatConstraints c;
     c.checkRawData = true;
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     c.rawData = IOAdapterUtils::readFileHeader(inFile);
     c.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     QList<DocumentFormatId> formats = AppContext::getDocumentFormatRegistry()->selectFormats(c);
@@ -283,7 +283,7 @@ QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
         setUseDescriptionFromSubtask(true);
         Document* d = loadTask->getDocument();
         assert(d != NULL);
-        QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (mobjs.isEmpty()) {
             stateInfo.setError(  tr("No alignment found") );
         } else {

@@ -69,7 +69,7 @@ OpenMSAEditorTask::OpenMSAEditorTask(MAlignmentObject* _obj)
 OpenMSAEditorTask::OpenMSAEditorTask(UnloadedObject* _obj)
 : ObjectViewTask(MSAEditorFactory::ID), unloadedReference(_obj)
 {
-    assert(_obj->getLoadedObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT);
+    assert(_obj->getLoadedObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     documentsToLoad.append(_obj->getDocument());
 }
 
@@ -93,11 +93,11 @@ void OpenMSAEditorTask::open() {
         QList<GObject*> objects;
         if (unloadedReference.isValid()) {
             GObject* obj = doc->findGObjectByName(unloadedReference.objName);
-            if (obj!=NULL && obj->getGObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT) {
+            if (obj!=NULL && obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
                 msaObject = qobject_cast<MAlignmentObject*>(obj);
             }
         } else {
-            QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT, UOF_LoadedAndUnloaded);
+            QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, UOF_LoadedAndUnloaded);
             msaObject = objects.isEmpty() ? NULL : qobject_cast<MAlignmentObject*>(objects.first());
         }
         if (msaObject.isNull()) {
@@ -162,7 +162,7 @@ void OpenSavedMSAEditorTask::open() {
     } else {
         obj = doc->findGObjectByName(ref.objName);
     }
-    if (obj == NULL || obj->getGObjectType() != GObjectTypes::MULTIPLE_ALIGNMENT) {
+    if (obj == NULL || obj->getGObjectType() != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
         stateIsIllegal = true;
         stateInfo.setError(tr("Alignment object not found: %1").arg(ref.objName));
         return;

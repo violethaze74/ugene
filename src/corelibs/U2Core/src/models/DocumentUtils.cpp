@@ -253,7 +253,7 @@ Document* DocumentUtils::createCopyRestructuredWithHints(Document* doc, U2OpStat
         objects << maObj;
 
         DocumentFormatConstraints objTypeConstraints;
-        objTypeConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+        objTypeConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
         bool makeReadOnly = !doc->getDocumentFormat()->checkConstraints(objTypeConstraints);
 
         resultDoc = new Document(doc->getDocumentFormat(), doc->getIOAdapterFactory(), doc->getURL(), doc->getDbiRef(), objects, hints,

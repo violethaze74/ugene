@@ -226,7 +226,7 @@ void LoadMSATask::run() {
     DocumentFormat* format = NULL;
     QList<DocumentFormat*> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
     foreach(DocumentFormat* f, fs) {
-        if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             format = f;
             break;
         }
@@ -252,8 +252,8 @@ void LoadMSATask::run() {
     CHECK_OP(stateInfo,);
     doc->setDocumentOwnsDbiResources(false);
 
-    if (!doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT).isEmpty()) {
-        foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+    if (!doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).isEmpty()) {
+        foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             SharedDbiDataHandler handler = storage->getDataHandler(go->getEntityRef());
             QVariant res = qVariantFromValue<SharedDbiDataHandler>(handler);
             results.append(res);
@@ -331,7 +331,7 @@ void LoadSeqTask::prepare() {
     QList<DocumentFormat*> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
     foreach (DocumentFormat *f, fs) {
         const QSet<GObjectType>& types = f->getSupportedObjectTypes();
-        if (types.contains(GObjectTypes::SEQUENCE) || types.contains(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        if (types.contains(GObjectTypes::SEQUENCE) || types.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             format = f;
             break;
         }
@@ -408,7 +408,7 @@ void LoadSeqTask::run() {
         //             bool merge = cfg.contains(mergeToken);
         //             int gaps = cfg.value(mergeToken).toInt();
         U2OpStatus2Log os;
-        foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             foreach(const DNASequence& s, MSAUtils::ma2seq(((MAlignmentObject*)go)->getMAlignment(), false)) {
                 if (!selector->matches(s)) {
                     continue;

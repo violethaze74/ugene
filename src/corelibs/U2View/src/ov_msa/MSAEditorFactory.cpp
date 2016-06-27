@@ -47,7 +47,7 @@ MSAEditorFactory::MSAEditorFactory()
 
 bool MSAEditorFactory::canCreateView(const MultiGSelection& multiSelection) {
     bool hasMSADocuments = !SelectionUtils::findDocumentsWithObjects(
-                                GObjectTypes::MULTIPLE_ALIGNMENT, &multiSelection, UOF_LoadedAndUnloaded, true).isEmpty();
+                                GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &multiSelection, UOF_LoadedAndUnloaded, true).isEmpty();
     if (hasMSADocuments) {
         return true;
     }
@@ -57,13 +57,13 @@ bool MSAEditorFactory::canCreateView(const MultiGSelection& multiSelection) {
 #define MAX_VIEWS 10
 
 Task* MSAEditorFactory::createViewTask(const MultiGSelection& multiSelection, bool single) {
-    QList<GObject*> msaObjects = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_ALIGNMENT, &multiSelection, UOF_LoadedAndUnloaded);
-    QSet<Document*> docsWithMSA = SelectionUtils::findDocumentsWithObjects(GObjectTypes::MULTIPLE_ALIGNMENT,
+    QList<GObject*> msaObjects = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &multiSelection, UOF_LoadedAndUnloaded);
+    QSet<Document*> docsWithMSA = SelectionUtils::findDocumentsWithObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
         &multiSelection, UOF_LoadedAndUnloaded, false);
     QList<OpenMSAEditorTask*> resTasks;
 
     foreach(Document* doc, docsWithMSA) {
-        QList<GObject*> docObjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT, UOF_LoadedAndUnloaded);
+        QList<GObject*> docObjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, UOF_LoadedAndUnloaded);
         if (!docObjs.isEmpty()) {
             foreach(GObject* obj, docObjs){
                 if(!msaObjects.contains(obj)){
@@ -87,7 +87,7 @@ Task* MSAEditorFactory::createViewTask(const MultiGSelection& multiSelection, bo
             if (o->getGObjectType() == GObjectTypes::UNLOADED) {
                 resTasks.append(new OpenMSAEditorTask(qobject_cast<UnloadedObject*>(o)));
             } else {
-                assert(o->getGObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT);
+                assert(o->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
                 resTasks.append(new OpenMSAEditorTask(qobject_cast<MAlignmentObject*>(o)));
             }
         }

@@ -338,7 +338,7 @@ ClustalWWithExtFileSpecifySupportTask::~ClustalWWithExtFileSpecifySupportTask(){
 void ClustalWWithExtFileSpecifySupportTask::prepare(){
     DocumentFormatConstraints c;
     c.checkRawData = true;
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     c.rawData = IOAdapterUtils::readFileHeader(settings.inputFilePath);
     c.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     QList<DocumentFormatId> formats = AppContext::getDocumentFormatRegistry()->selectFormats(c);

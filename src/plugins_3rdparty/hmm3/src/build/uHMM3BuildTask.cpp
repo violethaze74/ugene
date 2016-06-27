@@ -172,7 +172,7 @@ settings( set ), inFile( _inFile ), loadTask( NULL ), saveHmmFileTask( NULL ), s
     }
 
     DocumentFormatConstraints constr;
-    constr.supportedObjectTypes+=GObjectTypes::MULTIPLE_ALIGNMENT;
+    constr.supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     constr.checkRawData = true;
     constr.rawData = IOAdapterUtils::readFileHeader( inFile );
     constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
@@ -224,7 +224,7 @@ QList< Task* > UHMM3BuildToFileTask::onSubTaskFinished( Task* sub ) {
         assert( msas.isEmpty() );
         
         Document* doc = loadTask->getDocument();
-        QList< GObject* > msaObjs = doc->findGObjectByType( GObjectTypes::MULTIPLE_ALIGNMENT );
+        QList< GObject* > msaObjs = doc->findGObjectByType( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT );
         if( msaObjs.isEmpty() ) {
             stateInfo.setError( tr( "No multiple alignments found in input file" ) );
             return res;

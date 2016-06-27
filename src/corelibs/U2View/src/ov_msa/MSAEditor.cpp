@@ -767,7 +767,7 @@ void MSAEditor::sl_addToAlignment() {
     bool selectFromProject = !objects.isEmpty();
 
     foreach(GObject* object, objects) {
-        if(object == getMSAObject() || (object->getGObjectType() != GObjectTypes::MULTIPLE_ALIGNMENT && object->getGObjectType() != GObjectTypes::SEQUENCE)) {
+        if(object == getMSAObject() || (object->getGObjectType() != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT && object->getGObjectType() != GObjectTypes::SEQUENCE)) {
             selectFromProject = false;
             break;
         }
@@ -951,7 +951,7 @@ MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
     setContextMenuPolicy(Qt::CustomContextMenu);
     setMinimumSize(300, 200);
 
-    setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_ALIGNMENT).icon);
+    setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
     QWidget *label;
     GScrollBar* shBar = new GScrollBar(Qt::Horizontal);

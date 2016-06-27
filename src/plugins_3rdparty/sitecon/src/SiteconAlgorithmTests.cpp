@@ -91,14 +91,14 @@ void GTest_CalculateACGTContent::prepare(){
         stateInfo.setError(  QString("context not found %1").arg(docName) );
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
@@ -186,14 +186,14 @@ void GTest_CalculateDispersionAndAverage::prepare() {
         stateInfo.setError(  QString("context not found %1").arg(docName) );
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
@@ -274,14 +274,14 @@ void GTest_CalculateFirstTypeError::prepare() {
         stateInfo.setError(  QString("context not found %1").arg(docName) );
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);
@@ -355,14 +355,14 @@ void GTest_CalculateSecondTypeError::prepare() {
         stateInfo.setError(  QString("context not found %1").arg(docName) );
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     MAlignmentObject *mao = qobject_cast<MAlignmentObject*>(obj);

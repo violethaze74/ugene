@@ -3183,7 +3183,7 @@ GUI_TEST_CLASS_DEFINITION(test_4587) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4587/", "extended_dna.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkObjectTypes(os,
-        QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT,
+        QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
         GTUtilsProjectTreeView::findIndex(os, "Contig1"));
     CHECK_SET_ERR(!l.hasError(), "logfile shouldn't contain errors");
 }

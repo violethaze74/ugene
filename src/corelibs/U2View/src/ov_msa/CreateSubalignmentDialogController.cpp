@@ -155,7 +155,7 @@ void CreateSubalignmentDialogController::initSaveController() {
     config.parentWidget = this;
 
     DocumentFormatConstraints formatConstraints;
-    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatConstraints.addFlagToExclude(DocumentFormatFlag_SingleObjectFormat);
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
 

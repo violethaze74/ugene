@@ -498,7 +498,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
     GTUtilsDocument::checkDocument(os, "ace_test_1.ace", MSAEditorFactory::ID);
     GTUtilsProjectTreeView::checkObjectTypes(os,
-                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT,
+                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
                                              GTUtilsProjectTreeView::findIndex(os, "ace_test_1.ace"));
 
 //    3. Open "_common_data/ACE/ace_test_2.ace".

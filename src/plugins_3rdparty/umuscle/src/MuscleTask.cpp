@@ -313,7 +313,7 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
     }
 
     if (seqObjects.isEmpty()) {
-        QList<GObject*> maObjects = loadTask->getDocument()->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+        QList<GObject*> maObjects = loadTask->getDocument()->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!maObjects.isEmpty()) {
             MAlignmentObject* maObj = qobject_cast<MAlignmentObject*>(maObjects.first());
             s.profile = maObj->getMAlignment();
@@ -509,7 +509,7 @@ MuscleWithExtFileSpecifySupportTask::~MuscleWithExtFileSpecifySupportTask() {
 void MuscleWithExtFileSpecifySupportTask::prepare(){
     DocumentFormatConstraints c;
     c.checkRawData = true;
-    c.supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     c.rawData = IOAdapterUtils::readFileHeader(config.inputFilePath);
     c.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     QList<DocumentFormatId> formats = AppContext::getDocumentFormatRegistry()->selectFormats(c);

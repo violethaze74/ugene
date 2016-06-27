@@ -117,7 +117,7 @@ void UHMM3BuildDialogImpl::setModelValues() {
 void UHMM3BuildDialogImpl::sl_maOpenFileButtonClicked() {
     LastUsedDirHelper helper( MA_FILES_DIR_ID );
     helper.url = U2FileDialog::getOpenFileName( this, tr( "Select multiple alignment file" ),
-        helper, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        helper, DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
     if( !helper.url.isEmpty() ) {
         maLoadFromFileEdit->setText( helper.url );
     }

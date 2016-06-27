@@ -81,7 +81,7 @@ void SequenceObjectsExtractor::extractSequencesFromObjects(const QList<GObject*>
             }
         }
 
-        if(object->getGObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT) {
+        if(object->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
             extractFromMsa = true;
             MAlignmentObject* curObj = qobject_cast<MAlignmentObject*>(object);
             SAFE_POINT(curObj != NULL, "MAlignmentObject is null",);

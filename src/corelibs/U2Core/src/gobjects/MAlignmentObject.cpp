@@ -47,7 +47,7 @@ void MSAMemento::setState(const MAlignment& state){
 }
 
 MAlignmentObject::MAlignmentObject(const QString& name, const U2EntityRef& msaRef, const QVariantMap& hintsMap, const MAlignment &alnData)
-    : GObject(GObjectTypes::MULTIPLE_ALIGNMENT, name, hintsMap), cachedMAlignment(alnData), memento(new MSAMemento)
+    : GObject(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, name, hintsMap), cachedMAlignment(alnData), memento(new MSAMemento)
 {
     entityRef = msaRef;
 

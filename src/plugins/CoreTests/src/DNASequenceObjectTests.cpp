@@ -781,14 +781,14 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
         obj = objs.at(i);
         obj2 = objs2.at(i);
 
-        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
+        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
             myMSequence = qobject_cast<MAlignmentObject*>(obj);
             if(myMSequence==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
-        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
+        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
             myMSequence2 = qobject_cast<MAlignmentObject*>(obj2);
             if(myMSequence2==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
@@ -875,14 +875,14 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
         obj = objs.at(i);
         obj2 = objs2.at(i);
 
-        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
+        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
             myMSequence = qobject_cast<MAlignmentObject*>(obj);
             if(myMSequence==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
-        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
+        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
             myMSequence2 = qobject_cast<MAlignmentObject*>(obj2);
             if(myMSequence2==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
@@ -1130,14 +1130,14 @@ Task::ReportResult GTest_DNAcompareMulSequencesAlphabetIdInTwoObjects::report() 
         obj = objs.at(i);
         obj2 = objs2.at(i);
 
-        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
+        if(obj->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
             myMSequence = qobject_cast<MAlignmentObject*>(obj);
             if(myMSequence==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
-        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_ALIGNMENT){
+        if(obj2->getGObjectType()== GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
             myMSequence2 = qobject_cast<MAlignmentObject*>(obj2);
             if(myMSequence2==NULL){
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));

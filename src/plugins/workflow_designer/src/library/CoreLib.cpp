@@ -203,7 +203,7 @@ void CoreLib::init() {
     // GENERIC WRITE MSA actor proto
     {
         DocumentFormatConstraints constr;
-        constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_ALIGNMENT );
+        constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT );
         constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
         constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
         QList<DocumentFormatId> supportedFormats = AppContext::getDocumentFormatRegistry()->selectFormats( constr );

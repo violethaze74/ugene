@@ -97,7 +97,7 @@ void DNASequenceGeneratorDialog::initSaveController(){
 
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::SEQUENCE
-                                           << GObjectTypes::MULTIPLE_ALIGNMENT;
+                                           << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatConstraints.addFlagToExclude(DocumentFormatFlag_SingleObjectFormat);
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
     formatConstraints.allowPartialTypeMapping = true;

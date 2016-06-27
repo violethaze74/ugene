@@ -676,7 +676,7 @@ namespace U2 {
 StockholmFormat::StockholmFormat( QObject *obj ) : DocumentFormat( obj , DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "sto") {
     format_name = tr( "Stockholm" );
     formatDescription = tr("A multiple sequence alignments file format");
-    supportedObjectTypes+=GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
 
@@ -725,7 +725,7 @@ FormatCheckResult StockholmFormat::checkRawData(const QByteArray& data, const GU
 bool StockholmFormat::isObjectOpSupported( const Document *doc, DocObjectOp op, GObjectType t ) const {
     Q_UNUSED( op ); Q_UNUSED( doc );
     assert( NULL != doc );
-    if ( GObjectTypes::MULTIPLE_ALIGNMENT != t  ) {
+    if ( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT != t  ) {
         return false;
     }
     /*if (op == DocumentFormat::DocObjectOp_Add) {
