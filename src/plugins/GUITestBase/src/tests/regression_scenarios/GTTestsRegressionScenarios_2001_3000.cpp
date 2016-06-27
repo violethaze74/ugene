@@ -5916,6 +5916,27 @@ GUI_TEST_CLASS_DEFINITION(test_2924) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_2927) {
+//    1. Open file "data/samples/PDB/1CF7.PDB".
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open file "data/samples/PDB/1CRN.PDB".
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CRN.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Remove first document with delete key.
+    GTUtilsProjectTreeView::click(os, "1CF7.PDB");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    4. Press "Open" toolBar button.
+//    Expected state: UGENE doesn't crash.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/PDB/1CF7.PDB"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_MAIN, "Open");
+    GTGlobals::sleep();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_2929){
 //    1.    Open "human_T1.fa".
 //    2.    Click the "Find TFBS with SITECON" button on the main toolbar
