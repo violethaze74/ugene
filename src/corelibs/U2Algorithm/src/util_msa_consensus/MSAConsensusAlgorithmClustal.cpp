@@ -52,7 +52,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
         }
         int nSeq =( seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size());
         for (int s = 1; s < nSeq; s++) {
-            const MAlignmentRow& row = msa.getRow( seqIdx.isEmpty() ? s : seqIdx [s] );
+            const MultipleSequenceAlignmentRow& row = msa.getRow( seqIdx.isEmpty() ? s : seqIdx [s] );
             char c = row.charAt(pos);
             if (c != pc) {
                 pc = defChar;
@@ -77,7 +77,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
         QByteArray currentGroup; //TODO: optimize 'currentGroup' related code!
         int nSeq =( seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size());
         for (int s = 0; s < nSeq; s++) {
-            const MAlignmentRow& row = msa.getRow( seqIdx.isEmpty() ? s : seqIdx [s] );
+            const MultipleSequenceAlignmentRow& row = msa.getRow( seqIdx.isEmpty() ? s : seqIdx [s] );
             char c = row.charAt(pos);
             if (!currentGroup.contains(c)) {
                 currentGroup.append(c);

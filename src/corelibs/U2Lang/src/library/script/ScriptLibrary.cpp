@@ -514,7 +514,7 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext *ctx
         return ctx->throwError(QObject::tr("Row is out of range"));
     }
 
-    MAlignmentRow aRow = align.getRow(row);
+    MultipleSequenceAlignmentRow aRow = align.getRow(row);
     aRow.simplify();
     U2OpStatus2Log os;
     QByteArray arr = aRow.toByteArray(aRow.getCoreLength(), os);

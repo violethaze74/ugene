@@ -28,7 +28,7 @@ const int CURSOR_START_POSITION = 0;
 namespace U2 {
 
 SequenceSelectorWidgetController::SequenceSelectorWidgetController(MSAEditor* _msa)
-    : msa(_msa), defaultSeqName(""), seqId(MAlignmentRow::invalidRowId())
+    : msa(_msa), defaultSeqName(""), seqId(MultipleSequenceAlignmentRow::invalidRowId())
 {
     setupUi(this);
     filler = new MSACompletionFiller();
@@ -62,7 +62,7 @@ QString SequenceSelectorWidgetController::text() const {
 void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
     const MultipleSequenceAlignment &ma = msa->getMSAObject()->getMAlignment();
     U2OpStatusImpl os;
-    const MAlignmentRow selectedRow = ma.getRowByRowId(newId, os);
+    const MultipleSequenceAlignmentRow selectedRow = ma.getRowByRowId(newId, os);
     seqId = newId;
     const QString selectedName = selectedRow.getName();
     if (seqLineEdit->text() != selectedName) {
@@ -132,7 +132,7 @@ void SequenceSelectorWidgetController::sl_addSeqClicked() {
         return;
     }
 
-    const MAlignmentRow selectedRow = msa->getRowByLineNumber(msa->getCurrentSelection().y());
+    const MultipleSequenceAlignmentRow selectedRow = msa->getRowByLineNumber(msa->getCurrentSelection().y());
     setSequenceId(selectedRow.getRowId());
     emit si_selectionChanged();
 }
@@ -140,7 +140,7 @@ void SequenceSelectorWidgetController::sl_addSeqClicked() {
 void SequenceSelectorWidgetController::sl_deleteSeqClicked() {
     seqLineEdit->setText("");
     defaultSeqName = "";
-    setSequenceId(MAlignmentRow::invalidRowId());
+    setSequenceId(MultipleSequenceAlignmentRow::invalidRowId());
     emit si_selectionChanged();
 }
 

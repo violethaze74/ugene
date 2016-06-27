@@ -71,7 +71,7 @@ bool MsaContentFilterTask::msaContainsPattern(MultipleSequenceAlignmentObject *m
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
     for (int i = 0, n = ma.getNumRows(); i < n; ++i) {
-        const MAlignmentRow &row = ma.getRow(i);
+        const MultipleSequenceAlignmentRow &row = ma.getRow(i);
         for (int j = 0; j < (ma.getLength() - searchStr.length() + 1); ++j) {
             const char c = row.charAt(j);
             int altenateLength = 0;

@@ -210,11 +210,11 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 resultText += "<table>\n";
                 QVector<U2Region> unitedRows;
                 s.ma.sortRowsBySimilarity(unitedRows);
-                QList<MAlignmentRow> rows;
+                QList<MultipleSequenceAlignmentRow> rows;
                 int i = 1;
                 srand(QDateTime::currentDateTime().toTime_t());
                 foreach(const U2Region &reg, unitedRows) {
-                    MAlignmentRow row = s.ma.getRow(reg.startPos + qrand() % reg.length);
+                    MultipleSequenceAlignmentRow row = s.ma.getRow(reg.startPos + qrand() % reg.length);
                     row.setName(QString("Group %1: ").arg(i) + "(" + row.getName() + ")");
                     rows.append(s.ma.getRow(reg.startPos + qrand() % reg.length));
 
@@ -291,7 +291,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
-void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MAlignmentRow> &rows, QFile *f)
+void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow> &rows, QFile *f)
 {
     int maxVal = s.usePercents ? 100 : s.ma.getLength();
     QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};

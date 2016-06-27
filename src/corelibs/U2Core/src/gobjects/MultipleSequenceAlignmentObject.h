@@ -106,7 +106,7 @@ public:
 
     const MultipleSequenceAlignment & getMAlignment() const;
     void setMAlignment(const MultipleSequenceAlignment& ma, MAlignmentModInfo mi = MAlignmentModInfo(), const QVariantMap& hints = QVariantMap());
-    void copyGapModel(const QList<MAlignmentRow> &copyRows);
+    void copyGapModel(const QList<MultipleSequenceAlignmentRow> &copyRows);
 
     /** GObject methods */
     virtual GObject* clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
@@ -118,7 +118,7 @@ public:
     const DNAAlphabet* getAlphabet() const;
     qint64 getLength() const;
     qint64 getNumRows() const;
-    const MAlignmentRow& getRow(int row) const;
+    const MultipleSequenceAlignmentRow& getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
 
     /** Methods that modify the gap model only */

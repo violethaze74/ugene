@@ -64,7 +64,7 @@ QString MAlignmentTestUtils::getRowData(const MultipleSequenceAlignment& almnt, 
         return "";
     }
 
-    MAlignmentRow row = almnt.getRow(rowNum);
+    MultipleSequenceAlignmentRow row = almnt.getRow(rowNum);
 
     return MAlignmentRowTestUtils::getRowData(row);
 }
@@ -90,7 +90,7 @@ bool MAlignmentTestUtils::testAlignmentNotChanged(const MultipleSequenceAlignmen
 IMPLEMENT_TEST(MAlignmentUnitTests, clear_notEmpty) {
     MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     almnt.clear();
-    QList<MAlignmentRow> rows = almnt.getRows();
+    QList<MultipleSequenceAlignmentRow> rows = almnt.getRows();
     CHECK_EQUAL(0, rows.count(), "number of rows");
 }
 
@@ -460,13 +460,13 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_similarTwoRegions) {
 /** Tests getRows */
 IMPLEMENT_TEST(MAlignmentUnitTests, getRows_oneRow) {
     MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
-    MAlignmentRow row = almnt.getRow(0);
+    MultipleSequenceAlignmentRow row = almnt.getRow(0);
     CHECK_EQUAL("---AG-T--", MAlignmentRowTestUtils::getRowData(row), "first row");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, getRows_severalRows) {
     MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
-    QList<MAlignmentRow> rows = almnt.getRows();
+    QList<MultipleSequenceAlignmentRow> rows = almnt.getRows();
     CHECK_EQUAL(2, rows.count(), "number of rows");
     CHECK_EQUAL("---AG-T--", MAlignmentRowTestUtils::getRowData(rows[0]), "first row");
     CHECK_EQUAL("AG-CT-TAA", MAlignmentRowTestUtils::getRowData(rows[1]), "second row");
@@ -676,7 +676,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, renameRow_validParams) {
     MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     QString newRowName = "New row name";
     almnt.renameRow(0, newRowName);
-    MAlignmentRow actualRow = almnt.getRow(0);
+    MultipleSequenceAlignmentRow actualRow = almnt.getRow(0);
     CHECK_EQUAL(newRowName, actualRow.getName(), "renamed row name");
 }
 

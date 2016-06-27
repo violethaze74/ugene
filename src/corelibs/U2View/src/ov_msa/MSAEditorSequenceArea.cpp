@@ -685,8 +685,8 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
     U2OpStatusImpl os;
     const int refSeq = msa.getRowIndexByRowId(editor->getReferenceRowId(), os);
     QString refSeqName = editor->getReferenceRowName();
-    const MAlignmentRow *r = NULL;
-    if (MAlignmentRow::invalidRowId() != refSeq) {
+    const MultipleSequenceAlignmentRow *r = NULL;
+    if (MultipleSequenceAlignmentRow::invalidRowId() != refSeq) {
         r = &(msa.getRow(refSeq));
     }
 
@@ -1833,7 +1833,7 @@ void MSAEditorSequenceArea::updateCollapsedGroups(const MAlignmentModInfo& modIn
         QList<U2Region> updatedRegions;
         foreach (qint64 modifiedSeqId, modInfo.modifiedRowIds) {
             int modifiedRowPos = editor->getMSAObject()->getRowPosById(modifiedSeqId);
-            const MAlignmentRow& modifiedRowRef = editor->getMSAObject()->getRow(modifiedRowPos);
+            const MultipleSequenceAlignmentRow& modifiedRowRef = editor->getMSAObject()->getRow(modifiedRowPos);
             modifiedRowPos = ui->getCollapseModel()->rowToMap(modifiedRowPos);
             const U2Region rowsCollapsibleGroup = ui->getCollapseModel()->mapSelectionRegionToRows(U2Region(modifiedRowPos, 1));
             if (updatedRegions.contains(rowsCollapsibleGroup)) {
@@ -2385,7 +2385,7 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
         if (ui->getCollapseModel()->rowToMap(i, true) < 0) {
             continue;
         }
-        const MAlignmentRow& row = msa.getRow(i);
+        const MultipleSequenceAlignmentRow& row = msa.getRow(i);
         int len = selection.width();
         QByteArray seqPart = row.mid(selection.x(), len, os).toByteArray(len, os);
         selText.append(seqPart);
@@ -2778,7 +2778,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
         QList<qint64> modifiedRowIds;
         modifiedRowIds.reserve(sel.length);
         for (int i = sel.startPos; i < sel.endPos(); i++) {
-            const MAlignmentRow &currentRow = ma.getRow(i);
+            const MultipleSequenceAlignmentRow &currentRow = ma.getRow(i);
             QByteArray currentRowContent = currentRow.toByteArray(ma.getLength(), os);
             switch (type.getType())
             {
@@ -2858,7 +2858,7 @@ QPair<QString, int> MSAEditorSequenceArea::getGappedColumnInfo() const{
     }
 
     const MultipleSequenceAlignment& msa = editor->getMSAObject()->getMAlignment();
-    const MAlignmentRow& row = msa.getRow(getSelectedRows().startPos);
+    const MultipleSequenceAlignmentRow& row = msa.getRow(getSelectedRows().startPos);
     int len = row.getUngappedLength();
     QChar current = row.charAt(selection.topLeft().x());
     if(current == MAlignment_GapChar){
@@ -2936,8 +2936,8 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
     const MultipleSequenceAlignment &alignment = editor->getMSAObject()->getMAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment.getRowIndexByRowId(editor->getReferenceRowId(), os);
-    const MAlignmentRow *r = NULL;
-    if (MAlignmentRow::invalidRowId() != refSeq) {
+    const MultipleSequenceAlignmentRow *r = NULL;
+    if (MultipleSequenceAlignmentRow::invalidRowId() != refSeq) {
         r = &(msa.getRow(refSeq));
     }
 

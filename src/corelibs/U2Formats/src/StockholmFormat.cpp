@@ -494,7 +494,7 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MultipleSequenceAlignmen
                 }
             }
             else {
-                const MAlignmentRow& row = msa.getRow(seq_ind);
+                const MultipleSequenceAlignmentRow& row = msa.getRow(seq_ind);
                 if( name != row.getName()) {
                     throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: sequence names are not equal in blocks" ) );
                 }
@@ -650,9 +650,9 @@ static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, const QSt
         //write block
         U2OpStatus2Log os;
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MAlignmentRow>::ConstIterator ri = msa.getRows().constBegin();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = msa.getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MAlignmentRow &row = *ri;
+            const MultipleSequenceAlignmentRow &row = *ri;
             QByteArray name = row.getName().toLatin1();
             TextUtils::replace(name.data(), name.length(), TextUtils::WHITES, '_');
             name += getNameSeqGap( name_max_len - row.getName().size() );

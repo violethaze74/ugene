@@ -240,7 +240,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                     if (rowsOrder.count() != inputMsa.getNumRows()) {
                         // Find rows that were removed by ClustalO and remove them from MSA
                         for (int i = inputMsa.getNumRows() - 1; i >= 0; i--) {
-                            const MAlignmentRow& alRow = inputMsa.getRow(i);
+                            const MultipleSequenceAlignmentRow& alRow = inputMsa.getRow(i);
                             qint64 rowId = alRow.getRowDBInfo().rowId;
                             if (!rowsOrder.contains(rowId)) {
                                 alObj->removeRow(i);

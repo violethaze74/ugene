@@ -193,8 +193,8 @@ void RichTextMsaClipboardTask::run(){
     const MultipleSequenceAlignment &msa = obj->getMAlignment();
     U2OpStatusImpl os;
     const int refSeq = msa.getRowIndexByRowId(context->getReferenceRowId(), os);
-    const MAlignmentRow *r = NULL;
-    if (MAlignmentRow::invalidRowId() != refSeq) {
+    const MultipleSequenceAlignmentRow *r = NULL;
+    if (MultipleSequenceAlignmentRow::invalidRowId() != refSeq) {
         r = &(msa.getRow(refSeq));
     }
 
@@ -203,7 +203,7 @@ void RichTextMsaClipboardTask::run(){
         int numRows = ma.getNumRows();
         for (int seq = 0; seq < numRows; seq++){
             QString res;
-            const MAlignmentRow& row = ma.getRow(seq);
+            const MultipleSequenceAlignmentRow& row = ma.getRow(seq);
             if (!names.contains(row.getName())){
                 continue;
             }
@@ -216,7 +216,7 @@ void RichTextMsaClipboardTask::run(){
                 if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
                     const char refChar = '\n';
                     highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-                } else if (seq == refSeq || MAlignmentRow::invalidRowId() == refSeq) {
+                } else if (seq == refSeq || MultipleSequenceAlignmentRow::invalidRowId() == refSeq) {
                     highlight = true;
                 } else {
                     const char refChar = r->charAt(pos);

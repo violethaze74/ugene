@@ -119,7 +119,7 @@ MSADistanceMatrix::MSADistanceMatrix(const MSADistanceAlgorithm *algo, bool _use
     int nSeq = algo->ma.getNumRows();
     alignmentLength = algo->ma.getLength();
     for (int i = 0; i < nSeq; i++) {
-        const MAlignmentRow& row = algo->ma.getRow(i);
+        const MultipleSequenceAlignmentRow& row = algo->ma.getRow(i);
         seqsUngappedLenghts.append(row.getUngappedLength());
     }
 }

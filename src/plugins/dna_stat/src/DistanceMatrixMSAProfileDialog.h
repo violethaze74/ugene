@@ -92,7 +92,7 @@ public:
 
     virtual void prepare();
 
-    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MAlignmentRow> &rows, QFile *f);
+    void createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow> &rows, QFile *f);
 
     QList<Task*> createStatisticsDocument(Task* subTask);
 

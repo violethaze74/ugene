@@ -36,7 +36,7 @@ namespace U2
 {
 
 class CreateDistanceMatrixTask;
-class MAlignmentRow;
+class MultipleSequenceAlignmentRow;
 class MSADistanceMatrix;
 class MSAWidget;
 class Task;

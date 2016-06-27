@@ -28,7 +28,7 @@ namespace U2 {
 
 class RowWalker {
 public:
-    RowWalker(const MAlignmentRow &row, char gapChar)
+    RowWalker(const MultipleSequenceAlignmentRow &row, char gapChar)
     : row(row), gaps(row.getGapModel()), seqPos(0), gapChar(gapChar)
     {
 
@@ -106,7 +106,7 @@ private:
     }
 
 private:
-    const MAlignmentRow &row;
+    const MultipleSequenceAlignmentRow &row;
     QList<U2MsaGap> gaps;
     int seqPos;
     const char gapChar;

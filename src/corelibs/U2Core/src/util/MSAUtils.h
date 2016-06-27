@@ -31,16 +31,16 @@ namespace U2 {
 
 class GObject;
 class MultipleSequenceAlignment;
-class MAlignmentRow;
+class MultipleSequenceAlignmentRow;
 class U2OpStatus;
 
 class U2CORE_EXPORT MSAUtils : public QObject {
     Q_OBJECT
 public:
 
-    static bool equalsIgnoreGaps(const MAlignmentRow& row, int startPos, const QByteArray& pattern, int &alternateLen);
+    static bool equalsIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pattern, int &alternateLen);
 
-    static int getPatternSimilarityIgnoreGaps(const MAlignmentRow& row, int startPos, const QByteArray& pattern, int &alternateLen);
+    static int getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pattern, int &alternateLen);
 
     static MultipleSequenceAlignment seq2ma(const QList<GObject*>& dnas, U2OpStatus& os, bool useGenbankHeader = false);
 

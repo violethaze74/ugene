@@ -30,7 +30,7 @@
 namespace U2
 {
 
-class MAlignmentRow;
+class MultipleSequenceAlignmentRow;
 class MSADistanceMatrix;
 class MSAEditor;
 

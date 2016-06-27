@@ -1395,7 +1395,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_empty) {
     ma.addRow("4", "TTT-TTTT", -1, os);
     CHECK_NO_ERROR(os);
 
-    QList<MAlignmentRow> maRows = ma.getRows();
+    QList<MultipleSequenceAlignmentRow> maRows = ma.getRows();
 
     // Call test function
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1454,7 +1454,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_nothingNew) {
     ma.addRow("4", "TTT-TTTT", -1, os);
     CHECK_NO_ERROR(os);
 
-    QList<MAlignmentRow> maRows = ma.getRows();
+    QList<MultipleSequenceAlignmentRow> maRows = ma.getRows();
 
     // The first call is correct (updateMsa_empty test)
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1524,7 +1524,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newOrder) {
     // Change order of rows
     ma.moveRowsBlock(1, 1, 1);
 
-    QList<MAlignmentRow> maRows = ma.getRows();
+    QList<MultipleSequenceAlignmentRow> maRows = ma.getRows();
 
     // Test call with new row order
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1583,7 +1583,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newName) {
     ma.addRow("4", "TTT-TTTT", -1, os);
     CHECK_NO_ERROR(os);
 
-    QList<MAlignmentRow> maRows = ma.getRows();
+    QList<MultipleSequenceAlignmentRow> maRows = ma.getRows();
 
     // The first call is correct (updateMsa_empty test)
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1649,7 +1649,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newAlphabet) {
     ma.addRow("4", "TTT-TTTT", -1, os);
     CHECK_NO_ERROR(os);
 
-    QList<MAlignmentRow> maRows = ma.getRows();
+    QList<MultipleSequenceAlignmentRow> maRows = ma.getRows();
 
     // The first call is correct (updateMsa_empty test)
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1723,7 +1723,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newContent) {
     // Change sequence data in the second row
     ma.setRowContent(1, "AA--AA--AA--AA");
 
-    QList<MAlignmentRow> maRows = ma.getRows();
+    QList<MultipleSequenceAlignmentRow> maRows = ma.getRows();
 
     // Test call with changed data in second row
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1808,7 +1808,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
     expMa.addRow(changedRow, newDnaSeq, os);
     CHECK_NO_ERROR(os);
 
-    QList<MAlignmentRow> expMaRows = expMa.getRows();
+    QList<MultipleSequenceAlignmentRow> expMaRows = expMa.getRows();
 
     // Test call with changed sequence ID
     MsaDbiUtils::updateMsa(msaRef, expMa, os);
@@ -1877,7 +1877,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_additionalRows) {
     ma.addRow("6", "CGCG--CGCG", -1, os);
     CHECK_NO_ERROR(os);
 
-    QList<MAlignmentRow> maRows = ma.getRows();
+    QList<MultipleSequenceAlignmentRow> maRows = ma.getRows();
 
     // Test call without new information
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -1946,7 +1946,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_removeRows) {
     ma.removeRow(2, os);
     CHECK_NO_ERROR(os);
 
-    QList<MAlignmentRow> maRows = ma.getRows();
+    QList<MultipleSequenceAlignmentRow> maRows = ma.getRows();
 
     // Test call without some rows
     MsaDbiUtils::updateMsa(msaRef, ma, os);
@@ -2012,7 +2012,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_clear) {
     // Clear alignment
     ma.clear();
 
-    QList<MAlignmentRow> maRows = ma.getRows();
+    QList<MultipleSequenceAlignmentRow> maRows = ma.getRows();
 
     // Test call with empty alignment
     MsaDbiUtils::updateMsa(msaRef, ma, os);

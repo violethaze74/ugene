@@ -455,7 +455,7 @@ void MsaDbiUtils::replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint6
     }
 }
 
-void MsaDbiUtils::cropCharsFromRow(MAlignmentRow& alRow, qint64 pos, qint64 count) {
+void MsaDbiUtils::cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 pos, qint64 count) {
     SAFE_POINT(pos >= 0, "Incorrect position!",);
     SAFE_POINT(count > 0, "Incorrect characters count!",);
 
@@ -645,7 +645,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     // remember the rows order
     QList<qint64> rowsOrder;
     for (int i = 0, n = al.getNumRows(); i < n; ++i) {
-        const MAlignmentRow& alRow = al.getRow(i);
+        const MultipleSequenceAlignmentRow& alRow = al.getRow(i);
         U2MsaRow row = alRow.getRowDBInfo();
 
         if (row.sequenceId.isEmpty() || !currentRowIds.contains(row.rowId)) {
@@ -1080,7 +1080,7 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64> rowIds, qi
 
     // Crop or remove each row
     for (int i = 0, n = al.getNumRows(); i < n; ++i) {
-        MAlignmentRow row = al.getRow(i);
+        MultipleSequenceAlignmentRow row = al.getRow(i);
         qint64 rowId = row.getRowId();
         if (rowIds.contains(rowId)) {
             U2DataId sequenceId = row.getRowDBInfo().sequenceId;

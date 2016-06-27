@@ -129,7 +129,7 @@ private:
     void insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps);
     MultipleSequenceAlignment createAlignment();
     void createAnnotations(const MultipleSequenceAlignment &alignment);
-    U2Region getReadRegion(const MAlignmentRow &readRow, const MAlignmentRow &referenceRow) const;
+    U2Region getReadRegion(const MultipleSequenceAlignmentRow &readRow, const MultipleSequenceAlignmentRow &referenceRow) const;
     U2Location getLocation(const U2Region &region, bool isComplement);
 
 private:

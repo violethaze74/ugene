@@ -51,7 +51,7 @@ class MultipleSequenceAlignment;
  * A row core is an obsolete concept. Currently,
  * it exactly equals to the row (offset always equals to zero).
  */
-class U2CORE_EXPORT MAlignmentRow {
+class U2CORE_EXPORT MultipleSequenceAlignmentRow {
     friend class MultipleSequenceAlignment;
 
 public:
@@ -119,7 +119,7 @@ public:
     inline bool simplify();
 
     /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
-    void append(const MAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
+    void append(const MultipleSequenceAlignmentRow& anotherRow, int lengthBefore, U2OpStatus& os);
 
     /**
      * Sets new sequence and gap model.
@@ -165,11 +165,11 @@ public:
      * Exactly compares the rows. Sequences and gap models must match.
      * However, the rows are considered equal if they differ by trailing gaps only.
      */
-    bool isRowContentEqual(const MAlignmentRow& row) const;
+    bool isRowContentEqual(const MultipleSequenceAlignmentRow& row) const;
 
     /** Compares 2 rows. Rows are equal if their contents and names are equal. */
-    inline bool operator!=(const MAlignmentRow& r) const;
-    bool operator==(const MAlignmentRow& r) const;
+    inline bool operator!=(const MultipleSequenceAlignmentRow& r) const;
+    bool operator==(const MultipleSequenceAlignmentRow& r) const;
 
     /**
      * Crops the row -> keeps only specified region in the row.
@@ -183,7 +183,7 @@ public:
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    MAlignmentRow mid(int pos, int count, U2OpStatus& os) const;
+    MultipleSequenceAlignmentRow mid(int pos, int count, U2OpStatus& os) const;
 
     /** Converts the row sequence to upper case */
     void toUpperCase();
@@ -199,12 +199,12 @@ public:
 
 private:
     /** Do NOT create a row without an alignment! */
-    MAlignmentRow(MultipleSequenceAlignment* al = NULL);
+    MultipleSequenceAlignmentRow(MultipleSequenceAlignment* al = NULL);
 
     /** Creates a row in memory. */
-    MAlignmentRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MsaGap>& gaps, MultipleSequenceAlignment* al);
+    MultipleSequenceAlignmentRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MsaGap>& gaps, MultipleSequenceAlignment* al);
 
-    MAlignmentRow(const MAlignmentRow& r, MultipleSequenceAlignment* al);
+    MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow& r, MultipleSequenceAlignment* al);
 
     /** Splits input to sequence bytes and gaps model */
     static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MsaGap>& gapModel);
@@ -258,27 +258,27 @@ private:
 };
 
 
-inline int MAlignmentRow::getGapsLength() const {
+inline int MultipleSequenceAlignmentRow::getGapsLength() const {
     return MsaRowUtils::getGapsLength(gaps);
 }
 
-inline int MAlignmentRow::getCoreStart() const {
+inline int MultipleSequenceAlignmentRow::getCoreStart() const {
     return MsaRowUtils::getCoreStart(gaps);
 }
 
-inline int MAlignmentRow::getCoreEnd() const {
+inline int MultipleSequenceAlignmentRow::getCoreEnd() const {
     return getRowLengthWithoutTrailing();
 }
 
-inline int MAlignmentRow::getRowLengthWithoutTrailing() const {
+inline int MultipleSequenceAlignmentRow::getRowLengthWithoutTrailing() const {
     return MsaRowUtils::getRowLength(sequence.seq, gaps);
 }
 
-inline int MAlignmentRow::getUngappedLength() const {
+inline int MultipleSequenceAlignmentRow::getUngappedLength() const {
     return sequence.length();
 }
 
-inline bool MAlignmentRow::simplify() {
+inline bool MultipleSequenceAlignmentRow::simplify() {
     if (gaps.count() > 0) {
         gaps.clear();
         return true;
@@ -286,15 +286,15 @@ inline bool MAlignmentRow::simplify() {
     return false;
 }
 
-inline const QList<U2MsaGap>& MAlignmentRow::getGapModel() const {
+inline const QList<U2MsaGap>& MultipleSequenceAlignmentRow::getGapModel() const {
     return gaps;
 }
 
-inline const DNASequence& MAlignmentRow::getSequence() const {
+inline const DNASequence& MultipleSequenceAlignmentRow::getSequence() const {
     return sequence;
 }
 
-inline bool MAlignmentRow::operator!=(const MAlignmentRow& row) const {
+inline bool MultipleSequenceAlignmentRow::operator!=(const MultipleSequenceAlignmentRow& row) const {
     return !(*this == row);
 }
 
@@ -313,7 +313,7 @@ public:
      */
     MultipleSequenceAlignment(const QString& name = QString(),
                const DNAAlphabet* alphabet = NULL,
-               const QList<MAlignmentRow>& rows = QList<MAlignmentRow>());
+               const QList<MultipleSequenceAlignmentRow>& rows = QList<MultipleSequenceAlignmentRow>());
     MultipleSequenceAlignment(const MultipleSequenceAlignment& m);
 
     MultipleSequenceAlignment & operator=(const MultipleSequenceAlignment &other);
@@ -380,18 +380,18 @@ public:
     bool sortRowsBySimilarity(QVector<U2Region>& united);
 
     /** Returns row of the alignment */
-    inline MAlignmentRow& getRow(int row);
-    inline const MAlignmentRow& getRow(int row) const;
+    inline MultipleSequenceAlignmentRow& getRow(int row);
+    inline const MultipleSequenceAlignmentRow& getRow(int row) const;
 
-    const MAlignmentRow& getRow(QString name) const;
+    const MultipleSequenceAlignmentRow& getRow(QString name) const;
 
     /** Returns all rows in the alignment */
-    const QList<MAlignmentRow>& getRows() const { return rows; }
+    const QList<MultipleSequenceAlignmentRow>& getRows() const { return rows; }
 
     /** Returns IDs of the alignment rows in the database */
     QList<qint64> getRowsIds() const;
 
-    MAlignmentRow getRowByRowId(qint64 rowId, U2OpStatus& os) const;
+    MultipleSequenceAlignmentRow getRowByRowId(qint64 rowId, U2OpStatus& os) const;
 
     /** Returns all rows' names in the alignment */
     QStringList getRowNames() const;
@@ -504,9 +504,9 @@ public:
 
     void appendChars(int row, int afterPos, const char *str, int len);
 
-    void appendRow(int rowIdx, const MAlignmentRow& r, bool ignoreTrailingGaps, U2OpStatus& os);
+    void appendRow(int rowIdx, const MultipleSequenceAlignmentRow& r, bool ignoreTrailingGaps, U2OpStatus& os);
 
-    void appendRow(int rowIdx, int afterPos, const MAlignmentRow &r, U2OpStatus& os);
+    void appendRow(int rowIdx, int afterPos, const MultipleSequenceAlignmentRow &r, U2OpStatus& os);
 
     /** returns "True" if there are no gaps in the alignment */
     bool hasEmptyGapModel() const;
@@ -538,24 +538,24 @@ public:
 
 private:
     /** Create a new row (sequence + gap model) from the bytes */
-    MAlignmentRow createRow(const QString& name, const QByteArray& bytes, U2OpStatus& os);
+    MultipleSequenceAlignmentRow createRow(const QString& name, const QByteArray& bytes, U2OpStatus& os);
 
     /**
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MsaGap>& gaps, U2OpStatus& os);
+    MultipleSequenceAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MsaGap>& gaps, U2OpStatus& os);
 
-    MAlignmentRow createRow(const MAlignmentRow& r, U2OpStatus& os);
+    MultipleSequenceAlignmentRow createRow(const MultipleSequenceAlignmentRow& r, U2OpStatus& os);
 
     /** Helper-method for adding a row to the alignment */
-    void addRow(const MAlignmentRow& row, int rowLenWithTrailingGaps, int rowIndex, U2OpStatus& os);
+    void addRow(const MultipleSequenceAlignmentRow& row, int rowLenWithTrailingGaps, int rowIndex, U2OpStatus& os);
 
     /** Alphabet for all sequences in the alignment */
     const DNAAlphabet*            alphabet;
 
     /** Alignment rows (each row = sequence + gap model) */
-    QList<MAlignmentRow>    rows;
+    QList<MultipleSequenceAlignmentRow>    rows;
 
     /** The length of the longest row in the alignment */
     int                     length;
@@ -567,16 +567,16 @@ private:
     static bool registerMeta;
 };
 
-inline MAlignmentRow& MultipleSequenceAlignment::getRow(int rowIndex) {
-    static MAlignmentRow emptyRow;
+inline MultipleSequenceAlignmentRow& MultipleSequenceAlignment::getRow(int rowIndex) {
+    static MultipleSequenceAlignmentRow emptyRow;
     int rowsCount = rows.count();
     SAFE_POINT(0 != rowsCount, "No rows!", emptyRow);
     SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignmnet::getRow!", emptyRow);
     return rows[rowIndex];
 }
 
-inline const MAlignmentRow& MultipleSequenceAlignment::getRow(int rowIndex) const {
-    static MAlignmentRow emptyRow;
+inline const MultipleSequenceAlignmentRow& MultipleSequenceAlignment::getRow(int rowIndex) const {
+    static MultipleSequenceAlignmentRow emptyRow;
     int rowsCount = rows.count();
     SAFE_POINT(0 != rowsCount, "No rows!", emptyRow);
     SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignmnet::getRow!", emptyRow);

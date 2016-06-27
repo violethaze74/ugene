@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-bool MSAUtils::equalsIgnoreGaps(const MAlignmentRow& row, int startPos, const QByteArray& pat, int &alternateLen) {
+bool MSAUtils::equalsIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pat, int &alternateLen) {
     int sLen = row.getCoreEnd();
     int pLen = pat.size();
     int i = startPos;
@@ -62,7 +62,7 @@ bool MSAUtils::equalsIgnoreGaps(const MAlignmentRow& row, int startPos, const QB
     return true;
 }
 
-int MSAUtils::getPatternSimilarityIgnoreGaps(const MAlignmentRow& row, int startPos, const QByteArray& pat, int &alternateLen) {
+int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pat, int &alternateLen) {
     int sLen = row.getCoreEnd();
     int pLen = pat.size();
     int i = startPos;
@@ -202,7 +202,7 @@ QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool tr
     int len = ma.getLength();
     const DNAAlphabet* al = ma.getAlphabet();
     U2OpStatus2Log os;
-    foreach(const MAlignmentRow& row, ma.getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma.getRows()) {
         DNASequence s(row.getName(), row.toByteArray(len, os), al);
         if (trimGaps) {
             int newLen = TextUtils::remove(s.seq.data(), s.length(), gapCharMap);
@@ -225,7 +225,7 @@ bool MSAUtils::checkPackedModelSymmetry(MultipleSequenceAlignment& ali, U2OpStat
         return false;
     }
     for (int i=0, n = ali.getNumRows(); i < n; i++) {
-        const MAlignmentRow& row = ali.getRow(i);
+        const MultipleSequenceAlignmentRow& row = ali.getRow(i);
         int rowCoreLength = row.getCoreLength();
         if (rowCoreLength > coreLen) {
             ti.setError(tr("Sequences in alignment have different sizes!"));
@@ -239,7 +239,7 @@ int MSAUtils::getRowIndexByName( const MultipleSequenceAlignment& ma, const QStr
 {
     int idx = 0;
 
-    foreach(const MAlignmentRow& row, ma.getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma.getRows()) {
         if (row.getName() == name) {
             return idx;
         }
@@ -316,13 +316,13 @@ MultipleSequenceAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs,
 
 QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignment& origMsa, MultipleSequenceAlignment& newMsa, U2OpStatus& os) {
     QList<qint64> rowsOrder;
-    const QList<MAlignmentRow> origMsaRows = origMsa.getRows();
+    const QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa.getRows();
     for (int i = 0, n = newMsa.getNumRows(); i < n; ++i) {
-        const MAlignmentRow& newMsaRow = newMsa.getRow(i);
+        const MultipleSequenceAlignmentRow& newMsaRow = newMsa.getRow(i);
         QString rowName = newMsaRow.getName().replace(" ", "_");
 
         bool rowFound = false;
-        foreach (const MAlignmentRow &origMsaRow, origMsaRows) {
+        foreach (const MultipleSequenceAlignmentRow &origMsaRow, origMsaRows) {
             if (origMsaRow.getName().replace(" ", "_") == rowName && origMsaRow.getSequence().seq == newMsaRow.getSequence().seq) {
                 rowFound = true;
                 qint64 rowId = origMsaRow.getRowDBInfo().rowId;

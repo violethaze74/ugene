@@ -358,7 +358,7 @@ int MSAEditor::getFirstVisibleBase() const {
     return ui->seqArea->getFirstVisibleBase();
 }
 
-const MAlignmentRow& MSAEditor::getRowByLineNumber(int lineNumber) const {
+const MultipleSequenceAlignmentRow& MSAEditor::getRowByLineNumber(int lineNumber) const {
     if (ui->isCollapsibleMode()) {
         lineNumber = ui->getCollapseModel()->mapToRow(lineNumber);
     }
@@ -445,7 +445,7 @@ void MSAEditor::addExportMenu(QMenu* m) {
     em->addAction(saveScreenshotAction);
     em->addAction(exportHighlightedAction);
     if(!ui->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
-                getReferenceRowId() != MAlignmentRow::invalidRowId()){
+                getReferenceRowId() != MultipleSequenceAlignmentRow::invalidRowId()){
         exportHighlightedAction->setEnabled(true);
     }else{
         exportHighlightedAction->setDisabled(true);
@@ -593,14 +593,14 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & pos) {
     snp.clickPoint = QCursor::pos( );
     const QPoint nameMapped = ui->nameList->mapFromGlobal( snp.clickPoint );
     const qint64 hoverRowId = ( 0 <= nameMapped.y( ) )
-        ? ui->nameList->sequenceIdAtPos( nameMapped ) : MAlignmentRow::invalidRowId( );
+        ? ui->nameList->sequenceIdAtPos( nameMapped ) : MultipleSequenceAlignmentRow::invalidRowId( );
     if ( ( hoverRowId != getReferenceRowId( )
-        || MAlignmentRow::invalidRowId( ) == getReferenceRowId( ) )
-        && hoverRowId != MAlignmentRow::invalidRowId( ) )
+        || MultipleSequenceAlignmentRow::invalidRowId( ) == getReferenceRowId( ) )
+        && hoverRowId != MultipleSequenceAlignmentRow::invalidRowId( ) )
     {
         m.addAction( setAsReferenceSequenceAction );
     }
-    if ( MAlignmentRow::invalidRowId( ) != getReferenceRowId( ) ) {
+    if ( MultipleSequenceAlignmentRow::invalidRowId( ) != getReferenceRowId( ) ) {
         m.addAction( unsetReferenceSequenceAction );
     }
     m.addSeparator();
@@ -820,15 +820,15 @@ void MSAEditor::sl_setSeqAsReference(){
     QPoint nameMapped = ui->nameList->mapFromGlobal(menuCallPos);
     if ( nameMapped.y() >= 0 ) {
         qint64 newRowId = ui->nameList->sequenceIdAtPos(nameMapped);
-        if (MAlignmentRow::invalidRowId() != newRowId && newRowId != snp.seqId) {
+        if (MultipleSequenceAlignmentRow::invalidRowId() != newRowId && newRowId != snp.seqId) {
             setReference(newRowId);
         }
     }
 }
 
 void MSAEditor::sl_unsetReferenceSeq( ) {
-    if ( MAlignmentRow::invalidRowId( ) != getReferenceRowId( ) ) {
-        setReference( MAlignmentRow::invalidRowId( ) );
+    if ( MultipleSequenceAlignmentRow::invalidRowId( ) != getReferenceRowId( ) ) {
+        setReference( MultipleSequenceAlignmentRow::invalidRowId( ) );
     }
 }
 
@@ -842,7 +842,7 @@ void MSAEditor::sl_rowsRemoved(const QList<qint64> &rowIds) {
 }
 
 void MSAEditor::setReference(qint64 sequenceId) {
-    if(sequenceId == MAlignmentRow::invalidRowId()){
+    if(sequenceId == MultipleSequenceAlignmentRow::invalidRowId()){
         exportHighlightedAction->setDisabled(true);
     }else{
         exportHighlightedAction->setEnabled(true);
@@ -856,7 +856,7 @@ void MSAEditor::setReference(qint64 sequenceId) {
 
 void MSAEditor::updateReference(){
     if(msaObject->getRowPosById(snp.seqId) == -1){
-        setReference(MAlignmentRow::invalidRowId());
+        setReference(MultipleSequenceAlignmentRow::invalidRowId());
     }
 }
 
@@ -864,7 +864,7 @@ QString MSAEditor::getReferenceRowName() const {
     const MultipleSequenceAlignment &alignment = getMSAObject()->getMAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment.getRowIndexByRowId(getReferenceRowId(), os);
-    return (MAlignmentRow::invalidRowId() != refSeq) ? alignment.getRowNames().at(refSeq)
+    return (MultipleSequenceAlignmentRow::invalidRowId() != refSeq) ? alignment.getRowNames().at(refSeq)
         : QString();
 }
 

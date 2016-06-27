@@ -173,7 +173,7 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
             bool drawColor = true;
             int refPos = -1;;
             qint64 refId = editor->getReferenceRowId();
-            if (refId != MAlignmentRow::invalidRowId()) {
+            if (refId != MultipleSequenceAlignmentRow::invalidRowId()) {
                 refPos = mAlignment.getRowIndexByRowId(refId, os);
                 SAFE_POINT_OP(os, );
             }

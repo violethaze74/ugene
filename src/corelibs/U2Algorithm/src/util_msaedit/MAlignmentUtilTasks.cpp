@@ -148,13 +148,13 @@ void AlignInAminoFormTask::run() {
     SAFE_POINT_EXT(NULL != clonedObj, setError(tr("NULL clonedObj in AlignInAminoFormTask::prepare!")),);
 
     const MultipleSequenceAlignment &newMA = clonedObj->getMAlignment();
-    const QList<MAlignmentRow>& rows = newMA.getRows();
+    const QList<MultipleSequenceAlignmentRow>& rows = newMA.getRows();
 
     //Create gap map from amino-acid alignment
     U2OpStatus2Log os;
-    foreach (const MAlignmentRow& row, rows) {
+    foreach (const MultipleSequenceAlignmentRow& row, rows) {
         const int rowIdx = MSAUtils::getRowIndexByName(maObj->getMAlignment(), row.getName());
-        const MAlignmentRow curRow = maObj->getMAlignment().getRow(row.getName());
+        const MultipleSequenceAlignmentRow curRow = maObj->getMAlignment().getRow(row.getName());
         SAFE_POINT_EXT(rowIdx >= 0, setError(tr("Can not find row %1 in original alignment.").arg(row.getName())),);
 
         QList<U2MsaGap> gapsList;

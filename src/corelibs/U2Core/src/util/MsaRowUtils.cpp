@@ -69,7 +69,7 @@ char MsaRowUtils::charAt(const QByteArray &seq, const QList<U2MsaGap> &gaps, int
     bool indexIsInBounds = (index < seq.length()) && (index >= 0);
 
     SAFE_POINT(indexIsInBounds,
-        QString("Internal error detected in MAlignmentRow::charAt,"
+        QString("Internal error detected in MultipleSequenceAlignmentRow::charAt,"
         " row length is '%1', gapsLength is '%2'!").arg(getRowLength(seq, gaps)).arg(index), MAlignment_GapChar);
     return seq[index];
 }

@@ -176,7 +176,7 @@ ESL_MSA * UHMM3Utilities::convertMSA( const MultipleSequenceAlignment & ma ) {
     }
     msa->nseq = nseq;
     for (i = 0; i < nseq; i++) {
-        const MAlignmentRow& row = ma.getRow(i);
+        const MultipleSequenceAlignmentRow& row = ma.getRow(i);
         ok = allocAndCopyData( row.getName().toLatin1(), &msa->sqname[i] );
         if( !ok ) {
             esl_msa_Destroy( msa );

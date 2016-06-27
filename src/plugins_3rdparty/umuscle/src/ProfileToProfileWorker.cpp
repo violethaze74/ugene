@@ -135,7 +135,7 @@ void ProfileToProfileTask::prepare() {
     setMaxParallelSubtasks(maxThreads);
 
     U2OpStatus2Log os;
-    foreach (const MAlignmentRow &row, masterMsa.getRows()) {
+    foreach (const MultipleSequenceAlignmentRow &row, masterMsa.getRows()) {
         result.addRow(row.getRowDBInfo(), row.getSequence(), os);
     }
 
@@ -171,7 +171,7 @@ void ProfileToProfileTask::appendResult(Task *task) {
     MuscleTask *t = dynamic_cast<MuscleTask*>(task);
     SAFE_POINT(NULL != t, "NULL Muscle task!",);
 
-    const QList<MAlignmentRow> &newRows = t->resultMA.getRows();
+    const QList<MultipleSequenceAlignmentRow> &newRows = t->resultMA.getRows();
     if (newRows.size() == masterMsa.getRows().size() + 1) {
         U2OpStatus2Log os;
         result.addRow(newRows.last().getRowDBInfo(), newRows.last().getSequence(), os);

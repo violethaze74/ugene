@@ -136,10 +136,10 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
                 return false;
             }
 
-            QList<MAlignmentRow> rows1 = al1.getRows();
-            QList<MAlignmentRow> rows2 = al2.getRows();
-            QList<MAlignmentRow>::const_iterator it1 = rows1.constBegin();
-            QList<MAlignmentRow>::const_iterator it2 = rows2.constBegin();
+            QList<MultipleSequenceAlignmentRow> rows1 = al1.getRows();
+            QList<MultipleSequenceAlignmentRow> rows2 = al2.getRows();
+            QList<MultipleSequenceAlignmentRow>::const_iterator it1 = rows1.constBegin();
+            QList<MultipleSequenceAlignmentRow>::const_iterator it2 = rows2.constBegin();
             for (; it1 != rows1.constEnd(); ++it1, ++it2) {
                 bool equal = *it1 == *it2;
                 if (!equal) {
@@ -307,7 +307,7 @@ bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
     }
 
     if (unique) {
-        foreach (MAlignmentRow currRow, result.getRows()) {
+        foreach (MultipleSequenceAlignmentRow currRow, result.getRows()) {
             if ((currRow.getName() == rowName) &&
                 (currRow.getData() == bytes)) {
                     return true;
@@ -355,8 +355,8 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     }
 
     U2OpStatus2Log os;
-    const QList<MAlignmentRow> &rows = result.getRows();
-    foreach (const MAlignmentRow &newRow, newAl.getRows()) {
+    const QList<MultipleSequenceAlignmentRow> &rows = result.getRows();
+    foreach (const MultipleSequenceAlignmentRow &newRow, newAl.getRows()) {
         if (unique) {
             if (!rows.contains(newRow)) {
                 result.addRow(newRow.getRowDBInfo(), newRow.getSequence(), os);

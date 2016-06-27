@@ -334,12 +334,12 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
 }
 
 void ComposeResultSubTask::createAnnotations(const MultipleSequenceAlignment &alignment) {
-    const MAlignmentRow &referenceRow = alignment.getRow(0);
+    const MultipleSequenceAlignmentRow &referenceRow = alignment.getRow(0);
     QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceRow.getName() + " features", storage->getDbiRef()));
 
     QList<SharedAnnotationData> anns;
     for (int i=1; i<alignment.getNumRows(); i++) {
-        const MAlignmentRow &readRow = alignment.getRow(i);
+        const MultipleSequenceAlignmentRow &readRow = alignment.getRow(i);
         U2Region region = getReadRegion(readRow, referenceRow);
         PairwiseAlignmentTask *task = getPATask(i - 1);
         CHECK_OP(stateInfo, );
@@ -355,7 +355,7 @@ void ComposeResultSubTask::createAnnotations(const MultipleSequenceAlignment &al
     annotations = storage->getDataHandler(annsObject->getEntityRef());
 }
 
-U2Region ComposeResultSubTask::getReadRegion(const MAlignmentRow &readRow, const MAlignmentRow &referenceRow) const {
+U2Region ComposeResultSubTask::getReadRegion(const MultipleSequenceAlignmentRow &readRow, const MultipleSequenceAlignmentRow &referenceRow) const {
     U2Region region(0, readRow.getRowLengthWithoutTrailing());
 
     // calculate read start
@@ -528,7 +528,7 @@ void KAlignSubTask::run() {
     int rowCount = msaObject->getNumRows();
     CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
 
-    MAlignmentRow readRow = msaObject->getRow(1);
+    MultipleSequenceAlignmentRow readRow = msaObject->getRow(1);
     QList<U2Region> regions = getRegions(readRow.getGapModel(), readRow.getRowLengthWithoutTrailing());
     calculateCoreRegion(regions);
     extendCoreRegion(regions);

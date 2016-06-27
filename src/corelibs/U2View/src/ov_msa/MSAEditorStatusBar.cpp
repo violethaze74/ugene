@@ -181,7 +181,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
     for (int s = selectionTopLeft.y(); s < nSeq; s++) {
         const U2Region rowsAtPosition = seqArea->getRowsAt( s );
         SAFE_POINT( 0 <= rowsAtPosition.startPos, "Invalid row number!", );
-        const MAlignmentRow &row = ma.getRow( rowsAtPosition.startPos );
+        const MultipleSequenceAlignmentRow &row = ma.getRow( rowsAtPosition.startPos );
         // if s == pos.y -> search from the current base, otherwise search from the seq start
         int p = ( s == selectionTopLeft.y( ) ) ? selectionTopLeft.x( ) : 0;
         for ( ; p < ( aliLen - pat.length( ) + 1 ); p++ ) {
@@ -220,7 +220,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
     for ( int s = pos.y( ); 0 <= s; s-- ) {
         const U2Region rowsAtPosition = seqArea->getRowsAt( s );
         SAFE_POINT( 0 <= rowsAtPosition.startPos, "Invalid row number!", );
-        const MAlignmentRow &row = ma.getRow( rowsAtPosition.startPos );
+        const MultipleSequenceAlignmentRow &row = ma.getRow( rowsAtPosition.startPos );
         //if s == pos.y -> search from the current base, otherwise search from the seq end
         int p = ( s == pos.y( ) ? pos.x( ) : ( aliLen - pat.length( ) + 1) );
         while ( 0 <= p ) {

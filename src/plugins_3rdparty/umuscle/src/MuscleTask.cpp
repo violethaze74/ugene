@@ -203,13 +203,13 @@ void MuscleTask::doAlign(bool refine) {
         if (config.alignRegion && config.regionToAlign.length != inputMA.getLength()) {
 
             for(int i=0, n = inputMA.getNumRows(); i < n; i++) {
-                const MAlignmentRow& row= inputMA.getRow(ids[i]);
+                const MultipleSequenceAlignmentRow& row= inputMA.getRow(ids[i]);
                 resultMA.addRow(row.getName(), emptySeq, os);
             }
             if (config.regionToAlign.startPos != 0) {
                 for(int i=0; i < nSeq; i++)  {
                     int regionLen = config.regionToAlign.startPos;
-                    MAlignmentRow inputRow = inputMA.getRow(ids[i]).mid(0,regionLen, os);
+                    MultipleSequenceAlignmentRow inputRow = inputMA.getRow(ids[i]).mid(0,regionLen, os);
                     resultMA.appendChars(i, 0, inputRow.toByteArray(regionLen, os).constData(), regionLen);
                 }
             }
@@ -219,7 +219,7 @@ void MuscleTask::doAlign(bool refine) {
                 int subStart = config.regionToAlign.endPos();
                 int subLen = inputMA.getLength() - config.regionToAlign.endPos();
                 for(int i = 0; i < nSeq; i++) {
-                    MAlignmentRow inputRow = inputMA.getRow(ids[i]).mid(subStart, subLen, os);
+                    MultipleSequenceAlignmentRow inputRow = inputMA.getRow(ids[i]).mid(subStart, subLen, os);
                     resultMA.appendChars(i, resultLen, inputRow.toByteArray(subLen, os).constData(), subLen);
                 }
             }

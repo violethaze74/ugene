@@ -171,7 +171,7 @@ void MSAEditorNameList::updateScrollBar() {
     int maxNameWidth = 0;
 
     MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
-    foreach(const MAlignmentRow& row, maObj->getMAlignment().getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, maObj->getMAlignment().getRows()) {
         maxNameWidth = qMax(fm.width(row.getName()), maxNameWidth);
     }
     // adjustment for branch primitive in collapsing mode
@@ -238,7 +238,7 @@ void MSAEditorNameList::sl_copyCurrentSequence() {
     int n = getSelectedRow();
     MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj) {
-        const MAlignmentRow& row = maObj->getMAlignment().getRow(n);
+        const MultipleSequenceAlignmentRow& row = maObj->getMAlignment().getRow(n);
         //TODO: trim large sequence?
         U2OpStatus2Log os;
         QApplication::clipboard()->setText(row.toByteArray(maObj->getLength(), os));
@@ -793,7 +793,7 @@ void MSAEditorNameList::drawRefSequence(QPainter &p, QRect r){
 QString MSAEditorNameList::getTextForRow(int s) {
     MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     const MultipleSequenceAlignment& ma = maObj->getMAlignment();
-    const MAlignmentRow& row = ma.getRow(s);
+    const MultipleSequenceAlignmentRow& row = ma.getRow(s);
 
     return row.getName();
 }
@@ -854,7 +854,7 @@ void MSAEditorNameList::sl_editSequenceName()
     if (n<0) {
         return;
     }
-    const MAlignmentRow& row = maObj->getMAlignment().getRow(n);
+    const MultipleSequenceAlignmentRow& row = maObj->getMAlignment().getRow(n);
     QString curName = row.getName();
     QString newName = QInputDialog::getText(this, tr("Rename"),
             tr("New sequence name:"), QLineEdit::Normal, curName, &ok);
@@ -906,7 +906,7 @@ bool MSAEditorNameList::isRowInSelection(int seqnum) {
 }
 
 qint64 MSAEditorNameList::sequenceIdAtPos(const QPoint &p) {
-    qint64 result = MAlignmentRow::invalidRowId();
+    qint64 result = MultipleSequenceAlignmentRow::invalidRowId();
     curSeq = ui->seqArea->getSequenceNumByY(p.y());
     if (!ui->seqArea->isSeqInRange(curSeq)) {
         return result;

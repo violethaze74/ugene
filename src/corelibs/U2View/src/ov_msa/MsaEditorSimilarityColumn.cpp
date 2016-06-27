@@ -64,7 +64,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
 
     const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMAlignment();
     const qint64 referenceRowId = editor->getReferenceRowId();
-    if(MAlignmentRow::invalidRowId() == referenceRowId) {
+    if(MultipleSequenceAlignmentRow::invalidRowId() == referenceRowId) {
         return tr("-");
     }
 

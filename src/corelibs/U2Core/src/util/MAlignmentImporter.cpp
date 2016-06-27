@@ -147,7 +147,7 @@ QList<U2Sequence> MAlignmentImporter::importSequences(const DbiConnection& con, 
 
     QList<U2Sequence> sequences;
     for (int i = 0; i < al.getNumRows(); ++i) {
-        MAlignmentRow row = al.getRow(i);
+        MultipleSequenceAlignmentRow row = al.getRow(i);
         DNASequence dnaSeq = row.getSequence();
 
         U2Sequence sequence = U2Sequence();
@@ -211,7 +211,7 @@ QList<U2MsaRow> MAlignmentImporter::importRows(const DbiConnection& con, Multipl
     for (int i = 0; i < al.getNumRows(); ++i) {
         U2Sequence seq = sequences[i];
         if (seq.length > 0) {
-            MAlignmentRow &alignmentRow = al.getRow(i);
+            MultipleSequenceAlignmentRow &alignmentRow = al.getRow(i);
             const U2MsaRowGapModel gapModel = msaGapModel[i];
             if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow.getSequence().seq, gapModel)) {
                 // remove trailing gap if it exists

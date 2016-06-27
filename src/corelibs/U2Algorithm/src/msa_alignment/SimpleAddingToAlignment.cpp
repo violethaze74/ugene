@@ -122,7 +122,7 @@ void BestPositionFindTask::run() {
     int similarity = 0;
 
     if(referenceRowId >= 0) {
-        const MAlignmentRow &row = inputMsa.getRow(referenceRowId);
+        const MultipleSequenceAlignmentRow &row = inputMsa.getRow(referenceRowId);
         int iterationsNum = aliLen - sequence.length() + 1;
         for (int p = 0; p < iterationsNum; p++ ) {
             stateInfo.setProgress(100 * p / iterationsNum);
@@ -136,7 +136,7 @@ void BestPositionFindTask::run() {
         }
     } else {
         int processedRows = 0;
-        foreach(const MAlignmentRow &row, inputMsa.getRows()) {
+        foreach(const MultipleSequenceAlignmentRow &row, inputMsa.getRows()) {
             stateInfo.setProgress(100 * processedRows / nSeq);
             for (int p = 0; p < ( aliLen - sequence.length() + 1 ); p++ ) {
                 char c = row.charAt(p);

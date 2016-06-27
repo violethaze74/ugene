@@ -84,7 +84,7 @@ class PairwiseAlignmentTask;
 
 class SNPSettings {
 public:
-    SNPSettings() : seqId(MAlignmentRow::invalidRowId()) { }
+    SNPSettings() : seqId(MultipleSequenceAlignmentRow::invalidRowId()) { }
     QPoint clickPoint;
     qint64 seqId;
     QVariantMap highlightSchemeSettings;
@@ -93,8 +93,8 @@ public:
 class PairwiseAlignmentWidgetsSettings {
 public:
     PairwiseAlignmentWidgetsSettings()
-        : firstSequenceId(MAlignmentRow::invalidRowId()),
-        secondSequenceId(MAlignmentRow::invalidRowId()), inNewWindow(true),
+        : firstSequenceId(MultipleSequenceAlignmentRow::invalidRowId()),
+        secondSequenceId(MultipleSequenceAlignmentRow::invalidRowId()), inNewWindow(true),
         pairwiseAlignmentTask(NULL), showSequenceWidget(true), showAlgorithmWidget(false),
         showOutputWidget(false), sequenceSelectionModeOn(false)
     {
@@ -152,7 +152,7 @@ public:
     int getFirstVisibleBase() const;
 
     //Return alignment row that is displayed on target line in MSAEditor
-    const MAlignmentRow& getRowByLineNumber(int lineNumber) const;
+    const MultipleSequenceAlignmentRow& getRowByLineNumber(int lineNumber) const;
 
     float getZoomFactor() const {return zoomFactor;}
 

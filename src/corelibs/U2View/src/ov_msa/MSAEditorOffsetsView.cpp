@@ -176,7 +176,7 @@ QFont MSAEditorOffsetsViewWidget::getOffsetsFont() {
 
 int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const {
     const MultipleSequenceAlignment &ma = editor->getMSAObject()->getMAlignment();
-    const MAlignmentRow &row = ma.getRow(seqNum);
+    const MultipleSequenceAlignmentRow &row = ma.getRow(seqNum);
     const int endPos = inclAliPos ? aliPos + 1 : aliPos;
 
     return (endPos < row.getCoreStart()) ? 0 : row.getBaseCount(endPos);
