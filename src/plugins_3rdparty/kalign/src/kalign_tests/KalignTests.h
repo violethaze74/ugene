@@ -35,7 +35,7 @@ namespace U2 {
 class KalignGObjectTask;
 class MAlignmentObject;
 class LoadDocumentTask;
-class MAlignment;
+class MultipleSequenceAlignment;
 
 class  Kalign_Load_Align_Compare_Task : public Task {
 	Q_OBJECT
@@ -53,7 +53,7 @@ public:
 		void sl_kalignProgressChg() {stateInfo.progress = kalignTask->getProgress();}
 
 private:
-	MAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+	MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
 	QString str_inFileURL;
 	QString str_patFileURL;
 	LoadDocumentTask*           loadTask1;
@@ -87,7 +87,7 @@ public:
 	Task::ReportResult report();
 	void run();
 	QList<Task*> onSubTaskFinished(Task* subTask);
-	MAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+	MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
 
 	public slots:
 		void sl_kalignProgressChg() {stateInfo.progress = kalignTask->getProgress();}

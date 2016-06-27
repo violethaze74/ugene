@@ -27,7 +27,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <format/uHMMFormat.h>
 
@@ -41,7 +41,7 @@ class LoadDocumentTask;
 class UHMM3BuildTask : public Task {
     Q_OBJECT
 public:
-    UHMM3BuildTask( const UHMM3BuildSettings& settings, const MAlignment & msa );
+    UHMM3BuildTask( const UHMM3BuildSettings& settings, const MultipleSequenceAlignment & msa );
     ~UHMM3BuildTask();
     virtual void run();
     P7_HMM * getHMM() const;
@@ -53,7 +53,7 @@ private:
     
 private:
     UHMM3BuildSettings  settings;
-    MAlignment msa;
+    MultipleSequenceAlignment msa;
     P7_HMM * hmm;
     
 }; // UHMM3BuildTask
@@ -70,8 +70,8 @@ public:
 class UHMM3BuildToFileTask : public Task {
     Q_OBJECT
 public:
-    UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& settings, const QList< MAlignment >& msas);
-    UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& settings, const MAlignment& ma );
+    UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& settings, const QList< MultipleSequenceAlignment >& msas);
+    UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& settings, const MultipleSequenceAlignment& ma );
     UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& settings, const QString& in );
     
     virtual QList< Task* > onSubTaskFinished( Task* sub );
@@ -85,7 +85,7 @@ private:
 private:
     UHMM3BuildTaskSettings      settings;
     QString                     inFile;
-    QList< MAlignment >         msas;
+    QList< MultipleSequenceAlignment >         msas;
     QList<const P7_HMM* >            hmms;
     LoadDocumentTask*           loadTask;
     QList< UHMM3BuildTask* >    buildTasks;

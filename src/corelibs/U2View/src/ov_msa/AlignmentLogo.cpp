@@ -25,7 +25,7 @@
 
 #include <QtGui/QPainter>
 #include <QHBoxLayout>
-#include "U2Core/MAlignment.h"
+#include "U2Core/MultipleSequenceAlignment.h"
 #include "U2Core/DNAAlphabet.h"
 #include <math.h>
 
@@ -133,7 +133,7 @@ void AlignmentLogoRenderArea::resizeEvent(QResizeEvent* e) {
 }
 
 void AlignmentLogoRenderArea::evaluateHeights() {
-    const MAlignment& ma = settings.ma;
+    const MultipleSequenceAlignment& ma = settings.ma;
     int numRows = ma.getNumRows();
     error = (s - 1)/(2*log(2.0)*numRows);
 

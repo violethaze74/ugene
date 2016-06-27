@@ -620,7 +620,7 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
     }
     bool ok_flag=false;
     U2OpStatus2Log os;
-    const MAlignment ma = myMSequence->getMAlignment();
+    const MultipleSequenceAlignment ma = myMSequence->getMAlignment();
     foreach(const MAlignmentRow& myItem , ma.getRows()){
         if (myItem.getName() == seqName){
             ok_flag=true;
@@ -800,8 +800,8 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
            return ReportResult_Finished;
         }
 
-        const MAlignment &one = myMSequence->getMAlignment();
-        const MAlignment &two = myMSequence2->getMAlignment();
+        const MultipleSequenceAlignment &one = myMSequence->getMAlignment();
+        const MultipleSequenceAlignment &two = myMSequence2->getMAlignment();
         const QList <MAlignmentRow>& alignedSeqs1 = one.getRows();
         const QList <MAlignmentRow>& alignedSeqs2 = two.getRows();
 
@@ -811,9 +811,9 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
         }
 
         if (sortValue == "true") {
-            MAlignment first = myMSequence->getMAlignment();
+            MultipleSequenceAlignment first = myMSequence->getMAlignment();
             first.sortRowsByName();
-            MAlignment second = myMSequence2->getMAlignment();
+            MultipleSequenceAlignment second = myMSequence2->getMAlignment();
             second.sortRowsByName();
         }
 
@@ -894,8 +894,8 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
         stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%").arg(myMSequence->getLength(), myMSequence2->getMAlignment().getLength()));
         return ReportResult_Finished;
     }
-    const MAlignment &one = myMSequence->getMAlignment();
-    const MAlignment &two = myMSequence2->getMAlignment();
+    const MultipleSequenceAlignment &one = myMSequence->getMAlignment();
+    const MultipleSequenceAlignment &two = myMSequence2->getMAlignment();
     const QList <MAlignmentRow>& myQList1 = one.getRows();
     const QList <MAlignmentRow>& myQList2 = two.getRows();
 

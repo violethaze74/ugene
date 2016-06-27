@@ -34,7 +34,7 @@
 #include <U2Designer/DelegateEditors.h>
 #include <U2Lang/CoreLibConstants.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -146,7 +146,7 @@ Task* HMM3BuildWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
         
         Task* t = new UHMM3BuildTask(cfg, msa);
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));

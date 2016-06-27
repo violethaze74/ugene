@@ -36,7 +36,7 @@ namespace U2 {
 class MuscleGObjectTask;
 class MAlignmentObject;
 class LoadDocumentTask;
-class MAlignment;
+class MultipleSequenceAlignment;
 
 class GTest_uMuscle : public GTest {
     Q_OBJECT
@@ -101,7 +101,7 @@ public:
     Task::ReportResult report();
 	void run();
 	QList<Task*> onSubTaskFinished(Task* subTask);
-	MAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+	MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
 
 public slots:
 		void sl_muscleProgressChg() {stateInfo.progress = muscleTask->getProgress();}
@@ -135,7 +135,7 @@ public slots:
     void sl_muscleProgressChg() {stateInfo.progress = muscleTask->getProgress();}
 
 private:
-    MAlignment dna_to_ma(QList<GObject*> dnaSeqs);
+    MultipleSequenceAlignment dna_to_ma(QList<GObject*> dnaSeqs);
     QString str_inFileURL;
     QString str_patFileURL;
     LoadDocumentTask*           loadTask1;

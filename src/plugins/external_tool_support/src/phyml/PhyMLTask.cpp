@@ -37,7 +37,7 @@ const QString PhyMLSupportTask::TMP_FILE_NAME("tmp.phy");
 const QString PhyMLSupportTask::RESULT_BOOTSTRAP_EXT("_phyml_boot_trees.txt");
 const QString PhyMLSupportTask::RESULT_TREE_EXT("_phyml_tree.txt");
 
-PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const MAlignment& ma, const CreatePhyTreeSettings& s, const QString& url)
+PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s, const QString& url)
     : Task(tr("Generating input file for PhyML"), TaskFlags_NR_FOSE_COSC),
       ma(ma),
       settings(s),
@@ -81,7 +81,7 @@ QList<Task*> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task* subTask){
     return res;
 }
 
-PhyMLSupportTask::PhyMLSupportTask(const MAlignment& ma, const CreatePhyTreeSettings& s)
+PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s)
     : PhyTreeGeneratorTask(ma, s),
       prepareDataTask(NULL),
       phyMlTask(NULL),

@@ -82,7 +82,7 @@ void UHMM3BuildDialogImpl::initSaveController() {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-UHMM3BuildDialogImpl::UHMM3BuildDialogImpl( const MAlignment & ma, QWidget * p )
+UHMM3BuildDialogImpl::UHMM3BuildDialogImpl( const MultipleSequenceAlignment & ma, QWidget * p )
     : QDialog(p),
       saveController(NULL) {
     initialize();

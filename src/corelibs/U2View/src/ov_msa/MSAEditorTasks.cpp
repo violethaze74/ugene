@@ -283,7 +283,7 @@ void ExtractConsensusTask::run() {
     CHECK(msa->getUI()->getConsensusArea()->getConsensusCache(),);
 
     MSAConsensusAlgorithm *algorithm = msa->getUI()->getConsensusArea()->getConsensusAlgorithm();
-    MAlignment ma = msa->getMSAObject()->getMAlignment();
+    MultipleSequenceAlignment ma = msa->getMSAObject()->getMAlignment();
     for (int i = 0, n = ma.getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;

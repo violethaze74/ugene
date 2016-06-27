@@ -22,7 +22,7 @@
 #ifndef _U2_MALIGNMENT_EXPORTER_H_
 #define _U2_MALIGNMENT_EXPORTER_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatus.h>
@@ -43,7 +43,7 @@ class U2CORE_EXPORT MAlignmentExporter {
 public:
                                         MAlignmentExporter();
 
-    MAlignment                          getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId,
+    MultipleSequenceAlignment                          getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId,
                                             U2OpStatus& os) const;
     U2Msa                               getAlignmentObject(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const;
     QList<MAlignmentRowReplacementData> getAlignmentRows(const U2DbiRef& dbiRef, const U2DataId& msaId,

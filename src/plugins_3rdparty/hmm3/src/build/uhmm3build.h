@@ -24,7 +24,7 @@
 
 #include <QtCore/QObject>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
 
 #include <hmmer3/hmmer.h>
@@ -34,7 +34,7 @@ namespace U2 {
 class UHMM3Build : public QObject {
     Q_OBJECT
 public:
-    static P7_HMM * build( const MAlignment & msa, const UHMM3BuildSettings & settings ,TaskStateInfo & ti );
+    static P7_HMM * build( const MultipleSequenceAlignment & msa, const UHMM3BuildSettings & settings ,TaskStateInfo & ti );
     
 }; // UHMM3Build
 

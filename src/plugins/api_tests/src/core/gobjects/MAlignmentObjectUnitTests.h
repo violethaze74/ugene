@@ -26,7 +26,7 @@
 
 #include <unittest.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Dbi.h>
 
 
@@ -43,7 +43,7 @@ public:
 
     static MAlignmentObject *getTestAlignmentObject(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os);
     static U2EntityRef getTestAlignmentRef(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os);
-    static MAlignment getTestAlignment(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os);
+    static MultipleSequenceAlignment getTestAlignment(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os);
 
 private:
     static TestDbiProvider dbiProvider;

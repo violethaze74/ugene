@@ -125,10 +125,10 @@ private:
     DNASequence getReferenceSequence();
     QList<U2MsaGap> getReferenceGaps();
     QList<U2MsaGap> getShiftedGaps(int rowNum);
-    void insertShiftedGapsIntoReference(MAlignment &alignment, const QList<U2MsaGap> &gaps);
-    void insertShiftedGapsIntoRead(MAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps);
-    MAlignment createAlignment();
-    void createAnnotations(const MAlignment &alignment);
+    void insertShiftedGapsIntoReference(MultipleSequenceAlignment &alignment, const QList<U2MsaGap> &gaps);
+    void insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps);
+    MultipleSequenceAlignment createAlignment();
+    void createAnnotations(const MultipleSequenceAlignment &alignment);
     U2Region getReadRegion(const MAlignmentRow &readRow, const MAlignmentRow &referenceRow) const;
     U2Location getLocation(const U2Region &region, bool isComplement);
 

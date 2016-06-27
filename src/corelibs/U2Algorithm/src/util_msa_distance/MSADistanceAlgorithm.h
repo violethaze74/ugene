@@ -24,13 +24,13 @@
 
 #include <U2Core/AppResources.h>
 #include <U2Core/Task.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <QtCore/QVarLengthArray>
 #include <QtCore/QMutex>
 
 namespace U2 {
 
-class MAlignment;
+class MultipleSequenceAlignment;
 class MSADistanceAlgorithm;
 class DNAAlphabet;
 class MSADistanceMatrix;
@@ -51,7 +51,7 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithmFactory : public QObject {
 public:
     MSADistanceAlgorithmFactory(const QString& algoId, DistanceAlgorithmFlags flags, QObject* p = NULL);
 
-    virtual MSADistanceAlgorithm* createAlgorithm(const MAlignment& ma, QObject* parent = NULL) = 0;
+    virtual MSADistanceAlgorithm* createAlgorithm(const MultipleSequenceAlignment& ma, QObject* parent = NULL) = 0;
 
     QString getId() const {return algorithmId;}
 
@@ -80,7 +80,7 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithm : public Task {
 
     friend class MSADistanceMatrix;
 public:
-    MSADistanceAlgorithm(MSADistanceAlgorithmFactory* factory, const MAlignment& ma);
+    MSADistanceAlgorithm(MSADistanceAlgorithmFactory* factory, const MultipleSequenceAlignment& ma);
 
     int getSimilarity(int row1, int row2);
 
@@ -108,7 +108,7 @@ private:
 protected:
     virtual void fillTable();
     virtual int calculateSimilarity(int , int ){return 0;}
-    MAlignment                                  ma;
+    MultipleSequenceAlignment                                  ma;
     QMutex                                      lock;
     bool                                        excludeGaps;
     bool                                        isSimilarity;

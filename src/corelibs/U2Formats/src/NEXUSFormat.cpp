@@ -433,9 +433,9 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 reportProgress();
             }
 
-            // Build MAlignment object
+            // Build MultipleSequenceAlignment object
             U2OpStatus2Log os;
-            MAlignment ma(tz.getIO()->getURL().baseFileName());
+            MultipleSequenceAlignment ma(tz.getIO()->getURL().baseFileName());
             foreach (QString name, rows.keys()) {
                 ma.addRow(name, rows[name], os);
                 CHECK_OP(os, false);
@@ -725,7 +725,7 @@ void writeHeader(IOAdapter *io, U2OpStatus&) {
     io->writeBlock(line);
 }
 
-void writeMAligment(const MAlignment &ma, bool simpleName, IOAdapter *io, U2OpStatus&) {
+void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdapter *io, U2OpStatus&) {
     QByteArray line;
     QByteArray tabs, tab(4, ' ');
 

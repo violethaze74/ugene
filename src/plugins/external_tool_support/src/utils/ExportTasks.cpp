@@ -49,7 +49,7 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-SaveAlignmentTask::SaveAlignmentTask(const MAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
+SaveAlignmentTask::SaveAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
 : Task("", TaskFlag_None),
   ma(_ma),
   fileName(_fileName),
@@ -87,7 +87,7 @@ void SaveAlignmentTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MAlignment& _ma, const QString& _url, bool _trimAli, DocumentFormatId _format)
+SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleSequenceAlignment& _ma, const QString& _url, bool _trimAli, DocumentFormatId _format)
 : Task(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
 ma(_ma), url(_url), trimAli(_trimAli), format(_format)
 {

@@ -22,7 +22,7 @@
 #ifndef _U2_MALIGNMENT_ROW_UNIT_TESTS_H_
 #define _U2_MALIGNMENT_ROW_UNIT_TESTS_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <unittest.h>
 
@@ -31,12 +31,12 @@ namespace U2 {
 
 class MAlignmentRowTestUtils {
 public:
-    static MAlignmentRow initTestRowWithGaps(MAlignment& ma);
-    static MAlignmentRow initTestRowWithGapsInMiddle(MAlignment& ma);
-    static MAlignmentRow initTestRowWithTrailingGaps(MAlignment& ma);
-    static MAlignmentRow initTestRowWithoutGaps(MAlignment& ma);
-    static MAlignmentRow initTestRowForModification(MAlignment& ma);
-    static MAlignmentRow initEmptyRow(MAlignment& ma);
+    static MAlignmentRow initTestRowWithGaps(MultipleSequenceAlignment& ma);
+    static MAlignmentRow initTestRowWithGapsInMiddle(MultipleSequenceAlignment& ma);
+    static MAlignmentRow initTestRowWithTrailingGaps(MultipleSequenceAlignment& ma);
+    static MAlignmentRow initTestRowWithoutGaps(MultipleSequenceAlignment& ma);
+    static MAlignmentRow initTestRowForModification(MultipleSequenceAlignment& ma);
+    static MAlignmentRow initEmptyRow(MultipleSequenceAlignment& ma);
     static QString getRowData(MAlignmentRow row);
 
     static const int rowWithGapsLength;

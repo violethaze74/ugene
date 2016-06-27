@@ -154,7 +154,7 @@ Task* KalignWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
 
         if (msa.isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to Kalign.").arg(msa.getName()));
@@ -191,7 +191,7 @@ void KalignWorker::sl_taskFinished() {
 void KalignWorker::cleanup() {
 }
 
-void KalignWorker::send(const MAlignment &msa) {
+void KalignWorker::send(const MultipleSequenceAlignment &msa) {
     SAFE_POINT(NULL != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;

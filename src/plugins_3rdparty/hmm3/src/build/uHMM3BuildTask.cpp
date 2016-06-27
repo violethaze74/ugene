@@ -51,7 +51,7 @@ namespace U2 {
  * UHMM3BuildTask
  ***********************************/
 
-UHMM3BuildTask::UHMM3BuildTask( const UHMM3BuildSettings& aset, const MAlignment & amsa )
+UHMM3BuildTask::UHMM3BuildTask( const UHMM3BuildSettings& aset, const MultipleSequenceAlignment & amsa )
 : Task("", TaskFlag_None), settings( aset ), msa( amsa ), hmm( NULL ) {
     GCOUNTER( cvar, tvar, "UHMM3BuildTask" );
     setTaskName( tr( "Build HMM profile from %1 alignment" ).arg( msa.getName() ) );
@@ -117,9 +117,9 @@ UHMM3BuildTaskSettings::UHMM3BuildTaskSettings( const QString& out ) : outFile( 
 * UHMM3BuildToFileTask
 ***********************************/
 
-static QList< MAlignment > getMalignments( const QList< GObject* >& objList );
+static QList< MultipleSequenceAlignment > getMalignments( const QList< GObject* >& objList );
 
-UHMM3BuildToFileTask::UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& s, const QList< MAlignment >& m )
+UHMM3BuildToFileTask::UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& s, const QList< MultipleSequenceAlignment >& m )
 : Task( "", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled ),
   settings( s ), msas( m ), loadTask( NULL ), saveHmmFileTask( NULL ), savingDocument( NULL ) {
     
@@ -139,7 +139,7 @@ UHMM3BuildToFileTask::UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& s, con
     addBuildSubTasks();
 }
 
-UHMM3BuildToFileTask::UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& set, const MAlignment& ma )
+UHMM3BuildToFileTask::UHMM3BuildToFileTask( const UHMM3BuildTaskSettings& set, const MultipleSequenceAlignment& ma )
 : Task( "", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled ), 
   settings( set ), loadTask( NULL ), saveHmmFileTask( NULL ), savingDocument( NULL ) {
     
@@ -194,7 +194,7 @@ settings( set ), inFile( _inFile ), loadTask( NULL ), saveHmmFileTask( NULL ), s
 }
 
 void UHMM3BuildToFileTask::createBuildSubtasks() {
-    foreach( const MAlignment & ma, msas ) {
+    foreach( const MultipleSequenceAlignment & ma, msas ) {
         UHMM3BuildTask * curTask = new UHMM3BuildTask( settings.inner, ma );
         buildTasks << curTask;
     }
@@ -317,8 +317,8 @@ QString UHMM3BuildToFileTask::generateReport() const {
     return res;
 }
 
-static QList< MAlignment > getMalignments( const QList< GObject* >& objList ) {
-    QList< MAlignment > res;
+static QList< MultipleSequenceAlignment > getMalignments( const QList< GObject* >& objList ) {
+    QList< MultipleSequenceAlignment > res;
     
     foreach( GObject* obj, objList ) {
         MAlignmentObject* msaObj = qobject_cast< MAlignmentObject* >( obj );

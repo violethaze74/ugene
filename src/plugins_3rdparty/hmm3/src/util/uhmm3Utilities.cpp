@@ -161,7 +161,7 @@ int UHMM3Utilities::convertAlphabetType( const DNAAlphabet * al ) {
     return ret;
 }
 
-ESL_MSA * UHMM3Utilities::convertMSA( const MAlignment & ma ) {
+ESL_MSA * UHMM3Utilities::convertMSA( const MultipleSequenceAlignment & ma ) {
     ESL_MSA * msa = NULL;
     int i = 0;
     bool ok = false;

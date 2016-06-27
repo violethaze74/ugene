@@ -30,7 +30,7 @@
 #include <QScrollBar>
 
 #include <QtCore/QMap>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/PhyTree.h>

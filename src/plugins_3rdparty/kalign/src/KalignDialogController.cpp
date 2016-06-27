@@ -55,7 +55,7 @@ public:
 
 };
 
-KalignDialogController::KalignDialogController(QWidget* w, const MAlignment& _ma, KalignTaskSettings& _settings) 
+KalignDialogController::KalignDialogController(QWidget* w, const MultipleSequenceAlignment& _ma, KalignTaskSettings& _settings) 
 : QDialog(w), ma(_ma), settings(_settings)
 {
     setupUi(this);

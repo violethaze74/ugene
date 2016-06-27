@@ -69,8 +69,8 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MSAEditorUI *_ui)
     connect(ui->editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_zoomOperationPerformed(bool)));
     connect(ui->seqArea->getHBar(), SIGNAL(actionTriggered(int)), SLOT(sl_onScrollBarActionTriggered(int)));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)),
-                                    SLOT(sl_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)));
+    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MAlignmentModInfo &)),
+                                    SLOT(sl_alignmentChanged(const MultipleSequenceAlignment &, const MAlignmentModInfo &)));
 
     connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView * , QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
@@ -151,7 +151,7 @@ void MSAEditorConsensusArea::paintConsenusPart(QPainter &p, const U2Region &regi
     MSAConsensusAlgorithm *alg = getConsensusAlgorithm();
     SAFE_POINT(alg != NULL, tr("MSA consensus algorothm is NULL"), );
     SAFE_POINT(editor->getMSAObject() != NULL, tr("MSA object is NULL"), );
-    const MAlignment &msa = editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment &msa = editor->getMSAObject()->getMAlignment();
     for (int pos = 0; pos < region.length; pos++) {
         char c = alg->getConsensusChar(msa, pos + region.startPos, seqIdx.toVector());
         drawConsensusChar(p, pos, 0, c, false, true);
@@ -224,7 +224,7 @@ QString MSAEditorConsensusArea::createToolTip(QHelpEvent* he) const {
     QString result;
     if (pos >= 0) {
         assert(editor->getMSAObject());
-        const MAlignment& ma = editor->getMSAObject()->getMAlignment();
+        const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMAlignment();
         result = MSAConsensusUtils::getConsensusPercentTip(ma, pos, 0, 4);
     }
     return result;
@@ -499,7 +499,7 @@ void MSAEditorConsensusArea::sl_startChanged(const QPoint& p, const QPoint& prev
     update();
 }
 
-void MSAEditorConsensusArea::sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&) {
+void MSAEditorConsensusArea::sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&) {
     updateConsensusAlgorithm();
     completeRedraw = true;
     update();

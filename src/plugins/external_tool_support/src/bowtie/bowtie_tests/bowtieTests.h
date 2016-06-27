@@ -34,7 +34,7 @@ namespace U2 {
 class BowtieGObjectTask;
 class DnaAssemblyMultiTask;
 class MAlignmentObject;
-class MAlignment;
+class MultipleSequenceAlignment;
 
 class GTest_Bowtie : public GTest {
     Q_OBJECT

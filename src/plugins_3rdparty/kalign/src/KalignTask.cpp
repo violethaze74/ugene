@@ -69,7 +69,7 @@ void KalignTaskSettings::reset() {
     inputFilePath="";
 }
 
-KalignTask::KalignTask(const MAlignment& ma, const KalignTaskSettings& _config)
+KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSettings& _config)
 :TLSTask(tr("KALIGN alignment"), TaskFlags_FOSCOE), config(_config), inputMA(ma)
 {
     GCOUNTER( cvar, tvar, "KalignTask" );
@@ -180,8 +180,8 @@ Task::ReportResult KalignGObjectTask::report() {
     CHECK_EXT(!obj->isStateLocked(), stateInfo.setError("object_is_state_locked"), ReportResult_Finished);
 
     // Apply the result
-    const MAlignment& inputMA = kalignTask->inputMA;
-    MAlignment resultMA = kalignTask->resultMA;
+    const MultipleSequenceAlignment& inputMA = kalignTask->inputMA;
+    MultipleSequenceAlignment resultMA = kalignTask->resultMA;
 
     QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMA, resultMA, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
@@ -206,7 +206,7 @@ Task::ReportResult KalignGObjectTask::report() {
             lock = NULL;
         }
         else {
-            stateInfo.setError("MAlignment object has been changed");
+            stateInfo.setError("MultipleSequenceAlignment object has been changed");
             return ReportResult_Finished;
         }
 

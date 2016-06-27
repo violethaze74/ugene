@@ -127,7 +127,7 @@ void GTest_CreateSubalignimentTask::prepare(){
 }
 
 Task::ReportResult GTest_CreateSubalignimentTask::report(){
-    const MAlignment &actual = maobj->getMAlignment(),
+    const MultipleSequenceAlignment &actual = maobj->getMAlignment(),
                 expected = expectedMaobj->getMAlignment();
     if (actual.getRows().size() != expected.getRows().size()){
         stateInfo.setError(GTest::tr("Expected and actual alignment sizes are different: %1 , %2")
@@ -268,7 +268,7 @@ Task::ReportResult GTest_RemoveAlignmentRegion::report(){
     if (!hasError()) {
 
         maobj->removeRegion(startBase, startSeq, width, height, true);
-        const MAlignment &actual = maobj->getMAlignment(),
+        const MultipleSequenceAlignment &actual = maobj->getMAlignment(),
             expected = expectedMaobj->getMAlignment();
 
         if (actual != expected) {
@@ -355,8 +355,8 @@ Task::ReportResult GTest_AddSequenceToAlignment::report(){
 
     if (!hasError()) {
 
-        const MAlignment& actual = maobj->getMAlignment();
-        const MAlignment& expected = expectedMaobj->getMAlignment();
+        const MultipleSequenceAlignment& actual = maobj->getMAlignment();
+        const MultipleSequenceAlignment& expected = expectedMaobj->getMAlignment();
 
         if (actual != expected) {
             stateInfo.setError(GTest::tr("Expected and actual alignments not equal"));

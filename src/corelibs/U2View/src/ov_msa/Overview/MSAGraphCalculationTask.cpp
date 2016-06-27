@@ -52,10 +52,10 @@ MSAGraphCalculationTask::MSAGraphCalculationTask(MAlignmentObject* msa, int widt
         setError(memLocker.getError());
         return;
     }
-    ma.reset(new MAlignment(msa->getMAlignment()));
+    ma.reset(new MultipleSequenceAlignment(msa->getMAlignment()));
     connect(msa, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
     connect(msa, SIGNAL(si_startMsaUpdating()), this, SLOT(cancel()));
-    connect(msa, SIGNAL(si_alignmentChanged(MAlignment,MAlignmentModInfo)), this, SLOT(cancel()));
+    connect(msa, SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MAlignmentModInfo)), this, SLOT(cancel()));
 }
 
 void MSAGraphCalculationTask::run() {
@@ -135,7 +135,7 @@ MSAConsensusOverviewCalculationTask::MSAConsensusOverviewCalculationTask(MAlignm
     SAFE_POINT_EXT(factory != NULL, setError(tr("Strict consensus algorithm factory is NULL")), );
 
     SAFE_POINT_EXT(msa != NULL, setError(tr("MSA is NULL")), );
-    const MAlignment& ma = msa->getMAlignment();
+    const MultipleSequenceAlignment& ma = msa->getMAlignment();
     algorithm = factory->createAlgorithm(ma);
     algorithm->setParent(this);
 }
@@ -212,7 +212,7 @@ MSAHighlightingOverviewCalculationTask::MSAHighlightingOverviewCalculationTask(M
     refSequenceId = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
 }
 
-bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MAlignment &ma, MsaHighlightingScheme *highlightingScheme,
+bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleSequenceAlignment &ma, MsaHighlightingScheme *highlightingScheme,
                                                                MsaColorScheme *colorScheme,
                                                                int seq, int pos,
                                                                int refSeq)

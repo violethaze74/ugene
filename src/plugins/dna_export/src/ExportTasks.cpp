@@ -88,7 +88,7 @@ QList<Task*> AddExportedDocumentAndOpenViewTask::onSubTaskFinished( Task* subTas
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-ExportAlignmentTask::ExportAlignmentTask(const MAlignment& _ma, const QString& _fileName, DocumentFormatId _f)
+ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _fileName, DocumentFormatId _f)
 : DocumentProviderTask("", TaskFlag_None), ma(_ma), fileName(_fileName), format(_f)
 {
     GCOUNTER( cvar, tvar, "ExportAlignmentTask" );
@@ -116,7 +116,7 @@ void ExportAlignmentTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MAlignment& _ma, const QString& _url, bool _trimAli, DocumentFormatId _format)
+ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment& _ma, const QString& _url, bool _trimAli, DocumentFormatId _format)
 : DocumentProviderTask(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
 ma(_ma), url(_url), trimAli(_trimAli), format(_format)
 {
@@ -149,7 +149,7 @@ void ExportMSA2SequencesTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export nucleic alignment 2 amino alignment
 
-ExportMSA2MSATask::ExportMSA2MSATask(const MAlignment& _ma, int _offset, int _len, const QString& _url,
+ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& _ma, int _offset, int _len, const QString& _url,
     const QList<DNATranslation*>& _aminoTranslations, DocumentFormatId _format)
 : DocumentProviderTask(tr("Export alignment to alignment: %1").arg(_url), TaskFlag_None),
 ma(_ma), offset(_offset), len(_len), url(_url), format(_format), aminoTranslations(_aminoTranslations)
@@ -192,7 +192,7 @@ void ExportMSA2MSATask::run() {
             seqList << s;
         }
     }
-    MAlignment ma = MSAUtils::seq2ma(seqList, stateInfo);
+    MultipleSequenceAlignment ma = MSAUtils::seq2ma(seqList, stateInfo);
     CHECK_OP(stateInfo, );
 
     MAlignmentObject* obj = MAlignmentImporter::createAlignment(resultDocument->getDbiRef(), ma, stateInfo);

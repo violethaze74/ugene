@@ -22,7 +22,7 @@
 #ifndef _U2_MALIGNMENTWALKER_H_
 #define _U2_MALIGNMENTWALKER_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -30,7 +30,7 @@ class RowWalker;
 
 class U2CORE_EXPORT MAlignmentWalker {
 public:
-    MAlignmentWalker(const MAlignment &msa, char gapChar = MAlignment_GapChar);
+    MAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar = MAlignment_GapChar);
     ~MAlignmentWalker();
 
     bool isEnded() const;
@@ -38,7 +38,7 @@ public:
     QList<QByteArray> nextData(int length, U2OpStatus &os);
 
 private:
-    const MAlignment &msa;
+    const MultipleSequenceAlignment &msa;
     int currentOffset;
     QList<RowWalker*> rowWalkerList;
 };

@@ -23,7 +23,7 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Settings.h>
 
 #include "NeighborJoinWidget.h"
@@ -62,7 +62,7 @@ QList<QString> ConsensusModelTypes::getConsensusModelTypes() {
     return list;
 }
 
-NeighborJoinWidget::NeighborJoinWidget(const MAlignment &ma, QWidget *parent) :
+NeighborJoinWidget::NeighborJoinWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
     CreatePhyTreeWidget(parent)
 {
     setupUi(this);
@@ -122,7 +122,7 @@ void NeighborJoinWidget::restoreDefault() {
     displayOptions->restoreDefault();
 }
 
-bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MAlignment &msa, const CreatePhyTreeSettings &settings) {
+bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings) {
     AppResourcePool *s = AppContext::getAppSettings()->getAppResourcePool();
     const qint64 appMemMb = s->getMaxMemorySizeInMB();
 
@@ -184,7 +184,7 @@ void NeighborJoinWidget::sl_onConsensusTypeChanged(const QString &consensusTypeN
     }
 }
 
-void NeighborJoinWidget::init(const MAlignment &ma) {
+void NeighborJoinWidget::init(const MultipleSequenceAlignment &ma) {
     const DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
     if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)) {
         cbModel->addItems(DNADistModelTypes::getDNADistModelTypes());

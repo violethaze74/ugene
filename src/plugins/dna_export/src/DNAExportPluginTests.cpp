@@ -176,7 +176,7 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
         return;
     }
     MAlignmentObject* alObj = qobject_cast<MAlignmentObject*>(list.first());
-    srcAl = MAlignment(alObj->getMAlignment());
+    srcAl = MultipleSequenceAlignment(alObj->getMAlignment());
 
     QList<DNATranslation*> trans;
     QString trid = DNATranslationID(0);
@@ -236,7 +236,7 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         return ReportResult_Finished;
     }
     MAlignmentObject * expAlign = qobject_cast<MAlignmentObject*>(explist.first());
-    const MAlignment &expAl = expAlign->getMAlignment();
+    const MultipleSequenceAlignment &expAl = expAlign->getMAlignment();
 
     if (resAl.getLength() != expAl.getLength()) {
         stateInfo.setError(GTest::tr("Unexpected alignment length %1, expected %2").arg(resAl.getLength()).arg(expAl.getLength()));

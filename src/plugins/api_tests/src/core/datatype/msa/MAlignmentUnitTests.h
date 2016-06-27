@@ -23,7 +23,7 @@
 #ifndef _U2_MALIGNMENT_UNIT_TESTS_H_
 #define _U2_MALIGNMENT_UNIT_TESTS_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <unittest.h>
 
@@ -32,9 +32,9 @@ namespace U2 {
 
 class MAlignmentTestUtils {
 public:
-    static MAlignment initTestAlignment();
-    static QString getRowData(const MAlignment&, int rowNum);
-    static bool testAlignmentNotChanged(const MAlignment&);
+    static MultipleSequenceAlignment initTestAlignment();
+    static QString getRowData(const MultipleSequenceAlignment&, int rowNum);
+    static bool testAlignmentNotChanged(const MultipleSequenceAlignment&);
 
     static const int rowsNum;
     static const int firstRowLength;

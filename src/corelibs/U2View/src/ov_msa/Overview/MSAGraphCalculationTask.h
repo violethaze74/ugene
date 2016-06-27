@@ -27,7 +27,7 @@
 #include <U2Core/BackgroundTaskRunner.h>
 #include <U2View/MSAEditorConsensusCache.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <QtGui/QPolygonF>
 
@@ -52,7 +52,7 @@ protected:
     void constructPolygon(QPolygonF &polygon);
     virtual int getGraphValue(int) const { return height; }
 
-    QScopedPointer<MAlignment> ma;
+    QScopedPointer<MultipleSequenceAlignment> ma;
     MemoryLocker memLocker;
     int msaLength;
     int seqNumber;
@@ -99,7 +99,7 @@ public:
                                            const QString &highlightingSchemeId,
                                            int width, int height);
 
-    static bool isCellHighlighted(const MAlignment &msa,
+    static bool isCellHighlighted(const MultipleSequenceAlignment &msa,
                                   MsaHighlightingScheme* highlightingScheme,
                                   MsaColorScheme* colorScheme,
                                   int seq, int pos,

@@ -23,7 +23,7 @@
 #include "MSACollapsibleModel.h"
 
 #include <U2Core/MAlignmentObject.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #if (QT_VERSION < 0x050000) //Qt 5
 #include <QtGui/QAction>
@@ -37,8 +37,8 @@ MSAEditorUndoFramework::MSAEditorUndoFramework(QObject* p, MAlignmentObject* ma)
 : QUndoStack(p), maObj(ma), lastSavedObjectVersion(0), maxMemUse(20*1024*1024), stateComplete(true)
 {
     if (maObj!=NULL) {
-        connect(maObj, SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-                       SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+        connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
+                       SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
         connect(maObj, SIGNAL(si_completeStateChanged(bool)), SLOT(sl_completeStateChanged(bool)));
         connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     }
@@ -71,7 +71,7 @@ void MSAEditorUndoFramework::sl_lockedStateChanged() {
     rAction->setEnabled(active && activeIdx + 1 < cnt);
 }
 
-void MSAEditorUndoFramework::applyUndoRedoAction(const MAlignment& ma) {
+void MSAEditorUndoFramework::applyUndoRedoAction(const MultipleSequenceAlignment& ma) {
     if (maObj) {
         assert(!maObj->isStateLocked());
         lastSavedObjectVersion = maObj->getModificationVersion()+1;
@@ -83,7 +83,7 @@ void MSAEditorUndoFramework::sl_completeStateChanged(bool _stateCompele){
     stateComplete = _stateCompele;
 }
 
-void MSAEditorUndoFramework::sl_alignmentChanged(const MAlignment& maBefore, const MAlignmentModInfo& mi) {
+void MSAEditorUndoFramework::sl_alignmentChanged(const MultipleSequenceAlignment& maBefore, const MAlignmentModInfo& mi) {
     if (maObj == NULL || lastSavedObjectVersion == maObj->getModificationVersion() ||
             ((maBefore.getRows() == maObj->getMAlignment().getRows()) && (maBefore.getRowNames() == maObj->getMAlignment().getRowNames())))
     {
@@ -93,7 +93,7 @@ void MSAEditorUndoFramework::sl_alignmentChanged(const MAlignment& maBefore, con
     if(!stateComplete){return;}
 
     lastSavedObjectVersion = maObj->getModificationVersion();
-    const MAlignment& maAfter = maObj->getMAlignment();
+    const MultipleSequenceAlignment& maAfter = maObj->getMAlignment();
     int memUseBefore = 0;
     int cntBefore = count();
     for (int i=0; i < cntBefore;i++) {

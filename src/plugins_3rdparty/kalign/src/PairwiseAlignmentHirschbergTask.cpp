@@ -11,7 +11,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MAlignmentObject.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -79,7 +79,7 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     alphabet = U2AlphabetUtils::getById(settings->alphabet);
     SAFE_POINT(alphabet != NULL, "Albhabet is invalid.", );
 
-    ma = new MAlignment(firstName + " vs. " + secondName, alphabet);
+    ma = new MultipleSequenceAlignment(firstName + " vs. " + secondName, alphabet);
     ma->addRow(firstName, first, os);
     CHECK_OP(os, );
     ma->addRow(secondName, second, os);
@@ -125,7 +125,7 @@ QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) {
             alignmentDoc = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(newFileUrl), localStateInfo);
             CHECK_OP(localStateInfo, res);
 
-            MAlignment resultMa = kalignSubTask->resultMA;
+            MultipleSequenceAlignment resultMa = kalignSubTask->resultMA;
 
             MAlignmentObject * docObject = MAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
             CHECK_OP(localStateInfo, res);

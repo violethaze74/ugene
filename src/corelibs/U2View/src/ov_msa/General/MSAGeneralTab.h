@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class MAlignment;
+class MultipleSequenceAlignment;
 class MAlignmentModInfo;
 class MSAEditor;
 
@@ -44,7 +44,7 @@ signals:
     void si_copyFormatted();
 
 public slots:
-    void sl_alignmentChanged(const MAlignment& al, const MAlignmentModInfo& modInfo);
+    void sl_alignmentChanged(const MultipleSequenceAlignment& al, const MAlignmentModInfo& modInfo);
     void sl_algorithmChanged(const QString& algoId);
     void sl_thresholdChanged(int value);
     void sl_algorithmSelectionChanged(int index);

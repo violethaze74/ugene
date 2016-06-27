@@ -55,7 +55,7 @@ void MAFFTSupportTaskSettings::reset() {
     inputFilePath="";
 }
 
-MAFFTSupportTask::MAFFTSupportTask(const MAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& _settings)
+MAFFTSupportTask::MAFFTSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run MAFFT alignment task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa),
       objRef(_objRef),
@@ -243,7 +243,7 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
                         lock = NULL;
                     }
                     else {
-                        stateInfo.setError("MAlignment object has been changed");
+                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
                         return res;
                     }
 

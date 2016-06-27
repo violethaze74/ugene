@@ -23,7 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -47,7 +47,7 @@ QString MSADistanceAlgorithmFactoryHammingRevCompl::getName() const {
 }
 
 
-MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHammingRevCompl::createAlgorithm(const MAlignment& ma, QObject* ) {
+MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHammingRevCompl::createAlgorithm(const MultipleSequenceAlignment& ma, QObject* ) {
     return new MSADistanceAlgorithmHammingRevCompl(this, ma);
 }
 
@@ -62,7 +62,7 @@ void MSADistanceAlgorithmHammingRevCompl::run() {
 
     DNATranslation* trans = compTT ;
     int nSeq = ma.getNumRows();
-    MAlignment revtransl;
+    MultipleSequenceAlignment revtransl;
     revtransl.setAlphabet(ma.getAlphabet());
     U2OpStatus2Log os;
     for (int i = 0; i < nSeq; i++) {

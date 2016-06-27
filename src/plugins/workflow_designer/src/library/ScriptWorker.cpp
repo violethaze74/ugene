@@ -29,7 +29,7 @@
 #include <U2Core/DNATranslation.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <U2Designer/DelegateEditors.h>
 

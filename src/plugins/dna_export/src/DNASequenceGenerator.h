@@ -30,7 +30,7 @@ namespace U2 {
 
 class GObject;
 class Document;
-class MAlignment;
+class MultipleSequenceAlignment;
 class DNAAlphabet;
 class LoadDocumentTask;
 class SaveDocumentTask;
@@ -94,7 +94,7 @@ public:
 
     static void evaluateBaseContent(const DNASequence& sequence, QMap<char, qreal>& result);
 
-    static void evaluateBaseContent(const MAlignment& ma, QMap<char, qreal>& result);
+    static void evaluateBaseContent(const MultipleSequenceAlignment& ma, QMap<char, qreal>& result);
 };
 
 class EvaluateBaseContentTask : public Task {

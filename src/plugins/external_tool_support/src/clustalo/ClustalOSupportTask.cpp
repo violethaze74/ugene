@@ -56,7 +56,7 @@ void ClustalOSupportTaskSettings::reset() {
     numberOfProcessors=1;
 }
 
-ClustalOSupportTask::ClustalOSupportTask(const MAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalOSupportTaskSettings& _settings)
+ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalOSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run ClustalO alignment task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa),
       objRef(_objRef),
@@ -227,7 +227,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                         lock = NULL;
                     }
                     else {
-                        stateInfo.setError("MAlignment object has been changed");
+                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
                         return res;
                     }
                     U2OpStatus2Log os;

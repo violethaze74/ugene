@@ -26,7 +26,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/Task.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <algorithm>
@@ -43,7 +43,7 @@ extern "C" {
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-void KalignAdapter::align(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti) {
+void KalignAdapter::align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
     if(ti.cancelFlag)  {
         return;
     }
@@ -85,7 +85,7 @@ void throwCancellingException() {
 
 }
 
-void KalignAdapter::alignUnsafe(const MAlignment& ma, MAlignment& res, TaskStateInfo& ti) {
+void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
     ti.progress = 0;
     int* tree = 0;
     quint32 a, b, c;

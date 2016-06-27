@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MALIGNMENT_H_
-#define _U2_MALIGNMENT_H_
+#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_H_
+#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_H_
 
 #include "MAlignmentInfo.h"
 
@@ -42,7 +42,7 @@ namespace U2 {
 #define MAlignment_TailedGapsPattern "\\-+$"
 
 class DNAAlphabet;
-class MAlignment;
+class MultipleSequenceAlignment;
 
 /**
  * A row in a multiple alignment structure.
@@ -52,7 +52,7 @@ class MAlignment;
  * it exactly equals to the row (offset always equals to zero).
  */
 class U2CORE_EXPORT MAlignmentRow {
-    friend class MAlignment;
+    friend class MultipleSequenceAlignment;
 
 public:
     /** Name of the row (equals to the sequence name), can be empty */
@@ -199,12 +199,12 @@ public:
 
 private:
     /** Do NOT create a row without an alignment! */
-    MAlignmentRow(MAlignment* al = NULL);
+    MAlignmentRow(MultipleSequenceAlignment* al = NULL);
 
     /** Creates a row in memory. */
-    MAlignmentRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MsaGap>& gaps, MAlignment* al);
+    MAlignmentRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MsaGap>& gaps, MultipleSequenceAlignment* al);
 
-    MAlignmentRow(const MAlignmentRow& r, MAlignment* al);
+    MAlignmentRow(const MAlignmentRow& r, MultipleSequenceAlignment* al);
 
     /** Splits input to sequence bytes and gaps model */
     static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MsaGap>& gapModel);
@@ -239,9 +239,9 @@ private:
     /** Removing gaps from the row between position 'pos' and 'pos + count' */
     void removeGapsFromGapModel(int pos, int count);
 
-    void setParentAlignment(MAlignment* newAl) { alignment = newAl; }
+    void setParentAlignment(MultipleSequenceAlignment* newAl) { alignment = newAl; }
 
-    MAlignment*         alignment;
+    MultipleSequenceAlignment*         alignment;
 
     /** The sequence of the row without gaps (cached) */
     DNASequence         sequence;
@@ -305,18 +305,18 @@ inline bool MAlignmentRow::operator!=(const MAlignmentRow& row) const {
  * There are minimal checks on the alignment's alphabet, but the client of the class
  * is expected to keep the conformance of the data and the alphabet.
  */
-class U2CORE_EXPORT MAlignment {
+class U2CORE_EXPORT MultipleSequenceAlignment {
 public:
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MAlignment(const QString& name = QString(),
+    MultipleSequenceAlignment(const QString& name = QString(),
                const DNAAlphabet* alphabet = NULL,
                const QList<MAlignmentRow>& rows = QList<MAlignmentRow>());
-    MAlignment(const MAlignment& m);
+    MultipleSequenceAlignment(const MultipleSequenceAlignment& m);
 
-    MAlignment & operator=(const MAlignment &other);
+    MultipleSequenceAlignment & operator=(const MultipleSequenceAlignment &other);
 
     /**
      * Clears the alignment. Makes alignment length == 0.
@@ -449,7 +449,7 @@ public:
      * Creates a new alignment from the sub-alignment. Do not trims the result.
      * Assumes that 'start' >= 0, and 'start + len' is less or equal than the alignment length.
      */
-    MAlignment mid(int start, int len) const;
+    MultipleSequenceAlignment mid(int start, int len) const;
 
     U2MsaGapModel getGapModel() const;
 
@@ -518,13 +518,13 @@ public:
      * Joins two alignments. Alignments must have the same size and alphabet.
      * Increases the alignment length.
      */
-    MAlignment& operator+=(const MAlignment& ma);
+    MultipleSequenceAlignment& operator+=(const MultipleSequenceAlignment& ma);
 
     /**
      * Compares two alignments: lengths, alphabets, rows and infos (that include names).
      */
-    bool operator==(const MAlignment& ma) const;
-    bool operator!=(const MAlignment& ma) const;
+    bool operator==(const MultipleSequenceAlignment& ma) const;
+    bool operator!=(const MultipleSequenceAlignment& ma) const;
 
 
     /** Estimates memory size consumed by alignment structure in bytes */
@@ -567,7 +567,7 @@ private:
     static bool registerMeta;
 };
 
-inline MAlignmentRow& MAlignment::getRow(int rowIndex) {
+inline MAlignmentRow& MultipleSequenceAlignment::getRow(int rowIndex) {
     static MAlignmentRow emptyRow;
     int rowsCount = rows.count();
     SAFE_POINT(0 != rowsCount, "No rows!", emptyRow);
@@ -575,7 +575,7 @@ inline MAlignmentRow& MAlignment::getRow(int rowIndex) {
     return rows[rowIndex];
 }
 
-inline const MAlignmentRow& MAlignment::getRow(int rowIndex) const {
+inline const MAlignmentRow& MultipleSequenceAlignment::getRow(int rowIndex) const {
     static MAlignmentRow emptyRow;
     int rowsCount = rows.count();
     SAFE_POINT(0 != rowsCount, "No rows!", emptyRow);
@@ -585,6 +585,6 @@ inline const MAlignmentRow& MAlignment::getRow(int rowIndex) const {
 
 }//namespace
 
-Q_DECLARE_METATYPE(U2::MAlignment)
+Q_DECLARE_METATYPE(U2::MultipleSequenceAlignment)
 
 #endif

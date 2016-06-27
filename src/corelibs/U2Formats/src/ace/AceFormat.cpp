@@ -467,7 +467,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             return;
         }
 
-        MAlignment al(consName);
+        MultipleSequenceAlignment al(consName);
         al.addRow(consName, consensus, os);
         CHECK_OP(os, );
 

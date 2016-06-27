@@ -34,7 +34,7 @@ class TmpDbiHandle;
 class PhylipCmdlineTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    PhylipCmdlineTask(const MAlignment &msa, const CreatePhyTreeSettings &settings);
+    PhylipCmdlineTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings);
     ~PhylipCmdlineTask();
 
     void prepare();

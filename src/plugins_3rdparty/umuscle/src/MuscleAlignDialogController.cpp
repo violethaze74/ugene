@@ -39,7 +39,7 @@
 
 namespace U2 {
 
-MuscleAlignDialogController::MuscleAlignDialogController(QWidget* w, const MAlignment& _ma, MuscleTaskSettings& _settings) 
+MuscleAlignDialogController::MuscleAlignDialogController(QWidget* w, const MultipleSequenceAlignment& _ma, MuscleTaskSettings& _settings) 
     : QDialog(w), ma(_ma), settings(_settings)
 {
     setupUi(this);

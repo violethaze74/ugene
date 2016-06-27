@@ -29,7 +29,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowIOTasks.h>
@@ -104,7 +104,7 @@ public:
 
     void prepare();
     ReportResult report();
-    MAlignment getResult();
+    MultipleSequenceAlignment getResult();
 
 private:
     void releaseModStep(const QString error = QString());

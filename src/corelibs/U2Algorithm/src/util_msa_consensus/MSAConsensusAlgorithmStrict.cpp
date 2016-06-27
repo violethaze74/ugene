@@ -21,7 +21,7 @@
 
 #include "MSAConsensusAlgorithmStrict.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include "MSAConsensusUtils.h"
 
 #include <QtCore/QVector>
@@ -43,14 +43,14 @@ QString MSAConsensusAlgorithmFactoryStrict::getName() const  {
     return tr("Strict");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MAlignment&, QObject* p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleSequenceAlignment&, QObject* p) {
     return new MSAConsensusAlgorithmStrict(this, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmStrict::getConsensusChar(const MAlignment& msa, int column, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleSequenceAlignment& msa, int column, const QVector<qint64> &seqIdx) const {
     QVector<int> freqsByChar(256, 0);
     int nonGaps = 0;
     uchar topChar = MSAConsensusUtils::getColumnFreqs(msa, column, freqsByChar, nonGaps, seqIdx);

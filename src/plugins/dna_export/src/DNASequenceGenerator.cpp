@@ -120,7 +120,7 @@ void DNASequenceGenerator::evaluateBaseContent(const DNASequence& sequence, QMap
     evaluate(sequence.seq, result);
 }
 
-void DNASequenceGenerator::evaluateBaseContent(const MAlignment& ma, QMap<char, qreal>& result) {
+void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment& ma, QMap<char, qreal>& result) {
     QList< QMap<char, qreal> > rowsContents;
     foreach(const MAlignmentRow& row, ma.getRows()) {
         QMap<char, qreal> rowContent;
@@ -303,7 +303,7 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc( Document *source )
     const QString baseSeqName = cfg.getSequenceName( );
     const QList<U2Sequence> seqs = generateTask->getResults( );
 
-    MAlignment msa( tr( "Generated MSA" ), alp );
+    MultipleSequenceAlignment msa( tr( "Generated MSA" ), alp );
     DbiConnection con( dbiRef, stateInfo );
 
     for ( int sequenceNum = 0, totalSeqCount = seqs.size( ); sequenceNum < totalSeqCount;

@@ -39,7 +39,7 @@
 #include <U2Lang/CoreLibConstants.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 /* TRANSLATOR U2::WeightMatrixIO */
 /* TRANSLATOR U2::LocalWorkflow::PWMatrixBuildWorker */
@@ -140,7 +140,7 @@ Task* PWMatrixBuildWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
 
         Task* t = new PWMatrixBuildTask(cfg, msa);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -230,7 +230,7 @@ Task* PFMatrixBuildWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
 
         Task* t = new PFMatrixBuildTask(cfg, msa);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));

@@ -55,7 +55,7 @@ class MSAEditorUI;
 class GObjectView;
 class MsaColorScheme;
 class MsaHighlightingScheme;
-class MAlignment;
+class MultipleSequenceAlignment;
 class MAlignmentModInfo;
 class MAlignmentObject;
 class MsaColorSchemeFactory;
@@ -351,7 +351,7 @@ protected:
 private slots:
     void sl_onHScrollMoved(int pos);
     void sl_onVScrollMoved(int pos);
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&);
 
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);

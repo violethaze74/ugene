@@ -21,7 +21,7 @@
 
 #include "MSADistanceAlgorithmHamming.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -41,7 +41,7 @@ QString MSADistanceAlgorithmFactoryHamming::getName() const {
 }
 
 
-MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHamming::createAlgorithm(const MAlignment& ma, QObject* ) {
+MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHamming::createAlgorithm(const MultipleSequenceAlignment& ma, QObject* ) {
     MSADistanceAlgorithm* res = new MSADistanceAlgorithmHamming(this, ma);
      if(flags.testFlag(DistanceAlgorithmFlag_ExcludeGaps)){
         res->setExcludeGaps(true);

@@ -269,7 +269,7 @@ void ComposeResultSubTask::prepare() {
 }
 
 void ComposeResultSubTask::run() {
-    MAlignment alignment = createAlignment();
+    MultipleSequenceAlignment alignment = createAlignment();
     CHECK_OP(stateInfo, );
 
     createAnnotations(alignment);
@@ -284,8 +284,8 @@ SharedDbiDataHandler ComposeResultSubTask::getAnnotations() const {
     return annotations;
 }
 
-MAlignment ComposeResultSubTask::createAlignment() {
-    MAlignment result("Aligned reads");
+MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
+    MultipleSequenceAlignment result("Aligned reads");
 
     DNASequence referenceSeq = getReferenceSequence();
     CHECK_OP(stateInfo, result);
@@ -333,7 +333,7 @@ MAlignment ComposeResultSubTask::createAlignment() {
     return msaObject->getMAlignment();
 }
 
-void ComposeResultSubTask::createAnnotations(const MAlignment &alignment) {
+void ComposeResultSubTask::createAnnotations(const MultipleSequenceAlignment &alignment) {
     const MAlignmentRow &referenceRow = alignment.getRow(0);
     QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceRow.getName() + " features", storage->getDbiRef()));
 
@@ -455,7 +455,7 @@ QList<U2MsaGap> ComposeResultSubTask::getShiftedGaps(int rowNum) {
     return result;
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoReference(MAlignment &alignment, const QList<U2MsaGap> &gaps) {
+void ComposeResultSubTask::insertShiftedGapsIntoReference(MultipleSequenceAlignment &alignment, const QList<U2MsaGap> &gaps) {
     for (int i=gaps.size() - 1; i>=0; i--) {
         U2MsaGap gap = gaps[i];
         alignment.insertGaps(0, gap.offset, gap.gap, stateInfo);
@@ -463,7 +463,7 @@ void ComposeResultSubTask::insertShiftedGapsIntoReference(MAlignment &alignment,
     }
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoRead(MAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps) {
+void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps) {
     QList<U2MsaGap> ownGaps = getShiftedGaps(readNum);
     CHECK_OP(stateInfo, );
 
@@ -611,7 +611,7 @@ void KAlignSubTask::createAlignment() {
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), );
 
-    MAlignment alignment("msa", refObject->getAlphabet());
+    MultipleSequenceAlignment alignment("msa", refObject->getAlphabet());
     QByteArray refData = refObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
     alignment.addRow(refObject->getSequenceName(), refData, stateInfo);
@@ -831,7 +831,7 @@ void PairwiseAlignmentTask::createSWAlignment(KAlignSubTask *task) {
     QByteArray referenceData = refObject->getSequenceData(task->getCoreRegion(), stateInfo);
     CHECK_OP(stateInfo, );
 
-    MAlignment alignment("msa", refObject->getAlphabet());
+    MultipleSequenceAlignment alignment("msa", refObject->getAlphabet());
     alignment.addRow(refObject->getSequenceName(), referenceData, stateInfo);
     CHECK_OP(stateInfo, );
     QByteArray readData = readObject->getWholeSequenceData(stateInfo);

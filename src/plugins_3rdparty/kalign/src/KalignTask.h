@@ -63,24 +63,24 @@ public:
 class KalignTask : public TLSTask {
     Q_OBJECT
 public:
-    KalignTask(const MAlignment& ma, const KalignTaskSettings& config);
+    KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSettings& config);
     
     void _run();
     void doAlign();
     ReportResult report();
     
     KalignTaskSettings          config;
-    MAlignment                  inputMA;
-    MAlignment                  resultMA;
+    MultipleSequenceAlignment                  inputMA;
+    MultipleSequenceAlignment                  resultMA;
     
-    MAlignment                  inputSubMA;
-    MAlignment                  resultSubMA;
+    MultipleSequenceAlignment                  inputSubMA;
+    MultipleSequenceAlignment                  resultSubMA;
     
 protected:
     TLSContext* createContextInstance();
 };
 
-//locks MAlignment object and propagate KalignTask results to it
+//locks MultipleSequenceAlignment object and propagate KalignTask results to it
 class  KalignGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:

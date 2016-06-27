@@ -36,17 +36,17 @@
 
 namespace U2 {
 
-MSAMemento::MSAMemento():lastState(MAlignment()){}
+MSAMemento::MSAMemento():lastState(MultipleSequenceAlignment()){}
 
-MAlignment MSAMemento::getState() const{
+MultipleSequenceAlignment MSAMemento::getState() const{
     return lastState;
 }
 
-void MSAMemento::setState(const MAlignment& state){
+void MSAMemento::setState(const MultipleSequenceAlignment& state){
     lastState = state;
 }
 
-MAlignmentObject::MAlignmentObject(const QString& name, const U2EntityRef& msaRef, const QVariantMap& hintsMap, const MAlignment &alnData)
+MAlignmentObject::MAlignmentObject(const QString& name, const U2EntityRef& msaRef, const QVariantMap& hintsMap, const MultipleSequenceAlignment &alnData)
     : GObject(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, name, hintsMap), cachedMAlignment(alnData), memento(new MSAMemento)
 {
     entityRef = msaRef;
@@ -73,7 +73,7 @@ void MAlignmentObject::setTrackMod(U2TrackModType trackMod, U2OpStatus& os) {
     objDbi->setTrackModType(entityRef.entityId, trackMod, os);
 }
 
-const MAlignment & MAlignmentObject::getMAlignment() const {
+const MultipleSequenceAlignment & MAlignmentObject::getMAlignment() const {
     ensureDataLoaded();
     return cachedMAlignment;
 }
@@ -83,7 +83,7 @@ void MAlignmentObject::updateCachedMAlignment(const MAlignmentModInfo &mi, const
     ensureDataLoaded();
     emit si_startMsaUpdating();
 
-    MAlignment maBefore = cachedMAlignment;
+    MultipleSequenceAlignment maBefore = cachedMAlignment;
     QString oldName = maBefore.getName();
 
     U2OpStatus2Log os;
@@ -155,7 +155,7 @@ void MAlignmentObject::updateCachedMAlignment(const MAlignmentModInfo &mi, const
     }
 }
 
-void MAlignmentObject::setMAlignment(const MAlignment& newMa, MAlignmentModInfo mi, const QVariantMap& hints) {
+void MAlignmentObject::setMAlignment(const MultipleSequenceAlignment& newMa, MAlignmentModInfo mi, const QVariantMap& hints) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
     U2OpStatus2Log os;
@@ -167,7 +167,7 @@ void MAlignmentObject::setMAlignment(const MAlignment& newMa, MAlignmentModInfo 
 }
 
 void MAlignmentObject::copyGapModel(const QList<MAlignmentRow> &copyRows) {
-    const MAlignment &tmp = getMAlignment();
+    const MultipleSequenceAlignment &tmp = getMAlignment();
     const QList<MAlignmentRow> &oldRows = tmp.getRows();
 
     SAFE_POINT(oldRows.count() == copyRows.count(), "Different rows count", );
@@ -184,12 +184,12 @@ void MAlignmentObject::copyGapModel(const QList<MAlignmentRow> &copyRows) {
 }
 
 char MAlignmentObject::charAt(int seqNum, int pos) const {
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     return msa.charAt(seqNum, pos);
 }
 
 void MAlignmentObject::saveState(){
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     emit si_completeStateChanged(false);
     memento->setState(msa);
 }
@@ -198,7 +198,7 @@ void MAlignmentObject::releaseState() {
     if(!isStateLocked()) {
         emit si_completeStateChanged(true);
 
-        MAlignment maBefore = memento->getState();
+        MultipleSequenceAlignment maBefore = memento->getState();
         CHECK(maBefore != getMAlignment(), );
         setModified(true);
 
@@ -222,7 +222,7 @@ GObject* MAlignmentObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, cons
     gHints->setAll(hints);
     const QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-    MAlignment msa = getMAlignment();
+    MultipleSequenceAlignment msa = getMAlignment();
     MAlignmentObject *clonedObj = MAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
     CHECK_OP_EXT(os, delete gHints, NULL);
 
@@ -233,7 +233,7 @@ GObject* MAlignmentObject::clone(const U2DbiRef& dstDbiRef, U2OpStatus& os, cons
 
 void MAlignmentObject::insertGap(U2Region rows, int pos, int count) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     int startSeq = rows.startPos;
     int endSeq = startSeq + rows.length;
 
@@ -256,7 +256,7 @@ void MAlignmentObject::insertGap(U2Region rows, int pos, int count) {
 int MAlignmentObject::getMaxWidthOfGapRegion( const U2Region &rows, int pos, int maxGaps,
     U2OpStatus &os )
 {
-    const MAlignment &msa = getMAlignment( );
+    const MultipleSequenceAlignment &msa = getMAlignment( );
     SAFE_POINT_EXT( U2Region( 0, msa.getNumRows( ) ).contains( rows ) && 0 <= pos && 0 <= maxGaps
         && msa.getLength( ) > pos, os.setError( "Illegal parameters of the gap region!" ), 0 );
 
@@ -326,7 +326,7 @@ int MAlignmentObject::deleteGap( const U2Region &rows, int pos, int maxGaps, U2O
     QList<qint64> modifiedRowIds;
     modifiedRowIds.reserve( rows.length );
 
-    MAlignment msa = getMAlignment( );
+    MultipleSequenceAlignment msa = getMAlignment( );
     // iterate through given rows to update each of them in DB
     for ( int rowCount = rows.startPos; rowCount < rows.endPos( ); ++rowCount ) {
         msa.removeChars( rowCount, pos, removingGapColumnCount, os );
@@ -353,7 +353,7 @@ int MAlignmentObject::deleteGap( const U2Region &rows, int pos, int maxGaps, U2O
 void MAlignmentObject::removeRow(int rowIdx) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < msa.getNumRows(), "Invalid row index!", );
     const MAlignmentRow& row = msa.getRow(rowIdx);
     qint64 rowId = row.getRowDBInfo().rowId;
@@ -375,7 +375,7 @@ void MAlignmentObject::removeRow(int rowIdx) {
 void MAlignmentObject::updateRow(int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MsaGap>& gapModel, U2OpStatus& os) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < msa.getNumRows(), "Invalid row index!", );
     const MAlignmentRow& row = msa.getRow(rowIdx);
     qint64 rowId = row.getRowDBInfo().rowId;
@@ -403,7 +403,7 @@ void MAlignmentObject::setGObjectName(const QString& newName) {
     }
 }
 
-QList<qint64> getRowsAffectedByDeletion( const MAlignment &msa,
+QList<qint64> getRowsAffectedByDeletion( const MultipleSequenceAlignment &msa,
     const QList<qint64> &removedRowIds )
 {
     QList<qint64> rowIdsAffectedByDeletion;
@@ -451,7 +451,7 @@ inline QList<T> mergeLists( const QList<T> &first, const QList<T> &second ) {
 void MAlignmentObject::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
     QList<qint64> modifiedRowIds;
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     const QList<MAlignmentRow> &msaRows = msa.getRows();
     SAFE_POINT(nRows > 0 && startRow >= 0 && startRow + nRows <= msaRows.size() && startPos + nBases <= msa.getLength(), "Invalid parameters!", );
     QList<MAlignmentRow>::ConstIterator it = msaRows.begin() + startRow;
@@ -490,7 +490,7 @@ void MAlignmentObject::removeRegion(int startPos, int startRow, int nBases, int 
 
 void MAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     SAFE_POINT(rowIndex >= 0 && startPos + 1 <= msa.getLength(), "Invalid parameters!", );
     qint64 modifiedRowId = msa.getRow(rowIndex).getRowId();
 
@@ -529,7 +529,7 @@ void MAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar
 void MAlignmentObject::renameRow(int rowIdx, const QString& newName) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < msa.getNumRows(), "Invalid row index!", );
     const MAlignmentRow& row = msa.getRow(rowIdx);
     qint64 rowId = row.getRowDBInfo().rowId;
@@ -545,7 +545,7 @@ void MAlignmentObject::renameRow(int rowIdx, const QString& newName) {
 
 void MAlignmentObject::crop(U2Region window, const QSet<QString>& rowNames) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
 
     QList<qint64> rowIds;
     for (int i = 0; i < msa.getNumRows(); ++i) {
@@ -564,7 +564,7 @@ void MAlignmentObject::crop(U2Region window, const QSet<QString>& rowNames) {
 }
 
 QList<qint64> MAlignmentObject::getColumnsWithGaps(int requiredGapCount) const {
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     const int length = msa.getLength();
     if (GAP_COLUMN_ONLY == requiredGapCount) {
         requiredGapCount = msa.getNumRows();
@@ -630,7 +630,7 @@ void MAlignmentObject::deleteColumnWithGaps(int requiredGapCount) {
 void MAlignmentObject::updateGapModel(QMap<qint64, QList<U2MsaGap> > rowsGapModel, U2OpStatus& os) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
 
     QList<qint64> modifiedRowIds;
     foreach (qint64 rowId, rowsGapModel.keys()) {
@@ -651,7 +651,7 @@ void MAlignmentObject::updateGapModel(QMap<qint64, QList<U2MsaGap> > rowsGapMode
 
 QMap<qint64, QList<U2MsaGap> > MAlignmentObject::getGapModel() const {
     QMap<qint64, QList<U2MsaGap> > rowsGapModel;
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     foreach (const MAlignmentRow& curRow, msa.getRows()) {
         rowsGapModel[curRow.getRowId()] = curRow.getGapModel();
     }
@@ -662,7 +662,7 @@ void MAlignmentObject::moveRowsBlock(int firstRow, int numRows, int shift)
 {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     QList<qint64> rowIds = msa.getRowsIds();
     QList<qint64> rowsToMove;
 
@@ -730,7 +730,7 @@ int MAlignmentObject::shiftRegion( int startPos, int startRow, int nBases, int n
 
 bool MAlignmentObject::isRegionEmpty(int startPos, int startRow, int numChars, int numRows) const
 {
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     bool isBlockEmpty = true;
     for (int row = startRow; row < startRow + numRows && isBlockEmpty; ++row ) {
         for( int pos = startPos; pos < startPos + numChars; ++pos ) {
@@ -745,29 +745,29 @@ bool MAlignmentObject::isRegionEmpty(int startPos, int startRow, int numChars, i
 }
 
 const DNAAlphabet* MAlignmentObject::getAlphabet() const {
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     return msa.getAlphabet();
 }
 
 qint64 MAlignmentObject::getLength() const {
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     return msa.getLength();
 }
 
 qint64 MAlignmentObject::getNumRows() const {
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     return msa.getNumRows();
 }
 
 const MAlignmentRow& MAlignmentObject::getRow(int row) const {
-//    MAlignment msa = getMAlignment();
+//    MultipleSequenceAlignment msa = getMAlignment();
 //    return msa.getRow(row);
     ensureDataLoaded();
     return cachedMAlignment.getRow(row);
 }
 
 int MAlignmentObject::getRowPosById(qint64 rowId) const {
-    const MAlignment &msa = getMAlignment();
+    const MultipleSequenceAlignment &msa = getMAlignment();
     return msa.getRowsIds().indexOf(rowId);
 }
 
@@ -782,7 +782,7 @@ void MAlignmentObject::sortRowsByList(const QStringList& order) {
     GTIMER(c, t, "MAlignmentObject::sortRowsByList");
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
-    MAlignment msa = getMAlignment();
+    MultipleSequenceAlignment msa = getMAlignment();
     msa.sortRowsByList(order);
     CHECK(msa.getRowsIds() != cachedMAlignment.getRowsIds(), );
 

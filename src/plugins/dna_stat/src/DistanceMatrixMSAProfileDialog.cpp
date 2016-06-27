@@ -62,7 +62,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
     MAlignmentObject* msaObj = ctx->getMSAObject();
     if (msaObj != NULL) {
         QVector<U2Region> unitedRows;
-        MAlignment ma = msaObj->getMAlignment();
+        MultipleSequenceAlignment ma = msaObj->getMAlignment();
         ma.sortRowsBySimilarity(unitedRows);
         if(unitedRows.size() < 2)
             groupStatisticsCheck->setEnabled(false);

@@ -50,7 +50,7 @@ namespace U2 {
    Note, that we do not destroy hmm->abc here, caller should delete it too.
    Don't worry, on exception we'll catch it here
  */
-P7_HMM * UHMM3Build::build( const MAlignment & malignment, const UHMM3BuildSettings & settings ,TaskStateInfo & ti ) {
+P7_HMM * UHMM3Build::build( const MultipleSequenceAlignment & malignment, const UHMM3BuildSettings & settings ,TaskStateInfo & ti ) {
     ESL_ALPHABET*   abc = NULL;
     P7_BG*          bg  = NULL;
     P7_BUILDER*     bld = NULL;

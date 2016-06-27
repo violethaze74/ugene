@@ -24,7 +24,7 @@
 
 #include <U2Core/global.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MAlignmentInfo.h>
 
 #if (QT_VERSION < 0x050000) //Qt 5
@@ -46,7 +46,7 @@ enum SequenceType {Auto, NA, AA};
 class U2VIEW_EXPORT AlignmentLogoSettings {
 public:
 
-    AlignmentLogoSettings(const MAlignment& _ma) : ma(_ma) {
+    AlignmentLogoSettings(const MultipleSequenceAlignment& _ma) : ma(_ma) {
         for (int i = 0; i < 256; i++) {
             colorScheme[i] = Qt::black;
         }
@@ -105,7 +105,7 @@ public:
         colorScheme.insert('W', Qt::blue);*/
     }
 
-    MAlignment              ma;
+    MultipleSequenceAlignment              ma;
     SequenceType            sequenceType;
     int                     startPos;
     int                     len;

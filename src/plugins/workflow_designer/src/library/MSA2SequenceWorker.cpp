@@ -32,7 +32,7 @@
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MSAUtils.h>
 
 namespace U2 {
@@ -64,7 +64,7 @@ Task * Alignment2SequenceWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &ma = msaObj->getMAlignment();
+        const MultipleSequenceAlignment &ma = msaObj->getMAlignment();
 
         if(ma.isEmpty()) {
             return new FailTask(tr("empty input alignment"));

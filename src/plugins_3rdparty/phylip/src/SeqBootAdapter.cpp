@@ -68,22 +68,22 @@ QString SeqBoot::getTmpFileTemplate(){
 
 
 void SeqBoot::initGenerSeq(int reps, int rowC, int seqLen){
-    generatedSeq = QVector<MAlignment*>(reps);
+    generatedSeq = QVector<MultipleSequenceAlignment*>(reps);
     this->seqLen = seqLen;
     seqRowCount = rowC;
         
     for(int i = 0; i < reps; i++){
-        generatedSeq[i] = new MAlignment(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
+        generatedSeq[i] = new MultipleSequenceAlignment(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
     }
     
 }
 
-const MAlignment& SeqBoot::getMSA(int pos) const {
+const MultipleSequenceAlignment& SeqBoot::getMSA(int pos) const {
     return *generatedSeq[pos];
 
 }
 
-void SeqBoot::generateSequencesFromAlignment( const MAlignment& ma, const CreatePhyTreeSettings& settings ){
+void SeqBoot::generateSequencesFromAlignment( const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& settings ){
     if(!settings.bootstrap){
         return ;
     }

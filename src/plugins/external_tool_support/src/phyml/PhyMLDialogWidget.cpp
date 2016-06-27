@@ -64,7 +64,7 @@ const QString PhyMlSettingsPreffixes::TreeImprovementType(CreatePhyTreeWidget::s
 const QString PhyMlSettingsPreffixes::TreeSearchingType(CreatePhyTreeWidget::settingsPath() + "/phyml_search");
 const QString PhyMlSettingsPreffixes::UserTreePath(CreatePhyTreeWidget::settingsPath() + "/user_tree");
 
-PhyMlWidget::PhyMlWidget(const MAlignment &ma, QWidget *parent) :
+PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
     CreatePhyTreeWidget(parent)
 {
     setupUi(this);
@@ -80,7 +80,7 @@ PhyMlWidget::PhyMlWidget(const MAlignment &ma, QWidget *parent) :
     connect(inputFilePathButton, SIGNAL(clicked ()), SLOT(sl_inputPathButtonClicked()));
 }
 
-void PhyMlWidget::fillComboBoxes(const MAlignment& ma) {
+void PhyMlWidget::fillComboBoxes(const MultipleSequenceAlignment& ma) {
     DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
     if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)){
         isAminoAcid = false;

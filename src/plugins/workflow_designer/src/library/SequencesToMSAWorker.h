@@ -25,7 +25,7 @@
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/DNASequence.h>
 
 namespace U2 {
@@ -70,10 +70,10 @@ public:
     MSAFromSequencesTask(const QList<DNASequence>& sequences)
         : Task(tr("MSAFromSequencesTask"), TaskFlag_None), sequences_(sequences), ma(NULL) {}
     void run();
-    MAlignment getResult() const { return ma; }
+    MultipleSequenceAlignment getResult() const { return ma; }
 private:
     QList<DNASequence> sequences_;
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
 };
 
 } //LocalWorkflow namespace

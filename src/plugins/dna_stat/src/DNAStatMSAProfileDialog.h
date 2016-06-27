@@ -26,11 +26,11 @@
 #include <QSet>
 
 #include <U2Core/global.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
 #include <U2Core/Task.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "ui_DNAStatMSAProfileDialog.h"
 
@@ -79,7 +79,7 @@ public:
 
     QString                         profileName; // usually object name
     QString                         profileURL;  // document url
-    MAlignment                      ma;
+    MultipleSequenceAlignment                      ma;
     bool                            usePercents; //report percents but not counts
     DNAStatMSAProfileOutputFormat   outFormat;
     QString                         outURL;

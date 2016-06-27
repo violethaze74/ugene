@@ -152,11 +152,11 @@ SharedDbiDataHandler DbiDataStorage::putSequence(const DNASequence &dnaSeq) {
     return handler;
 }
 
-SharedDbiDataHandler DbiDataStorage::putAlignment(const MAlignment &al) {
+SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleSequenceAlignment &al) {
     assert(NULL != dbiHandle);
 
     U2OpStatus2Log os;
-    MAlignment copiedAlignment = al;
+    MultipleSequenceAlignment copiedAlignment = al;
     QScopedPointer<MAlignmentObject> obj(MAlignmentImporter::createAlignment(dbiHandle->getDbiRef(), copiedAlignment, os));
     CHECK_OP(os, SharedDbiDataHandler());
 

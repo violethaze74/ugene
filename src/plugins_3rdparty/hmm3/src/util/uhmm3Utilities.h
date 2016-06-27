@@ -24,7 +24,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <hmmer3/hmmer.h>
 #include <hmmer3/easel/esl_scorematrix.h>
@@ -43,7 +43,7 @@ public:
     
     static int convertAlphabetType( const DNAAlphabet * al );
     
-    static ESL_MSA * convertMSA( const MAlignment & ma );
+    static ESL_MSA * convertMSA( const MultipleSequenceAlignment & ma );
     
     static QList<const P7_HMM *> getHmmsFromDocument( Document* doc, TaskStateInfo& ti );
 

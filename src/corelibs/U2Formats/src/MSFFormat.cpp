@@ -115,7 +115,7 @@ int MSFFormat::getCheckSum(const QByteArray& seq) {
 }
 
 void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& ti) {
-    MAlignment al(io->getURL().baseFileName());
+    MultipleSequenceAlignment al(io->getURL().baseFileName());
 
     //skip comments
     int checkSum = -1;
@@ -265,7 +265,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "MSF entry storing: NULL alignment object", );
 
-    const MAlignment& ma = obj->getMAlignment();
+    const MultipleSequenceAlignment& ma = obj->getMAlignment();
 
     //precalculate seq writing params
     int maxNameLen = 0, maLen = ma.getLength(), checkSum = 0;

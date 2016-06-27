@@ -35,19 +35,19 @@
 
 namespace U2 { 
 
-class MAlignment;
+class MultipleSequenceAlignment;
 class TaskStateInfo;
 class PhyTreeGeneratorTask;
 
 class NeighborJoinAdapter : public PhyTreeGenerator {
 public:
-    Task * createCalculatePhyTreeTask(const MAlignment& ma, const CreatePhyTreeSettings& s);
-    CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MAlignment &ma, QWidget *parent = NULL);
+    Task * createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s);
+    CreatePhyTreeWidget *createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent = NULL);
 };
 
 class NeighborJoinCalculateTreeTask: public PhyTreeGeneratorTask {
 public:
-    NeighborJoinCalculateTreeTask(const MAlignment &ma, const CreatePhyTreeSettings &s);
+    NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s);
     void run();
 
 private:

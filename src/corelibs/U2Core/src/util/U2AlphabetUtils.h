@@ -29,7 +29,7 @@
 #include <U2Core/U2Alphabet.h>
 
 namespace U2 {
-class MAlignment;
+class MultipleSequenceAlignment;
 
 class DNAAlphabetComparator {
 public:
@@ -111,9 +111,9 @@ public:
 
     static char getDefaultSymbol(const U2AlphabetId& alphaId);
 
-    static void assignAlphabet(MAlignment& ma);
+    static void assignAlphabet(MultipleSequenceAlignment& ma);
 
-    static void assignAlphabet(MAlignment& ma, char ignore);
+    static void assignAlphabet(MultipleSequenceAlignment& ma, char ignore);
 
 
     static const DNAAlphabet* getById(const U2AlphabetId& id) {return getById(id.id);}

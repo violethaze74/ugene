@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-PhyTreeGeneratorTask::PhyTreeGeneratorTask(const MAlignment& ma, const CreatePhyTreeSettings& _settings)
+PhyTreeGeneratorTask::PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
 : Task(PhyTreeGeneratorTask::tr("Calculating Phylogenetic Tree"), TaskFlag_FailOnSubtaskError), inputMA(ma), settings(_settings)
 {
     tpm = Task::Progress_Manual;
@@ -41,7 +41,7 @@ Task::ReportResult PhyTreeGeneratorTask::report() {
     return ReportResult_Finished;
 }
 
-PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const MAlignment& ma, const CreatePhyTreeSettings& _settings)
+PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
 :Task(PhyTreeGeneratorLauncherTask::tr("Calculating Phylogenetic Tree"), TaskFlag_FailOnSubtaskError), inputMA(ma), settings(_settings), task(NULL){
     tpm = Task::Progress_SubTasksBased;
 }
@@ -77,7 +77,7 @@ void PhyTreeGeneratorLauncherTask::sl_onCalculationCanceled() {
     cancel();
 }
 
-void SeqNamesConvertor::replaceNamesWithAlphabeticIds(MAlignment& ma) {
+void SeqNamesConvertor::replaceNamesWithAlphabeticIds(MultipleSequenceAlignment& ma) {
     QStringList rows = ma.getRowNames();
 
     int rowsNum = ma.getNumRows();

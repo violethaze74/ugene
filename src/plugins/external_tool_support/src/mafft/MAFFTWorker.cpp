@@ -167,7 +167,7 @@ Task* MAFFTWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
 
         if (msa.isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to MAFFT.").arg(msa.getName()));
@@ -205,7 +205,7 @@ void MAFFTWorker::sl_taskFinished() {
 void MAFFTWorker::cleanup() {
 }
 
-void MAFFTWorker::send(const MAlignment &msa) {
+void MAFFTWorker::send(const MultipleSequenceAlignment &msa) {
     SAFE_POINT(NULL != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;

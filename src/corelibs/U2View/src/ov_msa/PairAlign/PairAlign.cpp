@@ -187,7 +187,7 @@ void PairAlign::connectSignals() {
     connect(firstSeqSelectorWC,         SIGNAL(si_selectionChanged()),         SLOT(sl_selectorTextChanged()));
     connect(secondSeqSelectorWC,        SIGNAL(si_selectionChanged()),         SLOT(sl_selectorTextChanged()));
     connect(msa->getMSAObject(),        SIGNAL(si_lockedStateChanged()),       SLOT(sl_checkState()));
-    connect(msa->getMSAObject(),        SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)), SLOT(sl_alignmentChanged()));
+    connect(msa->getMSAObject(),        SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 void PairAlign::sl_checkState(){
@@ -264,8 +264,8 @@ void PairAlign::updatePercentOfSimilarity() {
     SAFE_POINT(NULL != distanceFactory, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
-    MAlignment ma;
-    const MAlignment &currentAlignment = msa->getMSAObject()->getMAlignment();
+    MultipleSequenceAlignment ma;
+    const MultipleSequenceAlignment &currentAlignment = msa->getMSAObject()->getMAlignment();
     ma.addRow(firstSeqSelectorWC->text(),
         currentAlignment.getRowByRowId(firstSeqSelectorWC->sequenceId(), os).getData(), -1, os);
     CHECK_OP(os, );

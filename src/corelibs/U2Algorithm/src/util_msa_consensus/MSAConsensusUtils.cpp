@@ -22,25 +22,25 @@
 #include "MSAConsensusUtils.h"
 #include "MSAConsensusAlgorithm.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <QtCore/QVector>
 #include <QtCore/QPair>
 
 namespace U2 {
 
-void MSAConsensusUtils::updateConsensus(const MAlignment& msa, QByteArray& cons, MSAConsensusAlgorithm* algo) {
+void MSAConsensusUtils::updateConsensus(const MultipleSequenceAlignment& msa, QByteArray& cons, MSAConsensusAlgorithm* algo) {
     U2Region r(0, msa.getLength());
     updateConsensus(msa, r, cons, algo);
 }
 
-void MSAConsensusUtils::updateConsensus(const MAlignment& msa, const U2Region& region, QByteArray& cons, MSAConsensusAlgorithm* algo) {
+void MSAConsensusUtils::updateConsensus(const MultipleSequenceAlignment& msa, const U2Region& region, QByteArray& cons, MSAConsensusAlgorithm* algo) {
     QVector<U2Region> l;
     l.append(region);
     updateConsensus(msa, l, cons, algo);
 }
 
-void MSAConsensusUtils::updateConsensus(const MAlignment& msa, const QVector<U2Region>& regions, QByteArray& cons, MSAConsensusAlgorithm* algo) {
+void MSAConsensusUtils::updateConsensus(const MultipleSequenceAlignment& msa, const QVector<U2Region>& regions, QByteArray& cons, MSAConsensusAlgorithm* algo) {
     if (msa.isEmpty()) {
         return;
     }
@@ -56,7 +56,7 @@ void MSAConsensusUtils::updateConsensus(const MAlignment& msa, const QVector<U2R
 }
 
 
-QString MSAConsensusUtils::getConsensusPercentTip(const MAlignment& msa, int pos, int minReportPercent, int maxReportChars) {
+QString MSAConsensusUtils::getConsensusPercentTip(const MultipleSequenceAlignment& msa, int pos, int minReportPercent, int maxReportChars) {
     QVector<QPair<int, char> > freqs(32); //TODO: try QVarLengthArray?
     assert(pos>=0 && pos < msa.getLength());
     int nSeq = msa.getNumRows();
@@ -125,7 +125,7 @@ void MSAConsensusUtils::unpackConsensusCharsFromInt(quint32 val, char* charVal, 
     }
 }
 
-uchar MSAConsensusUtils::getColumnFreqs(const MAlignment& ma, int pos, QVector<int>& freqsByChar,
+uchar MSAConsensusUtils::getColumnFreqs(const MultipleSequenceAlignment& ma, int pos, QVector<int>& freqsByChar,
                                         int& nonGapChars, const QVector<qint64>& seqIdx) {
     assert(freqsByChar.size() == 256);
     freqsByChar.fill(0);
@@ -149,7 +149,7 @@ uchar MSAConsensusUtils::getColumnFreqs(const MAlignment& ma, int pos, QVector<i
     return maxC;
 }
 
-quint32 MSAConsensusUtils::packConsensusCharsToInt(const MAlignment& msa, int pos, const int* mask4, bool gapsAffectPercents) {
+quint32 MSAConsensusUtils::packConsensusCharsToInt(const MultipleSequenceAlignment& msa, int pos, const int* mask4, bool gapsAffectPercents) {
     QVector<QPair<int, char> > freqs(32);
     int numNoGaps = 0;
     int nSeq = msa.getNumRows();

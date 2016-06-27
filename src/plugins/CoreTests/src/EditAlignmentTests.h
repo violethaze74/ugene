@@ -22,7 +22,7 @@
 #ifndef _U2_EDIT_ALIGNMENT_TESTS_H_
 #define _U2_EDIT_ALIGNMENT_TESTS_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/GUrl.h>
 
 #include <U2Test/GTest.h>

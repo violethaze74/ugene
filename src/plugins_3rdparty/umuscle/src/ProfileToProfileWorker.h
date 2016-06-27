@@ -74,18 +74,18 @@ protected:
 
 class ProfileToProfileTask : public Task {
 public:
-    ProfileToProfileTask(const MAlignment &masterMsa, MAlignment &secondMsa);
+    ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, MultipleSequenceAlignment &secondMsa);
     ~ProfileToProfileTask();
 
     virtual void prepare();
     virtual QList<Task*> onSubTaskFinished(Task *subTask);
 
-    const MAlignment & getResult();
+    const MultipleSequenceAlignment & getResult();
 
 private:
-    MAlignment masterMsa;
-    MAlignment secondMsa;
-    MAlignment result;
+    MultipleSequenceAlignment masterMsa;
+    MultipleSequenceAlignment secondMsa;
+    MultipleSequenceAlignment result;
     int seqIdx;
     int subtaskCount;
 

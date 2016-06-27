@@ -55,7 +55,7 @@ void TCoffeeSupportTaskSettings::reset() {
     inputFilePath="";
 }
 
-TCoffeeSupportTask::TCoffeeSupportTask(const MAlignment& _inputMsa, const GObjectReference& _objRef, const TCoffeeSupportTaskSettings& _settings)
+TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const TCoffeeSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run T-Coffee alignment task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa),
       objRef(_objRef),
@@ -245,7 +245,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
                         lock = NULL;
                     }
                     else {
-                        stateInfo.setError("MAlignment object has been changed");
+                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
                         return res;
                     }
 

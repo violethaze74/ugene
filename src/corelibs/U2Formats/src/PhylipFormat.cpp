@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/MAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
@@ -68,7 +68,7 @@ void PhylipFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
 MAlignmentObject* PhylipFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap& fs, U2OpStatus &os) {
     SAFE_POINT(io != NULL, "IO adapter is NULL!", NULL);
 
-    MAlignment al = parse(io, os);
+    MultipleSequenceAlignment al = parse(io, os);
     CHECK_OP(os, NULL);
     MSAUtils::checkPackedModelSymmetry(al, os);
     CHECK_OP(os, NULL);
@@ -129,7 +129,7 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "PHYLIP entry storing: NULL alignment object", );
 
-    const MAlignment& ma = obj->getMAlignment();
+    const MultipleSequenceAlignment& ma = obj->getMAlignment();
 
     //write header
     int numberOfSpecies = ma.getNumRows();
@@ -188,32 +188,32 @@ FormatCheckResult PhylipSequentialFormat::checkRawData(const QByteArray &rawData
     return FormatDetection_AverageSimilarity;
 }
 
-MAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatus &os) const {
-    SAFE_POINT(io != NULL, "IO adapter is NULL!", MAlignment());
+MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatus &os) const {
+    SAFE_POINT(io != NULL, "IO adapter is NULL!", MultipleSequenceAlignment());
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     char* buff = readBuffer.data();
     QString objName = io->getURL().baseFileName();
-    MAlignment al(objName);
+    MultipleSequenceAlignment al(objName);
     bool resOk = false;
 
     // Header: "<number of species> <number of characters>"
     int len = io->readLine(buff, READ_BUFF_SIZE, &resOk);
-    CHECK_EXT(resOk, os.setError( PhylipSequentialFormat::tr("Illegal line")), MAlignment());
+    CHECK_EXT(resOk, os.setError( PhylipSequentialFormat::tr("Illegal line")), MultipleSequenceAlignment());
 
     QByteArray line = QByteArray(buff, len).trimmed();
 
     int numberOfSpecies = 0;
     int numberOfCharacters = 0;
     resOk = parseHeader(line, numberOfSpecies, numberOfCharacters);
-    CHECK_EXT(resOk, os.setError( PhylipSequentialFormat::tr("Wrong header") ), MAlignment());
+    CHECK_EXT(resOk, os.setError( PhylipSequentialFormat::tr("Wrong header") ), MultipleSequenceAlignment());
 
     for (int i = 0; i < numberOfSpecies; i++) {
-        CHECK_EXT(!io->isEof(), os.setError( PhylipSequentialFormat::tr("There is not enough data")), MAlignment());
+        CHECK_EXT(!io->isEof(), os.setError( PhylipSequentialFormat::tr("There is not enough data")), MultipleSequenceAlignment());
         // get name
         len = io->readBlock(buff, MAX_NAME_LEN);
         QByteArray name;
         name.append(QByteArray::fromRawData(buff, len).trimmed());
-        CHECK_EXT(len != 0, os.setError( PhylipSequentialFormat::tr("Error parsing file") ), MAlignment());
+        CHECK_EXT(len != 0, os.setError( PhylipSequentialFormat::tr("Error parsing file") ), MultipleSequenceAlignment());
 
         // get sequence
         QByteArray value;
@@ -228,7 +228,7 @@ MAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatus &os) const {
         os.setProgress(io->getProgress());
     }
     CHECK_EXT(al.getLength() == numberOfCharacters, os.setError( PhylipSequentialFormat::tr("Number of characters does not correspond to the stated number") ),
-               MAlignment());
+               MultipleSequenceAlignment());
     return al;
 }
 
@@ -248,7 +248,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "PHYLIP entry storing: NULL alignment object", );
 
-    const MAlignment& ma = obj->getMAlignment();
+    const MultipleSequenceAlignment& ma = obj->getMAlignment();
 
     //write header
     int numberOfSpecies = ma.getNumRows();
@@ -322,33 +322,33 @@ FormatCheckResult PhylipInterleavedFormat::checkRawData(const QByteArray &rawDat
     return FormatDetection_AverageSimilarity;
 }
 
-MAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStatus &os) const {
-    SAFE_POINT(io != NULL, "IO adapter is NULL!", MAlignment());
+MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStatus &os) const {
+    SAFE_POINT(io != NULL, "IO adapter is NULL!", MultipleSequenceAlignment());
 
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     char* buff = readBuffer.data();
     QString objName = io->getURL().baseFileName();
-    MAlignment al(objName);
+    MultipleSequenceAlignment al(objName);
 
     bool resOk = false;
 
     // First line: "<number of species> <number of characters>"
     int len = io->readLine(buff, READ_BUFF_SIZE, &resOk);
 
-    CHECK_EXT(resOk, os.setError( PhylipInterleavedFormat::tr("Illegal line") ), MAlignment());
+    CHECK_EXT(resOk, os.setError( PhylipInterleavedFormat::tr("Illegal line") ), MultipleSequenceAlignment());
 
     QByteArray line = QByteArray(buff, len).trimmed();
 
     int numberOfSpecies;
     int numberOfCharacters;
     resOk = parseHeader(line, numberOfSpecies, numberOfCharacters);
-    CHECK_EXT(resOk,  os.setError( PhylipInterleavedFormat::tr("Wrong header") ), MAlignment());
+    CHECK_EXT(resOk,  os.setError( PhylipInterleavedFormat::tr("Wrong header") ), MultipleSequenceAlignment());
 
     //the first block with the names
     for (int i = 0; i < numberOfSpecies; i++) {
-        CHECK_EXT(!io->isEof(), os.setError( PhylipSequentialFormat::tr("There is not enough data")), MAlignment());
+        CHECK_EXT(!io->isEof(), os.setError( PhylipSequentialFormat::tr("There is not enough data")), MultipleSequenceAlignment());
         len = io->readBlock(buff, MAX_NAME_LEN);
-        CHECK_EXT(len != 0, os.setError( PhylipFormat::tr("Error parsing file") ), MAlignment());
+        CHECK_EXT(len != 0, os.setError( PhylipFormat::tr("Error parsing file") ), MultipleSequenceAlignment());
 
         QByteArray name;
         name.append(QByteArray::fromRawData(buff, len).trimmed());
@@ -356,7 +356,7 @@ MAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStatus &os) const {
         QByteArray value;
         do {
             len = io->readUntil(buff, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Skip, &resOk);
-            CHECK_EXT(len != 0, os.setError( PhylipSequentialFormat::tr("Error parsing file") ), MAlignment());
+            CHECK_EXT(len != 0, os.setError( PhylipSequentialFormat::tr("Error parsing file") ), MultipleSequenceAlignment());
             value.append(QByteArray::fromRawData(buff, len));
         } while (!resOk);
 
@@ -397,7 +397,7 @@ MAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStatus &os) const {
         currentLen += blockSize;
     }
     CHECK_EXT(al.getLength() == numberOfCharacters, os.setError( PhylipInterleavedFormat::tr("Number of characters does not correspond to the stated number") ),
-              MAlignment());
+              MultipleSequenceAlignment());
     return al;
 }
 

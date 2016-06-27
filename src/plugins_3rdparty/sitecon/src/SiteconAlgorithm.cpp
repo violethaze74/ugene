@@ -27,7 +27,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Core/TextUtils.h>
@@ -64,7 +64,7 @@ bool SiteconModel::operator !=(const SiteconModel& model) const {
     return !eq;
 }
 
-QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const MAlignment& ma, const SiteconBuildSettings& config, TaskStateInfo& ts) 
+QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& config, TaskStateInfo& ts) 
 {
     const QList<DiPropertySitecon*>& props = config.props;
     assert(!props.isEmpty());
@@ -145,7 +145,7 @@ float SiteconAlgorithm::calculatePSum(const char* seq, int len, const QVector<Po
 
 
 
-QVector<float> SiteconAlgorithm::calculateFirstTypeError(const MAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts) {
+QVector<float> SiteconAlgorithm::calculateFirstTypeError(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& s, TaskStateInfo& ts) {
     float devThresh = critchi(s.chisquare, s.numSequencesInAlignment - 2) / (s.numSequencesInAlignment - 1);
 
     QVector<float> scores;
@@ -157,7 +157,7 @@ QVector<float> SiteconAlgorithm::calculateFirstTypeError(const MAlignment& ma, c
 	int maLen = ma.getLength();
     for (int i=0; i < ma.getNumRows() && !ts.cancelFlag; i++) {
         const MAlignmentRow& row = ma.getRow(i);
-        MAlignment subMA = ma;
+        MultipleSequenceAlignment subMA = ma;
         subMA.removeRow(i, os);
         QVector<PositionStats> matrix = calculateDispersionAndAverage(subMA, s, ts);
         QVector<PositionStats> normalizedMatrix = normalize(matrix, s);
@@ -247,7 +247,7 @@ QVector<PositionStats> SiteconAlgorithm::normalize(const QVector<PositionStats>&
 }
 
 
-void SiteconAlgorithm::calculateACGTContent(const MAlignment& ma, SiteconBuildSettings& bs) {
+void SiteconAlgorithm::calculateACGTContent(const MultipleSequenceAlignment& ma, SiteconBuildSettings& bs) {
     assert(ma.getAlphabet()->isNucleic());
     bs.acgtContent[0] = bs.acgtContent[1] = bs.acgtContent[2] = bs.acgtContent[3] = 0;
 	int maLen = ma.getLength();
@@ -338,7 +338,7 @@ static void dumpWeights(const QString& url, const PWVector& weights, const Sitec
 }
 #endif
 
-int SiteconAlgorithm::calculateWeights(const MAlignment& ma, QVector<PositionStats>& origMatrix, 
+int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVector<PositionStats>& origMatrix, 
                                        const SiteconBuildSettings& settings, bool matrixIsNormalized,
                                        TaskStateInfo& si) 
 {

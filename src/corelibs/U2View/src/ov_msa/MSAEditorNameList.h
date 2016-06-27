@@ -45,7 +45,7 @@ namespace U2 {
 class MSAEditor;
 class MSAEditorUI;
 class GObjectView;
-class MAlignment;
+class MultipleSequenceAlignment;
 class MAlignmentModInfo;
 class MSAEditorSelection;
 
@@ -67,7 +67,7 @@ private slots:
     void sl_lockedStateChanged();
     void sl_removeSequence();
     void sl_selectReferenceSequence();
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&);
     void sl_onScrollBarActionTriggered( int scrollAction );
     void sl_referenceSeqChanged(qint64);
 

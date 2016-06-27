@@ -67,7 +67,7 @@ IMPLEMENT_TEST(MAlignmentImporterExporterUnitTests, importExportAlignment) {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("AG-CT-TAA");
 
-    MAlignment al(alignmentName, alphabet);
+    MultipleSequenceAlignment al(alignmentName, alphabet);
 
     al.addRow("First row", firstSequence, os);
     CHECK_NO_ERROR(os);
@@ -81,7 +81,7 @@ IMPLEMENT_TEST(MAlignmentImporterExporterUnitTests, importExportAlignment) {
 
     // Export the alignment
     MAlignmentExporter alExporter;
-    MAlignment alActual = alExporter.getAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
+    MultipleSequenceAlignment alActual = alExporter.getAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
     CHECK_NO_ERROR(os);
 
     bool alsEqual = (al == alActual);

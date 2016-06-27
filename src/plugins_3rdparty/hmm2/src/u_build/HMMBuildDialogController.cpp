@@ -45,7 +45,7 @@
 #include "hmmer2/funcs.h"
 
 namespace U2 {
-HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const MAlignment& _ma, QWidget* p) 
+HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const MultipleSequenceAlignment& _ma, QWidget* p) 
     : QDialog(p),
       ma(_ma),
       profileName(_pn),
@@ -221,7 +221,7 @@ HMMBuildToFileTask::HMMBuildToFileTask(const QString& inFile, const QString& _ou
     addSubTask(loadTask);
 }
 
-HMMBuildToFileTask::HMMBuildToFileTask(const MAlignment& _ma, const QString& _outFile, const UHMMBuildSettings& s) 
+HMMBuildToFileTask::HMMBuildToFileTask(const MultipleSequenceAlignment& _ma, const QString& _outFile, const UHMMBuildSettings& s) 
 : Task("", TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported),
 settings(s), outFile(_outFile), ma(_ma), loadTask(NULL), buildTask(NULL)
 {
@@ -258,7 +258,7 @@ QList<Task*> HMMBuildToFileTask::onSubTaskFinished(Task* subTask) {
             stateInfo.setError(  tr("Alignment object not found!") );
         } else {
             MAlignmentObject* msa = qobject_cast<MAlignmentObject*>(list.first());
-            const MAlignment &ma = msa->getMAlignment();
+            const MultipleSequenceAlignment &ma = msa->getMAlignment();
             if (settings.name.isEmpty()) {
                 settings.name = msa->getGObjectName() == MA_OBJECT_NAME ? doc->getName() : msa->getGObjectName();
             }
@@ -320,7 +320,7 @@ QString HMMBuildToFileTask::generateReport() const {
 }
 
 
-HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MAlignment& _ma) 
+HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MultipleSequenceAlignment& _ma) 
   : Task("", TaskFlag_None), ma(_ma), settings(s), hmm(NULL)
 {
     GCOUNTER( cvar, tvar, "HMMBuildTask" );

@@ -21,7 +21,7 @@
 
 #include "MSAConsensusAlgorithmClustal.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/DNAAlphabet.h>
 
 namespace U2 {
@@ -35,14 +35,14 @@ QString MSAConsensusAlgorithmFactoryClustal::getName() const {
 }
 
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MAlignment&, QObject* p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleSequenceAlignment&, QObject* p) {
     return new MSAConsensusAlgorithmClustal(this, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 //Algorithm
 
-char MSAConsensusAlgorithmClustal::getConsensusChar(const MAlignment& msa, int pos, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignment& msa, int pos, const QVector<qint64> &seqIdx) const {
     if (!msa.getAlphabet()->isAmino()) {
         // for nucleic alphabet work as strict algorithm but use ' ' as default
         char  defChar = ' ';

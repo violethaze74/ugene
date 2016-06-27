@@ -44,7 +44,7 @@ public:
 
 class U2Region;
 class MSAEditorUI;
-class MAlignment;
+class MultipleSequenceAlignment;
 class MAlignmentModInfo;
 
 class U2VIEW_EXPORT MSACollapsibleItemModel : public QObject {

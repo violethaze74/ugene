@@ -68,7 +68,7 @@ public:
     U2Region         regionToAlign;
 
     //used only for MuscleTaskOp_AddUnalignedToProfile and MuscleTaskOp_ProfileToProfile
-    MAlignment      profile;
+    MultipleSequenceAlignment      profile;
 
     //number of threads: 0 - auto, 1 - serial
     int nThreads;
@@ -79,7 +79,7 @@ public:
 class MuscleTask : public Task {
     Q_OBJECT
 public:
-    MuscleTask(const MAlignment& ma, const MuscleTaskSettings& config);
+    MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSettings& config);
 
     void run();
 
@@ -90,11 +90,11 @@ public:
     ReportResult report();
 
     MuscleTaskSettings          config;
-    MAlignment                  inputMA;
-    MAlignment                  resultMA;
+    MultipleSequenceAlignment                  inputMA;
+    MultipleSequenceAlignment                  resultMA;
 
-    MAlignment                  inputSubMA;
-    MAlignment                  resultSubMA;
+    MultipleSequenceAlignment                  inputSubMA;
+    MultipleSequenceAlignment                  resultSubMA;
 
     MuscleContext*              ctx;
     MuscleParallelTask*         parallelSubTask;
@@ -115,7 +115,7 @@ public:
     MMode                       mode;
 };
 
-//locks MAlignment object and propagate MuscleTask results to it
+//locks MultipleSequenceAlignment object and propagate MuscleTask results to it
 class  MuscleGObjectTask : public AlignGObjectTask {
     Q_OBJECT
 public:

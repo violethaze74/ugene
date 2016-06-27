@@ -38,7 +38,7 @@
 namespace U2 {
 ////////////////////////////////////////
 //ClustalWSupportRunDialog
-ClustalWSupportRunDialog::ClustalWSupportRunDialog(const MAlignment& _ma, ClustalWSupportTaskSettings& _settings, QWidget* _parent) :
+ClustalWSupportRunDialog::ClustalWSupportRunDialog(const MultipleSequenceAlignment& _ma, ClustalWSupportTaskSettings& _settings, QWidget* _parent) :
         QDialog(_parent), ma(_ma), settings(_settings)
 {
     setupUi(this);

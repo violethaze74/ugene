@@ -24,7 +24,7 @@
 
 #include <U2Core/GObject.h>
 #include <U2Core/U2Region.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "GObjectTypes.h"
 
@@ -87,10 +87,10 @@ public:
 private:
     friend class MAlignmentObject;
     MSAMemento();
-    MAlignment getState() const;
-    void setState(const MAlignment&);
+    MultipleSequenceAlignment getState() const;
+    void setState(const MultipleSequenceAlignment&);
 private:
-    MAlignment lastState;
+    MultipleSequenceAlignment lastState;
 };
 
 class U2CORE_EXPORT MAlignmentObject : public GObject {
@@ -98,14 +98,14 @@ class U2CORE_EXPORT MAlignmentObject : public GObject {
 
 public:
     MAlignmentObject(const QString& name, const U2EntityRef& msaRef, const QVariantMap& hintsMap = QVariantMap(),
-        const MAlignment &alnData = MAlignment());
+        const MultipleSequenceAlignment &alnData = MultipleSequenceAlignment());
     ~MAlignmentObject();
 
     /** Sets type of modifications tracking for the alignment */
     void setTrackMod(U2TrackModType trackMod, U2OpStatus& os);
 
-    const MAlignment & getMAlignment() const;
-    void setMAlignment(const MAlignment& ma, MAlignmentModInfo mi = MAlignmentModInfo(), const QVariantMap& hints = QVariantMap());
+    const MultipleSequenceAlignment & getMAlignment() const;
+    void setMAlignment(const MultipleSequenceAlignment& ma, MAlignmentModInfo mi = MAlignmentModInfo(), const QVariantMap& hints = QVariantMap());
     void copyGapModel(const QList<MAlignmentRow> &copyRows);
 
     /** GObject methods */
@@ -193,7 +193,7 @@ public:
 
 signals:
     void si_startMsaUpdating();
-    void si_alignmentChanged(const MAlignment& maBefore, const MAlignmentModInfo& modInfo);
+    void si_alignmentChanged(const MultipleSequenceAlignment& maBefore, const MAlignmentModInfo& modInfo);
     void si_alignmentBecomesEmpty(bool isEmpty);
     void si_completeStateChanged(bool complete);
     void si_rowsRemoved(const QList<qint64> &rowIds);
@@ -214,7 +214,7 @@ private:
      */
     int getMaxWidthOfGapRegion( const U2Region &rows, int pos, int maxGaps, U2OpStatus &os );
 
-    MAlignment      cachedMAlignment;
+    MultipleSequenceAlignment      cachedMAlignment;
     MSAMemento*     memento;
 };
 

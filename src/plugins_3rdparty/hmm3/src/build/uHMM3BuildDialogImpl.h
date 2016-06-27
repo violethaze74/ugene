@@ -35,7 +35,7 @@ struct UHMM3BuildDialogModel {
     
     /* one of this is used */
     QString                 inputFile;
-    MAlignment              alignment;
+    MultipleSequenceAlignment              alignment;
     bool                    alignmentUsing;
     
 }; // UHMM3BuildDialogModel
@@ -47,7 +47,7 @@ public:
     static const QString HMM_FILES_DIR_ID;
     
 public:
-    UHMM3BuildDialogImpl( const MAlignment & ma, QWidget * p = NULL );
+    UHMM3BuildDialogImpl( const MultipleSequenceAlignment & ma, QWidget * p = NULL );
     
 private:
     void setModelValues();

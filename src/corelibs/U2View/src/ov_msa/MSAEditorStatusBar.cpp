@@ -91,8 +91,8 @@ lockedIcon(":core/images/lock.png"), unlockedIcon(":core/images/lock_open.png")
 
     connect(seqArea, SIGNAL(si_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& )),
         SLOT(sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection&)));
-    connect(mobj, SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
     connect(mobj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
 
     connect(prevButton, SIGNAL(clicked()), SLOT(sl_findPrev()));
@@ -167,7 +167,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
     if ( pat.isEmpty( ) ) {
         return;
     }
-    const MAlignment &ma = aliObj->getMAlignment( );
+    const MultipleSequenceAlignment &ma = aliObj->getMAlignment( );
     if ( !ma.getAlphabet( )->isCaseSensitive( ) ) {
         pat = pat.toUpper( );
     }
@@ -208,7 +208,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
     if ( pat.isEmpty( ) ) {
         return;
     }
-    const MAlignment &ma = aliObj->getMAlignment();
+    const MultipleSequenceAlignment &ma = aliObj->getMAlignment();
     if ( !ma.getAlphabet( )->isCaseSensitive( ) ) {
         pat = pat.toUpper( );
     }

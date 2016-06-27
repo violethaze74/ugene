@@ -42,7 +42,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
@@ -202,8 +202,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     complementAction->setObjectName("replace_selected_rows_with_complement");
     connect(complementAction, SIGNAL(triggered()), SLOT(sl_complementCurrentSelection()));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
     connect(editor->getMSAObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(editor->getMSAObject(), SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_updateCollapsingMode()));
 
@@ -542,7 +542,7 @@ void MSAEditorSequenceArea::sl_changeHighlightScheme(){
     highlightingScheme = factory->create(this, ui->editor->getMSAObject());
     highlightingScheme->applySettings(editor->getHighlightingSettings(id));
 
-    const MAlignment &msa = ui->editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment &msa = ui->editor->getMSAObject()->getMAlignment();
 
     U2OpStatusImpl os;
     const int refSeq = msa.getRowIndexByRowId(editor->getReferenceRowId(), os);
@@ -680,7 +680,7 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
 
     MAlignmentObject* maObj = editor->getMSAObject();
     SAFE_POINT(maObj != NULL, tr("Alignment object is NULL"), false);
-    const MAlignment &msa = maObj->getMAlignment();
+    const MultipleSequenceAlignment &msa = maObj->getMAlignment();
 
     U2OpStatusImpl os;
     const int refSeq = msa.getRowIndexByRowId(editor->getReferenceRowId(), os);
@@ -1788,7 +1788,7 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     }
 }
 
-void MSAEditorSequenceArea::sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo& modInfo) {
+void MSAEditorSequenceArea::sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo& modInfo) {
     exitFromEditCharacterMode();
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
@@ -2109,7 +2109,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
     SAFE_POINT_OP(os, );
 
     QMap<qint64, QList<U2MsaGap> > noGapModel;
-    const MAlignment &ma = msa->getMAlignment();
+    const MultipleSequenceAlignment &ma = msa->getMAlignment();
     foreach (qint64 rowId, ma.getRowsIds()) {
         noGapModel[rowId] = QList<U2MsaGap>();
     }
@@ -2374,7 +2374,7 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
     if (selection.isNull()) {
         return;
     }
-    const MAlignment& msa = maObj->getMAlignment();
+    const MultipleSequenceAlignment& msa = maObj->getMAlignment();
 
     MSACollapsibleItemModel* m = ui->getCollapseModel();
     U2Region sel(m->mapToRow(selection.y()), m->mapToRow(selection.y() + selection.height()) - m->mapToRow(selection.y()));
@@ -2634,7 +2634,7 @@ void MSAEditorSequenceArea::sl_sortByName() {
     if (msaObject->isStateLocked()) {
         return;
     }
-    MAlignment ma = msaObject->getMAlignment();
+    MultipleSequenceAlignment ma = msaObject->getMAlignment();
     ma.sortRowsByName();
     QStringList rowNames = ma.getRowNames();
     if (rowNames != msaObject->getMAlignment().getRowNames()) {
@@ -2693,7 +2693,7 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
     Document *doc = msaObject->getDocument();
     SAFE_POINT(NULL != doc, tr("NULL document!"), );
 
-    MAlignment ma = msaObject->getMAlignment();
+    MultipleSequenceAlignment ma = msaObject->getMAlignment();
     QVector<U2Region> unitedRows;
     bool sorted = ma.sortRowsBySimilarity(unitedRows);
     collapsibleModel->reset(unitedRows);
@@ -2731,7 +2731,7 @@ void MSAEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps)
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os,);
 
-    const MAlignment &msa = maObj->getMAlignment();
+    const MultipleSequenceAlignment &msa = maObj->getMAlignment();
     if (selection.width() == msa.getLength() && selection.height() == msa.getNumRows()) {
         return;
     }
@@ -2762,7 +2762,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
         // then shifting should be canceled
         cancelShiftTracking();
 
-        const MAlignment &ma = maObj->getMAlignment();
+        const MultipleSequenceAlignment &ma = maObj->getMAlignment();
         DNATranslation* trans =
             AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma.getAlphabet());
         if (trans == NULL || !trans->isOne2One()) {
@@ -2857,7 +2857,7 @@ QPair<QString, int> MSAEditorSequenceArea::getGappedColumnInfo() const{
         return QPair<QString, int>(QString::number(0), 0);
     }
 
-    const MAlignment& msa = editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment& msa = editor->getMSAObject()->getMAlignment();
     const MAlignmentRow& row = msa.getRow(getSelectedRows().startPos);
     int len = row.getUngappedLength();
     QChar current = row.charAt(selection.topLeft().x());
@@ -2879,7 +2879,7 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
     m->reset();
 
     MAlignmentObject* msaObject = editor->getMSAObject();
-    const MAlignment &ma = msaObject->getMAlignment();
+    const MultipleSequenceAlignment &ma = msaObject->getMAlignment();
     QStringList rowNames = ma.getRowNames();
     QVector<U2Region> collapsedRegions;
 
@@ -2931,9 +2931,9 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
     MAlignmentObject* maObj = editor->getMSAObject();
     assert(maObj!=NULL);
 
-    const MAlignment& msa = maObj->getMAlignment();
+    const MultipleSequenceAlignment& msa = maObj->getMAlignment();
     const MSAEditor *editor = ui->getEditor();
-    const MAlignment &alignment = editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment &alignment = editor->getMSAObject()->getMAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment.getRowIndexByRowId(editor->getReferenceRowId(), os);
     const MAlignmentRow *r = NULL;

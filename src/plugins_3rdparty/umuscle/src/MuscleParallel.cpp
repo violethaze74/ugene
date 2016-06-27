@@ -48,7 +48,7 @@ struct Range {
 
 /////////////////////////////////////////////////////////////////////
 
-MuscleParallelTask::MuscleParallelTask(const MAlignment& ma, MAlignment& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
+MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, const MuscleTaskSettings& _config, MuscleContext* ctx)
     : Task(tr("MuscleParallelTask"), TaskFlags_NR_FOSCOE), progAlignTask(NULL), refineTreeTask(NULL), refineTask(NULL)
 {
     //assert(ma.isNormalized()); //not required to be normalized    assert(_config.op == MuscleTaskOp_Align || _config.op == MuscleTaskOp_Refine);    workpool = NULL;
@@ -63,7 +63,7 @@ MuscleParallelTask::MuscleParallelTask(const MAlignment& ma, MAlignment& res, co
     addTaskResource(resourseUsage);
 }
 
-int MuscleParallelTask::estimateMemoryUsageInMb(const MAlignment& ma) {
+int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment& ma) {
     QList<int> rowsLengths;
     foreach(const MAlignmentRow& row, ma.getRows()) {
         rowsLengths.append(row.getCoreLength());

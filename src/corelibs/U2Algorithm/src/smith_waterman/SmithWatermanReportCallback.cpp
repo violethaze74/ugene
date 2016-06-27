@@ -25,7 +25,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MAlignmentExporter.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/MAlignmentObject.h>
@@ -208,7 +208,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         QByteArray curResultPtrnSubseq = ptrnSequenceData.mid(pairAlignSeqs.ptrnSubseq.startPos, pairAlignSeqs.ptrnSubseq.length);
         alignSequences(curResultRefSubseq, curResultPtrnSubseq, pairAlignSeqs.pairAlignment);
 
-        MAlignment msa(newFileName, alphabet);
+        MultipleSequenceAlignment msa(newFileName, alphabet);
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.refSubseq;
         msa.addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq, stateInfo);
@@ -298,7 +298,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length detected!", QString::null);
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
-    MAlignment msa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
+    MultipleSequenceAlignment msa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
     msa.addRow(refSequence->visualName, refSequenceData, stateInfo);
     CHECK_OP(stateInfo, tr("Failed to add row to result msa."));
     msa.addRow(ptrnSequence->visualName, ptrnSequenceData, stateInfo);

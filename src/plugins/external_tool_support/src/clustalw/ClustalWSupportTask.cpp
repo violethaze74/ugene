@@ -61,7 +61,7 @@ void ClustalWSupportTaskSettings::reset() {
     outOrderInput=true;
 }
 
-ClustalWSupportTask::ClustalWSupportTask(const MAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings)
+ClustalWSupportTask::ClustalWSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run ClustalW alignment task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa),
       objRef(_objRef),
@@ -224,7 +224,7 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(tmpDoc!=NULL, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), res);
         SAFE_POINT(tmpDoc->getObjects().length()==1, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
-        //move MAlignment from new alignment to old document
+        //move MultipleSequenceAlignment from new alignment to old document
         MAlignmentObject* newMAligmentObject=qobject_cast<MAlignmentObject*>(tmpDoc->getObjects().first());
         SAFE_POINT(newMAligmentObject!=NULL, "newDocument->getObjects().first() is not a MAlignmentObject", res);
 
@@ -264,7 +264,7 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
                         lock = NULL;
                     }
                     else {
-                        stateInfo.setError("MAlignment object has been changed");
+                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
                         return res;
                     }
 

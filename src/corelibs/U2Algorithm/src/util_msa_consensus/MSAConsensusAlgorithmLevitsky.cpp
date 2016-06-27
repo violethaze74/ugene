@@ -21,7 +21,7 @@
 
 #include "MSAConsensusAlgorithmLevitsky.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -44,7 +44,7 @@ QString MSAConsensusAlgorithmFactoryLevitsky::getName() const  {
     return tr("Levitsky");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MAlignment& ma, QObject* p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleSequenceAlignment& ma, QObject* p) {
     return new MSAConsensusAlgorithmLevitsky(this, ma, p);
 }
 
@@ -115,7 +115,7 @@ static void registerHit(int* data, char c) {
     }
 }
 
-MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MAlignment& ma,  QObject* p)
+MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleSequenceAlignment& ma,  QObject* p)
 : MSAConsensusAlgorithm(f, p)
 {
     globalFreqs.resize(256);
@@ -132,7 +132,7 @@ MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorit
 }
 
 
-char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MAlignment& msa, int column, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleSequenceAlignment& msa, int column, const QVector<qint64> &seqIdx) const {
     // count local freqs first
     QVarLengthArray<int> localFreqs(256);
     memset(localFreqs.data(), 0, localFreqs.size() * 4);

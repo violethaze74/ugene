@@ -71,7 +71,7 @@ void MuscleTaskSettings::reset() {
     mode = Default;
 }
 
-MuscleTask::MuscleTask(const MAlignment& ma, const MuscleTaskSettings& _config)
+MuscleTask::MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSettings& _config)
 :Task(tr("MUSCLE alignment"), TaskFlags_FOSCOE | TaskFlag_MinimizeSubtaskErrorText), config(_config), inputMA(ma)
 {
     GCOUNTER( cvar, tvar, "MuscleTask" );
@@ -103,7 +103,7 @@ MuscleTask::MuscleTask(const MAlignment& ma, const MuscleTaskSettings& _config)
         SAFE_POINT_EXT(config.regionToAlign.length > 0,
             setError(tr("Incorrect region to align")), );
         inputSubMA = inputMA.mid(config.regionToAlign.startPos, config.regionToAlign.length);
-        CHECK_EXT(inputSubMA != MAlignment(), setError(tr("Stopping MUSCLE task, because of error in MAlignment::mid function")), );
+        CHECK_EXT(inputSubMA != MultipleSequenceAlignment(), setError(tr("Stopping MUSCLE task, because of error in MultipleSequenceAlignment::mid function")), );
     }
 
     if (config.nThreads == 1 || (config.op != MuscleTaskOp_Align)) {
@@ -409,7 +409,7 @@ Task::ReportResult MuscleGObjectTask::report() {
         lock = NULL;
     } else {
         if (!stateInfo.isCoR()) {
-            stateInfo.setError(tr("MAlignment object has been changed"));
+            stateInfo.setError(tr("MultipleSequenceAlignment object has been changed"));
         }
         return ReportResult_Finished;
     }

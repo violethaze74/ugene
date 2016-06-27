@@ -57,8 +57,8 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEd
 
     MAlignmentObject *mobj = editor->getMSAObject();
     SAFE_POINT(NULL != mobj, L10N::nullPointerError("multiple alignment object"), );
-    connect(mobj, SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
 
     seqArea->installEventFilter(this);
 
@@ -87,7 +87,7 @@ QAction * MSAEditorOffsetsViewController::getToggleColumnsViewAction() const {
     return viewAction;
 }
 
-void MSAEditorOffsetsViewController::sl_alignmentChanged(const MAlignment &, const MAlignmentModInfo &) {
+void MSAEditorOffsetsViewController::sl_alignmentChanged(const MultipleSequenceAlignment &, const MAlignmentModInfo &) {
     updateOffsets();
 }
 
@@ -175,7 +175,7 @@ QFont MSAEditorOffsetsViewWidget::getOffsetsFont() {
 }
 
 int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const {
-    const MAlignment &ma = editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment &ma = editor->getMSAObject()->getMAlignment();
     const MAlignmentRow &row = ma.getRow(seqNum);
     const int endPos = inclAliPos ? aliPos + 1 : aliPos;
 
@@ -217,7 +217,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
 
     int i=0;
     const MSAEditor *editor = ui->getEditor();
-    const MAlignment &alignment = editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment &alignment = editor->getMSAObject()->getMAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment.getRowIndexByRowId(editor->getReferenceRowId(), os);
 

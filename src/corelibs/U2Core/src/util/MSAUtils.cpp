@@ -24,7 +24,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/TextUtils.h>
@@ -81,14 +81,14 @@ int MSAUtils::getPatternSimilarityIgnoreGaps(const MAlignmentRow& row, int start
     return similarity;
 }
 
-MAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& os) {
-    MAlignment ma(MA_OBJECT_NAME);
+MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& os) {
+    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
     foreach(const DNASequence& seq, list) {
         updateAlignmentAlphabet(ma, seq.alphabet, os);
         //TODO: handle memory overflow
         ma.addRow(seq.getName(), seq.seq, os);
     }
-    CHECK_OP(os, MAlignment());
+    CHECK_OP(os, MultipleSequenceAlignment());
     return ma;
 }
 
@@ -121,7 +121,7 @@ MAlignmentObject * prepareSequenceHeadersList(const QList<GObject *> &list, bool
 }
 
 
-void appendSequenceToAlignmentRow(MAlignment &ma, int rowIndex, int afterPos, const U2SequenceObject &seq, U2OpStatus &os) {
+void appendSequenceToAlignmentRow(MultipleSequenceAlignment &ma, int rowIndex, int afterPos, const U2SequenceObject &seq, U2OpStatus &os) {
     U2Region seqRegion(0, seq.getSequenceLength());
     const qint64 blockReadFromBD = 4194305; // 4 MB + 1
 
@@ -137,7 +137,7 @@ void appendSequenceToAlignmentRow(MAlignment &ma, int rowIndex, int afterPos, co
 
 } // unnamed namespace
 
-MAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpStatus &os, bool useGenbankHeader) {
+MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpStatus &os, bool useGenbankHeader) {
     QList<U2SequenceObject *> dnaList;
     QStringList nameList;
 
@@ -146,10 +146,10 @@ MAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpStatus &os, bool u
         return obj->getMAlignment();
     }
 
-    MAlignment ma(MA_OBJECT_NAME);
+    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
 
     int i = 0;
-    SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", MAlignment());
+    SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", MultipleSequenceAlignment());
     QListIterator<U2SequenceObject *> listIterator(dnaList);
     QListIterator<QString> nameIterator(nameList);
     while (listIterator.hasNext()) {
@@ -158,21 +158,21 @@ MAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpStatus &os, bool u
 
         const DNAAlphabet *alphabet = seq.getAlphabet();
         updateAlignmentAlphabet(ma, alphabet, os);
-        CHECK_OP(os, MAlignment());
+        CHECK_OP(os, MultipleSequenceAlignment());
 
         ma.addRow(objName, QByteArray(""), os);
-        CHECK_OP(os, MAlignment());
+        CHECK_OP(os, MultipleSequenceAlignment());
 
-        SAFE_POINT(i < ma.getNumRows(), "Row count differ from expected after adding row", MAlignment());
+        SAFE_POINT(i < ma.getNumRows(), "Row count differ from expected after adding row", MultipleSequenceAlignment());
         appendSequenceToAlignmentRow(ma, i, 0, seq, os);
-        CHECK_OP(os, MAlignment());
+        CHECK_OP(os, MultipleSequenceAlignment());
         i++;
     }
 
     return ma;
 }
 
-void MSAUtils::updateAlignmentAlphabet(MAlignment& ma, const DNAAlphabet* alphabet, U2OpStatus& os) {
+void MSAUtils::updateAlignmentAlphabet(MultipleSequenceAlignment& ma, const DNAAlphabet* alphabet, U2OpStatus& os) {
     const DNAAlphabet* al = ma.getAlphabet();
     if (al == NULL) {
         al = alphabet;
@@ -196,7 +196,7 @@ void MSAUtils::updateAlignmentAlphabet(MAlignment& ma, const DNAAlphabet* alphab
     ma.setAlphabet(al);
 }
 
-QList<DNASequence> MSAUtils::ma2seq(const MAlignment& ma, bool trimGaps) {
+QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps) {
     QList<DNASequence> lst;
     QBitArray gapCharMap = TextUtils::createBitMap(MAlignment_GapChar);
     int len = ma.getLength();
@@ -214,7 +214,7 @@ QList<DNASequence> MSAUtils::ma2seq(const MAlignment& ma, bool trimGaps) {
 }
 
 
-bool MSAUtils::checkPackedModelSymmetry(MAlignment& ali, U2OpStatus& ti) {
+bool MSAUtils::checkPackedModelSymmetry(MultipleSequenceAlignment& ali, U2OpStatus& ti) {
     if (ali.getLength() == 0) {
         ti.setError(tr("Alignment is empty!"));
         return false;
@@ -235,7 +235,7 @@ bool MSAUtils::checkPackedModelSymmetry(MAlignment& ali, U2OpStatus& ti) {
     return true;
 }
 
-int MSAUtils::getRowIndexByName( const MAlignment& ma, const QString& name )
+int MSAUtils::getRowIndexByName( const MultipleSequenceAlignment& ma, const QString& name )
 {
     int idx = 0;
 
@@ -295,7 +295,7 @@ MAlignmentObject * MSAUtils::seqObjs2msaObj(const QList<GObject *> &objects, con
     Q_UNUSED(opBlock);
 
     const bool useGenbankHeader = hints.value(ObjectConvertion_UseGenbankHeader, false).toBool();
-    MAlignment ma = seq2ma(objects, os, useGenbankHeader);
+    MultipleSequenceAlignment ma = seq2ma(objects, os, useGenbankHeader);
     CHECK_OP(os, NULL);
     CHECK(!ma.isEmpty(), NULL);
 
@@ -314,7 +314,7 @@ MAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs, const QVariant
     return seqObjs2msaObj(objects, hints, os);
 }
 
-QList<qint64> MSAUtils::compareRowsAfterAlignment(const MAlignment& origMsa, MAlignment& newMsa, U2OpStatus& os) {
+QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignment& origMsa, MultipleSequenceAlignment& newMsa, U2OpStatus& os) {
     QList<qint64> rowsOrder;
     const QList<MAlignmentRow> origMsaRows = origMsa.getRows();
     for (int i = 0, n = newMsa.getNumRows(); i < n; ++i) {
@@ -391,8 +391,8 @@ void MSAUtils::copyRowFromSequence(MAlignmentObject *msaObj, U2SequenceObject *s
     con.dbi->getMsaDbi()->addRow(entityRef.entityId, -1, row, os);
 }
 
-MAlignment MSAUtils::setUniqueRowNames(const MAlignment &ma) {
-    MAlignment res = ma;
+MultipleSequenceAlignment MSAUtils::setUniqueRowNames(const MultipleSequenceAlignment &ma) {
+    MultipleSequenceAlignment res = ma;
     int rowNumber = res.getNumRows();
     for (int i = 0; i < rowNumber; i++) {
         res.renameRow(i, QString::number(i));
@@ -400,7 +400,7 @@ MAlignment MSAUtils::setUniqueRowNames(const MAlignment &ma) {
     return res;
 }
 
-bool MSAUtils::restoreRowNames(MAlignment &ma, const QStringList &names) {
+bool MSAUtils::restoreRowNames(MultipleSequenceAlignment &ma, const QStringList &names) {
     int rowNumber = ma.getNumRows();
     CHECK( rowNumber == names.size(), false);
 

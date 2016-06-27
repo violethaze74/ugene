@@ -28,7 +28,7 @@
 namespace U2 {
 
 class DbiConnection;
-class MAlignment;
+class MultipleSequenceAlignment;
 class MAlignmentObject;
 class U2DbiRef;
 class U2OpStatus;
@@ -40,17 +40,17 @@ public:
      * Creates an alignment in the db.
      * The alignment is completely removed in case of an error.
      */
-    static MAlignmentObject * createAlignment(const U2DbiRef &dbiRef, MAlignment &al, U2OpStatus &os);
-    static MAlignmentObject * createAlignment(const U2DbiRef &dbiRef, const QString &folder, MAlignment &al,
+    static MAlignmentObject * createAlignment(const U2DbiRef &dbiRef, MultipleSequenceAlignment &al, U2OpStatus &os);
+    static MAlignmentObject * createAlignment(const U2DbiRef &dbiRef, const QString &folder, MultipleSequenceAlignment &al,
         U2OpStatus &os, const QList<U2Sequence> &alignedSequences = QList<U2Sequence>());
 
 private:
-    static U2Msa importMsaObject(const DbiConnection &con, const QString &folder, const MAlignment &al, U2OpStatus &os);
-    static void importMsaInfo(const DbiConnection &con, const U2DataId &msaId, const MAlignment &al, U2OpStatus &os);
-    static QList<U2Sequence> importSequences(const DbiConnection &con, const QString &folder, const MAlignment &al, U2OpStatus &os);
+    static U2Msa importMsaObject(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
+    static void importMsaInfo(const DbiConnection &con, const U2DataId &msaId, const MultipleSequenceAlignment &al, U2OpStatus &os);
+    static QList<U2Sequence> importSequences(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
     static void splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MsaGapModel &gapModel, U2OpStatus &os);
     static void setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os);
-    static QList<U2MsaRow> importRows(const DbiConnection &con, MAlignment &al, U2Msa &msa, const QList<U2Sequence> &rows, const U2MsaGapModel &msaGapModel, U2OpStatus &os);
+    static QList<U2MsaRow> importRows(const DbiConnection &con, MultipleSequenceAlignment &al, U2Msa &msa, const QList<U2Sequence> &rows, const U2MsaGapModel &msaGapModel, U2OpStatus &os);
 };
 
 } // namespace

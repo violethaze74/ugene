@@ -39,11 +39,11 @@ class U2ALGORITHM_EXPORT TranslateMSA2AminoTask : public Task {
 public:
     TranslateMSA2AminoTask(MAlignmentObject* obj);
     TranslateMSA2AminoTask(MAlignmentObject* obj, const QString& trId );
-    const MAlignment& getTaskResult() { return resultMA; }
+    const MultipleSequenceAlignment& getTaskResult() { return resultMA; }
     void run();
     ReportResult report();
 private:
-    MAlignment resultMA;
+    MultipleSequenceAlignment resultMA;
     MAlignmentObject* maObj;
     DNATranslation* translation;
 };
@@ -85,7 +85,7 @@ public:
 protected:
     AlignGObjectTask* alignTask;
     MAlignmentObject *maObj, *clonedObj;
-    //MAlignment bufMA;
+    //MultipleSequenceAlignment bufMA;
     QString traslId;
     Document* tmpDoc;
     QMap<qint64, QList<U2MsaGap> > rowsGapModel;

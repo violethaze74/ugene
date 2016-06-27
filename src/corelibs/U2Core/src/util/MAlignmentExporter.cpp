@@ -39,35 +39,35 @@ MAlignmentExporter::MAlignmentExporter()
 
 }
 
-MAlignment MAlignmentExporter::getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const {
-    SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, MAlignment());
+MultipleSequenceAlignment MAlignmentExporter::getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const {
+    SAFE_POINT(!con.isOpen(), OPENED_DBI_CONNECTION_ERROR, MultipleSequenceAlignment());
     con.open(dbiRef, false, os);
-    CHECK_OP(os, MAlignment());
+    CHECK_OP(os, MultipleSequenceAlignment());
 
     // Rows and their sequences
     QList<U2MsaRow> rows = exportRows(msaId, os);
-    CHECK_OP(os, MAlignment());
+    CHECK_OP(os, MultipleSequenceAlignment());
 
     QList<DNASequence> sequences = exportSequencesOfRows(rows, os);
-    CHECK_OP(os, MAlignment());
+    CHECK_OP(os, MultipleSequenceAlignment());
 
-    SAFE_POINT(rows.count() == sequences.count(), ROWS_SEQS_COUNT_MISMATCH_ERROR, MAlignment());
+    SAFE_POINT(rows.count() == sequences.count(), ROWS_SEQS_COUNT_MISMATCH_ERROR, MultipleSequenceAlignment());
 
-    MAlignment al;
+    MultipleSequenceAlignment al;
     for (int i = 0; i < rows.count(); ++i) {
         al.addRow(rows[i], sequences[i], os);
-        CHECK_OP(os, MAlignment());
+        CHECK_OP(os, MultipleSequenceAlignment());
     }
 
     // Info
     QVariantMap alInfo = exportAlignmentInfo(msaId, os);
-    CHECK_OP(os, MAlignment());
+    CHECK_OP(os, MultipleSequenceAlignment());
 
     al.setInfo(alInfo);
 
     // Alphabet, name and length
     U2Msa msa = exportAlignmentObject(msaId, os);
-    CHECK_OP(os, MAlignment());
+    CHECK_OP(os, MultipleSequenceAlignment());
 
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(msa.alphabet);
     al.setAlphabet(alphabet);

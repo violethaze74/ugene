@@ -414,7 +414,7 @@ static bool blockEnded( IOAdapter* io ) {
     return 1 < nl_count;
 }
 
-static bool nameWasBefore( const MAlignment& msa, const QString& name ) {
+static bool nameWasBefore( const MultipleSequenceAlignment& msa, const QString& name ) {
     int n = msa.getNumRows();
     bool ret = false;
 
@@ -437,7 +437,7 @@ static void changeGaps( QByteArray& seq ) {
 }
 
 // returns true if operation was not canceled
-static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MAlignment& msa, AnnotationBank& ann_bank ) {
+static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MultipleSequenceAlignment& msa, AnnotationBank& ann_bank ) {
     assert( NULL != io );
 
     QByteArray buf( BUF_SZ, TERM_SYM );
@@ -536,7 +536,7 @@ static void setMsaInfoCutoffs( QVariantMap& info, const QString& string, MAlignm
     MAlignmentInfo::setCutoff( info, cof2, val2 );
 }
 
-static void setMsaInfo( const QHash< QString, QString>& annMap, MAlignment& ma ) {
+static void setMsaInfo( const QHash< QString, QString>& annMap, MultipleSequenceAlignment& ma ) {
     QVariantMap info = ma.getInfo();
 
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_AC ) ) {
@@ -570,7 +570,7 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
     QStringList names_list;
     QString filename = io->getURL().baseFileName();
     while( !io->isEof() ) {
-        MAlignment msa;
+        MultipleSequenceAlignment msa;
         AnnotationBank ann_bank;
         QString name;
         bool notCanceled = true;
@@ -600,7 +600,7 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
     }
 }
 
-static int getMaxNameLen( const MAlignment& msa ) {
+static int getMaxNameLen( const MultipleSequenceAlignment& msa ) {
     assert( msa.getNumRows() != 0 );
     int sz = msa.getNumRows();
     int max_len = msa.getRow(0).getName().size();
@@ -621,7 +621,7 @@ static QByteArray getNameSeqGap( int diff ) {
     return ret;
 }
 
-static void save( IOAdapter* io, const MAlignment& msa, const QString& name, U2OpStatus &os ) {
+static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, const QString& name, U2OpStatus &os ) {
     assert( NULL != io );
     assert( msa.getNumRows() );
     int ret = 0;

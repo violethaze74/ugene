@@ -82,9 +82,9 @@ U2EntityRef MAlignmentObjectTestData::getTestAlignmentRef(const U2DbiRef &dbiRef
     return U2EntityRef(dbiRef, msaId);
 }
 
-MAlignment MAlignmentObjectTestData::getTestAlignment(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os) {
+MultipleSequenceAlignment MAlignmentObjectTestData::getTestAlignment(const U2DbiRef &dbiRef, const QString &name, U2OpStatus &os) {
     U2EntityRef malignmentRef = getTestAlignmentRef(dbiRef, name, os);
-    CHECK_OP(os, MAlignment());
+    CHECK_OP(os, MultipleSequenceAlignment());
 
     MAlignmentExporter exporter;
     return exporter.getAlignment(dbiRef, malignmentRef.entityId, os);
@@ -102,7 +102,7 @@ IMPLEMENT_TEST(MAlignmentObjectUnitTests, getMAlignment) {
     QScopedPointer<MAlignmentObject> alObj(MAlignmentObjectTestData::getTestAlignmentObject(dbiRef, alName, os));
     CHECK_NO_ERROR(os);
 
-    const MAlignment alActual = alObj->getMAlignment();
+    const MultipleSequenceAlignment alActual = alObj->getMAlignment();
 
     const bool alsEqual = (alActual == MAlignmentObjectTestData::getTestAlignment(dbiRef, alName, os));
     CHECK_TRUE(alsEqual, "Actual alignment doesn't equal to the original!");
@@ -126,9 +126,9 @@ IMPLEMENT_TEST(MAlignmentObjectUnitTests, setMAlignment) {
     QScopedPointer<MAlignmentObject> alObj(MAlignmentObjectTestData::getTestAlignmentObject(dbiRef, firstAlignmentName, os));
     CHECK_NO_ERROR(os);
 
-    const MAlignment secondAlignment = MAlignmentObjectTestData::getTestAlignment(dbiRef, secondAlignmentName, os);
+    const MultipleSequenceAlignment secondAlignment = MAlignmentObjectTestData::getTestAlignment(dbiRef, secondAlignmentName, os);
     alObj->setMAlignment(secondAlignment);
-    const MAlignment &actualAlignment = alObj->getMAlignment();
+    const MultipleSequenceAlignment &actualAlignment = alObj->getMAlignment();
 
     bool alsEqual = (secondAlignment == actualAlignment);
     CHECK_TRUE(alsEqual, "Actual alignment doesn't equal to the original!");
@@ -152,7 +152,7 @@ IMPLEMENT_TEST( MAlignmentObjectUnitTests, deleteGap_trailingGaps ) {
 
     alnObj->deleteGap(U2Region(0, alnObj->getNumRows()), 10, 3, os);
 
-    const MAlignment &resultAlignment = alnObj->getMAlignment();
+    const MultipleSequenceAlignment &resultAlignment = alnObj->getMAlignment();
     CHECK_TRUE(resultAlignment.getRow(0).getData() == "AC-GT--AAA-", "First row content is unexpected!");
     CHECK_TRUE(resultAlignment.getRow(1).getData() == "-ACA---GTT-", "Second row content is unexpected!");
     CHECK_TRUE(resultAlignment.getRow(2).getData() == "-ACACA-G---", "Third row content is unexpected!");
@@ -177,7 +177,7 @@ IMPLEMENT_TEST( MAlignmentObjectUnitTests, deleteGap_regionWithNonGapSymbols ) {
     SAFE_POINT_OP(os, );
 
     CHECK_TRUE(0 == countOfDeleted, "Unexpected count of removed symbols!");
-    const MAlignment &resultAlignment = alnObj->getMAlignment();
+    const MultipleSequenceAlignment &resultAlignment = alnObj->getMAlignment();
     CHECK_TRUE(resultAlignment.getRow(0).getData() == "AC-GT--AAA----", "First row content is unexpected!");
     CHECK_TRUE(resultAlignment.getRow(1).getData() == "-ACA---GTT----", "Second row content is unexpected!");
     CHECK_TRUE(resultAlignment.getRow(2).getData() == "-ACACA-G------", "Third row content is unexpected!");
@@ -205,7 +205,7 @@ IMPLEMENT_TEST( MAlignmentObjectUnitTests, deleteGap_gapRegion ) {
     SAFE_POINT_OP(os, );
 
     CHECK_TRUE(2 == countOfDeleted, "Unexpected count of removed symbols!");
-    const MAlignment &resultAlignment = alnObj->getMAlignment();
+    const MultipleSequenceAlignment &resultAlignment = alnObj->getMAlignment();
     CHECK_TRUE(resultAlignment.getRow(0).getData() == "AC-GTAAA---", "First row content is unexpected!");
     CHECK_TRUE(resultAlignment.getRow(1).getData() == "-ACA-GTT---", "Second row content is unexpected!");
     CHECK_TRUE(resultAlignment.getRow(2).getData() == "-ACACA-G---", "Third row content is unexpected!");

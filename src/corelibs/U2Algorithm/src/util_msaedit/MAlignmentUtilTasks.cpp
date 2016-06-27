@@ -71,7 +71,7 @@ void TranslateMSA2AminoTask::run() {
     SAFE_POINT_EXT(NULL != translation, setError(tr("Invalid translation object")),);
 
     QList<DNASequence> lst = MSAUtils::ma2seq(maObj->getMAlignment(), true);
-    resultMA = MAlignment(maObj->getMAlignment().getName(),translation->getDstAlphabet()) ;
+    resultMA = MultipleSequenceAlignment(maObj->getMAlignment().getName(),translation->getDstAlphabet()) ;
 
     foreach (const DNASequence& dna, lst) {
         int buflen = dna.length() / 3;
@@ -110,7 +110,7 @@ void AlignInAminoFormTask::prepare() {
     CHECK_EXT(maObj->getAlphabet()->isNucleic(), setError(tr("AlignInAminoFormTask: Input alphabet is not nucleic!")), );
     CHECK_EXT(!maObj->getMAlignment().isEmpty(), setError(tr("AlignInAminoFormTask: Input alignment is empty!")), );
 
-    MAlignment msa = maObj->getMAlignment();
+    MultipleSequenceAlignment msa = maObj->getMAlignment();
     const U2DbiRef& dbiRef = maObj->getEntityRef().dbiRef;
 
     //Create temporal document for the workflow run task
@@ -147,7 +147,7 @@ void AlignInAminoFormTask::run() {
 
     SAFE_POINT_EXT(NULL != clonedObj, setError(tr("NULL clonedObj in AlignInAminoFormTask::prepare!")),);
 
-    const MAlignment &newMA = clonedObj->getMAlignment();
+    const MultipleSequenceAlignment &newMA = clonedObj->getMAlignment();
     const QList<MAlignmentRow>& rows = newMA.getRows();
 
     //Create gap map from amino-acid alignment

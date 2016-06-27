@@ -69,7 +69,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
     const QBitArray& WHITES = TextUtils::WHITES;
 
     QString objName = io->getURL().baseFileName();
-    MAlignment al(objName);
+    MultipleSequenceAlignment al(objName);
     bool lineOk = false;
     bool firstBlock = true;
     int sequenceIdx = 0;
@@ -211,7 +211,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
     const MAlignmentObject* obj = dynamic_cast<MAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "Clustal entry storing: NULL alignment object", );
 
-    const MAlignment& ma = obj->getMAlignment();
+    const MultipleSequenceAlignment& ma = obj->getMAlignment();
 
     //write header
     QByteArray header("CLUSTAL W 2.0 multiple sequence alignment\n\n");

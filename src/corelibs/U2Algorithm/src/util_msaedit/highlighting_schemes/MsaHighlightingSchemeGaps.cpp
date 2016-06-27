@@ -21,7 +21,7 @@
 
 #include <QColor>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "MsaHighlightingSchemeGaps.h"
 

@@ -41,7 +41,7 @@ namespace U2 {
 
 QMutex NeighborJoinCalculateTreeTask::runLock;
 
-void createPhyTreeFromPhylipTree(const MAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode* root, int bootstrap_repl)
+void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode* root, int bootstrap_repl)
 {
     /* used in fitch & neighbor */
     long i=0;
@@ -97,15 +97,15 @@ void replacePhylipRestrictedSymbols(QByteArray& name) {
     }
 }
 
-Task* NeighborJoinAdapter::createCalculatePhyTreeTask(const MAlignment& ma, const CreatePhyTreeSettings& s){
+Task* NeighborJoinAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s){
     return new PhylipCmdlineTask(ma, s);
 }
 
-CreatePhyTreeWidget * NeighborJoinAdapter::createPhyTreeSettingsWidget(const MAlignment &ma, QWidget *parent) {
+CreatePhyTreeWidget * NeighborJoinAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent) {
     return new NeighborJoinWidget(ma, parent);
 }
 
-NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MAlignment& ma, const CreatePhyTreeSettings& s)
+NeighborJoinCalculateTreeTask::NeighborJoinCalculateTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s)
 :PhyTreeGeneratorTask(ma, s), memLocker(stateInfo){
     setTaskName("NeighborJoin algorithm");
 }
@@ -151,7 +151,7 @@ void NeighborJoinCalculateTreeTask::run(){
             for (int i = 0; i < settings.replicates; i++){
                 stateInfo.progress = (int)(i/(float)settings.replicates * 100);
 
-                const MAlignment& curMSA = seqBoot->getMSA(i);
+                const MultipleSequenceAlignment& curMSA = seqBoot->getMSA(i);
                 QScopedPointer<DistanceMatrix> distanceMatrix(new DistanceMatrix);
                 distanceMatrix->calculateOutOfAlignment(curMSA,settings);
 

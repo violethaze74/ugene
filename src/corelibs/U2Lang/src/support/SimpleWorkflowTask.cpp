@@ -149,7 +149,7 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
     U2OpStatus2Log os;
     userModStep = new U2UseCommonUserModStep(obj->getEntityRef(), os);
 
-    MAlignment al = MSAUtils::setUniqueRowNames( obj->getMAlignment() );
+    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames( obj->getMAlignment() );
 
     MAlignmentObject *msaObject = MAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os,);
@@ -199,8 +199,8 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
     CHECK_EXT(!obj.isNull(), releaseModStep(tr("Object '%1' removed").arg(docName)), ReportResult_Finished);
     CHECK_EXT(!obj->isStateLocked(), releaseModStep(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);
 
-    MAlignment res = getResult();
-    const MAlignment &originalAlignment = obj->getMAlignment();
+    MultipleSequenceAlignment res = getResult();
+    const MultipleSequenceAlignment &originalAlignment = obj->getMAlignment();
     MSAUtils::restoreRowNames(res, originalAlignment.getRowNames());
     res.setName(originalAlignment.getName());
     obj->setMAlignment(res);
@@ -218,8 +218,8 @@ void SimpleMSAWorkflow4GObjectTask::releaseModStep(const QString error) {
     userModStep = NULL;
 }
 
-MAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
-    MAlignment res;
+MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
+    MultipleSequenceAlignment res;
     CHECK_OP(stateInfo, res);
 
     SAFE_POINT(runWorkflowTask!=NULL,"SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.",res);

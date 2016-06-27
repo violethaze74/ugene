@@ -32,8 +32,8 @@ MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MAlignmentObject* o
 {
     setConsensusAlgorithm(factory);
 
-    connect(aliObj, SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
     connect(aliObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_invalidateAlignmentObject()));
 
     curCacheSize = aliObj->getLength();
@@ -54,7 +54,7 @@ void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory
     updateMap.fill(false);
 }
 
-void MSAEditorConsensusCache::sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&) {
+void MSAEditorConsensusCache::sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&) {
     if(curCacheSize != aliObj->getLength()) {
         curCacheSize = aliObj->getLength();
         updateMap.resize(curCacheSize);
@@ -65,7 +65,7 @@ void MSAEditorConsensusCache::sl_alignmentChanged(const MAlignment&, const MAlig
 
 void MSAEditorConsensusCache::updateCacheItem(int pos) {
     if(!updateMap.at(pos) && aliObj != NULL) {
-        const MAlignment& ma = aliObj->getMAlignment();
+        const MultipleSequenceAlignment& ma = aliObj->getMAlignment();
         QString errorMessage = tr("Can not update consensus chache item");
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage,);
         SAFE_POINT(curCacheSize == ma.getLength(), errorMessage,);
@@ -96,7 +96,7 @@ int MSAEditorConsensusCache::getConsensusCharPercent(int pos) {
 
 QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
     QByteArray res;
-    const MAlignment& ma = aliObj->getMAlignment();
+    const MultipleSequenceAlignment& ma = aliObj->getMAlignment();
     for (int i=0, n = ma.getLength(); i<n; i++) {
         char c = getConsensusChar(i);
         if (c!=MAlignment_GapChar || withGaps) {

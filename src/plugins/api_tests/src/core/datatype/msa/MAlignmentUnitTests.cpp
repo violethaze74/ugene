@@ -40,26 +40,26 @@ const int MAlignmentTestUtils::secondRowLength = 9;
 const QString MAlignmentTestUtils::alignmentName = "Test alignment name";
 
 
-MAlignment MAlignmentTestUtils::initTestAlignment() {
+MultipleSequenceAlignment MAlignmentTestUtils::initTestAlignment() {
     DNAAlphabetRegistry* alphabetRegistry = AppContext::getDNAAlphabetRegistry();
     const DNAAlphabet* alphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
 
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("AG-CT-TAA");
 
-    MAlignment almnt(alignmentName, alphabet);
+    MultipleSequenceAlignment almnt(alignmentName, alphabet);
 
     U2OpStatusImpl os;
     almnt.addRow("First row", firstSequence, os);
-    CHECK_OP(os, MAlignment());
+    CHECK_OP(os, MultipleSequenceAlignment());
 
     almnt.addRow("Second row", secondSequence, os);
-    CHECK_OP(os, MAlignment());
+    CHECK_OP(os, MultipleSequenceAlignment());
 
     return almnt;
 }
 
-QString MAlignmentTestUtils::getRowData(const MAlignment& almnt, int rowNum) {
+QString MAlignmentTestUtils::getRowData(const MultipleSequenceAlignment& almnt, int rowNum) {
     if (rowNum < 0 || rowNum > almnt.getNumRows()) {
         return "";
     }
@@ -69,7 +69,7 @@ QString MAlignmentTestUtils::getRowData(const MAlignment& almnt, int rowNum) {
     return MAlignmentRowTestUtils::getRowData(row);
 }
 
-bool MAlignmentTestUtils::testAlignmentNotChanged(const MAlignment& almnt) {
+bool MAlignmentTestUtils::testAlignmentNotChanged(const MultipleSequenceAlignment& almnt) {
     if (9 != almnt.getLength()) {
         return false;
     }
@@ -88,7 +88,7 @@ bool MAlignmentTestUtils::testAlignmentNotChanged(const MAlignment& almnt) {
 
 /** Tests clear */
 IMPLEMENT_TEST(MAlignmentUnitTests, clear_notEmpty) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     almnt.clear();
     QList<MAlignmentRow> rows = almnt.getRows();
     CHECK_EQUAL(0, rows.count(), "number of rows");
@@ -96,12 +96,12 @@ IMPLEMENT_TEST(MAlignmentUnitTests, clear_notEmpty) {
 
 /** Tests name */
 IMPLEMENT_TEST(MAlignmentUnitTests, name_ctor) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     CHECK_EQUAL(MAlignmentTestUtils::alignmentName, almnt.getName(), "alignment name");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, name_setName) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     QString newName = "Another name";
     almnt.setName(newName);
     CHECK_EQUAL(newName, almnt.getName(), "alignment name");
@@ -109,7 +109,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, name_setName) {
 
 /** Tests alphabet */
 IMPLEMENT_TEST(MAlignmentUnitTests, alphabet_ctor) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     if (NULL == almnt.getAlphabet()) {
         SetError("NULL alphabet!");
     }
@@ -117,7 +117,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, alphabet_ctor) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, alphabet_setAlphabet) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
 
     DNAAlphabetRegistry* alphabetRegistry = AppContext::getDNAAlphabetRegistry();
     const DNAAlphabet* newAlphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
@@ -131,7 +131,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, alphabet_setAlphabet) {
 
 /** Tests info */
 IMPLEMENT_TEST(MAlignmentUnitTests, info_setGet) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     QVariantMap info;
     QString infoElementName = "Test element name";
     QString infoElementValue = "Test element value";
@@ -144,28 +144,28 @@ IMPLEMENT_TEST(MAlignmentUnitTests, info_setGet) {
 
 /** Tests length */
 IMPLEMENT_TEST(MAlignmentUnitTests, length_isEmptyFalse) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     CHECK_FALSE(almnt.isEmpty(), "Method isEmpty() returned 'true' unexpectedly!");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, length_isEmptyTrue) {
-    MAlignment almnt = MAlignment();
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     CHECK_TRUE(almnt.isEmpty(), "Method isEmpty() returned 'false' unexpectedly!");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, length_get) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     int expectedLength = 9; // the length of the longest row
     CHECK_EQUAL(expectedLength, almnt.getLength(), "alignment length");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, length_getForEmpty) {
-    MAlignment almnt = MAlignment();
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     CHECK_EQUAL(0, almnt.getLength(), "alignment length");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, length_setLessLength) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     int newLength = 5;
     almnt.setLength(newLength);
     CHECK_EQUAL(newLength, almnt.getLength(), "alignment length");
@@ -176,18 +176,18 @@ IMPLEMENT_TEST(MAlignmentUnitTests, length_setLessLength) {
 
 /** Tests numOfRows */
 IMPLEMENT_TEST(MAlignmentUnitTests, numOfRows_notEmpty) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     CHECK_EQUAL(MAlignmentTestUtils::rowsNum, almnt.getNumRows(), "number of rows");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, numOfRows_empty) {
-    MAlignment almnt = MAlignment();
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     CHECK_EQUAL(0, almnt.getNumRows(), "number of rows");
 }
 
 /** Tests trim */
 IMPLEMENT_TEST(MAlignmentUnitTests, trim_biggerLength) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     int newLength = 100;
     almnt.setLength(newLength);
     bool result = almnt.trim();
@@ -200,7 +200,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, trim_leadingGapColumns) {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("--AG-CT-TA");
 
-    MAlignment almnt = MAlignment("Alignment with leading gap columns", NULL);
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment with leading gap columns", NULL);
     U2OpStatusImpl os;
     almnt.addRow("First row", firstSequence, os);
     CHECK_NO_ERROR(os);
@@ -217,7 +217,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, trim_leadingGapColumns) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, trim_nothingToTrim) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     bool result = almnt.trim();
     CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
@@ -227,7 +227,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, trim_nothingToTrim) {
 IMPLEMENT_TEST(MAlignmentUnitTests, trim_rowWithoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
-    MAlignment almnt = MAlignment("Alignment", NULL);
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment", NULL);
     U2OpStatusImpl os;
     almnt.addRow("Row without gaps", seq, os);
     CHECK_NO_ERROR(os);
@@ -240,7 +240,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, trim_rowWithoutGaps) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, trim_empty) {
-    MAlignment almnt = MAlignment();
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     bool result = almnt.trim();
     CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
 }
@@ -249,7 +249,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, trim_trailingGapInOne) {
     QByteArray firstSequence("ACGT");
     QByteArray secondSequence("CAC-");
 
-    MAlignment almnt = MAlignment("Alignment", NULL);
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment", NULL);
     U2OpStatusImpl os;
     almnt.addRow("First row", firstSequence, os);
     CHECK_NO_ERROR(os);
@@ -268,7 +268,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, trim_trailingGapInOne) {
 
 /** Tests simplify */
 IMPLEMENT_TEST(MAlignmentUnitTests, simplify_withGaps) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     bool result = almnt.simplify();
     CHECK_TRUE(result, "Method simplify() returned 'false' unexpectedly!");
     CHECK_EQUAL(7, almnt.getLength(), "alignment length");
@@ -279,7 +279,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, simplify_withGaps) {
 IMPLEMENT_TEST(MAlignmentUnitTests, simplify_withoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
-    MAlignment almnt = MAlignment("Alignment", NULL);
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment", NULL);
     U2OpStatusImpl os;
     almnt.addRow("Row without gaps", seq, os);
     CHECK_NO_ERROR(os);
@@ -292,7 +292,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, simplify_withoutGaps) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, simplify_empty) {
-    MAlignment almnt = MAlignment();
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     bool result = almnt.simplify();
     CHECK_FALSE(result, "Method simplify() returned 'true' unexpectedly!");
 }
@@ -304,7 +304,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_byNameAsc) {
     QByteArray thirdSequence("TTTTTT");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name", NULL);
+    MultipleSequenceAlignment almnt("Alignment name", NULL);
     almnt.addRow("NameBA", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("NameAB", secondSequence, os);
@@ -327,7 +327,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_byNameDesc) {
     QByteArray thirdSequence("TTTTTT");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name", NULL);
+    MultipleSequenceAlignment almnt("Alignment name", NULL);
     almnt.addRow("NameAA", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("NameBA", secondSequence, os);
@@ -351,7 +351,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_twoSimilar) {
     QByteArray forthSequence("AAAAAA");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -387,7 +387,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_threeSimilar) {
     QByteArray forthSequence("AAAAAA");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -424,7 +424,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_similarTwoRegions) {
     QByteArray forthSequence("CCCCCC");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -459,13 +459,13 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_similarTwoRegions) {
 
 /** Tests getRows */
 IMPLEMENT_TEST(MAlignmentUnitTests, getRows_oneRow) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     MAlignmentRow row = almnt.getRow(0);
     CHECK_EQUAL("---AG-T--", MAlignmentRowTestUtils::getRowData(row), "first row");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, getRows_severalRows) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     QList<MAlignmentRow> rows = almnt.getRows();
     CHECK_EQUAL(2, rows.count(), "number of rows");
     CHECK_EQUAL("---AG-T--", MAlignmentRowTestUtils::getRowData(rows[0]), "first row");
@@ -473,7 +473,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, getRows_severalRows) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, getRows_rowNames) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     QStringList rowNames = almnt.getRowNames();
     CHECK_EQUAL(2, rowNames.count(), "number of rows");
     CHECK_EQUAL("First row", rowNames[0], "first row name");
@@ -482,20 +482,20 @@ IMPLEMENT_TEST(MAlignmentUnitTests, getRows_rowNames) {
 
 /** Tests charAt */
 IMPLEMENT_TEST(MAlignmentUnitTests, charAt_nonGapChar) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     char result = almnt.charAt(0, 3);
     CHECK_EQUAL('A', result, "char inside first row");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, charAt_gap) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     char result = almnt.charAt(1, 2);
     CHECK_EQUAL('-', result, "gap inside second row");
 }
 
 /** Tests insertGaps */
 IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_validParams) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(0, 4, 3, os);
     CHECK_NO_ERROR(os);
@@ -508,7 +508,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_toBeginningLength) {
     QByteArray secondSequence("ACC");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment");
+    MultipleSequenceAlignment almnt("Alignment");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -521,7 +521,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_toBeginningLength) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_negativeRowIndex) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(-1, 4, 3, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
@@ -529,7 +529,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_negativeRowIndex) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_tooBigRowIndex) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(2, 4, 3, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
@@ -537,7 +537,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_tooBigRowIndex) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_negativePos) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(0, -1, 3, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
@@ -545,7 +545,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_negativePos) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_tooBigPos) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(0, 10, 3, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
@@ -553,7 +553,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_tooBigPos) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_negativeCount) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(0, 4, -1, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
@@ -562,7 +562,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_negativeCount) {
 
 /** Tests removeChars */
 IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_validParams) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(1, 0, 2, os);
     CHECK_NO_ERROR(os);
@@ -572,7 +572,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_validParams) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_negativeRowIndex) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(-1, 0, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
@@ -580,7 +580,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_negativeRowIndex) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_tooBigRowIndex) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(2, 0, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
@@ -588,7 +588,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_tooBigRowIndex) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_negativePos) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(1, -1, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
@@ -596,7 +596,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_negativePos) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_tooBigPos) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(1, 10, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
@@ -604,7 +604,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_tooBigPos) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_negativeCount) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(1, 0, -1, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
@@ -619,7 +619,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_validParams) {
     QByteArray forthSequence("AAAAAA");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -645,7 +645,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_removeEmpty) {
     QByteArray forthSequence("AAAAAA");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -664,7 +664,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_removeEmpty) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_trimmed) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     almnt.removeRegion(0, 1, 2, 1, false);
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
     CHECK_EQUAL("---AG-T--", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
@@ -673,7 +673,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_trimmed) {
 
 /** Tests renameRow */
 IMPLEMENT_TEST(MAlignmentUnitTests, renameRow_validParams) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     QString newRowName = "New row name";
     almnt.renameRow(0, newRowName);
     MAlignmentRow actualRow = almnt.getRow(0);
@@ -682,7 +682,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, renameRow_validParams) {
 
 /** Tests setRowContent */
 IMPLEMENT_TEST(MAlignmentUnitTests, setRowContent_validParamsAndNotTrimmed) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     almnt.setRowContent(1, "---AC-");
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
     CHECK_EQUAL("---AG-T--", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
@@ -690,7 +690,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, setRowContent_validParamsAndNotTrimmed) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, setRowContent_lengthIsIncreased) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     almnt.setRowContent(0, "ACGT-ACA-ACA");
     CHECK_EQUAL(12, almnt.getLength(), "alignment length");
     CHECK_EQUAL("ACGT-ACA-ACA", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
@@ -703,7 +703,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, upperCase_charsAndGaps) {
     QByteArray sequence2("avn-*y-s");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment with chars in lower-case");
+    MultipleSequenceAlignment almnt("Alignment with chars in lower-case");
     almnt.addRow("First row", sequence1, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second row", sequence2, os);
@@ -722,7 +722,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, crop_validParams) {
     QByteArray thirdSequence("---CGA");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -750,7 +750,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, mid_validParams) {
     QByteArray thirdSequence("---CGA");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -758,7 +758,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, mid_validParams) {
     almnt.addRow("Third", thirdSequence, os);
     CHECK_NO_ERROR(os);
 
-    MAlignment almntResult = almnt.mid(2, 3);
+    MultipleSequenceAlignment almntResult = almnt.mid(2, 3);
     CHECK_EQUAL(3, almntResult.getNumRows(), "number of rows");
     CHECK_EQUAL("-AC", MAlignmentTestUtils::getRowData(almntResult, 0), "first row");
     CHECK_EQUAL("---", MAlignmentTestUtils::getRowData(almntResult, 1), "second row");
@@ -769,7 +769,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, mid_validParams) {
 
 /** Tests addRow */
 IMPLEMENT_TEST(MAlignmentUnitTests, addRow_appendRowFromBytes) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.addRow("Added row", "--AACT-GAG", os);
     CHECK_NO_ERROR(os);
@@ -783,7 +783,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, addRow_appendRowFromBytes) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, addRow_rowFromBytesToIndex) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.addRow("Added row", "--AACT-GAG", 1, os);
     CHECK_NO_ERROR(os);
@@ -797,7 +797,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, addRow_rowFromBytesToIndex) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, addRow_zeroBound) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.addRow("Added row", "--AACT-GAG", -2, os);
     CHECK_NO_ERROR(os);
@@ -811,7 +811,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, addRow_zeroBound) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, addRow_rowsNumBound) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.addRow("Added row", "--AACT-GAG", 3, os);
     CHECK_NO_ERROR(os);
@@ -826,7 +826,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, addRow_rowsNumBound) {
 
 /** Tests removeRow */
 IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_validIndex) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeRow(1, os);
     CHECK_NO_ERROR(os);
@@ -836,7 +836,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_validIndex) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_negativeIndex) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeRow(-1, os);
     CHECK_EQUAL("Failed to remove a row!", os.getError(), "opStatus");
@@ -847,7 +847,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_negativeIndex) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_tooBigIndex) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeRow(2, os);
     CHECK_EQUAL("Failed to remove a row!", os.getError(), "opStatus");
@@ -858,7 +858,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_tooBigIndex) {
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_emptyAlignment) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeRow(0, os);
     CHECK_NO_ERROR(os);
@@ -876,7 +876,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, moveRowsBlock_positiveDelta) {
     QByteArray forthSequence("TTTTTT");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -901,7 +901,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, moveRowsBlock_negativeDelta) {
     QByteArray forthSequence("TTTTTT");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second", secondSequence, os);
@@ -925,7 +925,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, replaceChars_validParams) {
     QByteArray secondSequence("A.CT.-AA");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First row", firstSequence, os);
     CHECK_NO_ERROR(os);
     almnt.addRow("Second row", secondSequence, os);
@@ -938,7 +938,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, replaceChars_validParams) {
 
 /** Tests appendChars */
 IMPLEMENT_TEST(MAlignmentUnitTests, appendChars_validParams) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     const char* str = "-AC-GT-";
     int length = 7;
     almnt.appendChars(0, str, length);
@@ -949,8 +949,8 @@ IMPLEMENT_TEST(MAlignmentUnitTests, appendChars_validParams) {
 
 /** Tests operPlusEqual */
 IMPLEMENT_TEST(MAlignmentUnitTests, operPlusEqual_validParams) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
-    MAlignment almnt2 = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt2 = MAlignmentTestUtils::initTestAlignment();
 
     almnt += almnt2;
 
@@ -963,16 +963,16 @@ IMPLEMENT_TEST(MAlignmentUnitTests, operPlusEqual_validParams) {
 
 /** Tests operNotEqual */
 IMPLEMENT_TEST(MAlignmentUnitTests, operNotEqual_equal) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
-    MAlignment almnt2 = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt2 = MAlignmentTestUtils::initTestAlignment();
 
     bool res = (almnt != almnt2);
     CHECK_FALSE(res, "Operator!= returned 'True' unexpectedly!");
 }
 
 IMPLEMENT_TEST(MAlignmentUnitTests, operNotEqual_notEqual) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
-    MAlignment almnt2;
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt2;
 
     bool res = (almnt != almnt2);
     CHECK_TRUE(res, "Operator!= returned 'False' unexpectedly!");
@@ -980,7 +980,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, operNotEqual_notEqual) {
 
 /** Tests hasEmptyGapModel */
 IMPLEMENT_TEST(MAlignmentUnitTests, hasEmptyGapModel_gaps) {
-    MAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
     bool res = almnt.hasEmptyGapModel();
 
     CHECK_FALSE(res, "Method hasEmptyGapModel() returned 'True' unexpectedly!");
@@ -990,7 +990,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, hasEmptyGapModel_noGaps) {
     QByteArray firstSequence("AAAAAA");
 
     U2OpStatusImpl os;
-    MAlignment almnt("Alignment name");
+    MultipleSequenceAlignment almnt("Alignment name");
     almnt.addRow("First", firstSequence, os);
     CHECK_NO_ERROR(os);
 

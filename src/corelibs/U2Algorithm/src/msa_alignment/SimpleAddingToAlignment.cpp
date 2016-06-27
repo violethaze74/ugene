@@ -101,7 +101,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
 /* BestPositionFindTask */
 /************************************************************************/
 
-BestPositionFindTask::BestPositionFindTask(const MAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId)
+BestPositionFindTask::BestPositionFindTask(const MultipleSequenceAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId)
 : Task(tr("Best position find task"), TaskFlag_None), inputMsa(alignment), sequenceRef(sequenceRef), sequenceId(sequenceId), bestPosition(0), referenceRowId(referenceRowId) {
 
 }

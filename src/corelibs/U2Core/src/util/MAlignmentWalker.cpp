@@ -115,7 +115,7 @@ private:
 /************************************************************************/
 /* MAlignmentWalker */
 /************************************************************************/
-MAlignmentWalker::MAlignmentWalker(const MAlignment &msa, char gapChar)
+MAlignmentWalker::MAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar)
 : msa(msa), currentOffset(0)
 {
     for (int i=0; i<msa.getNumRows(); i++) {

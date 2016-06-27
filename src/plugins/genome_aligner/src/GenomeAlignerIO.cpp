@@ -126,7 +126,7 @@ void GenomeAlignerMAlignmentWriter::close() {
     result.setAlphabet(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
 }
 
-MAlignment& GenomeAlignerMAlignmentWriter::getResult() {
+MultipleSequenceAlignment& GenomeAlignerMAlignmentWriter::getResult() {
     return result;
 }
 

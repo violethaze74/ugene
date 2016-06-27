@@ -480,7 +480,7 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
 
 #define MAX_ALI_MODEL (10*1000*1000)
 
-void ADVExportContext::prepareMAFromBlastAnnotations(MAlignment& ma, const QString& qualiferId, bool includeRef, U2OpStatus& os) {
+void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& ma, const QString& qualiferId, bool includeRef, U2OpStatus& os) {
     SAFE_POINT_EXT(ma.isEmpty(), os.setError(tr("Illegal parameter: input alignment is not empty!")),);
     const QList<AnnotationSelectionData>& selection = view->getAnnotationsSelection()->getSelection();
     CHECK_EXT(selection.size() >= 2, os.setError(tr("At least 2 annotations are required")),);
@@ -537,7 +537,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MAlignment& ma, const QStri
     }
 }
 
-void ADVExportContext::prepareMAFromAnnotations(MAlignment& ma, bool translate, U2OpStatus& os) {
+void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os) {
     SAFE_POINT_EXT(ma.isEmpty(), os.setError(tr("Illegal parameter: input alignment is not empty!")),);
     const QList<AnnotationSelectionData>& selection = view->getAnnotationsSelection()->getSelection();
     CHECK_EXT(selection.size() >= 2, os.setError(tr("At least 2 annotations are required")),);
@@ -584,7 +584,7 @@ void ADVExportContext::prepareMAFromAnnotations(MAlignment& ma, bool translate, 
     }
 }
 
-void ADVExportContext::prepareMAFromSequences(MAlignment& ma, bool translate, U2OpStatus& os) {
+void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os) {
     SAFE_POINT_EXT(ma.isEmpty(), os.setError(tr("Illegal parameter: Input alignment is not empty!")),);
 
     const DNAAlphabet* al = translate ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT()) : NULL;
@@ -642,7 +642,7 @@ void ADVExportContext::prepareMAFromSequences(MAlignment& ma, bool translate, U2
 }
 
 void ADVExportContext::selectionToAlignment(const QString& title, bool annotations, bool translate) {
-    MAlignment ma(MA_OBJECT_NAME);
+    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
     U2OpStatusImpl os;
     if (annotations) {
         prepareMAFromAnnotations(ma, translate, os);
@@ -777,7 +777,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment()
         return;
     }
 
-    MAlignment ma(MA_OBJECT_NAME);
+    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
     U2OpStatusImpl os;
 
     prepareMAFromBlastAnnotations(ma, d->qualiferId, d->addRefFlag, os);

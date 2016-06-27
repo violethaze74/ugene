@@ -23,7 +23,7 @@
 #define _U2_MSA_EDITOR_UNDO_FRAMEWOFK_H_
 
 #include <U2Core/global.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #if (QT_VERSION < 0x050000) //Qt 5
 #include <QtGui/QUndoStack>
@@ -40,13 +40,13 @@ class U2VIEW_EXPORT MSAEditorUndoFramework : protected QUndoStack {
     Q_OBJECT
 public:
     MSAEditorUndoFramework(QObject* p, MAlignmentObject* ma);
-    void applyUndoRedoAction(const MAlignment& ma);
+    void applyUndoRedoAction(const MultipleSequenceAlignment& ma);
 
     QAction* getUndoAction() const {return uAction;}
     QAction* getRedoAction() const {return rAction;}
 
 public slots:
-    void sl_alignmentChanged(const MAlignment& aliBefore, const MAlignmentModInfo& modInfo);
+    void sl_alignmentChanged(const MultipleSequenceAlignment& aliBefore, const MAlignmentModInfo& modInfo);
     void sl_lockedStateChanged();
     void sl_completeStateChanged(bool complete);
 
@@ -73,7 +73,7 @@ protected:
 
 class MSAEditorUndoWholeAliCommand : public MSAEditorUndoCommand {
 public:
-    MSAEditorUndoWholeAliCommand(const MAlignment& _maBefore, const MAlignment& _maAfter) : maBefore(_maBefore), maAfter(_maAfter){}
+    MSAEditorUndoWholeAliCommand(const MultipleSequenceAlignment& _maBefore, const MultipleSequenceAlignment& _maAfter) : maBefore(_maBefore), maAfter(_maAfter){}
 
     virtual int getMemUsage() const {return maBefore.estimateMemorySize();}
 
@@ -81,8 +81,8 @@ public:
     virtual void undo();
 
 protected:
-    MAlignment maBefore;
-    MAlignment maAfter;
+    MultipleSequenceAlignment maBefore;
+    MultipleSequenceAlignment maAfter;
 };
 
 

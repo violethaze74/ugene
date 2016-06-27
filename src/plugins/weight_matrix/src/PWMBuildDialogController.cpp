@@ -132,7 +132,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
     QList<GObject*> mobjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (!mobjs.isEmpty()) {
         MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
-        const MAlignment &ma = mobj->getMAlignment();
+        const MultipleSequenceAlignment &ma = mobj->getMAlignment();
         replaceLogo(ma);
     } else {
         mobjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
@@ -141,7 +141,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
             return;
         }
         U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(mobjs.first());
-        MAlignment ma(dnaObj->getSequenceName(), dnaObj->getAlphabet());
+        MultipleSequenceAlignment ma(dnaObj->getSequenceName(), dnaObj->getAlphabet());
         foreach (GObject* obj, mobjs) {
             U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
             if (dnaObj->getAlphabet()->getType() != DNAAlphabet_NUCL) {
@@ -169,7 +169,7 @@ void PWMBuildDialogController::reportError(const QString &message) {
     QMessageBox::warning(this, L10N::errorTitle(), message);
 }
 
-void PWMBuildDialogController::replaceLogo(const MAlignment& ma) {
+void PWMBuildDialogController::replaceLogo(const MultipleSequenceAlignment& ma) {
     int logoheight = 150;
     if (ma.getLength() < 50) {
         AlignmentLogoSettings logoSettings(ma);
@@ -330,7 +330,7 @@ void PWMBuildDialogController::reject() {
 //////////////////////////////////////////////////////////////////////////
 // tasks
 
-PFMatrixBuildTask::PFMatrixBuildTask(const PMBuildSettings& s, const MAlignment& ma)
+PFMatrixBuildTask::PFMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma)
 : Task (tr("Build Frequency Matrix"), TaskFlag_None), settings(s), ma(ma)
 {
     GCOUNTER( cvar, tvar, "PFMatrixBuildTask" );
@@ -420,7 +420,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
             MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
-            const MAlignment &ma = mobj->getMAlignment();
+            const MultipleSequenceAlignment &ma = mobj->getMAlignment();
             buildTask = new PFMatrixBuildTask(settings, ma);
             res.append(buildTask);
         } else {
@@ -428,7 +428,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
             if (!mobjs.isEmpty()) {
                 U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(mobjs.first());
                 QString baseName = d->getURL().baseFileName();
-                MAlignment ma(baseName, dnaObj->getAlphabet());
+                MultipleSequenceAlignment ma(baseName, dnaObj->getAlphabet());
                 QList<MAlignmentRow> rows;
                 foreach (GObject* obj, mobjs) {
                     U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
@@ -454,7 +454,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
-PWMatrixBuildTask::PWMatrixBuildTask(const PMBuildSettings& s, const MAlignment& ma)
+PWMatrixBuildTask::PWMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma)
 : Task (tr("Build Weight Matrix"), TaskFlag_None), settings(s), ma(ma)
 {
     GCOUNTER( cvar, tvar, "PWMatrixBuildTask" );
@@ -553,7 +553,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
             MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
-            const MAlignment &ma = mobj->getMAlignment();
+            const MultipleSequenceAlignment &ma = mobj->getMAlignment();
             buildTask = new PWMatrixBuildTask(settings, ma);
             res.append(buildTask);
         } else {
@@ -561,7 +561,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
             if (!mobjs.isEmpty()) {
                 U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(mobjs.first());
                 QString baseName = d->getURL().baseFileName();
-                MAlignment ma(baseName, dnaObj->getAlphabet());
+                MultipleSequenceAlignment ma(baseName, dnaObj->getAlphabet());
                 foreach (GObject* obj, mobjs) {
                     U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
                     if (dnaObj->getAlphabet()->getType() != DNAAlphabet_NUCL) {

@@ -22,7 +22,7 @@
 #ifndef _U2_MSA_DBI_UTILS_
 #define _U2_MSA_DBI_UTILS_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2MsaDbi.h>
 
 
@@ -42,7 +42,7 @@ public:
      *    Otherwise adds or removes the corresponding rows and sequences.
      * 3) Updates rows positions
      */
-    static void updateMsa(const U2EntityRef& msaRef, const MAlignment& al, U2OpStatus& os);
+    static void updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAlignment& al, U2OpStatus& os);
 
     /**
     * Get the length of the alignment in the database.

@@ -122,7 +122,7 @@ UHMM3Plugin::UHMM3Plugin() : Plugin( tr( "HMM3" ), tr( "HMM profile tools. Plugi
 }
 
 void UHMM3Plugin::sl_buildProfile() {
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
     MWMDIWindow* w = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if( NULL != w ) {
         GObjectViewWindow* ow = qobject_cast< GObjectViewWindow* >( w );

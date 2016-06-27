@@ -27,7 +27,7 @@
 
 #include <U2Core/BackgroundTaskRunner.h>
 #include <U2Core/Task.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include "MSAEditorNameList.h"
 #include "MsaUpdatedWidgetInterface.h"
 
@@ -75,7 +75,7 @@ signals:
     void si_dataStateChanged(DataState newState);
 private slots:
 
-    void onAlignmentChanged(const MAlignment& maBefore, const MAlignmentModInfo& modInfo);
+    void onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MAlignmentModInfo& modInfo);
     void sl_createMatrixTaskFinished(Task*);
 private:
     void sl_buildStaticMenu(GObjectView*, QMenu*) {}
@@ -120,7 +120,7 @@ public:
     const UpdatedWidgetSettings* getSettings() const {return settings;}
 
 private slots:
-    void sl_onAlignmentChanged(const MAlignment& maBefore, const MAlignmentModInfo& modInfo);
+    void sl_onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MAlignmentModInfo& modInfo);
     void sl_onUpdateButonPressed();
     void sl_onDataStateChanged(DataState newState);
     void sl_onFontChanged(const QFont&);

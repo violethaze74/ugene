@@ -159,7 +159,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             sub = new QMenu(tr("Export/Import"));
             sub->addAction(exportAlignmentAsSequencesAction);
             GObject* obj = set.first();
-            const MAlignment &ma = qobject_cast<MAlignmentObject*>(obj)->getMAlignment();
+            const MultipleSequenceAlignment &ma = qobject_cast<MAlignmentObject*>(obj)->getMAlignment();
             if (ma.getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
             }
@@ -402,7 +402,7 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
         return;
     }
 
-    MAlignment ma = MSAUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
+    MultipleSequenceAlignment ma = MSAUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
     if (os.hasError()) {
         QMessageBox::critical(NULL, L10N::errorTitle(), os.getError());
         return;
@@ -425,7 +425,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     }
     GObject* obj = set.first();
     MAlignmentObject* maObject = qobject_cast<MAlignmentObject*>(obj);
-    const MAlignment& ma = maObject->getMAlignment();
+    const MultipleSequenceAlignment& ma = maObject->getMAlignment();
 
     QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
@@ -450,7 +450,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     }
 
     GObject* obj = set.first();
-    const MAlignment &ma = qobject_cast<MAlignmentObject*>(obj)->getMAlignment();
+    const MultipleSequenceAlignment &ma = qobject_cast<MAlignmentObject*>(obj)->getMAlignment();
 
     GObject* firstObject = set.first();
     Document* doc = firstObject->getDocument();

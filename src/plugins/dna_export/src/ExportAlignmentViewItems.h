@@ -33,7 +33,7 @@ class AnnotatedDNAView;
 class AnnotationSelection;
 class Annotation;
 class LRegionsSelection;
-class MAlignment;
+class MultipleSequenceAlignment;
 class MSAEditor;
 
 class ExportAlignmentViewItemsController : public GObjectViewWindowContext {

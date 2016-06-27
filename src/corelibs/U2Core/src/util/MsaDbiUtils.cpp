@@ -38,7 +38,7 @@ namespace U2 {
 // Helper-methods to validate parameters
 
 /** Validates that all 'rowIds' contains in the alignment rows */
-bool validateRowIds(const MAlignment& al, const QList<qint64>& rowIds) {
+bool validateRowIds(const MultipleSequenceAlignment& al, const QList<qint64>& rowIds) {
     QList<qint64> alRowIds = al.getRowsIds();
     foreach (qint64 rowId, rowIds) {
         if (!alRowIds.contains(rowId)) {
@@ -65,7 +65,7 @@ void validateRowIds(U2MsaDbi *msaDbi, const U2DataId &msaId, const QList<qint64>
 }
 
 /** Validates 'pos' in an alignment: it must be non-negative and less than or equal to the alignment length */
-bool validatePos(const MAlignment& al, qint64 pos) {
+bool validatePos(const MultipleSequenceAlignment& al, qint64 pos) {
     if (pos < 0 || pos > al.getLength()) {
         coreLog.trace(QString("Invalid position '%1' in '%2' alignment!").arg(pos).arg(al.getName()));
         return false;
@@ -564,7 +564,7 @@ void MsaDbiUtils::splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& 
     SAFE_POINT(-1 == seqBytes.indexOf(MAlignment_GapChar), "Row sequence contains gaps!", );
 }
 
-void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MAlignment& al, U2OpStatus& os) {
+void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAlignment& al, U2OpStatus& os) {
     // Prepare the connection
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
@@ -1060,7 +1060,7 @@ QList<qint64> MsaDbiUtils::removeEmptyRows(const U2EntityRef& msaRef, const QLis
 void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64> rowIds, qint64 pos, qint64 count, U2OpStatus& os) {
     // Get the alignment
     MAlignmentExporter alExporter;
-    MAlignment al = alExporter.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
+    MultipleSequenceAlignment al = alExporter.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
 
     // Validate the parameters
     if (!validatePos(al, pos) ||

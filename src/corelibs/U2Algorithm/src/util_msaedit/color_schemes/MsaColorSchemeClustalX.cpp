@@ -42,7 +42,7 @@ MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSc
     colorByIdx[ClustalColor_CYAN]    = "#15a4a4";
     colorByIdx[ClustalColor_YELLOW]  = "#c0c000";
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MAlignmentModInfo &)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemeClustalX::getColor(int seq, int pos, char) const {
@@ -79,7 +79,7 @@ void MsaColorSchemeClustalX::updateCache() const {
 
     // compute colors for whole ali
     // use 4 bits per color
-    const MAlignment &ma = maObj->getMAlignment();
+    const MultipleSequenceAlignment &ma = maObj->getMAlignment();
     int nSeq = ma.getNumRows();
     aliLen = maObj->getLength();
     cacheVersion = objVersion;

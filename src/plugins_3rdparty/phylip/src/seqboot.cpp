@@ -4,7 +4,7 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include "seqboot.h"
@@ -762,7 +762,7 @@ void charpermute(long m, long n)
 } /* charpermute */
 
 
-void writedata( QVector<U2::MAlignment*>& mavect, int rep, const U2::MAlignment& ma)
+void writedata( QVector<U2::MultipleSequenceAlignment*>& mavect, int rep, const U2::MultipleSequenceAlignment& ma)
 {
     
 
@@ -1148,7 +1148,7 @@ void writefactors(void)
 } /* writefactors */
 
 
-void bootwrite( QVector<U2::MAlignment*>& mavect, const U2::MAlignment& ma)
+void bootwrite( QVector<U2::MultipleSequenceAlignment*>& mavect, const U2::MultipleSequenceAlignment& ma)
 { /* does bootstrapping and writes out data sets */
   long i, j, rr, repdiv10;
 

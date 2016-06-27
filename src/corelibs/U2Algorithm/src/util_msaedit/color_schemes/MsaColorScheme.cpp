@@ -22,7 +22,7 @@
 #include <QColor>
 
 #include <U2Core/FeatureColors.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ColorSchemeUtils.h"

@@ -181,7 +181,7 @@ void SiteconBuildDialogController::reject() {
 //////////////////////////////////////////////////////////////////////////
 // task
 
-SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const MAlignment& ma, const QString& origin) 
+SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const MultipleSequenceAlignment& ma, const QString& origin) 
 : Task (tr("Build SITECON model"), TaskFlag_None), settings(s), ma(ma)
 {
     GCOUNTER( cvar, tvar, "SiteconBuildTask" );
@@ -288,7 +288,7 @@ QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
             stateInfo.setError(  tr("No alignment found") );
         } else {
             MAlignmentObject* mobj =  qobject_cast<MAlignmentObject*>(mobjs.first());
-            const MAlignment &ma = mobj->getMAlignment();
+            const MultipleSequenceAlignment &ma = mobj->getMAlignment();
             QString baseName = mobj->getDocument()->getURL().baseFileName();
             buildTask = new SiteconBuildTask(settings, ma, baseName);
             res.append(buildTask);

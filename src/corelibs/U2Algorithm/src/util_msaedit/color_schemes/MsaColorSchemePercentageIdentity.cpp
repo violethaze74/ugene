@@ -23,7 +23,7 @@
 
 #include <U2Algorithm/MSAConsensusUtils.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/MAlignmentObject.h>
 
 #include "MsaColorSchemePercentageIdentity.h"
@@ -45,7 +45,7 @@ MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *pare
     colorsByRange[2] = QColor("#CCCCFF");
     colorsByRange[3] = QColor();
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MAlignmentModInfo &)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemePercentageIdentity::getColor(int /*seq*/, int pos, char c) const {
@@ -72,7 +72,7 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     if (cacheVersion == objVersion) {
         return;
     }
-    const MAlignment& ma = maObj->getMAlignment();
+    const MultipleSequenceAlignment& ma = maObj->getMAlignment();
     int aliLen = ma.getLength();
     indentCache.resize(aliLen);
     for (int i = 0; i < aliLen; i++) {

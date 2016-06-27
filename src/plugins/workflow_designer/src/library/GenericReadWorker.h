@@ -26,7 +26,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 

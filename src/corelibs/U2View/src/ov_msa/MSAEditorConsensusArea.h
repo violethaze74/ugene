@@ -37,7 +37,7 @@ namespace U2 {
 class MSAEditor;
 class MSAEditorUI;
 class GObjectView;
-class MAlignment;
+class MultipleSequenceAlignment;
 class MAlignmentModInfo;
 class MSAEditorSelection;
 class MSAConsensusAlgorithm;
@@ -89,7 +89,7 @@ signals:
 private slots:
     void sl_startChanged(const QPoint&, const QPoint&);
     void sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev);
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&);
     void sl_changeConsensusAlgorithm(const QString& algoId);
     void sl_changeConsensusThreshold(int val);
     void sl_onScrollBarActionTriggered( int scrollAction );

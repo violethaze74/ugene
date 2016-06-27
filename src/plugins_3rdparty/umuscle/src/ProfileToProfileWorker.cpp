@@ -71,12 +71,12 @@ Task * ProfileToProfileWorker::tick() {
         SharedDbiDataHandler masterMsaId = qm.value(MASTER_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MAlignmentObject> masterMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), masterMsaId));
         SAFE_POINT(!masterMsaObj.isNull(), "NULL MSA Object!", NULL);
-        const MAlignment &masterMsa = masterMsaObj->getMAlignment();
+        const MultipleSequenceAlignment &masterMsa = masterMsaObj->getMAlignment();
 
         SharedDbiDataHandler secondMsaId = qm.value(SECOND_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MAlignmentObject> secondMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), secondMsaId));
         SAFE_POINT(!secondMsaObj.isNull(), "NULL MSA Object!", NULL);
-        MAlignment secondMsa = secondMsaObj->getMAlignment();
+        MultipleSequenceAlignment secondMsa = secondMsaObj->getMAlignment();
 
         Task *t = new ProfileToProfileTask(masterMsa, secondMsa);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -106,7 +106,7 @@ void ProfileToProfileWorker::sl_taskFinished() {
 
     if (outPort) {
         QVariantMap channelContext = outPort->getContext();
-        MAlignment resultAl = t->getResult();
+        MultipleSequenceAlignment resultAl = t->getResult();
         resultAl.setName("Aligned");
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(resultAl);
         QVariantMap msgData;
@@ -119,7 +119,7 @@ void ProfileToProfileWorker::sl_taskFinished() {
 /************************************************************************/
 /* Task */
 /************************************************************************/
-ProfileToProfileTask::ProfileToProfileTask(const MAlignment &_masterMsa, MAlignment &_secondMsa)
+ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment &_masterMsa, MultipleSequenceAlignment &_secondMsa)
 : Task("Align profile to profile with MUSCLE", TaskFlag_NoRun), masterMsa(_masterMsa), secondMsa(_secondMsa),
 seqIdx(0), subtaskCount(0)
 {
@@ -161,7 +161,7 @@ QList<Task*> ProfileToProfileTask::onSubTaskFinished(Task *subTask) {
     return tasks;
 }
 
-const MAlignment & ProfileToProfileTask::getResult() {
+const MultipleSequenceAlignment & ProfileToProfileTask::getResult() {
     U2AlphabetUtils::assignAlphabet(result);
     return result;
 }

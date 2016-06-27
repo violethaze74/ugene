@@ -190,7 +190,7 @@ void RichTextMsaClipboardTask::run(){
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
 
-    const MAlignment &msa = obj->getMAlignment();
+    const MultipleSequenceAlignment &msa = obj->getMAlignment();
     U2OpStatusImpl os;
     const int refSeq = msa.getRowIndexByRowId(context->getReferenceRowId(), os);
     const MAlignmentRow *r = NULL;
@@ -199,7 +199,7 @@ void RichTextMsaClipboardTask::run(){
     }
 
     result.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toLatin1());
-        const MAlignment& ma = obj->getMAlignment();
+        const MultipleSequenceAlignment& ma = obj->getMAlignment();
         int numRows = ma.getNumRows();
         for (int seq = 0; seq < numRows; seq++){
             QString res;

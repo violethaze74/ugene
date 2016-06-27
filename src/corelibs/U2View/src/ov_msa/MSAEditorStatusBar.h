@@ -41,7 +41,7 @@
 namespace U2 {
 
 class MAlignmentObject;
-class MAlignment;
+class MultipleSequenceAlignment;
 class MAlignmentModInfo;
 class MSAEditorSequenceArea;
 class MSAEditorSelection;
@@ -54,7 +54,7 @@ public:
     bool eventFilter(QObject* obj, QEvent* ev);
 
 private slots:
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&) {updateCoords();}
+    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&) {updateCoords();}
     void sl_lockStateChanged() {updateLock();}
     void sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& ){updateCoords();}
     void sl_findNext();

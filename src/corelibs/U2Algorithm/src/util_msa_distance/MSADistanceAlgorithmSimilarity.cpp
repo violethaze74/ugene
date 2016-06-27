@@ -21,7 +21,7 @@
 
 #include "MSADistanceAlgorithmSimilarity.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -41,7 +41,7 @@ QString MSADistanceAlgorithmFactorySimilarity::getName() const {
 }
 
 
-MSADistanceAlgorithm* MSADistanceAlgorithmFactorySimilarity::createAlgorithm(const MAlignment& ma, QObject* ) {
+MSADistanceAlgorithm* MSADistanceAlgorithmFactorySimilarity::createAlgorithm(const MultipleSequenceAlignment& ma, QObject* ) {
     MSADistanceAlgorithm* res = new MSADistanceAlgorithmSimilarity(this, ma);
     if(flags.testFlag(DistanceAlgorithmFlag_ExcludeGaps)){
         res->setExcludeGaps(true);

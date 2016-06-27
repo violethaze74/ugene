@@ -11,7 +11,7 @@
 
 #include <QVector>
 namespace U2 {
-    class MAlignment;
+    class MultipleSequenceAlignment;
 }
 
 typedef enum {
@@ -115,12 +115,12 @@ void   bootweights(void);
 void   permute_vec(long *a, long n);
 void   sppermute(long);
 void   charpermute(long, long);
-void writedata(QVector<U2::MAlignment*>& mavect, int rep, const U2::MAlignment& ma);
+void writedata(QVector<U2::MultipleSequenceAlignment*>& mavect, int rep, const U2::MultipleSequenceAlignment& ma);
 void   writeweights(void);
 void   writecategories(void);
 void   writeauxdata(steptr, FILE*);
 void   writefactors(void);
-void bootwrite(QVector<U2::MAlignment*>& mavect, const U2::MAlignment& ma);
+void bootwrite(QVector<U2::MultipleSequenceAlignment*>& mavect, const U2::MultipleSequenceAlignment& ma);
 //void   seqboot_inputaux(steptr, FILE*);
 void   freenewer(void);
 /* function prototypes */
