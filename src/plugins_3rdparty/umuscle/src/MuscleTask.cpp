@@ -448,10 +448,10 @@ Task::ReportResult MuscleGObjectTask::report() {
             return ReportResult_Finished;
         }
 
-        QMap<qint64, QList<U2MsaGap> > rowsGapModel;
+        QMap<qint64, QList<U2MaGap> > rowsGapModel;
         for (int i = 0, n = muscleTask->resultMA.getNumRows(); i < n; ++i) {
             qint64 rowId = muscleTask->resultMA.getRow(i).getRowDBInfo().rowId;
-            const QList<U2MsaGap>& newGapModel = muscleTask->resultMA.getRow(i).getGapModel();
+            const QList<U2MaGap>& newGapModel = muscleTask->resultMA.getRow(i).getGapModel();
             rowsGapModel.insert(rowId, newGapModel);
         }
 

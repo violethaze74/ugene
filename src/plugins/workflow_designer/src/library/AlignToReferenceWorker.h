@@ -46,7 +46,7 @@ public:
 
 private:
     void createAlignment();
-    QList<U2Region> getRegions(const QList<U2MsaGap> &gaps, qint64 rowLength) const;
+    QList<U2Region> getRegions(const QList<U2MaGap> &gaps, qint64 rowLength) const;
     void calculateCoreRegion(const QList<U2Region> &regions);
     void extendCoreRegion(const QList<U2Region> &regions);
 
@@ -74,8 +74,8 @@ public:
     bool isReverse() const;
     bool isComplement() const;
     SharedDbiDataHandler getRead() const;
-    QList<U2MsaGap> getReferenceGaps() const;
-    QList<U2MsaGap> getReadGaps() const;
+    QList<U2MaGap> getReferenceGaps() const;
+    QList<U2MaGap> getReadGaps() const;
     QString getInitialReadName() const;
 
 private:
@@ -85,7 +85,7 @@ private:
     void createRcReads();
     KAlignSubTask * initRc();
     void createSWAlignment(KAlignSubTask *task);
-    void shiftGaps(QList<U2MsaGap> &gaps) const;
+    void shiftGaps(QList<U2MaGap> &gaps) const;
 
 private:
     const SharedDbiDataHandler reference;
@@ -105,8 +105,8 @@ private:
 
     SharedDbiDataHandler msa;
     qint64 maxChunkSize;
-    QList<U2MsaGap> referenceGaps;
-    QList<U2MsaGap> readGaps;
+    QList<U2MaGap> referenceGaps;
+    QList<U2MaGap> readGaps;
     QString initialReadName;
 };
 
@@ -123,10 +123,10 @@ private:
     PairwiseAlignmentTask * getPATask(int readNum);
     DNASequence getReadSequence(int readNum);
     DNASequence getReferenceSequence();
-    QList<U2MsaGap> getReferenceGaps();
-    QList<U2MsaGap> getShiftedGaps(int rowNum);
-    void insertShiftedGapsIntoReference(MultipleSequenceAlignment &alignment, const QList<U2MsaGap> &gaps);
-    void insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps);
+    QList<U2MaGap> getReferenceGaps();
+    QList<U2MaGap> getShiftedGaps(int rowNum);
+    void insertShiftedGapsIntoReference(MultipleSequenceAlignment &alignment, const QList<U2MaGap> &gaps);
+    void insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, const QList<U2MaGap> &gaps);
     MultipleSequenceAlignment createAlignment();
     void createAnnotations(const MultipleSequenceAlignment &alignment);
     U2Region getReadRegion(const MultipleSequenceAlignmentRow &readRow, const MultipleSequenceAlignmentRow &referenceRow) const;

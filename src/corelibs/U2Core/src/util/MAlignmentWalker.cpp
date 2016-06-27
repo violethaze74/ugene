@@ -44,9 +44,9 @@ public:
 
         int gapsInserted = 0;
         while (hasGapsInRegion(startPos, length, os)) {
-            U2MsaGap gap = gaps.takeFirst();
-            U2MsaGap inRegion;
-            U2MsaGap outRegion;
+            U2MaGap gap = gaps.takeFirst();
+            U2MaGap inRegion;
+            U2MaGap outRegion;
             splitGap(startPos, length, gap, inRegion, outRegion, os);
             CHECK_OP(os, "");
 
@@ -72,7 +72,7 @@ public:
 private:
     bool hasGapsInRegion(int startPos, int length, U2OpStatus &os) const {
         CHECK(!gaps.isEmpty(), false);
-        const U2MsaGap &gap = gaps.first();
+        const U2MaGap &gap = gaps.first();
 
         SAFE_POINT_EXT(gap.offset >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start"))), false);
 
@@ -82,7 +82,7 @@ private:
         return true;
     }
 
-    static void splitGap(int startPos, int length, const U2MsaGap &gap, U2MsaGap &inRegion, U2MsaGap &outRegion, U2OpStatus &os) {
+    static void splitGap(int startPos, int length, const U2MaGap &gap, U2MaGap &inRegion, U2MaGap &outRegion, U2OpStatus &os) {
         SAFE_POINT_EXT(gap.offset >= startPos, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too small)"))), );
         SAFE_POINT_EXT(gap.offset < startPos + length, os.setError(L10N::badArgument(MultipleSequenceAlignmentObject::tr("Unexpected gap start (too big)"))), );
 
@@ -92,8 +92,8 @@ private:
         } else {
             int inRegionLength = endPos - gap.offset + 1;
             int outRegionLength = gap.gap - inRegionLength;
-            inRegion = U2MsaGap(gap.offset, inRegionLength);
-            outRegion = U2MsaGap(endPos + 1, outRegionLength);
+            inRegion = U2MaGap(gap.offset, inRegionLength);
+            outRegion = U2MaGap(endPos + 1, outRegionLength);
         }
 
         SAFE_POINT_EXT((startPos + length >= inRegion.offset + inRegion.gap)
@@ -107,7 +107,7 @@ private:
 
 private:
     const MultipleSequenceAlignmentRow &row;
-    QList<U2MsaGap> gaps;
+    QList<U2MaGap> gaps;
     int seqPos;
     const char gapChar;
 };

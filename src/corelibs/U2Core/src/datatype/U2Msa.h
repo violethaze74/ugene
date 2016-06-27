@@ -28,22 +28,23 @@
 namespace U2 {
 
 /**
-    Gap model for Msa: for every sequence it keeps gaps map
+    Gap model for Multiple Alignment: for every row it keeps gaps map
 */
 
-class U2MsaGap;
+class U2MaGap;
 
-typedef QList<U2MsaGap> U2MsaRowGapModel;
-typedef QList<U2MsaRowGapModel> U2MsaGapModel;
+typedef QList<U2MaGap> U2MaRowGapModel;
+typedef QList<U2MaRowGapModel> U2MaListGapModel;
+typedef QMap<qint64, U2MaRowGapModel> U2MaMapGapModel;
 
-class U2CORE_EXPORT U2MsaGap  {
+class U2CORE_EXPORT U2MaGap  {
 public:
-    U2MsaGap() : offset(0), gap(0){}
-    U2MsaGap(qint64 off, qint64 g) : offset(off), gap(g){}
+    U2MaGap() : offset(0), gap(0){}
+    U2MaGap(qint64 off, qint64 g) : offset(off), gap(g){}
 
     bool isValid() const { return ((offset >= 0) && (gap > 0)); }
 
-    bool operator==(const U2MsaGap& g) const { return ((offset == g.offset) && (gap == g.gap)); }
+    bool operator==(const U2MaGap& g) const { return ((offset == g.offset) && (gap == g.gap)); }
 
     /** Offset of the gap in sequence*/
     qint64 offset;
@@ -70,7 +71,7 @@ public:
     qint64          gend;
 
     /** A gap model for the row */
-    QList<U2MsaGap> gaps;
+    QList<U2MaGap> gaps;
 
     /** Length of the sequence characters and gaps of the row (without trailing) */
     qint64          length;

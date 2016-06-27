@@ -295,7 +295,7 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
     result.addRow(referenceSeq.getName(), referenceSeq.seq, 0, stateInfo);
     CHECK_OP(stateInfo, result);
 
-    QList<U2MsaGap> referenceGaps = getReferenceGaps();
+    QList<U2MaGap> referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, result);
 
     insertShiftedGapsIntoReference(result, referenceGaps);
@@ -311,7 +311,7 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
 
         PairwiseAlignmentTask *subTask = getPATask(i);
         CHECK_OP(stateInfo, result);
-        foreach (const U2MsaGap &gap, subTask->getReadGaps()) {
+        foreach (const U2MaGap &gap, subTask->getReadGaps()) {
             result.insertGaps(i + 1, gap.offset, gap.gap, stateInfo);
             CHECK_OP(stateInfo, result);
         }
@@ -360,7 +360,7 @@ U2Region ComposeResultSubTask::getReadRegion(const MultipleSequenceAlignmentRow 
 
     // calculate read start
     if (!readRow.getGapModel().isEmpty()) {
-        U2MsaGap firstGap = readRow.getGapModel().first();
+        U2MaGap firstGap = readRow.getGapModel().first();
         if (0 == firstGap.offset) {
             region.startPos += firstGap.gap;
             region.length -= firstGap.gap;
@@ -369,7 +369,7 @@ U2Region ComposeResultSubTask::getReadRegion(const MultipleSequenceAlignmentRow 
 
     qint64 leftGap = 0;
     qint64 innerGap = 0;
-    foreach (const U2MsaGap &gap, referenceRow.getGapModel()) {
+    foreach (const U2MaGap &gap, referenceRow.getGapModel()) {
         qint64 endPos = gap.offset + gap.gap;
         if (gap.offset < region.startPos) {
             leftGap += gap.gap;
@@ -425,13 +425,13 @@ DNASequence ComposeResultSubTask::getReferenceSequence() {
 }
 
 namespace {
-    bool compare(const U2MsaGap &gap1, const U2MsaGap &gap2) {
+    bool compare(const U2MaGap &gap1, const U2MaGap &gap2) {
         return gap1.offset < gap2.offset;
     }
 }
 
-QList<U2MsaGap> ComposeResultSubTask::getReferenceGaps() {
-    QList<U2MsaGap> result;
+QList<U2MaGap> ComposeResultSubTask::getReferenceGaps() {
+    QList<U2MaGap> result;
 
     for (int i=0; i<reads.size(); i++) {
         result << getShiftedGaps(i);
@@ -441,34 +441,34 @@ QList<U2MsaGap> ComposeResultSubTask::getReferenceGaps() {
     return result;
 }
 
-QList<U2MsaGap> ComposeResultSubTask::getShiftedGaps(int rowNum) {
-    QList<U2MsaGap> result;
+QList<U2MaGap> ComposeResultSubTask::getShiftedGaps(int rowNum) {
+    QList<U2MaGap> result;
 
     PairwiseAlignmentTask *subTask = getPATask(rowNum);
     CHECK_OP(stateInfo, result);
 
     qint64 wholeGap = 0;
-    foreach (const U2MsaGap &gap, subTask->getReferenceGaps()) {
-        result << U2MsaGap(gap.offset - wholeGap, gap.gap);
+    foreach (const U2MaGap &gap, subTask->getReferenceGaps()) {
+        result << U2MaGap(gap.offset - wholeGap, gap.gap);
         wholeGap += gap.gap;
     }
     return result;
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoReference(MultipleSequenceAlignment &alignment, const QList<U2MsaGap> &gaps) {
+void ComposeResultSubTask::insertShiftedGapsIntoReference(MultipleSequenceAlignment &alignment, const QList<U2MaGap> &gaps) {
     for (int i=gaps.size() - 1; i>=0; i--) {
-        U2MsaGap gap = gaps[i];
+        U2MaGap gap = gaps[i];
         alignment.insertGaps(0, gap.offset, gap.gap, stateInfo);
         CHECK_OP(stateInfo, );
     }
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps) {
-    QList<U2MsaGap> ownGaps = getShiftedGaps(readNum);
+void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, const QList<U2MaGap> &gaps) {
+    QList<U2MaGap> ownGaps = getShiftedGaps(readNum);
     CHECK_OP(stateInfo, );
 
     qint64 globalOffset = 0;
-    foreach (const U2MsaGap &gap, gaps) {
+    foreach (const U2MaGap &gap, gaps) {
         if (ownGaps.contains(gap)) { // task own gaps into account but don't insert them
             globalOffset += gap.gap;
             ownGaps.removeOne(gap);
@@ -537,10 +537,10 @@ void KAlignSubTask::run() {
     algoLog.details(tr("Core region: %1-%2").arg(coreRegion.startPos).arg(coreRegion.endPos()-1));
 }
 
-QList<U2Region> KAlignSubTask::getRegions(const QList<U2MsaGap> &gaps, qint64 rowLength) const {
+QList<U2Region> KAlignSubTask::getRegions(const QList<U2MaGap> &gaps, qint64 rowLength) const {
     QList<U2Region> regions;
     qint64 startPos = 0;
-    foreach (const U2MsaGap &gap, gaps) {
+    foreach (const U2MaGap &gap, gaps) {
         qint64 length = gap.offset - startPos;
         if (length > 0) {
             regions << U2Region(startPos, length);
@@ -705,7 +705,7 @@ void PairwiseAlignmentTask::run() {
     CHECK(offset > 0, );
     shiftGaps(referenceGaps);
     shiftGaps(readGaps);
-    readGaps.prepend(U2MsaGap(0, offset));
+    readGaps.prepend(U2MaGap(0, offset));
 }
 
 bool PairwiseAlignmentTask::isReverse() const {
@@ -728,11 +728,11 @@ SharedDbiDataHandler PairwiseAlignmentTask::getRead() const {
     }
 }
 
-QList<U2MsaGap> PairwiseAlignmentTask::getReferenceGaps() const {
+QList<U2MaGap> PairwiseAlignmentTask::getReferenceGaps() const {
     return referenceGaps;
 }
 
-QList<U2MsaGap> PairwiseAlignmentTask::getReadGaps() const {
+QList<U2MaGap> PairwiseAlignmentTask::getReadGaps() const {
     return readGaps;
 }
 
@@ -845,7 +845,7 @@ void PairwiseAlignmentTask::createSWAlignment(KAlignSubTask *task) {
     offset = task->getCoreRegion().startPos;
 }
 
-void PairwiseAlignmentTask::shiftGaps(QList<U2MsaGap> &gaps) const {
+void PairwiseAlignmentTask::shiftGaps(QList<U2MaGap> &gaps) const {
     for (int i=0; i<gaps.size(); i++) {
         gaps[i].offset += offset;
     }

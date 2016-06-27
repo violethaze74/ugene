@@ -157,9 +157,9 @@ void AlignInAminoFormTask::run() {
         const MultipleSequenceAlignmentRow curRow = maObj->getMAlignment().getRow(row.getName());
         SAFE_POINT_EXT(rowIdx >= 0, setError(tr("Can not find row %1 in original alignment.").arg(row.getName())),);
 
-        QList<U2MsaGap> gapsList;
-        foreach(const U2MsaGap& gap, row.getGapModel()) {
-            gapsList << U2MsaGap(gap.offset * 3, gap.gap * 3);
+        QList<U2MaGap> gapsList;
+        foreach(const U2MaGap& gap, row.getGapModel()) {
+            gapsList << U2MaGap(gap.offset * 3, gap.gap * 3);
         }
         rowsGapModel[curRow.getRowId()] = gapsList;
     }

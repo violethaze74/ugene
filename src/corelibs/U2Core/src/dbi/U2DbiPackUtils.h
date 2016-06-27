@@ -34,12 +34,12 @@ public:
     static const QByteArray VERSION;
 
     /** Gaps */
-    static QByteArray packGaps(const QList<U2MsaGap> &gaps);
-    static bool unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps);
+    static QByteArray packGaps(const QList<U2MaGap> &gaps);
+    static bool unpackGaps(const QByteArray &str, QList<U2MaGap> &gaps);
 
     /** Gaps details */
-    static QByteArray packGapDetails(qint64 rowId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps);
-    static bool unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps);
+    static QByteArray packGapDetails(qint64 rowId, const QList<U2MaGap> &oldGaps, const QList<U2MaGap> &newGaps);
+    static bool unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MaGap> &oldGaps, QList<U2MaGap> &newGaps);
 
     /** Row order */
     static QByteArray packRowOrder(const QList<qint64>& rowIds);

@@ -123,9 +123,9 @@ IMPLEMENT_TEST(MsaDbiUnitTests, addRows) {
     row1.gstart = 0;
     row1.gend = 5;
 
-    U2MsaGap row1gap1(0, 2);
-    U2MsaGap row1gap2(3, 1);
-    QList<U2MsaGap> row1gaps;
+    U2MaGap row1gap1(0, 2);
+    U2MaGap row1gap2(3, 1);
+    QList<U2MaGap> row1gaps;
     row1gaps << row1gap1 << row1gap2;
 
     row1.gaps = row1gaps;
@@ -156,10 +156,10 @@ IMPLEMENT_TEST(MsaDbiUnitTests, addRows) {
     CHECK_EQUAL(0, actualRow1.gstart, "first row global start");
     CHECK_EQUAL(5, actualRow1.gend, "first row global end");
     CHECK_EQUAL(2, actualRow1.gaps.count(), "first row gaps count");
-    U2MsaGap actualRow1Gap1 = actualRow1.gaps[0];
+    U2MaGap actualRow1Gap1 = actualRow1.gaps[0];
     CHECK_EQUAL(0, actualRow1Gap1.offset, "first row gap1 offset");
     CHECK_EQUAL(2, actualRow1Gap1.gap, "first row gap1 length");
-    U2MsaGap actualRow1Gap2 = actualRow1.gaps[1];
+    U2MaGap actualRow1Gap2 = actualRow1.gaps[1];
     CHECK_EQUAL(3, actualRow1Gap2.offset, "first row gap2 offset");
     CHECK_EQUAL(1, actualRow1Gap2.gap, "first row gap2 length");
 
@@ -198,9 +198,9 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     row1.gstart = 0;
     row1.gend = 5;
 
-    U2MsaGap row1gap1(0, 2);
-    U2MsaGap row1gap2(3, 1);
-    QList<U2MsaGap> row1gaps;
+    U2MaGap row1gap1(0, 2);
+    U2MaGap row1gap2(3, 1);
+    QList<U2MaGap> row1gaps;
     row1gaps << row1gap1 << row1gap2;
 
     row1.gaps = row1gaps;
@@ -210,8 +210,8 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     row2.gstart = 2;
     row2.gend = 4;
 
-    U2MsaGap row2gap(1, 2);
-    QList<U2MsaGap> row2gaps;
+    U2MaGap row2gap(1, 2);
+    QList<U2MaGap> row2gaps;
     row2gaps << row2gap;
 
     row2.gaps = row2gaps;
@@ -250,7 +250,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     CHECK_EQUAL(2, actualRow.gstart, "row global start");
     CHECK_EQUAL(4, actualRow.gend, "row global end");
     CHECK_EQUAL(1, actualRow.gaps.count(), "row gaps");
-    U2MsaGap actualRowGap = actualRow.gaps[0];
+    U2MaGap actualRowGap = actualRow.gaps[0];
     CHECK_EQUAL(1, actualRowGap.offset, "row gap offset");
     CHECK_EQUAL(2, actualRowGap.gap, "row gap length");
 }

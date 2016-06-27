@@ -172,7 +172,7 @@ void MultipleSequenceAlignmentObject::copyGapModel(const QList<MultipleSequenceA
 
     SAFE_POINT(oldRows.count() == copyRows.count(), "Different rows count", );
 
-    QMap<qint64, QList<U2MsaGap> > newGapModel;
+    QMap<qint64, QList<U2MaGap> > newGapModel;
     QList<MultipleSequenceAlignmentRow>::ConstIterator ori = oldRows.begin();
     QList<MultipleSequenceAlignmentRow>::ConstIterator cri = copyRows.begin();
     for (; ori != oldRows.end(); ori++, cri++) {
@@ -372,7 +372,7 @@ void MultipleSequenceAlignmentObject::removeRow(int rowIdx) {
     updateCachedMAlignment(mi, removedRowIds);
 }
 
-void MultipleSequenceAlignmentObject::updateRow(int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MsaGap>& gapModel, U2OpStatus& os) {
+void MultipleSequenceAlignmentObject::updateRow(int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MaGap>& gapModel, U2OpStatus& os) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
     const MultipleSequenceAlignment &msa = getMAlignment();
@@ -627,7 +627,7 @@ void MultipleSequenceAlignmentObject::deleteColumnWithGaps(int requiredGapCount)
     SAFE_POINT_OP(os, );
 }
 
-void MultipleSequenceAlignmentObject::updateGapModel(QMap<qint64, QList<U2MsaGap> > rowsGapModel, U2OpStatus& os) {
+void MultipleSequenceAlignmentObject::updateGapModel(QMap<qint64, QList<U2MaGap> > rowsGapModel, U2OpStatus& os) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
     const MultipleSequenceAlignment &msa = getMAlignment();
@@ -649,8 +649,8 @@ void MultipleSequenceAlignmentObject::updateGapModel(QMap<qint64, QList<U2MsaGap
     updateCachedMAlignment(mi);
 }
 
-QMap<qint64, QList<U2MsaGap> > MultipleSequenceAlignmentObject::getGapModel() const {
-    QMap<qint64, QList<U2MsaGap> > rowsGapModel;
+QMap<qint64, QList<U2MaGap> > MultipleSequenceAlignmentObject::getGapModel() const {
+    QMap<qint64, QList<U2MaGap> > rowsGapModel;
     const MultipleSequenceAlignment &msa = getMAlignment();
     foreach (const MultipleSequenceAlignmentRow& curRow, msa.getRows()) {
         rowsGapModel[curRow.getRowId()] = curRow.getGapModel();

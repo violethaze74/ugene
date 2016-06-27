@@ -63,7 +63,7 @@ MultipleSequenceAlignmentObject * MAlignmentImporter::createAlignment(const U2Db
 
     // MSA rows
     QList<U2Sequence> sequences;
-    U2MsaGapModel gapModel;
+    U2MaListGapModel gapModel;
 
     if (alignedSeqs.isEmpty()) {
         sequences = importSequences(con, folder, al, os);
@@ -175,7 +175,7 @@ QList<U2Sequence> MAlignmentImporter::importSequences(const DbiConnection& con, 
     return sequences;
 }
 
-void MAlignmentImporter::splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MsaGapModel &gapModel, U2OpStatus &os) {
+void MAlignmentImporter::splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MaListGapModel &gapModel, U2OpStatus &os) {
     U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
     SAFE_POINT(NULL != seqDbi, "NULL Sequence Dbi during importing an alignment!", );
 
@@ -185,7 +185,7 @@ void MAlignmentImporter::splitToCharsAndGaps(const DbiConnection &con, QList<U2S
         CHECK_OP(os, );
 
         QByteArray pureSequenceData;
-        U2MsaRowGapModel sequenceGapModel;
+        U2MaRowGapModel sequenceGapModel;
         MsaDbiUtils::splitBytesToCharsAndGaps(sequenceData, pureSequenceData, sequenceGapModel);
         gapModel << sequenceGapModel;
 
@@ -204,7 +204,7 @@ void MAlignmentImporter::splitToCharsAndGaps(const DbiConnection &con, QList<U2S
     }
 }
 
-QList<U2MsaRow> MAlignmentImporter::importRows(const DbiConnection& con, MultipleSequenceAlignment& al, U2Msa& msa, const QList<U2Sequence> &sequences, const U2MsaGapModel &msaGapModel, U2OpStatus& os) {
+QList<U2MsaRow> MAlignmentImporter::importRows(const DbiConnection& con, MultipleSequenceAlignment& al, U2Msa& msa, const QList<U2Sequence> &sequences, const U2MaListGapModel &msaGapModel, U2OpStatus& os) {
     QList<U2MsaRow> rows;
     SAFE_POINT_EXT(sequences.size() == msaGapModel.size(), os.setError("Gap model doesn't fit sequences count"), rows);
 
@@ -212,10 +212,10 @@ QList<U2MsaRow> MAlignmentImporter::importRows(const DbiConnection& con, Multipl
         U2Sequence seq = sequences[i];
         if (seq.length > 0) {
             MultipleSequenceAlignmentRow &alignmentRow = al.getRow(i);
-            const U2MsaRowGapModel gapModel = msaGapModel[i];
+            const U2MaRowGapModel gapModel = msaGapModel[i];
             if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow.getSequence().seq, gapModel)) {
                 // remove trailing gap if it exists
-                U2MsaRowGapModel newGapModel = gapModel;
+                U2MaRowGapModel newGapModel = gapModel;
                 newGapModel.removeLast();
                 alignmentRow.setGapModel(newGapModel);
             }

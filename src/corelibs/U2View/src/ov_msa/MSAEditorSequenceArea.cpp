@@ -1829,7 +1829,7 @@ void MSAEditorSequenceArea::updateCollapsedGroups(const MAlignmentModInfo& modIn
     if(modInfo.sequenceContentChanged) {
         QList<qint64> updatedRows;
         bool isModelChanged = false;
-        QMap<qint64, QList<U2MsaGap> > curGapModel = editor->getMSAObject()->getGapModel();
+        QMap<qint64, QList<U2MaGap> > curGapModel = editor->getMSAObject()->getGapModel();
         QList<U2Region> updatedRegions;
         foreach (qint64 modifiedSeqId, modInfo.modifiedRowIds) {
             int modifiedRowPos = editor->getMSAObject()->getRowPosById(modifiedSeqId);
@@ -2108,10 +2108,10 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    QMap<qint64, QList<U2MsaGap> > noGapModel;
+    QMap<qint64, QList<U2MaGap> > noGapModel;
     const MultipleSequenceAlignment &ma = msa->getMAlignment();
     foreach (qint64 rowId, ma.getRowsIds()) {
-        noGapModel[rowId] = QList<U2MsaGap>();
+        noGapModel[rowId] = QList<U2MaGap>();
     }
 
     msa->updateGapModel(noGapModel, os);
@@ -2823,7 +2823,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
 
             // Split the sequence into gaps and chars
             QByteArray seqBytes;
-            QList<U2MsaGap> gapModel;
+            QList<U2MaGap> gapModel;
             MsaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
 
             maObj->updateRow(i, name, seqBytes, gapModel, os);

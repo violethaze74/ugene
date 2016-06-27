@@ -425,7 +425,7 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
     }
 }
 
-void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MsaGap> &refSequenceGapModel, QList<U2MsaGap> &ptrnSequenceGapModel,
+void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MaGap> &refSequenceGapModel, QList<U2MaGap> &ptrnSequenceGapModel,
     const QByteArray& pairwiseAlignment)
 {
     bool lastSymbolIsGapRef = false;
@@ -437,18 +437,18 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MsaGap> &refSeque
         case SmithWatermanResult::DIAG:
             if (lastSymbolIsGapRef) {
                 intervalStart = i;
-                refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                refSequenceGapModel.prepend(U2MaGap(intervalStart, intervalEnd));
                 lastSymbolIsGapRef = false;
             }
             if (lastSymbolIsGapPtrn) {
                 intervalStart = i;
-                ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                ptrnSequenceGapModel.prepend(U2MaGap(intervalStart, intervalEnd));
                 lastSymbolIsGapPtrn = false;
             }
             break;
         case SmithWatermanResult::UP:
             if (lastSymbolIsGapRef) {
-                refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                refSequenceGapModel.prepend(U2MaGap(intervalStart, intervalEnd));
                 lastSymbolIsGapRef = false;
             }
             if (!lastSymbolIsGapPtrn) {
@@ -458,7 +458,7 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MsaGap> &refSeque
             break;
         case SmithWatermanResult::LEFT:
             if (lastSymbolIsGapPtrn) {
-                ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                ptrnSequenceGapModel.prepend(U2MaGap(intervalStart, intervalEnd));
                 lastSymbolIsGapPtrn = false;
             }
             if (!lastSymbolIsGapRef) {

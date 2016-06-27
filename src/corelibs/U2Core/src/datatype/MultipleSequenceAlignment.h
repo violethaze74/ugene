@@ -60,10 +60,10 @@ public:
     void setName(const QString& name) { sequence.setName(name); }
 
     /** Returns the list of gaps for the row */
-    inline const QList<U2MsaGap>& getGapModel() const;
+    inline const QList<U2MaGap>& getGapModel() const;
 
     /** Careful, the new gap model is not validated! */
-    void setGapModel(const QList<U2MsaGap>& newGapModel);
+    void setGapModel(const QList<U2MaGap>& newGapModel);
 
     /** Returns the row sequence (without gaps) */
     inline const DNASequence& getSequence() const;
@@ -202,18 +202,18 @@ private:
     MultipleSequenceAlignmentRow(MultipleSequenceAlignment* al = NULL);
 
     /** Creates a row in memory. */
-    MultipleSequenceAlignmentRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MsaGap>& gaps, MultipleSequenceAlignment* al);
+    MultipleSequenceAlignmentRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MaGap>& gaps, MultipleSequenceAlignment* al);
 
     MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow& r, MultipleSequenceAlignment* al);
 
     /** Splits input to sequence bytes and gaps model */
-    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MsaGap>& gapModel);
+    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MaGap>& gapModel);
 
     /**
      * Add "offset" of gaps to the beginning of the row
      * Warning: it is not verified that the row sequence is not empty.
      */
-    static void addOffsetToGapModel(QList<U2MsaGap>& gapModel, int offset);
+    static void addOffsetToGapModel(QList<U2MaGap>& gapModel, int offset);
 
     /**
      * Joins sequence chars and gaps into one byte array.
@@ -251,7 +251,7 @@ private:
      * There should be no trailing gaps!
      * Trailing gaps are 'Virtual': they are stored 'inside' the alignment length
      */
-    QList<U2MsaGap>     gaps;
+    QList<U2MaGap>     gaps;
 
     /** The row in the database */
     U2MsaRow            initialRowInDb;
@@ -286,7 +286,7 @@ inline bool MultipleSequenceAlignmentRow::simplify() {
     return false;
 }
 
-inline const QList<U2MsaGap>& MultipleSequenceAlignmentRow::getGapModel() const {
+inline const QList<U2MaGap>& MultipleSequenceAlignmentRow::getGapModel() const {
     return gaps;
 }
 
@@ -451,9 +451,9 @@ public:
      */
     MultipleSequenceAlignment mid(int start, int len) const;
 
-    U2MsaGapModel getGapModel() const;
+    U2MaListGapModel getGapModel() const;
 
-    void setRowGapModel(int rowIndex, const QList<U2MsaGap>& gapModel);
+    void setRowGapModel(int rowIndex, const QList<U2MaGap>& gapModel);
 
     /** Updates row ID of the row at 'rowIndex' position */
     void setRowId(int rowIndex, qint64 rowId);
@@ -470,7 +470,7 @@ public:
     void addRow(const QString& name, const QByteArray& bytes, U2OpStatus& os);
     void addRow(const QString& name, const QByteArray& bytes, int rowIndex, U2OpStatus& os);
     void addRow(const U2MsaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os);
-    void addRow(const QString& name, const DNASequence& sequence, const QList<U2MsaGap>& gaps, U2OpStatus& os);
+    void addRow(const QString& name, const DNASequence& sequence, const QList<U2MaGap>& gaps, U2OpStatus& os);
 
     /**
      * Removes a row from alignment.
@@ -544,7 +544,7 @@ private:
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleSequenceAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MsaGap>& gaps, U2OpStatus& os);
+    MultipleSequenceAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MaGap>& gaps, U2OpStatus& os);
 
     MultipleSequenceAlignmentRow createRow(const MultipleSequenceAlignmentRow& r, U2OpStatus& os);
 

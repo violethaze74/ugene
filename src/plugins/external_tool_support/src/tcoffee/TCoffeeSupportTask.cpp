@@ -228,10 +228,10 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
                     return res;
                 }
 
-                QMap<qint64, QList<U2MsaGap> > rowsGapModel;
+                QMap<qint64, QList<U2MaGap> > rowsGapModel;
                 for (int i = 0, n = resultMA.getNumRows(); i < n; ++i) {
                     qint64 rowId = resultMA.getRow(i).getRowDBInfo().rowId;
-                    const QList<U2MsaGap>& newGapModel = resultMA.getRow(i).getGapModel();
+                    const QList<U2MaGap>& newGapModel = resultMA.getRow(i).getGapModel();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 

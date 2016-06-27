@@ -86,8 +86,8 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
         posInMsa++;
 
         if(sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
-            QList<U2MsaGap> gapModel;
-            gapModel << U2MsaGap(0, sequencePositions[seqName]);
+            QList<U2MaGap> gapModel;
+            gapModel << U2MaGap(0, sequencePositions[seqName]);
             dbi->updateGapModel(settings.msaRef.entityId, row.rowId, gapModel, stateInfo);
         }
         namesIterator.next();

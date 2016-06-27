@@ -33,7 +33,7 @@ class U2CORE_EXPORT MsaDbiUtils : public QObject {
 
 public:
     /** Split 'input' bytes into sequence bytes (chars) and a gap model */
-    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MsaGap>& gapModel);
+    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MaGap>& gapModel);
 
     /**
      * Updates the whole alignment in the database:
@@ -133,14 +133,14 @@ public:
      * Parameter 'rowId' must contain a valid row ID in the database.
      */
     static void updateRowContent(const U2EntityRef& msaRef, qint64 rowId,
-                                 const QByteArray& seqBytes, const QList<U2MsaGap>& gaps,
+                                 const QByteArray& seqBytes, const QList<U2MaGap>& gaps,
                                  U2OpStatus& os);
 
     /**
      * Updates a gap model of the specified row in the database.
      * Parameter 'rowId' must contain a valid row ID in the database.
      */
-    static void updateRowGapModel(const U2EntityRef& msaRef, qint64 rowId, const QList<U2MsaGap>& gaps, U2OpStatus& os);
+    static void updateRowGapModel(const U2EntityRef& msaRef, qint64 rowId, const QList<U2MaGap>& gaps, U2OpStatus& os);
 
     /**
      * Updates positions of the rows in the database according to the order in the list.
@@ -170,7 +170,7 @@ public:
     static QList<qint64> removeEmptyRows(const U2EntityRef& msaRef, const QList<qint64>& rowIds, U2OpStatus &os);
 
     /** Calculates a new gap model when 'count' gaps are inserted to 'pos' position */
-    static void calculateGapModelAfterInsert(QList<U2MsaGap>& gapModel, qint64 pos, qint64 count);
+    static void calculateGapModelAfterInsert(QList<U2MaGap>& gapModel, qint64 pos, qint64 count);
 
 private:
     /**
@@ -193,30 +193,30 @@ private:
      * Removes gaps from the row between position 'pos' and 'pos + count'.
      * Shifts the remaining gaps, if required.
      */
-    static void calculateGapModelAfterRemove(QList<U2MsaGap>& gapModel, qint64 pos, qint64 count);
+    static void calculateGapModelAfterRemove(QList<U2MaGap>& gapModel, qint64 pos, qint64 count);
 
     /** Length of all gaps in the gap model */
-    static qint64 calculateGapsLength(const QList<U2MsaGap>& gapModel);
+    static qint64 calculateGapsLength(const QList<U2MaGap>& gapModel);
 
     /** Length of the sequence and gap model for the row */
     static qint64 calculateRowLength(const U2MsaRow& row);
 
     /** If there are consecutive gaps in the gaps model, merges them into one gap */
-    static void mergeConsecutiveGaps(QList<U2MsaGap>& gapModel);
+    static void mergeConsecutiveGaps(QList<U2MaGap>& gapModel);
 
     /**
      * Calculates start and end position in the sequence,
      * depending on the start position in the row and the 'count' character from it
      */
-    static void getStartAndEndSequencePositions(const QByteArray &seq, const QList<U2MsaGap> &gaps,
+    static void getStartAndEndSequencePositions(const QByteArray &seq, const QList<U2MaGap> &gaps,
         qint64 pos, qint64 count,
         qint64& startPosInSeq, qint64& endPosInSeq);
 
     /** Removes chars/gaps from the row */
-    static void removeCharsFromRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint64 pos, qint64 count);
+    static void removeCharsFromRow(QByteArray &seq, QList<U2MaGap> &gaps, qint64 pos, qint64 count);
 
     /** Replace chars in the row */
-    static void replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint64 pos, char newChar);
+    static void replaceCharInRow(QByteArray &seq, QList<U2MaGap> &gaps, qint64 pos, char newChar);
 
     /**
      * Crops a row to region from 'pos' to 'pos' + 'count',
@@ -227,7 +227,7 @@ private:
     static void cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 pos, qint64 count);
 
     /** Returns "true" if there is a gap on position "pos" */
-    static bool gapInPosition(const QList<U2MsaGap>& gapModel, qint64 pos);
+    static bool gapInPosition(const QList<U2MaGap>& gapModel, qint64 pos);
 };
 
 } // namespace

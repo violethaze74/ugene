@@ -133,7 +133,7 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(const QStringList& rowsData 
     QList<U2MsaRow> rows;
     for (int i = 0; i < rowCount; ++i) {
         QByteArray seqData;
-        QList<U2MsaGap> gapModel;
+        QList<U2MaGap> gapModel;
         MsaDbiUtils::splitBytesToCharsAndGaps(rowsData[i].toLatin1(), seqData, gapModel);
 
         U2Sequence sequence;
@@ -181,7 +181,7 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(QList<U2MsaRow>& rows) {
 }
 
 void Utils::addRow(U2Dbi *dbi, const U2DataId &msaId,
-    const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps,
+    const QByteArray &name, const QByteArray &seq, const QList<U2MaGap> &gaps,
     U2OpStatus &os) {
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
@@ -203,7 +203,7 @@ void Utils::addRow(U2Dbi *dbi, const U2DataId &msaId,
     dbi->getMsaDbi()->addRow(msaId, -1, row, os);
 }
 
-U2MsaRow MsaDbiUtilsTestUtils::addRow(const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os) {
+U2MsaRow MsaDbiUtilsTestUtils::addRow(const QByteArray &name, const QByteArray &seq, const QList<U2MaGap> &gaps, U2OpStatus &os) {
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     sequence.visualName = name;
@@ -235,19 +235,19 @@ U2EntityRef MsaDbiUtilsTestUtils::removeRegionTestAlignment(U2OpStatus &os) {
     U2Dbi *dbi = msaDbi->getRootDbi();
     SAFE_POINT(NULL != dbi, "Root dbi is NULL", U2EntityRef());
 
-    Utils::addRow(dbi, msaId, "1", "TAAGACTTCTAA", QList<U2MsaGap>() << U2MsaGap(12, 2), os);
-    Utils::addRow(dbi, msaId, "2", "TAAGCTTACTA", QList<U2MsaGap>() << U2MsaGap(11, 3), os);
-    Utils::addRow(dbi, msaId, "3", "TTAGTTTATTA", QList<U2MsaGap>() << U2MsaGap(11, 3), os);
-    Utils::addRow(dbi, msaId, "4", "TCAGTCTATTA", QList<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
-    Utils::addRow(dbi, msaId, "5", "TCAGTTTATTA", QList<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
-    Utils::addRow(dbi, msaId, "6", "TTAGTCTACTA", QList<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
-    Utils::addRow(dbi, msaId, "7", "TCAGATTATTA", QList<U2MsaGap>() << U2MsaGap(1, 2) << U2MsaGap(5, 1), os);
-    Utils::addRow(dbi, msaId, "8", "TTAGATTGCTA", QList<U2MsaGap>() << U2MsaGap(1, 1) << U2MsaGap(12, 2), os);
-    Utils::addRow(dbi, msaId, "9", "TTAGATTATTA", QList<U2MsaGap>() << U2MsaGap(11, 3), os);
-    Utils::addRow(dbi, msaId, "10", "", QList<U2MsaGap>() << U2MsaGap(0, 14), os);
-    Utils::addRow(dbi, msaId, "11", "", QList<U2MsaGap>() << U2MsaGap(0, 14), os);
-    Utils::addRow(dbi, msaId, "12", "", QList<U2MsaGap>() << U2MsaGap(0, 14), os);
-    Utils::addRow(dbi, msaId, "13", "", QList<U2MsaGap>() << U2MsaGap(0, 14), os);
+    Utils::addRow(dbi, msaId, "1", "TAAGACTTCTAA", QList<U2MaGap>() << U2MaGap(12, 2), os);
+    Utils::addRow(dbi, msaId, "2", "TAAGCTTACTA", QList<U2MaGap>() << U2MaGap(11, 3), os);
+    Utils::addRow(dbi, msaId, "3", "TTAGTTTATTA", QList<U2MaGap>() << U2MaGap(11, 3), os);
+    Utils::addRow(dbi, msaId, "4", "TCAGTCTATTA", QList<U2MaGap>() << U2MaGap(1, 2) << U2MaGap(5, 1), os);
+    Utils::addRow(dbi, msaId, "5", "TCAGTTTATTA", QList<U2MaGap>() << U2MaGap(1, 2) << U2MaGap(5, 1), os);
+    Utils::addRow(dbi, msaId, "6", "TTAGTCTACTA", QList<U2MaGap>() << U2MaGap(1, 2) << U2MaGap(5, 1), os);
+    Utils::addRow(dbi, msaId, "7", "TCAGATTATTA", QList<U2MaGap>() << U2MaGap(1, 2) << U2MaGap(5, 1), os);
+    Utils::addRow(dbi, msaId, "8", "TTAGATTGCTA", QList<U2MaGap>() << U2MaGap(1, 1) << U2MaGap(12, 2), os);
+    Utils::addRow(dbi, msaId, "9", "TTAGATTATTA", QList<U2MaGap>() << U2MaGap(11, 3), os);
+    Utils::addRow(dbi, msaId, "10", "", QList<U2MaGap>() << U2MaGap(0, 14), os);
+    Utils::addRow(dbi, msaId, "11", "", QList<U2MaGap>() << U2MaGap(0, 14), os);
+    Utils::addRow(dbi, msaId, "12", "", QList<U2MaGap>() << U2MaGap(0, 14), os);
+    Utils::addRow(dbi, msaId, "13", "", QList<U2MaGap>() << U2MaGap(0, 14), os);
     CHECK_OP(os, U2EntityRef());
 
     return  U2EntityRef(msaDbi->getRootDbi()->getDbiRef(), msaId);

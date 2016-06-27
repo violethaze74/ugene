@@ -137,13 +137,13 @@ public:
      * Updates a gap model of the alignment.
      * The map must contain valid row IDs and corresponding gap models.
      */
-    void updateGapModel(QMap<qint64, QList<U2MsaGap> > rowsGapModel, U2OpStatus& os);
+    void updateGapModel(QMap<qint64, QList<U2MaGap> > rowsGapModel, U2OpStatus& os);
 
-    QMap<qint64, QList<U2MsaGap> > getGapModel() const;
+    QMap<qint64, QList<U2MaGap> > getGapModel() const;
 
     /** Methods to work with rows */
     void removeRow(int rowIdx);
-    void updateRow(int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MsaGap>& gapModel, U2OpStatus& os);
+    void updateRow(int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MaGap>& gapModel, U2OpStatus& os);
     void renameRow(int rowIdx, const QString& newName);
     void moveRowsBlock(int firstRow, int numRows, int delta);
 

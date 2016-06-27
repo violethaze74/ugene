@@ -30,9 +30,9 @@ const QByteArray PackUtils::VERSION("0");
 const char PackUtils::SEP = '\t';
 const char PackUtils::SECOND_SEP = 11;
 
-QByteArray PackUtils::packGaps(const QList<U2MsaGap> &gaps) {
+QByteArray PackUtils::packGaps(const QList<U2MaGap> &gaps) {
     QByteArray result;
-    foreach (const U2MsaGap &gap, gaps) {
+    foreach (const U2MaGap &gap, gaps) {
         if (!result.isEmpty()) {
             result += ";";
         }
@@ -43,7 +43,7 @@ QByteArray PackUtils::packGaps(const QList<U2MsaGap> &gaps) {
     return "\"" + result + "\"";
 }
 
-bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps) {
+bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MaGap> &gaps) {
     CHECK(str.startsWith('\"') && str.endsWith('\"'), false);
     QByteArray gapsStr = str.mid(1, str.length() - 2);
     if (gapsStr.isEmpty()) {
@@ -55,7 +55,7 @@ bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps) {
         QList<QByteArray> gapTokens = t.split(',');
         CHECK(2 == gapTokens.size(), false);
         bool ok = false;
-        U2MsaGap gap;
+        U2MaGap gap;
         gap.offset = gapTokens[0].toLongLong(&ok);
         CHECK(ok, false);
         gap.gap = gapTokens[1].toLongLong(&ok);
@@ -65,7 +65,7 @@ bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps) {
     return true;
 }
 
-QByteArray PackUtils::packGapDetails(qint64 rowId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps) {
+QByteArray PackUtils::packGapDetails(qint64 rowId, const QList<U2MaGap> &oldGaps, const QList<U2MaGap> &newGaps) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(rowId);
@@ -76,7 +76,7 @@ QByteArray PackUtils::packGapDetails(qint64 rowId, const QList<U2MsaGap> &oldGap
     return result;
 }
 
-bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
+bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MaGap> &oldGaps, QList<U2MaGap> &newGaps) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(4 == tokens.size(), QString("Invalid gap modDetails string '%1'").arg(QString(modDetails)), false);
     { // version

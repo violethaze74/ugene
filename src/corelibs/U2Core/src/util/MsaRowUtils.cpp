@@ -28,25 +28,25 @@ namespace U2 {
 /** Gap character */
 #define MAlignment_GapChar '-'
 
-int MsaRowUtils::getRowLength(const QByteArray &seq, const QList<U2MsaGap> &gaps) {
+int MsaRowUtils::getRowLength(const QByteArray &seq, const QList<U2MaGap> &gaps) {
     return seq.length() + getGapsLength(gaps);
 }
 
-int MsaRowUtils::getGapsLength(const QList<U2MsaGap> &gaps) {
+int MsaRowUtils::getGapsLength(const QList<U2MaGap> &gaps) {
     int length = 0;
-    foreach (const U2MsaGap &elt, gaps) {
+    foreach (const U2MaGap &elt, gaps) {
         length += elt.gap;
     }
     return length;
 }
 
-char MsaRowUtils::charAt(const QByteArray &seq, const QList<U2MsaGap> &gaps, int pos) {
+char MsaRowUtils::charAt(const QByteArray &seq, const QList<U2MaGap> &gaps, int pos) {
     if (pos < 0 || pos >= getRowLength(seq, gaps)) {
         return MAlignment_GapChar;
     }
 
     int gapsLength = 0;
-    foreach (const U2MsaGap &gap, gaps) {
+    foreach (const U2MaGap &gap, gaps) {
         // Current gap is somewhere further in the row
         if (gap.offset > pos) {
             break;
@@ -74,25 +74,25 @@ char MsaRowUtils::charAt(const QByteArray &seq, const QList<U2MsaGap> &gaps, int
     return seq[index];
 }
 
-qint64 MsaRowUtils::getRowLengthWithoutTrailing(const QByteArray &seq, const QList<U2MsaGap> &gaps) {
+qint64 MsaRowUtils::getRowLengthWithoutTrailing(const QByteArray &seq, const QList<U2MaGap> &gaps) {
     int rowLength = getRowLength(seq, gaps);
     int rowLengthWithoutTrailingGap = rowLength;
     if (!gaps.isEmpty()) {
         if (MAlignment_GapChar == charAt(seq, gaps, rowLength - 1)) {
-            U2MsaGap lastGap = gaps.last();
+            U2MaGap lastGap = gaps.last();
             rowLengthWithoutTrailingGap -= lastGap.gap;
         }
     }
     return rowLengthWithoutTrailingGap;
 }
 
-int MsaRowUtils::getUngappedPosition(const QByteArray &seq, const QList<U2MsaGap> &gaps, int pos, bool allowGapInPos) {
+int MsaRowUtils::getUngappedPosition(const QByteArray &seq, const QList<U2MaGap> &gaps, int pos, bool allowGapInPos) {
     if (MAlignment_GapChar == charAt(seq, gaps, pos) && !allowGapInPos) {
         return -1;
     }
 
     int gapsLength = 0;
-    foreach (const U2MsaGap &gap, gaps) {
+    foreach (const U2MaGap &gap, gaps) {
         if (gap.offset < pos) {
             if (allowGapInPos) {
                 gapsLength += (gap.offset + gap.gap < pos) ? gap.gap : gap.gap - (gap.offset + gap.gap - pos);
@@ -106,7 +106,7 @@ int MsaRowUtils::getUngappedPosition(const QByteArray &seq, const QList<U2MsaGap
     return (pos - gapsLength);
 }
 
-int MsaRowUtils::getCoreStart(const QList<U2MsaGap> &gaps) {
+int MsaRowUtils::getCoreStart(const QList<U2MaGap> &gaps) {
     if (!gaps.isEmpty() && gaps.first().offset == 0) {
         return gaps.first().gap;
     }
