@@ -28,7 +28,7 @@
 #include <U2Core/GHints.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2Mod.h>
@@ -131,7 +131,7 @@ void AlignInAminoFormTask::prepare() {
     CHECK_OP(os, );
 
     //Create copy of multiple alignment object
-    clonedObj = MAlignmentImporter::createAlignment(dbiRef, msa, stateInfo);
+    clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, msa, stateInfo);
     CHECK_OP(stateInfo, );
     clonedObj->setGHints(new GHintsDefaultImpl(maObj->getGHintsMap()));
 

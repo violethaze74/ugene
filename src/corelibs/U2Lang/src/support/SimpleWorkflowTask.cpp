@@ -25,7 +25,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -151,7 +151,7 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
 
     MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames( obj->getMAlignment() );
 
-    MultipleSequenceAlignmentObject *msaObject = MAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
+    MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os,);
 
     SimpleInOutWorkflowTaskConfig sioConf;

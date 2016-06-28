@@ -213,12 +213,12 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/GUrlUtils.h \
            src/util/ImportToDatabaseOptions.h \
            src/util/IOAdapterUtils.h \
-           src/util/MAlignmentImporter.h \
            src/util/MAlignmentWalker.h \
            src/util/MsaDbiUtils.h \
            src/util/MsaRowUtils.h \
            src/util/MSAUtils.h \
            src/util/MultipleSequenceAlignmentExporter.h \
+           src/util/MultipleSequenceAlignmentImporter.h \
            src/util/PMatrixSerializeUtils.h \
            src/util/QObjectScopedPointer.h \
            src/util/QVariantUtils.h \
@@ -412,12 +412,12 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/GUrlUtils.cpp \
            src/util/ImportToDatabaseOptions.cpp \
            src/util/IOAdapterUtils.cpp \
-           src/util/MAlignmentImporter.cpp \
            src/util/MAlignmentWalker.cpp \
            src/util/MsaDbiUtils.cpp \
            src/util/MsaRowUtils.cpp \
            src/util/MSAUtils.cpp \
            src/util/MultipleSequenceAlignmentExporter.cpp \
+           src/util/MultipleSequenceAlignmentImporter.cpp \
            src/util/QVariantUtils.cpp \
            src/util/SequenceUtils.cpp \
            src/util/SyncHttp.cpp \

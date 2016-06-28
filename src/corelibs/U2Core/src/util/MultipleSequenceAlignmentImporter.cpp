@@ -30,15 +30,15 @@
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2SequenceUtils.h>
 
-#include "MAlignmentImporter.h"
+#include "MultipleSequenceAlignmentImporter.h"
 
 namespace U2 {
 
-MultipleSequenceAlignmentObject * MAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, MultipleSequenceAlignment& al, U2OpStatus& os) {
+MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef& dbiRef, MultipleSequenceAlignment& al, U2OpStatus& os) {
     return createAlignment(dbiRef, U2ObjectDbi::ROOT_FOLDER, al, os);
 }
 
-MultipleSequenceAlignmentObject * MAlignmentImporter::createAlignment(const U2DbiRef &dbiRef, const QString &folder, MultipleSequenceAlignment &al,
+MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef &dbiRef, const QString &folder, MultipleSequenceAlignment &al,
     U2OpStatus &os, const QList<U2Sequence> &alignedSeqs)
 {
     if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al.getNumRows()) {
@@ -89,7 +89,7 @@ MultipleSequenceAlignmentObject * MAlignmentImporter::createAlignment(const U2Db
     return new MultipleSequenceAlignmentObject(al.getName(), U2EntityRef(dbiRef, msa.id), QVariantMap(), al);
 }
 
-void MAlignmentImporter::setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os) {
+void MultipleSequenceAlignmentImporter::setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os) {
     SAFE_POINT(NULL != con.dbi, L10N::nullPointerError("database connection"), );
     U2ObjectDbi *objDbi = con.dbi->getObjectDbi();
     SAFE_POINT(NULL != objDbi, L10N::nullPointerError("object storage"), );
@@ -100,7 +100,7 @@ void MAlignmentImporter::setChildRankForSequences(const DbiConnection &con, cons
     }
 }
 
-U2Msa MAlignmentImporter::importMsaObject(const DbiConnection& con, const QString& folder, const MultipleSequenceAlignment& al, U2OpStatus& os) {
+U2Msa MultipleSequenceAlignmentImporter::importMsaObject(const DbiConnection& con, const QString& folder, const MultipleSequenceAlignment& al, U2OpStatus& os) {
     U2Msa msa;
     const DNAAlphabet* alphabet = al.getAlphabet();
     SAFE_POINT(NULL != alphabet, "The alignment alphabet is NULL during importing!", U2Msa());
@@ -124,7 +124,7 @@ U2Msa MAlignmentImporter::importMsaObject(const DbiConnection& con, const QStrin
     return msa;
 }
 
-void MAlignmentImporter::importMsaInfo(const DbiConnection& con, const U2DataId& msaId, const MultipleSequenceAlignment& al, U2OpStatus& os) {
+void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection& con, const U2DataId& msaId, const MultipleSequenceAlignment& al, U2OpStatus& os) {
     QVariantMap alInfo = al.getInfo();
 
     U2AttributeDbi* attrDbi = con.dbi->getAttributeDbi();
@@ -141,7 +141,7 @@ void MAlignmentImporter::importMsaInfo(const DbiConnection& con, const U2DataId&
     }
 }
 
-QList<U2Sequence> MAlignmentImporter::importSequences(const DbiConnection& con, const QString& folder, const MultipleSequenceAlignment& al, U2OpStatus& os) {
+QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiConnection& con, const QString& folder, const MultipleSequenceAlignment& al, U2OpStatus& os) {
     U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
     SAFE_POINT(NULL != seqDbi, "NULL Sequence Dbi during importing an alignment!", QList<U2Sequence>());
 
@@ -175,7 +175,7 @@ QList<U2Sequence> MAlignmentImporter::importSequences(const DbiConnection& con, 
     return sequences;
 }
 
-void MAlignmentImporter::splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MaListGapModel &gapModel, U2OpStatus &os) {
+void MultipleSequenceAlignmentImporter::splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MaListGapModel &gapModel, U2OpStatus &os) {
     U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
     SAFE_POINT(NULL != seqDbi, "NULL Sequence Dbi during importing an alignment!", );
 
@@ -204,7 +204,7 @@ void MAlignmentImporter::splitToCharsAndGaps(const DbiConnection &con, QList<U2S
     }
 }
 
-QList<U2MsaRow> MAlignmentImporter::importRows(const DbiConnection& con, MultipleSequenceAlignment& al, U2Msa& msa, const QList<U2Sequence> &sequences, const U2MaListGapModel &msaGapModel, U2OpStatus& os) {
+QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnection& con, MultipleSequenceAlignment& al, U2Msa& msa, const QList<U2Sequence> &sequences, const U2MaListGapModel &msaGapModel, U2OpStatus& os) {
     QList<U2MsaRow> rows;
     SAFE_POINT_EXT(sequences.size() == msaGapModel.size(), os.setError("Gap model doesn't fit sequences count"), rows);
 

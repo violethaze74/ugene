@@ -31,7 +31,7 @@
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -323,7 +323,7 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
 
     result.trim(false);
 
-    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(MAlignmentImporter::createAlignment(storage->getDbiRef(), result, stateInfo));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), result, stateInfo));
     CHECK_OP(stateInfo, result);
     msa = storage->getDataHandler(msaObject->getEntityRef());
 
@@ -621,7 +621,7 @@ void KAlignSubTask::createAlignment() {
     alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
     CHECK_OP(stateInfo, );
 
-    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
     CHECK_OP(stateInfo, );
     msa = storage->getDataHandler(msaObj->getEntityRef());
 }
@@ -839,7 +839,7 @@ void PairwiseAlignmentTask::createSWAlignment(KAlignSubTask *task) {
     alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
     CHECK_OP(stateInfo, );
 
-    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
     CHECK_OP(stateInfo, );
     msa = storage->getDataHandler(msaObj->getEntityRef());
     offset = task->getCoreRegion().startPos;

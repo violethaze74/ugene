@@ -25,7 +25,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -302,7 +302,7 @@ MultipleSequenceAlignmentObject * MSAUtils::seqObjs2msaObj(const QList<GObject *
     const QList<U2Sequence> sequencesInDB = shallowCopy ? getDbSequences(objects) : QList<U2Sequence>();
 
     const QString dstFolder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    return MAlignmentImporter::createAlignment(dbiRef, dstFolder, ma, os, sequencesInDB);
+    return MultipleSequenceAlignmentImporter::createAlignment(dbiRef, dstFolder, ma, os, sequencesInDB);
 }
 
 MultipleSequenceAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs, const QVariantMap& hints, U2OpStatus& os){

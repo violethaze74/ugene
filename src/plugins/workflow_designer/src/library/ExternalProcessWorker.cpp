@@ -28,7 +28,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/U2AlphabetUtils.h>

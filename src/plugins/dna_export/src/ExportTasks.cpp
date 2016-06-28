@@ -36,7 +36,7 @@
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
@@ -105,7 +105,7 @@ void ExportAlignmentTask::run() {
     resultDocument = f->createNewLoadedDocument(iof, fileName, stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(resultDocument->getDbiRef(), ma, stateInfo);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     resultDocument->addObject(obj);
@@ -195,7 +195,7 @@ void ExportMSA2MSATask::run() {
     MultipleSequenceAlignment ma = MSAUtils::seq2ma(seqList, stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(resultDocument->getDbiRef(), ma, stateInfo);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     resultDocument->addObject(obj);

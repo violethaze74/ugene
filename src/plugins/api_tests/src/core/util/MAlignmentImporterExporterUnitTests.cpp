@@ -23,7 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -76,7 +76,7 @@ IMPLEMENT_TEST(MAlignmentImporterExporterUnitTests, importExportAlignment) {
     CHECK_NO_ERROR(os);
 
     // Import the alignment
-    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MAlignmentImporter::createAlignment(dbiRef, al, os));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(dbiRef, al, os));
     CHECK_NO_ERROR(os);
 
     // Export the alignment

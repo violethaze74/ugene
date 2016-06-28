@@ -25,7 +25,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/TextUtils.h>
@@ -463,7 +463,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 return false;
             }
 
-            MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
+            MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, ma, ti);
             CHECK_OP(ti, false);
             addObject(obj);
         } else if (cmd == END) {

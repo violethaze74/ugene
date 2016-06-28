@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MALIGNMENT_IMPORTER_H_
-#define _U2_MALIGNMENT_IMPORTER_H_
+#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_IMPORTER_H_
+#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_IMPORTER_H_
 
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2Sequence.h>
@@ -34,7 +34,7 @@ class U2DbiRef;
 class U2OpStatus;
 
 /** Importing a multiple alignment into db */
-class U2CORE_EXPORT MAlignmentImporter {
+class U2CORE_EXPORT MultipleSequenceAlignmentImporter {
 public:
     /**
      * Creates an alignment in the db.
@@ -55,4 +55,4 @@ private:
 
 } // namespace
 
-#endif
+#endif // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_IMPORTER_H_

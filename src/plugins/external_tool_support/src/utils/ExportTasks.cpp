@@ -40,7 +40,7 @@
 #include <U2Core/U2SequenceUtils.h>
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include "ExportTasks.h"
@@ -71,7 +71,7 @@ void SaveAlignmentTask::run() {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(fileName));
     doc.reset(f->createNewLoadedDocument(iof, fileName, stateInfo));
 
-    MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(doc->getDbiRef(), ma, stateInfo);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     GHints* docHints = doc->getGHints();

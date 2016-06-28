@@ -24,7 +24,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
@@ -511,7 +511,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
 
         const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-        MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+        MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
         CHECK_OP(os, );
         objects.append(obj);
     }

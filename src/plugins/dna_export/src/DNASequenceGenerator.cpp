@@ -29,7 +29,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -317,7 +317,7 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc( Document *source )
         msa.addRow( seqName, seqContent, sequenceNum, stateInfo );
         CHECK_OP( stateInfo, );
     }
-    MultipleSequenceAlignmentObject *alnObject = MAlignmentImporter::createAlignment( source->getDbiRef( ), msa, stateInfo );
+    MultipleSequenceAlignmentObject *alnObject = MultipleSequenceAlignmentImporter::createAlignment( source->getDbiRef( ), msa, stateInfo );
     CHECK_OP( stateInfo, );
     source->addObject( alnObject );
 }

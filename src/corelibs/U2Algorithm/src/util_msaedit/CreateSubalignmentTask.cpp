@@ -40,7 +40,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LocalFileAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -75,7 +75,7 @@ void CreateSubalignmentTask::prepare() {
         CHECK_OP(stateInfo, );
 
         MultipleSequenceAlignment msa = origMAObj->getMAlignment();
-        resultMAObj = MAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
+        resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
         resultMAObj->setGHints(new GHintsDefaultImpl(origMAObj->getGHintsMap()));
 

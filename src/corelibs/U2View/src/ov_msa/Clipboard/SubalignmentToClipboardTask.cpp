@@ -38,7 +38,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LocalFileAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2AlphabetUtils.h>

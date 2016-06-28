@@ -57,7 +57,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PasswordStorage.h>
 #include <U2Core/QVariantUtils.h>

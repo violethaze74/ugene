@@ -35,7 +35,7 @@
 #include <U2Core/IOAdapterUtils.h>
 
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/DNASequenceObject.h>
 
@@ -151,7 +151,7 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        ma1 = MAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if(ma1 == NULL){
@@ -194,7 +194,7 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        ma2 = MAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if(ma2 == NULL){
@@ -405,7 +405,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        ma1 = MAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if(ma1 == NULL){
@@ -448,7 +448,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        ma2 = MAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
+        ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
         if(ma2 == NULL){

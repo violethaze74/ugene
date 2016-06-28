@@ -25,7 +25,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
@@ -77,7 +77,7 @@ MultipleSequenceAlignmentObject* PhylipFormat::load(IOAdapter *io, const U2DbiRe
     CHECK_EXT(al.getAlphabet()!=NULL, os.setError( PhylipFormat::tr("Alphabet is unknown")), NULL);
 
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
     CHECK_OP(os, NULL);
     return obj;
 }

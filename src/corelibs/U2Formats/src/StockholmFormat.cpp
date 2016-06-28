@@ -26,7 +26,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MAlignmentWalker.h>
@@ -593,7 +593,7 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
 
         U2OpStatus2Log os;
         const QString folder = fs.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-        MultipleSequenceAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
+        MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, msa, os);
         CHECK_OP(os, );
         obj->setIndexInfo(annMap);
         l.append( obj );

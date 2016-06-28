@@ -24,7 +24,7 @@
 #include <U2Core/DNASequence.h>
 #include <U2Core/GHints.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -223,7 +223,7 @@ GObject* MultipleSequenceAlignmentObject::clone(const U2DbiRef& dstDbiRef, U2OpS
     const QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     MultipleSequenceAlignment msa = getMAlignment();
-    MultipleSequenceAlignmentObject *clonedObj = MAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
+    MultipleSequenceAlignmentObject *clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
     CHECK_OP_EXT(os, delete gHints, NULL);
 
     clonedObj->setGHints(gHints);

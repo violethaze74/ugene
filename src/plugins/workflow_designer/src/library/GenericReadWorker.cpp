@@ -35,7 +35,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/MSAUtils.h>
@@ -261,7 +261,7 @@ void LoadMSATask::run() {
     } else {
         MultipleSequenceAlignment ma = MSAUtils::seq2ma(doc->findGObjectByType(GObjectTypes::SEQUENCE), stateInfo);
 
-        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
+        QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), ma, stateInfo));
         CHECK_OP(stateInfo,);
 
         SharedDbiDataHandler handler = storage->getDataHandler(msaObj->getEntityRef());

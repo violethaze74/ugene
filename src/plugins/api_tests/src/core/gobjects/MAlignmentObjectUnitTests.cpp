@@ -24,7 +24,7 @@
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>
