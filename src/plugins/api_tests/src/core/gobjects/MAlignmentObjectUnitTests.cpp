@@ -21,7 +21,7 @@
 
 #include "MAlignmentObjectUnitTests.h"
 
-#include <U2Core/MAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MAlignmentImporter.h>
@@ -86,7 +86,7 @@ MultipleSequenceAlignment MAlignmentObjectTestData::getTestAlignment(const U2Dbi
     U2EntityRef malignmentRef = getTestAlignmentRef(dbiRef, name, os);
     CHECK_OP(os, MultipleSequenceAlignment());
 
-    MAlignmentExporter exporter;
+    MultipleSequenceAlignmentExporter exporter;
     return exporter.getAlignment(dbiRef, malignmentRef.entityId, os);
 }
 

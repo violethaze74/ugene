@@ -22,7 +22,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MSAUtils.h>
@@ -40,7 +40,7 @@ SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignme
 
         SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"),);
 
-        MAlignmentExporter alnExporter;
+        MultipleSequenceAlignmentExporter alnExporter;
         inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
 }
 

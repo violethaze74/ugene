@@ -39,7 +39,7 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/MAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MSAUtils.h>
@@ -75,7 +75,7 @@ MafftAddToAlignmentTask::MafftAddToAlignmentTask(const AlignSequencesToAlignment
 
     SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into MafftAddToAlignmentTask"), );
 
-    MAlignmentExporter alnExporter;
+    MultipleSequenceAlignmentExporter alnExporter;
     inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
     int rowNumber = inputMsa.getNumRows();
     for (int i = 0; i < rowNumber; i++) {

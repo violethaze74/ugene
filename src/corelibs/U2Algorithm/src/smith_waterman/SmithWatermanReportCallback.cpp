@@ -26,7 +26,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>

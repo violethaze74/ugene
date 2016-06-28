@@ -24,7 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -80,7 +80,7 @@ IMPLEMENT_TEST(MAlignmentImporterExporterUnitTests, importExportAlignment) {
     CHECK_NO_ERROR(os);
 
     // Export the alignment
-    MAlignmentExporter alExporter;
+    MultipleSequenceAlignmentExporter alExporter;
     MultipleSequenceAlignment alActual = alExporter.getAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
     CHECK_NO_ERROR(os);
 

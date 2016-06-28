@@ -28,7 +28,7 @@
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/U2AlphabetUtils.h>
 
 namespace U2 {
@@ -974,7 +974,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_noGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     //Check actual state
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al.getLength(), "Wrong msa length.");
@@ -1001,7 +1001,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     //Check actual state
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al.getLength(), "Wrong msa length.");
@@ -1028,7 +1028,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     //Check actual state
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al.getLength(), "Wrong msa length.");
@@ -1055,7 +1055,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGapsCutOff) {
     MsaDbiUtils::trim(msaRef, os);
 
     //Check actual state
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al.getLength(), "Wrong msa length.");
@@ -1082,7 +1082,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGapsCutOff) {
     MsaDbiUtils::trim(msaRef, os);
 
     //Check actual state
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al.getLength(), "Wrong msa length.");
@@ -1109,7 +1109,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingAndTrailingGaps) {
     MsaDbiUtils::trim(msaRef, os);
 
     //Check actual state
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(8, al.getLength(), "Wrong msa length.");
@@ -1136,7 +1136,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_gapsOnly) {
     MsaDbiUtils::trim(msaRef, os);
 
     //Check actual state
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al.getLength(), "Wrong msa length.");
@@ -1165,7 +1165,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_oneRow) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 8, 3, os);
     CHECK_NO_ERROR(os);
 
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al.getLength(), "Wrong msa length");
@@ -1192,7 +1192,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_threeRows) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 2, 8, os);
     CHECK_NO_ERROR(os);
 
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al.getLength(), "Wrong msa length");
@@ -1219,7 +1219,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_lengthChange) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 5, 1, os);
     CHECK_NO_ERROR(os);
 
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al.getLength(), "Wrong msa length");
@@ -1248,7 +1248,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_allRows) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 3, os);
     CHECK_NO_ERROR(os);
 
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(11, al.getLength(), "Wrong msa length");
@@ -1295,7 +1295,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_all) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 14, os);
     CHECK_NO_ERROR(os);
 
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al.getLength(), "Wrong msa length");
@@ -1321,7 +1321,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_negativePos) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, -1, 14, tmpOs);
     CHECK_TRUE(tmpOs.hasError(), "No error occurred for negative pos");
 
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al.getLength(), "Wrong msa length");
@@ -1365,7 +1365,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongCount) {
     MsaDbiUtils::removeRegion(msaRef, rowIds, 0, 0, tmpOs);
     CHECK_TRUE(tmpOs.hasError(), "No error occurred for negative pos");
 
-    MAlignmentExporter ex;
+    MultipleSequenceAlignmentExporter ex;
     MultipleSequenceAlignment al = ex.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al.getLength(), "Wrong msa length");
@@ -1788,7 +1788,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
     CHECK_NO_ERROR(os);
 
     // Export an alignment from the dbi to the memory (to set actual IDs)
-    MAlignmentExporter exporter;
+    MultipleSequenceAlignmentExporter exporter;
     MultipleSequenceAlignment expMa;
     expMa = exporter.getAlignment(dbiRef, msaId, os);
     CHECK_NO_ERROR(os);

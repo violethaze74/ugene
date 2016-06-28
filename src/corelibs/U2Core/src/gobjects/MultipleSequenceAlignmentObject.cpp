@@ -23,7 +23,7 @@
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/GHints.h>
-#include <U2Core/MAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/MAlignmentImporter.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
@@ -118,7 +118,7 @@ void MultipleSequenceAlignmentObject::updateCachedMAlignment(const MAlignmentMod
             }
         }
         if (!mi.modifiedRowIds.isEmpty()) {
-            MAlignmentExporter alExporter;
+            MultipleSequenceAlignmentExporter alExporter;
             QList<MAlignmentRowReplacementData> rowsAndSeqs = alExporter.getAlignmentRows(entityRef.dbiRef, entityRef.entityId,
                 mi.modifiedRowIds, os);
             SAFE_POINT_OP(os, );
@@ -804,7 +804,7 @@ void MultipleSequenceAlignmentObject::loadDataCore(U2OpStatus &os) {
 }
 
 void MultipleSequenceAlignmentObject::loadAlignment(U2OpStatus &os) {
-    MAlignmentExporter alExporter;
+    MultipleSequenceAlignmentExporter alExporter;
     cachedMAlignment = alExporter.getAlignment(entityRef.dbiRef, entityRef.entityId, os);
 }
 

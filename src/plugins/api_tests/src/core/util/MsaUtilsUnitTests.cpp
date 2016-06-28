@@ -29,7 +29,7 @@
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/MAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/U2AlphabetUtils.h>
 
 namespace U2{

@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MALIGNMENT_EXPORTER_H_
-#define _U2_MALIGNMENT_EXPORTER_H_
+#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_EXPORTER_H_
+#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_EXPORTER_H_
 
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Msa.h>
@@ -38,10 +38,10 @@ struct MAlignmentRowReplacementData {
     U2MsaRow row;
 };
 
-/** Getting a multiple alignment from DBI */
-class U2CORE_EXPORT MAlignmentExporter {
+/** Getting a multiple sequence alignment from DBI */
+class U2CORE_EXPORT MultipleSequenceAlignmentExporter {
 public:
-                                        MAlignmentExporter();
+                                        MultipleSequenceAlignmentExporter();
 
     MultipleSequenceAlignment                          getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId,
                                             U2OpStatus& os) const;
@@ -61,4 +61,4 @@ private:
 
 } // namespace
 
-#endif
+#endif // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_EXPORTER_H_
