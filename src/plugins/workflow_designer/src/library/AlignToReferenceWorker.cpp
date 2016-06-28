@@ -328,7 +328,7 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
     msa = storage->getDataHandler(msaObject->getEntityRef());
 
     // remove gap columns
-    msaObject->deleteColumnWithGaps(GAP_COLUMN_ONLY, stateInfo);
+    msaObject->deleteColumnWithGaps(stateInfo, GAP_COLUMN_ONLY);
 
     return msaObject->getMAlignment();
 }

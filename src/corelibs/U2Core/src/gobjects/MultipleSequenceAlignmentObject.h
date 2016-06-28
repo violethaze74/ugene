@@ -102,7 +102,7 @@ public:
     ~MultipleSequenceAlignmentObject();
 
     /** Sets type of modifications tracking for the alignment */
-    void setTrackMod(U2TrackModType trackMod, U2OpStatus& os);
+    void setTrackMod(U2OpStatus &os, U2TrackModType trackMod);
 
     const MultipleSequenceAlignment & getMAlignment() const;
     void setMAlignment(const MultipleSequenceAlignment& ma, MsaModificationInfo mi = MsaModificationInfo(), const QVariantMap& hints = QVariantMap());
@@ -131,19 +131,19 @@ public:
      *
      * If the given region is a subset of a trailing gaps area then nothing happens.
      */
-    int deleteGap(const U2Region &rows, int pos, int maxGaps, U2OpStatus &os);
+    int deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
 
     /**
      * Updates a gap model of the alignment.
      * The map must contain valid row IDs and corresponding gap models.
      */
-    void updateGapModel(QMap<qint64, QList<U2MaGap> > rowsGapModel, U2OpStatus& os);
+    void updateGapModel(U2OpStatus &os, QMap<qint64, QList<U2MaGap> > rowsGapModel);
 
     QMap<qint64, QList<U2MaGap> > getGapModel() const;
 
     /** Methods to work with rows */
     void removeRow(int rowIdx);
-    void updateRow(int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MaGap>& gapModel, U2OpStatus& os);
+    void updateRow(U2OpStatus &os, int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MaGap>& gapModel);
     void renameRow(int rowIdx, const QString& newName);
     void moveRowsBlock(int firstRow, int numRows, int delta);
 
@@ -152,7 +152,7 @@ public:
      * There must be one-to-one correspondence between the specified rows IDs
      * and rows IDs of the alignment.
      */
-    void updateRowsOrder(const QList<qint64>& rowIds, U2OpStatus& os);
+    void updateRowsOrder(U2OpStatus &os, const QList<qint64>& rowIds);
 
 
     /** Method that affect the whole alignment, including sequences
@@ -181,7 +181,7 @@ public:
      * Returns shift size, besides sign of the returning value specifies direction of the shift
      */
     int shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift);
-    void deleteColumnWithGaps(int requiredGapCount, U2OpStatus &os);
+    void deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount);
     void deleteColumnWithGaps(int requiredGapCount = GAP_COLUMN_ONLY);
     QList<qint64> getColumnsWithGaps(int requiredGapCount = GAP_COLUMN_ONLY) const;
     void updateCachedMAlignment(const MsaModificationInfo &mi = MsaModificationInfo(),
@@ -212,7 +212,7 @@ private:
      * having @pos + @maxGaps number, otherwise 0 is returned. If the region is located
      * in the MSA trailing gaps area, then 0 is returned.
      */
-    int getMaxWidthOfGapRegion( const U2Region &rows, int pos, int maxGaps, U2OpStatus &os );
+    int getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
 
     MultipleSequenceAlignment      cachedMsa;
     MsaSavedState*     savedState;

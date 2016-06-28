@@ -462,10 +462,10 @@ Task::ReportResult MuscleGObjectTask::report() {
             return ReportResult_Finished;
         }
 
-        obj->updateGapModel(rowsGapModel, stateInfo);
+        obj->updateGapModel(stateInfo, rowsGapModel);
 
         if (rowsOrder != muscleTask->inputMA.getRowsIds()) {
-            obj->updateRowsOrder(rowsOrder, stateInfo);
+            obj->updateRowsOrder(stateInfo, rowsOrder);
         }
     }
     else if (config.op == MuscleTaskOp_ProfileToProfile) {

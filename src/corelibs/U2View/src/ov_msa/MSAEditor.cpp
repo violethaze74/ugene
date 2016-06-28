@@ -122,7 +122,7 @@ MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
 
     if (!U2DbiUtils::isDbiReadOnly(msaObject->getEntityRef().dbiRef)) {
         U2OpStatus2Log os;
-        msaObject->setTrackMod(TrackOnUpdate, os);
+        msaObject->setTrackMod(os, TrackOnUpdate);
     }
 
     saveAlignmentAction = new QAction(QIcon(":core/images/msa_save.png"), tr("Save alignment"), this);

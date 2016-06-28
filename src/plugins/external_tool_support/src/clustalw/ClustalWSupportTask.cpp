@@ -275,11 +275,11 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
                         return res;
                     }
 
-                    alObj->updateGapModel(rowsGapModel, stateInfo);
+                    alObj->updateGapModel(stateInfo, rowsGapModel);
                     SAFE_POINT_OP(stateInfo, res);
 
                     if (rowsOrder != inputMsa.getRowsIds()) {
-                        alObj->updateRowsOrder(rowsOrder, stateInfo);
+                        alObj->updateRowsOrder(stateInfo, rowsOrder);
                         SAFE_POINT_OP(stateInfo, res);
                     }
                 }

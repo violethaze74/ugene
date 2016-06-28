@@ -218,11 +218,11 @@ Task::ReportResult KalignGObjectTask::report() {
             return ReportResult_Finished;
         }
 
-        obj->updateGapModel(rowsGapModel, stateInfo);
+        obj->updateGapModel(stateInfo, rowsGapModel);
         SAFE_POINT_OP(stateInfo, ReportResult_Finished);
 
         if (rowsOrder != inputMA.getRowsIds()) {
-            obj->updateRowsOrder(rowsOrder, stateInfo);
+            obj->updateRowsOrder(stateInfo, rowsOrder);
             SAFE_POINT_OP(stateInfo, ReportResult_Finished);
         }
     }

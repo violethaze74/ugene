@@ -170,9 +170,9 @@ Task::ReportResult AlignInAminoFormTask::report() {
 
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), stateInfo);
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
-    maObj->updateGapModel(emptyGapModel, stateInfo);
+    maObj->updateGapModel(stateInfo, emptyGapModel);
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
-    maObj->updateGapModel(rowsGapModel, stateInfo);
+    maObj->updateGapModel(stateInfo, rowsGapModel);
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
 
     return ReportResult_Finished;

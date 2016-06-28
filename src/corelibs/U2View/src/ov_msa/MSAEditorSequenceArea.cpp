@@ -1774,8 +1774,8 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
 
-    const int countOfDeletedSymbols = maObj->deleteGap(rowsContainingRemovedGaps,
-        topLeftCornerOfRemovedRegion.x(), removedRegionWidth, os);
+    const int countOfDeletedSymbols = maObj->deleteGap(os, rowsContainingRemovedGaps,
+        topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
 
     // if some symbols were actually removed and the selection is not located
     // at the alignment end, then it's needed to move the selection
@@ -1850,7 +1850,7 @@ void MSAEditorSequenceArea::updateCollapsedGroups(const MsaModificationInfo& mod
             updatedRegions.append(rowsCollapsibleGroup);
         }
         if(isModelChanged) {
-            editor->getMSAObject()->updateGapModel(curGapModel, os);
+            editor->getMSAObject()->updateGapModel(os, curGapModel);
             return;
         }
     }
@@ -2114,7 +2114,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
         noGapModel[rowId] = QList<U2MaGap>();
     }
 
-    msa->updateGapModel(noGapModel, os);
+    msa->updateGapModel(os, noGapModel);
 
     MsaDbiUtils::trim(msa->getEntityRef(), os);
     msa->updateCachedMAlignment();
@@ -2639,7 +2639,7 @@ void MSAEditorSequenceArea::sl_sortByName() {
     QStringList rowNames = ma.getRowNames();
     if (rowNames != msaObject->getMAlignment().getRowNames()) {
         U2OpStatusImpl os;
-        msaObject->updateRowsOrder(ma.getRowsIds(), os);
+        msaObject->updateRowsOrder(os, ma.getRowsIds());
         SAFE_POINT_OP(os, );
     }
     if (ui->isCollapsibleMode()) {
@@ -2700,7 +2700,7 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
 
     U2OpStatusImpl os;
     if (sorted) {
-        msaObject->updateRowsOrder(ma.getRowsIds(), os);
+        msaObject->updateRowsOrder(os, ma.getRowsIds());
         SAFE_POINT_OP(os, );
     }
 
@@ -2826,7 +2826,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
             QList<U2MaGap> gapModel;
             MsaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
 
-            maObj->updateRow(i, name, seqBytes, gapModel, os);
+            maObj->updateRow(os, i, name, seqBytes, gapModel);
             modifiedRowIds << currentRow.getRowId();
         }
 

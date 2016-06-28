@@ -61,7 +61,7 @@ MultipleSequenceAlignmentObject::~MultipleSequenceAlignmentObject(){
     delete savedState;
 }
 
-void MultipleSequenceAlignmentObject::setTrackMod(U2TrackModType trackMod, U2OpStatus& os) {
+void MultipleSequenceAlignmentObject::setTrackMod(U2OpStatus& os, U2TrackModType trackMod) {
     // Prepare the connection
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
@@ -180,7 +180,7 @@ void MultipleSequenceAlignmentObject::copyGapModel(const QList<MultipleSequenceA
     }
 
     U2OpStatus2Log os;
-    updateGapModel(newGapModel, os);
+    updateGapModel(os, newGapModel);
 }
 
 char MultipleSequenceAlignmentObject::charAt(int seqNum, int pos) const {
@@ -253,8 +253,7 @@ void MultipleSequenceAlignmentObject::insertGap(U2Region rows, int pos, int coun
     updateCachedMAlignment(mi);
 }
 
-int MultipleSequenceAlignmentObject::getMaxWidthOfGapRegion( const U2Region &rows, int pos, int maxGaps,
-    U2OpStatus &os )
+int MultipleSequenceAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os , const U2Region &rows, int pos, int maxGaps)
 {
     const MultipleSequenceAlignment &msa = getMAlignment( );
     SAFE_POINT_EXT( U2Region( 0, msa.getNumRows( ) ).contains( rows ) && 0 <= pos && 0 <= maxGaps
@@ -313,10 +312,10 @@ int MultipleSequenceAlignmentObject::getMaxWidthOfGapRegion( const U2Region &row
     return removingGapColumnCount;
 }
 
-int MultipleSequenceAlignmentObject::deleteGap( const U2Region &rows, int pos, int maxGaps, U2OpStatus &os ) {
+int MultipleSequenceAlignmentObject::deleteGap(U2OpStatus &os , const U2Region &rows, int pos, int maxGaps) {
     SAFE_POINT( !isStateLocked( ), "Alignment state is locked!", 0 );
 
-    const int removingGapColumnCount = getMaxWidthOfGapRegion( rows, pos, maxGaps, os );
+    const int removingGapColumnCount = getMaxWidthOfGapRegion(os, rows, pos, maxGaps);
     SAFE_POINT_OP( os, 0 );
     if ( 0 == removingGapColumnCount ) {
         return 0;
@@ -372,7 +371,7 @@ void MultipleSequenceAlignmentObject::removeRow(int rowIdx) {
     updateCachedMAlignment(mi, removedRowIds);
 }
 
-void MultipleSequenceAlignmentObject::updateRow(int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MaGap>& gapModel, U2OpStatus& os) {
+void MultipleSequenceAlignmentObject::updateRow(U2OpStatus& os, int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MaGap>& gapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
     const MultipleSequenceAlignment &msa = getMAlignment();
@@ -585,7 +584,7 @@ QList<qint64> MultipleSequenceAlignmentObject::getColumnsWithGaps(int requiredGa
     return colsForDelete;
 }
 
-void MultipleSequenceAlignmentObject::deleteColumnWithGaps(int requiredGapCount, U2OpStatus &os) {
+void MultipleSequenceAlignmentObject::deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount) {
     QList<qint64> colsForDelete = getColumnsWithGaps(requiredGapCount);
     if (getLength() == colsForDelete.count()) {
         return;
@@ -623,11 +622,11 @@ void MultipleSequenceAlignmentObject::deleteColumnWithGaps(int requiredGapCount,
 
 void MultipleSequenceAlignmentObject::deleteColumnWithGaps(int requiredGapCount) {
     U2OpStatusImpl os;
-    deleteColumnWithGaps(requiredGapCount, os);
+    deleteColumnWithGaps(os, requiredGapCount);
     SAFE_POINT_OP(os, );
 }
 
-void MultipleSequenceAlignmentObject::updateGapModel(QMap<qint64, QList<U2MaGap> > rowsGapModel, U2OpStatus& os) {
+void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus &os, QMap<qint64, QList<U2MaGap> > rowsGapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
     const MultipleSequenceAlignment &msa = getMAlignment();
@@ -677,7 +676,7 @@ void MultipleSequenceAlignmentObject::moveRowsBlock(int firstRow, int numRows, i
     updateCachedMAlignment();
 }
 
-void MultipleSequenceAlignmentObject::updateRowsOrder(const QList<qint64>& rowIds, U2OpStatus& os) {
+void MultipleSequenceAlignmentObject::updateRowsOrder(U2OpStatus& os, const QList<qint64>& rowIds) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
     MsaDbiUtils::updateRowsOrder(entityRef, rowIds, os);
@@ -722,7 +721,7 @@ int MultipleSequenceAlignmentObject::shiftRegion( int startPos, int startRow, in
         if (0 > startPos + shift) {
             shift = -startPos;
         }
-        n = -deleteGap(U2Region(startRow, nRows), startPos + shift, -shift, os);
+        n = -deleteGap(os, U2Region(startRow, nRows), startPos + shift, -shift);
         SAFE_POINT_OP( os, 0 );
     }
     return n;
