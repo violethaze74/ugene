@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MALIGNMENTWALKER_H_
-#define _U2_MALIGNMENTWALKER_H_
+#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_WALKER_H_
+#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_WALKER_H_
 
 #include <U2Core/MultipleSequenceAlignment.h>
 
@@ -28,10 +28,10 @@ namespace U2 {
 
 class RowWalker;
 
-class U2CORE_EXPORT MAlignmentWalker {
+class U2CORE_EXPORT MultipleSequenceAlignmentWalker {
 public:
-    MAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar = MAlignment_GapChar);
-    ~MAlignmentWalker();
+    MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar = MAlignment_GapChar);
+    ~MultipleSequenceAlignmentWalker();
 
     bool isEnded() const;
 
@@ -45,4 +45,4 @@ private:
 
 } // U2
 
-#endif // _U2_MALIGNMENTWALKER_H_
+#endif // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_WALKER_H_

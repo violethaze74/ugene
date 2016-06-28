@@ -24,7 +24,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MAlignmentWalker.h>
+#include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -357,7 +357,7 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObjec
     //write data
     int seqLength=ma.getLength();
     int writtenLength=0;
-    MAlignmentWalker walker(ma);
+    MultipleSequenceAlignmentWalker walker(ma);
     while (writtenLength<seqLength) {
         QList<QByteArray> seqs = walker.nextData(BLOCK_LENGTH, ti);
         CHECK_OP(ti, );

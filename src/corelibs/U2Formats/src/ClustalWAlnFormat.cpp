@@ -33,7 +33,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MAlignmentWalker.h>
+#include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -252,7 +252,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
 
     //write sequence
     U2OpStatus2Log os;
-    MAlignmentWalker walker(ma);
+    MultipleSequenceAlignmentWalker walker(ma);
     for(int i = 0; i < aliLen; i+=seqPerPage) {
         int partLen = i + seqPerPage > aliLen ? aliLen - i : seqPerPage;
         QList<QByteArray> seqs = walker.nextData(partLen, os);

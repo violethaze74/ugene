@@ -25,7 +25,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MAlignmentWalker.h>
+#include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -310,7 +310,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         return;
     }
 
-    MAlignmentWalker walker(ma, '.');
+    MultipleSequenceAlignmentWalker walker(ma, '.');
     for (int i = 0; !os.isCoR() && i < maLen; i += CHARS_IN_ROW) {
         /* write numbers */ {
             QByteArray line(maxNameLen + 2, ' ');

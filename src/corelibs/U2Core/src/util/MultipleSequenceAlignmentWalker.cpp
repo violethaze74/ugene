@@ -22,7 +22,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
-#include "MAlignmentWalker.h"
+#include "MultipleSequenceAlignmentWalker.h"
 
 namespace U2 {
 
@@ -113,9 +113,9 @@ private:
 };
 
 /************************************************************************/
-/* MAlignmentWalker */
+/* MultipleSequenceAlignmentWalker */
 /************************************************************************/
-MAlignmentWalker::MAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar)
+MultipleSequenceAlignmentWalker::MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar)
 : msa(msa), currentOffset(0)
 {
     for (int i=0; i<msa.getNumRows(); i++) {
@@ -123,15 +123,15 @@ MAlignmentWalker::MAlignmentWalker(const MultipleSequenceAlignment &msa, char ga
     }
 }
 
-MAlignmentWalker::~MAlignmentWalker() {
+MultipleSequenceAlignmentWalker::~MultipleSequenceAlignmentWalker() {
     qDeleteAll(rowWalkerList);
 }
 
-bool MAlignmentWalker::isEnded() const {
+bool MultipleSequenceAlignmentWalker::isEnded() const {
     return currentOffset >= msa.getLength();
 }
 
-QList<QByteArray> MAlignmentWalker::nextData(int length, U2OpStatus &os) {
+QList<QByteArray> MultipleSequenceAlignmentWalker::nextData(int length, U2OpStatus &os) {
     QList<QByteArray> result;
     SAFE_POINT_EXT(!isEnded(), os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Alignment walker is ended")), result);
     SAFE_POINT_EXT(msa.getNumRows() == rowWalkerList.size(), os.setError(L10N::internalError() + MultipleSequenceAlignmentObject::tr(" Alignment changed")), result);

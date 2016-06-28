@@ -29,7 +29,7 @@
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MAlignmentWalker.h>
+#include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -640,7 +640,7 @@ static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, const QSt
     int name_max_len = getMaxNameLen( msa );
     int seq_len = msa.getLength();
     int cur_seq_pos = 0;
-    MAlignmentWalker walker(msa);
+    MultipleSequenceAlignmentWalker walker(msa);
     CHECK_OP(os, );
     while ( 0 < seq_len ) {
         int block_len = ( WRITE_BLOCK_LENGTH >= seq_len )? seq_len: WRITE_BLOCK_LENGTH;
