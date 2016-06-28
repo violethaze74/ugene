@@ -18,7 +18,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ProjectModel.h>
 
-#include <U2Algorithm/MAlignmentUtilTasks.h>
+#include <U2Algorithm/MsaUtilTasks.h>
 
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/SimpleWorkflowTask.h>

@@ -56,7 +56,7 @@ class GObjectView;
 class MsaColorScheme;
 class MsaHighlightingScheme;
 class MultipleSequenceAlignment;
-class MAlignmentModInfo;
+class MsaModificationInfo;
 class MultipleSequenceAlignmentObject;
 class MsaColorSchemeFactory;
 class MsaHighlightingSchemeFactory;
@@ -351,7 +351,7 @@ protected:
 private slots:
     void sl_onHScrollMoved(int pos);
     void sl_onVScrollMoved(int pos);
-    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&);
 
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
@@ -400,7 +400,7 @@ private slots:
     void sl_useDots();
     void sl_fontChanged(QFont font);
 
-    void sl_alphabetChanged(const MAlignmentModInfo &mi, const DNAAlphabet *prevAlphabet);
+    void sl_alphabetChanged(const MsaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
 
     void sl_changeSelectionColor();
 
@@ -473,7 +473,7 @@ private:
      */
     void cancelShiftTracking( );
 
-    void updateCollapsedGroups(const MAlignmentModInfo& modInfo);
+    void updateCollapsedGroups(const MsaModificationInfo& modInfo);
 
     MSAEditor*      editor;
     MSAEditorUI*    ui;

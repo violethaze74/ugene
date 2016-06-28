@@ -37,8 +37,8 @@ MSAEditorUndoFramework::MSAEditorUndoFramework(QObject* p, MultipleSequenceAlign
 : QUndoStack(p), maObj(ma), lastSavedObjectVersion(0), maxMemUse(20*1024*1024), stateComplete(true)
 {
     if (maObj!=NULL) {
-        connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
-                       SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
+        connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
+                       SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
         connect(maObj, SIGNAL(si_completeStateChanged(bool)), SLOT(sl_completeStateChanged(bool)));
         connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     }
@@ -83,7 +83,7 @@ void MSAEditorUndoFramework::sl_completeStateChanged(bool _stateCompele){
     stateComplete = _stateCompele;
 }
 
-void MSAEditorUndoFramework::sl_alignmentChanged(const MultipleSequenceAlignment& maBefore, const MAlignmentModInfo& mi) {
+void MSAEditorUndoFramework::sl_alignmentChanged(const MultipleSequenceAlignment& maBefore, const MsaModificationInfo& mi) {
     if (maObj == NULL || lastSavedObjectVersion == maObj->getModificationVersion() ||
             ((maBefore.getRows() == maObj->getMAlignment().getRows()) && (maBefore.getRowNames() == maObj->getMAlignment().getRowNames())))
     {

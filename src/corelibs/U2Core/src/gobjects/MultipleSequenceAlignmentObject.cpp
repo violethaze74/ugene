@@ -36,29 +36,29 @@
 
 namespace U2 {
 
-MSAMemento::MSAMemento():lastState(MultipleSequenceAlignment()){}
+MsaSavedState::MsaSavedState():lastState(MultipleSequenceAlignment()){}
 
-MultipleSequenceAlignment MSAMemento::getState() const{
+MultipleSequenceAlignment MsaSavedState::getState() const{
     return lastState;
 }
 
-void MSAMemento::setState(const MultipleSequenceAlignment& state){
+void MsaSavedState::setState(const MultipleSequenceAlignment& state){
     lastState = state;
 }
 
 MultipleSequenceAlignmentObject::MultipleSequenceAlignmentObject(const QString& name, const U2EntityRef& msaRef, const QVariantMap& hintsMap, const MultipleSequenceAlignment &alnData)
-    : GObject(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, name, hintsMap), cachedMAlignment(alnData), memento(new MSAMemento)
+    : GObject(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, name, hintsMap), cachedMsa(alnData), savedState(new MsaSavedState)
 {
     entityRef = msaRef;
 
-    if (!cachedMAlignment.isEmpty()) {
+    if (!cachedMsa.isEmpty()) {
         dataLoaded = true;
     }
 }
 
 MultipleSequenceAlignmentObject::~MultipleSequenceAlignmentObject(){
     emit si_invalidateAlignmentObject();
-    delete memento;
+    delete savedState;
 }
 
 void MultipleSequenceAlignmentObject::setTrackMod(U2TrackModType trackMod, U2OpStatus& os) {
@@ -75,15 +75,15 @@ void MultipleSequenceAlignmentObject::setTrackMod(U2TrackModType trackMod, U2OpS
 
 const MultipleSequenceAlignment & MultipleSequenceAlignmentObject::getMAlignment() const {
     ensureDataLoaded();
-    return cachedMAlignment;
+    return cachedMsa;
 }
 
-void MultipleSequenceAlignmentObject::updateCachedMAlignment(const MAlignmentModInfo &mi, const QList<qint64> &removedRowIds)
+void MultipleSequenceAlignmentObject::updateCachedMAlignment(const MsaModificationInfo &mi, const QList<qint64> &removedRowIds)
 {
     ensureDataLoaded();
     emit si_startMsaUpdating();
 
-    MultipleSequenceAlignment maBefore = cachedMAlignment;
+    MultipleSequenceAlignment maBefore = cachedMsa;
     QString oldName = maBefore.getName();
 
     U2OpStatus2Log os;
@@ -91,17 +91,17 @@ void MultipleSequenceAlignmentObject::updateCachedMAlignment(const MAlignmentMod
     if (mi.alignmentLengthChanged) {
         qint64 msaLength = MsaDbiUtils::getMsaLength(entityRef, os);
         SAFE_POINT_OP(os, );
-        if (msaLength != cachedMAlignment.getLength()) {
-            cachedMAlignment.setLength(msaLength);
+        if (msaLength != cachedMsa.getLength()) {
+            cachedMsa.setLength(msaLength);
         }
     }
 
     if (mi.alphabetChanged) {
         U2AlphabetId alphabet = MsaDbiUtils::getMsaAlphabet(entityRef, os);
         SAFE_POINT_OP(os, );
-        if (alphabet.id != cachedMAlignment.getAlphabet()->getId() && !alphabet.id.isEmpty()) {
+        if (alphabet.id != cachedMsa.getAlphabet()->getId() && !alphabet.id.isEmpty()) {
             const DNAAlphabet* newAlphabet = U2AlphabetUtils::getById(alphabet);
-            cachedMAlignment.setAlphabet(newAlphabet);
+            cachedMsa.setAlphabet(newAlphabet);
         }
     }
 
@@ -111,23 +111,23 @@ void MultipleSequenceAlignmentObject::updateCachedMAlignment(const MAlignmentMod
     } else { // only specified rows were changed
         if (!removedRowIds.isEmpty()) {
             foreach (qint64 rowId, removedRowIds) {
-                const int rowIndex = cachedMAlignment.getRowIndexByRowId(rowId, os);
+                const int rowIndex = cachedMsa.getRowIndexByRowId(rowId, os);
                 SAFE_POINT_OP(os, );
-                cachedMAlignment.removeRow(rowIndex, os);
+                cachedMsa.removeRow(rowIndex, os);
                 SAFE_POINT_OP(os, );
             }
         }
         if (!mi.modifiedRowIds.isEmpty()) {
             MultipleSequenceAlignmentExporter alExporter;
-            QList<MAlignmentRowReplacementData> rowsAndSeqs = alExporter.getAlignmentRows(entityRef.dbiRef, entityRef.entityId,
+            QList<MsaRowReplacementData> rowsAndSeqs = alExporter.getAlignmentRows(entityRef.dbiRef, entityRef.entityId,
                 mi.modifiedRowIds, os);
             SAFE_POINT_OP(os, );
-            foreach (const MAlignmentRowReplacementData &data, rowsAndSeqs) {
-                const int rowIndex = cachedMAlignment.getRowIndexByRowId(data.row.rowId, os);
+            foreach (const MsaRowReplacementData &data, rowsAndSeqs) {
+                const int rowIndex = cachedMsa.getRowIndexByRowId(data.row.rowId, os);
                 SAFE_POINT_OP(os, );
-                cachedMAlignment.setRowContent(rowIndex, data.sequence.seq);
-                cachedMAlignment.setRowGapModel(rowIndex, data.row.gaps);
-                cachedMAlignment.renameRow(rowIndex, data.sequence.getName());
+                cachedMsa.setRowContent(rowIndex, data.sequence.seq);
+                cachedMsa.setRowGapModel(rowIndex, data.row.gaps);
+                cachedMsa.renameRow(rowIndex, data.sequence.getName());
             }
         }
     }
@@ -136,13 +136,13 @@ void MultipleSequenceAlignmentObject::updateCachedMAlignment(const MAlignmentMod
     if (!mi.middleState) {
         emit si_alignmentChanged(maBefore, mi);
 
-        if (cachedMAlignment.isEmpty() && !maBefore.isEmpty()) {
+        if (cachedMsa.isEmpty() && !maBefore.isEmpty()) {
             emit si_alignmentBecomesEmpty(true);
-        } else if (!cachedMAlignment.isEmpty() && maBefore.isEmpty()) {
+        } else if (!cachedMsa.isEmpty() && maBefore.isEmpty()) {
             emit si_alignmentBecomesEmpty(false);
         }
 
-        const QString newName = cachedMAlignment.getName();
+        const QString newName = cachedMsa.getName();
         if (oldName != newName) {
             setGObjectNameNotDbi(newName);
         }
@@ -150,12 +150,12 @@ void MultipleSequenceAlignmentObject::updateCachedMAlignment(const MAlignmentMod
     if (!removedRowIds.isEmpty()) {
         emit si_rowsRemoved(removedRowIds);
     }
-    if (cachedMAlignment.getAlphabet()->getId() != maBefore.getAlphabet()->getId()) {
+    if (cachedMsa.getAlphabet()->getId() != maBefore.getAlphabet()->getId()) {
         emit si_alphabetChanged(mi, maBefore.getAlphabet());
     }
 }
 
-void MultipleSequenceAlignmentObject::setMAlignment(const MultipleSequenceAlignment& newMa, MAlignmentModInfo mi, const QVariantMap& hints) {
+void MultipleSequenceAlignmentObject::setMAlignment(const MultipleSequenceAlignment& newMa, MsaModificationInfo mi, const QVariantMap& hints) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
 
     U2OpStatus2Log os;
@@ -191,23 +191,23 @@ char MultipleSequenceAlignmentObject::charAt(int seqNum, int pos) const {
 void MultipleSequenceAlignmentObject::saveState(){
     const MultipleSequenceAlignment &msa = getMAlignment();
     emit si_completeStateChanged(false);
-    memento->setState(msa);
+    savedState->setState(msa);
 }
 
 void MultipleSequenceAlignmentObject::releaseState() {
     if(!isStateLocked()) {
         emit si_completeStateChanged(true);
 
-        MultipleSequenceAlignment maBefore = memento->getState();
+        MultipleSequenceAlignment maBefore = savedState->getState();
         CHECK(maBefore != getMAlignment(), );
         setModified(true);
 
-        MAlignmentModInfo mi;
+        MsaModificationInfo mi;
         emit si_alignmentChanged(maBefore, mi);
 
-        if (cachedMAlignment.isEmpty() && !maBefore.isEmpty()) {
+        if (cachedMsa.isEmpty() && !maBefore.isEmpty()) {
             emit si_alignmentBecomesEmpty(true);
-        } else if (!cachedMAlignment.isEmpty() && maBefore.isEmpty()) {
+        } else if (!cachedMsa.isEmpty() && maBefore.isEmpty()) {
             emit si_alignmentBecomesEmpty(false);
         }
     }
@@ -247,7 +247,7 @@ void MultipleSequenceAlignmentObject::insertGap(U2Region rows, int pos, int coun
     MsaDbiUtils::insertGaps(entityRef, rowIdsToInsert, pos, count, os);
     SAFE_POINT_OP(os, );
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     mi.sequenceListChanged = false;
     mi.modifiedRowIds = rowIdsToInsert;
     updateCachedMAlignment(mi);
@@ -343,7 +343,7 @@ int MultipleSequenceAlignmentObject::deleteGap( const U2Region &rows, int pos, i
         CHECK_OP( os, 0);
     }
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     mi.sequenceListChanged = false;
     mi.modifiedRowIds = modifiedRowIds;
     updateCachedMAlignment(mi);
@@ -362,7 +362,7 @@ void MultipleSequenceAlignmentObject::removeRow(int rowIdx) {
     MsaDbiUtils::removeRow(entityRef, rowId, os);
     SAFE_POINT_OP(os, );
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     mi.sequenceContentChanged = false;
     mi.alignmentLengthChanged = false;
 
@@ -389,7 +389,7 @@ void MultipleSequenceAlignmentObject::updateRow(int rowIdx, const QString& name,
 
 void MultipleSequenceAlignmentObject::setGObjectName(const QString& newName) {
     ensureDataLoaded();
-    CHECK(cachedMAlignment.getName() != newName, );
+    CHECK(cachedMsa.getName() != newName, );
 
     if (!isStateLocked()) {
         U2OpStatus2Log os;
@@ -399,7 +399,7 @@ void MultipleSequenceAlignmentObject::setGObjectName(const QString& newName) {
         updateCachedMAlignment();
     } else {
         GObject::setGObjectName(newName);
-        cachedMAlignment.setName(newName);
+        cachedMsa.setName(newName);
     }
 }
 
@@ -479,7 +479,7 @@ void MultipleSequenceAlignmentObject::removeRegion(int startPos, int startRow, i
         }
     }
     if (track || !removedRows.isEmpty()) {
-        MAlignmentModInfo mi;
+        MsaModificationInfo mi;
         mi.modifiedRowIds = modifiedRowIds;
         updateCachedMAlignment(mi, removedRows);
     }
@@ -505,7 +505,7 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
     }
     SAFE_POINT_OP(os, );
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     mi.sequenceContentChanged = true;
     mi.sequenceListChanged = false;
     mi.alignmentLengthChanged = false;
@@ -538,7 +538,7 @@ void MultipleSequenceAlignmentObject::renameRow(int rowIdx, const QString& newNa
     MsaDbiUtils::renameRow(entityRef, rowId, newName, os);
     SAFE_POINT_OP(os, );
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     mi.alignmentLengthChanged = false;
     updateCachedMAlignment(mi);
 }
@@ -644,7 +644,7 @@ void MultipleSequenceAlignmentObject::updateGapModel(QMap<qint64, QList<U2MaGap>
         modifiedRowIds.append(rowId);
     }
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     mi.sequenceListChanged = false;
     updateCachedMAlignment(mi);
 }
@@ -683,7 +683,7 @@ void MultipleSequenceAlignmentObject::updateRowsOrder(const QList<qint64>& rowId
     MsaDbiUtils::updateRowsOrder(entityRef, rowIds, os);
     CHECK_OP(os, );
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     mi.alignmentLengthChanged = false;
     updateCachedMAlignment(mi);
 }
@@ -763,7 +763,7 @@ const MultipleSequenceAlignmentRow& MultipleSequenceAlignmentObject::getRow(int 
 //    MultipleSequenceAlignment msa = getMAlignment();
 //    return msa.getRow(row);
     ensureDataLoaded();
-    return cachedMAlignment.getRow(row);
+    return cachedMsa.getRow(row);
 }
 
 int MultipleSequenceAlignmentObject::getRowPosById(qint64 rowId) const {
@@ -772,11 +772,11 @@ int MultipleSequenceAlignmentObject::getRowPosById(qint64 rowId) const {
 }
 
 static bool _registerMeta() {
-    qRegisterMetaType<MAlignmentModInfo>("MAlignmentModInfo");
+    qRegisterMetaType<MsaModificationInfo>("MsaModificationInfo");
     return true;
 }
 
-bool MAlignmentModInfo::registerMeta = _registerMeta();
+bool MsaModificationInfo::registerMeta = _registerMeta();
 
 void MultipleSequenceAlignmentObject::sortRowsByList(const QStringList& order) {
     GTIMER(c, t, "MultipleSequenceAlignmentObject::sortRowsByList");
@@ -784,13 +784,13 @@ void MultipleSequenceAlignmentObject::sortRowsByList(const QStringList& order) {
 
     MultipleSequenceAlignment msa = getMAlignment();
     msa.sortRowsByList(order);
-    CHECK(msa.getRowsIds() != cachedMAlignment.getRowsIds(), );
+    CHECK(msa.getRowsIds() != cachedMsa.getRowsIds(), );
 
     U2OpStatusImpl os;
     MsaDbiUtils::updateRowsOrder(entityRef, msa.getRowsIds(), os);
     SAFE_POINT_OP(os, );
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     mi.alignmentLengthChanged = false;
     mi.sequenceContentChanged = false;
     mi.sequenceListChanged = false;
@@ -805,7 +805,7 @@ void MultipleSequenceAlignmentObject::loadDataCore(U2OpStatus &os) {
 
 void MultipleSequenceAlignmentObject::loadAlignment(U2OpStatus &os) {
     MultipleSequenceAlignmentExporter alExporter;
-    cachedMAlignment = alExporter.getAlignment(entityRef.dbiRef, entityRef.entityId, os);
+    cachedMsa = alExporter.getAlignment(entityRef.dbiRef, entityRef.entityId, os);
 }
 
 }//namespace

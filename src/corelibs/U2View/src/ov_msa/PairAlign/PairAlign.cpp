@@ -187,7 +187,7 @@ void PairAlign::connectSignals() {
     connect(firstSeqSelectorWC,         SIGNAL(si_selectionChanged()),         SLOT(sl_selectorTextChanged()));
     connect(secondSeqSelectorWC,        SIGNAL(si_selectionChanged()),         SLOT(sl_selectorTextChanged()));
     connect(msa->getMSAObject(),        SIGNAL(si_lockedStateChanged()),       SLOT(sl_checkState()));
-    connect(msa->getMSAObject(),        SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)), SLOT(sl_alignmentChanged()));
+    connect(msa->getMSAObject(),        SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 void PairAlign::sl_checkState(){
@@ -418,7 +418,7 @@ void PairAlign::sl_alignComplete() {
     SAFE_POINT(NULL != pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask, "Can't process an unexpected align task", );
     if (true == pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask->isFinished()) {
         if(!inNewWindowCheckBox->isChecked()){
-            MAlignmentModInfo mi;
+            MsaModificationInfo mi;
             mi.sequenceListChanged = false;
             mi.modifiedRowIds.append(pairwiseAlignmentWidgetsSettings->firstSequenceId);
             mi.modifiedRowIds.append(pairwiseAlignmentWidgetsSettings->secondSequenceId);

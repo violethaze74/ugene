@@ -58,7 +58,7 @@ private:
     U2MsaDbi*                   dbi;
     U2EntityRef                 entityRef;
     U2UseCommonUserModStep*     modStep;
-    MAlignmentModInfo           mi;
+    MsaModificationInfo           mi;
 
     static const int maxErrorListSize;
     /** Returns the max length of the rows including trailing gaps */

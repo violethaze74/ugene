@@ -46,7 +46,7 @@ signals:
 
 private slots:
     void sl_seqLineEditEditingFinished();
-    void sl_seqLineEditEditingFinished(const MultipleSequenceAlignment& , const MAlignmentModInfo&);
+    void sl_seqLineEditEditingFinished(const MultipleSequenceAlignment& , const MsaModificationInfo&);
     void sl_addSeqClicked();
     void sl_deleteSeqClicked();
     void sl_setDefaultLineEditValue();

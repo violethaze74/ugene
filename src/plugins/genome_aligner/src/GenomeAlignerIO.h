@@ -129,9 +129,9 @@ private:
     CommunicationChannel* reads;
 };
 
-class GenomeAlignerMAlignmentWriter : public GenomeAlignerWriter {
+class GenomeAlignerMsaWriter : public GenomeAlignerWriter {
 public:
-    GenomeAlignerMAlignmentWriter();
+    GenomeAlignerMsaWriter();
     inline void write(SearchQuery *seq, SAType offset);
     void close();
     void setReferenceName(const QString &refName);

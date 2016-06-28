@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include "MAlignmentUnitTests.h"
-#include "MAlignmentRowUnitTests.h"
+#include "MsaUnitTests.h"
+#include "MsaRowUnitTests.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -33,14 +33,14 @@
 
 namespace U2 {
 
-const int MAlignmentTestUtils::rowsNum = 2;
-const int MAlignmentTestUtils::firstRowLength = 7;
-const int MAlignmentTestUtils::secondRowLength = 9;
+const int MsaTestUtils::rowsNum = 2;
+const int MsaTestUtils::firstRowLength = 7;
+const int MsaTestUtils::secondRowLength = 9;
 
-const QString MAlignmentTestUtils::alignmentName = "Test alignment name";
+const QString MsaTestUtils::alignmentName = "Test alignment name";
 
 
-MultipleSequenceAlignment MAlignmentTestUtils::initTestAlignment() {
+MultipleSequenceAlignment MsaTestUtils::initTestAlignment() {
     DNAAlphabetRegistry* alphabetRegistry = AppContext::getDNAAlphabetRegistry();
     const DNAAlphabet* alphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
 
@@ -59,26 +59,26 @@ MultipleSequenceAlignment MAlignmentTestUtils::initTestAlignment() {
     return almnt;
 }
 
-QString MAlignmentTestUtils::getRowData(const MultipleSequenceAlignment& almnt, int rowNum) {
+QString MsaTestUtils::getRowData(const MultipleSequenceAlignment& almnt, int rowNum) {
     if (rowNum < 0 || rowNum > almnt.getNumRows()) {
         return "";
     }
 
     MultipleSequenceAlignmentRow row = almnt.getRow(rowNum);
 
-    return MAlignmentRowTestUtils::getRowData(row);
+    return MsaRowTestUtils::getRowData(row);
 }
 
-bool MAlignmentTestUtils::testAlignmentNotChanged(const MultipleSequenceAlignment& almnt) {
+bool MsaTestUtils::testAlignmentNotChanged(const MultipleSequenceAlignment& almnt) {
     if (9 != almnt.getLength()) {
         return false;
     }
 
-    if ("---AG-T--" != MAlignmentTestUtils::getRowData(almnt, 0)) {
+    if ("---AG-T--" != MsaTestUtils::getRowData(almnt, 0)) {
         return false;
     }
 
-    if ("AG-CT-TAA" != MAlignmentTestUtils::getRowData(almnt, 1)) {
+    if ("AG-CT-TAA" != MsaTestUtils::getRowData(almnt, 1)) {
         return false;
     }
 
@@ -87,37 +87,37 @@ bool MAlignmentTestUtils::testAlignmentNotChanged(const MultipleSequenceAlignmen
 
 
 /** Tests clear */
-IMPLEMENT_TEST(MAlignmentUnitTests, clear_notEmpty) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, clear_notEmpty) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     almnt.clear();
     QList<MultipleSequenceAlignmentRow> rows = almnt.getRows();
     CHECK_EQUAL(0, rows.count(), "number of rows");
 }
 
 /** Tests name */
-IMPLEMENT_TEST(MAlignmentUnitTests, name_ctor) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
-    CHECK_EQUAL(MAlignmentTestUtils::alignmentName, almnt.getName(), "alignment name");
+IMPLEMENT_TEST(MsaUnitTests, name_ctor) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
+    CHECK_EQUAL(MsaTestUtils::alignmentName, almnt.getName(), "alignment name");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, name_setName) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, name_setName) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     QString newName = "Another name";
     almnt.setName(newName);
     CHECK_EQUAL(newName, almnt.getName(), "alignment name");
 }
 
 /** Tests alphabet */
-IMPLEMENT_TEST(MAlignmentUnitTests, alphabet_ctor) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, alphabet_ctor) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     if (NULL == almnt.getAlphabet()) {
         SetError("NULL alphabet!");
     }
     CHECK_EQUAL(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), almnt.getAlphabet()->getId(), "alphabet ID");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, alphabet_setAlphabet) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, alphabet_setAlphabet) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
 
     DNAAlphabetRegistry* alphabetRegistry = AppContext::getDNAAlphabetRegistry();
     const DNAAlphabet* newAlphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
@@ -130,8 +130,8 @@ IMPLEMENT_TEST(MAlignmentUnitTests, alphabet_setAlphabet) {
 }
 
 /** Tests info */
-IMPLEMENT_TEST(MAlignmentUnitTests, info_setGet) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, info_setGet) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     QVariantMap info;
     QString infoElementName = "Test element name";
     QString infoElementValue = "Test element value";
@@ -143,60 +143,60 @@ IMPLEMENT_TEST(MAlignmentUnitTests, info_setGet) {
 }
 
 /** Tests length */
-IMPLEMENT_TEST(MAlignmentUnitTests, length_isEmptyFalse) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, length_isEmptyFalse) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     CHECK_FALSE(almnt.isEmpty(), "Method isEmpty() returned 'true' unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, length_isEmptyTrue) {
+IMPLEMENT_TEST(MsaUnitTests, length_isEmptyTrue) {
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     CHECK_TRUE(almnt.isEmpty(), "Method isEmpty() returned 'false' unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, length_get) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, length_get) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     int expectedLength = 9; // the length of the longest row
     CHECK_EQUAL(expectedLength, almnt.getLength(), "alignment length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, length_getForEmpty) {
+IMPLEMENT_TEST(MsaUnitTests, length_getForEmpty) {
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     CHECK_EQUAL(0, almnt.getLength(), "alignment length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, length_setLessLength) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, length_setLessLength) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     int newLength = 5;
     almnt.setLength(newLength);
     CHECK_EQUAL(newLength, almnt.getLength(), "alignment length");
 
-    CHECK_EQUAL("---AG", MAlignmentTestUtils::getRowData(almnt, 0), "first row data");
-    CHECK_EQUAL("AG-CT", MAlignmentTestUtils::getRowData(almnt, 1), "second row data");
+    CHECK_EQUAL("---AG", MsaTestUtils::getRowData(almnt, 0), "first row data");
+    CHECK_EQUAL("AG-CT", MsaTestUtils::getRowData(almnt, 1), "second row data");
 }
 
 /** Tests numOfRows */
-IMPLEMENT_TEST(MAlignmentUnitTests, numOfRows_notEmpty) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
-    CHECK_EQUAL(MAlignmentTestUtils::rowsNum, almnt.getNumRows(), "number of rows");
+IMPLEMENT_TEST(MsaUnitTests, numOfRows_notEmpty) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
+    CHECK_EQUAL(MsaTestUtils::rowsNum, almnt.getNumRows(), "number of rows");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, numOfRows_empty) {
+IMPLEMENT_TEST(MsaUnitTests, numOfRows_empty) {
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     CHECK_EQUAL(0, almnt.getNumRows(), "number of rows");
 }
 
 /** Tests trim */
-IMPLEMENT_TEST(MAlignmentUnitTests, trim_biggerLength) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, trim_biggerLength) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     int newLength = 100;
     almnt.setLength(newLength);
     bool result = almnt.trim();
     CHECK_TRUE(result, "Method trim() returned 'false' unexpectedly!");
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("AG-CT-TAA", MAlignmentTestUtils::getRowData(almnt, 1), "row data");
+    CHECK_EQUAL("AG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "row data");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, trim_leadingGapColumns) {
+IMPLEMENT_TEST(MsaUnitTests, trim_leadingGapColumns) {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("--AG-CT-TA");
 
@@ -212,19 +212,19 @@ IMPLEMENT_TEST(MAlignmentUnitTests, trim_leadingGapColumns) {
 
     CHECK_TRUE(result, "Method trim() returned 'false' unexpectedly!");
     CHECK_EQUAL(8, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("-AG-T---", MAlignmentTestUtils::getRowData(almnt, 0), "first row data");
-    CHECK_EQUAL("AG-CT-TA", MAlignmentTestUtils::getRowData(almnt, 1), "second row data");
+    CHECK_EQUAL("-AG-T---", MsaTestUtils::getRowData(almnt, 0), "first row data");
+    CHECK_EQUAL("AG-CT-TA", MsaTestUtils::getRowData(almnt, 1), "second row data");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, trim_nothingToTrim) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, trim_nothingToTrim) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     bool result = almnt.trim();
     CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("AG-CT-TAA", MAlignmentTestUtils::getRowData(almnt, 1), "row data");
+    CHECK_EQUAL("AG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "row data");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, trim_rowWithoutGaps) {
+IMPLEMENT_TEST(MsaUnitTests, trim_rowWithoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment", NULL);
@@ -236,16 +236,16 @@ IMPLEMENT_TEST(MAlignmentUnitTests, trim_rowWithoutGaps) {
 
     CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
     CHECK_EQUAL(12, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("ACGTAGTCGATC", MAlignmentTestUtils::getRowData(almnt, 0), "row data");
+    CHECK_EQUAL("ACGTAGTCGATC", MsaTestUtils::getRowData(almnt, 0), "row data");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, trim_empty) {
+IMPLEMENT_TEST(MsaUnitTests, trim_empty) {
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     bool result = almnt.trim();
     CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, trim_trailingGapInOne) {
+IMPLEMENT_TEST(MsaUnitTests, trim_trailingGapInOne) {
     QByteArray firstSequence("ACGT");
     QByteArray secondSequence("CAC-");
 
@@ -261,22 +261,22 @@ IMPLEMENT_TEST(MAlignmentUnitTests, trim_trailingGapInOne) {
 
     CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
     CHECK_EQUAL(4, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("ACGT", MAlignmentTestUtils::getRowData(almnt, 0), "first row data");
-    CHECK_EQUAL("CAC-", MAlignmentTestUtils::getRowData(almnt, 1), "second row data");
+    CHECK_EQUAL("ACGT", MsaTestUtils::getRowData(almnt, 0), "first row data");
+    CHECK_EQUAL("CAC-", MsaTestUtils::getRowData(almnt, 1), "second row data");
     CHECK_EQUAL(0, almnt.getRow(1).getGapModel().size(), "number of gaps in the second row");
 }
 
 /** Tests simplify */
-IMPLEMENT_TEST(MAlignmentUnitTests, simplify_withGaps) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, simplify_withGaps) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     bool result = almnt.simplify();
     CHECK_TRUE(result, "Method simplify() returned 'false' unexpectedly!");
     CHECK_EQUAL(7, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("AGT----", MAlignmentTestUtils::getRowData(almnt, 0), "first row data");
-    CHECK_EQUAL("AGCTTAA", MAlignmentTestUtils::getRowData(almnt, 1), "second row data");
+    CHECK_EQUAL("AGT----", MsaTestUtils::getRowData(almnt, 0), "first row data");
+    CHECK_EQUAL("AGCTTAA", MsaTestUtils::getRowData(almnt, 1), "second row data");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, simplify_withoutGaps) {
+IMPLEMENT_TEST(MsaUnitTests, simplify_withoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment", NULL);
@@ -288,17 +288,17 @@ IMPLEMENT_TEST(MAlignmentUnitTests, simplify_withoutGaps) {
 
     CHECK_FALSE(result, "Method simplify() returned 'true' unexpectedly!");
     CHECK_EQUAL(12, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("ACGTAGTCGATC", MAlignmentTestUtils::getRowData(almnt, 0), "row data");
+    CHECK_EQUAL("ACGTAGTCGATC", MsaTestUtils::getRowData(almnt, 0), "row data");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, simplify_empty) {
+IMPLEMENT_TEST(MsaUnitTests, simplify_empty) {
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment();
     bool result = almnt.simplify();
     CHECK_FALSE(result, "Method simplify() returned 'true' unexpectedly!");
 }
 
 /** Tests sortRows */
-IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_byNameAsc) {
+IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameAsc) {
     QByteArray firstSequence("AAAAAA");
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("TTTTTT");
@@ -318,10 +318,10 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_byNameAsc) {
     CHECK_EQUAL("NameAA", rowNames[0], "order");
     CHECK_EQUAL("NameAB", rowNames[1], "order");
     CHECK_EQUAL("NameBA", rowNames[2], "order");
-    CHECK_EQUAL("TTTTTT", MAlignmentTestUtils::getRowData(almnt, 0), "first row sequence");
+    CHECK_EQUAL("TTTTTT", MsaTestUtils::getRowData(almnt, 0), "first row sequence");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_byNameDesc) {
+IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameDesc) {
     QByteArray firstSequence("AAAAAA");
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("TTTTTT");
@@ -341,10 +341,10 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_byNameDesc) {
     CHECK_EQUAL("NameBA", rowNames[0], "order");
     CHECK_EQUAL("NameAB", rowNames[1], "order");
     CHECK_EQUAL("NameAA", rowNames[2], "order");
-    CHECK_EQUAL("CCCCCC", MAlignmentTestUtils::getRowData(almnt, 0), "first row sequence");
+    CHECK_EQUAL("CCCCCC", MsaTestUtils::getRowData(almnt, 0), "first row sequence");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_twoSimilar) {
+IMPLEMENT_TEST(MsaUnitTests, sortRows_twoSimilar) {
     QByteArray firstSequence("AAAAAA");
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("TTTTTT");
@@ -370,17 +370,17 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_twoSimilar) {
     CHECK_EQUAL("Second", rowNames[2], "order");
     CHECK_EQUAL("Third", rowNames[3], "order");
 
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 0), "row1");
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 1), "row2");
-    CHECK_EQUAL("CCCCCC", MAlignmentTestUtils::getRowData(almnt, 2), "row3");
-    CHECK_EQUAL("TTTTTT", MAlignmentTestUtils::getRowData(almnt, 3), "row4");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 0), "row1");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 1), "row2");
+    CHECK_EQUAL("CCCCCC", MsaTestUtils::getRowData(almnt, 2), "row3");
+    CHECK_EQUAL("TTTTTT", MsaTestUtils::getRowData(almnt, 3), "row4");
     CHECK_EQUAL(1, unitedRegions.count(), "number of similar regions");
     U2Region reg = unitedRegions[0];
     CHECK_EQUAL(0, reg.startPos, "similar rows region start position");
     CHECK_EQUAL(2, reg.length, "similar rows region length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_threeSimilar) {
+IMPLEMENT_TEST(MsaUnitTests, sortRows_threeSimilar) {
     QByteArray firstSequence("AAAAAA");
     QByteArray secondSequence("AAAAAA");
     QByteArray thirdSequence("TTTTTT");
@@ -406,10 +406,10 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_threeSimilar) {
     CHECK_EQUAL("Forth", rowNames[2], "order");
     CHECK_EQUAL("Third", rowNames[3], "order");
 
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 0), "row1");
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 1), "row2");
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 2), "row3");
-    CHECK_EQUAL("TTTTTT", MAlignmentTestUtils::getRowData(almnt, 3), "row4");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 0), "row1");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 1), "row2");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 2), "row3");
+    CHECK_EQUAL("TTTTTT", MsaTestUtils::getRowData(almnt, 3), "row4");
 
     CHECK_EQUAL(1, unitedRegions.count(), "number of similar regions");
     U2Region reg = unitedRegions[0];
@@ -417,7 +417,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_threeSimilar) {
     CHECK_EQUAL(3, reg.length, "similar rows region length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_similarTwoRegions) {
+IMPLEMENT_TEST(MsaUnitTests, sortRows_similarTwoRegions) {
     QByteArray firstSequence("AAAAAA");
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("AAAAAA");
@@ -443,10 +443,10 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_similarTwoRegions) {
     CHECK_EQUAL("Second", rowNames[2], "order");
     CHECK_EQUAL("Forth", rowNames[3], "order");
 
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 0), "row1");
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 1), "row2");
-    CHECK_EQUAL("CCCCCC", MAlignmentTestUtils::getRowData(almnt, 2), "row3");
-    CHECK_EQUAL("CCCCCC", MAlignmentTestUtils::getRowData(almnt, 3), "row4");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 0), "row1");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 1), "row2");
+    CHECK_EQUAL("CCCCCC", MsaTestUtils::getRowData(almnt, 2), "row3");
+    CHECK_EQUAL("CCCCCC", MsaTestUtils::getRowData(almnt, 3), "row4");
 
     CHECK_EQUAL(2, unitedRegions.count(), "number of similar regions");
     U2Region reg = unitedRegions[0];
@@ -458,22 +458,22 @@ IMPLEMENT_TEST(MAlignmentUnitTests, sortRows_similarTwoRegions) {
 }
 
 /** Tests getRows */
-IMPLEMENT_TEST(MAlignmentUnitTests, getRows_oneRow) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, getRows_oneRow) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     MultipleSequenceAlignmentRow row = almnt.getRow(0);
-    CHECK_EQUAL("---AG-T--", MAlignmentRowTestUtils::getRowData(row), "first row");
+    CHECK_EQUAL("---AG-T--", MsaRowTestUtils::getRowData(row), "first row");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, getRows_severalRows) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, getRows_severalRows) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     QList<MultipleSequenceAlignmentRow> rows = almnt.getRows();
     CHECK_EQUAL(2, rows.count(), "number of rows");
-    CHECK_EQUAL("---AG-T--", MAlignmentRowTestUtils::getRowData(rows[0]), "first row");
-    CHECK_EQUAL("AG-CT-TAA", MAlignmentRowTestUtils::getRowData(rows[1]), "second row");
+    CHECK_EQUAL("---AG-T--", MsaRowTestUtils::getRowData(rows[0]), "first row");
+    CHECK_EQUAL("AG-CT-TAA", MsaRowTestUtils::getRowData(rows[1]), "second row");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, getRows_rowNames) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, getRows_rowNames) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     QStringList rowNames = almnt.getRowNames();
     CHECK_EQUAL(2, rowNames.count(), "number of rows");
     CHECK_EQUAL("First row", rowNames[0], "first row name");
@@ -481,29 +481,29 @@ IMPLEMENT_TEST(MAlignmentUnitTests, getRows_rowNames) {
 }
 
 /** Tests charAt */
-IMPLEMENT_TEST(MAlignmentUnitTests, charAt_nonGapChar) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, charAt_nonGapChar) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     char result = almnt.charAt(0, 3);
     CHECK_EQUAL('A', result, "char inside first row");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, charAt_gap) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, charAt_gap) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     char result = almnt.charAt(1, 2);
     CHECK_EQUAL('-', result, "gap inside second row");
 }
 
 /** Tests insertGaps */
-IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_validParams) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, insertGaps_validParams) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(0, 4, 3, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(10, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("---A---G-T", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("---A---G-T", MsaTestUtils::getRowData(almnt, 0), "first row");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_toBeginningLength) {
+IMPLEMENT_TEST(MsaUnitTests, insertGaps_toBeginningLength) {
     QByteArray firstSequence("ACGT");
     QByteArray secondSequence("ACC");
 
@@ -517,102 +517,102 @@ IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_toBeginningLength) {
     almnt.insertGaps(1, 0, 2, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(5, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("--ACC", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("--ACC", MsaTestUtils::getRowData(almnt, 1), "second row");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_negativeRowIndex) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, insertGaps_negativeRowIndex) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(-1, 4, 3, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_tooBigRowIndex) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, insertGaps_tooBigRowIndex) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(2, 4, 3, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_negativePos) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, insertGaps_negativePos) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(0, -1, 3, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_tooBigPos) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, insertGaps_tooBigPos) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(0, 10, 3, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, insertGaps_negativeCount) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, insertGaps_negativeCount) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.insertGaps(0, 4, -1, os);
     CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
 /** Tests removeChars */
-IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_validParams) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeChars_validParams) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(1, 0, 2, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("---AG-T--", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("-CT-TAA--", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("-CT-TAA--", MsaTestUtils::getRowData(almnt, 1), "second row");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_negativeRowIndex) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeRowIndex) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(-1, 0, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_tooBigRowIndex) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigRowIndex) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(2, 0, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_negativePos) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeChars_negativePos) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(1, -1, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_tooBigPos) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigPos) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(1, 10, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeChars_negativeCount) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeCount) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeChars(1, 0, -1, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MAlignmentTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
 /** Tests removeRegion */
-IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_validParams) {
+IMPLEMENT_TEST(MsaUnitTests, removeRegion_validParams) {
     QByteArray firstSequence("---ACT");
     QByteArray secondSequence("A-CG-A");
     QByteArray thirdSequence("---CGA");
@@ -632,13 +632,13 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_validParams) {
     almnt.removeRegion(1, 1, 3, 2, false);
 
     CHECK_EQUAL(4, almnt.getNumRows(), "number of rows");
-    CHECK_EQUAL("---ACT", MAlignmentTestUtils::getRowData(almnt, 0), "row1");
-    CHECK_EQUAL("A-A---", MAlignmentTestUtils::getRowData(almnt, 1), "row2");
-    CHECK_EQUAL("-GA---", MAlignmentTestUtils::getRowData(almnt, 2), "row3");
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 3), "row4");
+    CHECK_EQUAL("---ACT", MsaTestUtils::getRowData(almnt, 0), "row1");
+    CHECK_EQUAL("A-A---", MsaTestUtils::getRowData(almnt, 1), "row2");
+    CHECK_EQUAL("-GA---", MsaTestUtils::getRowData(almnt, 2), "row3");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 3), "row4");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_removeEmpty) {
+IMPLEMENT_TEST(MsaUnitTests, removeRegion_removeEmpty) {
     QByteArray firstSequence("---ACT");
     QByteArray secondSequence("A-CG-A");
     QByteArray thirdSequence("--AC");
@@ -658,22 +658,22 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_removeEmpty) {
     almnt.removeRegion(1, 1, 3, 2, true);
 
     CHECK_EQUAL(3, almnt.getNumRows(), "number of rows");
-    CHECK_EQUAL("---ACT", MAlignmentTestUtils::getRowData(almnt, 0), "row1");
-    CHECK_EQUAL("A-A---", MAlignmentTestUtils::getRowData(almnt, 1), "row2");
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 2), "row3");
+    CHECK_EQUAL("---ACT", MsaTestUtils::getRowData(almnt, 0), "row1");
+    CHECK_EQUAL("A-A---", MsaTestUtils::getRowData(almnt, 1), "row2");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 2), "row3");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeRegion_trimmed) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeRegion_trimmed) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     almnt.removeRegion(0, 1, 2, 1, false);
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("---AG-T--", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("-CT-TAA--", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("-CT-TAA--", MsaTestUtils::getRowData(almnt, 1), "second row");
 }
 
 /** Tests renameRow */
-IMPLEMENT_TEST(MAlignmentUnitTests, renameRow_validParams) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, renameRow_validParams) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     QString newRowName = "New row name";
     almnt.renameRow(0, newRowName);
     MultipleSequenceAlignmentRow actualRow = almnt.getRow(0);
@@ -681,24 +681,24 @@ IMPLEMENT_TEST(MAlignmentUnitTests, renameRow_validParams) {
 }
 
 /** Tests setRowContent */
-IMPLEMENT_TEST(MAlignmentUnitTests, setRowContent_validParamsAndNotTrimmed) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, setRowContent_validParamsAndNotTrimmed) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     almnt.setRowContent(1, "---AC-");
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("---AG-T--", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("---AC----", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("---AC----", MsaTestUtils::getRowData(almnt, 1), "second row");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, setRowContent_lengthIsIncreased) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, setRowContent_lengthIsIncreased) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     almnt.setRowContent(0, "ACGT-ACA-ACA");
     CHECK_EQUAL(12, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("ACGT-ACA-ACA", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("AG-CT-TAA---", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("ACGT-ACA-ACA", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("AG-CT-TAA---", MsaTestUtils::getRowData(almnt, 1), "second row");
 }
 
 /** Tests upperCase */
-IMPLEMENT_TEST(MAlignmentUnitTests, upperCase_charsAndGaps) {
+IMPLEMENT_TEST(MsaUnitTests, upperCase_charsAndGaps) {
     QByteArray sequence1("mMva-ke");
     QByteArray sequence2("avn-*y-s");
 
@@ -711,12 +711,12 @@ IMPLEMENT_TEST(MAlignmentUnitTests, upperCase_charsAndGaps) {
 
     almnt.toUpperCase();
 
-    CHECK_EQUAL("MMVA-KE-", MAlignmentTestUtils::getRowData(almnt, 0), "row1");
-    CHECK_EQUAL("AVN-*Y-S", MAlignmentTestUtils::getRowData(almnt, 1), "row2");
+    CHECK_EQUAL("MMVA-KE-", MsaTestUtils::getRowData(almnt, 0), "row1");
+    CHECK_EQUAL("AVN-*Y-S", MsaTestUtils::getRowData(almnt, 1), "row2");
 }
 
 /** Tests crop */
-IMPLEMENT_TEST(MAlignmentUnitTests, crop_validParams) {
+IMPLEMENT_TEST(MsaUnitTests, crop_validParams) {
     QByteArray firstSequence("---ACT");
     QByteArray secondSequence("A-CG-A");
     QByteArray thirdSequence("---CGA");
@@ -739,12 +739,12 @@ IMPLEMENT_TEST(MAlignmentUnitTests, crop_validParams) {
 
     CHECK_EQUAL(2, almnt.getNumRows(), "number of rows");
     CHECK_EQUAL(4, almnt.getLength(), "alignment length");
-    CHECK_EQUAL("--AC", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("-CG-", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("--AC", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("-CG-", MsaTestUtils::getRowData(almnt, 1), "second row");
 }
 
 /** Tests mid */
-IMPLEMENT_TEST(MAlignmentUnitTests, mid_validParams) {
+IMPLEMENT_TEST(MsaUnitTests, mid_validParams) {
     QByteArray firstSequence("---ACT");
     QByteArray secondSequence("A");
     QByteArray thirdSequence("---CGA");
@@ -760,105 +760,105 @@ IMPLEMENT_TEST(MAlignmentUnitTests, mid_validParams) {
 
     MultipleSequenceAlignment almntResult = almnt.mid(2, 3);
     CHECK_EQUAL(3, almntResult.getNumRows(), "number of rows");
-    CHECK_EQUAL("-AC", MAlignmentTestUtils::getRowData(almntResult, 0), "first row");
-    CHECK_EQUAL("---", MAlignmentTestUtils::getRowData(almntResult, 1), "second row");
-    CHECK_EQUAL("-CG", MAlignmentTestUtils::getRowData(almntResult, 2), "third row");
+    CHECK_EQUAL("-AC", MsaTestUtils::getRowData(almntResult, 0), "first row");
+    CHECK_EQUAL("---", MsaTestUtils::getRowData(almntResult, 1), "second row");
+    CHECK_EQUAL("-CG", MsaTestUtils::getRowData(almntResult, 2), "third row");
 
-    CHECK_EQUAL("---ACT", MAlignmentTestUtils::getRowData(almnt, 0), "first row of the original");
+    CHECK_EQUAL("---ACT", MsaTestUtils::getRowData(almnt, 0), "first row of the original");
 }
 
 /** Tests addRow */
-IMPLEMENT_TEST(MAlignmentUnitTests, addRow_appendRowFromBytes) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, addRow_appendRowFromBytes) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.addRow("Added row", "--AACT-GAG", os);
     CHECK_NO_ERROR(os);
 
     CHECK_EQUAL(3, almnt.getNumRows(), "number of rows");
-    CHECK_EQUAL("---AG-T---", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("AG-CT-TAA-", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
-    CHECK_EQUAL("--AACT-GAG", MAlignmentTestUtils::getRowData(almnt, 2), "third row");
+    CHECK_EQUAL("---AG-T---", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("AG-CT-TAA-", MsaTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("--AACT-GAG", MsaTestUtils::getRowData(almnt, 2), "third row");
     CHECK_EQUAL("Added row", almnt.getRowNames().at(2), "added row name");
     CHECK_EQUAL(10, almnt.getLength(), "alignment length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, addRow_rowFromBytesToIndex) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, addRow_rowFromBytesToIndex) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.addRow("Added row", "--AACT-GAG", 1, os);
     CHECK_NO_ERROR(os);
 
     CHECK_EQUAL(3, almnt.getNumRows(), "number of rows");
-    CHECK_EQUAL("---AG-T---", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("--AACT-GAG", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
-    CHECK_EQUAL("AG-CT-TAA-", MAlignmentTestUtils::getRowData(almnt, 2), "third row");
+    CHECK_EQUAL("---AG-T---", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("--AACT-GAG", MsaTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("AG-CT-TAA-", MsaTestUtils::getRowData(almnt, 2), "third row");
     CHECK_EQUAL("Added row", almnt.getRowNames().at(1), "added row name");
     CHECK_EQUAL(10, almnt.getLength(), "alignment length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, addRow_zeroBound) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, addRow_zeroBound) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.addRow("Added row", "--AACT-GAG", -2, os);
     CHECK_NO_ERROR(os);
 
     CHECK_EQUAL(3, almnt.getNumRows(), "number of rows");
-    CHECK_EQUAL("--AACT-GAG", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("---AG-T---", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
-    CHECK_EQUAL("AG-CT-TAA-", MAlignmentTestUtils::getRowData(almnt, 2), "third row");
+    CHECK_EQUAL("--AACT-GAG", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("---AG-T---", MsaTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("AG-CT-TAA-", MsaTestUtils::getRowData(almnt, 2), "third row");
     CHECK_EQUAL("Added row", almnt.getRowNames().at(0), "added row name");
     CHECK_EQUAL(10, almnt.getLength(), "alignment length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, addRow_rowsNumBound) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, addRow_rowsNumBound) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.addRow("Added row", "--AACT-GAG", 3, os);
     CHECK_NO_ERROR(os);
 
     CHECK_EQUAL(3, almnt.getNumRows(), "number of rows");
-    CHECK_EQUAL("---AG-T---", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("AG-CT-TAA-", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
-    CHECK_EQUAL("--AACT-GAG", MAlignmentTestUtils::getRowData(almnt, 2), "third row");
+    CHECK_EQUAL("---AG-T---", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("AG-CT-TAA-", MsaTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("--AACT-GAG", MsaTestUtils::getRowData(almnt, 2), "third row");
     CHECK_EQUAL("Added row", almnt.getRowNames().at(2), "added row name");
     CHECK_EQUAL(10, almnt.getLength(), "alignment length");
 }
 
 /** Tests removeRow */
-IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_validIndex) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeRow_validIndex) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeRow(1, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(1, almnt.getNumRows(), "number of rows");
-    CHECK_EQUAL("---AG-T--", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_negativeIndex) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeRow_negativeIndex) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeRow(-1, os);
     CHECK_EQUAL("Failed to remove a row!", os.getError(), "opStatus");
     CHECK_EQUAL(2, almnt.getNumRows(), "number of rows");
-    CHECK_EQUAL("---AG-T--", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("AG-CT-TAA", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("AG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "second row");
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_tooBigIndex) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeRow_tooBigIndex) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeRow(2, os);
     CHECK_EQUAL("Failed to remove a row!", os.getError(), "opStatus");
     CHECK_EQUAL(2, almnt.getNumRows(), "number of rows");
-    CHECK_EQUAL("---AG-T--", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL("AG-CT-TAA", MAlignmentTestUtils::getRowData(almnt, 1), "second row");
+    CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("AG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "second row");
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_emptyAlignment) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, removeRow_emptyAlignment) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt.removeRow(0, os);
     CHECK_NO_ERROR(os);
@@ -869,7 +869,7 @@ IMPLEMENT_TEST(MAlignmentUnitTests, removeRow_emptyAlignment) {
 }
 
 /** Tests moveRowsBlock */
-IMPLEMENT_TEST(MAlignmentUnitTests, moveRowsBlock_positiveDelta) {
+IMPLEMENT_TEST(MsaUnitTests, moveRowsBlock_positiveDelta) {
     QByteArray firstSequence("AAAAAA");
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("GGGGGG");
@@ -888,13 +888,13 @@ IMPLEMENT_TEST(MAlignmentUnitTests, moveRowsBlock_positiveDelta) {
 
     almnt.moveRowsBlock(0, 2, 1);
 
-    CHECK_EQUAL("GGGGGG", MAlignmentTestUtils::getRowData(almnt, 0), "row1");
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 1), "row2");
-    CHECK_EQUAL("CCCCCC", MAlignmentTestUtils::getRowData(almnt, 2), "row3");
-    CHECK_EQUAL("TTTTTT", MAlignmentTestUtils::getRowData(almnt, 3), "row4");
+    CHECK_EQUAL("GGGGGG", MsaTestUtils::getRowData(almnt, 0), "row1");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 1), "row2");
+    CHECK_EQUAL("CCCCCC", MsaTestUtils::getRowData(almnt, 2), "row3");
+    CHECK_EQUAL("TTTTTT", MsaTestUtils::getRowData(almnt, 3), "row4");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, moveRowsBlock_negativeDelta) {
+IMPLEMENT_TEST(MsaUnitTests, moveRowsBlock_negativeDelta) {
     QByteArray firstSequence("AAAAAA");
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("GGGGGG");
@@ -913,14 +913,14 @@ IMPLEMENT_TEST(MAlignmentUnitTests, moveRowsBlock_negativeDelta) {
 
     almnt.moveRowsBlock(3, 1, -1);
 
-    CHECK_EQUAL("AAAAAA", MAlignmentTestUtils::getRowData(almnt, 0), "row1");
-    CHECK_EQUAL("CCCCCC", MAlignmentTestUtils::getRowData(almnt, 1), "row2");
-    CHECK_EQUAL("TTTTTT", MAlignmentTestUtils::getRowData(almnt, 2), "row3");
-    CHECK_EQUAL("GGGGGG", MAlignmentTestUtils::getRowData(almnt, 3), "row4");
+    CHECK_EQUAL("AAAAAA", MsaTestUtils::getRowData(almnt, 0), "row1");
+    CHECK_EQUAL("CCCCCC", MsaTestUtils::getRowData(almnt, 1), "row2");
+    CHECK_EQUAL("TTTTTT", MsaTestUtils::getRowData(almnt, 2), "row3");
+    CHECK_EQUAL("GGGGGG", MsaTestUtils::getRowData(almnt, 3), "row4");
 }
 
 /** Tests replaceChars */
-IMPLEMENT_TEST(MAlignmentUnitTests, replaceChars_validParams) {
+IMPLEMENT_TEST(MsaUnitTests, replaceChars_validParams) {
     QByteArray firstSequence("AGT.C.T");
     QByteArray secondSequence("A.CT.-AA");
 
@@ -932,46 +932,46 @@ IMPLEMENT_TEST(MAlignmentUnitTests, replaceChars_validParams) {
     CHECK_NO_ERROR(os);
 
     almnt.replaceChars(1, '.', '-');
-    CHECK_EQUAL("AGT.C.T-", MAlignmentTestUtils::getRowData(almnt, 0), "first sequence");
-    CHECK_EQUAL("A-CT--AA", MAlignmentTestUtils::getRowData(almnt, 1), "second sequence");
+    CHECK_EQUAL("AGT.C.T-", MsaTestUtils::getRowData(almnt, 0), "first sequence");
+    CHECK_EQUAL("A-CT--AA", MsaTestUtils::getRowData(almnt, 1), "second sequence");
 }
 
 /** Tests appendChars */
-IMPLEMENT_TEST(MAlignmentUnitTests, appendChars_validParams) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, appendChars_validParams) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     const char* str = "-AC-GT-";
     int length = 7;
     almnt.appendChars(0, str, length);
-    CHECK_EQUAL("---AG-T---AC-GT-", MAlignmentTestUtils::getRowData(almnt, 0), "first row");
+    CHECK_EQUAL("---AG-T---AC-GT-", MsaTestUtils::getRowData(almnt, 0), "first row");
     CHECK_EQUAL(4, almnt.getRow(0).getGapModel().size(), "number of gaps");
     CHECK_EQUAL(16, almnt.getLength(), "alignment length");
 }
 
 /** Tests operPlusEqual */
-IMPLEMENT_TEST(MAlignmentUnitTests, operPlusEqual_validParams) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
-    MultipleSequenceAlignment almnt2 = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, operPlusEqual_validParams) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt2 = MsaTestUtils::initTestAlignment();
 
     almnt += almnt2;
 
-    CHECK_EQUAL("---AG-T-----AG-T--", MAlignmentTestUtils::getRowData(almnt, 0), "row1");
-    CHECK_EQUAL("AG-CT-TAAAG-CT-TAA", MAlignmentTestUtils::getRowData(almnt, 1), "row2");
+    CHECK_EQUAL("---AG-T-----AG-T--", MsaTestUtils::getRowData(almnt, 0), "row1");
+    CHECK_EQUAL("AG-CT-TAAAG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "row2");
 
     CHECK_EQUAL(4, almnt.getRow(0).getGapModel().size(), "number of gaps");
     CHECK_EQUAL(18, almnt.getLength(), "alignment length");
 }
 
 /** Tests operNotEqual */
-IMPLEMENT_TEST(MAlignmentUnitTests, operNotEqual_equal) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
-    MultipleSequenceAlignment almnt2 = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, operNotEqual_equal) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
+    MultipleSequenceAlignment almnt2 = MsaTestUtils::initTestAlignment();
 
     bool res = (almnt != almnt2);
     CHECK_FALSE(res, "Operator!= returned 'True' unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, operNotEqual_notEqual) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, operNotEqual_notEqual) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     MultipleSequenceAlignment almnt2;
 
     bool res = (almnt != almnt2);
@@ -979,14 +979,14 @@ IMPLEMENT_TEST(MAlignmentUnitTests, operNotEqual_notEqual) {
 }
 
 /** Tests hasEmptyGapModel */
-IMPLEMENT_TEST(MAlignmentUnitTests, hasEmptyGapModel_gaps) {
-    MultipleSequenceAlignment almnt = MAlignmentTestUtils::initTestAlignment();
+IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_gaps) {
+    MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     bool res = almnt.hasEmptyGapModel();
 
     CHECK_FALSE(res, "Method hasEmptyGapModel() returned 'True' unexpectedly!");
 }
 
-IMPLEMENT_TEST(MAlignmentUnitTests, hasEmptyGapModel_noGaps) {
+IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_noGaps) {
     QByteArray firstSequence("AAAAAA");
 
     U2OpStatusImpl os;

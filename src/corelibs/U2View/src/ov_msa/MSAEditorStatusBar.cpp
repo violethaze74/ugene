@@ -91,8 +91,8 @@ lockedIcon(":core/images/lock.png"), unlockedIcon(":core/images/lock_open.png")
 
     connect(seqArea, SIGNAL(si_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& )),
         SLOT(sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection&)));
-    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
+    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
     connect(mobj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
 
     connect(prevButton, SIGNAL(clicked()), SLOT(sl_findPrev()));

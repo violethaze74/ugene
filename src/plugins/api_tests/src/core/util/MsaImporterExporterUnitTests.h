@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MALIGNMENT_IMPORTER_EXPORTER_UNIT_TESTS_H_
-#define _U2_MALIGNMENT_IMPORTER_EXPORTER_UNIT_TESTS_H_
+#ifndef _U2_MSA_IMPORTER_EXPORTER_UNIT_TESTS_H_
+#define _U2_MSA_IMPORTER_EXPORTER_UNIT_TESTS_H_
 
 #include "core/dbi/DbiTest.h"
 
@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-class MAlignmentImporterExporterTestData {
+class MsaImporterExporterTestData {
 public:
     static void init();
 
@@ -43,10 +43,10 @@ private:
     static U2DbiRef dbiRef;
 };
 
-DECLARE_TEST(MAlignmentImporterExporterUnitTests, importExportAlignment);
+DECLARE_TEST(MsaImporterExporterUnitTests, importExportAlignment);
 
 } // namespace
 
-DECLARE_METATYPE(MAlignmentImporterExporterUnitTests, importExportAlignment);
+DECLARE_METATYPE(MsaImporterExporterUnitTests, importExportAlignment);
 
 #endif

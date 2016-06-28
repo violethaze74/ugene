@@ -117,7 +117,7 @@ private:
     qint64 sequencesMaxLength;
     AlignSequencesToAlignmentTaskSettings settings;
     QList<Document*> usedDocuments;
-    const DNAAlphabet *initialMAlignmentAlphabet;
+    const DNAAlphabet *initialMsaAlphabet;
     SequenceObjectsExtractor extr;
 };
 

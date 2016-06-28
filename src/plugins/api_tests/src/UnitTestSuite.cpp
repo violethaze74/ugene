@@ -32,7 +32,7 @@
 #include "core/format/sqlite_msa_dbi/MsaDbiSQLiteSpecificUnitTests.h"
 #include "core/gobjects/DNAChromatogramObjectUnitTests.h"
 #include "core/gobjects/FeaturesTableObjectUnitTest.h"
-#include "core/gobjects/MAlignmentObjectUnitTests.h"
+#include "core/gobjects/MsaObjectUnitTests.h"
 #include "core/gobjects/TextObjectUnitTests.h"
 
 namespace U2 {
@@ -137,7 +137,7 @@ void UnitTestSuite::cleanup() {
     DNAChromatogramObjectTestData::shutdown();
     FeatureTestData::shutdown();
     FeaturesTableObjectTestData::shutdown();
-    MAlignmentObjectTestData::shutdown();
+    MsaObjectTestData::shutdown();
     MsaSQLiteSpecificTestData::shutdown();
     RawDataUdrSchemaTestData::shutdown();
     SequenceTestData::shutdown();

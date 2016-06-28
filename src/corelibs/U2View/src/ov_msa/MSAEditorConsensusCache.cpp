@@ -32,8 +32,8 @@ MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MultipleSequenceAli
 {
     setConsensusAlgorithm(factory);
 
-    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
+    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
     connect(aliObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_invalidateAlignmentObject()));
 
     curCacheSize = aliObj->getLength();
@@ -54,7 +54,7 @@ void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory
     updateMap.fill(false);
 }
 
-void MSAEditorConsensusCache::sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&) {
+void MSAEditorConsensusCache::sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&) {
     if(curCacheSize != aliObj->getLength()) {
         curCacheSize = aliObj->getLength();
         updateMap.resize(curCacheSize);

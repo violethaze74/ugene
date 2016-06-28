@@ -26,7 +26,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Algorithm/MAlignmentUtilTasks.h>
+#include <U2Algorithm/MsaUtilTasks.h>
 #include <U2Core/U2Mod.h>
 
 class MuscleContext;

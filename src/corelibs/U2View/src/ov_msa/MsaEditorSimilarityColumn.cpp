@@ -129,7 +129,7 @@ void MsaEditorSimilarityColumn::updateDistanceMatrix() {
     createDistanceMatrixTaskRunner.run( createDistanceMatrixTask );
 }
 
-void MsaEditorSimilarityColumn::onAlignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&) {
+void MsaEditorSimilarityColumn::onAlignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&) {
     if(autoUpdate) {
         state = DataIsBeingUpdated;
         updateDistanceMatrix();
@@ -202,8 +202,8 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(UpdatedWidg
     SAFE_POINT(NULL != _contentWidget, QString("Argument is NULL in constructor MsaEditorAlignmentDependentWidget()"),);
 
     settings = &contentWidget->getSettings();
-    connect(settings->ma, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
-        this, SLOT(sl_onAlignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
+    connect(settings->ma, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
+        this, SLOT(sl_onAlignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
     connect(dynamic_cast<QObject*>(contentWidget), SIGNAL(si_dataStateChanged(DataState)),
         this, SLOT(sl_onDataStateChanged(DataState)));
     connect(settings->ui->getEditor(), SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_onFontChanged(const QFont&)));
@@ -248,7 +248,7 @@ void MsaEditorAlignmentDependentWidget::setSettings(const UpdatedWidgetSettings*
     nameWidget.setText(contentWidget->getHeaderText());
 }
 
-void MsaEditorAlignmentDependentWidget::sl_onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MAlignmentModInfo& modInfo) {
+void MsaEditorAlignmentDependentWidget::sl_onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MsaModificationInfo& modInfo) {
     contentWidget->onAlignmentChanged(maBefore, modInfo);
 }
 

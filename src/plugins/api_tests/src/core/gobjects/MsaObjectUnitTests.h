@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _MALIGNMENT_OBEJCT_UNIT_TESTS_H_
-#define _MALIGNMENT_OBEJCT_UNIT_TESTS_H_
+#ifndef _MSA_OBEJCT_UNIT_TESTS_H_
+#define _MSA_OBEJCT_UNIT_TESTS_H_
 
 #include "core/dbi/DbiTest.h"
 
@@ -34,7 +34,7 @@ namespace U2 {
 
 class MultipleSequenceAlignmentObject;
 
-class MAlignmentObjectTestData {
+class MsaObjectTestData {
 public:
     static void init();
     static void shutdown();
@@ -51,18 +51,18 @@ private:
     static U2DbiRef dbiRef;
 };
 
-DECLARE_TEST(MAlignmentObjectUnitTests, getMAlignment);
-DECLARE_TEST(MAlignmentObjectUnitTests, setMAlignment);
-DECLARE_TEST( MAlignmentObjectUnitTests, deleteGap_trailingGaps );
-DECLARE_TEST( MAlignmentObjectUnitTests, deleteGap_regionWithNonGapSymbols );
-DECLARE_TEST( MAlignmentObjectUnitTests, deleteGap_gapRegion );
+DECLARE_TEST(MsaObjectUnitTests, getMAlignment);
+DECLARE_TEST(MsaObjectUnitTests, setMAlignment);
+DECLARE_TEST( MsaObjectUnitTests, deleteGap_trailingGaps );
+DECLARE_TEST( MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols );
+DECLARE_TEST( MsaObjectUnitTests, deleteGap_gapRegion );
 
 } // namespace
 
-DECLARE_METATYPE(MAlignmentObjectUnitTests, getMAlignment);
-DECLARE_METATYPE(MAlignmentObjectUnitTests, setMAlignment);
-DECLARE_METATYPE( MAlignmentObjectUnitTests, deleteGap_trailingGaps );
-DECLARE_METATYPE( MAlignmentObjectUnitTests, deleteGap_regionWithNonGapSymbols );
-DECLARE_METATYPE( MAlignmentObjectUnitTests, deleteGap_gapRegion );
+DECLARE_METATYPE(MsaObjectUnitTests, getMAlignment);
+DECLARE_METATYPE(MsaObjectUnitTests, setMAlignment);
+DECLARE_METATYPE( MsaObjectUnitTests, deleteGap_trailingGaps );
+DECLARE_METATYPE( MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols );
+DECLARE_METATYPE( MsaObjectUnitTests, deleteGap_gapRegion );
 
 #endif

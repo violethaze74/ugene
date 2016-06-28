@@ -246,7 +246,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                                 alObj->removeRow(i);
                             }
                         }
-                        MAlignmentModInfo mi;
+                        MsaModificationInfo mi;
                         mi.sequenceContentChanged = false;
                         alObj->updateCachedMAlignment(mi);
                     }

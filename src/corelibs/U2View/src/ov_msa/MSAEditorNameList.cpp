@@ -78,8 +78,8 @@ MSAEditorNameList::MSAEditorNameList(MSAEditorUI* _ui, QScrollBar* _nhBar)
 
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
     if (editor->getMSAObject()) {
-        connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
-            SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
+        connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
+            SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
         connect(editor->getMSAObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     }
 
@@ -245,7 +245,7 @@ void MSAEditorNameList::sl_copyCurrentSequence() {
     }
 }
 
-void MSAEditorNameList::sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo& mi) {
+void MSAEditorNameList::sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo& mi) {
     if (mi.sequenceListChanged) {
         completeRedraw = true;
         updateActions();

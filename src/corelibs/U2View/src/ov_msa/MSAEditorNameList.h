@@ -46,7 +46,7 @@ class MSAEditor;
 class MSAEditorUI;
 class GObjectView;
 class MultipleSequenceAlignment;
-class MAlignmentModInfo;
+class MsaModificationInfo;
 class MSAEditorSelection;
 
 class U2VIEW_EXPORT MSAEditorNameList: public QWidget {
@@ -67,7 +67,7 @@ private slots:
     void sl_lockedStateChanged();
     void sl_removeSequence();
     void sl_selectReferenceSequence();
-    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&);
     void sl_onScrollBarActionTriggered( int scrollAction );
     void sl_referenceSeqChanged(qint64);
 

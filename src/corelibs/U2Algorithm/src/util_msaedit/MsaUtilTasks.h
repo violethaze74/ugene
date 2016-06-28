@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MALIGNMENT_UTIL_TASKS
-#define _U2_MALIGNMENT_UTIL_TASKS
+#ifndef _U2_MSA_UTIL_TASKS
+#define _U2_MSA_UTIL_TASKS
 
 #include <U2Core/global.h>
 #include <U2Core/Task.h>
@@ -31,14 +31,14 @@ namespace U2 {
 class DNATranslation;
 
 /**
- Performs in-place translation of malignment object
+ Performs in-place translation of multiple sequence alignment object
 */
 
-class U2ALGORITHM_EXPORT TranslateMSA2AminoTask : public Task {
+class U2ALGORITHM_EXPORT TranslateMsa2AminoTask : public Task {
     Q_OBJECT
 public:
-    TranslateMSA2AminoTask(MultipleSequenceAlignmentObject* obj);
-    TranslateMSA2AminoTask(MultipleSequenceAlignmentObject* obj, const QString& trId );
+    TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj);
+    TranslateMsa2AminoTask(MultipleSequenceAlignmentObject* obj, const QString& trId );
     const MultipleSequenceAlignment& getTaskResult() { return resultMA; }
     void run();
     ReportResult report();
@@ -95,4 +95,4 @@ protected:
 
 } // U2
 
-#endif // _U2_MALIGNMENT_UTIL_TASKS
+#endif // _U2_MSA_UTIL_TASKS

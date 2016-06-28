@@ -90,7 +90,7 @@ private slots:
 
     void sl_stopTracking();
     void sl_startTracking(bool changed);
-    void sl_alignmentChanged(const MultipleSequenceAlignment& ma, const MAlignmentModInfo& modInfo);
+    void sl_alignmentChanged(const MultipleSequenceAlignment& ma, const MsaModificationInfo& modInfo);
 
 signals:
     void si_refreshTree(MSAEditorTreeViewer* treeViewer);
@@ -106,7 +106,7 @@ private:
     MSAEditor*            msa;
     SynchronizationMode   syncMode;
     bool                  slotsAreConnected;
-    MAlignmentModInfo     cachedModification;
+    MsaModificationInfo     cachedModification;
 };
 
 class U2VIEW_EXPORT MSAEditorTreeViewerUI: public TreeViewerUI {

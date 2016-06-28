@@ -231,7 +231,7 @@ AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAli
     settings.maxSequenceLength = extractor.getMaxSequencesLength();
     settings.alphabet = extractor.getAlphabet()->getId();
     usedDocuments = extractor.getUsedDocuments();
-    initialMAlignmentAlphabet = obj->getAlphabet();
+    initialMsaAlphabet = obj->getAlphabet();
 }
 
 void AlignSequencesToAlignmentTask::prepare()
@@ -293,8 +293,8 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 
         delete docStateLock;
     }
-    MAlignmentModInfo mi;
-    mi.alphabetChanged = extr.getAlphabet()->getId() != initialMAlignmentAlphabet->getId();
+    MsaModificationInfo mi;
+    mi.alphabetChanged = extr.getAlphabet()->getId() != initialMsaAlphabet->getId();
     mi.sequenceListChanged = true;
     if(!hasError() && !isCanceled()) {
         maObj->updateCachedMAlignment(mi);

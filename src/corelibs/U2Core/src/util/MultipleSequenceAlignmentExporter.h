@@ -30,8 +30,8 @@
 
 namespace U2 {
 
-struct MAlignmentRowReplacementData {
-    MAlignmentRowReplacementData( const DNASequence &_sequence, const U2MsaRow &_row )
+struct MsaRowReplacementData {
+    MsaRowReplacementData( const DNASequence &_sequence, const U2MsaRow &_row )
         : sequence( _sequence ), row( _row ) { }
 
     DNASequence sequence;
@@ -46,7 +46,7 @@ public:
     MultipleSequenceAlignment                          getAlignment(const U2DbiRef& dbiRef, const U2DataId& msaId,
                                             U2OpStatus& os) const;
     U2Msa                               getAlignmentObject(const U2DbiRef& dbiRef, const U2DataId& msaId, U2OpStatus& os) const;
-    QList<MAlignmentRowReplacementData> getAlignmentRows(const U2DbiRef& dbiRef, const U2DataId& msaId,
+    QList<MsaRowReplacementData> getAlignmentRows(const U2DbiRef& dbiRef, const U2DataId& msaId,
                                             const QList<qint64> rowIds, U2OpStatus& os) const;
 
 private:

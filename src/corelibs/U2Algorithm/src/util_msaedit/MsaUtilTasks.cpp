@@ -36,15 +36,15 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "MAlignmentUtilTasks.h"
+#include "MsaUtilTasks.h"
 
 
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-/// TranslateMSA2AminoTask
+/// TranslateMsa2AminoTask
 
-TranslateMSA2AminoTask::TranslateMSA2AminoTask( MultipleSequenceAlignmentObject* obj )
+TranslateMsa2AminoTask::TranslateMsa2AminoTask( MultipleSequenceAlignmentObject* obj )
 : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), maObj(obj)
 {
     SAFE_POINT_EXT(NULL != maObj, setError(tr("Invalid MSA object detected")),);
@@ -57,7 +57,7 @@ TranslateMSA2AminoTask::TranslateMSA2AminoTask( MultipleSequenceAlignmentObject*
     translation = AppContext::getDNATranslationRegistry()->getStandardGeneticCodeTranslation(maObj->getAlphabet());
 }
 
-TranslateMSA2AminoTask::TranslateMSA2AminoTask( MultipleSequenceAlignmentObject* obj, const QString& translationId )
+TranslateMsa2AminoTask::TranslateMsa2AminoTask( MultipleSequenceAlignmentObject* obj, const QString& translationId )
 : Task(tr("Translate nucleic alignment to amino"), TaskFlags_FOSE_COSC), maObj(obj)
 {
     SAFE_POINT_EXT(NULL != maObj, setError(tr("Invalid MSA object detected")),);
@@ -67,7 +67,7 @@ TranslateMSA2AminoTask::TranslateMSA2AminoTask( MultipleSequenceAlignmentObject*
 }
 
 
-void TranslateMSA2AminoTask::run() {
+void TranslateMsa2AminoTask::run() {
     SAFE_POINT_EXT(NULL != translation, setError(tr("Invalid translation object")),);
 
     QList<DNASequence> lst = MSAUtils::ma2seq(maObj->getMAlignment(), true);
@@ -83,7 +83,7 @@ void TranslateMSA2AminoTask::run() {
 }
 
 
-Task::ReportResult TranslateMSA2AminoTask::report() {
+Task::ReportResult TranslateMsa2AminoTask::report() {
     if (!resultMA.isEmpty()) {
         maObj->setMAlignment(resultMA);
     }
@@ -138,7 +138,7 @@ void AlignInAminoFormTask::prepare() {
     tmpDoc->addObject(clonedObj);
 
     alignTask->setMAObject(clonedObj);
-    addSubTask(new TranslateMSA2AminoTask(clonedObj,traslId));
+    addSubTask(new TranslateMsa2AminoTask(clonedObj,traslId));
     addSubTask(alignTask);
 }
 

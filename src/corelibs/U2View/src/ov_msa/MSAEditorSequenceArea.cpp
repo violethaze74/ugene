@@ -202,8 +202,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     complementAction->setObjectName("replace_selected_rows_with_complement");
     connect(complementAction, SIGNAL(triggered()), SLOT(sl_complementCurrentSelection()));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
+    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
     connect(editor->getMSAObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(editor->getMSAObject(), SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_updateCollapsingMode()));
 
@@ -227,8 +227,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     connect(undoAction, SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
     connect(redoAction, SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alphabetChanged(const MAlignmentModInfo &, const DNAAlphabet*)),
-        SLOT(sl_alphabetChanged(const MAlignmentModInfo &, const DNAAlphabet*)));
+    connect(editor->getMSAObject(), SIGNAL(si_alphabetChanged(const MsaModificationInfo &, const DNAAlphabet*)),
+        SLOT(sl_alphabetChanged(const MsaModificationInfo &, const DNAAlphabet*)));
 
     updateColorAndHighlightSchemes();
     updateActions();
@@ -1788,7 +1788,7 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     }
 }
 
-void MSAEditorSequenceArea::sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo& modInfo) {
+void MSAEditorSequenceArea::sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo& modInfo) {
     exitFromEditCharacterMode();
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
@@ -1824,7 +1824,7 @@ void MSAEditorSequenceArea::sl_alignmentChanged(const MultipleSequenceAlignment&
     update();
 }
 
-void MSAEditorSequenceArea::updateCollapsedGroups(const MAlignmentModInfo& modInfo) {
+void MSAEditorSequenceArea::updateCollapsedGroups(const MsaModificationInfo& modInfo) {
     U2OpStatus2Log os;
     if(modInfo.sequenceContentChanged) {
         QList<qint64> updatedRows;
@@ -1973,11 +1973,11 @@ void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
     repaint();
 }
 
-void MSAEditorSequenceArea::sl_alphabetChanged(const MAlignmentModInfo &mi, const DNAAlphabet *prevAlphabet) {
+void MSAEditorSequenceArea::sl_alphabetChanged(const MsaModificationInfo &mi, const DNAAlphabet *prevAlphabet) {
     updateColorAndHighlightSchemes();
 
     QString message;
-    if (mi.alphabetChanged || mi.type != MAlignmentModType_Undo) {
+    if (mi.alphabetChanged || mi.type != MsaModificationType_Undo) {
         message = tr("The alignment has been modified, so that its alphabet has been switched from \"%1\" to \"%2\". Use \"Undo\", if you'd like to restore the original alignment.")
             .arg(prevAlphabet->getName()).arg(editor->getMSAObject()->getAlphabet()->getName());
     }
@@ -2704,7 +2704,7 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
         SAFE_POINT_OP(os, );
     }
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     mi.alignmentLengthChanged = false;
     msaObject->updateCachedMAlignment(mi);
 }
@@ -2830,7 +2830,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
             modifiedRowIds << currentRow.getRowId();
         }
 
-        MAlignmentModInfo modInfo;
+        MsaModificationInfo modInfo;
         modInfo.modifiedRowIds = modifiedRowIds;
         modInfo.alignmentLengthChanged = false;
         maObj->updateCachedMAlignment(modInfo);
@@ -2909,7 +2909,7 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
 
     m->reset(collapsedRegions);
 
-    MAlignmentModInfo mi;
+    MsaModificationInfo mi;
     msaObject->updateCachedMAlignment(mi);
 
     updateVScrollBar();

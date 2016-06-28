@@ -43,8 +43,8 @@ SequenceSelectorWidgetController::SequenceSelectorWidgetController(MSAEditor* _m
     connect(addSeq, SIGNAL(clicked()), SLOT(sl_addSeqClicked()));
     connect(deleteSeq, SIGNAL(clicked()), SLOT(sl_deleteSeqClicked()));
 
-    connect(msa->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment& , const MAlignmentModInfo&)),
-        SLOT(sl_seqLineEditEditingFinished(const MultipleSequenceAlignment& , const MAlignmentModInfo&)));
+    connect(msa->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment& , const MsaModificationInfo&)),
+        SLOT(sl_seqLineEditEditingFinished(const MultipleSequenceAlignment& , const MsaModificationInfo&)));
 
     connect(completer, SIGNAL(si_editingFinished()), SLOT(sl_seqLineEditEditingFinished()));
 
@@ -86,7 +86,7 @@ void SequenceSelectorWidgetController::updateCompleter() {
     }
 }
 
-void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const MultipleSequenceAlignment& , const MAlignmentModInfo& modInfo){
+void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const MultipleSequenceAlignment& , const MsaModificationInfo& modInfo){
     if(!modInfo.sequenceListChanged) {
         return;
     }

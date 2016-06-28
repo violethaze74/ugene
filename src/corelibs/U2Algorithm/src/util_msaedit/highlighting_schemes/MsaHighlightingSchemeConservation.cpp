@@ -31,7 +31,7 @@ MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *pa
       threshold(50),
       lessThenThreshold(false)
 {
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MAlignmentModInfo &)), SLOT(sl_resetMap()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MsaModificationInfo &)), SLOT(sl_resetMap()));
 }
 
 void MsaHighlightingSchemeConservation::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {

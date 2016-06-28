@@ -115,22 +115,22 @@ GenomeAlignerCommunicationChanelReader::~GenomeAlignerCommunicationChanelReader(
 }
 
 /************************************************************************/
-/* GenomeAlignerMAlignmentWriter                                        */
+/* GenomeAlignerMsaWriter                                        */
 /************************************************************************/
-GenomeAlignerMAlignmentWriter::GenomeAlignerMAlignmentWriter() {
+GenomeAlignerMsaWriter::GenomeAlignerMsaWriter() {
     writtenReadsCount = 0;
 }
 
-void GenomeAlignerMAlignmentWriter::close() {
+void GenomeAlignerMsaWriter::close() {
     //TODO: add some heuristic alphabet selection.
     result.setAlphabet(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
 }
 
-MultipleSequenceAlignment& GenomeAlignerMAlignmentWriter::getResult() {
+MultipleSequenceAlignment& GenomeAlignerMsaWriter::getResult() {
     return result;
 }
 
-void GenomeAlignerMAlignmentWriter::write(SearchQuery *seq, SAType offset) {
+void GenomeAlignerMsaWriter::write(SearchQuery *seq, SAType offset) {
     U2OpStatus2Log os;
     //if (seq->hasQuality() && seq->getQuality().qualCodes.length() > 0) {
     //    row.setQuality(seq->getQuality());
@@ -143,7 +143,7 @@ void GenomeAlignerMAlignmentWriter::write(SearchQuery *seq, SAType offset) {
     writtenReadsCount++;
 }
 
-void GenomeAlignerMAlignmentWriter::setReferenceName(const QString &refName) {
+void GenomeAlignerMsaWriter::setReferenceName(const QString &refName) {
     this->refName = refName;
     result.setName(refName);
 }

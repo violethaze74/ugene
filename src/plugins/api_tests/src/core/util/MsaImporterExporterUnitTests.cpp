@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "MAlignmentImporterExporterUnitTests.h"
+#include "MsaImporterExporterUnitTests.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -33,11 +33,11 @@
 
 namespace U2 {
 
-TestDbiProvider MAlignmentImporterExporterTestData::dbiProvider = TestDbiProvider();
-const QString& MAlignmentImporterExporterTestData::IMP_EXP_DB_URL("imp-exp-dbi.ugenedb");
-U2DbiRef MAlignmentImporterExporterTestData::dbiRef = U2DbiRef();
+TestDbiProvider MsaImporterExporterTestData::dbiProvider = TestDbiProvider();
+const QString& MsaImporterExporterTestData::IMP_EXP_DB_URL("imp-exp-dbi.ugenedb");
+U2DbiRef MsaImporterExporterTestData::dbiRef = U2DbiRef();
 
-void MAlignmentImporterExporterTestData::init() {
+void MsaImporterExporterTestData::init() {
     bool ok = dbiProvider.init(IMP_EXP_DB_URL, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in MsaTestData::init()!",);
 
@@ -46,7 +46,7 @@ void MAlignmentImporterExporterTestData::init() {
     dbiProvider.close();
 }
 
-const U2DbiRef& MAlignmentImporterExporterTestData::getDbiRef() {
+const U2DbiRef& MsaImporterExporterTestData::getDbiRef() {
     if (dbiRef == U2DbiRef()) {
         init();
     }
@@ -54,8 +54,8 @@ const U2DbiRef& MAlignmentImporterExporterTestData::getDbiRef() {
 }
 
 
-IMPLEMENT_TEST(MAlignmentImporterExporterUnitTests, importExportAlignment) {
-    const U2DbiRef& dbiRef = MAlignmentImporterExporterTestData::getDbiRef();
+IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
+    const U2DbiRef& dbiRef = MsaImporterExporterTestData::getDbiRef();
 
     U2OpStatusImpl os;
 

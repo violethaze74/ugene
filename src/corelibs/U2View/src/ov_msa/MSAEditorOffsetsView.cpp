@@ -57,8 +57,8 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEd
 
     MultipleSequenceAlignmentObject *mobj = editor->getMSAObject();
     SAFE_POINT(NULL != mobj, L10N::nullPointerError("multiple alignment object"), );
-    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MAlignmentModInfo&)));
+    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
 
     seqArea->installEventFilter(this);
 
@@ -87,7 +87,7 @@ QAction * MSAEditorOffsetsViewController::getToggleColumnsViewAction() const {
     return viewAction;
 }
 
-void MSAEditorOffsetsViewController::sl_alignmentChanged(const MultipleSequenceAlignment &, const MAlignmentModInfo &) {
+void MSAEditorOffsetsViewController::sl_alignmentChanged(const MultipleSequenceAlignment &, const MsaModificationInfo &) {
     updateOffsets();
 }
 
