@@ -22,7 +22,7 @@
 #ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_H_
 #define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_H_
 
-#include "MAlignmentInfo.h"
+#include "MultipleAlignmentInfo.h"
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/MsaRowUtils.h>
@@ -325,10 +325,10 @@ public:
     void clear();
 
     /** Returns  the name of the alignment */
-    QString getName() const { return MAlignmentInfo::getName(info); }
+    QString getName() const { return MultipleAlignmentInfo::getName(info); }
 
     /** Sets the name of the alignment */
-    void setName(const QString& newName) { MAlignmentInfo::setName(info, newName); }
+    void setName(const QString& newName) { MultipleAlignmentInfo::setName(info, newName); }
 
     /** Returns the alphabet of the alignment */
     const DNAAlphabet* getAlphabet() const { return alphabet; }

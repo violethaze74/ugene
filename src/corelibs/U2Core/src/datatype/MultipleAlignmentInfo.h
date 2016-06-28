@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MALIGNMENT_INFO_H_
-#define _U2_MALIGNMENT_INFO_H_
+#ifndef _U2_MULTIPLE_ALIGNMENT_INFO_H_
+#define _U2_MULTIPLE_ALIGNMENT_INFO_H_
 
 #include <QtCore/QString>
 
@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class U2CORE_EXPORT MAlignmentInfo {
+class U2CORE_EXPORT MultipleAlignmentInfo {
 public:
     static const QString NAME;
     static const QString ACCESSION;
@@ -72,8 +72,8 @@ public:
     static bool     hasCutoff( const QVariantMap& map, Cutoffs coff );
     static void     setCutoff( QVariantMap& map, Cutoffs coff, float val );
 
-}; // MAlignmentInfo
+}; // MultipleAlignmentInfo
 
 } // U2
 
-#endif // _U2_MALIGNMENT_INFO_H_
+#endif // _U2_MULTIPLE_ALIGNMENT_INFO_H_

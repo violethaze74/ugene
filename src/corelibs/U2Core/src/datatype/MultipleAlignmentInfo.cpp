@@ -22,18 +22,18 @@
 
 #include <QtCore/QStringList>
 
-#include "MAlignmentInfo.h"
+#include "MultipleAlignmentInfo.h"
 
 namespace U2 {
 
-const QString MAlignmentInfo::NAME                  = "NAME";
-const QString MAlignmentInfo::ACCESSION             = "ACCESSION";
-const QString MAlignmentInfo::DESCRIPTION           = "DESCRIPTION";
-const QString MAlignmentInfo::SS_CONSENSUS          = "SS_CONSENSUS";
-const QString MAlignmentInfo::REFERENCE_LINE        = "REFERENCE_LINE";
-const QString MAlignmentInfo::CUTOFFS               = "CUTOFFS";
+const QString MultipleAlignmentInfo::NAME                  = "NAME";
+const QString MultipleAlignmentInfo::ACCESSION             = "ACCESSION";
+const QString MultipleAlignmentInfo::DESCRIPTION           = "DESCRIPTION";
+const QString MultipleAlignmentInfo::SS_CONSENSUS          = "SS_CONSENSUS";
+const QString MultipleAlignmentInfo::REFERENCE_LINE        = "REFERENCE_LINE";
+const QString MultipleAlignmentInfo::CUTOFFS               = "CUTOFFS";
 
-bool MAlignmentInfo::isValid( const QVariantMap& map ) {
+bool MultipleAlignmentInfo::isValid( const QVariantMap& map ) {
     return hasName( map );
 }
 
@@ -48,75 +48,75 @@ static void setValue( QVariantMap& map, const QString& tag, const QVariant& val 
     }
 }
 
-QString MAlignmentInfo::getName( const QVariantMap& map ) {
+QString MultipleAlignmentInfo::getName( const QVariantMap& map ) {
     return getValue( NAME, map ).toString();
 }
 
-void MAlignmentInfo::setName( QVariantMap& map, const QString& name ) {
+void MultipleAlignmentInfo::setName( QVariantMap& map, const QString& name ) {
     setValue( map, NAME, name );
 }
 
-bool MAlignmentInfo::hasName( const QVariantMap& map ) {
+bool MultipleAlignmentInfo::hasName( const QVariantMap& map ) {
     return !getName( map ).isEmpty();
 }
 
-QString MAlignmentInfo::getAccession( const QVariantMap& map ) {
+QString MultipleAlignmentInfo::getAccession( const QVariantMap& map ) {
     return getValue( ACCESSION, map ).toString();
 }
 
-void MAlignmentInfo::setAccession( QVariantMap& map, const QString& acc ) {
+void MultipleAlignmentInfo::setAccession( QVariantMap& map, const QString& acc ) {
     setValue( map, ACCESSION, acc );
 }
 
-bool MAlignmentInfo::hasAccession( const QVariantMap& map ) {
+bool MultipleAlignmentInfo::hasAccession( const QVariantMap& map ) {
     return !getAccession( map ).isEmpty();
 }
 
-QString MAlignmentInfo::getDescription( const QVariantMap& map ) {
+QString MultipleAlignmentInfo::getDescription( const QVariantMap& map ) {
     return getValue( DESCRIPTION, map ).toString();
 }
 
-void MAlignmentInfo::setDescription( QVariantMap& map, const QString& desc ) {
+void MultipleAlignmentInfo::setDescription( QVariantMap& map, const QString& desc ) {
     setValue( map, DESCRIPTION, desc );
 }
 
-bool MAlignmentInfo::hasDescription( const QVariantMap& map ) {
+bool MultipleAlignmentInfo::hasDescription( const QVariantMap& map ) {
     return !getDescription( map ).isEmpty();
 }
 
-QString MAlignmentInfo::getSSConsensus( const QVariantMap& map ) {
+QString MultipleAlignmentInfo::getSSConsensus( const QVariantMap& map ) {
     return getValue( SS_CONSENSUS, map ).toString();
 }
 
-void MAlignmentInfo::setSSConsensus( QVariantMap& map, const QString& cs ) {
+void MultipleAlignmentInfo::setSSConsensus( QVariantMap& map, const QString& cs ) {
     setValue( map, SS_CONSENSUS, cs );
 }
 
-bool MAlignmentInfo::hasSSConsensus( const QVariantMap& map ) {
+bool MultipleAlignmentInfo::hasSSConsensus( const QVariantMap& map ) {
     return !getSSConsensus( map ).isEmpty();
 }
 
-QString MAlignmentInfo::getReferenceLine( const QVariantMap& map ) {
+QString MultipleAlignmentInfo::getReferenceLine( const QVariantMap& map ) {
     return getValue( REFERENCE_LINE, map ).toString();
 }
 
-void MAlignmentInfo::setReferenceLine( QVariantMap& map ,const QString& rf ) {
+void MultipleAlignmentInfo::setReferenceLine( QVariantMap& map ,const QString& rf ) {
     setValue( map, REFERENCE_LINE, rf );
 }
 
-bool MAlignmentInfo::hasReferenceLine( const QVariantMap& map ) {
+bool MultipleAlignmentInfo::hasReferenceLine( const QVariantMap& map ) {
     return !getReferenceLine( map ).isEmpty();
 }
 
-void MAlignmentInfo::setCutoff( QVariantMap& map, Cutoffs coff, float val ) {
+void MultipleAlignmentInfo::setCutoff( QVariantMap& map, Cutoffs coff, float val ) {
     setValue( map, CUTOFFS + QString::number( static_cast< int >( coff ) ), val );
 }
 
-float MAlignmentInfo::getCutoff( const QVariantMap& map, Cutoffs coff ) {
+float MultipleAlignmentInfo::getCutoff( const QVariantMap& map, Cutoffs coff ) {
     return static_cast< float >( getValue( CUTOFFS + QString::number( static_cast< int >( coff ) ), map ).toDouble() );
 }
 
-bool MAlignmentInfo::hasCutoff( const QVariantMap& map, Cutoffs coff ) {
+bool MultipleAlignmentInfo::hasCutoff( const QVariantMap& map, Cutoffs coff ) {
     bool ok = false;
     getValue( CUTOFFS + QString::number( static_cast< int >( coff ) ), map ).toDouble( &ok );
     return ok;

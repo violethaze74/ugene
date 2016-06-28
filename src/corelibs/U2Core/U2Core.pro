@@ -23,8 +23,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/DNATranslation.h \
            src/datatype/DNATranslationImpl.h \
            src/datatype/FeatureColors.h \
-           src/datatype/MAlignmentInfo.h \
            src/datatype/Matrix44.h \
+           src/datatype/MultipleAlignmentInfo.h \
            src/datatype/MultipleSequenceAlignment.h \
            src/datatype/PFMatrix.h \
            src/datatype/PhyTree.h \
@@ -261,8 +261,8 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/DNATranslation.cpp \
            src/datatype/DNATranslationImpl.cpp \
            src/datatype/FeatureColors.cpp \
-           src/datatype/MAlignmentInfo.cpp \
            src/datatype/Matrix44.cpp \
+           src/datatype/MultipleAlignmentInfo.cpp \
            src/datatype/MultipleSequenceAlignment.cpp \
            src/datatype/PFMatrix.cpp \
            src/datatype/PhyTree.cpp \

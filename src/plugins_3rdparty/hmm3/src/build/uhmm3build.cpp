@@ -24,7 +24,7 @@
 #include <string.h>
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignmentInfo.h>
+#include <U2Core/MultipleAlignmentInfo.h>
 
 #include <hmmer3/easel/esl_msa.h>
 #include <hmmer3/hmmer.h>

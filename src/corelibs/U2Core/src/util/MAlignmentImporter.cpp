@@ -131,7 +131,7 @@ void MAlignmentImporter::importMsaInfo(const DbiConnection& con, const U2DataId&
     SAFE_POINT(NULL != attrDbi, "NULL Attribute Dbi during importing an alignment!",);
 
     foreach (QString key, alInfo.keys()) {
-        if (key != MAlignmentInfo::NAME) { // name is stored in the object
+        if (key != MultipleAlignmentInfo::NAME) { // name is stored in the object
             QString val =  alInfo.value(key).value<QString>();
             U2StringAttribute attr(msaId, key, val);
 

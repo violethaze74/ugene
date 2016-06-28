@@ -21,7 +21,7 @@
 
 #include <cassert>
 
-#include <U2Core/MAlignmentInfo.h>
+#include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/SMatrix.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/AppContext.h>
@@ -53,11 +53,11 @@ static bool allocAndCopyData( const QByteArray& from, char** to ) {
     return true;
 }
 
-static void setMsaCutoffs( const QVariantMap& info, ESL_MSA* msa, MAlignmentInfo::Cutoffs cof ) {
+static void setMsaCutoffs( const QVariantMap& info, ESL_MSA* msa, MultipleAlignmentInfo::Cutoffs cof ) {
     assert( NULL != msa );
-    if( MAlignmentInfo::hasCutoff( info, cof ) ) {
+    if( MultipleAlignmentInfo::hasCutoff( info, cof ) ) {
         int ind = static_cast< int >( cof );
-        msa->cutoff[ind] = MAlignmentInfo::getCutoff( info, cof );
+        msa->cutoff[ind] = MultipleAlignmentInfo::getCutoff( info, cof );
         msa->cutset[ind] = TRUE;
     }
 }
@@ -66,54 +66,54 @@ static bool convertMalignmentInfo( const QVariantMap& info, ESL_MSA* msa ) {
     assert( NULL != msa );
     bool ok = false;
 
-    if( !MAlignmentInfo::hasName( info ) ) {
+    if( !MultipleAlignmentInfo::hasName( info ) ) {
         return false;
     }
-    QString name = MAlignmentInfo::getName( info );
+    QString name = MultipleAlignmentInfo::getName( info );
     assert( !name.isEmpty() );
     ok = allocAndCopyData( name.toLatin1(), &msa->name );
     if( !ok ) {
         return false;
     }
 
-    if( MAlignmentInfo::hasAccession( info ) ) {
-        QString acc = MAlignmentInfo::getAccession( info );
+    if( MultipleAlignmentInfo::hasAccession( info ) ) {
+        QString acc = MultipleAlignmentInfo::getAccession( info );
         assert( !acc.isEmpty() );
         ok = allocAndCopyData( acc.toLatin1(), &msa->acc );
         if( !ok ) {
             return false;
         }
     }
-    if( MAlignmentInfo::hasDescription( info ) ) {
-        QString desc = MAlignmentInfo::getDescription( info );
+    if( MultipleAlignmentInfo::hasDescription( info ) ) {
+        QString desc = MultipleAlignmentInfo::getDescription( info );
         assert( !desc.isEmpty() );
         ok = allocAndCopyData( desc.toLatin1(), &msa->desc );
         if( !ok ) {
             return false;
         }
     }
-    if( MAlignmentInfo::hasSSConsensus( info ) ) {
-        QString cs = MAlignmentInfo::getSSConsensus( info );
+    if( MultipleAlignmentInfo::hasSSConsensus( info ) ) {
+        QString cs = MultipleAlignmentInfo::getSSConsensus( info );
         assert( !cs.isEmpty() );
         ok = allocAndCopyData( cs.toLatin1(), &msa->ss_cons );
         if( !ok ) {
             return false;
         }
     }
-    if( MAlignmentInfo::hasReferenceLine( info ) ) {
-        QString rf = MAlignmentInfo::getReferenceLine( info );
+    if( MultipleAlignmentInfo::hasReferenceLine( info ) ) {
+        QString rf = MultipleAlignmentInfo::getReferenceLine( info );
         assert( !rf.isEmpty() );
         ok = allocAndCopyData( rf.toLatin1(), &msa->rf );
         if( !ok ) {
             return false;
         }
     }
-    setMsaCutoffs( info, msa, MAlignmentInfo::CUTOFF_GA1 );
-    setMsaCutoffs( info, msa, MAlignmentInfo::CUTOFF_GA2 );
-    setMsaCutoffs( info, msa, MAlignmentInfo::CUTOFF_NC1 );
-    setMsaCutoffs( info, msa, MAlignmentInfo::CUTOFF_NC2 );
-    setMsaCutoffs( info, msa, MAlignmentInfo::CUTOFF_TC1 );
-    setMsaCutoffs( info, msa, MAlignmentInfo::CUTOFF_TC2 );
+    setMsaCutoffs( info, msa, MultipleAlignmentInfo::CUTOFF_GA1 );
+    setMsaCutoffs( info, msa, MultipleAlignmentInfo::CUTOFF_GA2 );
+    setMsaCutoffs( info, msa, MultipleAlignmentInfo::CUTOFF_NC1 );
+    setMsaCutoffs( info, msa, MultipleAlignmentInfo::CUTOFF_NC2 );
+    setMsaCutoffs( info, msa, MultipleAlignmentInfo::CUTOFF_TC1 );
+    setMsaCutoffs( info, msa, MultipleAlignmentInfo::CUTOFF_TC2 );
 
     return true;
 }
