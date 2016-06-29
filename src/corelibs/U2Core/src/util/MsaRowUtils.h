@@ -23,7 +23,7 @@
 #define _U2_MSAROWUTILS_H_
 
 #include <U2Core/global.h>
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Ma.h>
 
 namespace U2 {
 

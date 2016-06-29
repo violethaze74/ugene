@@ -331,13 +331,13 @@ MultipleSequenceAlignmentRow MultipleSequenceAlignment::createRow(const QString&
     MultipleSequenceAlignmentRow::splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
     DNASequence newSequence(name, newSequenceBytes);
 
-    U2MsaRow row;
+    U2MaRow row;
     row.rowId = MultipleSequenceAlignmentRow::INVALID_ROW_ID;
 
     return MultipleSequenceAlignmentRow(row, newSequence, newGapsModel, this);
 }
 
-MultipleSequenceAlignmentRow MultipleSequenceAlignment::createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MaGap>& gaps, U2OpStatus& os) {
+MultipleSequenceAlignmentRow MultipleSequenceAlignment::createRow(const U2MaRow& rowInDb, const DNASequence& sequence, const QList<U2MaGap>& gaps, U2OpStatus& os) {
     QString errorDescr = "Failed to create a multiple alignment row!";
     if (-1 != sequence.constSequence().indexOf(MAlignment_GapChar)) {
         coreLog.trace("Attempted to create an alignment row from a sequence with gaps!");
@@ -386,7 +386,7 @@ void MultipleSequenceAlignment::addRow(const QString& name, const QByteArray& by
     addRow(newRow, bytes.size(), rowIndex, os);
 }
 
-void MultipleSequenceAlignment::addRow(const U2MsaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os) {
+void MultipleSequenceAlignment::addRow(const U2MaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os) {
     MultipleSequenceAlignmentRow newRow = createRow(rowInDb, sequence, rowInDb.gaps, os);
     CHECK_OP(os, );
 
@@ -394,7 +394,7 @@ void MultipleSequenceAlignment::addRow(const U2MsaRow& rowInDb, const DNASequenc
 }
 
 void MultipleSequenceAlignment::addRow(const QString& name, const DNASequence &sequence, const QList<U2MaGap> &gaps, U2OpStatus &os) {
-    U2MsaRow row;
+    U2MaRow row;
     row.rowId = MultipleSequenceAlignmentRow::INVALID_ROW_ID;
 
     MultipleSequenceAlignmentRow newRow = createRow(row, sequence, gaps, os);

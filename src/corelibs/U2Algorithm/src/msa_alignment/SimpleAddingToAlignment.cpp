@@ -79,7 +79,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     foreach(const U2EntityRef& sequence, settings.addedSequencesRefs) {
         QString seqName = namesIterator.peekNext();
         U2SequenceObject seqObject(seqName, sequence);
-        U2MsaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
+        U2MaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
         dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);

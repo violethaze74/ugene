@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_H_
-#define _U2_MSA_H_
+#ifndef _U2_MA_H_
+#define _U2_MA_H_
 
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2Type.h>
@@ -39,12 +39,12 @@ typedef QMap<qint64, U2MaRowGapModel> U2MaMapGapModel;
 
 class U2CORE_EXPORT U2MaGap  {
 public:
-    U2MaGap() : offset(0), gap(0){}
-    U2MaGap(qint64 off, qint64 g) : offset(off), gap(g){}
+    U2MaGap();
+    U2MaGap(qint64 off, qint64 gap);
 
-    bool isValid() const { return ((offset >= 0) && (gap > 0)); }
+    bool isValid() const;
 
-    bool operator==(const U2MaGap& g) const { return ((offset == g.offset) && (gap == g.gap)); }
+    bool operator==(const U2MaGap &g) const;
 
     /** Offset of the gap in sequence*/
     qint64 offset;
@@ -56,13 +56,15 @@ public:
 /**
     Row of multiple alignment: gaps map and sequence id
 */
-class U2CORE_EXPORT U2MsaRow {
+class U2CORE_EXPORT U2MaRow {
 public:
+    U2MaRow();
+
     /** Id of the row in the database */
     qint64          rowId;
 
     /** Id of the sequence of the row in the database */
-    U2DataId        sequenceId;
+    U2DataId        dataObjectId;
 
     /** Start of the row in the sequence */
     qint64          gstart;
@@ -80,21 +82,20 @@ public:
 /**
     Multiple sequence alignment representation
 */
-class U2CORE_EXPORT U2Msa : public U2Object {
+class U2CORE_EXPORT U2Ma : public U2Object {
 public:
-    U2Msa(){}
-    U2Msa(U2DataId id, QString dbId, qint64 version) : U2Object(id, dbId, version) {}
+    U2Ma();
+    U2Ma(const U2DataId &id, const QString &dbId, qint64 version);
+
+    U2DataType getType() const;
 
     /** Alignment alphabet. All sequence in alignment must have alphabet that fits into alignment alphabet */
     U2AlphabetId    alphabet;
 
     /** Length of the alignment */
     qint64          length;
-
-    U2DataType getType() const { return U2Type::Msa; }
 };
 
+}   // namespace U2
 
-} //namespace
-
-#endif
+#endif // _U2_MA_H_

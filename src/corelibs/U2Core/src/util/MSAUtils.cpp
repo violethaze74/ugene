@@ -329,7 +329,7 @@ QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignmen
                 newMsa.setRowId(i, rowId);
                 rowsOrder.append(rowId);
 
-                U2DataId sequenceId = origMsaRow.getRowDbInfo().sequenceId;
+                U2DataId sequenceId = origMsaRow.getRowDbInfo().dataObjectId;
                 newMsa.setSequenceId(i, sequenceId);
 
                 break;
@@ -344,8 +344,8 @@ QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignmen
     return rowsOrder;
 }
 
-U2MsaRow MSAUtils::copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef &dstDbi, U2OpStatus &os) {
-    U2MsaRow row;
+U2MaRow MSAUtils::copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef &dstDbi, U2OpStatus &os) {
+    U2MaRow row;
     CHECK_EXT(NULL != seqObj, os.setError("NULL sequence object"), row);
 
     DNASequence dnaSeq = seqObj->getWholeSequence(os);
@@ -354,8 +354,8 @@ U2MsaRow MSAUtils::copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef 
     return copyRowFromSequence(dnaSeq, dstDbi, os);
 }
 
-U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDbi, U2OpStatus &os) {
-    U2MsaRow row;
+U2MaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDbi, U2OpStatus &os) {
+    U2MaRow row;
     row.rowId = -1; // set the ID automatically
 
     QByteArray oldSeqData = dnaSeq.seq;
@@ -369,7 +369,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
     U2Sequence seq = U2SequenceUtils::copySequence(dnaSeq, dstDbi, U2ObjectDbi::ROOT_FOLDER, os);
     CHECK_OP(os, row);
 
-    row.sequenceId = seq.id;
+    row.dataObjectId = seq.id;
     row.gstart = 0;
     row.gend = seq.length;
     row.length = MsaRowUtils::getRowLengthWithoutTrailing(dnaSeq.seq, row.gaps);
@@ -380,7 +380,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
 void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2SequenceObject *seqObj, U2OpStatus &os) {
     CHECK_EXT(NULL != msaObj, os.setError("NULL msa object"), );
 
-    U2MsaRow row = copyRowFromSequence(seqObj, msaObj->getEntityRef().dbiRef, os);
+    U2MaRow row = copyRowFromSequence(seqObj, msaObj->getEntityRef().dbiRef, os);
     CHECK_OP(os, );
 
     U2EntityRef entityRef = msaObj->getEntityRef();

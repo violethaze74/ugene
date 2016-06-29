@@ -24,7 +24,7 @@
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/MsaRowUtils.h>
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Ma.h>
 
 namespace U2 {
 
@@ -68,10 +68,10 @@ public:
     void setSequenceId(const U2DataId &sequenceId);
 
     /** Returns ID of the row sequence in the database. */
-    U2MsaRow getRowDbInfo() const;
+    U2MaRow getRowDbInfo() const;
 
     /** Sets database IDs for row and sequence */
-    void setRowDbInfo(const U2MsaRow &dbRow);
+    void setRowDbInfo(const U2MaRow &dbRow);
 
     /**
      * The length must be greater or equal to the row length.
@@ -188,7 +188,7 @@ private:
     MultipleSequenceAlignmentRow(MultipleSequenceAlignment *al = NULL);
 
     /** Creates a row in memory. */
-    MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, MultipleSequenceAlignment *al);
+    MultipleSequenceAlignmentRow(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, MultipleSequenceAlignment *al);
 
     MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &row, MultipleSequenceAlignment *al);
 
@@ -240,7 +240,7 @@ private:
     QList<U2MaGap>     gaps;
 
     /** The row in the database */
-    U2MsaRow            initialRowInDb;
+    U2MaRow            initialRowInDb;
 };
 
 inline int MultipleSequenceAlignmentRow::getGapsLength() const {

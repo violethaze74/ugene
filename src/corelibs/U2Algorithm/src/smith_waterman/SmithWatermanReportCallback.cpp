@@ -37,7 +37,7 @@
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2DbiRegistry.h>
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Ma.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -368,17 +368,17 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     U2MsaDbi *msaDbi = sourceMsaConnection.dbi->getMsaDbi();
     SAFE_POINT(NULL != msaDbi, "Invalid MSA DBI detected!", QString::null);
 
-    QList<U2MsaRow> rows = msaDbi->getRows(sourceMsaRef.entityId, os);
+    QList<U2MaRow> rows = msaDbi->getRows(sourceMsaRef.entityId, os);
     CHECK_OP(os, tr("Failed to get msa from dbi"));
 
-    U2MsaRow *refRow = NULL;
-    U2MsaRow *ptrnRow = NULL;
+    U2MaRow *refRow = NULL;
+    U2MaRow *ptrnRow = NULL;
 
     for (int  i = 0; i < rows.length(); ++i) {
-        if (rows[i].sequenceId == refSequence->id) {
+        if (rows[i].dataObjectId == refSequence->id) {
             refRow = &rows[i];
         }
-        if (rows[i].sequenceId == ptrnSequence->id) {
+        if (rows[i].dataObjectId == ptrnSequence->id) {
             ptrnRow = &rows[i];
         }
     }

@@ -31,7 +31,7 @@ namespace U2 {
 
 const qint64 MultipleSequenceAlignmentRow::INVALID_ROW_ID = -1;
 
-MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb,
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MaRow &rowInDb,
                                                            const DNASequence &sequence,
                                                            const U2MaRowGapModel &gaps,
                                                            MultipleSequenceAlignment *alignment)
@@ -47,7 +47,7 @@ MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MsaRow &rowIn
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlignment *al)
     : alignment(al),
       sequence(DNASequence()),
-      initialRowInDb(U2MsaRow())
+      initialRowInDb(U2MaRow())
 {
     initialRowInDb.rowId = INVALID_ROW_ID;
     removeTrailingGaps();
@@ -199,10 +199,10 @@ void MultipleSequenceAlignmentRow::append(const MultipleSequenceAlignmentRow &an
     DNASequenceUtils::append(sequence, anotherRow.sequence, os);
 }
 
-U2MsaRow MultipleSequenceAlignmentRow::getRowDbInfo() const {
-    U2MsaRow row;
+U2MaRow MultipleSequenceAlignmentRow::getRowDbInfo() const {
+    U2MaRow row;
     row.rowId = initialRowInDb.rowId;
-    row.sequenceId = initialRowInDb.sequenceId;
+    row.dataObjectId = initialRowInDb.dataObjectId;
     row.gstart = 0;
     row.gend = sequence.length();
     row.gaps = gaps;
@@ -210,7 +210,7 @@ U2MsaRow MultipleSequenceAlignmentRow::getRowDbInfo() const {
     return row;
 }
 
-void MultipleSequenceAlignmentRow::setRowDbInfo(const U2MsaRow &dbRow) {
+void MultipleSequenceAlignmentRow::setRowDbInfo(const U2MaRow &dbRow) {
     initialRowInDb = dbRow;
 }
 
@@ -255,7 +255,7 @@ void MultipleSequenceAlignmentRow::setRowId(qint64 rowId) {
 }
 
 void MultipleSequenceAlignmentRow::setSequenceId(const U2DataId &sequenceId) {
-    initialRowInDb.sequenceId = sequenceId;
+    initialRowInDb.dataObjectId = sequenceId;
 }
 
 char MultipleSequenceAlignmentRow::charAt(int pos) const {

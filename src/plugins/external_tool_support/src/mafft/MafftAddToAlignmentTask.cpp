@@ -219,7 +219,7 @@ void MafftAddToAlignmentTask::run() {
         if(!rowNames.contains(sequenceObject->getSequenceName())) {
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
             SAFE_POINT(sequenceObject != NULL, "U2SequenceObject is null", );
-            U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
+            U2MaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
             dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
             CHECK_OP(stateInfo, );
         }

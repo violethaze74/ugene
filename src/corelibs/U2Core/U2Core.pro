@@ -40,8 +40,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/U2Identity.h \
            src/datatype/U2IdTypes.h \
            src/datatype/U2Location.h \
+           src/datatype/U2Ma.h \
            src/datatype/U2Mod.h \
-           src/datatype/U2Msa.h \
            src/datatype/U2Qualifier.h \
            src/datatype/U2Range.h \
            src/datatype/U2RawData.h \
@@ -272,6 +272,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/SMatrix.cpp \
            src/datatype/U2CoreAttributes.cpp \
            src/datatype/U2FeatureType.cpp \
+           src/datatype/U2Ma.cpp \
            src/datatype/U2Mod.cpp \
            src/datatype/U2Region.cpp \
            src/datatype/U2Type.cpp \

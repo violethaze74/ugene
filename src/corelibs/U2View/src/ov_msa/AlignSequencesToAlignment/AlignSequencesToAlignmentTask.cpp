@@ -90,7 +90,7 @@ void SequenceObjectsExtractor::extractSequencesFromObjects(const QList<GObject*>
             sequencesMaxLength = qMax(sequencesMaxLength, curObj->getLength());
 
             foreach(const MultipleSequenceAlignmentRow& row, curObj->getMAlignment().getRows()) {
-                U2EntityRef seqRef(curObj->getEntityRef().dbiRef, row.getRowDbInfo().sequenceId);
+                U2EntityRef seqRef(curObj->getEntityRef().dbiRef, row.getRowDbInfo().dataObjectId);
                 sequenceRefs << seqRef;
                 sequenceNames << row.getName();
             }

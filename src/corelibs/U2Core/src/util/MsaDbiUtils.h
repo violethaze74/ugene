@@ -120,7 +120,7 @@ public:
      * Parameter 'posInMsa' must be within bounds [0, numRows] or '-1' (row is appended).
      * Parameter 'row' must contain valid values!
      */
-    static void addRow(const U2EntityRef& msaRef, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os);
+    static void addRow(const U2EntityRef& msaRef, qint64 posInMsa, U2MaRow& row, U2OpStatus& os);
 
     /**
      * Removes a row from the alignment.
@@ -179,7 +179,7 @@ private:
      * Gaps should be ordered and should not stick together.
      * Returns a list containing modified rows
      */
-    static QList<U2MsaRow> cutOffLeadingGaps(QList<U2MsaRow>& rows);
+    static QList<U2MaRow> cutOffLeadingGaps(QList<U2MaRow>& rows);
 
     /**
      * Delete all gaps from gapModel after msaLength.
@@ -187,7 +187,7 @@ private:
      * the gap`s end will be equal to the alignment`s end.
      * Returns a list containing modified rows
      */
-    static QList<U2MsaRow> cutOffTrailingGaps(QList<U2MsaRow>& rows, const qint64 msaLength);
+    static QList<U2MaRow> cutOffTrailingGaps(QList<U2MaRow>& rows, const qint64 msaLength);
 
     /**
      * Removes gaps from the row between position 'pos' and 'pos + count'.
@@ -199,7 +199,7 @@ private:
     static qint64 calculateGapsLength(const QList<U2MaGap>& gapModel);
 
     /** Length of the sequence and gap model for the row */
-    static qint64 calculateRowLength(const U2MsaRow& row);
+    static qint64 calculateRowLength(const U2MaRow& row);
 
     /** If there are consecutive gaps in the gaps model, merges them into one gap */
     static void mergeConsecutiveGaps(QList<U2MaGap>& gapModel);

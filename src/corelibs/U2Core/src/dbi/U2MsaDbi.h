@@ -24,7 +24,7 @@
 
 #include <U2Core/U2Type.h>
 #include <U2Core/U2Dbi.h>
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Ma.h>
 
 namespace U2 {
 
@@ -37,16 +37,16 @@ protected:
 
 public:
     /** Reads Msa objects by id */
-    virtual U2Msa getMsaObject(const U2DataId& id, U2OpStatus& os) = 0;
+    virtual U2Ma getMsaObject(const U2DataId& id, U2OpStatus& os) = 0;
 
     /** Returns the number of rows in the MSA */
     virtual qint64 getNumOfRows(const U2DataId& msaId, U2OpStatus& os) = 0;
 
     /** Returns all MSA rows */
-    virtual QList<U2MsaRow> getRows(const U2DataId& msaId, U2OpStatus& os) = 0;
+    virtual QList<U2MaRow> getRows(const U2DataId& msaId, U2OpStatus& os) = 0;
 
     /** Return a row with the specified ID */
-    virtual U2MsaRow getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os) = 0;
+    virtual U2MaRow getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os) = 0;
 
     /** Returns the list of rows IDs in the database for the specified MSA (in increasing order) */
     virtual QList<qint64> getRowsOrder(const U2DataId& msaId, U2OpStatus& os) = 0;
@@ -80,7 +80,7 @@ public:
      * Adds rows to the MSA
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpStatus& os) = 0;
+    virtual void addRows(const U2DataId& msaId, QList<U2MaRow>& rows, U2OpStatus& os) = 0;
 
     /**
      * Adds a row to the MSA
@@ -88,7 +88,7 @@ public:
      * otherwise it is inserted to the specified position and all positions are updated.
      * Requires: U2DbiFeature_WriteMsa feature support
      */
-    virtual void addRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os) = 0;
+    virtual void addRow(const U2DataId& msaId, qint64 posInMsa, U2MaRow& row, U2OpStatus& os) = 0;
 
     /**
      * Removes rows from MSA

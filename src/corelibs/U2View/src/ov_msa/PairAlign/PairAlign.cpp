@@ -43,7 +43,7 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2DbiUtils.h>
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Ma.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -65,7 +65,7 @@
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
     U2::MultipleSequenceAlignmentRow row = msa->getMSAObject()->getMAlignment().getRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
-    return row.getRowDbInfo().sequenceId;
+    return row.getRowDbInfo().dataObjectId;
 }
 
 namespace U2 {

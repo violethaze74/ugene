@@ -26,7 +26,7 @@
 #include <U2Core/DNAAlphabet.h>
 
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Ma.h>
 #include <U2Core/U2DbiUtils.h>
 
 namespace U2 {

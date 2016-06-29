@@ -24,7 +24,7 @@
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/MsaRowUtils.h>
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Ma.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
@@ -213,7 +213,7 @@ public:
      */
     void addRow(const QString& name, const QByteArray& bytes, U2OpStatus& os);
     void addRow(const QString& name, const QByteArray& bytes, int rowIndex, U2OpStatus& os);
-    void addRow(const U2MsaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os);
+    void addRow(const U2MaRow& rowInDb, const DNASequence& sequence, U2OpStatus& os);
     void addRow(const QString& name, const DNASequence& sequence, const QList<U2MaGap>& gaps, U2OpStatus& os);
 
     /**
@@ -290,7 +290,7 @@ private:
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleSequenceAlignmentRow createRow(const U2MsaRow& rowInDb, const DNASequence& sequence, const QList<U2MaGap>& gaps, U2OpStatus& os);
+    MultipleSequenceAlignmentRow createRow(const U2MaRow& rowInDb, const DNASequence& sequence, const QList<U2MaGap>& gaps, U2OpStatus& os);
 
     MultipleSequenceAlignmentRow createRow(const MultipleSequenceAlignmentRow& r, U2OpStatus& os);
 

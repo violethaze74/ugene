@@ -210,26 +210,26 @@ QList<U2SingleModStep> ModSQLiteSpecificTestData::getAllModSteps(const U2DataId&
     return res;
 }
 
-U2MsaRow ModSQLiteSpecificTestData::addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MaGap> &gaps, U2OpStatus &os) {
+U2MaRow ModSQLiteSpecificTestData::addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MaGap> &gaps, U2OpStatus &os) {
     U2Sequence sequence;
     sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
     sequence.visualName = name;
     sqliteDbi->getSequenceDbi()->createSequenceObject(sequence, "", os);
-    CHECK_OP(os, U2MsaRow());
+    CHECK_OP(os, U2MaRow());
 
     U2Region reg(0, 0);
     sqliteDbi->getSequenceDbi()->updateSequenceData(sequence.id, reg, seq, QVariantMap(), os);
-    CHECK_OP(os, U2MsaRow());
+    CHECK_OP(os, U2MaRow());
 
-    U2MsaRow row;
-    row.sequenceId = sequence.id;
+    U2MaRow row;
+    row.dataObjectId = sequence.id;
     row.gstart = 0;
     row.gend = seq.length();
     row.gaps = gaps;
     row.length = MsaRowUtils::getRowLengthWithoutTrailing(seq, gaps);
 
     sqliteDbi->getMsaDbi()->addRow(msaId, -1, row, os);
-    CHECK_OP(os, U2MsaRow());
+    CHECK_OP(os, U2MaRow());
     return row;
 }
 
@@ -651,7 +651,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_noModTrack) {
     CHECK_NO_ERROR(os);
 
     // Get some base data
-    QList<U2MsaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
+    QList<U2MaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Update gaps
@@ -678,7 +678,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalSteps) {
     CHECK_NO_ERROR(os);
     QList<U2SingleModStep> baseModStepList = ModSQLiteSpecificTestData::getAllModSteps(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<U2MsaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
+    QList<U2MaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare value list
@@ -781,7 +781,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalUndoThenActi
     CHECK_NO_ERROR(os);
     QList<U2SingleModStep> baseModStepList = ModSQLiteSpecificTestData::getAllModSteps(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<U2MsaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
+    QList<U2MaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare value list
@@ -915,7 +915,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_noModTrack) {
     CHECK_NO_ERROR(os);
 
     // Get some base data
-    QList<U2MsaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
+    QList<U2MaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Update row content
@@ -943,17 +943,17 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
     CHECK_NO_ERROR(os);
     QList<U2SingleModStep> baseMsaModStepList = ModSQLiteSpecificTestData::getAllModSteps(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<U2MsaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
+    QList<U2MaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
-    qint64 baseSeqVersion = sqliteDbi->getObjectDbi()->getObjectVersion(baseRows[rowNumber].sequenceId, os);
+    qint64 baseSeqVersion = sqliteDbi->getObjectDbi()->getObjectVersion(baseRows[rowNumber].dataObjectId, os);
     CHECK_NO_ERROR(os);
-    QList<U2SingleModStep> baseSeqModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRows[rowNumber].sequenceId, os);
+    QList<U2SingleModStep> baseSeqModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRows[rowNumber].dataObjectId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare value list
     QList<QByteArray> seqDataList;
-    QList<U2MsaRow> rowInfoList;
-    seqDataList << sqliteDbi->getSequenceDbi()->getSequenceData(baseRows[rowNumber].sequenceId, U2_REGION_MAX, os);
+    QList<U2MaRow> rowInfoList;
+    seqDataList << sqliteDbi->getSequenceDbi()->getSequenceData(baseRows[rowNumber].dataObjectId, U2_REGION_MAX, os);
     CHECK_NO_ERROR(os);
     rowInfoList << baseRows[rowNumber];
     for (int i = 0; i < 6; ++i) {
@@ -961,7 +961,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
         QByteArray secondPart((i + 3) * 2, 'C');
         QList<U2MaGap> gapModel = QList<U2MaGap>() << U2MaGap((i + 2) * 2, 5);
 
-        U2MsaRow row;
+        U2MaRow row;
         row.gaps = gapModel;
         row.gstart = 0;
         row.gend = firstPart.length() + secondPart.length();
@@ -972,7 +972,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
             }
         }
         row.rowId = baseRows[rowNumber].rowId;
-        row.sequenceId = baseRows[rowNumber].sequenceId;
+        row.dataObjectId = baseRows[rowNumber].dataObjectId;
 
         seqDataList << firstPart + secondPart;
         rowInfoList << row;
@@ -1014,7 +1014,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
     for (int i = 0; i < valuesCount - 1; ++i) {
         U2SingleModStep modStep;
         modStep.modType = U2ModType::sequenceUpdatedData;
-        modStep.objectId = baseRows[rowNumber].sequenceId;
+        modStep.objectId = baseRows[rowNumber].dataObjectId;
         modStep.version = baseSeqVersion + i;
         modStep.details = PackUtils::packSequenceDataDetails(U2_REGION_MAX,
                                                                      seqDataList[i],
@@ -1060,7 +1060,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
     }
 
     // Check seqModSteps
-    QList<U2SingleModStep> finalSeqModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRows[rowNumber].sequenceId, os);
+    QList<U2SingleModStep> finalSeqModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRows[rowNumber].dataObjectId, os);
     CHECK_EQUAL(expectedSeqModStepList.length(), finalSeqModStepList.length(), "seq mod steps table size");
     for (int i = 0; i < expectedSeqModStepList.length(); ++i) {
         CHECK_EQUAL(expectedSeqModStepList[i].modType, finalSeqModStepList[i].modType, "seq mod type");
@@ -1083,17 +1083,17 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
     CHECK_NO_ERROR(os);
     QList<U2SingleModStep> baseMsaModStepList = ModSQLiteSpecificTestData::getAllModSteps(msaId, os);
     CHECK_NO_ERROR(os);
-    QList<U2MsaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
+    QList<U2MaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
-    qint64 baseSeqVersion = sqliteDbi->getObjectDbi()->getObjectVersion(baseRows[rowNumber].sequenceId, os);
+    qint64 baseSeqVersion = sqliteDbi->getObjectDbi()->getObjectVersion(baseRows[rowNumber].dataObjectId, os);
     CHECK_NO_ERROR(os);
-    QList<U2SingleModStep> baseSeqModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRows[rowNumber].sequenceId, os);
+    QList<U2SingleModStep> baseSeqModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRows[rowNumber].dataObjectId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare value list
     QList<QByteArray> seqDataList;
-    QList<U2MsaRow> rowInfoList;
-    seqDataList << sqliteDbi->getSequenceDbi()->getSequenceData(baseRows[rowNumber].sequenceId, U2_REGION_MAX, os);
+    QList<U2MaRow> rowInfoList;
+    seqDataList << sqliteDbi->getSequenceDbi()->getSequenceData(baseRows[rowNumber].dataObjectId, U2_REGION_MAX, os);
     CHECK_NO_ERROR(os);
     rowInfoList << baseRows[rowNumber];
     for (int i = 0; i < 6; ++i) {
@@ -1101,7 +1101,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
         QByteArray secondPart((i + 3) * 2, 'C');
         QList<U2MaGap> gapModel = QList<U2MaGap>() << U2MaGap((i + 2) * 2, 5);
 
-        U2MsaRow row;
+        U2MaRow row;
         row.gaps = gapModel;
         row.gstart = 0;
         row.gend = firstPart.length() + secondPart.length();
@@ -1112,19 +1112,19 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
             }
         }
         row.rowId = baseRows[rowNumber].rowId;
-        row.sequenceId = baseRows[rowNumber].sequenceId;
+        row.dataObjectId = baseRows[rowNumber].dataObjectId;
 
         seqDataList << firstPart + secondPart;
         rowInfoList << row;
     }
     QByteArray newSeqData = "AA";
-    U2MsaRow newRow;
+    U2MaRow newRow;
     newRow.gaps = QList<U2MaGap>() << U2MaGap(1, 1);
     newRow.gstart = 0;
     newRow.gend = newSeqData.length();
     newRow.length = newRow.gend + 1;
     newRow.rowId = baseRows[rowNumber].rowId;
-    newRow.sequenceId = baseRows[rowNumber].sequenceId;
+    newRow.dataObjectId = baseRows[rowNumber].dataObjectId;
 
     // Steps count
     int valuesCount = seqDataList.length();    // changes = valuesCount - 1;
@@ -1161,7 +1161,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
     for (int i = 0; i < valuesCount - 1; ++i) {
         U2SingleModStep modStep;
         modStep.modType = U2ModType::sequenceUpdatedData;
-        modStep.objectId = baseRows[rowNumber].sequenceId;
+        modStep.objectId = baseRows[rowNumber].dataObjectId;
         modStep.version = baseSeqVersion + i;
         modStep.details = PackUtils::packSequenceDataDetails(U2_REGION_MAX,
                                                                      seqDataList[i],
@@ -1180,7 +1180,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
 
     U2SingleModStep actionSeqModStep;
     actionSeqModStep.modType = U2ModType::sequenceUpdatedData;
-    actionSeqModStep.objectId = baseRows[rowNumber].sequenceId;
+    actionSeqModStep.objectId = baseRows[rowNumber].dataObjectId;
     actionSeqModStep.version = baseSeqVersion + expectedIndex;
     actionSeqModStep.details = PackUtils::packSequenceDataDetails(U2_REGION_MAX,
                                                                           seqDataList[expectedIndex],
@@ -1244,7 +1244,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
     }
 
     // Check seqModSteps
-    QList<U2SingleModStep> finalSeqModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRows[rowNumber].sequenceId, os);
+    QList<U2SingleModStep> finalSeqModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRows[rowNumber].dataObjectId, os);
     CHECK_EQUAL(expectedSeqModStepList.length(), finalSeqModStepList.length(), "seq mod steps table size");
     for (int i = 0; i < expectedSeqModStepList.length(); ++i) {
         CHECK_EQUAL(expectedSeqModStepList[i].modType, finalSeqModStepList[i].modType, "seq mod type");
@@ -1547,13 +1547,13 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_noModTrack) {
     CHECK_NO_ERROR(os);
 
     // Get some base data
-    QList<U2MsaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
+    QList<U2MaRow> baseRows = sqliteDbi->getMsaDbi()->getRows(msaId, os);
     CHECK_NO_ERROR(os);
 
     // Update row name
-    U2MsaRow oldRow = sqliteDbi->getMsaDbi()->getRow(msaId, baseRows[0].rowId, os);
+    U2MaRow oldRow = sqliteDbi->getMsaDbi()->getRow(msaId, baseRows[0].rowId, os);
     CHECK_NO_ERROR(os);
-    QString oldName = sqliteDbi->getSequenceDbi()->getSequenceObject(oldRow.sequenceId, os).visualName;
+    QString oldName = sqliteDbi->getSequenceDbi()->getSequenceObject(oldRow.dataObjectId, os).visualName;
     CHECK_NO_ERROR(os);
     QString newName = oldName + "_new";
     sqliteDbi->getMsaDbi()->updateRowName(msaId, baseRows[0].rowId, newName, os);
@@ -1575,16 +1575,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalSteps) {
     // Get some base data
     QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
     CHECK_NO_ERROR(os);
-    U2MsaRow baseRow = sqliteDbi->getMsaDbi()->getRow(msaId, baseRowOrder[1], os);
+    U2MaRow baseRow = sqliteDbi->getMsaDbi()->getRow(msaId, baseRowOrder[1], os);
     CHECK_NO_ERROR(os);
-    qint64 baseObjVersion = sqliteDbi->getObjectDbi()->getObjectVersion(baseRow.sequenceId, os);
+    qint64 baseObjVersion = sqliteDbi->getObjectDbi()->getObjectVersion(baseRow.dataObjectId, os);
     CHECK_NO_ERROR(os);
-    QList<U2SingleModStep> baseModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRow.sequenceId, os);
+    QList<U2SingleModStep> baseModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRow.dataObjectId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare value list
     QStringList rowNames;
-    rowNames << sqliteDbi->getSequenceDbi()->getSequenceObject(baseRow.sequenceId, os).visualName;
+    rowNames << sqliteDbi->getSequenceDbi()->getSequenceObject(baseRow.dataObjectId, os).visualName;
     CHECK_NO_ERROR(os);
 
     for (int i = 0; i < 6; ++i) {
@@ -1605,7 +1605,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalSteps) {
     for (int i = 0; i < valuesCount - 1; ++i) {
         U2SingleModStep modStep;
         modStep.modType = U2ModType::objUpdatedName;
-        modStep.objectId = baseRow.sequenceId;
+        modStep.objectId = baseRow.dataObjectId;
         modStep.version = baseObjVersion + i;
         //PackUtils::VERSION hardcoded, correct after test failure.
         modStep.details = "0\t" + rowNames[i].toLatin1() + "\t" + rowNames[i + 1].toLatin1();
@@ -1639,7 +1639,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalSteps) {
     }
 
     // Check modSteps
-    QList<U2SingleModStep> finalModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRow.sequenceId, os);
+    QList<U2SingleModStep> finalModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRow.dataObjectId, os);
     CHECK_EQUAL(expectedModStepList.length(), finalModStepList.length(), "mod steps table size");
     for (int i = 0; i < expectedModStepList.length(); ++i) {
         CHECK_EQUAL(expectedModStepList[i].modType, finalModStepList[i].modType, "mod type");
@@ -1659,16 +1659,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalUndoThenActio
     // Get some base data
     QList<qint64> baseRowOrder = sqliteDbi->getMsaDbi()->getRowsOrder(msaId, os);
     CHECK_NO_ERROR(os);
-    U2MsaRow baseRow = sqliteDbi->getMsaDbi()->getRow(msaId, baseRowOrder[1], os);
+    U2MaRow baseRow = sqliteDbi->getMsaDbi()->getRow(msaId, baseRowOrder[1], os);
     CHECK_NO_ERROR(os);
-    qint64 baseObjVersion = sqliteDbi->getObjectDbi()->getObjectVersion(baseRow.sequenceId, os);
+    qint64 baseObjVersion = sqliteDbi->getObjectDbi()->getObjectVersion(baseRow.dataObjectId, os);
     CHECK_NO_ERROR(os);
-    QList<U2SingleModStep> baseModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRow.sequenceId, os);
+    QList<U2SingleModStep> baseModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRow.dataObjectId, os);
     CHECK_NO_ERROR(os);
 
     // Prepare value list
     QStringList rowNames;
-    rowNames << sqliteDbi->getSequenceDbi()->getSequenceObject(baseRow.sequenceId, os).visualName;
+    rowNames << sqliteDbi->getSequenceDbi()->getSequenceObject(baseRow.dataObjectId, os).visualName;
     CHECK_NO_ERROR(os);
 
     for (int i = 0; i < 6; ++i) {
@@ -1690,7 +1690,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalUndoThenActio
     for (int i = 0; i < valuesCount - 1; ++i) {
         U2SingleModStep modStep;
         modStep.modType = U2ModType::objUpdatedName;
-        modStep.objectId = baseRow.sequenceId;
+        modStep.objectId = baseRow.dataObjectId;
         modStep.version = baseObjVersion + i;
         //PackUtils::VERSION hardcoded, correct after test failure.
         modStep.details = "0\t" + rowNames[i].toLatin1() + "\t" + rowNames[i + 1].toLatin1();
@@ -1704,7 +1704,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalUndoThenActio
 
     U2SingleModStep actionModStep;
     actionModStep.modType = U2ModType::objUpdatedName;
-    actionModStep.objectId = baseRow.sequenceId;
+    actionModStep.objectId = baseRow.dataObjectId;
     actionModStep.version = baseObjVersion + expectedIndex;
     //PackUtils::VERSION hardcoded, correct after test failure.
     actionModStep.details = "0\t" + rowNames[expectedIndex].toLatin1() + "\t" + newRowName.toLatin1();
@@ -1740,7 +1740,7 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalUndoThenActio
     CHECK_NO_ERROR(os);
 
     // Check modSteps
-    QList<U2SingleModStep> finalModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRow.sequenceId, os);
+    QList<U2SingleModStep> finalModStepList = ModSQLiteSpecificTestData::getAllModSteps(baseRow.dataObjectId, os);
     CHECK_EQUAL(expectedModStepList.length(), finalModStepList.length(), "mod steps table size");
     for (int i = 0; i < expectedModStepList.length(); ++i) {
         CHECK_EQUAL(expectedModStepList[i].modType, finalModStepList[i].modType, "mod type");

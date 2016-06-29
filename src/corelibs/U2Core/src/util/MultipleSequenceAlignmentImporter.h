@@ -22,7 +22,7 @@
 #ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_IMPORTER_H_
 #define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_IMPORTER_H_
 
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Ma.h>
 #include <U2Core/U2Sequence.h>
 
 namespace U2 {
@@ -45,12 +45,12 @@ public:
         U2OpStatus &os, const QList<U2Sequence> &alignedSequences = QList<U2Sequence>());
 
 private:
-    static U2Msa importMsaObject(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
+    static U2Ma importMsaObject(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
     static void importMsaInfo(const DbiConnection &con, const U2DataId &msaId, const MultipleSequenceAlignment &al, U2OpStatus &os);
     static QList<U2Sequence> importSequences(const DbiConnection &con, const QString &folder, const MultipleSequenceAlignment &al, U2OpStatus &os);
     static void splitToCharsAndGaps(const DbiConnection &con, QList<U2Sequence> &sequences, U2MaListGapModel &gapModel, U2OpStatus &os);
     static void setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os);
-    static QList<U2MsaRow> importRows(const DbiConnection &con, MultipleSequenceAlignment &al, U2Msa &msa, const QList<U2Sequence> &rows, const U2MaListGapModel &msaGapModel, U2OpStatus &os);
+    static QList<U2MaRow> importRows(const DbiConnection &con, MultipleSequenceAlignment &al, U2Ma &msa, const QList<U2Sequence> &rows, const U2MaListGapModel &msaGapModel, U2OpStatus &os);
 };
 
 } // namespace
