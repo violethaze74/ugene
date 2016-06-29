@@ -147,9 +147,7 @@ void FormatDBSupport::sl_runWithExtFileSpecify(){
     if (formatDBRunDialog->result() != QDialog::Accepted){
         return;
     }
-    //assert(!settings.inputFilePath.isEmpty());
-    //
-    FormatDBSupportTask* formatDBSupportTask=new FormatDBSupportTask(name, settings);
+    FormatDBSupportTask* formatDBSupportTask = new FormatDBSupportTask(name, settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(formatDBSupportTask);
 }
 }//namespace

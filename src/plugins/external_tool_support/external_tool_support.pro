@@ -16,6 +16,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/bigWigTools/BigWigSupport.h \
            src/bigWigTools/BedGraphToBigWigTask.h \
            src/bigWigTools/BedGraphToBigWigWorker.h \
+           src/blast/AlignToReferenceBlastWorker.h \
            src/blast/BlastAllSupport.h \
            src/blast/BlastAllSupportRunDialog.h \
            src/blast/BlastAllSupportTask.h \
@@ -192,6 +193,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/bigWigTools/BigWigSupport.cpp \
            src/bigWigTools/BedGraphToBigWigTask.cpp \
            src/bigWigTools/BedGraphToBigWigWorker.cpp \
+           src/blast/AlignToReferenceBlastWorker.cpp \
            src/blast/BlastAllSupport.cpp \
            src/blast/BlastAllSupportRunDialog.cpp \
            src/blast/BlastAllSupportTask.cpp \
