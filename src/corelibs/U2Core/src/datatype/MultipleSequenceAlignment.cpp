@@ -750,7 +750,7 @@ void MultipleSequenceAlignment::setSequenceId(int rowIndex, U2DataId sequenceId)
     SAFE_POINT(rowIndex >= 0 && rowIndex < getNumRows(), "Invalid row index!", );
 
     MultipleSequenceAlignmentRow& row = rows[rowIndex];
-    row.setSequenceId(sequenceId);
+    row.setDataId(sequenceId);
 }
 
 void MultipleSequenceAlignment::check() const {

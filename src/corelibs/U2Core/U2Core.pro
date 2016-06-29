@@ -25,6 +25,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/FeatureColors.h \
            src/datatype/Matrix44.h \
            src/datatype/MultipleAlignmentInfo.h \
+           src/datatype/MultipleAlignmentRow.h \
            src/datatype/MultipleSequenceAlignment.h \
            src/datatype/MultipleSequenceAlignmentRow.h \
            src/datatype/PFMatrix.h \
@@ -264,6 +265,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/FeatureColors.cpp \
            src/datatype/Matrix44.cpp \
            src/datatype/MultipleAlignmentInfo.cpp \
+           src/datatype/MultipleAlignmentRow.cpp \
            src/datatype/MultipleSequenceAlignment.cpp \
            src/datatype/MultipleSequenceAlignmentRow.cpp \
            src/datatype/PFMatrix.cpp \
