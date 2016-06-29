@@ -26,138 +26,35 @@
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
+
 class AbstractAlignmentTaskFactory;
-class PairwiseAlignmentTaskSettings;
+namespace Workflow {
+class FormatDBSubTask;
+class PairwiseAlignmentTask;
+class ComposeResultSubTask;
+}
+
 namespace LocalWorkflow {
-
-class KAlignSubTask : public Task {
-    Q_OBJECT
-public:
-    KAlignSubTask(const SharedDbiDataHandler &reference, const SharedDbiDataHandler &read, DbiDataStorage *storage);
-    void prepare();
-    void run();
-
-    const SharedDbiDataHandler getRead() const;
-    qint64 getMaxRegionSize() const;
-    U2Region getCoreRegion() const;
-
-    static PairwiseAlignmentTaskSettings * createSettings(DbiDataStorage *storage, const SharedDbiDataHandler &msa, U2OpStatus &os);
-    static AbstractAlignmentTaskFactory * getAbstractAlignmentTaskFactory(const QString &algoId, const QString &implId, U2OpStatus &os);
-
-private:
-    void createAlignment();
-    QList<U2Region> getRegions(const QList<U2MsaGap> &gaps, qint64 rowLength) const;
-    void calculateCoreRegion(const QList<U2Region> &regions);
-    void extendCoreRegion(const QList<U2Region> &regions);
-
-private:
-    const SharedDbiDataHandler reference;
-    const SharedDbiDataHandler read;
-    DbiDataStorage *storage;
-    SharedDbiDataHandler msa;
-
-    qint64 maxRegionSize;
-    U2Region coreRegion;
-
-    static const qint64 MAX_GAP_SIZE;
-    static const qint64 EXTENSION_COEF;
-};
-
-class PairwiseAlignmentTask : public Task {
-    Q_OBJECT
-public:
-    PairwiseAlignmentTask(const SharedDbiDataHandler &reference,
-                          const SharedDbiDataHandler &read,
-                          DbiDataStorage *storage);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
-    void run();
-
-    bool isReverse() const;
-    bool isComplement() const;
-    SharedDbiDataHandler getRead() const;
-    QList<U2MsaGap> getReferenceGaps() const;
-    QList<U2MsaGap> getReadGaps() const;
-    QString getInitialReadName() const;
-
-private:
-    QByteArray getComplement(const QByteArray &sequence, const DNAAlphabet *alphabet);
-    QByteArray getReverse(const QByteArray &sequence) const;
-    QByteArray getReverseComplement(const QByteArray &sequence, const DNAAlphabet *alphabet);
-    void createRcReads();
-    KAlignSubTask * initRc();
-    void createSWAlignment(KAlignSubTask *task);
-    void shiftGaps(QList<U2MsaGap> &gaps) const;
-
-private:
-    const SharedDbiDataHandler reference;
-    const SharedDbiDataHandler read;
-    SharedDbiDataHandler rRead;
-    SharedDbiDataHandler cRead;
-    SharedDbiDataHandler rcRead;
-    DbiDataStorage *storage;
-
-    KAlignSubTask *kalign;
-    KAlignSubTask *rKalign;
-    KAlignSubTask *cKalign;
-    KAlignSubTask *rcKalign;
-    bool reverse;
-    bool complement;
-    qint64 offset;
-
-    SharedDbiDataHandler msa;
-    qint64 maxChunkSize;
-    QList<U2MsaGap> referenceGaps;
-    QList<U2MsaGap> readGaps;
-    QString initialReadName;
-};
-
-class ComposeResultSubTask : public Task {
-    Q_OBJECT
-public:
-    ComposeResultSubTask(const SharedDbiDataHandler &reference, const QList<SharedDbiDataHandler> &reads, const QList<PairwiseAlignmentTask*> subTasks, DbiDataStorage *storage);
-    void prepare();
-    void run();
-    SharedDbiDataHandler getAlignment() const;
-    SharedDbiDataHandler getAnnotations() const;
-
-private:
-    PairwiseAlignmentTask * getPATask(int readNum);
-    DNASequence getReadSequence(int readNum);
-    DNASequence getReferenceSequence();
-    QList<U2MsaGap> getReferenceGaps();
-    QList<U2MsaGap> getShiftedGaps(int rowNum);
-    void insertShiftedGapsIntoReference(MAlignment &alignment, const QList<U2MsaGap> &gaps);
-    void insertShiftedGapsIntoRead(MAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps);
-    MAlignment createAlignment();
-    void createAnnotations(const MAlignment &alignment);
-    U2Region getReadRegion(const MAlignmentRow &readRow, const MAlignmentRow &referenceRow) const;
-    U2Location getLocation(const U2Region &region, bool isComplement);
-
-private:
-    const SharedDbiDataHandler reference;
-    const QList<SharedDbiDataHandler> reads;
-    const QList<PairwiseAlignmentTask*> subTasks;
-    DbiDataStorage *storage;
-    SharedDbiDataHandler msa;
-    SharedDbiDataHandler annotations;
-};
 
 class AlignToReferenceBlastTask : public Task {
     Q_OBJECT
 public:
-    AlignToReferenceBlastTask(const SharedDbiDataHandler &reference,
-                         const QList<SharedDbiDataHandler> &reads,
-                         DbiDataStorage *storage);
+    AlignToReferenceBlastTask(const QString& refUrl,
+                              const SharedDbiDataHandler &reference,
+                              const QList<SharedDbiDataHandler> &reads,
+                              DbiDataStorage *storage);
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
     SharedDbiDataHandler getAlignment() const;
     SharedDbiDataHandler getAnnotations() const;
 
 private:
+    const QString referenceUrl;
     const SharedDbiDataHandler reference;
     const QList<SharedDbiDataHandler> reads;
-    QList<PairwiseAlignmentTask*> subTasks;
+
+    FormatDBSubTask* formatDbSubTask;
+    QList<U2::Workflow::PairwiseAlignmentTask*> subTasks;
     ComposeResultSubTask *composeSubTask;
     DbiDataStorage *storage;
     SharedDbiDataHandler msa;

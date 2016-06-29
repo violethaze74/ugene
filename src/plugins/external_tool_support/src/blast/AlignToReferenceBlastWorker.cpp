@@ -19,23 +19,13 @@
 * MA 02110-1301, USA.
 */
 
-#include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
-#include <U2Algorithm/PairwiseAlignmentTask.h>
-
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNATranslation.h>
-#include <U2Core/GenbankFeatures.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceUtils.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -47,6 +37,10 @@
 #include <U2Lang/WorkflowEnv.h>
 
 #include "AlignToReferenceBlastWorker.h"
+
+#include "align_worker_subtasks/FormatDBSubTask.h"
+#include "align_worker_subtasks/ComposeResultSubTask.h"
+
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -179,7 +173,7 @@ Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) c
             reads << data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
         }
     }
-    return new AlignToReferenceBlastTask(reference, reads, context->getDataStorage());
+    return new AlignToReferenceBlastTask(getValue<QString>(REF_ATTR_ID), reference, reads, context->getDataStorage());
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
@@ -200,45 +194,49 @@ MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString &dat
 /************************************************************************/
 /* AlignToReferenceBlastTask */
 /************************************************************************/
-namespace {
-    qint64 calcMemUsageBytes(DbiDataStorage *storage, const SharedDbiDataHandler &seqId, U2OpStatus &os) {
-        QScopedPointer<U2SequenceObject> object(StorageUtils::getSequenceObject(storage, seqId));
-        CHECK_EXT(!object.isNull(), os.setError(L10N::nullPointerError("Sequence object")), 0);
-
-        return object->getSequenceLength();
-    }
-
-    int toMb(qint64 bytes) {
-        return 0.5 + (double(bytes) / (1024 * 1024));
-    }
-}
-
-AlignToReferenceBlastTask::AlignToReferenceBlastTask(const SharedDbiDataHandler &reference,
-                                           const QList<SharedDbiDataHandler> &reads,
-                                           DbiDataStorage *storage)
-: Task(tr("Align to reference"), TaskFlags_NR_FOSE_COSC), reference(reference), reads(reads), composeSubTask(NULL), storage(storage), subTasksCount(0)
+AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl,
+                                                     const SharedDbiDataHandler &reference,
+                                                     const QList<SharedDbiDataHandler> &reads,
+                                                     DbiDataStorage *storage)
+    : Task(tr("Align to reference"), TaskFlags_NR_FOSE_COSC),
+      referenceUrl(refUrl),
+      reference(reference),
+      reads(reads),
+      formatDbSubTask(NULL),
+      composeSubTask(NULL),
+      storage(storage),
+      subTasksCount(0)
 {
     setMaxParallelSubtasks(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 }
 
 void AlignToReferenceBlastTask::prepare() {
-    foreach (const SharedDbiDataHandler &read, reads) {
-        PairwiseAlignmentTask *subTask = new PairwiseAlignmentTask(reference, read, storage);
-        subTasks << subTask;
-        subTask->setSubtaskProgressWeight(1.0f / (2 * reads.count()));
-        addSubTask(subTask);
-    }
-    subTasksCount = subTasks.size();
+    formatDbSubTask = new U2::Workflow::FormatDBSubTask(referenceUrl, reference, storage);
+    addSubTask(formatDbSubTask);
+
+//    foreach (const SharedDbiDataHandler &read, reads) {
+//        PairwiseAlignmentTask *subTask = new PairwiseAlignmentTask(reference, read, storage);
+//        subTasks << subTask;
+//        subTask->setSubtaskProgressWeight(1.0f / (2 * reads.count()));
+//        addSubTask(subTask);
+//    }
+//    subTasksCount = subTasks.size();
 }
 
-QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task * /*subTask*/) {
+QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
-    if (1 == subTasksCount) {
-        composeSubTask = new ComposeResultSubTask(reference, reads, subTasks, storage);
-        composeSubTask->setSubtaskProgressWeight(0.5f);
-        result << composeSubTask;
-    }
-    subTasksCount--;
+    CHECK(subTask != NULL, result);
+
+//    if (subTask == formatDbSubTask) {
+        // launch the custom
+//        QString dbPath = formatDbSubTask->ge
+//    }
+//    if (1 == subTasksCount) {
+//        composeSubTask = new ComposeResultSubTask(reference, reads, subTasks, storage);
+//        composeSubTask->setSubtaskProgressWeight(0.5f);
+//        result << composeSubTask;
+//    }
+//    subTasksCount--;
     return result;
 }
 
@@ -250,614 +248,6 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAlignment() const {
 SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
     CHECK(NULL != composeSubTask, SharedDbiDataHandler());
     return composeSubTask->getAnnotations();
-}
-
-/************************************************************************/
-/* ComposeResultSubTask */
-/************************************************************************/
-ComposeResultSubTask::ComposeResultSubTask(const SharedDbiDataHandler &reference, const QList<SharedDbiDataHandler> &reads, const QList<PairwiseAlignmentTask*> subTasks, DbiDataStorage *storage)
-: Task(tr("Compose alignment"), TaskFlags_FOSE_COSC), reference(reference), reads(reads), subTasks(subTasks), storage(storage)
-{
-    tpm = Task::Progress_Manual;
-}
-
-void ComposeResultSubTask::prepare() {
-    qint64 memUsage = calcMemUsageBytes(storage, reference, stateInfo);
-    CHECK_OP(stateInfo, );
-
-    foreach (const SharedDbiDataHandler &read, reads) {
-        memUsage += calcMemUsageBytes(storage, read, stateInfo);
-        CHECK_OP(stateInfo, );
-    }
-    if (toMb(memUsage) > 0) {
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, toMb(memUsage), false));
-    }
-}
-
-void ComposeResultSubTask::run() {
-    MAlignment alignment = createAlignment();
-    CHECK_OP(stateInfo, );
-
-    createAnnotations(alignment);
-    CHECK_OP(stateInfo, );
-}
-
-SharedDbiDataHandler ComposeResultSubTask::getAlignment() const {
-    return msa;
-}
-
-SharedDbiDataHandler ComposeResultSubTask::getAnnotations() const {
-    return annotations;
-}
-
-MAlignment ComposeResultSubTask::createAlignment() {
-    MAlignment result("Aligned reads");
-
-    DNASequence referenceSeq = getReferenceSequence();
-    CHECK_OP(stateInfo, result);
-    result.setAlphabet(referenceSeq.alphabet);
-
-    // add the reference row
-    result.addRow(referenceSeq.getName(), referenceSeq.seq, 0, stateInfo);
-    CHECK_OP(stateInfo, result);
-
-    QList<U2MsaGap> referenceGaps = getReferenceGaps();
-    CHECK_OP(stateInfo, result);
-
-    insertShiftedGapsIntoReference(result, referenceGaps);
-    CHECK_OP(stateInfo, result);
-
-    for (int i=0; i<reads.size(); i++) {
-        // add the read row
-        DNASequence readSeq = getReadSequence(i);
-        CHECK_OP(stateInfo, result);
-
-        result.addRow(readSeq.getName(), readSeq.seq, i + 1, stateInfo);
-        CHECK_OP(stateInfo, result);
-
-        PairwiseAlignmentTask *subTask = getPATask(i);
-        CHECK_OP(stateInfo, result);
-        foreach (const U2MsaGap &gap, subTask->getReadGaps()) {
-            result.insertGaps(i + 1, gap.offset, gap.gap, stateInfo);
-            CHECK_OP(stateInfo, result);
-        }
-
-        // add reference gaps to the read
-        insertShiftedGapsIntoRead(result, i, referenceGaps);
-        CHECK_OP(stateInfo, result);
-    }
-
-    result.trim(false);
-
-    QScopedPointer<MAlignmentObject> msaObject(MAlignmentImporter::createAlignment(storage->getDbiRef(), result, stateInfo));
-    CHECK_OP(stateInfo, result);
-    msa = storage->getDataHandler(msaObject->getEntityRef());
-
-    // remove gap columns
-    msaObject->deleteColumnWithGaps(GAP_COLUMN_ONLY, stateInfo);
-
-    return msaObject->getMAlignment();
-}
-
-void ComposeResultSubTask::createAnnotations(const MAlignment &alignment) {
-    const MAlignmentRow &referenceRow = alignment.getRow(0);
-    QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceRow.getName() + " features", storage->getDbiRef()));
-
-    QList<SharedAnnotationData> anns;
-    for (int i=1; i<alignment.getNumRows(); i++) {
-        const MAlignmentRow &readRow = alignment.getRow(i);
-        U2Region region = getReadRegion(readRow, referenceRow);
-        PairwiseAlignmentTask *task = getPATask(i - 1);
-        CHECK_OP(stateInfo, );
-
-        SharedAnnotationData ann(new AnnotationData);
-        ann->location = getLocation(region, task->isComplement());
-        ann->name = GBFeatureUtils::getKeyInfo(GBFeatureKey_misc_feature).text;
-        ann->qualifiers << U2Qualifier("label", task->getInitialReadName());
-        anns.append(ann);
-    }
-    annsObject->addAnnotations(anns);
-
-    annotations = storage->getDataHandler(annsObject->getEntityRef());
-}
-
-U2Region ComposeResultSubTask::getReadRegion(const MAlignmentRow &readRow, const MAlignmentRow &referenceRow) const {
-    U2Region region(0, readRow.getRowLengthWithoutTrailing());
-
-    // calculate read start
-    if (!readRow.getGapModel().isEmpty()) {
-        U2MsaGap firstGap = readRow.getGapModel().first();
-        if (0 == firstGap.offset) {
-            region.startPos += firstGap.gap;
-            region.length -= firstGap.gap;
-        }
-    }
-
-    qint64 leftGap = 0;
-    qint64 innerGap = 0;
-    foreach (const U2MsaGap &gap, referenceRow.getGapModel()) {
-        qint64 endPos = gap.offset + gap.gap;
-        if (gap.offset < region.startPos) {
-            leftGap += gap.gap;
-        } else if (endPos <= region.endPos()) {
-            innerGap += gap.gap;
-        } else {
-            break;
-        }
-    }
-
-    region.startPos -= leftGap;
-    region.length -= innerGap;
-    return region;
-}
-
-U2Location ComposeResultSubTask::getLocation(const U2Region &region, bool isComplement) {
-    U2Location result;
-    result->strand = isComplement ? U2Strand(U2Strand::Complementary) : U2Strand(U2Strand::Direct);
-
-    if (region.startPos < 0) {
-        // TODO: just trim the region because it is incorrect to make the annotation circular: the left (negative) part of the read is not aligned.
-        // Fix it when the task can work with circular references.
-        result->regions << U2Region(0, region.length + region.startPos);
-    } else {
-        result->regions << region;
-    }
-
-    return result;
-}
-
-PairwiseAlignmentTask * ComposeResultSubTask::getPATask(int readNum) {
-    CHECK_EXT(readNum < subTasks.size(), setError(L10N::internalError("Wrong reads number")), NULL);
-    return subTasks[readNum];
-}
-
-DNASequence ComposeResultSubTask::getReadSequence(int readNum) {
-    PairwiseAlignmentTask *subTask = getPATask(readNum);
-    CHECK_OP(stateInfo, DNASequence());
-
-    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, subTask->getRead()));
-    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), DNASequence());
-    DNASequence seq = readObject->getWholeSequence(stateInfo);
-    CHECK_OP(stateInfo, DNASequence());
-    return seq;
-}
-
-DNASequence ComposeResultSubTask::getReferenceSequence() {
-    QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
-    CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), DNASequence());
-    DNASequence seq = refObject->getWholeSequence(stateInfo);
-    CHECK_OP(stateInfo, DNASequence());
-    return seq;
-}
-
-namespace {
-    bool compare(const U2MsaGap &gap1, const U2MsaGap &gap2) {
-        return gap1.offset < gap2.offset;
-    }
-}
-
-QList<U2MsaGap> ComposeResultSubTask::getReferenceGaps() {
-    QList<U2MsaGap> result;
-
-    for (int i=0; i<reads.size(); i++) {
-        result << getShiftedGaps(i);
-        CHECK_OP(stateInfo, result);
-    }
-    qSort(result.begin(), result.end(), compare);
-    return result;
-}
-
-QList<U2MsaGap> ComposeResultSubTask::getShiftedGaps(int rowNum) {
-    QList<U2MsaGap> result;
-
-    PairwiseAlignmentTask *subTask = getPATask(rowNum);
-    CHECK_OP(stateInfo, result);
-
-    qint64 wholeGap = 0;
-    foreach (const U2MsaGap &gap, subTask->getReferenceGaps()) {
-        result << U2MsaGap(gap.offset - wholeGap, gap.gap);
-        wholeGap += gap.gap;
-    }
-    return result;
-}
-
-void ComposeResultSubTask::insertShiftedGapsIntoReference(MAlignment &alignment, const QList<U2MsaGap> &gaps) {
-    for (int i=gaps.size() - 1; i>=0; i--) {
-        U2MsaGap gap = gaps[i];
-        alignment.insertGaps(0, gap.offset, gap.gap, stateInfo);
-        CHECK_OP(stateInfo, );
-    }
-}
-
-void ComposeResultSubTask::insertShiftedGapsIntoRead(MAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps) {
-    QList<U2MsaGap> ownGaps = getShiftedGaps(readNum);
-    CHECK_OP(stateInfo, );
-
-    qint64 globalOffset = 0;
-    foreach (const U2MsaGap &gap, gaps) {
-        if (ownGaps.contains(gap)) { // task own gaps into account but don't insert them
-            globalOffset += gap.gap;
-            ownGaps.removeOne(gap);
-            continue;
-        }
-        alignment.insertGaps(readNum + 1, globalOffset + gap.offset, gap.gap, stateInfo);
-        CHECK_OP(stateInfo, );
-        globalOffset += gap.gap;
-    }
-}
-
-/************************************************************************/
-/* KAlignSubTask */
-/************************************************************************/
-const qint64 KAlignSubTask::MAX_GAP_SIZE = 10;
-const qint64 KAlignSubTask::EXTENSION_COEF = 2;
-
-KAlignSubTask::KAlignSubTask(const SharedDbiDataHandler &reference, const SharedDbiDataHandler &read, DbiDataStorage *storage)
-: Task("KAlign task wrapper", TaskFlags_FOSE_COSC), reference(reference), read(read), storage(storage), maxRegionSize(0)
-{
-
-}
-
-const SharedDbiDataHandler KAlignSubTask::getRead() const {
-    return read;
-}
-
-qint64 KAlignSubTask::getMaxRegionSize() const {
-    return maxRegionSize;
-}
-
-U2Region KAlignSubTask::getCoreRegion() const {
-    return coreRegion;
-}
-
-void KAlignSubTask::prepare() {
-    qint64 memUsage = calcMemUsageBytes(storage, reference, stateInfo) + calcMemUsageBytes(storage, read, stateInfo);
-    CHECK_OP(stateInfo, );
-    if (toMb(memUsage) > 0) {
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, toMb(memUsage), false));
-    }
-
-    createAlignment();
-    CHECK_OP(stateInfo, );
-
-    AbstractAlignmentTaskFactory *factory = getAbstractAlignmentTaskFactory("Hirschberg (KAlign)", "KAlign", stateInfo);
-    CHECK_OP(stateInfo, );
-
-    QScopedPointer<PairwiseAlignmentTaskSettings> settings(createSettings(storage, msa, stateInfo));
-    CHECK_OP(stateInfo, );
-    addSubTask(factory->getTaskInstance(settings.take()));
-}
-
-void KAlignSubTask::run() {
-    QScopedPointer<MAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
-    CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object")), );
-    int rowCount = msaObject->getNumRows();
-    CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
-
-    MAlignmentRow readRow = msaObject->getRow(1);
-    QList<U2Region> regions = getRegions(readRow.getGapModel(), readRow.getRowLengthWithoutTrailing());
-    calculateCoreRegion(regions);
-    extendCoreRegion(regions);
-
-    algoLog.details(tr("Max region size: %1").arg(maxRegionSize));
-    algoLog.details(tr("Core region: %1-%2").arg(coreRegion.startPos).arg(coreRegion.endPos()-1));
-}
-
-QList<U2Region> KAlignSubTask::getRegions(const QList<U2MsaGap> &gaps, qint64 rowLength) const {
-    QList<U2Region> regions;
-    qint64 startPos = 0;
-    foreach (const U2MsaGap &gap, gaps) {
-        qint64 length = gap.offset - startPos;
-        if (length > 0) {
-            regions << U2Region(startPos, length);
-        }
-        startPos = gap.offset + gap.gap;
-    }
-    if (startPos < rowLength) {
-        qint64 length = rowLength - startPos;
-        regions << U2Region(startPos, length);
-    }
-    return regions;
-}
-
-void KAlignSubTask::calculateCoreRegion(const QList<U2Region> &regions) {
-    coreRegion = U2Region(0, 0);
-    maxRegionSize = 0;
-    U2Region currentRegion = coreRegion;
-    foreach (const U2Region &region, regions) {
-        if (maxRegionSize < region.length) {
-            maxRegionSize = region.length;
-        }
-        if (0 == currentRegion.length) {
-            currentRegion = region;
-            continue;
-        }
-        if (region.startPos - currentRegion.endPos() < MAX_GAP_SIZE) {
-            currentRegion.length = region.endPos() - currentRegion.startPos;
-        } else {
-            if (coreRegion.length < currentRegion.length) {
-                coreRegion = currentRegion;
-            }
-            currentRegion = region;
-        }
-    }
-    if (coreRegion.length < currentRegion.length) {
-        coreRegion = currentRegion;
-    }
-}
-
-void KAlignSubTask::extendCoreRegion(const QList<U2Region> &regions) {
-    qint64 leftSize = 0;
-    qint64 rightSize = 0;
-    foreach (const U2Region &region, regions) {
-        if (region.endPos() - 1 < coreRegion.startPos) {
-            leftSize += region.length;
-        }
-        if (region.startPos > coreRegion.endPos() - 1) {
-            rightSize += region.length;
-        }
-    }
-    coreRegion.startPos -= leftSize * EXTENSION_COEF;
-    coreRegion.length += (leftSize + rightSize) * EXTENSION_COEF;
-}
-
-AbstractAlignmentTaskFactory * KAlignSubTask::getAbstractAlignmentTaskFactory(const QString &algoId, const QString &implId, U2OpStatus &os) {
-    AlignmentAlgorithm *algo = AppContext::getAlignmentAlgorithmsRegistry()->getAlgorithm(algoId);
-    CHECK_EXT(NULL != algo, os.setError(tr("The %1 algorithm is not found. Add the %1 plugin.").arg(algoId)), NULL);
-
-    AlgorithmRealization *algoImpl = algo->getAlgorithmRealization(implId);
-    CHECK_EXT(NULL != algoImpl, os.setError(tr("The %1 algorithm is not found. Check that the %1 plugin is up to date.").arg(algoId)), NULL);
-
-    return algoImpl->getTaskFactory();
-}
-
-void KAlignSubTask::createAlignment() {
-    QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
-    CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), );
-    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
-    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), );
-
-    MAlignment alignment("msa", refObject->getAlphabet());
-    QByteArray refData = refObject->getWholeSequenceData(stateInfo);
-    CHECK_OP(stateInfo, );
-    alignment.addRow(refObject->getSequenceName(), refData, stateInfo);
-    CHECK_OP(stateInfo, );
-    QByteArray readData = readObject->getWholeSequenceData(stateInfo);
-    CHECK_OP(stateInfo, );
-    alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
-    CHECK_OP(stateInfo, );
-
-    QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
-    CHECK_OP(stateInfo, );
-    msa = storage->getDataHandler(msaObj->getEntityRef());
-}
-
-PairwiseAlignmentTaskSettings * KAlignSubTask::createSettings(DbiDataStorage *storage, const SharedDbiDataHandler &msa, U2OpStatus &os) {
-    QScopedPointer<MAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
-    CHECK_EXT(!msaObject.isNull(), os.setError(L10N::nullPointerError("MSA object")), NULL);
-
-    U2DataId referenceId = msaObject->getRow(0).getRowDBInfo().sequenceId;
-    U2DataId readId = msaObject->getRow(1).getRowDBInfo().sequenceId;
-
-    PairwiseAlignmentTaskSettings *settings = new PairwiseAlignmentTaskSettings();
-    settings->alphabet = msaObject->getAlphabet()->getId();
-    settings->inNewWindow = false;
-    settings->msaRef = msaObject->getEntityRef();
-    settings->firstSequenceRef = U2EntityRef(msaObject->getEntityRef().dbiRef, referenceId);
-    settings->secondSequenceRef = U2EntityRef(msaObject->getEntityRef().dbiRef, readId);
-    return settings;
-}
-
-/************************************************************************/
-/* PairwiseAlignmentTask */
-/************************************************************************/
-PairwiseAlignmentTask::PairwiseAlignmentTask(const SharedDbiDataHandler &reference,
-                                             const SharedDbiDataHandler &read,
-                                             DbiDataStorage *storage)
-: Task("Pairwise Alignment", TaskFlags_FOSE_COSC), reference(reference), read(read), storage(storage), kalign(NULL), rKalign(NULL), cKalign(NULL), rcKalign(NULL), reverse(false), complement(false), offset(0)
-{
-    setMaxParallelSubtasks(2);
-}
-
-void PairwiseAlignmentTask::prepare() {
-    qint64 memUsage = calcMemUsageBytes(storage, reference, stateInfo) + calcMemUsageBytes(storage, read, stateInfo);
-    CHECK_OP(stateInfo, );
-    if (toMb(memUsage) > 0) {
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, toMb(memUsage), false));
-    }
-
-    createRcReads();
-    CHECK_OP(stateInfo, );
-
-    kalign = new KAlignSubTask(reference, read, storage);
-    rKalign = new KAlignSubTask(reference, rRead, storage);
-    cKalign = new KAlignSubTask(reference, cRead, storage);
-    rcKalign = new KAlignSubTask(reference, rcRead, storage);
-    addSubTask(kalign);
-    addSubTask(rKalign);
-    addSubTask(cKalign);
-    addSubTask(rcKalign);
-}
-
-QList<Task*> PairwiseAlignmentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task*> result;
-    CHECK_OP(stateInfo, result);
-    // not kalign is filtered for now
-    CHECK((kalign == subTask) || (rKalign == subTask) || (cKalign == subTask) || (rcKalign == subTask), result);
-    CHECK(kalign->isFinished() && rKalign->isFinished() && cKalign->isFinished() && rcKalign->isFinished(), result);
-
-    createSWAlignment(initRc());
-
-    AbstractAlignmentTaskFactory *factory = KAlignSubTask::getAbstractAlignmentTaskFactory("Smith-Waterman", "SW_classic", stateInfo);
-    CHECK_OP(stateInfo, result);
-
-    QScopedPointer<PairwiseAlignmentTaskSettings> settings(KAlignSubTask::createSettings(storage, msa, stateInfo));
-    CHECK_OP(stateInfo, result);
-    settings->setCustomValue("SW_gapOpen", -10);
-    settings->setCustomValue("SW_gapExtd", -1);
-    settings->setCustomValue("SW_scoringMatrix", "dna");
-
-    result << factory->getTaskInstance(settings.take());
-    return result;
-}
-
-void PairwiseAlignmentTask::run() {
-    CHECK_OP(stateInfo, );
-    QScopedPointer<MAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
-    CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object")), );
-    int rowCount = msaObject->getNumRows();
-    CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
-
-    referenceGaps = msaObject->getRow(0).getGapModel();
-    readGaps = msaObject->getRow(1).getGapModel();
-
-    CHECK(offset > 0, );
-    shiftGaps(referenceGaps);
-    shiftGaps(readGaps);
-    readGaps.prepend(U2MsaGap(0, offset));
-}
-
-bool PairwiseAlignmentTask::isReverse() const {
-    return reverse;
-}
-
-bool PairwiseAlignmentTask::isComplement() const {
-    return complement;
-}
-
-SharedDbiDataHandler PairwiseAlignmentTask::getRead() const {
-    if (reverse && complement) {
-        return rcKalign->getRead();
-    } else if (reverse) {
-        return rKalign->getRead();
-    } else if (complement) {
-        return cKalign->getRead();
-    } else {
-        return kalign->getRead();
-    }
-}
-
-QList<U2MsaGap> PairwiseAlignmentTask::getReferenceGaps() const {
-    return referenceGaps;
-}
-
-QList<U2MsaGap> PairwiseAlignmentTask::getReadGaps() const {
-    return readGaps;
-}
-
-QString PairwiseAlignmentTask::getInitialReadName() const {
-    return initialReadName;
-}
-
-QByteArray PairwiseAlignmentTask::getComplement(const QByteArray &sequence, const DNAAlphabet *alphabet) {
-    DNATranslation *translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
-    CHECK_EXT(NULL != translator, setError(tr("Can't translate read sequence to reverse complement")), "");
-
-    QByteArray translation(sequence.length(), 0);
-    translator->translate(sequence.constData(), sequence.length(), translation.data(), translation.length());
-    return translation;
-}
-
-QByteArray PairwiseAlignmentTask::getReverse(const QByteArray &sequence) const {
-    QByteArray result = sequence;
-    TextUtils::reverse(result.data(), result.length());
-    return result;
-}
-
-QByteArray PairwiseAlignmentTask::getReverseComplement(const QByteArray &sequence, const DNAAlphabet *alphabet) {
-    return getReverse(getComplement(sequence, alphabet));
-}
-
-void PairwiseAlignmentTask::createRcReads() {
-    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
-    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), );
-
-    DNASequence seq = readObject->getWholeSequence(stateInfo);
-    CHECK_OP(stateInfo, );
-    QByteArray sequence = seq.seq;
-    initialReadName = seq.getName();
-
-    seq.seq = getReverse(sequence);
-    seq.setName(initialReadName + "_rev");
-    U2EntityRef rRef = U2SequenceUtils::import(storage->getDbiRef(), seq, stateInfo);
-    CHECK_OP(stateInfo, );
-    rRead = storage->getDataHandler(rRef);
-
-    seq.seq = getComplement(sequence, readObject->getAlphabet());
-    seq.setName(initialReadName + "_compl");
-    U2EntityRef cRef = U2SequenceUtils::import(storage->getDbiRef(), seq, stateInfo);
-    CHECK_OP(stateInfo, );
-    cRead = storage->getDataHandler(cRef);
-
-    seq.seq = getReverseComplement(sequence, readObject->getAlphabet());
-    seq.setName(initialReadName + "_rev_compl");
-    U2EntityRef rcRef = U2SequenceUtils::import(storage->getDbiRef(), seq, stateInfo);
-    CHECK_OP(stateInfo, );
-    rcRead = storage->getDataHandler(rcRef);
-}
-
-KAlignSubTask * PairwiseAlignmentTask::initRc() {
-    QList<qint64> values;
-    values << kalign->getMaxRegionSize();
-    values << rKalign->getMaxRegionSize();
-    values << cKalign->getMaxRegionSize();
-    values << rcKalign->getMaxRegionSize();
-    qSort(values);
-    qint64 max = values.last();
-
-    if (kalign->getMaxRegionSize() == max) {
-        reverse = false;
-        complement = false;
-    } else if (rKalign->getMaxRegionSize() == max) {
-        reverse = true;
-        complement = false;
-    } else if (cKalign->getMaxRegionSize() == max) {
-        reverse = false;
-        complement = true;
-    } else {
-        assert(rcKalign->getMaxRegionSize() == max);
-        reverse = true;
-        complement = true;
-    }
-
-    if (reverse && complement) {
-        return rcKalign;
-    } else if (reverse) {
-        return rKalign;
-    } else if (complement) {
-        return cKalign;
-    } else {
-        return kalign;
-    }
-}
-
-void PairwiseAlignmentTask::createSWAlignment(KAlignSubTask *task) {
-    QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
-    CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), );
-    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, task->getRead()));
-    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), );
-
-    QByteArray referenceData = refObject->getSequenceData(task->getCoreRegion(), stateInfo);
-    CHECK_OP(stateInfo, );
-
-    MAlignment alignment("msa", refObject->getAlphabet());
-    alignment.addRow(refObject->getSequenceName(), referenceData, stateInfo);
-    CHECK_OP(stateInfo, );
-    QByteArray readData = readObject->getWholeSequenceData(stateInfo);
-    CHECK_OP(stateInfo, );
-    alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
-    CHECK_OP(stateInfo, );
-
-    QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
-    CHECK_OP(stateInfo, );
-    msa = storage->getDataHandler(msaObj->getEntityRef());
-    offset = task->getCoreRegion().startPos;
-}
-
-void PairwiseAlignmentTask::shiftGaps(QList<U2MsaGap> &gaps) const {
-    for (int i=0; i<gaps.size(); i++) {
-        gaps[i].offset += offset;
-    }
 }
 
 } // LocalWorkflow
