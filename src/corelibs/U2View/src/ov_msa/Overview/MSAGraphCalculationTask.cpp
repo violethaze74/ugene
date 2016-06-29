@@ -223,7 +223,7 @@ bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleSeq
     QString schemeId = highlightingScheme->getFactory()->getId();
 
     if (seq == refSeq || isEmptyScheme(schemeId) ||
-            ((refSeq == MultipleSequenceAlignmentRow::invalidRowId()) && !isGapScheme(schemeId) &&
+            ((refSeq == MultipleSequenceAlignmentRow::INVALID_ROW_ID) && !isGapScheme(schemeId) &&
             !highlightingScheme->getFactory()->isRefFree())) {
         if (colorScheme->getColor(seq, pos, ma.charAt(seq, pos)) != QColor()) {
             return true;

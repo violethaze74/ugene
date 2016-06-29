@@ -450,7 +450,7 @@ Task::ReportResult MuscleGObjectTask::report() {
 
         QMap<qint64, QList<U2MaGap> > rowsGapModel;
         for (int i = 0, n = muscleTask->resultMA.getNumRows(); i < n; ++i) {
-            qint64 rowId = muscleTask->resultMA.getRow(i).getRowDBInfo().rowId;
+            qint64 rowId = muscleTask->resultMA.getRow(i).getRowDbInfo().rowId;
             const QList<U2MaGap>& newGapModel = muscleTask->resultMA.getRow(i).getGapModel();
             rowsGapModel.insert(rowId, newGapModel);
         }

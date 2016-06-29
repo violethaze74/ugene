@@ -612,7 +612,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
         // Update data for rows with the same row and sequence IDs
         if (newRowsIds.contains(currentRow.rowId)) {
             // Update sequence and row info
-            const U2MsaRow newRow = al.getRowByRowId(currentRow.rowId, os).getRowDBInfo();
+            const U2MsaRow newRow = al.getRowByRowId(currentRow.rowId, os).getRowDbInfo();
             CHECK_OP(os, );
 
             if (newRow.sequenceId != currentRow.sequenceId) {
@@ -646,7 +646,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     QList<qint64> rowsOrder;
     for (int i = 0, n = al.getNumRows(); i < n; ++i) {
         const MultipleSequenceAlignmentRow& alRow = al.getRow(i);
-        U2MsaRow row = alRow.getRowDBInfo();
+        U2MsaRow row = alRow.getRowDbInfo();
 
         if (row.sequenceId.isEmpty() || !currentRowIds.contains(row.rowId)) {
             // Import the sequence
@@ -1083,7 +1083,7 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64> rowIds, qi
         MultipleSequenceAlignmentRow row = al.getRow(i);
         qint64 rowId = row.getRowId();
         if (rowIds.contains(rowId)) {
-            U2DataId sequenceId = row.getRowDBInfo().sequenceId;
+            U2DataId sequenceId = row.getRowDbInfo().sequenceId;
             SAFE_POINT(!sequenceId.isEmpty(), "Empty sequence ID!", );
 
             // Calculate the modified row

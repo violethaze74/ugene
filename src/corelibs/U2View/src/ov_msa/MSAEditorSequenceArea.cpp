@@ -686,7 +686,7 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
     const int refSeq = msa.getRowIndexByRowId(editor->getReferenceRowId(), os);
     QString refSeqName = editor->getReferenceRowName();
     const MultipleSequenceAlignmentRow *r = NULL;
-    if (MultipleSequenceAlignmentRow::invalidRowId() != refSeq) {
+    if (MultipleSequenceAlignmentRow::INVALID_ROW_ID != refSeq) {
         r = &(msa.getRow(refSeq));
     }
 
@@ -2937,7 +2937,7 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
     U2OpStatusImpl os;
     const int refSeq = alignment.getRowIndexByRowId(editor->getReferenceRowId(), os);
     const MultipleSequenceAlignmentRow *r = NULL;
-    if (MultipleSequenceAlignmentRow::invalidRowId() != refSeq) {
+    if (MultipleSequenceAlignmentRow::INVALID_ROW_ID != refSeq) {
         r = &(msa.getRow(refSeq));
     }
 

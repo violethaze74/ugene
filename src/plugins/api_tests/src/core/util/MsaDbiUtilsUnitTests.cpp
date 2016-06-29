@@ -1800,7 +1800,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
     seqDbi->createSequenceObject(newSeq, "", os);
     CHECK_NO_ERROR(os);
 
-    U2MsaRow changedRow = expMa.getRow(1).getRowDBInfo();
+    U2MsaRow changedRow = expMa.getRow(1).getRowDbInfo();
     changedRow.sequenceId = newSeq.id;
     expMa.removeRow(1, os);
     CHECK_NO_ERROR(os);

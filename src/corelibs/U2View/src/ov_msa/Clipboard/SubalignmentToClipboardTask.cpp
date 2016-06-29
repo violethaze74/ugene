@@ -194,7 +194,7 @@ void RichTextMsaClipboardTask::run(){
     U2OpStatusImpl os;
     const int refSeq = msa.getRowIndexByRowId(context->getReferenceRowId(), os);
     const MultipleSequenceAlignmentRow *r = NULL;
-    if (MultipleSequenceAlignmentRow::invalidRowId() != refSeq) {
+    if (MultipleSequenceAlignmentRow::INVALID_ROW_ID != refSeq) {
         r = &(msa.getRow(refSeq));
     }
 
@@ -216,7 +216,7 @@ void RichTextMsaClipboardTask::run(){
                 if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
                     const char refChar = '\n';
                     highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-                } else if (seq == refSeq || MultipleSequenceAlignmentRow::invalidRowId() == refSeq) {
+                } else if (seq == refSeq || MultipleSequenceAlignmentRow::INVALID_ROW_ID == refSeq) {
                     highlight = true;
                 } else {
                     const char refChar = r->charAt(pos);

@@ -28,7 +28,7 @@ const int CURSOR_START_POSITION = 0;
 namespace U2 {
 
 SequenceSelectorWidgetController::SequenceSelectorWidgetController(MSAEditor* _msa)
-    : msa(_msa), defaultSeqName(""), seqId(MultipleSequenceAlignmentRow::invalidRowId())
+    : msa(_msa), defaultSeqName(""), seqId(MultipleSequenceAlignmentRow::INVALID_ROW_ID)
 {
     setupUi(this);
     filler = new MSACompletionFiller();
@@ -140,7 +140,7 @@ void SequenceSelectorWidgetController::sl_addSeqClicked() {
 void SequenceSelectorWidgetController::sl_deleteSeqClicked() {
     seqLineEdit->setText("");
     defaultSeqName = "";
-    setSequenceId(MultipleSequenceAlignmentRow::invalidRowId());
+    setSequenceId(MultipleSequenceAlignmentRow::INVALID_ROW_ID);
     emit si_selectionChanged();
 }
 

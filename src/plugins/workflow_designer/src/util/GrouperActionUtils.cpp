@@ -359,10 +359,10 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     foreach (const MultipleSequenceAlignmentRow &newRow, newAl.getRows()) {
         if (unique) {
             if (!rows.contains(newRow)) {
-                result.addRow(newRow.getRowDBInfo(), newRow.getSequence(), os);
+                result.addRow(newRow.getRowDbInfo(), newRow.getSequence(), os);
             }
         } else {
-            result.addRow(newRow.getRowDBInfo(), newRow.getSequence(), os);
+            result.addRow(newRow.getRowDbInfo(), newRow.getSequence(), os);
         }
     }
 

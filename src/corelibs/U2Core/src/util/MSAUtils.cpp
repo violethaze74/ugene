@@ -325,11 +325,11 @@ QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignmen
         foreach (const MultipleSequenceAlignmentRow &origMsaRow, origMsaRows) {
             if (origMsaRow.getName().replace(" ", "_") == rowName && origMsaRow.getSequence().seq == newMsaRow.getSequence().seq) {
                 rowFound = true;
-                qint64 rowId = origMsaRow.getRowDBInfo().rowId;
+                qint64 rowId = origMsaRow.getRowDbInfo().rowId;
                 newMsa.setRowId(i, rowId);
                 rowsOrder.append(rowId);
 
-                U2DataId sequenceId = origMsaRow.getRowDBInfo().sequenceId;
+                U2DataId sequenceId = origMsaRow.getRowDbInfo().sequenceId;
                 newMsa.setSequenceId(i, sequenceId);
 
                 break;

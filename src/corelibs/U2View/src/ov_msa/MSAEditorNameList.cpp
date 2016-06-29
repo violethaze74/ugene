@@ -906,7 +906,7 @@ bool MSAEditorNameList::isRowInSelection(int seqnum) {
 }
 
 qint64 MSAEditorNameList::sequenceIdAtPos(const QPoint &p) {
-    qint64 result = MultipleSequenceAlignmentRow::invalidRowId();
+    qint64 result = MultipleSequenceAlignmentRow::INVALID_ROW_ID;
     curSeq = ui->seqArea->getSequenceNumByY(p.y());
     if (!ui->seqArea->isSeqInRange(curSeq)) {
         return result;

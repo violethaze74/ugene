@@ -65,7 +65,7 @@
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
     U2::MultipleSequenceAlignmentRow row = msa->getMSAObject()->getMAlignment().getRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
-    return row.getRowDBInfo().sequenceId;
+    return row.getRowDbInfo().sequenceId;
 }
 
 namespace U2 {
@@ -232,8 +232,8 @@ void PairAlign::checkState() {
     showHideOutputWidget->setEnabled(alphabetIsOk);
 
     bool readOnly = msa->getMSAObject()->isStateLocked();
-    canDoAlign = ((MultipleSequenceAlignmentRow::invalidRowId() != firstSeqSelectorWC->sequenceId())
-                  && (MultipleSequenceAlignmentRow::invalidRowId() != secondSeqSelectorWC->sequenceId())
+    canDoAlign = ((MultipleSequenceAlignmentRow::INVALID_ROW_ID != firstSeqSelectorWC->sequenceId())
+                  && (MultipleSequenceAlignmentRow::INVALID_ROW_ID != secondSeqSelectorWC->sequenceId())
                   && (firstSeqSelectorWC->sequenceId() != secondSeqSelectorWC->sequenceId())
                   && sequenceNamesIsOk && alphabetIsOk && (!readOnly || inNewWindowCheckBox->isChecked()));
 

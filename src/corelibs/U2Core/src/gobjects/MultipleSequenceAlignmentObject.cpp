@@ -355,7 +355,7 @@ void MultipleSequenceAlignmentObject::removeRow(int rowIdx) {
     const MultipleSequenceAlignment &msa = getMAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < msa.getNumRows(), "Invalid row index!", );
     const MultipleSequenceAlignmentRow& row = msa.getRow(rowIdx);
-    qint64 rowId = row.getRowDBInfo().rowId;
+    qint64 rowId = row.getRowDbInfo().rowId;
 
     U2OpStatus2Log os;
     MsaDbiUtils::removeRow(entityRef, rowId, os);
@@ -377,7 +377,7 @@ void MultipleSequenceAlignmentObject::updateRow(U2OpStatus& os, int rowIdx, cons
     const MultipleSequenceAlignment &msa = getMAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < msa.getNumRows(), "Invalid row index!", );
     const MultipleSequenceAlignmentRow& row = msa.getRow(rowIdx);
-    qint64 rowId = row.getRowDBInfo().rowId;
+    qint64 rowId = row.getRowDbInfo().rowId;
 
     MsaDbiUtils::updateRowContent(entityRef, rowId, seqBytes, gapModel, os);
     CHECK_OP(os, );
@@ -531,7 +531,7 @@ void MultipleSequenceAlignmentObject::renameRow(int rowIdx, const QString& newNa
     const MultipleSequenceAlignment &msa = getMAlignment();
     SAFE_POINT(rowIdx >= 0 && rowIdx < msa.getNumRows(), "Invalid row index!", );
     const MultipleSequenceAlignmentRow& row = msa.getRow(rowIdx);
-    qint64 rowId = row.getRowDBInfo().rowId;
+    qint64 rowId = row.getRowDbInfo().rowId;
 
     U2OpStatus2Log os;
     MsaDbiUtils::renameRow(entityRef, rowId, newName, os);
