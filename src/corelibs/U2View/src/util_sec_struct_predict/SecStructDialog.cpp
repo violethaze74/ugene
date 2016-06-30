@@ -62,6 +62,10 @@ SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) :
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     startButton = buttonBox->button(QDialogButtonBox::Ok);
 
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Save)->setText(tr("Save"));
+
     saveAnnotationButton->setDisabled(true);
 
     U2Region initialSelection = ctx->getSequenceSelection()->isEmpty() ? U2Region() : ctx->getSequenceSelection()->getSelectedRegions().first();
