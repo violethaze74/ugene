@@ -126,7 +126,7 @@ void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma) {
     const DNAAlphabet* resAl = NULL;
     for (int i = 0, n = ma.getNumRows();i<n; i++) {
         const MultipleSequenceAlignmentRow& item = ma.getRow(i);
-        const QByteArray& itemSeq = item.getCore();
+        const QByteArray& itemSeq = item->getCore();
         const DNAAlphabet* itemAl = findBestAlphabet(itemSeq);
         if (resAl == NULL) {
             resAl = itemAl;
@@ -147,7 +147,7 @@ void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma, char ignore)
     const DNAAlphabet* resAl = NULL;
     for (int i = 0, n = ma.getNumRows();i<n; i++) {
         const MultipleSequenceAlignmentRow& item = ma.getRow(i);
-        QByteArray itemSeq = item.getCore();
+        QByteArray itemSeq = item->getCore();
         itemSeq.replace(ignore, MAlignment_GapChar);
         const DNAAlphabet* itemAl = findBestAlphabet(itemSeq);
         if (resAl == NULL) {

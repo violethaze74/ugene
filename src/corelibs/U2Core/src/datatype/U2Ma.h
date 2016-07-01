@@ -46,6 +46,8 @@ public:
 
     bool operator==(const U2MaGap &g) const;
 
+    static bool lessThan(const U2MaGap &first, const U2MaGap &second);
+
     /** Offset of the gap in sequence*/
     qint64 offset;
 

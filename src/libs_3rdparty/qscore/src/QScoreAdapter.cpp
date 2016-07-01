@@ -12,13 +12,13 @@ namespace U2 {
 
       char *sequence = new char[ma.getLength() + 1];
       for(int position = 0;position < ma.getLength();position++) {
-          sequence[position] = aseq.charAt(position);
+          sequence[position] = aseq->charAt(position);
       }
       sequence[ma.getLength()] = '\0';
 
-      char* name = new char[aseq.getName().length() + 1];
-      memcpy(name, aseq.getName().toLocal8Bit().data(), aseq.getName().length());
-      name[aseq.getName().length()] = '\0';
+      char* name = new char[aseq->getName().length() + 1];
+      memcpy(name, aseq->getName().toLocal8Bit().data(), aseq->getName().length());
+      name[aseq->getName().length()] = '\0';
 
       muscleMSA.AppendSeq(sequence, ma.getLength(), name);
     }

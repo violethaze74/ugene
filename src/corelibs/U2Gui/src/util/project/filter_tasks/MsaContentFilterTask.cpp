@@ -73,7 +73,7 @@ bool MsaContentFilterTask::msaContainsPattern(MultipleSequenceAlignmentObject *m
     for (int i = 0, n = ma.getNumRows(); i < n; ++i) {
         const MultipleSequenceAlignmentRow &row = ma.getRow(i);
         for (int j = 0; j < (ma.getLength() - searchStr.length() + 1); ++j) {
-            const char c = row.charAt(j);
+            const char c = row->charAt(j);
             int altenateLength = 0;
             if (MAlignment_GapChar != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {
                 return true;

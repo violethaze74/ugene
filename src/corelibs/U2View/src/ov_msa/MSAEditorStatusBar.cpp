@@ -185,7 +185,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
         // if s == pos.y -> search from the current base, otherwise search from the seq start
         int p = ( s == selectionTopLeft.y( ) ) ? selectionTopLeft.x( ) : 0;
         for ( ; p < ( aliLen - pat.length( ) + 1 ); p++ ) {
-            char c = row.charAt( p );
+            char c = row->charAt( p );
             int selLength = 0;
             if ( MAlignment_GapChar != c && MSAUtils::equalsIgnoreGaps(row, p, pat, selLength) ) {
                 // select the result now
@@ -225,7 +225,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
         int p = ( s == pos.y( ) ? pos.x( ) : ( aliLen - pat.length( ) + 1) );
         while ( 0 <= p ) {
             int selectionLength = 0;
-            if ( MAlignment_GapChar != row.charAt( p )
+            if ( MAlignment_GapChar != row->charAt( p )
                 && MSAUtils::equalsIgnoreGaps( row, p, pat, selectionLength ) )
             {
                 // select the result now

@@ -29,13 +29,13 @@ namespace U2 {
 class RowWalker {
 public:
     RowWalker(const MultipleSequenceAlignmentRow &row, char gapChar)
-    : row(row), gaps(row.getGapModel()), seqPos(0), gapChar(gapChar)
+    : row(row), gaps(row->getGapModel()), seqPos(0), gapChar(gapChar)
     {
 
     }
 
     QByteArray nextData(int startPos, int length, U2OpStatus &os) {
-        QByteArray result = row.getSequence().constSequence().mid(seqPos, length);
+        QByteArray result = row->getSequence().constSequence().mid(seqPos, length);
 
         if (gaps.isEmpty()) { // add trailing gaps if it is possible
             seqPos += result.length();

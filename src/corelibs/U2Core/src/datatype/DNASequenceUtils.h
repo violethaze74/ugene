@@ -35,7 +35,7 @@ enum DnaSequencesMatchStatus {MatchExactly, DoNotMatch};
 class U2CORE_EXPORT DNASequenceUtils {
 public:
     /** Appends "appendedSequence" to "sequence" */
-    static void append(DNASequence& sequence, const DNASequence& appendedSequence, U2OpStatus& os);
+    static void append(DNASequence& sequence, const DNASequence& appendedSequence);
 
     /** Compares two sequences */
     static DnaSequencesMatchStatus compare(const DNASequence& firstSeq, const DNASequence& secondSec);

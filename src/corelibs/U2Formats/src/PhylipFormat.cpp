@@ -140,7 +140,7 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
 
     //write sequences
     for (int i = 0; i < numberOfSpecies; i++) {
-        QByteArray line = ma.getRow(i).getName().toLatin1();
+        QByteArray line = ma.getRow(i)->getName().toLatin1();
         if (line.length() < MAX_NAME_LEN) {
             int difference = MAX_NAME_LEN - line.length();
             for (int j = 0; j < difference; j++) {
@@ -151,7 +151,7 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
             line = line.left(MAX_NAME_LEN);
         }
         io->writeBlock(line);
-        QByteArray sequence = ma.getRow(i).toByteArray(numberOfCharacters, os);
+        QByteArray sequence = ma.getRow(i)->toByteArray(numberOfCharacters, os);
         int blockCounter = 0;
         while ((blockCounter*SEQ_BLOCK_SIZE) <= numberOfCharacters) {
             line.clear();
@@ -260,7 +260,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
 
     //write first block with names
     for (int i = 0; i < numberOfSpecies; i++) {
-        QByteArray line = ma.getRow(i).getName().toLatin1();
+        QByteArray line = ma.getRow(i)->getName().toLatin1();
         if (line.length() < MAX_NAME_LEN) {
             int difference = MAX_NAME_LEN - line.length();
             for (int j = 0; j < difference; j++)
@@ -270,7 +270,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
             line = line.left(MAX_NAME_LEN);
         }
 
-        QByteArray sequence = ma.getRow(i).toByteArray(numberOfCharacters, os);
+        QByteArray sequence = ma.getRow(i)->toByteArray(numberOfCharacters, os);
         line.append(sequence.left(INT_BLOCK_SIZE));
         line.append('\n');
 
@@ -283,7 +283,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     while (blockCounter*INT_BLOCK_SIZE <= numberOfCharacters) {
         io->writeBlock("\n", 1);
         for (int i = 0; i < numberOfSpecies; i++) {
-            QByteArray sequence = ma.getRow(i).toByteArray(numberOfCharacters, os);
+            QByteArray sequence = ma.getRow(i)->toByteArray(numberOfCharacters, os);
             QByteArray line;
             line.append(spacer);
             line.append(sequence.mid(blockCounter*INT_BLOCK_SIZE, INT_BLOCK_SIZE));

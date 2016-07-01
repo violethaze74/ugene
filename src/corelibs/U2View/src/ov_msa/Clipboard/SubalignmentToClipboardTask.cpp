@@ -86,7 +86,7 @@ QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MSAEditor *context,
         if (m->rowToMap(i, true) < 0) {
             continue;
         }
-        names.append(msaObj->getMAlignment().getRow(i).getName());
+        names.append(msaObj->getMAlignment().getRow(i)->getName());
     }
     return names;
 }
@@ -193,9 +193,9 @@ void RichTextMsaClipboardTask::run(){
     const MultipleSequenceAlignment &msa = obj->getMAlignment();
     U2OpStatusImpl os;
     const int refSeq = msa.getRowIndexByRowId(context->getReferenceRowId(), os);
-    const MultipleSequenceAlignmentRow *r = NULL;
-    if (MultipleSequenceAlignmentRow::INVALID_ROW_ID != refSeq) {
-        r = &(msa.getRow(refSeq));
+    MultipleSequenceAlignmentRow row;
+    if (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) {
+        row = msa.getRow(refSeq);
     }
 
     result.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toLatin1());
@@ -204,22 +204,23 @@ void RichTextMsaClipboardTask::run(){
         for (int seq = 0; seq < numRows; seq++){
             QString res;
             const MultipleSequenceAlignmentRow& row = ma.getRow(seq);
-            if (!names.contains(row.getName())){
+            if (!names.contains(row->getName())){
                 continue;
             }
 
             result.append("<p>");
             for (int pos = window.startPos; pos < window.endPos(); pos++){
-                char c = row.charAt(pos);
+                char c = row->charAt(pos);
                 bool highlight = false;
                 QColor color = colorScheme->getColor(seq, pos, c);
                 if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
                     const char refChar = '\n';
                     highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-                } else if (seq == refSeq || MultipleSequenceAlignmentRow::INVALID_ROW_ID == refSeq) {
+                } else if (seq == refSeq || MultipleAlignmentRowData::INVALID_ROW_ID == refSeq) {
                     highlight = true;
                 } else {
-                    const char refChar = r->charAt(pos);
+                    SAFE_POINT_EXT(NULL != row, setError("MSA row is NULL"), );
+                    const char refChar = row->charAt(pos);
                     highlightingScheme->process(refChar, c, color, highlight, pos, seq);
                 }
 

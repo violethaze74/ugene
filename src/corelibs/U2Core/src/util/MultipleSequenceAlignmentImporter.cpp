@@ -83,7 +83,7 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
     SAFE_POINT_EXT(rows.size() == al.getNumRows(), os.setError(QObject::tr("Unexpected error on MSA rows import")), NULL);
 
     for (int i = 0, n = al.getNumRows(); i < n; ++i) {
-        al.getRow(i).setRowDbInfo(rows.at(i));
+        al.getRow(i)->setRowDbInfo(rows.at(i));
     }
 
     return new MultipleSequenceAlignmentObject(al.getName(), U2EntityRef(dbiRef, msa.id), QVariantMap(), al);
@@ -148,7 +148,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
     QList<U2Sequence> sequences;
     for (int i = 0; i < al.getNumRows(); ++i) {
         MultipleSequenceAlignmentRow row = al.getRow(i);
-        DNASequence dnaSeq = row.getSequence();
+        DNASequence dnaSeq = row->getSequence();
 
         U2Sequence sequence = U2Sequence();
         sequence.visualName = dnaSeq.getName();
@@ -213,19 +213,19 @@ QList<U2MaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnection
         if (seq.length > 0) {
             MultipleSequenceAlignmentRow &alignmentRow = al.getRow(i);
             const U2MaRowGapModel gapModel = msaGapModel[i];
-            if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow.getSequence().seq, gapModel)) {
+            if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
                 // remove trailing gap if it exists
                 U2MaRowGapModel newGapModel = gapModel;
                 newGapModel.removeLast();
-                alignmentRow.setGapModel(newGapModel);
+                alignmentRow->setGapModel(newGapModel);
             }
 
             U2MaRow row;
             row.dataObjectId = seq.id;
             row.gstart = 0;
             row.gend = seq.length;
-            row.gaps = alignmentRow.getGapModel();
-            row.length = alignmentRow.getRowLengthWithoutTrailing();
+            row.gaps = alignmentRow->getGapModel();
+            row.length = alignmentRow->getRowLengthWithoutTrailing();
 
             rows.append(row);
         } else {

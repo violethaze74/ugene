@@ -28,7 +28,7 @@ const int CURSOR_START_POSITION = 0;
 namespace U2 {
 
 SequenceSelectorWidgetController::SequenceSelectorWidgetController(MSAEditor* _msa)
-    : msa(_msa), defaultSeqName(""), seqId(MultipleSequenceAlignmentRow::INVALID_ROW_ID)
+    : msa(_msa), defaultSeqName(""), seqId(MultipleAlignmentRowData::INVALID_ROW_ID)
 {
     setupUi(this);
     filler = new MSACompletionFiller();
@@ -64,7 +64,7 @@ void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
     U2OpStatusImpl os;
     const MultipleSequenceAlignmentRow selectedRow = ma.getRowByRowId(newId, os);
     seqId = newId;
-    const QString selectedName = selectedRow.getName();
+    const QString selectedName = selectedRow->getName();
     if (seqLineEdit->text() != selectedName) {
         seqLineEdit->setText(selectedName);
         seqLineEdit->setCursorPosition(CURSOR_START_POSITION);
@@ -118,9 +118,9 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
                 for ( int sameNameCounter = 0; sameNameCounter <= sequenceIndex; ++sameNameCounter ) {
                     selectedRowIndex = rowNames.indexOf( selectedSeqName, selectedRowIndex + 1 );
                 }
-                seqId = ma.getRow( selectedRowIndex ).getRowId( );
+                seqId = ma.getRow( selectedRowIndex )->getRowId( );
             } else { // case when chosen name is unique in the msa
-                seqId = ma.getRow( selectedSeqName ).getRowId( );
+                seqId = ma.getRow( selectedSeqName )->getRowId( );
             }
         }
     }
@@ -133,14 +133,14 @@ void SequenceSelectorWidgetController::sl_addSeqClicked() {
     }
 
     const MultipleSequenceAlignmentRow selectedRow = msa->getRowByLineNumber(msa->getCurrentSelection().y());
-    setSequenceId(selectedRow.getRowId());
+    setSequenceId(selectedRow->getRowId());
     emit si_selectionChanged();
 }
 
 void SequenceSelectorWidgetController::sl_deleteSeqClicked() {
     seqLineEdit->setText("");
     defaultSeqName = "";
-    setSequenceId(MultipleSequenceAlignmentRow::INVALID_ROW_ID);
+    setSequenceId(MultipleAlignmentRowData::INVALID_ROW_ID);
     emit si_selectionChanged();
 }
 

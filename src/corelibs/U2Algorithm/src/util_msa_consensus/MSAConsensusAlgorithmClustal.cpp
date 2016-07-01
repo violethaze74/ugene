@@ -46,14 +46,14 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
     if (!msa.getAlphabet()->isAmino()) {
         // for nucleic alphabet work as strict algorithm but use ' ' as default
         char  defChar = ' ';
-        char pc = ( seqIdx.isEmpty() ? msa.getRows().first() : msa.getRows()[ seqIdx[0] ] ).charAt(pos);
+        char pc = ( seqIdx.isEmpty() ? msa.getRows().first() : msa.getRows()[ seqIdx[0] ] )->charAt(pos);
         if (pc == MAlignment_GapChar) {
             pc = defChar;
         }
         int nSeq =( seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size());
         for (int s = 1; s < nSeq; s++) {
             const MultipleSequenceAlignmentRow& row = msa.getRow( seqIdx.isEmpty() ? s : seqIdx [s] );
-            char c = row.charAt(pos);
+            char c = row->charAt(pos);
             if (c != pc) {
                 pc = defChar;
                 break;
@@ -78,7 +78,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
         int nSeq =( seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size());
         for (int s = 0; s < nSeq; s++) {
             const MultipleSequenceAlignmentRow& row = msa.getRow( seqIdx.isEmpty() ? s : seqIdx [s] );
-            char c = row.charAt(pos);
+            char c = row->charAt(pos);
             if (!currentGroup.contains(c)) {
                 currentGroup.append(c);
             }

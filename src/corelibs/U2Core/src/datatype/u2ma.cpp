@@ -45,6 +45,10 @@ bool U2MaGap::operator==(const U2MaGap &g) const {
     return ((offset == g.offset) && (gap == g.gap));
 }
 
+bool U2MaGap::lessThan(const U2MaGap &first, const U2MaGap &second) {
+    return first.offset < second.offset;
+}
+
 U2MaRow::U2MaRow()
     : rowId(-1),
       gstart(0),

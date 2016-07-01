@@ -258,7 +258,7 @@ void MSAHighlightingTab::sl_updateHint() {
         thresholdMoreRb->hide();
         lessMoreLabel->hide();
     }
-    if (MultipleSequenceAlignmentRow::INVALID_ROW_ID == msa->getReferenceRowId()
+    if (MultipleAlignmentRowData::INVALID_ROW_ID == msa->getReferenceRowId()
         && !seqArea->getCurrentHighlightingScheme()->getFactory()->isRefFree())
     {
         hint->setText(tr("Hint: select a reference above"));

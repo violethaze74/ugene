@@ -184,7 +184,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         int i = 0, n = al.getNumRows();
         for (; i < n; i++) {
             const MultipleSequenceAlignmentRow& row = al.getRow(i);
-            QByteArray t = row.getName().toLocal8Bit();
+            QByteArray t = row->getName().toLocal8Bit();
             if (line.startsWith(t) && line[t.length()] == ' ') {
                 break;
             }
@@ -206,8 +206,8 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     U2OpStatus2Log seqCheckOs;
     for (int i=0; i<al.getNumRows(); i++) {
         const MultipleSequenceAlignmentRow& row = al.getRow(i);
-        int expectedCheckSum = seqs[row.getName()];
-        int sequenceCheckSum = getCheckSum(row.toByteArray(al.getLength(), seqCheckOs));
+        int expectedCheckSum = seqs[row->getName()];
+        int sequenceCheckSum = getCheckSum(row->toByteArray(al.getLength(), seqCheckOs));
         if ( expectedCheckSum < CHECK_SUM_MOD &&  sequenceCheckSum != expectedCheckSum) {
             ti.setError(MSFFormat::tr("Check sum test failed"));
             return;
@@ -272,11 +272,11 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     static int maxCheckSumLen = 4;
     QMap <QString, int> checkSums;
     foreach(const MultipleSequenceAlignmentRow& row , ma.getRows()) {
-        QByteArray sequence = row.toByteArray(maLen, os).replace(MAlignment_GapChar, '.');
+        QByteArray sequence = row->toByteArray(maLen, os).replace(MAlignment_GapChar, '.');
         int seqCheckSum = getCheckSum(sequence);
-        checkSums.insert(row.getName(), seqCheckSum);
+        checkSums.insert(row->getName(), seqCheckSum);
         checkSum = (checkSum + seqCheckSum) % CHECK_SUM_MOD;
-        maxNameLen = qMax(maxNameLen, row.getName().length());
+        maxNameLen = qMax(maxNameLen, row->getName().length());
     }
     int maxLengthLen = QString::number(maLen).length();
 
@@ -295,11 +295,11 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     //write info
     foreach(const MultipleSequenceAlignmentRow& row, ma.getRows()) {
         QByteArray line = " " + NAME_FIELD;
-        line += " " + QString(row.getName()).replace(' ', '_').leftJustified(maxNameLen+1); // since ' ' is a delimeter for MSF parser spaces in name not suppoted
+        line += " " + QString(row->getName()).replace(' ', '_').leftJustified(maxNameLen+1); // since ' ' is a delimeter for MSF parser spaces in name not suppoted
         line += "  " + LEN_FIELD;
         line += " " + QString("%1").arg(maLen, -maxLengthLen);
         line += "  " + CHECK_FIELD;
-        line += " " + QString("%1").arg(checkSums[row.getName()], -maxCheckSumLen);
+        line += " " + QString("%1").arg(checkSums[row->getName()], -maxCheckSumLen);
         line += "  " + WEIGHT_FIELD;
         line += " " + QByteArray::number(WEIGHT_VALUE) + "\n";
         if (writeBlock(io, os, line)) {
@@ -336,7 +336,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         QList<MultipleSequenceAlignmentRow>::ConstIterator ri = ma.getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;
-            QByteArray line = row.getName().toLocal8Bit();
+            QByteArray line = row->getName().toLocal8Bit();
             line.replace(' ', '_'); // since ' ' is a delimiter for MSF parser spaces in name not supported
             line = line.leftJustified(maxNameLen+1);
 

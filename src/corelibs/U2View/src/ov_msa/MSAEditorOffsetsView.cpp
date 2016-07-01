@@ -179,7 +179,7 @@ int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclA
     const MultipleSequenceAlignmentRow &row = ma.getRow(seqNum);
     const int endPos = inclAliPos ? aliPos + 1 : aliPos;
 
-    return (endPos < row.getCoreStart()) ? 0 : row.getBaseCount(endPos);
+    return (endPos < row->getCoreStart()) ? 0 : row->getDataSize(endPos);
 }
 
 void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {

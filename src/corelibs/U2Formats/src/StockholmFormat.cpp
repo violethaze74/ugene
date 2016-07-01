@@ -419,7 +419,7 @@ static bool nameWasBefore( const MultipleSequenceAlignment& msa, const QString& 
     bool ret = false;
 
     for( int i = 0; i < n; ++i ) {
-        if ( name == msa.getRow(i).getName()) {
+        if ( name == msa.getRow(i)->getName()) {
             ret = true;
             break;
         }
@@ -495,7 +495,7 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MultipleSequenceAlignmen
             }
             else {
                 const MultipleSequenceAlignmentRow& row = msa.getRow(seq_ind);
-                if( name != row.getName()) {
+                if( name != row->getName()) {
                     throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: sequence names are not equal in blocks" ) );
                 }
                 msa.appendChars(seq_ind, currentLen, seq.constData(), seq.size());
@@ -603,10 +603,10 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
 static int getMaxNameLen( const MultipleSequenceAlignment& msa ) {
     assert( msa.getNumRows() != 0 );
     int sz = msa.getNumRows();
-    int max_len = msa.getRow(0).getName().size();
+    int max_len = msa.getRow(0)->getName().size();
 
     for( int i = 0; i < sz; ++i ) {
-        int name_len =  msa.getRow(i).getName().size();
+        int name_len =  msa.getRow(i)->getName().size();
         max_len = ( max_len < name_len )? name_len: max_len;
     }
     return max_len;
@@ -653,9 +653,9 @@ static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, const QSt
         QList<MultipleSequenceAlignmentRow>::ConstIterator ri = msa.getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;
-            QByteArray name = row.getName().toLatin1();
+            QByteArray name = row->getName().toLatin1();
             TextUtils::replace(name.data(), name.length(), TextUtils::WHITES, '_');
-            name += getNameSeqGap( name_max_len - row.getName().size() );
+            name += getNameSeqGap( name_max_len - row->getName().size() );
             ret = io->writeBlock( name );
             checkValThrowException<int>( true, name.size(), ret, StockholmFormat::WriteError(io->getURL()) );
             QByteArray seq = *si + NEW_LINE;

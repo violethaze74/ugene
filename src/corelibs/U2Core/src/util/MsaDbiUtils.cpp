@@ -327,10 +327,10 @@ void MsaDbiUtils::getStartAndEndSequencePositions(const QByteArray &seq, const Q
             }
             i++;
         }
-        startPosInSeq = MsaRowUtils::getUngappedPosition(seq, gaps, pos + i);
+        startPosInSeq = MsaRowUtils::getUngappedPosition(gaps, pos + i);
     }
     else {
-        startPosInSeq = MsaRowUtils::getUngappedPosition(seq, gaps, pos);
+        startPosInSeq = MsaRowUtils::getUngappedPosition(gaps, pos);
     }
 
     // Calculate end position in the sequence
@@ -352,10 +352,10 @@ void MsaDbiUtils::getStartAndEndSequencePositions(const QByteArray &seq, const Q
                 }
                 i++;
             }
-            endPosInSeq = MsaRowUtils::getUngappedPosition(seq, gaps, endRegionPos + i);
+            endPosInSeq = MsaRowUtils::getUngappedPosition(gaps, endRegionPos + i);
         }
         else {
-            endPosInSeq = MsaRowUtils::getUngappedPosition(seq, gaps, endRegionPos);
+            endPosInSeq = MsaRowUtils::getUngappedPosition(gaps, endRegionPos);
         }
     }
 }
@@ -460,17 +460,17 @@ void MsaDbiUtils::cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 p
     SAFE_POINT(count > 0, "Incorrect characters count!",);
 
     // Change the sequence
-    qint64 initialRowLength = alRow.getRowLength();
-    qint64 initialSeqLength = alRow.getUngappedLength();
-    DNASequence modifiedSeq = alRow.getSequence();
+    qint64 initialRowLength = alRow->getRowLength();
+    qint64 initialSeqLength = alRow->getUngappedLength();
+    DNASequence modifiedSeq = alRow->getSequence();
 
-    if (pos >= alRow.getRowLengthWithoutTrailing()) {
+    if (pos >= alRow->getRowLengthWithoutTrailing()) {
         DNASequenceUtils::makeEmpty(modifiedSeq);
     }
     else {
         qint64 startPosInSeq = -1;
         qint64 endPosInSeq = -1;
-        getStartAndEndSequencePositions(alRow.getSequence().seq, alRow.getGapModel(),
+        getStartAndEndSequencePositions(alRow->getSequence().seq, alRow->getGapModel(),
             pos, count,
             startPosInSeq, endPosInSeq);
 
@@ -489,10 +489,10 @@ void MsaDbiUtils::cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 p
             }
         }
     }
-    alRow.setSequence(modifiedSeq);
+    alRow->setSequence(modifiedSeq);
 
     // Change the gap model
-    QList<U2MaGap> gapModel = alRow.getGapModel();
+    QList<U2MaGap> gapModel = alRow->getGapModel();
     if (pos + count < initialRowLength) {
         calculateGapModelAfterRemove(gapModel, pos + count, initialRowLength - pos - count);
     }
@@ -500,7 +500,7 @@ void MsaDbiUtils::cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 p
     if (pos > 0) {
         calculateGapModelAfterRemove(gapModel, 0, pos);
     }
-    alRow.setGapModel(gapModel);
+    alRow->setGapModel(gapModel);
 }
 
 /** Returns "true" if there is a gap on position "pos" */
@@ -612,7 +612,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
         // Update data for rows with the same row and sequence IDs
         if (newRowsIds.contains(currentRow.rowId)) {
             // Update sequence and row info
-            const U2MaRow newRow = al.getRowByRowId(currentRow.rowId, os).getRowDbInfo();
+            const U2MaRow newRow = al.getRowByRowId(currentRow.rowId, os)->getRowDbInfo();
             CHECK_OP(os, );
 
             if (newRow.dataObjectId != currentRow.dataObjectId) {
@@ -624,7 +624,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
                 continue;
             }
 
-            DNASequence sequence = al.getRowByRowId(newRow.rowId, os).getSequence();
+            DNASequence sequence = al.getRowByRowId(newRow.rowId, os)->getSequence();
             CHECK_OP(os, );
 
             msaDbi->updateRowName(msaRef.entityId, newRow.rowId, sequence.getName(), os);
@@ -646,11 +646,11 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     QList<qint64> rowsOrder;
     for (int i = 0, n = al.getNumRows(); i < n; ++i) {
         const MultipleSequenceAlignmentRow& alRow = al.getRow(i);
-        U2MaRow row = alRow.getRowDbInfo();
+        U2MaRow row = alRow->getRowDbInfo();
 
         if (row.dataObjectId.isEmpty() || !currentRowIds.contains(row.rowId)) {
             // Import the sequence
-            DNASequence rowSeq = alRow.getSequence();
+            DNASequence rowSeq = alRow->getSequence();
             U2Sequence sequence = U2Sequence();
             sequence.visualName = rowSeq.getName();
             sequence.circular = rowSeq.circular;
@@ -676,7 +676,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
             row.dataObjectId = sequence.id;
             row.gstart = 0;
             row.gend = sequence.length;
-            row.gaps = alRow.getGapModel();
+            row.gaps = alRow->getGapModel();
             MsaDbiUtils::addRow(msaRef, -1, row, os);
             CHECK_OP(os, );
         }
@@ -1081,20 +1081,20 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64> rowIds, qi
     // Crop or remove each row
     for (int i = 0, n = al.getNumRows(); i < n; ++i) {
         MultipleSequenceAlignmentRow row = al.getRow(i);
-        qint64 rowId = row.getRowId();
+        qint64 rowId = row->getRowId();
         if (rowIds.contains(rowId)) {
-            U2DataId sequenceId = row.getRowDbInfo().dataObjectId;
+            U2DataId sequenceId = row->getRowDbInfo().dataObjectId;
             SAFE_POINT(!sequenceId.isEmpty(), "Empty sequence ID!", );
 
             // Calculate the modified row
             cropCharsFromRow(row, pos, count);
 
             // Put the new sequence and gap model into the database
-            msaDbi->updateRowContent(msaRef.entityId, rowId, row.getSequence().constSequence(), row.getGapModel(), os);
+            msaDbi->updateRowContent(msaRef.entityId, rowId, row->getSequence().constSequence(), row->getGapModel(), os);
             CHECK_OP(os, );
         }
         else {
-            MsaDbiUtils::removeRow(msaRef, row.getRowId(), os);
+            MsaDbiUtils::removeRow(msaRef, row->getRowId(), os);
             CHECK_OP(os, );
         }
     }

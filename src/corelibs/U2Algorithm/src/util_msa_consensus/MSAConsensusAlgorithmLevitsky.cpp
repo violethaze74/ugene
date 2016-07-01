@@ -125,7 +125,7 @@ MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorit
     int len = ma.getLength();
     foreach (const MultipleSequenceAlignmentRow& row, ma.getRows()) {
         for (int i = 0; i < len; i++) {
-            char c = row.charAt(i);
+            char c = row->charAt(i);
             registerHit(freqsData, c);
         }
     }

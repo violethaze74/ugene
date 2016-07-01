@@ -126,7 +126,7 @@ void BestPositionFindTask::run() {
         int iterationsNum = aliLen - sequence.length() + 1;
         for (int p = 0; p < iterationsNum; p++ ) {
             stateInfo.setProgress(100 * p / iterationsNum);
-            char c = row.charAt(p);
+            char c = row->charAt(p);
             int selLength = 0;
             int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
             if (MAlignment_GapChar != c && patternSimilarity > similarity) {
@@ -139,7 +139,7 @@ void BestPositionFindTask::run() {
         foreach(const MultipleSequenceAlignmentRow &row, inputMsa.getRows()) {
             stateInfo.setProgress(100 * processedRows / nSeq);
             for (int p = 0; p < ( aliLen - sequence.length() + 1 ); p++ ) {
-                char c = row.charAt(p);
+                char c = row->charAt(p);
                 int selLength = 0;
                 int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
                 if (MAlignment_GapChar != c && patternSimilarity > similarity) {

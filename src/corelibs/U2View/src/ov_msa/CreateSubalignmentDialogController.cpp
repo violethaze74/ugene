@@ -92,7 +92,7 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     endPosBox->setValue(endPos);
 
     for (int i=0; i<rowNumber; i++) {
-        QCheckBox *cb = new QCheckBox(mobj->getMAlignment().getRow(i).getName(), this);
+        QCheckBox *cb = new QCheckBox(mobj->getMAlignment().getRow(i)->getName(), this);
         cb->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
         if ( (i >= startSeq) && (i <= endSeq)) {
             cb->setChecked(true);

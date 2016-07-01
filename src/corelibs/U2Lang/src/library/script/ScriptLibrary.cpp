@@ -515,9 +515,9 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext *ctx
     }
 
     MultipleSequenceAlignmentRow aRow = align.getRow(row);
-    aRow.simplify();
+    aRow->simplify();
     U2OpStatus2Log os;
-    QByteArray arr = aRow.toByteArray(aRow.getCoreLength(), os);
+    QByteArray arr = aRow->toByteArray(aRow->getCoreLength(), os);
     if(ctx->argumentCount() == 4) {
         var = ctx->argument(2).toVariant();
         int beg = var.toInt(&ok);
@@ -539,7 +539,7 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext *ctx
         }
         arr = arr.mid(beg,len);
     }
-    DNASequence seq(aRow.getName(),arr,align.getAlphabet());
+    DNASequence seq(aRow->getName(),arr,align.getAlphabet());
 
     QScriptValue calee = ctx->callee();
     calee.setProperty("res", putSequence(engine, seq));

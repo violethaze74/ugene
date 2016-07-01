@@ -177,13 +177,13 @@ ESL_MSA * UHMM3Utilities::convertMSA( const MultipleSequenceAlignment & ma ) {
     msa->nseq = nseq;
     for (i = 0; i < nseq; i++) {
         const MultipleSequenceAlignmentRow& row = ma.getRow(i);
-        ok = allocAndCopyData( row.getName().toLatin1(), &msa->sqname[i] );
+        ok = allocAndCopyData( row->getName().toLatin1(), &msa->sqname[i] );
         if( !ok ) {
             esl_msa_Destroy( msa );
             return NULL;
         }
         U2OpStatus2Log os;
-        QByteArray sequence = row.toByteArray(ma.getLength(), os);
+        QByteArray sequence = row->toByteArray(ma.getLength(), os);
         copyData(sequence, msa->aseq[i] );
     }
 

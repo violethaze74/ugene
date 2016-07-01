@@ -44,7 +44,7 @@ bool MsaSeqNameFilterTask::filterAcceptsObject(GObject *obj) {
 
     for (int i = 0, n = msaObj->getNumRows(); i < n; ++i) {
         const MultipleSequenceAlignmentRow &row = msaObj->getRow(i);
-        if (settings.nameFilterAcceptsString(row.getName())) {
+        if (settings.nameFilterAcceptsString(row->getName())) {
             return true;
         }
     }

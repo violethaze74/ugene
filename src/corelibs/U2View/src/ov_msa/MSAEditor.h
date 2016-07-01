@@ -84,7 +84,7 @@ class PairwiseAlignmentTask;
 
 class SNPSettings {
 public:
-    SNPSettings() : seqId(MultipleSequenceAlignmentRow::INVALID_ROW_ID) { }
+    SNPSettings() : seqId(MultipleAlignmentRowData::INVALID_ROW_ID) { }
     QPoint clickPoint;
     qint64 seqId;
     QVariantMap highlightSchemeSettings;
@@ -93,8 +93,8 @@ public:
 class PairwiseAlignmentWidgetsSettings {
 public:
     PairwiseAlignmentWidgetsSettings()
-        : firstSequenceId(MultipleSequenceAlignmentRow::INVALID_ROW_ID),
-        secondSequenceId(MultipleSequenceAlignmentRow::INVALID_ROW_ID), inNewWindow(true),
+        : firstSequenceId(MultipleAlignmentRowData::INVALID_ROW_ID),
+        secondSequenceId(MultipleAlignmentRowData::INVALID_ROW_ID), inNewWindow(true),
         pairwiseAlignmentTask(NULL), showSequenceWidget(true), showAlgorithmWidget(false),
         showOutputWidget(false), sequenceSelectionModeOn(false)
     {

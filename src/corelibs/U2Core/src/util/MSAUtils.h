@@ -22,17 +22,11 @@
 #ifndef _U2_MSA_UTILS_H_
 #define _U2_MSA_UTILS_H_
 
-#include <U2Core/global.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
-
-class GObject;
-class MultipleSequenceAlignment;
-class MultipleSequenceAlignmentRow;
-class U2OpStatus;
 
 class U2CORE_EXPORT MSAUtils : public QObject {
     Q_OBJECT

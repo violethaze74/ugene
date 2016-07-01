@@ -170,8 +170,8 @@ QList<DNASequence> DocumentFormatUtils::toSequences(const GObject* obj) {
     qint64 alLen = maObj->getMAlignment().getLength();
     foreach (const MultipleSequenceAlignmentRow& row, maObj->getMAlignment().getRows()) {
         DNASequence seq;
-        seq.seq = row.toByteArray(alLen, os);
-        seq.setName(row.getName());
+        seq.seq = row->toByteArray(alLen, os);
+        seq.setName(row->getName());
         seq.alphabet = al;
         res << seq;
     }

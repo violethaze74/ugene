@@ -39,16 +39,16 @@
 namespace U2 {
 
 bool MSAUtils::equalsIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pat, int &alternateLen) {
-    int sLen = row.getCoreEnd();
+    int sLen = row->getCoreEnd();
     int pLen = pat.size();
     int i = startPos;
     int gapsCounter = 0;
     for (int j = 0; i  < sLen && j < pLen; i++, j++) {
-        char c1 = row.charAt(i);
+        char c1 = row->charAt(i);
         char c2 = pat[j];
         while(c1 == MAlignment_GapChar && ++i < sLen) {
             gapsCounter++;
-            c1 = row.charAt(i);
+            c1 = row->charAt(i);
         }
         if (c1 != c2) {
             alternateLen = i - startPos;
@@ -63,15 +63,15 @@ bool MSAUtils::equalsIgnoreGaps(const MultipleSequenceAlignmentRow& row, int sta
 }
 
 int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pat, int &alternateLen) {
-    int sLen = row.getCoreEnd();
+    int sLen = row->getCoreEnd();
     int pLen = pat.size();
     int i = startPos;
     int similarity = 0;
     for (int j = 0; i  < sLen && j < pLen; i++, j++) {
-        char c1 = row.charAt(i);
+        char c1 = row->charAt(i);
         char c2 = pat[j];
         while(c1 == MAlignment_GapChar && ++i < sLen) {
-            c1 = row.charAt(i);
+            c1 = row->charAt(i);
         }
         if (c1 == c2) {
             similarity++;
@@ -203,7 +203,7 @@ QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool tr
     const DNAAlphabet* al = ma.getAlphabet();
     U2OpStatus2Log os;
     foreach(const MultipleSequenceAlignmentRow& row, ma.getRows()) {
-        DNASequence s(row.getName(), row.toByteArray(len, os), al);
+        DNASequence s(row->getName(), row->toByteArray(len, os), al);
         if (trimGaps) {
             int newLen = TextUtils::remove(s.seq.data(), s.length(), gapCharMap);
             s.seq.resize(newLen);
@@ -226,7 +226,7 @@ bool MSAUtils::checkPackedModelSymmetry(MultipleSequenceAlignment& ali, U2OpStat
     }
     for (int i=0, n = ali.getNumRows(); i < n; i++) {
         const MultipleSequenceAlignmentRow& row = ali.getRow(i);
-        int rowCoreLength = row.getCoreLength();
+        int rowCoreLength = row->getCoreLength();
         if (rowCoreLength > coreLen) {
             ti.setError(tr("Sequences in alignment have different sizes!"));
             return false;
@@ -240,7 +240,7 @@ int MSAUtils::getRowIndexByName( const MultipleSequenceAlignment& ma, const QStr
     int idx = 0;
 
     foreach(const MultipleSequenceAlignmentRow& row, ma.getRows()) {
-        if (row.getName() == name) {
+        if (row->getName() == name) {
             return idx;
         }
         ++idx;
@@ -319,17 +319,17 @@ QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignmen
     const QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa.getRows();
     for (int i = 0, n = newMsa.getNumRows(); i < n; ++i) {
         const MultipleSequenceAlignmentRow& newMsaRow = newMsa.getRow(i);
-        QString rowName = newMsaRow.getName().replace(" ", "_");
+        QString rowName = newMsaRow->getName().replace(" ", "_");
 
         bool rowFound = false;
         foreach (const MultipleSequenceAlignmentRow &origMsaRow, origMsaRows) {
-            if (origMsaRow.getName().replace(" ", "_") == rowName && origMsaRow.getSequence().seq == newMsaRow.getSequence().seq) {
+            if (origMsaRow->getName().replace(" ", "_") == rowName && origMsaRow->getSequence().seq == newMsaRow->getSequence().seq) {
                 rowFound = true;
-                qint64 rowId = origMsaRow.getRowDbInfo().rowId;
+                qint64 rowId = origMsaRow->getRowDbInfo().rowId;
                 newMsa.setRowId(i, rowId);
                 rowsOrder.append(rowId);
 
-                U2DataId sequenceId = origMsaRow.getRowDbInfo().dataObjectId;
+                U2DataId sequenceId = origMsaRow->getRowDbInfo().dataObjectId;
                 newMsa.setSequenceId(i, sequenceId);
 
                 break;

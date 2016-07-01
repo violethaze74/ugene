@@ -172,7 +172,7 @@ void MSAEditorNameList::updateScrollBar() {
 
     MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     foreach(const MultipleSequenceAlignmentRow& row, maObj->getMAlignment().getRows()) {
-        maxNameWidth = qMax(fm.width(row.getName()), maxNameWidth);
+        maxNameWidth = qMax(fm.width(row->getName()), maxNameWidth);
     }
     // adjustment for branch primitive in collapsing mode
     if (ui->isCollapsibleMode()) {
@@ -241,7 +241,7 @@ void MSAEditorNameList::sl_copyCurrentSequence() {
         const MultipleSequenceAlignmentRow& row = maObj->getMAlignment().getRow(n);
         //TODO: trim large sequence?
         U2OpStatus2Log os;
-        QApplication::clipboard()->setText(row.toByteArray(maObj->getLength(), os));
+        QApplication::clipboard()->setText(row->toByteArray(maObj->getLength(), os));
     }
 }
 
@@ -275,7 +275,7 @@ void MSAEditorNameList::sl_selectReferenceSequence() {
             return;
         }
         assert(!maObj->isStateLocked());
-        editor->setReference(maObj->getRow(n).getRowId());
+        editor->setReference(maObj->getRow(n)->getRowId());
     }
 }
 
@@ -795,7 +795,7 @@ QString MSAEditorNameList::getTextForRow(int s) {
     const MultipleSequenceAlignment& ma = maObj->getMAlignment();
     const MultipleSequenceAlignmentRow& row = ma.getRow(s);
 
-    return row.getName();
+    return row->getName();
 }
 
 QString MSAEditorNameList::getSeqName(int s) {
@@ -855,7 +855,7 @@ void MSAEditorNameList::sl_editSequenceName()
         return;
     }
     const MultipleSequenceAlignmentRow& row = maObj->getMAlignment().getRow(n);
-    QString curName = row.getName();
+    QString curName = row->getName();
     QString newName = QInputDialog::getText(this, tr("Rename"),
             tr("New sequence name:"), QLineEdit::Normal, curName, &ok);
     if (ok && !newName.isEmpty() && curName != newName) {
@@ -906,7 +906,7 @@ bool MSAEditorNameList::isRowInSelection(int seqnum) {
 }
 
 qint64 MSAEditorNameList::sequenceIdAtPos(const QPoint &p) {
-    qint64 result = MultipleSequenceAlignmentRow::INVALID_ROW_ID;
+    qint64 result = MultipleAlignmentRowData::INVALID_ROW_ID;
     curSeq = ui->seqArea->getSequenceNumByY(p.y());
     if (!ui->seqArea->isSeqInRange(curSeq)) {
         return result;
@@ -916,7 +916,7 @@ qint64 MSAEditorNameList::sequenceIdAtPos(const QPoint &p) {
     }
     if (curSeq != -1) {
         MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
-        result = maObj->getMAlignment().getRow(curSeq).getRowId();
+        result = maObj->getMAlignment().getRow(curSeq)->getRowId();
     }
     return result;
 }

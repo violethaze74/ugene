@@ -65,7 +65,7 @@
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
     U2::MultipleSequenceAlignmentRow row = msa->getMSAObject()->getMAlignment().getRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
-    return row.getRowDbInfo().dataObjectId;
+    return row->getRowDbInfo().dataObjectId;
 }
 
 namespace U2 {
@@ -117,9 +117,9 @@ void PairAlign::initLayout() {
 void PairAlign::initParameters() {
     if (2 == msa->getCurrentSelection().height()) {
         int selectionPos = msa->getCurrentSelection().y();
-        qint64 firstRowId = msa->getRowByLineNumber(selectionPos).getRowId();
+        qint64 firstRowId = msa->getRowByLineNumber(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
-        qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1).getRowId();
+        qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1)->getRowId();
         secondSeqSelectorWC->setSequenceId(secondRowId);
     } else {
         firstSeqSelectorWC->setSequenceId(pairwiseAlignmentWidgetsSettings->firstSequenceId);
@@ -232,8 +232,8 @@ void PairAlign::checkState() {
     showHideOutputWidget->setEnabled(alphabetIsOk);
 
     bool readOnly = msa->getMSAObject()->isStateLocked();
-    canDoAlign = ((MultipleSequenceAlignmentRow::INVALID_ROW_ID != firstSeqSelectorWC->sequenceId())
-                  && (MultipleSequenceAlignmentRow::INVALID_ROW_ID != secondSeqSelectorWC->sequenceId())
+    canDoAlign = ((MultipleAlignmentRowData::INVALID_ROW_ID != firstSeqSelectorWC->sequenceId())
+                  && (MultipleAlignmentRowData::INVALID_ROW_ID != secondSeqSelectorWC->sequenceId())
                   && (firstSeqSelectorWC->sequenceId() != secondSeqSelectorWC->sequenceId())
                   && sequenceNamesIsOk && alphabetIsOk && (!readOnly || inNewWindowCheckBox->isChecked()));
 
@@ -267,10 +267,10 @@ void PairAlign::updatePercentOfSimilarity() {
     MultipleSequenceAlignment ma;
     const MultipleSequenceAlignment &currentAlignment = msa->getMSAObject()->getMAlignment();
     ma.addRow(firstSeqSelectorWC->text(),
-        currentAlignment.getRowByRowId(firstSeqSelectorWC->sequenceId(), os).getData(), -1, os);
+        currentAlignment.getRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1, os);
     CHECK_OP(os, );
     ma.addRow(secondSeqSelectorWC->text(),
-        currentAlignment.getRowByRowId(secondSeqSelectorWC->sequenceId(), os).getData(), -1, os);
+        currentAlignment.getRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1, os);
     CHECK_OP(os, );
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
     distanceCalcTask->setExcludeGaps(true);

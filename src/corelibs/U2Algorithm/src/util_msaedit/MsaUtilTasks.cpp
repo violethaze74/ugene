@@ -153,15 +153,15 @@ void AlignInAminoFormTask::run() {
     //Create gap map from amino-acid alignment
     U2OpStatus2Log os;
     foreach (const MultipleSequenceAlignmentRow& row, rows) {
-        const int rowIdx = MSAUtils::getRowIndexByName(maObj->getMAlignment(), row.getName());
-        const MultipleSequenceAlignmentRow curRow = maObj->getMAlignment().getRow(row.getName());
-        SAFE_POINT_EXT(rowIdx >= 0, setError(tr("Can not find row %1 in original alignment.").arg(row.getName())),);
+        const int rowIdx = MSAUtils::getRowIndexByName(maObj->getMAlignment(), row->getName());
+        const MultipleSequenceAlignmentRow curRow = maObj->getMAlignment().getRow(row->getName());
+        SAFE_POINT_EXT(rowIdx >= 0, setError(tr("Can not find row %1 in original alignment.").arg(row->getName())),);
 
         QList<U2MaGap> gapsList;
-        foreach(const U2MaGap& gap, row.getGapModel()) {
+        foreach(const U2MaGap& gap, row->getGapModel()) {
             gapsList << U2MaGap(gap.offset * 3, gap.gap * 3);
         }
-        rowsGapModel[curRow.getRowId()] = gapsList;
+        rowsGapModel[curRow->getRowId()] = gapsList;
     }
 }
 

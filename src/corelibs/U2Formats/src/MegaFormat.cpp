@@ -218,10 +218,10 @@ bool MegaFormat::skipComments(IOAdapter *io, QByteArray &line, U2OpStatus &ti) {
 }
 
 void MegaFormat::workUpIndels(MultipleSequenceAlignment& al) {
-    QByteArray firstSequence=al.getRow(0).getData();
+    QByteArray firstSequence=al.getRow(0)->getData();
 
     for (int i=1; i<al.getNumRows(); i++) {
-        QByteArray newSeq=al.getRow(i).getData();
+        QByteArray newSeq=al.getRow(i)->getData();
         for (int j=0; j<newSeq.length(); j++) {
             if (MEGA_IDENTICAL==al.charAt(i, j)) {
                 newSeq[j]=firstSequence[j];
@@ -276,7 +276,7 @@ void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*>
 
         if (firstBlock) {
             for (int i=0; i<al.getNumRows(); i++) {
-                if (al.getRow(i).getName()==name) {
+                if (al.getRow(i)->getName()==name) {
                     firstBlock=false;
                     sequenceIdx=0;
                     break;
@@ -291,9 +291,7 @@ void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*>
             sequenceIdx++;
         } else {
             if (sequenceIdx<al.getNumRows()) {
-                const MultipleSequenceAlignmentRow *item=&al.getRow(sequenceIdx);
-
-                if (item->getName()!=name) {
+                if (al.getRow(sequenceIdx)->getName() != name) {
                     os.setError(MegaFormat::tr("Incorrect order of sequences' names"));
                     return;
                 }
@@ -350,8 +348,8 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObjec
     }
 
     int maxNameLength=0;
-    foreach (MultipleSequenceAlignmentRow item, ma.getRows()) {
-        maxNameLength = qMax(maxNameLength, item.getName().length());
+    foreach (const MultipleSequenceAlignmentRow &item, ma.getRows()) {
+        maxNameLength = qMax(maxNameLength, item->getName().length());
     }
 
     //write data
@@ -366,10 +364,10 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObjec
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &item = *ri;
             QByteArray line;
-            line.append(MEGA_SEPARATOR).append(item.getName());
+            line.append(MEGA_SEPARATOR).append(item->getName());
             TextUtils::replace(line.data(), line.length(), TextUtils::WHITES, '_');
 
-            for (int i=0; i<maxNameLength-item.getName().length()+1; i++) {
+            for (int i=0; i<maxNameLength-item->getName().length()+1; i++) {
                 line.append(' ');
             }
 

@@ -770,15 +770,15 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
 
     int nameMaxLen = 0;
     foreach (MultipleSequenceAlignmentRow row, rows) {
-        if (row.getName().size() > nameMaxLen) {
-            nameMaxLen = row.getName().size();
+        if (row->getName().size() > nameMaxLen) {
+            nameMaxLen = row->getName().size();
         }
     }
     nameMaxLen += 2;    // quotes may appear
 
     foreach (const MultipleSequenceAlignmentRow& row, rows)
     {
-        QString name = row.getName();
+        QString name = row->getName();
 
         if (name.contains(QRegExp("\\s|\\W"))){
             if (simpleName){
@@ -795,7 +795,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
         name = name.leftJustified(nameMaxLen);
 
         U2OpStatus2Log os;
-        QTextStream(&line) << tabs << name << " " << row.toByteArray(nchar, os) << "\n";
+        QTextStream(&line) << tabs << name << " " << row->toByteArray(nchar, os) << "\n";
         io->writeBlock(line);
         line.clear();
     }
