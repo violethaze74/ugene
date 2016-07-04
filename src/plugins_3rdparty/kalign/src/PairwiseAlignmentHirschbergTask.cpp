@@ -80,10 +80,8 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     SAFE_POINT(alphabet != NULL, "Albhabet is invalid.", );
 
     ma = new MultipleSequenceAlignment(firstName + " vs. " + secondName, alphabet);
-    ma->addRow(firstName, first, os);
-    CHECK_OP(os, );
-    ma->addRow(secondName, second, os);
-    CHECK_OP(os, );
+    ma->addRow(firstName, first);
+    ma->addRow(secondName, second);
 
     KalignTaskSettings kalignSettings;
     kalignSettings.gapOpenPenalty = settings->gapOpen;
@@ -147,11 +145,11 @@ QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) {
             SAFE_POINT_OP(os, res);
             for (int rowNumber = 0; rowNumber < rows.length(); ++rowNumber) {
                 if (rows[rowNumber].dataObjectId == settings->firstSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA.getRow(0).getGapModel(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA.getRow(0)->getGapModel(), os);
                     CHECK_OP(os, res);
                 }
                 if (rows[rowNumber].dataObjectId == settings->secondSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA.getRow(1).getGapModel(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA.getRow(1)->getGapModel(), os);
                     CHECK_OP(os, res);
                 }
             }

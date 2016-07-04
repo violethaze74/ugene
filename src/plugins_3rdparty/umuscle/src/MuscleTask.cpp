@@ -186,12 +186,12 @@ void MuscleTask::doAlign(bool refine) {
         QByteArray gapSeq(resultSubMA.getLength(),MAlignment_GapChar);
         for(int i=0, n = nSeq; i < n; i++) {
             if(!existID[i]) {
-                QString rowName = inputMA.getRow(i).getName();
+                QString rowName = inputMA.getRow(i)->getName();
                 if(config.stableMode) {
-                    resultSubMA.addRow(rowName, gapSeq, i, os);
+                    resultSubMA.addRow(rowName, gapSeq, i);
                 } else {
                     ids[j] = i;
-                    resultSubMA.addRow(rowName, gapSeq, os);
+                    resultSubMA.addRow(rowName, gapSeq);
                 }
                 j++;
             }
@@ -204,13 +204,13 @@ void MuscleTask::doAlign(bool refine) {
 
             for(int i=0, n = inputMA.getNumRows(); i < n; i++) {
                 const MultipleSequenceAlignmentRow& row= inputMA.getRow(ids[i]);
-                resultMA.addRow(row.getName(), emptySeq, os);
+                resultMA.addRow(row->getName(), emptySeq);
             }
             if (config.regionToAlign.startPos != 0) {
                 for(int i=0; i < nSeq; i++)  {
                     int regionLen = config.regionToAlign.startPos;
-                    MultipleSequenceAlignmentRow inputRow = inputMA.getRow(ids[i]).mid(0,regionLen, os);
-                    resultMA.appendChars(i, 0, inputRow.toByteArray(regionLen, os).constData(), regionLen);
+                    MultipleSequenceAlignmentRow inputRow = inputMA.getMsaRow(ids[i])->mid(0, regionLen, os);
+                    resultMA.appendChars(i, 0, inputRow->toByteArray(regionLen, os).constData(), regionLen);
                 }
             }
             resultMA += resultSubMA;
@@ -219,8 +219,8 @@ void MuscleTask::doAlign(bool refine) {
                 int subStart = config.regionToAlign.endPos();
                 int subLen = inputMA.getLength() - config.regionToAlign.endPos();
                 for(int i = 0; i < nSeq; i++) {
-                    MultipleSequenceAlignmentRow inputRow = inputMA.getRow(ids[i]).mid(subStart, subLen, os);
-                    resultMA.appendChars(i, resultLen, inputRow.toByteArray(subLen, os).constData(), subLen);
+                    MultipleSequenceAlignmentRow inputRow = inputMA.getMsaRow(ids[i])->mid(subStart, subLen, os);
+                    resultMA.appendChars(i, resultLen, inputRow->toByteArray(subLen, os).constData(), subLen);
                 }
             }
             //TODO: check if there are GAP columns on borders and remove them
@@ -305,8 +305,7 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
         }
         QByteArray seqData = dnaObj->getWholeSequenceData(stateInfo);
         CHECK_OP(stateInfo, res);
-        s.profile.addRow(dnaObj->getSequenceName(), seqData, stateInfo);
-        CHECK_OP(stateInfo, res);
+        s.profile.addRow(dnaObj->getSequenceName(), seqData);
     }
     if(!seqObjects.isEmpty()) {
         s.profile.setAlphabet(al);
@@ -450,8 +449,8 @@ Task::ReportResult MuscleGObjectTask::report() {
 
         QMap<qint64, QList<U2MaGap> > rowsGapModel;
         for (int i = 0, n = muscleTask->resultMA.getNumRows(); i < n; ++i) {
-            qint64 rowId = muscleTask->resultMA.getRow(i).getRowDbInfo().rowId;
-            const QList<U2MaGap>& newGapModel = muscleTask->resultMA.getRow(i).getGapModel();
+            qint64 rowId = muscleTask->resultMA.getRow(i)->getRowDbInfo().rowId;
+            const QList<U2MaGap>& newGapModel = muscleTask->resultMA.getRow(i)->getGapModel();
             rowsGapModel.insert(rowId, newGapModel);
         }
 

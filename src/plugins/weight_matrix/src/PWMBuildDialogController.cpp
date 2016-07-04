@@ -150,8 +150,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
             U2OpStatus2Log os;
             QByteArray seqData = dnaObj->getWholeSequenceData(os);
             CHECK_OP_EXT(os, reportError(os.getError()), );
-            ma.addRow(dnaObj->getSequenceName(), seqData, os);
-            CHECK_OP_EXT(os, reportError(os.getError()), );
+            ma.addRow(dnaObj->getSequenceName(), seqData);
         }
         replaceLogo(ma);
     }
@@ -338,7 +337,7 @@ PFMatrixBuildTask::PFMatrixBuildTask(const PMBuildSettings& s, const MultipleSeq
 }
 
 void PFMatrixBuildTask::run() {
-    if (!ma.hasEqualLength()) {
+    if (!ma.hasEqualDataLength()) {
         stateInfo.setError(  tr("Sequences in alignment have various lengths") );
         return;
     }
@@ -437,8 +436,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
                     }
                     QByteArray seqData = dnaObj->getWholeSequenceData(stateInfo);
                     CHECK_OP(stateInfo, res);
-                    ma.addRow(dnaObj->getSequenceName(), seqData, stateInfo);
-                    CHECK_OP(stateInfo, res);
+                    ma.addRow(dnaObj->getSequenceName(), seqData);
                 }
                 buildTask = new PFMatrixBuildTask(settings, ma);
                 res.append(buildTask);
@@ -482,7 +480,7 @@ void PWMatrixBuildTask::run() {
             return;
         }
     } else {
-        if (!ma.hasEqualLength()) {
+        if (!ma.hasEqualDataLength()) {
             stateInfo.setError(  tr("Sequences in alignment have various lengths") );
             return;
         }
@@ -569,8 +567,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
                     }
                     QByteArray seqData = dnaObj->getWholeSequenceData(stateInfo);
                     CHECK_OP(stateInfo, res);
-                    ma.addRow(dnaObj->getSequenceName(), seqData, stateInfo);
-                    CHECK_OP(stateInfo, res);
+                    ma.addRow(dnaObj->getSequenceName(), seqData);
                 }
 
                 buildTask = new PWMatrixBuildTask(settings, ma);

@@ -19,24 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/AppContext.h>
-#include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/U2ObjectDbi.h>
-
-#include <U2Gui/ProjectViewModel.h>
-#include <U2Gui/ToolsMenu.h>
-
-#include <U2View/ADVConstants.h>
-#include <U2View/ADVSingleSequenceWidget.h>
-#include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/AnnotationsTreeView.h>
-#include <U2View/AssemblyBrowser.h>
-#include <U2View/AssemblyModel.h>
-#include <U2View/AssemblyNavigationWidget.h>
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
-#include <U2View/MSAEditorNameList.h>
-
 #include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QHeaderView>
@@ -81,6 +63,25 @@
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 #include <utils/GTUtilsToolTip.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/ProjectViewModel.h>
+#include <U2Gui/ToolsMenu.h>
+
+#include <U2View/ADVConstants.h>
+#include <U2View/ADVSingleSequenceWidget.h>
+#include <U2View/AnnotatedDNAViewFactory.h>
+#include <U2View/AnnotationsTreeView.h>
+#include <U2View/AssemblyBrowser.h>
+#include <U2View/AssemblyModel.h>
+#include <U2View/AssemblyNavigationWidget.h>
+#include <U2View/MSAEditor.h>
+#include <U2View/MSAEditorFactory.h>
+#include <U2View/MSAEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"

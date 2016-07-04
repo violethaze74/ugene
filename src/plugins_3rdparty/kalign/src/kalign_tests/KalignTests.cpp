@@ -19,30 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#include "KalignTests.h"
-#include "KalignTask.h"
-#include "KalignConstants.h"
+#include <QDir>
 
-//#include <kalign_local_task/KalignLocalTask.h>
-
-#include <U2Core/LoadDocumentTask.h>
-#include <U2Core/SaveDocumentTask.h>
-
-#include <U2Core/DocumentModel.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-
-#include <U2Core/GObjectTypes.h>
+#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/DNASequenceObject.h>
+#include <U2Core/SaveDocumentTask.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QDir>
-
-
-/* TRANSLATOR U2::GTest*/
+#include "KalignConstants.h"
+#include "KalignTask.h"
+#include "KalignTests.h"
 
 namespace U2 {
 
@@ -119,8 +113,7 @@ MultipleSequenceAlignment Kalign_Load_Align_Compare_Task::dna_to_ma(QList<GObjec
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
         SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
-        ma.addRow(seq->getSequenceName(), seqData, stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        ma.addRow(seq->getSequenceName(), seqData);
     }
     return ma;
 }
@@ -170,7 +163,7 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         }
         KalignTask * localKalign = qobject_cast<KalignTask*>( subTask );
         assert( NULL != localKalign );
-        ma1->copyGapModel(localKalign->resultMA.getRows());
+        ma1->copyGapModel(localKalign->resultMA.getMsaRows());
     }
     else if (subTask == loadTask2) {
         if (loadTask2->hasError()) {
@@ -207,26 +200,26 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 
 void Kalign_Load_Align_Compare_Task::run() {
 
-    const QList<MultipleSequenceAlignmentRow> &alignedSeqs1 = ma1->getMAlignment().getRows();
-    const QList<MultipleSequenceAlignmentRow> &alignedSeqs2 = ma2->getMAlignment().getRows();
+    const QList<MultipleSequenceAlignmentRow> &alignedSeqs1 = ma1->getMAlignment().getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> &alignedSeqs2 = ma2->getMAlignment().getMsaRows();
 
     foreach(const MultipleSequenceAlignmentRow &maItem1, alignedSeqs1) {
         bool nameFound = false;
         foreach(const MultipleSequenceAlignmentRow &maItem2, alignedSeqs2) {
-            if (maItem1.getName() == maItem2.getName()) {
+            if (maItem1->getName() == maItem2->getName()) {
                 nameFound = true;
-                if(maItem2.getCoreEnd() != maItem1.getCoreEnd()) {
-                    stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1.getName()).arg(maItem1.getCoreEnd()).arg(maItem2.getCoreEnd()) );
+                if(maItem2->getCoreEnd() != maItem1->getCoreEnd()) {
+                    stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(maItem1->getCoreEnd()).arg(maItem2->getCoreEnd()) );
                     return;
                 }
                 if (maItem1 != maItem2) {
-                    stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1.getName()).arg(QString(maItem1.getCore())).arg(QString(maItem2.getCore())) );
+                    stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(QString(maItem1->getCore())).arg(QString(maItem2->getCore())) );
                     return;
                 }
             }
         }
         if (!nameFound) {
-            stateInfo.setError(  QString("aligned sequence not found \"%1\"").arg(maItem1.getName()) );
+            stateInfo.setError(  QString("aligned sequence not found \"%1\"").arg(maItem1->getName()) );
         }
     }
 }
@@ -373,8 +366,7 @@ MultipleSequenceAlignment GTest_Kalign_Load_Align_QScore::dna_to_ma(QList<GObjec
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
         SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
-        ma.addRow(seq->getSequenceName(), seqData, stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        ma.addRow(seq->getSequenceName(), seqData);
     }
     return ma;
 }
@@ -424,7 +416,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         }
         KalignTask * localKalign = qobject_cast<KalignTask*>( subTask );
         assert( NULL != localKalign );
-        ma1->copyGapModel(localKalign->resultMA.getRows());
+        ma1->copyGapModel(localKalign->resultMA.getMsaRows());
     }
     else if (subTask == loadTask2) {
         if (loadTask2->hasError()) {

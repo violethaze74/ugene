@@ -69,11 +69,8 @@ IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
 
     MultipleSequenceAlignment al(alignmentName, alphabet);
 
-    al.addRow("First row", firstSequence, os);
-    CHECK_NO_ERROR(os);
-
-    al.addRow("Second row", secondSequence, os);
-    CHECK_NO_ERROR(os);
+    al.addRow("First row", firstSequence);
+    al.addRow("Second row", secondSequence);
 
     // Import the alignment
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(dbiRef, al, os));

@@ -19,11 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Lang/WorkflowContext.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/DbiDataHandler.h>
+#include <U2Lang/WorkflowContext.h>
 
 #include "MultipleAlignmentMessageTranslator.h"
 

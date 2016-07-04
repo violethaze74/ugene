@@ -27,6 +27,7 @@
 #include <U2Core/FailTask.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 

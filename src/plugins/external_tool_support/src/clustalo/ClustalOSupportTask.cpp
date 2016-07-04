@@ -241,7 +241,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                         // Find rows that were removed by ClustalO and remove them from MSA
                         for (int i = inputMsa.getNumRows() - 1; i >= 0; i--) {
                             const MultipleSequenceAlignmentRow& alRow = inputMsa.getRow(i);
-                            qint64 rowId = alRow.getRowDbInfo().rowId;
+                            qint64 rowId = alRow->getRowDbInfo().rowId;
                             if (!rowsOrder.contains(rowId)) {
                                 alObj->removeRow(i);
                             }
@@ -253,8 +253,8 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
 
                     QMap<qint64, QList<U2MaGap> > rowsGapModel;
                     for (int i = 0, n = resultMA.getNumRows(); i < n; ++i) {
-                        qint64 rowId = resultMA.getRow(i).getRowDbInfo().rowId;
-                        const QList<U2MaGap>& newGapModel = resultMA.getRow(i).getGapModel();
+                        qint64 rowId = resultMA.getRow(i)->getRowDbInfo().rowId;
+                        const QList<U2MaGap>& newGapModel = resultMA.getRow(i)->getGapModel();
                         rowsGapModel.insert(rowId, newGapModel);
                     }
 
@@ -366,7 +366,7 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->copyGapModel(clustalOSupportTask->resultMA.getRows());
+        mAObject->copyGapModel(clustalOSupportTask->resultMA.getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

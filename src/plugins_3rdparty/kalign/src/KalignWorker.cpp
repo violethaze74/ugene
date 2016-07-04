@@ -19,27 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#include "KalignWorker.h"
-#include "KalignConstants.h"
-#include "TaskLocalStorage.h"
-#include "KalignDialogController.h"
-
 #include <U2Core/Log.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
+#include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/NoFailTaskWrapper.h>
+#include <U2Lang/WorkflowEnv.h>
 
-/* TRANSLATOR U2::LocalWorkflow::KalignWorker */
+#include "KalignConstants.h"
+#include "KalignDialogController.h"
+#include "KalignWorker.h"
+#include "TaskLocalStorage.h"
 
 namespace U2 {
 namespace LocalWorkflow {

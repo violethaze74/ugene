@@ -20,6 +20,7 @@
 */
 
 #include <QFile>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/CmdlineInOutTaskRunner.h>
@@ -29,6 +30,7 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/U2DbiRegistry.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "PhylipCmdlineTask.h"

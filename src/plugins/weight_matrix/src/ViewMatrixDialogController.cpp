@@ -109,9 +109,7 @@ MatrixAndLogoController::MatrixAndLogoController( PFMatrix matrix, QWidget *p):Q
                 }
             }
         }
-        U2OpStatus2Log os;
-        ma.addRow(QString("Row %1").arg(i), arr, os);
-        CHECK_OP(os, );
+        ma.addRow(QString("Row %1").arg(i), arr);
     }
     AlignmentLogoSettings logoSettings(ma);
     logoWidget->resize(logowidth, logoheight);

@@ -19,14 +19,16 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2core/U2SafePoints.h>
+
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
-#include <U2Lang/WorkflowMonitor.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowMonitor.h>
 
 #include "RenameChromosomeInVariationWorker.h"
 #include "tasks/RenameChromosomeInVariationTask.h"

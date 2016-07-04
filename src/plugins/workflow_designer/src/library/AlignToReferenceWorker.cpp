@@ -292,8 +292,7 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
     result.setAlphabet(referenceSeq.alphabet);
 
     // add the reference row
-    result.addRow(referenceSeq.getName(), referenceSeq.seq, 0, stateInfo);
-    CHECK_OP(stateInfo, result);
+    result.addRow(referenceSeq.getName(), referenceSeq.seq, 0);
 
     QList<U2MaGap> referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, result);
@@ -306,8 +305,7 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
         DNASequence readSeq = getReadSequence(i);
         CHECK_OP(stateInfo, result);
 
-        result.addRow(readSeq.getName(), readSeq.seq, i + 1, stateInfo);
-        CHECK_OP(stateInfo, result);
+        result.addRow(readSeq.getName(), readSeq.seq, i + 1);
 
         PairwiseAlignmentTask *subTask = getPATask(i);
         CHECK_OP(stateInfo, result);
@@ -335,7 +333,7 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
 
 void ComposeResultSubTask::createAnnotations(const MultipleSequenceAlignment &alignment) {
     const MultipleSequenceAlignmentRow &referenceRow = alignment.getRow(0);
-    QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceRow.getName() + " features", storage->getDbiRef()));
+    QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceRow->getName() + " features", storage->getDbiRef()));
 
     QList<SharedAnnotationData> anns;
     for (int i=1; i<alignment.getNumRows(); i++) {
@@ -356,11 +354,11 @@ void ComposeResultSubTask::createAnnotations(const MultipleSequenceAlignment &al
 }
 
 U2Region ComposeResultSubTask::getReadRegion(const MultipleSequenceAlignmentRow &readRow, const MultipleSequenceAlignmentRow &referenceRow) const {
-    U2Region region(0, readRow.getRowLengthWithoutTrailing());
+    U2Region region(0, readRow->getRowLengthWithoutTrailing());
 
     // calculate read start
-    if (!readRow.getGapModel().isEmpty()) {
-        U2MaGap firstGap = readRow.getGapModel().first();
+    if (!readRow->getGapModel().isEmpty()) {
+        U2MaGap firstGap = readRow->getGapModel().first();
         if (0 == firstGap.offset) {
             region.startPos += firstGap.gap;
             region.length -= firstGap.gap;
@@ -369,7 +367,7 @@ U2Region ComposeResultSubTask::getReadRegion(const MultipleSequenceAlignmentRow 
 
     qint64 leftGap = 0;
     qint64 innerGap = 0;
-    foreach (const U2MaGap &gap, referenceRow.getGapModel()) {
+    foreach (const U2MaGap &gap, referenceRow->getGapModel()) {
         qint64 endPos = gap.offset + gap.gap;
         if (gap.offset < region.startPos) {
             leftGap += gap.gap;
@@ -529,7 +527,7 @@ void KAlignSubTask::run() {
     CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
 
     MultipleSequenceAlignmentRow readRow = msaObject->getRow(1);
-    QList<U2Region> regions = getRegions(readRow.getGapModel(), readRow.getRowLengthWithoutTrailing());
+    QList<U2Region> regions = getRegions(readRow->getGapModel(), readRow->getRowLengthWithoutTrailing());
     calculateCoreRegion(regions);
     extendCoreRegion(regions);
 
@@ -614,12 +612,10 @@ void KAlignSubTask::createAlignment() {
     MultipleSequenceAlignment alignment("msa", refObject->getAlphabet());
     QByteArray refData = refObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
-    alignment.addRow(refObject->getSequenceName(), refData, stateInfo);
-    CHECK_OP(stateInfo, );
+    alignment.addRow(refObject->getSequenceName(), refData);
     QByteArray readData = readObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
-    alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
-    CHECK_OP(stateInfo, );
+    alignment.addRow(readObject->getSequenceName(), readData);
 
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
     CHECK_OP(stateInfo, );
@@ -630,8 +626,8 @@ PairwiseAlignmentTaskSettings * KAlignSubTask::createSettings(DbiDataStorage *st
     QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
     CHECK_EXT(!msaObject.isNull(), os.setError(L10N::nullPointerError("MSA object")), NULL);
 
-    U2DataId referenceId = msaObject->getRow(0).getRowDbInfo().dataObjectId;
-    U2DataId readId = msaObject->getRow(1).getRowDbInfo().dataObjectId;
+    U2DataId referenceId = msaObject->getRow(0)->getRowDbInfo().dataObjectId;
+    U2DataId readId = msaObject->getRow(1)->getRowDbInfo().dataObjectId;
 
     PairwiseAlignmentTaskSettings *settings = new PairwiseAlignmentTaskSettings();
     settings->alphabet = msaObject->getAlphabet()->getId();
@@ -699,8 +695,8 @@ void PairwiseAlignmentTask::run() {
     int rowCount = msaObject->getNumRows();
     CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
 
-    referenceGaps = msaObject->getRow(0).getGapModel();
-    readGaps = msaObject->getRow(1).getGapModel();
+    referenceGaps = msaObject->getRow(0)->getGapModel();
+    readGaps = msaObject->getRow(1)->getGapModel();
 
     CHECK(offset > 0, );
     shiftGaps(referenceGaps);
@@ -832,12 +828,10 @@ void PairwiseAlignmentTask::createSWAlignment(KAlignSubTask *task) {
     CHECK_OP(stateInfo, );
 
     MultipleSequenceAlignment alignment("msa", refObject->getAlphabet());
-    alignment.addRow(refObject->getSequenceName(), referenceData, stateInfo);
-    CHECK_OP(stateInfo, );
+    alignment.addRow(refObject->getSequenceName(), referenceData);
     QByteArray readData = readObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
-    alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
-    CHECK_OP(stateInfo, );
+    alignment.addRow(readObject->getSequenceName(), readData);
 
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
     CHECK_OP(stateInfo, );

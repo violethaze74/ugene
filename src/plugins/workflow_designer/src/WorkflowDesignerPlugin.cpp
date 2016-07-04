@@ -20,52 +20,42 @@
  */
 
 #include <QMessageBox>
+#include <QMenu>
 
-#include "WorkflowDesignerPlugin.h"
-#include "WorkflowViewController.h"
-#include "WorkflowDocument.h"
-#include "WorkflowSettingsController.h"
-#include "WorkflowSamples.h"
-#include "tasks/ReadAssemblyTask.h"
+#include <U2Core/AppContext.h>
+#include <U2Core/CMDLineHelpProvider.h>
+#include <U2Core/CMDLineRegistry.h>
+#include <U2Core/CMDLineUtils.h>
+#include <U2Core/GAutoDeleteList.h>
+#include <U2Core/L10n.h>
+#include <U2Core/ServiceTypes.h>
+#include <U2Core/Settings.h>
+#include <U2Core/Task.h>
+#include <U2Core/TaskStarter.h>
+#include <U2Core/U2SafePoints.h>
 
-#include "library/CoreLib.h"
-#include "library/IncludedProtoFactoryImpl.h"
-
-#include <util/SaveSchemaImageUtils.h>
-#include <util/DatasetsCountValidator.h>
+#include <U2Gui/ToolsMenu.h>
 
 #include <U2Lang/IncludedProtoFactory.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowTasksRegistry.h>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/L10n.h>
-#include <U2Core/Settings.h>
-#include <U2Core/Task.h>
-#include <U2Core/ServiceTypes.h>
-
-#include <U2Core/CMDLineRegistry.h>
-#include <U2Core/CMDLineHelpProvider.h>
-#include <U2Core/CMDLineUtils.h>
-#include <cmdline/WorkflowCMDLineTasks.h>
-#include <cmdline/GalaxyConfigTask.h>
-
-#include <U2Gui/ToolsMenu.h>
-
-#include <U2Core/TaskStarter.h>
-#include <U2Core/GAutoDeleteList.h>
-#include <U2Test/XMLTestFormat.h>
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
+#include <U2Test/XMLTestFormat.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMenu>
-#endif
-
-/* TRANSLATOR U2::LocalWorkflow::WorkflowView */
-/* TRANSLATOR U2::LocalWorkflow::WorkflowDesignerPlugin */
+#include "WorkflowDesignerPlugin.h"
+#include "WorkflowDocument.h"
+#include "WorkflowSamples.h"
+#include "WorkflowSettingsController.h"
+#include "WorkflowViewController.h"
+#include "cmdline/GalaxyConfigTask.h"
+#include "cmdline/WorkflowCMDLineTasks.h"
+#include "library/CoreLib.h"
+#include "library/IncludedProtoFactoryImpl.h"
+#include "tasks/ReadAssemblyTask.h"
+#include "util/DatasetsCountValidator.h"
+#include "util/SaveSchemaImageUtils.h"
 
 namespace U2 {
 

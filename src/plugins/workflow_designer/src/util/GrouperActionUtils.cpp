@@ -136,8 +136,8 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
                 return false;
             }
 
-            QList<MultipleSequenceAlignmentRow> rows1 = al1.getRows();
-            QList<MultipleSequenceAlignmentRow> rows2 = al2.getRows();
+            QList<MultipleSequenceAlignmentRow> rows1 = al1.getMsaRows();
+            QList<MultipleSequenceAlignmentRow> rows2 = al2.getMsaRows();
             QList<MultipleSequenceAlignmentRow>::const_iterator it1 = rows1.constBegin();
             QList<MultipleSequenceAlignmentRow>::const_iterator it2 = rows2.constBegin();
             for (; it1 != rows1.constEnd(); ++it1, ++it2) {
@@ -307,15 +307,15 @@ bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
     }
 
     if (unique) {
-        foreach (MultipleSequenceAlignmentRow currRow, result.getRows()) {
-            if ((currRow.getName() == rowName) &&
-                (currRow.getData() == bytes)) {
+        foreach (MultipleSequenceAlignmentRow currRow, result.getMsaRows()) {
+            if ((currRow->getName() == rowName) &&
+                (currRow->getData() == bytes)) {
                     return true;
             }
         }
     }
 
-    result.addRow(rowName, bytes, os);
+    result.addRow(rowName, bytes);
 
     return true;
 }
@@ -355,14 +355,14 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     }
 
     U2OpStatus2Log os;
-    const QList<MultipleSequenceAlignmentRow> &rows = result.getRows();
-    foreach (const MultipleSequenceAlignmentRow &newRow, newAl.getRows()) {
+    const QList<MultipleSequenceAlignmentRow> &rows = result.getMsaRows();
+    foreach (const MultipleSequenceAlignmentRow &newRow, newAl.getMsaRows()) {
         if (unique) {
             if (!rows.contains(newRow)) {
-                result.addRow(newRow.getRowDbInfo(), newRow.getSequence(), os);
+                result.addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);
             }
         } else {
-            result.addRow(newRow.getRowDbInfo(), newRow.getSequence(), os);
+            result.addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);
         }
     }
 

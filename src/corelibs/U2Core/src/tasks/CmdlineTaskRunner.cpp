@@ -236,7 +236,6 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
 
     foreach(const QString &line, lines) {
         QStringList words = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        int sz = words.size();
         foreach (const QString &word, words) {
             if (word.startsWith(OUTPUT_PROGRESS_TAG)) {
                 QString numStr = word.mid(OUTPUT_PROGRESS_TAG.size());

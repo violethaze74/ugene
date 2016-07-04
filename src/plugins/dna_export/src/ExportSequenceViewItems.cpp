@@ -512,13 +512,11 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& 
         QByteArray rowSequence;
         QString subjSeq = a.annotation->findFirstQualifierValue("subj_seq");
         if(!subjSeq.isEmpty()){
-            ma.addRow(rowName, subjSeq.toLatin1(), os);
-            CHECK_OP(os,);
+            ma.addRow(rowName, subjSeq.toLatin1());
         }else{
             AnnotationSelection::getAnnotationSequence(rowSequence, a, MAlignment_GapChar, seqRef, NULL, NULL, os);
             CHECK_OP(os,);
-            ma.addRow(rowName, rowSequence, os);
-            CHECK_OP(os,);
+            ma.addRow(rowName, rowSequence);
         }
 
         int offset = a.annotation->getLocation()->regions.first().startPos;
@@ -532,8 +530,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& 
     if (includeRef) {
         QByteArray rowSequence = commonSeq->getSequenceObject()->getWholeSequenceData(os);
         CHECK_OP(os,);
-        ma.addRow(commonSeq->getSequenceGObject()->getGObjectName(), rowSequence, 0, os);
-        CHECK_OP(os,);
+        ma.addRow(commonSeq->getSequenceGObject()->getGObjectName(), rowSequence, 0);
     }
 }
 
@@ -577,8 +574,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, b
         AnnotationSelection::getAnnotationSequence(rowSequence, a, MAlignment_GapChar, seqRef, doComplement ? complTT : NULL, aminoTT, os);
         CHECK_OP(os,);
 
-        ma.addRow(rowName, rowSequence, os);
-        CHECK_OP(os,);
+        ma.addRow(rowName, rowSequence);
 
         names.insert(rowName);
     }
@@ -636,7 +632,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, boo
             }
             QString rowName = ExportUtils::genUniqueName(names, seqCtx->getSequenceGObject()->getGObjectName());
             names.insert(rowName);
-            ma.addRow(rowName, seq, os);
+            ma.addRow(rowName, seq);
         }
     }
 }

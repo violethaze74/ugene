@@ -19,18 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#include "PWMatrixTests.h"
-#include <U2Core/AppContext.h>
-#include <U2Core/IOAdapter.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObject.h>
-#include <U2Core/DNAAlphabet.h>
-
 #include <U2Algorithm/PWMConversionAlgorithm.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObject.h>
+#include <U2Core/IOAdapter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
+
+#include "PWMatrixTests.h"
 
 namespace U2 {
 

@@ -19,16 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
+#include <QDir>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/PhyTreeObject.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorTask.h>
+
+#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/PhyTreeObject.h>
+#include <U2Core/U2DbiRegistry.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "PhyTreeObjectTests.h"
 

@@ -102,18 +102,18 @@ void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, 
     MuscleContext *ctx = getMuscleContext();
     ctx->fillUidsVectors(ma.getNumRows());
     for (int i=0, n = ma.getNumRows(); i<n; i++) {
-        const MultipleSequenceAlignmentRow& row = ma.getRow(i);
+        const MultipleSequenceAlignmentRow& row = ma.getMsaRow(i);
         
-        int coreLen = row.getCoreLength();
+        int coreLen = row->getCoreLength();
         int maLen = ma.getLength();
         char* seq  = new char[maLen + 1];
-        memcpy(seq, row.getCore().constData(), coreLen);
+        memcpy(seq, row->getCore().constData(), coreLen);
         memset(seq + coreLen, '-', maLen - coreLen + 1);
         seq[maLen] = 0;
 
-        char* name = new char[row.getName().length() + 1];
-        memcpy(name, row.getName().toLocal8Bit().constData(), row.getName().length());
-        name[row.getName().length()] = '\0';
+        char* name = new char[row->getName().length() + 1];
+        memcpy(name, row->getName().toLocal8Bit().constData(), row->getName().length());
+        name[row->getName().length()] = '\0';
         
         muscleMSA.AppendSeq(seq, maLen, name);
         ctx->tmp_uIds[i] = ctx->input_uIds[i];
@@ -131,10 +131,10 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
 
     unsigned i=0;
     unsigned seq_count = 0;
-    foreach(const MultipleSequenceAlignmentRow& row, ma.getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma.getMsaRows()) {
         Seq *ptrSeq = new Seq();
-        QByteArray name =  row.getName().toLocal8Bit();
-        ptrSeq->FromString(row.getCore().constData(), name.constData());
+        QByteArray name =  row->getName().toLocal8Bit();
+        ptrSeq->FromString(row->getCore().constData(), name.constData());
         //stripping gaps, original Seq::StripGaps fails on MSVC9
         Seq::iterator newEnd = std::remove(ptrSeq->begin(), ptrSeq->end(), MAlignment_GapChar);
         ptrSeq->erase(newEnd, ptrSeq->end());
@@ -165,8 +165,7 @@ void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlig
             seq.append(c);
         }
         ctx->output_uIds.append(ctx->tmp_uIds[msa.GetSeqId(i)]);
-        U2OpStatus2Log os;
-        res.addRow(name, seq, os);
+        res.addRow(name, seq);
     }
 }
 

@@ -49,12 +49,8 @@ MultipleSequenceAlignment MsaTestUtils::initTestAlignment() {
 
     MultipleSequenceAlignment almnt(alignmentName, alphabet);
 
-    U2OpStatusImpl os;
-    almnt.addRow("First row", firstSequence, os);
-    CHECK_OP(os, MultipleSequenceAlignment());
-
-    almnt.addRow("Second row", secondSequence, os);
-    CHECK_OP(os, MultipleSequenceAlignment());
+    almnt.addRow("First row", firstSequence);
+    almnt.addRow("Second row", secondSequence);
 
     return almnt;
 }
@@ -90,7 +86,7 @@ bool MsaTestUtils::testAlignmentNotChanged(const MultipleSequenceAlignment& almn
 IMPLEMENT_TEST(MsaUnitTests, clear_notEmpty) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     almnt.clear();
-    QList<MultipleSequenceAlignmentRow> rows = almnt.getRows();
+    QList<MultipleSequenceAlignmentRow> rows = almnt.getMsaRows();
     CHECK_EQUAL(0, rows.count(), "number of rows");
 }
 
@@ -201,12 +197,8 @@ IMPLEMENT_TEST(MsaUnitTests, trim_leadingGapColumns) {
     QByteArray secondSequence("--AG-CT-TA");
 
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment with leading gap columns", NULL);
-    U2OpStatusImpl os;
-    almnt.addRow("First row", firstSequence, os);
-    CHECK_NO_ERROR(os);
-
-    almnt.addRow("Second row", secondSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First row", firstSequence);
+    almnt.addRow("Second row", secondSequence);
 
     bool result = almnt.trim();
 
@@ -228,9 +220,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_rowWithoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment", NULL);
-    U2OpStatusImpl os;
-    almnt.addRow("Row without gaps", seq, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("Row without gaps", seq);
 
     bool result = almnt.trim();
 
@@ -250,12 +240,8 @@ IMPLEMENT_TEST(MsaUnitTests, trim_trailingGapInOne) {
     QByteArray secondSequence("CAC-");
 
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment", NULL);
-    U2OpStatusImpl os;
-    almnt.addRow("First row", firstSequence, os);
-    CHECK_NO_ERROR(os);
-
-    almnt.addRow("Second row", secondSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First row", firstSequence);
+    almnt.addRow("Second row", secondSequence);
 
     bool result = almnt.trim();
 
@@ -263,7 +249,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_trailingGapInOne) {
     CHECK_EQUAL(4, almnt.getLength(), "alignment length");
     CHECK_EQUAL("ACGT", MsaTestUtils::getRowData(almnt, 0), "first row data");
     CHECK_EQUAL("CAC-", MsaTestUtils::getRowData(almnt, 1), "second row data");
-    CHECK_EQUAL(0, almnt.getRow(1).getGapModel().size(), "number of gaps in the second row");
+    CHECK_EQUAL(0, almnt.getRow(1)->getGapModel().size(), "number of gaps in the second row");
 }
 
 /** Tests simplify */
@@ -280,9 +266,7 @@ IMPLEMENT_TEST(MsaUnitTests, simplify_withoutGaps) {
     QByteArray seq("ACGTAGTCGATC");
 
     MultipleSequenceAlignment almnt = MultipleSequenceAlignment("Alignment", NULL);
-    U2OpStatusImpl os;
-    almnt.addRow("Row without gaps", seq, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("Row without gaps", seq);
 
     bool result = almnt.simplify();
 
@@ -303,14 +287,10 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameAsc) {
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("TTTTTT");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name", NULL);
-    almnt.addRow("NameBA", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("NameAB", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("NameAA", thirdSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("NameBA", firstSequence);
+    almnt.addRow("NameAB", secondSequence);
+    almnt.addRow("NameAA", thirdSequence);
 
     almnt.sortRowsByName();
     QStringList rowNames = almnt.getRowNames();
@@ -326,14 +306,10 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameDesc) {
     QByteArray secondSequence("CCCCCC");
     QByteArray thirdSequence("TTTTTT");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name", NULL);
-    almnt.addRow("NameAA", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("NameBA", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("NameAB", thirdSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("NameAA", firstSequence);
+    almnt.addRow("NameBA", secondSequence);
+    almnt.addRow("NameAB", thirdSequence);
 
     almnt.sortRowsByName(false);
     QStringList rowNames = almnt.getRowNames();
@@ -350,16 +326,11 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_twoSimilar) {
     QByteArray thirdSequence("TTTTTT");
     QByteArray forthSequence("AAAAAA");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Third", thirdSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Forth", forthSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
+    almnt.addRow("Third", thirdSequence);
+    almnt.addRow("Forth", forthSequence);
 
     QVector<U2Region> unitedRegions;
     almnt.sortRowsBySimilarity(unitedRegions);
@@ -386,16 +357,11 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_threeSimilar) {
     QByteArray thirdSequence("TTTTTT");
     QByteArray forthSequence("AAAAAA");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Third", thirdSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Forth", forthSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
+    almnt.addRow("Third", thirdSequence);
+    almnt.addRow("Forth", forthSequence);
 
     QVector<U2Region> unitedRegions;
     almnt.sortRowsBySimilarity(unitedRegions);
@@ -423,16 +389,11 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_similarTwoRegions) {
     QByteArray thirdSequence("AAAAAA");
     QByteArray forthSequence("CCCCCC");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Third", thirdSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Forth", forthSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
+    almnt.addRow("Third", thirdSequence);
+    almnt.addRow("Forth", forthSequence);
 
     QVector<U2Region> unitedRegions;
     almnt.sortRowsBySimilarity(unitedRegions);
@@ -466,7 +427,7 @@ IMPLEMENT_TEST(MsaUnitTests, getRows_oneRow) {
 
 IMPLEMENT_TEST(MsaUnitTests, getRows_severalRows) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    QList<MultipleSequenceAlignmentRow> rows = almnt.getRows();
+    QList<MultipleSequenceAlignmentRow> rows = almnt.getMsaRows();
     CHECK_EQUAL(2, rows.count(), "number of rows");
     CHECK_EQUAL("---AG-T--", MsaRowTestUtils::getRowData(rows[0]), "first row");
     CHECK_EQUAL("AG-CT-TAA", MsaRowTestUtils::getRowData(rows[1]), "second row");
@@ -509,10 +470,8 @@ IMPLEMENT_TEST(MsaUnitTests, insertGaps_toBeginningLength) {
 
     U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
 
     almnt.insertGaps(1, 0, 2, os);
     CHECK_NO_ERROR(os);
@@ -560,11 +519,11 @@ IMPLEMENT_TEST(MsaUnitTests, insertGaps_negativeCount) {
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
 
-/** Tests removeChars */
+/** Tests removeData */
 IMPLEMENT_TEST(MsaUnitTests, removeChars_validParams) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt.removeChars(1, 0, 2, os);
+    almnt.removeRowData(1, 0, 2, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(9, almnt.getLength(), "alignment length");
     CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
@@ -574,7 +533,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_validParams) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeRowIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt.removeChars(-1, 0, 2, os);
+    almnt.removeRowData(-1, 0, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
@@ -582,7 +541,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeRowIndex) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigRowIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt.removeChars(2, 0, 2, os);
+    almnt.removeRowData(2, 0, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
@@ -590,7 +549,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigRowIndex) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_negativePos) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt.removeChars(1, -1, 2, os);
+    almnt.removeRowData(1, -1, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
@@ -598,7 +557,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_negativePos) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigPos) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt.removeChars(1, 10, 2, os);
+    almnt.removeRowData(1, 10, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
@@ -606,7 +565,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigPos) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeCount) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt.removeChars(1, 0, -1, os);
+    almnt.removeRowData(1, 0, -1, os);
     CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
 }
@@ -618,16 +577,11 @@ IMPLEMENT_TEST(MsaUnitTests, removeRegion_validParams) {
     QByteArray thirdSequence("---CGA");
     QByteArray forthSequence("AAAAAA");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Third", thirdSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Forth", forthSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
+    almnt.addRow("Third", thirdSequence);
+    almnt.addRow("Forth", forthSequence);
 
     almnt.removeRegion(1, 1, 3, 2, false);
 
@@ -644,16 +598,11 @@ IMPLEMENT_TEST(MsaUnitTests, removeRegion_removeEmpty) {
     QByteArray thirdSequence("--AC");
     QByteArray forthSequence("AAAAAA");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Third", thirdSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Forth", forthSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
+    almnt.addRow("Third", thirdSequence);
+    almnt.addRow("Forth", forthSequence);
 
     almnt.removeRegion(1, 1, 3, 2, true);
 
@@ -677,7 +626,7 @@ IMPLEMENT_TEST(MsaUnitTests, renameRow_validParams) {
     QString newRowName = "New row name";
     almnt.renameRow(0, newRowName);
     MultipleSequenceAlignmentRow actualRow = almnt.getRow(0);
-    CHECK_EQUAL(newRowName, actualRow.getName(), "renamed row name");
+    CHECK_EQUAL(newRowName, actualRow->getName(), "renamed row name");
 }
 
 /** Tests setRowContent */
@@ -702,12 +651,9 @@ IMPLEMENT_TEST(MsaUnitTests, upperCase_charsAndGaps) {
     QByteArray sequence1("mMva-ke");
     QByteArray sequence2("avn-*y-s");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment with chars in lower-case");
-    almnt.addRow("First row", sequence1, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second row", sequence2, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First row", sequence1);
+    almnt.addRow("Second row", sequence2);
 
     almnt.toUpperCase();
 
@@ -723,12 +669,9 @@ IMPLEMENT_TEST(MsaUnitTests, crop_validParams) {
 
     U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Third", thirdSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
+    almnt.addRow("Third", thirdSequence);
 
     U2Region region(1, 4);
     QSet<QString> rowNames;
@@ -749,14 +692,10 @@ IMPLEMENT_TEST(MsaUnitTests, mid_validParams) {
     QByteArray secondSequence("A");
     QByteArray thirdSequence("---CGA");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Third", thirdSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
+    almnt.addRow("Third", thirdSequence);
 
     MultipleSequenceAlignment almntResult = almnt.mid(2, 3);
     CHECK_EQUAL(3, almntResult.getNumRows(), "number of rows");
@@ -770,9 +709,7 @@ IMPLEMENT_TEST(MsaUnitTests, mid_validParams) {
 /** Tests addRow */
 IMPLEMENT_TEST(MsaUnitTests, addRow_appendRowFromBytes) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    U2OpStatusImpl os;
-    almnt.addRow("Added row", "--AACT-GAG", os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("Added row", "--AACT-GAG");
 
     CHECK_EQUAL(3, almnt.getNumRows(), "number of rows");
     CHECK_EQUAL("---AG-T---", MsaTestUtils::getRowData(almnt, 0), "first row");
@@ -784,9 +721,7 @@ IMPLEMENT_TEST(MsaUnitTests, addRow_appendRowFromBytes) {
 
 IMPLEMENT_TEST(MsaUnitTests, addRow_rowFromBytesToIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    U2OpStatusImpl os;
-    almnt.addRow("Added row", "--AACT-GAG", 1, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("Added row", "--AACT-GAG", 1);
 
     CHECK_EQUAL(3, almnt.getNumRows(), "number of rows");
     CHECK_EQUAL("---AG-T---", MsaTestUtils::getRowData(almnt, 0), "first row");
@@ -798,9 +733,7 @@ IMPLEMENT_TEST(MsaUnitTests, addRow_rowFromBytesToIndex) {
 
 IMPLEMENT_TEST(MsaUnitTests, addRow_zeroBound) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    U2OpStatusImpl os;
-    almnt.addRow("Added row", "--AACT-GAG", -2, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("Added row", "--AACT-GAG", -2);
 
     CHECK_EQUAL(3, almnt.getNumRows(), "number of rows");
     CHECK_EQUAL("--AACT-GAG", MsaTestUtils::getRowData(almnt, 0), "first row");
@@ -812,9 +745,7 @@ IMPLEMENT_TEST(MsaUnitTests, addRow_zeroBound) {
 
 IMPLEMENT_TEST(MsaUnitTests, addRow_rowsNumBound) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    U2OpStatusImpl os;
-    almnt.addRow("Added row", "--AACT-GAG", 3, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("Added row", "--AACT-GAG", 3);
 
     CHECK_EQUAL(3, almnt.getNumRows(), "number of rows");
     CHECK_EQUAL("---AG-T---", MsaTestUtils::getRowData(almnt, 0), "first row");
@@ -875,16 +806,11 @@ IMPLEMENT_TEST(MsaUnitTests, moveRowsBlock_positiveDelta) {
     QByteArray thirdSequence("GGGGGG");
     QByteArray forthSequence("TTTTTT");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Third", thirdSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Forth", forthSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
+    almnt.addRow("Third", thirdSequence);
+    almnt.addRow("Forth", forthSequence);
 
     almnt.moveRowsBlock(0, 2, 1);
 
@@ -900,16 +826,11 @@ IMPLEMENT_TEST(MsaUnitTests, moveRowsBlock_negativeDelta) {
     QByteArray thirdSequence("GGGGGG");
     QByteArray forthSequence("TTTTTT");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second", secondSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Third", thirdSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Forth", forthSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
+    almnt.addRow("Second", secondSequence);
+    almnt.addRow("Third", thirdSequence);
+    almnt.addRow("Forth", forthSequence);
 
     almnt.moveRowsBlock(3, 1, -1);
 
@@ -924,12 +845,9 @@ IMPLEMENT_TEST(MsaUnitTests, replaceChars_validParams) {
     QByteArray firstSequence("AGT.C.T");
     QByteArray secondSequence("A.CT.-AA");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First row", firstSequence, os);
-    CHECK_NO_ERROR(os);
-    almnt.addRow("Second row", secondSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First row", firstSequence);
+    almnt.addRow("Second row", secondSequence);
 
     almnt.replaceChars(1, '.', '-');
     CHECK_EQUAL("AGT.C.T-", MsaTestUtils::getRowData(almnt, 0), "first sequence");
@@ -943,7 +861,7 @@ IMPLEMENT_TEST(MsaUnitTests, appendChars_validParams) {
     int length = 7;
     almnt.appendChars(0, str, length);
     CHECK_EQUAL("---AG-T---AC-GT-", MsaTestUtils::getRowData(almnt, 0), "first row");
-    CHECK_EQUAL(4, almnt.getRow(0).getGapModel().size(), "number of gaps");
+    CHECK_EQUAL(4, almnt.getRow(0)->getGapModel().size(), "number of gaps");
     CHECK_EQUAL(16, almnt.getLength(), "alignment length");
 }
 
@@ -957,7 +875,7 @@ IMPLEMENT_TEST(MsaUnitTests, operPlusEqual_validParams) {
     CHECK_EQUAL("---AG-T-----AG-T--", MsaTestUtils::getRowData(almnt, 0), "row1");
     CHECK_EQUAL("AG-CT-TAAAG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "row2");
 
-    CHECK_EQUAL(4, almnt.getRow(0).getGapModel().size(), "number of gaps");
+    CHECK_EQUAL(4, almnt.getRow(0)->getGapModel().size(), "number of gaps");
     CHECK_EQUAL(18, almnt.getLength(), "alignment length");
 }
 
@@ -989,10 +907,8 @@ IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_gaps) {
 IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_noGaps) {
     QByteArray firstSequence("AAAAAA");
 
-    U2OpStatusImpl os;
     MultipleSequenceAlignment almnt("Alignment name");
-    almnt.addRow("First", firstSequence, os);
-    CHECK_NO_ERROR(os);
+    almnt.addRow("First", firstSequence);
 
     bool res = almnt.hasEmptyGapModel();
 

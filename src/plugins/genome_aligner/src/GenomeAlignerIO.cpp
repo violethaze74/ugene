@@ -131,15 +131,11 @@ MultipleSequenceAlignment& GenomeAlignerMsaWriter::getResult() {
 }
 
 void GenomeAlignerMsaWriter::write(SearchQuery *seq, SAType offset) {
-    U2OpStatus2Log os;
-    //if (seq->hasQuality() && seq->getQuality().qualCodes.length() > 0) {
-    //    row.setQuality(seq->getQuality());
-    //}
     QByteArray offsetGaps;
     offsetGaps.fill(MAlignment_GapChar, offset);
     QByteArray seqWithOffset = seq->constSequence();
     seqWithOffset.prepend(offsetGaps);
-    result.addRow(seq->getName(), seqWithOffset, os);
+    result.addRow(seq->getName(), seqWithOffset);
     writtenReadsCount++;
 }
 

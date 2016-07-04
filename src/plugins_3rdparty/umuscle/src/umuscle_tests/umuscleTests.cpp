@@ -253,8 +253,8 @@ Task::ReportResult GTest_CompareMAlignment::report() {
     for (int i=0;i<listSize;i++) {
         MultipleSequenceAlignmentObject* ma1 = qobject_cast<MultipleSequenceAlignmentObject*>(objs1.at(i));
         MultipleSequenceAlignmentObject* ma2 = qobject_cast<MultipleSequenceAlignmentObject*>(objs2.at(i));
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMAlignment().getRows();
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMAlignment().getRows();
+        const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMAlignment().getMsaRows();
+        const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMAlignment().getMsaRows();
         if(ma1->objectName()!=ma2->objectName()) {
             stateInfo.setError(  QString("MAlignmentObjects name not matched \"%1\", expected \"%2\"").arg(ma1->objectName()).arg(ma2->objectName()) );
             return ReportResult_Finished;
@@ -262,22 +262,22 @@ Task::ReportResult GTest_CompareMAlignment::report() {
         foreach(const MultipleSequenceAlignmentRow &maItem1, alignedSeqs1) {
             bool nameFound = false;
             foreach(const MultipleSequenceAlignmentRow &maItem2, alignedSeqs2) {
-                if (maItem1.getName() == maItem2.getName()) {
+                if (maItem1->getName() == maItem2->getName()) {
                     nameFound = true;
-                    int l1 = maItem1.getCoreEnd();
-                    int l2 = maItem2.getCoreEnd();
+                    int l1 = maItem1->getCoreEnd();
+                    int l2 = maItem2->getCoreEnd();
                     if(l1!=l2) {
-                        stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1.getName()).arg(l1).arg(l2) );
+                        stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(l1).arg(l2) );
                         return ReportResult_Finished;
                     }
                     if (maItem1 != maItem2) {
-                        stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1.getName()).arg(QString(maItem1.getCore())).arg(QString(maItem2.getCore())) );
+                        stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(QString(maItem1->getCore())).arg(QString(maItem2->getCore())) );
                         return ReportResult_Finished;
                     }
                 }
             }
             if (!nameFound) {
-                stateInfo.setError(  QString("aligned sequence not found \"%1\"").arg(maItem1.getName()) );
+                stateInfo.setError(  QString("aligned sequence not found \"%1\"").arg(maItem1->getName()) );
             }
 
         }
@@ -362,9 +362,7 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
         U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
         QByteArray seqData = dnaObj->getWholeSequenceData(stateInfo);
         CHECK_OP(stateInfo, );
-        U2OpStatus2Log os;
-        unalignedMA.addRow(dnaObj->getSequenceName(), seqData, os);
-        CHECK_OP_EXT(os, stateInfo.setError("An error has occurred during adding a row"),);
+        unalignedMA.addRow(dnaObj->getSequenceName(), seqData);
     }
     if (unalignedMA.getNumRows()!=gapPositionsForSeqs.size()) {
         stateInfo.setError( QString("number of sequences not matches number of gaps in test: %1 sequences and %2 gap lines")
@@ -403,15 +401,15 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
 
     U2OpStatus2Log os;
     for (int i = origAliSeqs, j = 0; i < ma.getNumRows(); i++, j++) {
-        const MultipleSequenceAlignmentRow& row = ma.getRow(i);
-        QByteArray seq = row.toByteArray(ma.getLength(), os);
+        const MultipleSequenceAlignmentRow& row = ma.getMsaRow(i);
+        QByteArray seq = row->toByteArray(ma.getLength(), os);
         QList<int> seqGaps = gapPositionsForSeqs[j];
         for (int pos = 0; pos < seq.size(); pos++) {
             char c = seq[pos];
             if (c == MAlignment_GapChar) {
                 bool found = seqGaps.contains(pos);
                 if (!found) {
-                    stateInfo.setError(  QString("illegal gap found! pos: %1, sequence: %2").arg(pos).arg(row.getName()) );
+                    stateInfo.setError(  QString("illegal gap found! pos: %1, sequence: %2").arg(pos).arg(row->getName()) );
                     return ReportResult_Finished;
                 }
             }
@@ -420,7 +418,7 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
             int pos  = seqGaps[gap];
             char c = seq[pos];
             if (c != MAlignment_GapChar) {
-                stateInfo.setError(  QString("gap not found! pos: %1, sequence: %2").arg(pos).arg(row.getName()) );
+                stateInfo.setError(  QString("gap not found! pos: %1, sequence: %2").arg(pos).arg(row->getName()) );
                 return ReportResult_Finished;
             }
         }
@@ -518,8 +516,7 @@ MultipleSequenceAlignment GTest_Muscle_Load_Align_QScore::dna_to_ma(QList<GObjec
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
         SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
-        ma.addRow(seq->getSequenceName(), seqData, stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        ma.addRow(seq->getSequenceName(), seqData);
     }
     return ma;
 }
@@ -664,8 +661,7 @@ MultipleSequenceAlignment Muscle_Load_Align_Compare_Task::dna_to_ma(QList<GObjec
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
         SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
-        ma.addRow(seq->getSequenceName(), seqData, stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        ma.addRow(seq->getSequenceName(), seqData);
     }
     return ma;
 }
@@ -753,28 +749,28 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 
 void Muscle_Load_Align_Compare_Task::run() {
 
-    const QList<MultipleSequenceAlignmentRow> &alignedSeqs1 = ma1->getMAlignment().getRows();
-    const QList<MultipleSequenceAlignmentRow> &alignedSeqs2 = ma2->getMAlignment().getRows();
+    const QList<MultipleSequenceAlignmentRow> &alignedSeqs1 = ma1->getMAlignment().getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> &alignedSeqs2 = ma2->getMAlignment().getMsaRows();
 
     foreach(const MultipleSequenceAlignmentRow &maItem1, alignedSeqs1) {
         bool nameFound = false;
         foreach(const MultipleSequenceAlignmentRow&maItem2, alignedSeqs2) {
-            if (maItem1.getName()== maItem2.getName()) {
+            if (maItem1->getName()== maItem2->getName()) {
                 nameFound = true;
-                int l1 = maItem1.getCoreLength();
-                int l2 = maItem2.getCoreLength();
+                int l1 = maItem1->getCoreLength();
+                int l2 = maItem2->getCoreLength();
                 if (l1!= l2) {
-                    stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1.getName()).arg(l1).arg(l2) );
+                    stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(l1).arg(l2) );
                     return;
                 }
                 if (maItem1!= maItem2) {
-                    stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1.getName()).arg(QString(maItem1.getCore())).arg(QString(maItem2.getCore())) );
+                    stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(QString(maItem1->getCore())).arg(QString(maItem2->getCore())) );
                     return;
                 }
             }
         }
         if (!nameFound) {
-            stateInfo.setError(  QString("aligned sequence not found \"%1\"").arg(maItem1.getName()) );
+            stateInfo.setError(  QString("aligned sequence not found \"%1\"").arg(maItem1->getName()) );
         }
     }
 }

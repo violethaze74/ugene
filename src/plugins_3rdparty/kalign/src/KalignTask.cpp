@@ -193,8 +193,8 @@ Task::ReportResult KalignGObjectTask::report() {
 
     QMap<qint64, QList<U2MaGap> > rowsGapModel;
     for (int i = 0, n = resultMA.getNumRows(); i < n; ++i) {
-        qint64 rowId = resultMA.getRow(i).getRowDbInfo().rowId;
-        const QList<U2MaGap>& newGapModel = resultMA.getRow(i).getGapModel();
+        qint64 rowId = resultMA.getRow(i)->getRowDbInfo().rowId;
+        const QList<U2MaGap>& newGapModel = resultMA.getRow(i)->getGapModel();
         rowsGapModel.insert(rowId, newGapModel);
     }
 

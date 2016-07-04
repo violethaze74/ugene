@@ -429,7 +429,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
         int newLen = prevLen + numIns;
         QByteArray msaPathChangesNew;
         for (int i = 0, n = ma.getNumRows(); i < n; i++) {
-            const MultipleSequenceAlignmentRow& row = ma.getRow(i);
+            const MultipleSequenceAlignmentRow& row = ma.getMsaRow(i);
             QByteArray newSeq;
             newSeq.reserve(newLen);
             int insCoordsPos = insCoords[0];
@@ -447,7 +447,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
                         }
                     } while (insCoordsPos == prevInsCoordsPos+1);
                 }
-                newSeq.append(row.charAt(seqPos));
+                newSeq.append(row->charAt(seqPos));
                 if (i == 0) {
                     msaPathChangesNew.append(msaPathChanges[seqPos]);
                 }
@@ -471,7 +471,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
     assert(aseqLen == ma2Len);  // gapped sequence has the same length as alignment
 
     U2OpStatus2Log os;
-    ma.addRow(name, alignedSeq, os);
+    ma.addRow(name, alignedSeq);
 }
 
 void MuscleAdapter::addUnalignedSequencesToProfile(const MultipleSequenceAlignment& ma, const MultipleSequenceAlignment& unalignedSeqs, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
@@ -523,9 +523,9 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
     for (int i=0, n = unalignedSeqs.getNumRows(); i < n; i++) {
         ti.setDescription(tr("Aligning sequence %1 of %2").arg(QString::number(i+1)).arg(QString::number(n)));
         ti.progress = dp + i*(95-dp)/n;
-        const MultipleSequenceAlignmentRow& useq = unalignedSeqs.getRow(i);
+        const MultipleSequenceAlignmentRow& useq = unalignedSeqs.getMsaRow(i);
         Seq seq;
-        seq.FromString(useq.getCore().constData(), useq.getName().toLocal8Bit().constData());
+        seq.FromString(useq->getCore().constData(), useq->getName().toLocal8Bit().constData());
         seq.SetId(0);
         seq.StripGaps();
         seq.FixAlpha();
@@ -539,7 +539,7 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
         AlignTwoProfs(prof1.data, profileMSA.GetColCount(), 1.0, prof2.get(), tmpMSA.GetColCount(), 1.0, path, &profOut.data, &uLengthOut);
 
         AlignedSeq aseq;
-        aseq.name = useq.getName();
+        aseq.name = useq->getName();
         aseq.seq = QByteArray((const char*)&seq.front(), seq.Length());//without gaps
         aseq.pathToMSA = path2Str(path);
         alignedSeqs.append(aseq);

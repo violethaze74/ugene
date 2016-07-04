@@ -306,8 +306,8 @@ void DNAStatMSAProfileTask::computeStats() {
         cs.charFreqs.resize(aChars.size());
         cs.consChar = MAlignment_GapChar;
         for (int i = 0; i< s.ma.getNumRows(); i++) {
-            const MultipleSequenceAlignmentRow& row = s.ma.getRow(i);
-            char c = row.charAt(pos);
+            const MultipleSequenceAlignmentRow& row = s.ma.getMsaRow(i);
+            char c = row->charAt(pos);
             unusedChars.remove(c);
             int idx = char2index.value(c);
             int v = ++cs.charFreqs[idx];

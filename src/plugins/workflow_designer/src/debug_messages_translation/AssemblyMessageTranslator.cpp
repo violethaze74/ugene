@@ -19,12 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QScopedPointer>
+#include <QScopedPointer>
 
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Lang/WorkflowContext.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/DbiDataHandler.h>
+#include <U2Lang/WorkflowContext.h>
 
 #include "AssemblyMessageTranslator.h"
 

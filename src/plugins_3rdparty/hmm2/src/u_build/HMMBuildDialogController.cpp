@@ -363,11 +363,11 @@ void HMMBuildTask::_run() {
     }
     U2OpStatus2Log os;
     for (int i=0; i<ma.getNumRows();i++) {
-        const MultipleSequenceAlignmentRow& row = ma.getRow(i);
-        QByteArray seq = row.toByteArray(ma.getLength(), os);
+        const MultipleSequenceAlignmentRow& row = ma.getMsaRow(i);
+        QByteArray seq = row->toByteArray(ma.getLength(), os);
         free(msa->aseq[i]);
         msa->aseq[i] = sre_strdup(seq.constData(), seq.size());
-        QByteArray name = row.getName().toLatin1();
+        QByteArray name = row->getName().toLatin1();
         msa->sqname[i] = sre_strdup(name.constData(), name.size());
         msa->wgt[i] = 1.0; // default weights 
     }

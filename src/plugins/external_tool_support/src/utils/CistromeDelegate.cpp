@@ -19,16 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#include "CistromeDelegate.h"
-#include "utils/ExternalToolUtils.h"
-
 #include <U2Core/AppContext.h>
 #include <U2Core/DataPathRegistry.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/WorkflowEnv.h>
+
+#include "CistromeDelegate.h"
+#include "utils/ExternalToolUtils.h"
 
 namespace U2 {
 namespace LocalWorkflow {

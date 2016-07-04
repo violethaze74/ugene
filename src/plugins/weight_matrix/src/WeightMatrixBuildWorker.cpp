@@ -19,30 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#include "WeightMatrixWorkers.h"
-#include "WeightMatrixIOWorkers.h"
-#include "WeightMatrixPlugin.h"
-#include "PWMBuildDialogController.h"
-
 #include <U2Algorithm/BuiltInPWMConversionAlgorithms.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/Datatype.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/CoreLibConstants.h>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-
-/* TRANSLATOR U2::WeightMatrixIO */
-/* TRANSLATOR U2::LocalWorkflow::PWMatrixBuildWorker */
+#include "PWMBuildDialogController.h"
+#include "WeightMatrixIOWorkers.h"
+#include "WeightMatrixPlugin.h"
+#include "WeightMatrixWorkers.h"
 
 namespace U2 {
 namespace LocalWorkflow {

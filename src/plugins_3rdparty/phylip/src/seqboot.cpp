@@ -904,8 +904,7 @@ void writedata( QVector<U2::MultipleSequenceAlignment*>& mavect, int rep, const 
       }
       //putchar('\n');
       if (j >= mavect[rep]->getNumRows()) {
-          U2::U2OpStatus2Log os;
-          mavect[rep]->addRow(ma.getRow(j).getName(), curAr, os);
+          mavect[rep]->addRow(ma.getRow(j)->getName(), curAr);
       }
       else {
         const U2::MultipleSequenceAlignmentRow& curR = mavect[rep]->getRow(j);

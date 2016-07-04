@@ -122,9 +122,9 @@ void DNASequenceGenerator::evaluateBaseContent(const DNASequence& sequence, QMap
 
 void DNASequenceGenerator::evaluateBaseContent(const MultipleSequenceAlignment& ma, QMap<char, qreal>& result) {
     QList< QMap<char, qreal> > rowsContents;
-    foreach(const MultipleSequenceAlignmentRow& row, ma.getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma.getMsaRows()) {
         QMap<char, qreal> rowContent;
-        evaluate(row.getData(), rowContent);
+        evaluate(row->getData(), rowContent);
         rowsContents.append(rowContent);
     }
 
@@ -314,8 +314,7 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc( Document *source )
         // TODO: large sequences will cause out of memory error here
         const QByteArray seqContent = con.dbi->getSequenceDbi( )->getSequenceData(
             seqs[sequenceNum].id, U2_REGION_MAX, stateInfo );
-        msa.addRow( seqName, seqContent, sequenceNum, stateInfo );
-        CHECK_OP( stateInfo, );
+        msa.addRow( seqName, seqContent, sequenceNum);
     }
     MultipleSequenceAlignmentObject *alnObject = MultipleSequenceAlignmentImporter::createAlignment( source->getDbiRef( ), msa, stateInfo );
     CHECK_OP( stateInfo, );

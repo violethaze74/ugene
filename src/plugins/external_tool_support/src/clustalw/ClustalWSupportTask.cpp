@@ -249,8 +249,8 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
 
                 QMap<qint64, QList<U2MaGap> > rowsGapModel;
                 for (int i = 0, n = resultMA.getNumRows(); i < n; ++i) {
-                    qint64 rowId = resultMA.getRow(i).getRowDbInfo().rowId;
-                    const QList<U2MaGap>& newGapModel = resultMA.getRow(i).getGapModel();
+                    qint64 rowId = resultMA.getRow(i)->getRowDbInfo().rowId;
+                    const QList<U2MaGap>& newGapModel = resultMA.getRow(i)->getGapModel();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 
@@ -381,7 +381,7 @@ QList<Task*> ClustalWWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->copyGapModel(clustalWSupportTask->resultMA.getRows());
+        mAObject->copyGapModel(clustalWSupportTask->resultMA.getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

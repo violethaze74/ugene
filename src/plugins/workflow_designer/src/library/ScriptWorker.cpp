@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtScriptTools/QScriptEngineDebugger>
-
-#include "ScriptWorker.h"
+#include <QScriptEngineDebugger>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -30,6 +28,7 @@
 #include <U2Core/FailTask.h>
 #include <U2Core/Log.h>
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -47,6 +46,7 @@
 #include <U2Lang/SequencePrototype.h>
 #include <U2Lang/WorkflowEnv.h>
 
+#include "ScriptWorker.h"
 
 namespace U2 {
 namespace LocalWorkflow {
