@@ -26,10 +26,11 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SequenceUtils.h>
+#include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {

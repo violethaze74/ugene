@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Designer/GrouperEditor.h>
-
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Designer/GrouperEditor.h>
 
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>

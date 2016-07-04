@@ -47,9 +47,9 @@ class U2CORE_EXPORT MultipleAlignmentRowData : public QSharedData {
 
 protected:
     /** Do NOT create a row without an alignment! */
-    MultipleAlignmentRowData(MultipleSequenceAlignment *alignment = NULL);
-    MultipleAlignmentRowData(const MultipleAlignmentRow &row, MultipleSequenceAlignment *alignment);
-    MultipleAlignmentRowData(const U2MaRow &rowInDb, const U2MaRowGapModel &gaps, MultipleSequenceAlignment *alignment);
+    MultipleAlignmentRowData(const MultipleSequenceAlignment *alignment = NULL);
+    MultipleAlignmentRowData(const MultipleAlignmentRow &row, const MultipleSequenceAlignment *alignment);
+    MultipleAlignmentRowData(const U2MaRow &rowInDb, const U2MaRowGapModel &gaps, const MultipleSequenceAlignment *alignment);
 
 public:
     virtual ~MultipleAlignmentRowData();
@@ -172,11 +172,11 @@ private:
     /** Removing gaps from the row between position 'pos' and 'pos + count' */
     void removeGapsFromGapModel(int pos, int count);
 
-    void setParentAlignment(MultipleSequenceAlignment *newAl);
+    void setParentAlignment(const MultipleSequenceAlignment *newAl);
 
     bool isGap(int position) const;
 
-    MultipleSequenceAlignment *alignment;
+    const MultipleSequenceAlignment *alignment;
 
     /**
      * Gaps model of the row

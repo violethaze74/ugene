@@ -19,12 +19,14 @@
  * MA 02110-1301, USA.
  */
 
+#include <QMutexLocker>
+
+#include <U2Core/U2SafePoints.h>
+
+#include <U2View/AlignmentAlgorithmGUIExtension.h>
+
 #include "AlignmentAlgorithmsRegistry.h"
-
-#include "U2View/AlignmentAlgorithmGUIExtension.h"
-#include "../msa_alignment/SimpleAddingToAlignment.h"
-
-#include <QtCore/QMutexLocker>
+#include "msa_alignment/SimpleAddingToAlignment.h"
 
 namespace U2 {
 

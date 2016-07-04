@@ -19,15 +19,18 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
+
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/MSAUtils.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/U2SafePoints.h>
+
 #include "SimpleAddingToAlignment.h"
-#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
 namespace U2 {
 
@@ -36,12 +39,12 @@ namespace U2 {
 /************************************************************************/
 SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings)
     : AbstractAlignmentTask("Simple add to alignment task", TaskFlags_NR_FOSCOE), settings(settings) {
-        GCOUNTER(cvar, tvar, "SimpleAddToAlignmentTask" );
+    GCOUNTER(cvar, tvar, "SimpleAddToAlignmentTask" );
 
-        SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"),);
+    SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"),);
 
-        MultipleSequenceAlignmentExporter alnExporter;
-        inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
+    MultipleSequenceAlignmentExporter alnExporter;
+    inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
 }
 
 void SimpleAddToAlignmentTask::prepare()

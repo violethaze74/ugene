@@ -168,7 +168,7 @@ void MultipleSequenceAlignmentObject::setMAlignment(const MultipleSequenceAlignm
 
 void MultipleSequenceAlignmentObject::copyGapModel(const QList<MultipleSequenceAlignmentRow> &copyRows) {
     const MultipleSequenceAlignment &tmp = getMAlignment();
-    const QList<MultipleSequenceAlignmentRow> &oldRows = tmp.getRows();
+    const QList<MultipleSequenceAlignmentRow> &oldRows = tmp.getMsaRows();
 
     SAFE_POINT(oldRows.count() == copyRows.count(), "Different rows count", );
 
@@ -328,7 +328,7 @@ int MultipleSequenceAlignmentObject::deleteGap(U2OpStatus &os , const U2Region &
     MultipleSequenceAlignment msa = getMAlignment( );
     // iterate through given rows to update each of them in DB
     for ( int rowCount = rows.startPos; rowCount < rows.endPos( ); ++rowCount ) {
-        msa.removeChars( rowCount, pos, removingGapColumnCount, os );
+        msa.removeRowData( rowCount, pos, removingGapColumnCount, os );
         CHECK_OP( os, 0 );
 
         const MultipleSequenceAlignmentRow &row = msa.getRow( rowCount );
@@ -451,7 +451,7 @@ void MultipleSequenceAlignmentObject::removeRegion(int startPos, int startRow, i
     SAFE_POINT(!isStateLocked(), "Alignment state is locked!", );
     QList<qint64> modifiedRowIds;
     const MultipleSequenceAlignment &msa = getMAlignment();
-    const QList<MultipleSequenceAlignmentRow> &msaRows = msa.getRows();
+    const QList<MultipleSequenceAlignmentRow> &msaRows = msa.getMsaRows();
     SAFE_POINT(nRows > 0 && startRow >= 0 && startRow + nRows <= msaRows.size() && startPos + nBases <= msa.getLength(), "Invalid parameters!", );
     QList<MultipleSequenceAlignmentRow>::ConstIterator it = msaRows.begin() + startRow;
     QList<MultipleSequenceAlignmentRow>::ConstIterator end = it + nRows;
@@ -762,7 +762,7 @@ const MultipleSequenceAlignmentRow& MultipleSequenceAlignmentObject::getRow(int 
 //    MultipleSequenceAlignment msa = getMAlignment();
 //    return msa.getRow(row);
     ensureDataLoaded();
-    return cachedMsa.getRow(row);
+    return cachedMsa.getMsaRow(row);
 }
 
 int MultipleSequenceAlignmentObject::getRowPosById(qint64 rowId) const {

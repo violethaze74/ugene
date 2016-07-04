@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include "WizardController.h"
+#include <U2Core/U2SafePoints.h>
 
 #include "PairedDatasetsController.h"
+#include "WizardController.h"
 
 namespace U2 {
 

@@ -46,7 +46,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
     if (!msa.getAlphabet()->isAmino()) {
         // for nucleic alphabet work as strict algorithm but use ' ' as default
         char  defChar = ' ';
-        char pc = ( seqIdx.isEmpty() ? msa.getRows().first() : msa.getRows()[ seqIdx[0] ] )->charAt(pos);
+        char pc = ( seqIdx.isEmpty() ? msa.getMsaRows().first() : msa.getMsaRows()[ seqIdx[0] ] )->charAt(pos);
         if (pc == MAlignment_GapChar) {
             pc = defChar;
         }

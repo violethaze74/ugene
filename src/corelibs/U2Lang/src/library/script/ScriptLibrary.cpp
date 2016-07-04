@@ -593,8 +593,7 @@ QScriptValue WorkflowScriptLibrary::createAlignment(QScriptContext *ctx, QScript
         return ctx->throwError(QObject::tr("Empty or invalid sequence"));
     }
     align.setAlphabet(seq.alphabet);
-    U2OpStatus2Log os;
-    align.addRow(seq.getName(), seq.seq, os);
+    align.addRow(seq.getName(), seq.seq);
 
     for(int i = 1; i < ctx->argumentCount(); i++) {
         DNASequence seq = getSequence(ctx, engine, i);
@@ -604,7 +603,7 @@ QScriptValue WorkflowScriptLibrary::createAlignment(QScriptContext *ctx, QScript
         if(seq.alphabet != align.getAlphabet()) {
             return ctx->throwError(QObject::tr("Alphabets of each sequence must be the same"));
         }
-        align.addRow(seq.getName(), seq.seq, os);
+        align.addRow(seq.getName(), seq.seq);
     }
 
     return putAlignment(engine, align);
@@ -641,8 +640,7 @@ QScriptValue WorkflowScriptLibrary::addToAlignment(QScriptContext *ctx, QScriptE
             row = -1;
         }
     }
-    U2OpStatus2Log os;
-    align.addRow(seq.getName(), seq.seq, row, os);
+    align.addRow(seq.getName(), seq.seq, row);
 
     return putAlignment(engine, align);
 }

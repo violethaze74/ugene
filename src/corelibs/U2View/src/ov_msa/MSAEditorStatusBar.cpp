@@ -19,19 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAEditorStatusBar.h"
-#include "MSAEditorSequenceArea.h"
+#include <QHBoxLayout>
+#include <QKeyEvent>
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QHBoxLayout>
-#else
-#include <QtWidgets/QHBoxLayout>
-#endif
-#include <QtGui/QKeyEvent>
+#include "MSAEditorSequenceArea.h"
+#include "MSAEditorStatusBar.h"
 
 namespace U2 {
 

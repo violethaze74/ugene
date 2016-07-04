@@ -19,13 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Lang/WorkflowDebugStatus.h>
-
-#include <U2Core/Timer.h>
 #include <U2Core/TaskSignalMapper.h>
+#include <U2Core/Timer.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <U2Lang/WorkflowMonitor.h>
 #include <U2Lang/ElapsedTimeUpdater.h>
+#include <U2Lang/WorkflowDebugStatus.h>
+#include <U2Lang/WorkflowMonitor.h>
 
 #include "LastReadyScheduler.h"
 

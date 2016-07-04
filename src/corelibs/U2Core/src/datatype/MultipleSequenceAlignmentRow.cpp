@@ -29,35 +29,41 @@
 
 namespace U2 {
 
-MultipleSequenceAlignmentRow::operator MultipleAlignmentRow() const {
-    return MultipleAlignmentRow(const_cast<MultipleSequenceAlignmentRowData *>(constData()));
-}
-
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow()
     : QSharedDataPointer<MultipleSequenceAlignmentRowData>(new MultipleSequenceAlignmentRowData)
 {
-
+    init();
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleAlignmentRow &maRow)
-    : QSharedDataPointer<MultipleSequenceAlignmentRowData>((MultipleSequenceAlignmentRow)maRow)
+    : QSharedDataPointer<MultipleSequenceAlignmentRowData>(dynamic_cast<MultipleSequenceAlignmentRowData *>(const_cast<MultipleAlignmentRowData *>(maRow.constData())))
 {
-
+    init();
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &msaRow)
     : QSharedDataPointer<MultipleSequenceAlignmentRowData>(msaRow)
 {
-
+    init();
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlignmentRowData *msaRowData)
     : QSharedDataPointer<MultipleSequenceAlignmentRowData>(msaRowData)
 {
-
+    init();
 }
 
-MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(MultipleSequenceAlignment *msa)
+void MultipleSequenceAlignmentRow::init() {
+    if (NULL == constData()) {
+        *this = new MultipleSequenceAlignmentRowData();
+    }
+}
+
+MultipleSequenceAlignmentRow::operator MultipleAlignmentRow() const {
+    return MultipleAlignmentRow(const_cast<MultipleSequenceAlignmentRowData *>(constData()));
+}
+
+MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const MultipleSequenceAlignment *msa)
     : MultipleAlignmentRowData(msa)
 {
 
@@ -66,14 +72,14 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(MultipleSeque
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb,
                                                                    const DNASequence &sequence,
                                                                    const U2MaRowGapModel &gaps,
-                                                                   MultipleSequenceAlignment *msa)
+                                                                   const MultipleSequenceAlignment *msa)
     : MultipleAlignmentRowData(rowInDb, gaps, msa),
       sequence(sequence)
 {
     removeTrailingGaps();
 }
 
-MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const QString &rowName, const QByteArray &rawData, MultipleSequenceAlignment *msa)
+MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const QString &rowName, const QByteArray &rawData, const MultipleSequenceAlignment *msa)
     : MultipleAlignmentRowData(rowInDb, U2MaRowGapModel(), msa)
 {
     QByteArray sequenceData;
@@ -83,7 +89,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MaRow
     setGapModel(gapModel);
 }
 
-MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow &row, MultipleSequenceAlignment *msa)
+MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignment *msa)
     : MultipleAlignmentRowData((MultipleAlignmentRow)row, msa),
       sequence(row->sequence)
 {

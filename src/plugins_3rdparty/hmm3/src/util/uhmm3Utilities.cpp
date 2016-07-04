@@ -21,14 +21,15 @@
 
 #include <cassert>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/SMatrix.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <gobject/uHMMObject.h>
-#include <format/uHMMFormat.h>
+#include "format/uHMMFormat.h"
+#include "gobject/uHMMObject.h"
 #include "uhmm3Utilities.h"
 
 using namespace U2;

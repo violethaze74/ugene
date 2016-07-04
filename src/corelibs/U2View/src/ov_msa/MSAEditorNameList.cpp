@@ -19,27 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAEditorNameList.h"
-#include "MSAEditor.h"
-#include "MSAEditorSequenceArea.h"
+#include <QApplication>
+#include <QClipboard>
+#include <QInputDialog>
+#include <QMouseEvent>
+#include <QPainter>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QInputDialog>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QInputDialog>
-#endif
-#include <QtGui/QClipboard>
-#include <QtGui/QPainter>
-#include <QtGui/QMouseEvent>
-
+#include "MSAEditor.h"
+#include "MSAEditorNameList.h"
+#include "MSAEditorSequenceArea.h"
 
 namespace U2 {
 

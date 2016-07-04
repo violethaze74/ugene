@@ -624,7 +624,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
                 continue;
             }
 
-            DNASequence sequence = al.getRowByRowId(newRow.rowId, os)->getSequence();
+            DNASequence sequence = ((MultipleSequenceAlignmentRow)al.getRowByRowId(newRow.rowId, os))->getSequence();
             CHECK_OP(os, );
 
             msaDbi->updateRowName(msaRef.entityId, newRow.rowId, sequence.getName(), os);

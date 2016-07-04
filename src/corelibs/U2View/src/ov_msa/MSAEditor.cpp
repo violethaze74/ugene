@@ -81,7 +81,6 @@
 
 #include <U2View/UndoRedoFramework.h>
 
-#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Export/MSAImageExportTask.h"
 #include "ExportHighlightedDialogController.h"
 #include "MSAEditor.h"
@@ -96,6 +95,7 @@
 #include "MSAEditorTasks.h"
 #include "MSAEditorUndoFramework.h"
 #include "MsaEditorSimilarityColumn.h"
+#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "PhyTrees/MSAEditorTreeViewer.h"
 #include "ov_msa/TreeOptions//TreeOptionsWidgetFactory.h"

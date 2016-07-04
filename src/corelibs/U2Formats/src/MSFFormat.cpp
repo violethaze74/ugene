@@ -159,7 +159,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
         seqs.insert(name, check);
         U2OpStatus2Log os;
-        al.addRow(name, QByteArray(), os);
+        al.addRow(name, QByteArray());
         rowLens.append(0);
         if (sum < CHECK_SUM_MOD) {
             sum = (sum + check) % CHECK_SUM_MOD;
@@ -333,7 +333,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         QList<QByteArray> seqs = walker.nextData(CHARS_IN_ROW, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = ma.getRows().constBegin();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = ma.getMsaRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;
             QByteArray line = row->getName().toLocal8Bit();

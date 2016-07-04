@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "SequenceSelectorWidgetController.h"
 
@@ -63,6 +64,7 @@ void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
     const MultipleSequenceAlignment &ma = msa->getMSAObject()->getMAlignment();
     U2OpStatusImpl os;
     const MultipleSequenceAlignmentRow selectedRow = ma.getRowByRowId(newId, os);
+    CHECK_OP(os, );
     seqId = newId;
     const QString selectedName = selectedRow->getName();
     if (seqLineEdit->text() != selectedName) {

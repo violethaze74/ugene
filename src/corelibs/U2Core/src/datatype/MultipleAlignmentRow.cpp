@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MultipleAlignmentRow.h"
@@ -28,14 +29,14 @@ namespace U2 {
 
 const qint64 MultipleAlignmentRowData::INVALID_ROW_ID = -1;
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(MultipleSequenceAlignment *alignment)
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleSequenceAlignment *alignment)
     : alignment(alignment),
       initialRowInDb(U2MaRow())
 {
     initialRowInDb.rowId = INVALID_ROW_ID;
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentRow &row, MultipleSequenceAlignment *alignment)
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentRow &row, const MultipleSequenceAlignment *alignment)
     : alignment(alignment),
       gaps(row->gaps),
       initialRowInDb(row->initialRowInDb)
@@ -43,7 +44,7 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentRow &r
     SAFE_POINT(alignment != NULL, "Parent MultipleAlignment is NULL", );
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MaRow &rowInDb, const U2MaRowGapModel &gaps, MultipleSequenceAlignment *alignment)
+MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MaRow &rowInDb, const U2MaRowGapModel &gaps, const MultipleSequenceAlignment *alignment)
     : alignment(alignment),
       gaps(gaps),
       initialRowInDb(rowInDb)
@@ -444,7 +445,7 @@ void MultipleAlignmentRowData::removeGapsFromGapModel(int pos, int count) {
     gaps = newGapModel;
 }
 
-void MultipleAlignmentRowData::setParentAlignment(MultipleSequenceAlignment *newAl) {
+void MultipleAlignmentRowData::setParentAlignment(const MultipleSequenceAlignment *newAl) {
     alignment = newAl;
 }
 

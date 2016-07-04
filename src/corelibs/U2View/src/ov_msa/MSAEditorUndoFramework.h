@@ -75,7 +75,7 @@ class MSAEditorUndoWholeAliCommand : public MSAEditorUndoCommand {
 public:
     MSAEditorUndoWholeAliCommand(const MultipleSequenceAlignment& _maBefore, const MultipleSequenceAlignment& _maAfter) : maBefore(_maBefore), maAfter(_maAfter){}
 
-    virtual int getMemUsage() const {return maBefore.estimateMemorySize();}
+    virtual int getMemUsage() const {return 0; /*maBefore.estimateMemorySize();*/}
 
     virtual void redo();
     virtual void undo();

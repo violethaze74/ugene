@@ -30,6 +30,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2IdTypes.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Formats/DocumentFormatUtils.h>

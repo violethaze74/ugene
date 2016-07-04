@@ -19,6 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
+#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MSAConsensusUtils.h>
+
 #include <QApplication>
 #include <QClipboard>
 #include <QHelpEvent>
@@ -26,24 +30,22 @@
 #include <QPainter>
 #include <QToolTip>
 
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/Settings.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Gui/GraphUtils.h>
+#include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/GraphUtils.h>
 #include <U2Gui/OPWidgetFactory.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
-#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
-#include <U2Algorithm/MSAConsensusUtils.h>
 
 #include "MSAEditor.h"
+#include "MSAEditorConsensusArea.h"
 #include "MSAEditorSequenceArea.h"
 #include "General/MSAGeneralTabFactory.h"
-
-#include "MSAEditorConsensusArea.h"
 
 namespace U2 {
 

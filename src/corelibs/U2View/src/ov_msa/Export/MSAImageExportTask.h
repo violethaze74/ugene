@@ -22,16 +22,17 @@
 #ifndef _U2_MSA_IMAGE_EXPORT_TASK_H_
 #define _U2_MSA_IMAGE_EXPORT_TASK_H_
 
-#include <U2Gui/ImageExportTask.h>
+#include <QPixmap>
 
 #include <U2Core/U2Region.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/ImageExportTask.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorNameList.h>
 #include <U2View/MSAEditorConsensusArea.h>
+#include <U2View/MSAEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
-
-#include <QtGui/QPixmap>
 
 class Ui_MSAExportSettings;
 

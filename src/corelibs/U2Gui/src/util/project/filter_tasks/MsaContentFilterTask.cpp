@@ -21,12 +21,12 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
-
-#include "../ProjectFilterNames.h"
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "MsaContentFilterTask.h"
+#include "../ProjectFilterNames.h"
 
 namespace U2 {
 

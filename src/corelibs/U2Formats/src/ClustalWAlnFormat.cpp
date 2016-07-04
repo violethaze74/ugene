@@ -143,7 +143,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
                 // this is consensus line - skip it
             } else {
                 assert(al.getNumRows() == sequenceIdx);
-                al.addRow(name, value, os);
+                al.addRow(name, value);
             }
         } else {
             int rowIdx = -1;
@@ -258,7 +258,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
         QList<QByteArray> seqs = walker.nextData(partLen, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = ma.getRows().constBegin();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = ma.getMsaRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;
             QByteArray line = row->getName().toLatin1();

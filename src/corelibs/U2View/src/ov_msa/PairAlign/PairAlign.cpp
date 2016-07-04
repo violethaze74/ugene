@@ -267,11 +267,9 @@ void PairAlign::updatePercentOfSimilarity() {
     MultipleSequenceAlignment ma;
     const MultipleSequenceAlignment &currentAlignment = msa->getMSAObject()->getMAlignment();
     ma.addRow(firstSeqSelectorWC->text(),
-        currentAlignment.getRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1, os);
-    CHECK_OP(os, );
+        ((MultipleSequenceAlignmentRow)currentAlignment.getRowByRowId(firstSeqSelectorWC->sequenceId(), os))->getData(), -1);
     ma.addRow(secondSeqSelectorWC->text(),
-        currentAlignment.getRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1, os);
-    CHECK_OP(os, );
+        ((MultipleSequenceAlignmentRow)currentAlignment.getRowByRowId(secondSeqSelectorWC->sequenceId(), os))->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
     distanceCalcTask->setExcludeGaps(true);
     connect(distanceCalcTask, SIGNAL(si_stateChanged()), SLOT(sl_distanceCalculated()));

@@ -22,12 +22,13 @@
 #include <QCheckBox>
 #include <QMessageBox>
 
-#include "MSASelectSubalignmentDialog.h"
-#include "MSAEditor.h"
+#include <U2Core/L10n.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 
-#include <U2Core/L10n.h>
+#include "MSASelectSubalignmentDialog.h"
+#include "MSAEditor.h"
 
 namespace U2 {
 

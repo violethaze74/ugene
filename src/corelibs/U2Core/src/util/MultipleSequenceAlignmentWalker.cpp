@@ -21,6 +21,8 @@
 
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2OpStatus.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "MultipleSequenceAlignmentWalker.h"
 

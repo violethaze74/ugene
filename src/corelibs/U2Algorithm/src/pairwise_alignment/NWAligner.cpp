@@ -126,12 +126,8 @@ MultipleSequenceAlignment NWAligner::align() {
     }
 
     MultipleSequenceAlignment result(MA_OBJECT_NAME, sMatrix.getAlphabet());
-    U2OpStatus2Log os;
-    result.addRow("seq1", aligned1, os);
-    CHECK_OP(os, MultipleSequenceAlignment());
-
-    result.addRow("seq2", aligned2, os);
-    CHECK_OP(os, MultipleSequenceAlignment());
+    result.addRow("seq1", aligned1);
+    result.addRow("seq2", aligned2);
 
     return result;
 }

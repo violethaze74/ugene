@@ -86,7 +86,7 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpS
     foreach(const DNASequence& seq, list) {
         updateAlignmentAlphabet(ma, seq.alphabet, os);
         //TODO: handle memory overflow
-        ma.addRow(seq.getName(), seq.seq, os);
+        ma.addRow(seq.getName(), seq.seq);
     }
     CHECK_OP(os, MultipleSequenceAlignment());
     return ma;
@@ -160,8 +160,7 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
         updateAlignmentAlphabet(ma, alphabet, os);
         CHECK_OP(os, MultipleSequenceAlignment());
 
-        ma.addRow(objName, QByteArray(""), os);
-        CHECK_OP(os, MultipleSequenceAlignment());
+        ma.addRow(objName, QByteArray(""));
 
         SAFE_POINT(i < ma.getNumRows(), "Row count differ from expected after adding row", MultipleSequenceAlignment());
         appendSequenceToAlignmentRow(ma, i, 0, seq, os);
@@ -316,7 +315,7 @@ MultipleSequenceAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs,
 
 QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignment& origMsa, MultipleSequenceAlignment& newMsa, U2OpStatus& os) {
     QList<qint64> rowsOrder;
-    const QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa.getRows();
+    const QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa.getMsaRows();
     for (int i = 0, n = newMsa.getNumRows(); i < n; ++i) {
         const MultipleSequenceAlignmentRow& newMsaRow = newMsa.getRow(i);
         QString rowName = newMsaRow->getName().replace(" ", "_");
@@ -330,7 +329,7 @@ QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignmen
                 rowsOrder.append(rowId);
 
                 U2DataId sequenceId = origMsaRow->getRowDbInfo().dataObjectId;
-                newMsa.setSequenceId(i, sequenceId);
+                newMsa.setDataId(i, sequenceId);
 
                 break;
             }

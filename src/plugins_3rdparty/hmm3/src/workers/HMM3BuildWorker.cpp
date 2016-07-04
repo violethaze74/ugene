@@ -19,26 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#include "HMM3BuildWorker.h"
-#include "HMM3IOWorker.h"
-#include "build/uHMM3BuildTask.h"
+#include <U2Core/AppContext.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/Log.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
 
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BasePorts.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/CoreLibConstants.h>
 #include <U2Lang/Datatype.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
-#include <U2Lang/BasePorts.h>
-#include <U2Lang/BaseActorCategories.h>
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/CoreLibConstants.h>
 
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
-#include <U2Core/TaskSignalMapper.h>
-#include <U2Core/FailTask.h>
+#include "HMM3BuildWorker.h"
+#include "HMM3IOWorker.h"
+#include "build/uHMM3BuildTask.h"
 
 /* TRANSLATOR U2::LocalWorkflow::HMM3BuildWorker */
 

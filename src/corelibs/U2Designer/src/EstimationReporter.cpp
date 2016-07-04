@@ -19,14 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QWebFrame>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWebKitWidgets/QWebFrame>
-#endif
+
+#include <U2Core/U2SafePoints.h>
 
 #include "EstimationReporter.h"
 

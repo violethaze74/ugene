@@ -436,9 +436,8 @@ bool NEXUSParser::readDataContents(Context &ctx) {
             // Build MultipleSequenceAlignment object
             U2OpStatus2Log os;
             MultipleSequenceAlignment ma(tz.getIO()->getURL().baseFileName());
-            foreach (QString name, rows.keys()) {
-                ma.addRow(name, rows[name], os);
-                CHECK_OP(os, false);
+            foreach (const QString &name, rows.keys()) {
+                ma.addRow(name, rows[name]);
             }
 
             // Determine alphabet & replace missing chars
@@ -766,7 +765,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
 
     tabs.append(tab);
 
-    const QList<MultipleSequenceAlignmentRow> &rows = ma.getRows();
+    const QList<MultipleSequenceAlignmentRow> &rows = ma.getMsaRows();
 
     int nameMaxLen = 0;
     foreach (MultipleSequenceAlignmentRow row, rows) {

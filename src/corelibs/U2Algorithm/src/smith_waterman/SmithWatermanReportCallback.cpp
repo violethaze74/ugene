@@ -211,11 +211,11 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         MultipleSequenceAlignment msa(newFileName, alphabet);
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.refSubseq;
-        msa.addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq, stateInfo);
+        msa.addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq);
         CHECK_OP(stateInfo, tr("Failed to add a reference subsequence row."));
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.ptrnSubseq;
-        msa.addRow(tagsRegistry->parseStringWithTags(ptrnSubseqTemplate, expansionInfo), curResultPtrnSubseq, stateInfo);
+        msa.addRow(tagsRegistry->parseStringWithTags(ptrnSubseqTemplate, expansionInfo), curResultPtrnSubseq);
         CHECK_OP(stateInfo, tr("Failed to add a pattern subsequence row."));
 
         MultipleSequenceAlignmentObject *docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
@@ -299,10 +299,8 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
     MultipleSequenceAlignment msa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
-    msa.addRow(refSequence->visualName, refSequenceData, stateInfo);
-    CHECK_OP(stateInfo, tr("Failed to add row to result msa."));
-    msa.addRow(ptrnSequence->visualName, ptrnSequenceData, stateInfo);
-    CHECK_OP(stateInfo, tr("Failed to add row to result msa."));
+    msa.addRow(refSequence->visualName, refSequenceData);
+    msa.addRow(ptrnSequence->visualName, ptrnSequenceData);
 
     MultipleSequenceAlignmentObject *docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
     CHECK_OP(stateInfo, tr("Failed to create an alignment."));

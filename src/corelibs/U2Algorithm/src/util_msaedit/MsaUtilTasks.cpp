@@ -78,7 +78,7 @@ void TranslateMsa2AminoTask::run() {
         QByteArray buf(buflen,'\0');
         translation->translate(dna.seq.constData(), dna.length(), buf.data(), buflen);
         buf.replace("*","X");
-        resultMA.addRow(dna.getName(), buf, stateInfo);
+        resultMA.addRow(dna.getName(), buf);
     }
 }
 
@@ -148,10 +148,9 @@ void AlignInAminoFormTask::run() {
     SAFE_POINT_EXT(NULL != clonedObj, setError(tr("NULL clonedObj in AlignInAminoFormTask::prepare!")),);
 
     const MultipleSequenceAlignment &newMA = clonedObj->getMAlignment();
-    const QList<MultipleSequenceAlignmentRow>& rows = newMA.getRows();
+    const QList<MultipleSequenceAlignmentRow>& rows = newMA.getMsaRows();
 
     //Create gap map from amino-acid alignment
-    U2OpStatus2Log os;
     foreach (const MultipleSequenceAlignmentRow& row, rows) {
         const int rowIdx = MSAUtils::getRowIndexByName(maObj->getMAlignment(), row->getName());
         const MultipleSequenceAlignmentRow curRow = maObj->getMAlignment().getRow(row->getName());

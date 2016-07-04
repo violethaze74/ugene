@@ -19,22 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include "uhmm3QDActor.h"
-#include <gobject/uHMMObject.h>
-#include <search/uHMM3SearchTask.h>
-#include <search/uHMM3SearchDialogImpl.h>
-
-#include <U2Core/FailTask.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/DNASequenceObject.h>
-
-#include <U2Gui/DialogUtils.h>
+#include <U2Core/FailTask.h>
+#include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
+#include <U2Gui/DialogUtils.h>
+
 #include <U2Lang/BaseTypes.h>
 
+#include "uhmm3QDActor.h"
+#include "gobject/uHMMObject.h"
+#include "search/uHMM3SearchTask.h"
+#include "search/uHMM3SearchDialogImpl.h"
 
 namespace U2 {
 

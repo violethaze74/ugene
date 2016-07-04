@@ -41,6 +41,9 @@ public:
     MultipleSequenceAlignmentRow(MultipleSequenceAlignmentRowData *msaRowData);
 
     operator MultipleAlignmentRow() const;
+
+private:
+    void init();
 };
 
 /**
@@ -55,12 +58,12 @@ class U2CORE_EXPORT MultipleSequenceAlignmentRowData : public MultipleAlignmentR
     friend class MultipleSequenceAlignmentRow;
 
     /** Do NOT create a row without an alignment! */
-    MultipleSequenceAlignmentRowData(MultipleSequenceAlignment *msa = NULL);
+    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignment *msa = NULL);
 
     /** Creates a row in memory. */
-    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, MultipleSequenceAlignment *msa);
-    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const QString &rowName, const QByteArray &rawData, MultipleSequenceAlignment *msa);
-    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow &row, MultipleSequenceAlignment *msa);
+    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, const MultipleSequenceAlignment *msa);
+    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const QString &rowName, const QByteArray &rawData, const MultipleSequenceAlignment *msa);
+    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignment *msa);
 
 public:
     /** Name of the row (equals to the sequence name), can be empty */

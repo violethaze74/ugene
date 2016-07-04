@@ -24,6 +24,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/DNATranslationImpl.h \
            src/datatype/FeatureColors.h \
            src/datatype/Matrix44.h \
+           src/datatype/MultipleAlignment.h \
            src/datatype/MultipleAlignmentInfo.h \
            src/datatype/MultipleAlignmentRow.h \
            src/datatype/MultipleSequenceAlignment.h \
@@ -264,6 +265,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/DNATranslationImpl.cpp \
            src/datatype/FeatureColors.cpp \
            src/datatype/Matrix44.cpp \
+           src/datatype/MultipleAlignment.cpp \
            src/datatype/MultipleAlignmentInfo.cpp \
            src/datatype/MultipleAlignmentRow.cpp \
            src/datatype/MultipleSequenceAlignment.cpp \

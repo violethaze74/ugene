@@ -151,7 +151,7 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
             line = line.left(MAX_NAME_LEN);
         }
         io->writeBlock(line);
-        QByteArray sequence = ma.getRow(i)->toByteArray(numberOfCharacters, os);
+        QByteArray sequence = ma.getMsaRow(i)->toByteArray(numberOfCharacters, os);
         int blockCounter = 0;
         while ((blockCounter*SEQ_BLOCK_SIZE) <= numberOfCharacters) {
             line.clear();
@@ -223,7 +223,7 @@ MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatu
             removeSpaces(line);
             value.append(line);
         }
-        al.addRow(name, value, os);
+        al.addRow(name, value);
 
         os.setProgress(io->getProgress());
     }
@@ -270,7 +270,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
             line = line.left(MAX_NAME_LEN);
         }
 
-        QByteArray sequence = ma.getRow(i)->toByteArray(numberOfCharacters, os);
+        QByteArray sequence = ma.getMsaRow(i)->toByteArray(numberOfCharacters, os);
         line.append(sequence.left(INT_BLOCK_SIZE));
         line.append('\n');
 
@@ -283,7 +283,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     while (blockCounter*INT_BLOCK_SIZE <= numberOfCharacters) {
         io->writeBlock("\n", 1);
         for (int i = 0; i < numberOfSpecies; i++) {
-            QByteArray sequence = ma.getRow(i)->toByteArray(numberOfCharacters, os);
+            QByteArray sequence = ma.getMsaRow(i)->toByteArray(numberOfCharacters, os);
             QByteArray line;
             line.append(spacer);
             line.append(sequence.mid(blockCounter*INT_BLOCK_SIZE, INT_BLOCK_SIZE));
@@ -361,7 +361,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
         } while (!resOk);
 
         removeSpaces(value);
-        al.addRow(name, value, os);
+        al.addRow(name, value);
 
         os.setProgress(io->getProgress());
     }

@@ -468,8 +468,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
         }
 
         MultipleSequenceAlignment al(consName);
-        al.addRow(consName, consensus, os);
-        CHECK_OP(os, );
+        al.addRow(consName, consensus);
 
         //AF
         QMap< QString, int> posMap;
@@ -500,8 +499,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             QByteArray offsetGaps;
             offsetGaps.fill(MAlignment_GapChar, pos);
             sequence.prepend(offsetGaps);
-            al.addRow(rowName, sequence, os);
-            CHECK_OP(os, );
+            al.addRow(rowName, sequence);
 
             count--;
             os.setProgress(io->getProgress());

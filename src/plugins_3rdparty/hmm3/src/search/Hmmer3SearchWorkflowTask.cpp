@@ -22,9 +22,10 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/U1AnnotationUtils.h>
-#include <workers/HMM3SearchWorker.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "Hmmer3SearchWorkflowTask.h"
+#include "workers/HMM3SearchWorker.h"
 
 namespace U2 {
 

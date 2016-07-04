@@ -28,12 +28,12 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "MSAEditor.h"
 #include "MSAEditorNameList.h"
-#include "MSAEditorSequenceArea.h"
-
 #include "MSAEditorOffsetsView.h"
+#include "MSAEditorSequenceArea.h"
 
 namespace U2 {
 

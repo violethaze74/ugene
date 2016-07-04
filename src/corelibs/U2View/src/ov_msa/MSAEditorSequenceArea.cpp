@@ -2387,7 +2387,7 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
             continue;
         }
         int len = selection.width();
-        QByteArray seqPart = msa.getRow(i)->mid(selection.x(), len, os)->toByteArray(len, os);
+        QByteArray seqPart = msa.getMsaRow(i)->mid(selection.x(), len, os)->toByteArray(len, os);
         selText.append(seqPart);
         if (i + 1 != sel.endPos()) { // do not add line break into the last line
             selText.append("\n");

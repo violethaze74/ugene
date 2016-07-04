@@ -20,8 +20,9 @@
  */
 
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MultipleAlignmentInfo.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2MsaDbi.h>
@@ -211,7 +212,7 @@ QList<U2MaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnection
     for (int i = 0; i < al.getNumRows(); ++i) {
         U2Sequence seq = sequences[i];
         if (seq.length > 0) {
-            MultipleSequenceAlignmentRow &alignmentRow = al.getRow(i);
+            MultipleSequenceAlignmentRow &alignmentRow = al.getMsaRow(i);
             const U2MaRowGapModel gapModel = msaGapModel[i];
             if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
                 // remove trailing gap if it exists
