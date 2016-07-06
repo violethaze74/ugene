@@ -74,6 +74,7 @@
 #include "tcoffee/TCoffeeWorker.h"
 #include "mrbayes/MrBayesSupport.h"
 #include "mrbayes/MrBayesTests.h"
+#include "blast/AlignToReferenceBlastWorker.h"
 #include "blast/FormatDBSupport.h"
 #include "blast/BlastAllSupport.h"
 #include "blast/BlastAllWorker.h"
@@ -608,8 +609,11 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     LocalWorkflow::ClustalWWorkerFactory::init();
     LocalWorkflow::ClustalOWorkerFactory::init();
     LocalWorkflow::MAFFTWorkerFactory::init();
+
+    LocalWorkflow::AlignToReferenceBlastWorkerFactory::init();
     LocalWorkflow::BlastAllWorkerFactory::init();
     LocalWorkflow::BlastPlusWorkerFactory::init();
+
     LocalWorkflow::TCoffeeWorkerFactory::init();
     LocalWorkflow::CuffdiffWorkerFactory::init();
     LocalWorkflow::CufflinksWorkerFactory::init();
