@@ -19,8 +19,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/blast/align_worker_subtasks/BlastReadsSubTask.h \
            src/blast/align_worker_subtasks/FormatDBSubTask.h \
            src/blast/align_worker_subtasks/ComposeResultSubTask.h \
-           src/blast/align_worker_subtasks/PairwiseAlignmentSubTask.h \
-           src/blast/align_worker_subtasks/KAlignSubTask.h \
            src/blast/AlignToReferenceBlastWorker.h \
            src/blast/BlastAllSupport.h \
            src/blast/BlastAllSupportRunDialog.h \
@@ -201,8 +199,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/blast/align_worker_subtasks/BlastReadsSubTask.cpp \
            src/blast/align_worker_subtasks/FormatDBSubTask.cpp \
            src/blast/align_worker_subtasks/ComposeResultSubTask.cpp \
-           src/blast/align_worker_subtasks/PairwiseAlignmentSubTask.cpp \
-           src/blast/align_worker_subtasks/KAlignSubTask.cpp \
            src/blast/AlignToReferenceBlastWorker.cpp \
            src/blast/BlastAllSupport.cpp \
            src/blast/BlastAllSupportRunDialog.cpp \

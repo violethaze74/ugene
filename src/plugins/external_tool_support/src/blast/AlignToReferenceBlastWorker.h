@@ -31,7 +31,6 @@ namespace U2 {
 namespace Workflow {
 class BlastReadsSubTask;
 class FormatDBSubTask;
-class PairwiseAlignmentTask;
 class ComposeResultSubTask;
 }
 
