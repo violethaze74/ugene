@@ -22,13 +22,13 @@
 #ifndef _U2_MSA_GENERAL_TAB_H_
 #define _U2_MSA_GENERAL_TAB_H_
 
-#include "ui_GeneralTabOptionsPanelWidget.h"
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "../MsaOpSavableTab.h"
+#include "ui_GeneralTabOptionsPanelWidget.h"
 
 namespace U2 {
 
-class MultipleSequenceAlignment;
 class MsaModificationInfo;
 class MSAEditor;
 

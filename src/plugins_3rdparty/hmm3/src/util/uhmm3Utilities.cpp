@@ -166,8 +166,8 @@ ESL_MSA * UHMM3Utilities::convertMSA( const MultipleSequenceAlignment & ma ) {
     ESL_MSA * msa = NULL;
     int i = 0;
     bool ok = false;
-    int nseq = ma.getNumRows();
-    int alen = ma.getLength();
+    int nseq = ma->getNumRows();
+    int alen = ma->getLength();
 
     assert( 0 < nseq && 0 < alen );
 
@@ -177,18 +177,18 @@ ESL_MSA * UHMM3Utilities::convertMSA( const MultipleSequenceAlignment & ma ) {
     }
     msa->nseq = nseq;
     for (i = 0; i < nseq; i++) {
-        const MultipleSequenceAlignmentRow& row = ma.getRow(i);
+        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
         ok = allocAndCopyData( row->getName().toLatin1(), &msa->sqname[i] );
         if( !ok ) {
             esl_msa_Destroy( msa );
             return NULL;
         }
         U2OpStatus2Log os;
-        QByteArray sequence = row->toByteArray(ma.getLength(), os);
+        QByteArray sequence = row->toByteArray(ma->getLength(), os);
         copyData(sequence, msa->aseq[i] );
     }
 
-    ok = convertMalignmentInfo( ma.getInfo(), msa );
+    ok = convertMalignmentInfo( ma->getInfo(), msa );
     if( !ok ) {
         esl_msa_Destroy( msa );
         return NULL;

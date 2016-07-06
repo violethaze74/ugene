@@ -28,8 +28,6 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignment;
-
 class ConsensusModelTypes {
 public:
     static QString M1;

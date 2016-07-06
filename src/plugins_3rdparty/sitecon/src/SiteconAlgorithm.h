@@ -22,14 +22,14 @@
 #ifndef _U2_SITECON_ALG_H_
 #define _U2_SITECON_ALG_H_
 
-#include <U2Core/U2Region.h>
-#include <U2Core/Task.h>
+#include <QVector>
 
-#include <QtCore/QVector>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Task.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
-class MultipleSequenceAlignment;
 class DiPropertySitecon;
 
 //average and deviation for one property

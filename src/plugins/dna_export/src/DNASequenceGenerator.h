@@ -22,16 +22,16 @@
 #ifndef _U2_DNA_SEQUENCE_GENERATOR_H_
 #define _U2_DNA_SEQUENCE_GENERATOR_H_
 
-#include <U2Core/Task.h>
 #include <U2Core/DNASequence.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Task.h>
 #include <U2Core/U2Sequence.h>
 
 namespace U2 {
 
-class GObject;
-class Document;
-class MultipleSequenceAlignment;
 class DNAAlphabet;
+class Document;
+class GObject;
 class LoadDocumentTask;
 class SaveDocumentTask;
 

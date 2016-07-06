@@ -22,10 +22,12 @@
 #ifndef _U2_BWA_TESTS_H_
 #define _U2_BWA_TESTS_H_
 
-#include <U2Test/XMLTestUtils.h>
-#include <U2Core/GObject.h>
-#include <QtXml/QDomElement>
+#include <QDomElement>
 #include <QFileInfo>
+
+#include <U2Core/GObject.h>
+
+#include <U2Test/XMLTestUtils.h>
 
 #include "bwa/BwaTask.h"
 
@@ -34,7 +36,6 @@ namespace U2 {
 class BwaGObjectTask;
 class DnaAssemblyMultiTask;
 class MultipleSequenceAlignmentObject;
-class MultipleSequenceAlignment;
 
 class GTest_Bwa : public GTest {
     Q_OBJECT

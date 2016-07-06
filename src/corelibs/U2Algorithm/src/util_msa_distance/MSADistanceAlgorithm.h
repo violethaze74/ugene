@@ -22,17 +22,17 @@
 #ifndef _U2_MSA_DISTANCE_ALGORITHM_H_
 #define _U2_MSA_DISTANCE_ALGORITHM_H_
 
+#include <QMutex>
+#include <QVarLengthArray>
+
 #include <U2Core/AppResources.h>
-#include <U2Core/Task.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <QtCore/QVarLengthArray>
-#include <QtCore/QMutex>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
-class MultipleSequenceAlignment;
-class MSADistanceAlgorithm;
 class DNAAlphabet;
+class MSADistanceAlgorithm;
 class MSADistanceMatrix;
 
 enum DistanceAlgorithmFlag {

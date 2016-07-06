@@ -124,8 +124,8 @@ char U2AlphabetUtils::getDefaultSymbol(const U2AlphabetId& alphaId) {
 
 void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma) {
     const DNAAlphabet* resAl = NULL;
-    for (int i = 0, n = ma.getNumRows();i<n; i++) {
-        const MultipleSequenceAlignmentRow& item = ma.getRow(i);
+    for (int i = 0, n = ma->getNumRows();i<n; i++) {
+        const MultipleSequenceAlignmentRow& item = ma->getMsaRow(i);
         const QByteArray& itemSeq = item->getCore();
         const DNAAlphabet* itemAl = findBestAlphabet(itemSeq);
         if (resAl == NULL) {
@@ -136,17 +136,17 @@ void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma) {
         CHECK(resAl != NULL, );
     }
     CHECK(resAl != NULL, );
-    ma.setAlphabet(resAl);
+    ma->setAlphabet(resAl);
 
     if (!resAl->isCaseSensitive()) {
-        ma.toUpperCase();
+        ma->toUpperCase();
     }
 }
 
 void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma, char ignore) {
     const DNAAlphabet* resAl = NULL;
-    for (int i = 0, n = ma.getNumRows();i<n; i++) {
-        const MultipleSequenceAlignmentRow& item = ma.getRow(i);
+    for (int i = 0, n = ma->getNumRows();i<n; i++) {
+        const MultipleSequenceAlignmentRow& item = ma->getMsaRow(i);
         QByteArray itemSeq = item->getCore();
         itemSeq.replace(ignore, MAlignment_GapChar);
         const DNAAlphabet* itemAl = findBestAlphabet(itemSeq);
@@ -158,10 +158,10 @@ void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma, char ignore)
         CHECK(resAl != NULL, );
     }
     CHECK(resAl != NULL, );
-    ma.setAlphabet(resAl);
+    ma->setAlphabet(resAl);
 
     if (!resAl->isCaseSensitive()) {
-        ma.toUpperCase();
+        ma->toUpperCase();
     }
 }
 

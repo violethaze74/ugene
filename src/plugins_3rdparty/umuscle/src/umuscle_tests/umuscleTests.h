@@ -22,21 +22,20 @@
 #ifndef _U2_MUSCLE_TESTS_H_
 #define _U2_MUSCLE_TESTS_H_
 
+#include <QDomElement>
+#include <QFileInfo>
+
 #include <U2Core/GObject.h>
+
 #include <U2Test/XMLTestUtils.h>
-
-#include <QtXml/QDomElement>
-#include <QtCore/QFileInfo>
-
 
 #include "MuscleTask.h"
 
 namespace U2 {
 
-class MuscleGObjectTask;
 class MultipleSequenceAlignmentObject;
+class MuscleGObjectTask;
 class LoadDocumentTask;
-class MultipleSequenceAlignment;
 
 class GTest_uMuscle : public GTest {
     Q_OBJECT

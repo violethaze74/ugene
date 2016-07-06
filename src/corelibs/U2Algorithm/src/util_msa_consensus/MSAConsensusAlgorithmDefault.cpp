@@ -53,9 +53,9 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleSequen
     //TODO: use var-length array!
     QVector<QPair<int, char> > freqs(32);
     int ch = MAlignment_GapChar;
-    int nSeq = seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size();
+    int nSeq = seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)msa.charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
+        uchar c = (uchar)msa->charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
                                      pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';

@@ -7,20 +7,20 @@ namespace U2 {
   
   static void convertMAlignment2MSA(MSA_QScore& muscleMSA, const MultipleSequenceAlignment& ma){
 
-    for (int i=0, n = ma.getNumRows(); i<n; i++) {
-      const MultipleSequenceAlignmentRow& aseq = ma.getRow(i);
+    for (int i=0, n = ma->getNumRows(); i<n; i++) {
+      const MultipleSequenceAlignmentRow aseq = ma->getMsaRow(i);
 
-      char *sequence = new char[ma.getLength() + 1];
-      for(int position = 0;position < ma.getLength();position++) {
+      char *sequence = new char[ma->getLength() + 1];
+      for(int position = 0;position < ma->getLength();position++) {
           sequence[position] = aseq->charAt(position);
       }
-      sequence[ma.getLength()] = '\0';
+      sequence[ma->getLength()] = '\0';
 
       char* name = new char[aseq->getName().length() + 1];
       memcpy(name, aseq->getName().toLocal8Bit().data(), aseq->getName().length());
       name[aseq->getName().length()] = '\0';
 
-      muscleMSA.AppendSeq(sequence, ma.getLength(), name);
+      muscleMSA.AppendSeq(sequence, ma->getLength(), name);
     }
   }
 

@@ -22,15 +22,14 @@
 #ifndef _U2_MSA_CONSENSUS_UTILS_H_
 #define _U2_MSA_CONSENSUS_UTILS_H_
 
-#include <U2Core/global.h>
-#include <U2Core/U2Region.h>
+#include <QByteArray>
 
-#include <QtCore/QByteArray>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
 class MSAConsensusAlgorithm;
-class MultipleSequenceAlignment;
 
 
 class U2ALGORITHM_EXPORT MSAConsensusUtils : public QObject {

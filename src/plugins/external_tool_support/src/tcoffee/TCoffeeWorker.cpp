@@ -168,8 +168,8 @@ Task* TCoffeeWorker::tick() {
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
         const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
 
-        if (msa.isEmpty()) {
-            algoLog.error(tr("An empty MSA '%1' has been supplied to T-Coffee.").arg(msa.getName()));
+        if (msa->isEmpty()) {
+            algoLog.error(tr("An empty MSA '%1' has been supplied to T-Coffee.").arg(msa->getName()));
             return NULL;
         }
         TCoffeeSupportTask* supportTask = new TCoffeeSupportTask(msa, GObjectReference(), cfg);
@@ -201,7 +201,7 @@ void TCoffeeWorker::sl_taskFinished() {
     QVariantMap msgData;
     msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
-    algoLog.info(tr("Aligned %1 with T-Coffee").arg(t->resultMA.getName()));
+    algoLog.info(tr("Aligned %1 with T-Coffee").arg(t->resultMA->getName()));
 }
 
 void TCoffeeWorker::cleanup() {

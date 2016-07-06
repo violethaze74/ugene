@@ -481,14 +481,14 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
 #define MAX_ALI_MODEL (10*1000*1000)
 
 void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& ma, const QString& qualiferId, bool includeRef, U2OpStatus& os) {
-    SAFE_POINT_EXT(ma.isEmpty(), os.setError(tr("Illegal parameter: input alignment is not empty!")),);
+    SAFE_POINT_EXT(ma->isEmpty(), os.setError(tr("Illegal parameter: input alignment is not empty!")),);
     const QList<AnnotationSelectionData>& selection = view->getAnnotationsSelection()->getSelection();
     CHECK_EXT(selection.size() >= 2, os.setError(tr("At least 2 annotations are required")),);
 
     AnnotationTableObject *ao = selection.first().annotation->getGObject();
     ADVSequenceObjectContext* commonSeq = view->getSequenceContext(ao);
     int maxLen = commonSeq->getSequenceLength();
-    ma.setAlphabet(commonSeq->getAlphabet());
+    ma->setAlphabet(commonSeq->getAlphabet());
     QSet<QString> names;
     int rowIdx = 0;
 
@@ -507,20 +507,20 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& 
         U2EntityRef seqRef = seqCtx->getSequenceObject()->getSequenceRef();
 
         maxLen = qMax(maxLen, a.getSelectedRegionsLen());
-        CHECK_EXT(maxLen * ma.getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
+        CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")), );
 
         QByteArray rowSequence;
         QString subjSeq = a.annotation->findFirstQualifierValue("subj_seq");
         if(!subjSeq.isEmpty()){
-            ma.addRow(rowName, subjSeq.toLatin1());
+            ma->addRow(rowName, subjSeq.toLatin1());
         }else{
             AnnotationSelection::getAnnotationSequence(rowSequence, a, MAlignment_GapChar, seqRef, NULL, NULL, os);
             CHECK_OP(os,);
-            ma.addRow(rowName, rowSequence);
+            ma->addRow(rowName, rowSequence);
         }
 
         int offset = a.annotation->getLocation()->regions.first().startPos;
-        ma.insertGaps(rowIdx, 0, offset, os);
+        ma->insertGaps(rowIdx, 0, offset, os);
         CHECK_OP(os,);
 
         names.insert(rowName);
@@ -530,12 +530,12 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& 
     if (includeRef) {
         QByteArray rowSequence = commonSeq->getSequenceObject()->getWholeSequenceData(os);
         CHECK_OP(os,);
-        ma.addRow(commonSeq->getSequenceGObject()->getGObjectName(), rowSequence, 0);
+        ma->addRow(commonSeq->getSequenceGObject()->getGObjectName(), rowSequence, 0);
     }
 }
 
 void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os) {
-    SAFE_POINT_EXT(ma.isEmpty(), os.setError(tr("Illegal parameter: input alignment is not empty!")),);
+    SAFE_POINT_EXT(ma->isEmpty(), os.setError(tr("Illegal parameter: input alignment is not empty!")),);
     const QList<AnnotationSelectionData>& selection = view->getAnnotationsSelection()->getSelection();
     CHECK_EXT(selection.size() >= 2, os.setError(tr("At least 2 annotations are required")),);
 
@@ -557,7 +557,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, b
         }
     }
     int maxLen = 0;
-    ma.setAlphabet(al);
+    ma->setAlphabet(al);
     QSet<QString> names;
     foreach (const AnnotationSelectionData& a, selection) {
         QString rowName = a.annotation->getName();
@@ -566,7 +566,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, b
         U2EntityRef seqRef = seqCtx->getSequenceObject()->getSequenceRef();
 
         maxLen = qMax(maxLen, a.getSelectedRegionsLen());
-        CHECK_EXT(maxLen * ma.getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")),);
+        CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")),);
 
         bool doComplement = a.annotation->getStrand().isCompementary();
         const DNATranslation* aminoTT = translate ? seqCtx->getAminoTT() : NULL;
@@ -574,14 +574,14 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, b
         AnnotationSelection::getAnnotationSequence(rowSequence, a, MAlignment_GapChar, seqRef, doComplement ? complTT : NULL, aminoTT, os);
         CHECK_OP(os,);
 
-        ma.addRow(rowName, rowSequence);
+        ma->addRow(rowName, rowSequence);
 
         names.insert(rowName);
     }
 }
 
 void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os) {
-    SAFE_POINT_EXT(ma.isEmpty(), os.setError(tr("Illegal parameter: Input alignment is not empty!")),);
+    SAFE_POINT_EXT(ma->isEmpty(), os.setError(tr("Illegal parameter: Input alignment is not empty!")),);
 
     const DNAAlphabet* al = translate ? AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT()) : NULL;
 
@@ -610,7 +610,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, boo
     }
 
     CHECK_EXT(nItems >= 2, os.setError(tr("At least 2 sequences required")),);
-    ma.setAlphabet(al);
+    ma->setAlphabet(al);
 
     //cache sequences
     QSet<QString> names;
@@ -623,7 +623,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, boo
         DNATranslation* aminoTT = ((translate || forceTranslation) && seqAl->isNucleic()) ? seqCtx->getAminoTT() : NULL;
         foreach(const U2Region& r, seqCtx->getSequenceSelection()->getSelectedRegions()) {
             maxLen = qMax(maxLen, r.length);
-            CHECK_EXT(maxLen * ma.getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")),);
+            CHECK_EXT(maxLen * ma->getNumRows() <= MAX_ALI_MODEL, os.setError(tr("Alignment is too large")),);
             QByteArray seq = seqCtx->getSequenceData(r, os);
             CHECK_OP(os, );
             if (aminoTT!=NULL) {
@@ -632,13 +632,13 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, boo
             }
             QString rowName = ExportUtils::genUniqueName(names, seqCtx->getSequenceGObject()->getGObjectName());
             names.insert(rowName);
-            ma.addRow(rowName, seq);
+            ma->addRow(rowName, seq);
         }
     }
 }
 
 void ADVExportContext::selectionToAlignment(const QString& title, bool annotations, bool translate) {
-    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
+    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MA_OBJECT_NAME));
     U2OpStatusImpl os;
     if (annotations) {
         prepareMAFromAnnotations(ma, translate, os);
@@ -773,7 +773,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment()
         return;
     }
 
-    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
+    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MA_OBJECT_NAME));
     U2OpStatusImpl os;
 
     prepareMAFromBlastAnnotations(ma, d->qualiferId, d->addRefFlag, os);

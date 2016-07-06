@@ -105,14 +105,13 @@ void ProfileToProfileWorker::sl_taskFinished() {
     }
 
     if (outPort) {
-        QVariantMap channelContext = outPort->getContext();
         MultipleSequenceAlignment resultAl = t->getResult();
-        resultAl.setName("Aligned");
+        resultAl->setName("Aligned");
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(resultAl);
         QVariantMap msgData;
         msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
         outPort->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
-        algoLog.info(tr("Aligned profile to profile with MUSCLE").arg(t->getResult().getName()));
+        algoLog.info(tr("Aligned profile to profile with MUSCLE").arg(t->getResult()->getName()));
     }
 }
 
@@ -134,8 +133,8 @@ void ProfileToProfileTask::prepare() {
     int maxThreads = 1;//AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
     setMaxParallelSubtasks(maxThreads);
 
-    foreach (const MultipleSequenceAlignmentRow &row, masterMsa.getMsaRows()) {
-        result.addRow(row->getRowDbInfo(), row->getSequence(), stateInfo);
+    foreach (const MultipleSequenceAlignmentRow &row, masterMsa->getMsaRows()) {
+        result->addRow(row->getRowDbInfo(), row->getSequence(), stateInfo);
         CHECK_OP(stateInfo, );
     }
 
@@ -171,10 +170,10 @@ void ProfileToProfileTask::appendResult(Task *task) {
     MuscleTask *t = dynamic_cast<MuscleTask*>(task);
     SAFE_POINT(NULL != t, "NULL Muscle task!",);
 
-    const QList<MultipleSequenceAlignmentRow> &newRows = t->resultMA.getMsaRows();
-    if (newRows.size() == masterMsa.getRows().size() + 1) {
+    const QList<MultipleSequenceAlignmentRow> newRows = t->resultMA->getMsaRows();
+    if (newRows.size() == masterMsa->getRows().size() + 1) {
         U2OpStatus2Log os;
-        result.addRow(newRows.last()->getRowDbInfo(), newRows.last()->getSequence(), os);
+        result->addRow(newRows.last()->getRowDbInfo(), newRows.last()->getSequence(), os);
     }
 }
 
@@ -184,8 +183,8 @@ QList<Task*> ProfileToProfileTask::createAlignTasks() {
         U2OpStatus2Log os;
         MuscleTaskSettings cfg;
         cfg.op = MuscleTaskOp_ProfileToProfile;
-        cfg.profile.addRow(secondMsa.getRow(seqIdx)->getRowDbInfo(), secondMsa.getMsaRow(seqIdx)->getSequence(), os);
-        cfg.profile.setAlphabet(secondMsa.getAlphabet());
+        cfg.profile->addRow(secondMsa->getRow(seqIdx)->getRowDbInfo(), secondMsa->getMsaRow(seqIdx)->getSequence(), os);
+        cfg.profile->setAlphabet(secondMsa->getAlphabet());
 
         tasks << new MuscleTask(masterMsa, cfg);
 
@@ -197,7 +196,7 @@ QList<Task*> ProfileToProfileTask::createAlignTasks() {
 }
 
 bool ProfileToProfileTask::canCreateTask() const {
-    return (seqIdx < secondMsa.getRows().size())
+    return (seqIdx < secondMsa->getRows().size())
         && (subtaskCount < getMaxParallelSubtasks());
 }
 

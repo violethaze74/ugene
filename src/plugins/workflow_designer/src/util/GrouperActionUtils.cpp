@@ -130,18 +130,18 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
         const MultipleSequenceAlignment &al2 = alObj2->getMAlignment();
 
         if (GroupOperations::BY_NAME() == groupOp) {
-            return al1.getName() == al2.getName();
+            return al1->getName() == al2->getName();
         } else { // id or value
-            if (al1.getRows().size() != al2.getRows().size()) {
+            if (al1->getRows().size() != al2->getRows().size()) {
                 return false;
             }
 
-            QList<MultipleSequenceAlignmentRow> rows1 = al1.getMsaRows();
-            QList<MultipleSequenceAlignmentRow> rows2 = al2.getMsaRows();
+            QList<MultipleSequenceAlignmentRow> rows1 = al1->getMsaRows();
+            QList<MultipleSequenceAlignmentRow> rows2 = al2->getMsaRows();
             QList<MultipleSequenceAlignmentRow>::const_iterator it1 = rows1.constBegin();
             QList<MultipleSequenceAlignmentRow>::const_iterator it2 = rows2.constBegin();
             for (; it1 != rows1.constEnd(); ++it1, ++it2) {
-                bool equal = *it1 == *it2;
+                bool equal = **it1 == **it2;
                 if (!equal) {
                     return false;
                 }
@@ -296,8 +296,8 @@ bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
         } else {
             name = "Grouped alignment";
         }
-        result.setName(name);
-        result.setAlphabet(seqObj->getAlphabet());
+        result->setName(name);
+        result->setAlphabet(seqObj->getAlphabet());
         started = true;
     }
 
@@ -307,7 +307,7 @@ bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
     }
 
     if (unique) {
-        foreach (MultipleSequenceAlignmentRow currRow, result.getMsaRows()) {
+        foreach (const MultipleSequenceAlignmentRow &currRow, result->getMsaRows()) {
             if ((currRow->getName() == rowName) &&
                 (currRow->getData() == bytes)) {
                     return true;
@@ -315,7 +315,7 @@ bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
         }
     }
 
-    result.addRow(rowName, bytes);
+    result->addRow(rowName, bytes);
 
     return true;
 }
@@ -344,8 +344,8 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
         } else {
             name = "Grouped alignment";
         }
-        result.setName(name);
-        result.setAlphabet(newAl.getAlphabet());
+        result->setName(name);
+        result->setAlphabet(newAl->getAlphabet());
         started = true;
     }
 
@@ -355,14 +355,14 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     }
 
     U2OpStatus2Log os;
-    const QList<MultipleSequenceAlignmentRow> &rows = result.getMsaRows();
-    foreach (const MultipleSequenceAlignmentRow &newRow, newAl.getMsaRows()) {
+    const QList<MultipleSequenceAlignmentRow> rows = result->getMsaRows();
+    foreach (const MultipleSequenceAlignmentRow &newRow, newAl->getMsaRows()) {
         if (unique) {
             if (!rows.contains(newRow)) {
-                result.addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);
+                result->addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);
             }
         } else {
-            result.addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);
+            result->addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);
         }
     }
 

@@ -22,18 +22,20 @@
 #ifndef _U2_MULTIPLE_ALIGNMENT_ROW_H_
 #define _U2_MULTIPLE_ALIGNMENT_ROW_H_
 
-#include <QSharedDataPointer>
+#include <QSharedPointer>
 
 #include <U2Core/MsaRowUtils.h>
 #include <U2Core/U2Ma.h>
 
 namespace U2 {
 
+class MultipleAlignmentData;
 class MultipleAlignmentRowData;
-class MultipleSequenceAlignment;
 class U2OpStatus;
 
-typedef QSharedDataPointer<MultipleAlignmentRowData> MultipleAlignmentRow;
+typedef QSharedPointer<MultipleAlignmentData> MultipleAlignment;
+typedef QWeakPointer<MultipleAlignmentData> MultipleAlignmentWeak;
+typedef QSharedPointer<MultipleAlignmentRowData> MultipleAlignmentRow;
 
 /**
  * A row in a multiple alignment structure.
@@ -42,14 +44,14 @@ typedef QSharedDataPointer<MultipleAlignmentRowData> MultipleAlignmentRow;
  * A row core is an obsolete concept. Currently,
  * it exactly equals to the row (offset always equals to zero).
  */
-class U2CORE_EXPORT MultipleAlignmentRowData : public QSharedData {
-    friend class MultipleSequenceAlignment;
+class U2CORE_EXPORT MultipleAlignmentRowData {
+    friend class MultipleAlignmentData;
 
 protected:
     /** Do NOT create a row without an alignment! */
-    MultipleAlignmentRowData(const MultipleSequenceAlignment *alignment = NULL);
-    MultipleAlignmentRowData(const MultipleAlignmentRow &row, const MultipleSequenceAlignment *alignment);
-    MultipleAlignmentRowData(const U2MaRow &rowInDb, const U2MaRowGapModel &gaps, const MultipleSequenceAlignment *alignment);
+    MultipleAlignmentRowData(const MultipleAlignmentData *alignment = NULL);
+    MultipleAlignmentRowData(const MultipleAlignmentRow &row, const MultipleAlignmentData *alignment);
+    MultipleAlignmentRowData(const U2MaRow &rowInDb, const U2MaRowGapModel &gaps, const MultipleAlignmentData *alignment);
 
 public:
     virtual ~MultipleAlignmentRowData();
@@ -130,10 +132,11 @@ public:
      * However, the rows are considered equal if they differ by trailing gaps only.
      */
     bool isRowContentEqual(const MultipleAlignmentRow &row) const;
+    bool isRowContentEqual(const MultipleAlignmentRowData &rowData) const;
 
     /** Compares 2 rows. Rows are equal if their contents and names are equal. */
-    inline bool operator!=(const MultipleAlignmentRow &row) const;
-    bool operator==(const MultipleAlignmentRow &row) const;
+    bool operator!=(const MultipleAlignmentRowData &rowData) const;
+    bool operator==(const MultipleAlignmentRowData &rowData) const;
 
     /**
      * Crops the row -> keeps only specified region in the row.
@@ -143,6 +146,8 @@ public:
     void crop(int pos, int count, U2OpStatus &os);
 
     virtual MultipleAlignmentRowData * clone() const = 0;
+
+    void setParentAlignment(const MultipleAlignment &newAlignment);
 
     static const qint64 INVALID_ROW_ID;
 
@@ -157,7 +162,7 @@ protected:
     virtual int getDataLength() const = 0;
     virtual void appendDataCore(const MultipleAlignmentRow &anotherRow) = 0;
     virtual void removeDataCore(int startPosInData, int endPosInData, U2OpStatus &os) = 0;
-    virtual bool isDataEqual(const MultipleAlignmentRow &row) const = 0;
+    virtual bool isDataEqual(const MultipleAlignmentRowData &rowData) const = 0;
 
 private:
     /** Gets the length of all gaps */
@@ -172,11 +177,9 @@ private:
     /** Removing gaps from the row between position 'pos' and 'pos + count' */
     void removeGapsFromGapModel(int pos, int count);
 
-    void setParentAlignment(const MultipleSequenceAlignment *newAl);
-
     bool isGap(int position) const;
 
-    const MultipleSequenceAlignment *alignment;
+    const MultipleAlignmentData *alignment;
 
     /**
      * Gaps model of the row
@@ -190,10 +193,5 @@ private:
 };
 
 }   // namespace U2
-
-template<>
-inline U2::MultipleAlignmentRowData * QSharedDataPointer<U2::MultipleAlignmentRowData>::clone() {
-    return d->clone();
-}
 
 #endif // _U2_MULTIPLE_ALIGNMENT_ROW_H_

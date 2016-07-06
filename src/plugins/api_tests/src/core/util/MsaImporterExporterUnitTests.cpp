@@ -67,10 +67,10 @@ IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("AG-CT-TAA");
 
-    MultipleSequenceAlignment al(alignmentName, alphabet);
+    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(alignmentName, alphabet));
 
-    al.addRow("First row", firstSequence);
-    al.addRow("Second row", secondSequence);
+    al->addRow("First row", firstSequence);
+    al->addRow("Second row", secondSequence);
 
     // Import the alignment
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(dbiRef, al, os));
@@ -81,9 +81,9 @@ IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
     MultipleSequenceAlignment alActual = alExporter.getAlignment(dbiRef, msaObj->getEntityRef().entityId, os);
     CHECK_NO_ERROR(os);
 
-    bool alsEqual = (al == alActual);
+    bool alsEqual = (*al == *alActual);
     CHECK_TRUE(alsEqual, "Actual alignment doesn't equal to the original!");
-    CHECK_EQUAL(alignmentName, alActual.getName(), "alignment name");
+    CHECK_EQUAL(alignmentName, alActual->getName(), "alignment name");
 }
 
 

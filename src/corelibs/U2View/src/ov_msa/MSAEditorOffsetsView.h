@@ -24,14 +24,15 @@
 
 #include <QWidget>
 
+#include <U2Core/MultipleSequenceAlignment.h>
+
 namespace U2 {
 
 class MSAEditor;
-class MultipleSequenceAlignmentObject;
-class MultipleSequenceAlignment;
-class MsaModificationInfo;
-class MSAEditorSequenceArea;
 class MSAEditorOffsetsViewWidget;
+class MSAEditorSequenceArea;
+class MsaModificationInfo;
+class MultipleSequenceAlignmentObject;
 
 class MSAEditorOffsetsViewController : public QObject {
     Q_OBJECT

@@ -201,8 +201,8 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
 
     MultipleSequenceAlignment res = getResult();
     const MultipleSequenceAlignment &originalAlignment = obj->getMAlignment();
-    MSAUtils::restoreRowNames(res, originalAlignment.getRowNames());
-    res.setName(originalAlignment.getName());
+    MSAUtils::restoreRowNames(res, originalAlignment->getRowNames());
+    res->setName(originalAlignment->getName());
     obj->setMAlignment(res);
 
     releaseModStep();
@@ -219,7 +219,7 @@ void SimpleMSAWorkflow4GObjectTask::releaseModStep(const QString error) {
 }
 
 MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
-    MultipleSequenceAlignment res;
+    MultipleSequenceAlignment res(new MultipleSequenceAlignmentData);
     CHECK_OP(stateInfo, res);
 
     SAFE_POINT(runWorkflowTask!=NULL,"SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.",res);

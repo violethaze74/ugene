@@ -81,7 +81,7 @@ PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
 }
 
 void PhyMlWidget::fillComboBoxes(const MultipleSequenceAlignment& ma) {
-    DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
+    DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
     if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)){
         isAminoAcid = false;
         subModelCombo->addItems(PhyMLModelTypes::getDnaModelTypes());

@@ -22,11 +22,12 @@
 #ifndef _U2_UMUSCLE_ADAPTER_H_
 #define _U2_UMUSCLE_ADAPTER_H_
 
-#include <QtCore/QObject>
+#include <QObject>
+
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
-class MultipleSequenceAlignment;
 class TaskStateInfo;
 
 class MuscleAdapter : public QObject {

@@ -60,8 +60,8 @@ void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, d
             if(bootstrap_repl != 0){
                 current->setName(QString::fromLatin1(p->nayme));
             }else{
-                assert(p->index - 1 < ma.getNumRows());
-                current->setName(QString(ma.getRow(p->index - 1)->getName()));
+                assert(p->index - 1 < ma->getNumRows());
+                current->setName(QString(ma->getRow(p->index - 1)->getName()));
             }
         } else {
             current->setName(QString("node %1").arg(counter++));
@@ -118,7 +118,7 @@ void NeighborJoinCalculateTreeTask::run(){
 
     PhyTree phyTree(NULL);
 
-    if (inputMA.getNumRows() < 3) {
+    if (inputMA->getNumRows() < 3) {
         setError("Neighbor-Joining runs must have at least 3 species");
         result = phyTree;
         return;
@@ -185,7 +185,7 @@ void NeighborJoinCalculateTreeTask::run(){
 
                 naym* nayme = getNayme();
                 for (int i = 0; i < sz; ++i) {
-                    const MultipleSequenceAlignmentRow& row = inputMA.getRow(i);
+                    const MultipleAlignmentRow& row = inputMA->getRow(i);
                     QByteArray name = row->getName().toLatin1();
                     replacePhylipRestrictedSymbols(name);
                     qstrncpy(nayme[i], name.constData(), sizeof(naym));
@@ -265,7 +265,7 @@ void NeighborJoinCalculateTreeTask::run(){
 
             naym* nayme = getNayme();
             for (int i = 0; i < sz; ++i) {
-                const MultipleSequenceAlignmentRow& row = inputMA.getRow(i);
+                const MultipleAlignmentRow& row = inputMA->getRow(i);
                 QByteArray name = row->getName().toLatin1();
                 replacePhylipRestrictedSymbols(name);
                 qstrncpy(nayme[i], name.constData(), sizeof(naym));
@@ -290,7 +290,7 @@ void NeighborJoinCalculateTreeTask::run(){
         }
     }
     catch (const std::bad_alloc &) {
-        setError(QString("Not enough memory to calculate tree for alignment \"%1\"").arg(inputMA.getName()));
+        setError(QString("Not enough memory to calculate tree for alignment \"%1\"").arg(inputMA->getName()));
     }
     catch (const char* message) {
         stateInfo.setError(QString("Phylip error %1").arg(message));

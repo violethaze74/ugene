@@ -467,8 +467,8 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             return;
         }
 
-        MultipleSequenceAlignment al(consName);
-        al.addRow(consName, consensus);
+        MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(consName));
+        al->addRow(consName, consensus);
 
         //AF
         QMap< QString, int> posMap;
@@ -477,7 +477,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
 
         int smallestOffset = getSmallestOffset(posMap);
         if (smallestOffset < 0) {
-            al.insertGaps(0, 0, qAbs(smallestOffset), os);
+            al->insertGaps(0, 0, qAbs(smallestOffset), os);
             CHECK_OP(os, );
         }
 
@@ -499,13 +499,13 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             QByteArray offsetGaps;
             offsetGaps.fill(MAlignment_GapChar, pos);
             sequence.prepend(offsetGaps);
-            al.addRow(rowName, sequence);
+            al->addRow(rowName, sequence);
 
             count--;
             os.setProgress(io->getProgress());
         }
         U2AlphabetUtils::assignAlphabet(al);
-        CHECK_EXT(al.getAlphabet() != NULL, ACEFormat::tr("Alphabet unknown"), );
+        CHECK_EXT(al->getAlphabet() != NULL, ACEFormat::tr("Alphabet unknown"), );
 
         const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 

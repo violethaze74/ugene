@@ -66,7 +66,7 @@ KalignDialogController::KalignDialogController(QWidget* w, const MultipleSequenc
     setupUiExt();
     inputGroupBox->setVisible(false);
     this->adjustSize();
-    translateCheckBox->setEnabled(ma.getAlphabet()->isNucleic());
+    translateCheckBox->setEnabled(ma->getAlphabet()->isNucleic());
     const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
     QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
@@ -83,7 +83,7 @@ void KalignDialogController::setupUiExt() {
     terminalGapSpinBox->setEnabled(false);
     bonusScoreSpinBox->setEnabled(false);
 
-    if(ma.getAlphabet()->isAmino()) {
+    if(ma->getAlphabet()->isAmino()) {
         gapOpenSpinBox->setValue(53.9);
         gapExtensionPenaltySpinBox->setValue(8.52);
         terminalGapSpinBox->setValue(4.42);

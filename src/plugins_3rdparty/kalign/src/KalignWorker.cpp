@@ -81,7 +81,7 @@ void KalignWorkerFactory::init() {
 
     Descriptor desc(ACTOR_ID, KalignWorker::tr("Align with Kalign"),
         KalignWorker::tr("Aligns multiple sequence alignments (MSAs) supplied with Kalign."
-		"<p>Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on <a href=\"http://msa.sbc.su.se\">http://msa.sbc.su.se</a>."));
+        "<p>Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on <a href=\"http://msa->sbc.su.se\">http://msa->sbc.su.se</a>."));
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
 
@@ -155,8 +155,8 @@ Task* KalignWorker::tick() {
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
         const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
 
-        if (msa.isEmpty()) {
-            algoLog.error(tr("An empty MSA '%1' has been supplied to Kalign.").arg(msa.getName()));
+        if (msa->isEmpty()) {
+            algoLog.error(tr("An empty MSA '%1' has been supplied to Kalign.").arg(msa->getName()));
             return NULL;
         }
         Task *t = new NoFailTaskWrapper(new KalignTask(msa, cfg));
@@ -184,7 +184,7 @@ void KalignWorker::sl_taskFinished() {
 
     SAFE_POINT(NULL != output, "NULL output!", );
     send(t->resultMA);
-    algoLog.info(tr("Aligned %1 with Kalign").arg(t->resultMA.getName()));
+    algoLog.info(tr("Aligned %1 with Kalign").arg(t->resultMA->getName()));
 }
 
 void KalignWorker::cleanup() {

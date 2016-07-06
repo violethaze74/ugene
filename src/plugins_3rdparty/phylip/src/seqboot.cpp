@@ -762,7 +762,7 @@ void charpermute(long m, long n)
 } /* charpermute */
 
 
-void writedata( QVector<U2::MultipleSequenceAlignment*>& mavect, int rep, const U2::MultipleSequenceAlignment& ma)
+void writedata( QVector<U2::MultipleSequenceAlignment>& mavect, int rep, const U2::MultipleSequenceAlignment& ma)
 {
     
 
@@ -904,10 +904,9 @@ void writedata( QVector<U2::MultipleSequenceAlignment*>& mavect, int rep, const 
       }
       //putchar('\n');
       if (j >= mavect[rep]->getNumRows()) {
-          mavect[rep]->addRow(ma.getRow(j)->getName(), curAr);
+          mavect[rep]->addRow(ma->getRow(j)->getName(), curAr);
       }
       else {
-        const U2::MultipleSequenceAlignmentRow& curR = mavect[rep]->getRow(j);
         mavect[rep]->appendChars(j,curAr.data(), curAr.length());
       }
       
@@ -1147,7 +1146,7 @@ void writefactors(void)
 } /* writefactors */
 
 
-void bootwrite( QVector<U2::MultipleSequenceAlignment*>& mavect, const U2::MultipleSequenceAlignment& ma)
+void bootwrite( QVector<U2::MultipleSequenceAlignment>& mavect, const U2::MultipleSequenceAlignment& ma)
 { /* does bootstrapping and writes out data sets */
   long i, j, rr, repdiv10;
 

@@ -68,7 +68,7 @@ Task * Alignment2SequenceWorker::tick() {
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
         const MultipleSequenceAlignment &ma = msaObj->getMAlignment();
 
-        if(ma.isEmpty()) {
+        if(ma->isEmpty()) {
             return new FailTask(tr("empty input alignment"));
         }
         QList<DNASequence> seqs = MSAUtils::ma2seq(ma,true);

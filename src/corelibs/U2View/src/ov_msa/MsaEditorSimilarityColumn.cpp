@@ -69,7 +69,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
     }
 
     U2OpStatusImpl os;
-    const int refSequenceIndex = ma.getRowIndexByRowId(referenceRowId, os);
+    const int refSequenceIndex = ma->getRowIndexByRowId(referenceRowId, os);
     CHECK_OP(os, QString());
 
     int sim = matrix->getSimilarity(refSequenceIndex, s);
@@ -81,7 +81,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
 QString MsaEditorSimilarityColumn::getSeqName(int s) {
     const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMAlignment();
 
-    return ma.getRowNames().at(s);
+    return ma->getRowNames().at(s);
 }
 
 void MsaEditorSimilarityColumn::updateScrollBar() {

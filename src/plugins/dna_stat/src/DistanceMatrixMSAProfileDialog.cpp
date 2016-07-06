@@ -62,8 +62,8 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
     MultipleSequenceAlignmentObject* msaObj = ctx->getMSAObject();
     if (msaObj != NULL) {
         QVector<U2Region> unitedRows;
-        MultipleSequenceAlignment ma = msaObj->getMAlignment();
-        ma.sortRowsBySimilarity(unitedRows);
+        MultipleSequenceAlignment ma(msaObj->getMAlignment()->explicitClone());
+        ma->sortRowsBySimilarity(unitedRows);
         if(unitedRows.size() < 2)
             groupStatisticsCheck->setEnabled(false);
     }
@@ -196,7 +196,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
             FileAndDirectoryUtils::dumpStringToFile(f, resultText);
             bool isSimilarity = algo->isSimilarityMeasure();
             try {
-                createDistanceTable(algo, s.ma.getMsaRows(), f);
+                createDistanceTable(algo, s.ma->getMsaRows(), f);
             } catch (std::bad_alloc &e) {
                 Q_UNUSED(e);
                 setError(tr("There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser."));
@@ -209,18 +209,19 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 resultText += "<tr><td><b>" + tr("Group statistics of multiple alignment") + "</td></tr>\n";
                 resultText += "<table>\n";
                 QVector<U2Region> unitedRows;
-                s.ma.sortRowsBySimilarity(unitedRows);
+                s.ma->sortRowsBySimilarity(unitedRows);
                 QList<MultipleSequenceAlignmentRow> rows;
                 int i = 1;
                 srand(QDateTime::currentDateTime().toTime_t());
                 foreach(const U2Region &reg, unitedRows) {
-                    MultipleAlignmentRow &row = s.ma.getRow(reg.startPos + qrand() % reg.length);
+                    MultipleAlignmentRow &row = s.ma->getRow(reg.startPos + qrand() % reg.length);
                     row->setName(QString("Group %1: ").arg(i) + "(" + row->getName() + ")");
-                    rows.append(s.ma.getRow(reg.startPos + qrand() % reg.length));
+                    rows.append(s.ma->getMsaRow(reg.startPos + qrand() % reg.length));
 
                     resultText += "<tr><td><b>" + QString("Group %1: ").arg(i) + "</b></td><td>";
-                    for (int x = reg.startPos; x < reg.endPos(); x++)
-                        resultText += s.ma.getRow(x)->getName() + ", ";
+                    for (int x = reg.startPos; x < reg.endPos(); x++) {
+                        resultText += s.ma->getRow(x)->getName() + ", ";
+                    }
                     resultText += "\n";
                     i++;
                     FileAndDirectoryUtils::dumpStringToFile(f, resultText);
@@ -261,20 +262,20 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 return res;
             }
             resultText += " ";
-            for (int i = 0; i < s.ma.getNumRows(); i++) {
-                QString name = s.ma.getRow(i)->getName();
+            for (int i = 0; i < s.ma->getNumRows(); i++) {
+                QString name = s.ma->getRow(i)->getName();
                 TextUtils::wrapForCSV(name);
                 resultText += "," + name;
                 FileAndDirectoryUtils::dumpStringToFile(f, resultText);
             }
             resultText += "\n";
 
-            for (int i = 0; i < s.ma.getNumRows(); i++) {
-                QString name = s.ma.getRow(i)->getName();
+            for (int i = 0; i < s.ma->getNumRows(); i++) {
+                QString name = s.ma->getRow(i)->getName();
                 TextUtils::wrapForCSV(name);
                 resultText += name;
-                for (int j = 0; j < s.ma.getNumRows(); j++) {
-                    int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / s.ma.getLength()) : 1.0));
+                for (int j = 0; j < s.ma->getNumRows(); j++) {
+                    int val = qRound(algo->getSimilarity(i, j) * (s.usePercents ? (100.0 / s.ma->getLength()) : 1.0));
                     resultText += "," + QString::number(val) + (s.usePercents ? "%" : "");
                     FileAndDirectoryUtils::dumpStringToFile(f, resultText);
                 }
@@ -293,10 +294,10 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
 
 void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* algo, const QList<MultipleSequenceAlignmentRow> &rows, QFile *f)
 {
-    int maxVal = s.usePercents ? 100 : s.ma.getLength();
+    int maxVal = s.usePercents ? 100 : s.ma->getLength();
     QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
     bool isSimilarity = algo->isSimilarityMeasure();
-    int minLen = s.ma.getLength();
+    int minLen = s.ma->getLength();
 
     if(rows.size() < 2) {
         resultText += "<tr><td><b>"+tr("There is not enough groups to create distance matrix!") + "</td></tr>\n";

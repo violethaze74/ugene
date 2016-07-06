@@ -37,7 +37,7 @@
 
 namespace U2{
 
-SeqBoot::SeqBoot() : malignment(NULL) {
+SeqBoot::SeqBoot() {
     seqLen = 0;
     seqRowCount = 0;
 }
@@ -47,11 +47,7 @@ SeqBoot::~SeqBoot(){
 }
 
 void SeqBoot::clearGenratedSequences(){
-    for(int i = 0; i < generatedSeq.size(); i++){
-            delete generatedSeq[i];
-    }
     generatedSeq.clear();
-    
 }
 
 QString SeqBoot::getTmpFileTemplate(){
@@ -68,18 +64,18 @@ QString SeqBoot::getTmpFileTemplate(){
 
 
 void SeqBoot::initGenerSeq(int reps, int rowC, int seqLen){
-    generatedSeq = QVector<MultipleSequenceAlignment*>(reps);
+    generatedSeq = QVector<MultipleSequenceAlignment>(reps);
     this->seqLen = seqLen;
     seqRowCount = rowC;
         
     for(int i = 0; i < reps; i++){
-        generatedSeq[i] = new MultipleSequenceAlignment(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
+        generatedSeq[i] = MultipleSequenceAlignment(new MultipleSequenceAlignmentData(QString("bootstrap %1").arg(reps), malignment->getAlphabet()));
     }
     
 }
 
 const MultipleSequenceAlignment& SeqBoot::getMSA(int pos) const {
-    return *generatedSeq[pos];
+    return generatedSeq[pos];
 
 }
 
@@ -88,21 +84,19 @@ void SeqBoot::generateSequencesFromAlignment( const MultipleSequenceAlignment& m
         return ;
     }
 
-    malignment = &ma;
+    malignment = ma;
     int replicates = settings.replicates;
     
     seqboot_getoptions();
     
     reps = replicates;
 
-    spp = ma.getNumRows();
-    sites = ma.getLength();
+    spp = ma->getNumRows();
+    sites = ma->getLength();
 
     initGenerSeq(replicates, spp, sites);
     loci = sites;
     maxalleles = 1;
-
-    DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
 
     seq_allocrest();
     seq_inputoptions();
@@ -110,7 +104,7 @@ void SeqBoot::generateSequencesFromAlignment( const MultipleSequenceAlignment& m
     nodep_boot = matrix_char_new(spp, sites);
     for (int k=0; k<spp; k++){
         for(int j=0; j<sites; j++) {
-            const MultipleSequenceAlignmentRow& rowK = ma.getMsaRow(k);
+            const MultipleSequenceAlignmentRow rowK = ma->getMsaRow(k);
             nodep_boot[k][j] = rowK->charAt(j);
         }
     }
@@ -128,7 +122,7 @@ void SeqBoot::generateSequencesFromAlignment( const MultipleSequenceAlignment& m
     } while (inseed != 0);
 
     
-    bootwrite(generatedSeq, *malignment);
+    bootwrite(generatedSeq, malignment);
 
     freenewer();
     freenew();

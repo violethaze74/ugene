@@ -29,12 +29,12 @@
 
 namespace U2 {
 
-const char MultipleAlignment::GapChar = '-';
+const char MultipleAlignmentData::GapChar = '-';
 
-// Helper class to call MultipleAlignment state check
+// Helper class to call MultipleAlignmentData state check
 class MaStateCheck {
 public:
-    MaStateCheck(const MultipleAlignment *ma)
+    MaStateCheck(const MultipleAlignmentData *ma)
         : ma(ma)
     {
 
@@ -46,10 +46,10 @@ public:
 #endif
     }
 
-    const MultipleAlignment *ma;
+    const MultipleAlignmentData *ma;
 };
 
-MultipleAlignment::MultipleAlignment(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleAlignmentRow> &rows)
+MultipleAlignmentData::MultipleAlignmentData(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleAlignmentRow> &rows)
     : alphabet(alphabet),
       rows(rows),
       length(0)
@@ -57,7 +57,7 @@ MultipleAlignment::MultipleAlignment(const QString &name, const DNAAlphabet *alp
     MaStateCheck check(this);
     Q_UNUSED(check);
 
-    SAFE_POINT(NULL == alphabet || !name.isEmpty(), "Incorrect parameters in MultipleAlignment ctor", );        // TODO: check the condition, it is strange
+    SAFE_POINT(NULL == alphabet || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );        // TODO: check the condition, it is strange
 
     setName(name);
     for (int i = 0, n = rows.size(); i < n; i++) {
@@ -65,63 +65,63 @@ MultipleAlignment::MultipleAlignment(const QString &name, const DNAAlphabet *alp
     }
 }
 
-MultipleAlignment::MultipleAlignment(const MultipleAlignment &multipleAlignment)
+MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData &multipleAlignment)
     : alphabet(NULL),
       length(0)
 {
     copy(multipleAlignment);
 }
 
-MultipleAlignment::~MultipleAlignment() {
+MultipleAlignmentData::~MultipleAlignmentData() {
 
 }
 
-const MultipleAlignment & MultipleAlignment::operator=(const MultipleAlignment &other) {
+const MultipleAlignmentData & MultipleAlignmentData::operator=(const MultipleAlignmentData &other) {
     copy(other);
     return *this;
 }
 
-void MultipleAlignment::clear() {
+void MultipleAlignmentData::clear() {
     MaStateCheck check(this);
     Q_UNUSED(check);
     rows.clear();
     length = 0;
 }
 
-QString MultipleAlignment::getName() const {
+QString MultipleAlignmentData::getName() const {
     return MultipleAlignmentInfo::getName(info);
 }
 
-void MultipleAlignment::setName(const QString &newName) {
+void MultipleAlignmentData::setName(const QString &newName) {
     MultipleAlignmentInfo::setName(info, newName);
 }
 
-const DNAAlphabet * MultipleAlignment::getAlphabet() const {
+const DNAAlphabet * MultipleAlignmentData::getAlphabet() const {
     return alphabet;
 }
 
-void MultipleAlignment::setAlphabet(const DNAAlphabet *_alphabet) {
+void MultipleAlignmentData::setAlphabet(const DNAAlphabet *_alphabet) {
     SAFE_POINT(NULL != _alphabet, "Internal error: attempted to set NULL alphabet for the alignment",);
     alphabet = _alphabet;
 }
 
-QVariantMap MultipleAlignment::getInfo() const {
+QVariantMap MultipleAlignmentData::getInfo() const {
     return info;
 }
 
-void MultipleAlignment::setInfo(const QVariantMap &_info) {
+void MultipleAlignmentData::setInfo(const QVariantMap &_info) {
     info = _info;
 }
 
-bool MultipleAlignment::isEmpty() const {
+bool MultipleAlignmentData::isEmpty() const {
     return getLength() == 0;
 }
 
-int MultipleAlignment::getLength() const {
+int MultipleAlignmentData::getLength() const {
     return length;
 }
 
-void MultipleAlignment::setLength(int newLength) {
+void MultipleAlignmentData::setLength(int newLength) {
     SAFE_POINT(newLength >= 0, QString("Internal error: attempted to set length '%1' for an alignment").arg(newLength), );
 
     MaStateCheck check(this);
@@ -140,11 +140,11 @@ void MultipleAlignment::setLength(int newLength) {
     length = newLength;
 }
 
-int MultipleAlignment::getNumRows() const {
+int MultipleAlignmentData::getNumRows() const {
     return rows.size();
 }
 
-bool MultipleAlignment::trim(bool removeLeadingGaps) {
+bool MultipleAlignmentData::trim(bool removeLeadingGaps) {
     MaStateCheck check(this);
     Q_UNUSED(check);
 
@@ -194,7 +194,7 @@ bool MultipleAlignment::trim(bool removeLeadingGaps) {
     return result;
 }
 
-bool MultipleAlignment::simplify() {
+bool MultipleAlignmentData::simplify() {
     MaStateCheck check(this);
     Q_UNUSED(check);
 
@@ -231,13 +231,13 @@ private:
     bool asc;
 };
 
-void MultipleAlignment::sortRowsByName(bool asc) {
+void MultipleAlignmentData::sortRowsByName(bool asc) {
     MaStateCheck check(this);
     Q_UNUSED(check);
     qStableSort(rows.begin(), rows.end(), CompareMARowsByName(asc));
 }
 
-bool MultipleAlignment::sortRowsBySimilarity(QVector<U2Region> &united) {
+bool MultipleAlignmentData::sortRowsBySimilarity(QVector<U2Region> &united) {
     QList<MultipleAlignmentRow> oldRows = rows;
     QList<MultipleAlignmentRow> sortedRows;
     while (!oldRows.isEmpty()) {
@@ -265,7 +265,7 @@ bool MultipleAlignment::sortRowsBySimilarity(QVector<U2Region> &united) {
     return false;
 }
 
-MultipleAlignmentRow & MultipleAlignment::getRow(int rowIndex) {
+MultipleAlignmentRow & MultipleAlignmentData::getRow(int rowIndex) {
     static MultipleAlignmentRow emptyRow;
     int rowsCount = rows.count();
     SAFE_POINT(0 != rowsCount, "No rows", emptyRow);
@@ -273,7 +273,7 @@ MultipleAlignmentRow & MultipleAlignment::getRow(int rowIndex) {
     return rows[rowIndex];
 }
 
-const MultipleAlignmentRow & MultipleAlignment::getRow(int rowIndex) const {
+const MultipleAlignmentRow & MultipleAlignmentData::getRow(int rowIndex) const {
     static MultipleAlignmentRow emptyRow;
     int rowsCount = rows.count();
     SAFE_POINT(0 != rowsCount, "No rows", emptyRow);
@@ -281,7 +281,7 @@ const MultipleAlignmentRow & MultipleAlignment::getRow(int rowIndex) const {
     return rows[rowIndex];
 }
 
-const MultipleAlignmentRow & MultipleAlignment::getRow(const QString &name) const {
+const MultipleAlignmentRow & MultipleAlignmentData::getRow(const QString &name) const {
     static MultipleAlignmentRow emptyRow;
     for (int i = 0; i < rows.count(); i++) {
         if (rows[i]->getName() == name) {
@@ -291,11 +291,11 @@ const MultipleAlignmentRow & MultipleAlignment::getRow(const QString &name) cons
     SAFE_POINT(false, "Internal error: row name passed to MAlignmnet::getRow function not exists", emptyRow);
 }
 
-const QList<MultipleAlignmentRow> & MultipleAlignment::getRows() const {
+const QList<MultipleAlignmentRow> & MultipleAlignmentData::getRows() const {
     return rows;
 }
 
-QList<qint64> MultipleAlignment::getRowsIds() const {
+QList<qint64> MultipleAlignmentData::getRowsIds() const {
     QList<qint64> rowIds;
     foreach (const MultipleAlignmentRow &row, rows) {
         rowIds.append(row->getRowId());
@@ -303,7 +303,7 @@ QList<qint64> MultipleAlignment::getRowsIds() const {
     return rowIds;
 }
 
-MultipleAlignmentRow MultipleAlignment::getRowByRowId(qint64 rowId, U2OpStatus &os) const {
+MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStatus &os) const {
     static MultipleAlignmentRow emptyRow;
     foreach (const MultipleAlignmentRow &row, rows) {
         if (row->getRowId() == rowId) {
@@ -314,7 +314,7 @@ MultipleAlignmentRow MultipleAlignment::getRowByRowId(qint64 rowId, U2OpStatus &
     return emptyRow;
 }
 
-QStringList MultipleAlignment::getRowNames() const {
+QStringList MultipleAlignmentData::getRowNames() const {
     QStringList rowNames;
     foreach (const MultipleAlignmentRow &row, rows) {
         rowNames.append(row->getName());
@@ -322,7 +322,7 @@ QStringList MultipleAlignment::getRowNames() const {
     return rowNames;
 }
 
-int MultipleAlignment::getRowIndexByRowId(qint64 rowId, U2OpStatus &os) const {
+int MultipleAlignmentData::getRowIndexByRowId(qint64 rowId, U2OpStatus &os) const {
     for (int rowIndex = 0; rowIndex < rows.size(); ++rowIndex) {
         if (rows.at(rowIndex)->getRowId() == rowId) {
             return rowIndex;
@@ -332,10 +332,10 @@ int MultipleAlignment::getRowIndexByRowId(qint64 rowId, U2OpStatus &os) const {
     return MultipleAlignmentRowData::INVALID_ROW_ID;
 }
 
-void MultipleAlignment::insertGaps(int row, int pos, int count, U2OpStatus &os) {
+void MultipleAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus &os) {
     if (row >= getNumRows() || row < 0 || pos > length || pos < 0 || count < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed"
-                              " to MultipleAlignment::insertGaps: row index '%1', pos '%2', count '%3'").arg(row).arg(pos).arg(count));
+                              " to MultipleAlignmentData::insertGaps: row index '%1', pos '%2', count '%3'").arg(row).arg(pos).arg(count));
         os.setError("Failed to insert gaps into an alignment");
         return;
     }
@@ -359,10 +359,10 @@ void MultipleAlignment::insertGaps(int row, int pos, int count, U2OpStatus &os) 
     length = qMax(length, rowLength);
 }
 
-void MultipleAlignment::removeRowData(int row, int pos, int count, U2OpStatus &os) {
+void MultipleAlignmentData::removeRowData(int row, int pos, int count, U2OpStatus &os) {
     if (row >= getNumRows() || row < 0 || pos > length || pos < 0 || count < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed"
-            " to MultipleAlignment::removeChars: row index '%1', pos '%2', count '%3'").arg(row).arg(pos).arg(count));
+            " to MultipleAlignmentData::removeChars: row index '%1', pos '%2', count '%3'").arg(row).arg(pos).arg(count));
         os.setError("Failed to remove chars from an alignment");
         return;
     }
@@ -373,12 +373,12 @@ void MultipleAlignment::removeRowData(int row, int pos, int count, U2OpStatus &o
     rows[row]->removeData(pos, count, os);
 }
 
-void MultipleAlignment::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows) {
+void MultipleAlignmentData::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows) {
     SAFE_POINT(startPos >= 0 && startPos + nBases <= length && nBases > 0,
-        QString("Incorrect parameters were passed to MultipleAlignment::removeRegion: startPos '%1',"
+        QString("Incorrect parameters were passed to MultipleAlignmentData::removeRegion: startPos '%1',"
         " nBases '%2', the length is '%3'").arg(startPos).arg(nBases).arg(length), );
     SAFE_POINT(startRow >= 0 && startRow + nRows <= getNumRows() && nRows > 0,
-        QString("Incorrect parameters were passed to MultipleAlignment::removeRegion: startRow '%1',"
+        QString("Incorrect parameters were passed to MultipleAlignmentData::removeRegion: startRow '%1',"
         " nRows '%2', the number of rows is '%3'").arg(startRow).arg(nRows).arg(getNumRows()), );
 
     MaStateCheck check(this);
@@ -403,19 +403,19 @@ void MultipleAlignment::removeRegion(int startPos, int startRow, int nBases, int
     }
 }
 
-void MultipleAlignment::renameRow(int row, const QString &name) {
+void MultipleAlignmentData::renameRow(int row, const QString &name) {
     SAFE_POINT(row >= 0 && row < getNumRows(),
-        QString("Incorrect row index '%1' was passed to MultipleAlignment::renameRow: "
+        QString("Incorrect row index '%1' was passed to MultipleAlignmentData::renameRow: "
         "the number of rows is '%2'").arg(row).arg(getNumRows()), );
     SAFE_POINT(!name.isEmpty(),
-        "Incorrect parameter 'name' was passed to MultipleAlignment::renameRow: "
+        "Incorrect parameter 'name' was passed to MultipleAlignmentData::renameRow: "
         "Can't set the name of a row to an empty string", );
     rows[row]->setName(name);
 }
 
-bool MultipleAlignment::crop(const U2Region &region, const QSet<QString> &rowNames, U2OpStatus &os) {
+bool MultipleAlignmentData::crop(const U2Region &region, const QSet<QString> &rowNames, U2OpStatus &os) {
     if (!(region.startPos >= 0 && region.length > 0 && region.length < length && region.startPos < length)) {
-        os.setError(QString("Incorrect region was passed to MultipleAlignment::crop, "
+        os.setError(QString("Incorrect region was passed to MultipleAlignmentData::crop, "
                             "startPos '%1', length '%2'").arg(region.startPos).arg(region.length));
         return false;
     }
@@ -443,15 +443,15 @@ bool MultipleAlignment::crop(const U2Region &region, const QSet<QString> &rowNam
     return true;
 }
 
-bool MultipleAlignment::crop(const U2Region &region, U2OpStatus &os) {
+bool MultipleAlignmentData::crop(const U2Region &region, U2OpStatus &os) {
     return crop(region, getRowNames().toSet(), os);
 }
 
-bool MultipleAlignment::crop(int start, int count, U2OpStatus &os) {
+bool MultipleAlignmentData::crop(int start, int count, U2OpStatus &os) {
     return crop(U2Region(start, count), os);
 }
 
-U2MaListGapModel MultipleAlignment::getGapModel() const {
+U2MaListGapModel MultipleAlignmentData::getGapModel() const {
     U2MaListGapModel gapModel;
     foreach (const MultipleAlignmentRow &row, rows) {
         gapModel << row->getGapModel();
@@ -459,26 +459,26 @@ U2MaListGapModel MultipleAlignment::getGapModel() const {
     return gapModel;
 }
 
-void MultipleAlignment::setRowGapModel(int rowIndex, const U2MaRowGapModel &gapModel) {
+void MultipleAlignmentData::setRowGapModel(int rowIndex, const U2MaRowGapModel &gapModel) {
     SAFE_POINT(rowIndex >= 0 && rowIndex < getNumRows(), "Invalid row index", );
     MultipleAlignmentRow &row = rows[rowIndex];
     row->setGapModel(gapModel);
     length = qMax(length, row->getRowLengthWithoutTrailing());
 }
 
-void MultipleAlignment::setRowId(int rowIndex, qint64 rowId) {
+void MultipleAlignmentData::setRowId(int rowIndex, qint64 rowId) {
     SAFE_POINT(rowIndex >= 0 && rowIndex < getNumRows(), "Invalid row index", );
     rows[rowIndex]->setRowId(rowId);
 }
 
-void MultipleAlignment::setDataId(int rowIndex, const U2DataId &dataId) {
+void MultipleAlignmentData::setDataId(int rowIndex, const U2DataId &dataId) {
     SAFE_POINT(rowIndex >= 0 && rowIndex < getNumRows(), "Invalid row index", );
     rows[rowIndex]->setDataId(dataId);
 }
 
-void MultipleAlignment::removeRow(int rowIndex, U2OpStatus &os) {
+void MultipleAlignmentData::removeRow(int rowIndex, U2OpStatus &os) {
     if (rowIndex < 0 || rowIndex >= getNumRows()) {
-        coreLog.trace(QString("Internal error: incorrect parameters was passed to MultipleAlignment::removeRow, "
+        coreLog.trace(QString("Internal error: incorrect parameters was passed to MultipleAlignmentData::removeRow, "
                               "rowIndex '%1', the number of rows is '%2'").arg(rowIndex).arg(getNumRows()));
         os.setError("Failed to remove a row");
         return;
@@ -494,7 +494,7 @@ void MultipleAlignment::removeRow(int rowIndex, U2OpStatus &os) {
     }
 }
 
-void MultipleAlignment::moveRowsBlock(int startRow, int numRows, int delta) {
+void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) {
     MaStateCheck check(this);
     Q_UNUSED(check);
 
@@ -506,7 +506,7 @@ void MultipleAlignment::moveRowsBlock(int startRow, int numRows, int delta) {
 
     SAFE_POINT((delta > 0 && startRow + numRows + delta - 1 < rows.length())
                || (delta < 0 && startRow + delta >= 0),
-               QString("Incorrect parameters in MultipleAlignment::moveRowsBlock: "
+               QString("Incorrect parameters in MultipleAlignmentData::moveRowsBlock: "
                        "startRow: '%1', numRows: '%2', delta: '%3'").arg(startRow).arg(numRows).arg(delta),);
 
     QList<MultipleAlignmentRow> toMove;
@@ -527,13 +527,13 @@ void MultipleAlignment::moveRowsBlock(int startRow, int numRows, int delta) {
     }
 }
 
-void MultipleAlignment::appendRow(int rowIdx, const MultipleAlignmentRow &row, bool ignoreTrailingGaps, U2OpStatus &os) {
+void MultipleAlignmentData::appendRow(int rowIdx, const MultipleAlignmentRow &row, bool ignoreTrailingGaps, U2OpStatus &os) {
     appendRow(rowIdx, ignoreTrailingGaps ? rows[rowIdx]->getRowLengthWithoutTrailing()
                                          : rows[rowIdx]->getRowLength(), row, os);
 }
 
-void MultipleAlignment::appendRow(int rowIdx, int afterPos, const MultipleAlignmentRow &row, U2OpStatus &os) {
-    SAFE_POINT(0 <= rowIdx && rowIdx < getNumRows(), QString("Incorrect row index '%1' in MultipleAlignment::appendRow").arg(rowIdx), );
+void MultipleAlignmentData::appendRow(int rowIdx, int afterPos, const MultipleAlignmentRow &row, U2OpStatus &os) {
+    SAFE_POINT(0 <= rowIdx && rowIdx < getNumRows(), QString("Incorrect row index '%1' in MultipleAlignmentData::appendRow").arg(rowIdx), );
 
     rows[rowIdx]->append(row, afterPos, os);
     CHECK_OP(os, );
@@ -541,7 +541,7 @@ void MultipleAlignment::appendRow(int rowIdx, int afterPos, const MultipleAlignm
     length = qMax(length, afterPos + row->getRowLength());
 }
 
-bool MultipleAlignment::hasEmptyGapModel() const {
+bool MultipleAlignmentData::hasEmptyGapModel() const {
     for (int i = 0, n = rows.size(); i < n; ++i) {
         if (!rows[i]->getGapModel().isEmpty()) {
             return false;
@@ -550,7 +550,7 @@ bool MultipleAlignment::hasEmptyGapModel() const {
     return true;
 }
 
-bool MultipleAlignment::hasEqualDataLength() const {
+bool MultipleAlignmentData::hasEqualDataLength() const {
     const int defaultSequenceLength = -1;
     int sequenceLength = defaultSequenceLength;
     for (int i = 0, n = rows.size(); i < n; ++i) {
@@ -563,14 +563,14 @@ bool MultipleAlignment::hasEqualDataLength() const {
     return true;
 }
 
-const MultipleAlignment & MultipleAlignment::operator+=(const MultipleAlignment &ma) {
+const MultipleAlignmentData & MultipleAlignmentData::operator+=(const MultipleAlignmentData &ma) {
     MaStateCheck check(this);
     Q_UNUSED(check);
 
-    SAFE_POINT(ma.alphabet == alphabet, "Different alphabets in MultipleAlignment::operator+=", *this);
+    SAFE_POINT(ma.alphabet == alphabet, "Different alphabets in MultipleAlignmentData::operator+=", *this);
 
     int nSeq = getNumRows();
-    SAFE_POINT(ma.getNumRows() == nSeq, "Different number of rows in MultipleAlignment::operator+=", *this);
+    SAFE_POINT(ma.getNumRows() == nSeq, "Different number of rows in MultipleAlignmentData::operator+=", *this);
 
     U2OpStatus2Log os;
     for (int i = 0; i < nSeq; i++) {
@@ -581,18 +581,18 @@ const MultipleAlignment & MultipleAlignment::operator+=(const MultipleAlignment 
     return *this;
 }
 
-bool MultipleAlignment::operator==(const MultipleAlignment &other) const {
+bool MultipleAlignmentData::operator==(const MultipleAlignmentData &other) const {
     const bool lengthsAreEqual = (length == other.length);
     const bool alphabetsAreEqual = (alphabet == other.alphabet);
     const bool rowsAreEqual = (rows == other.rows);
     return lengthsAreEqual && alphabetsAreEqual && rowsAreEqual;
 }
 
-bool MultipleAlignment::operator!=(const MultipleAlignment &other) const {
+bool MultipleAlignmentData::operator!=(const MultipleAlignmentData &other) const {
     return !operator==(other);
 }
 
-void MultipleAlignment::check() const {
+void MultipleAlignmentData::check() const {
 #ifdef DEBUG
     assert(getNumRows() != 0 || length == 0);
     for (int i = 0, n = getNumRows(); i < n; i++) {
@@ -601,7 +601,7 @@ void MultipleAlignment::check() const {
 #endif
 }
 
-bool MultipleAlignment::sortRowsByList(const QStringList &rowsOrder) {
+bool MultipleAlignmentData::sortRowsByList(const QStringList &rowsOrder) {
     MaStateCheck check(this);
     Q_UNUSED(check);
 
@@ -622,7 +622,7 @@ bool MultipleAlignment::sortRowsByList(const QStringList &rowsOrder) {
     return true;
 }
 
-void MultipleAlignment::copy(const MultipleAlignment &other) {
+void MultipleAlignmentData::copy(const MultipleAlignmentData &other) {
     clear();
 
     alphabet = other.alphabet;
@@ -635,7 +635,7 @@ void MultipleAlignment::copy(const MultipleAlignment &other) {
     }
 }
 
-void MultipleAlignment::addRowPrivate(const MultipleAlignmentRow &row, int rowLenWithTrailingGaps, int rowIndex) {
+void MultipleAlignmentData::addRowPrivate(const MultipleAlignmentRow &row, int rowLenWithTrailingGaps, int rowIndex) {
     MaStateCheck check(this);
     Q_UNUSED(check);
 

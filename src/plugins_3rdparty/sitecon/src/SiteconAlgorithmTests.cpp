@@ -208,7 +208,7 @@ void GTest_CalculateDispersionAndAverage::run() {
     DinucleotitePropertyRegistry di;
     s.props = di.getProperties();
     SiteconAlgorithm::calculateACGTContent(ma, s);
-    s.numSequencesInAlignment = ma.getNumRows();
+    s.numSequencesInAlignment = ma->getNumRows();
     TaskStateInfo stub;
     result = SiteconAlgorithm::calculateDispersionAndAverage(ma, s, stub);
 }
@@ -296,8 +296,8 @@ void GTest_CalculateFirstTypeError::run() {
     DinucleotitePropertyRegistry di;
     s.props = di.getProperties();
     SiteconAlgorithm::calculateACGTContent(ma, s);
-    s.numSequencesInAlignment = ma.getNumRows();
-    s.windowSize = ma.getLength();
+    s.numSequencesInAlignment = ma->getNumRows();
+    s.windowSize = ma->getLength();
     TaskStateInfo stub;
     result = SiteconAlgorithm::calculateFirstTypeError(ma, s, stub);
 }
@@ -377,8 +377,8 @@ void GTest_CalculateSecondTypeError::run() {
     DinucleotitePropertyRegistry di;
     s.props = di.getProperties();
     SiteconAlgorithm::calculateACGTContent(ma, s);
-    s.numSequencesInAlignment = ma.getNumRows();
-    s.windowSize = ma.getLength();
+    s.numSequencesInAlignment = ma->getNumRows();
+    s.windowSize = ma->getLength();
     SiteconModel m;
     m.aliURL = (getContext<Document>(this, docName))->getURLString();
     m.modelName = QFileInfo(m.aliURL).baseName();

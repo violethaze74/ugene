@@ -56,7 +56,7 @@ AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings& _s
             s = 4.0;
             break;
         default:
-            QByteArray chars = settings.ma.getAlphabet()->getAlphabetChars();
+            QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
             foreach(char ch, chars) {
                 if(ch!=MAlignment_GapChar)
                     acceptableChars->append(ch);
@@ -81,7 +81,7 @@ void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings& _s) {
             s = 4.0;
             break;
         default:
-            QByteArray chars = settings.ma.getAlphabet()->getAlphabetChars();
+            QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
             foreach(char ch, chars) {
                 if(ch!=MAlignment_GapChar)
                     acceptableChars->append(ch);
@@ -126,7 +126,7 @@ void AlignmentLogoRenderArea::paintEvent(QPaintEvent* e) {
 }
 
 void AlignmentLogoRenderArea::resizeEvent(QResizeEvent* e) {
-    bitWidth = qMax(width() / settings.ma.getLength() - SPACER, MIN_WIDTH);
+    bitWidth = qMax(width() / settings.ma->getLength() - SPACER, MIN_WIDTH);
     bitHeight = (height() - s) * log(2.0) / log(s);
 
     QWidget::resizeEvent(e);
@@ -134,7 +134,7 @@ void AlignmentLogoRenderArea::resizeEvent(QResizeEvent* e) {
 
 void AlignmentLogoRenderArea::evaluateHeights() {
     const MultipleSequenceAlignment& ma = settings.ma;
-    int numRows = ma.getNumRows();
+    int numRows = ma->getNumRows();
     error = (s - 1)/(2*log(2.0)*numRows);
 
     foreach (char ch, *acceptableChars) {
@@ -147,8 +147,8 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
     for (int pos = settings.startPos; pos < settings.len + settings.startPos; pos++) {
         for (int idx = 0; idx < numRows; idx++) {
-            const MultipleSequenceAlignmentRow& row = ma.getRow(idx);
-            assert(pos < ma.getLength());
+            const MultipleSequenceAlignmentRow row = ma->getMsaRow(idx);
+            assert(pos < ma->getLength());
             char ch = row->charAt(pos);
             if(acceptableChars->contains(ch)) {
                 int arrIdx = pos - settings.startPos;
@@ -162,7 +162,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
         }
     }
 
-    int rows = settings.ma.getNumRows();
+    int rows = settings.ma->getNumRows();
     for(int pos=0; pos < settings.len; pos++) {
         qreal h = getH(pos);
         foreach(char c, columns[pos]) {
@@ -174,7 +174,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
 qreal AlignmentLogoRenderArea::getH(int pos) {
     qreal h = 0.0;
-    int rows = settings.ma.getNumRows();
+    int rows = settings.ma->getNumRows();
     foreach(char ch, columns.at(pos)) {
         qreal freq = frequencies[(int)uchar(ch)][pos] / rows;
         h += -freq * log(freq) / log(2.0);

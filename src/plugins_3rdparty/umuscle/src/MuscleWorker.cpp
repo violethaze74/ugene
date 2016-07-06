@@ -170,14 +170,14 @@ Task* MuscleWorker::tick() {
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
         const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
 
-        if( msa.isEmpty() ) {
-            algoLog.error(tr("An empty MSA '%1' has been supplied to MUSCLE.").arg(msa.getName()));
+        if( msa->isEmpty() ) {
+            algoLog.error(tr("An empty MSA '%1' has been supplied to MUSCLE.").arg(msa->getName()));
             return NULL;
         }
         QString range = actor->getParameter(RANGE_ATTR)->getAttributeValue<QString>(context);
         if( range.isEmpty() || range == RANGE_ATTR_DEFAULT_VALUE ) {
             cfg.alignRegion = false;
-            cfg.regionToAlign = U2Region(0, msa.getLength());
+            cfg.regionToAlign = U2Region(0, msa->getLength());
         } else {
             QStringList words = range.split(".", QString::SkipEmptyParts);
             if( words.size() != 2 ) {
@@ -197,7 +197,7 @@ Task* MuscleWorker::tick() {
             if(end < start) {
                 return new FailTask(tr("Region end position should be greater than start position"));
             }
-            end = qMin(end, msa.getLength());
+            end = qMin(end, msa->getLength());
             
             cfg.alignRegion = true;
             cfg.regionToAlign = U2Region(start,  end - start + 1);
@@ -229,7 +229,7 @@ void MuscleWorker::sl_taskFinished() {
     QVariantMap msgData;
     msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
     output->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), msgData));
-    algoLog.info(tr("Aligned %1 with MUSCLE").arg(t->resultMA.getName()));
+    algoLog.info(tr("Aligned %1 with MUSCLE").arg(t->resultMA->getName()));
 }
 
 void MuscleWorker::cleanup() {

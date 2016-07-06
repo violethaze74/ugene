@@ -125,9 +125,9 @@ MultipleSequenceAlignment NWAligner::align() {
         j--;
     }
 
-    MultipleSequenceAlignment result(MA_OBJECT_NAME, sMatrix.getAlphabet());
-    result.addRow("seq1", aligned1);
-    result.addRow("seq2", aligned2);
+    MultipleSequenceAlignment result(new MultipleSequenceAlignmentData(MA_OBJECT_NAME, sMatrix.getAlphabet()));
+    result->addRow("seq1", aligned1);
+    result->addRow("seq2", aligned2);
 
     return result;
 }

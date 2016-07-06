@@ -90,7 +90,7 @@ PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment& ma, const Cr
 {
     GCOUNTER( cvar, tvar, "PhyMLSupportTask" );
 
-    sequencesNumber = ma.getNumRows();
+    sequencesNumber = ma->getNumRows();
 
     setTaskName(tr("PhyML tree calculation"));
 

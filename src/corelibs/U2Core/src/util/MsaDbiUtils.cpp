@@ -39,10 +39,10 @@ namespace U2 {
 
 /** Validates that all 'rowIds' contains in the alignment rows */
 bool validateRowIds(const MultipleSequenceAlignment& al, const QList<qint64>& rowIds) {
-    QList<qint64> alRowIds = al.getRowsIds();
+    QList<qint64> alRowIds = al->getRowsIds();
     foreach (qint64 rowId, rowIds) {
         if (!alRowIds.contains(rowId)) {
-            coreLog.trace(QString("No row ID '%1' in '%2' alignment!").arg(rowId).arg(al.getName()));
+            coreLog.trace(QString("No row ID '%1' in '%2' alignment!").arg(rowId).arg(al->getName()));
             return false;
         }
     }
@@ -66,8 +66,8 @@ void validateRowIds(U2MsaDbi *msaDbi, const U2DataId &msaId, const QList<qint64>
 
 /** Validates 'pos' in an alignment: it must be non-negative and less than or equal to the alignment length */
 bool validatePos(const MultipleSequenceAlignment& al, qint64 pos) {
-    if (pos < 0 || pos > al.getLength()) {
-        coreLog.trace(QString("Invalid position '%1' in '%2' alignment!").arg(pos).arg(al.getName()));
+    if (pos < 0 || pos > al->getLength()) {
+        coreLog.trace(QString("Invalid position '%1' in '%2' alignment!").arg(pos).arg(al->getName()));
         return false;
     }
     return true;
@@ -579,22 +579,22 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     SAFE_POINT(NULL != attrDbi, "NULL Attribute Dbi!", );
 
     //// UPDATE MSA OBJECT
-    const DNAAlphabet* alphabet = al.getAlphabet();
+    const DNAAlphabet* alphabet = al->getAlphabet();
     SAFE_POINT(NULL != alphabet, "The alignment alphabet is NULL!", );
 
     U2Ma msaObj;
     msaObj.id = msaRef.entityId;
-    msaObj.visualName = al.getName();
+    msaObj.visualName = al->getName();
     msaObj.alphabet.id = alphabet->getId();
-    msaObj.length = al.getLength();
+    msaObj.length = al->getLength();
 
-    msaDbi->updateMsaName(msaRef.entityId, al.getName(), os);
+    msaDbi->updateMsaName(msaRef.entityId, al->getName(), os);
     CHECK_OP(os, );
 
     msaDbi->updateMsaAlphabet(msaRef.entityId, alphabet->getId(), os);
     CHECK_OP(os, );
 
-    msaDbi->updateMsaLength(msaRef.entityId, al.getLength(), os);
+    msaDbi->updateMsaLength(msaRef.entityId, al->getLength(), os);
     CHECK_OP(os, );
 
     //// UPDATE ROWS AND SEQUENCES
@@ -603,7 +603,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     QList<qint64> currentRowIds;
     CHECK_OP(os, );
 
-    QList<qint64> newRowsIds = al.getRowsIds();
+    QList<qint64> newRowsIds = al->getRowsIds();
     QList<qint64> eliminatedRows;
 
     foreach (const U2MaRow &currentRow, currentRows) {
@@ -612,7 +612,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
         // Update data for rows with the same row and sequence IDs
         if (newRowsIds.contains(currentRow.rowId)) {
             // Update sequence and row info
-            const U2MaRow newRow = al.getRowByRowId(currentRow.rowId, os)->getRowDbInfo();
+            const U2MaRow newRow = al->getRowByRowId(currentRow.rowId, os)->getRowDbInfo();
             CHECK_OP(os, );
 
             if (newRow.dataObjectId != currentRow.dataObjectId) {
@@ -624,7 +624,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
                 continue;
             }
 
-            DNASequence sequence = ((MultipleSequenceAlignmentRow)al.getRowByRowId(newRow.rowId, os))->getSequence();
+            DNASequence sequence = (al->getMsaRowByRowId(newRow.rowId, os))->getSequence();
             CHECK_OP(os, );
 
             msaDbi->updateRowName(msaRef.entityId, newRow.rowId, sequence.getName(), os);
@@ -644,8 +644,8 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     // Add rows that are stored in memory, but are not present in the database,
     // remember the rows order
     QList<qint64> rowsOrder;
-    for (int i = 0, n = al.getNumRows(); i < n; ++i) {
-        const MultipleSequenceAlignmentRow& alRow = al.getRow(i);
+    for (int i = 0, n = al->getNumRows(); i < n; ++i) {
+        const MultipleSequenceAlignmentRow alRow = al->getMsaRow(i);
         U2MaRow row = alRow->getRowDbInfo();
 
         if (row.dataObjectId.isEmpty() || !currentRowIds.contains(row.rowId)) {
@@ -687,7 +687,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     msaDbi->setNewRowsOrder(msaRef.entityId, rowsOrder, os);
 
     //// UPDATE MALIGNMENT ATTRIBUTES
-    QVariantMap alInfo = al.getInfo();
+    QVariantMap alInfo = al->getInfo();
 
     foreach (QString key, alInfo.keys()) {
         QString val = alInfo.value(key).value<QString>();
@@ -1079,8 +1079,8 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64> rowIds, qi
     SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
 
     // Crop or remove each row
-    for (int i = 0, n = al.getNumRows(); i < n; ++i) {
-        MultipleSequenceAlignmentRow row = al.getRow(i);
+    for (int i = 0, n = al->getNumRows(); i < n; ++i) {
+        MultipleSequenceAlignmentRow row(al->getMsaRow(i)->explicitClone());
         qint64 rowId = row->getRowId();
         if (rowIds.contains(rowId)) {
             U2DataId sequenceId = row->getRowDbInfo().dataObjectId;

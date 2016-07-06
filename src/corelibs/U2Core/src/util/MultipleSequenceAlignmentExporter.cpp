@@ -55,7 +55,7 @@ MultipleSequenceAlignment MultipleSequenceAlignmentExporter::getAlignment(const 
 
     MultipleSequenceAlignment al;
     for (int i = 0; i < rows.count(); ++i) {
-        al.addRow(rows[i], sequences[i], os);
+        al->addRow(rows[i], sequences[i], os);
         CHECK_OP(os, MultipleSequenceAlignment());
     }
 
@@ -63,16 +63,16 @@ MultipleSequenceAlignment MultipleSequenceAlignmentExporter::getAlignment(const 
     QVariantMap alInfo = exportAlignmentInfo(msaId, os);
     CHECK_OP(os, MultipleSequenceAlignment());
 
-    al.setInfo(alInfo);
+    al->setInfo(alInfo);
 
     // Alphabet, name and length
     U2Ma msa = exportAlignmentObject(msaId, os);
     CHECK_OP(os, MultipleSequenceAlignment());
 
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(msa.alphabet);
-    al.setAlphabet(alphabet);
-    al.setName(msa.visualName);
-    al.setLength(msa.length);
+    al->setAlphabet(alphabet);
+    al->setName(msa.visualName);
+    al->setLength(msa.length);
 
     return al;
 }

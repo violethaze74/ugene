@@ -74,34 +74,34 @@ KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSett
 {
     GCOUNTER( cvar, tvar, "KalignTask" );
     inputSubMA = inputMA;
-    resultSubMA.setAlphabet(inputSubMA.getAlphabet());
-    QString inputMAName = inputMA.getName();
-    resultMA.setName(inputMAName);
-    resultSubMA.setName(inputMAName);
+    resultSubMA->setAlphabet(inputSubMA->getAlphabet());
+    QString inputMAName = inputMA->getName();
+    resultMA->setName(inputMAName);
+    resultSubMA->setName(inputMAName);
     tpm = Task::Progress_Manual;
-    quint64 mem = inputMA.getNumRows() * sizeof(float);
-    quint64 profileMem = (ma.getLength() + 2)*22*sizeof(float); // the size of profile that is built during kalign
+    quint64 mem = inputMA->getNumRows() * sizeof(float);
+    quint64 profileMem = (ma->getLength() + 2)*22*sizeof(float); // the size of profile that is built during kalign
     addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, (profileMem + (mem * mem + 3 * mem)) / (1024 * 1024)));
 }
 
 void KalignTask::_run() {
-    SAFE_POINT_EXT(NULL != inputMA.getAlphabet(), stateInfo.setError("The alphabet is NULL"),);
-    if (inputMA.getAlphabet()->getId() == BaseDNAAlphabetIds::RAW() ||
-            inputMA.getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {
-        setError(tr("Unsupported alphabet: %1").arg(inputMA.getAlphabet()->getName()));
+    SAFE_POINT_EXT(NULL != inputMA->getAlphabet(), stateInfo.setError("The alphabet is NULL"),);
+    if (inputMA->getAlphabet()->getId() == BaseDNAAlphabetIds::RAW() ||
+            inputMA->getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {
+        setError(tr("Unsupported alphabet: %1").arg(inputMA->getAlphabet()->getName()));
         return;
     }
     algoLog.info(tr("Kalign alignment started"));
     CHECK(!hasError(),);
     doAlign();
     if (!hasError() && !isCanceled()) {
-        SAFE_POINT_EXT(NULL != resultMA.getAlphabet(), "The alphabet is NULL",);
+        SAFE_POINT_EXT(NULL != resultMA->getAlphabet(), "The alphabet is NULL",);
         algoLog.info(tr("Kalign alignment successfully finished"));
     }
 }
 
 void KalignTask::doAlign() {
-    SAFE_POINT_EXT(resultSubMA.isEmpty(), stateInfo.setError("Incorrect result state"),);
+    SAFE_POINT_EXT(resultSubMA->isEmpty(), stateInfo.setError("Incorrect result state"),);
     KalignAdapter::align(inputSubMA, resultSubMA, stateInfo);
     if (hasError()) {
         return;
@@ -186,15 +186,15 @@ Task::ReportResult KalignGObjectTask::report() {
     QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMA, resultMA, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
 
-    if (rowsOrder.count() != inputMA.getNumRows()) {
+    if (rowsOrder.count() != inputMA->getNumRows()) {
         stateInfo.setError("Unexpected number of rows in the result multiple alignment!");
         return ReportResult_Finished;
     }
 
     QMap<qint64, QList<U2MaGap> > rowsGapModel;
-    for (int i = 0, n = resultMA.getNumRows(); i < n; ++i) {
-        qint64 rowId = resultMA.getRow(i)->getRowDbInfo().rowId;
-        const QList<U2MaGap>& newGapModel = resultMA.getRow(i)->getGapModel();
+    for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
+        qint64 rowId = resultMA->getRow(i)->getRowDbInfo().rowId;
+        const QList<U2MaGap>& newGapModel = resultMA->getRow(i)->getGapModel();
         rowsGapModel.insert(rowId, newGapModel);
     }
 
@@ -221,7 +221,7 @@ Task::ReportResult KalignGObjectTask::report() {
         obj->updateGapModel(stateInfo, rowsGapModel);
         SAFE_POINT_OP(stateInfo, ReportResult_Finished);
 
-        if (rowsOrder != inputMA.getRowsIds()) {
+        if (rowsOrder != inputMA->getRowsIds()) {
             obj->updateRowsOrder(stateInfo, rowsOrder);
             SAFE_POINT_OP(stateInfo, ReportResult_Finished);
         }

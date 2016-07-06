@@ -54,11 +54,11 @@ namespace U2 {
 UHMM3BuildTask::UHMM3BuildTask( const UHMM3BuildSettings& aset, const MultipleSequenceAlignment & amsa )
 : Task("", TaskFlag_None), settings( aset ), msa( amsa ), hmm( NULL ) {
     GCOUNTER( cvar, tvar, "UHMM3BuildTask" );
-    setTaskName( tr( "Build HMM profile from %1 alignment" ).arg( msa.getName() ) );
+    setTaskName( tr( "Build HMM profile from %1 alignment" ).arg( msa->getName() ) );
     checkMsa();
     
     // work with task resources
-    float msaSzInMB = ( msa.getLength() * msa.getNumRows() ) / ( 1024.0 * 1024 );
+    float msaSzInMB = ( msa->getLength() * msa->getNumRows() ) / ( 1024.0 * 1024 );
     int power = ( 0 <= msaSzInMB && msaSzInMB <= 0.5 ) ? 20 : ( 0.5 < msaSzInMB && msaSzInMB <= 1 ) ? 10 : 
         ( 1 < msaSzInMB && msaSzInMB <= 10 ) ? 7 : ( 10 < msaSzInMB && msaSzInMB <= 30 ) ? 5 : 4;
     int howManyMem = qMax( 1, (int)( power * msaSzInMB ) );
@@ -67,10 +67,10 @@ UHMM3BuildTask::UHMM3BuildTask( const UHMM3BuildSettings& aset, const MultipleSe
 }
 
 bool UHMM3BuildTask::checkMsa() {
-    if( msa.getNumRows() == 0 ) {
+    if( msa->getNumRows() == 0 ) {
         stateInfo.setError( tr("Given multiple alignment has no sequences") );
         return false;
-    } else if ( msa.getLength() == 0 ) {
+    } else if ( msa->getLength() == 0 ) {
         stateInfo.setError(  tr("Given multiple alignment is empty") );
         return false;
     }

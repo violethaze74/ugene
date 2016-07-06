@@ -191,36 +191,36 @@ SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const Multiple
 
 void SiteconBuildTask::run() {
     // compute average/dispersion matrix
-    if (!ma.hasEmptyGapModel()) {
+    if (!ma->hasEmptyGapModel()) {
         stateInfo.setError( tr("Alignment contains gaps") );
         return;
     }
-    if (ma.isEmpty()) {
+    if (ma->isEmpty()) {
         stateInfo.setError(  tr("Alignment is empty") );
         return;
     }
-    if (ma.getNumRows() < 2) {
+    if (ma->getNumRows() < 2) {
         stateInfo.setError(  tr("Alignment must have at least 2 sequences") );
         return;
     }
-    if (!ma.getAlphabet()->isNucleic()) {
+    if (!ma->getAlphabet()->isNucleic()) {
         stateInfo.setError(  tr("Alignment is not nucleic") );
         return;
     }
-    if (ma.getLength() < settings.windowSize) {
+    if (ma->getLength() < settings.windowSize) {
         stateInfo.setError(  tr("Window size is greater than alignment length") );
         return;
     }
     
-    int centerPos = ma.getLength() / 2;
+    int centerPos = ma->getLength() / 2;
     int startPos = centerPos - settings.windowSize / 2;
     int endPos = centerPos + (settings.windowSize - settings.windowSize / 2);
-    assert(startPos >=0 && endPos <= ma.getLength());
-    ma = ma.mid(startPos, endPos - startPos);
-    assert(ma.getLength() == settings.windowSize);
+    assert(startPos >=0 && endPos <= ma->getLength());
+    ma = ma->mid(startPos, endPos - startPos);
+    assert(ma->getLength() == settings.windowSize);
 
     SiteconAlgorithm::calculateACGTContent(ma, settings);
-    settings.numSequencesInAlignment = ma.getNumRows();
+    settings.numSequencesInAlignment = ma->getNumRows();
     m.settings = settings;
     stateInfo.setDescription(tr("Calculating average and dispersion matrixes"));
     m.matrix = SiteconAlgorithm::calculateDispersionAndAverage(ma, settings, stateInfo);

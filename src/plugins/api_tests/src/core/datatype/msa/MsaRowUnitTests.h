@@ -37,7 +37,7 @@ public:
     static MultipleSequenceAlignmentRow initTestRowWithoutGaps(MultipleSequenceAlignment& ma);
     static MultipleSequenceAlignmentRow initTestRowForModification(MultipleSequenceAlignment& ma);
     static MultipleSequenceAlignmentRow initEmptyRow(MultipleSequenceAlignment& ma);
-    static QString getRowData(MultipleSequenceAlignmentRow row);
+    static QString getRowData(const MultipleSequenceAlignmentRow &row);
 
     static const int rowWithGapsLength;
     static const int rowWithGapsInMiddleLength;

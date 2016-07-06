@@ -415,11 +415,11 @@ static bool blockEnded( IOAdapter* io ) {
 }
 
 static bool nameWasBefore( const MultipleSequenceAlignment& msa, const QString& name ) {
-    int n = msa.getNumRows();
+    int n = msa->getNumRows();
     bool ret = false;
 
     for( int i = 0; i < n; ++i ) {
-        if ( name == msa.getRow(i)->getName()) {
+        if ( name == msa->getRow(i)->getName()) {
             ret = true;
             break;
         }
@@ -485,8 +485,8 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MultipleSequenceAlignmen
                 if ( nameWasBefore( msa, QString( name.data() ) ) ) {
                     throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: equal sequence names in one block" ) );
                 }
-                U2OpStatus2Log os;
-                msa.addRow(name.data(), seq);
+
+                msa->addRow(name.data(), seq);
                 if (blockSize == -1) {
                     blockSize = seq.size();
                 } else if (blockSize != seq.size() ) {
@@ -494,11 +494,10 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MultipleSequenceAlignmen
                 }
             }
             else {
-                const MultipleSequenceAlignmentRow& row = msa.getRow(seq_ind);
-                if( name != row->getName()) {
+                if( name != msa->getRow(seq_ind)->getName()) {
                     throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: sequence names are not equal in blocks" ) );
                 }
-                msa.appendChars(seq_ind, currentLen, seq.constData(), seq.size());
+                msa->appendChars(seq_ind, currentLen, seq.constData(), seq.size());
                 if (blockSize == -1) {
                     blockSize = seq.size();
                 } else if (blockSize != seq.size() ) {
@@ -515,11 +514,11 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MultipleSequenceAlignmen
     readEofMsa( io );
     skipBlankLines( io );
 
-    if ( msa.getNumRows() == 0 ) {
+    if ( msa->getNumRows() == 0 ) {
         throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: empty sequence alignment" ) );
     }
     U2AlphabetUtils::assignAlphabet(msa);
-    if (msa.getAlphabet() == NULL) {
+    if (msa->getAlphabet() == NULL) {
         throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: unknown alphabet" ) );
     }
     return true;
@@ -537,7 +536,7 @@ static void setMsaInfoCutoffs( QVariantMap& info, const QString& string, Multipl
 }
 
 static void setMsaInfo( const QHash< QString, QString>& annMap, MultipleSequenceAlignment& ma ) {
-    QVariantMap info = ma.getInfo();
+    QVariantMap info = ma->getInfo();
 
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_AC ) ) {
         MultipleAlignmentInfo::setAccession( info, annMap[StockholmFormat::FILE_ANNOTATION_AC] );
@@ -563,7 +562,7 @@ static void setMsaInfo( const QHash< QString, QString>& annMap, MultipleSequence
         setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_TC], MultipleAlignmentInfo::CUTOFF_TC1,
                                                                               MultipleAlignmentInfo::CUTOFF_TC2 );
     }
-    ma.setInfo(info);
+    ma->setInfo(info);
 }
 
 static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, const QVariantMap& fs, U2OpStatus& tsi, bool& uni_file) {
@@ -586,7 +585,7 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
         name = ( QString::null == name || names_list.contains( name ) )?
             filename + "_" + QString::number( l.size() ): name;
         names_list.append( name );
-        msa.setName( name );
+        msa->setName( name );
 
         annMap = getAnnotationMap( ann_bank );
         setMsaInfo( annMap, msa );
@@ -601,12 +600,12 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
 }
 
 static int getMaxNameLen( const MultipleSequenceAlignment& msa ) {
-    assert( msa.getNumRows() != 0 );
-    int sz = msa.getNumRows();
-    int max_len = msa.getRow(0)->getName().size();
+    assert( msa->getNumRows() != 0 );
+    int sz = msa->getNumRows();
+    int max_len = msa->getRow(0)->getName().size();
 
     for( int i = 0; i < sz; ++i ) {
-        int name_len =  msa.getRow(i)->getName().size();
+        int name_len =  msa->getRow(i)->getName().size();
         max_len = ( max_len < name_len )? name_len: max_len;
     }
     return max_len;
@@ -623,7 +622,7 @@ static QByteArray getNameSeqGap( int diff ) {
 
 static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, const QString& name, U2OpStatus &os ) {
     assert( NULL != io );
-    assert( msa.getNumRows() );
+    assert( msa->getNumRows() );
     int ret = 0;
 
     QByteArray header( HEADER );
@@ -638,7 +637,7 @@ static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, const QSt
 
     //write sequences
     int name_max_len = getMaxNameLen( msa );
-    int seq_len = msa.getLength();
+    int seq_len = msa->getLength();
     int cur_seq_pos = 0;
     MultipleSequenceAlignmentWalker walker(msa);
     CHECK_OP(os, );
@@ -650,7 +649,8 @@ static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, const QSt
         //write block
         U2OpStatus2Log os;
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = msa.getMsaRows().constBegin();
+        const QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;
             QByteArray name = row->getName().toLatin1();

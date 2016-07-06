@@ -69,7 +69,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
     const QBitArray& WHITES = TextUtils::WHITES;
 
     QString objName = io->getURL().baseFileName();
-    MultipleSequenceAlignment al(objName);
+    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(objName));
     bool lineOk = false;
     bool firstBlock = true;
     int sequenceIdx = 0;
@@ -97,7 +97,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
             len--;
         }
         if (len == 0) {
-            if (al.getNumRows() == 0) {
+            if (al->getNumRows() == 0) {
                 continue;//initial empty lines
             }
             os.setError( ClustalWAlnFormat::tr("Error parsing file"));
@@ -132,7 +132,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
         QByteArray name = line.left(valStartPos).trimmed();
         QByteArray value = line.mid(valStartPos, valEndPos - valStartPos);
 
-        int seqsInModel = al.getNumRows();
+        int seqsInModel = al->getNumRows();
         bool lastBlockLine = (!firstBlock && sequenceIdx == seqsInModel)
             || numNs >=2
             || name.isEmpty()
@@ -142,8 +142,8 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
             if (lastBlockLine && name.isEmpty()) { //if name is not empty -> this is a sequence but consensus (for Clustal files without consensus)
                 // this is consensus line - skip it
             } else {
-                assert(al.getNumRows() == sequenceIdx);
-                al.addRow(name, value);
+                assert(al->getNumRows() == sequenceIdx);
+                al->addRow(name, value);
             }
         } else {
             int rowIdx = -1;
@@ -157,12 +157,12 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
                 break;
             }
             if (rowIdx != -1) {
-                const MultipleSequenceAlignmentRow& row = al.getRow(rowIdx);
+                const MultipleAlignmentRow& row = al->getRow(rowIdx);
                 if (row->getName() != name) {
                     os.setError( ClustalWAlnFormat::tr("Sequence names are not matched"));
                     break;
                 }
-                al.appendChars(rowIdx, currentLen, value.constData(), value.size());
+                al->appendChars(rowIdx, currentLen, value.constData(), value.size());
             }
         }
         if (lastBlockLine) {
@@ -171,7 +171,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
                 break;
             }
             sequenceIdx = 0;
-            currentLen = al.getLength();
+            currentLen = al->getLength();
         } else {
             sequenceIdx++;
         }
@@ -183,7 +183,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
         return;
     }
     U2AlphabetUtils::assignAlphabet(al);
-    CHECK_EXT(al.getAlphabet()!=NULL, os.setError( ClustalWAlnFormat::tr("Alphabet is unknown")), );
+    CHECK_EXT(al->getAlphabet()!=NULL, os.setError( ClustalWAlnFormat::tr("Alphabet is unknown")), );
 
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
@@ -223,12 +223,12 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
 
     //precalculate seq writing params
     int maxNameLength = 0;
-    foreach(const MultipleSequenceAlignmentRow& row, ma.getRows()) {
+    foreach(const MultipleAlignmentRow& row, ma->getRows()) {
         maxNameLength = qMax(maxNameLength, row->getName().length());
     }
     maxNameLength = qMin(maxNameLength, MAX_NAME_LEN);
 
-    int aliLen = ma.getLength();
+    int aliLen = ma->getLength();
     QByteArray consensus(aliLen, MAlignment_GapChar);
 
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
@@ -258,9 +258,9 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
         QList<QByteArray> seqs = walker.nextData(partLen, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = ma.getMsaRows().constBegin();
+        QList<MultipleAlignmentRow>::ConstIterator ri = ma->getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleSequenceAlignmentRow &row = *ri;
+            const MultipleAlignmentRow &row = *ri;
             QByteArray line = row->getName().toLatin1();
             if (line.length() > MAX_NAME_LEN) {
                 line = line.left(MAX_NAME_LEN);

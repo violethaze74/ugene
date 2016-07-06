@@ -48,20 +48,20 @@ MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(
     QScopedPointer<MultipleSequenceAlignmentObject> malignmentObject( StorageUtils::getMsaObject(
         context->getDataStorage( ), malignmentId ) );
     SAFE_POINT( !malignmentObject.isNull( ), "Invalid MSA object detected!", );
-    malignment = malignmentObject->getMAlignment( );
+    malignment.reset(malignmentObject->getMAlignment()->explicitClone());
 }
 
 QString MultipleAlignmentMessageTranslator::getTranslation( ) const {
-    const QString alignmentName = malignment.getName( );
+    const QString alignmentName = malignment->getName( );
     const QString displayingName = ( alignmentName.isEmpty( ) )
         ? QObject::tr( EMPTY_ALIGNMENT_NAME_LABEL ) : ( "'" + alignmentName + "'" );
 
     QString result = QObject::tr( ALIGNMENT_NAME_LABEL ) + displayingName + INFO_TAGS_SEPARATOR;
-    result += QObject::tr( ALIGNMENT_LENGTH_LABEL ) + QString::number( malignment.getLength( ) )
+    result += QObject::tr( ALIGNMENT_LENGTH_LABEL ) + QString::number( malignment->getLength( ) )
         + INFO_TAGS_SEPARATOR;
-    result += QObject::tr( COUNT_OF_ROWS_LABEL ) + QString::number( malignment.getNumRows( ) )
+    result += QObject::tr( COUNT_OF_ROWS_LABEL ) + QString::number( malignment->getNumRows( ) )
         + INFO_TAGS_SEPARATOR;
-    result += QObject::tr( ROW_NAMES_LABEL ) + "'" + malignment.getRowNames( ).join( "', '" )
+    result += QObject::tr( ROW_NAMES_LABEL ) + "'" + malignment->getRowNames( ).join( "', '" )
         + "'";
 
     return result;

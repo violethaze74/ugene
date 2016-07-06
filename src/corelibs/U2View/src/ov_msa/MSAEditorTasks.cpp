@@ -283,13 +283,13 @@ void ExtractConsensusTask::run() {
     CHECK(msa->getUI()->getConsensusArea()->getConsensusCache(),);
 
     MSAConsensusAlgorithm *algorithm = msa->getUI()->getConsensusArea()->getConsensusAlgorithm();
-    MultipleSequenceAlignment ma = msa->getMSAObject()->getMAlignment();
-    for (int i = 0, n = ma.getLength(); i < n; i++) {
+    const MultipleSequenceAlignment ma = msa->getMSAObject()->getMAlignment();
+    for (int i = 0, n = ma->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;
         }
         int count = 0;
-        int nSeq = ma.getNumRows();
+        int nSeq = ma->getNumRows();
         SAFE_POINT(0 != nSeq, tr("No sequences in alignment"), );
 
         QChar c = algorithm->getConsensusCharAndScore(ma, i, count);

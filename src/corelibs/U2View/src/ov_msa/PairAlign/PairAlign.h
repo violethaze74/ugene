@@ -45,7 +45,6 @@ namespace U2 {
 
 class AlignmentAlgorithm;
 class AlignmentAlgorithmMainWidget;
-class MultipleSequenceAlignment;
 class MsaModificationInfo;
 class MSADistanceAlgorithm;
 class MSAEditor;

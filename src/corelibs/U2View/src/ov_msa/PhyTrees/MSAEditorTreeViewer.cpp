@@ -476,7 +476,7 @@ bool MSAEditorTreeViewerUI::canSynchronizeWithMSA(MSAEditor* msa) {
     if(!curLayoutIsRectangular) {
         return false;
     }
-    QStringList seqsNames = msa->getMSAObject()->getMAlignment().getRowNames();
+    QStringList seqsNames = msa->getMSAObject()->getMAlignment()->getRowNames();
     QList<QGraphicsItem*> items = scene()->items();
 
     int counter = 0;

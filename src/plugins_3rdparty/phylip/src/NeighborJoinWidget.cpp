@@ -138,8 +138,8 @@ bool NeighborJoinWidget::checkMemoryEstimation(QString &msg, const MultipleSeque
     //sizeof(sitelike) = 32
     //sizeof(ratelike) = 4
 
-    const qint64 spp = msa.getNumRows();
-    const qint64 endsite = msa.getLength();
+    const qint64 spp = msa->getNumRows();
+    const qint64 endsite = msa->getLength();
     const qint64 ugeneLowestMemoryUsageMb = 50;
     const qint64 minMemoryForDistanceMatrixMb = (qint64)(spp * endsite * 32 + endsite * 4) / (1024 * 1024);
 
@@ -185,7 +185,7 @@ void NeighborJoinWidget::sl_onConsensusTypeChanged(const QString &consensusTypeN
 }
 
 void NeighborJoinWidget::init(const MultipleSequenceAlignment &ma) {
-    const DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
+    const DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
     if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)) {
         cbModel->addItems(DNADistModelTypes::getDNADistModelTypes());
     } else {

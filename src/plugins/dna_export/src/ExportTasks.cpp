@@ -95,7 +95,7 @@ ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment& _ma, c
     setTaskName(tr("Export alignment to '%1'").arg(QFileInfo(fileName).fileName()));
     setVerboseLogMode(true);
 
-    assert(!ma.isEmpty());
+    assert(!ma->isEmpty());
 }
 
 void ExportAlignmentTask::run() {
@@ -155,7 +155,7 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& _ma, int _
 ma(_ma), offset(_offset), len(_len), url(_url), format(_format), aminoTranslations(_aminoTranslations)
 {
     GCOUNTER( cvar, tvar, "ExportMSA2MSATask" );
-    CHECK_EXT( !ma.isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
+    CHECK_EXT( !ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
     setVerboseLogMode(true);
 }
 

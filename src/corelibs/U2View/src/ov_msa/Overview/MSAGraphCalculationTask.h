@@ -52,7 +52,7 @@ protected:
     void constructPolygon(QPolygonF &polygon);
     virtual int getGraphValue(int) const { return height; }
 
-    QScopedPointer<MultipleSequenceAlignment> ma;
+    MultipleSequenceAlignment ma;
     MemoryLocker memLocker;
     int msaLength;
     int seqNumber;

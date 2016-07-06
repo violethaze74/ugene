@@ -152,7 +152,7 @@ public:
     int getFirstVisibleBase() const;
 
     //Return alignment row that is displayed on target line in MSAEditor
-    const MultipleSequenceAlignmentRow& getRowByLineNumber(int lineNumber) const;
+    const MultipleSequenceAlignmentRow getRowByLineNumber(int lineNumber) const;
 
     float getZoomFactor() const {return zoomFactor;}
 

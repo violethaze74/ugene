@@ -176,15 +176,19 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
         return;
     }
     MultipleSequenceAlignmentObject* alObj = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
-    srcAl = MultipleSequenceAlignment(alObj->getMAlignment());
+    srcAl = MultipleSequenceAlignment(alObj->getMAlignment()->explicitClone());
 
     QList<DNATranslation*> trans;
     QString trid = DNATranslationID(0);
     trid.replace("0", QString("%1").arg(transTable));
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(trid);
 
-    exportTask = new ExportMSA2MSATask(srcAl, selectedRows.length ? selectedRows.startPos : 0, selectedRows.length ? selectedRows.length : srcAl.getNumRows(), outputFileName,
-         trans, BaseDocumentFormats::CLUSTAL_ALN);
+    exportTask = new ExportMSA2MSATask(srcAl,
+                                       selectedRows.length ? selectedRows.startPos : 0,
+                                       selectedRows.length ? selectedRows.length : srcAl->getNumRows(),
+                                       outputFileName,
+                                       trans,
+                                       BaseDocumentFormats::CLUSTAL_ALN);
     addSubTask(exportTask);
 }
 
@@ -238,27 +242,27 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
     MultipleSequenceAlignmentObject * expAlign = qobject_cast<MultipleSequenceAlignmentObject*>(explist.first());
     const MultipleSequenceAlignment &expAl = expAlign->getMAlignment();
 
-    if (resAl.getLength() != expAl.getLength()) {
-        stateInfo.setError(GTest::tr("Unexpected alignment length %1, expected %2").arg(resAl.getLength()).arg(expAl.getLength()));
+    if (resAl->getLength() != expAl->getLength()) {
+        stateInfo.setError(GTest::tr("Unexpected alignment length %1, expected %2").arg(resAl->getLength()).arg(expAl->getLength()));
         return ReportResult_Finished;
     }
 
-    if (resAl.getNumRows() != expAl.getNumRows()) {
-        stateInfo.setError(GTest::tr("Unexpected alignment size %1, expected %2").arg(resAl.getNumRows()).arg(expAl.getNumRows()));
+    if (resAl->getNumRows() != expAl->getNumRows()) {
+        stateInfo.setError(GTest::tr("Unexpected alignment size %1, expected %2").arg(resAl->getNumRows()).arg(expAl->getNumRows()));
         return ReportResult_Finished;
     }
 
-    QStringList resNames = resAl.getRowNames();
-    QStringList expNames = expAl.getRowNames();
+    QStringList resNames = resAl->getRowNames();
+    QStringList expNames = expAl->getRowNames();
 
-    for (int i = 0; i < resAl.getNumRows(); i++) {
+    for (int i = 0; i < resAl->getNumRows(); i++) {
         if (resNames[i] != expNames[i]) {
             stateInfo.setError(GTest::tr("Invalid name for row %1: %2, expected %3").arg(i+1).arg(resNames[i]).arg(expNames[i]));
             return ReportResult_Finished;
         }
-        for (int j = 0; j < resAl.getLength(); j++) {
-            if (resAl.charAt(i, j) != expAl.charAt(i, j)) {
-                stateInfo.setError(GTest::tr("Invalid char at row %1 column %2: %3, expected %4").arg(i+1).arg(j+1).arg(resAl.charAt(i, j)).arg(expAl.charAt(i, j)));
+        for (int j = 0; j < resAl->getLength(); j++) {
+            if (resAl->charAt(i, j) != expAl->charAt(i, j)) {
+                stateInfo.setError(GTest::tr("Invalid char at row %1 column %2: %3, expected %4").arg(i+1).arg(j+1).arg(resAl->charAt(i, j)).arg(expAl->charAt(i, j)));
                 return ReportResult_Finished;
             }
         }

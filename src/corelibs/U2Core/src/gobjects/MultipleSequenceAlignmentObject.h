@@ -23,8 +23,8 @@
 #define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_
 
 #include <U2Core/GObject.h>
-#include <U2Core/U2Region.h>
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/U2Region.h>
 
 #include "GObjectTypes.h"
 
@@ -84,13 +84,17 @@ private:
 class MsaSavedState{
 public:
     ~MsaSavedState(){}
+
 private:
     friend class MultipleSequenceAlignmentObject;
     MsaSavedState();
-    MultipleSequenceAlignment getState() const;
-    void setState(const MultipleSequenceAlignment&);
+
+    const MultipleSequenceAlignmentData & getState() const;
+    void setState(const MultipleSequenceAlignment &msa);
+    void setState(const MultipleSequenceAlignmentData &msaData);
+
 private:
-    MultipleSequenceAlignment lastState;
+    MultipleSequenceAlignmentData lastState;
 };
 
 class U2CORE_EXPORT MultipleSequenceAlignmentObject : public GObject {
@@ -118,7 +122,7 @@ public:
     const DNAAlphabet* getAlphabet() const;
     qint64 getLength() const;
     qint64 getNumRows() const;
-    const MultipleSequenceAlignmentRow& getRow(int row) const;
+    const MultipleSequenceAlignmentRow getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
 
     /** Methods that modify the gap model only */

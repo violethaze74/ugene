@@ -434,30 +434,29 @@ bool NEXUSParser::readDataContents(Context &ctx) {
             }
 
             // Build MultipleSequenceAlignment object
-            U2OpStatus2Log os;
-            MultipleSequenceAlignment ma(tz.getIO()->getURL().baseFileName());
+            MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(tz.getIO()->getURL().baseFileName()));
             foreach (const QString &name, rows.keys()) {
-                ma.addRow(name, rows[name]);
+                ma->addRow(name, rows[name]);
             }
 
             // Determine alphabet & replace missing chars
             if (ctx.contains("missing")) {
                 char missing = ctx["missing"].toLatin1()[0];
                 U2AlphabetUtils::assignAlphabet(ma, missing);
-                CHECK_EXT(ma.getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
+                CHECK_EXT(ma->getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
 
-                char ourMissing = ma.getAlphabet()->getDefaultSymbol();
+                char ourMissing = ma->getAlphabet()->getDefaultSymbol();
 
                 // replace missing
-                for (int i = 0; i < ma.getNumRows(); ++i) {
-                    ma.replaceChars(i, missing, ourMissing);
+                for (int i = 0; i < ma->getNumRows(); ++i) {
+                    ma->replaceChars(i, missing, ourMissing);
                 }
             } else {
                 U2AlphabetUtils::assignAlphabet(ma);
-                CHECK_EXT(ma.getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
+                CHECK_EXT(ma->getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
             }
 
-            if (ma.getAlphabet() == 0) {
+            if (ma->getAlphabet() == 0) {
                 errors.append("Unknown alphabet");
                 return false;
             }
@@ -735,8 +734,8 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
     tabs.append(tab);
 
     int ntax, nchar;
-    ntax = ma.getNumRows();
-    nchar = ma.getLength();
+    ntax = ma->getNumRows();
+    nchar = ma->getLength();
 
     QTextStream(&line) << tabs << "dimensions ntax=" << ntax << " nchar=" << nchar << ";\n";
     io->writeBlock(line);
@@ -744,7 +743,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
 
     //datatype for MrBayes files
     QString dataType;
-    const QString& alphabetId = ma.getAlphabet()->getId();
+    const QString& alphabetId = ma->getAlphabet()->getId();
     if(alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() || alphabetId == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED()){
         dataType = "dna";
     }else if(alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT() || alphabetId == BaseDNAAlphabetIds::NUCL_RNA_EXTENDED()){
@@ -765,7 +764,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
 
     tabs.append(tab);
 
-    const QList<MultipleSequenceAlignmentRow> &rows = ma.getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> rows = ma->getMsaRows();
 
     int nameMaxLen = 0;
     foreach (MultipleSequenceAlignmentRow row, rows) {

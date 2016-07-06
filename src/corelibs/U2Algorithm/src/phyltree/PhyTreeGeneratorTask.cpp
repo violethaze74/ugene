@@ -54,8 +54,8 @@ void PhyTreeGeneratorLauncherTask::prepare(){
         stateInfo.setError(PhyTreeGeneratorLauncherTask::tr("Tree construction algorithm %1 not found").arg(algId));
     }else{
         const QStringList& rowsOrder = settings.rowsOrder;
-        if(rowsOrder.size() >= inputMA.getRowNames().size()) {
-            inputMA.sortRowsByList(rowsOrder);
+        if(rowsOrder.size() >= inputMA->getRowNames().size()) {
+            inputMA->sortRowsByList(rowsOrder);
         }
 
         namesConvertor.replaceNamesWithAlphabeticIds(inputMA);
@@ -78,12 +78,12 @@ void PhyTreeGeneratorLauncherTask::sl_onCalculationCanceled() {
 }
 
 void SeqNamesConvertor::replaceNamesWithAlphabeticIds(MultipleSequenceAlignment& ma) {
-    QStringList rows = ma.getRowNames();
+    QStringList rows = ma->getRowNames();
 
-    int rowsNum = ma.getNumRows();
+    int rowsNum = ma->getNumRows();
     for(int i = 0; i < rowsNum; i++) {
         namesMap[generateNewAlphabeticId()] = rows.at(i);
-        ma.renameRow(i, lastIdStr);
+        ma->renameRow(i, lastIdStr);
     }
 }
 void SeqNamesConvertor::restoreNames(const PhyTree& tree) {

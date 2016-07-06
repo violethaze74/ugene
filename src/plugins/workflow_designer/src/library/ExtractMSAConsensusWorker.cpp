@@ -197,7 +197,7 @@ ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString &algo
 
 QString ExtractMSAConsensusTaskHelper::getResultName () const {
     QString res;
-    res = msa.getName();
+    res = msa->getName();
     res+="_consensus";
     return res;
 }

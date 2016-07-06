@@ -63,7 +63,7 @@ QString SequenceSelectorWidgetController::text() const {
 void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
     const MultipleSequenceAlignment &ma = msa->getMSAObject()->getMAlignment();
     U2OpStatusImpl os;
-    const MultipleSequenceAlignmentRow selectedRow = ma.getRowByRowId(newId, os);
+    const MultipleAlignmentRow &selectedRow = ma->getRowByRowId(newId, os);
     CHECK_OP(os, );
     seqId = newId;
     const QString selectedName = selectedRow->getName();
@@ -81,7 +81,7 @@ qint64 SequenceSelectorWidgetController::sequenceId( ) const {
 void SequenceSelectorWidgetController::updateCompleter() {
     MultipleSequenceAlignmentObject* maObj = msa->getMSAObject();
     const MultipleSequenceAlignment& ma = maObj->getMAlignment();
-    QStringList newNamesList = ma.getRowNames();
+    QStringList newNamesList = ma->getRowNames();
     filler->updateSeqList(newNamesList);
     if (!newNamesList.contains(seqLineEdit->text())) {
         sl_seqLineEditEditingFinished();
@@ -94,14 +94,14 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const Multi
     }
     MultipleSequenceAlignmentObject* maObj = msa->getMSAObject();
     const MultipleSequenceAlignment& ma = maObj->getMAlignment();
-    filler->updateSeqList(ma.getRowNames());
+    filler->updateSeqList(ma->getRowNames());
     sl_seqLineEditEditingFinished();
 }
 
 void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
     MultipleSequenceAlignmentObject* maObj = msa->getMSAObject();
     const MultipleSequenceAlignment& ma = maObj->getMAlignment();
-    if (!ma.getRowNames().contains(seqLineEdit->text())) {
+    if (!ma->getRowNames().contains(seqLineEdit->text())) {
         seqLineEdit->setText(defaultSeqName);
     } else {
         const QString selectedSeqName = seqLineEdit->text();
@@ -112,7 +112,7 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
         // index in popup list
         const int sequenceIndex = completer->getLastChosenItemIndex();
         if ( completer == QObject::sender( ) && -1 != sequenceIndex ) {
-            const QStringList rowNames = ma.getRowNames( );
+            const QStringList rowNames = ma->getRowNames( );
             SAFE_POINT( rowNames.contains( selectedSeqName ), "Unexpected sequence name is selected", );
             if ( 1 < rowNames.count( selectedSeqName ) ) { // case when there are sequences with identical names
                 int selectedRowIndex = -1;
@@ -120,9 +120,9 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
                 for ( int sameNameCounter = 0; sameNameCounter <= sequenceIndex; ++sameNameCounter ) {
                     selectedRowIndex = rowNames.indexOf( selectedSeqName, selectedRowIndex + 1 );
                 }
-                seqId = ma.getRow( selectedRowIndex )->getRowId( );
+                seqId = ma->getRow( selectedRowIndex )->getRowId( );
             } else { // case when chosen name is unique in the msa
-                seqId = ma.getRow( selectedSeqName )->getRowId( );
+                seqId = ma->getRow( selectedSeqName )->getRowId( );
             }
         }
     }

@@ -89,20 +89,20 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSett
     parallelSubTask = NULL;
 
     //todo: make more precise estimation, use config.op mode
-    int aliLen = ma.getLength();
-    int nSeq = ma.getNumRows();
+    int aliLen = ma->getLength();
+    int nSeq = ma->getNumRows();
     int memUseMB = qint64(aliLen) * qint64(nSeq) * 200 / (1024 * 1024); //200x per char in alignment
     TaskResourceUsage tru(RESOURCE_MEMORY, memUseMB);
 
-    QString inputAlName = inputMA.getName();
-    resultMA.setName(inputAlName);
-    resultSubMA.setName(inputAlName);
+    QString inputAlName = inputMA->getName();
+    resultMA->setName(inputAlName);
+    resultSubMA->setName(inputAlName);
 
     inputSubMA = inputMA;
-    if (config.alignRegion && config.regionToAlign.length != inputMA.getLength()) {
+    if (config.alignRegion && config.regionToAlign.length != inputMA->getLength()) {
         SAFE_POINT_EXT(config.regionToAlign.length > 0,
             setError(tr("Incorrect region to align")), );
-        inputSubMA = inputMA.mid(config.regionToAlign.startPos, config.regionToAlign.length);
+        inputSubMA = inputMA->mid(config.regionToAlign.startPos, config.regionToAlign.length);
         CHECK_EXT(inputSubMA != MultipleSequenceAlignment(), setError(tr("Stopping MUSCLE task, because of error in MultipleSequenceAlignment::mid function")), );
     }
 
@@ -139,7 +139,7 @@ void MuscleTask::run() {
             break;
     }
     if (!hasError() && !isCanceled()) {
-        SAFE_POINT_EXT(NULL != resultMA.getAlphabet(),
+        SAFE_POINT_EXT(NULL != resultMA->getAlphabet(),
             stateInfo.setError("The alphabet of result alignment is null"),);
     }
     TaskLocalData::detachMuscleTLSContext();
@@ -151,7 +151,7 @@ void MuscleTask::run() {
 
 void MuscleTask::doAlign(bool refine) {
     if (parallelSubTask == NULL) { //align in this thread
-        SAFE_POINT_EXT(resultSubMA.isEmpty(), stateInfo.setError("Incorrect result state"),);
+        SAFE_POINT_EXT(resultSubMA->isEmpty(), stateInfo.setError("Incorrect result state"),);
         if (refine) {
             MuscleAdapter::refine(inputSubMA, resultSubMA, stateInfo);
         } else {
@@ -162,14 +162,14 @@ void MuscleTask::doAlign(bool refine) {
     U2OpStatus2Log os;
 
     if(!isCanceled()) {
-        SAFE_POINT_EXT(!resultSubMA.isEmpty(),
+        SAFE_POINT_EXT(!resultSubMA->isEmpty(),
             stateInfo.setError("The result multiple alignment is empty!"), );
 
-        resultMA.setAlphabet(inputMA.getAlphabet());
+        resultMA->setAlphabet(inputMA->getAlphabet());
         QByteArray emptySeq;
-        const int nSeq = inputMA.getNumRows();
+        const int nSeq = inputMA->getNumRows();
 
-        const int resNSeq = resultSubMA.getNumRows();
+        const int resNSeq = resultSubMA->getNumRows();
         const int maxSeq = qMax(nSeq, resNSeq);
         QVector<unsigned int> ids(maxSeq, 0);
         QVector<bool> existID(maxSeq, false);
@@ -183,44 +183,44 @@ void MuscleTask::doAlign(bool refine) {
             }
         }
         int j = resNSeq;
-        QByteArray gapSeq(resultSubMA.getLength(),MAlignment_GapChar);
+        QByteArray gapSeq(resultSubMA->getLength(),MAlignment_GapChar);
         for(int i=0, n = nSeq; i < n; i++) {
             if(!existID[i]) {
-                QString rowName = inputMA.getRow(i)->getName();
+                QString rowName = inputMA->getRow(i)->getName();
                 if(config.stableMode) {
-                    resultSubMA.addRow(rowName, gapSeq, i);
+                    resultSubMA->addRow(rowName, gapSeq, i);
                 } else {
                     ids[j] = i;
-                    resultSubMA.addRow(rowName, gapSeq);
+                    resultSubMA->addRow(rowName, gapSeq);
                 }
                 j++;
             }
         }
 
-        SAFE_POINT_EXT(resultSubMA.getNumRows() == inputMA.getNumRows(),
+        SAFE_POINT_EXT(resultSubMA->getNumRows() == inputMA->getNumRows(),
             stateInfo.setError(tr("Unexpected number of rows in the result multiple alignment!")), );
 
-        if (config.alignRegion && config.regionToAlign.length != inputMA.getLength()) {
+        if (config.alignRegion && config.regionToAlign.length != inputMA->getLength()) {
 
-            for(int i=0, n = inputMA.getNumRows(); i < n; i++) {
-                const MultipleSequenceAlignmentRow& row= inputMA.getRow(ids[i]);
-                resultMA.addRow(row->getName(), emptySeq);
+            for(int i=0, n = inputMA->getNumRows(); i < n; i++) {
+                const MultipleAlignmentRow& row= inputMA->getRow(ids[i]);
+                resultMA->addRow(row->getName(), emptySeq);
             }
             if (config.regionToAlign.startPos != 0) {
                 for(int i=0; i < nSeq; i++)  {
                     int regionLen = config.regionToAlign.startPos;
-                    MultipleSequenceAlignmentRow inputRow = inputMA.getMsaRow(ids[i])->mid(0, regionLen, os);
-                    resultMA.appendChars(i, 0, inputRow->toByteArray(regionLen, os).constData(), regionLen);
+                    const MultipleSequenceAlignmentRow inputRow = inputMA->getMsaRow(ids[i])->mid(0, regionLen, os);
+                    resultMA->appendChars(i, 0, inputRow->toByteArray(regionLen, os).constData(), regionLen);
                 }
             }
-            resultMA += resultSubMA;
-            int resultLen = resultMA.getLength();
-            if (config.regionToAlign.endPos() != inputMA.getLength()) {
+            *resultMA += *resultSubMA;
+            int resultLen = resultMA->getLength();
+            if (config.regionToAlign.endPos() != inputMA->getLength()) {
                 int subStart = config.regionToAlign.endPos();
-                int subLen = inputMA.getLength() - config.regionToAlign.endPos();
+                int subLen = inputMA->getLength() - config.regionToAlign.endPos();
                 for(int i = 0; i < nSeq; i++) {
-                    MultipleSequenceAlignmentRow inputRow = inputMA.getMsaRow(ids[i])->mid(subStart, subLen, os);
-                    resultMA.appendChars(i, resultLen, inputRow->toByteArray(subLen, os).constData(), subLen);
+                    const MultipleSequenceAlignmentRow inputRow = inputMA->getMsaRow(ids[i])->mid(subStart, subLen, os);
+                    resultMA->appendChars(i, resultLen, inputRow->toByteArray(subLen, os).constData(), subLen);
                 }
             }
             //TODO: check if there are GAP columns on borders and remove them
@@ -305,10 +305,10 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
         }
         QByteArray seqData = dnaObj->getWholeSequenceData(stateInfo);
         CHECK_OP(stateInfo, res);
-        s.profile.addRow(dnaObj->getSequenceName(), seqData);
+        s.profile->addRow(dnaObj->getSequenceName(), seqData);
     }
     if(!seqObjects.isEmpty()) {
-        s.profile.setAlphabet(al);
+        s.profile->setAlphabet(al);
     }
 
     if (seqObjects.isEmpty()) {
@@ -319,7 +319,7 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
         }
     }
 
-    if (s.profile.isEmpty()) {
+    if (s.profile->isEmpty()) {
         if (mode == Sequences2Profile) {
             stateInfo.setError(tr("No sequences found in file %1").arg(loadTask->getDocument()->getURLString()));
         } else {
@@ -426,7 +426,7 @@ Task::ReportResult MuscleGObjectTask::report() {
         return ReportResult_Finished;
     }
     if (config.op == MuscleTaskOp_AddUnalignedToProfile) {
-        SAFE_POINT_EXT((muscleTask->inputMA.getNumRows() + config.profile.getNumRows()) == muscleTask->resultMA.getNumRows(),
+        SAFE_POINT_EXT((muscleTask->inputMA->getNumRows() + config.profile->getNumRows()) == muscleTask->resultMA->getNumRows(),
             stateInfo.setError("Failed to apply the result of Muscle"), ReportResult_Finished);
 
         U2OpStatus2Log os;
@@ -442,15 +442,15 @@ Task::ReportResult MuscleGObjectTask::report() {
         QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(muscleTask->inputMA, muscleTask->resultMA, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
 
-        if (rowsOrder.count() != muscleTask->inputMA.getNumRows()) {
+        if (rowsOrder.count() != muscleTask->inputMA->getNumRows()) {
             stateInfo.setError("Unexpected number of rows in the result multiple alignment!");
             return ReportResult_Finished;
         }
 
         QMap<qint64, QList<U2MaGap> > rowsGapModel;
-        for (int i = 0, n = muscleTask->resultMA.getNumRows(); i < n; ++i) {
-            qint64 rowId = muscleTask->resultMA.getRow(i)->getRowDbInfo().rowId;
-            const QList<U2MaGap>& newGapModel = muscleTask->resultMA.getRow(i)->getGapModel();
+        for (int i = 0, n = muscleTask->resultMA->getNumRows(); i < n; ++i) {
+            qint64 rowId = muscleTask->resultMA->getRow(i)->getRowDbInfo().rowId;
+            const QList<U2MaGap>& newGapModel = muscleTask->resultMA->getRow(i)->getGapModel();
             rowsGapModel.insert(rowId, newGapModel);
         }
 
@@ -463,12 +463,12 @@ Task::ReportResult MuscleGObjectTask::report() {
 
         obj->updateGapModel(stateInfo, rowsGapModel);
 
-        if (rowsOrder != muscleTask->inputMA.getRowsIds()) {
+        if (rowsOrder != muscleTask->inputMA->getRowsIds()) {
             obj->updateRowsOrder(stateInfo, rowsOrder);
         }
     }
     else if (config.op == MuscleTaskOp_ProfileToProfile) {
-        SAFE_POINT_EXT(muscleTask->inputMA.getNumRows() + config.profile.getNumRows() == muscleTask->resultMA.getNumRows(),
+        SAFE_POINT_EXT(muscleTask->inputMA->getNumRows() + config.profile->getNumRows() == muscleTask->resultMA->getNumRows(),
             stateInfo.setError("Failed to apply the result of Muscle"), ReportResult_Finished);
 
         U2OpStatus2Log os;
@@ -577,7 +577,7 @@ MuscleGObjectRunFromSchemaTask::MuscleGObjectRunFromSchemaTask(MultipleSequenceA
 : AlignGObjectTask("", TaskFlags_NR_FOSCOE, obj), config(c)
 {
     setMAObject(obj);
-    SAFE_POINT_EXT(config.profile.isEmpty(), setError("Invalid config profile detected"),);
+    SAFE_POINT_EXT(config.profile->isEmpty(), setError("Invalid config profile detected"),);
 
     setUseDescriptionFromSubtask(true);
     setVerboseLogMode(true);

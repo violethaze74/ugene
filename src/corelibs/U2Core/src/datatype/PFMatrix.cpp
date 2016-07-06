@@ -66,8 +66,8 @@ QMap<QString, QString> JasparInfo::getProperties() const {
 }
 
 PFMatrix::PFMatrix(const MultipleSequenceAlignment &align, PFMatrixType _type): type(_type) {
-    assert(align.hasEqualDataLength());
-    const int sequenceLength = align.getRows().first()->getUngappedLength();
+    assert(align->hasEqualDataLength());
+    const int sequenceLength = align->getRows().first()->getUngappedLength();
     length = (type == PFM_MONONUCLEOTIDE) ? sequenceLength : sequenceLength - 1;
     assert (length > 0);
     int size = (type == PFM_MONONUCLEOTIDE) ? 4 : 16;
@@ -75,16 +75,16 @@ PFMatrix::PFMatrix(const MultipleSequenceAlignment &align, PFMatrixType _type): 
     memset(data.data(), 0, size*length*sizeof(int));
     U2OpStatus2Log os;
     if (type == PFM_MONONUCLEOTIDE) {
-        for (int i = 0, n = align.getNumRows(); i < n; i++) {
-            const QByteArray row = align.getMsaRow(i)->getSequence().seq;
+        for (int i = 0, n = align->getNumRows(); i < n; i++) {
+            const QByteArray row = align->getMsaRow(i)->getSequence().seq;
             for (int j = 0; j < length; j++) {
                 char curr = row[j];
                 data[DiProperty::index(curr) * length + j]++;
             }
         }
     } else {
-        for (int i = 0, n = align.getNumRows(); i < n; i++) {
-            const QByteArray row = align.getMsaRow(i)->getSequence().seq;
+        for (int i = 0, n = align->getNumRows(); i < n; i++) {
+            const QByteArray row = align->getMsaRow(i)->getSequence().seq;
             for (int j = 0; j < length; j++) {
                 char curr = row[j];
                 char next = row[j+1];

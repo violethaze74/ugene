@@ -22,12 +22,11 @@
 #ifndef _U2_MSA_CONSENSUS_ALGORITHM_H_
 #define _U2_MSA_CONSENSUS_ALGORITHM_H_
 
-#include <U2Core/global.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
 namespace U2 {
 
-class MultipleSequenceAlignment;
 class MSAConsensusAlgorithm;
 class DNAAlphabet;
 

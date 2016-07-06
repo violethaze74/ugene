@@ -141,7 +141,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
             return;
         }
         U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(mobjs.first());
-        MultipleSequenceAlignment ma(dnaObj->getSequenceName(), dnaObj->getAlphabet());
+        MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(dnaObj->getSequenceName(), dnaObj->getAlphabet()));
         foreach (GObject* obj, mobjs) {
             U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
             if (dnaObj->getAlphabet()->getType() != DNAAlphabet_NUCL) {
@@ -150,7 +150,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
             U2OpStatus2Log os;
             QByteArray seqData = dnaObj->getWholeSequenceData(os);
             CHECK_OP_EXT(os, reportError(os.getError()), );
-            ma.addRow(dnaObj->getSequenceName(), seqData);
+            ma->addRow(dnaObj->getSequenceName(), seqData);
         }
         replaceLogo(ma);
     }
@@ -170,7 +170,7 @@ void PWMBuildDialogController::reportError(const QString &message) {
 
 void PWMBuildDialogController::replaceLogo(const MultipleSequenceAlignment& ma) {
     int logoheight = 150;
-    if (ma.getLength() < 50) {
+    if (ma->getLength() < 50) {
         AlignmentLogoSettings logoSettings(ma);
         logoWidget->resize(logoWidget->width(), logoheight);
         logoWidget->setMinimumHeight(logoheight);
@@ -337,15 +337,15 @@ PFMatrixBuildTask::PFMatrixBuildTask(const PMBuildSettings& s, const MultipleSeq
 }
 
 void PFMatrixBuildTask::run() {
-    if (!ma.hasEqualDataLength()) {
+    if (!ma->hasEqualDataLength()) {
         stateInfo.setError(  tr("Sequences in alignment have various lengths") );
         return;
     }
-    if (ma.isEmpty()) {
+    if (ma->isEmpty()) {
         stateInfo.setError(  tr("Alignment is empty") );
         return;
     }
-    if (!ma.getAlphabet()->isNucleic()) {
+    if (!ma->getAlphabet()->isNucleic()) {
         stateInfo.setError(  tr("Alignment is not nucleic") );
         return;
     }
@@ -427,8 +427,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
             if (!mobjs.isEmpty()) {
                 U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(mobjs.first());
                 QString baseName = d->getURL().baseFileName();
-                MultipleSequenceAlignment ma(baseName, dnaObj->getAlphabet());
-                QList<MultipleSequenceAlignmentRow> rows;
+                MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(baseName, dnaObj->getAlphabet()));
                 foreach (GObject* obj, mobjs) {
                     U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
                     if (dnaObj->getAlphabet()->getType() != DNAAlphabet_NUCL) {
@@ -436,7 +435,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
                     }
                     QByteArray seqData = dnaObj->getWholeSequenceData(stateInfo);
                     CHECK_OP(stateInfo, res);
-                    ma.addRow(dnaObj->getSequenceName(), seqData);
+                    ma->addRow(dnaObj->getSequenceName(), seqData);
                 }
                 buildTask = new PFMatrixBuildTask(settings, ma);
                 res.append(buildTask);
@@ -480,15 +479,15 @@ void PWMatrixBuildTask::run() {
             return;
         }
     } else {
-        if (!ma.hasEqualDataLength()) {
+        if (!ma->hasEqualDataLength()) {
             stateInfo.setError(  tr("Sequences in alignment have various lengths") );
             return;
         }
-        if (ma.isEmpty()) {
+        if (ma->isEmpty()) {
             stateInfo.setError(  tr("Alignment is empty") );
             return;
         }
-        if (!ma.getAlphabet()->isNucleic()) {
+        if (!ma->getAlphabet()->isNucleic()) {
             stateInfo.setError(  tr("Alignment is not nucleic") );
             return;
         }
@@ -559,7 +558,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
             if (!mobjs.isEmpty()) {
                 U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(mobjs.first());
                 QString baseName = d->getURL().baseFileName();
-                MultipleSequenceAlignment ma(baseName, dnaObj->getAlphabet());
+                MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(baseName, dnaObj->getAlphabet()));
                 foreach (GObject* obj, mobjs) {
                     U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
                     if (dnaObj->getAlphabet()->getType() != DNAAlphabet_NUCL) {
@@ -567,7 +566,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
                     }
                     QByteArray seqData = dnaObj->getWholeSequenceData(stateInfo);
                     CHECK_OP(stateInfo, res);
-                    ma.addRow(dnaObj->getSequenceName(), seqData);
+                    ma->addRow(dnaObj->getSequenceName(), seqData);
                 }
 
                 buildTask = new PWMatrixBuildTask(settings, ma);

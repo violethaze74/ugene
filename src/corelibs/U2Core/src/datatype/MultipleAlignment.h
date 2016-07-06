@@ -37,25 +37,27 @@ class DNAAlphabet;
 #define MAlignment_GapChar '-'
 #define MAlignment_TailedGapsPattern "\\-+$"
 
+typedef QSharedPointer<MultipleAlignmentData> MultipleAlignment;
+
 /**
  * Multiple alignment
  * The length of the alignment is the maximum length of its rows.
  * There are minimal checks on the alignment's alphabet, but the client of the class
  * is expected to keep the conformance of the data and the alphabet.
  */
-class U2CORE_EXPORT MultipleAlignment {
+class U2CORE_EXPORT MultipleAlignmentData {
 public:
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MultipleAlignment(const QString &name = QString(),
+    MultipleAlignmentData(const QString &name = QString(),
                       const DNAAlphabet *alphabet = NULL,
                       const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
-    MultipleAlignment(const MultipleAlignment &multipleAlignment);
-    virtual ~MultipleAlignment();
+    MultipleAlignmentData(const MultipleAlignmentData &multipleAlignment);
+    virtual ~MultipleAlignmentData();
 
-    const MultipleAlignment & operator=(const MultipleAlignment &other);
+    const MultipleAlignmentData & operator=(const MultipleAlignmentData &other);
 
     /**
      * Clears the alignment. Makes alignment length == 0.
@@ -205,13 +207,13 @@ public:
      * Joins two alignments. Alignments must have the same size and alphabet.
      * Increases the alignment length.
      */
-    const MultipleAlignment & operator+=(const MultipleAlignment &ma);
+    const MultipleAlignmentData & operator+=(const MultipleAlignmentData &ma);
 
     /**
      * Compares two alignments: lengths, alphabets, rows and infos (that include names).
      */
-    bool operator==(const MultipleAlignment &ma) const;
-    bool operator!=(const MultipleAlignment &ma) const;
+    bool operator==(const MultipleAlignmentData &ma) const;
+    bool operator!=(const MultipleAlignmentData &ma) const;
 
     /** Checks model consistency */
     void check() const;
@@ -222,14 +224,14 @@ public:
     static const char GapChar;
 
 protected:
-    virtual MultipleAlignment * clone() = 0;
+    virtual MultipleAlignmentData * clone() const = 0;
     virtual MultipleAlignmentRow createRow(const MultipleAlignmentRow &row) const = 0;
 
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow &row, int rowLenWithTrailingGaps, int rowIndex);
 
 private:
-    void copy(const MultipleAlignment &other);
+    void copy(const MultipleAlignmentData &other);
 
     /** Alphabet for all sequences in the alignment */
     const DNAAlphabet *alphabet;

@@ -79,7 +79,7 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     alphabet = U2AlphabetUtils::getById(settings->alphabet);
     SAFE_POINT(alphabet != NULL, "Albhabet is invalid.", );
 
-    ma = new MultipleSequenceAlignment(firstName + " vs. " + secondName, alphabet);
+    ma = MultipleSequenceAlignment(new MultipleSequenceAlignmentData(firstName + " vs. " + secondName, alphabet));
     ma->addRow(firstName, first);
     ma->addRow(secondName, second);
 
@@ -89,14 +89,13 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     kalignSettings.termGapPenalty = settings->gapTerm;
     kalignSettings.secret = settings->bonusScore;
 
-    kalignSubTask = new KalignTask(*ma, kalignSettings);
+    kalignSubTask = new KalignTask(ma, kalignSettings);
     setUseDescriptionFromSubtask(true);
     setVerboseLogMode(true);
     addSubTask(kalignSubTask);
 }
 
 PairwiseAlignmentHirschbergTask::~PairwiseAlignmentHirschbergTask() {
-    delete ma;
     delete settings;
 }
 
@@ -145,11 +144,11 @@ QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) {
             SAFE_POINT_OP(os, res);
             for (int rowNumber = 0; rowNumber < rows.length(); ++rowNumber) {
                 if (rows[rowNumber].dataObjectId == settings->firstSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA.getRow(0)->getGapModel(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getRow(0)->getGapModel(), os);
                     CHECK_OP(os, res);
                 }
                 if (rows[rowNumber].dataObjectId == settings->secondSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA.getRow(1)->getGapModel(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getRow(1)->getGapModel(), os);
                     CHECK_OP(os, res);
                 }
             }
@@ -162,7 +161,7 @@ Task::ReportResult PairwiseAlignmentHirschbergTask::report() {
     propagateSubtaskError();
     CHECK_OP(stateInfo, ReportResult_Finished);
 
-    assert(kalignSubTask->inputMA.getNumRows() == kalignSubTask->resultMA.getNumRows());
+    assert(kalignSubTask->inputMA->getNumRows() == kalignSubTask->resultMA->getNumRows());
 
     return ReportResult_Finished;
 }

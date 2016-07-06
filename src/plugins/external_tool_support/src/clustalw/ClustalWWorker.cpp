@@ -259,8 +259,8 @@ Task* ClustalWWorker::tick() {
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
         const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
 
-        if (msa.isEmpty()) {
-            algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalW.").arg(msa.getName()));
+        if (msa->isEmpty()) {
+            algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalW.").arg(msa->getName()));
             return NULL;
         }
         ClustalWSupportTask* supportTask = new ClustalWSupportTask(msa, GObjectReference(), cfg);
@@ -289,7 +289,7 @@ void ClustalWWorker::sl_taskFinished() {
 
     SAFE_POINT(NULL != output, "NULL output!", );
     send(t->resultMA);
-    algoLog.info(tr("Aligned %1 with ClustalW").arg(t->resultMA.getName()));
+    algoLog.info(tr("Aligned %1 with ClustalW").arg(t->resultMA->getName()));
 }
 
 void ClustalWWorker::cleanup() {

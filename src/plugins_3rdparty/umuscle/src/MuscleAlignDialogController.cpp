@@ -47,12 +47,12 @@ MuscleAlignDialogController::MuscleAlignDialogController(QWidget* w, const Multi
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    translateCheckBox->setEnabled(ma.getAlphabet()->isNucleic());
+    translateCheckBox->setEnabled(ma->getAlphabet()->isNucleic());
     inputGroupBox->setVisible(false);
     this->adjustSize();
 
-    rangeEndSB->setMaximum(ma.getLength());
-    rangeEndSB->setValue(ma.getLength());
+    rangeEndSB->setMaximum(ma->getLength());
+    rangeEndSB->setValue(ma->getLength());
 
     if (settings.alignRegion) {
         customRangeRB->setChecked(true);
@@ -94,7 +94,7 @@ void MuscleAlignDialogController::accept() {
     settings.stableMode = stableCB->isChecked();
 
     if (wholeRangeRB->isChecked()) {
-        settings.regionToAlign = U2Region(0, ma.getLength());
+        settings.regionToAlign = U2Region(0, ma->getLength());
         settings.alignRegion = false;
     } else {
         int startPos = rangeStartSB->value() - 1;

@@ -51,7 +51,7 @@ ClustalWSupportRunDialog::ClustalWSupportRunDialog(const MultipleSequenceAlignme
 
     connect(this->iterationTypeCheckBox,SIGNAL(toggled(bool)),this,SLOT(sl_iterationTypeEnabled(bool)));
 
-    if(ma.getAlphabet()->isAmino()){
+    if(ma->getAlphabet()->isAmino()){
         gapOpenSpinBox->setValue(10.0);
         gapExtSpinBox->setValue(0.2);
         proteinGapParamGroupBox->setEnabled(true);

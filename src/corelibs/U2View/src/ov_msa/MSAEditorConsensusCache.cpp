@@ -68,11 +68,11 @@ void MSAEditorConsensusCache::updateCacheItem(int pos) {
         const MultipleSequenceAlignment& ma = aliObj->getMAlignment();
         QString errorMessage = tr("Can not update consensus chache item");
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage,);
-        SAFE_POINT(curCacheSize == ma.getLength(), errorMessage,);
+        SAFE_POINT(curCacheSize == ma->getLength(), errorMessage,);
 
         CacheItem& ci = cache[pos];
         int count = 0;
-        int nSeq = ma.getNumRows();
+        int nSeq = ma->getNumRows();
         SAFE_POINT(0 != nSeq, errorMessage,);
 
         ci.topChar = algorithm->getConsensusCharAndScore(ma, pos, count);
@@ -97,7 +97,7 @@ int MSAEditorConsensusCache::getConsensusCharPercent(int pos) {
 QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
     QByteArray res;
     const MultipleSequenceAlignment& ma = aliObj->getMAlignment();
-    for (int i=0, n = ma.getLength(); i<n; i++) {
+    for (int i=0, n = ma->getLength(); i<n; i++) {
         char c = getConsensusChar(i);
         if (c!=MAlignment_GapChar || withGaps) {
             res.append(c);

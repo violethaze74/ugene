@@ -51,20 +51,20 @@ public:
             colorScheme[i] = Qt::black;
         }
 
-        if (ma.getAlphabet()->isNucleic()) {
+        if (ma->getAlphabet()->isNucleic()) {
             sequenceType = NA;
             colorScheme['G'] = QColor(255, 128, 0);
             colorScheme['T'] = Qt::red;
             colorScheme['C'] = Qt::blue;
             colorScheme['A'] = Qt::green;
             colorScheme['U'] = Qt::red;
-        } else if (ma.getAlphabet()->isAmino()) {
+        } else if (ma->getAlphabet()->isAmino()) {
             sequenceType = AA;
         } else {
             sequenceType = Auto;
         }
 
-        if (!ma.getAlphabet()->isNucleic()) {
+        if (!ma->getAlphabet()->isNucleic()) {
             colorScheme['G'] = Qt::green;
             colorScheme['S'] = Qt::green;
             colorScheme['T'] = Qt::green;
@@ -87,7 +87,7 @@ public:
             colorScheme['V'] = Qt::black;
         }
         startPos = 0;
-        len = ma.getLength();
+        len = ma->getLength();
 
         /*colorScheme.insert('S', Qt::green);
         colorScheme.insert('G', Qt::green);

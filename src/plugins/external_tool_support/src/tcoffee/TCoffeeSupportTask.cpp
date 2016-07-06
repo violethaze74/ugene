@@ -67,8 +67,8 @@ TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment& _inputMs
     loadTmpDocumentTask=NULL;
     tCoffeeTask=NULL;
     tmpDoc=NULL;
-    resultMA.setAlphabet(inputMsa.getAlphabet());
-    resultMA.setName(inputMsa.getName());
+    resultMA->setAlphabet(inputMsa->getAlphabet());
+    resultMA->setName(inputMsa->getName());
 }
 
 TCoffeeSupportTask::~TCoffeeSupportTask() {
@@ -93,9 +93,9 @@ TCoffeeSupportTask::~TCoffeeSupportTask() {
 }
 
 void TCoffeeSupportTask::prepare(){
-    if (inputMsa.getAlphabet()->getId() == BaseDNAAlphabetIds::RAW() ||
-            inputMsa.getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {
-        setError(tr("Unsupported alphabet: %1").arg(inputMsa.getAlphabet()->getName()));
+    if (inputMsa->getAlphabet()->getId() == BaseDNAAlphabetIds::RAW() ||
+            inputMsa->getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {
+        setError(tr("Unsupported alphabet: %1").arg(inputMsa->getAlphabet()->getName()));
         return;
     }
 
@@ -210,7 +210,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(NULL != newMAligmentObject, "Failed to cast object from temporary document to an alignment!", res);
 
         resultMA = newMAligmentObject->getMAlignment();
-        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa.getRowNames());
+        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT( renamed, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it
@@ -223,15 +223,15 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
                 QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
 
-                if (rowsOrder.count() != inputMsa.getNumRows()) {
+                if (rowsOrder.count() != inputMsa->getNumRows()) {
                     stateInfo.setError("Unexpected number of rows in the result multiple alignment!");
                     return res;
                 }
 
                 QMap<qint64, QList<U2MaGap> > rowsGapModel;
-                for (int i = 0, n = resultMA.getNumRows(); i < n; ++i) {
-                    qint64 rowId = resultMA.getRow(i)->getRowDbInfo().rowId;
-                    const QList<U2MaGap>& newGapModel = resultMA.getRow(i)->getGapModel();
+                for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
+                    qint64 rowId = resultMA->getRow(i)->getRowDbInfo().rowId;
+                    const QList<U2MaGap>& newGapModel = resultMA->getRow(i)->getGapModel();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 
@@ -259,7 +259,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
                     alObj->updateGapModel(stateInfo, rowsGapModel);
                     SAFE_POINT_OP(stateInfo, res);
 
-                    if (rowsOrder != inputMsa.getRowsIds()) {
+                    if (rowsOrder != inputMsa->getRowsIds()) {
                         alObj->updateRowsOrder(stateInfo, rowsOrder);
                         SAFE_POINT_OP(stateInfo, res);
                     }
@@ -359,7 +359,7 @@ QList<Task*> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTa
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->copyGapModel(tCoffeeSupportTask->resultMA.getMsaRows());
+        mAObject->copyGapModel(tCoffeeSupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

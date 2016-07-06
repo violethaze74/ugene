@@ -80,7 +80,7 @@ void MsaColorSchemeClustalX::updateCache() const {
     // compute colors for whole ali
     // use 4 bits per color
     const MultipleSequenceAlignment &ma = maObj->getMAlignment();
-    int nSeq = ma.getNumRows();
+    int nSeq = ma->getNumRows();
     aliLen = maObj->getLength();
     cacheVersion = objVersion;
 
@@ -128,7 +128,7 @@ void MsaColorSchemeClustalX::updateCache() const {
         int content85 = int(nonGapChars * 85.0 / 100);
 
         for (int seq = 0; seq < nSeq; seq++) {
-            char c = ma.charAt(seq, pos);
+            char c = ma->charAt(seq, pos);
             int colorIdx = ClustalColor_NO_COLOR;
             switch(c) {
             case 'W': //(W,L,V,I,M,F): {50%, P}{60%, WLVIMAFCYHP} -> BLUE

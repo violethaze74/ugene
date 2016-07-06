@@ -22,8 +22,8 @@
 #ifndef _U2_EXPORT_ALIGNMENT_VIEW_ITEMS_H_
 #define _U2_EXPORT_ALIGNMENT_VIEW_ITEMS_H_
 
-#include <U2Core/global.h>
 #include <U2Core/U2Region.h>
+
 #include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
@@ -33,7 +33,6 @@ class AnnotatedDNAView;
 class AnnotationSelection;
 class Annotation;
 class LRegionsSelection;
-class MultipleSequenceAlignment;
 class MSAEditor;
 
 class ExportAlignmentViewItemsController : public GObjectViewWindowContext {

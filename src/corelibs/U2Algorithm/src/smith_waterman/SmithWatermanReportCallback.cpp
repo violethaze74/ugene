@@ -208,14 +208,14 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         QByteArray curResultPtrnSubseq = ptrnSequenceData.mid(pairAlignSeqs.ptrnSubseq.startPos, pairAlignSeqs.ptrnSubseq.length);
         alignSequences(curResultRefSubseq, curResultPtrnSubseq, pairAlignSeqs.pairAlignment);
 
-        MultipleSequenceAlignment msa(newFileName, alphabet);
+        MultipleSequenceAlignment msa(new MultipleSequenceAlignmentData(newFileName, alphabet));
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.refSubseq;
-        msa.addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq);
+        msa->addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq);
         CHECK_OP(stateInfo, tr("Failed to add a reference subsequence row."));
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.ptrnSubseq;
-        msa.addRow(tagsRegistry->parseStringWithTags(ptrnSubseqTemplate, expansionInfo), curResultPtrnSubseq);
+        msa->addRow(tagsRegistry->parseStringWithTags(ptrnSubseqTemplate, expansionInfo), curResultPtrnSubseq);
         CHECK_OP(stateInfo, tr("Failed to add a pattern subsequence row."));
 
         MultipleSequenceAlignmentObject *docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
@@ -298,9 +298,9 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length detected!", QString::null);
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
-    MultipleSequenceAlignment msa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
-    msa.addRow(refSequence->visualName, refSequenceData);
-    msa.addRow(ptrnSequence->visualName, ptrnSequenceData);
+    MultipleSequenceAlignment msa(new MultipleSequenceAlignmentData(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet));
+    msa->addRow(refSequence->visualName, refSequenceData);
+    msa->addRow(ptrnSequence->visualName, ptrnSequenceData);
 
     MultipleSequenceAlignmentObject *docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), msa, stateInfo);
     CHECK_OP(stateInfo, tr("Failed to create an alignment."));

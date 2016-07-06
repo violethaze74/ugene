@@ -23,13 +23,13 @@
 #define _U2_ALPHABET_UTILS_H_
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/Timer.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Core/Timer.h>
 #include <U2Core/U2Alphabet.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
-class MultipleSequenceAlignment;
 
 class DNAAlphabetComparator {
 public:

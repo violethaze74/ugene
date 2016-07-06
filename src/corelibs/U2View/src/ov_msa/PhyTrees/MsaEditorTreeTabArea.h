@@ -27,10 +27,8 @@
 
 #include "../MsaUpdatedWidgetInterface.h"
 
-namespace U2
-{
+namespace U2{
 
-class MultipleSequenceAlignmentRow;
 class MSADistanceMatrix;
 class MSAEditor;
 

@@ -60,7 +60,7 @@ P7_HMM * UHMM3Build::build( const MultipleSequenceAlignment & malignment, const 
     
     ti.progress = 0;
     try {
-        int alType = UHMM3Utilities::convertAlphabetType( malignment.getAlphabet() );
+        int alType = UHMM3Utilities::convertAlphabetType( malignment->getAlphabet() );
         if( UHMM3Utilities::BAD_ALPHABET == alType ) {
             errStr = tr( "UGENE cannot determine alphabet of alignment" ).toLatin1();
             throwUHMMER3Exception( errStr.data() );

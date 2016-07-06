@@ -71,20 +71,20 @@ void TranslateMsa2AminoTask::run() {
     SAFE_POINT_EXT(NULL != translation, setError(tr("Invalid translation object")),);
 
     QList<DNASequence> lst = MSAUtils::ma2seq(maObj->getMAlignment(), true);
-    resultMA = MultipleSequenceAlignment(maObj->getMAlignment().getName(),translation->getDstAlphabet()) ;
+    resultMA = MultipleSequenceAlignment(new MultipleSequenceAlignmentData(maObj->getMAlignment()->getName(),translation->getDstAlphabet()));
 
     foreach (const DNASequence& dna, lst) {
         int buflen = dna.length() / 3;
         QByteArray buf(buflen,'\0');
         translation->translate(dna.seq.constData(), dna.length(), buf.data(), buflen);
         buf.replace("*","X");
-        resultMA.addRow(dna.getName(), buf);
+        resultMA->addRow(dna.getName(), buf);
     }
 }
 
 
 Task::ReportResult TranslateMsa2AminoTask::report() {
-    if (!resultMA.isEmpty()) {
+    if (!resultMA->isEmpty()) {
         maObj->setMAlignment(resultMA);
     }
 
@@ -108,7 +108,7 @@ AlignInAminoFormTask::~AlignInAminoFormTask() {
 void AlignInAminoFormTask::prepare() {
     SAFE_POINT_EXT(NULL != maObj, setError(tr("Invalid MSA object detected")),);
     CHECK_EXT(maObj->getAlphabet()->isNucleic(), setError(tr("AlignInAminoFormTask: Input alphabet is not nucleic!")), );
-    CHECK_EXT(!maObj->getMAlignment().isEmpty(), setError(tr("AlignInAminoFormTask: Input alignment is empty!")), );
+    CHECK_EXT(!maObj->getMAlignment()->isEmpty(), setError(tr("AlignInAminoFormTask: Input alignment is empty!")), );
 
     MultipleSequenceAlignment msa = maObj->getMAlignment();
     const U2DbiRef& dbiRef = maObj->getEntityRef().dbiRef;
@@ -148,12 +148,12 @@ void AlignInAminoFormTask::run() {
     SAFE_POINT_EXT(NULL != clonedObj, setError(tr("NULL clonedObj in AlignInAminoFormTask::prepare!")),);
 
     const MultipleSequenceAlignment &newMA = clonedObj->getMAlignment();
-    const QList<MultipleSequenceAlignmentRow>& rows = newMA.getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> rows = newMA->getMsaRows();
 
     //Create gap map from amino-acid alignment
     foreach (const MultipleSequenceAlignmentRow& row, rows) {
         const int rowIdx = MSAUtils::getRowIndexByName(maObj->getMAlignment(), row->getName());
-        const MultipleSequenceAlignmentRow curRow = maObj->getMAlignment().getRow(row->getName());
+        const MultipleAlignmentRow curRow = maObj->getMAlignment()->getRow(row->getName());
         SAFE_POINT_EXT(rowIdx >= 0, setError(tr("Can not find row %1 in original alignment.").arg(row->getName())),);
 
         QList<U2MaGap> gapsList;

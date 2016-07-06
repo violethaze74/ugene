@@ -24,6 +24,7 @@
 
 #include <QWidget>
 
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
 #include "MSAEditorConsensusCache.h"
@@ -34,14 +35,13 @@ class QPainter;
 
 namespace U2 {
 
-class MSAEditor;
-class MSAEditorUI;
 class GObjectView;
-class MultipleSequenceAlignment;
-class MsaModificationInfo;
-class MSAEditorSelection;
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
+class MSAEditor;
+class MSAEditorSelection;
+class MSAEditorUI;
+class MsaModificationInfo;
 
 enum MSAEditorConsElement {
     MSAEditorConsElement_HISTOGRAM,

@@ -22,26 +22,19 @@
 #ifndef _U2_MSA_EDITOR_STATUS_BAR_H_
 #define _U2_MSA_EDITOR_STATUS_BAR_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-#include <QtCore/QEvent>
+#include <QEvent>
+#include <QLabel>
+#include <QLineEdit>
+#include <QObject>
+#include <QPushButton>
+#include <QVector>
+#include <QWidget>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QLineEdit>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
-#endif
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
 class MultipleSequenceAlignmentObject;
-class MultipleSequenceAlignment;
 class MsaModificationInfo;
 class MSAEditorSequenceArea;
 class MSAEditorSelection;

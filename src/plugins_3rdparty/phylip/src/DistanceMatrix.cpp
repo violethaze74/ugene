@@ -37,11 +37,11 @@ void DistanceMatrix::calculateOutOfAlignment( const MultipleSequenceAlignment& m
     try {
         malignment = &ma;
         int index = 0;
-        int size = ma.getNumRows();
+        int size = ma->getNumRows();
         this->size = size;
         printdata = false;
 
-        foreach(const MultipleSequenceAlignmentRow& r, ma.getRows()) {
+        foreach(const MultipleAlignmentRow& r, ma->getRows()) {
             const QString& str = r->getName();
             index_map.insert(str, index);
             index++;
@@ -61,11 +61,11 @@ void DistanceMatrix::calculateOutOfAlignment( const MultipleSequenceAlignment& m
 
             rawMatrix.append(row);
         }
-        spp = ma.getNumRows();
-        sites = ma.getLength();
+        spp = ma->getNumRows();
+        sites = ma->getLength();
         chars = sites;
         nonodes = 2*sites - 1;
-        DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
+        DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
 
         ibmpc = IBMCRT;
         ansi = ANSICRT;
@@ -86,8 +86,7 @@ void DistanceMatrix::calculateOutOfAlignment( const MultipleSequenceAlignment& m
 
             for (int k=0; k<spp; k++){
                 for(int j=0; j<sites; j++) {
-                    const MultipleSequenceAlignmentRow& rowK = ma.getMsaRow(k);
-                    y[k][j] = rowK->charAt(j);
+                    y[k][j] = ma->getMsaRow(k)->charAt(j);
                 }
             }
             makeweights();
@@ -132,8 +131,7 @@ void DistanceMatrix::calculateOutOfAlignment( const MultipleSequenceAlignment& m
 
             for (int k=0; k<spp; k++){
                 for(int j=0; j<sites; j++){
-                    const MultipleSequenceAlignmentRow& rowK = ma.getMsaRow(k);
-                    charstate = rowK->charAt(j);
+                    charstate = ma->getMsaRow(k)->charAt(j);
                     switch (charstate) {
                         case 'A':
                             aa = ala;
@@ -256,7 +254,7 @@ void DistanceMatrix::calculateOutOfAlignment( const MultipleSequenceAlignment& m
             }
         }
     } catch(const std::bad_alloc &) {
-        errorMessage = QString("Not enough memory to calculate distance matrix for alignment \"%1\"").arg(ma.getName());
+        errorMessage = QString("Not enough memory to calculate distance matrix for alignment \"%1\"").arg(ma->getName());
         if(NULL != gnode) {
             for (int i = 0; i < spp; i++) {
                 free(gnode[i]);

@@ -55,20 +55,20 @@ MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHamming::createAlgorithm(const 
 // Algorithm
 
 void MSADistanceAlgorithmHamming::run() {
-    int nSeq = ma.getNumRows();
+    int nSeq = ma->getNumRows();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             int sim = 0;
-            for (int k = 0; k < ma.getLength(); k++) {
+            for (int k = 0; k < ma->getLength(); k++) {
                 if (isCanceled()) {
                     return;
                 }
-                bool dissimilar = (ma.charAt(i, k) != ma.charAt(j, k));
+                bool dissimilar = (ma->charAt(i, k) != ma->charAt(j, k));
 
                 if(!excludeGaps){
                     if (dissimilar) sim++;
                 }else{
-                    if (dissimilar && (ma.charAt(i, k)!=MAlignment_GapChar && ma.charAt(j, k)!=MAlignment_GapChar)) sim++;
+                    if (dissimilar && (ma->charAt(i, k)!=MAlignment_GapChar && ma->charAt(j, k)!=MAlignment_GapChar)) sim++;
                 }
             }
             lock.lock();

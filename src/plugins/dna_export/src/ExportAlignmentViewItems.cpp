@@ -102,7 +102,7 @@ void MSAExportContext::buildMenu(QMenu* m) {
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
     const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMAlignment();
-    assert(ma.getAlphabet()->isNucleic());
+    assert(ma->getAlphabet()->isNucleic());
 
     GUrl msaUrl = editor->getMSAObject()->getDocument()->getURL();
     QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMSAObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
@@ -120,7 +120,7 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
     int offset = d->exportWholeAlignment ? 0 : editor->getCurrentSelection().top();
-    int len = d->exportWholeAlignment ? ma.getNumRows() : editor->getCurrentSelection().height();
+    int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getCurrentSelection().height();
 
     Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma, offset, len, d->file, trans, d->formatId), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);

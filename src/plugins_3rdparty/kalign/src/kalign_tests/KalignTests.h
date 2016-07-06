@@ -22,20 +22,20 @@
 #ifndef _U2_KALIGN_TESTS_H_
 #define _U2_KALIGN_TESTS_H_
 
-#include "KalignTask.h"
+#include <QDomElement>
+#include <QFileInfo>
 
-#include <U2Test/XMLTestUtils.h>
 #include <U2Core/GObject.h>
 
-#include <QtXml/QDomElement>
-#include <QtCore/QFileInfo>
+#include <U2Test/XMLTestUtils.h>
+
+#include "KalignTask.h"
 
 namespace U2 {
 
 class KalignGObjectTask;
-class MultipleSequenceAlignmentObject;
 class LoadDocumentTask;
-class MultipleSequenceAlignment;
+class MultipleSequenceAlignmentObject;
 
 class  Kalign_Load_Align_Compare_Task : public Task {
 	Q_OBJECT

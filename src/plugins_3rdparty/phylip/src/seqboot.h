@@ -10,9 +10,8 @@
 #include "seq.h"
 
 #include <QVector>
-namespace U2 {
-    class MultipleSequenceAlignment;
-}
+
+#include <U2Core/MultipleSequenceAlignment.h>
 
 typedef enum {
   seqs, morphology, restsites, genefreqs
@@ -120,7 +119,7 @@ void   writeweights(void);
 void   writecategories(void);
 void   writeauxdata(steptr, FILE*);
 void   writefactors(void);
-void bootwrite(QVector<U2::MultipleSequenceAlignment*>& mavect, const U2::MultipleSequenceAlignment& ma);
+void bootwrite(QVector<U2::MultipleSequenceAlignment>& mavect, const U2::MultipleSequenceAlignment& ma);
 //void   seqboot_inputaux(steptr, FILE*);
 void   freenewer(void);
 /* function prototypes */

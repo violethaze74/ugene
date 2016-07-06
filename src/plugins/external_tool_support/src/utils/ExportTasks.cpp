@@ -60,7 +60,7 @@ SaveAlignmentTask::SaveAlignmentTask(const MultipleSequenceAlignment& _ma, const
     setTaskName(tr("Export alignment to '%1'").arg(QFileInfo(fileName).fileName()));
     setVerboseLogMode(true);
 
-    if (ma.isEmpty()) {
+    if (ma->isEmpty()) {
         setError(tr("An alignment is empty"));
     }
 }

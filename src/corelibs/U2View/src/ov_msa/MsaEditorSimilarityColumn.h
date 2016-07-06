@@ -26,17 +26,15 @@
 #include <QPushButton>
 
 #include <U2Core/BackgroundTaskRunner.h>
-#include <U2Core/Task.h>
 #include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Task.h>
+
 #include "MSAEditorNameList.h"
 #include "MsaUpdatedWidgetInterface.h"
 
-
-namespace U2
-{
+namespace U2 {
 
 class CreateDistanceMatrixTask;
-class MultipleSequenceAlignmentRow;
 class MSADistanceMatrix;
 class MSAWidget;
 class Task;

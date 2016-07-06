@@ -174,7 +174,7 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
             int refPos = -1;;
             qint64 refId = editor->getReferenceRowId();
             if (refId != MultipleAlignmentRowData::INVALID_ROW_ID) {
-                refPos = mAlignment.getRowIndexByRowId(refId, os);
+                refPos = mAlignment->getRowIndexByRowId(refId, os);
                 SAFE_POINT_OP(os, );
             }
             drawColor = MSAHighlightingOverviewCalculationTask::isCellHighlighted(

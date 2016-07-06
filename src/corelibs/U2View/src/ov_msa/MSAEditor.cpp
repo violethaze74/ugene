@@ -358,7 +358,7 @@ int MSAEditor::getFirstVisibleBase() const {
     return ui->seqArea->getFirstVisibleBase();
 }
 
-const MultipleSequenceAlignmentRow& MSAEditor::getRowByLineNumber(int lineNumber) const {
+const MultipleSequenceAlignmentRow MSAEditor::getRowByLineNumber(int lineNumber) const {
     if (ui->isCollapsibleMode()) {
         lineNumber = ui->getCollapseModel()->mapToRow(lineNumber);
     }
@@ -863,8 +863,8 @@ void MSAEditor::updateReference(){
 QString MSAEditor::getReferenceRowName() const {
     const MultipleSequenceAlignment &alignment = getMSAObject()->getMAlignment();
     U2OpStatusImpl os;
-    const int refSeq = alignment.getRowIndexByRowId(getReferenceRowId(), os);
-    return (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) ? alignment.getRowNames().at(refSeq)
+    const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
+    return (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq)
         : QString();
 }
 

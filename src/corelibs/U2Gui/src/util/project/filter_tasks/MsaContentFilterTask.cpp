@@ -70,9 +70,9 @@ bool MsaContentFilterTask::msaContainsPattern(MultipleSequenceAlignmentObject *m
     const MultipleSequenceAlignment &ma = msaObject->getMAlignment();
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
-    for (int i = 0, n = ma.getNumRows(); i < n; ++i) {
-        const MultipleSequenceAlignmentRow &row = ma.getRow(i);
-        for (int j = 0; j < (ma.getLength() - searchStr.length() + 1); ++j) {
+    for (int i = 0, n = ma->getNumRows(); i < n; ++i) {
+        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
+        for (int j = 0; j < (ma->getLength() - searchStr.length() + 1); ++j) {
             const char c = row->charAt(j);
             int altenateLength = 0;
             if (MAlignment_GapChar != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {

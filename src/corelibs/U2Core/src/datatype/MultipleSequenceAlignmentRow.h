@@ -30,21 +30,11 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignment;
+class MultipleSequenceAlignmentData;
 class MultipleSequenceAlignmentRowData;
 
-class MultipleSequenceAlignmentRow : public QSharedDataPointer<MultipleSequenceAlignmentRowData> {
-public:
-    MultipleSequenceAlignmentRow();
-    MultipleSequenceAlignmentRow(const MultipleAlignmentRow &maRow);
-    MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &msaRow);
-    MultipleSequenceAlignmentRow(MultipleSequenceAlignmentRowData *msaRowData);
-
-    operator MultipleAlignmentRow() const;
-
-private:
-    void init();
-};
+typedef  QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
+typedef  QSharedPointer<MultipleSequenceAlignmentRowData> MultipleSequenceAlignmentRow;
 
 /**
  * A row in a multiple alignment structure.
@@ -54,16 +44,16 @@ private:
  * it exactly equals to the row (offset always equals to zero).
  */
 class U2CORE_EXPORT MultipleSequenceAlignmentRowData : public MultipleAlignmentRowData {
-    friend class MultipleSequenceAlignment;
-    friend class MultipleSequenceAlignmentRow;
+    friend class MultipleSequenceAlignmentData;
 
     /** Do NOT create a row without an alignment! */
-    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignment *msa = NULL);
+    MultipleSequenceAlignmentRowData();
+    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentData *msa);
 
     /** Creates a row in memory. */
-    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, const MultipleSequenceAlignment *msa);
-    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const QString &rowName, const QByteArray &rawData, const MultipleSequenceAlignment *msa);
-    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignment *msa);
+    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, const MultipleSequenceAlignmentData *msa);
+    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const QString &rowName, const QByteArray &rawData, const MultipleSequenceAlignmentData *msa);
+    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignmentData *msa);
 
 public:
     /** Name of the row (equals to the sequence name), can be empty */
@@ -122,12 +112,13 @@ public:
     MultipleSequenceAlignmentRow mid(int pos, int count, U2OpStatus &os) const;
 
     MultipleAlignmentRowData * clone() const;
+    MultipleSequenceAlignmentRowData * explicitClone() const;
 
 private:
     int getDataLength() const;
     void appendDataCore(const MultipleAlignmentRow &anotherRow);
     void removeDataCore(int startPosInData, int endPosInData, U2OpStatus &os);
-    bool isDataEqual(const MultipleAlignmentRow &row) const;
+    bool isDataEqual(const MultipleAlignmentRowData &rowData) const;
 
     /**
      * Joins sequence chars and gaps into one byte array.

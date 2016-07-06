@@ -55,20 +55,20 @@ MSADistanceAlgorithm* MSADistanceAlgorithmFactorySimilarity::createAlgorithm(con
 // Algorithm
 
 void MSADistanceAlgorithmSimilarity::run() {
-    int nSeq = ma.getNumRows();
+    int nSeq = ma->getNumRows();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             int sim = 0;
-            for (int k = 0; k < ma.getLength(); k++) {
+            for (int k = 0; k < ma->getLength(); k++) {
                 if (isCanceled()) {
                     return;
                 }
-                bool similar = (ma.charAt(i, k) == ma.charAt(j, k));
+                bool similar = (ma->charAt(i, k) == ma->charAt(j, k));
 
                 if(!excludeGaps){
                     if (similar) sim++;
                 }else{
-                    if (similar && ma.charAt(i, k)!=MAlignment_GapChar) sim++;
+                    if (similar && ma->charAt(i, k)!=MAlignment_GapChar) sim++;
                 }
 
             }

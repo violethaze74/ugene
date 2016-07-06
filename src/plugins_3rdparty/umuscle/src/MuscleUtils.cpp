@@ -100,12 +100,12 @@ void setupAlphaAndScore(const DNAAlphabet* al, TaskStateInfo& ti) {
 
 void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, bool fixAlpha) {    
     MuscleContext *ctx = getMuscleContext();
-    ctx->fillUidsVectors(ma.getNumRows());
-    for (int i=0, n = ma.getNumRows(); i<n; i++) {
-        const MultipleSequenceAlignmentRow& row = ma.getMsaRow(i);
+    ctx->fillUidsVectors(ma->getNumRows());
+    for (int i=0, n = ma->getNumRows(); i<n; i++) {
+        const MultipleSequenceAlignmentRow& row = ma->getMsaRow(i);
         
         int coreLen = row->getCoreLength();
-        int maLen = ma.getLength();
+        int maLen = ma->getLength();
         char* seq  = new char[maLen + 1];
         memcpy(seq, row->getCore().constData(), coreLen);
         memset(seq + coreLen, '-', maLen - coreLen + 1);
@@ -127,11 +127,11 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
     sv.Clear();
 
     MuscleContext *ctx = getMuscleContext();
-    ctx->fillUidsVectors(ma.getNumRows());
+    ctx->fillUidsVectors(ma->getNumRows());
 
     unsigned i=0;
     unsigned seq_count = 0;
-    foreach(const MultipleSequenceAlignmentRow& row, ma.getMsaRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         Seq *ptrSeq = new Seq();
         QByteArray name =  row->getName().toLocal8Bit();
         ptrSeq->FromString(row->getCore().constData(), name.constData());
@@ -151,9 +151,9 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
 }
 
 void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlignment& res) {
-    assert(res.isEmpty());
+    assert(res->isEmpty());
     MuscleContext *ctx = getMuscleContext();
-    res.setAlphabet(al);
+    res->setAlphabet(al);
     ctx->output_uIds.clear();
 
     for(int i=0, n = msa.GetSeqCount(); i < n; i++) {
@@ -165,7 +165,7 @@ void convertMSA2MAlignment(MSA& msa, const DNAAlphabet* al, MultipleSequenceAlig
             seq.append(c);
         }
         ctx->output_uIds.append(ctx->tmp_uIds[msa.GetSeqId(i)]);
-        res.addRow(name, seq);
+        res->addRow(name, seq);
     }
 }
 

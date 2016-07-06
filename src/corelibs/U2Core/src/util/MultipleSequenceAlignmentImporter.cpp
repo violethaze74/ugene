@@ -42,7 +42,7 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
 MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlignment(const U2DbiRef &dbiRef, const QString &folder, MultipleSequenceAlignment &al,
     U2OpStatus &os, const QList<U2Sequence> &alignedSeqs)
 {
-    if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al.getNumRows()) {
+    if (!alignedSeqs.isEmpty() && alignedSeqs.size() != al->getNumRows()) {
         os.setError(QObject::tr("Unexpected number of sequences in a multiple alignment"));
         return NULL;
     }
@@ -68,7 +68,7 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
 
     if (alignedSeqs.isEmpty()) {
         sequences = importSequences(con, folder, al, os);
-        gapModel = al.getGapModel();
+        gapModel = al->getGapModel();
         CHECK_OP(os, NULL);
     } else {
         setChildRankForSequences(con, alignedSeqs, os);
@@ -81,13 +81,13 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
 
     QList<U2MaRow> rows = importRows(con, al, msa, sequences, gapModel, os);
     CHECK_OP(os, NULL);
-    SAFE_POINT_EXT(rows.size() == al.getNumRows(), os.setError(QObject::tr("Unexpected error on MSA rows import")), NULL);
+    SAFE_POINT_EXT(rows.size() == al->getNumRows(), os.setError(QObject::tr("Unexpected error on MSA rows import")), NULL);
 
-    for (int i = 0, n = al.getNumRows(); i < n; ++i) {
-        al.getRow(i)->setRowDbInfo(rows.at(i));
+    for (int i = 0, n = al->getNumRows(); i < n; ++i) {
+        al->getRow(i)->setRowDbInfo(rows.at(i));
     }
 
-    return new MultipleSequenceAlignmentObject(al.getName(), U2EntityRef(dbiRef, msa.id), QVariantMap(), al);
+    return new MultipleSequenceAlignmentObject(al->getName(), U2EntityRef(dbiRef, msa.id), QVariantMap(), al);
 }
 
 void MultipleSequenceAlignmentImporter::setChildRankForSequences(const DbiConnection &con, const QList<U2Sequence> &sequences, U2OpStatus &os) {
@@ -103,12 +103,12 @@ void MultipleSequenceAlignmentImporter::setChildRankForSequences(const DbiConnec
 
 U2Ma MultipleSequenceAlignmentImporter::importMsaObject(const DbiConnection& con, const QString& folder, const MultipleSequenceAlignment& al, U2OpStatus& os) {
     U2Ma msa;
-    const DNAAlphabet* alphabet = al.getAlphabet();
+    const DNAAlphabet* alphabet = al->getAlphabet();
     SAFE_POINT(NULL != alphabet, "The alignment alphabet is NULL during importing!", U2Ma());
 
     msa.alphabet.id = alphabet->getId();
-    msa.length = al.getLength();
-    msa.visualName = al.getName();
+    msa.length = al->getLength();
+    msa.visualName = al->getName();
     if (msa.visualName.isEmpty()) {
         QDate date = QDate::currentDate();
         QString generatedName = "MSA" + date.toString();
@@ -126,7 +126,7 @@ U2Ma MultipleSequenceAlignmentImporter::importMsaObject(const DbiConnection& con
 }
 
 void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection& con, const U2DataId& msaId, const MultipleSequenceAlignment& al, U2OpStatus& os) {
-    QVariantMap alInfo = al.getInfo();
+    QVariantMap alInfo = al->getInfo();
 
     U2AttributeDbi* attrDbi = con.dbi->getAttributeDbi();
     SAFE_POINT(NULL != attrDbi, "NULL Attribute Dbi during importing an alignment!",);
@@ -147,9 +147,8 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
     SAFE_POINT(NULL != seqDbi, "NULL Sequence Dbi during importing an alignment!", QList<U2Sequence>());
 
     QList<U2Sequence> sequences;
-    for (int i = 0; i < al.getNumRows(); ++i) {
-        MultipleSequenceAlignmentRow row = al.getRow(i);
-        DNASequence dnaSeq = row->getSequence();
+    for (int i = 0; i < al->getNumRows(); ++i) {
+        DNASequence dnaSeq = al->getMsaRow(i)->getSequence();
 
         U2Sequence sequence = U2Sequence();
         sequence.visualName = dnaSeq.getName();
@@ -209,10 +208,10 @@ QList<U2MaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnection
     QList<U2MaRow> rows;
     SAFE_POINT_EXT(sequences.size() == msaGapModel.size(), os.setError("Gap model doesn't fit sequences count"), rows);
 
-    for (int i = 0; i < al.getNumRows(); ++i) {
+    for (int i = 0; i < al->getNumRows(); ++i) {
         U2Sequence seq = sequences[i];
         if (seq.length > 0) {
-            MultipleSequenceAlignmentRow &alignmentRow = al.getMsaRow(i);
+            MultipleSequenceAlignmentRow &alignmentRow = al->getMsaRow(i);
             const U2MaRowGapModel gapModel = msaGapModel[i];
             if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
                 // remove trailing gap if it exists
@@ -230,7 +229,7 @@ QList<U2MaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnection
 
             rows.append(row);
         } else {
-            al.removeRow(i, os);
+            al->removeRow(i, os);
             --i;
         }
     }

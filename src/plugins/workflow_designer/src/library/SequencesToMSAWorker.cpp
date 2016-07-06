@@ -75,12 +75,12 @@ Task* SequencesToMSAWorker::tick() {
 void MSAFromSequencesTask::run() {
     CHECK(sequences_.size() > 0, );
     DNASequence seq = sequences_.first();
-    ma.setAlphabet(seq.alphabet);
-    ma.addRow(seq.getName(), seq.seq);
+    ma->setAlphabet(seq.alphabet);
+    ma->addRow(seq.getName(), seq.seq);
 
     for (int i=1; i<sequences_.size(); i++) {
         DNASequence sqnc = sequences_.at(i);
-        ma.addRow(sqnc.getName(), sqnc.seq);
+        ma->addRow(sqnc.getName(), sqnc.seq);
     }
 }
 
@@ -88,9 +88,9 @@ void SequencesToMSAWorker::sl_onTaskFinished(Task* t) {
     MSAFromSequencesTask* maTask = qobject_cast<MSAFromSequencesTask*>(t);
     MultipleSequenceAlignment ma = maTask->getResult();
 
-    if (!ma.isEmpty()) {
-        if (ma.getName().isEmpty()) {
-            ma.setName("Multiple alignment");
+    if (!ma->isEmpty()) {
+        if (ma->getName().isEmpty()) {
+            ma->setName("Multiple alignment");
         }
 
         SAFE_POINT(NULL != outPort, "NULL outPort!",);

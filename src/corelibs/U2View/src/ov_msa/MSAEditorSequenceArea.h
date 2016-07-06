@@ -22,46 +22,37 @@
 #ifndef _U2_MSA_EDITOR_SEQUENCE_AREA_H_
 #define _U2_MSA_EDITOR_SEQUENCE_AREA_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QMenu>
-#include <QtGui/QToolBar>
-#include <QtGui/QRubberBand>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QToolBar>
-#include <QtWidgets/QRubberBand>
-#endif
+#include <QMenu>
+#include <QRubberBand>
 #include <QTimer>
+#include <QToolBar>
+#include <QWidget>
 
-#include <U2Core/global.h>
-#include <U2Core/U2Region.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
+#include <U2Core/U2Region.h>
+
 #include <U2Gui/GScrollBar.h>
 
-
 #include "DeleteGapsDialog.h"
+#include "ExportHighlightedDialogController.h"
 #include "MSACollapsibleModel.h"
 #include "MsaEditorUserModStepController.h"
 #include "SaveSelectedSequenceFromMSADialogController.h"
-#include "ExportHighlightedDialogController.h"
 
 namespace U2 {
 
-class MSAEditor;
-class MSAEditorUI;
 class GObjectView;
 class MsaColorScheme;
+class MsaColorSchemeFactory;
+class MsaColorSchemeRegistry;
+class MSAEditor;
+class MSAEditorUI;
 class MsaHighlightingScheme;
-class MultipleSequenceAlignment;
+class MsaHighlightingSchemeFactory;
+class MsaHighlightingSchemeRegistry;
 class MsaModificationInfo;
 class MultipleSequenceAlignmentObject;
-class MsaColorSchemeFactory;
-class MsaHighlightingSchemeFactory;
-class MsaColorSchemeRegistry;
-class MsaHighlightingSchemeRegistry;
 class Settings;
 
 class ModificationType {

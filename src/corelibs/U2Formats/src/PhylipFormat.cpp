@@ -74,7 +74,7 @@ MultipleSequenceAlignmentObject* PhylipFormat::load(IOAdapter *io, const U2DbiRe
     CHECK_OP(os, NULL);
 
     U2AlphabetUtils::assignAlphabet(al);
-    CHECK_EXT(al.getAlphabet()!=NULL, os.setError( PhylipFormat::tr("Alphabet is unknown")), NULL);
+    CHECK_EXT(al->getAlphabet()!=NULL, os.setError( PhylipFormat::tr("Alphabet is unknown")), NULL);
 
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
@@ -132,15 +132,15 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     const MultipleSequenceAlignment& ma = obj->getMAlignment();
 
     //write header
-    int numberOfSpecies = ma.getNumRows();
-    int numberOfCharacters = ma.getLength();
+    int numberOfSpecies = ma->getNumRows();
+    int numberOfCharacters = ma->getLength();
     QByteArray header( (QString::number(numberOfSpecies) + " " + QString::number(numberOfCharacters)).toLatin1() + "\n");
     int len = io->writeBlock(header);
     CHECK_EXT(len == header.length(), os.setError(L10N::errorTitle()), );
 
     //write sequences
     for (int i = 0; i < numberOfSpecies; i++) {
-        QByteArray line = ma.getRow(i)->getName().toLatin1();
+        QByteArray line = ma->getRow(i)->getName().toLatin1();
         if (line.length() < MAX_NAME_LEN) {
             int difference = MAX_NAME_LEN - line.length();
             for (int j = 0; j < difference; j++) {
@@ -151,7 +151,7 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
             line = line.left(MAX_NAME_LEN);
         }
         io->writeBlock(line);
-        QByteArray sequence = ma.getMsaRow(i)->toByteArray(numberOfCharacters, os);
+        QByteArray sequence = ma->getMsaRow(i)->toByteArray(numberOfCharacters, os);
         int blockCounter = 0;
         while ((blockCounter*SEQ_BLOCK_SIZE) <= numberOfCharacters) {
             line.clear();
@@ -193,7 +193,7 @@ MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatu
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     char* buff = readBuffer.data();
     QString objName = io->getURL().baseFileName();
-    MultipleSequenceAlignment al(objName);
+    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(objName));
     bool resOk = false;
 
     // Header: "<number of species> <number of characters>"
@@ -223,11 +223,11 @@ MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatu
             removeSpaces(line);
             value.append(line);
         }
-        al.addRow(name, value);
+        al->addRow(name, value);
 
         os.setProgress(io->getProgress());
     }
-    CHECK_EXT(al.getLength() == numberOfCharacters, os.setError( PhylipSequentialFormat::tr("Number of characters does not correspond to the stated number") ),
+    CHECK_EXT(al->getLength() == numberOfCharacters, os.setError( PhylipSequentialFormat::tr("Number of characters does not correspond to the stated number") ),
                MultipleSequenceAlignment());
     return al;
 }
@@ -251,8 +251,8 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     const MultipleSequenceAlignment& ma = obj->getMAlignment();
 
     //write header
-    int numberOfSpecies = ma.getNumRows();
-    int numberOfCharacters = ma.getLength();
+    int numberOfSpecies = ma->getNumRows();
+    int numberOfCharacters = ma->getLength();
     QByteArray header( (QString::number(numberOfSpecies) + " " + QString::number(numberOfCharacters)).toLatin1() + "\n");
     int len = io->writeBlock(header);
 
@@ -260,7 +260,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
 
     //write first block with names
     for (int i = 0; i < numberOfSpecies; i++) {
-        QByteArray line = ma.getRow(i)->getName().toLatin1();
+        QByteArray line = ma->getRow(i)->getName().toLatin1();
         if (line.length() < MAX_NAME_LEN) {
             int difference = MAX_NAME_LEN - line.length();
             for (int j = 0; j < difference; j++)
@@ -270,7 +270,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
             line = line.left(MAX_NAME_LEN);
         }
 
-        QByteArray sequence = ma.getMsaRow(i)->toByteArray(numberOfCharacters, os);
+        QByteArray sequence = ma->getMsaRow(i)->toByteArray(numberOfCharacters, os);
         line.append(sequence.left(INT_BLOCK_SIZE));
         line.append('\n');
 
@@ -283,7 +283,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     while (blockCounter*INT_BLOCK_SIZE <= numberOfCharacters) {
         io->writeBlock("\n", 1);
         for (int i = 0; i < numberOfSpecies; i++) {
-            QByteArray sequence = ma.getMsaRow(i)->toByteArray(numberOfCharacters, os);
+            QByteArray sequence = ma->getMsaRow(i)->toByteArray(numberOfCharacters, os);
             QByteArray line;
             line.append(spacer);
             line.append(sequence.mid(blockCounter*INT_BLOCK_SIZE, INT_BLOCK_SIZE));
@@ -328,7 +328,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     char* buff = readBuffer.data();
     QString objName = io->getURL().baseFileName();
-    MultipleSequenceAlignment al(objName);
+    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(objName));
 
     bool resOk = false;
 
@@ -361,11 +361,11 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
         } while (!resOk);
 
         removeSpaces(value);
-        al.addRow(name, value);
+        al->addRow(name, value);
 
         os.setProgress(io->getProgress());
     }
-    int currentLen = al.getLength();
+    int currentLen = al->getLength();
 
     // sequence blocks
     while (!os.isCoR() && len > 0 && !io->isEof()) {
@@ -385,7 +385,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
 
             removeSpaces(value);
 
-            al.appendChars(i, currentLen, value.constData(), value.size());
+            al->appendChars(i, currentLen, value.constData(), value.size());
             if (blockSize == -1) {
                 blockSize = value.size();
             } else if (blockSize != value.size()) {
@@ -396,7 +396,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
         os.setProgress(io->getProgress());
         currentLen += blockSize;
     }
-    CHECK_EXT(al.getLength() == numberOfCharacters, os.setError( PhylipInterleavedFormat::tr("Number of characters does not correspond to the stated number") ),
+    CHECK_EXT(al->getLength() == numberOfCharacters, os.setError( PhylipInterleavedFormat::tr("Number of characters does not correspond to the stated number") ),
               MultipleSequenceAlignment());
     return al;
 }

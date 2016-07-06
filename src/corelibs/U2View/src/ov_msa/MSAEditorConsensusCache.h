@@ -22,17 +22,18 @@
 #ifndef _U2_MSA_EDITOR_CONSENSUS_CACHE_H_
 #define _U2_MSA_EDITOR_CONSENSUS_CACHE_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-#include <QtCore/QBitArray>
+#include <QBitArray>
+#include <QObject>
+#include <QVector>
+
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
-class MultipleSequenceAlignment;
-class MsaModificationInfo;
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
+class MsaModificationInfo;
+class MultipleSequenceAlignmentObject;
 class U2OpStatus;
 
 class MSAEditorConsensusCache : public QObject {

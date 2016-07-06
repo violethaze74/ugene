@@ -35,8 +35,8 @@ typedef QVector<matrixrow> matrix;
 
 class SeqBoot{
 private:
-    const MultipleSequenceAlignment* malignment;
-    QVector<MultipleSequenceAlignment*> generatedSeq;
+    MultipleSequenceAlignment malignment;
+    QVector<MultipleSequenceAlignment> generatedSeq;
     int seqLen;
     int seqRowCount;
 

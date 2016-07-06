@@ -22,14 +22,13 @@
 #ifndef _U2_KALIGN_TASK_H_
 #define _U2_KALIGN_TASK_H_
 
+#include <U2Algorithm/MsaUtilTasks.h>
 
 #include <U2Core/Task.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TLSTask.h>
-#include <U2Algorithm/MsaUtilTasks.h>
 #include <U2Core/U2Mod.h>
-
 
 #define KALIGN_CONTEXT_ID "kalign"
 

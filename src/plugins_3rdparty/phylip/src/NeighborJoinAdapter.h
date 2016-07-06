@@ -26,18 +26,14 @@
 
 #include <U2Algorithm/PhyTreeGenerator.h>
 #include <U2Algorithm/PhyTreeGeneratorTask.h>
-//#include <U2Algorithm/SubstMatrixRegistry.h>
 
 #include <U2Core/AppResources.h>
-//#include <U2Core/PhyTree.h>
-
-//#include <U2View/CreatePhyTreeDialogController.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 { 
 
-class MultipleSequenceAlignment;
-class TaskStateInfo;
 class PhyTreeGeneratorTask;
+class TaskStateInfo;
 
 class NeighborJoinAdapter : public PhyTreeGenerator {
 public:

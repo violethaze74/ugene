@@ -120,7 +120,7 @@ void MSAEditorTreeManager::buildTreeWithDialog() {
     CHECK(!dlg.isNull(), );
     CHECK(rc == QDialog::Accepted, );
 
-    settings.rowsOrder = msaObject->getMAlignment().getRowNames();
+    settings.rowsOrder = msaObject->getMAlignment()->getRowNames();
     buildTree(settings);
 }
 
@@ -166,7 +166,7 @@ void MSAEditorTreeManager::sl_treeRebuildingFinished(Task* _treeBuildTask) {
 }
 
 bool MSAEditorTreeManager::canRefreshTree(MSAEditorTreeViewer* treeViewer) {
-    bool canRefresh = (treeViewer->getParentAlignmentName() == msaObject->getMAlignment().getName());
+    bool canRefresh = (treeViewer->getParentAlignmentName() == msaObject->getMAlignment()->getName());
     return canRefresh && !activeRefreshTasks.contains(treeViewer);
 }
 
@@ -290,7 +290,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t) {
 
             if(!addExistingTree) {
                 treeView->setCreatePhyTreeSettings(settings);
-                treeView->setParentAignmentName(msaObject->getMAlignment().getName());
+                treeView->setParentAignmentName(msaObject->getMAlignment()->getName());
             }
 
             treeView->setMSAEditor(editor);

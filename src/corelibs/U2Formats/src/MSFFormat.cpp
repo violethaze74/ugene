@@ -115,7 +115,7 @@ int MSFFormat::getCheckSum(const QByteArray& seq) {
 }
 
 void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& ti) {
-    MultipleSequenceAlignment al(io->getURL().baseFileName());
+    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(io->getURL().baseFileName()));
 
     //skip comments
     int checkSum = -1;
@@ -158,8 +158,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         }
 
         seqs.insert(name, check);
-        U2OpStatus2Log os;
-        al.addRow(name, QByteArray());
+        al->addRow(name, QByteArray());
         rowLens.append(0);
         if (sum < CHECK_SUM_MOD) {
             sum = (sum + check) % CHECK_SUM_MOD;
@@ -181,9 +180,9 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             continue;
         }
 
-        int i = 0, n = al.getNumRows();
+        int i = 0, n = al->getNumRows();
         for (; i < n; i++) {
-            const MultipleSequenceAlignmentRow& row = al.getRow(i);
+            const MultipleAlignmentRow& row = al->getRow(i);
             QByteArray t = row->getName().toLocal8Bit();
             if (line.startsWith(t) && line[t.length()] == ' ') {
                 break;
@@ -195,7 +194,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
         for (int q, p = line.indexOf(' ') + 1; p > 0; p = q + 1) {
             q = line.indexOf(' ', p);
             QByteArray subSeq = (q < 0) ? line.mid(p) : line.mid(p, q - p);
-            al.appendChars(i, rowLens[i], subSeq.constData(), subSeq.length());
+            al->appendChars(i, rowLens[i], subSeq.constData(), subSeq.length());
             rowLens[i] = rowLens[i] + subSeq.length();
         }
 
@@ -204,20 +203,20 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
     //checksum
     U2OpStatus2Log seqCheckOs;
-    for (int i=0; i<al.getNumRows(); i++) {
-        const MultipleSequenceAlignmentRow& row = al.getRow(i);
+    for (int i=0; i<al->getNumRows(); i++) {
+        const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
         int expectedCheckSum = seqs[row->getName()];
-        int sequenceCheckSum = getCheckSum(row->toByteArray(al.getLength(), seqCheckOs));
+        int sequenceCheckSum = getCheckSum(row->toByteArray(al->getLength(), seqCheckOs));
         if ( expectedCheckSum < CHECK_SUM_MOD &&  sequenceCheckSum != expectedCheckSum) {
             ti.setError(MSFFormat::tr("Check sum test failed"));
             return;
         }
-        al.replaceChars(i, '.', MAlignment_GapChar);
-        al.replaceChars(i, '~', MAlignment_GapChar);
+        al->replaceChars(i, '.', MAlignment_GapChar);
+        al->replaceChars(i, '~', MAlignment_GapChar);
     }
 
     U2AlphabetUtils::assignAlphabet(al);
-    CHECK_EXT(al.getAlphabet() != NULL, ti.setError(MSFFormat::tr("Alphabet unknown")), );
+    CHECK_EXT(al->getAlphabet() != NULL, ti.setError(MSFFormat::tr("Alphabet unknown")), );
 
     U2OpStatus2Log os;
     const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
@@ -268,10 +267,10 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     const MultipleSequenceAlignment& ma = obj->getMAlignment();
 
     //precalculate seq writing params
-    int maxNameLen = 0, maLen = ma.getLength(), checkSum = 0;
+    int maxNameLen = 0, maLen = ma->getLength(), checkSum = 0;
     static int maxCheckSumLen = 4;
     QMap <QString, int> checkSums;
-    foreach(const MultipleSequenceAlignmentRow& row , ma.getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row , ma->getMsaRows()) {
         QByteArray sequence = row->toByteArray(maLen, os).replace(MAlignment_GapChar, '.');
         int seqCheckSum = getCheckSum(sequence);
         checkSums.insert(row->getName(), seqCheckSum);
@@ -293,7 +292,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         return;
 
     //write info
-    foreach(const MultipleSequenceAlignmentRow& row, ma.getRows()) {
+    foreach(const MultipleAlignmentRow& row, ma->getRows()) {
         QByteArray line = " " + NAME_FIELD;
         line += " " + QString(row->getName()).replace(' ', '_').leftJustified(maxNameLen+1); // since ' ' is a delimeter for MSF parser spaces in name not suppoted
         line += "  " + LEN_FIELD;
@@ -333,9 +332,9 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         QList<QByteArray> seqs = walker.nextData(CHARS_IN_ROW, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = ma.getMsaRows().constBegin();
+        QList<MultipleAlignmentRow>::ConstIterator ri = ma->getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleSequenceAlignmentRow &row = *ri;
+            const MultipleAlignmentRow &row = *ri;
             QByteArray line = row->getName().toLocal8Bit();
             line.replace(' ', '_'); // since ' ' is a delimiter for MSF parser spaces in name not supported
             line = line.leftJustified(maxNameLen+1);

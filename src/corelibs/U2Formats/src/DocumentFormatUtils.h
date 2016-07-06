@@ -25,6 +25,7 @@
 #include <QStringList>
 
 #include <U2Core/DocumentModel.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
 namespace U2 {
@@ -37,7 +38,6 @@ class Document;
 class GObject;
 class GObjectReference;
 class GUrl;
-class MultipleSequenceAlignment;
 class U2DbiRef;
 class U2OpStatus;
 class U2Sequence;

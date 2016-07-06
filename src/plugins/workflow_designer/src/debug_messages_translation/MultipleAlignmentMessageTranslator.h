@@ -28,8 +28,6 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignment;
-
 class MultipleAlignmentMessageTranslator : public BaseMessageTranslator {
 public:
     MultipleAlignmentMessageTranslator( const QVariant &atomicMessage,

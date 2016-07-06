@@ -86,7 +86,7 @@ QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MSAEditor *context,
         if (m->rowToMap(i, true) < 0) {
             continue;
         }
-        names.append(msaObj->getMAlignment().getRow(i)->getName());
+        names.append(msaObj->getMAlignment()->getRow(i)->getName());
     }
     return names;
 }
@@ -192,18 +192,14 @@ void RichTextMsaClipboardTask::run(){
 
     const MultipleSequenceAlignment &msa = obj->getMAlignment();
     U2OpStatusImpl os;
-    const int refSeq = msa.getRowIndexByRowId(context->getReferenceRowId(), os);
-    MultipleSequenceAlignmentRow row;
-    if (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) {
-        row = msa.getRow(refSeq);
-    }
+    const int refSeq = msa->getRowIndexByRowId(context->getReferenceRowId(), os);
 
     result.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toLatin1());
         const MultipleSequenceAlignment& ma = obj->getMAlignment();
-        int numRows = ma.getNumRows();
+        int numRows = ma->getNumRows();
         for (int seq = 0; seq < numRows; seq++){
             QString res;
-            const MultipleSequenceAlignmentRow& row = ma.getRow(seq);
+            const MultipleSequenceAlignmentRow& row = ma->getMsaRow(seq);
             if (!names.contains(row->getName())){
                 continue;
             }

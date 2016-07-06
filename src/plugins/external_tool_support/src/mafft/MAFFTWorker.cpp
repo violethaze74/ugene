@@ -170,8 +170,8 @@ Task* MAFFTWorker::tick() {
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
         const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
 
-        if (msa.isEmpty()) {
-            algoLog.error(tr("An empty MSA '%1' has been supplied to MAFFT.").arg(msa.getName()));
+        if (msa->isEmpty()) {
+            algoLog.error(tr("An empty MSA '%1' has been supplied to MAFFT.").arg(msa->getName()));
             return NULL;
         }
         MAFFTSupportTask* supportTask = new MAFFTSupportTask(msa, GObjectReference(), cfg);
@@ -200,7 +200,7 @@ void MAFFTWorker::sl_taskFinished() {
 
     SAFE_POINT(NULL != output, "NULL output!", );
     send(t->resultMA);
-    algoLog.info(tr("Aligned %1 with MAFFT").arg(t->resultMA.getName()));
+    algoLog.info(tr("Aligned %1 with MAFFT").arg(t->resultMA->getName()));
 }
 
 void MAFFTWorker::cleanup() {

@@ -123,7 +123,7 @@ GenomeAlignerMsaWriter::GenomeAlignerMsaWriter() {
 
 void GenomeAlignerMsaWriter::close() {
     //TODO: add some heuristic alphabet selection.
-    result.setAlphabet(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
+    result->setAlphabet(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()));
 }
 
 MultipleSequenceAlignment& GenomeAlignerMsaWriter::getResult() {
@@ -135,13 +135,13 @@ void GenomeAlignerMsaWriter::write(SearchQuery *seq, SAType offset) {
     offsetGaps.fill(MAlignment_GapChar, offset);
     QByteArray seqWithOffset = seq->constSequence();
     seqWithOffset.prepend(offsetGaps);
-    result.addRow(seq->getName(), seqWithOffset);
+    result->addRow(seq->getName(), seqWithOffset);
     writtenReadsCount++;
 }
 
 void GenomeAlignerMsaWriter::setReferenceName(const QString &refName) {
     this->refName = refName;
-    result.setName(refName);
+    result->setName(refName);
 }
 
 } //LocalWorkflow

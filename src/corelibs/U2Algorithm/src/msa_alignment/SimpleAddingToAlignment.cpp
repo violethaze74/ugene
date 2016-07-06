@@ -73,7 +73,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     U2UseCommonUserModStep modStep(settings.msaRef, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
     U2MsaDbi *dbi = modStep.getDbi()->getMsaDbi();
-    int posInMsa = inputMsa.getNumRows();
+    int posInMsa = inputMsa->getNumRows();
 
 
     dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
@@ -116,16 +116,16 @@ void BestPositionFindTask::run() {
     if(sequence.isEmpty()) {
         return;
     }
-    if(!inputMsa.getAlphabet()->isCaseSensitive()) {
+    if(!inputMsa->getAlphabet()->isCaseSensitive()) {
         sequence = sequence.toUpper();
     }
-    const int aliLen = inputMsa.getLength();
-    const int nSeq = inputMsa.getNumRows();
+    const int aliLen = inputMsa->getLength();
+    const int nSeq = inputMsa->getNumRows();
 
     int similarity = 0;
 
     if(referenceRowId >= 0) {
-        const MultipleSequenceAlignmentRow &row = inputMsa.getRow(referenceRowId);
+        const MultipleSequenceAlignmentRow row = inputMsa->getMsaRow(referenceRowId);
         int iterationsNum = aliLen - sequence.length() + 1;
         for (int p = 0; p < iterationsNum; p++ ) {
             stateInfo.setProgress(100 * p / iterationsNum);
@@ -139,7 +139,7 @@ void BestPositionFindTask::run() {
         }
     } else {
         int processedRows = 0;
-        foreach(const MultipleSequenceAlignmentRow &row, inputMsa.getRows()) {
+        foreach(const MultipleSequenceAlignmentRow &row, inputMsa->getMsaRows()) {
             stateInfo.setProgress(100 * processedRows / nSeq);
             for (int p = 0; p < ( aliLen - sequence.length() + 1 ); p++ ) {
                 char c = row->charAt(p);

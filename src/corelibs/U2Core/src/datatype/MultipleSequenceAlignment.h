@@ -27,22 +27,25 @@
 
 namespace U2 {
 
+class MultipleSequenceAlignmentData;
+typedef QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
+
 /**
  * Multiple sequence alignment
  * The length of the alignment is the maximum length of its rows.
  * There are minimal checks on the alignment's alphabet, but the client of the class
  * is expected to keep the conformance of the data and the alphabet.
  */
-class U2CORE_EXPORT MultipleSequenceAlignment : public MultipleAlignment {
+class U2CORE_EXPORT MultipleSequenceAlignmentData : public MultipleAlignmentData {
 public:
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MultipleSequenceAlignment(const QString &name = QString(),
-                              const DNAAlphabet *alphabet = NULL,
-                              const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
-    MultipleSequenceAlignment(const MultipleSequenceAlignment &msa);
+    MultipleSequenceAlignmentData(const QString &name = QString(),
+                                  const DNAAlphabet *alphabet = NULL,
+                                  const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
+    MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData &msa);
 
     /** Returns a character (a gap or a non-gap) in the specified row and position */
     char charAt(int rowIndex, int pos) const;
@@ -93,12 +96,18 @@ public:
     void appendChars(int row, const char* str, int len);
     void appendChars(int row, int afterPos, const char *str, int len);
 
-    MultipleSequenceAlignmentRow & getMsaRow(int i);
-    const MultipleSequenceAlignmentRow & getMsaRow(int i) const;
+    MultipleSequenceAlignmentRow getMsaRow(int i);
+    const MultipleSequenceAlignmentRow getMsaRow(int i) const;
+    const MultipleSequenceAlignmentRow getMsaRow(const QString &name) const;
     QList<MultipleSequenceAlignmentRow> getMsaRows() const;
+    const MultipleSequenceAlignmentRow getMsaRowByRowId(qint64 rowId, U2OpStatus &os) const;
+
+    MultipleSequenceAlignmentData * explicitClone() const ;
 
 private:
-    MultipleAlignment * clone();
+    MultipleAlignmentData * clone() const;
+    MultipleAlignmentRow getEmptyRow() const;
+    MultipleAlignment getEmptyMultipleAlignment() const;
 
     /** Create a new row (sequence + gap model) from the bytes */
     MultipleSequenceAlignmentRow createSequenceRow(const QString &name, const QByteArray &rawData) const;
@@ -111,10 +120,12 @@ private:
     MultipleAlignmentRow createRow(const MultipleAlignmentRow &row) const;
 
     static bool registerMeta;
+    static MultipleSequenceAlignment EMPTY_MA;
+    static MultipleSequenceAlignmentRow EMPTY_ROW;
 };
 
 }   // namespace U2
 
-Q_DECLARE_METATYPE(U2::MultipleSequenceAlignment)
+Q_DECLARE_METATYPE(U2::MultipleSequenceAlignmentData)
 
 #endif

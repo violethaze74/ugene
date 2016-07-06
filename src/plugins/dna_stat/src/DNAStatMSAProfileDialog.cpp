@@ -137,7 +137,7 @@ void DNAStatMSAProfileTask::run() {
                 return;
             }
         }
-        int maxVal = s.usePercents ? 100 : s.ma.getNumRows();
+        int maxVal = s.usePercents ? 100 : s.ma->getNumRows();
         QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
 
         try {
@@ -182,7 +182,7 @@ void DNAStatMSAProfileTask::run() {
             }
             resultText += "</tr>\n";
             //out char freqs
-            QByteArray aChars = s.ma.getAlphabet()->getAlphabetChars();
+            QByteArray aChars = s.ma->getAlphabet()->getAlphabetChars();
             for (int i = 0; i < aChars.size(); i++) {
                 char c = aChars[i];
                 if (c == MAlignment_GapChar && !s.reportGaps) {
@@ -248,7 +248,7 @@ void DNAStatMSAProfileTask::run() {
             return;
         }
         //out char freqs
-        QByteArray aChars = s.ma.getAlphabet()->getAlphabetChars();
+        QByteArray aChars = s.ma->getAlphabet()->getAlphabetChars();
         for (int i = 0; i < aChars.size(); i++) {
             char c = aChars[i];
             if (c == MAlignment_GapChar && !s.reportGaps) {
@@ -289,7 +289,7 @@ Task::ReportResult DNAStatMSAProfileTask::report() {
 
 void DNAStatMSAProfileTask::computeStats() {
     //fill names
-    QByteArray aChars = s.ma.getAlphabet()->getAlphabetChars();
+    QByteArray aChars = s.ma->getAlphabet()->getAlphabetChars();
     for (int i = 0; i < aChars.size(); i++) {
         char c = aChars[i];
         verticalColumnNames.append(QChar(c));
@@ -298,16 +298,15 @@ void DNAStatMSAProfileTask::computeStats() {
     }
 
     //fill values
-    columns.resize(s.ma.getLength());
-    consenusChars.resize(s.ma.getLength());
-    for (int pos = 0; pos < s.ma.getLength(); pos++) {
+    columns.resize(s.ma->getLength());
+    consenusChars.resize(s.ma->getLength());
+    for (int pos = 0; pos < s.ma->getLength(); pos++) {
         int topCharCount = 0;
         ColumnStat& cs = columns[pos];
         cs.charFreqs.resize(aChars.size());
         cs.consChar = MAlignment_GapChar;
-        for (int i = 0; i< s.ma.getNumRows(); i++) {
-            const MultipleSequenceAlignmentRow& row = s.ma.getMsaRow(i);
-            char c = row->charAt(pos);
+        for (int i = 0; i< s.ma->getNumRows(); i++) {
+            char c = s.ma->getMsaRow(i)->charAt(pos);
             unusedChars.remove(c);
             int idx = char2index.value(c);
             int v = ++cs.charFreqs[idx];
@@ -321,8 +320,8 @@ void DNAStatMSAProfileTask::computeStats() {
     }
 
     if (s.usePercents) {
-        int charsInColumn = s.ma.getNumRows();
-        for (int pos = 0; pos < s.ma.getLength(); pos++) {
+        int charsInColumn = s.ma->getNumRows();
+        for (int pos = 0; pos < s.ma->getLength(); pos++) {
             ColumnStat& cs = columns[pos];
             for (int i=0; i < aChars.size(); i++) {
                 char c = aChars[i];

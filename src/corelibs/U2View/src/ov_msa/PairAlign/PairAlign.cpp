@@ -63,7 +63,7 @@
 #include "../SequenceSelectorWidgetController.h"
 
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
-    U2::MultipleSequenceAlignmentRow row = msa->getMSAObject()->getMAlignment().getRowByRowId(rowId, os);
+    const U2::MultipleAlignmentRow row = msa->getMSAObject()->getMAlignment()->getRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
     return row->getRowDbInfo().dataObjectId;
 }
@@ -264,12 +264,10 @@ void PairAlign::updatePercentOfSimilarity() {
     SAFE_POINT(NULL != distanceFactory, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
-    MultipleSequenceAlignment ma;
+    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData());
     const MultipleSequenceAlignment &currentAlignment = msa->getMSAObject()->getMAlignment();
-    ma.addRow(firstSeqSelectorWC->text(),
-        ((MultipleSequenceAlignmentRow)currentAlignment.getRowByRowId(firstSeqSelectorWC->sequenceId(), os))->getData(), -1);
-    ma.addRow(secondSeqSelectorWC->text(),
-        ((MultipleSequenceAlignmentRow)currentAlignment.getRowByRowId(secondSeqSelectorWC->sequenceId(), os))->getData(), -1);
+    ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
+    ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
     distanceCalcTask->setExcludeGaps(true);
     connect(distanceCalcTask, SIGNAL(si_stateChanged()), SLOT(sl_distanceCalculated()));
@@ -277,7 +275,7 @@ void PairAlign::updatePercentOfSimilarity() {
 }
 
 bool PairAlign::checkSequenceNames( ) {
-    QList<qint64> rowIds = msa->getMSAObject( )->getMAlignment( ).getRowsIds( );
+    QList<qint64> rowIds = msa->getMSAObject( )->getMAlignment( )->getRowsIds( );
     return ( rowIds.contains( firstSeqSelectorWC->sequenceId( ) )
         && rowIds.contains( secondSeqSelectorWC->sequenceId( ) ) );
 }

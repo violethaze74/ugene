@@ -22,13 +22,13 @@
 #ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_IMPORTER_H_
 #define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_IMPORTER_H_
 
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Ma.h>
 #include <U2Core/U2Sequence.h>
 
 namespace U2 {
 
 class DbiConnection;
-class MultipleSequenceAlignment;
 class MultipleSequenceAlignmentObject;
 class U2DbiRef;
 class U2OpStatus;

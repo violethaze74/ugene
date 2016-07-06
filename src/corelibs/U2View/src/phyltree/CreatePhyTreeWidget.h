@@ -26,12 +26,11 @@
 
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 
-#include <U2Core/global.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
 class CreatePhyTreeSettings;
-class MultipleSequenceAlignment;
 class PhyTreeDisplayOptionsWidget;
 
 class U2VIEW_EXPORT CreatePhyTreeWidget : public QWidget {

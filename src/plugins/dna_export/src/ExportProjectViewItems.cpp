@@ -160,7 +160,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             sub->addAction(exportAlignmentAsSequencesAction);
             GObject* obj = set.first();
             const MultipleSequenceAlignment &ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMAlignment();
-            if (ma.getAlphabet()->isNucleic()) {
+            if (ma->getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
             }
         }
@@ -408,7 +408,7 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
         return;
     }
     QString objName = GUrl(d->url).baseFileName();
-    ma.setName(objName);
+    ma->setName(objName);
     Task* t = ExportUtils::wrapExportTask(new ExportAlignmentTask(ma, d->url, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
@@ -454,7 +454,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
 
     GObject* firstObject = set.first();
     Document* doc = firstObject->getDocument();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), ma.getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), ma->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
     QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, true, AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
@@ -467,7 +467,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     QList<DNATranslation*> trans;
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
-    Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma, 0, ma.getNumRows(), d->file, trans, d->formatId), d->addToProjectFlag);
+    Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma, 0, ma->getNumRows(), d->file, trans, d->formatId), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

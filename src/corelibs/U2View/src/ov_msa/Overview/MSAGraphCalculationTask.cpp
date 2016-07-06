@@ -48,11 +48,11 @@ MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleSequenceAlignmentObject
     SAFE_POINT_EXT(msa != NULL, setError(tr("MSA is NULL")), );
     msaLength = msa->getLength();
     seqNumber = msa->getNumRows();
-    if(!memLocker.tryAcquire(msa->getMAlignment().getLength() * msa->getMAlignment().getNumRows())) {
+    if(!memLocker.tryAcquire(msa->getMAlignment()->getLength() * msa->getMAlignment()->getNumRows())) {
         setError(memLocker.getError());
         return;
     }
-    ma.reset(new MultipleSequenceAlignment(msa->getMAlignment()));
+    ma.reset(msa->getMAlignment()->explicitClone());
     connect(msa, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
     connect(msa, SIGNAL(si_startMsaUpdating()), this, SLOT(cancel()));
     connect(msa, SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MsaModificationInfo)), this, SLOT(cancel()));
@@ -142,7 +142,7 @@ MSAConsensusOverviewCalculationTask::MSAConsensusOverviewCalculationTask(Multipl
 
 int MSAConsensusOverviewCalculationTask::getGraphValue(int pos) const {
     int score;
-    algorithm->getConsensusCharAndScore(*ma, pos, score);
+    algorithm->getConsensusCharAndScore(ma, pos, score);
     return qRound(score * 100. / seqNumber);
 }
 
@@ -172,12 +172,12 @@ MSAClustalOverviewCalculationTask::MSAClustalOverviewCalculationTask(MultipleSeq
     SAFE_POINT_EXT(factory != NULL, setError(tr("Clustal algorithm factory is NULL")), );
 
     SAFE_POINT_EXT(msa != NULL, setError(tr("MSA is NULL")), );
-    algorithm = factory->createAlgorithm(*ma);
+    algorithm = factory->createAlgorithm(ma);
     algorithm->setParent(this);
 }
 
 int MSAClustalOverviewCalculationTask::getGraphValue(int pos) const {
-    char c = algorithm->getConsensusChar(*ma, pos);
+    char c = algorithm->getConsensusChar(ma, pos);
 
     switch (c) {
     case '*':
@@ -225,7 +225,7 @@ bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleSeq
     if (seq == refSeq || isEmptyScheme(schemeId) ||
             ((refSeq == MultipleAlignmentRowData::INVALID_ROW_ID) && !isGapScheme(schemeId) &&
             !highlightingScheme->getFactory()->isRefFree())) {
-        if (colorScheme->getColor(seq, pos, ma.charAt(seq, pos)) != QColor()) {
+        if (colorScheme->getColor(seq, pos, ma->charAt(seq, pos)) != QColor()) {
             return true;
         }
     }
@@ -234,10 +234,10 @@ bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleSeq
         if (isGapScheme(schemeId) || highlightingScheme->getFactory()->isRefFree()) {
             refChar = '\n';
         } else {
-            refChar = ma.charAt(refSeq, pos);
+            refChar = ma->charAt(refSeq, pos);
         }
 
-        char c = ma.charAt(seq, pos);
+        char c = ma->charAt(seq, pos);
         bool highlight = false;
         QColor unused;
         highlightingScheme->process(refChar, c, unused, highlight, pos, seq);
@@ -271,7 +271,7 @@ bool MSAHighlightingOverviewCalculationTask::isEmptyScheme(const QString &scheme
 }
 
 bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(int seq, int pos) const {
-    return isCellHighlighted(*ma, highlightingScheme, colorScheme, seq, pos, refSequenceId);
+    return isCellHighlighted(ma, highlightingScheme, colorScheme, seq, pos, refSequenceId);
 }
 
 } // namespace

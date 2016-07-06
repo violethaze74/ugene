@@ -55,7 +55,7 @@ HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const Mul
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Close"));
 
-    if (!ma.isEmpty()) {
+    if (!ma->isEmpty()) {
         msaFileButton->setHidden(true);
         msaFileEdit->setHidden(true);
         msaFileLabel->setHidden(true);
@@ -96,7 +96,7 @@ void HMMBuildDialogController::sl_okClicked() {
     QString errMsg;
 
     QString inFile = msaFileEdit->text();
-    if (ma.isEmpty() && (inFile.isEmpty() || !QFileInfo(inFile).exists())) {
+    if (ma->isEmpty() && (inFile.isEmpty() || !QFileInfo(inFile).exists())) {
         errMsg = tr("Incorrect alignment file!");
         msaFileEdit->setFocus();
     }
@@ -122,7 +122,7 @@ void HMMBuildDialogController::sl_okClicked() {
         return;
     }
 
-    task = ma.isEmpty() ? new HMMBuildToFileTask(inFile, outFile, s) : new HMMBuildToFileTask(ma, outFile, s);
+    task = ma->isEmpty() ? new HMMBuildToFileTask(inFile, outFile, s) : new HMMBuildToFileTask(ma, outFile, s);
     task->setReportingEnabled(true);
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_onStateChanged()));
     connect(task, SIGNAL(si_progressChanged()), SLOT(sl_onProgressChanged()));
@@ -228,7 +228,7 @@ settings(s), outFile(_outFile), ma(_ma), loadTask(NULL), buildTask(NULL)
     setTaskName(tr("Build HMM profile to '%1'").arg(QFileInfo(outFile).fileName()));
     setVerboseLogMode(true);
 
-    assert(!(outFile.isEmpty() || ma.isEmpty()));
+    assert(!(outFile.isEmpty() || ma->isEmpty()));
     if (settings.name.isEmpty()) {
         QFileInfo fi(outFile);
         settings.name = fi.baseName(); //FIXME temporary workaround
@@ -246,7 +246,7 @@ QList<Task*> HMMBuildToFileTask::onSubTaskFinished(Task* subTask) {
     }
 
     if (subTask == loadTask) {
-        assert(ma.isEmpty());
+        assert(ma->isEmpty());
         Document*  doc = loadTask->getDocument();
         //assert(doc);
         if(!doc) {
@@ -340,31 +340,31 @@ void HMMBuildTask::run() {
 }
 
 void HMMBuildTask::_run() {
-    if (ma.getNumRows() == 0) {
+    if (ma->getNumRows() == 0) {
         stateInfo.setError(  tr("Multiple alignment is empty") );
         return;
     }
-    if (ma.getLength() == 0) {
+    if (ma->getLength() == 0) {
         stateInfo.setError(  tr("Multiple alignment is of 0 length") );
         return;
     }
     //todo: check HMM for RAW alphabet!
-    if (ma.getAlphabet()->isRaw()) {
+    if (ma->getAlphabet()->isRaw()) {
         stateInfo.setError(  tr("Invalid alphabet! Only amino and nucleic alphabets are supported") );
         return;
     }
 
     //everything ok here: fill msa
 
-    msa_struct* msa = MSAAlloc(ma.getNumRows(), ma.getLength());
+    msa_struct* msa = MSAAlloc(ma->getNumRows(), ma->getLength());
     if (msa == NULL) {
         stateInfo.setError(  tr("Error creating MSA structure") );
         return;
     }
     U2OpStatus2Log os;
-    for (int i=0; i<ma.getNumRows();i++) {
-        const MultipleSequenceAlignmentRow& row = ma.getMsaRow(i);
-        QByteArray seq = row->toByteArray(ma.getLength(), os);
+    for (int i=0; i<ma->getNumRows();i++) {
+        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
+        QByteArray seq = row->toByteArray(ma->getLength(), os);
         free(msa->aseq[i]);
         msa->aseq[i] = sre_strdup(seq.constData(), seq.size());
         QByteArray name = row->getName().toLatin1();
@@ -372,7 +372,7 @@ void HMMBuildTask::_run() {
         msa->wgt[i] = 1.0; // default weights 
     }
     
-    int atype = ma.getAlphabet()->isNucleic() ? hmmNUCLEIC :hmmAMINO;
+    int atype = ma->getAlphabet()->isNucleic() ? hmmNUCLEIC :hmmAMINO;
     try {
         hmm = UHMMBuild::build(msa, atype, settings, stateInfo);
     } catch (HMMException e) {

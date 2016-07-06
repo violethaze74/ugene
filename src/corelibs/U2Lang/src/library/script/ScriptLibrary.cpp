@@ -500,7 +500,7 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext *ctx
     }
 
     MultipleSequenceAlignment align = getAlignment(ctx, engine, 0);
-    if(align.isEmpty()) {
+    if(align->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
 
@@ -510,11 +510,11 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext *ctx
     if(!ok) {
         return ctx->throwError(QObject::tr("Second argument must be a number"));
     }
-    if(row < 0 || row >= align.getNumRows()) {
+    if(row < 0 || row >= align->getNumRows()) {
         return ctx->throwError(QObject::tr("Row is out of range"));
     }
 
-    MultipleSequenceAlignmentRow aRow = align.getRow(row);
+    MultipleSequenceAlignmentRow aRow(align->getMsaRow(row)->explicitClone());
     aRow->simplify();
     U2OpStatus2Log os;
     QByteArray arr = aRow->toByteArray(aRow->getCoreLength(), os);
@@ -539,7 +539,7 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext *ctx
         }
         arr = arr.mid(beg,len);
     }
-    DNASequence seq(aRow->getName(),arr,align.getAlphabet());
+    DNASequence seq(aRow->getName(),arr,align->getAlphabet());
 
     QScriptValue calee = ctx->callee();
     calee.setProperty("res", putSequence(engine, seq));
@@ -554,14 +554,14 @@ QScriptValue WorkflowScriptLibrary::findInAlignment(QScriptContext *ctx, QScript
     QString name;
     DNASequence seq;
     MultipleSequenceAlignment aln = getAlignment(ctx, engine, 0);
-    if(aln.isEmpty()) {
+    if(aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
     int row = 0;
     QScriptValue val = ctx->argument(1);
     name = val.toString();
     if(!name.isEmpty()) {
-        row = aln.getRowNames().indexOf(name);
+        row = aln->getRowNames().indexOf(name);
     }else{
         seq = val.toVariant().value<DNASequence>();
         if(seq.seq.isEmpty()) {
@@ -573,7 +573,7 @@ QScriptValue WorkflowScriptLibrary::findInAlignment(QScriptContext *ctx, QScript
             }
             row++;
         }
-        if(row == aln.getNumRows()) {
+        if(row == aln->getNumRows()) {
             row = -1;
         }
     }
@@ -592,18 +592,18 @@ QScriptValue WorkflowScriptLibrary::createAlignment(QScriptContext *ctx, QScript
     if(seq.seq.isEmpty()) {
         return ctx->throwError(QObject::tr("Empty or invalid sequence"));
     }
-    align.setAlphabet(seq.alphabet);
-    align.addRow(seq.getName(), seq.seq);
+    align->setAlphabet(seq.alphabet);
+    align->addRow(seq.getName(), seq.seq);
 
     for(int i = 1; i < ctx->argumentCount(); i++) {
         DNASequence seq = getSequence(ctx, engine, i);
         if(seq.seq.isEmpty()) {
             return ctx->throwError(QObject::tr("Empty or invalid sequence"));
         }
-        if(seq.alphabet != align.getAlphabet()) {
+        if(seq.alphabet != align->getAlphabet()) {
             return ctx->throwError(QObject::tr("Alphabets of each sequence must be the same"));
         }
-        align.addRow(seq.getName(), seq.seq);
+        align->addRow(seq.getName(), seq.seq);
     }
 
     return putAlignment(engine, align);
@@ -620,13 +620,13 @@ QScriptValue WorkflowScriptLibrary::addToAlignment(QScriptContext *ctx, QScriptE
         return ctx->throwError(QObject::tr("Empty or invalid sequence"));
     }
 
-    if(align.isEmpty()) {
+    if(align->isEmpty()) {
         //return ctx->throwError(QObject::tr("Invalid alignment"));
         //align = new MultipleSequenceAlignment("alignment");
-        align.setAlphabet(seq.alphabet);
+        align->setAlphabet(seq.alphabet);
     }
 
-    if(seq.alphabet != align.getAlphabet()) {
+    if(seq.alphabet != align->getAlphabet()) {
         return ctx->throwError(QObject::tr("Alphabets don't match"));
     }
 
@@ -636,11 +636,11 @@ QScriptValue WorkflowScriptLibrary::addToAlignment(QScriptContext *ctx, QScriptE
             return ctx->throwError(QObject::tr("Third argument must be a number"));
         }
         row = ctx->argument(2).toInt32();
-        if(row > align.getLength()) {
+        if(row > align->getLength()) {
             row = -1;
         }
     }
-    align.addRow(seq.getName(), seq.seq, row);
+    align->addRow(seq.getName(), seq.seq, row);
 
     return putAlignment(engine, align);
 }
@@ -651,7 +651,7 @@ QScriptValue WorkflowScriptLibrary::removeFromAlignment(QScriptContext *ctx, QSc
     }
 
     MultipleSequenceAlignment aln = getAlignment(ctx, engine, 0);
-    if(aln.isEmpty()) {
+    if(aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
 
@@ -662,12 +662,12 @@ QScriptValue WorkflowScriptLibrary::removeFromAlignment(QScriptContext *ctx, QSc
         return ctx->throwError(QObject::tr("Second argument must be a number"));
     }
 
-    if(row < 0 || row >= aln.getLength()) {
+    if(row < 0 || row >= aln->getLength()) {
         return ctx->throwError(QObject::tr("Row is out of range"));
     }
 
     U2OpStatus2Log os;
-    aln.removeRow(row, os);
+    aln->removeRow(row, os);
     return putAlignment(engine, aln);
 }
 
@@ -677,10 +677,10 @@ QScriptValue WorkflowScriptLibrary::rowNum(QScriptContext *ctx, QScriptEngine *e
     }
 
     MultipleSequenceAlignment aln = getAlignment(ctx, engine, 0);
-    if(aln.isEmpty()) {
+    if(aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
-    int num = aln.getNumRows();
+    int num = aln->getNumRows();
 
     QScriptValue calee = ctx->callee();
     calee.setProperty("res", engine->newVariant(num));
@@ -693,10 +693,10 @@ QScriptValue WorkflowScriptLibrary::columnNum(QScriptContext *ctx, QScriptEngine
     }
 
     MultipleSequenceAlignment aln = getAlignment(ctx, engine, 0);
-    if(aln.isEmpty()) {
+    if(aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
-    int num = aln.getLength();
+    int num = aln->getLength();
 
     QScriptValue calee = ctx->callee();
     calee.setProperty("res", engine->newVariant(num));
@@ -709,10 +709,10 @@ QScriptValue WorkflowScriptLibrary::alignmentAlphabetType(QScriptContext *ctx, Q
     }
 
     MultipleSequenceAlignment aln = getAlignment(ctx, engine, 0);
-    if(aln.isEmpty()) {
+    if(aln->isEmpty()) {
         return ctx->throwError(QObject::tr("Invalid alignment"));
     }
-    QString alph = aln.getAlphabet()->getName();
+    QString alph = aln->getAlphabet()->getName();
 
     QScriptValue calee = ctx->callee();
     calee.setProperty("res", engine->newVariant(alph));
