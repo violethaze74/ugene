@@ -56,7 +56,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="substitutionModel">
       <attribute name="title">
@@ -339,7 +339,7 @@ Uncheck to get the maximum likelihood estimate.</string>
        <item row="1" column="1">
         <widget class="QSpinBox" name="bootstrapSpinBox">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="toolTip">
           <string>It is the number of bootstrap replicates.</string>
@@ -562,5 +562,22 @@ Uncheck to get the maximum likelihood estimate.</string>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>bootstrapCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>bootstrapSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>88</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>311</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
