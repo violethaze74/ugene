@@ -3669,8 +3669,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/PassFilterWorker.cpp" line="101"/>
-        <source>Semicolon-separated list of values used to filter the input data.</source>
-        <translation>Semicolon-separated list of values used to filter the input data.</translation>
+        <source>Comma-separated list of values used to filter the input data.</source>
+        <translation>Comma-separated list of values used to filter the input data.</translation>
     </message>
     <message>
         <location filename="../src/library/PassFilterWorker.cpp" line="105"/>

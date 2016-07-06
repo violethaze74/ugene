@@ -3383,8 +3383,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/PassFilterWorker.cpp" line="101"/>
-        <source>Semicolon-separated list of values used to filter the input data.</source>
-        <translation>принимает на вход список значений, разделенных точкой с запятой, который будет использован для фильтрации входных данных.</translation>
+        <source>Comma-separated list of values used to filter the input data.</source>
+        <translation>принимает на вход список значений, разделенных запятой, который будет использован для фильтрации входных данных.</translation>
     </message>
     <message>
         <location filename="../src/library/PassFilterWorker.cpp" line="105"/>
