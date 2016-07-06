@@ -39,6 +39,7 @@ namespace Workflow {
 /************************************************************************/
 /* BlastReadsSubTask */
 /************************************************************************/
+class BlastAndSwReadTask;
 class BlastReadsSubTask : public Task {
     Q_OBJECT
 public:
@@ -48,12 +49,17 @@ public:
                       DbiDataStorage *storage);
 
     void prepare();
+
+    QList<BlastAndSwReadTask*> getBlastSubtasks() const;
+
 private:
     const QString dbPath;
     const QList<SharedDbiDataHandler> reads;
     const SharedDbiDataHandler reference;
 
     DbiDataStorage *storage;
+
+    QList<BlastAndSwReadTask*> blastSubTasks;
 };
 
 /************************************************************************/
@@ -71,8 +77,13 @@ public:
     QList<Task*> onSubTaskFinished(Task *subTask);
     void run();
 
+    bool isComplement() const;
+    SharedDbiDataHandler getRead() const;
+    QList<U2MsaGap> getReferenceGaps() const;
+    QList<U2MsaGap> getReadGaps() const;
+    QString getInitialReadName() const;
+
 private:
-    QByteArray getRead();
     U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
     void createAlignment(const U2Region& refRegion);
     void shiftGaps(QList<U2MsaGap> &gaps) const;
@@ -94,6 +105,7 @@ private:
 
     QList<U2MsaGap> referenceGaps;
     QList<U2MsaGap> readGaps;
+    QString initialReadName;
 };
 
 } // namespace Workflow

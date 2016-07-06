@@ -59,13 +59,9 @@ private:
 
     FormatDBSubTask* formatDbSubTask;
     BlastReadsSubTask* blastTask;
-
-    QList<U2::Workflow::PairwiseAlignmentTask*> subTasks;
     ComposeResultSubTask *composeSubTask;
+
     DbiDataStorage *storage;
-    SharedDbiDataHandler msa;
-    SharedDbiDataHandler annotations;
-    int subTasksCount;
 };
 
 /************************************************************************/

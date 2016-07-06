@@ -30,19 +30,21 @@
 namespace U2 {
 namespace Workflow {
 
-class PairwiseAlignmentTask;
+class BlastAndSwReadTask;
 
 class ComposeResultSubTask : public Task {
     Q_OBJECT
 public:
-    ComposeResultSubTask(const SharedDbiDataHandler &reference, const QList<SharedDbiDataHandler> &reads, const QList<PairwiseAlignmentTask*> subTasks, DbiDataStorage *storage);
+    ComposeResultSubTask(const SharedDbiDataHandler &reference,
+                         const QList<SharedDbiDataHandler> &reads,
+                         const QList<BlastAndSwReadTask*> subTasks, DbiDataStorage *storage);
     void prepare();
     void run();
     SharedDbiDataHandler getAlignment() const;
     SharedDbiDataHandler getAnnotations() const;
 
 private:
-    PairwiseAlignmentTask * getPATask(int readNum);
+    BlastAndSwReadTask * getBlastSwTask(int readNum);
     DNASequence getReadSequence(int readNum);
     DNASequence getReferenceSequence();
     QList<U2MsaGap> getReferenceGaps();
@@ -57,7 +59,7 @@ private:
 private:
     const SharedDbiDataHandler reference;
     const QList<SharedDbiDataHandler> reads;
-    const QList<PairwiseAlignmentTask*> subTasks;
+    const QList<BlastAndSwReadTask*> subTasks;
     DbiDataStorage *storage;
     SharedDbiDataHandler msa;
     SharedDbiDataHandler annotations;

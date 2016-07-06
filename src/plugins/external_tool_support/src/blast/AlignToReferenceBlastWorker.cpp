@@ -206,8 +206,7 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl,
       formatDbSubTask(NULL),
       blastTask(NULL),
       composeSubTask(NULL),
-      storage(storage),
-      subTasksCount(0)
+      storage(storage)
 {
     setMaxParallelSubtasks(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 }
@@ -220,21 +219,16 @@ void AlignToReferenceBlastTask::prepare() {
 QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
     CHECK(subTask != NULL, result);
+    CHECK(!subTask->isCanceled() && !subTask ->hasError(), result);
 
     if (subTask == formatDbSubTask) {
-        CHECK(!formatDbSubTask->isCanceled() && !formatDbSubTask->hasError(), result);
-
-        // launch BLAST
         QString dbPath = formatDbSubTask->getResultPath();
         blastTask = new BlastReadsSubTask(dbPath, reads, reference, storage);
-
         result << blastTask;
     } else if (subTask == blastTask) {
-        //! compose results
-
-//        composeSubTask = new ComposeResultSubTask(reference, reads, subTasks, storage);
-//        composeSubTask->setSubtaskProgressWeight(0.5f);
-//        result << composeSubTask;
+        composeSubTask = new ComposeResultSubTask(reference, reads, blastTask->getBlastSubtasks(), storage);
+        composeSubTask->setSubtaskProgressWeight(0.5f);
+        result << composeSubTask;
     }
     return result;
 }

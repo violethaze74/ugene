@@ -36,6 +36,9 @@
 namespace U2 {
 namespace Workflow {
 
+/************************************************************************/
+/* BlastReadsSubTask */
+/************************************************************************/
 BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
                                      const QList<SharedDbiDataHandler> &reads,
                                      const SharedDbiDataHandler &reference,
@@ -53,9 +56,18 @@ void BlastReadsSubTask::prepare() {
     foreach (const SharedDbiDataHandler &read, reads) {
         BlastAndSwReadTask* subTask = new BlastAndSwReadTask(dbPath, read, reference, storage);
         addSubTask(subTask);
+
+        blastSubTasks << subTask;
     }
 }
 
+QList<BlastAndSwReadTask*> BlastReadsSubTask::getBlastSubtasks() const {
+    return blastSubTasks;
+}
+
+/************************************************************************/
+/* BlastAndSwReadTask */
+/************************************************************************/
 BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
                                        const SharedDbiDataHandler &read,
                                        const SharedDbiDataHandler &reference,
@@ -79,6 +91,8 @@ void BlastAndSwReadTask::prepare() {
     settings.megablast = true;
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), );
+
+    initialReadName = readObject->getSequenceName();
 
     settings.querySequence = readObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
@@ -137,11 +151,25 @@ void BlastAndSwReadTask::run() {
     readGaps.prepend(U2MsaGap(0, offset));
 }
 
-QByteArray BlastAndSwReadTask::getRead() {
-    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
-    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), QByteArray());
+bool BlastAndSwReadTask::isComplement() const {
+    //! TODO
+    return false;
+}
 
-    return readObject->getWholeSequenceData(stateInfo);
+SharedDbiDataHandler BlastAndSwReadTask::getRead() const {
+    return read;
+}
+
+QList<U2MsaGap> BlastAndSwReadTask::getReferenceGaps() const {
+    return referenceGaps;
+}
+
+QList<U2MsaGap> BlastAndSwReadTask::getReadGaps() const {
+    return readGaps;
+}
+
+QString BlastAndSwReadTask::getInitialReadName() const {
+    return initialReadName;
 }
 
 U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData> &blastAnnotations) {

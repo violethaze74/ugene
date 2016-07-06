@@ -20,7 +20,7 @@
 */
 
 #include "ComposeResultSubTask.h"
-#include "PairwiseAlignmentSubTask.h"
+#include "BlastReadsSubTask.h"
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppResources.h>
@@ -51,7 +51,7 @@ namespace {
 /************************************************************************/
 ComposeResultSubTask::ComposeResultSubTask(const SharedDbiDataHandler &reference,
                                            const QList<SharedDbiDataHandler> &reads,
-                                           const QList<PairwiseAlignmentTask*> subTasks,
+                                           const QList<BlastAndSwReadTask*> subTasks,
                                            DbiDataStorage *storage)
 : Task(tr("Compose alignment"), TaskFlags_FOSE_COSC), reference(reference), reads(reads), subTasks(subTasks), storage(storage)
 {
@@ -112,7 +112,7 @@ MAlignment ComposeResultSubTask::createAlignment() {
         result.addRow(readSeq.getName(), readSeq.seq, i + 1, stateInfo);
         CHECK_OP(stateInfo, result);
 
-        PairwiseAlignmentTask *subTask = getPATask(i);
+        BlastAndSwReadTask *subTask = getBlastSwTask(i);
         CHECK_OP(stateInfo, result);
         foreach (const U2MsaGap &gap, subTask->getReadGaps()) {
             result.insertGaps(i + 1, gap.offset, gap.gap, stateInfo);
@@ -144,7 +144,7 @@ void ComposeResultSubTask::createAnnotations(const MAlignment &alignment) {
     for (int i=1; i<alignment.getNumRows(); i++) {
         const MAlignmentRow &readRow = alignment.getRow(i);
         U2Region region = getReadRegion(readRow, referenceRow);
-        PairwiseAlignmentTask *task = getPATask(i - 1);
+        BlastAndSwReadTask *task = getBlastSwTask(i - 1);
         CHECK_OP(stateInfo, );
 
         SharedAnnotationData ann(new AnnotationData);
@@ -203,13 +203,13 @@ U2Location ComposeResultSubTask::getLocation(const U2Region &region, bool isComp
     return result;
 }
 
-PairwiseAlignmentTask * ComposeResultSubTask::getPATask(int readNum) {
+BlastAndSwReadTask * ComposeResultSubTask::getBlastSwTask(int readNum) {
     CHECK_EXT(readNum < subTasks.size(), setError(L10N::internalError("Wrong reads number")), NULL);
     return subTasks[readNum];
 }
 
 DNASequence ComposeResultSubTask::getReadSequence(int readNum) {
-    PairwiseAlignmentTask *subTask = getPATask(readNum);
+    BlastAndSwReadTask *subTask = getBlastSwTask(readNum);
     CHECK_OP(stateInfo, DNASequence());
 
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, subTask->getRead()));
@@ -247,7 +247,7 @@ QList<U2MsaGap> ComposeResultSubTask::getReferenceGaps() {
 QList<U2MsaGap> ComposeResultSubTask::getShiftedGaps(int rowNum) {
     QList<U2MsaGap> result;
 
-    PairwiseAlignmentTask *subTask = getPATask(rowNum);
+    BlastAndSwReadTask *subTask = getBlastSwTask(rowNum);
     CHECK_OP(stateInfo, result);
 
     qint64 wholeGap = 0;
