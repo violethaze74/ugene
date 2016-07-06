@@ -60,6 +60,15 @@ static const QString NAME_ATTR("result-name");
 static const QString DOM_E_ATTR("e-val");
 static const QString DOM_T_ATTR("score");
 static const QString SEED_ATTR("seed");
+static const QString FILTER_BY_ATTR("filter-by");
+
+static const QString FILTER_BY_E_VALUE_STRING ("E-value");
+static const QString FILTER_BY_SCORE_STRING ("Score");
+static const QString FILTER_BY_NONE_STRING("Do not filter results");
+
+static const QString FILTER_BY_E_VALUE("evalue");
+static const QString FILTER_BY_SCORE("score");
+static const QString FILTER_BY_NONE("none");
 
 const QString HmmerSearchWorkerFactory::ACTOR("hmm3-search");
 
@@ -67,6 +76,9 @@ void HmmerSearchWorkerFactory::init() {
     QList<PortDescriptor*> p;
     QList<Attribute*> a;
     {
+        Descriptor filterByDesc(FILTER_BY_ATTR,
+            HmmerSearchWorker::tr("Filter by"),
+            HmmerSearchWorker::tr("Parameter to filter results by."));
         Descriptor hd(HMM_URL_PORT, HmmerSearchWorker::tr("HMMER profile"), HmmerSearchWorker::tr("HMMER profile(s) URL(s) to search with."));
         Descriptor sd(BasePorts::IN_SEQ_PORT_ID(), HmmerSearchWorker::tr("Input sequence"),
             HmmerSearchWorker::tr("An input sequence (nucleotide or protein) to search in."));
@@ -82,18 +94,25 @@ void HmmerSearchWorkerFactory::init() {
         QMap<Descriptor, DataTypePtr> outM;
         outM[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
         p << new PortDescriptor(od, DataTypePtr(new MapDataType("hmm.search.out", outM)), false /*input*/, true);
-    }
 
-    {
         Descriptor nd(NAME_ATTR, HmmerSearchWorker::tr("Result annotation"), HmmerSearchWorker::tr("A name of the result annotations."));
         Descriptor nsd(SEED_ATTR, HmmerSearchWorker::tr("Seed"), HmmerSearchWorker::tr("Random generator seed. 0 - means that one-time arbitrary seed will be used."));
         Descriptor ded(DOM_E_ATTR, HmmerSearchWorker::tr("Filter by high E-value"), HmmerSearchWorker::tr("Report domains with e-value less than."));
         Descriptor dtd(DOM_T_ATTR, HmmerSearchWorker::tr("Filter by low score"), HmmerSearchWorker::tr("Report domains with score greater than."));
 
-         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("hmm_signal"));
-         a << new Attribute(nsd, BaseTypes::NUM_TYPE(), false, QVariant(42));
-         a << new Attribute(ded, BaseTypes::NUM_TYPE(), false, QVariant((double)10.0));
-         a << new Attribute(dtd, BaseTypes::NUM_TYPE(), false, QVariant((double)0.0));
+        Attribute *evalue = new Attribute(ded, BaseTypes::NUM_TYPE(), false, QVariant((double)10.0));
+        Attribute *score = new Attribute(dtd, BaseTypes::NUM_TYPE(), false, QVariant((double)0.0));
+
+        Attribute *filterBy = new Attribute(filterByDesc, BaseTypes::STRING_TYPE(), true, FILTER_BY_NONE);
+        a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("hmm_signal"));
+        a << filterBy;
+        a << new Attribute(nsd, BaseTypes::NUM_TYPE(), false, QVariant(42));
+        a << evalue;
+        a << score;
+
+
+        evalue->addRelation(new VisibilityRelation(FILTER_BY_ATTR, FILTER_BY_E_VALUE));
+        score->addRelation(new VisibilityRelation(FILTER_BY_ATTR, FILTER_BY_SCORE));
     }
 
     Descriptor desc(HmmerSearchWorkerFactory::ACTOR, HmmerSearchWorker::tr("HMM3 Search"),
@@ -101,6 +120,14 @@ void HmmerSearchWorkerFactory::init() {
         " In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, p, a);
     QMap<QString, PropertyDelegate *> delegates;
+
+    {
+        QVariantMap filterByValues;
+        filterByValues[FILTER_BY_E_VALUE_STRING] = FILTER_BY_E_VALUE;
+        filterByValues[FILTER_BY_SCORE_STRING] = FILTER_BY_SCORE;
+        filterByValues[FILTER_BY_NONE_STRING] = FILTER_BY_NONE;
+        delegates[FILTER_BY_ATTR] = new ComboBoxDelegate(filterByValues);
+    }
 
     {
         QVariantMap eMap;
@@ -193,17 +220,18 @@ void HmmerSearchWorker::init() {
     seqPort->addComplement(output);
     output->addComplement(seqPort);
 
-    double domENum = actor->getParameter(DOM_E_ATTR)->getAttributeValue<double>(context);
-    if(domENum > 0) {
-        algoLog.details(tr("E-value threshold must be greater than zero. Using the default value: 10.0"));
-        domENum = 10;
+    QString filterBy = actor->getParameter(FILTER_BY_ATTR)->getAttributeValue<QString>(context);
+    if (filterBy == FILTER_BY_E_VALUE) {
+        cfg.domE = actor->getParameter(DOM_E_ATTR)->getAttributeValue<double>(context);
+        cfg.domT = HmmerSearchSettings::OPTION_NOT_SET;
+    } else if (filterBy == FILTER_BY_SCORE) {
+        cfg.domT = actor->getParameter(DOM_T_ATTR)->getAttributeValue<double>(context);
+        cfg.domE = HmmerSearchSettings::OPTION_NOT_SET;
+    } else {
+        cfg.domE = HmmerSearchSettings::OPTION_NOT_SET;
+        cfg.domT = HmmerSearchSettings::OPTION_NOT_SET;
     }
-    cfg.domE = domENum;
 
-    double domT = actor->getParameter(DOM_T_ATTR)->getAttributeValue<double>(context);
-    if (domT > 0) {
-        cfg.domT = domT;
-    }
     cfg.seed = actor->getParameter(SEED_ATTR)->getAttributeValue<int>(context);
     resultName = actor->getParameter(NAME_ATTR)->getAttributeValue<QString>(context);
     if (resultName.isEmpty()) {

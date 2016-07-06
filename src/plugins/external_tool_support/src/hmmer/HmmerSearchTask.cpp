@@ -166,7 +166,10 @@ QStringList HmmerSearchTask::getArguments() const {
         arguments << "-Z" << QString::number(settings.z);
     }
 
-    arguments << "--domE" << QString::number(settings.domE);
+    if (HmmerSearchSettings::OPTION_NOT_SET != settings.domE) {
+        arguments << "--domE" << QString::number(settings.domE);
+    }
+
     if (HmmerSearchSettings::OPTION_NOT_SET != settings.domT) {
         arguments << "--domT" << QString::number(settings.domT);
     }

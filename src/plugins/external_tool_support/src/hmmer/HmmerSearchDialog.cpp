@@ -116,6 +116,7 @@ void HmmerSearchDialog::getModelValues() {
         model.searchSettings.domE = pow(10.0, domESpinBox->value());
         model.searchSettings.domT = HmmerSearchSettings::OPTION_NOT_SET;
     } else if (useScoreTresholdsButton->isChecked()) {
+        model.searchSettings.domE = HmmerSearchSettings::OPTION_NOT_SET;
         if (useExplicitScoreTresholdButton->isChecked()) {
             model.searchSettings.domT = scoreTresholdDoubleSpin->value();
         } else if (useGATresholdsButton->isChecked()) {

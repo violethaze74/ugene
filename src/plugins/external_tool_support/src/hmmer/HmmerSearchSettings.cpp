@@ -31,7 +31,7 @@ HmmerSearchSettings::HmmerSearchSettings()
     : e(10.0),
       t(OPTION_NOT_SET),
       z(OPTION_NOT_SET),
-      domE(10.0),
+      domE(OPTION_NOT_SET),
       domT(OPTION_NOT_SET),
       domZ(OPTION_NOT_SET),
       useBitCutoffs(None),
@@ -51,7 +51,7 @@ bool HmmerSearchSettings::validate() const {
     CHECK(0 < e, false);
     CHECK(0 < t || OPTION_NOT_SET == t, false);
     CHECK(0 < z || OPTION_NOT_SET == z, false);
-    CHECK(0 < domE, false);
+    CHECK(0 < domE || OPTION_NOT_SET == domE, false);
     CHECK(0 < domT || OPTION_NOT_SET == domT, false);
     CHECK(0 < domZ || OPTION_NOT_SET == domZ, false);
     CHECK(0 <= seed, false);
