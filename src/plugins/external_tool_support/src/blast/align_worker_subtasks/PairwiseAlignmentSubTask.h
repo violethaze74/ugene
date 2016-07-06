@@ -32,6 +32,7 @@ namespace Workflow {
 
 class KAlignSubTask;
 
+//! to remove
 class PairwiseAlignmentTask : public Task {
     Q_OBJECT
 public:

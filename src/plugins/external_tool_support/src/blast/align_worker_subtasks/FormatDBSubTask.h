@@ -38,6 +38,8 @@ public:
                     DbiDataStorage *storage);
     void prepare();
 
+    QString getResultPath() const;
+
 private:
     const QString               referenceUrl;
     const SharedDbiDataHandler  referenceDbHandler;

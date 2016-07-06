@@ -38,6 +38,7 @@
 
 #include "AlignToReferenceBlastWorker.h"
 
+#include "align_worker_subtasks/BlastReadsSubTask.h"
 #include "align_worker_subtasks/FormatDBSubTask.h"
 #include "align_worker_subtasks/ComposeResultSubTask.h"
 
@@ -203,6 +204,7 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl,
       reference(reference),
       reads(reads),
       formatDbSubTask(NULL),
+      blastTask(NULL),
       composeSubTask(NULL),
       storage(storage),
       subTasksCount(0)
@@ -213,30 +215,27 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl,
 void AlignToReferenceBlastTask::prepare() {
     formatDbSubTask = new U2::Workflow::FormatDBSubTask(referenceUrl, reference, storage);
     addSubTask(formatDbSubTask);
-
-//    foreach (const SharedDbiDataHandler &read, reads) {
-//        PairwiseAlignmentTask *subTask = new PairwiseAlignmentTask(reference, read, storage);
-//        subTasks << subTask;
-//        subTask->setSubtaskProgressWeight(1.0f / (2 * reads.count()));
-//        addSubTask(subTask);
-//    }
-//    subTasksCount = subTasks.size();
 }
 
 QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
     CHECK(subTask != NULL, result);
 
-//    if (subTask == formatDbSubTask) {
-        // launch the custom
-//        QString dbPath = formatDbSubTask->ge
-//    }
-//    if (1 == subTasksCount) {
+    if (subTask == formatDbSubTask) {
+        CHECK(!formatDbSubTask->isCanceled() && !formatDbSubTask->hasError(), result);
+
+        // launch BLAST
+        QString dbPath = formatDbSubTask->getResultPath();
+        blastTask = new BlastReadsSubTask(dbPath, reads, storage);
+
+        result << blastTask;
+    } else if (subTask == blastTask) {
+        //! compose results
+
 //        composeSubTask = new ComposeResultSubTask(reference, reads, subTasks, storage);
 //        composeSubTask->setSubtaskProgressWeight(0.5f);
 //        result << composeSubTask;
-//    }
-//    subTasksCount--;
+    }
     return result;
 }
 

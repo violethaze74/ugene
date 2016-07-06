@@ -25,10 +25,11 @@
 #include <U2Lang/BaseDatasetWorker.h>
 #include <U2Lang/WorkflowUtils.h>
 
+
 namespace U2 {
 
-class AbstractAlignmentTaskFactory;
 namespace Workflow {
+class BlastReadsSubTask;
 class FormatDBSubTask;
 class PairwiseAlignmentTask;
 class ComposeResultSubTask;
@@ -36,6 +37,9 @@ class ComposeResultSubTask;
 
 namespace LocalWorkflow {
 
+/************************************************************************/
+/* AlignToReferenceBlastTask */
+/************************************************************************/
 class AlignToReferenceBlastTask : public Task {
     Q_OBJECT
 public:
@@ -54,6 +58,8 @@ private:
     const QList<SharedDbiDataHandler> reads;
 
     FormatDBSubTask* formatDbSubTask;
+    BlastReadsSubTask* blastTask;
+
     QList<U2::Workflow::PairwiseAlignmentTask*> subTasks;
     ComposeResultSubTask *composeSubTask;
     DbiDataStorage *storage;
@@ -62,6 +68,9 @@ private:
     int subTasksCount;
 };
 
+/************************************************************************/
+/* AlignToReferenceBlastPrompter */
+/************************************************************************/
 class AlignToReferenceBlastPrompter : public PrompterBase<AlignToReferenceBlastPrompter> {
     Q_OBJECT
 public:
@@ -71,6 +80,9 @@ protected:
     QString composeRichDoc();
 };
 
+/************************************************************************/
+/* AlignToReferenceBlastWorker */
+/************************************************************************/
 class AlignToReferenceBlastWorker : public BaseDatasetWorker {
     Q_OBJECT
 public:
@@ -90,6 +102,9 @@ private:
     SharedDbiDataHandler reference;
 };
 
+/************************************************************************/
+/* AlignToReferenceBlastWorkerFactory */
+/************************************************************************/
 class AlignToReferenceBlastWorkerFactory : public DomainFactory {
 public:
     AlignToReferenceBlastWorkerFactory();

@@ -16,6 +16,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/bigWigTools/BigWigSupport.h \
            src/bigWigTools/BedGraphToBigWigTask.h \
            src/bigWigTools/BedGraphToBigWigWorker.h \
+           src/blast/align_worker_subtasks/BlastReadsSubTask.h \
            src/blast/align_worker_subtasks/FormatDBSubTask.h \
            src/blast/align_worker_subtasks/ComposeResultSubTask.h \
            src/blast/align_worker_subtasks/PairwiseAlignmentSubTask.h \
@@ -197,6 +198,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/bigWigTools/BigWigSupport.cpp \
            src/bigWigTools/BedGraphToBigWigTask.cpp \
            src/bigWigTools/BedGraphToBigWigWorker.cpp \
+           src/blast/align_worker_subtasks/BlastReadsSubTask.cpp \
            src/blast/align_worker_subtasks/FormatDBSubTask.cpp \
            src/blast/align_worker_subtasks/ComposeResultSubTask.cpp \
            src/blast/align_worker_subtasks/PairwiseAlignmentSubTask.cpp \

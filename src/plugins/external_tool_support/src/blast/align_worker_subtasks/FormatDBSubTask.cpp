@@ -20,14 +20,16 @@
  */
 
 #include "FormatDBSubTask.h"
-#include "../FormatDBSupportTask.h"
+#include "blast/FormatDBSupport.h"
+#include "blast/FormatDBSupportTask.h"
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/L10n.h>
 
-
 #include <U2Lang/DbiDataStorage.h>
+
+#include <QDir>
 
 namespace U2 {
 namespace Workflow {
@@ -35,7 +37,7 @@ namespace Workflow {
 FormatDBSubTask::FormatDBSubTask(const QString &referenceUrl,
                                  const SharedDbiDataHandler &referenceDbHandler,
                                  DbiDataStorage *storage)
-    : Task("Format DB task wrapper", TaskFlags_FOSE_COSC),
+    : Task("Format DB task wrapper", TaskFlags_NR_FOSE_COSC),
       referenceUrl(referenceUrl),
       referenceDbHandler(referenceDbHandler),
       storage(storage)
@@ -57,10 +59,14 @@ void FormatDBSubTask::prepare() {
     settings.outputPath = ExternalToolSupportUtils::createTmpDir("align_to_ref", stateInfo);
     CHECK_OP(stateInfo, );
 
-    FormatDBSupportTask* formatTask = new FormatDBSupportTask("TEMP", settings);
+    FormatDBSupportTask* formatTask = new FormatDBSupportTask(ET_FORMATDB, settings);
     addSubTask(formatTask);
 
-    databaseNameAndPath = settings.outputPath + "TEMP";
+    databaseNameAndPath = settings.outputPath;
+}
+
+QString FormatDBSubTask::getResultPath() const {
+    return databaseNameAndPath;
 }
 
 } // namespace Workflow
