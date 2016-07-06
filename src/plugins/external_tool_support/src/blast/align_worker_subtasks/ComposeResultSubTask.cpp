@@ -49,7 +49,10 @@ namespace {
 /************************************************************************/
 /* ComposeResultSubTask */
 /************************************************************************/
-ComposeResultSubTask::ComposeResultSubTask(const SharedDbiDataHandler &reference, const QList<SharedDbiDataHandler> &reads, const QList<PairwiseAlignmentTask*> subTasks, DbiDataStorage *storage)
+ComposeResultSubTask::ComposeResultSubTask(const SharedDbiDataHandler &reference,
+                                           const QList<SharedDbiDataHandler> &reads,
+                                           const QList<PairwiseAlignmentTask*> subTasks,
+                                           DbiDataStorage *storage)
 : Task(tr("Compose alignment"), TaskFlags_FOSE_COSC), reference(reference), reads(reads), subTasks(subTasks), storage(storage)
 {
     tpm = Task::Progress_Manual;

@@ -226,7 +226,7 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 
         // launch BLAST
         QString dbPath = formatDbSubTask->getResultPath();
-        blastTask = new BlastReadsSubTask(dbPath, reads, storage);
+        blastTask = new BlastReadsSubTask(dbPath, reads, reference, storage);
 
         result << blastTask;
     } else if (subTask == blastTask) {

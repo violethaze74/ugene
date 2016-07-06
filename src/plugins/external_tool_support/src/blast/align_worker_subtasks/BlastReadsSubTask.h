@@ -30,7 +30,9 @@
 
 namespace U2 {
 
+class AbstractAlignmentTaskFactory;
 class BlastAllSupportTask;
+class PairwiseAlignmentTaskSettings;
 
 namespace Workflow {
 
@@ -42,12 +44,14 @@ class BlastReadsSubTask : public Task {
 public:
     BlastReadsSubTask(const QString& dbPath,
                       const QList<SharedDbiDataHandler> &reads,
+                      const SharedDbiDataHandler &reference,
                       DbiDataStorage *storage);
 
     void prepare();
 private:
     const QString dbPath;
     const QList<SharedDbiDataHandler> reads;
+    const SharedDbiDataHandler reference;
 
     DbiDataStorage *storage;
 };
@@ -60,21 +64,36 @@ class BlastAndSwReadTask : public Task {
 public:
     BlastAndSwReadTask(const QString& dbPath,
                        const SharedDbiDataHandler& read,
+                       const SharedDbiDataHandler &reference,
                        DbiDataStorage *storage);
 
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
     void run();
+
 private:
     QByteArray getRead();
+    U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
+    void createAlignment(const U2Region& refRegion);
+    void shiftGaps(QList<U2MsaGap> &gaps) const;
+
+    static AbstractAlignmentTaskFactory* getAbstractAlignmentTaskFactory(const QString &algoId, const QString &implId, U2OpStatus &os);
+    static PairwiseAlignmentTaskSettings* createSettings(DbiDataStorage *storage, const SharedDbiDataHandler &msa, U2OpStatus &os);
 
     const QString dbPath;
     const SharedDbiDataHandler read;
+    const SharedDbiDataHandler reference;
+
+    SharedDbiDataHandler msa;
+    qint64 offset;
+
     DbiDataStorage *storage;
 
     BlastAllSupportTask*    blastTask;
-
     QString blastResultDir;
+
+    QList<U2MsaGap> referenceGaps;
+    QList<U2MsaGap> readGaps;
 };
 
 } // namespace Workflow
