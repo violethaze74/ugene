@@ -106,6 +106,7 @@ private:
     QList<U2MsaGap> referenceGaps;
     QList<U2MsaGap> readGaps;
     QString initialReadName;
+    bool complement;
 };
 
 } // namespace Workflow

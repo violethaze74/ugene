@@ -176,7 +176,8 @@ U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData
     U2Region r;
     int maxIdentity = 0;
     foreach (const SharedAnnotationData& ann, blastAnnotations) {
-        // get constant
+        complement = ann->findFirstQualifierValue("hit_frame") != "direct";
+
         QString percentQualifier = ann->findFirstQualifierValue("identities");
         int annIdentity = percentQualifier.left(percentQualifier.indexOf('/')).toInt();
         if (annIdentity  > maxIdentity ) {
