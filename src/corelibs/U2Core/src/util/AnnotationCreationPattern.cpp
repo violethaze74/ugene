@@ -19,42 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
-#define _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
-
-#include <U2Core/PluginModel.h>
-#include <U2Core/ServiceModel.h>
-
-#include "ExternalToolManager.h"
+#include "AnnotationCreationPattern.h"
 
 namespace U2 {
-class ETSProjectViewItemsContoller;
 
-class ExternalToolSupportPlugin : public Plugin  {
-    Q_OBJECT
-public:
-    ExternalToolSupportPlugin();
-    ~ExternalToolSupportPlugin();
-
-private:
-    void registerSettingsController();
-    void registerWorkers();
-
-    ExternalToolManagerImpl validationManager;
-};
-
-class ExternalToolSupportService: public Service {
-    Q_OBJECT
-public:
-    ExternalToolSupportService();
-
-protected:
-    virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
-
-    ETSProjectViewItemsContoller*    projectViewController;
-};
+AnnotationCreationPattern::AnnotationCreationPattern()
+    : type(U2FeatureTypes::MiscFeature)
+{
 
 }
 
-
-#endif
+}   // namespace U2

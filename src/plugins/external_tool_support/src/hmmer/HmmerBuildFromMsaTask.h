@@ -19,42 +19,38 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
-#define _U2_EXTERNAL_TOOL_SUPPORT_PLUGIN_H_
+#ifndef _U2_HMMER_BUILD_FROM_MSA_TASK_H_
+#define _U2_HMMER_BUILD_FROM_MSA_TASK_H_
 
-#include <U2Core/PluginModel.h>
-#include <U2Core/ServiceModel.h>
+#include <U2Core/MAlignment.h>
 
-#include "ExternalToolManager.h"
+#include "HmmerBuildTask.h"
 
 namespace U2 {
-class ETSProjectViewItemsContoller;
 
-class ExternalToolSupportPlugin : public Plugin  {
+class HmmerBuildFromMsaTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    ExternalToolSupportPlugin();
-    ~ExternalToolSupportPlugin();
+    HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MAlignment &msa);
+
+    const QString & getHmmUrl() const;
 
 private:
-    void registerSettingsController();
-    void registerWorkers();
+    void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
+    QString generateReport() const;
 
-    ExternalToolManagerImpl validationManager;
+    void prepareWorkingDir();
+    void removeTempDir();
+
+    HmmerBuildSettings settings;
+    const MAlignment msa;
+
+    SaveAlignmentTask *saveTask;
+    HmmerBuildTask *hmmerTask;
+    bool removeWorkingDir;
 };
 
-class ExternalToolSupportService: public Service {
-    Q_OBJECT
-public:
-    ExternalToolSupportService();
+}   // namespace U2
 
-protected:
-    virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged);
-
-    ETSProjectViewItemsContoller*    projectViewController;
-};
-
-}
-
-
-#endif
+#endif // _U2_HMMER_BUILD_FROM_MSA_TASK_H_
