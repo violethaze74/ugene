@@ -264,7 +264,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "MSF entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment& ma = obj->getMAlignment();
+    const MultipleSequenceAlignment& ma = obj->getMultipleAlignment();
 
     //precalculate seq writing params
     int maxNameLen = 0, maLen = ma->getLength(), checkSum = 0;

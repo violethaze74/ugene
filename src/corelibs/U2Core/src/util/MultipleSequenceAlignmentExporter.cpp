@@ -53,7 +53,7 @@ MultipleSequenceAlignment MultipleSequenceAlignmentExporter::getAlignment(const 
 
     SAFE_POINT(rows.count() == sequences.count(), ROWS_SEQS_COUNT_MISMATCH_ERROR, MultipleSequenceAlignment());
 
-    MultipleSequenceAlignment al;
+    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData);
     for (int i = 0; i < rows.count(); ++i) {
         al->addRow(rows[i], sequences[i], os);
         CHECK_OP(os, MultipleSequenceAlignment());

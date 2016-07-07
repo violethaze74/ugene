@@ -31,7 +31,7 @@ MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *pa
       threshold(50),
       lessThenThreshold(false)
 {
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MsaModificationInfo &)), SLOT(sl_resetMap()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MaModificationInfo &)), SLOT(sl_resetMap()));
 }
 
 void MsaHighlightingSchemeConservation::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
@@ -76,7 +76,7 @@ void MsaHighlightingSchemeConservation::sl_resetMap() {
 void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharColumn) const {
     CHECK(!msaCharCountMap.contains(refCharColumn), );
     CharCountMap columnStatistic;
-    const MultipleSequenceAlignment &m = maObj->getMAlignment();
+    const MultipleSequenceAlignment &m = maObj->getMultipleAlignment();
     for (int row = m->getNumRows() - 1; row >= 0; row--) {
         char seqChar = m->charAt(row, refCharColumn);
         if (columnStatistic.contains(seqChar)) {

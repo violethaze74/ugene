@@ -43,7 +43,7 @@ public:
 };
 
 class MSAEditorUI;
-class MsaModificationInfo;
+class MaModificationInfo;
 class U2Region;
 
 class U2VIEW_EXPORT MSACollapsibleItemModel : public QObject {

@@ -335,7 +335,7 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObjec
     const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "Mega entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment& ma = obj->getMAlignment();
+    const MultipleSequenceAlignment& ma = obj->getMultipleAlignment();
 
     //write header
     QByteArray header;

@@ -46,7 +46,7 @@ enum DataState {
 class UpdatedWidgetInterface{
 public:
     virtual ~UpdatedWidgetInterface() {}
-    virtual void onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MsaModificationInfo& modInfo) = 0;
+    virtual void onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo) = 0;
     virtual void setSettings(const UpdatedWidgetSettings* settings) = 0;
     virtual QWidget* getWidget() = 0;
     virtual const UpdatedWidgetSettings& getSettings() const = 0;

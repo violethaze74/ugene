@@ -34,7 +34,7 @@
 namespace U2 {
 
 class MultipleSequenceAlignmentObject;
-class MsaModificationInfo;
+class MaModificationInfo;
 
 class U2VIEW_EXPORT MSAEditorUndoFramework : protected QUndoStack {
     Q_OBJECT
@@ -46,7 +46,7 @@ public:
     QAction* getRedoAction() const {return rAction;}
 
 public slots:
-    void sl_alignmentChanged(const MultipleSequenceAlignment& aliBefore, const MsaModificationInfo& modInfo);
+    void sl_alignmentChanged(const MultipleSequenceAlignment& aliBefore, const MaModificationInfo& modInfo);
     void sl_lockedStateChanged();
     void sl_completeStateChanged(bool complete);
 

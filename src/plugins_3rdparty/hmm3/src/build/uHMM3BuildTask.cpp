@@ -323,7 +323,7 @@ static QList< MultipleSequenceAlignment > getMalignments( const QList< GObject* 
     foreach( GObject* obj, objList ) {
         MultipleSequenceAlignmentObject* msaObj = qobject_cast< MultipleSequenceAlignmentObject* >( obj );
         assert( NULL != msaObj );
-        res << msaObj->getMAlignment();
+        res << msaObj->getMultipleAlignment();
     }
     return res;
 }

@@ -53,7 +53,7 @@ MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleSequenceAlignment
 
     checkUndoRedoEnabled();
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
                    SLOT(sl_alignmentChanged()));
     connect(maObj, SIGNAL(si_completeStateChanged(bool)), SLOT(sl_completeStateChanged(bool)));
     connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
@@ -117,8 +117,8 @@ void MsaUndoRedoFramework::sl_undo() {
     objDbi->undo(msaRef.entityId, os);
     SAFE_POINT_OP(os, );
 
-    MsaModificationInfo modInfo;
-    modInfo.type = MsaModificationType_Undo;
+    MaModificationInfo modInfo;
+    modInfo.type = MaModificationType_Undo;
     maObj->updateCachedMAlignment(modInfo);
 }
 
@@ -140,8 +140,8 @@ void MsaUndoRedoFramework::sl_redo() {
     objDbi->redo(msaRef.entityId, os);
     SAFE_POINT_OP(os, );
 
-    MsaModificationInfo modInfo;
-    modInfo.type = MsaModificationType_Redo;
+    MaModificationInfo modInfo;
+    modInfo.type = MaModificationType_Redo;
     maObj->updateCachedMAlignment(modInfo);
 }
 

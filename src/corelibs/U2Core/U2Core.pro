@@ -126,6 +126,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/gobjects/GObjectRelationRoles.h \
            src/gobjects/GObjectTypes.h \
            src/gobjects/GObjectUtils.h \
+           src/gobjects/MultipleAlignmentObject.h \
            src/gobjects/MultipleSequenceAlignmentObject.h \
            src/gobjects/PFMatrixObject.h \
            src/gobjects/PhyTreeObject.h \
@@ -335,6 +336,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/gobjects/GObjectRelationRoles.cpp \
            src/gobjects/GObjectTypes.cpp \
            src/gobjects/GObjectUtils.cpp \
+           src/gobjects/MultipleAlignmentObject.cpp \
            src/gobjects/MultipleSequenceAlignmentObject.cpp \
            src/gobjects/PFMatrixObject.cpp \
            src/gobjects/PhyTreeObject.cpp \

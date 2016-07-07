@@ -253,8 +253,8 @@ Task::ReportResult GTest_CompareMAlignment::report() {
     for (int i=0;i<listSize;i++) {
         MultipleSequenceAlignmentObject* ma1 = qobject_cast<MultipleSequenceAlignmentObject*>(objs1.at(i));
         MultipleSequenceAlignmentObject* ma2 = qobject_cast<MultipleSequenceAlignmentObject*>(objs2.at(i));
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMAlignment()->getMsaRows();
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMAlignment()->getMsaRows();
+        const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMultipleAlignment()->getMsaRows();
+        const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMultipleAlignment()->getMsaRows();
         if(ma1->objectName()!=ma2->objectName()) {
             stateInfo.setError(  QString("MAlignmentObjects name not matched \"%1\", expected \"%2\"").arg(ma1->objectName()).arg(ma2->objectName()) );
             return ReportResult_Finished;
@@ -388,7 +388,7 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
     if (hasError()) {
         return ReportResult_Finished;
     }
-    const MultipleSequenceAlignment &ma = aliObj->getMAlignment();
+    const MultipleSequenceAlignment &ma = aliObj->getMultipleAlignment();
     if (ma->getLength()!=resultAliLen) {
         stateInfo.setError(  QString("result alignment length notmatches: %1, expected: %2").arg(ma->getLength()).arg(resultAliLen) );
         return ReportResult_Finished;
@@ -555,7 +555,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        muscleTask = new MuscleTask(ma1->getMAlignment(),config);
+        muscleTask = new MuscleTask(ma1->getMultipleAlignment(),config);
         res << muscleTask;
         this->connect(muscleTask,SIGNAL(si_progressChanged()),SLOT(sl_muscleProgressChg()));
     }
@@ -567,7 +567,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
 
         MuscleTask * localMuscle = qobject_cast<MuscleTask*>( subTask );
         assert( NULL != localMuscle );
-        ma1->setMAlignment( localMuscle->resultMA );
+        ma1->setMultipleAlignment( localMuscle->resultMA );
 
     }
     else if (subTask == loadTask2) {
@@ -604,7 +604,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
 }
 
 void GTest_Muscle_Load_Align_QScore::run() {
-    double qscore = QScore(ma1->getMAlignment(), ma2->getMAlignment(), stateInfo);
+    double qscore = QScore(ma1->getMultipleAlignment(), ma2->getMultipleAlignment(), stateInfo);
     if(stateInfo.hasError()) {
         return;
     }
@@ -699,7 +699,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        muscleTask = new MuscleTask(ma1->getMAlignment(),config);
+        muscleTask = new MuscleTask(ma1->getMultipleAlignment(),config);
 
         res << muscleTask;
         this->connect(muscleTask,SIGNAL(si_progressChanged()),SLOT(sl_muscleProgressChg()));
@@ -711,7 +711,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         }
         MuscleTask * localMuscle = qobject_cast<MuscleTask*>( subTask );
         assert( NULL != localMuscle );
-        ma1->setMAlignment( localMuscle->resultMA );
+        ma1->setMultipleAlignment( localMuscle->resultMA );
 
     }
     else if (subTask == loadTask2) {
@@ -749,8 +749,8 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 
 void Muscle_Load_Align_Compare_Task::run() {
 
-    const QList<MultipleSequenceAlignmentRow> &alignedSeqs1 = ma1->getMAlignment()->getMsaRows();
-    const QList<MultipleSequenceAlignmentRow> &alignedSeqs2 = ma2->getMAlignment()->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> &alignedSeqs1 = ma1->getMultipleAlignment()->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> &alignedSeqs2 = ma2->getMultipleAlignment()->getMsaRows();
 
     foreach(const MultipleSequenceAlignmentRow &maItem1, alignedSeqs1) {
         bool nameFound = false;

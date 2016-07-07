@@ -203,7 +203,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
         MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
         SAFE_POINT(newMAligmentObject!=NULL, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
-        resultMA=newMAligmentObject->getMAlignment();
+        resultMA=newMAligmentObject->getMultipleAlignment();
         bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT( renamed, "Failed to restore initial row names!", res);
 
@@ -245,8 +245,8 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                                 alObj->removeRow(i);
                             }
                         }
-                        MsaModificationInfo mi;
-                        mi.sequenceContentChanged = false;
+                        MaModificationInfo mi;
+                        mi.rowContentChanged = false;
                         alObj->updateCachedMAlignment(mi);
                     }
 
@@ -358,14 +358,14 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        clustalOSupportTask=new ClustalOSupportTask(mAObject->getMAlignment(), GObjectReference(), settings);
+        clustalOSupportTask=new ClustalOSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
         res.append(clustalOSupportTask);
     }
     else if (subTask == clustalOSupportTask) {
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->copyGapModel(clustalOSupportTask->resultMA->getMsaRows());
+        mAObject->updateGapModel(clustalOSupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

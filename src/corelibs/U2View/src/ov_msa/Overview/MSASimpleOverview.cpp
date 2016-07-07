@@ -148,7 +148,7 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
 
     MultipleSequenceAlignmentObject* mAlignmentObj = editor->getMSAObject();
     SAFE_POINT(NULL != mAlignmentObj, tr("Incorrect multiple alignment object!"), );
-    const MultipleSequenceAlignment &mAlignment = mAlignmentObj->getMAlignment();
+    const MultipleSequenceAlignment &mAlignment = mAlignmentObj->getMultipleAlignment();
 
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {

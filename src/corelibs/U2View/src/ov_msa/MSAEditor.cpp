@@ -861,7 +861,7 @@ void MSAEditor::updateReference(){
 }
 
 QString MSAEditor::getReferenceRowName() const {
-    const MultipleSequenceAlignment &alignment = getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment &alignment = getMSAObject()->getMultipleAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
     return (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq)

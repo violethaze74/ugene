@@ -126,8 +126,8 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
         SAFE_POINT(NULL != alObj2.data(), "NULL MSA Object!", false);
 
 
-        const MultipleSequenceAlignment &al1 = alObj1->getMAlignment();
-        const MultipleSequenceAlignment &al2 = alObj2->getMAlignment();
+        const MultipleSequenceAlignment &al1 = alObj1->getMultipleAlignment();
+        const MultipleSequenceAlignment &al2 = alObj2->getMultipleAlignment();
 
         if (GroupOperations::BY_NAME() == groupOp) {
             return al1->getName() == al2->getName();
@@ -335,7 +335,7 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     SharedDbiDataHandler newAlId = newData.value<SharedDbiDataHandler>();
     QScopedPointer<MultipleSequenceAlignmentObject> newAlObj(StorageUtils::getMsaObject(context->getDataStorage(), newAlId));
     SAFE_POINT(NULL != newAlObj.data(), "NULL MSA Object!", false);
-    const MultipleSequenceAlignment &newAl = newAlObj->getMAlignment();
+    const MultipleSequenceAlignment &newAl = newAlObj->getMultipleAlignment();
 
     if (!started) {
         QString name;

@@ -178,7 +178,7 @@ Task* ClustalOWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment &msa = msaObj->getMultipleAlignment();
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalO.").arg(msa->getName()));

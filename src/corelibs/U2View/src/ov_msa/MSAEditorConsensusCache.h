@@ -32,7 +32,7 @@ namespace U2 {
 
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
-class MsaModificationInfo;
+class MaModificationInfo;
 class MultipleSequenceAlignmentObject;
 class U2OpStatus;
 
@@ -55,7 +55,7 @@ public:
 
     QByteArray getConsensusLine(bool withGaps);
 private slots:
-    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&);
+    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&);
     void sl_thresholdChanged(int newValue);
     void sl_invalidateAlignmentObject();
 

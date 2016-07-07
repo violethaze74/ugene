@@ -146,7 +146,7 @@ void uHMMPlugin::sl_build() {
             if (av!=NULL) {
                 MultipleSequenceAlignmentObject* maObj = av->getMSAObject();
                 if (maObj!=NULL) {
-                    ma = maObj->getMAlignment();
+                    ma = maObj->getMultipleAlignment();
                     profileName = maObj->getGObjectName() == MA_OBJECT_NAME ? maObj->getDocument()->getName() : maObj->getGObjectName();
                 }
             }
@@ -242,7 +242,7 @@ void HMMMSAEditorContext::sl_build() {
     MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
     if (obj) {
         QString profileName = obj->getGObjectName() == MA_OBJECT_NAME ? obj->getDocument()->getName() : obj->getGObjectName();
-        QObjectScopedPointer<HMMBuildDialogController> d = new HMMBuildDialogController(profileName, obj->getMAlignment());
+        QObjectScopedPointer<HMMBuildDialogController> d = new HMMBuildDialogController(profileName, obj->getMultipleAlignment());
         d->exec();
         CHECK(!d.isNull(), );
     }

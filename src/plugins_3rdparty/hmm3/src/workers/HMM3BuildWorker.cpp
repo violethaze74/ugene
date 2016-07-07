@@ -148,7 +148,7 @@ Task* HMM3BuildWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment &msa = msaObj->getMAlignment();
+        const MultipleSequenceAlignment &msa = msaObj->getMultipleAlignment();
         
         Task* t = new UHMM3BuildTask(cfg, msa);
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));

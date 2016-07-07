@@ -357,14 +357,14 @@ QList<Task*> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        mAFFTSupportTask = new MAFFTSupportTask(mAObject->getMAlignment(), GObjectReference(), settings);
+        mAFFTSupportTask = new MAFFTSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
         res.append(mAFFTSupportTask);
     }
     else if (subTask == mAFFTSupportTask) {
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->copyGapModel(mAFFTSupportTask->resultMA->getMsaRows());
+        mAObject->updateGapModel(mAFFTSupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

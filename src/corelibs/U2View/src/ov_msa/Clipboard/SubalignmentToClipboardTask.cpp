@@ -86,7 +86,7 @@ QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MSAEditor *context,
         if (m->rowToMap(i, true) < 0) {
             continue;
         }
-        names.append(msaObj->getMAlignment()->getRow(i)->getName());
+        names.append(msaObj->getMultipleAlignment()->getRow(i)->getName());
     }
     return names;
 }
@@ -190,12 +190,12 @@ void RichTextMsaClipboardTask::run(){
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
 
-    const MultipleSequenceAlignment &msa = obj->getMAlignment();
+    const MultipleSequenceAlignment &msa = obj->getMultipleAlignment();
     U2OpStatusImpl os;
     const int refSeq = msa->getRowIndexByRowId(context->getReferenceRowId(), os);
 
     result.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toLatin1());
-        const MultipleSequenceAlignment& ma = obj->getMAlignment();
+        const MultipleSequenceAlignment& ma = obj->getMultipleAlignment();
         int numRows = ma->getNumRows();
         for (int seq = 0; seq < numRows; seq++){
             QString res;

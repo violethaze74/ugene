@@ -112,7 +112,7 @@ MultipleSequenceAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus &os) {
         os.setError(tr("Error with msa object"));
         return MultipleSequenceAlignment();
     }
-    return obj->getMAlignment();
+    return obj->getMultipleAlignment();
 }
 
 ///////////////////////////////////////////////////////////////////////

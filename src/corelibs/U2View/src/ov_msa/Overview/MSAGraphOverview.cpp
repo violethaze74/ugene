@@ -67,7 +67,7 @@ MSAGraphOverview::MSAGraphOverview(MSAEditorUI *ui)
     connect(&graphCalculationTaskRunner,    SIGNAL(si_finished()),
                                             SLOT(sl_redraw()));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MsaModificationInfo)),
+    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)),
                                     SLOT(sl_drawGraph()));
 
     connect(ui, SIGNAL(si_startMsaChanging()),
@@ -280,7 +280,7 @@ void MSAGraphOverview::sl_unblockRendering(bool update) {
         this->update();
     }
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MsaModificationInfo)),
+    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)),
             SLOT(sl_drawGraph()));
 }
 

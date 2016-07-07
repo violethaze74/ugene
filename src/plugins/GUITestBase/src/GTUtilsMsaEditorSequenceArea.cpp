@@ -243,7 +243,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getNameList(HI::GUITestOpStatus &os) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR_RESULT(editor != NULL, "MsaEditor not found", QStringList());
 
-    QStringList result = editor->getMSAObject()->getMAlignment()->getRowNames();
+    QStringList result = editor->getMSAObject()->getMultipleAlignment()->getRowNames();
 
     return result;
 }

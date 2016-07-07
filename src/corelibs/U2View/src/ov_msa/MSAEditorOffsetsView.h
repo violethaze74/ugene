@@ -31,7 +31,7 @@ namespace U2 {
 class MSAEditor;
 class MSAEditorOffsetsViewWidget;
 class MSAEditorSequenceArea;
-class MsaModificationInfo;
+class MaModificationInfo;
 class MultipleSequenceAlignmentObject;
 
 class MSAEditorOffsetsViewController : public QObject {
@@ -46,7 +46,7 @@ public:
     bool eventFilter(QObject* o, QEvent* e);
 
 private slots:
-    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&);
+    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&);
     void sl_startChanged(const QPoint& , const QPoint& );
     void sl_fontChanged();
     void sl_modelChanged();

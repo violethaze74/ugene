@@ -143,7 +143,7 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
 
     MultipleSequenceAlignmentObject *obj = prepareSequenceHeadersList(list, useGenbankHeader, dnaList, nameList);
     if (NULL != obj) {
-        return obj->getMAlignment();
+        return obj->getMultipleAlignment();
     }
 
     MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MA_OBJECT_NAME));

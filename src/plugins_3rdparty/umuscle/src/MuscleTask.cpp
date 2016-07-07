@@ -315,7 +315,7 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
         QList<GObject*> maObjects = loadTask->getDocument()->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!maObjects.isEmpty()) {
             MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(maObjects.first());
-            s.profile = maObj->getMAlignment();
+            s.profile = maObj->getMultipleAlignment();
         }
     }
 
@@ -396,7 +396,7 @@ void MuscleGObjectTask::prepare() {
 
     lock = new StateLock(MUSCLE_LOCK_REASON);
     obj->lockState(lock);
-    muscleTask = new MuscleTask(obj->getMAlignment(), config);
+    muscleTask = new MuscleTask(obj->getMultipleAlignment(), config);
 
     addSubTask(muscleTask);
 }
@@ -436,7 +436,7 @@ Task::ReportResult MuscleGObjectTask::report() {
             return ReportResult_Finished;
         }
 
-        obj->setMAlignment(muscleTask->resultMA);
+        obj->setMultipleAlignment(muscleTask->resultMA);
     }
     else if (config.op == MuscleTaskOp_Align || config.op == MuscleTaskOp_Refine) {
         QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(muscleTask->inputMA, muscleTask->resultMA, stateInfo);
@@ -478,7 +478,7 @@ Task::ReportResult MuscleGObjectTask::report() {
             return ReportResult_Finished;
         }
 
-        obj->setMAlignment(muscleTask->resultMA);
+        obj->setMultipleAlignment(muscleTask->resultMA);
     }
 
     return ReportResult_Finished;

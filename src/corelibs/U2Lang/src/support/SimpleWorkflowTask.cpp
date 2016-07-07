@@ -149,7 +149,7 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
     U2OpStatus2Log os;
     userModStep = new U2UseCommonUserModStep(obj->getEntityRef(), os);
 
-    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames( obj->getMAlignment() );
+    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames( obj->getMultipleAlignment() );
 
     MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os,);
@@ -200,10 +200,10 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
     CHECK_EXT(!obj->isStateLocked(), releaseModStep(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);
 
     MultipleSequenceAlignment res = getResult();
-    const MultipleSequenceAlignment &originalAlignment = obj->getMAlignment();
+    const MultipleSequenceAlignment &originalAlignment = obj->getMultipleAlignment();
     MSAUtils::restoreRowNames(res, originalAlignment->getRowNames());
     res->setName(originalAlignment->getName());
-    obj->setMAlignment(res);
+    obj->setMultipleAlignment(res);
 
     releaseModStep();
 
@@ -228,7 +228,7 @@ MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
     MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first());
     CHECK_EXT(maObj!=NULL, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
-    return maObj->getMAlignment();
+    return maObj->getMultipleAlignment();
 }
 
 

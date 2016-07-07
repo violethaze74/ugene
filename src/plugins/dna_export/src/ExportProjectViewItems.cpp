@@ -425,7 +425,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     }
     GObject* obj = set.first();
     MultipleSequenceAlignmentObject* maObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    const MultipleSequenceAlignment& ma = maObject->getMAlignment();
+    const MultipleSequenceAlignment& ma = maObject->getMultipleAlignment();
 
     QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();

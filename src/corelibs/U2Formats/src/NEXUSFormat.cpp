@@ -888,7 +888,7 @@ void NEXUSFormat::storeObjects( QList<GObject*> objects, bool simpleNames, IOAda
         MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*> (object);
         PhyTreeObject *pto = qobject_cast<PhyTreeObject*> (object);
         if (mao) {
-            writeMAligment(mao->getMAlignment(), simpleNames, io, ti);
+            writeMAligment(mao->getMultipleAlignment(), simpleNames, io, ti);
             io->writeBlock(QByteArray("\n"));
         } else if (pto) {
             writePhyTree(pto->getTree(), pto->getGObjectName(), io, ti);

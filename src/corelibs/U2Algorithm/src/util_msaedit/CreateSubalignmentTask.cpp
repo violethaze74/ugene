@@ -74,7 +74,7 @@ void CreateSubalignmentTask::prepare() {
         resultDocument = dfd->createNewLoadedDocument(iof, cfg.url, stateInfo, hints);
         CHECK_OP(stateInfo, );
 
-        MultipleSequenceAlignment msa = origMAObj->getMAlignment();
+        MultipleSequenceAlignment msa = origMAObj->getMultipleAlignment();
         resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
         resultMAObj->setGHints(new GHintsDefaultImpl(origMAObj->getGHintsMap()));

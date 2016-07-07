@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class MsaModificationInfo;
+class MaModificationInfo;
 class MSAEditor;
 
 class MSAGeneralTab : public QWidget, public Ui_GeneralTabOptionsPanelWidget {
@@ -44,7 +44,7 @@ signals:
     void si_copyFormatted();
 
 public slots:
-    void sl_alignmentChanged(const MultipleSequenceAlignment& al, const MsaModificationInfo& modInfo);
+    void sl_alignmentChanged(const MultipleSequenceAlignment& al, const MaModificationInfo& modInfo);
     void sl_algorithmChanged(const QString& algoId);
     void sl_thresholdChanged(int value);
     void sl_algorithmSelectionChanged(int index);

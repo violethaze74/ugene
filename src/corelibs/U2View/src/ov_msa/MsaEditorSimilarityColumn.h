@@ -73,7 +73,7 @@ signals:
     void si_dataStateChanged(DataState newState);
 private slots:
 
-    void onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MsaModificationInfo& modInfo);
+    void onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo);
     void sl_createMatrixTaskFinished(Task*);
 private:
     void sl_buildStaticMenu(GObjectView*, QMenu*) {}
@@ -118,7 +118,7 @@ public:
     const UpdatedWidgetSettings* getSettings() const {return settings;}
 
 private slots:
-    void sl_onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MsaModificationInfo& modInfo);
+    void sl_onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo);
     void sl_onUpdateButonPressed();
     void sl_onDataStateChanged(DataState newState);
     void sl_onFontChanged(const QFont&);

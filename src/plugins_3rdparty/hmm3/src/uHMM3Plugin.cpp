@@ -133,7 +133,7 @@ void UHMM3Plugin::sl_buildProfile() {
             if( NULL != av ) {
                 MultipleSequenceAlignmentObject* maObj = av->getMSAObject();
                 if (maObj != NULL)
-                    ma = maObj->getMAlignment();
+                    ma = maObj->getMultipleAlignment();
             }
         }
     }
@@ -227,7 +227,7 @@ void UHMM3MSAEditorContext::sl_build() {
     assert( NULL != ed );
     MultipleSequenceAlignmentObject * obj = ed->getMSAObject(); 
     if (obj != NULL) {
-        QObjectScopedPointer<UHMM3BuildDialogImpl> buildDlg = new UHMM3BuildDialogImpl( obj->getMAlignment() );
+        QObjectScopedPointer<UHMM3BuildDialogImpl> buildDlg = new UHMM3BuildDialogImpl( obj->getMultipleAlignment() );
         buildDlg->exec();
         CHECK(!buildDlg.isNull(), );
     }

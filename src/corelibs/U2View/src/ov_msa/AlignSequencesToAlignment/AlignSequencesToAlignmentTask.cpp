@@ -89,7 +89,7 @@ void SequenceObjectsExtractor::extractSequencesFromObjects(const QList<GObject*>
             checkAlphabet(curObj->getAlphabet(), curObj->getGObjectName());
             sequencesMaxLength = qMax(sequencesMaxLength, curObj->getLength());
 
-            foreach(const MultipleAlignmentRow& row, curObj->getMAlignment()->getRows()) {
+            foreach(const MultipleAlignmentRow& row, curObj->getMultipleAlignment()->getRows()) {
                 U2EntityRef seqRef(curObj->getEntityRef().dbiRef, row->getRowDbInfo().dataObjectId);
                 sequenceRefs << seqRef;
                 sequenceNames << row->getName();
@@ -267,7 +267,7 @@ void AlignSequencesToAlignmentTask::fillSettingsByDefault() {
     AlignmentAlgorithmsRegistry* alignmentRegistry = AppContext::getAlignmentAlgorithmsRegistry();
     SAFE_POINT(NULL != alignmentRegistry, "AlignmentAlgorithmsRegistry is NULL.", );
     if(alignmentRegistry->getAvailableAlgorithmIds(AddToAlignment).contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT) 
-        && maObj->getMAlignment()->getNumRows() != 0) {
+        && maObj->getMultipleAlignment()->getNumRows() != 0) {
         settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
     } else {
         settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
@@ -293,9 +293,9 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 
         delete docStateLock;
     }
-    MsaModificationInfo mi;
+    MaModificationInfo mi;
     mi.alphabetChanged = extr.getAlphabet()->getId() != initialMsaAlphabet->getId();
-    mi.sequenceListChanged = true;
+    mi.rowListChanged = true;
     if(!hasError() && !isCanceled()) {
         maObj->updateCachedMAlignment(mi);
     }

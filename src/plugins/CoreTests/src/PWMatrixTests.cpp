@@ -159,7 +159,7 @@ Task::ReportResult GTest_PFMCreateTest::report() {
             return ReportResult_Finished;
         }
         MultipleSequenceAlignmentObject * myAlign = (MultipleSequenceAlignmentObject*)list.first();
-        const MultipleSequenceAlignment &al = myAlign->getMAlignment();
+        const MultipleSequenceAlignment &al = myAlign->getMultipleAlignment();
         PFMatrix pfm(al, type);
         for (int i = 0, n = (type == PFM_MONONUCLEOTIDE) ? 4 : 16; i < n; i++) {
             for (int j = 0, nn = (type == PFM_MONONUCLEOTIDE) ? length : length - 1; j < nn; j++) {
@@ -329,7 +329,7 @@ Task::ReportResult GTest_PWMCreateTest::report() {
             return ReportResult_Finished;
         }
         MultipleSequenceAlignmentObject * myAlign = (MultipleSequenceAlignmentObject*)list.first();
-        const MultipleSequenceAlignment &al = myAlign->getMAlignment();
+        const MultipleSequenceAlignment &al = myAlign->getMultipleAlignment();
 
         PFMatrix pfm(al, pftype);
         pwm = algorithm->convert(pfm);

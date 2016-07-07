@@ -37,8 +37,8 @@ MSAEditorUndoFramework::MSAEditorUndoFramework(QObject* p, MultipleSequenceAlign
 : QUndoStack(p), maObj(ma), lastSavedObjectVersion(0), maxMemUse(20*1024*1024), stateComplete(true)
 {
     if (maObj!=NULL) {
-        connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
-                       SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
+        connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
+                       SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)));
         connect(maObj, SIGNAL(si_completeStateChanged(bool)), SLOT(sl_completeStateChanged(bool)));
         connect(maObj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     }
@@ -75,7 +75,7 @@ void MSAEditorUndoFramework::applyUndoRedoAction(const MultipleSequenceAlignment
     if (maObj) {
         assert(!maObj->isStateLocked());
         lastSavedObjectVersion = maObj->getModificationVersion()+1;
-        maObj->setMAlignment(ma);
+        maObj->setMultipleAlignment(ma);
     }
 }
 
@@ -83,9 +83,9 @@ void MSAEditorUndoFramework::sl_completeStateChanged(bool _stateCompele){
     stateComplete = _stateCompele;
 }
 
-void MSAEditorUndoFramework::sl_alignmentChanged(const MultipleSequenceAlignment& maBefore, const MsaModificationInfo& mi) {
+void MSAEditorUndoFramework::sl_alignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& mi) {
     if (maObj == NULL || lastSavedObjectVersion == maObj->getModificationVersion() ||
-            ((maBefore->getRows() == maObj->getMAlignment()->getRows()) && (maBefore->getRowNames() == maObj->getMAlignment()->getRowNames())))
+            ((maBefore->getRows() == maObj->getMultipleAlignment()->getRows()) && (maBefore->getRowNames() == maObj->getMultipleAlignment()->getRowNames())))
     {
         return;
     }
@@ -93,7 +93,7 @@ void MSAEditorUndoFramework::sl_alignmentChanged(const MultipleSequenceAlignment
     if(!stateComplete){return;}
 
     lastSavedObjectVersion = maObj->getModificationVersion();
-    const MultipleSequenceAlignment& maAfter = maObj->getMAlignment();
+    const MultipleSequenceAlignment& maAfter = maObj->getMultipleAlignment();
     int memUseBefore = 0;
     int cntBefore = count();
     for (int i=0; i < cntBefore;i++) {

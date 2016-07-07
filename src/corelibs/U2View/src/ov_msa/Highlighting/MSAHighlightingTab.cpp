@@ -171,7 +171,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_customSchemesListChanged()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
-    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MsaModificationInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
+    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
 
     connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));

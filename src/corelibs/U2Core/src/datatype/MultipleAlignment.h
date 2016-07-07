@@ -221,6 +221,8 @@ public:
     /** Arranges rows in lists order*/
     bool sortRowsByList(const QStringList &order);
 
+    bool isGap(int row, int pos) const;
+
     static const char GapChar;
 
 protected:

@@ -386,7 +386,7 @@ void EvaluateBaseContentTask::run() {
     } else if (_obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
         MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(_obj);
         alp = maObj->getAlphabet();
-        DNASequenceGenerator::evaluateBaseContent(maObj->getMAlignment(), result);
+        DNASequenceGenerator::evaluateBaseContent(maObj->getMultipleAlignment(), result);
     } else {
         stateInfo.setError(tr("Base content can be evaluated for sequence or sequence alignment"));
     }

@@ -140,7 +140,7 @@ static MultipleSequenceAlignment getAlignment(QScriptContext *ctx, QScriptEngine
     SharedDbiDataHandler msaId = ScriptEngineUtils::getDbiId(engine, ctx->argument(argNum));
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(wse->getWorkflowContext()->getDataStorage(), msaId));
     CHECK(!msaObj.isNull(), MultipleSequenceAlignment());
-    return msaObj->getMAlignment();
+    return msaObj->getMultipleAlignment();
 }
 
 static QScriptValue putSequence(QScriptEngine *engine, const DNASequence &seq) {

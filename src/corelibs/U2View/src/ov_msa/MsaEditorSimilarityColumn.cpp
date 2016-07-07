@@ -62,7 +62,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
         return tr("-");
     }
 
-    const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMultipleAlignment();
     const qint64 referenceRowId = editor->getReferenceRowId();
     if(MultipleAlignmentRowData::INVALID_ROW_ID == referenceRowId) {
         return tr("-");
@@ -79,7 +79,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
 }
 
 QString MsaEditorSimilarityColumn::getSeqName(int s) {
-    const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMultipleAlignment();
 
     return ma->getRowNames().at(s);
 }
@@ -129,7 +129,7 @@ void MsaEditorSimilarityColumn::updateDistanceMatrix() {
     createDistanceMatrixTaskRunner.run( createDistanceMatrixTask );
 }
 
-void MsaEditorSimilarityColumn::onAlignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&) {
+void MsaEditorSimilarityColumn::onAlignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&) {
     if(autoUpdate) {
         state = DataIsBeingUpdated;
         updateDistanceMatrix();
@@ -175,7 +175,7 @@ void CreateDistanceMatrixTask::prepare() {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
 
-    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.ma->getMAlignment());
+    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.ma->getMultipleAlignment());
     //connect(s.ma, SIGNAL(si_rowsAdded()), algo, SLOT(sl_addEmptyDistanceRow()));
     CHECK(NULL != algo,);
     addSubTask(algo);
@@ -202,8 +202,8 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(UpdatedWidg
     SAFE_POINT(NULL != _contentWidget, QString("Argument is NULL in constructor MsaEditorAlignmentDependentWidget()"),);
 
     settings = &contentWidget->getSettings();
-    connect(settings->ma, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
-        this, SLOT(sl_onAlignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
+    connect(settings->ma, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
+        this, SLOT(sl_onAlignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)));
     connect(dynamic_cast<QObject*>(contentWidget), SIGNAL(si_dataStateChanged(DataState)),
         this, SLOT(sl_onDataStateChanged(DataState)));
     connect(settings->ui->getEditor(), SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_onFontChanged(const QFont&)));
@@ -248,7 +248,7 @@ void MsaEditorAlignmentDependentWidget::setSettings(const UpdatedWidgetSettings*
     nameWidget.setText(contentWidget->getHeaderText());
 }
 
-void MsaEditorAlignmentDependentWidget::sl_onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MsaModificationInfo& modInfo) {
+void MsaEditorAlignmentDependentWidget::sl_onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo) {
     contentWidget->onAlignmentChanged(maBefore, modInfo);
 }
 

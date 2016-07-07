@@ -45,7 +45,7 @@ MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *pare
     colorsByRange[2] = QColor("#CCCCFF");
     colorsByRange[3] = QColor();
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MsaModificationInfo &)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemePercentageIdentity::getColor(int /*seq*/, int pos, char c) const {
@@ -72,7 +72,7 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     if (cacheVersion == objVersion) {
         return;
     }
-    const MultipleSequenceAlignment& ma = maObj->getMAlignment();
+    const MultipleSequenceAlignment& ma = maObj->getMultipleAlignment();
     int aliLen = ma->getLength();
     indentCache.resize(aliLen);
     for (int i = 0; i < aliLen; i++) {

@@ -32,8 +32,8 @@ MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MultipleSequenceAli
 {
     setConsensusAlgorithm(factory);
 
-    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)),
-        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&)));
+    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)));
     connect(aliObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_invalidateAlignmentObject()));
 
     curCacheSize = aliObj->getLength();
@@ -49,12 +49,12 @@ MSAEditorConsensusCache::~MSAEditorConsensusCache() {
 void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory) {
     delete algorithm;
     algorithm = NULL;
-    algorithm = factory->createAlgorithm(aliObj->getMAlignment());
+    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment());
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);
 }
 
-void MSAEditorConsensusCache::sl_alignmentChanged(const MultipleSequenceAlignment&, const MsaModificationInfo&) {
+void MSAEditorConsensusCache::sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&) {
     if(curCacheSize != aliObj->getLength()) {
         curCacheSize = aliObj->getLength();
         updateMap.resize(curCacheSize);
@@ -65,7 +65,7 @@ void MSAEditorConsensusCache::sl_alignmentChanged(const MultipleSequenceAlignmen
 
 void MSAEditorConsensusCache::updateCacheItem(int pos) {
     if(!updateMap.at(pos) && aliObj != NULL) {
-        const MultipleSequenceAlignment& ma = aliObj->getMAlignment();
+        const MultipleSequenceAlignment& ma = aliObj->getMultipleAlignment();
         QString errorMessage = tr("Can not update consensus chache item");
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage,);
         SAFE_POINT(curCacheSize == ma->getLength(), errorMessage,);
@@ -96,7 +96,7 @@ int MSAEditorConsensusCache::getConsensusCharPercent(int pos) {
 
 QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
     QByteArray res;
-    const MultipleSequenceAlignment& ma = aliObj->getMAlignment();
+    const MultipleSequenceAlignment& ma = aliObj->getMultipleAlignment();
     for (int i=0, n = ma->getLength(); i<n; i++) {
         char c = getConsensusChar(i);
         if (c!=MAlignment_GapChar || withGaps) {

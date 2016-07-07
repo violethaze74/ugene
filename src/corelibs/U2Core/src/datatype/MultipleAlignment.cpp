@@ -622,6 +622,10 @@ bool MultipleAlignmentData::sortRowsByList(const QStringList &rowsOrder) {
     return true;
 }
 
+bool MultipleAlignmentData::isGap(int row, int pos) const {
+    return rows[row]->isGap(pos);
+}
+
 void MultipleAlignmentData::copy(const MultipleAlignmentData &other) {
     clear();
 
