@@ -98,7 +98,7 @@ void PassFilterWorkerFactory::init() {
 
     Descriptor passVals(BaseSlots::TEXT_SLOT().getId(),
         PassFilterWorker::tr("Filter by value(s)"),
-        PassFilterWorker::tr("Semicolon-separated list of values used to filter the input data."));
+        PassFilterWorker::tr("Comma-separated list of values used to filter the input data."));
     attrs << new Attribute(passVals, BaseTypes::STRING_TYPE(), true);
 
     Descriptor protoDesc(PassFilterWorkerFactory::ACTOR_ID,

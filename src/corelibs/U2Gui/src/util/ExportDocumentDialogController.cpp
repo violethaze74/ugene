@@ -71,7 +71,7 @@ void ExportDocumentDialogController::initSaveController(const QList<GObject *> &
     config.fileDialogButton = ui->browseButton;
     config.fileNameEdit = ui->fileNameEdit;
     config.formatCombo = ui->formatCombo;
-    config.compressCheckbox= ui->compressCheck;
+    config.compressCheckbox = ui->compressCheck;
     config.parentWidget = this;
     config.rollOutProjectUrls = true;
     config.rollSuffix = "_copy";
@@ -109,11 +109,11 @@ DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstrain
 
 QString ExportDocumentDialogController::getDocumentURL() const {
     QString path = saveController->getSaveFileName();
-    if(ui->compressCheck->isChecked()) {
+    if (ui->compressCheck != NULL && ui->compressCheck->isChecked() && ui->compressCheck->isEnabled()) {
         QString suffix = path.split(".").last();
         if(suffix != "gz") {
             return path + ".gz";
-        } 
+        }
     }
     return path;
 }

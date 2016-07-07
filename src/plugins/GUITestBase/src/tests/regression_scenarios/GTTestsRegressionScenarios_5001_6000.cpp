@@ -332,23 +332,7 @@ GUI_TEST_CLASS_DEFINITION(test_5029) {
     CHECK_SET_ERR( numPlugins > 10, QString("Not all plugins were loaded. Loaded %1 plugins").arg(numPlugins));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5052) {
-    //1. Open "samples/Genbank/murine.gb".
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
-    //2. Close the opened sequence view.
-    GTGlobals::FindOptions findOptions;
-    findOptions.matchPolicy = Qt::MatchContains;
-    GTUtilsMdi::closeWindow(os, "NC_", findOptions);
-    //3. Click "murine.gb" on Start Page.
-    GTUtilsStartPage::clickResentDocument(os, "murine.gb");
-    //Expected: The file is loaded, the view is opened.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded(os, "murine.gb"), "The file is not loaded");
-    QString title = GTUtilsMdi::activeWindowTitle(os);
-    CHECK_SET_ERR(title.contains("NC_"), "Wrong MDI window is active");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5079) {
+GUI_TEST_CLASS_DEFINITION(test_5039) {
     //1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -379,6 +363,22 @@ GUI_TEST_CLASS_DEFINITION(test_5079) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //Expected state : the tab is successfully updated. No error in log.
     CHECK_SET_ERR(!l.hasError(), "unexpected errors in log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5052) {
+    //1. Open "samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    //2. Close the opened sequence view.
+    GTGlobals::FindOptions findOptions;
+    findOptions.matchPolicy = Qt::MatchContains;
+    GTUtilsMdi::closeWindow(os, "NC_", findOptions);
+    //3. Click "murine.gb" on Start Page.
+    GTUtilsStartPage::clickResentDocument(os, "murine.gb");
+    //Expected: The file is loaded, the view is opened.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded(os, "murine.gb"), "The file is not loaded");
+    QString title = GTUtilsMdi::activeWindowTitle(os);
+    CHECK_SET_ERR(title.contains("NC_"), "Wrong MDI window is active");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5082) {

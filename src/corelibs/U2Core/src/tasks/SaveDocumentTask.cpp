@@ -204,14 +204,19 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document*>& docs, bool 
     foreach(Document* doc, docs) {
         bool save=true;
         if (askBeforeSave) {
-            QMessageBox::StandardButtons buttons = QMessageBox::StandardButtons(QMessageBox::Yes) | QMessageBox::No;
+            QMessageBox::StandardButtons buttons = QMessageBox::StandardButtons(QMessageBox::Yes) | QMessageBox::No | QMessageBox::Cancel;
             if (docs.size() > 1) {
                 buttons = buttons | QMessageBox::YesToAll | QMessageBox::NoToAll;
             }
 
-            QMessageBox::StandardButton res = saveAll ? QMessageBox::YesToAll : QMessageBox::question(QApplication::activeWindow(),
-                tr("Question?"), tr("Save document: %1").arg(doc->getURLString()),
-                buttons, QMessageBox::Yes);
+            QObjectScopedPointer<QMessageBox> messageBox(new QMessageBox(QMessageBox::Question,
+                                                                         tr("Question?"),
+                                                                         tr("Save document: %1").arg(doc->getURLString()),
+                                                                         buttons,
+                                                                         QApplication::activeWindow()));
+            messageBox->button(QMessageBox::Cancel)->hide();
+
+            int res = saveAll ? QMessageBox::YesToAll : messageBox->exec();
 
             if (res == QMessageBox::NoToAll) {
                 break;
@@ -221,6 +226,11 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document*>& docs, bool 
             }
             if (res == QMessageBox::No) {
                 save = false;
+            }
+            if (res == QMessageBox::Cancel) {
+                save = false;
+                cancel();
+                break;
             }
         }
         if (save) {

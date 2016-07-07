@@ -144,6 +144,7 @@ void ExportImageDialog::init() {
     ui = new Ui_ImageExportForm;
     ui->setupUi(this);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     switch (source) {
     case WD:

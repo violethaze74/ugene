@@ -75,7 +75,7 @@ namespace U2 {
 int BioStruct3DGLWidget::widgetCount = 0;
 
 void BioStruct3DGLWidget::tryGL() {
-    QGLWidget wgt;
+    volatile QGLWidget wgt;
     Q_UNUSED(wgt);
 }
 

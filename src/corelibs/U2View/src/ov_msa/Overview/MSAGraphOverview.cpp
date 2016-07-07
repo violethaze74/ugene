@@ -257,10 +257,12 @@ void MSAGraphOverview::sl_calculationMethodChanged(MSAGraphCalculationMethod _me
 
 void MSAGraphOverview::sl_startRendering() {
     isRendering = true;
+    emit si_renderingStateChanged(isRendering);
 }
 
 void MSAGraphOverview::sl_stopRendering() {
     isRendering = false;
+    emit si_renderingStateChanged(isRendering);
 }
 
 void MSAGraphOverview::sl_blockRendering() {
