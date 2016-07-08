@@ -3727,6 +3727,26 @@ GUI_TEST_CLASS_DEFINITION(test_4694) {
     CHECK_SET_ERR(!undo->isEnabled(), "Button should be disabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4700) {
+    //1. Open assembly
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4700/", "almost-empty.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
+    //2. Find area without reads
+    for (int i = 0;i < 24;i++) {
+        GTKeyboardDriver::keyClick('=', Qt::ShiftModifier);
+        GTGlobals::sleep(100);
+    }
+    GTGlobals::sleep(2000);
+
+    GTKeyboardDriver::keyClick(Qt::Key_Home);
+    GTGlobals::sleep(2000);
+    //3. Export visible reads
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export" << "Visible reads as sequences"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4702_1) {
     // 1. Open "samples/Genbank/NC_014267.1.gb"
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
