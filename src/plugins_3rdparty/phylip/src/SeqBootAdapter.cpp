@@ -69,7 +69,7 @@ void SeqBoot::initGenerSeq(int reps, int rowC, int seqLen){
     seqRowCount = rowC;
         
     for(int i = 0; i < reps; i++){
-        generatedSeq[i] = MultipleSequenceAlignment(new MultipleSequenceAlignmentData(QString("bootstrap %1").arg(reps), malignment->getAlphabet()));
+        generatedSeq[i] = MultipleSequenceAlignmentData::createMsa(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
     }
     
 }

@@ -707,7 +707,7 @@ void StockholmFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os
         foreach( GObject* p_obj, doc->getObjects() ) {
             const MultipleSequenceAlignmentObject* aln_obj = qobject_cast<const MultipleSequenceAlignmentObject*>( p_obj );
             assert( NULL != aln_obj );
-            save( io, aln_obj->getMultipleAlignment(), aln_obj->getGObjectName(), os );
+            save( io, aln_obj->getMsa(), aln_obj->getGObjectName(), os );
             CHECK_OP(os, );
         }
     } catch( const StockholmBaseException& ex ) {

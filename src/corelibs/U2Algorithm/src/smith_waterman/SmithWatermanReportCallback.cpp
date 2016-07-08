@@ -208,7 +208,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         QByteArray curResultPtrnSubseq = ptrnSequenceData.mid(pairAlignSeqs.ptrnSubseq.startPos, pairAlignSeqs.ptrnSubseq.length);
         alignSequences(curResultRefSubseq, curResultPtrnSubseq, pairAlignSeqs.pairAlignment);
 
-        MultipleSequenceAlignment msa(new MultipleSequenceAlignmentData(newFileName, alphabet));
+        MultipleSequenceAlignment msa = MultipleSequenceAlignmentData::createMsa(newFileName, alphabet);
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.refSubseq;
         msa->addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq);
@@ -298,7 +298,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length detected!", QString::null);
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
-    MultipleSequenceAlignment msa(new MultipleSequenceAlignmentData(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet));
+    MultipleSequenceAlignment msa = MultipleSequenceAlignmentData::createMsa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
     msa->addRow(refSequence->visualName, refSequenceData);
     msa->addRow(ptrnSequence->visualName, ptrnSequenceData);
 

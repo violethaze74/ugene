@@ -232,7 +232,7 @@ void MegaFormat::workUpIndels(MultipleSequenceAlignment& al) {
 }
 
 void MegaFormat::load(U2::IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &objects, const QVariantMap& fs, U2::U2OpStatus &os) {
-    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(io->getURL().baseFileName()));
+    MultipleSequenceAlignment al = MultipleSequenceAlignmentData::createMsa(io->getURL().baseFileName());
     QByteArray line;
     bool eof=false;
     bool firstBlock=true;
@@ -335,7 +335,7 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObjec
     const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "Mega entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment& ma = obj->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = obj->getMsa();
 
     //write header
     QByteArray header;
@@ -347,19 +347,19 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObjec
     }
 
     int maxNameLength=0;
-    foreach (const MultipleAlignmentRow &item, ma->getRows()) {
+    foreach (const MultipleAlignmentRow &item, msa->getRows()) {
         maxNameLength = qMax(maxNameLength, item->getName().length());
     }
 
     //write data
-    int seqLength=ma->getLength();
+    int seqLength=msa->getLength();
     int writtenLength=0;
-    MultipleSequenceAlignmentWalker walker(ma);
+    MultipleSequenceAlignmentWalker walker(msa);
     while (writtenLength<seqLength) {
         QList<QByteArray> seqs = walker.nextData(BLOCK_LENGTH, ti);
         CHECK_OP(ti, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleAlignmentRow>::ConstIterator ri = ma->getRows().constBegin();
+        QList<MultipleAlignmentRow>::ConstIterator ri = msa->getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleAlignmentRow &item = *ri;
             QByteArray line;

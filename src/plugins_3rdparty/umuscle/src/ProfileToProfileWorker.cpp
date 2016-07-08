@@ -71,12 +71,12 @@ Task * ProfileToProfileWorker::tick() {
         SharedDbiDataHandler masterMsaId = qm.value(MASTER_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> masterMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), masterMsaId));
         SAFE_POINT(!masterMsaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment &masterMsa = masterMsaObj->getMultipleAlignment();
+        const MultipleSequenceAlignment masterMsa = masterMsaObj->getMsa();
 
         SharedDbiDataHandler secondMsaId = qm.value(SECOND_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> secondMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), secondMsaId));
         SAFE_POINT(!secondMsaObj.isNull(), "NULL MSA Object!", NULL);
-        MultipleSequenceAlignment secondMsa = secondMsaObj->getMultipleAlignment();
+        const MultipleSequenceAlignment secondMsa = secondMsaObj->getMsa();
 
         Task *t = new ProfileToProfileTask(masterMsa, secondMsa);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -118,9 +118,12 @@ void ProfileToProfileWorker::sl_taskFinished() {
 /************************************************************************/
 /* Task */
 /************************************************************************/
-ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment &_masterMsa, MultipleSequenceAlignment &_secondMsa)
-: Task("Align profile to profile with MUSCLE", TaskFlag_NoRun), masterMsa(_masterMsa), secondMsa(_secondMsa),
-seqIdx(0), subtaskCount(0)
+ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, const MultipleSequenceAlignment &secondMsa)
+    : Task(tr("Align profile to profile with MUSCLE"), TaskFlag_NoRun),
+      masterMsa(masterMsa->explicitClone()),
+      secondMsa(secondMsa->explicitClone()),
+      seqIdx(0),
+      subtaskCount(0)
 {
 
 }

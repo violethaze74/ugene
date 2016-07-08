@@ -58,7 +58,6 @@ class MSAEditorNameList;
 class MSAEditorOffsetsViewController;
 class MSAEditorOverviewArea;
 class MSAEditorStatusWidget;
-class MSAEditorUndoFramework;
 class PhyTreeGeneratorLauncherTask;
 class MSAEditorTreeViewer;
 class MSACollapsibleItemModel;

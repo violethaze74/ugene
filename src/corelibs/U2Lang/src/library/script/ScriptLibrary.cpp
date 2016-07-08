@@ -135,12 +135,12 @@ static QList<SharedAnnotationData> getAnnotationTable(QScriptContext *ctx, QScri
 
 static MultipleSequenceAlignment getAlignment(QScriptContext *ctx, QScriptEngine *engine, int argNum) {
     WorkflowScriptEngine *wse = ScriptEngineUtils::workflowEngine(engine);
-    CHECK(NULL != wse, MultipleSequenceAlignment());
+    CHECK(NULL != wse, MultipleSequenceAlignmentData::getEmptyMsa());
 
     SharedDbiDataHandler msaId = ScriptEngineUtils::getDbiId(engine, ctx->argument(argNum));
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(wse->getWorkflowContext()->getDataStorage(), msaId));
-    CHECK(!msaObj.isNull(), MultipleSequenceAlignment());
-    return msaObj->getMultipleAlignment();
+    CHECK(!msaObj.isNull(), MultipleSequenceAlignmentData::getEmptyMsa());
+    return msaObj->getMsaCopy();
 }
 
 static QScriptValue putSequence(QScriptEngine *engine, const DNASequence &seq) {

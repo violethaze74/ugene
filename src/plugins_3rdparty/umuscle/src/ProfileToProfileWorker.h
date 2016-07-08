@@ -74,7 +74,7 @@ protected:
 
 class ProfileToProfileTask : public Task {
 public:
-    ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, MultipleSequenceAlignment &secondMsa);
+    ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, const MultipleSequenceAlignment &secondMsa);
     ~ProfileToProfileTask();
 
     virtual void prepare();

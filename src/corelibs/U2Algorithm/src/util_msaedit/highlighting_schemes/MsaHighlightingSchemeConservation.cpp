@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QColor>
+
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -76,9 +78,9 @@ void MsaHighlightingSchemeConservation::sl_resetMap() {
 void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharColumn) const {
     CHECK(!msaCharCountMap.contains(refCharColumn), );
     CharCountMap columnStatistic;
-    const MultipleSequenceAlignment &m = maObj->getMultipleAlignment();
-    for (int row = m->getNumRows() - 1; row >= 0; row--) {
-        char seqChar = m->charAt(row, refCharColumn);
+    const MultipleSequenceAlignment msa = maObj->getMsa();
+    for (int row = msa->getNumRows() - 1; row >= 0; row--) {
+        char seqChar = msa->charAt(row, refCharColumn);
         if (columnStatistic.contains(seqChar)) {
             columnStatistic[seqChar] += 1;
         } else {

@@ -80,7 +80,7 @@ QString MsaRowTestUtils::getRowData(const MultipleSequenceAlignmentRow &row) {
 
 /** Tests createRow */
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromBytes) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "--GG-A---T");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("--GG-A---T", MsaRowTestUtils::getRowData(row), "row data");
@@ -93,7 +93,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromBytes) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromBytesTrailing) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "--GG-A---T--");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("--GG-A---T--", MsaRowTestUtils::getRowData(row), "row data");
@@ -106,7 +106,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromBytesTrailing) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromBytesGaps) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "----");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("----", MsaRowTestUtils::getRowData(row), "row data");
@@ -119,7 +119,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromBytesGaps) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_oneTrailing) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "A-");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("A-", MsaRowTestUtils::getRowData(row), "row data");
@@ -132,7 +132,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_oneTrailing) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_twoTrailing) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "A--");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("A--", MsaRowTestUtils::getRowData(row), "row data");
@@ -145,7 +145,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_twoTrailing) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_oneMiddleGap) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "AC-GT");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("AC-GT", MsaRowTestUtils::getRowData(row), "row data");
@@ -158,7 +158,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_oneMiddleGap) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_noGaps) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "ACGT");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("ACGT", MsaRowTestUtils::getRowData(row), "row data");
@@ -171,7 +171,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_noGaps) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeq) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     DNASequence sequence("Test sequence", "GGAT");
     QList<U2MaGap> gaps;
     U2MaGap gapBeginning(0, 2);
@@ -192,7 +192,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeq) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeqTrailing) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     DNASequence sequence("Test sequence", "GGAT");
     QList<U2MaGap> gaps;
     U2MaGap gapBeginning(0, 2);
@@ -214,7 +214,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeqTrailing) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeqWithGaps) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     DNASequence sequence("Test sequence", "GG-AT");
     QList<U2MaGap> gaps;
     U2OpStatusImpl os;
@@ -223,7 +223,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeqWithGaps) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_gapPositionTooBig) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     DNASequence sequence("Test sequence", "GGAT");
     QList<U2MaGap> gaps;
     U2MaGap gapBeginning(0, 2);
@@ -236,7 +236,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_gapPositionTooBig) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapPos) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     DNASequence sequence("Test sequence", "ACGT");
     QList<U2MaGap> gaps;
     U2MaGap invalidGap(-1, 2);
@@ -247,7 +247,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapPos) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapOffset) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     DNASequence sequence("Test sequence", "ACGT");
     QList<U2MaGap> gaps;
     U2MaGap invalidGap(0, -1);
@@ -260,7 +260,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapOffset) {
 /** Tests rowName */
 IMPLEMENT_TEST(MsaRowUnitTests, rowName_rowFromBytes) {
     QString rowName = "Test sequence";
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow(rowName, "AG-T");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL(rowName, row->getName(), "name of the row");
@@ -268,7 +268,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowName_rowFromBytes) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowName_rowFromSeq) {
     QString rowName = "Test sequence";
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow(rowName, "AGT");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL(rowName, row->getName(), "name of the row");
@@ -321,7 +321,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, toByteArray_greaterLength) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, toByteArray_trailing) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "--GG-A---T--");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     QByteArray bytes = row->toByteArray(12, os);
@@ -331,7 +331,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, toByteArray_trailing) {
 
 /** Tests simplify */
 IMPLEMENT_TEST(MsaRowUnitTests, simplify_gaps) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "--GG-A---T--");
     bool result = almnt->simplify();
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
@@ -631,7 +631,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, insertGaps_toLastPosGap) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, insertGaps_toLastPosOneGap) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "A-");
     almnt->insertGaps(0, 1, 1, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
@@ -653,7 +653,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, insertGaps_noGapsYet) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, insertGaps_onlyGaps) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "--");
     almnt->insertGaps(0, 1, 2, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
@@ -664,7 +664,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, insertGaps_onlyGaps) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, insertGaps_oneChar) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("One-char sequence", "A");
     almnt->insertGaps(0, 0, 2, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
@@ -848,7 +848,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, remove_insideOneGap2) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, remove_insideOneGapLong) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test sequence", "A------GT--C-T");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("A------GT--C-T", MsaRowTestUtils::getRowData(row), "row data");
@@ -861,7 +861,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, remove_insideOneGapLong) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, remove_insideTrailingGap) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "AC-GT----");
     almnt->removeRowData(0, 5, 2, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
@@ -995,7 +995,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, charAt_allCharsNoOffset) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, charAt_offsetAndTrailing) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "-AC-");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
 
@@ -1019,7 +1019,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, charAt_offsetAndTrailing) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, charAt_onlyCharsInRow) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "ACG");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
 
@@ -1054,7 +1054,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_sameContent) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_noGaps) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("First", "ACT");
     MultipleSequenceAlignmentRow firstRow = almnt->getMsaRow(0);
     almnt->addRow("Second", "ACT");
@@ -1068,10 +1068,10 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_noGaps) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInFirst) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("First", "AC-GT-");
     MultipleSequenceAlignmentRow firstRow = almnt->getMsaRow(0);
-    MultipleSequenceAlignment almnt2(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt2 = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt2->addRow("Second", "AC-GT");
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
 
@@ -1083,10 +1083,10 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInFirst) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInSecond) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("First", "AC-GT");
     MultipleSequenceAlignmentRow firstRow = almnt->getMsaRow(0);
-    MultipleSequenceAlignment almnt2(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt2 = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt2->addRow("Second", "AC-GT--");
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
 
@@ -1098,10 +1098,10 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInSecond) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInBoth) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("First", "AC-GT---");
     MultipleSequenceAlignmentRow firstRow = almnt->getMsaRow(0);
-    MultipleSequenceAlignment almnt2(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt2 = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt2->addRow("Second", "AC-GT--");
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
 
@@ -1113,11 +1113,11 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInBoth) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsGap) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test sequence", "--GG-A---T");
     MultipleSequenceAlignmentRow firstRow = almnt->getMsaRow(0);
     CHECK_EQUAL("--GG-A---T", MsaRowTestUtils::getRowData(firstRow), "first row data");
-    MultipleSequenceAlignment almnt2(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt2 = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt2->addRow("Test sequence", "--GG--A---T");
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
     CHECK_EQUAL("--GG--A---T", MsaRowTestUtils::getRowData(secondRow), "second row data");
@@ -1130,11 +1130,11 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsGap) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsOffset) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test sequence", "--GG-A---T");
     MultipleSequenceAlignmentRow firstRow = almnt->getMsaRow(0);
     CHECK_EQUAL("--GG-A---T", MsaRowTestUtils::getRowData(firstRow), "first row data");
-    MultipleSequenceAlignment almnt2(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt2 = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt2->addRow("Test sequence", "--G-GA---T");
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
     CHECK_EQUAL("--G-GA---T", MsaRowTestUtils::getRowData(secondRow), "second row data");
@@ -1147,11 +1147,11 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsOffset) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffNumOfGaps) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test sequence", "--GG-A---T");
     MultipleSequenceAlignmentRow firstRow = almnt->getMsaRow(0);
     CHECK_EQUAL("--GG-A---T", MsaRowTestUtils::getRowData(firstRow), "first row data");
-    MultipleSequenceAlignment almnt2(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt2 = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt2->addRow("Test sequence", "--GG-AT");
     MultipleSequenceAlignmentRow secondRow = almnt2->getMsaRow(0);
     CHECK_EQUAL("--GG-AT", MsaRowTestUtils::getRowData(secondRow), "second row data");
@@ -1164,7 +1164,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffNumOfGaps) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffSequences) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test sequence", "--GG-A---T");
     MultipleSequenceAlignmentRow firstRow = almnt->getMsaRow(0);
     CHECK_EQUAL("--GG-A---T", MsaRowTestUtils::getRowData(firstRow), "first row data");
@@ -1197,7 +1197,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, ungapped_rowWithoutOffset) {
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, ungapped_offsetTrailing) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test row", "---AG-T-");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL(3,  row->getUngappedLength(), "ungapped length");
@@ -1359,7 +1359,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_insideOneGap2) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, crop_insideOneGapLong) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Test sequence", "A------GT--C-T");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
 
@@ -1474,7 +1474,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, mid_general) {
 
 /** Tests upperCase */
 IMPLEMENT_TEST(MsaRowUnitTests, upperCase_general) {
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Row name", "avn-*y-s");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     row->toUpperCase();
@@ -1505,7 +1505,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, replaceChars_nothingToReplace) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, replaceChars_tildasToGapsNoGaps) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Row name", "A~~CC~~~AG~AC~TG");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     row->replaceChars('~', '-', os);
@@ -1515,7 +1515,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, replaceChars_tildasToGapsNoGaps) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, replaceChars_tildasToGapsWithGaps) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Row name", "A~-CC~-~AG~AC-TG");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     row->replaceChars('~', '-', os);
@@ -1525,7 +1525,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, replaceChars_tildasToGapsWithGaps) {
 
 IMPLEMENT_TEST(MsaRowUnitTests, replaceChars_trailingGaps) {
     U2OpStatusImpl os;
-    MultipleSequenceAlignment almnt(new MultipleSequenceAlignmentData("Test alignment"));
+    MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa("Test alignment");
     almnt->addRow("Row name", "A~~CC~~~AG~AC~TG~");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     row->replaceChars('~', '-', os);

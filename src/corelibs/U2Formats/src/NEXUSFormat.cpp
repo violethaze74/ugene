@@ -434,7 +434,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
             }
 
             // Build MultipleSequenceAlignment object
-            MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(tz.getIO()->getURL().baseFileName()));
+            MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(tz.getIO()->getURL().baseFileName());
             foreach (const QString &name, rows.keys()) {
                 ma->addRow(name, rows[name]);
             }
@@ -888,7 +888,7 @@ void NEXUSFormat::storeObjects( QList<GObject*> objects, bool simpleNames, IOAda
         MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*> (object);
         PhyTreeObject *pto = qobject_cast<PhyTreeObject*> (object);
         if (mao) {
-            writeMAligment(mao->getMultipleAlignment(), simpleNames, io, ti);
+            writeMAligment(mao->getMsa(), simpleNames, io, ti);
             io->writeBlock(QByteArray("\n"));
         } else if (pto) {
             writePhyTree(pto->getTree(), pto->getGObjectName(), io, ti);

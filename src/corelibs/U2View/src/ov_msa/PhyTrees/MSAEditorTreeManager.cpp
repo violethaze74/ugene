@@ -120,7 +120,7 @@ void MSAEditorTreeManager::buildTreeWithDialog() {
     CHECK(!dlg.isNull(), );
     CHECK(rc == QDialog::Accepted, );
 
-    settings.rowsOrder = msaObject->getMultipleAlignment()->getRowNames();
+    settings.rowsOrder = msaObject->getMsa()->getRowNames();
     buildTree(settings);
 }
 
@@ -135,10 +135,10 @@ void MSAEditorTreeManager::sl_refreshTree(MSAEditorTreeViewer* treeViewer) {
 }
 
 void MSAEditorTreeManager::createPhyTreeGeneratorTask(const CreatePhyTreeSettings& buildSettings, bool refreshExistingTree, MSAEditorTreeViewer* treeViewer) {
-    const MultipleSequenceAlignment& ma = msaObject->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = msaObject->getMsa();
     settings = buildSettings;
 
-    PhyTreeGeneratorLauncherTask* treeGeneratorTask = new PhyTreeGeneratorLauncherTask(ma, settings);
+    PhyTreeGeneratorLauncherTask* treeGeneratorTask = new PhyTreeGeneratorLauncherTask(msa, settings);
     if(refreshExistingTree) {
         activeRefreshTasks[treeViewer] = treeGeneratorTask;
         connect(new TaskSignalMapper(treeGeneratorTask), SIGNAL(si_taskSucceeded(Task*)), SLOT(sl_treeRebuildingFinished(Task*)));
@@ -166,7 +166,7 @@ void MSAEditorTreeManager::sl_treeRebuildingFinished(Task* _treeBuildTask) {
 }
 
 bool MSAEditorTreeManager::canRefreshTree(MSAEditorTreeViewer* treeViewer) {
-    bool canRefresh = (treeViewer->getParentAlignmentName() == msaObject->getMultipleAlignment()->getName());
+    bool canRefresh = (treeViewer->getParentAlignmentName() == msaObject->getMsa()->getName());
     return canRefresh && !activeRefreshTasks.contains(treeViewer);
 }
 
@@ -290,7 +290,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t) {
 
             if(!addExistingTree) {
                 treeView->setCreatePhyTreeSettings(settings);
-                treeView->setParentAignmentName(msaObject->getMultipleAlignment()->getName());
+                treeView->setParentAignmentName(msaObject->getMsa()->getName());
             }
 
             treeView->setMSAEditor(editor);

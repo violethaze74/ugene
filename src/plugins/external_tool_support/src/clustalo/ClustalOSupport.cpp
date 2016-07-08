@@ -192,7 +192,7 @@ void ClustalOSupportContext::sl_align_with_ClustalO() {
     assert(!obj->isStateLocked());
 
     ClustalOSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMultipleAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMsa(), settings, AppContext::getMainWindow()->getQMainWindow());
     clustalORunDialog->exec();
     CHECK(!clustalORunDialog.isNull(), );
 
@@ -200,7 +200,7 @@ void ClustalOSupportContext::sl_align_with_ClustalO() {
         return;
     }
 
-    ClustalOSupportTask* clustalOSupportTask = new ClustalOSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    ClustalOSupportTask* clustalOSupportTask = new ClustalOSupportTask(obj->getMsa(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 

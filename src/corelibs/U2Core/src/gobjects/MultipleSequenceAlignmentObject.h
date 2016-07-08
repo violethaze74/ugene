@@ -22,207 +22,42 @@
 #ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_
 #define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_
 
-#include <U2Core/GObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/U2Region.h>
-
-#include "GObjectTypes.h"
-
-const int GAP_COLUMN_ONLY = -1;
 
 namespace U2 {
 
-class GHints;
-class DNASequence;
-
-enum MaModificationType {
-    MaModificationType_User,
-    MaModificationType_Undo,
-    MaModificationType_Redo
-};
-
-class MaModificationInfo {
-public:
-    MaModificationInfo()
-        : rowContentChanged(true),
-          rowListChanged(true),
-          alignmentLengthChanged(true),
-          middleState(false),
-          alphabetChanged(false),
-          type(MaModificationType_User) {}
-
-    bool rowContentChanged;
-    bool rowListChanged;
-    bool alignmentLengthChanged;
-    bool middleState;
-    bool alphabetChanged;
-    QVariantMap hints;
-    QList<qint64> modifiedRowIds;
-    MaModificationType type;
-
-private:
-    static bool registerMeta;
-};
-
-#define MOBJECT_MIN_FONT_SIZE 8
-#define MOBJECT_MAX_FONT_SIZE 18
-#define MOBJECT_MIN_COLUMN_WIDTH 1
-
-#define MOBJECT_SETTINGS_ROOT QString("msaeditor/")
-#define MOBJECT_SETTINGS_COLOR_NUCL     "color_nucl"
-#define MOBJECT_SETTINGS_COLOR_AMINO    "color_amino"
-#define MOBJECT_SETTINGS_FONT_FAMILY    "font_family"
-#define MOBJECT_SETTINGS_FONT_SIZE      "font_size"
-#define MOBJECT_SETTINGS_FONT_ITALIC    "font_italic"
-#define MOBJECT_SETTINGS_FONT_BOLD      "font_bold"
-#define MOBJECT_SETTINGS_ZOOM_FACTOR    "zoom_factor"
-
-#define MOBJECT_DEFAULT_FONT_FAMILY "Verdana"
-#define MOBJECT_DEFAULT_FONT_SIZE 10
-#define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0f
-
-class MaSavedState{
-public:
-    ~MaSavedState(){}
-
-private:
-    friend class MultipleSequenceAlignmentObject;
-    MaSavedState();
-
-    const MultipleSequenceAlignmentData & getState() const;
-    void setState(const MultipleSequenceAlignment &msa);
-    void setState(const MultipleSequenceAlignmentData &msaData);
-
-private:
-    MultipleSequenceAlignmentData lastState;
-};
-
-class U2CORE_EXPORT MultipleSequenceAlignmentObject : public GObject {
+class U2CORE_EXPORT MultipleSequenceAlignmentObject : public MultipleAlignmentObject {
     Q_OBJECT
-
 public:
-    MultipleSequenceAlignmentObject(const QString& name, const U2EntityRef& msaRef, const QVariantMap& hintsMap = QVariantMap(),
-        const MultipleSequenceAlignment &alnData = MultipleSequenceAlignment());
-    ~MultipleSequenceAlignmentObject();
+    MultipleSequenceAlignmentObject(const QString &name,
+                                    const U2EntityRef &msaRef,
+                                    const QVariantMap &hintsMap = QVariantMap(),
+                                    const MultipleSequenceAlignment &msaData = MultipleSequenceAlignmentData::getEmptyMsa());
 
-    /** Sets type of modifications tracking for the alignment */
-    void setTrackMod(U2OpStatus &os, U2TrackModType trackMod);
-
-    const MultipleSequenceAlignment & getMultipleAlignment() const;
-    void setMultipleAlignment(const MultipleSequenceAlignment& ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap& hints = QVariantMap());
-    void updateGapModel(const QList<MultipleSequenceAlignmentRow> &copyRows);
+    const MultipleSequenceAlignment getMsa() const;
+    const MultipleSequenceAlignment getMsaCopy() const;
 
     /** GObject methods */
-    virtual GObject* clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
-    virtual void setGObjectName(const QString& newName);
+    virtual GObject * clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 
     /** Const getters */
     char charAt(int seqNum, int pos) const;
-    bool isRegionEmpty(int x, int y, int width, int height) const;
-    const DNAAlphabet* getAlphabet() const;
-    qint64 getLength() const;
-    qint64 getNumRows() const;
-    const MultipleSequenceAlignmentRow getRow(int row) const;
-    int getRowPosById(qint64 rowId) const;
-
-    /** Methods that modify the gap model only */
-    void insertGap(U2Region rows, int pos, int nGaps);
-
-    /**
-     * Removes gap region that extends from the @pos column and is no longer than @maxGaps.
-     * If the region starting from @pos and having width of @maxGaps includes any non-gap symbols
-     * then its longest subset starting from @pos and containing gaps only is removed.
-     *
-     * If the given region is a subset of a trailing gaps area then nothing happens.
-     */
-    int deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
-
-    /**
-     * Updates a gap model of the alignment.
-     * The map must contain valid row IDs and corresponding gap models.
-     */
-    void updateGapModel(U2OpStatus &os, QMap<qint64, QList<U2MaGap> > rowsGapModel);
-
-    QMap<qint64, QList<U2MaGap> > getGapModel() const;
+    const MultipleSequenceAlignmentRow getMsaRow(int row) const;
 
     /** Methods to work with rows */
-    void removeRow(int rowIdx);
-    void updateRow(U2OpStatus &os, int rowIdx, const QString& name, const QByteArray& seqBytes, const QList<U2MaGap>& gapModel);
-    void renameRow(int rowIdx, const QString& newName);
-    void moveRowsBlock(int firstRow, int numRows, int delta);
-
-    /**
-     * Updates the rows order.
-     * There must be one-to-one correspondence between the specified rows IDs
-     * and rows IDs of the alignment.
-     */
-    void updateRowsOrder(U2OpStatus &os, const QList<qint64>& rowIds);
-
-
-    /** Method that affect the whole alignment, including sequences
-     */
-    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track = true);
+    void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MaRowGapModel &gapModel);
 
     /** Replace character in row and change alphabet, if it does not contain the character
     */
     void replaceCharacter(int startPos, int rowIndex, char newChar);
 
-    void crop(U2Region window, const QSet<QString>& rowNames);
-    /**
-     * Performs shift of the region specified by parameters @startPos (leftmost column number),
-     * @startRow (top row number), @nBases (region width), @nRows (region height) in no more
-     * than @shift bases.
-     *
-     * @startPos and @startRow must be non-negative numbers, @nBases and @nRows - strictly
-     * positive. The sign of @shift parameter specifies the direction of shifting: positive
-     * for right direction, negative for left one. If 0 == @shift nothing happens.
-     *
-     * Shifting to the left may be performed only if a region preceding the selection
-     * and having the same height consists of gaps only. In this case selected region
-     * is moved to the left in the width of the preceding gap region but no more
-     * than |@shift| bases.
-     *
-     * Returns shift size, besides sign of the returning value specifies direction of the shift
-     */
-    int shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift);
-    void deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount);
-    void deleteColumnWithGaps(int requiredGapCount = GAP_COLUMN_ONLY);
-    QList<qint64> getColumnsWithGaps(int requiredGapCount = GAP_COLUMN_ONLY) const;
-    void updateCachedMAlignment(const MaModificationInfo &mi = MaModificationInfo(),
-        const QList<qint64> &removedRowIds = QList<qint64>());
-    void sortRowsByList(const QStringList& order);
-
-    void saveState();
-    void releaseState();
-
-signals:
-    void si_startMaUpdating();
-    void si_alignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo);
-    void si_alignmentBecomesEmpty(bool isEmpty);
-    void si_completeStateChanged(bool complete);
-    void si_rowsRemoved(const QList<qint64> &rowIds);
-    void si_invalidateAlignmentObject();
-    void si_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
-
-protected:
-    void loadDataCore(U2OpStatus &os);
-    void loadAlignment(U2OpStatus &os);
-
 private:
-    /**
-     * Returns maximum count of subsequent gap columns in the region that starts from column
-     * with @pos number, has width of @maxGaps and includes the rows specified by @rows.
-     * @maxGaps, @pos are to be non-negative numbers. Gap columns should finish in column
-     * having @pos + @maxGaps number, otherwise 0 is returned. If the region is located
-     * in the MSA trailing gaps area, then 0 is returned.
-     */
-    int getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
-
-    MultipleSequenceAlignment      cachedMsa;
-    MaSavedState*     savedState;
+    void loadAlignment(U2OpStatus &os);
+    void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
+    void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma);
 };
 
+}   // namespace U2
 
-}//namespace
-
-#endif
+#endif // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_

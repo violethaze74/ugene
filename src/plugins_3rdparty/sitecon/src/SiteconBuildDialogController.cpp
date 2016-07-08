@@ -288,9 +288,9 @@ QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
             stateInfo.setError(  tr("No alignment found") );
         } else {
             MultipleSequenceAlignmentObject* mobj =  qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
-            const MultipleSequenceAlignment &ma = mobj->getMultipleAlignment();
+            const MultipleSequenceAlignment msa = mobj->getMsa();
             QString baseName = mobj->getDocument()->getURL().baseFileName();
-            buildTask = new SiteconBuildTask(settings, ma, baseName);
+            buildTask = new SiteconBuildTask(settings, msa, baseName);
             res.append(buildTask);
         }
     } else if (subTask == buildTask) {

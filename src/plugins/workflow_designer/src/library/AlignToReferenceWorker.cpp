@@ -285,7 +285,7 @@ SharedDbiDataHandler ComposeResultSubTask::getAnnotations() const {
 }
 
 MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
-    MultipleSequenceAlignment result(new MultipleSequenceAlignmentData("Aligned reads"));
+    MultipleSequenceAlignment result = MultipleSequenceAlignmentData::createMsa("Aligned reads");
 
     DNASequence referenceSeq = getReferenceSequence();
     CHECK_OP(stateInfo, result);
@@ -328,7 +328,7 @@ MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
     // remove gap columns
     msaObject->deleteColumnWithGaps(stateInfo, GAP_COLUMN_ONLY);
 
-    return msaObject->getMultipleAlignment();
+    return msaObject->getMsa();
 }
 
 void ComposeResultSubTask::createAnnotations(const MultipleSequenceAlignment &alignment) {
@@ -526,7 +526,7 @@ void KAlignSubTask::run() {
     int rowCount = msaObject->getNumRows();
     CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
 
-    MultipleSequenceAlignmentRow readRow = msaObject->getRow(1);
+    const MultipleAlignmentRow readRow = msaObject->getRow(1);
     QList<U2Region> regions = getRegions(readRow->getGapModel(), readRow->getRowLengthWithoutTrailing());
     calculateCoreRegion(regions);
     extendCoreRegion(regions);
@@ -609,7 +609,7 @@ void KAlignSubTask::createAlignment() {
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), );
 
-    MultipleSequenceAlignment alignment(new MultipleSequenceAlignmentData("msa", refObject->getAlphabet()));
+    MultipleSequenceAlignment alignment = MultipleSequenceAlignmentData::createMsa("msa", refObject->getAlphabet());
     QByteArray refData = refObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
     alignment->addRow(refObject->getSequenceName(), refData);
@@ -827,7 +827,7 @@ void PairwiseAlignmentTask::createSWAlignment(KAlignSubTask *task) {
     QByteArray referenceData = refObject->getSequenceData(task->getCoreRegion(), stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignment alignment(new MultipleSequenceAlignmentData("msa", refObject->getAlphabet()));
+    MultipleSequenceAlignment alignment = MultipleSequenceAlignmentData::createMsa("msa", refObject->getAlphabet());
     alignment->addRow(refObject->getSequenceName(), referenceData);
     QByteArray readData = readObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );

@@ -71,11 +71,13 @@ void MuscleTaskSettings::reset() {
     mode = Default;
 }
 
-MuscleTask::MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSettings& _config)
-:Task(tr("MUSCLE alignment"), TaskFlags_FOSCOE | TaskFlag_MinimizeSubtaskErrorText), config(_config), inputMA(ma)
+MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSettings& _config)
+    : Task(tr("MUSCLE alignment"), TaskFlags_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
+      config(_config),
+      inputMA(ma->explicitClone())
 {
     GCOUNTER( cvar, tvar, "MuscleTask" );
-    config.nThreads = (config.nThreads == 0) ? AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount():config.nThreads;
+    config.nThreads = (config.nThreads == 0 ? AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount() : config.nThreads);
     SAFE_POINT_EXT(config.nThreads > 0,
         setError("Incorrect number of max parallel subtasks"), );
     setMaxParallelSubtasks(config.nThreads);
@@ -315,7 +317,7 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
         QList<GObject*> maObjects = loadTask->getDocument()->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!maObjects.isEmpty()) {
             MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(maObjects.first());
-            s.profile = maObj->getMultipleAlignment();
+            s.profile = maObj->getMsaCopy();
         }
     }
 
@@ -396,7 +398,7 @@ void MuscleGObjectTask::prepare() {
 
     lock = new StateLock(MUSCLE_LOCK_REASON);
     obj->lockState(lock);
-    muscleTask = new MuscleTask(obj->getMultipleAlignment(), config);
+    muscleTask = new MuscleTask(obj->getMsa(), config);
 
     addSubTask(muscleTask);
 }

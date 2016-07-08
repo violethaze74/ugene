@@ -33,8 +33,8 @@ namespace U2 {
 class MultipleSequenceAlignmentData;
 class MultipleSequenceAlignmentRowData;
 
-typedef  QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
-typedef  QSharedPointer<MultipleSequenceAlignmentRowData> MultipleSequenceAlignmentRow;
+typedef QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
+typedef QSharedPointer<MultipleSequenceAlignmentRowData> MultipleSequenceAlignmentRow;
 
 /**
  * A row in a multiple alignment structure.

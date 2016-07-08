@@ -129,18 +129,18 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "PHYLIP entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment& ma = obj->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = obj->getMsa();
 
     //write header
-    int numberOfSpecies = ma->getNumRows();
-    int numberOfCharacters = ma->getLength();
+    int numberOfSpecies = msa->getNumRows();
+    int numberOfCharacters = msa->getLength();
     QByteArray header( (QString::number(numberOfSpecies) + " " + QString::number(numberOfCharacters)).toLatin1() + "\n");
     int len = io->writeBlock(header);
     CHECK_EXT(len == header.length(), os.setError(L10N::errorTitle()), );
 
     //write sequences
     for (int i = 0; i < numberOfSpecies; i++) {
-        QByteArray line = ma->getRow(i)->getName().toLatin1();
+        QByteArray line = msa->getRow(i)->getName().toLatin1();
         if (line.length() < MAX_NAME_LEN) {
             int difference = MAX_NAME_LEN - line.length();
             for (int j = 0; j < difference; j++) {
@@ -151,7 +151,7 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
             line = line.left(MAX_NAME_LEN);
         }
         io->writeBlock(line);
-        QByteArray sequence = ma->getMsaRow(i)->toByteArray(numberOfCharacters, os);
+        QByteArray sequence = msa->getMsaRow(i)->toByteArray(numberOfCharacters, os);
         int blockCounter = 0;
         while ((blockCounter*SEQ_BLOCK_SIZE) <= numberOfCharacters) {
             line.clear();
@@ -193,7 +193,7 @@ MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatu
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     char* buff = readBuffer.data();
     QString objName = io->getURL().baseFileName();
-    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(objName));
+    MultipleSequenceAlignment al = MultipleSequenceAlignmentData::createMsa(objName);
     bool resOk = false;
 
     // Header: "<number of species> <number of characters>"
@@ -248,11 +248,11 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "PHYLIP entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment& ma = obj->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = obj->getMsa();
 
     //write header
-    int numberOfSpecies = ma->getNumRows();
-    int numberOfCharacters = ma->getLength();
+    int numberOfSpecies = msa->getNumRows();
+    int numberOfCharacters = msa->getLength();
     QByteArray header( (QString::number(numberOfSpecies) + " " + QString::number(numberOfCharacters)).toLatin1() + "\n");
     int len = io->writeBlock(header);
 
@@ -260,7 +260,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
 
     //write first block with names
     for (int i = 0; i < numberOfSpecies; i++) {
-        QByteArray line = ma->getRow(i)->getName().toLatin1();
+        QByteArray line = msa->getRow(i)->getName().toLatin1();
         if (line.length() < MAX_NAME_LEN) {
             int difference = MAX_NAME_LEN - line.length();
             for (int j = 0; j < difference; j++)
@@ -270,7 +270,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
             line = line.left(MAX_NAME_LEN);
         }
 
-        QByteArray sequence = ma->getMsaRow(i)->toByteArray(numberOfCharacters, os);
+        QByteArray sequence = msa->getMsaRow(i)->toByteArray(numberOfCharacters, os);
         line.append(sequence.left(INT_BLOCK_SIZE));
         line.append('\n');
 
@@ -283,7 +283,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     while (blockCounter*INT_BLOCK_SIZE <= numberOfCharacters) {
         io->writeBlock("\n", 1);
         for (int i = 0; i < numberOfSpecies; i++) {
-            QByteArray sequence = ma->getMsaRow(i)->toByteArray(numberOfCharacters, os);
+            QByteArray sequence = msa->getMsaRow(i)->toByteArray(numberOfCharacters, os);
             QByteArray line;
             line.append(spacer);
             line.append(sequence.mid(blockCounter*INT_BLOCK_SIZE, INT_BLOCK_SIZE));
@@ -328,7 +328,7 @@ MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStat
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     char* buff = readBuffer.data();
     QString objName = io->getURL().baseFileName();
-    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(objName));
+    MultipleSequenceAlignment al = MultipleSequenceAlignmentData::createMsa(objName);
 
     bool resOk = false;
 

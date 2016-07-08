@@ -95,7 +95,6 @@ public:
     void setMultipleAlignment(const MultipleAlignment &ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap &hints = QVariantMap());
 
     /** GObject methods */
-    GObject * clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
     void setGObjectName(const QString &newName);
 
     /** Const getters */
@@ -103,7 +102,7 @@ public:
     const DNAAlphabet * getAlphabet() const;
     qint64 getLength() const;
     qint64 getNumRows() const;
-    const MultipleAlignmentRow &getRow(int row) const;
+    const MultipleAlignmentRow & getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
 
     /** Methods that modify the gap model only */
@@ -180,9 +179,14 @@ signals:
     void si_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
 
 protected:
-    void loadDataCore(U2OpStatus &os);
+    virtual void loadAlignment(U2OpStatus &os) = 0;
+    virtual void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds) = 0;
+    virtual void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) = 0;
+
+    MultipleAlignment cachedMa;
 
 private:
+    void loadDataCore(U2OpStatus &os);
     /**
      * Returns maximum count of subsequent gap columns in the region that starts from column
      * with @pos number, has width of @maxGaps and includes the rows specified by @rows.
@@ -192,9 +196,7 @@ private:
      */
     int getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
 
-    void loadAlignment(U2OpStatus &os);
 
-    MultipleAlignment cachedMa;
     MaSavedState savedState;
 
     static const int GAP_COLUMN_ONLY;

@@ -62,7 +62,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
         return tr("-");
     }
 
-    const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMultipleAlignment();
+    const MultipleSequenceAlignment ma = editor->getMSAObject()->getMsa();
     const qint64 referenceRowId = editor->getReferenceRowId();
     if(MultipleAlignmentRowData::INVALID_ROW_ID == referenceRowId) {
         return tr("-");
@@ -79,7 +79,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
 }
 
 QString MsaEditorSimilarityColumn::getSeqName(int s) {
-    const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMultipleAlignment();
+    const MultipleSequenceAlignment ma = editor->getMSAObject()->getMsa();
 
     return ma->getRowNames().at(s);
 }
@@ -175,8 +175,7 @@ void CreateDistanceMatrixTask::prepare() {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
 
-    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.ma->getMultipleAlignment());
-    //connect(s.ma, SIGNAL(si_rowsAdded()), algo, SLOT(sl_addEmptyDistanceRow()));
+    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.ma->getMsa());
     CHECK(NULL != algo,);
     addSubTask(algo);
 }

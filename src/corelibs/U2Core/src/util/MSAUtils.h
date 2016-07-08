@@ -46,7 +46,7 @@ public:
     static void updateAlignmentAlphabet(MultipleSequenceAlignment& ma, const DNAAlphabet* a, U2OpStatus& os);
 
     // Returns row index or -1 if name is not present
-    static int getRowIndexByName(const MultipleSequenceAlignment& ma, const QString& name);
+    static int getRowIndexByName(const MultipleAlignment &ma, const QString& name);
 
     //checks that alignment is not empty and all packed sequence parts has equal length
     static bool checkPackedModelSymmetry(MultipleSequenceAlignment& ali, U2OpStatus& ti);

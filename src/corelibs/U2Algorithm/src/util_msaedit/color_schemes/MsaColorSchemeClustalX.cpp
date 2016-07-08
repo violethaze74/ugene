@@ -79,8 +79,8 @@ void MsaColorSchemeClustalX::updateCache() const {
 
     // compute colors for whole ali
     // use 4 bits per color
-    const MultipleSequenceAlignment &ma = maObj->getMultipleAlignment();
-    int nSeq = ma->getNumRows();
+    const MultipleSequenceAlignment msa = maObj->getMsa();
+    int nSeq = msa->getNumRows();
     aliLen = maObj->getLength();
     cacheVersion = objVersion;
 
@@ -121,14 +121,14 @@ void MsaColorSchemeClustalX::updateCache() const {
 
     for (int pos = 0; pos < aliLen; pos++) {
         int nonGapChars = 0;
-        MSAConsensusUtils::getColumnFreqs(ma, pos, freqsByChar, nonGapChars);
+        MSAConsensusUtils::getColumnFreqs(msa, pos, freqsByChar, nonGapChars);
         int content50 = int(nonGapChars * 50.0 / 100);
         int content60 = int(nonGapChars * 60.0 / 100);
         int content80 = int(nonGapChars * 80.0 / 100);
         int content85 = int(nonGapChars * 85.0 / 100);
 
         for (int seq = 0; seq < nSeq; seq++) {
-            char c = ma->charAt(seq, pos);
+            char c = msa->charAt(seq, pos);
             int colorIdx = ClustalColor_NO_COLOR;
             switch(c) {
             case 'W': //(W,L,V,I,M,F): {50%, P}{60%, WLVIMAFCYHP} -> BLUE

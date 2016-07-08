@@ -67,7 +67,7 @@ IMPLEMENT_TEST(MsaImporterExporterUnitTests, importExportAlignment) {
     QByteArray firstSequence("---AG-T");
     QByteArray secondSequence("AG-CT-TAA");
 
-    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(alignmentName, alphabet));
+    MultipleSequenceAlignment al = MultipleSequenceAlignmentData::createMsa(alignmentName, alphabet);
 
     al->addRow("First row", firstSequence);
     al->addRow("Second row", secondSequence);

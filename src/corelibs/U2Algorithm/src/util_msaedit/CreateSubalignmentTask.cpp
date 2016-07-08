@@ -60,8 +60,6 @@ CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject *
 }
 
 void CreateSubalignmentTask::prepare() {
-    QString ext = cfg.url.completeFileSuffix();
-
     DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
     DocumentFormat *dfd = dfr->getFormatById(cfg.formatIdToSave);
 
@@ -74,7 +72,7 @@ void CreateSubalignmentTask::prepare() {
         resultDocument = dfd->createNewLoadedDocument(iof, cfg.url, stateInfo, hints);
         CHECK_OP(stateInfo, );
 
-        MultipleSequenceAlignment msa = origMAObj->getMultipleAlignment();
+        MultipleSequenceAlignment msa = origMAObj->getMsaCopy();
         resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
         resultMAObj->setGHints(new GHintsDefaultImpl(origMAObj->getGHintsMap()));

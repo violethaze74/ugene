@@ -104,7 +104,7 @@ MultipleSequenceAlignment Kalign_Load_Align_Compare_Task::dna_to_ma(QList<GObjec
 
     int seqCount = dnaSeqs.count();
     U2SequenceObject *seq = qobject_cast<U2SequenceObject *>(dnaSeqs[0]);
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData("Alignment",seq->getAlphabet()));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa("Alignment", seq->getAlphabet());
     for(int i=0; i<seqCount; i++) {
         seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
         if(seq == NULL) {
@@ -163,7 +163,7 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         }
         KalignTask * localKalign = qobject_cast<KalignTask*>( subTask );
         assert( NULL != localKalign );
-        ma1->updateGapModel(localKalign->resultMA->getMsaRows());
+        ma1->updateGapModel(localKalign->resultMA->getRows());
     }
     else if (subTask == loadTask2) {
         if (loadTask2->hasError()) {
@@ -200,8 +200,8 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 
 void Kalign_Load_Align_Compare_Task::run() {
 
-    const QList<MultipleSequenceAlignmentRow> &alignedSeqs1 = ma1->getMultipleAlignment()->getMsaRows();
-    const QList<MultipleSequenceAlignmentRow> &alignedSeqs2 = ma2->getMultipleAlignment()->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
 
     foreach(const MultipleSequenceAlignmentRow &maItem1, alignedSeqs1) {
         bool nameFound = false;
@@ -357,7 +357,7 @@ MultipleSequenceAlignment GTest_Kalign_Load_Align_QScore::dna_to_ma(QList<GObjec
 
     int seqCount = dnaSeqs.count();
     U2SequenceObject *seq = qobject_cast<U2SequenceObject *>(dnaSeqs[0]);
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData("Alignment", seq->getAlphabet()));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa("Alignment", seq->getAlphabet());
     for(int i=0; i<seqCount; i++) {
         seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
         if(seq == NULL) {
@@ -405,7 +405,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        kalignTask = new KalignTask(ma1->getMultipleAlignment(),config);
+        kalignTask = new KalignTask(ma1->getMsa(), config);
         res << kalignTask;
         this->connect(kalignTask,SIGNAL(si_progressChanged()),SLOT(sl_kalignProgressChg()));
     }
@@ -416,7 +416,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         }
         KalignTask * localKalign = qobject_cast<KalignTask*>( subTask );
         assert( NULL != localKalign );
-        ma1->updateGapModel(localKalign->resultMA->getMsaRows());
+        ma1->updateGapModel(localKalign->resultMA->getRows());
     }
     else if (subTask == loadTask2) {
         if (loadTask2->hasError()) {
@@ -452,7 +452,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
 }
 
 void GTest_Kalign_Load_Align_QScore::run() {
-    double qscore = QScore(ma1->getMultipleAlignment(), ma2->getMultipleAlignment(), stateInfo);
+    double qscore = QScore(ma1->getMsa(), ma2->getMsa(), stateInfo);
     if (stateInfo.hasError()) {
         return;
     }

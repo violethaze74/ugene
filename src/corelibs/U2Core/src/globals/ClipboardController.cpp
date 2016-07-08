@@ -67,7 +67,7 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document*>& docs, U2OpSt
             if (casted == NULL){
                 continue;
             }
-            foreach(const MultipleSequenceAlignmentRow& row, casted->getMultipleAlignment()->getMsaRows()) {
+            foreach (const MultipleSequenceAlignmentRow &row, casted->getMsa()->getMsaRows()) {
                 DNASequence seq = row->getSequence();
                 seq.seq = row->getData();
                 seq.alphabet = casted->getAlphabet();

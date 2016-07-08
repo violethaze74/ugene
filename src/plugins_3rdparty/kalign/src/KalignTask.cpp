@@ -73,8 +73,8 @@ KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSett
     :TLSTask(tr("KALIGN alignment"), TaskFlags_FOSCOE),
       config(_config),
       inputMA(ma->explicitClone()),
-      resultMA(new MultipleSequenceAlignmentData),
-      resultSubMA(new MultipleSequenceAlignmentData)
+      resultMA(MultipleSequenceAlignmentData::createMsa()),
+      resultSubMA(MultipleSequenceAlignmentData::createMsa())
 {
     GCOUNTER( cvar, tvar, "KalignTask" );
     inputSubMA.reset(inputMA->explicitClone());
@@ -172,7 +172,7 @@ void KalignGObjectTask::prepare() {
 
     lock = new StateLock(KALIGN_LOCK_REASON, StateLockFlag_LiveLock);
     obj->lockState(lock);
-    kalignTask = new KalignTask(obj->getMultipleAlignment(), config);
+    kalignTask = new KalignTask(obj->getMsa(), config);
     addSubTask(kalignTask);
 }
 

@@ -148,7 +148,7 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
 
     MultipleSequenceAlignmentObject* mAlignmentObj = editor->getMSAObject();
     SAFE_POINT(NULL != mAlignmentObj, tr("Incorrect multiple alignment object!"), );
-    const MultipleSequenceAlignment &mAlignment = mAlignmentObj->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = mAlignmentObj->getMsa();
 
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
@@ -174,11 +174,11 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
             int refPos = -1;;
             qint64 refId = editor->getReferenceRowId();
             if (refId != MultipleAlignmentRowData::INVALID_ROW_ID) {
-                refPos = mAlignment->getRowIndexByRowId(refId, os);
+                refPos = msa->getRowIndexByRowId(refId, os);
                 SAFE_POINT_OP(os, );
             }
             drawColor = MSAHighlightingOverviewCalculationTask::isCellHighlighted(
-                        mAlignment,
+                        msa,
                         sequenceArea->getCurrentHighlightingScheme(),
                         sequenceArea->getCurrentColorScheme(),
                         seq, pos,

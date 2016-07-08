@@ -106,7 +106,7 @@ void GTest_CalculateACGTContent::prepare(){
         stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
-    ma = mao->getMultipleAlignment();
+    ma = mao->getMsaCopy();
 }
 
 void GTest_CalculateACGTContent::run() {
@@ -201,7 +201,7 @@ void GTest_CalculateDispersionAndAverage::prepare() {
         stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
-    ma = mao->getMultipleAlignment();
+    ma = mao->getMsaCopy();
 }
 
 void GTest_CalculateDispersionAndAverage::run() {
@@ -289,7 +289,7 @@ void GTest_CalculateFirstTypeError::prepare() {
         stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
-    ma = mao->getMultipleAlignment();
+    ma = mao->getMsaCopy();
 }
 
 void GTest_CalculateFirstTypeError::run() {
@@ -370,7 +370,7 @@ void GTest_CalculateSecondTypeError::prepare() {
         stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
         return;
     }
-    ma = mao->getMultipleAlignment();
+    ma = mao->getMsaCopy();
 }
 
 void GTest_CalculateSecondTypeError::run() {

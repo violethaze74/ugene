@@ -203,7 +203,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
         MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
         SAFE_POINT(newMAligmentObject!=NULL, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
-        resultMA=newMAligmentObject->getMultipleAlignment();
+        resultMA = newMAligmentObject->getMsaCopy();
         bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT( renamed, "Failed to restore initial row names!", res);
 
@@ -232,6 +232,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                     }
                     U2OpStatus2Log os;
                     U2UseCommonUserModStep userModStep(obj->getEntityRef(), os);
+                    Q_UNUSED(userModStep);
                     if (os.hasError()) {
                         stateInfo.setError("Failed to apply the result of the alignment!");
                         return res;
@@ -247,7 +248,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                         }
                         MaModificationInfo mi;
                         mi.rowContentChanged = false;
-                        alObj->updateCachedMAlignment(mi);
+                        alObj->updateCachedMultipleAlignment(mi);
                     }
 
                     QMap<qint64, QList<U2MaGap> > rowsGapModel;
@@ -358,14 +359,14 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        clustalOSupportTask=new ClustalOSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
+        clustalOSupportTask = new ClustalOSupportTask(mAObject->getMsa(), GObjectReference(), settings);
         res.append(clustalOSupportTask);
     }
     else if (subTask == clustalOSupportTask) {
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->updateGapModel(clustalOSupportTask->resultMA->getMsaRows());
+        mAObject->updateGapModel(clustalOSupportTask->resultMA->getRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

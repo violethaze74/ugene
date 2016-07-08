@@ -153,7 +153,7 @@ void MSAEditorConsensusArea::paintConsenusPart(QPainter &p, const U2Region &regi
     MSAConsensusAlgorithm *alg = getConsensusAlgorithm();
     SAFE_POINT(alg != NULL, tr("MSA consensus algorothm is NULL"), );
     SAFE_POINT(editor->getMSAObject() != NULL, tr("MSA object is NULL"), );
-    const MultipleSequenceAlignment &msa = editor->getMSAObject()->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = editor->getMSAObject()->getMsa();
     for (int pos = 0; pos < region.length; pos++) {
         char c = alg->getConsensusChar(msa, pos + region.startPos, seqIdx.toVector());
         drawConsensusChar(p, pos, 0, c, false, true);
@@ -226,8 +226,8 @@ QString MSAEditorConsensusArea::createToolTip(QHelpEvent* he) const {
     QString result;
     if (pos >= 0) {
         assert(editor->getMSAObject());
-        const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMultipleAlignment();
-        result = MSAConsensusUtils::getConsensusPercentTip(ma, pos, 0, 4);
+        const MultipleSequenceAlignment msa = editor->getMSAObject()->getMsa();
+        result = MSAConsensusUtils::getConsensusPercentTip(msa, pos, 0, 4);
     }
     return result;
 }

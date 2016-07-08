@@ -48,11 +48,11 @@ MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleSequenceAlignmentObject
     SAFE_POINT_EXT(msa != NULL, setError(tr("MSA is NULL")), );
     msaLength = msa->getLength();
     seqNumber = msa->getNumRows();
-    if(!memLocker.tryAcquire(msa->getMultipleAlignment()->getLength() * msa->getMultipleAlignment()->getNumRows())) {
+    if(!memLocker.tryAcquire(msa->getMsa()->getLength() * msa->getMsa()->getNumRows())) {
         setError(memLocker.getError());
         return;
     }
-    ma.reset(msa->getMultipleAlignment()->explicitClone());
+    ma = msa->getMsaCopy();
     connect(msa, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
     connect(msa, SIGNAL(si_startMaUpdating()), this, SLOT(cancel()));
     connect(msa, SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)), this, SLOT(cancel()));
@@ -135,8 +135,7 @@ MSAConsensusOverviewCalculationTask::MSAConsensusOverviewCalculationTask(Multipl
     SAFE_POINT_EXT(factory != NULL, setError(tr("Strict consensus algorithm factory is NULL")), );
 
     SAFE_POINT_EXT(msa != NULL, setError(tr("MSA is NULL")), );
-    const MultipleSequenceAlignment& ma = msa->getMultipleAlignment();
-    algorithm = factory->createAlgorithm(ma);
+    algorithm = factory->createAlgorithm(msa->getMsa());
     algorithm->setParent(this);
 }
 

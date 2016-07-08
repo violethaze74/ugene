@@ -467,7 +467,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             return;
         }
 
-        MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(consName));
+        MultipleSequenceAlignment al = MultipleSequenceAlignmentData::createMsa(consName);
         al->addRow(consName, consensus);
 
         //AF

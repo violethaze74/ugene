@@ -209,7 +209,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
         MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(newDocumentObjects.first());
         SAFE_POINT(NULL != newMAligmentObject, "Failed to cast object from temporary document to an alignment!", res);
 
-        resultMA = newMAligmentObject->getMultipleAlignment();
+        resultMA = newMAligmentObject->getMsaCopy();
         bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT( renamed, "Failed to restore initial row names!", res);
 
@@ -352,14 +352,14 @@ QList<Task*> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTa
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        tCoffeeSupportTask = new TCoffeeSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
+        tCoffeeSupportTask = new TCoffeeSupportTask(mAObject->getMsa(), GObjectReference(), settings);
         res.append(tCoffeeSupportTask);
     }
     else if (subTask == tCoffeeSupportTask) {
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->updateGapModel(tCoffeeSupportTask->resultMA->getMsaRows());
+        mAObject->updateGapModel(tCoffeeSupportTask->resultMA->getRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

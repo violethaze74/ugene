@@ -115,7 +115,7 @@ int MSFFormat::getCheckSum(const QByteArray& seq) {
 }
 
 void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& ti) {
-    MultipleSequenceAlignment al(new MultipleSequenceAlignmentData(io->getURL().baseFileName()));
+    MultipleSequenceAlignment al = MultipleSequenceAlignmentData::createMsa(io->getURL().baseFileName());
 
     //skip comments
     int checkSum = -1;
@@ -264,13 +264,13 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "MSF entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment& ma = obj->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = obj->getMsa();
 
     //precalculate seq writing params
-    int maxNameLen = 0, maLen = ma->getLength(), checkSum = 0;
+    int maxNameLen = 0, maLen = msa->getLength(), checkSum = 0;
     static int maxCheckSumLen = 4;
     QMap <QString, int> checkSums;
-    foreach(const MultipleSequenceAlignmentRow& row , ma->getMsaRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row , msa->getMsaRows()) {
         QByteArray sequence = row->toByteArray(maLen, os).replace(MAlignment_GapChar, '.');
         int seqCheckSum = getCheckSum(sequence);
         checkSums.insert(row->getName(), seqCheckSum);
@@ -292,7 +292,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         return;
 
     //write info
-    foreach(const MultipleAlignmentRow& row, ma->getRows()) {
+    foreach(const MultipleAlignmentRow& row, msa->getRows()) {
         QByteArray line = " " + NAME_FIELD;
         line += " " + QString(row->getName()).replace(' ', '_').leftJustified(maxNameLen+1); // since ' ' is a delimeter for MSF parser spaces in name not suppoted
         line += "  " + LEN_FIELD;
@@ -309,7 +309,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         return;
     }
 
-    MultipleSequenceAlignmentWalker walker(ma, '.');
+    MultipleSequenceAlignmentWalker walker(msa, '.');
     for (int i = 0; !os.isCoR() && i < maLen; i += CHARS_IN_ROW) {
         /* write numbers */ {
             QByteArray line(maxNameLen + 2, ' ');
@@ -332,7 +332,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         QList<QByteArray> seqs = walker.nextData(CHARS_IN_ROW, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleAlignmentRow>::ConstIterator ri = ma->getRows().constBegin();
+        QList<MultipleAlignmentRow>::ConstIterator ri = msa->getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleAlignmentRow &row = *ri;
             QByteArray line = row->getName().toLocal8Bit();

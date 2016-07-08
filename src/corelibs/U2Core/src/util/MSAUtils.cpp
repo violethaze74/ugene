@@ -82,7 +82,7 @@ int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow&
 }
 
 MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& os) {
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MA_OBJECT_NAME));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME);
     foreach(const DNASequence& seq, list) {
         updateAlignmentAlphabet(ma, seq.alphabet, os);
         //TODO: handle memory overflow
@@ -143,10 +143,10 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
 
     MultipleSequenceAlignmentObject *obj = prepareSequenceHeadersList(list, useGenbankHeader, dnaList, nameList);
     if (NULL != obj) {
-        return obj->getMultipleAlignment();
+        return obj->getMsaCopy();
     }
 
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MA_OBJECT_NAME));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME);
 
     int i = 0;
     SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", MultipleSequenceAlignment());
@@ -233,8 +233,7 @@ bool MSAUtils::checkPackedModelSymmetry(MultipleSequenceAlignment& ali, U2OpStat
     return true;
 }
 
-int MSAUtils::getRowIndexByName( const MultipleSequenceAlignment& ma, const QString& name )
-{
+int MSAUtils::getRowIndexByName(const MultipleAlignment &ma, const QString &name) {
     int idx = 0;
 
     foreach(const MultipleAlignmentRow& row, ma->getRows()) {

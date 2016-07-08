@@ -103,7 +103,7 @@ Task::ReportResult AddSequenceObjectsToAlignmentTask::report() {
     }
 
     // Update object
-    maObj->updateCachedMAlignment(mi);
+    maObj->updateCachedMultipleAlignment(mi);
 
     if (!errorList.isEmpty()) {
         setupError();

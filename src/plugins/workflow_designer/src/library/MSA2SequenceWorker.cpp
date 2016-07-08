@@ -66,12 +66,12 @@ Task * Alignment2SequenceWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment &ma = msaObj->getMultipleAlignment();
+        const MultipleSequenceAlignment msa = msaObj->getMsa();
 
-        if(ma->isEmpty()) {
+        if(msa->isEmpty()) {
             return new FailTask(tr("empty input alignment"));
         }
-        QList<DNASequence> seqs = MSAUtils::ma2seq(ma,true);
+        QList<DNASequence> seqs = MSAUtils::ma2seq(msa,true);
         QVariantMap channelContext = output->getContext();
         foreach(const DNASequence &seq, seqs) {
             QVariantMap msgData;

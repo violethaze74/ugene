@@ -46,7 +46,7 @@ typedef QSharedPointer<MultipleAlignmentData> MultipleAlignment;
  * is expected to keep the conformance of the data and the alphabet.
  */
 class U2CORE_EXPORT MultipleAlignmentData {
-public:
+protected:
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
@@ -55,6 +55,8 @@ public:
                       const DNAAlphabet *alphabet = NULL,
                       const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
     MultipleAlignmentData(const MultipleAlignmentData &multipleAlignment);
+
+public:
     virtual ~MultipleAlignmentData();
 
     const MultipleAlignmentData & operator=(const MultipleAlignmentData &other);
@@ -225,8 +227,9 @@ public:
 
     static const char GapChar;
 
-protected:
     virtual MultipleAlignmentData * clone() const = 0;
+
+protected:
     virtual MultipleAlignmentRow createRow(const MultipleAlignmentRow &row) const = 0;
 
     /** Helper-method for adding a row to the alignment */

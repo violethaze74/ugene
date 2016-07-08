@@ -160,7 +160,7 @@ void GTest_PhyML::prepare() {
 
     settings.algorithmId = PhyMLSupport::PhyMlRegistryId;
 
-    task = new PhyTreeGeneratorLauncherTask(input->getMultipleAlignment(), settings);
+    task = new PhyTreeGeneratorLauncherTask(input->getMsa(), settings);
     addSubTask(task);
 }
 

@@ -39,16 +39,17 @@ namespace U2 {
 
 using namespace Workflow;
 
-MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(
-    const QVariant &atomicMessage, WorkflowContext *initContext)
-    : BaseMessageTranslator(atomicMessage, initContext)
+MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(const QVariant &atomicMessage, WorkflowContext *initContext)
+    : BaseMessageTranslator(atomicMessage, initContext),
+      malignment(MultipleSequenceAlignmentData::getEmptyMsa())
+
 {
     SAFE_POINT( source.canConvert<SharedDbiDataHandler>( ), "Invalid MSA data supplied!", );
     SharedDbiDataHandler malignmentId = source.value<SharedDbiDataHandler>( );
     QScopedPointer<MultipleSequenceAlignmentObject> malignmentObject( StorageUtils::getMsaObject(
         context->getDataStorage( ), malignmentId ) );
     SAFE_POINT( !malignmentObject.isNull( ), "Invalid MSA object detected!", );
-    malignment.reset(malignmentObject->getMultipleAlignment()->explicitClone());
+    malignment = malignmentObject->getMsaCopy();
 }
 
 QString MultipleAlignmentMessageTranslator::getTranslation( ) const {

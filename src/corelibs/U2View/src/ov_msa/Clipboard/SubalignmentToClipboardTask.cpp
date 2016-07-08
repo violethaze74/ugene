@@ -86,7 +86,7 @@ QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MSAEditor *context,
         if (m->rowToMap(i, true) < 0) {
             continue;
         }
-        names.append(msaObj->getMultipleAlignment()->getRow(i)->getName());
+        names.append(msaObj->getMsa()->getRow(i)->getName());
     }
     return names;
 }
@@ -190,46 +190,46 @@ void RichTextMsaClipboardTask::run(){
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
 
-    const MultipleSequenceAlignment &msa = obj->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = obj->getMsa();
+
     U2OpStatusImpl os;
     const int refSeq = msa->getRowIndexByRowId(context->getReferenceRowId(), os);
 
     result.append(QString("<span style=\"font-size:%1pt; font-family:%2;\">\n").arg(pointSize).arg(fontFamily).toLatin1());
-        const MultipleSequenceAlignment& ma = obj->getMultipleAlignment();
-        int numRows = ma->getNumRows();
-        for (int seq = 0; seq < numRows; seq++){
-            QString res;
-            const MultipleSequenceAlignmentRow& row = ma->getMsaRow(seq);
-            if (!names.contains(row->getName())){
-                continue;
-            }
-
-            result.append("<p>");
-            for (int pos = window.startPos; pos < window.endPos(); pos++){
-                char c = row->charAt(pos);
-                bool highlight = false;
-                QColor color = colorScheme->getColor(seq, pos, c);
-                if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
-                    const char refChar = '\n';
-                    highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-                } else if (seq == refSeq || MultipleAlignmentRowData::INVALID_ROW_ID == refSeq) {
-                    highlight = true;
-                } else {
-                    SAFE_POINT_EXT(NULL != row, setError("MSA row is NULL"), );
-                    const char refChar = row->charAt(pos);
-                    highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-                }
-
-                if (color.isValid() && highlight) {
-                    res.append(QString("<span style=\"background-color:%1;\">%2</span>").arg(color.name()).arg(c));
-                } else {
-                    res.append(QString("%1").arg(c));
-                }
-            }
-
-            result.append(res.toLatin1());
-            result.append("</p>\n");
+    int numRows = msa->getNumRows();
+    for (int seq = 0; seq < numRows; seq++){
+        QString res;
+        const MultipleSequenceAlignmentRow row = msa->getMsaRow(seq);
+        if (!names.contains(row->getName())){
+            continue;
         }
+
+        result.append("<p>");
+        for (int pos = window.startPos; pos < window.endPos(); pos++){
+            char c = row->charAt(pos);
+            bool highlight = false;
+            QColor color = colorScheme->getColor(seq, pos, c);
+            if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
+                const char refChar = '\n';
+                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
+            } else if (seq == refSeq || MultipleAlignmentRowData::INVALID_ROW_ID == refSeq) {
+                highlight = true;
+            } else {
+                SAFE_POINT_EXT(NULL != row, setError("MSA row is NULL"), );
+                const char refChar = row->charAt(pos);
+                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
+            }
+
+            if (color.isValid() && highlight) {
+                res.append(QString("<span style=\"background-color:%1;\">%2</span>").arg(color.name()).arg(c));
+            } else {
+                res.append(QString("%1").arg(c));
+            }
+        }
+
+        result.append(res.toLatin1());
+        result.append("</p>\n");
+    }
     result.append("</span>");
 
     delete colorScheme;

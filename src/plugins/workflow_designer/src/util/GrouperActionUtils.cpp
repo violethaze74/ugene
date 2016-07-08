@@ -126,8 +126,8 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
         SAFE_POINT(NULL != alObj2.data(), "NULL MSA Object!", false);
 
 
-        const MultipleSequenceAlignment &al1 = alObj1->getMultipleAlignment();
-        const MultipleSequenceAlignment &al2 = alObj2->getMultipleAlignment();
+        const MultipleSequenceAlignment al1 = alObj1->getMsa();
+        const MultipleSequenceAlignment al2 = alObj2->getMsa();
 
         if (GroupOperations::BY_NAME() == groupOp) {
             return al1->getName() == al2->getName();
@@ -136,13 +136,12 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
                 return false;
             }
 
-            QList<MultipleSequenceAlignmentRow> rows1 = al1->getMsaRows();
-            QList<MultipleSequenceAlignmentRow> rows2 = al2->getMsaRows();
-            QList<MultipleSequenceAlignmentRow>::const_iterator it1 = rows1.constBegin();
-            QList<MultipleSequenceAlignmentRow>::const_iterator it2 = rows2.constBegin();
+            QList<MultipleAlignmentRow> rows1 = al1->getRows();
+            QList<MultipleAlignmentRow> rows2 = al2->getRows();
+            QList<MultipleAlignmentRow>::const_iterator it1 = rows1.constBegin();
+            QList<MultipleAlignmentRow>::const_iterator it2 = rows2.constBegin();
             for (; it1 != rows1.constEnd(); ++it1, ++it2) {
-                bool equal = **it1 == **it2;
-                if (!equal) {
+                if (**it1 != **it2) {
                     return false;
                 }
             }
@@ -335,7 +334,7 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     SharedDbiDataHandler newAlId = newData.value<SharedDbiDataHandler>();
     QScopedPointer<MultipleSequenceAlignmentObject> newAlObj(StorageUtils::getMsaObject(context->getDataStorage(), newAlId));
     SAFE_POINT(NULL != newAlObj.data(), "NULL MSA Object!", false);
-    const MultipleSequenceAlignment &newAl = newAlObj->getMultipleAlignment();
+    const MultipleSequenceAlignment newAl = newAlObj->getMsa();
 
     if (!started) {
         QString name;

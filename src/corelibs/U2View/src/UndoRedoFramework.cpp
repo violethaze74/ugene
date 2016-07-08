@@ -119,7 +119,7 @@ void MsaUndoRedoFramework::sl_undo() {
 
     MaModificationInfo modInfo;
     modInfo.type = MaModificationType_Undo;
-    maObj->updateCachedMAlignment(modInfo);
+    maObj->updateCachedMultipleAlignment(modInfo);
 }
 
 void MsaUndoRedoFramework::sl_redo() {
@@ -142,7 +142,7 @@ void MsaUndoRedoFramework::sl_redo() {
 
     MaModificationInfo modInfo;
     modInfo.type = MaModificationType_Redo;
-    maObj->updateCachedMAlignment(modInfo);
+    maObj->updateCachedMultipleAlignment(modInfo);
 }
 
 

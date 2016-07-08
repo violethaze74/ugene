@@ -159,7 +159,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             sub = new QMenu(tr("Export/Import"));
             sub->addAction(exportAlignmentAsSequencesAction);
             GObject* obj = set.first();
-            const MultipleSequenceAlignment &ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMAlignment();
+            const MultipleAlignment &ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMsa();
             if (ma->getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
             }
@@ -425,7 +425,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     }
     GObject* obj = set.first();
     MultipleSequenceAlignmentObject* maObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    const MultipleSequenceAlignment& ma = maObject->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = maObject->getMsa();
 
     QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
@@ -434,7 +434,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     if (rc == QDialog::Rejected) {
         return;
     }
-    Task* t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(ma, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
+    Task* t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(msa, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
@@ -450,11 +450,11 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     }
 
     GObject* obj = set.first();
-    const MultipleSequenceAlignment &ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMAlignment();
+    const MultipleSequenceAlignment msa = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMsa();
 
     GObject* firstObject = set.first();
     Document* doc = firstObject->getDocument();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), ma->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), msa->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
     QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, true, AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
@@ -467,7 +467,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     QList<DNATranslation*> trans;
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
-    Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma, 0, ma->getNumRows(), d->file, trans, d->formatId), d->addToProjectFlag);
+    Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(msa, 0, msa->getNumRows(), d->file, trans, d->formatId), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

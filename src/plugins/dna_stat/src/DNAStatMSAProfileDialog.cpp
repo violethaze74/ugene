@@ -92,7 +92,7 @@ void DNAStatMSAProfileDialog::accept() {
     s.profileName = msaObj->getGObjectName();
     s.profileURL = msaObj->getDocument()->getURLString();
     s.usePercents = percentsRB->isChecked();
-    s.ma = msaObj->getMultipleAlignment();
+    s.ma = msaObj->getMsaCopy();
     s.reportGaps = gapCB->isChecked();
     s.stripUnused = !unusedCB->isChecked();
     s.countGapsInConsensusNumbering = !skipGapPositionsCB->isChecked();

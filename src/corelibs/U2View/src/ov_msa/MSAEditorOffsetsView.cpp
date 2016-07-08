@@ -175,8 +175,7 @@ QFont MSAEditorOffsetsViewWidget::getOffsetsFont() {
 }
 
 int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const {
-    const MultipleSequenceAlignment &ma = editor->getMSAObject()->getMultipleAlignment();
-    const MultipleAlignmentRow &row = ma->getRow(seqNum);
+    const MultipleAlignmentRow &row = editor->getMSAObject()->getRow(seqNum);
     const int endPos = inclAliPos ? aliPos + 1 : aliPos;
 
     return (endPos < row->getCoreStart()) ? 0 : row->getDataSize(endPos);
@@ -217,7 +216,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
 
     int i=0;
     const MSAEditor *editor = ui->getEditor();
-    const MultipleSequenceAlignment &alignment = editor->getMSAObject()->getMultipleAlignment();
+    const MultipleSequenceAlignment alignment = editor->getMSAObject()->getMsa();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);
 

@@ -147,14 +147,13 @@ Task* SiteconBuildWorker::tick() {
         }
         mtype = SiteconWorkerFactory::SITECON_MODEL_TYPE();
         QVariantMap data = inputMessage.getData().toMap();
-        SiteconModel model = data.value(SiteconWorkerFactory::SITECON_MODEL_TYPE_ID).value<SiteconModel>();
         QString url = data.value(BaseSlots::URL_SLOT().getId()).toString();
         
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment &msa = msaObj->getMultipleAlignment();
+        const MultipleSequenceAlignment msa = msaObj->getMsa();
 
         Task* t = new SiteconBuildTask(cfg, msa, url);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));

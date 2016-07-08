@@ -67,12 +67,12 @@ bool MsaContentFilterTask::msaContainsPattern(MultipleSequenceAlignmentObject *m
     SAFE_POINT(NULL != msaObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
-    const MultipleSequenceAlignment &ma = msaObject->getMultipleAlignment();
+    const MultipleSequenceAlignment msa = msaObject->getMsa();
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
-    for (int i = 0, n = ma->getNumRows(); i < n; ++i) {
-        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
-        for (int j = 0; j < (ma->getLength() - searchStr.length() + 1); ++j) {
+    for (int i = 0, n = msa->getNumRows(); i < n; ++i) {
+        const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
+        for (int j = 0; j < (msa->getLength() - searchStr.length() + 1); ++j) {
             const char c = row->charAt(j);
             int altenateLength = 0;
             if (MAlignment_GapChar != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {

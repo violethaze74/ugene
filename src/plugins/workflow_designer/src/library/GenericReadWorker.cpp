@@ -409,7 +409,7 @@ void LoadSeqTask::run() {
         //             int gaps = cfg.value(mergeToken).toInt();
         U2OpStatus2Log os;
         foreach(GObject* go, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
-            foreach(const DNASequence& s, MSAUtils::ma2seq(((MultipleSequenceAlignmentObject*)go)->getMultipleAlignment(), false)) {
+            foreach(const DNASequence& s, MSAUtils::ma2seq((qobject_cast<MultipleSequenceAlignmentObject *>(go))->getMsa(), false)) {
                 if (!selector->matches(s)) {
                     continue;
                 }

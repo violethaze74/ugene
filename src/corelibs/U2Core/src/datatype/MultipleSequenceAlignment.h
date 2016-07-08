@@ -37,7 +37,7 @@ typedef QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
  * is expected to keep the conformance of the data and the alphabet.
  */
 class U2CORE_EXPORT MultipleSequenceAlignmentData : public MultipleAlignmentData {
-public:
+private:
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
@@ -46,6 +46,11 @@ public:
                                   const DNAAlphabet *alphabet = NULL,
                                   const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
     MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData &msa);
+
+public:
+    static MultipleSequenceAlignment createMsa(const QString &name = QString(),
+                                               const DNAAlphabet *alphabet = NULL,
+                                               const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
 
     /** Returns a character (a gap or a non-gap) in the specified row and position */
     char charAt(int rowIndex, int pos) const;
@@ -102,12 +107,15 @@ public:
     QList<MultipleSequenceAlignmentRow> getMsaRows() const;
     const MultipleSequenceAlignmentRow getMsaRowByRowId(qint64 rowId, U2OpStatus &os) const;
 
+    MultipleAlignmentData * clone() const;
     MultipleSequenceAlignmentData * explicitClone() const ;
 
+    static MultipleSequenceAlignment getEmptyMsa();
+    static MultipleSequenceAlignmentRow getEmptyRow();
+
 private:
-    MultipleAlignmentData * clone() const;
-    MultipleAlignmentRow getEmptyRow() const;
-    MultipleAlignment getEmptyMultipleAlignment() const;
+    static const MultipleSequenceAlignment EMPTY_MSA;
+    static const MultipleSequenceAlignmentRow EMPTY_ROW;
 
     /** Create a new row (sequence + gap model) from the bytes */
     MultipleSequenceAlignmentRow createSequenceRow(const QString &name, const QByteArray &rawData) const;
@@ -118,14 +126,8 @@ private:
      */
     MultipleSequenceAlignmentRow createSequenceRow(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, U2OpStatus &os);
     MultipleAlignmentRow createRow(const MultipleAlignmentRow &row) const;
-
-    static bool registerMeta;
-    static MultipleSequenceAlignment EMPTY_MA;
-    static MultipleSequenceAlignmentRow EMPTY_ROW;
 };
 
 }   // namespace U2
-
-Q_DECLARE_METATYPE(U2::MultipleSequenceAlignmentData)
 
 #endif

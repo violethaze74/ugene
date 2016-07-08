@@ -638,7 +638,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, boo
 }
 
 void ADVExportContext::selectionToAlignment(const QString& title, bool annotations, bool translate) {
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MA_OBJECT_NAME));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME);
     U2OpStatusImpl os;
     if (annotations) {
         prepareMAFromAnnotations(ma, translate, os);
@@ -773,7 +773,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment()
         return;
     }
 
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MA_OBJECT_NAME));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME);
     U2OpStatusImpl os;
 
     prepareMAFromBlastAnnotations(ma, d->qualiferId, d->addRefFlag, os);

@@ -102,7 +102,7 @@ void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, 
     MuscleContext *ctx = getMuscleContext();
     ctx->fillUidsVectors(ma->getNumRows());
     for (int i=0, n = ma->getNumRows(); i<n; i++) {
-        const MultipleSequenceAlignmentRow& row = ma->getMsaRow(i);
+        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
         
         int coreLen = row->getCoreLength();
         int maLen = ma->getLength();

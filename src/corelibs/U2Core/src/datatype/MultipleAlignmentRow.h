@@ -34,7 +34,6 @@ class MultipleAlignmentRowData;
 class U2OpStatus;
 
 typedef QSharedPointer<MultipleAlignmentData> MultipleAlignment;
-typedef QWeakPointer<MultipleAlignmentData> MultipleAlignmentWeak;
 typedef QSharedPointer<MultipleAlignmentRowData> MultipleAlignmentRow;
 
 /**

@@ -72,11 +72,11 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     if (cacheVersion == objVersion) {
         return;
     }
-    const MultipleSequenceAlignment& ma = maObj->getMultipleAlignment();
-    int aliLen = ma->getLength();
+    const MultipleSequenceAlignment msa = maObj->getMsa();
+    int aliLen = msa->getLength();
     indentCache.resize(aliLen);
     for (int i = 0; i < aliLen; i++) {
-        indentCache[i] = MSAConsensusUtils::packConsensusCharsToInt(ma, i, mask4, true);
+        indentCache[i] = MSAConsensusUtils::packConsensusCharsToInt(msa, i, mask4, true);
     }
     cacheVersion = objVersion;
 }

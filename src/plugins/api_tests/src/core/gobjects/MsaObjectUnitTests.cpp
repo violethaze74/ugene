@@ -102,9 +102,9 @@ IMPLEMENT_TEST(MsaObjectUnitTests, getMAlignment) {
     QScopedPointer<MultipleSequenceAlignmentObject> alObj(MsaObjectTestData::getTestAlignmentObject(dbiRef, alName, os));
     CHECK_NO_ERROR(os);
 
-    const MultipleSequenceAlignment alActual = alObj->getMultipleAlignment();
+    const MultipleSequenceAlignment alActual = alObj->getMsa();
 
-    const bool alsEqual = (alActual == MsaObjectTestData::getTestAlignment(dbiRef, alName, os));
+    const bool alsEqual = (*alActual == *MsaObjectTestData::getTestAlignment(dbiRef, alName, os));
     CHECK_TRUE(alsEqual, "Actual alignment doesn't equal to the original!");
     CHECK_EQUAL(alName, alActual->getName(), "alignment name");
 }
@@ -128,9 +128,9 @@ IMPLEMENT_TEST(MsaObjectUnitTests, setMAlignment) {
 
     const MultipleSequenceAlignment secondAlignment = MsaObjectTestData::getTestAlignment(dbiRef, secondAlignmentName, os);
     alObj->setMultipleAlignment(secondAlignment);
-    const MultipleSequenceAlignment &actualAlignment = alObj->getMultipleAlignment();
+    const MultipleSequenceAlignment actualAlignment = alObj->getMsa();
 
-    bool alsEqual = (secondAlignment == actualAlignment);
+    bool alsEqual = (*secondAlignment == *actualAlignment);
     CHECK_TRUE(alsEqual, "Actual alignment doesn't equal to the original!");
     CHECK_EQUAL(secondAlignmentName, actualAlignment->getName(), "alignment name");
 }
@@ -152,7 +152,7 @@ IMPLEMENT_TEST( MsaObjectUnitTests, deleteGap_trailingGaps ) {
 
     alnObj->deleteGap(os, U2Region(0, alnObj->getNumRows()), 10, 3);
 
-    const MultipleSequenceAlignment &resultAlignment = alnObj->getMultipleAlignment();
+    const MultipleSequenceAlignment resultAlignment = alnObj->getMsa();
     CHECK_TRUE(resultAlignment->getMsaRow(0)->getData() == "AC-GT--AAA-", "First row content is unexpected!");
     CHECK_TRUE(resultAlignment->getMsaRow(1)->getData() == "-ACA---GTT-", "Second row content is unexpected!");
     CHECK_TRUE(resultAlignment->getMsaRow(2)->getData() == "-ACACA-G---", "Third row content is unexpected!");
@@ -177,7 +177,7 @@ IMPLEMENT_TEST( MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols ) {
     SAFE_POINT_OP(os, );
 
     CHECK_TRUE(0 == countOfDeleted, "Unexpected count of removed symbols!");
-    const MultipleSequenceAlignment &resultAlignment = alnObj->getMultipleAlignment();
+    const MultipleSequenceAlignment resultAlignment = alnObj->getMsa();
     CHECK_TRUE(resultAlignment->getMsaRow(0)->getData() == "AC-GT--AAA----", "First row content is unexpected!");
     CHECK_TRUE(resultAlignment->getMsaRow(1)->getData() == "-ACA---GTT----", "Second row content is unexpected!");
     CHECK_TRUE(resultAlignment->getMsaRow(2)->getData() == "-ACACA-G------", "Third row content is unexpected!");
@@ -205,7 +205,7 @@ IMPLEMENT_TEST( MsaObjectUnitTests, deleteGap_gapRegion ) {
     SAFE_POINT_OP(os, );
 
     CHECK_TRUE(2 == countOfDeleted, "Unexpected count of removed symbols!");
-    const MultipleSequenceAlignment &resultAlignment = alnObj->getMultipleAlignment();
+    const MultipleSequenceAlignment resultAlignment = alnObj->getMsa();
     CHECK_TRUE(resultAlignment->getMsaRow(0)->getData() == "AC-GTAAA---", "First row content is unexpected!");
     CHECK_TRUE(resultAlignment->getMsaRow(1)->getData() == "-ACA-GTT---", "Second row content is unexpected!");
     CHECK_TRUE(resultAlignment->getMsaRow(2)->getData() == "-ACACA-G---", "Third row content is unexpected!");

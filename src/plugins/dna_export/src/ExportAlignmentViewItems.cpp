@@ -101,7 +101,7 @@ void MSAExportContext::buildMenu(QMenu* m) {
 }
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
-    const MultipleSequenceAlignment& ma = editor->getMSAObject()->getMultipleAlignment();
+    const MultipleSequenceAlignment ma = editor->getMSAObject()->getMsa();
     assert(ma->getAlphabet()->isNucleic());
 
     GUrl msaUrl = editor->getMSAObject()->getDocument()->getURL();

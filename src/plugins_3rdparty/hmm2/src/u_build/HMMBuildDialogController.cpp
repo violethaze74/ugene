@@ -258,7 +258,7 @@ QList<Task*> HMMBuildToFileTask::onSubTaskFinished(Task* subTask) {
             stateInfo.setError(  tr("Alignment object not found!") );
         } else {
             MultipleSequenceAlignmentObject* msa = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
-            const MultipleSequenceAlignment &ma = msa->getMultipleAlignment();
+            const MultipleSequenceAlignment ma = msa->getMsa();
             if (settings.name.isEmpty()) {
                 settings.name = msa->getGObjectName() == MA_OBJECT_NAME ? doc->getName() : msa->getGObjectName();
             }

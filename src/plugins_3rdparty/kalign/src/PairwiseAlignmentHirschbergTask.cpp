@@ -79,7 +79,7 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     alphabet = U2AlphabetUtils::getById(settings->alphabet);
     SAFE_POINT(alphabet != NULL, "Albhabet is invalid.", );
 
-    ma = MultipleSequenceAlignment(new MultipleSequenceAlignmentData(firstName + " vs. " + secondName, alphabet));
+    ma = MultipleSequenceAlignmentData::createMsa(firstName + " vs. " + secondName, alphabet);
     ma->addRow(firstName, first);
     ma->addRow(secondName, second);
 

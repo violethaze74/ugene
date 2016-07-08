@@ -1385,7 +1385,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_empty) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1440,7 +1440,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_nothingNew) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1499,7 +1499,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newOrder) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1561,7 +1561,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newName) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1623,7 +1623,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newAlphabet) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1686,7 +1686,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newContent) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1748,7 +1748,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1828,7 +1828,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_additionalRows) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1891,7 +1891,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_removeRows) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);
@@ -1956,7 +1956,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_clear) {
 
     // Prepare input data
     const DNAAlphabet* alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData(MsaDbiUtilsTestUtils::alignmentName, alphabet));
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MsaDbiUtilsTestUtils::alignmentName, alphabet);
     ma->addRow("1", "AAAA--AAA", -1);
     ma->addRow("2", "C--CCCCCC", -1);
     ma->addRow("3", "GG-GGGG-G", -1);

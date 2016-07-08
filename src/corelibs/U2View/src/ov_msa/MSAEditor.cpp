@@ -93,7 +93,6 @@
 #include "MSAEditorState.h"
 #include "MSAEditorStatusBar.h"
 #include "MSAEditorTasks.h"
-#include "MSAEditorUndoFramework.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "PhyTrees/MSAEditorMultiTreeViewer.h"
@@ -362,7 +361,7 @@ const MultipleSequenceAlignmentRow MSAEditor::getRowByLineNumber(int lineNumber)
     if (ui->isCollapsibleMode()) {
         lineNumber = ui->getCollapseModel()->mapToRow(lineNumber);
     }
-    return getMSAObject()->getRow(lineNumber);
+    return getMSAObject()->getMsaRow(lineNumber);
 }
 
 void MSAEditor::sl_changeFont() {
@@ -634,7 +633,7 @@ void MSAEditor::calcFontPixelToPointSizeCoef() {
 
 void MSAEditor::copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os) {
     MSAUtils::copyRowFromSequence(msaObject, seqObj, os);
-    msaObject->updateCachedMAlignment();
+    msaObject->updateCachedMultipleAlignment();
 }
 
 void MSAEditor::sl_onSeqOrderChanged(const QStringList& order ){
@@ -861,7 +860,7 @@ void MSAEditor::updateReference(){
 }
 
 QString MSAEditor::getReferenceRowName() const {
-    const MultipleSequenceAlignment &alignment = getMSAObject()->getMultipleAlignment();
+    const MultipleSequenceAlignment alignment = getMSAObject()->getMsa();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
     return (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq)

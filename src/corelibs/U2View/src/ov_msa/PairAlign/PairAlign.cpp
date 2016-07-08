@@ -63,7 +63,7 @@
 #include "../SequenceSelectorWidgetController.h"
 
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
-    const U2::MultipleAlignmentRow row = msa->getMSAObject()->getMultipleAlignment()->getRowByRowId(rowId, os);
+    const U2::MultipleAlignmentRow row = msa->getMSAObject()->getMsa()->getRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
     return row->getRowDbInfo().dataObjectId;
 }
@@ -264,8 +264,8 @@ void PairAlign::updatePercentOfSimilarity() {
     SAFE_POINT(NULL != distanceFactory, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
-    MultipleSequenceAlignment ma(new MultipleSequenceAlignmentData());
-    const MultipleSequenceAlignment &currentAlignment = msa->getMSAObject()->getMultipleAlignment();
+    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa();
+    const MultipleSequenceAlignment currentAlignment = msa->getMSAObject()->getMsa();
     ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
     ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
@@ -275,7 +275,7 @@ void PairAlign::updatePercentOfSimilarity() {
 }
 
 bool PairAlign::checkSequenceNames( ) {
-    QList<qint64> rowIds = msa->getMSAObject( )->getMultipleAlignment( )->getRowsIds( );
+    QList<qint64> rowIds = msa->getMSAObject( )->getMsa( )->getRowsIds( );
     return ( rowIds.contains( firstSeqSelectorWC->sequenceId( ) )
         && rowIds.contains( secondSeqSelectorWC->sequenceId( ) ) );
 }
@@ -418,7 +418,7 @@ void PairAlign::sl_alignComplete() {
             mi.rowListChanged = false;
             mi.modifiedRowIds.append(pairwiseAlignmentWidgetsSettings->firstSequenceId);
             mi.modifiedRowIds.append(pairwiseAlignmentWidgetsSettings->secondSequenceId);
-            msa->getMSAObject()->updateCachedMAlignment(mi);
+            msa->getMSAObject()->updateCachedMultipleAlignment(mi);
         }
         pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask = NULL;
     }

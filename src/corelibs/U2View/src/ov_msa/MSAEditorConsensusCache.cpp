@@ -49,7 +49,7 @@ MSAEditorConsensusCache::~MSAEditorConsensusCache() {
 void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory) {
     delete algorithm;
     algorithm = NULL;
-    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment());
+    algorithm = factory->createAlgorithm(aliObj->getMsa());
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);
 }
@@ -65,17 +65,17 @@ void MSAEditorConsensusCache::sl_alignmentChanged(const MultipleSequenceAlignmen
 
 void MSAEditorConsensusCache::updateCacheItem(int pos) {
     if(!updateMap.at(pos) && aliObj != NULL) {
-        const MultipleSequenceAlignment& ma = aliObj->getMultipleAlignment();
+        const MultipleSequenceAlignment msa = aliObj->getMsa();
         QString errorMessage = tr("Can not update consensus chache item");
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage,);
-        SAFE_POINT(curCacheSize == ma->getLength(), errorMessage,);
+        SAFE_POINT(curCacheSize == msa->getLength(), errorMessage,);
 
         CacheItem& ci = cache[pos];
         int count = 0;
-        int nSeq = ma->getNumRows();
+        int nSeq = msa->getNumRows();
         SAFE_POINT(0 != nSeq, errorMessage,);
 
-        ci.topChar = algorithm->getConsensusCharAndScore(ma, pos, count);
+        ci.topChar = algorithm->getConsensusCharAndScore(msa, pos, count);
         ci.topPercent = (char)qRound(count * 100. / nSeq);
         assert(ci.topPercent >=0 && ci.topPercent<=100);
         updateMap.setBit(pos, true);
@@ -96,7 +96,7 @@ int MSAEditorConsensusCache::getConsensusCharPercent(int pos) {
 
 QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
     QByteArray res;
-    const MultipleSequenceAlignment& ma = aliObj->getMultipleAlignment();
+    const MultipleSequenceAlignment ma = aliObj->getMsa();
     for (int i=0, n = ma->getLength(); i<n; i++) {
         char c = getConsensusChar(i);
         if (c!=MAlignment_GapChar || withGaps) {
