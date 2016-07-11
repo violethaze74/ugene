@@ -28,7 +28,7 @@
 #include <U2Gui/CreateAnnotationWidgetController.h>
 
 #include "PhmmerSearchSettings.h"
-#include "ui/ui_PhmmerSearchDialog.h"
+#include "ui_PhmmerSearchDialog.h"
 
 namespace U2 {
 

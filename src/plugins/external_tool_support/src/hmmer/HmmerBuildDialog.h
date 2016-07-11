@@ -27,7 +27,7 @@
 #include <U2Core/MAlignment.h>
 
 #include "HmmerBuildTask.h"
-#include "ui/ui_HmmerBuildDialog.h"
+#include "ui_HmmerBuildDialog.h"
 
 namespace U2 {
 

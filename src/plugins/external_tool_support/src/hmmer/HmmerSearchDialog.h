@@ -25,7 +25,7 @@
 #include <U2Gui/CreateAnnotationWidgetController.h>
 
 #include "HmmerSearchTask.h"
-#include "ui/ui_HmmerSearchDialog.h"
+#include "ui_HmmerSearchDialog.h"
 
 namespace U2 {
 
