@@ -135,6 +135,9 @@ Task * CuffdiffSupportTask::createTranscriptTask() {
 Task * CuffdiffSupportTask::createCuffdiffTask() {
     // prepare arguments
     QStringList arguments;
+
+    arguments << "--no-update-check";
+
     arguments << "-p" << QString::number(TopHatSettings::getThreadsCount());
     arguments << "--output-dir" << settings.outDir;
     if (settings.timeSeriesAnalysis) {

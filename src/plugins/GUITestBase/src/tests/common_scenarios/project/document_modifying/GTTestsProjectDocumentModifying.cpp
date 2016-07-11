@@ -54,12 +54,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 // 2. Open view for 1.gb document.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
+    GTMouseDriver::click(Qt::RightButton);
 
 // Press Ctrl+N and add annotation to it annotations table.
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "CCC", "1.. 10"));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
     GTGlobals::sleep();
@@ -79,12 +79,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) { //CHANGES another annotation created
 
     // 2. Open view for 1.gb document.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
+    GTMouseDriver::click(Qt::RightButton);
 
     // Press Ctrl+N and add annotation to it annotations table.
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "GROUP", "Annotation", "4.. 18"));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
     GTGlobals::sleep();
@@ -126,12 +126,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 // 6. Load 1.gb document using context menu.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
+    GTMouseDriver::click(Qt::RightButton);
 
 // Press Ctrl+N and add annotation "misc_feature" to the annotations table in 1.gb document.
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "misc_feature", "complement(1.. 20)"));
-    GTKeyboardDriver::keyClick(os, 'n', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'n', Qt::ControlModifier);
     GTGlobals::sleep();
 
 // Expected state: in project view 1.gb document has marked as modified (with blue color)
@@ -154,8 +154,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 // 10) Open 1.gb view by context menu
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_load_selected_documents", GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
+    GTMouseDriver::click(Qt::RightButton);
 
 // Expected state: annotation added at step 6 already presents in document
     GTGlobals::sleep();

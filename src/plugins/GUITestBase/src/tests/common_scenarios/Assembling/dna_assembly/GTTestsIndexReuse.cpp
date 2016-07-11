@@ -153,6 +153,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
 
     QFileInfoList fListIndex = QDir(sandBoxDir).entryInfoList();
     CHECK_SET_ERR(fListIndex.size() == 17, QString("3: unexpected files number: %1").arg(fListIndex.size()));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002){
@@ -275,6 +276,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 
     QFileInfoList fListIndex = QDir(sandBoxDir).entryInfoList();
     CHECK_SET_ERR(fListIndex.size() == 17, QString("3: unexpected files number: %1").arg(fListIndex.size()));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005){
@@ -400,7 +402,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
     foreach (QFileInfo info, fListIndex) {
         s2.append(info.absoluteFilePath() + "\n");
     }
-    CHECK_SET_ERR(fListIndex.size() == 17, s2 + QString("3: unexpected files number: %1").arg(fListIndex.size()));
+    CHECK_SET_ERR(fListIndex.size() == 19, s2 + QString("3: unexpected files number: %1").arg(fListIndex.size()));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008){
@@ -513,7 +516,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010){
     GTUtilsLog::checkContainsMessage(os, l3, false);
 
     QFileInfoList fListIndex = QDir(sandBoxDir).entryInfoList();
-    CHECK_SET_ERR(fListIndex.size() == 17, QString("3: unexpected files number: %1").arg(fListIndex.size()));
+    CHECK_SET_ERR(fListIndex.size() == 19, QString("3: unexpected files number: %1").arg(fListIndex.size()));
+
 }
 
 }

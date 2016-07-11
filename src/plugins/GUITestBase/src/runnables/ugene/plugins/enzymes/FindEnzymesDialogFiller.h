@@ -30,11 +30,19 @@ using namespace HI;
 class FindEnzymesDialogFiller : public Filler {
 public:
     FindEnzymesDialogFiller(HI::GUITestOpStatus &os, const QStringList &enzymesToFind, CustomScenario *scenario = NULL);
+    FindEnzymesDialogFiller(HI::GUITestOpStatus &os, const QStringList &enzymesToFind,
+                            qint64 searchRegionStart, qint64 searchRegionEnd,
+                            qint64 excludedRegionStart = -1, qint64 excludedRegionEnd = -1,
+                            CustomScenario *scenario = NULL);
 
     void commonScenario();
 
 private:
     QStringList enzymesToFind;
+    qint64 searchStart;
+    qint64 searchEnd;
+    qint64 excludeStart;
+    qint64 excludeEnd;
 };
 
 }   // namespace U2

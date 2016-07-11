@@ -22,6 +22,7 @@
 #include <QDir>
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -68,7 +69,9 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
 {
     ui = new Ui_EditSequenceDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17468760");
+    new HelpButton(this, ui->buttonBox, "17470484");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     addSeqpasterWidget();
     w->disableCustomSettings();

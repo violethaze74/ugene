@@ -67,7 +67,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011){
     GTUtilsDialog::waitForDialog(os, filler2);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Build dotplot...");
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep();
 //Expected state: Dot plot view has appear. There is 1 line at view.
 //6. Use context menu on dot plot view {Dotplot->Remove}
 //Expected state: save "Dotplot" has appear.
@@ -111,6 +111,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2){//commit DotPlotWidget.cpp exitButton
     GTUtilsDialog::waitForDialog(os, filler2);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Build dotplot...");
+    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTWidget::click(os, GTWidget::findWidget(os, "exitButton"));
@@ -197,7 +198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_1){
     GTUtilsDialog::waitForDialog(os, filler2);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Build dotplot...");
-    GTGlobals::sleep(500);
+    GTGlobals::sleep();
     GTUtilsProjectTreeView::openView(os);
 
     for(int i=0;i<4;i++){
@@ -217,7 +218,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2){
     GTUtilsDialog::waitForDialog(os, filler2);
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Build dotplot...");
-    GTGlobals::sleep(500);
+    GTGlobals::sleep();
     GTUtilsProjectTreeView::openView(os);
 
     for(int i=0;i<4;i++){

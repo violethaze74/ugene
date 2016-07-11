@@ -39,10 +39,10 @@ void GTUtilsEscClicker::commonScenario( )
     if ( mouse ) {
         QPoint p = GTMouseDriver::getMousePosition( );
         p.setX( p.x( ) - 50 );
-        GTMouseDriver::moveTo( os, p );
-        GTMouseDriver::click( os );
+        GTMouseDriver::moveTo( p );
+        GTMouseDriver::click();
     } else {
-        GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["esc"] );
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
     }
 }
 

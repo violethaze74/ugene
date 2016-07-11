@@ -23,6 +23,8 @@
 #include "ServiceRegistryImpl.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/CMDLineRegistry.h>
+#include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Log.h>
 #include <U2Core/L10n.h>
@@ -41,15 +43,15 @@
 #include <windows.h>
 #endif
 
+
 namespace U2 {
 
 /* TRANSLATOR U2::PluginSupportImpl */
 #define PLUGINS_LIST_SETTINGS QString("plugin_support/list/")
 #define SKIP_LIST_SETTINGS QString("plugin_support/skip_list/")
 #define PLUGINS_ACCEPTED_LICENSE_LIST QString("plugin_support/accepted_list/")
+#define PLUGIN_VERIFICATION QString("plugin_support/verification/")
 
-QString PluginSupportImpl::versionAppendix("");
-const QString PluginSupportImpl::OPENCL_CHECKED_SETTINGS("plugin_support/opencl/");
 static QStringList findAllPluginsInDefaultPluginsDir();
 
 
@@ -58,40 +60,10 @@ PluginRef::PluginRef(Plugin* _plugin, QLibrary* _library, const PluginDesc& desc
 {
 }
 
-PluginSupportImpl::PluginSupportImpl(bool testingMode): allLoaded(false) {
-    //read plugin names from settings
-    Settings* settings = AppContext::getSettings();
-
-    QSet<QString> pluginFiles = getPluginPaths();
-
+PluginSupportImpl::PluginSupportImpl(): allLoaded(false) {
     connect(this, SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_registerServices()));
 
-    if(testingMode) {
-        foreach(const QString& pluginFile, pluginFiles) {
-            if(pluginFile.contains("opencl_support")) {
-                Task* loadStartUpPlugins = new LoadAllPluginsTask(this, QStringList(pluginFile));
-                AppContext::getTaskScheduler()->registerTopLevelTask(loadStartUpPlugins);
-                return;
-            }
-        }
-    }
-
-    QString openclCheckingVersion = settings->getValue(OPENCL_CHECKED_SETTINGS, "").toString();
-
-    Task* loadStartUpPlugins = NULL;
-#ifndef Q_OS_MAC
-    if(openclCheckingVersion != Version::appVersion().text && !testingMode) {
-        loadStartUpPlugins = new LoadAllPluginsTask(this, pluginFiles.toList(), QStringList("opencl_support"));
-    }
-    else {
-        loadStartUpPlugins = new LoadAllPluginsTask(this, pluginFiles.toList(), QStringList());
-        settings->setValue(OPENCL_CHECKED_SETTINGS, Version::appVersion().text);
-    }
-#else
-    Q_UNUSED(openclCheckingVersion);
-    loadStartUpPlugins = new LoadAllPluginsTask(this, pluginFiles.toList(), QStringList());
-#endif
-
+    Task* loadStartUpPlugins = new LoadAllPluginsTask(this, getPluginPaths().toList());
     AppContext::getTaskScheduler()->registerTopLevelTask(loadStartUpPlugins);
 }
 
@@ -106,8 +78,10 @@ bool PluginSupportImpl::isAllPluginsLoaded() const {
     return allLoaded;
 }
 
-LoadAllPluginsTask::LoadAllPluginsTask(PluginSupportImpl* _ps, const QStringList& _pluginFiles, const QStringList& verifiedPlugins)
-: Task(tr("Loading start up plugins"), TaskFlag_NoRun), ps(_ps), pluginFiles(_pluginFiles), verifiedPlugins(verifiedPlugins)
+LoadAllPluginsTask::LoadAllPluginsTask(PluginSupportImpl* _ps, const QStringList& _pluginFiles)
+    : Task(tr("Loading start up plugins"), TaskFlag_NoRun),
+      ps(_ps),
+      pluginFiles(_pluginFiles)
 {
     coreLog.trace("List of the plugins to be loaded:");
     foreach(const QString& path, pluginFiles) {
@@ -129,41 +103,9 @@ void LoadAllPluginsTask::prepare() {
         return;
     }
 
-    if(!orderedPluginsWithVerification.isEmpty()) {
-        orderedPluginsWithVerification = PluginDescriptorHelper::orderPlugins(orderedPluginsWithVerification, err);
-
-        if (!err.isEmpty()) {
-            setError(err);
-            return;
-        }
-        foreach(const PluginDesc& desc, orderedPluginsWithVerification) {
-            addSubTask(new VerifyPluginTask(ps, desc));
-        }
-    }
-
     foreach(const PluginDesc& desc, orderedPlugins) {
         addSubTask(new AddPluginTask(ps, desc));
     }
-}
-
-QList<Task*> LoadAllPluginsTask::onSubTaskFinished(Task* subTask) {
-    QList<Task*> res;
-    VerifyPluginTask* verifyTask = qobject_cast<VerifyPluginTask*>(subTask);
-    if(NULL != verifyTask) {
-        if(verifyTask->isCorrectPlugin()) {
-            res << new AddPluginTask(ps, verifyTask->getPluginDescriptor());
-        }
-        else {
-            MainWindow* mw = AppContext::getMainWindow();
-            if(NULL == mw) {
-                return res;
-            }
-            mw->addNotification(tr("Problem occurred loading the OpenCL driver. Please try to update drivers if \
-                                   you're going to make calculations on your video card. For details see this page: \
-                                   <a href=\"%1\">%1</a>").arg("http://ugene.unipro.ru/using-video-cards.html"), Warning_Not);
-        }
-    }
-    return res;
 }
 
 void LoadAllPluginsTask::addToOrderingQueue(const QString& url) {
@@ -187,7 +129,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString& url) {
     }
 
     // now check plugin compatibility
-    bool isUIMode = AppContext::getMainWindow() != NULL;
+    bool isUIMode = AppContext::getMainWindow() != NULL || AppContext::isGUIMode(); // isGUIMode - for pluginChecker!
     bool modeIsOk = false;
     if (isUIMode) {
         modeIsOk = desc.mode.testFlag(PluginMode_UI);
@@ -210,8 +152,8 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString& url) {
         coreLog.trace(QString("Plugin was built with higher QT version: %1").arg(desc.id));
         return;
     }
-    if (ugeneVersion < desc.ugeneVersion) {
-        coreLog.trace(QString("Plugin was built with higher UGENE version: %1, %2 vs %3").arg(desc.id).arg(desc.ugeneVersion.text).arg(ugeneVersion.text));
+    if (ugeneVersion != desc.ugeneVersion) {
+        coreLog.trace(QString("Plugin was built with another UGENE version: %1, %2 vs %3").arg(desc.id).arg(desc.ugeneVersion.text).arg(ugeneVersion.text));
         return;
     }
 
@@ -252,12 +194,6 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString& url) {
     }
 #endif
 
-    foreach(const QString& verifiedPlugin, verifiedPlugins) {
-        if(url.contains(verifiedPlugin) && !verifiedPlugin.isEmpty()) {
-            orderedPluginsWithVerification.append(desc);
-            return;
-        }
-    }
     orderedPlugins.append(desc);
 }
 
@@ -272,16 +208,31 @@ Task::ReportResult LoadAllPluginsTask::report()
     return ReportResult_Finished;
 }
 
+namespace {
+    QStringList getCmdlinePlugins() {
+        CMDLineRegistry *reg = AppContext::getCMDLineRegistry();
+        if (reg->hasParameter(CMDLineRegistry::PLUGINS_ARG)) {
+            QString pluginsToLoad = reg->getParameterValue(CMDLineRegistry::PLUGINS_ARG);
+            return pluginsToLoad.split(";");
+        }
+        return QStringList();
+    }
+}
+
 static QStringList findAllPluginsInDefaultPluginsDir() {
     QDir d = PluginSupportImpl::getDefaultPluginsDir();
     QStringList filter; filter << QString("*.") + PLUGIN_FILE_EXT;
     QStringList fileNames = d.entryList(filter, QDir::Readable | QDir::Files, QDir::NoSort);
     QStringList res;
+    bool hasCmdlinePlugins = AppContext::getCMDLineRegistry()->hasParameter(CMDLineRegistry::PLUGINS_ARG);
+    QStringList cmdlinePlugins = getCmdlinePlugins();
     foreach(const QString& name, fileNames) {
         GUrl filePath(d.absolutePath() + "/" + name);
-        QString path = filePath.getURLString();
-        res.append(path);
-        coreLog.trace(QString("Found plugin candidate in default dir: %1").arg(path));
+        if (!hasCmdlinePlugins || cmdlinePlugins.contains(filePath.baseFileName())) {
+            QString path = filePath.getURLString();
+            res.append(path);
+            coreLog.trace(QString("Found plugin candidate in default dir: %1").arg(path));
+        }
     }
     return res;
 }
@@ -329,7 +280,7 @@ QString PluginSupportImpl::getPluginFileURL(Plugin* p) const {
 Task* PluginSupportImpl::addPluginTask(const QString& pathToPlugin) {
     QString err;
     PluginDesc desc = PluginDescriptorHelper::readPluginDescriptor(pathToPlugin, err);
-    Task* res = new AddPluginTask(this, desc);
+    Task* res = new AddPluginTask(this, desc, true);
     if (!err.isEmpty()) {
         res->setError(err);
     }
@@ -400,7 +351,7 @@ void PluginSupportImpl::updateSavedState(PluginRef* ref) {
             }
         }
     } else {
-        settings->setValue(pluginListSettingsDir + versionAppendix + pluginId, descUrl);
+        settings->setValue(pluginListSettingsDir + pluginId, descUrl);
 
         //remove from skip-list if present
         if (isDefaultPluginsDir(descUrl)) {
@@ -412,7 +363,7 @@ void PluginSupportImpl::updateSavedState(PluginRef* ref) {
     }
 
     if (!ref->plugin->isFree()){
-        settings->setValue(pluginAcceptedLicenseSettingsDir + versionAppendix + pluginId + "license",ref->plugin->isLicenseAccepted());
+        settings->setValue(pluginAcceptedLicenseSettingsDir + pluginId + "license",ref->plugin->isLicenseAccepted());
     }
 }
 
@@ -430,30 +381,22 @@ QSet<QString> PluginSupportImpl::getPluginPaths(){
     Settings* settings = AppContext::getSettings();
     QString pluginListSettingsDir = settings->toVersionKey(PLUGINS_LIST_SETTINGS);
 
-    QStringList pluginsIds = settings->getAllKeys(pluginListSettingsDir);
+    QStringList pluginsIds;
+    if (AppContext::getCMDLineRegistry()->hasParameter(CMDLineRegistry::PLUGINS_ARG)) {
+        pluginsIds = getCmdlinePlugins();
+    } else {
+        pluginsIds = settings->getAllKeys(pluginListSettingsDir);
+    }
 
     QSet<QString> pluginFiles;
-    versionAppendix = Version::buildDate;
-    if (!Version::appVersion().isDevVersion){
-        versionAppendix.clear();
-    }else{
-        versionAppendix.replace(" ", ".");
-        versionAppendix.append("-");
-        if (pluginsIds.size() > 150){
-            settings->remove(pluginListSettingsDir);
-        }
-    }
     foreach (const QString& pluginId, pluginsIds) {
-        QString file = settings->getValue(pluginListSettingsDir + versionAppendix + pluginId).toString();
+        QString file = settings->getValue(pluginListSettingsDir + pluginId).toString();
         if(!file.isEmpty()) {
             pluginFiles.insert(file);
         }
     }
     //read all plugins from the current folder and from ./plugins folder
-    // use SKIP list to learn which plugin should not be loaded
-    QStringList skipFiles = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS), QStringList()).toStringList();
     pluginFiles.unite(findAllPluginsInDefaultPluginsDir().toSet());
-    pluginFiles.subtract(skipFiles.toSet());
 
     return pluginFiles;
 }
@@ -461,18 +404,24 @@ QSet<QString> PluginSupportImpl::getPluginPaths(){
 
 //////////////////////////////////////////////////////////////////////////
 /// Tasks
-
-//todo: improve task naming
-AddPluginTask::AddPluginTask(PluginSupportImpl* _ps, const PluginDesc& _desc)
-: Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlag_NoRun), ps(_ps), desc(_desc)
+AddPluginTask:: AddPluginTask(PluginSupportImpl* _ps, const PluginDesc& _desc, bool forceVerification)
+    : Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlag_NoRun),
+      lib(NULL),
+      ps(_ps),
+      desc(_desc),
+      forceVerification(forceVerification),
+      verificationMode(false),
+      verifyTask(NULL)
 {
+    CMDLineRegistry *reg = AppContext::getCMDLineRegistry();
+    verificationMode = reg->hasParameter(CMDLineRegistry::VERIFY_ARG);
 }
 
-Task::ReportResult AddPluginTask::report() {
+void AddPluginTask::prepare() {
     PluginRef* ref = ps->findRefById(desc.id);
     if (ref != NULL) {
         stateInfo.setError(  tr("Plugin is already loaded: %1").arg(desc.id) );
-        return ReportResult_Finished;
+        return;
     }
 
     //check that plugin we depends on is already loaded
@@ -480,26 +429,77 @@ Task::ReportResult AddPluginTask::report() {
         PluginRef* ref = ps->findRefById(desc.id);
         if (ref == NULL) {
             stateInfo.setError(  tr("Plugin %1 depends on %2 which is not loaded").arg(desc.id).arg(di.id) );
-            return ReportResult_Finished;
+            return;
         }
         if (ref->pluginDesc.pluginVersion < di.version) {
             stateInfo.setError(  tr("Plugin %1 depends on %2 which is available, but the version is too old").arg(desc.id).arg(di.id) );
-            return ReportResult_Finished;
+            return;
         }
     }
 
     //load library
     QString libUrl = desc.libraryUrl.getURLString();
-    QScopedPointer<QLibrary> lib(new QLibrary(libUrl));
+    lib.reset(new QLibrary(libUrl));
     bool loadOk = lib->load();
 
     if (!loadOk) {
         stateInfo.setError(  tr("Plugin loading error: %1, Error string %2").arg(libUrl).arg(lib->errorString()) );
+        return;
+    }
+
+    Settings* settings = AppContext::getSettings();
+    SAFE_POINT(settings != NULL, tr("Settings is NULL"), );
+    QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
+
+    PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
+    if (verify_func && !verificationMode && (checkVersion != Version::appVersion().text || forceVerification)) {
+        verifyTask = new VerifyPluginTask(ps, desc);
+        addSubTask(verifyTask);
+    }
+}
+
+Task::ReportResult AddPluginTask::report() {
+    CHECK_OP(stateInfo, ReportResult_Finished);
+
+    // verify plugin
+    PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
+    if (verify_func && verificationMode) {
+        if (!verify_func()) {
+            // verification mode is exclusively for crash check!
+            FAIL("Plugin is not verified!", ReportResult_Finished);
+        }
+    }
+
+    // check if verification failed
+    Settings* settings = AppContext::getSettings();
+    QString libUrl = desc.libraryUrl.getURLString();
+    PLUG_FAIL_MESSAGE_FUNC message_func = PLUG_FAIL_MESSAGE_FUNC(lib->resolve(U2_PLUGIN_FAIL_MASSAGE_NAME));
+    if (!verificationMode && verifyTask != NULL) {
+        settings->setValue(PLUGIN_VERIFICATION + desc.id, Version::appVersion().text);
+        if (!verifyTask->isCorrectPlugin()) {
+            settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
+            QString message = message_func ? *(QScopedPointer<QString>(message_func())) : tr("Plugin loading error: %1. Verification failed.").arg(libUrl);
+            stateInfo.setError(message);
+            MainWindow* mw = AppContext::getMainWindow();
+            CHECK(mw != NULL, ReportResult_Finished);
+            mw->addNotification(message, Warning_Not);
+            return ReportResult_Finished;
+        } else {
+            QString skipFile = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id, QString()).toString();
+            if (skipFile == desc.descriptorUrl.getURLString()) {
+                settings->remove(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id);
+            }
+        }
+    }
+
+    settings->sync();
+    QString skipFile = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id, QString()).toString();
+    if (skipFile == desc.descriptorUrl.getURLString()) {
         return ReportResult_Finished;
     }
 
     //instantiate plugin
-    PLUG_INIT_FUNC init_fn = PLUG_INIT_FUNC((lib->resolve(U2_PLUGIN_INIT_FUNC_NAME)));
+    PLUG_INIT_FUNC init_fn = PLUG_INIT_FUNC(lib->resolve(U2_PLUGIN_INIT_FUNC_NAME));
     if (!init_fn) {
         stateInfo.setError(  tr("Plugin initialization routine was not found: %1").arg(libUrl) );
         return ReportResult_Finished;
@@ -510,6 +510,7 @@ Task::ReportResult AddPluginTask::report() {
         stateInfo.setError(  tr("Plugin initialization failed: %1").arg(libUrl) );
         return ReportResult_Finished;
     }
+
     p->setId(desc.id);
     p->setLicensePath(desc.licenseUrl.getURLString());
 
@@ -528,7 +529,7 @@ Task::ReportResult AddPluginTask::report() {
         }
     }
 
-    ref = new PluginRef(p, lib.take(), desc);
+    PluginRef* ref = new PluginRef(p, lib.take(), desc);
     ps->registerPlugin(ref);
 
     return ReportResult_Finished;
@@ -539,23 +540,23 @@ VerifyPluginTask::VerifyPluginTask(PluginSupportImpl* ps, const PluginDesc& desc
 {
 }
 void VerifyPluginTask::run() {
-    Settings* settings = AppContext::getSettings();
-
     QString executableDir = AppContext::getWorkingDirectoryPath();
-    QString openclCheckerPath = executableDir + "/plugins_checker";
+    QString pluginCheckerPath = executableDir + "/plugins_checker";
     if(Version::appVersion().debug) {
-        openclCheckerPath += 'd';
+        pluginCheckerPath += 'd';
     }
     #ifdef Q_OS_WIN
-        openclCheckerPath += ".exe";
+        pluginCheckerPath += ".exe";
     #endif
 
-    if(!QFileInfo(openclCheckerPath).exists()) {
-        coreLog.error(QString("Can not find file: \"%1\"").arg(openclCheckerPath));
+    if(!QFileInfo(pluginCheckerPath).exists()) {
+        coreLog.error(QString("Can not find file: \"%1\"").arg(pluginCheckerPath));
         return;
     }
     proc = new QProcess();
-    proc->start(openclCheckerPath, QStringList());
+    proc->start(pluginCheckerPath, QStringList()
+                << QString("--%1=%2").arg(CMDLineRegistry::PLUGINS_ARG).arg(desc.id)
+                << "--" + CMDLineRegistry::VERIFY_ARG);
 
     int elapsedTime = 0;
     while(!proc->waitForFinished(1000) && elapsedTime < timeOut) {
@@ -565,11 +566,7 @@ void VerifyPluginTask::run() {
         elapsedTime += 1000;
     }
     QString errorMessage = proc->readAllStandardError();
-
-    if(0 != proc->exitCode() || !errorMessage.isEmpty()) {
-        settings->setValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, desc.descriptorUrl.getURLString());
-    }
-    else {
+    if (proc->exitStatus() == QProcess::NormalExit && errorMessage.isEmpty()) {
         pluginIsCorrect = true;
     }
 }

@@ -80,8 +80,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 
 //     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.PDB"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(10, 0));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
     GTGlobals::sleep();
     GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.PDB");
 }
@@ -123,8 +122,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 //     1) project view with document "1CF7.PDB" has been opened,
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 //     3) File path at tooltip for "1CF7.PDB" must be "samples/PDB/1CF7.PDB"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(10, 0));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
     GTGlobals::sleep(2000);
     GTUtilsToolTip::checkExistingToolTip(os, "samples/PDB/1CF7.PDB");
 }

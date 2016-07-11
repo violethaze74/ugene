@@ -47,9 +47,18 @@ public:
     virtual bool isReady() const;
     virtual Task* tick();
     virtual void cleanup();
-    
+
+    static const QString E_THRESHOLD;
+    static const QString T_THRESHOLD;
+    static const QString CUT_GA_THRESHOLD;
+    static const QString CUT_NC_THRESHOLD;
+    static const QString CUT_TC_THRESHOLD;;
+
 private slots:
     void sl_taskFinished(Task*);
+
+private:
+    void initConfig();
 
 protected:
     IntegralBus *hmmPort, *seqPort, *output;

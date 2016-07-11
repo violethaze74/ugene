@@ -440,12 +440,12 @@ p, li { white-space: pre-wrap; }
         <translation>Project View</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="92"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui" line="109"/>
         <source>Bookmarks</source>
         <translation>Bookmarks</translation>
     </message>
     <message>
-        <location filename="../src/project_view/ProjectViewWidget.ui" line="62"/>
+        <location filename="../src/project_view/ProjectViewWidget.ui" line="61"/>
         <source>Objects</source>
         <translation>Objects</translation>
     </message>
@@ -453,17 +453,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="729"/>
+        <location filename="../src/Main.cpp" line="728"/>
         <source>UGENE started</source>
         <translation>UGENE started</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="730"/>
+        <location filename="../src/Main.cpp" line="729"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>UGENE version: %1 %2-bit</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="731"/>
+        <location filename="../src/Main.cpp" line="730"/>
         <source>UGENE distribution: %1</source>
         <translation>UGENE distribution: %1</translation>
     </message>
@@ -671,17 +671,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AddDocumentsToProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="957"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="955"/>
         <source>Loading documents</source>
         <translation>Loading documents</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1019"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1017"/>
         <source>No active project found!</source>
         <translation>No active project found!</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1055"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1053"/>
         <source>Load document and add to project: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -689,7 +689,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/Main.cpp" line="472"/>
+        <location filename="../src/Main.cpp" line="475"/>
         <source>Style not available %1</source>
         <translation type="unfinished">Style not available %1</translation>
     </message>
@@ -697,8 +697,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppSettingsDialogController</name>
     <message>
-        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="76"/>
-        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="78"/>
+        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="43"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="44"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="80"/>
+        <location filename="../src/app_settings/AppSettingsDialogController.cpp" line="82"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -714,61 +724,52 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CheckUpdatesTask</name>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="44"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="43"/>
         <source>Check for updates</source>
         <translation>Check for updates</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="55"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="54"/>
         <source>Connecting to updates server</source>
         <translation>Connecting to updates server</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="68"/>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="70"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="67"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="69"/>
         <source>Cannot load the current version.</source>
         <translation>Cannot load the current version.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="97"/>
         <source>Newer version available. You can download it from our site.</source>
         <translation type="vanished">Newer version available. You can download it from our site.</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="102"/>
         <source>Don&apos;t ask again</source>
         <translation type="vanished">Don&apos;t ask again</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="114"/>
         <source>Your version:</source>
         <translation type="vanished">Your version:</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="115"/>
         <source>Latest version:</source>
         <translation type="vanished">Latest version:</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="118"/>
         <source>You have the latest version</source>
         <translation type="vanished">You have the latest version</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="98"/>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="122"/>
         <source>Version information</source>
         <translation type="vanished">Version information</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="79"/>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="81"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="78"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="80"/>
         <source>Connection error while checking for updates: %1</source>
         <translation>Connection error while checking for updates: %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="101"/>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="127"/>
         <source>Visit web site</source>
         <translation type="vanished">Visit web site</translation>
     </message>
@@ -1119,7 +1120,7 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::LogSettingsPageController</name>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="50"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="43"/>
         <source>Logging</source>
         <translation>Logging</translation>
     </message>
@@ -1127,29 +1128,34 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::LogSettingsPageWidget</name>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="99"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="94"/>
         <source>Category</source>
         <translation>Category</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="106"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="101"/>
         <source>&lt;&lt;all&gt;&gt;</source>
         <translation>&lt;&lt;all&gt;&gt;</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="214"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="209"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="214"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="209"/>
         <source>Unable to open log file for writing, log writing to file disabled</source>
         <translation>Unable to open log file for writing, log writing to file disabled</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="306"/>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="297"/>
         <source>Sample text</source>
         <translation>Sample text</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/logview_settings/LogSettingsGUIController.cpp" line="306"/>
+        <source>Save to...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1357,7 +1363,8 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::MultipleDocumentsReadingModeDialog</name>
     <message>
-        <location filename="../src/project_support/MultipleDocumentsReadingModeSelectorController.cpp" line="60"/>
+        <location filename="../src/project_support/MultipleDocumentsReadingModeSelectorController.cpp" line="233"/>
+        <location filename="../src/project_support/MultipleDocumentsReadingModeSelectorController.cpp" line="249"/>
         <source>Select file to save new document</source>
         <translation>Select file to save new document</translation>
     </message>
@@ -1399,12 +1406,12 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::OpenWithProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1086"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1084"/>
         <source>Opening document: %1</source>
         <translation>Opening document: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1088"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1086"/>
         <source>Opening %1 documents</source>
         <translation>Opening %1 documents</translation>
     </message>
@@ -1524,22 +1531,22 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::ProjectDialogController</name>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="827"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="825"/>
         <source>Create</source>
         <translation>Create</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="828"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="826"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="887"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="885"/>
         <source>Choose directory</source>
         <translation>Choose directory</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="921"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="919"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Project file already exists.&lt;br&gt;Are you sure you want to overwrite it?&lt;body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;&lt;br&gt;Project file already exists.&lt;br&gt;Are you sure you want to overwrite it?&lt;body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1598,17 +1605,17 @@ Do you want view online documentation?</translation>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="228"/>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="232"/>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="937"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="935"/>
         <source>Select files to open</source>
         <translation>Select files to open</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="472"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="470"/>
         <source>Project file &apos;%1&apos; ignored</source>
         <translation>Project file &apos;%1&apos; ignored</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="478"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="476"/>
         <source>The document with the same URL is already added to the project</source>
         <translation>The document with the same URL is already added to the project</translation>
     </message>
@@ -1617,57 +1624,57 @@ Do you want view online documentation?</translation>
         <translation type="vanished">warning</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="487"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="485"/>
         <source>The document is already loaded and added to project: %1</source>
         <translation>The document is already loaded and added to project: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="492"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="490"/>
         <source>The document with the same URL is already loading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="568"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="566"/>
         <source>Failed to detect file format: %1</source>
         <translation>Failed to detect file format: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="571"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="569"/>
         <source>File is empty: %1</source>
         <translation>File is empty: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="607"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="605"/>
         <source>Project is already opened</source>
         <translation>Project is already opened</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="613"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="611"/>
         <source>New project can either be opened in a new window or replace the project in the existing. How would you like to open the project?</source>
         <translation>New project can either be opened in a new window or replace the project in the existing. How would you like to open the project?</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="614"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="612"/>
         <source>New Window</source>
         <translation>New Window</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="616"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="614"/>
         <source>This Window</source>
         <translation>This Window</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="627"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="625"/>
         <source>Failed to open new instance of UGENE</source>
         <translation>Failed to open new instance of UGENE</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="633"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="631"/>
         <source>Stopped loading project: %1. Reason: active project found</source>
         <translation>Stopped loading project: %1. Reason: active project found</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="909"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="907"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1676,7 +1683,7 @@ Do you want view online documentation?</translation>
         <translation type="vanished">New Project...</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="911"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="909"/>
         <source>project</source>
         <translation>project</translation>
     </message>
@@ -1701,12 +1708,12 @@ Do you want view online documentation?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="837"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="835"/>
         <source>Save project as</source>
         <translation>Save project as</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="838"/>
+        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="836"/>
         <source>Save</source>
         <translation>Save</translation>
     </message>
@@ -1956,7 +1963,7 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::ShtirlitzStartupTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="318"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="317"/>
         <source>Shtirlitz Startup Task</source>
         <translation>Shtirlitz Startup Task</translation>
     </message>
@@ -1964,32 +1971,32 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::ShtirlitzTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="122"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="121"/>
         <source>Shtirlitz is sending the first-time report</source>
         <translation>Shtirlitz is sending the first-time report</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="134"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="133"/>
         <source>%1 days passed passed since previous Shtirlitz&apos;s report. Shtirlitz is sending the new one.</source>
         <translation>%1 days passed passed since previous Shtirlitz&apos;s report. Shtirlitz is sending the new one.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="276"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="275"/>
         <source>Connecting to remote server</source>
         <translation>Connecting to remote server</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="295"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="294"/>
         <source>Cannot resolve destination path for statistical reports</source>
         <translation>Cannot resolve destination path for statistical reports</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="299"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="298"/>
         <source>Network error while resolving destination URL: </source>
         <translation>Network error while resolving destination URL: </translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="312"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="311"/>
         <source>Network error while sending report: </source>
         <translation>Network error while sending report: </translation>
     </message>
@@ -2084,18 +2091,30 @@ Do you want view online documentation?</translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="446"/>
-        <source>status</source>
-        <translation>status</translation>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="448"/>
-        <source>error:</source>
-        <translation>error:</translation>
+        <source>Error:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="453"/>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>status</source>
+        <translation type="vanished">status</translation>
+    </message>
+    <message>
+        <source>error:</source>
+        <translation type="vanished">error:</translation>
+    </message>
+    <message>
         <source>time</source>
-        <translation>time</translation>
+        <translation type="vanished">time</translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskViewController.cpp" line="513"/>
@@ -2252,27 +2271,28 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::UpdateMessage</name>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="129"/>
-        <source>UGENE %1 is available for downloading. Would you like to download and install it?</source>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="128"/>
+        <source>UGENE %1 is available for downloading.
+Would you like to download and install it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="130"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="129"/>
         <source>New Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="134"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="133"/>
         <source>Update now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="135"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="134"/>
         <source>Ask later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="136"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="135"/>
         <source>Skip this update</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2332,7 +2352,7 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="450"/>
+        <location filename="../src/Main.cpp" line="453"/>
         <source>UGENE initialization started</source>
         <translation type="unfinished">UGENE initialization started</translation>
     </message>
@@ -2340,27 +2360,27 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::VersionMessage</name>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="158"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="157"/>
         <source>Version Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="164"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="163"/>
         <source>Update Now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="181"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="180"/>
         <source>Your version:</source>
         <translation type="unfinished">Your version:</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="181"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="180"/>
         <source>Latest version:</source>
         <translation type="unfinished">Latest version:</translation>
     </message>
     <message>
-        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="183"/>
+        <location filename="../src/main_window/CheckUpdatesTask.cpp" line="182"/>
         <source>You have the latest version</source>
         <translation type="unfinished">You have the latest version</translation>
     </message>
@@ -2439,24 +2459,22 @@ Do you want view online documentation?</translation>
         <translation>Enable statistical reports collecting</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="144"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="144"/>
         <source>Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="150"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="150"/>
         <source>Check for updates when UGENE starts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="160"/>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="144"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="160"/>
         <source>Default settings</source>
         <translation>Default settings</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/user_apps_settings/ui/UserApplicationsSettingsWidget.ui" line="166"/>
-        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="150"/>
+        <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="166"/>
         <source>Reset settings to default on the next run</source>
         <translation>Reset settings to default on the next run</translation>
     </message>

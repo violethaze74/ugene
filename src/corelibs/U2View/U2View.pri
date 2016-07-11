@@ -8,7 +8,7 @@ QT += xml svg webkit
 greaterThan(QT_MAJOR_VERSION, 4): QT -= webkit
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets printsupport
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2VIEW_DLL
-LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Remote -lU2Lang -lU2Gui
+LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Gui
 
 unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
 
@@ -16,8 +16,8 @@ unix: QMAKE_CXXFLAGS += -Wno-char-subscripts
 
     CONFIG(debug, debug|release) {
         DESTDIR=../../_debug
-        LIBS -= -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Remote -lU2Lang -lU2Gui
-        LIBS += -L../../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Remoted -lU2Langd -lU2Guid
+        LIBS -= -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Lang -lU2Gui
+        LIBS += -L../../_debug -lU2Cored -lU2Algorithmd -lU2Formatsd -lU2Langd -lU2Guid
     }
 
     CONFIG(release, debug|release) {

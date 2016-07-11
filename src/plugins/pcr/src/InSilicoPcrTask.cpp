@@ -174,7 +174,13 @@ bool InSilicoPcrTask::checkPerfectMatch(const U2Region &region, QByteArray prime
 }
 
 QByteArray InSilicoPcrTask::getSequence(const U2Region &region, U2Strand::Direction direction) const {
-    const QByteArray sequence = settings.sequence.mid(region.startPos, region.length);
+    QByteArray sequence;
+    if (settings.isCircular && region.endPos() > settings.sequence.size()) {
+        sequence = settings.sequence.mid(region.startPos, settings.sequence.size() - region.startPos);
+        sequence += settings.sequence.mid(0, region.endPos() - settings.sequence.size());
+    } else {
+        sequence = settings.sequence.mid(region.startPos, region.length);
+    }
     if (U2Strand::Complementary == direction) {
         return DNASequenceUtils::reverseComplement(sequence);
     }

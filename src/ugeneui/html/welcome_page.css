@@ -131,7 +131,7 @@ html, body {
 .stripped_line {
     height: 31px;
     width: 100%;
-    background: url("qrc:ugene/images/welcome_page/line.png");
+    background: url("qrc:///ugene/images/welcome_page/line.png");
     vertical-align: top;
 }
 

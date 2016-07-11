@@ -31,16 +31,29 @@
 
 class QComboBox;
 
+#include "RegionSelectorController.h"
+
+
 namespace U2 {
 
-class AnnotatedDNAView;
-class RegionLineEdit;
+class RegionLineEdit : public QLineEdit {
+    Q_OBJECT
+public:
+    RegionLineEdit(QWidget* p, QString actionName, qint64 defVal)
+        : QLineEdit(p),
+          actionName(actionName),
+          defaultValue(defVal) {}
 
-struct RegionPreset {
-    RegionPreset() {}
-    RegionPreset(const QString &text, const U2Region &region) : text(text), region(region) {}
-    QString text;
-    U2Region region;
+protected:
+    void focusOutEvent ( QFocusEvent * event );
+    void contextMenuEvent(QContextMenuEvent *);
+
+private slots:
+    void sl_onSetMinMaxValue();
+
+private:
+    const QString actionName;
+    qint64 defaultValue;
 };
 
 class U2GUI_EXPORT RegionSelector : public QWidget {
@@ -54,11 +67,8 @@ public:
     U2Region getRegion(bool *ok = NULL) const;
     bool isWholeSequenceSelected() const;
 
-    void setMaxLength(qint64 length);
     void setCustomRegion(const U2Region& value);
-    void setSequenceSelection(DNASequenceSelection* selection);
     void setWholeRegionSelected();
-    void setCircularSelectionAvailable(bool allowCircSelection);
     void setCurrentPreset(const QString &presetName);
     void reset();
     void removePreset(const QString &itemName);
@@ -72,44 +82,18 @@ public:
 signals:
     void si_regionChanged(const U2Region& newRegion);
 
-private slots:
-    void sl_onComboBoxIndexChanged(int index);
-    void sl_onRegionChanged();
-    void sl_onValueEdited();
-    void sl_onSelectionChanged(GSelection* selection);
-
 private:
     void initLayout();
-    void init(const QList<RegionPreset> &presetRegions);
-    void connectSignals();
 
-    // Returns circular region or the first selected. If none is selected, returns full sequence range.
-    U2Region getOneRegionFromSelection() const;
+    RegionSelectorController* controller;
 
     qint64                maxLen;
     RegionLineEdit *      startEdit;
     RegionLineEdit *      endEdit;
     QComboBox *           comboBox;
     bool                  isVertical;
-    QString               defaultItemText;
-    DNASequenceSelection *selection;
-    bool                  isCircularSelectionAvailable;
 };
 
-class RegionLineEdit : public QLineEdit {
-    Q_OBJECT
-public:
-    RegionLineEdit(QWidget* p, QString actionName, qint64 defVal) : QLineEdit(p), actionName(actionName), defaultValue(defVal){}
-protected:
-    void focusOutEvent ( QFocusEvent * event );
-    void contextMenuEvent(QContextMenuEvent *);
-
-private slots:
-    void sl_onSetMinMaxValue();
-private:
-    const QString actionName;
-    qint64 defaultValue;
-};
 }//namespace
 
 #endif

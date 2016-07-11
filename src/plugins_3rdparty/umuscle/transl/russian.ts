@@ -4,88 +4,88 @@
 <context>
     <name>MuscleAlignmentDialog</name>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="20"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="20"/>
         <source>Align with MUSCLE</source>
         <translation>Выравнивание с помощью MUSCLE</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="36"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="36"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="46"/>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="63"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="46"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="63"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="53"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="53"/>
         <source>Output file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="83"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="83"/>
         <source>Mode</source>
         <translation>Конфигурация</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="95"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="95"/>
         <source>Mode details:</source>
         <translation>Описание:</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="115"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="115"/>
         <source>Advanced options</source>
         <translation>Дополнительные настройки</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="138"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="138"/>
         <source>Max iterations</source>
         <translation>Максимальное число итераций</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="181"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="181"/>
         <source>Max time (minutes)</source>
         <translation>Максимальное время работы (мин.)</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="225"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="225"/>
         <source>Translating alignment to amino allows to avoid errors of inserting gaps within codon boundaries.</source>
         <translation>Трансляция выравнивания в амино позволяет избежать ошибок вставки пробелов в границах кодонов.</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="228"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="228"/>
         <source>Translate to amino when aligning</source>
         <translation>Транслировать в амины в процессе выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="240"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="240"/>
         <source>Translation table:</source>
         <translation>Таблица трансляций:</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="261"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="261"/>
         <source>Region to align</source>
         <translation>Выравнивать</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="351"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="351"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="269"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="269"/>
         <source>Whole alignment</source>
         <translation>Целые последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="284"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="284"/>
         <source>Column range</source>
         <translation>Указанный регион столбцов</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="123"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="123"/>
         <source>Do not re-arrange sequences (-stable)</source>
         <translation>Сохранять порядок последовательностей (ключ -stable)</translation>
     </message>
@@ -348,67 +348,67 @@
 <context>
     <name>U2::MuscleAlignDialogController</name>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="110"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="103"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="110"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="103"/>
         <source>Illegal alignment region</source>
         <translation>Неправильный регион</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="54"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="47"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="55"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="48"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="259"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="254"/>
         <source>MUSCLE default</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="260"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="255"/>
         <source>&lt;p&gt;The default settings are designed to give the best accuracy</source>
         <translation>&lt;p&gt;Наилучшая точность выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="261"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="256"/>
         <source>&lt;p&gt;&lt;b&gt;Command line:&lt;/b&gt; muscle &lt;no-parameters&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Командная строка:&lt;/b&gt; muscle &lt;no-parameters&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="265"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="260"/>
         <source>Large alignment</source>
         <translation>Большие выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="266"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="261"/>
         <source>&lt;p&gt;If you have a large number of sequences (a few thousand), or they are very long, then the default settings may be too slow for practical use. A good compromise between speed and accuracy is to run just the first two iterations of the algorithm</source>
         <translation>&lt;p&gt;При наличии тысяч последовательностей либо их большой длине, конфигурация по умолчанию может оказаться неприемлемо медленной. Хороший компромисс между скоростью и точностью обеспечивается при прогоне только первых 2-х итераций алгоритма</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="267"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="262"/>
         <source>&lt;p&gt;&lt;b&gt;Command line:&lt;/b&gt; muscle &lt;i&gt;-maxiters 2&lt;/i&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Командная строка:&lt;/b&gt; muscle &lt;i&gt;-maxiters 2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="271"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="266"/>
         <source>Refine only</source>
         <translation>Только улучшить</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="272"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="267"/>
         <source>&lt;p&gt;Improves existing alignment without complete realignment</source>
         <translation>&lt;p&gt;Улучшение существующего выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="273"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="268"/>
         <source>&lt;p&gt;&lt;b&gt;Command line:&lt;/b&gt; muscle &lt;i&gt;-refine&lt;/i&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Командная строка:&lt;/b&gt; muscle &lt;i&gt;-refine&lt;/i&gt;</translation>
     </message>
@@ -416,17 +416,17 @@
 <context>
     <name>U2::MuscleAlignWithExtFileSpecifyDialogController</name>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="142"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="138"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="143"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="139"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="169"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="165"/>
         <source>Open an alignment file</source>
         <translation>Открыть выравнивание</translation>
     </message>
@@ -436,28 +436,28 @@
         <translation>Сохранить множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="215"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="210"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="215"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="210"/>
         <source>Illegal alignment region</source>
         <translation>Неправильный регион</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="232"/>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="235"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="227"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="230"/>
         <source>Kalign with Align</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="233"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="228"/>
         <source>Input file is not set!</source>
         <translation>Входной файл не указан!</translation>
     </message>
     <message>
-        <location filename="../src/MuscleAlignDialogController.cpp" line="236"/>
+        <location filename="../src/MuscleAlignDialogController.cpp" line="231"/>
         <source>Output file is not set!</source>
         <translation>Выходной файл не указан!</translation>
     </message>

@@ -423,6 +423,8 @@ QList<U2FeatureTypes::U2FeatureTypeInfo> U2FeatureTypes::initFeatureTypes() {
     typeInfoIndexByType[ZincFinger] = infoCounter++;
     featureTypeInfos << U2FeatureTypeInfo(ZincFingerDomain, "Zinc Finger Domain", Alphabet_Nucleic);
     typeInfoIndexByType[ZincFingerDomain] = infoCounter++;
+    featureTypeInfos << U2FeatureTypeInfo(RestrictionSite, "Restriction Site", Alphabet_Nucleic);
+    typeInfoIndexByType[RestrictionSite] = infoCounter++;
 
     return featureTypeInfos;
 }

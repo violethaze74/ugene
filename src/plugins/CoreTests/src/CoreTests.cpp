@@ -45,7 +45,6 @@
 #include "LoadRemoteDocumentTests.h"
 #include "PWMatrixTests.h"
 #include "PhyTreeObjectTests.h"
-#include "PingRemoteServiceTests.h"
 #include "SMatrixTests.h"
 #include "SecStructPredictTests.h"
 #include "SequenceWalkerTests.h"
@@ -124,8 +123,6 @@ void CoreTests::registerFactories() {
 
     // DnaAssembly tests
     registerFactory<DnaAssemblyTests>(xmlTestFormat);
-
-    registerFactory<PingRemoteServiceTests>(xmlTestFormat);
 
     registerFactory<CreateSubalignimentTests>(xmlTestFormat);
 

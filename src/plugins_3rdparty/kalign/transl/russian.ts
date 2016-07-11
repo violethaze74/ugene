@@ -4,54 +4,54 @@
 <context>
     <name>KalignDialog</name>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="32"/>
+        <location filename="../src/KalignDialog.ui" line="32"/>
         <source>Align with Kalign</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="54"/>
+        <location filename="../src/KalignDialog.ui" line="54"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="64"/>
-        <location filename="../src/ui/KalignDialog.ui" line="81"/>
+        <location filename="../src/KalignDialog.ui" line="64"/>
+        <location filename="../src/KalignDialog.ui" line="81"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="71"/>
-        <location filename="../src/ui/KalignDialog.ui" line="307"/>
+        <location filename="../src/KalignDialog.ui" line="71"/>
+        <location filename="../src/KalignDialog.ui" line="307"/>
         <source>Output file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="99"/>
+        <location filename="../src/KalignDialog.ui" line="99"/>
         <source>Advanced options</source>
         <translation>Дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="114"/>
+        <location filename="../src/KalignDialog.ui" line="114"/>
         <source>Gap open penalty</source>
         <translation>Штраф за открытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="160"/>
+        <location filename="../src/KalignDialog.ui" line="160"/>
         <source>Gap extension penalty</source>
         <translation>Штраф за промежуточный пробел</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="206"/>
+        <location filename="../src/KalignDialog.ui" line="206"/>
         <source>Terminal gap penalty</source>
         <translation>Штраф за закрытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="252"/>
+        <location filename="../src/KalignDialog.ui" line="252"/>
         <source>Bonus score</source>
         <translation>Бонусные очки</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="295"/>
+        <location filename="../src/KalignDialog.ui" line="295"/>
         <source>Translate to amino when aligning</source>
         <translation>Транслировать в амины в процессе выравнивания</translation>
     </message>
@@ -59,27 +59,27 @@
 <context>
     <name>PairwiseAlignmentHirschbergOptionsPanelMainWidget</name>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="14"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="37"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="37"/>
         <source>Gap open penalty</source>
         <translation>Штраф за открытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="57"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="57"/>
         <source>Gap extension penalty</source>
         <translation>Штраф за промежуточный пробел</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="77"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="77"/>
         <source>Terminate gap penalty</source>
         <translation>Штраф за закрытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="97"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="97"/>
         <source>Bonus score</source>
         <translation>Бонусные очки</translation>
     </message>
@@ -95,17 +95,17 @@
 <context>
     <name>U2::KalignAlignWithExtFileSpecifyDialogController</name>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="133"/>
+        <location filename="../src/KalignDialogController.cpp" line="128"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="134"/>
+        <location filename="../src/KalignDialogController.cpp" line="129"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="150"/>
+        <location filename="../src/KalignDialogController.cpp" line="146"/>
         <source>Open an alignment file</source>
         <translation>Открыть выравнивание</translation>
     </message>
@@ -115,18 +115,18 @@
         <translation>Сохранить выранивание</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="200"/>
-        <location filename="../src/KalignDialogController.cpp" line="203"/>
+        <location filename="../src/KalignDialogController.cpp" line="193"/>
+        <location filename="../src/KalignDialogController.cpp" line="196"/>
         <source>Kalign with Align</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="201"/>
+        <location filename="../src/KalignDialogController.cpp" line="194"/>
         <source>Input file is not set!</source>
         <translation>Входной файл не выбран!</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="204"/>
+        <location filename="../src/KalignDialogController.cpp" line="197"/>
         <source>Output file is not set!</source>
         <translation>Выходной файл не указан!</translation>
     </message>
@@ -134,12 +134,12 @@
 <context>
     <name>U2::KalignDialogController</name>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="70"/>
+        <location filename="../src/KalignDialogController.cpp" line="63"/>
         <source>Align</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/KalignDialogController.cpp" line="71"/>
+        <location filename="../src/KalignDialogController.cpp" line="64"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>

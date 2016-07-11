@@ -66,7 +66,6 @@ add-library U2Formats
 add-library U2Gui
 add-library U2Lang
 add-library U2Private
-add-library U2Remote
 add-library U2Script
 add-library U2Test
 add-library U2View
@@ -75,7 +74,6 @@ add-library breakpad
 if [ "$1" == "-test" ]
    then
       add-library humimit
-      add-library gtest
 fi
 
 echo Copying plugins
@@ -111,7 +109,6 @@ PLUGIN_LIST="annotator \
             ptools \
             query_designer \
             remote_blast \
-            remote_service \
             repeat_finder \
             sitecon \
             smith_waterman \

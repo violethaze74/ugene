@@ -102,7 +102,7 @@ void Primer3DialogFiller::commonScenario() {
 #ifdef Q_OS_MAC
         dialog->close();
 #else
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Escape);
 #endif
     }
 }

@@ -30,10 +30,11 @@
 #include <U2Algorithm/CudaGpuRegistry.h>
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
-#include <U2Algorithm/MSAColorScheme.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/OpenCLGpuRegistry.h>
 #include <U2Algorithm/PWMConversionAlgorithmRegistry.h>
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
@@ -85,12 +86,12 @@
 #include <U2Gui/FeatureKeyFilterTask.h>
 #include <U2Gui/ImportDialogsFactories.h>
 #include <U2Gui/LogView.h>
-#include <U2Gui/PasteController.h>
 #include <U2Gui/MsaContentFilterTask.h>
 #include <U2Gui/MsaSeqNameFilterTask.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/ObjectNameFilterTask.h>
 #include <U2Gui/ObjectViewModel.h>
+#include <U2Gui/PasteController.h>
 #include <U2Gui/SequenceAccFilterTask.h>
 #include <U2Gui/TextContentFilterTask.h>
 #include <U2Gui/ToolsMenu.h>
@@ -99,8 +100,6 @@
 #include <U2Lang/QueryDesignerRegistry.h>
 #include <U2Lang/WorkflowEnvImpl.h>
 #include <U2Lang/WorkflowSettings.h>
-
-#include <U2Remote/DistributedComputingUtil.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 #ifndef HI_EXCLUDED
@@ -424,7 +423,6 @@ int main(int argc, char **argv)
         // set translations
         QString transFile[] = {
             userAppSettings->getTranslationFile(),
-            "transl_" + QLocale::system().name().left(2),
             "transl_en"
         };
         for (int i = transFile[0].isEmpty() ? 1 : 0; i < 3; ++i) {
@@ -539,13 +537,13 @@ int main(int argc, char **argv)
     DBXRefRegistry* dbxr = new DBXRefRegistry();
     appContext->setDBXRefRegistry(dbxr);
 
-    MSAColorSchemeRegistry* mcsr = new MSAColorSchemeRegistry();
-    appContext->setMSAColorSchemeRegistry(mcsr);
+    MsaColorSchemeRegistry* mcsr = new MsaColorSchemeRegistry();
+    appContext->setMsaColorSchemeRegistry(mcsr);
 
     AppContext::getAppSettingsGUI()->registerPage(new ColorSchemaSettingsPageController(mcsr));
 
-    MSAHighlightingSchemeRegistry* mhsr = new MSAHighlightingSchemeRegistry();
-    appContext->setMSAHighlightingSchemeRegistry(mhsr);
+    MsaHighlightingSchemeRegistry* mhsr = new MsaHighlightingSchemeRegistry();
+    appContext->setMsaHighlightingSchemeRegistry(mhsr);
 
     MSAConsensusAlgorithmRegistry* msaConsReg = new MSAConsensusAlgorithmRegistry();
     appContext->setMSAConsensusAlgorithmRegistry(msaConsReg);
@@ -677,8 +675,6 @@ int main(int argc, char **argv)
     RecentlyDownloadedCache* rdc = new RecentlyDownloadedCache();
     appContext->setRecentlyDownloadedCache(rdc);
 
-    DistributedComputingUtil * dcu = new DistributedComputingUtil();
-
     AutoAnnotationsSupport* aaSupport = new AutoAnnotationsSupport();
     appContext->setAutoAnnotationsSupport(aaSupport);
 #ifndef HI_EXCLUDED
@@ -698,28 +694,26 @@ int main(int argc, char **argv)
 
     // Register all Options Panel groups on the required GObjectViews
     initOptionsPanels();
-#ifndef HI_EXCLUDED
-    if (GUITestService::isGuiTestServiceNeeded()) {
-        QStringList urls = CMDLineRegistryUtils::getPureValues();
 
-        if(urls.isEmpty() && AppContext::getAppSettings()->getUserAppsSettings()->openLastProjectAtStartup()) {
-            QString lastProject = ProjectLoaderImpl::getLastProjectURL();
-            if (!lastProject.isEmpty()) {
-                urls << lastProject;
-            }
-        }
+    QStringList urls = CMDLineRegistryUtils::getPureValues();
 
-        if( !urls.isEmpty() ) {
-            // defer loading until all plugins/services loaded
-            app.openAfterPluginsLoaded(urls, TaskStarter::NoProject);
+    if (urls.isEmpty() && AppContext::getAppSettings()->getUserAppsSettings()->openLastProjectAtStartup()) {
+        QString lastProject = ProjectLoaderImpl::getLastProjectURL();
+        if (!lastProject.isEmpty()) {
+            urls << lastProject;
         }
     }
-#endif //HI_EXCLUDED
+
+    if (!urls.isEmpty()) {
+        // defer loading until all plugins/services loaded
+        app.openAfterPluginsLoaded(urls, TaskStarter::NoProject);
+    }
+
     registerCoreServices();
 
 #ifndef HI_EXCLUDED
     if (GUITestService::isGuiTestServiceNeeded()) {
-        GUITestService *guiTestService = new GUITestService();
+        new GUITestService();
     }
 #endif //HI_EXCLUDED
 
@@ -768,8 +762,6 @@ int main(int argc, char **argv)
     }
 
     delete wpc;
-
-    delete dcu;
 
     appContext->setPasteFactory(NULL);
     delete pasteFactory;
@@ -894,10 +886,10 @@ int main(int argc, char **argv)
     appContext->setMSAConsensusAlgorithmRegistry(NULL);
     delete msaConsReg;
 
-    appContext->setMSAHighlightingSchemeRegistry(NULL);
+    appContext->setMsaHighlightingSchemeRegistry(NULL);
     delete mhsr;
 
-    appContext->setMSAColorSchemeRegistry(NULL);
+    appContext->setMsaColorSchemeRegistry(NULL);
     delete mcsr;
 
     appContext->setDBXRefRegistry(NULL);

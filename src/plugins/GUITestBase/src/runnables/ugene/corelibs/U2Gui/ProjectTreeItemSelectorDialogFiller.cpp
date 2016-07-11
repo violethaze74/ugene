@@ -97,11 +97,7 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario(){
     options.depth = GTGlobals::FindOptions::INFINITE_DEPTH;
 
     if (Separate == mode) {
-#ifdef Q_OS_MAC
-        GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["cmd"]);
-#else
-        GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
-#endif
+        GTKeyboardDriver::keyPress(Qt::Key_Control);
     }
 
     bool firstIsSelected = false;
@@ -113,29 +109,25 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario(){
         if (!objects.isEmpty()) {
             foreach (const QString& objectName, itemsToSelect.value(documentName)) {
                 const QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, objectName, documentIndex, options);
-                GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
-                GTMouseDriver::click(os);
+                GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, objectIndex));
+                GTMouseDriver::click();
                 if (!firstIsSelected && Continuous == mode) {
-                    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["shift"]);
+                    GTKeyboardDriver::keyPress(Qt::Key_Shift);
                     firstIsSelected = true;
                 }
             }
         } else {
-            GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, treeView, documentIndex));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, documentIndex));
+            GTMouseDriver::click();
         }
     }
 
     switch (mode) {
     case Separate:
-#ifdef Q_OS_MAC
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["cmd"]);
-#else
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["ctrl"]);
-#endif
+        GTKeyboardDriver::keyClick( Qt::Key_Control);
         break;
     case Continuous:
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["shift"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Shift);
         break;
     default:
         ; // empty default section to avoid GCC warning

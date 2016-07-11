@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <QCoreApplication>
+#include <QApplication>
 
 #include <U2Algorithm/OpenCLGpuRegistry.h>
 
@@ -66,10 +66,12 @@ int main(int argc, char **argv)
 
     GTIMER(c1, t1, "main()->QApp::exec");
 
-    QCoreApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     AppContextImpl* appContext = AppContextImpl::getApplicationContext();
     appContext->setWorkingDirectoryPath(QCoreApplication::applicationDirPath());
+
+    appContext->setGUIMode(true);
 
     QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
     QString devPluginsPath = QDir(AppContext::getWorkingDirectoryPath()+"/../../installer/windows").absolutePath();
@@ -86,7 +88,6 @@ int main(int argc, char **argv)
     SettingsImpl * settings = new SettingsImpl( QSettings::UserScope );
     appContext->setSettings( settings );
 
-
     AppSettings* appSettings = new AppSettingsImpl();
     appContext->setAppSettings(appSettings);
 
@@ -98,7 +99,7 @@ int main(int argc, char **argv)
     TaskSchedulerImpl* ts = new TaskSchedulerImpl(appSettings->getAppResourcePool());
     appContext->setTaskScheduler(ts);
 
-    PluginSupportImpl* psp = new PluginSupportImpl(true);
+    PluginSupportImpl* psp = new PluginSupportImpl();
     appContext->setPluginSupport(psp);
 
     ServiceRegistryImpl* sreg = new ServiceRegistryImpl() ;

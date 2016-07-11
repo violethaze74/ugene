@@ -53,15 +53,15 @@ namespace U2 {
 class MSAEditor;
 class MSAEditorUI;
 class GObjectView;
-class MSAColorScheme;
-class MSAHighlightingScheme;
+class MsaColorScheme;
+class MsaHighlightingScheme;
 class MAlignment;
 class MAlignmentModInfo;
 class MAlignmentObject;
-class MSAColorSchemeFactory;
-class MSAHighlightingSchemeFactory;
-class MSAColorSchemeRegistry;
-class MSAHighlightingSchemeRegistry;
+class MsaColorSchemeFactory;
+class MsaHighlightingSchemeFactory;
+class MsaColorSchemeRegistry;
+class MsaHighlightingSchemeRegistry;
 class Settings;
 
 class ModificationType {
@@ -268,8 +268,6 @@ public:
 
     int getHeight();
 
-    QStringList getAvailableColorSchemes() const;
-
     QStringList getAvailableHighlightingSchemes() const;
 
     bool hasAminoAlphabet();
@@ -315,8 +313,8 @@ public:
 
     QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
-    MSAColorScheme * getCurrentColorScheme() const;
-    MSAHighlightingScheme * getCurrentHighlightingScheme() const;
+    MsaColorScheme * getCurrentColorScheme() const;
+    MsaHighlightingScheme * getCurrentHighlightingScheme() const;
     bool getUseDotsCheckedState() const;
 
     void onVisibleRangeChanged();
@@ -332,7 +330,6 @@ signals:
     void si_startMsaChanging();
     void si_stopMsaChanging(bool msaUpdated);
     void si_copyFormattedChanging(bool enabled);
-    void si_highlightingAndColorActionsChanged();
 
 public slots:
     void sl_changeColorSchemeOutside(const QString &name);
@@ -385,6 +382,9 @@ private slots:
 
     void sl_saveSequence();
 
+    void sl_registerCustomColorSchemes();
+    void sl_colorSchemeFactoryUpdated();
+    void sl_setDefaultColorScheme();
     void sl_changeColorScheme();
     void sl_changeHighlightScheme();
 
@@ -392,7 +392,6 @@ private slots:
 
     void sl_modelChanged();
 
-    void sl_customColorSettingsChanged();
     void sl_showCustomSettings();
     void sl_referenceSeqChanged(qint64);
 
@@ -418,11 +417,13 @@ private:
     void buildMenu(QMenu* m);
     void updateColorAndHighlightSchemes();
 
-    void initColorSchemes(MSAColorSchemeFactory* csf, DNAAlphabetType atype);
-    void initHighlightSchemes(MSAHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
-    void initCustomSchemeActions(MSAColorSchemeFactory* csf, DNAAlphabetType type);
+    void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
+    void registerCommonColorSchemes();
+    void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
 
+    MsaColorSchemeFactory * getDefaultColorSchemeFactory();
     void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
+    void applyColorScheme(const QString &id);
 
     void exitFromEditCharacterMode();
 
@@ -519,15 +520,13 @@ private:
     QPixmap*        cachedView;
     bool            completeRedraw;
 
-    MSAColorScheme* colorScheme;
-    MSAHighlightingScheme* highlightingScheme;
+    MsaColorScheme* colorScheme;
+    MsaHighlightingScheme* highlightingScheme;
     bool            highlightSelection;
 
     QList<QAction*> colorSchemeMenuActions;
     QList<QAction* > customColorSchemeMenuActions;
     QList<QAction* > highlightingSchemeMenuActions;
-
-    QString prevSchemeName;
 
     // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
     // that does not fit into one method, e.g. shifting MSA region with mouse.

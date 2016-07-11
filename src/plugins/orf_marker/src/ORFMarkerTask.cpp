@@ -123,7 +123,7 @@ QList<Task *> FindORFsToAnnotationsTask::onSubTaskFinished(Task *subTask) {
 // ORFs auto annotation updater
 
 ORFAutoAnnotationsUpdater::ORFAutoAnnotationsUpdater()
-: AutoAnnotationsUpdater(tr("ORFs"), ORFAlgorithmSettings::ANNOTATION_GROUP_NAME)
+: AutoAnnotationsUpdater(tr("ORFs"), ORFAlgorithmSettings::ANNOTATION_GROUP_NAME, false, true)
 {
 
 }
@@ -138,9 +138,7 @@ Task* ORFAutoAnnotationsUpdater::createAutoAnnotationsUpdateTask( const AutoAnno
     cfg.circularSearch = dnaObj->isCircular();
 
     cfg.complementTT = GObjectUtils::findComplementTT(dnaObj->getAlphabet());
-    if (cfg.proteinTT == NULL) {
-        cfg.proteinTT = GObjectUtils::findAminoTT(dnaObj,false);
-    }
+    cfg.proteinTT = aa->getAminoTT();
 
     const U2Region wholeSequenceRegion = U2Region(0, dnaObj->getSequenceLength());
     cfg.searchRegion = cfg.searchRegion.intersect(wholeSequenceRegion);

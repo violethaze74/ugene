@@ -44,7 +44,7 @@ SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWi
 {
     ui = new Ui_SearchGenbankSequenceDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17468733");
+    new HelpButton(this, ui->buttonBox, "17470456");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Download"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Close"));
@@ -243,7 +243,7 @@ QueryBlockWidget::QueryBlockWidget(QueryBuilderController* controller, bool firs
     layout->setMargin(0);
 
     if (first) {
-        QLabel* label = new QLabel("Term:");
+        QLabel* label = new QLabel(tr("Term:"));
         layout->addWidget(label);
     } else {
         conditionBox = new QComboBox(this);
@@ -254,7 +254,7 @@ QueryBlockWidget::QueryBlockWidget(QueryBuilderController* controller, bool firs
     }
 
     termBox = new QComboBox(this);
-    termBox->addItem("All fields");
+    termBox->addItem(tr("All fields"));
     termBox->addItems(ctx.fields);
     connect(termBox, SIGNAL(currentIndexChanged(int)), controller, SLOT(sl_updateQuery()) );
     termBox->setObjectName("term_box");

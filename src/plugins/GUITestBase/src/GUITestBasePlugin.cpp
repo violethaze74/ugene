@@ -91,6 +91,12 @@
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h"
 
 #define REGISTER_TEST(X) if (guiTestBase) guiTestBase->registerTest(new X())
+#define REGISTER_TEST_LABEL(X, LABEL) \
+    if (guiTestBase) { \
+        HI::GUITest *test = new X(); \
+        test->setLabel(LABEL); \
+        guiTestBase->registerTest(test); \
+    }
 #define REGISTER_TEST_WITH_TIMEOUT(X, TIMEOUT) \
     if (guiTestBase) { \
         HI::GUITest *test = new X(); \
@@ -347,7 +353,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1157);
     REGISTER_TEST(GUITest_regression_scenarios::test_1163);
     REGISTER_TEST(GUITest_regression_scenarios::test_1165);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1166);
+    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_1166, "mem");
     REGISTER_TEST(GUITest_regression_scenarios::test_1172);
     REGISTER_TEST(GUITest_regression_scenarios::test_1175);
     REGISTER_TEST(GUITest_regression_scenarios::test_1180);
@@ -520,7 +526,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1658);
     REGISTER_TEST(GUITest_regression_scenarios::test_1660);
     REGISTER_TEST(GUITest_regression_scenarios::test_1661);
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1662);
+    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_1662, "mem");
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_regression_scenarios::test_1664);
     REGISTER_TEST(GUITest_regression_scenarios::test_1668);
     REGISTER_TEST(GUITest_regression_scenarios::test_1672);
@@ -794,7 +800,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2951);
     REGISTER_TEST(GUITest_regression_scenarios::test_2962_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_2962_2);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2971);
+    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_2971, "mem");
     REGISTER_TEST(GUITest_regression_scenarios::test_2972);
     REGISTER_TEST(GUITest_regression_scenarios::test_2975);
     REGISTER_TEST(GUITest_regression_scenarios::test_2981);
@@ -1085,7 +1091,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4153);
     REGISTER_TEST(GUITest_regression_scenarios::test_4156);
     REGISTER_TEST(GUITest_regression_scenarios::test_4160);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4164);
+    REGISTER_TEST_LABEL(GUITest_regression_scenarios::test_4164, "mem");
     REGISTER_TEST(GUITest_regression_scenarios::test_4170);
     REGISTER_TEST(GUITest_regression_scenarios::test_4179);
     REGISTER_TEST(GUITest_regression_scenarios::test_4194);
@@ -1213,7 +1219,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4852);
     REGISTER_TEST(GUITest_regression_scenarios::test_4860);
     REGISTER_TEST(GUITest_regression_scenarios::test_4871);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4881);
+    //REGISTER_TEST(GUITest_regression_scenarios::test_4881);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4885_3);
@@ -1232,8 +1238,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4969_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4983);
     REGISTER_TEST(GUITest_regression_scenarios::test_4986);
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_4990, "Required \"slow\" machine");
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_5004);
     REGISTER_TEST(GUITest_regression_scenarios::test_5012);
     REGISTER_TEST(GUITest_regression_scenarios::test_5012_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5012_2);
@@ -1254,6 +1260,16 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
     REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
 }
+    REGISTER_TEST(GUITest_regression_scenarios::test_5199);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_5208);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5216);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5246);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5249);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5227);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5268);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5278);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5295);
 
 //////////////////////////////////////////////////////////////////////////
 // Common scenarios/project/
@@ -1411,7 +1427,7 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0027);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0028);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0029);
-    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0030);
+    REGISTER_TEST_LABEL(GUITest_common_scenarios_sequence_view::test_0030, "mem");
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0031);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0031_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0031_2);
@@ -1462,6 +1478,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0070);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0071);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0075);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0076);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0077);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0078);
 
 //////////////////////////////////////////////////////////////////////////
 // Common scenarios/sequence edit/
@@ -2294,7 +2313,7 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-3504");
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0005);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0006);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007);
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007, "UGENE-5188");
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0008);
 
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::export_consensus_test_0001);
@@ -2356,6 +2375,17 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_Assembly_browser::test_0026_1);
     REGISTER_TEST(GUITest_Assembly_browser::test_0026_2);
     REGISTER_TEST(GUITest_Assembly_browser::test_0026_3);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0027);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0028);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0029);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0030);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0031);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0032);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0033);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0034);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0035);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0036);
+    REGISTER_TEST(GUITest_Assembly_browser::test_0037);
 
 /////////////////////////////////////////////////////////////////////////
 // Common scenarios/Assembling/bowtie2
@@ -2429,10 +2459,11 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0017);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0018);
+    //REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0018);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0058);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0059);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0060);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0061);
 
 /////////////////////////////////////////////////////////////////////////
 // Common scenarios/Workflow designer/Workflow parameters validation
@@ -2683,6 +2714,7 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0015);
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0016);
 
 /////////////////////////////////////////////////////////////////////////
 // common_scenarios/pcr/primer_library

@@ -208,8 +208,8 @@ void ImportAnnotationsToCsvFiller::commonScenario()
         GT_CHECK(previewTable->item(0, r.column) != NULL, "Table item not found");
         previewTable->scrollToItem(previewTable->item(0, r.column));
         GTGlobals::sleep(200);
-        GTMouseDriver::moveTo(os, GTTableWidget::headerItemCenter(os, previewTable, r.column));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(GTTableWidget::headerItemCenter(os, previewTable, r.column));
+        GTMouseDriver::click();
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

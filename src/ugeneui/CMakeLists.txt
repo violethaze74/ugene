@@ -25,6 +25,6 @@ add_executable(ugeneui ${HDRS} ${SRCS} ${QM_FILES} ${RCC_SRCS})
 
 target_link_libraries(ugeneui
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Script Qt5::WebKit Qt5::WebKitWidgets
-        gtest ugenedb breakpad samtools
+        ugenedb breakpad samtools
         U2Core U2Algorithm U2Formats U2Remote U2Lang U2Gui U2View U2Test)
 

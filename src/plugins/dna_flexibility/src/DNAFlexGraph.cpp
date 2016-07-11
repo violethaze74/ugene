@@ -32,6 +32,9 @@
 
 namespace U2 {
 
+const qint64 DNAFlexGraphFactory::DEFAULT_WINDOW_SIZE = 100;
+
+const int DNAFlexGraphFactory::DEFAULT_WINDOW_STEP = 1;
 
 /**
  * Name of the graph (shown to a user)
@@ -80,7 +83,7 @@ QList<QSharedPointer<GSequenceGraphData> > DNAFlexGraphFactory::createGraphs(GSe
  */
 GSequenceGraphDrawer* DNAFlexGraphFactory::getDrawer(GSequenceGraphView* view)
 {
-    GSequenceGraphWindowData wd(DEFAULT_WINDOW_STEP, DEFAULT_WINDOW_SIZE);
+    GSequenceGraphWindowData wd(DEFAULT_WINDOW_STEP, qMin(DEFAULT_WINDOW_SIZE, view->getSequenceLength()));
     return new GSequenceGraphDrawer(view, wd);
 }
 

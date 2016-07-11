@@ -138,7 +138,7 @@ public:
     static bool validateInputFiles(QString urls, ProblemList &problemList);
     static bool validateInputDirs(QString urls, ProblemList &problemList);
 
-    static bool validateInputDbObjects(QString urls, ProblemList &problemList);
+    static bool validateInputDbObject(const QString &url, ProblemList &problemList);
     static bool validateInputDbFolders(QString urls, ProblemList &problemList);
 
     /**

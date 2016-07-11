@@ -26,9 +26,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <QDesktopServices>
-#include <QFile>
-#include <QTextStream>
-#include <QWebElement>
 #include <QWebElementCollection>
 #include <QWebFrame>
 
@@ -71,18 +68,9 @@ void MultilingualHtmlView::sl_linkActivated(const QUrl &url) {
 }
 
 void MultilingualHtmlView::loadPage(const QString& htmlPath) {
-    QFile file(htmlPath);
-    bool opened = file.open(QIODevice::ReadOnly);
-    SAFE_POINT(opened, "Can not load file", );
-
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    QString html = stream.readAll();
-    file.close();
-
     connect(this, SIGNAL(loadFinished(bool)), this, SLOT(sl_loaded(bool)));
     connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(sl_linkActivated(QUrl)));
-    page()->mainFrame()->setHtml(html);
+    load(QUrl(htmlPath));
 }
 
 } // namespace

@@ -1,23 +1,23 @@
 /**
- * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
- */
+* UGENE - Integrated Bioinformatics Tools.
+* Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+* http://ugene.unipro.ru
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+* MA 02110-1301, USA.
+*/
 
 #include <qglobal.h>
 
@@ -26,6 +26,8 @@
 #include <windows.h>
 #include <Psapi.h>
 #include <Winbase.h> //for IsProcessorFeaturePresent
+
+#include "DetectWin10.h"
 #endif
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #include <unistd.h> // for sysconf(3)
@@ -73,7 +75,7 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
     report = "Exception with code ";
 
     QStringList list = htmlReport.split("|");
-    if (list.size() == 8) {
+    if (list.size() == 9) {
         report += list.takeFirst() + " - ";
         report += list.takeFirst() + "\n\n";
 
@@ -105,6 +107,8 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
 #else
         report += list.takeFirst() + getUgeneBitCount() + "\n\n";
 #endif
+        report += "UUID: ";
+        report += list.takeFirst() + "\n\n";
 
         report += "ActiveWindow: ";
         report += list.takeFirst() + "\n\n";
@@ -140,13 +144,13 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
     }
 
     QFile fp("/tmp/UGENEstacktrace.txt");
-    if(fp.open(QIODevice::ReadOnly)) {
+    if (fp.open(QIODevice::ReadOnly)) {
         QByteArray stacktrace = fp.readAll();
         report += "Stack trace:\n";
         report += stacktrace.data();
-        if(stacktrace.isEmpty()) {
+        if (stacktrace.isEmpty()) {
             QFile err("/tmp/UGENEerror");
-            if(err.open(QIODevice::ReadOnly)) {
+            if (err.open(QIODevice::ReadOnly)) {
                 stacktrace = err.readAll();
                 report += stacktrace.data();
                 err.close();
@@ -159,8 +163,8 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
 bool ReportSender::send(const QString &additionalInfo, const QString &dumpUrl) {
     report += additionalInfo;
 
-    QNetworkAccessManager* netManager=new QNetworkAccessManager(this);
-    QNetworkProxy proxy = QNetworkProxy::applicationProxy ();
+    QNetworkAccessManager* netManager = new QNetworkAccessManager(this);
+    QNetworkProxy proxy = QNetworkProxy::applicationProxy();
     netManager->setProxy(proxy);
 
     connect(netManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(sl_replyFinished(QNetworkReply*)));
@@ -218,15 +222,14 @@ void ReportSender::sl_replyFinished(QNetworkReply *) {
 }
 
 SendReportDialog::SendReportDialog(const QString &report, const QString &dumpUrl, QDialog *d) :
-    QDialog(d),
-    dumpUrl(dumpUrl)
-{
+QDialog(d),
+dumpUrl(dumpUrl) {
     setupUi(this);
     sender.parse(report, dumpUrl);
     errorEdit->setText(sender.getReport());
 
-    connect(additionalInfoTextEdit,SIGNAL(textChanged()),
-            SLOT(sl_onMaximumMessageSizeReached()));
+    connect(additionalInfoTextEdit, SIGNAL(textChanged()),
+        SLOT(sl_onMaximumMessageSizeReached()));
     connect(sendButton, SIGNAL(clicked()), SLOT(sl_onOkClicked()));
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_onCancelClicked()));
 
@@ -245,12 +248,12 @@ void SendReportDialog::sl_onCancelClicked() {
 }
 
 void SendReportDialog::sl_onMaximumMessageSizeReached() {
-    if(additionalInfoTextEdit->toPlainText().length() > 500 ) {
+    if (additionalInfoTextEdit->toPlainText().length() > 500) {
         QMessageBox msgBox;
         msgBox.setWindowTitle(tr("Warning"));
         msgBox.setText(tr("The \"Additional information\" message is too long."));
         msgBox.setInformativeText(tr("You can also send the description of the problem to UGENE team "
-                                     "by e-mail <a href=\"mailto:ugene@unipro.ru\">ugene@unipro.ru</a>."));
+            "by e-mail <a href=\"mailto:ugene@unipro.ru\">ugene@unipro.ru</a>."));
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
@@ -304,12 +307,12 @@ void SendReportDialog::sl_onOkClicked() {
     cancelButton->setEnabled(false);
     checkBox->setEnabled(false);
     QString htmlReport = "";
-    if(!emailLineEdit->text().isEmpty()) {
+    if (!emailLineEdit->text().isEmpty()) {
         htmlReport += "\nUser email: ";
         htmlReport += emailLineEdit->text() + "\n";
     }
 
-    if(!additionalInfoTextEdit->toPlainText().isEmpty()) {
+    if (!additionalInfoTextEdit->toPlainText().isEmpty()) {
         htmlReport += "\nAdditional info: \n";
         htmlReport += additionalInfoTextEdit->toPlainText() + "\n";
     }
@@ -321,7 +324,6 @@ void SendReportDialog::sl_onOkClicked() {
     sender.send(htmlReport, dumpUrl);
     accept();
 }
-
 
 QString ReportSender::getOSVersion() {
     QString result;
@@ -361,11 +363,12 @@ QString ReportSender::getOSVersion() {
     case QSysInfo::WV_WINDOWS8:
         result += "8 (operating system version 6.2)";
         break;
-    case 0x00C0:
-        result += "10 (operating system version 10.0)";
-        break;
     default:
-        result += "unknown";
+        if (DetectWindowsVersion::isWindows10()) {
+            result += "10 (operating system version 10)";
+        } else {
+            result += QString("unknown (operating system version %1)").arg(DetectWindowsVersion::getVersionString());
+        }
         break;
     }
 
@@ -412,9 +415,6 @@ QString ReportSender::getOSVersion() {
     case 0x000C:
         result += "OS X 10.10";
         break;
-    case 0x000D:
-        result += "OS X 10.11";
-        break;
     default:
         result += "unknown";
         break;
@@ -433,24 +433,24 @@ int ReportSender::getTotalPhysicalMemory() {
 #ifndef Q_OS_MAC
 void cpuID(unsigned i, unsigned regs[4]) {
 #ifdef _WIN32
-  __cpuid((int *)regs, (int)i);
+    __cpuid((int *)regs, (int)i);
 
 #else
 #if !defined(UGENE_X86_64) && defined(__PIC__)
-  asm volatile (
-    "mov %%ebx, %%edi;"
-    "cpuid;"
-    "xchgl %%ebx, %%edi;"
-    : "=a" (regs[0]) ,
-      "=D" (regs[1]) , /* edi */
-      "=c" (regs[2]) ,
-      "=d" (regs[3])
-    : "0" (i)) ;
+    asm volatile (
+        "mov %%ebx, %%edi;"
+        "cpuid;"
+        "xchgl %%ebx, %%edi;"
+        : "=a" (regs[0]),
+        "=D" (regs[1]), /* edi */
+        "=c" (regs[2]),
+        "=d" (regs[3])
+        : "0" (i));
 #else
-  asm volatile
-    ("cpuid" : "=a" (regs[0]), "=b" (regs[1]), "=c" (regs[2]), "=d" (regs[3])
-     : "a" (i), "c" (0));
-  // ECX is set to zero for CPUID function 4
+    asm volatile
+        ("cpuid" : "=a" (regs[0]), "=b" (regs[1]), "=c" (regs[2]), "=d" (regs[3])
+        : "a" (i), "c" (0));
+    // ECX is set to zero for CPUID function 4
 #endif
 #endif
 }
@@ -467,8 +467,8 @@ QString ReportSender::getCPUInfo() {
     ((unsigned *)vendor)[0] = regs[1]; // EBX
     ((unsigned *)vendor)[1] = regs[3]; // EDX
     ((unsigned *)vendor)[2] = regs[2]; // ECX
-    QString cpuVendor=QString(vendor);
-    result+= "\n  Vendor :"+ cpuVendor;
+    QString cpuVendor = QString(vendor);
+    result += "\n  Vendor :" + cpuVendor;
 
     // Get CPU features
     cpuID(1, regs);
@@ -478,28 +478,28 @@ QString ReportSender::getCPUInfo() {
     cpuID(1, regs);
     unsigned logical = (regs[1] >> 16) & 0xff; // EBX[23:16]
 
-    result+= "\n  logical cpus: " + QString::number(logical);
+    result += "\n  logical cpus: " + QString::number(logical);
     unsigned cores = 0;
 
     if (cpuVendor.contains("GenuineIntel")) {
-      // Get DCP cache info
-      cpuID(4, regs);
-      cores = ((regs[0] >> 26) & 0x3f) + 1; // EAX[31:26] + 1
+        // Get DCP cache info
+        cpuID(4, regs);
+        cores = ((regs[0] >> 26) & 0x3f) + 1; // EAX[31:26] + 1
 
     } else if (cpuVendor.contains("AuthenticAMD")) {
-      // Get NC: Number of CPU cores - 1
-      cpuID(0x80000008, regs);
-      cores = ((unsigned)(regs[2] & 0xff)) + 1; // ECX[7:0] + 1
+        // Get NC: Number of CPU cores - 1
+        cpuID(0x80000008, regs);
+        cores = ((unsigned)(regs[2] & 0xff)) + 1; // ECX[7:0] + 1
     }
 
-    result+= "\n  cpu cores: " + QString::number(cores);
+    result += "\n  cpu cores: " + QString::number(cores);
 
     // Detect hyper-threads..
     bool hyperThreads = cpuFeatures & (1 << 28) && cores < logical;
 
-    result+= "\n  hyper-threads: " + QString(hyperThreads ? "true" : "false");
+    result += "\n  hyper-threads: " + QString(hyperThreads ? "true" : "false");
 #else
-    result="unknown";
+    result = "unknown";
 #endif
     return result;
 }

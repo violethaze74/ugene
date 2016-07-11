@@ -20,21 +20,8 @@
  */
 
 #include "GTTestsSequenceView.h"
-#include "system/GTClipboard.h"
-#include <primitives/GTComboBox.h>
-#include <primitives/GTLineEdit.h>
-#include <primitives/GTScrollBar.h>
-#include <drivers/GTMouseDriver.h>
+
 #include "GTGlobals.h"
-#include <primitives/GTWidget.h>
-#include "primitives/GTAction.h"
-#include "primitives/GTMenu.h"
-#include "system/GTFile.h"
-#include <base_dialogs/GTFileDialog.h>
-#include "api/GTSequenceReadingModeDialog.h"
-#include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTRadioButton.h>
-#include <primitives/GTTreeWidget.h>
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAnnotationsHighlightingTreeView.h"
 #include "GTUtilsCircularView.h"
@@ -43,10 +30,12 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "utils/GTUtilsToolTip.h"
-#include <base_dialogs/ColorDialogFiller.h>
-#include <base_dialogs/DefaultDialogFiller.h>
-#include "primitives/PopupChooser.h"
+
+#include "api/GTSequenceReadingModeDialog.h"
+
+#include "system/GTClipboard.h"
+#include "system/GTFile.h"
+
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateRulerDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
@@ -63,23 +52,43 @@
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
+
+#include "utils/GTUtilsToolTip.h"
+#include "utils/GTThread.h"
+
+#include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/ColorDialogFiller.h>
+#include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
-#include <U2View/DetView.h>
+#include <base_dialogs/MessageBoxFiller.h>
+
+#include <drivers/GTMouseDriver.h>
+#include <drivers/GTKeyboardDriver.h>
+
+#include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTLineEdit.h>
+#include <primitives/GTScrollBar.h>
+#include <primitives/GTWidget.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTMenu.h>
+#include <primitives/PopupChooser.h>
+#include <primitives/GTRadioButton.h>
+#include <primitives/GTTreeWidget.h>
+
 #include <U2Core/AppContext.h>
+
 #include <U2View/ADVConstants.h>
-#include <U2View/Overview.h>
+#include <U2View/DetView.h>
 #include <U2View/GSequenceLineView.h>
 #include <U2View/GSequenceGraphView.h>
+#include <U2View/Overview.h>
 
+#include <QApplication>
 #include <QGroupBox>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
 
 namespace U2 {
 
@@ -294,7 +303,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_EXPORT" << "action_export_selected_sequence_region"));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004_1) { //CHANGES: keyboard used instead mouse
@@ -307,7 +316,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) { //CHANGES: keyboard used instead mouse
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_EXPORT" << "action_export_selected_sequence_region"));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -622,9 +631,9 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     CHECK_SET_ERR( pair4.contains(U2Region(66, 20)), "No 67..86 region");
     CHECK_SET_ERR( pair4.contains(U2Region(606, 20)), "No 607..626 region");
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Primers_DNA"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Primers_DNA"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
     GTWidget::click(os, GTWidget::findWidget(os, "render_area_Primers_DNA"));
 
@@ -634,8 +643,8 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     settings.primersName = "linear";
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
 
-    GTMouseDriver::click(os);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click();
+    GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep(5000);
     pair1 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 1  (0, 2)", "linear  (5, 0)");
@@ -665,7 +674,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTUtilsCv::cvBtn::click(os, wgt);
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "150000..199950,1..50000"));
-    GTKeyboardDriver::keyClick(os, 'a', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "primer3_action"));
     Primer3DialogFiller::Primer3Settings settings;
@@ -673,7 +682,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
     GTWidget::click(os, wgt, Qt::RightButton);
 
-    GTGlobals::sleep(30000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<U2Region> pair32 = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(os, "pair 32  (0, 2)");
     CHECK_SET_ERR( pair32.contains(U2Region(36311, 20)), "No 36312..36331 region");
@@ -704,7 +713,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     CHECK_SET_ERR(wgt != NULL, "ADVSequenceWidget is NULL");
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "560..743,1..180"));
-    GTKeyboardDriver::keyClick(os, 'a', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "primer3_action"));
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os));
@@ -958,6 +967,14 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     qint64 fileSize = GTFile::getSize(os, sandBoxDir + "/seq_view_test_0030.svg");
     CHECK_SET_ERR(fileSize > 15 * 1024 * 1024, QString("SVG file is too small: %1").arg(fileSize));
+    //remove document
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
+    GTGlobals::sleep(100);
+
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031){
@@ -1096,9 +1113,9 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
             CHECK_SET_ERR(!compl3->isChecked(), "check1: compl3 is checked");
 
 
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
             GTGlobals::sleep(200);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new DirectPopupChecker));
@@ -1120,9 +1137,9 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
             CHECK_SET_ERR(compl3->isChecked(), "check2: compl3 is not checked");
 
 
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
             GTGlobals::sleep(200);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new ComplPopupChecker));
@@ -1144,9 +1161,9 @@ GUI_TEST_CLASS_DEFINITION(test_0032){
             CHECK_SET_ERR(compl3->isChecked(), "check3: compl3 is not checked");
 
 
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
             GTGlobals::sleep(200);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new AllPopupChecker));
@@ -1192,7 +1209,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035){
     QWidget* panView = GTWidget::findWidget(os, "pan_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, panView, Qt::LeftButton, QPoint(panView->rect().right() - 50, panView->rect().center().y()));
     GTGlobals::sleep(500);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
 //    Expected: Sequence scrolled to clicked position
     QWidget* det = GTWidget::findWidget(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     QScrollBar* scrollBar = det->findChild<QScrollBar*>();
@@ -1211,7 +1228,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036){
 //    Check "Sequence between selected annotations"  and
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
                                                       << "Sequence between selected annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     QVector<U2Region> select = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(select.size() ==1, QString("Wrong number of selections: %1").arg(select.size()));
     U2Region s = select.first();
@@ -1220,7 +1237,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036){
 //    "Sequence around selected annotations" actions
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
                                                       << "Sequence around selected annotations"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     select = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(select.size() ==1, QString("Wrong number of selections: %1").arg(select.size()));
     s = select.first();
@@ -1304,42 +1321,42 @@ GUI_TEST_CLASS_DEFINITION(test_0041){
     int initLength = det->getVisibleRange().length;
     GTWidget::click(os, det);
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["down"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
     GTGlobals::sleep(500);
     int start = GTUtilsSequenceView::getVisiableStart(os);
     CHECK_SET_ERR(start == 1, QString("1 Unexpected sequence start: %1").arg(start));
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["right"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Right);
     GTGlobals::sleep(500);
     start = GTUtilsSequenceView::getVisiableStart(os);
     CHECK_SET_ERR(start == 2, QString("2 Unexpected sequence start: %1").arg(start));
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["left"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Left);
     GTGlobals::sleep(500);
     start = GTUtilsSequenceView::getVisiableStart(os);
     CHECK_SET_ERR(start == 1, QString("3 Unexpected sequence start: %1").arg(start));
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["up"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Up);
     GTGlobals::sleep(500);
     start = GTUtilsSequenceView::getVisiableStart(os);
     CHECK_SET_ERR(start == 0, QString("4 Unexpected sequence start: %1").arg(start));
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["pagedown"]);
+    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
     GTGlobals::sleep(500);
     start = GTUtilsSequenceView::getVisiableStart(os);
     CHECK_SET_ERR(start == initLength, QString("5 Unexpected sequence start: %1").arg(start));
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["pageup"]);
+    GTKeyboardDriver::keyClick(Qt::Key_PageUp);
     GTGlobals::sleep(500);
     start = GTUtilsSequenceView::getVisiableStart(os);
     CHECK_SET_ERR(start == 0, QString("6 Unexpected sequence start: %1").arg(start));
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["end"]);
+    GTKeyboardDriver::keyClick(Qt::Key_End);
     GTGlobals::sleep(500);
     start = GTUtilsSequenceView::getVisiableStart(os);
     CHECK_SET_ERR(start == 199950 - initLength, QString("7 Unexpected sequence start: %1").arg(start));
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["home"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Home);
     GTGlobals::sleep(500);
     start = GTUtilsSequenceView::getVisiableStart(os);
     CHECK_SET_ERR(start == 0, QString("8 Unexpected sequence start: %1").arg(start));
@@ -1357,10 +1374,10 @@ GUI_TEST_CLASS_DEFINITION(test_0042){
     CHECK_SET_ERR(selected == "misc_feature", "Unexpected selected anntoation: " + selected);
 //    Click on annotation on seq view with right button
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_REMOVE
                                                       << "Selected annotations and qualifiers", PopupChecker::IsEnabled));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 //    Check context menu action
 }
 
@@ -1370,7 +1387,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    move mouse to annotation on det view
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(20, 0));
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(20, 0));
     GTGlobals::sleep();
     QString tooltip = GTUtilsToolTip::getToolTip();
     QString expected = "<table><tr><td bgcolor=#ffff99 bordercolor=black width=15></td><td><big>misc_feature</big></td></tr><tr><td></td><td><b>Location"
@@ -1388,7 +1405,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044){
     GTWidget::click(os, over);
     GTGlobals::sleep(1000);
     for(int i = 0; i<10; i++){
-        GTMouseDriver::scroll(os, 1);
+        GTMouseDriver::scroll(1);
         GTGlobals::sleep(200);
     }
     GTGlobals::sleep(1000);
@@ -1404,11 +1421,12 @@ GUI_TEST_CLASS_DEFINITION(test_0044_1){
     Overview* over = qobject_cast<Overview*>(GTWidget::findWidget(os, "OverviewRenderArea")->parentWidget()->parentWidget());
     GTWidget::click(os, over);
 
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["shift"]);
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(100, 0));
-    GTMouseDriver::release(os);
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(100, 0));
+    GTMouseDriver::release();
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTThread::waitForMainThread();
 
     QVector<U2Region> selectionVector = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(selectionVector.size() == 1, QString("unexpected number of selected regions: %1").arg(selectionVector.size()));
@@ -1421,12 +1439,12 @@ GUI_TEST_CLASS_DEFINITION(test_0044_2){
     GTUtilsTaskTreeView::waitTaskFinished(os);
     Overview* over = GTUtilsSequenceView::getOverviewByNumber(os);
     GTWidget::click(os, over);
-    GTMouseDriver::doubleClick(os);
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(0, over->geometry().height()/3));
+    GTMouseDriver::doubleClick();
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(0, over->geometry().height()/3));
     GTGlobals::sleep();
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(over->geometry().width()/3, 0));
-    GTMouseDriver::release(os);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(over->geometry().width()/3, 0));
+    GTMouseDriver::release();
     GTGlobals::sleep();
 
     int start = GTUtilsSequenceView::getVisiableStart(os);
@@ -1475,7 +1493,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045){
         }
     }
     GTWidget::click(os, vertical);
-    GTMouseDriver::scroll(os, 5);
+    GTMouseDriver::scroll(5);
     GTGlobals::sleep(1000);
     QImage final = GTWidget::getImage(os, pan);
     CHECK_SET_ERR(init != final, "pan view was not changed")
@@ -1588,12 +1606,38 @@ GUI_TEST_CLASS_DEFINITION(test_0050){
     GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem*>() << GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
 
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new WrongNameChecker));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
     GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new WrongDistanceChecker));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
     GTGlobals::sleep(1000);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0050_1){
+    class custom : public CustomScenario {
+    public:
+        virtual void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Genes" << "promoter"));
+            GTWidget::click(os, GTWidget::findWidget(os, "showNameGroupsButton", dialog));
+            QLineEdit* nameEdit = GTWidget::findExactWidget<QLineEdit*>(os, "nameEdit", dialog);
+            CHECK_SET_ERR(nameEdit->text() == "promoter", "unexpected name: " + nameEdit->text());
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem*>() << GTUtilsAnnotationsTreeView::findItem(os, "CDS"));
+
+    GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, new custom));
+    GTKeyboardDriver::keyClick( Qt::Key_F2);
+    GTGlobals::sleep(1000);
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0051){
@@ -1607,8 +1651,8 @@ GUI_TEST_CLASS_DEFINITION(test_0051){
 
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
     GTUtilsAnnotHighlightingTreeView::click(os, "CDS");
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(20, 0));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(20, 0));
+    GTMouseDriver::click();
     GTGlobals::sleep(1000);
 
     QColor final = GTUtilsAnnotHighlightingTreeView::getItemColor(os, "CDS");
@@ -1682,9 +1726,9 @@ GUI_TEST_CLASS_DEFINITION(test_0053){
 
 //    Add label with shift+left mouse
     QWidget* graphView = GTUtilsSequenceView::getGraphView(os);
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTWidget::click(os, graphView, Qt::LeftButton, QPoint(50, 50));
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     QList<QVariant> list = GTUtilsSequenceView::getLabelPositions(os, GTUtilsSequenceView::getGraphView(os));
     CHECK_SET_ERR(list.size() == 1, QString("unexpected number of labels: %1").arg(list.size()));
@@ -1700,9 +1744,9 @@ GUI_TEST_CLASS_DEFINITION(test_0054){
     GTGlobals::sleep(500);
 //    Add label with shift+left mouse
     GSequenceGraphView* graphView = GTUtilsSequenceView::getGraphView(os);
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTWidget::click(os, graphView, Qt::LeftButton, QPoint(50, 50));
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTGlobals::sleep(1000);
 //    Use context menu {graph->Graph settings}
     GTUtilsDialog::waitForDialog(os, new GraphSettingsDialogFiller(os, -1, -1, 0, 0, 255, 0, 0));
@@ -1891,8 +1935,8 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget* nameLabel = GTWidget::findWidget(os, "nameLabel");
-    GTMouseDriver::moveTo(os, GTWidget::getWidgetCenter(os, nameLabel) + QPoint(2*nameLabel->geometry().width()/3, 0));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(os, nameLabel) + QPoint(2*nameLabel->geometry().width()/3, 0));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep(2000);
 
     QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_NC_001363", NULL, false);
@@ -1912,10 +1956,10 @@ GUI_TEST_CLASS_DEFINITION(test_0061_1) {
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Check that first sequence name is '1CF7 chain A sequence'
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1CF7 chain A sequence"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7 chain A sequence"));
     //3. Check that first annotation table name is '1CF7 chain A annotation'
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1CF7 chain A annotation"));
-    GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "1CF7 chain A annotation [1CF7.PDB]"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7 chain A annotation"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CF7 chain A annotation [1CF7.PDB]"));
     //4. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR E2F-4)'  in 'chain_info' annotation for chain A
     QString moleculeName = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", GTUtilsAnnotationsTreeView::findItem(os, "chain_info"));
     CHECK_SET_ERR(moleculeName == "PROTEIN (TRANSCRIPTION FACTOR E2F-4)", QString("Incorrect molecule name is detected for chain A: %1").arg(moleculeName));
@@ -1936,8 +1980,8 @@ GUI_TEST_CLASS_DEFINITION(test_0061_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/pdb", "1CRN_without_compnd_tag.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Check that first annotation table name is '1CRN chain A sequence'
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1CRN chain A annotation"));
-    GTMouseDriver::moveTo(os, GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain A annotation [1CRN_without_compnd_tag.PDB]"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CRN chain A annotation"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain A annotation [1CRN_without_compnd_tag.PDB]"));
 
     //3. Check that there is 'chain_id' qualifier with value 'A'  in 'chain_info' annotation for chain A
     QString chainId = GTUtilsAnnotationsTreeView::getQualifierValue(os, "chain_id" ,"chain_info");
@@ -2069,26 +2113,26 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
 
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     for (int i = 0; i < 5; i++) {
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["down"]);
+        GTKeyboardDriver::keyClick(Qt::Key_Down);
     }
     CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisibleRange(os).startPos, "Visible range was changed");
 
     for (int i = 0; i < 5; i++) {
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["up"]);
+        GTKeyboardDriver::keyClick(Qt::Key_Up);
     }
     CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisibleRange(os).startPos, "Visible range was changed");
 
     visibleRange = GTUtilsSequenceView::getVisibleRange(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["pagedown"]);
+    GTKeyboardDriver::keyClick(Qt::Key_PageUp);
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["pagedown"]);
+    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
     GTGlobals::sleep();
     CHECK_SET_ERR(visibleRange.startPos != GTUtilsSequenceView::getVisibleRange(os).startPos, "Visible range was not changed on page down");
     visibleRange = GTUtilsSequenceView::getVisibleRange(os);
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["pageup"]);
+    GTKeyboardDriver::keyClick(Qt::Key_PageUp);
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["pageup"]);
+    GTKeyboardDriver::keyClick(Qt::Key_PageUp);
     GTGlobals::sleep();
     CHECK_SET_ERR(visibleRange.startPos != GTUtilsSequenceView::getVisibleRange(os).startPos, "Visible range was not changed on page up");
 }
@@ -2126,15 +2170,16 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTWidget::click(os, bottomSplitterHandle);
     QPoint p1 = GTMouseDriver::getMousePosition();
     QPoint p2 = QPoint(p1.x(), p1.y() + 100);
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, p2);
-    GTMouseDriver::release(os);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(p2);
+    GTMouseDriver::release();
     GTGlobals::sleep();
     CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on enlarge at the bottom");
 
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, p1);
-    GTMouseDriver::release(os);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(p1);
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on reduce at the bottom");
 
     QWidget* topSplitterHandle = GTWidget::findWidget(os, "qt_splithandle_det_view_NC_004718");
@@ -2142,15 +2187,16 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTWidget::click(os, topSplitterHandle);
     p1 = GTMouseDriver::getMousePosition();
     p2 = QPoint(p1.x(), p1.y() - 100);
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, p2);
-    GTMouseDriver::release(os);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(p2);
+    GTMouseDriver::release();
     GTGlobals::sleep();
     CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on enlarge at the top");
 
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, p1);
-    GTMouseDriver::release(os);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(p1);
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on reduce at the top");
 }
 
@@ -2181,10 +2227,10 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     CHECK_SET_ERR(scrollBar->minimum() == scrollBar->maximum(), "There is something to scroll");
 
     GTWidget::click(os, seqWgt);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
     GTWidget::click(os, wrapButton);
     GTWidget::click(os, seqWgt);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
 
     ExportSequenceImage::Settings s(ExportSequenceImage::DetailsView, U2Region(1, 3));
     GTUtilsDialog::waitForDialog(os, new ExportSequenceImage(os, sandBoxDir + "seq_image_0067", s));
@@ -2244,9 +2290,10 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     QPoint p1 = GTMouseDriver::getMousePosition();
     QPoint p2(p1.x() + 300, p1.y() + 200);
 
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, p2);
-    GTMouseDriver::release(os);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(p2);
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection(os).isEmpty(), "Nothing is selected");
 }
@@ -2326,6 +2373,129 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
 
     //Expected: the menu disappears.
     CHECK_SET_ERR(NULL == QApplication::activePopupWidget(), "Menu is shown");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0076) {
+    // UGENE-3267: Specifying a region when searching for restriction sites
+    // 1. Open /_common_data/genbank/pBR322.gb
+    // 2. Search the defauult set of the restriction site: "EcoRI"
+    // Expected state: the EcoRI restriction site is found on the zero-end position
+    // 4. Remove the circular mark
+    // 5. Search for the restriction site again
+    // Expected state: restriciton sites were recalculated and the is no annotation on zero position
+
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "EcoRI"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
+    CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
+
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "SYNPBR322"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "EcoRI"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", GTGlobals::FindOptions(false)) == NULL, "EcoRI is unexpectedly found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0077) {
+    // UGENE-3267: Specifying a region when searching for restriction sites
+    // 1. Open /_common_data/genbank/pBR322.gb
+    // 2. Open Find enzymes dialog
+    // 3. Set search region: 4200..10 and find restriction sites
+    // Expected state: there is only one result
+    // 4. Open Find enzymes dialog
+    // 6. Set search region: 3900..900 and exclude region 4300..10, find restriction sites
+    // Expected state: no annotations on zero position
+
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/pBR322.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const QStringList defaultEnzymes = QStringList() << "ClaI" << "DraI" << "EcoRI";
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 4200, 10));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI", GTGlobals::FindOptions(false)) == NULL, "ClaI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI", GTGlobals::FindOptions(false)) == NULL, "DraI is unexpectedly found");
+    QString region = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "EcoRI");
+    CHECK_SET_ERR(region == "join(4359..4361,1..3)", QString("EcoRI region is incorrect: %1").arg(region));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes, 3900, 300, 4300, 10));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "EcoRI", GTGlobals::FindOptions(false)) == NULL, "EcoRI is unexpectedly found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "ClaI") != NULL, "ClaI is unexpectedly not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "DraI") != NULL, "DraI is unexpectedly not found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0078) {
+    // UGENE-3267: Specifying a region when searching for restriction sites
+    // 1. Open /samples/Genbank/murine.gb
+    // 2. Open Find enzymes dialog
+    // 3. Set start search position to 5000, end position to 1000
+    // Expected state: the line edits are red
+    // 4. Click Ok
+    // Expected state: message box appears
+    // 5. Set start search postion back to 1
+    // 6. Check the exclude checkbox
+    // 7. Click Ok
+    // Expected state: message box appears
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class RegionSelectorChecker : public Filler {
+    public:
+        RegionSelectorChecker(HI::GUITestOpStatus &os)
+            : Filler(os, "FindEnzymesDialog") {}
+
+        void run() {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            QWidget* regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
+            CHECK_SET_ERR(regionSelector != NULL, "region_selector_with_excluded not found");
+
+            QLineEdit* start = GTWidget::findExactWidget<QLineEdit*>(os, "startLineEdit", regionSelector);
+            CHECK_SET_ERR(start != NULL, "startLineEdit of 'Search In' region not found");
+            GTLineEdit::setText(os, start, "5000");
+
+            QLineEdit* end = GTWidget::findExactWidget<QLineEdit*>(os, "endLineEdit", regionSelector);
+            CHECK_SET_ERR(end != NULL, "endLineEdit of 'Search In' region not found");
+            GTLineEdit::setText(os, end, "1000");
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTLineEdit::setText(os, start, "1");
+
+            QCheckBox* exclude = GTWidget::findExactWidget<QCheckBox*>(os, "excludeCheckBox");
+            GTCheckBox::setChecked(os, exclude);
+
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new RegionSelectorChecker(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 }
 
 } // namespace GUITest_common_scenarios_sequence_view

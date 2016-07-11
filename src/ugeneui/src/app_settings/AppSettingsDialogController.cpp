@@ -22,6 +22,7 @@
 #include <QHBoxLayout>
 #include <QTreeWidget>
 #include <QMessageBox>
+#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
@@ -39,6 +40,9 @@ AppSettingsDialogController::AppSettingsDialogController(const QString& pageId, 
 
     currentPage = NULL;
     helpButton = new HelpButton(this, buttonBox, QString());
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+
 
     QHBoxLayout *pageLayout = new QHBoxLayout();
     settingsBox->setLayout(pageLayout);

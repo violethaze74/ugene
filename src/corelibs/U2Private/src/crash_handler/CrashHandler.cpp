@@ -22,6 +22,7 @@
 #include <QTextStream>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Settings.h>
 #include <U2Core/Timer.h>
 #include <U2Core/Version.h>
 
@@ -39,6 +40,8 @@
 #include "CrashHandlerPrivateWin.h"
 #endif
 
+const static char * SETTINGS_UGENE_UID            = "shtirlitz/uid";
+
 namespace U2 {
 
 CrashHandlerPrivate * CrashHandler::crashHandlerPrivate = NULL;
@@ -51,7 +54,7 @@ bool CrashHandler::isEnabled() {
     return false;
 #endif
 
-    static QString useCrashHandlerValue = qgetenv(ENV_USE_CRASHHANDLER);
+    static QString useCrashHandlerValue = qgetenv(ENV_USE_CRASH_HANDLER);
 
     if ("0" == useCrashHandlerValue) {
         return false;
@@ -133,6 +136,14 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
 
     reportText += Version::appVersion().text;
     reportText += "|";
+
+    Settings* settings = AppContext::getSettings();
+    if (settings != NULL){
+        QVariant uuidQvar = settings->getValue( SETTINGS_UGENE_UID, "None" );
+        reportText += uuidQvar.toString() + "|";
+    } else {
+        reportText += "Settings is null|";
+    }
 
     QString activeWindow = AppContext::getActiveWindowName();
     if(activeWindow.isEmpty()) {

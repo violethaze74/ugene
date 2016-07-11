@@ -36,6 +36,7 @@
 #endif
 
 #include <U2Gui/HelpButton.h>
+#include <QPushButton>
 
 namespace U2 {
 
@@ -48,7 +49,8 @@ CreateObjectRelationDialogController::CreateObjectRelationDialogController(GObje
     ui = new Ui_CreateObjectRelationDialog;
 
     ui->setupUi(this);
-
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     QIcon objectIcon(":/core/images/gobject.png");
     foreach(GObject* obj, objects) {
         ui->listWidget->addItem(new QListWidgetItem(objectIcon, obj->getGObjectName()));

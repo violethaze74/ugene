@@ -36,6 +36,7 @@
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 
 #include "GTTestsStartPage.h"
+#include "GTUtilsLog.h"
 #include "GTUtilsTaskTreeView.h"
 
 namespace U2 {
@@ -45,10 +46,15 @@ using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001){
 //    Start UGENE
 //    Press "Open file(s)" button on start page
+    GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
     GTUtilsStartPage::clickButton(os, GTUtilsStartPage::OpenFile);
 //    Expected state: File dialog is opened.
     GTGlobals::sleep(500);
+    bool hasWindowsWarning = l.checkMessage("ShellExecute '#' failed");
+    bool hasUnixWarning = l.checkMessage("gvfs-open: #: error opening location");
+    CHECK_SET_ERR(!hasWindowsWarning, "Windows warning");
+    CHECK_SET_ERR(!hasUnixWarning, "Unix warning");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002){
@@ -80,7 +86,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
 //    Expected state: File added to "Resent files" list
 //    Remove file from project
     GTUtilsProjectTreeView::click(os, "COI.aln");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    Go to Start page
     GTUtilsStartPage::openStartPage(os);
 //    Click file name in "Resent files" list

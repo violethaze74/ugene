@@ -8,11 +8,6 @@ TARGET = breakpad
 DESTDIR = ../../_release
 QT -= gui
 
-!win32 {
-    QMAKE_CC = g++
-    QMAKE_CXX = g++
-}
-
 !debug_and_release|build_pass {
     CONFIG(debug, debug|release) {
         TARGET = breakpadd

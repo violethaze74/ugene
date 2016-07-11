@@ -33,8 +33,8 @@ namespace U2 {
 class MSAEditor;
 class MSAEditorUI;
 class MSAEditorSequenceArea;
-class MSAColorScheme;
-class MSAHighlightingScheme;
+class MsaColorScheme;
+class MsaHighlightingScheme;
 
 
 class U2VIEW_EXPORT MSASimpleOverview : public MSAOverview {

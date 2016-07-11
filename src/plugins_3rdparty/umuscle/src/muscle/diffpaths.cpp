@@ -1,7 +1,15 @@
 #include "muscle.h"
+#include "muscle_context.h"
 #include "pwpath.h"
 
 #define TRACE	0
+
+inline void setEdgeIndex(unsigned Edges[], unsigned uDiffCount, unsigned uEdgeIndex) {
+    if (uDiffCount >= EDGE_ARRAY_SIZE) {
+        return;
+    }
+    Edges[uDiffCount] = uEdgeIndex;
+}
 
 void DiffPaths(const PWPath &p1, const PWPath &p2, unsigned Edges1[],
   unsigned *ptruDiffCount1, unsigned Edges2[], unsigned *ptruDiffCount2)
@@ -39,8 +47,8 @@ void DiffPaths(const PWPath &p1, const PWPath &p2, unsigned Edges1[],
 			{
 			if (!Edge1->Equal(*Edge2))
 				{
-				Edges1[uDiffCount1++] = uEdgeIndex1;
-				Edges2[uDiffCount2++] = uEdgeIndex2;
+				setEdgeIndex(Edges1, uDiffCount1++, uEdgeIndex1);
+				setEdgeIndex(Edges2, uDiffCount2++, uEdgeIndex2);
 				}
 			++uEdgeIndex1;
 			++uEdgeIndex2;
@@ -48,22 +56,22 @@ void DiffPaths(const PWPath &p1, const PWPath &p2, unsigned Edges1[],
 
 		else if (Edge2->uPrefixLengthA < Edge1->uPrefixLengthA ||
 		  Edge2->uPrefixLengthB < Edge1->uPrefixLengthB)
-			Edges2[uDiffCount2++] = uEdgeIndex2++;
+			setEdgeIndex(Edges2, uDiffCount2++, uEdgeIndex2++);
 
 		else if (Edge1->uPrefixLengthA < Edge2->uPrefixLengthA ||
 		  Edge1->uPrefixLengthB < Edge2->uPrefixLengthB)
-			Edges1[uDiffCount1++] = uEdgeIndex1++;
+			setEdgeIndex(Edges1, uDiffCount1++, uEdgeIndex1++);
 
 		if (uEdgeCount1 == uEdgeIndex1)
 			{
 			while (uEdgeIndex2 < uEdgeCount2)
-				Edges2[uDiffCount2++] = uEdgeIndex2++;
+				setEdgeIndex(Edges2, uDiffCount2++, uEdgeIndex2++);
 			goto Done;
 			}
 		if (uEdgeCount2 == uEdgeIndex2)
 			{
 			while (uEdgeIndex1 < uEdgeCount1)
-				Edges1[uDiffCount1++] = uEdgeIndex1++;
+				setEdgeIndex(Edges1, uDiffCount1++, uEdgeIndex1++);
 			goto Done;
 			}
 		if (uEdgeIndex1 == uEdgeIndexTop1 && uEdgeIndex2 == uEdgeIndexTop2)

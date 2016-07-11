@@ -28,11 +28,10 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/NetworkConfiguration.h>
 #include <U2Core/Settings.h>
+#include <U2Core/SyncHttp.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
-
-#include <U2Remote/SynchHttp.h>
 
 #include "update/UgeneUpdater.h"
 
@@ -58,7 +57,7 @@ void CheckUpdatesTask::run() {
 
     bool isProxy = nc->isProxyUsed(QNetworkProxy::HttpProxy);
     bool isException = nc->getExceptionsList().contains(SITE_URL);
-    SyncHTTP http(stateInfo);
+    SyncHttp http(stateInfo);
     if (isProxy && !isException) {
         http.setProxy(nc->getProxy(QNetworkProxy::HttpProxy));
     }

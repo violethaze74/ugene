@@ -187,16 +187,16 @@ void ImportToDatabaseDialogFiller::selectItems(const Action &action) {
     GT_CHECK(!itemList.isEmpty(), "Items list to select is empty");
 
     if (itemList.size() > 1) {
-        GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+        GTKeyboardDriver::keyPress(Qt::Key_Control);
     }
 
     foreach (const QString& itemText, itemList) {
         const QPoint itemCenter = getItemCenter(itemText);
-        GTMouseDriver::moveTo(os, itemCenter);
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(itemCenter);
+        GTMouseDriver::click();
     }
 
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 }
 #undef GT_METHOD_NAME
 
@@ -207,12 +207,12 @@ void ImportToDatabaseDialogFiller::editDestinationFolder(const Action &action) {
     GT_CHECK(action.data.contains(Action::ACTION_DATA__DESTINATION_FOLDER), "Not enough parameters to perform the action");
 
     const QPoint itemCenter = getFolderColumnCenter(action.data.value(Action::ACTION_DATA__ITEM).toString());
-    GTMouseDriver::moveTo(os, itemCenter);
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(itemCenter);
+    GTMouseDriver::doubleClick();
 
     const QString dstFolder = action.data.value(Action::ACTION_DATA__DESTINATION_FOLDER).toString();
-    GTKeyboardDriver::keySequence(os, dstFolder);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTKeyboardDriver::keySequence(dstFolder);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
 
@@ -237,8 +237,8 @@ void ImportToDatabaseDialogFiller::editPrivateOptions(const Action &action) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Override options"));
 
     const QPoint itemCenter = getItemCenter(action.data.value(Action::ACTION_DATA__ITEM).toString());
-    GTMouseDriver::moveTo(os, itemCenter);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(itemCenter);
+    GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 
@@ -249,8 +249,8 @@ void ImportToDatabaseDialogFiller::resetPrivateOptions(const Action &action) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Reset to general options"));
     const QPoint itemCenter = getItemCenter(action.data.value(Action::ACTION_DATA__ITEM).toString());
-    GTMouseDriver::moveTo(os, itemCenter);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(itemCenter);
+    GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME
 

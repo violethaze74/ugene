@@ -26,7 +26,6 @@
 #include "GTTestsMSAEditorOverview.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
-#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsProjectTreeView.h"
 #include "primitives/GTAction.h"
@@ -39,6 +38,7 @@
 #include <primitives/GTWidget.h>
 #include <base_dialogs/ColorDialogFiller.h>
 #include "primitives/PopupChooser.h"
+#include <utils/GTThread.h>
 
 namespace U2 {
 
@@ -204,7 +204,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007){
         QImage imgGraph1 = pixmapGraph1.toImage();
 
         GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(40,17));
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
         GTGlobals::sleep(500);
 
         //checking images changed
@@ -235,7 +235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008){
 //    2. Select some area in msa view and move it with mouse.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(10,10));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5,5));
-    GTMouseDriver::press(os);
+    GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(15,5));
 
 //    Expected state: while mouse button is pressed graph overview is blocked. On mouse release overview updating starts.
@@ -260,7 +260,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008){
 
     CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
 #endif
-    GTMouseDriver::release(os);
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009){
@@ -279,9 +280,9 @@ GUI_TEST_CLASS_DEFINITION(test_0009){
 
 //    2. Select one symbol.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5,5));
-    GTMouseDriver::click(os);
+    GTMouseDriver::click();
 //    3. Press Delete button and release it after a while.
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Delete);
     GTGlobals::sleep(1000);
 //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
 //    Simple overview updates simultaneously.
@@ -298,7 +299,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009){
 
     CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
 
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyRelease(Qt::Key_Delete);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010){
@@ -317,9 +318,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010){
 
 //    2. Select one symbol.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5,5));
-    GTMouseDriver::click(os);
+    GTMouseDriver::click();
 //    3. Press Delete button and release it after a while.
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["space"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Space);
     GTGlobals::sleep(1000);
 //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
 //    Simple overview updates simultaneously.
@@ -334,7 +335,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010){
     QRgb rgb = img.pixel(overviewGraph->rect().topLeft() + QPoint(5,5));
     QColor c(rgb);
 
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["space"]);
+    GTKeyboardDriver::keyRelease(Qt::Key_Space);
 #ifdef Q_OS_MAC
     CHECK_SET_ERR(c.name()=="#a0a0a4","simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
 #else
@@ -478,7 +479,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017){
     QPixmap pixmap = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
     QImage img = pixmap.toImage();
 //    4. Go to Highlighting tab on Options panel.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     GTGlobals::sleep(500);
 //    5. Select Highlighting to "Gaps"
     QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
@@ -489,7 +490,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017){
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Calculation method"
                                                       << "Highlighting"));
     GTMenu::showContextMenu(os, overviewGraph);
-    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     GTGlobals::sleep(1000);
 //    Expected state: graph didn't change.
 
@@ -515,7 +516,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019){
     QPixmap pixmap = QPixmap::grabWidget(overviewGraph, overviewGraph->rect());
     QImage img = pixmap.toImage();
 
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "sf170");
     GTWidget::click(os, GTWidget::findWidget(os,"addSeq"));
 //    5. Change Highlighting.

@@ -20,6 +20,7 @@
  */
 
 #include <QMessageBox>
+#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -47,7 +48,9 @@ AceImportDialog::AceImportDialog(const QVariantMap& _settings) :
     saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17468907");
+    new HelpButton(this, buttonBox, "17470632");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     QString src = settings.value(AceImporter::SRC_URL).toString();
     leSource->setText(src);

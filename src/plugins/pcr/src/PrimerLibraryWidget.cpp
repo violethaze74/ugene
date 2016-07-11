@@ -52,7 +52,7 @@ PrimerLibraryWidget::PrimerLibraryWidget(QWidget *parent)
 : QWidget(parent), editPrimerButton(NULL), removePrimersButton(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17469031");
+    new HelpButton(this, buttonBox, "17470749");
 
     QPushButton *newPrimerButton = buttonBox->addButton(tr("New primer"), QDialogButtonBox::ActionRole);
     connect(newPrimerButton, SIGNAL(clicked()), SLOT(sl_newPrimer()));
@@ -132,7 +132,7 @@ void PrimerLibraryWidget::sl_importPrimers() {
 void PrimerLibraryWidget::sl_exportPrimers() {
     const QList<Primer> selection = primerTable->getSelection();
     SAFE_POINT(!selection.isEmpty(), L10N::nullPointerError("Selection"), );
-    QObjectScopedPointer<ExportPrimersDialog> exportDialog = new ExportPrimersDialog(selection);
+    QObjectScopedPointer<ExportPrimersDialog> exportDialog = new ExportPrimersDialog(selection, this);
     exportDialog->exec();
 }
 

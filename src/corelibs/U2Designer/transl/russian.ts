@@ -321,7 +321,7 @@ this merge sequence slot:</source>
     <message>
         <location filename="../src/EditStringMarkerWidget.ui" line="62"/>
         <source>Regular expression</source>
-        <translation>Регулярные выражения</translation>
+        <translation>Регулярное выражение</translation>
     </message>
 </context>
 <context>
@@ -825,6 +825,19 @@ bowtie index file</source>
     </message>
 </context>
 <context>
+    <name>U2::EditBreakpointLabelsDialog</name>
+    <message>
+        <location filename="../src/EditBreakpointLabelsDialog.cpp" line="49"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/EditBreakpointLabelsDialog.cpp" line="50"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
     <name>U2::EditMarkerDialog</name>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="401"/>
@@ -1020,6 +1033,19 @@ bowtie index file</source>
     </message>
     <message>
         <location filename="../src/NewGrouperSlotDialog.cpp" line="222"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
+    <name>U2::NewBreakpointDialog</name>
+    <message>
+        <location filename="../src/NewBreakpointDialog.cpp" line="34"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/NewBreakpointDialog.cpp" line="35"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>

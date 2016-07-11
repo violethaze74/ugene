@@ -48,10 +48,10 @@ void AliasesDialogFiller::commonScenario(){
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"paramAliasesTableWidget",dialog));
     QMap<QPoint*, QString>::iterator i;
     for (i = map.begin(); i != map.end(); ++i){
-        GTMouseDriver::moveTo(os,GTTableView::getCellPosition(os,table,i.key()->x(),i.key()->y()));
-        GTMouseDriver::doubleClick(os);
-        GTKeyboardDriver::keySequence(os, i.value());
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+        GTMouseDriver::moveTo(GTTableView::getCellPosition(os,table,i.key()->x(),i.key()->y()));
+        GTMouseDriver::doubleClick();
+        GTKeyboardDriver::keySequence(i.value());
+        GTKeyboardDriver::keyClick( Qt::Key_Enter);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

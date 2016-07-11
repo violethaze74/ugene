@@ -80,6 +80,9 @@ public:
     static void addEmptyValsToBindings(const QList<Actor*> & procs);
     // idMap not null in copy mode
     static QString string2Schema(const QString & data, Schema * schema, Metadata * meta = NULL, QMap<ActorId, ActorId>* idMap = NULL, QList<QString> includedUrls = QList<QString>());
+    // the method checks port relations:
+    // if the attribute has port relation and the port has a link - the value of attribute must be set to the value that allows port enabling
+    static void postProcessing(Schema* schema);
 
     static void addPart( QString & to, const QString & w);
     static QString header2String(const Metadata * meta);

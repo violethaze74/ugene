@@ -92,8 +92,8 @@ QPoint GTUtilsPrimerLibrary::getPrimerPoint(HI::GUITestOpStatus &os, int number)
 }
 
 void GTUtilsPrimerLibrary::clickPrimer(HI::GUITestOpStatus &os, int number) {
-    GTMouseDriver::moveTo(os, getPrimerPoint(os, number));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(getPrimerPoint(os, number));
+    GTMouseDriver::click();
 }
 
 void GTUtilsPrimerLibrary::clearLibrary(HI::GUITestOpStatus &os) {
@@ -117,18 +117,12 @@ void GTUtilsPrimerLibrary::addPrimer(HI::GUITestOpStatus &os, const QString &nam
 void GTUtilsPrimerLibrary::selectPrimers(HI::GUITestOpStatus &os, const QList<int> &numbers) {
     const int size = librarySize(os);
 
-#ifdef Q_OS_MAC
-    int key = GTKeyboardDriver::key["cmd"];
-#else
-    int key = GTKeyboardDriver::key["ctrl"];
-#endif
-
-    GTKeyboardDriver::keyPress(os, key);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     foreach (int number, numbers) {
         GT_CHECK(number < size, "Primer number is out of range");
         GTUtilsPrimerLibrary::clickPrimer(os, number);
     }
-    GTKeyboardDriver::keyClick(os, key);
+    GTKeyboardDriver::keyClick(Qt::Key_Control);
 }
 #undef GT_METHOD_NAME
 

@@ -63,13 +63,13 @@ changeCoreInstallNames () {
         install_name_tool -change libU2Guid.1.dylib  @executable_path/libU2Guid.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2Langd.1.dylib  @executable_path/libU2Langd.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2Privated.1.dylib  @executable_path/libU2Privated.1.dylib "$TARGET_EXE_DIR"/$1
-        install_name_tool -change libU2Remoted.1.dylib  @executable_path/libU2Remoted.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2Scriptd.1.dylib  @executable_path/libU2Scriptd.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2Testd.1.dylib  @executable_path/libU2Testd.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libU2Viewd.1.dylib  @executable_path/libU2Viewd.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libugenedbd.1.dylib  @executable_path/libugenedbd.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libgtestd.1.dylib  @executable_path/libgtestd.1.dylib "$TARGET_EXE_DIR"/$1
         install_name_tool -change libhumimitd.1.dylib  @executable_path/libhumimitd.1.dylib "$TARGET_EXE_DIR"/$1
+        install_name_tool -change libbreakpadd.1.dylib  @executable_path/libbreakpadd.1.dylib "$TARGET_EXE_DIR"/$1
   
    else
        echo "changeCoreInstallNames: no parameter passed."

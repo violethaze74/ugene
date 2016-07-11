@@ -53,9 +53,10 @@ namespace U2 {
 
 const int ParserState::LOCAL_READ_BUFFER_SIZE = 40000;
 
-const QString EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains features of another remote GenBank file. These features will be skipped.");
+const QString EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains features of another remote GenBank file. These features have been skipped.");
 const QString EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
 const QString EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "Location parsing error.");
+const QString EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE = QCoreApplication::translate("EMBLGenbankAbstractDocument", "The number of valid sequence characters does not coincide with the declared size in the sequence header.");
 
 EMBLGenbankAbstractDocument::EMBLGenbankAbstractDocument(const DocumentFormatId& _id, const QString& _formatName, int mls,
                                                          DocumentFormatFlags flags, QObject* p)
@@ -78,7 +79,7 @@ Document* EMBLGenbankAbstractDocument::loadDocument(IOAdapter* io, const U2DbiRe
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
 
     DocumentFormatUtils::updateFormatHints(objects, fs);
-    fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings();
+    fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings() && checkFlags(DocumentFormatFlag_SupportWriting);
     Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, writeLockReason);
     return doc;
 }
@@ -666,18 +667,14 @@ bool EMBLGenbankAbstractDocument::readSequence(ParserState* st, U2SequenceImport
     IOAdapter* io = st->io;
     U2OpStatus& si = st->si;
     si.setDescription(tr("Reading sequence %1").arg(st->entry->name));
-    //res.reserve(res.size() + headerSeqLen);
     QByteArray readBuffer(DocumentFormat::READ_BUFF_SIZE, '\0');
     char* buff  = readBuffer.data();
 
     //reading sequence
-    QBuffer writer(&res);
-    writer.open( QIODevice::WriteOnly);
-    bool ok = true;
     int len;
-    int dataOffset = 0;
-    bool numIsPrefix = isNcbiLikeFormat();
-    while (ok && (len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE)) > 0) {
+    sequenceLen = 0;
+    fullSequenceLen = 0;
+    while ((len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE)) > 0) {
         if (si.isCoR()) {
             res.clear();
             break;
@@ -692,61 +689,20 @@ bool EMBLGenbankAbstractDocument::readSequence(ParserState* st, U2SequenceImport
             break;
         }
 
-        //compute data offset
-        bool foundNum = false;
-        bool foundSpaceAfterNum = false;
-        for(dataOffset = 0 ; dataOffset < len; dataOffset++) {
-            char c = numIsPrefix ? buff[dataOffset] : buff[len - dataOffset - 1];
-            bool isNum = c >= '0' && c <= '9';
-            bool isSpace = c == ' ' || c == '\t';
-            if (!isSpace && (!isNum || foundSpaceAfterNum)) {
-                if (!foundSpaceAfterNum) {
-                    //unknown character -> stop iteration
-                    dataOffset = len;
-                }
-                break;
-            }
-            foundNum = foundNum || isNum;
-            foundSpaceAfterNum = foundSpaceAfterNum || (isSpace && foundNum);
-        }
+        len = TextUtils::remove(buff, len, TextUtils::WHITES | TextUtils::NUMS);
+        seqImporter.addBlock(buff, len, os);
 
-        if (dataOffset == len) {
-            si.setError(tr("Error reading sequence: invalid sequence format"));
-            break;
-        }
-
-        bool isSeek = writer.seek(0);
-                assert(isSeek);Q_UNUSED(isSeek);
-
-        //add buffer to result
-        for (int i= (numIsPrefix ? dataOffset : 0), n = (numIsPrefix ? len : len -  dataOffset) ; i < n; i++) {
-            char c = buff[i];
-            if (c != ' ' && c != '\t') {
-                ok = writer.putChar(c);
-                if (!ok) {
-                    break;
-                }
-            }
-        }
-        if (!ok) {
-            si.setError(tr("Error reading sequence: memory allocation failed"));
-            break;
-        }
-
-        seqImporter.addBlock(res.data(),res.size(),os);
         if(os.isCoR()){
             break;
         }
-        sequenceLen += res.size();
-        fullSequenceLen += res.size();
-        res.clear();
+        sequenceLen += len;
+        fullSequenceLen += len;
 
         si.setProgress(io->getProgress());
     }
     if (!si.isCoR() && buff[0] != '/') {
         si.setError(tr("Sequence is truncated"));
     }
-    writer.close();
     return true; //FIXME
 }
 

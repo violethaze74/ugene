@@ -1,0 +1,132 @@
+#@UGENE_WORKFLOW
+#The workflow searches for HMMER signals in a sequence.
+#The output is a file with signal annotations.
+
+
+
+workflow "HMMER 3 search"{
+
+    hmm3-search {
+        type:hmm3-search;
+        name:"HMM3 Search";
+    }
+    hmm3-read-profile {
+        type:hmm3-read-profile;
+        name:"Read HMM3 Profile";
+    }
+    read-sequence {
+        type:read-sequence;
+        name:"Read Sequence";
+        url-in {
+            dataset:"Dataset 1";
+        }
+    }
+    write-annotations {
+        type:write-annotations;
+        name:"Write Annotations";
+        write-mode:1;
+    }
+
+    .actor-bindings {
+        read-sequence.out-sequence->hmm3-search.in-sequence
+        hmm3-search.out-annotations->write-annotations.in-annotations
+        hmm3-read-profile.out-hmm3->hmm3-search.in-hmm3
+    }
+
+    hmm3-read-profile.hmm3-profile->hmm3-search.in-hmm3.hmm3-profile
+    read-sequence.sequence->hmm3-search.in-sequence.sequence
+    hmm3-search.annotations->write-annotations.in-annotations.annotations
+    read-sequence.annotations->write-annotations.in-annotations.annotations
+    read-sequence.sequence->write-annotations.in-annotations.sequence
+
+    .meta {
+        parameter-aliases {
+            hmm3-search.F1 {
+                alias:F1;
+            }
+            hmm3-search.F2 {
+                alias:F2;
+            }
+            hmm3-search.F3 {
+                alias:F3;
+            }
+            hmm3-search.domZ {
+                alias:domZ;
+            }
+            hmm3-search.e-val {
+                alias:domE;
+            }
+            hmm3-search.max {
+                alias:max;
+            }
+            hmm3-search.nobias {
+                alias:nobias;
+            }
+            hmm3-search.nonull2 {
+                alias:nonull2;
+            }
+            hmm3-search.result-name {
+                alias:annotation-name;
+            }
+            hmm3-search.score {
+                alias:domT;
+            }
+            hmm3-search.seed {
+                alias:seed;
+            }
+            hmm3-search.threshold-type {
+                alias:threshold-type;
+            }
+            hmm3-read-profile.url-in {
+                alias:hmm;
+            }
+            read-sequence.url-in {
+                alias:in;
+            }
+            write-annotations.document-format {
+                alias:format;
+            }
+            write-annotations.url-out {
+                alias:out;
+            }
+        }
+        visual {
+            hmm3-read-profile {
+                pos:"-960 -690";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                out-hmm3.angle:360;
+            }
+            hmm3-search {
+                pos:"-720 -600";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                in-hmm3.angle:150;
+                in-sequence.angle:210;
+                out-annotations.angle:360;
+            }
+            read-sequence {
+                pos:"-960 -540";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                out-sequence.angle:360;
+            }
+            write-annotations {
+                pos:"-420 -600";
+                style:ext;
+                bg-color-ext:"0 128 128 64";
+                in-annotations.angle:180;
+            }
+            hmm3-read-profile.out-hmm3->hmm3-search.in-hmm3 {
+                text-pos:"-35 -24";
+            }
+            hmm3-search.out-annotations->write-annotations.in-annotations {
+                text-pos:"-45 -37";
+            }
+            read-sequence.out-sequence->hmm3-search.in-sequence {
+                text-pos:"-27.5 -24";
+            }
+        }
+    }
+}
+

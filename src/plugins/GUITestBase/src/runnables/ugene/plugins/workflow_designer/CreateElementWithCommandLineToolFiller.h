@@ -92,14 +92,14 @@ private:
 
     template <typename DataType>
     void setType(QTableView *table, int row, const DataType &type) {
-        GTMouseDriver::moveTo(os, GTTableView::getCellPosition(os, table, 1, row));
-        GTMouseDriver::doubleClick(os);
-        GTThread::waitForMainThread(os);
+        GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, row));
+        GTMouseDriver::doubleClick();
+        GTThread::waitForMainThread();
 
         QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         GTComboBox::setIndexWithText(os, box, dataTypeToString(type));
 #ifdef Q_OS_WIN
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Enter);
 #endif
     }
 
@@ -114,20 +114,20 @@ private:
             GTWidget::click(os, addRowButton);
             table->scrollTo(model->index(row, 0));
 
-            GTMouseDriver::moveTo(os, GTTableView::getCellPosition(os, table, 0, row));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, row));
+            GTMouseDriver::click();
 
-            GTKeyboardDriver::keySequence(os, rowData.name);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+            GTKeyboardDriver::keySequence(rowData.name);
+            GTKeyboardDriver::keyClick( Qt::Key_Enter);
 
             processDataType(table, row, rowData.type);
 
-            GTMouseDriver::moveTo(os, GTTableView::getCellPosition(os, table, model->columnCount() - 1, row));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, model->columnCount() - 1, row));
+            GTMouseDriver::click();
 
             if (!rowData.description.isEmpty()) {
-                GTKeyboardDriver::keySequence(os, rowData.description);
-                GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+                GTKeyboardDriver::keySequence(rowData.description);
+                GTKeyboardDriver::keyClick( Qt::Key_Enter);
             }
             row++;
         }

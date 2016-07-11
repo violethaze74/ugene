@@ -159,7 +159,7 @@ static bool isConvertingFormat(const DocumentFormatId &formatId) {
 void ReadAssemblyTask::prepare() {
     QFileInfo fi(url);
     if(!fi.exists()){
-        stateInfo.setError(tr("File '%1' not exists").arg(url));
+        stateInfo.setError(tr("File '%1' does not exist").arg(url));
         return;
     }
 

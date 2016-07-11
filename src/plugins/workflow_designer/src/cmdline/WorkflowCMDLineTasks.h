@@ -23,7 +23,6 @@
 #define _U2_WORKFLOW_CMDLINE_TASKS_H_
 
 #include <U2Core/Task.h>
-#include <U2Remote/RemoteMachine.h>
 #include <U2Lang/WorkflowIOTasks.h>
 
 namespace U2 {
@@ -56,18 +55,6 @@ class WorkflowRunFromCMDLineTask : public WorkflowRunFromCMDLineBase {
 public:
     virtual Task * getWorkflowRunTask() const;
 }; // WorkflowRunFromCMDLineTask
-
-class WorkflowRemoteRunFromCMDLineTask : public WorkflowRunFromCMDLineBase {
-    Q_OBJECT
-public:
-    WorkflowRemoteRunFromCMDLineTask();
-    virtual void prepare();
-    virtual Task * getWorkflowRunTask() const;
-
-private:
-    RemoteMachineSettingsPtr settings;
-
-}; // WorkflowRemoteRunFromCMDLineTask
 
 } // U2
 

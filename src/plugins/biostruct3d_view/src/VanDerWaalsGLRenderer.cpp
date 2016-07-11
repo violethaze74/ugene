@@ -46,7 +46,6 @@ void VanDerWaalsGLRenderer::drawBioStruct3D( )
 
 void VanDerWaalsGLRenderer::drawAtoms( const BioStruct3DColorScheme* colorScheme )
 {
-    QOpenGLFunctions_2_0 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_2_0>();
     static float tolerance = 0.45f;
     int numSlices = 10 * settings->detailLevel;
     GLUquadricObj *pObj = gluNewQuadric();
@@ -62,11 +61,11 @@ void VanDerWaalsGLRenderer::drawAtoms( const BioStruct3DColorScheme* colorScheme
                 float radius = AtomConstants::getAtomCovalentRadius(atom->atomicNumber);
                 Vector3D pos = atom->coord3d;
                 Color4f atomColor = colorScheme->getAtomColor(atom);
-                f->glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, atomColor.getConstData());
-                f->glPushMatrix();
-                f->glTranslatef(pos.x, pos.y, pos.z);
+                glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, atomColor.getConstData());
+                glPushMatrix();
+                glTranslatef(pos.x, pos.y, pos.z);
                 gluSphere(pObj, radius + tolerance, numSlices, numSlices);
-                f->glPopMatrix();
+                glPopMatrix();
             }
         }
     }

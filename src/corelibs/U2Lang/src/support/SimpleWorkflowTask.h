@@ -33,17 +33,18 @@
 
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowIOTasks.h>
-#include <U2Lang/WorkflowRunTask.h>
 
 namespace U2 {
 
 using namespace Workflow;
 
+class CmdlineTaskRunner;
 class LoadDocumentTask;
 class MAlignmentObject;
 
 class U2LANG_EXPORT SimpleInOutWorkflowTaskConfig {
 public:
+    SimpleInOutWorkflowTaskConfig();
     QList<GObject*>     objects;
     DocumentFormatId    inFormat;
     QVariantMap         inDocHints;
@@ -51,6 +52,7 @@ public:
     QVariantMap         outDocHints;
     QStringList         extraArgs;
     QString             schemaName;
+    bool                emptyResultPossible;
 };
 
 /**
@@ -75,7 +77,7 @@ private:
     SaveDocumentTask*                   saveInputTask;
     QTemporaryFile                      inputTmpFile;
 
-    RunCmdlineWorkflowTask*             runWorkflowTask;
+    CmdlineTaskRunner*                  runWorkflowTask;
 
     QTemporaryFile                      resultTmpFile;
     LoadDocumentTask*                   loadResultTask;

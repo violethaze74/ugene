@@ -28,14 +28,14 @@
 class QEventLoop;
 class QNetworkReply;
 
-class ReportSender:public QObject {
+class ReportSender :public QObject {
     Q_OBJECT
 public:
     ReportSender(bool addGuiTestInfo = false);
     void parse(const QString &str, const QString &dumpUrl);
     bool send(const QString &additionalInfo, const QString &dumpUrl);
     QString getOSVersion();
-    QString getReport() const {return report;}
+    QString getReport() const { return report; }
     int getTotalPhysicalMemory();
     QString getCPUInfo();
     QString getUgeneBitCount() const;
@@ -51,7 +51,7 @@ private:
     QString failedTest;
 };
 
-class SendReportDialog:public QDialog, public Ui_Dialog {
+class SendReportDialog :public QDialog, public Ui_Dialog {
     Q_OBJECT
 public:
     SendReportDialog(const QString &report, const QString &dumpUrl, QDialog *d = NULL);
@@ -70,7 +70,5 @@ private:
     ReportSender sender;
     const QString dumpUrl;
 };
-
-
 
 #endif

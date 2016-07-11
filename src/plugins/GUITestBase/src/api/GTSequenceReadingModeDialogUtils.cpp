@@ -100,7 +100,7 @@ void GTSequenceReadingModeDialogUtils::selectMode()
 
         case GTGlobals::UseKey:
             GTWidget::setFocus(os, radioButton);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+            GTKeyboardDriver::keyClick(Qt::Key_Space);
             break;
         default:
             break;
@@ -157,16 +157,16 @@ void GTSequenceReadingModeDialogUtils::selectSaveDocument()
     if (GTSequenceReadingModeDialog::saveDocument != saveBox->isChecked()) {
         switch (GTSequenceReadingModeDialog::useMethod) {
         case GTGlobals::UseMouse:
-            GTMouseDriver::moveTo(os, saveBox->mapToGlobal(QPoint(saveBox->rect().left() + 10, saveBox->rect().height() / 2)));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(saveBox->mapToGlobal(QPoint(saveBox->rect().left() + 10, saveBox->rect().height() / 2)));
+            GTMouseDriver::click();
             break;
 
         case GTGlobals::UseKey:
             while (! saveBox->hasFocus()) {
-                GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
+                GTKeyboardDriver::keyClick(Qt::Key_Tab);
                 GTGlobals::sleep(100);
             }
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+            GTKeyboardDriver::keyClick(Qt::Key_Space);
         default:
             break;
         }
@@ -211,24 +211,24 @@ void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox *sb, int val)
                 arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() * 3 / 4);
             }
 
-            GTMouseDriver::moveTo(os, sb->mapToGlobal(arrowPos));
+            GTMouseDriver::moveTo(sb->mapToGlobal(arrowPos));
             while (sb->value() != val) {
-                GTMouseDriver::click(os);
+                GTMouseDriver::click();
                 GTGlobals::sleep(100);
             }
             break;
 
         case GTGlobals::UseKey: {
-            int key = 0;
+            Qt::Key key;
             if (val > sb->value()) {
-                key = GTKeyboardDriver::key["up"];
+                key = Qt::Key_Up;
             } else {
-                key = GTKeyboardDriver::key["down"];
+                key = Qt::Key_Down;
             }
 
             GTWidget::setFocus(os, sb);
             while (sb->value() != val) {
-                GTKeyboardDriver::keyClick(os, key);
+                GTKeyboardDriver::keyClick( key);
                 GTGlobals::sleep(100);
             }
         }

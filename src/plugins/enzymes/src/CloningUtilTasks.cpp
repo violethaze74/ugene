@@ -171,6 +171,19 @@ static void prepareLeftDnaTerm(TermData& leftTerm,
 }
 */
 
+bool compareAnnotationsbyLength(const SharedAnnotationData &a1, const SharedAnnotationData& a2) {
+    int length1 = 0;
+    foreach(const U2Region &reg, a1->getRegions()) {
+        length1 += reg.length;
+    }
+
+    int length2 = 0;
+    foreach(const U2Region &reg, a2->getRegions()) {
+        length2 += reg.length;
+    }
+    return length1 > length2;
+}
+
 void DigestSequenceTask::run()
 {
     CHECK_OP(stateInfo,);
@@ -229,7 +242,6 @@ void DigestSequenceTask::run()
             rightTerm.overhang  += dnaObj->getSequenceData(U2Region(0, leftCutPos));
         }
         SharedAnnotationData ad = createFragment(leftCutPos, leftTerm, rightCutPos, rightTerm);
-        ad->name = QString("Fragment %1").arg(count);
         results.append(ad);
         ++count;
         ++prev;
@@ -268,25 +280,26 @@ void DigestSequenceTask::run()
         QByteArray rightOverhang = first == prev ? leftOverhang : firstRightOverhang;
         SharedAnnotationData ad1 = createFragment(leftCutPos, DNAFragmentTerm(lastCutter->id, leftOverhang, leftOverhangIsDirect),
             firstCutPos, DNAFragmentTerm(firstCutter->id, rightOverhang, rightOverhangIsDirect));
-        ad1->name = QString("Fragment 1");
         results.append(ad1);
     } else {
         QByteArray lastLeftOverhang = dnaObj->getSequenceData(U2Region(leftOverhangStart, lastCutPos - leftOverhangStart));
         if (isCircular) {
             SharedAnnotationData ad = createFragment(lastCutPos, DNAFragmentTerm(lastCutter->id, lastLeftOverhang, leftOverhangIsDirect),
                 firstCutPos, DNAFragmentTerm(firstCutter->id, firstRightOverhang,rightOverhangIsDirect));
-            ad->name = QString("Fragment 1");
             results.append(ad);
         } else {
             SharedAnnotationData ad1 = createFragment(seqRange.startPos, DNAFragmentTerm(),
                 firstCutPos, DNAFragmentTerm(firstCutter->id, firstRightOverhang, rightOverhangIsDirect));
             SharedAnnotationData ad2 = createFragment(lastCutPos, DNAFragmentTerm(lastCutter->id, lastLeftOverhang, leftOverhangIsDirect),
                 seqRange.endPos(), DNAFragmentTerm());
-            ad1->name = QString("Fragment 1");
-            ad2->name = QString("Fragment %1").arg(count);
             results.append(ad1);
             results.append(ad2);
         }
+    }
+    qSort(results.begin(), results.end(), compareAnnotationsbyLength);
+    
+    for (int fragmentCounter = 0; fragmentCounter < results.size(); fragmentCounter++) {
+        results[fragmentCounter]->name = QString("Fragment %1").arg(fragmentCounter + 1);
     }
 }
 

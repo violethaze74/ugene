@@ -4,78 +4,78 @@
 <context>
     <name>BlastAllSupportDialog</name>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="20"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="20"/>
         <source>Request to Local BLAST Database</source>
         <translation>Request to Local BLAST Database</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="42"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="42"/>
         <source>General options</source>
         <translation>General options</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="53"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="53"/>
         <source>Select search:</source>
         <translation>Select search:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="61"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="61"/>
         <source>blastn</source>
         <extracomment>qwe</extracomment>
         <translation>blastn</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="66"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="66"/>
         <source>blastp</source>
         <translation>blastp</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="76"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="76"/>
         <source>blastx</source>
         <translation>blastx</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="81"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="81"/>
         <source>tblastn</source>
         <translation>tblastn</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="86"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="86"/>
         <source>tblastx</source>
         <translation>tblastx</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="94"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="94"/>
         <source>Search for short, nearly exact matches</source>
         <translation>Search for short, nearly exact matches</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="101"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="101"/>
         <source>Expectation value </source>
         <translation>Expectation value </translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="108"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="108"/>
         <source>Megablast</source>
         <translation>Megablast</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="125"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="125"/>
         <source>Off</source>
         <translation>Off</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="159"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="159"/>
         <source>Both strands</source>
         <translation>Both strands</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="169"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="169"/>
         <source>Direct</source>
         <translation>Direct</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="176"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="176"/>
         <source>Complement</source>
         <translation>Complement</translation>
     </message>
@@ -84,82 +84,82 @@
         <translation type="vanished">Base name for BLAST DB files:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="230"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="230"/>
         <source>Number of CPUs being used</source>
         <translation>Number of CPUs being used</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="268"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="268"/>
         <source>Advanced options</source>
         <translation>Advanced options</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="391"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="391"/>
         <source>Word size</source>
         <translation>Word size</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="528"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="528"/>
         <source>Gap costs</source>
         <translation>Gap costs</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="307"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="307"/>
         <source>Match scores</source>
         <translation>Match scores</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="337"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="337"/>
         <source>1 -3</source>
         <translation>1 -3</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="342"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="342"/>
         <source>1 -4</source>
         <translation>1 -4</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="347"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="347"/>
         <source>1 -2</source>
         <translation>1 -2</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="352"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="352"/>
         <source>1 -1</source>
         <translation>1 -1</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="357"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="357"/>
         <source>2 -7</source>
         <translation>2 -7</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="362"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="362"/>
         <source>2 -5</source>
         <translation>2 -5</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="367"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="367"/>
         <source>2 -3</source>
         <translation>2 -3</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="372"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="372"/>
         <source>4 -5</source>
         <translation>4 -5</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="377"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="377"/>
         <source>5 -4</source>
         <translation>5 -4</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="404"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="404"/>
         <source>Matrix</source>
         <translation>Matrix</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="71"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="71"/>
         <source>gpu-blastp</source>
         <translation>gpu-blastp</translation>
     </message>
@@ -174,162 +174,162 @@ a database file</source>
 a database file</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="412"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="412"/>
         <source>BLOSUM62</source>
         <translation>BLOSUM62</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="417"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="417"/>
         <source>BLOSUM45</source>
         <translation>BLOSUM45</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="422"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="422"/>
         <source>BLOSUM80</source>
         <translation>BLOSUM80</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="427"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="427"/>
         <source>PAM30</source>
         <translation>PAM30</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="432"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="432"/>
         <source>PAM70</source>
         <translation>PAM70</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="320"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="320"/>
         <source>Service</source>
         <translation>Service</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="115"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="115"/>
         <source>Max hits:</source>
         <translation>Max hits:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="283"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="283"/>
         <source>plain</source>
         <translation>plain</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="288"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="288"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="293"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="293"/>
         <source>phi</source>
         <translation>phi</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="443"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="443"/>
         <source>PHI pattern</source>
         <translation>PHI pattern</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="483"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="483"/>
         <source>Threshold for extending hits</source>
         <translation>Threshold for extending hits</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="486"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="486"/>
         <source>Threshold</source>
         <translation>Threshold</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="535"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="535"/>
         <source>Composition-based statistics</source>
         <translation>Composition-based statistics</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="543"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="543"/>
         <source>D or d: default (equivalent to 2 )</source>
         <translation>D or d: default (equivalent to 2 )</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="548"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="548"/>
         <source>0 or F or f: No composition-based statistics</source>
         <translation>0 or F or f: No composition-based statistics</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="553"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="553"/>
         <source>1: Composition-based statistics as in NAR 29:2994-3005, 2001</source>
         <translation>1: Composition-based statistics as in NAR 29:2994-3005, 2001</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="558"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="558"/>
         <source>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</source>
         <translation>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="563"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="563"/>
         <source>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</source>
         <translation>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="575"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="575"/>
         <source>Filters</source>
         <translation>Filters</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="581"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="581"/>
         <source>Low complexity filter</source>
         <translation>Low complexity filter</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="588"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="588"/>
         <source>Human repeats filter</source>
         <translation>Human repeats filter</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="598"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="598"/>
         <source>Masks</source>
         <translation>Masks</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="604"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="604"/>
         <source>Mask for lookup table only</source>
         <translation>Mask for lookup table only</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="614"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="614"/>
         <source>Mask lower case letters</source>
         <translation>Mask lower case letters</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="640"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="640"/>
         <source>Extension options</source>
         <translation>Extension options</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="648"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="648"/>
         <source>X dropoff value (in bits)</source>
         <translation>X dropoff value (in bits)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="654"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="654"/>
         <source>For gapped alignment</source>
         <translation>For gapped alignment</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="668"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="668"/>
         <source>For ungapped extensions</source>
         <translation>For ungapped extensions</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="675"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="675"/>
         <source>For final gapped alignment</source>
         <translation>For final gapped alignment</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="699"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="699"/>
         <source>Multiple Hits window size</source>
         <translation>Multiple Hits Window Size</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastAllSupportDialog.ui" line="711"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="711"/>
         <source>Perform gapped alignment</source>
         <translation>Perform gapped alignment</translation>
     </message>
@@ -337,22 +337,22 @@ a database file</translation>
 <context>
     <name>BlastDBCmdDialog</name>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="26"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="26"/>
         <source>Fetch Sequence from BLAST Database</source>
         <translation>Fetch Sequence from BLAST Database</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="44"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="44"/>
         <source>Entery query ID:</source>
         <translation>Enter query ID:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="54"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="54"/>
         <source>Select database :</source>
         <translation>Select database :</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="104"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="104"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -369,12 +369,12 @@ a database file</translation>
         <translation type="vanished">protein</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="88"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="88"/>
         <source>Output path:</source>
         <translation>Output path:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBCmdDialog.ui" line="116"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="116"/>
         <source>Add to project</source>
         <translation>Add to project</translation>
     </message>
@@ -382,24 +382,24 @@ a database file</translation>
 <context>
     <name>BlastDBSelectorWidget</name>
     <message>
-        <location filename="../src/ui/BlastDBSelectorWidget.ui" line="14"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBSelectorWidget.ui" line="34"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="34"/>
         <source>Database path:</source>
         <translation type="unfinished">Database path:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBSelectorWidget.ui" line="58"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="58"/>
         <source>Select
 a database file</source>
         <translation type="unfinished">Select
 a database file</translation>
     </message>
     <message>
-        <location filename="../src/ui/BlastDBSelectorWidget.ui" line="68"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="68"/>
         <source>Base name for BLAST DB files:</source>
         <translation type="unfinished">Base name for BLAST DB files:</translation>
     </message>
@@ -407,159 +407,159 @@ a database file</translation>
 <context>
     <name>Bowtie2Settings</name>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="41"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="41"/>
         <source>Parameters</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="60"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="76"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="60"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="76"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;By default, Bowtie2 performs end-to-end read alignment. That is, it searches for alignments involving all of the read characters. This is also called an &amp;quot;untrimmed&amp;quot; or &amp;quot;unclipped&amp;quot; alignment.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;When the --local option is specified, Bowtie2 performs local read alignment. In this mode, Bowtie2 might &amp;quot;trim&amp;quot; or &amp;quot;clip&amp;quot; some read characters from one or both ends of the alignment if doing so maximizes the alignment score.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;By default, Bowtie2 performs end-to-end read alignment. That is, it searches for alignments involving all of the read characters. This is also called an &amp;quot;untrimmed&amp;quot; or &amp;quot;unclipped&amp;quot; alignment.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;When the --local option is specified, Bowtie2 performs local read alignment. In this mode, Bowtie2 might &amp;quot;trim&amp;quot; or &amp;quot;clip&amp;quot; some read characters from one or both ends of the alignment if doing so maximizes the alignment score.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="63"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="63"/>
         <source>Mode</source>
         <translation>Mode</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="86"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="86"/>
         <source>--end-to-end</source>
         <translation>--end-to-end</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="91"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="91"/>
         <source>--local</source>
         <translation>--local</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="106"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="174"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="106"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="174"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&amp;quot;Pads&amp;quot; dynamic programming problems by specified number of columns on either side to allow gaps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;&amp;quot;Pads&amp;quot; dynamic programming problems by specified number of columns on either side to allow gaps.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="109"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="109"/>
         <source>Add columns to allow gaps (--dpad)</source>
         <translation>Add columns to allow gaps (--dpad)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="119"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="187"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="119"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="187"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1. Setting this higher makes alignment slower (often much slower) but increases sensitivity.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Sets the number of mismatches to allowed in a seed alignment. Can be set to 0 or 1. Setting this higher makes alignment slower (often much slower) but increases sensitivity.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="132"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="197"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="132"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="197"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Launch specified number of parallel search threads. Threads will run on separate processors/cores and synchronize when parsing reads and outputting alignments. Searching for alignments is highly parallel, and speedup is close to linear.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="148"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="252"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="148"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="252"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Disallow gaps within specified number of positions of the beginning or end of the read.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Disallow gaps within specified number of positions of the beginning or end of the read.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="161"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="229"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="161"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="229"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Use specified value as the seed for pseudo-random number generator.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Use specified value as the seed for pseudo-random number generator.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="164"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="164"/>
         <source>Seed (--seed)</source>
         <translation>Seed (--seed)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="190"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="190"/>
         <source>Number of mismatches</source>
         <translation>Number of mismatches</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="200"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="200"/>
         <source>Threads</source>
         <translation>Threads</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="210"/>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="239"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="210"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="239"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Sets the length of the seed substrings to align. Smaller values make alignment slower but more senstive.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Sets the length of the seed substrings to align. Smaller values make alignment slower but more senstive.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="242"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="242"/>
         <source>Seed length (--L)</source>
         <translation>Seed length (--L)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="255"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="255"/>
         <source>Disallow gaps (--gbar)</source>
         <translation>Disallow gaps (--gbar)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="284"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="284"/>
         <source>Flags</source>
         <translation>Flags</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="296"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="296"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments for the constituent mates. This is called &amp;quot;mixed mode.&amp;quot; To disable mixed mode, set this option.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bowtie2 runs a little faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If Bowtie2 cannot find a paired-end alignment for a pair, by default it will go on to look for unpaired alignments for the constituent mates. This is called &amp;quot;mixed mode.&amp;quot; To disable mixed mode, set this option.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Bowtie2 runs a little faster in the mixed mode, but will only consider alignment status of pairs per se, not individual mates.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="299"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="299"/>
         <source>No unpaired alignments (--no-mixed)</source>
         <translation>No unpaired alignments (--no-mixed)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="306"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="306"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;By default, Bowtie2 looks for discordant alignments if it cannot find any concordant alignments. A discordant alignment is an alignment where both mates align uniquely, but that does not satisfy the paired-end constraints. This option disables that behavior.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="309"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="309"/>
         <source>No discordant alignments (--no-discordant)</source>
         <translation>No discordant alignments (--no-discordant)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="316"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="316"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the forward reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the forward reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="319"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="319"/>
         <source>No forward orientation (--nofw)</source>
         <translation>No forward orientation (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="326"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="326"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the reverse-complement reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If this option is selected, Bowtie2 will not attempt to align against the reverse-complement reference strand.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="329"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="329"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>No reverse-complement orientation (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="336"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="336"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment overlaps the other at all, consider that to be non-concordant. Default: mates can overlap in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="339"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="339"/>
         <source>No overlapping mates (--no-overlap)</source>
         <translation>No overlapping mates (--no-overlap)</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="346"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="346"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the other in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;If one mate alignment contains the other, consider that to be non-concordant. Default: a mate can contain the other in a concordant alignment.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/Bowtie2Settings.ui" line="349"/>
+        <location filename="../src/bowtie2/Bowtie2Settings.ui" line="349"/>
         <source>No mates containing one another (--no-contain)</source>
         <translation>No mates containing one another (--no-contain)</translation>
     </message>
@@ -567,12 +567,12 @@ a database file</translation>
 <context>
     <name>BowtieBuildSettings</name>
     <message>
-        <location filename="../src/ui/BowtieBuildSettings.ui" line="20"/>
+        <location filename="../src/bowtie/BowtieBuildSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieBuildSettings.ui" line="29"/>
+        <location filename="../src/bowtie/BowtieBuildSettings.ui" line="29"/>
         <source>Colorspace</source>
         <translation>Colorspace</translation>
     </message>
@@ -580,12 +580,12 @@ a database file</translation>
 <context>
     <name>BowtieSettings</name>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="41"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="41"/>
         <source>Parameters</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="110"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="110"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -606,12 +606,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;rounding can be disabled with --nomaqround.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="121"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="121"/>
         <source>Maq error (--maqerr)</source>
         <translation>Maq error (--maqerr)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="144"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="144"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -628,7 +628,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;The lowest permitted setting is 5 and the default is 28. bowtie is faster for larger values of -l.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="176"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="176"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -653,7 +653,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Default: 250.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="215"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="215"/>
         <source>The number of megabytes of memory a given thread is given to store path descriptors in --best mode. 
 Best-first search must keep track of many paths at once to ensure it is always extending the path with the lowest cumulative cost. 
 Bowtie tries to minimize the memory impact of the descriptors, but they can still grow very large in some cases. 
@@ -668,17 +668,17 @@ try adjusting this parameter up to dedicate more memory to the descriptors.
 Default: 64.</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="246"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="246"/>
         <source>Use &lt;int&gt; as the seed for pseudo-random number generator</source>
         <translation>Use &lt;int&gt; as the seed for pseudo-random number generator</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="60"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="60"/>
         <source>Mode:  </source>
         <translation>Mode:  </translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="67"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="67"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -699,82 +699,82 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;In -v mode, alignments may have no more than V mismatches, where V may be a number from 0 through 3 set using the -v option. Quality values are ignored. The -v option is mutually exclusive with the -n option.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="82"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="82"/>
         <source>-n mode</source>
         <translation>-n mode</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="87"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="87"/>
         <source>-v mode</source>
         <translation>-v mode</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="153"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="153"/>
         <source>Seed length (--seedlen)</source>
         <translation>Seed length (--seedlen)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="189"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="189"/>
         <source>Maximum of backtracks (--maxbts)</source>
         <translation>Maximum of backtracks (--maxbts)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="223"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="223"/>
         <source>Descriptors memory usage (--chunkmbs)</source>
         <translation>Descriptors memory usage (--chunkmbs)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="249"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="249"/>
         <source>Seed (--seed)</source>
         <translation>Seed (--seed)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="266"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="266"/>
         <source>Threads</source>
         <translation>Threads</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="300"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="300"/>
         <source>Flags</source>
         <translation>Flags</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="312"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="312"/>
         <source>Colorspace (--color)</source>
         <translation>Colorspace (--color)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="329"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="329"/>
         <source>No Maq rounding (--nomaqround)</source>
         <translation>No Maq rounding (--nomaqround)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="339"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="339"/>
         <source>No forward orientation (--nofw)</source>
         <translation>No forward orientation (--nofw)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="349"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="349"/>
         <source>No reverse-complement orientation (--norc)</source>
         <translation>No reverse-complement orientation (--norc)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="369"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="369"/>
         <source>Try as hard (--tryhard)</source>
         <translation>Try as hard (--tryhard)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="383"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="383"/>
         <source>Best alignments (--best)</source>
         <translation>Best alignments (--best)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="393"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="393"/>
         <source>All alignments (--all)</source>
         <translation>All alignments (--all)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="319"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="319"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -793,17 +793,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;By default, bowtie also rounds this way. --nomaqround prevents this rounding in bowtie.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="336"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="336"/>
         <source>If --nofw is specified, bowtie will not attempt to align against the forward reference strand.</source>
         <translation>If --nofw is specified, bowtie will not attempt to align against the forward reference strand.</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="346"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="346"/>
         <source>If --norc is specified, bowtie will not attempt to align against the reverse-complement reference strand.</source>
         <translation>If --norc is specified, bowtie will not attempt to align against the reverse-complement reference strand.</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="356"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="356"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -828,7 +828,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;or (c) not many reads have valid alignments.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="376"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="376"/>
         <source>Make Bowtie guarantee that reported singleton alignments are &quot;best&quot; in terms of stratum
 (i.e. number of mismatches, or mismatches in the seed in the case of -n mode)
 and in terms of the quality values at the mismatched position(s).
@@ -841,7 +841,7 @@ bowtie is somewhat slower when --best is specified.
 </translation>
     </message>
     <message>
-        <location filename="../src/ui/BowtieSettings.ui" line="390"/>
+        <location filename="../src/bowtie/BowtieSettings.ui" line="390"/>
         <source>Report all valid alignments per read or pair.</source>
         <translation>Report all valid alignments per read or pair.</translation>
     </message>
@@ -849,27 +849,32 @@ bowtie is somewhat slower when --best is specified.
 <context>
     <name>BwaBuildSettings</name>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="20"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="54"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="63"/>
         <source>Index algorithm (-a)</source>
         <translation>Index algorithm (-a)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="68"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="77"/>
+        <source>autodetect</source>
+        <translation type="unfinished">autodetect</translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="82"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="73"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="87"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaBuildSettings.ui" line="78"/>
+        <location filename="../src/bwa/BwaBuildSettings.ui" line="92"/>
         <source>is</source>
         <translation>is</translation>
     </message>
@@ -877,212 +882,212 @@ bowtie is somewhat slower when --best is specified.
 <context>
     <name>BwaMemSettings</name>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="20"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="36"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="36"/>
         <source>Base Options</source>
         <translation>Base Options</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="441"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="441"/>
         <source>Penalty for a mismatch</source>
         <translation>Penalty for a mismatch</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="409"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="409"/>
         <source>Score for a sequence match</source>
         <translation>Score for a sequence match</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="393"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="393"/>
         <source>Score for a match (-A)</source>
         <translation>Score for a match (-A)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="425"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="425"/>
         <source>Mismatch penalty (-B)</source>
         <translation>Mismatch penalty (-B)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="454"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="454"/>
         <source>Gap open penalty (-O)</source>
         <translation>Gap open penalty (-O)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="557"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="557"/>
         <source>Penalty for an unpaired read pair</source>
         <translation>Penalty for an unpaired read pair</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="586"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="586"/>
         <source>Minimum score to output</source>
         <translation>Minimum score to output</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="541"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="541"/>
         <source>Penalty unpaired (-U)</source>
         <translation>Penalty unpaired (-U)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="528"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="528"/>
         <source>Penalty for clipping </source>
         <translation>Penalty for clipping </translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="470"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="470"/>
         <source>Gap open penalty</source>
         <translation>Gap open penalty</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="499"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="499"/>
         <source>Gap extension penalty; a gap of size k cost {-O} + {-E}*k</source>
         <translation>Gap extension penalty; a gap of size k cost {-O} + {-E}*k</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="512"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="512"/>
         <source>Penalty for clipping (-L)</source>
         <translation>Penalty for clipping (-L)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="483"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="483"/>
         <source>Gap extention penalty (-E)</source>
         <translation>Gap extention penalty (-E)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="570"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="570"/>
         <source>Score threshold (-T)</source>
         <translation>Score threshold (-T)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="209"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="209"/>
         <source>Internall seeds length (-r)</source>
         <translation>Internall seeds length (-r)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="107"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="107"/>
         <source>Min seed length (-k)</source>
         <translation>Min seed length (-k)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="69"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="69"/>
         <source>Look for internal seeds inside a seed longer than {-k} * FLOAT</source>
         <translation>Look for internal seeds inside a seed longer than {-k} * FLOAT</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="56"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="56"/>
         <source>Number of threads</source>
         <translation>Number of threads</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="193"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="193"/>
         <source>Off-diagonal X-dropoff</source>
         <translation>Off-diagonal X-dropoff</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="161"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="161"/>
         <source>Band width for banded alignment</source>
         <translation>Band width for banded alignment</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="145"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="145"/>
         <source>Band width (-w)</source>
         <translation>Band width (-w)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="123"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="123"/>
         <source>Minimum seed length</source>
         <translation>Minimum seed length</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="88"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="88"/>
         <source>Number of threads (-t)</source>
         <translation>Number of threads (-t)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="177"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="177"/>
         <source>Dropoff (-d)</source>
         <translation>Dropoff (-d)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="228"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="228"/>
         <source>Skip seeds threshold (-c)</source>
         <translation>Skip seeds threshold (-c)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="244"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="244"/>
         <source>Skip seeds with more than INT occurrences </source>
         <translation>Skip seeds with more than INT occurrences </translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="266"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="266"/>
         <source>Drop chain threshold (-D)</source>
         <translation>Drop chain threshold (-D)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="282"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="282"/>
         <source>Drop chains shorter than FLOAT fraction of the longest overlapping chain</source>
         <translation>Drop chains shorter than FLOAT fraction of the longest overlapping chain</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="308"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="308"/>
         <source>Index algorithm (-a)</source>
         <translation>Index algorithm (-a)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="325"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="325"/>
         <source>autodetect</source>
         <translation>autodetect</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="330"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="330"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="335"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="335"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="340"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="340"/>
         <source>is</source>
         <translation>is</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="599"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="599"/>
         <source>Rounds of mate rescues (-m)</source>
         <translation>Rounds of mate rescues (-m)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="615"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="615"/>
         <source>Perform at most INT rounds of mate rescues for each read</source>
         <translation>Perform at most INT rounds of mate rescues for each read</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="348"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="348"/>
         <source>Skip mate rescue</source>
         <translation>Skip mate rescue</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="351"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="351"/>
         <source>Skip mate rescue (-S)</source>
         <translation>Skip mate rescue (-S)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="358"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="358"/>
         <source>Skip pairing; mate rescue performed unless -S also in use</source>
         <translation>Skip pairing; mate rescue performed unless -S also in use</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="361"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="361"/>
         <source>Skip pairing (-P)</source>
         <translation>Skip pairing (-P)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaMemSettings.ui" line="633"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="633"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1098,137 +1103,137 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BwaSettings</name>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="20"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="135"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="135"/>
         <source>  Best hits (-R)</source>
         <translation>Best hits (-R)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="336"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="336"/>
         <source>Max gap extensions (-e)</source>
         <translation>Max gap extensions (-e)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="346"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="346"/>
         <source>Indel offset (-i)</source>
         <translation>Indel offset (-i)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="263"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="263"/>
         <source>Max long deletion extensions (-d)</source>
         <translation>Max long deletion extensions (-d)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="194"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="194"/>
         <source>Seed length (-l)</source>
         <translation>Seed length (-l)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="482"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="482"/>
         <source>Max seed differences (-k)</source>
         <translation>Max seed differences (-k)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="283"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="283"/>
         <source>Max queue entries (-m)</source>
         <translation>Max queue entries (-m)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="356"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="356"/>
         <source>Enable long gaps</source>
         <translation>Enable long gaps</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="171"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="171"/>
         <source>Missing prob (-n)</source>
         <translation>Missing prob (-n)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="154"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="154"/>
         <source>Max #diff (-n)</source>
         <translation>Max #diff (-n)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="42"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="42"/>
         <source>Long-scaled gap penalty for long deletions (-L)</source>
         <translation>Long-scaled gap penalty for long deletions (-L)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="241"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="241"/>
         <source>Advanced</source>
         <translation>Advanced</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="395"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="395"/>
         <source>Gap open penalty (-O)</source>
         <translation>Gap open penalty (-O)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="303"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="303"/>
         <source>Barcode length (-B)</source>
         <translation>Barcode length (-B)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="435"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="435"/>
         <source>Quality threshold (-q)</source>
         <translation>Quality threshold (-q)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="375"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="375"/>
         <source>Mismatch penalty (-M)</source>
         <translation>Mismatch penalty (-M)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="415"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="415"/>
         <source>Gap extension penalty (-E)</source>
         <translation>Gap extension penalty (-E)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="462"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="462"/>
         <source>Threads (-t)</source>
         <translation>Threads (-t)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="49"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="49"/>
         <source>Non-iterative mode (-N)</source>
         <translation>Non-iterative mode (-N)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="72"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="72"/>
         <source>Max gap opens (-o)</source>
         <translation>Max gap opens (-o)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="30"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="30"/>
         <source>Base Options</source>
         <translation>Base Options</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="85"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="85"/>
         <source>Index algorithm (-a)</source>
         <translation>Index algorithm (-a)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="102"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="102"/>
         <source>autodetect</source>
         <translation>autodetect</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="107"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="107"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="112"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="112"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSettings.ui" line="117"/>
+        <location filename="../src/bwa/BwaSettings.ui" line="117"/>
         <source>is</source>
         <translation>is</translation>
     </message>
@@ -1236,107 +1241,107 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BwaSwSettings</name>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="14"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="30"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="30"/>
         <source>Base Options</source>
         <translation>Base Options</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="288"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="288"/>
         <source>Score threshold (divided by match score) (-T)</source>
         <translation>Score threshold (divided by match score) (-T)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="233"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="233"/>
         <source>Number of threads (-t)</source>
         <translation>Number of threads (-t)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="334"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="334"/>
         <source>Number of seeds to start rev alginment (-N)</source>
         <translation>Number of seeds to start rev alginment (-N)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="311"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="311"/>
         <source>Z-best (-z)</source>
         <translation>Z-best (-z)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="393"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="393"/>
         <source>Prefer hard clipping in SAM output (-H)</source>
         <translation>Prefer hard clipping in SAM output (-H)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="256"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="256"/>
         <source>Size of chunk of reads (-s)</source>
         <translation>Size of chunk of reads (-s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="90"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="90"/>
         <source>Score for a match (-a)</source>
         <translation>Score for a match (-a)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="159"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="159"/>
         <source>Gap extention penalty (-r)</source>
         <translation>Gap extention penalty (-r)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="113"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="113"/>
         <source>Mismatch penalty (-b)</source>
         <translation>Mismatch penalty (-b)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="64"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="64"/>
         <source>autodetect</source>
         <translation>autodetect</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="69"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="69"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="74"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="74"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="79"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="79"/>
         <source>is</source>
         <translation>is</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="136"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="136"/>
         <source>Gap open penalty (-q)</source>
         <translation>Gap open penalty (-q)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="182"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="182"/>
         <source>Band width (-w)</source>
         <translation>Band width (-w)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="208"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="208"/>
         <source>Index algorithm (-a)</source>
         <translation>Index algorithm (-a)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="380"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="380"/>
         <source>Mask level (-c)</source>
         <translation>Mask level (-c)</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="347"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="347"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of seed to trigger reverse alignment&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of seed to trigger reverse alignment&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BwaSwSettings.ui" line="405"/>
+        <location filename="../src/bwa/BwaSwSettings.ui" line="405"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1352,22 +1357,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CAP3SupportDialog</name>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="20"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="14"/>
         <source>Contig Assembly with CAP3</source>
         <translation>Contig Assembly with CAP3</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="30"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="27"/>
         <source>Base</source>
         <translation>Base</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="36"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="33"/>
         <source>Input files (long DNA reads to assembly)</source>
         <translation>Input files (long DNA reads to assembly)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="45"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="42"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1382,132 +1387,132 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The quality scores for FASTA sequences can be provided in an additional file. The file must be located in the same folder as the original sequences and have the same name as FASTA file, but another extention: &lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;.qual&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="57"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="54"/>
         <source>Add</source>
         <translation>Add</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="64"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="61"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="71"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="68"/>
         <source>Remove All</source>
         <translation>Remove All</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="93"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="90"/>
         <source>Result contig</source>
         <translation>Result contig</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="102"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="99"/>
         <source>Path to result contig alignment in ACE format.</source>
         <translation>Path to result contig alignment in ACE format.</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="128"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="125"/>
         <source>Clipping for poor regions</source>
         <translation>Clipping for poor regions</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="134"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="131"/>
         <source>Base quality cutoff for clipping (-c)</source>
         <translation>Base quality cutoff for clipping (-c)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="151"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="148"/>
         <source>Clipping range (-y)</source>
         <translation>Clipping range (-y)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="174"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="171"/>
         <source>Length and percent identity of an overlap</source>
         <translation>Length and percent identity of an overlap</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="180"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="177"/>
         <source>Overlap length cutoff (-o)</source>
         <translation>Overlap length cutoff (-o)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="200"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="197"/>
         <source>Overlap percent identity cutoff (-p)</source>
         <translation>Overlap percent identity cutoff (-p)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="223"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="220"/>
         <source>Quality difference score of an overlap</source>
         <translation>Quality difference score of an overlap</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="229"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="226"/>
         <source>Base quality cutoff for differences (-b)</source>
         <translation>Base quality cutoff for differences (-b)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="259"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="256"/>
         <source>Max qscore sum at differences (-d)</source>
         <translation>Max qscore sum at differences (-d)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="269"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="266"/>
         <source>Other parameters</source>
         <translation>Other parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="275"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="272"/>
         <source>Max number of word matches (-t)</source>
         <translation>Max number of word matches (-t)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="295"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="292"/>
         <source>Band expansion size (-a)</source>
         <translation>Band expansion size (-a)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="318"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="315"/>
         <source>Max gap length in any overlap (-f)</source>
         <translation>Max gap length in any overlap (-f)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="338"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="335"/>
         <source>Assembly reverse reads (-r)</source>
         <translation>Assembly reverse reads (-r)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="364"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="361"/>
         <source>Similarity score of an overlap</source>
         <translation>Similarity score of an overlap</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="370"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="367"/>
         <source>Mismatch score factor (-n)</source>
         <translation>Mismatch score factor (-n)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="390"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="387"/>
         <source>Overlap similarity score cutoff (-s)</source>
         <translation>Overlap similarity score cutoff (-s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="410"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="407"/>
         <source>Gap penalty factor (-g)</source>
         <translation>Gap penalty factor (-g)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="417"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="414"/>
         <source>Match score factor (-m)</source>
         <translation>Match score factor (-m)</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="112"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="109"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/CAP3SupportDialog.ui" line="122"/>
+        <location filename="../src/cap3/CAP3SupportDialog.ui" line="119"/>
         <source>Advanced</source>
         <translation>Advanced</translation>
     </message>
@@ -1515,58 +1520,58 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ClustalOSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="26"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="26"/>
         <source>Align with Clustal Omega</source>
         <translation>Align with Clustal Omega</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="42"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="42"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="52"/>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="69"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="52"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="69"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="59"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="59"/>
         <source>Output file</source>
         <translation>Output file</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="81"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="81"/>
         <source>Iteration</source>
         <translation>Iteration</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="91"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="91"/>
         <source>Number of iterations</source>
         <translation>Number of iterations</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="137"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="137"/>
         <source>Max number guidetree iterations</source>
         <translation>Max number guidetree iterations</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="180"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="180"/>
         <source>Max number of HMM iterations</source>
         <translation>Max number of HMM iterations</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="217"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="217"/>
         <source>Miscellaneous</source>
         <translation>Miscellaneous</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="227"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="227"/>
         <source>Number of CPUs being used</source>
         <translation>Number of CPUs being used</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalOSupportRunDialog.ui" line="265"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="265"/>
         <source>Set options automatically</source>
         <translation>Set options automatically</translation>
     </message>
@@ -1574,118 +1579,118 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ClustalWSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="26"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="26"/>
         <source>Align with ClustalW</source>
         <translation>Align with ClustalW</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="42"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="42"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="52"/>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="76"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="52"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="76"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="59"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="59"/>
         <source>Output file</source>
         <translation>Output file</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="88"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="88"/>
         <source>Advanced options</source>
         <translation>Advanced options</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="98"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="98"/>
         <source>Gap opening penalty</source>
         <translation>Gap opening penalty</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="141"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="141"/>
         <source>Gap extension penalty</source>
         <translation>Gap extension penalty</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="184"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="184"/>
         <source>Weight matrix</source>
         <translation>Weight matrix</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="214"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="214"/>
         <source>IUB</source>
         <translation>IUB</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="219"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="219"/>
         <source>CLUSTALW</source>
         <translation>CLUSTALW</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="289"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="289"/>
         <source>Max iterations</source>
         <translation>Max iterations</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="261"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="261"/>
         <source>NONE</source>
         <translation>NONE</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="266"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="266"/>
         <source>TREE</source>
         <translation>TREE</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="271"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="271"/>
         <source>ALIGNMENT</source>
         <translation>ALIGNMENT</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="231"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="231"/>
         <source>Iteration type</source>
         <translation>Iteration type</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="335"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="335"/>
         <source>Out sequences order</source>
         <translation>Out sequences order</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="365"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="365"/>
         <source>Input</source>
         <translation>Input</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="370"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="370"/>
         <source>Aligned</source>
         <translation>Aligned</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="388"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="388"/>
         <source>Protein gap parameters</source>
         <translation>Protein gap parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="398"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="398"/>
         <source>Gap separation distance</source>
         <translation>Gap separation distance</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="456"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="456"/>
         <source>Residue-specific gaps off</source>
         <translation>Residue-specific gaps off</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="442"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="442"/>
         <source>Hydrophilic gaps off</source>
         <translation>Hydrophilic gaps off</translation>
     </message>
     <message>
-        <location filename="../src/ui/ClustalWSupportRunDialog.ui" line="449"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="449"/>
         <source>No end gap separation penalty</source>
         <translation>No end gap separation penalty</translation>
     </message>
@@ -1693,52 +1698,52 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ETSSettingsWidget</name>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="26"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="26"/>
         <source>Resource settings</source>
         <translation>Resource settings</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="40"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="40"/>
         <source>You can select path for</source>
         <translation>You can select path for</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="47"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="47"/>
         <source>Check lastest version of external tools package</source>
         <translation>Check latest version of external tools package</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="50"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="50"/>
         <source>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="70"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="70"/>
         <source>Browse...</source>
         <translation>Browse...</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="86"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="86"/>
         <source>Supported tools</source>
         <translation>Supported tools</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="102"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="102"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="107"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="107"/>
         <source>Path</source>
         <translation>Path</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="142"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="142"/>
         <source>Additional information</source>
         <translation>Additional information</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="177"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="177"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1751,12 +1756,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Select an external tool to view more information about it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="197"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="197"/>
         <source>Binary path:</source>
         <translation>Binary path:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ETSSettingsWidget.ui" line="207"/>
+        <location filename="../src/ETSSettingsWidget.ui" line="207"/>
         <source>Version info</source>
         <translation>Version info</translation>
     </message>
@@ -1764,89 +1769,89 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FormatDBSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="20"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="20"/>
         <source>Format Database</source>
         <translation>Format Database</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="29"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="29"/>
         <source>Input data</source>
         <translation>Input data</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="35"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="35"/>
         <source>Select input file(s) for formatting database:</source>
         <translation>Select input file(s) for formatting database:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="53"/>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="84"/>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="190"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="53"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="84"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="190"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="62"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="62"/>
         <source>Or select directory with input files:</source>
         <translation>Or select directory with input files:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="96"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="96"/>
         <source>File filter</source>
         <translation>File filter</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="104"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="104"/>
         <source>Include files filter</source>
         <translation>Include files filter</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="114"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="114"/>
         <source>*.fa;*.fasta</source>
         <translation>*.fa;*.fasta</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="121"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="121"/>
         <source>Exclude files filter</source>
         <translation>Exclude files filter</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="131"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="131"/>
         <source>*.pal</source>
         <translation>*.pal</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="143"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="143"/>
         <source>Type of file(s)</source>
         <translation>Type of file(s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="149"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="149"/>
         <source>protein</source>
         <translation>protein</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="159"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="159"/>
         <source>nucleotide</source>
         <translation>nucleotide</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="172"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="172"/>
         <source>Output settings</source>
         <translation>Output settings</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="178"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="178"/>
         <source>Select the path to save the database into:</source>
         <translation>Select the path to save the database into:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="201"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="201"/>
         <source>Base name for BLAST files:</source>
         <translation>Base name for BLAST files:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FormatDBSupportRunDialog.ui" line="211"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="211"/>
         <source>Title for database file:</source>
         <translation>Title for database file:</translation>
     </message>
@@ -1881,43 +1886,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MAFFTSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="20"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="20"/>
         <source>Align with MAFFT</source>
         <translation>Align with MAFFT</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="36"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="36"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="46"/>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="63"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="46"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="63"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="53"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="53"/>
         <source>Output file</source>
         <translation>Output file</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="75"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="75"/>
         <source>Advanced options</source>
         <translation>Advanced options</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="85"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="85"/>
         <source>Gap opening penalty</source>
         <translation>Gap opening penalty</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="131"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="131"/>
         <source>Offset (works like gap extension penalty)</source>
         <translation>Offset (works like gap extension penalty)</translation>
     </message>
     <message>
-        <location filename="../src/ui/MAFFTSupportRunDialog.ui" line="174"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="174"/>
         <source>Maximum number of iterative refinement</source>
         <translation>Maximum number of iterative refinement</translation>
     </message>
@@ -1929,62 +1934,62 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">MrBayes Settings</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="60"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="60"/>
         <source>Model</source>
         <translation>Model</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="78"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="78"/>
         <source>ModelType</source>
         <translation>ModelType</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="95"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="95"/>
         <source>Rate</source>
         <translation>Rate</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="118"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="118"/>
         <source>Gamma</source>
         <translation>Gamma</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="151"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="151"/>
         <source>MCMC</source>
         <translation>MCMC</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="163"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="163"/>
         <source>Chain length</source>
         <translation>Chain length</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="189"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="189"/>
         <source>Subsampling frequence</source>
         <translation>Subsampling frequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="221"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="221"/>
         <source>Burn-in length</source>
         <translation>Burn-in length</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="250"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="250"/>
         <source>Heated chains</source>
         <translation>Heated chains</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="279"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="279"/>
         <source>Heated chain temp</source>
         <translation>Heated chain temp</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="321"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="321"/>
         <source>Random seed</source>
         <translation>Random seed</translation>
     </message>
     <message>
-        <location filename="../src/ui/MrBayesDialog.ui" line="329"/>
+        <location filename="../src/mrbayes/MrBayesDialog.ui" line="329"/>
         <source>Display Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1992,119 +1997,119 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PhyMLDialog</name>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="77"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="77"/>
         <source>Substitution model</source>
         <translation>Substitution model</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="98"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="98"/>
         <source>Equilibrium frequencies</source>
         <translation>Equilibrium frequencies</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="112"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="112"/>
         <source>optimized</source>
         <translation>optimized</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="119"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="119"/>
         <source>empirical</source>
         <translation>empirical</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="293"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="293"/>
         <source>Transition / transversion ratio </source>
         <translation>Transition / transversion ratio </translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="139"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="171"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="289"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="139"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="171"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="289"/>
         <source>Check to set user value. 
 Uncheck to get the maximum likelihood estimate.</source>
         <translation>Check to set user value. 
 Uncheck to get the maximum likelihood estimate.</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="190"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="212"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="243"/>
-        <location filename="../src/ui/PhyMLDialog.ui" line="265"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="190"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="212"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="243"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="265"/>
         <source>estimated </source>
         <translation>estimated </translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="143"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="143"/>
         <source>Proportion of invariable sites</source>
         <translation>Proportion of invariable sites</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="63"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="63"/>
         <source>Substitution Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="154"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="154"/>
         <source>Number of substitution rate categories</source>
         <translation>Number of substitution rate categories</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="175"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="175"/>
         <source>Gamma shape parameter</source>
         <translation>Gamma shape parameter</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="303"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="303"/>
         <source>Branch Support</source>
         <translation>Branch Support</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="321"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="321"/>
         <source>Use fast likelihood-based method</source>
         <translation>Use fast likelihood-based method</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="353"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="353"/>
         <source>Perform bootstrap</source>
         <translation>Perform bootstrap</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="369"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="369"/>
         <source>It is the number of bootstrap replicates.</source>
         <translation>It is the number of bootstrap replicates.</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="380"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="380"/>
         <source>Tree Searching</source>
         <translation>Tree Searching</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="470"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="470"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="482"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="482"/>
         <source>Type of tree improvement</source>
         <translation>Type of tree improvement</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="499"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="499"/>
         <source>Set number of random starting tree</source>
         <translation>Set number of random starting tree</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="515"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="515"/>
         <source>Optimise topology</source>
         <translation>Optimise topology</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="525"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="525"/>
         <source>Optimise branch lengths</source>
         <translation>Optimise branch lengths</translation>
     </message>
     <message>
-        <location filename="../src/ui/PhyMLDialog.ui" line="546"/>
+        <location filename="../src/phyml/PhyMLDialog.ui" line="546"/>
         <source>Display Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2233,80 +2238,85 @@ Uncheck to get the maximum likelihood estimate.</translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaSettingsWidget.cpp" line="44"/>
+        <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB.
+In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
-        <translation>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</translation>
+        <translation type="vanished">NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</translation>
     </message>
 </context>
 <context>
     <name>SpadesSettings</name>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="20"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="20"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="30"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="30"/>
         <source>Base Options</source>
         <translation>Base Options</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="45"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="45"/>
         <source>Running mode</source>
         <translation>Running mode</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="59"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="59"/>
         <source>Error Correction and Assembly</source>
         <translation>Error Correction and Assembly</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="64"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="64"/>
         <source>Assembly only</source>
         <translation>Assembly only</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="69"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="69"/>
         <source>Error correction only</source>
         <translation>Error correction only</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="80"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="80"/>
         <source>k-mer sizes (-k)</source>
         <translation>k-mer sizes (-k)</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="99"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="99"/>
         <source>Dataset type</source>
         <translation>Dataset type</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="112"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="112"/>
         <source>auto</source>
         <translation>auto</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="120"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="120"/>
         <source>Multi Cell</source>
         <translation>Multi Cell</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="125"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="125"/>
         <source>Single Cell</source>
         <translation>Single Cell</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="142"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="142"/>
         <source>Memory limit GB (-m)</source>
         <translation>Memory limit GB (-m)</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="158"/>
-        <location filename="../src/ui/SpadesSettings.ui" line="190"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="158"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="190"/>
         <source>Number of threads</source>
         <translation>Number of threads</translation>
     </message>
     <message>
-        <location filename="../src/ui/SpadesSettings.ui" line="174"/>
+        <location filename="../src/spades/SpadesSettings.ui" line="174"/>
         <source>Number of threads (-t)</source>
         <translation>Number of threads (-t)</translation>
     </message>
@@ -2314,43 +2324,43 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>TCoffeeSupportRunDialog</name>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="20"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="20"/>
         <source>Align with T-Coffee</source>
         <translation>Align with T-Coffee</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="36"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="36"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="46"/>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="63"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="46"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="63"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="53"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="53"/>
         <source>Output file</source>
         <translation>Output file</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="75"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="75"/>
         <source>Advanced options</source>
         <translation>Advanced options</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="83"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="83"/>
         <source>Gap opening penalty</source>
         <translation>Gap opening penalty</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="122"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="122"/>
         <source>Gap extension penalty</source>
         <translation>Gap extension penalty</translation>
     </message>
     <message>
-        <location filename="../src/ui/TCoffeeSupportRunDialog.ui" line="158"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="158"/>
         <source>Number of iterations</source>
         <translation>Number of iterations</translation>
     </message>
@@ -2675,7 +2685,7 @@ Uncheck to get the maximum likelihood estimate.</translation>
         <translation type="vanished">Select a database file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="80"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="84"/>
         <source>Set a result FASTA file name</source>
         <translation>Set a result FASTA file name</translation>
     </message>
@@ -3104,22 +3114,36 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="92"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="105"/>
         <source>Short reads are not provided</source>
         <translation>Short reads are not provided</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="99"/>
         <source>In paired-end mode it possible to analyze only 2 read sets using BWA</source>
-        <translation>In paired-end mode it possible to analyze only 2 read sets using BWA</translation>
+        <translation type="vanished">In paired-end mode it possible to analyze only 2 read sets using BWA</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="217"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="123"/>
+        <source>Please, provide same number of files with downstream and upstream reads.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="194"/>
+        <source>Align reads with BWA Multitask</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="235"/>
+        <source>Saming reads with BWA Multitask</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="286"/>
         <source>Log is incomplete</source>
         <translation>Log is incomplete</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="220"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="289"/>
         <source>Log is incorrect</source>
         <translation>Log is incorrect</translation>
     </message>
@@ -3127,20 +3151,29 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaMemAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="242"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="312"/>
         <source>Short reads are not provided</source>
         <translation>Short reads are not provided</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="251"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="331"/>
+        <source>Please, provide same number of files with downstream and upstream reads.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaTask.cpp" line="420"/>
+        <source>Align reads with BWA-MEM Multitask</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Wrong settings of paired reads. For paired-read alignment by BWA MEM only a single pair of reads is acceptable.</source>
-        <translation>Wrong settings of paired reads. For paired-read alignment by BWA MEM only a single pair of reads is acceptable.</translation>
+        <translation type="vanished">Wrong settings of paired reads. For paired-read alignment by BWA MEM only a single pair of reads is acceptable.</translation>
     </message>
 </context>
 <context>
     <name>U2::BwaMemSettingsWidget</name>
     <message>
-        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="338"/>
+        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="298"/>
         <source>NOTE: bwa mem accepts reads only in FASTA or FASTQ format. Reads should be compiled into a single file for each mate end.</source>
         <translation>NOTE: bwa mem accepts reads only in FASTA or FASTQ format. Reads should be compiled into a single file for each mate end.</translation>
     </message>
@@ -3156,12 +3189,12 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaSwAlignTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="338"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="470"/>
         <source>Short reads are not provided</source>
         <translation>Short reads are not provided</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="348"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="480"/>
         <source>BWA SW can not align paired reads</source>
         <translation>BWA SW can not align paired reads</translation>
     </message>
@@ -3169,7 +3202,7 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaSwSettingsWidget</name>
     <message>
-        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="270"/>
+        <location filename="../src/bwa/BwaSettingsWidget.cpp" line="230"/>
         <source>NOTE: bwa-sw performs alignment of long sequencing reads (Sanger or 454). It accepts reads only in FASTA or FASTQ format. Reads should be compiled into single file.</source>
         <translation>NOTE: bwa-sw performs alignment of long sequencing reads (Sanger or 454). It accepts reads only in FASTA or FASTQ format. Reads should be compiled into single file.</translation>
     </message>
@@ -3177,19 +3210,22 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::BwaTask</name>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="479"/>
+        <location filename="../src/bwa/BwaTask.cpp" line="620"/>
         <source>Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file.</source>
         <translation>Multiple read files are not supported by bwa-sw. Please combine your reads into single FASTA file.</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="485"/>
-        <source>Multiple read files are not supported by bwa-mem. Please combine your reads into single FASTA file.</source>
-        <translation>Multiple read files are not supported by bwa-mem. Please combine your reads into single FASTA file.</translation>
+        <location filename="../src/bwa/BwaTask.cpp" line="626"/>
+        <source>Please, provide same number of files with downstream and upstream reads.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="488"/>
+        <source>Multiple read files are not supported by bwa-mem. Please combine your reads into single FASTA file.</source>
+        <translation type="vanished">Multiple read files are not supported by bwa-mem. Please combine your reads into single FASTA file.</translation>
+    </message>
+    <message>
         <source>Please, provide two files with paired reads.</source>
-        <translation>Please, provide two files with paired reads.</translation>
+        <translation type="vanished">Please, provide two files with paired reads.</translation>
     </message>
 </context>
 <context>
@@ -3228,22 +3264,22 @@ Uncheck to get the maximum likelihood estimate.</translation>
 <context>
     <name>U2::CAP3SupportDialog</name>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="47"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="44"/>
         <source>Run</source>
         <translation>Run</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="89"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="97"/>
         <source>List of input files is empty!</source>
         <translation>List of input files is empty!</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="101"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="109"/>
         <source>Result contig file name is not set!</source>
         <translation>Result contig file name is not set!</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="107"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="115"/>
         <source>Destination file already exists.
 To overwrite the file, press &apos;Replace&apos;.
 To save under other name press &apos;Cancel&apos; and change name in &apos;Result contig&apos; field.</source>
@@ -3252,30 +3288,29 @@ To overwrite the file, press &apos;Replace&apos;.
 To save under other name press &apos;Cancel&apos; and change name in &apos;Result contig&apos; field.</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="110"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="118"/>
         <source>Replace</source>
         <translation>Replace</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="139"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="147"/>
         <source>Add Sequences to Assembly</source>
         <translation>Add Sequences to Assembly</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="170"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="86"/>
         <source>Set Result Contig File Name</source>
         <translation>Set Result Contig File Name</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="48"/>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="111"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="45"/>
+        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="119"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportDialog.cpp" line="170"/>
         <source>ACE format (*.ace)</source>
-        <translation>ACE format (*.ace)</translation>
+        <translation type="vanished">ACE format (*.ace)</translation>
     </message>
 </context>
 <context>
@@ -3356,12 +3391,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOSupportRunDialog</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="55"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="49"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="56"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="50"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -3422,38 +3457,38 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="91"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="84"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="92"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="85"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="108"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="96"/>
         <source>Open an alignment file</source>
         <translation>Open an alignment file</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="118"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="110"/>
         <source>Save an multiple alignment file</source>
         <translation>Save an multiple alignment file</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="143"/>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="146"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="135"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="138"/>
         <source>Kalign with Align</source>
         <translation>Align with Kalign</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="144"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="136"/>
         <source>Input file is not set!</source>
         <translation>Input file is not set!</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="147"/>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="139"/>
         <source>Output file is not set!</source>
         <translation>Output file is not set!</translation>
     </message>
@@ -3505,12 +3540,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalWSupportRunDialog</name>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="52"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="46"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="53"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="47"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -3566,38 +3601,38 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalWWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="131"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="124"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="132"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="125"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="154"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="141"/>
         <source>Open an alignment file</source>
         <translation>Open an alignment file</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="164"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="155"/>
         <source>Save an multiple alignment file</source>
         <translation>Save an multiple alignment file</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="215"/>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="218"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="201"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="204"/>
         <source>Kalign with Align</source>
         <translation>Align with Kalign</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="216"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="202"/>
         <source>Input file is not set!</source>
         <translation>Input file is not set!</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="219"/>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="205"/>
         <source>Output file is not set!</source>
         <translation>Output file is not set!</translation>
     </message>
@@ -3764,7 +3799,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Unable to get an assembly object.</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CufflinksSupportTask.cpp" line="233"/>
+        <location filename="../src/cufflinks/CufflinksSupportTask.cpp" line="235"/>
         <source>An internal error occurred during getting annotations from a %1 output file!</source>
         <translation>An internal error occurred during getting annotations from a %1 output file!</translation>
     </message>
@@ -3866,7 +3901,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Tool does not start.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="156"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="158"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -3874,7 +3909,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSearchAndValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="347"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="349"/>
         <source>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</source>
         <translation>Can not find expected message.&lt;br&gt;It is possible that the specified executable file &lt;i&gt;%1&lt;/i&gt; for %2 tool is invalid. You can change the path to the executable file in the external tool settings in the global preferences.</translation>
     </message>
@@ -4107,12 +4142,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsInstallTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="391"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="393"/>
         <source>Installing external tools</source>
         <translation>Installing external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="396"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="398"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -4134,13 +4169,13 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="362"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="364"/>
         <source>Checking external tools</source>
         <translation>Checking external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="380"/>
         <location filename="../src/utils/ExternalToolValidateTask.cpp" line="382"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="384"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -4323,98 +4358,108 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BaseShortReadsAlignerWorker</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="247"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="238"/>
+        <source>Not enough upstream reads datasets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="241"/>
+        <source>Not enough downstream reads datasets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="276"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="248"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="277"/>
         <source>Directory to save output files.</source>
         <translation>Directory to save output files.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="251"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="280"/>
         <source>Reference genome</source>
         <translation>Reference genome</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="252"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="281"/>
         <source>Path to indexed reference genome.</source>
         <translation>Path to indexed reference genome.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="255"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="284"/>
         <source>Library</source>
         <translation>Library</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="256"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="285"/>
         <source>Is this library mate-paired?</source>
         <translation>Is this library mate-paired?</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="259"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="288"/>
         <source>Output file name</source>
         <translation>Output file name</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="260"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="289"/>
         <source>Base name of the output file. &apos;out.sam&apos; by default</source>
         <translation>Base name of the output file. &apos;out.sam&apos; by default</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="292"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="321"/>
         <source>URL of a file with reads</source>
         <translation>URL of a file with reads</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="293"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="303"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="322"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="332"/>
         <source>Input reads to be aligned.</source>
         <translation>Input reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="295"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="324"/>
         <source>URL of a file with mate reads</source>
         <translation>URL of a file with mate reads</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="296"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="325"/>
         <source>Input mate reads to be aligned.</source>
         <translation>Input mate reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="302"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="331"/>
         <source>Input data</source>
         <translation>Input data</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="306"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="335"/>
         <source>Reverse FASTQ file</source>
         <translation>Reverse FASTQ file</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="307"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="336"/>
         <source>Reverse paired reads to be aligned.</source>
         <translation>Reverse paired reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="319"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="348"/>
         <source>Assembly URL</source>
         <translation>Assembly URL</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="320"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="349"/>
         <source>Output assembly URL.</source>
         <translation>Output assembly URL.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="323"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="352"/>
         <source>Output data</source>
         <translation>Output data</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="324"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="353"/>
         <source>Output assembly files.</source>
         <translation>Output assembly files.</translation>
     </message>
@@ -7557,32 +7602,32 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::MACSPrompter</name>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="570"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="571"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="577"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="578"/>
         <source>Uses &lt;u&gt;%1&lt;/u&gt; as treatment</source>
         <translation>Uses &lt;u&gt;%1&lt;/u&gt; as treatment</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="579"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="580"/>
         <source> and &lt;u&gt;%1&lt;/u&gt; as control</source>
         <translation> and &lt;u&gt;%1&lt;/u&gt; as control</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="582"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="583"/>
         <source> to call peaks.</source>
         <translation> to call peaks.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="584"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="585"/>
         <source> Outputs all files to &lt;u&gt;%1&lt;/u&gt; directory</source>
         <translation> Outputs all files to &lt;u&gt;%1&lt;/u&gt; directory</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="586"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="587"/>
         <source> and pileup with &lt;u&gt;%1&lt;/u&gt; span</source>
         <translation> and pileup with &lt;u&gt;%1&lt;/u&gt; span</translation>
     </message>
@@ -7590,262 +7635,267 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::MACSWorker</name>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="194"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="195"/>
         <source>Bad model fold region: %1. Default region is used</source>
         <translation>Bad model fold region: %1. Default region is used</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="261"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="195"/>
+        <source>unrecognized parsing error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/macs/MACSWorker.cpp" line="262"/>
         <source>Input control and treatment annotations are the same</source>
         <translation>Input control and treatment annotations are the same</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="275"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="276"/>
         <source>Treatment features</source>
         <translation>Treatment features</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="276"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="277"/>
         <source>ChIP-seq treatment features.</source>
         <translation>ChIP-seq treatment features.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="278"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="279"/>
         <source>Control features</source>
         <translation>Control features</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="279"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="280"/>
         <source>Control features (Optional).</source>
         <translation>Control features (Optional).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="284"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="285"/>
         <source>MACS data</source>
         <translation>MACS data</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="285"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="286"/>
         <source>ChIP-seq treatment features and control features (optional) to call peaks with MACS.</source>
         <translation>ChIP-seq treatment features and control features (optional) to call peaks with MACS.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="293"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="294"/>
         <source>Peak regions</source>
         <translation>Peak regions</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="294"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="295"/>
         <source>Peak locations. Typically used in gene association study like CEAS, or correlation calculation.</source>
         <translation>Peak locations. Typically used in gene association study like CEAS, or correlation calculation.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="296"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="297"/>
         <source>Peak summits</source>
         <translation>Peak summits</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="297"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="298"/>
         <source>Peak summits locations for every peaks. Typically used in DNA motif analysis or conservation check.</source>
         <translation>Peak summits locations for every peaks. Typically used in DNA motif analysis or conservation check.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="299"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="300"/>
         <source>Treatment fragments pileup (wiggle)</source>
         <translation>Treatment fragments pileup (wiggle)</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="300"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="301"/>
         <source>Wiggle format files which can be imported to UCSC genome browser/GMOD/Affy IGB.</source>
         <translation>Wiggle format files which can be imported to UCSC genome browser/GMOD/Affy IGB.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="303"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="304"/>
         <source>MACS output data</source>
         <translation>MACS output data</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="304"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="305"/>
         <source>ChIP-seq peaks and summits. Pileup data (optional)</source>
         <translation>ChIP-seq peaks and summits. Pileup data (optional)</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="317"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="318"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="318"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="319"/>
         <source>Directory to save MACS output files.</source>
         <translation>Directory to save MACS output files.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="320"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="321"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="321"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="322"/>
         <source>The name string of the experiment. MACS will use this string NAME to create output files like &apos;NAME_peaks.xls&apos;, &apos;NAME_negative_peaks.xls&apos;, &apos;NAME_peaks.bed&apos;, &apos;NAME_summits.bed&apos;, &apos;NAME_model.r&apos; and so on. So please avoid any confliction between these filenames and your existing files (--name).</source>
         <translation>The name string of the experiment. MACS will use this string NAME to create output files like &apos;NAME_peaks.xls&apos;, &apos;NAME_negative_peaks.xls&apos;, &apos;NAME_peaks.bed&apos;, &apos;NAME_summits.bed&apos;, &apos;NAME_model.r&apos; and so on. So please avoid any confliction between these filenames and your existing files (--name).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="325"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="326"/>
         <source>Wiggle output</source>
         <translation>Wiggle output</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="326"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="327"/>
         <source>If this flag is on, MACS will store the fragment pileup in wiggle format for the whole genome data instead of for every chromosomes (--wig) (--single-profile).</source>
         <translation>If this flag is on, MACS will store the fragment pileup in wiggle format for the whole genome data instead of for every chromosomes (--wig) (--single-profile).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="328"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="329"/>
         <source>Wiggle space</source>
         <translation>Wiggle space</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="329"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="330"/>
         <source>By default, the resolution for saving wiggle files is 10 bps,i.e., MACS will save the raw tag count every 10 bps. You can change it along with &apos;--wig&apos; option (--space).</source>
         <translation>By default, the resolution for saving wiggle files is 10 bps,i.e., MACS will save the raw tag count every 10 bps. You can change it along with &apos;--wig&apos; option (--space).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="332"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="333"/>
         <source>Genome size (Mbp)</source>
         <translation>Genome size (Mbp)</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="333"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="334"/>
         <source>Homo sapience - 2700 Mbp&lt;br&gt;Mus musculus - 1870 Mbp&lt;br&gt;Caenorhabditis elegans - 90 Mbp&lt;br&gt;Drosophila melanogaster  - 120 Mbp&lt;br&gt; It&apos;s the mappable genome size or effective genome size which is defined as the genome size which can be sequenced. Because of the repetitive features on the chromosomes, the actual mappable genome size will be smaller than the original size, about 90% or 70% of the genome size (--gsize).</source>
         <translation>Homo sapience - 2700 Mbp&lt;br&gt;Mus musculus - 1870 Mbp&lt;br&gt;Caenorhabditis elegans - 90 Mbp&lt;br&gt;Drosophila melanogaster  - 120 Mbp&lt;br&gt; It&apos;s the mappable genome size or effective genome size which is defined as the genome size which can be sequenced. Because of the repetitive features on the chromosomes, the actual mappable genome size will be smaller than the original size, about 90% or 70% of the genome size (--gsize).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="342"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="343"/>
         <source>P-value</source>
         <translation>P-value</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="343"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="344"/>
         <source>P-value cutoff. Default is 0.00001, for looser results, try 0.001 instead (--pvalue).</source>
         <translation>P-value cutoff. Default is 0.00001, for looser results, try 0.001 instead (--pvalue).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="345"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="346"/>
         <source>Q-value</source>
         <translation>Q-value</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="346"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="347"/>
         <source>Minimum FDR (q-value) cutoff for peak detection.</source>
         <translation>Minimum FDR (q-value) cutoff for peak detection.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="348"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="349"/>
         <source>Use model</source>
         <translation>Use model</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="349"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="350"/>
         <source>Whether or not to use MACS paired peaks model (--nomodel).</source>
         <translation>Whether or not to use MACS paired peaks model (--nomodel).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="351"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="352"/>
         <source>Model fold</source>
         <translation>Model fold</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="352"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="353"/>
         <source>Select the regions within MFOLD range of high-confidence enrichment ratio against. &lt;b&gt;Model fold&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is true, which is the foldchange to chose paired peaks to build paired peaks model. Users need to set a lower(smaller) and upper(larger) number for fold change so that MACS will only use the peaks within these foldchange range to build model (--mfold).</source>
         <translation>Select the regions within MFOLD range of high-confidence enrichment ratio against. &lt;b&gt;Model fold&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is true, which is the foldchange to chose paired peaks to build paired peaks model. Users need to set a lower(smaller) and upper(larger) number for fold change so that MACS will only use the peaks within these foldchange range to build model (--mfold).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="357"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="358"/>
         <source>Shift size</source>
         <translation>Shift size</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="358"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="359"/>
         <source>An arbitrary shift value used as a half of the fragment size when model is not built. &lt;b&gt;Shift size&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is false, which will represent the HALF of the fragment size of your sample. If your sonication and size selection size is 300 bps, after you trim out nearly 100 bps adapters, the fragment size is about 200 bps, so you can specify 100 here (--shiftsize).</source>
         <translation>An arbitrary shift value used as a half of the fragment size when model is not built. &lt;b&gt;Shift size&lt;/b&gt; is available when &lt;b&gt;Use model&lt;/b&gt; is false, which will represent the HALF of the fragment size of your sample. If your sonication and size selection size is 300 bps, after you trim out nearly 100 bps adapters, the fragment size is about 200 bps, so you can specify 100 here (--shiftsize).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="363"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="364"/>
         <source>Keep duplicates</source>
         <translation>Keep duplicates</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="364"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="365"/>
         <source>It controls the MACS behavior towards duplicate tags at the exact same location -- the same coordination and the same strand. The default &lt;b&gt;auto&lt;/b&gt; option makes MACS calculate the maximum tags at the exact same location based on binomal distribution using 1e-5 as pvalue cutoff; and the &lt;b&gt;all&lt;/b&gt; option keeps every tags. If an &lt;b&gt;integer&lt;/b&gt; is given, at most this number of tags will be kept at the same location (--keep-dup).</source>
         <translation>It controls the MACS behavior towards duplicate tags at the exact same location -- the same coordination and the same strand. The default &lt;b&gt;auto&lt;/b&gt; option makes MACS calculate the maximum tags at the exact same location based on binomal distribution using 1e-5 as pvalue cutoff; and the &lt;b&gt;all&lt;/b&gt; option keeps every tags. If an &lt;b&gt;integer&lt;/b&gt; is given, at most this number of tags will be kept at the same location (--keep-dup).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="368"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="369"/>
         <source>Band width</source>
         <translation>Band width</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="369"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="370"/>
         <source>The band width which is used to scan the genome for model building. You can set this parameter as the sonication fragment size expected from wet experiment. Used only while building the shifting model (--bw).</source>
         <translation>The band width which is used to scan the genome for model building. You can set this parameter as the sonication fragment size expected from wet experiment. Used only while building the shifting model (--bw).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="373"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="374"/>
         <source>Extended fragment pileup</source>
         <translation>Extended fragment pileup</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="374"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="375"/>
         <source>Whether or not to generate extended fragment pileup, local lambda and score tracks at every bp.</source>
         <translation>Whether or not to generate extended fragment pileup, local lambda and score tracks at every bp.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="378"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="379"/>
         <source>Tag size (optional)</source>
         <translation>Tag size (optional)</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="379"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="380"/>
         <source>Length of reads. Determined from first 10 reads if not specified (input &lt;b&gt;0&lt;/b&gt;) (--tsize).</source>
         <translation>Length of reads. Determined from first 10 reads if not specified (input &lt;b&gt;0&lt;/b&gt;) (--tsize).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="383"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="384"/>
         <source>Use lambda</source>
         <translation>Use lambda</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="384"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="385"/>
         <source>Whether to use local lambda model which can use the local bias at peak regions to throw out false positives (--nolambda).</source>
         <translation>Whether to use local lambda model which can use the local bias at peak regions to throw out false positives (--nolambda).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="386"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="387"/>
         <source>Small nearby region</source>
         <translation>Small nearby region</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="387"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="388"/>
         <source>The small nearby region in basepairs to calculate dynamic lambda. This is used to capture the bias near the peak summit region. Invalid if there is no control data (--slocal).</source>
         <translation>The small nearby region in basepairs to calculate dynamic lambda. This is used to capture the bias near the peak summit region. Invalid if there is no control data (--slocal).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="390"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="391"/>
         <source>Large nearby region</source>
         <translation>Large nearby region</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="391"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="392"/>
         <source>The large nearby region in basepairs to calculate dynamic lambda.  This is used to capture the surround bias (--llocal).</source>
         <translation>The large nearby region in basepairs to calculate dynamic lambda.  This is used to capture the surround bias (--llocal).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="394"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="395"/>
         <source>Auto bimodal</source>
         <translation>Auto bimodal</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="395"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="396"/>
         <source>Whether turn on the auto pair model process.If set, when MACS failed to build paired model, it will use the nomodelsettings, the “Shift size” parameter to shift and extend each tags (--on-auto).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7869,62 +7919,62 @@ Default: 64.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="399"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="400"/>
         <source>Scale to large</source>
         <translation>Scale to large</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="400"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="401"/>
         <source> When set, scale the small sample up to the bigger sample.By default, the bigger dataset will be scaled down towards the smaller dataset,which will lead to smaller p/qvalues and more specific results.Keep in mind that scaling down will bring down background noise more (--to-large).</source>
         <translation> When set, scale the small sample up to the bigger sample.By default, the bigger dataset will be scaled down towards the smaller dataset,which will lead to smaller p/qvalues and more specific results.Keep in mind that scaling down will bring down background noise more (--to-large).</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="405"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="406"/>
         <source>Shift control</source>
         <translation>Shift control</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="406"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="407"/>
         <source>When set, control tags will be shifted just as ChIP tags according to their strand before the extension of d, slocal and llocal. By default, control tags are extended centeredat their current positions regardless of strand. You may consider to turn this option on whilecomparing two ChIP datasets of different condition but the same factor.</source>
         <translation>When set, control tags will be shifted just as ChIP tags according to their strand before the extension of d, slocal and llocal. By default, control tags are extended centeredat their current positions regardless of strand. You may consider to turn this option on whilecomparing two ChIP datasets of different condition but the same factor.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="411"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="412"/>
         <source>Half-extend</source>
         <translation>Half-extend</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="412"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="413"/>
         <source>When set, MACS extends 1/2 d size for each fragment centered at its middle point.</source>
         <translation>When set, MACS extends 1/2 d size for each fragment centered at its middle point.</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="414"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="415"/>
         <source>Broad</source>
         <translation>Broad</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="415"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="416"/>
         <source>If set, MACS will try to call broad peaks by linking nearby highly enriched regions.The linking region is controlled by another cutoff through “Broad cutoff”.The maximum linking region length is 4 times of d from MACS.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="419"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="420"/>
         <source>Broad cutoff</source>
         <translation>Broad cutoff</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="420"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="421"/>
         <source>Cutoff for broad region. This option is not available unless “Broad” is set.If “P-value” is set, this is a pvalue cutoff, otherwise, it&apos;s a qvalue cutoff.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="548"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="549"/>
         <source>Find Peaks with MACS</source>
         <translation>Find Peaks with MACS</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="549"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="550"/>
         <source>Performs peak calling for ChIP-Seq data.</source>
         <translation>Performs peak calling for ChIP-Seq data.</translation>
     </message>
@@ -8324,22 +8374,22 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::ShortReadsAlignerPrompter</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="340"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="369"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="346"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="375"/>
         <source>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </source>
         <translation>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="348"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="377"/>
         <source>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </source>
         <translation>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="352"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="381"/>
         <source> to reference genome &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> to reference genome &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -9466,12 +9516,12 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::MAFFTSupportRunDialog</name>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="52"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="46"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="53"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="47"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -9543,38 +9593,38 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::MAFFTWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="84"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="76"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="85"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="77"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="100"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="86"/>
         <source>Open an alignment file</source>
         <translation>Open an alignment file</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="110"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="100"/>
         <source>Save an multiple alignment file</source>
         <translation>Save an multiple alignment file</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="134"/>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="137"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="119"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="122"/>
         <source>Kalign with Align</source>
         <translation>Align with Kalign</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="135"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="120"/>
         <source>Input file is not set!</source>
         <translation>Input file is not set!</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="138"/>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="123"/>
         <source>Output file is not set!</source>
         <translation>Output file is not set!</translation>
     </message>
@@ -10222,12 +10272,12 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::TCoffeeSupportRunDialog</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="52"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="47"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="53"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="48"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -10293,38 +10343,38 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::TCoffeeWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="83"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="76"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="84"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="77"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="98"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="86"/>
         <source>Open an alignment file</source>
         <translation>Open an alignment file</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="108"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="100"/>
         <source>Save an multiple alignment file</source>
         <translation>Save an multiple alignment file</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="132"/>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="135"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="119"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="122"/>
         <source>Kalign with Align</source>
         <translation>Align with Kalign</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="133"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="120"/>
         <source>Input file is not set!</source>
         <translation>Input file is not set!</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="136"/>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="123"/>
         <source>Output file is not set!</source>
         <translation>Output file is not set!</translation>
     </message>
@@ -10394,7 +10444,12 @@ Set it empty if you want to run Tophat once for all input reads</translation>
         <translation>Preparing TopHatSupportTask internal error: unable to get a sequence object!</translation>
     </message>
     <message>
-        <location filename="../src/tophat/TopHatSupportTask.cpp" line="280"/>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="262"/>
+        <source>TopHat was not able to map reads to the reference.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tophat/TopHatSupportTask.cpp" line="284"/>
         <source>There are no accepted hits in the result</source>
         <translation>There are no accepted hits in the result</translation>
     </message>
@@ -10496,9 +10551,9 @@ Set it empty if you want to run Tophat once for all input reads</translation>
         <translation type="unfinished">Only one of these slots must be binded: &apos;%1&apos;, &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/macs/MACSWorker.cpp" line="235"/>
+        <location filename="../src/macs/MACSWorker.cpp" line="236"/>
         <location filename="../src/spades/SpadesWorker.cpp" line="189"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="224"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="253"/>
         <source>The slot must be not empty: &apos;%1&apos;</source>
         <translation type="unfinished">The slot must be not empty: &apos;%1&apos;</translation>
     </message>

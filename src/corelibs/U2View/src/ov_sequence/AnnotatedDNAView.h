@@ -213,6 +213,7 @@ private slots:
     void sl_reverseSequence();
     void sl_complementSequence();
     void sl_selectionChanged();
+    void sl_aminoTranslationChanged();
 
     virtual void sl_onDocumentAdded(Document*);
     virtual void sl_onDocumentLoadedStateChanged();

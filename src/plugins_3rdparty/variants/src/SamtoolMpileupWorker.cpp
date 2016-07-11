@@ -59,6 +59,10 @@ static const QString REF_SEQ_PORT_ID("ref-seq-port-id");
 static const QString ASSEMBLY_PORT_ID("assembly-port-id");
 
 const QString OUT_URL("variants-url");
+const QString REF_SOURCE("reference-source");
+const QString REF_SOURCE_PORT("port");
+const QString REF_SOURCE_FILE("file");
+const QString REF_URL("reference-url");
 
 //mpileup
 const QString ILLUMINA13("illumina13-encoding");
@@ -181,6 +185,18 @@ void CallVariantsWorkerFactory::init() {
     Descriptor outUrl(OUT_URL,
         CallVariantsWorker::tr("Output variants file"),
         CallVariantsWorker::tr("The url to the file with the extracted variations."));
+
+    Descriptor refLocation(REF_SOURCE,
+        CallVariantsWorker::tr("Use reference from"),
+        CallVariantsWorker::tr("<p>Specify \"File\" to set a single reference sequence for all input NGS assemblies. "
+                               "The reference should be set in the \"Reference\" parameter.</p>"
+                               "<p>Specify \"Input port\" to be able to set different references for difference NGS assemblies. "
+                               "The references should be input via the \"Input sequences\" port (e.g. use datasets in the \"Read Sequence\" element).</p>"));
+
+    Descriptor refUrl(REF_URL,
+        CallVariantsWorker::tr("Reference"),
+        CallVariantsWorker::tr("<p>Specify a file with the reference sequence.</p>"
+                               "<p>The sequence will be used as reference for all datasets with NGS assemblies.</p>"));
 
     Descriptor illumina13Encoding(ILLUMINA13,
         CallVariantsWorker::tr("Illumina-1.3+ encoding"),
@@ -370,6 +386,19 @@ void CallVariantsWorkerFactory::init() {
         CallVariantsWorker::tr("Print filtered variants into the log (varFilter) (-p)."));
 
     attributes << new Attribute(outUrl, BaseTypes::STRING_TYPE(), true, "");
+
+    Attribute* refUrlAttr = new Attribute(refUrl, BaseTypes::STRING_TYPE(), true, "");
+    QVariantList refUrlVisibilityValues;
+    refUrlVisibilityValues << QVariant(REF_SOURCE_FILE);
+    refUrlAttr->addRelation(new VisibilityRelation(REF_SOURCE, refUrlVisibilityValues));
+    attributes << refUrlAttr;
+
+    Attribute* refLocationAttr = new Attribute(refLocation, BaseTypes::STRING_TYPE(), false, QVariant(REF_SOURCE_FILE));
+    QVariantList refPortVisibilityValues;
+    refPortVisibilityValues << QVariant(REF_SOURCE_PORT);
+    refLocationAttr->addPortRelation(PortRelationDescriptor( BasePorts::IN_SEQ_PORT_ID(), refPortVisibilityValues));
+    attributes << refLocationAttr;
+
     attributes << new Attribute(illumina13Encoding, BaseTypes::BOOL_TYPE(), false, QVariant(false));
     attributes << new Attribute(useOrphan, BaseTypes::BOOL_TYPE(), false, QVariant(false));
     attributes << new Attribute(disableBaq, BaseTypes::BOOL_TYPE(), false, QVariant(false));
@@ -624,8 +653,15 @@ void CallVariantsWorkerFactory::init() {
         vm["singleStep"] = 0.0001;
         delegates[PVALUE_HWE] = new DoubleSpinBoxDelegate(vm);
     }
+    {
+        QVariantMap vm;
+        vm[CallVariantsWorker::tr("Input port")] = REF_SOURCE_PORT;
+        vm[CallVariantsWorker::tr("File")] = REF_SOURCE_FILE;
+        delegates[REF_SOURCE] = new ComboBoxDelegate(vm);
+    }
 
     delegates[OUT_URL] = new URLDelegate("", "", false, false, true, NULL, "vcf");
+    delegates[REF_URL] = new URLDelegate("", "", false, false, false);
     delegates[BCF_BED] = new URLDelegate("", "", false, false, false);
     delegates[SAMPLES] = new URLDelegate("", "", false, false, false);
 
@@ -650,11 +686,18 @@ void CallVariantsWorkerFactory::init() {
 
 
 QString CallVariantsPrompter::composeRichDoc() {
-    Actor* assemblyProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
-    Actor* seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
-
+    QString reference;
     QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
-    QString seqName = tr("For reference sequence from <u>%1</u>,").arg(seqProducer ? seqProducer->getLabel() : unsetStr);
+    Port* refPort = target->getPort(BasePorts::IN_SEQ_PORT_ID());
+    if (refPort->isEnabled()) {
+        Actor* seqProducer = qobject_cast<IntegralBusPort*>(refPort)->getProducer(BaseSlots::URL_SLOT().getId());
+        reference = seqProducer ? seqProducer->getLabel() : unsetStr;
+    } else {
+        reference = getHyperlink(REF_URL, getURL(REF_URL));
+    }
+    QString seqName = tr("For reference sequence from <u>%1</u>,").arg(reference);
+
+    Actor* assemblyProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
     QString assemblyName = tr("with assembly data provided by <u>%1</u>").arg(assemblyProducer ? assemblyProducer->getLabel() : unsetStr);
 
     QString doc = tr("%1 call variants %2.")
@@ -671,7 +714,7 @@ CallVariantsWorker::CallVariantsWorker(Actor* a)
       output(NULL),
       useDatasets(false)
 {
-
+    referenceSource = FromPort;
 }
 
 void CallVariantsWorker::initDatasetMode() {
@@ -690,6 +733,12 @@ void CallVariantsWorker::init() {
     assemblyPort = ports.value(BasePorts::IN_ASSEMBLY_PORT_ID());
     output = ports.value(BasePorts::OUT_VARIATION_TRACK_PORT_ID());
 
+    if (getValue<QString>(REF_SOURCE) == REF_SOURCE_PORT) {
+        referenceSource = FromPort;
+    } else {
+        referenceSource = FromFile;
+    }
+
     settings = getSettings();
 
     output->addComplement(refSeqPort);
@@ -701,11 +750,15 @@ bool CallVariantsWorker::isReady() const {
     if (isDone()) {
         return false;
     }
-    bool seqEnded = refSeqPort->isEnded();
-    bool seqHasMes = (refSeqPort->hasMessage() > 0);
     bool assemblyEnded = assemblyPort->isEnded();
     bool assemblyHasMes = (assemblyPort->hasMessage() > 0);
 
+    if (referenceSource == FromFile) {
+        return assemblyHasMes || assemblyEnded;
+    }
+
+    bool seqEnded = refSeqPort->isEnded();
+    bool seqHasMes = (refSeqPort->hasMessage() > 0);
     if (seqHasMes && assemblyHasMes) {
         return true;
     }
@@ -738,9 +791,13 @@ Task* CallVariantsWorker::tick() {
     }
 
     //take reference sequence
-    if (refSeqPort->hasMessage() && settings.refSeqUrl.isEmpty()) {
-        takeReference(os);
-        CHECK_OP_EXT(os, processError(os), NULL);
+    if (referenceSource == FromPort) {
+        if (refSeqPort->hasMessage() && settings.refSeqUrl.isEmpty()) {
+            takeReference(os);
+            CHECK_OP_EXT(os, processError(os), NULL);
+        }
+    } else if (settings.refSeqUrl.isEmpty()) {
+        settings.refSeqUrl = getValue<QString>(REF_URL);
     }
 
     //do
@@ -878,11 +935,18 @@ void CallVariantsWorker::processError(const U2OpStatus& os) {
 }
 
 void CallVariantsWorker::checkState(U2OpStatus& os) {
-    if (hasAssembly() && !hasReference()) {
+    if (referenceSource == FromFile) {
+        if (!hasAssembly()) {
+            setDone();
+        }
+        return;
+    }
+
+    if (hasAssembly() && !hasReferenceInPort()) {
         os.setError(tr("Not enough references"));
         processError(os);
         setDone();
-    } else if (!hasAssembly() && hasReference()) {
+    } else if (!hasAssembly() && hasReferenceInPort()) {
         if (!useDatasets) {
             os.setError(tr("The dataset slot is not binded, only the first reference sequence "
                            "against all assemblies was processed."));
@@ -891,7 +955,7 @@ void CallVariantsWorker::checkState(U2OpStatus& os) {
         }
         processError(os);
         setDone();
-    } else if (!hasAssembly() && !hasReference()) {
+    } else if (!hasAssembly() && !hasReferenceInPort()) {
         output->setEnded();
         setDone();
     }
@@ -904,7 +968,7 @@ bool CallVariantsWorker::hasAssembly() const {
             assemblyPort->hasMessage();
 }
 
-bool CallVariantsWorker::hasReference() const {
+bool CallVariantsWorker::hasReferenceInPort() const {
     return !settings.refSeqUrl.isEmpty() ||
             !refSeqPort->isEnded() ||
             refSeqPort->hasMessage();

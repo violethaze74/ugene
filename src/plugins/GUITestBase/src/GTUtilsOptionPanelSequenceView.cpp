@@ -78,7 +78,7 @@ void GTUtilsOptionPanelSequenceView::enterPattern( HI::GUITestOpStatus &os, QStr
     GTTextEdit::clear(os, patternEdit);
     if(useCopyPaste){
         GTClipboard::setText(os, pattern);
-        GTKeyboardDriver::keyClick(os, 'v', GTKeyboardDriver::key["ctrl"]);
+        GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
     }else{
         GTTextEdit::setText(os, patternEdit, pattern);
     }
@@ -99,7 +99,7 @@ void GTUtilsOptionPanelSequenceView::toggleTab(HI::GUITestOpStatus &os, GTUtilsO
 void GTUtilsOptionPanelSequenceView::openTab(HI::GUITestOpStatus &os, Tabs tab){
     if (!isTabOpened(os, tab)) {
         toggleTab(os, tab);
-        GTThread::waitForMainThread(os);
+        GTThread::waitForMainThread();
     }
 }
 #undef GT_METHOD_NAME
@@ -161,6 +161,7 @@ void GTUtilsOptionPanelSequenceView::clickPrev(HI::GUITestOpStatus &os){
 void GTUtilsOptionPanelSequenceView::clickGetAnnotation(HI::GUITestOpStatus &os){
     QPushButton *getAnnotations = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTWidget::click(os, getAnnotations);
+    GTThread::waitForMainThread();
 }
 
 #undef GT_METHOD_NAME
@@ -185,7 +186,7 @@ bool GTUtilsOptionPanelSequenceView::isGetAnnotationsEnabled(HI::GUITestOpStatus
 #define GT_METHOD_NAME "toggleCircularView"
 void GTUtilsOptionPanelSequenceView::toggleCircularView(HI::GUITestOpStatus &os) {
     GTWidget::click(os, GTWidget::findButtonByText(os, "Open Circular View(s)", GTUtilsMdi::activeWindow(os)));
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
@@ -313,7 +314,7 @@ void GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern( HI::GUITestOpSt
     QGroupBox *loadFromFile = qobject_cast<QGroupBox*>(GTWidget::findWidget(os, "loadFromFileGroupBox"));
     GTWidget::click(os, loadFromFile);
     //kinda hack for QGroupBox should be rewriten
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
 }
 
 #undef GT_METHOD_NAME

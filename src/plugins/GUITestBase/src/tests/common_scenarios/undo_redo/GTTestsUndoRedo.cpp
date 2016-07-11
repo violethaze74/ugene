@@ -57,7 +57,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){//DIFFERENCE: lock document is checked
 //2. Insert seversl spaces somewhere
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,0));
     for(int i=0; i<6; i++){
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Space);
         GTGlobals::sleep(200);
     }
 
@@ -69,18 +69,18 @@ GUI_TEST_CLASS_DEFINITION(test_0001){//DIFFERENCE: lock document is checked
         GTGlobals::sleep(200);
     }
 //4. lock document
-    GTMouseDriver::moveTo(os,GTUtilsProjectTreeView::getItemCenter(os,"COI.aln"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"COI.aln"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList() << ACTION_DOCUMENT__LOCK));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
 //Expected state: Undo and redo buttons are disabled
     CHECK_SET_ERR(!undo->isEnabled(),"Undo button is enebled after locking document");
     CHECK_SET_ERR(!redo->isEnabled(),"Redo button is enebled after locking document");
 
 //5. Unlock document
-    GTMouseDriver::moveTo(os,GTUtilsProjectTreeView::getItemCenter(os,"COI.aln"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os,"COI.aln"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList() << ACTION_DOCUMENT__UNLOCK));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
 //Expected state: undo and redo buttons are enebled and work properly
     CHECK_SET_ERR(undo->isEnabled(),"Undo button is disabled after unlocking document");
@@ -90,7 +90,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){//DIFFERENCE: lock document is checked
     GTWidget::click(os,GTUtilsMdi::activeWindow(os));
     GTWidget::click(os, undo);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(9,0));
-    GTKeyboardDriver::keyClick(os,'c',GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick('c',Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText=="--TAAGACTT","Undo works wrong. Found text is: " + clipboardText);
@@ -101,7 +101,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){//DIFFERENCE: lock document is checked
     GTGlobals::sleep(200);
     GTWidget::click(os, redo);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(9,0));
-    GTKeyboardDriver::keyClick(os,'c',GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick('c',Qt::ControlModifier);
     GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText=="----TAAGAC", "Redo works wrong. Found text is: " + clipboardText);
@@ -116,14 +116,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002){//DIFFERENCE: delete sequence is checked
 //2. Delete 4-th sequence
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10,3));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Roeseliana_roeseli", "Roeseliana_roeseli"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
 // Expected state: sequence deleted
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10,3));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Montana_montana", "Montana_montana"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep(500);
 
 //3. undo deletion
@@ -135,7 +135,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002){//DIFFERENCE: delete sequence is checked
 //Expected state: deletion undone
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10,3));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Roeseliana_roeseli", "Roeseliana_roeseli"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep(500);
 
 //4. Redo delition
@@ -144,7 +144,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002){//DIFFERENCE: delete sequence is checked
 //Expected state: delition is redone
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10,3));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Montana_montana", "Montana_montana"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep(500);
 }
 
@@ -163,7 +163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003){//DIFFERENCE: add sequence is checked
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).contains("raw"), "raw is not added");
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10,18));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "raw", "raw"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
 
 //3. undo adding
     QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
@@ -182,7 +182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003){//DIFFERENCE: add sequence is checked
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).contains("raw"), "Adding raw is not redone");
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10,18));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "raw", "raw"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004){//DIFFERENCE: add sequence is checked
@@ -195,11 +195,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004){//DIFFERENCE: add sequence is checked
     QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,0));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Space);
     GTWidget::click(os, undo);
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,0));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Space);
     GTWidget::click(os, undo);
 
     GTWidget::click(os, redo);
@@ -215,11 +215,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005){//undo remove selection
 
     //remove selection
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(3,1));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     //Expected state: selection removed
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(3,1));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipdoardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipdoardText=="ACTT\nCTTA", QString("Expected ACTT\nCTTA, found: %1").arg(clipdoardText));
@@ -231,7 +231,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005){//undo remove selection
     //Expected state: delition undone
     GTWidget::click(os,GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(3,1));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     clipdoardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipdoardText=="TAAG\nTAAG", QString("Expected TAAG\nTAAG, found: %1").arg(clipdoardText));
@@ -243,7 +243,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005){//undo remove selection
     //Expected state: delition redone
     GTWidget::click(os,GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(3,1));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     clipdoardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipdoardText=="ACTT\nCTTA", QString("Expected ACTT\nCTTA, found: %1").arg(clipdoardText));
@@ -259,11 +259,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006){//undo replace_selected_rows_with_reverse-c
 // 2. Select first sequence and do context menu {Edit->Replace selected rows with reverce complement}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "replace_selected_rows_with_reverse-complement"));
     GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( -1, 2 ) );
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
 // Expected state: sequence changed from TTG -> CAA
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
@@ -283,7 +283,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006){//undo replace_selected_rows_with_reverse-c
 
 // Expected state: sequence changed from CAA -> TTG
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
@@ -304,7 +304,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006){//undo replace_selected_rows_with_reverse-c
 
 // Expected state: sequence changed from TTG -> CAA
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
@@ -329,11 +329,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1){//undo replace_selected_rows_with_reverse
 // 2. Select first sequence and do context menu {Edit->Replace selected rows with reverce complement}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "replace_selected_rows_with_reverse"));
     GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( -1, 2 ) );
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
 // Expected state: sequence changed from TTG -> GTT
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
@@ -353,7 +353,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1){//undo replace_selected_rows_with_reverse
 
 // Expected state: sequence changed from GTT -> TTG
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
@@ -374,7 +374,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1){//undo replace_selected_rows_with_reverse
 
 // Expected state: sequence changed from TTG -> GTT
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
@@ -402,11 +402,11 @@ GUI_TEST_CLASS_DEFINITION( test_0006_2 )
     GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << MSAE_MENU_EDIT
         << "replace_selected_rows_with_complement" ) );
     GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( -1, 2 ) );
-    GTMouseDriver::click( os, Qt::RightButton );
+    GTMouseDriver::click(Qt::RightButton );
 
 // Expected state: sequence changed from TTG -> AAC
     GTGlobals::sleep( 500 );
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
 
     GTGlobals::sleep( 500 );
     QString clipboardText = GTClipboard::text( os );
@@ -427,7 +427,7 @@ GUI_TEST_CLASS_DEFINITION( test_0006_2 )
 
 // Expected state: sequence changed from AAC -> TTG
     GTGlobals::sleep( 500 );
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
 
     GTGlobals::sleep( 500 );
     clipboardText = GTClipboard::text( os );
@@ -448,7 +448,7 @@ GUI_TEST_CLASS_DEFINITION( test_0006_2 )
 
 // Expected state: sequence changed from TTG -> AAC
     GTGlobals::sleep( 500 );
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
 
     GTGlobals::sleep( 500 );
     clipboardText = GTClipboard::text( os );
@@ -471,7 +471,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007){//remove columns with 3 or more gaps
 
     //save initial state
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString initAln = GTClipboard::text(os);
     QString expectedChangedAln = "AAGCTTCTTT\nAAGTTACTAA\nTAG---TTAT\nAAGC---TAT\n"
@@ -483,7 +483,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007){//remove columns with 3 or more gaps
     GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Number,3));
     GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString changedAln = GTClipboard::text(os);
     CHECK_SET_ERR(changedAln == expectedChangedAln,"remove gaps option works wrong");
@@ -494,7 +494,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007){//remove columns with 3 or more gaps
 
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText==initAln, "undo works wrong");
@@ -503,7 +503,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007){//remove columns with 3 or more gaps
     QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
     GTWidget::click(os, redo);
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText==expectedChangedAln, "redo works wrong");
@@ -516,7 +516,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1){//remove columns with 15 percents of gaps
 
     //save initial state
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString initAln = GTClipboard::text(os);
     QString expectedChangedAln = "AAGCCTTT\nAAGTCTAA\nTAG-TTAT\nAAGC-TAT\nTAGTTTAA\nTAGTTTAA\n"
@@ -527,7 +527,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1){//remove columns with 15 percents of gaps
     GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Percent,15));
     GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString changedAln = GTClipboard::text(os);
     CHECK_SET_ERR(changedAln == expectedChangedAln,"remove gaps option works wrong\n" + changedAln + '\n' + expectedChangedAln);
@@ -538,7 +538,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1){//remove columns with 15 percents of gaps
 
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText==initAln, "undo works wrong");
@@ -547,7 +547,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1){//remove columns with 15 percents of gaps
     QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
     GTWidget::click(os, redo);
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     clipboardText=GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText==expectedChangedAln, "redo works wrong");
@@ -560,7 +560,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2){//remove columns of gaps is tested
 
     //save initial state
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString initAln = GTClipboard::text(os);
     QString expectedChangedAln = "AAGCTTCTTTTAA\nAAGTTACTAA---\nTAG---TTATTAA\nAAGC---TATTAA\nTAGTTATTAA---\n"
@@ -571,7 +571,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2){//remove columns of gaps is tested
     GTUtilsDialog::waitForDialog(os, new RemoveGapColsDialogFiller(os, RemoveGapColsDialogFiller::Column));
     GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString changedAln = GTClipboard::text(os);
     CHECK_SET_ERR(changedAln == expectedChangedAln,"remove gaps option works wrong\n" + changedAln + '\n' + expectedChangedAln);
@@ -582,7 +582,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2){//remove columns of gaps is tested
 
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText==initAln, "undo works wrong");
@@ -591,7 +591,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2){//remove columns of gaps is tested
     QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
     GTWidget::click(os, redo);
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     clipboardText=GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText==expectedChangedAln, "redo works wrong\n" + clipboardText);
@@ -604,7 +604,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008){//remove all gaps is tested
 
     //save initial state
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString initAln = GTClipboard::text(os);
     QString expectedChangedAln = "AAGCTTCTTTTAA\nAAGTTACTAA---\nTAGTTATTAA---\nAAGCTATTAA---\nTAGTTATTAA---\n"
@@ -614,7 +614,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008){//remove all gaps is tested
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "Remove all gaps",GTGlobals::UseMouse));
     GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString changedAln = GTClipboard::text(os);
     CHECK_SET_ERR(changedAln == expectedChangedAln,"remove gaps option works wrong\n" + changedAln + '\n' + expectedChangedAln);
@@ -625,7 +625,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008){//remove all gaps is tested
 
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText==initAln, "undo works wrong");
@@ -634,7 +634,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008){//remove all gaps is tested
     QAbstractButton *redo= GTAction::button(os,"msa_action_redo");
     GTWidget::click(os, redo);
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     clipboardText=GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText==expectedChangedAln, "redo works wrong\n" + clipboardText);
@@ -646,14 +646,14 @@ GUI_TEST_CLASS_DEFINITION(test_0009){//rename msa is tested
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //rename msa
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename"));
-    GTMouseDriver::moveTo(os,GTUtilsProjectTreeView::getItemCenter(os, "ma2_gap_col"));
-    GTMouseDriver::click(os,Qt::RightButton);
-    GTKeyboardDriver::keySequence(os, "some_name");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Rename"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "ma2_gap_col"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTKeyboardDriver::keySequence("some_name");
+    GTKeyboardDriver::keyClick( Qt::Key_Enter);
 
     //Expected state: msa renamed
-    GTMouseDriver::moveTo(os,GTUtilsProjectTreeView::getItemCenter(os, "some_name"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "some_name"));
 
     //undo
     QAbstractButton *undo= GTAction::button(os,"msa_action_undo");
@@ -661,13 +661,13 @@ GUI_TEST_CLASS_DEFINITION(test_0009){//rename msa is tested
     GTWidget::click(os, undo);
 
     //Expected state: rename undone
-    GTMouseDriver::moveTo(os,GTUtilsProjectTreeView::getItemCenter(os, "ma2_gap_col"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "ma2_gap_col"));
 
     //redo
     GTWidget::click(os, redo);
 
     //Expected state: rename redone
-    GTMouseDriver::moveTo(os,GTUtilsProjectTreeView::getItemCenter(os, "some_name"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "some_name"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010){//MUSCLE aligner undo test
@@ -676,7 +676,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010){//MUSCLE aligner undo test
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString initAln = GTClipboard::text(os);
     QString expectedAln("AAG---AATAATTA\n"
@@ -696,7 +696,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010){//MUSCLE aligner undo test
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep(10000);
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString changedAln = GTClipboard::text(os);
     CHECK_SET_ERR(changedAln==expectedAln, "Unexpected alignment" + changedAln);
@@ -706,7 +706,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010){//MUSCLE aligner undo test
 
     //undo
     GTWidget::click(os,undo);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     changedAln = GTClipboard::text(os);
 
@@ -714,7 +714,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010){//MUSCLE aligner undo test
 
     //redo
     GTWidget::click(os,redo);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     changedAln = GTClipboard::text(os);
 
@@ -728,7 +728,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011){//Kalign undo test
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString initAln = GTClipboard::text(os);
 
@@ -750,7 +750,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011){//Kalign undo test
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(10000);
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString changedAln = GTClipboard::text(os);
     CHECK_SET_ERR(changedAln==expectedAln, "Unexpected alignment" + changedAln);
@@ -760,7 +760,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011){//Kalign undo test
 
     //undo
     GTWidget::click(os,undo);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(3000);
     changedAln = GTClipboard::text(os);
 
@@ -768,7 +768,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011){//Kalign undo test
 
     //redo
     GTWidget::click(os,redo);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(3000);
     changedAln = GTClipboard::text(os);
 
@@ -781,7 +781,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1){//Kalign undo test
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString initAln = GTClipboard::text(os);
 
@@ -803,7 +803,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1){//Kalign undo test
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     QString changedAln = GTClipboard::text(os);
     CHECK_SET_ERR(changedAln==expectedAln, "Unexpected alignment" + changedAln);
 
@@ -812,7 +812,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1){//Kalign undo test
 
     //undo
     GTWidget::click(os,undo);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     changedAln = GTClipboard::text(os);
 
@@ -820,7 +820,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1){//Kalign undo test
 
     //redo
     GTWidget::click(os,redo);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     changedAln = GTClipboard::text(os);
 
@@ -833,7 +833,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012){//ClustalW aligner undo test
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(14,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString initAln = GTClipboard::text(os);
 
@@ -855,7 +855,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012){//ClustalW aligner undo test
 
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(17,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString changedAln = GTClipboard::text(os);
     CHECK_SET_ERR(changedAln==expectedAln, "Unexpected alignment\n" + changedAln);
@@ -865,7 +865,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012){//ClustalW aligner undo test
 
     //undo
     GTWidget::click(os,undo);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     changedAln = GTClipboard::text(os);
 
@@ -875,7 +875,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012){//ClustalW aligner undo test
     GTWidget::click(os,redo);
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(17,10));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     changedAln = GTClipboard::text(os);
 

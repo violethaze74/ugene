@@ -27,7 +27,7 @@
 namespace U2 {
 
 class MultiGSelection;
-class MSAColorSchemeRegistry;
+class MsaColorSchemeRegistry;
 
 class U2VIEW_EXPORT MSAEditorFactory : public GObjectViewFactory {
     Q_OBJECT

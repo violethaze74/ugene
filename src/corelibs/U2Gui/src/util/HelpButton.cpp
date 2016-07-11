@@ -49,7 +49,7 @@ HelpButton::HelpButton(QObject *parent, QAbstractButton *hb, const QString& _pag
 }
 
 void HelpButton::sl_buttonClicked(){
-    GUIUtils::runWebBrowser("https://ugene.unipro.ru/wiki/pages/viewpage.action?pageId="+pageId+"&from=ugene");
+    GUIUtils::runWebBrowser("http://ugene.net/wiki/pages/viewpage.action?pageId="+pageId+"&from=ugene");
 }
 
 void HelpButton::updatePageId( const QString &newPageId ){

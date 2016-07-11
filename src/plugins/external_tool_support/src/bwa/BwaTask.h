@@ -29,6 +29,8 @@
 
 namespace U2 {
 
+class MultiTask;
+
 class BwaBuildIndexTask : public Task {
     Q_OBJECT
 public:
@@ -65,13 +67,16 @@ public:
 protected slots:
     QList<Task *> onSubTaskFinished(Task *subTask);
 private:
-
-    QList<Task*> alignTasks;
+    QList<ShortReadSet> downStreamList;
+    QList<ShortReadSet> upStreamList;
+    MultiTask *samMultiTask;
+    QStringList urlsToMerge;
+    MultiTask *alignMultiTask;
+    Task *mergeTask;
     QString indexPath;
     QList<ShortReadSet> readSets;
     QString resultPath;
     DnaAssemblyToRefTaskSettings settings;
-    bool alignmentPerformed;
     inline QString getSAIPath(const QString& pathToReads);
 };
 
@@ -92,8 +97,14 @@ public:
     BwaMemAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings);
     void prepare();
 
+protected slots:
+    QList<Task *> onSubTaskFinished(Task *subTask);
 private:
+    MultiTask *alignMultiTask;
+    Task *mergeTask;
     const QString indexPath;
+    QString resultPath;
+    QStringList bamUrlstoMerge;
     DnaAssemblyToRefTaskSettings settings;
 };
 

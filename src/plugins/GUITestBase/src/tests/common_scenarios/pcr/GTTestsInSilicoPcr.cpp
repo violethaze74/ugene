@@ -168,8 +168,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     CHECK_SET_ERR("9 - 1196" == GTUtilsPcr::getResultRegion(os, 0), "Wrong result");
 
     //5. Click the result.
-    GTMouseDriver::moveTo(os, GTUtilsPcr::getResultPoint(os, 0));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 0));
+    GTMouseDriver::click();
 
     //Expected: the extract button is enabled.
     QWidget *extractButton = GTWidget::findWidget(os, "extractProductButton");
@@ -178,22 +178,22 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //6. Click the empty place of the table.
     QPoint emptyPoint = QPoint(GTUtilsPcr::getResultPoint(os, 0));
     emptyPoint.setY(emptyPoint.y() + 30);
-    GTMouseDriver::moveTo(os, emptyPoint);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(emptyPoint);
+    GTMouseDriver::click();
 
     //Expected: the extract button is disabled.
     CHECK_SET_ERR(!extractButton->isEnabled(), "Extract button is enabled");
 
     //7. Double click the result.
-    GTMouseDriver::moveTo(os, GTUtilsPcr::getResultPoint(os, 0));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 0));
+    GTMouseDriver::doubleClick();
 
     //Expected: the new file is opened "pIB2-SEC13_9-1196.gb".
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "pIB2-SEC13_9-1196.gb");
 
     // TODO: remove it after fixing UGENE-3657
-    GTKeyboardDriver::keyClick(os, 'w', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'w', Qt::ControlModifier);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -223,17 +223,17 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     CHECK_SET_ERR(3 == GTUtilsPcr::productsCount(os), "Wrong results count");
 
     //5. Click the 3rd result.
-    GTMouseDriver::moveTo(os, GTUtilsPcr::getResultPoint(os, 2));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 2));
+    GTMouseDriver::click();
 
     //Expected: the sequence selection is [2..3775].
     // TODO
 
     //6. Click the 2nd result with CTRL pressed.
-    GTMouseDriver::moveTo(os, GTUtilsPcr::getResultPoint(os, 1));
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTMouseDriver::moveTo(GTUtilsPcr::getResultPoint(os, 1));
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 
     //Expected: the sequence selection is not changed, two results are selected in the table.
     // TODO
@@ -247,9 +247,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsProjectTreeView::findIndex(os, "pIB2-SEC13_2-3775.gb");
 
     // TODO: remove it after fixing UGENE-3657
-    GTKeyboardDriver::keyClick(os, 'w', GTKeyboardDriver::key["ctrl"]);
-    GTKeyboardDriver::keyClick(os, 'w', GTKeyboardDriver::key["ctrl"]);
-    GTKeyboardDriver::keyClick(os, 'w', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'w', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick( 'w', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick( 'w', Qt::ControlModifier);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -282,8 +282,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //Expected: the details dialog is shown, the GC note of the forward primer is red.
     GTGlobals::sleep();
     GTUtilsDialog::waitForDialog(os, new PrimersDetailsDialogFiller(os));
-    GTMouseDriver::moveTo(os, GTUtilsPcr::getDetailsPoint(os));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsPcr::getDetailsPoint(os));
+    GTMouseDriver::click();
 
     //6. Remove the last character of the forward primer.
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "AGACTCTTTCGTCTCACGCACTTCGCTGAT");
@@ -357,9 +357,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(0 == GTUtilsPcr::productsCount(os), "Wrong results count 1");
 
     //5. Right click on the sequence object in the project view -> Mark as circular.
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "pIB2-SEC13"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "pIB2-SEC13"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Mark as circular"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
     //6. Click the find button.
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
@@ -628,6 +628,26 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(2 == GTUtilsPcr::productsCount(os), "Wrong results count 3");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016) {
+    // Gaps are not allowed for primers
+    // 1. Open murine.gb
+    GTUtilsPcr::clearPcrDir(os);
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Go to the PCR OP tab
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    // 3. Try to input gap symbol '-'
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "---");
+    GTGlobals::sleep();
+
+    // Expected state: '-' pressing is ignored
+    QLineEdit *primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
+    CHECK_SET_ERR(primerEdit != NULL, "Cannot find primer line edit");
+    CHECK_SET_ERR(primerEdit->text().isEmpty(), "There are unexpected characters in PrimerLineEdit");
 }
 
 } // GUITest_common_scenarios_in_silico_pcr

@@ -23,7 +23,6 @@ SUBDIRS += \
           src/libs_3rdparty/breakpad \
           src/libs_3rdparty/qscore \
           src/libs_3rdparty/sqlite3 \
-          src/libs_3rdparty/gtest \
           src/libs_3rdparty/samtools \
           src/libs_3rdparty/QSpec \
           src/corelibs/U2Core \
@@ -33,7 +32,6 @@ SUBDIRS += \
           src/corelibs/U2Lang \
           src/corelibs/U2Private \
           src/corelibs/U2Gui \
-          src/corelibs/U2Remote \
           src/corelibs/U2View \
           src/corelibs/U2Designer \
           src/corelibs/U2Script \
@@ -75,7 +73,6 @@ SUBDIRS += \
           src/plugins/dotplot \
           src/plugins/query_designer \
           src/plugins/external_tool_support \
-          src/plugins/remote_service \
           src/plugins/CoreTests \
           src/plugins/api_tests \
           src/plugins/GUITestBase \
@@ -145,13 +142,14 @@ win32 : UGENE_DEV_NULL = nul
 unix : UGENE_DEV_NULL = /dev/null
 
 UGENE_LRELEASE =
-UGENE_LUPDATE = 
-system(lrelease-qt5 -version > $$UGENE_DEV_NULL 2> $$UGENE_DEV_NULL) {
-    UGENE_LRELEASE = lrelease-qt5
-    UGENE_LUPDATE = lupdate-qt5
-} else : system(lrelease -version > $$UGENE_DEV_NULL 2> $$UGENE_DEV_NULL) {
-    UGENE_LRELEASE = lrelease
-    UGENE_LUPDATE = lupdate
+UGENE_LUPDATE =
+message(Using QT from $$[QT_INSTALL_BINS])
+system($$[QT_INSTALL_BINS]/lrelease-qt5 -version > $$UGENE_DEV_NULL 2> $$UGENE_DEV_NULL) {
+    UGENE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease-qt5
+    UGENE_LUPDATE = $$[QT_INSTALL_BINS]/lupdate-qt5
+} else : system($$[QT_INSTALL_BINS]/lrelease -version > $$UGENE_DEV_NULL 2> $$UGENE_DEV_NULL) {
+    UGENE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+    UGENE_LUPDATE = $$[QT_INSTALL_BINS]/lupdate
 }
 
 #foreach 'language'

@@ -260,7 +260,6 @@ private:
     void saveState();
     void recreateScene();
     void localHostLaunch();
-    void remoteLaunch();
     void rescale(bool updateGui = true);
 
     void toggleDebugActionsState(bool enable);

@@ -24,6 +24,7 @@
 #include <QListWidget>
 #include <QPlainTextEdit>
 #include <QTableView>
+#include <QTableWidget>
 #include <QWebElement>
 
 #include <U2Core/BaseDocumentFormats.h>
@@ -90,16 +91,44 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
 using namespace HI;
+
+GUI_TEST_CLASS_DEFINITION(test_5004) {
+    //1. Open file _common_data/scenarios/_regression/5004/short.fa
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5004", "short.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QWidget *sequenceWidget = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
+    CHECK_SET_ERR(NULL != sequenceWidget, "sequenceWidget is not present");
+
+    GTWidget::click(os, sequenceWidget);
+
+    GTLogTracer lt;
+    // 2. Show DNA Flexibility graph
+    // Expected state: no errors in log
+    QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
+    Runnable *chooser = new PopupChooser(os, QStringList() << "DNA Flexibility");
+    GTUtilsDialog::waitForDialog(os, chooser);
+    GTWidget::click(os, graphAction);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
 
 GUI_TEST_CLASS_DEFINITION(test_5012) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -212,7 +241,7 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
     CHECK_SET_ERR(GTFile::check(os, homePath + "/test_5018.fa"), "File was not created");
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     QFile(homePath + "/test_5018.fa").remove();
-    GTGlobals::sleep();
+    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5027_1) {
@@ -246,7 +275,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf", "valid.vcf");
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -286,7 +315,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf", "valid.vcf");
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -407,7 +436,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     //    1. Open document test/_common_data/clustal/big.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Add big sequence 
+    //    2. Add big sequence
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa");
     GTUtilsDialog::waitForDialog(os, ob);
 
@@ -417,7 +446,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during adding sequences. The multiple alignment is no more available.");
     GTGlobals::sleep();
     GTUtilsProjectTreeView::click(os, "COI");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(6000);
 }
 
@@ -451,6 +480,252 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5199) {
+//    1. Open "data/samples/PDB/1CF7.PDB".
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Set focus to the first sequence.
+    GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+
+//    3. Click "Predict secondary structure" button on the toolbar;
+//    4. Select "PsiPred" algorithm.
+//    5. Click "OK" button.
+//    Expected state: UGENE doesn't crash, 4 results are found.
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), "PsiPred");
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTUtilsTaskTreeView::waitTaskFinished(os);
+
+            QTableWidget *resultsTable = GTWidget::findExactWidget<QTableWidget *>(os, "resultsTable", dialog);
+            CHECK_SET_ERR(NULL != resultsTable, "resultsTable is NULL");
+            const int resultsCount = resultsTable->rowCount();
+            CHECK_SET_ERR(4 == resultsCount, QString("Unexpected results count: expected %1, got %2").arg(4).arg(resultsCount));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new PredictSecondaryStructureDialogFiller(os, new Scenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Predict secondary structure");
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5208) {
+    //    1. Open the library, clear it.
+    GTUtilsPrimerLibrary::openLibrary(os);
+    GTUtilsPrimerLibrary::clearLibrary(os);
+
+    //    2. Click "Import".
+    //    3. Fill the dialog:
+    //        Import from: "Local file(s)";
+    //        Files: "_common_data/fasta/random_primers.fa"
+    //    and accept the dialog.
+    class ImportFromMultifasta : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
+            ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, new ImportFromMultifasta));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Import);
+
+    //    4. Check log.
+    //    Expected state: the library contains four primers, log contains no errors.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5216) {
+    // 1. Connect to the public database
+    //GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(os);
+    GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
+
+    GTLogTracer lt;
+    // 2. Type to the project filter field "acct" then "acctt"
+    GTUtilsProjectTreeView::filterProjectSequental(os, QStringList() << "acct" << "accttt", true);
+    GTGlobals::sleep(3500);
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+    //GTUtilsProjectTreeView::filterProject(os, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5227) {
+    GTUtilsPcr::clearPcrDir(os);
+
+    //1. Open "samples/Genbank/CVU55762.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "CVU55762.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the PCR OP.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
+
+    //3. Set next parameters:
+    // the first primer : TTCTGGATTCA
+    // the first primer mismatches : 15
+    // the second primer : CGGGTAG
+    // the second primer mismatches : 12
+    // 3' perfect match: 10
+    // Maximum product : 100 bp
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "TTCTGGATTCA");
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "CGGGTAG");
+
+    GTUtilsPcr::setMismatches(os, U2Strand::Direct, 15);
+    GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 12);
+
+    QSpinBox *perfectSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
+    GTSpinBox::setValue(os, perfectSpinBox, 10, GTGlobals::UseKeyBoard);
+
+    QSpinBox *productSizeSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "productSizeSpinBox"));
+    GTSpinBox::setValue(os, productSizeSpinBox, 100, GTGlobals::UseKeyBoard);
+
+    //4. Find products
+    //Expected state: log shouldn't contain errors
+    GTLogTracer lt;
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_5246) {
+    //1. Open file human_t1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Show ORFs
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Show ORFs"));
+    GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QTreeWidget *widget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(widget->invisibleRootItem());
+    CHECK_SET_ERR(839 == treeItems.size(), "Unexpected annotation count");
+
+    //3. Change amino translation
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton", GTWidget::findWidget(os, "ADV_single_sequence_widget_0")));
+    QMenu *menu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
+    GTMenu::clickMenuItemByName(os, menu, QStringList() << "14. The Alternative Flatworm Mitochondrial Code");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //Expected state: orfs recalculated
+    treeItems = GTTreeWidget::getItems(widget->invisibleRootItem());
+    CHECK_SET_ERR(2023 == treeItems.size(), "Unexpected annotation count");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5249) {
+    // 1. Open file "_common_data/pdb/1atp.pdb"
+    // Expected state: no crash and no errors in the log
+    GTLogTracer l;
+
+    GTFileDialog::openFile(os, testDir + "_common_data/pdb/1atp.pdb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(!l.hasError(), "Error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5268) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+
+//    2. Create a custom color scheme for the alignment with aan ppropriate alphabet.
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+
+//    3. Open "Highlighting" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+
+//    4. Select the custom color scheme.
+    GTUtilsOptionPanelMsa::setColorScheme(os, "test_5268");
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+//    5. Open {Settings -> Preferences -> Alignment Color Scheme}.
+//    6. Change color of the custom color scheme and click ok.
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+
+    GTGlobals::sleep(500);
+
+//    Expected state: the settings dialog closed, new colors are applied for the opened MSA.
+    const QString opColorScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
+    CHECK_SET_ERR(opColorScheme == "test_5268",
+                  QString("An incorrect color scheme is set in option panel: expect '%1', got '%2'")
+                  .arg("test_5268").arg(opColorScheme));
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
+    GTGlobals::sleep(500);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5278) {
+    //1. Open file PBR322.gb from samples
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "PBR322.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Find next restriction sites "AaaI" and "AagI"
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "AaaI" << "AagI"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsNotifications::waitForNotification(os, false);
+    //3. Open report and be sure fragments sorted by length (longest first)
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTGlobals::sleep();
+    QTextEdit *textEdit = dynamic_cast<QTextEdit*>(GTWidget::findWidget(os, "reportTextEdit", GTUtilsMdi::activeWindow(os)));
+    CHECK_SET_ERR(textEdit->toPlainText().contains("1:    From AaaI (940) To AagI (24) - 3446 bp "), "Expected message is not found in the report text");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5295) {
+//    1. Open "_common_data/pdb/Helix.pdb".
+    GTFileDialog::openFile(os, testDir + "_common_data/pdb/Helix.pdb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: UGENE doesn't crash, the 3d structure is shown.
+    QWidget *biostructWidget = GTWidget::findWidget(os, "1-");
+    const QImage image1 = GTWidget::getImage(os, biostructWidget);
+    QSet<QRgb> colors;
+    for (int i = 0; i < image1.width(); i++) {
+        for (int j = 0; j < image1.height(); j++) {
+            colors << image1.pixel(i, j);
+        }
+    }
+    CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn");
+
+//    2. Call a context menu, open "Render Style" submenu.
+//    Expected state: "Ball-and-Stick" renderer is selected.
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Render Style" << "Ball-and-Stick", PopupChecker::CheckOptions(PopupChecker::IsChecked)));
+    GTWidget::click(os, biostructWidget, Qt::RightButton);
+
+//    3. Select "Model" renderer. Select "Ball-and-Stick" again.
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style" << "Model"));
+    GTWidget::click(os, biostructWidget, Qt::RightButton);
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Render Style" << "Ball-and-Stick"));
+    GTWidget::click(os, biostructWidget, Qt::RightButton);
+
+//    Expected state: UGENE doesn't crash, the 3d structure is shown.
+    const QImage image2 = GTWidget::getImage(os, biostructWidget);
+    colors.clear();
+    for (int i = 0; i < image2.width(); i++) {
+        for (int j = 0; j < image2.height(); j++) {
+            colors << image2.pixel(i, j);
+        }
+    }
+    CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn after renderer change");
 }
 
 } // namespace GUITest_regression_scenarios

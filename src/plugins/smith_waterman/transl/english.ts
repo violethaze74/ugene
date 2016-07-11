@@ -4,32 +4,32 @@
 <context>
     <name>PairwiseAlignmentSmithWatermanOptionsPanelMainWidget</name>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="14"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="29"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="29"/>
         <source>Algorithm version:</source>
         <translation>Algorithm version:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="39"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="39"/>
         <source>Scoring matrix:</source>
         <translation>Scoring matrix:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="62"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="62"/>
         <source>Gap penalty</source>
         <translation>Gap penalty</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
         <source>Open:</source>
         <translation>Open:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="84"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="84"/>
         <source>Extension:</source>
         <translation>Extension:</translation>
     </message>
@@ -96,17 +96,17 @@
 <context>
     <name>U2::GTest_SmithWatermnan</name>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="229"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="223"/>
         <source>**</source>
         <translation>**</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="232"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="226"/>
         <source>,</source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanTests.cpp" line="239"/>
+        <location filename="../src/SmithWatermanTests.cpp" line="233"/>
         <source>..</source>
         <translation>..</translation>
     </message>
@@ -383,27 +383,27 @@
 <context>
     <name>U2::PairwiseAlignmentSmithWatermanTask</name>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="554"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="561"/>
         <source>Substitution matrix is empty</source>
         <translation>Substitution matrix is empty</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="767"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="774"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="797"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="803"/>
         <source>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</source>
         <translation>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="803"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="809"/>
         <source>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</source>
         <translation>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="857"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="866"/>
         <source>%1 results found</source>
         <translation>%1 results found</translation>
     </message>
@@ -595,17 +595,17 @@
         <translation>Smith Waterman2 SequenceWalker</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="213"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="212"/>
         <source>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</source>
         <translation>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="219"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="218"/>
         <source>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</source>
         <translation>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="422"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="424"/>
         <source>%1 results found</source>
         <translation>%1 results found</translation>
     </message>

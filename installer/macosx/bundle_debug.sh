@@ -67,7 +67,6 @@ add-library U2Formats
 add-library U2Gui
 add-library U2Lang
 add-library U2Private
-add-library U2Remote
 add-library U2Script
 add-library U2Test
 add-library U2View
@@ -76,7 +75,6 @@ add-library breakpad
 if [ "$1" == "-test" ]
    then
       add-library humimit
-      add-library gtest
 fi
 
 #install_name_tool -change @executable_path/../Frameworks/Breakpad.framework/Versions/A/Breakpad @executable_path/../../../../includes/breakpad/Breakpad.framework/Versions/A/BreakPad ${TARGET_EXE_DIR}/libU2Privated.1.dylib
@@ -112,7 +110,6 @@ add-plugin psipred
 add-plugin ptools
 add-plugin query_designer
 add-plugin remote_blast
-add-plugin remote_service
 add-plugin repeat_finder
 add-plugin sitecon
 add-plugin smith_waterman

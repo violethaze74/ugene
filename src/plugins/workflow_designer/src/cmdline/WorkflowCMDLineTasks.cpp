@@ -28,7 +28,6 @@
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineUtils.h>
 #include <U2Core/CMDLineCoreOptions.h>
-#include <U2Remote/SerializeUtils.h>
 
 #include <U2Lang/URLAttribute.h>
 #include <U2Lang/WorkflowEnv.h>
@@ -184,36 +183,6 @@ QList<Task*> WorkflowRunFromCMDLineBase::onSubTaskFinished( Task* subTask ) {
 *******************************************/
 Task * WorkflowRunFromCMDLineTask::getWorkflowRunTask() const {
     return new WorkflowRunTask(*schema, remapping);
-}
-
-/*******************************************
-* WorkflowRemoteRunFromCMDLineTask
-*******************************************/
-WorkflowRemoteRunFromCMDLineTask::WorkflowRemoteRunFromCMDLineTask() {
-}
-
-Task * WorkflowRemoteRunFromCMDLineTask::getWorkflowRunTask() const {
-    assert(settings != NULL);
-    return new RemoteWorkflowRunTask( settings, *schema );
-}
-
-void WorkflowRemoteRunFromCMDLineTask::prepare()
-{
-    CMDLineRegistry * cmdlineReg = AppContext::getCMDLineRegistry();
-    assert(cmdlineReg != NULL);
-    QString filePath = cmdlineReg->getParameterValue(WorkflowDesignerPlugin::REMOTE_MACHINE);
-    if( filePath.isEmpty() ) {
-        stateInfo.setError(tr("%1 parameter expected, but not set").arg(WorkflowDesignerPlugin::REMOTE_MACHINE));
-        return;
-    }
-
-    settings = SerializeUtils::deserializeRemoteMachineSettingsFromFile(filePath);
-    if( settings == NULL ) {
-        stateInfo.setError(tr("Cannot read remote machine settings from %2").arg(filePath));
-        return;
-    }
-    assert(settings != NULL);
-
 }
 
 } // U2

@@ -65,7 +65,7 @@ void GTUtilsMSAEditorSequenceArea::callContextMenu(HI::GUITestOpStatus &os, cons
         GTWidget::click(os, getSequenceArea(os), Qt::RightButton);
     } else {
         moveTo(os, innerCoords);
-        GTMouseDriver::click(os, Qt::RightButton);
+        GTMouseDriver::click(Qt::RightButton);
     }
 }
 #undef GT_METHOD_NAME
@@ -75,7 +75,7 @@ void GTUtilsMSAEditorSequenceArea::moveTo(HI::GUITestOpStatus &os, const QPoint 
 {
     QPoint convP = convertCoordinates(os,p);
 
-    GTMouseDriver::moveTo(os, convP);
+    GTMouseDriver::moveTo(convP);
 }
 #undef GT_METHOD_NAME
 
@@ -112,16 +112,16 @@ void GTUtilsMSAEditorSequenceArea::selectArea(HI::GUITestOpStatus &os, QPoint p1
     p2.ry() = p2.y()==-1 ? msaEditArea->getNumVisibleSequences(true)-1 : p2.y();
 
     moveTo(os, p1);
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os,convertCoordinates(os,p2));
-    GTMouseDriver::release(os);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(convertCoordinates(os,p2));
+    GTMouseDriver::release();
     GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "cancelSelection"
 void GTUtilsMSAEditorSequenceArea::cancelSelection(HI::GUITestOpStatus &os) {
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GT_METHOD_NAME
 
@@ -148,8 +148,8 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(HI::GUITestOpStatus &os, con
         const QRect sliderSpaceRect = vBar->style()->subControlRect(QStyle::CC_ScrollBar, &vScrollBarOptions, QStyle::SC_ScrollBarGroove, vBar);
         const QPoint bottomEdge(sliderSpaceRect.width() / 2, sliderSpaceRect.y() + sliderSpaceRect.height());
 
-        GTMouseDriver::moveTo(os, vBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(vBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
+        GTMouseDriver::click();
     }
 
     // scroll right
@@ -163,8 +163,8 @@ void GTUtilsMSAEditorSequenceArea::scrollToPosition(HI::GUITestOpStatus &os, con
         const QRect sliderSpaceRect = hBar->style()->subControlRect(QStyle::CC_ScrollBar, &hScrollBarOptions, QStyle::SC_ScrollBarGroove, hBar);
         const QPoint rightEdge(sliderSpaceRect.x() + sliderSpaceRect.width(), sliderSpaceRect.height() / 2);
 
-        GTMouseDriver::moveTo(os, hBar->mapToGlobal(rightEdge) - QPoint(1, 0));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(hBar->mapToGlobal(rightEdge) - QPoint(1, 0));
+        GTMouseDriver::click();
     }
 
     SAFE_POINT(msaSeqArea->isVisible(position, false), "The position is still invisible after scrolling", );
@@ -191,8 +191,8 @@ void GTUtilsMSAEditorSequenceArea::scrollToBottom(HI::GUITestOpStatus &os) {
         const QRect sliderSpaceRect = vBar->style()->subControlRect(QStyle::CC_ScrollBar, &vScrollBarOptions, QStyle::SC_ScrollBarGroove, vBar);
         const QPoint bottomEdge(sliderSpaceRect.width() / 2 + 10, sliderSpaceRect.y() + sliderSpaceRect.height());
 
-        GTMouseDriver::moveTo(os, vBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(vBar->mapToGlobal(bottomEdge) - QPoint(0, 1));
+        GTMouseDriver::click();
     }
 }
 #undef GT_METHOD_NAME
@@ -247,8 +247,8 @@ QStringList GTUtilsMSAEditorSequenceArea::getNameList(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getVisibaleNames"
-QStringList GTUtilsMSAEditorSequenceArea::getVisibaleNames(HI::GUITestOpStatus &os){
+#define GT_METHOD_NAME "getVisibleNames"
+QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(HI::GUITestOpStatus &os){
     Q_UNUSED(os);
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor* editor = mw->findChild<MSAEditor*>();
@@ -275,8 +275,8 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibaleNames(HI::GUITestOpStatus &
 #define GT_METHOD_NAME "removeSequence"
 void GTUtilsMSAEditorSequenceArea::removeSequence(HI::GUITestOpStatus &os, const QString &sequenceName) {
     selectSequence(os, sequenceName);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
-    GTThread::waitForMainThread(os);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
@@ -297,20 +297,20 @@ void GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(HI::GUITestOpStatus &os
     MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea*>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     GT_CHECK(msaEditArea != NULL, "MsaEditorSequenceArea not found");
 
-    int rowNum = getVisibaleNames(os).indexOf(seqName);
+    int rowNum = getVisibleNames(os).indexOf(seqName);
     GT_CHECK(rowNum != -1, "sequence not found in nameList");
     QWidget* nameList = GTWidget::findWidget(os, "msa_editor_name_list");
     QPoint localCoord = QPoint(15, msaEditArea->getYBySequenceNum(rowNum));
     QPoint globalCoord = nameList->mapToGlobal(localCoord);
-    GTMouseDriver::moveTo(os, globalCoord);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(globalCoord);
+    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isCollapsed"
 bool GTUtilsMSAEditorSequenceArea::isCollapsed(HI::GUITestOpStatus &os, QString seqName){
     QStringList names = getNameList(os);
-    QStringList visiable = getVisibaleNames(os);
+    QStringList visiable = getVisibleNames(os);
     GT_CHECK_RESULT(names.contains(seqName), "sequence " + seqName + " not found", false);
     return !visiable.contains(seqName);
 }
@@ -319,7 +319,7 @@ bool GTUtilsMSAEditorSequenceArea::isCollapsed(HI::GUITestOpStatus &os, QString 
 #define GT_METHOD_NAME "collapsingMode"
 bool GTUtilsMSAEditorSequenceArea::collapsingMode(HI::GUITestOpStatus &os){
     QAbstractButton* collapce = GTAction::button(os, "Enable collapsing");
-    bool nameLists = getVisibaleNames(os)==getNameList(os);
+    bool nameLists = getVisibleNames(os)==getNameList(os);
     if(nameLists && !collapce->isChecked()){
         return false;
     }else if (!nameLists && collapce->isChecked()) {
@@ -410,7 +410,7 @@ void GTUtilsMSAEditorSequenceArea::selectSequence(HI::GUITestOpStatus &os, const
             (GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(msaEditArea != NULL, "MsaEditorSequenceArea not found");
 
-    QStringList names = getVisibaleNames(os);
+    QStringList names = getVisibleNames(os);
     int row = 0;
     while (names[row] != seqName) {
         row++;
@@ -453,7 +453,7 @@ int GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(HI::GUITestOpStatus &o
 
 #define GT_METHOD_NAME "isSequenceVisible"
 bool GTUtilsMSAEditorSequenceArea::isSequenceVisible(HI::GUITestOpStatus &os, const QString &seqName) {
-    QStringList visiableRowNames = getVisibaleNames(os);
+    QStringList visiableRowNames = getVisibleNames(os);
     return visiableRowNames.contains(seqName);
 }
 #undef GT_METHOD_NAME
@@ -496,8 +496,8 @@ void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus( HI::GUITestOpStatus 
     CHECK_SET_ERR( NULL != consArea,"consArea is NULL" );
 
     const int posY = consArea->mapToGlobal( consArea->rect( ).center( ) ).y( );
-    GTMouseDriver::moveTo( os, QPoint( posX, posY ) );
-    GTMouseDriver::click( os );
+    GTMouseDriver::moveTo( QPoint( posX, posY ) );
+    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 
@@ -513,7 +513,7 @@ bool GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(HI::GUITestOpStatus &os)
 
 #define GT_METHOD_NAME "isSequenceHightighted"
 bool GTUtilsMSAEditorSequenceArea::isSequenceHightighted(HI::GUITestOpStatus &os, const QString &seqName){
-    QStringList names = getVisibaleNames(os);
+    QStringList names = getVisibleNames(os);
     GT_CHECK_RESULT(names.contains(seqName), QString("sequence with name %1 not found").arg(seqName), false);
 
     int row = 0;
@@ -574,12 +574,12 @@ int GTUtilsMSAEditorSequenceArea::getRowHeight(HI::GUITestOpStatus &os){
 
 #define GT_METHOD_NAME "renameSequence"
 void GTUtilsMSAEditorSequenceArea::renameSequence(HI::GUITestOpStatus &os, const QString &seqToRename, const QString &newName){
-    int num = getVisibaleNames(os).indexOf(seqToRename);
+    int num = getVisibleNames(os).indexOf(seqToRename);
     GT_CHECK(num != -1, "sequence not found");
 
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, newName, seqToRename));
     moveTo(os, QPoint(-10,num));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
@@ -590,7 +590,7 @@ void GTUtilsMSAEditorSequenceArea::createColorScheme(HI::GUITestOpStatus &os, co
     GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors"
         << "Custom schemes" << "Create new color scheme" ) );
     GTUtilsDialog::waitForDialog( os, new NewColorSchemeCreator( os, colorSchemeName, al) );
-    GTMouseDriver::click( os, Qt::RightButton );
+    GTMouseDriver::click(Qt::RightButton );
 }
 #undef GT_METHOD_NAME
 
@@ -601,7 +601,7 @@ void GTUtilsMSAEditorSequenceArea::deleteColorScheme(HI::GUITestOpStatus &os, co
         << "Custom schemes" << "Create new color scheme" ) );
     GTUtilsDialog::waitForDialog( os, new NewColorSchemeCreator( os, colorSchemeName, NewColorSchemeCreator::nucl,
                                                                  NewColorSchemeCreator::Delete) );
-    GTMouseDriver::click( os, Qt::RightButton );
+    GTMouseDriver::click(Qt::RightButton );
 }
 #undef GT_METHOD_NAME
 
@@ -609,7 +609,7 @@ void GTUtilsMSAEditorSequenceArea::deleteColorScheme(HI::GUITestOpStatus &os, co
 void GTUtilsMSAEditorSequenceArea::checkSelection(HI::GUITestOpStatus &os, const QPoint &start, const QPoint &end, const QString &expected){
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     selectArea(os, start, end);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     GT_CHECK(clipboardText == expected, QString("unexpected selection:\n%1").arg(clipboardText));

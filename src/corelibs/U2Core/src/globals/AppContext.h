@@ -53,8 +53,8 @@ class SmithWatermanTaskFactoryRegistry;
 class SWMulAlignResultNamesTagsRegistry;
 class MolecularSurfaceFactoryRegistry;
 class SWResultFilterRegistry;
-class MSAColorSchemeRegistry;
-class MSAHighlightingSchemeRegistry;
+class MsaColorSchemeRegistry;
+class MsaHighlightingSchemeRegistry;
 class SecStructPredictAlgRegistry;
 class CudaGpuRegistry;
 class OpenCLGpuRegistry;
@@ -160,9 +160,9 @@ public:
 
     static SWResultFilterRegistry* getSWResultFilterRegistry() {return getInstance()->_getSWResultFilterRegistry();}
 
-    static MSAColorSchemeRegistry* getMSAColorSchemeRegistry() { return getInstance()->_getMSAColorSchemeRegistry();}
+    static MsaColorSchemeRegistry* getMsaColorSchemeRegistry() { return getInstance()->_getMsaColorSchemeRegistry();}
 
-    static MSAHighlightingSchemeRegistry* getMSAHighlightingSchemeRegistry() { return getInstance()->_getMSAHighlightingSchemeRegistry();}
+    static MsaHighlightingSchemeRegistry* getMsaHighlightingSchemeRegistry() { return getInstance()->_getMsaHighlightingSchemeRegistry();}
 
     static SecStructPredictAlgRegistry* getSecStructPredictAlgRegistry() { return getInstance()->_getSecStructPredictAlgRegistry(); }
 
@@ -287,8 +287,8 @@ protected:
     virtual MolecularSurfaceFactoryRegistry* _getMolecularSurfaceFactoryRegistry()const = 0;
     virtual SWMulAlignResultNamesTagsRegistry * _getSWMulAlignResultNamesTagsRegistry() const = 0;
     virtual SWResultFilterRegistry*     _getSWResultFilterRegistry() const = 0;
-    virtual MSAColorSchemeRegistry*     _getMSAColorSchemeRegistry() const = 0;
-    virtual MSAHighlightingSchemeRegistry* _getMSAHighlightingSchemeRegistry() const = 0;
+    virtual MsaColorSchemeRegistry*     _getMsaColorSchemeRegistry() const = 0;
+    virtual MsaHighlightingSchemeRegistry* _getMsaHighlightingSchemeRegistry() const = 0;
     virtual SecStructPredictAlgRegistry* _getSecStructPredictAlgRegistry() const = 0;
     virtual CudaGpuRegistry *           _getCudaGpuRegistry() const = 0;
     virtual OpenCLGpuRegistry *          _getOpenCLGpuRegistry() const = 0;

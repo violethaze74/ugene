@@ -38,14 +38,10 @@
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/GSequenceLineViewAnnotated.h>
 
-#include <QtGui/QFont>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QScrollBar>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QScrollBar>
-#endif
+#include <QFont>
+#include <QAction>
+#include <QScrollBar>
+
 
 namespace U2 {
 
@@ -161,7 +157,11 @@ protected:
     void resizeEvent(QResizeEvent *e);
     virtual void drawAll(QPaintDevice* pd);
     virtual U2Region getAnnotationYRange(Annotation *a, int ri, const AnnotationSettings *as) const;
-    void buildAnnotationItem(DrawAnnotationPass pass, Annotation *a, bool selected = false, const AnnotationSettings *as = NULL);
+
+    void buildAnnotationItem(DrawAnnotationPass pass, Annotation *a, int predefinedOrbit = -1, bool selected = false, const AnnotationSettings *as = NULL);
+    void buildAnnotationLabel( const QFont &font, Annotation *a, const AnnotationSettings *as, bool isAutoAnnotation = false);
+    void buildItems(QFont labelFont);
+
     virtual void drawAnnotations(QPainter& p);
 
     void redraw();
@@ -169,7 +169,6 @@ protected:
     void paintContent(QPainter& p, bool paintSelection = true, bool paintMarker = true);
     void paintContent(QPainter &p, int w, int h, bool paintSelection, bool paintMarker);
 
-    void buildAnnotationLabel( const QFont &font, Annotation *a, const AnnotationSettings *as, bool isAutoAnnotation = false);
     void drawSequenceName(QPainter& p);
     void drawRuler(QPainter& p);
     void drawRulerCoordinates(QPainter& p, int startPos, int seqLen);
@@ -225,6 +224,7 @@ private:
 
     CircularView* circularView;
     QList<QVector<U2Region> > regionY;
+
     QMap<Annotation *, CircularAnnotationItem *> circItems;
     TextItem* seqNameItem;
     TextItem* seqLenItem;

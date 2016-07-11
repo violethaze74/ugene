@@ -24,41 +24,37 @@
 #include "EnzymesIO.h"
 #include <limits>
 
-#include <U2Core/GObjectReference.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/Settings.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceSelection.h>
+#include <U2Core/GObjectReference.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/Settings.h>
 #include <U2Core/Timer.h>
-#include <U2Gui/HelpButton.h>
+#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/HelpButton.h>
+#include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/RegionSelectorWithExcludedRegion.h>
+
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/AutoAnnotationUtils.h>
-#include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DNASequenceObject.h>
+
 #include <U2Formats/GenbankLocationParser.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtCore/QTextStream>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QMessageBox>
-#include <QtGui/QInputDialog>
-#include <QtGui/QHeaderView>
-#else
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QInputDialog>
-#include <QtWidgets/QHeaderView>
-#endif
+#include <QVBoxLayout>
+#include <QTreeWidget>
+#include <QMessageBox>
+#include <QInputDialog>
+#include <QHeaderView>
 
 
 //TODO: group by TYPE, ORGANIZM
@@ -520,7 +516,7 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile()
 FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* sctx)
 : QDialog(sctx->getAnnotatedDNAView()->getWidget()), seqCtx(sctx) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17468941");
+    new HelpButton(this, buttonBox, "17470666");
 
     maxHitSB->setMaximum(INT_MAX);
     minHitSB->setMaximum(INT_MAX);
@@ -528,10 +524,11 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* sctx)
     maxHitSB->setMinimum(ANY_VALUE);
     minHitSB->setMinimum(ANY_VALUE);
 
-    rs = new RegionSelector(this, sctx->getSequenceLength(), false, sctx->getSequenceSelection());
-    rs->setEnabled(false);
-    rangeSelectorLayout->addWidget(rs);
-    connect(excludeRegionBox,SIGNAL(toggled(bool)),rs,SLOT(setEnabled(bool)));
+    regionSelector = new RegionSelectorWithExludedRegion(this,
+                                                         sctx->getSequenceLength(),
+                                                         sctx->getSequenceSelection(),
+                                                         sctx->getSequenceObject()->isCircular());
+    searchRegionLayout->addWidget(regionSelector);
 
     initSettings();
 
@@ -556,19 +553,18 @@ void FindEnzymesDialog::sl_onSelectionModified(int total, int nChecked) {
 void FindEnzymesDialog::accept() {
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
 
-    if (excludeRegionBox->isChecked()){
-        bool isRegionOk=false;
-        rs->getRegion(&isRegionOk);
-        if(!isRegionOk){
-            rs->showErrorMessage();
-            return;
-        }
+    if (regionSelector->hasError()) {
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(QMessageBox::Warning, L10N::errorTitle(), tr("Invalid 'Search' region!"), QMessageBox::Ok, this);
+        msgBox->setInformativeText(regionSelector->getErrorMessage());
+        msgBox->exec();
+        CHECK(!msgBox.isNull(), );
+        return;
     }
+
     if (selectedEnzymes.isEmpty()) {
         int ret = QMessageBox::question(this, windowTitle(),
-            tr("<html><body align=\"center\">No enzymes are selected!\
-                Do you want to turn off <br>enzymes annotations highlighting?</body></html>"),
-            QMessageBox::Yes, QMessageBox::No );
+            tr("<html><body align=\"center\">No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?</body></html>"),
+            QMessageBox::Yes, QMessageBox::No);
         if (ret == QMessageBox::Yes) {
             QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(seqCtx, ANNOTATION_GROUP_ENZYME);
             if (toggleAction) {
@@ -607,7 +603,12 @@ void FindEnzymesDialog::initSettings()
     int minHitValue = AppContext::getSettings()->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
     int maxHitValue = AppContext::getSettings()->getValue(EnzymeSettings::MAX_HIT_VALUE, 2).toInt();
 
-    QString exludedRegionStr = AppContext::getSettings()->getValue(EnzymeSettings::NON_CUT_REGION, "").toString();
+    U2Region searchRegion = AppContext::getSettings()->getValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(U2Region())).value<U2Region>();
+    if (!searchRegion.isEmpty() && U2Region(0, seqCtx->getSequenceLength()).contains(searchRegion)) {
+        regionSelector->setIncludeRegion(searchRegion);
+    }
+
+    QString exludedRegionStr = AppContext::getSettings()->getValue(EnzymeSettings::EXCLUDED_REGION, "").toString();
     bool excludeRegionOn = false;
     if (!exludedRegionStr.isEmpty()) {
         U2Location location;
@@ -615,11 +616,11 @@ void FindEnzymesDialog::initSettings()
         if (!location->isEmpty()) {
             excludeRegionOn = true;
             const U2Region& range = location->regions.first();
-            rs->setCustomRegion(range);
+            regionSelector->setExcludeRegion(range);
         }
     }
 
-    excludeRegionBox->setChecked(excludeRegionOn);
+    regionSelector->setExcludedCheckboxChecked(excludeRegionOn);
 
     filterGroupBox->setChecked(useHitCountControl);
     if (useHitCountControl) {
@@ -643,13 +644,11 @@ void FindEnzymesDialog::saveSettings()
     }
 
     QVector<U2Region> range;
-    if (excludeRegionBox->isChecked()) {
-        U2Region r=rs->getRegion();//todo add check on wrong region
-        if (r.length != 0) {
-            range.append(r);
-        }
+    if (regionSelector->getExcludeRegion() != U2Region()) {
+        range.append(regionSelector->getExcludeRegion());
     }
-    AppContext::getSettings()->setValue(EnzymeSettings::NON_CUT_REGION, QVariant::fromValue(range) );
+    AppContext::getSettings()->setValue(EnzymeSettings::EXCLUDED_REGION, QVariant::fromValue(range) );
+    AppContext::getSettings()->setValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(regionSelector->getIncludeRegion()) );
 
     enzSel->saveSettings();
 
@@ -657,7 +656,8 @@ void FindEnzymesDialog::saveSettings()
 
 void FindEnzymesDialog::initDefaultSettings()
 {
-    AppContext::getSettings()->setValue(EnzymeSettings::NON_CUT_REGION, "" );
+    AppContext::getSettings()->setValue(EnzymeSettings::EXCLUDED_REGION, "" );
+    AppContext::getSettings()->setValue(EnzymeSettings::SEARCH_REGION, "" );
 }
 
 //////////////////////////////////////////////////////////////////////////

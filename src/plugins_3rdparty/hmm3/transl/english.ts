@@ -117,6 +117,44 @@
     </message>
 </context>
 <context>
+    <name>U2::Hmmer3SearchWorfklowTask</name>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="56"/>
+        <source>No annotations objects found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="76"/>
+        <source>HMM profile used</source>
+        <translation type="unfinished">HMM profile used</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="79"/>
+        <source>Task was not finished</source>
+        <translation type="unfinished">Task was not finished</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="84"/>
+        <source>Result annotation table</source>
+        <translation type="unfinished">Result annotation table</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="85"/>
+        <source>Result annotation group</source>
+        <translation type="unfinished">Result annotation group</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="86"/>
+        <source>Result annotation name</source>
+        <translation type="unfinished">Result annotation name</translation>
+    </message>
+    <message>
+        <location filename="../src/search/Hmmer3SearchWorkflowTask.cpp" line="88"/>
+        <source>Results count</source>
+        <translation type="unfinished">Results count</translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::HMM3BuildPrompter</name>
     <message>
         <location filename="../src/workers/HMM3BuildWorker.cpp" line="109"/>
@@ -255,17 +293,17 @@
 <context>
     <name>U2::LocalWorkflow::HMM3SearchPrompter</name>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="136"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="195"/>
         <source>For each sequence from &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>For each sequence from &lt;u&gt;%1&lt;/u&gt;,</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="137"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="196"/>
         <source>using all profiles provided by &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>using all profiles provided by &lt;u&gt;%1&lt;/u&gt;,</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="141"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="200"/>
         <source>%1 search HMM3 signals %2. &lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%4&lt;/u&gt;.</source>
         <translation>%1 search HMM3 signals %2. &lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%4&lt;/u&gt;.</translation>
     </message>
@@ -273,112 +311,221 @@
 <context>
     <name>U2::LocalWorkflow::HMM3SearchWorker</name>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="71"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="85"/>
         <source>HMM3 profile</source>
         <translation>HMM3 profile</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="71"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="85"/>
         <source>HMM3 profile(s) to search with.</source>
         <translation>HMM3 profile(s) to search with.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="72"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="86"/>
         <source>Input sequence</source>
         <translation>Input sequence</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="73"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="87"/>
         <source>An input sequence (nucleotide or protein) to search in.</source>
         <translation>An input sequence (nucleotide or protein) to search in.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="74"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="88"/>
         <source>HMM3 annotations</source>
         <translation>HMM3 annotations</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="75"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="89"/>
         <source>Annotations marking found similar sequence regions.</source>
         <translation>Annotations marking found similar sequence regions.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="89"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="103"/>
         <source>Result annotation</source>
         <translation>Result annotation</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="89"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="103"/>
         <source>A name of the result annotations.</source>
         <translation>A name of the result annotations.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="90"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="104"/>
         <source>Seed</source>
         <translation>Seed</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="90"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="104"/>
         <source>Random generator seed. 0 - means that one-time arbitrary seed will be used.</source>
         <translation>Random generator seed. 0 - means that one-time arbitrary seed will be used.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="91"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="105"/>
+        <source>Threshold type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="105"/>
+        <source>Controlling reporting and  model-specific thresholds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="106"/>
         <source>Filter by high E-value</source>
         <translation>Filter by high E-value</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="91"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="106"/>
         <source>Report domains with e-value less than.</source>
         <translation>Report domains with e-value less than.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="92"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="107"/>
         <source>Filter by low score</source>
         <translation>Filter by low score</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="92"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="107"/>
         <source>Report domains with score greater than.</source>
         <translation>Report domains with score greater than.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="100"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="108"/>
+        <source>Significant sequences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="108"/>
+        <source>Number of significant sequences, for domain E-value calculation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="109"/>
+        <source>No bias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="109"/>
+        <source>Turn off composition bias filter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="110"/>
+        <source>No score corrections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="110"/>
+        <source>Turn off biased composition score corrections.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="111"/>
+        <source>No heuristic filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="111"/>
+        <source>Turn all heuristic filters off (less speed, more power).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="112"/>
+        <source>MSV threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="112"/>
+        <source>Stage 1 (MSV) threshold: promote hits w/ P &lt;= F1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="113"/>
+        <source>Vit threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="113"/>
+        <source>Stage 2 (Vit) threshold: promote hits w/ P &lt;= F2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="114"/>
+        <source>Fwd threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="114"/>
+        <source>Stage 3 (Fwd) threshold: promote hits w/ P &lt;= F3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="141"/>
         <source>HMM3 Search</source>
         <translation>HMM3 Search</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="101"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="142"/>
         <source>Searches each input sequence for significantly similar sequence matches to all specified HMM profiles. In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence.</source>
         <translation>Searches each input sequence for significantly similar sequence matches to all specified HMM profiles. In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence.</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="168"/>
-        <source>Power of e-value must be less or equal to zero. Using default value: 1e-1</source>
-        <translation>Power of e-value must be less or equal to zero. Using default value: 1e-1</translation>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="318"/>
+        <source>Power of e-value must be less or equal to zero. Using default value: 1e+1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="175"/>
+        <source>Power of e-value must be less or equal to zero. Using default value: 1e-1</source>
+        <translation type="vanished">Power of e-value must be less or equal to zero. Using default value: 1e-1</translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="325"/>
         <source>Score must be greater than zero. Using default value: 0.01</source>
         <translation>Score must be greater than zero. Using default value: 0.01</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="181"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="227"/>
         <source>Value for attribute name is empty, default name used</source>
         <translation>Value for attribute name is empty, default name used</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="227"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="148"/>
+        <source>&lt;= E-value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="149"/>
+        <source>&gt;= score</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="150"/>
+        <source>Use profile&apos;s GA gathering cutoffs</source>
+        <translation type="unfinished">Use profile&apos;s GA gathering cutoffs</translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="151"/>
+        <source>Use profile&apos;s NC noise cutoffs</source>
+        <translation type="unfinished">Use profile&apos;s NC noise cutoffs</translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="152"/>
+        <source>Use profile&apos;s TC trusted cutoffs</source>
+        <translation type="unfinished">Use profile&apos;s TC trusted cutoffs</translation>
+    </message>
+    <message>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="273"/>
         <source>Find HMM3 signals in %1</source>
         <translation>Find HMM3 signals in %1</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="231"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="277"/>
         <source>Bad sequence supplied to input: %1</source>
         <translation>Bad sequence supplied to input: %1</translation>
     </message>
     <message>
-        <location filename="../src/workers/HMM3SearchWorker.cpp" line="260"/>
+        <location filename="../src/workers/HMM3SearchWorker.cpp" line="306"/>
         <source>Found %1 HMM3 signals</source>
         <translation>Found %1 HMM3 signals</translation>
     </message>
@@ -473,37 +620,37 @@
 <context>
     <name>U2::UHMM3BuildDialogImpl</name>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="69"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="63"/>
         <source>Build</source>
         <translation>Build</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="70"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="64"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="109"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="119"/>
         <source>Select multiple alignment file</source>
         <translation>Select multiple alignment file</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="118"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="78"/>
         <source>Select hmm file to create</source>
         <translation>Select HMM file to create</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="184"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="185"/>
         <source>input file is empty</source>
         <translation>Input file is empty</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="187"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="188"/>
         <source>output hmm file is empty</source>
         <translation>Output HMM profile file is empty</translation>
     </message>
     <message>
-        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="196"/>
+        <location filename="../src/build/uHMM3BuildDialogImpl.cpp" line="197"/>
         <source>Error: bad arguments!</source>
         <translation>Error: bad arguments!</translation>
     </message>
@@ -1189,101 +1336,80 @@
 <context>
     <name>U2::UHMM3SWSearchToAnnotationsTask</name>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="557"/>
         <source>hmm profile filename</source>
-        <translation>Profile HMM file path</translation>
+        <translation type="vanished">Profile HMM file path</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="561"/>
         <source>annotation object</source>
-        <translation>Annotation object</translation>
+        <translation type="vanished">Annotation object</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="565"/>
         <source>annotations group name</source>
-        <translation>Annotations group name</translation>
+        <translation type="vanished">Annotations group name</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="569"/>
         <source>annotations name</source>
-        <translation>Annotations name</translation>
+        <translation type="vanished">Annotations name</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="586"/>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="612"/>
         <source>HMMER3 search task</source>
-        <translation>HMM3 search task</translation>
+        <translation type="vanished">HMM3 search task</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="589"/>
         <source>dna sequence</source>
-        <translation>Sequence to search in</translation>
+        <translation type="vanished">Sequence to search in</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="594"/>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="620"/>
         <source>HMMER3 search task with &apos;%1&apos; profile</source>
-        <translation>HMMER3 search task with &apos;%1&apos; profile</translation>
+        <translation type="vanished">HMMER3 search task with &apos;%1&apos; profile</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="615"/>
         <source>Sequence file</source>
-        <translation>Sequence file path</translation>
+        <translation type="vanished">Sequence file path</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="634"/>
         <source>HMM profile used</source>
-        <translation>HMM profile used</translation>
+        <translation type="vanished">HMM profile used</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="637"/>
         <source>Task was not finished</source>
-        <translation>Task was not finished</translation>
+        <translation type="vanished">Task was not finished</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="642"/>
         <source>Result annotation table</source>
-        <translation>Result annotation table</translation>
+        <translation type="vanished">Result annotation table</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="643"/>
         <source>Result annotation group</source>
-        <translation>Result annotation group</translation>
+        <translation type="vanished">Result annotation group</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="644"/>
         <source>Result annotation name</source>
-        <translation>Result annotation name</translation>
+        <translation type="vanished">Result annotation name</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="647"/>
         <source>Results count</source>
-        <translation>Results count</translation>
+        <translation type="vanished">Results count</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="657"/>
         <source>Cannot load sequence document</source>
-        <translation>Cannot load sequence document</translation>
+        <translation type="vanished">Cannot load sequence document</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="662"/>
         <source>No sequence objects loaded</source>
-        <translation>No sequence objects found in document</translation>
+        <translation type="vanished">No sequence objects found in document</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="666"/>
         <source>Unknown sequence type loaded</source>
-        <translation>No sequence objects found in document</translation>
+        <translation type="vanished">No sequence objects found in document</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="670"/>
         <source>Empty sequence loaded</source>
-        <translation>Empty sequence loaded</translation>
+        <translation type="vanished">Empty sequence loaded</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchTask.cpp" line="686"/>
         <source>Annotation object removed</source>
-        <translation>Choosed annotation object removed</translation>
+        <translation type="vanished">Choosed annotation object removed</translation>
     </message>
 </context>
 <context>
@@ -1363,18 +1489,17 @@
         <translation>Error: bad arguments!</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="182"/>
-        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="186"/>
+        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="183"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="186"/>
+        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="183"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="236"/>
+        <location filename="../src/search/uHMM3SearchDialogImpl.cpp" line="233"/>
         <source>Select query HMM profile</source>
         <translation>Select query HMM profile</translation>
     </message>
@@ -1615,18 +1740,18 @@
 <context>
     <name>UHMM3BuildDialog</name>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="59"/>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="76"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="62"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="79"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="123"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="126"/>
         <source>assign cols w/ &gt;= symfrac residues as consensus</source>
         <translation>assign cols w/ &gt;= symfrac residues as consensus</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="126"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="129"/>
         <source>fast</source>
         <translation>Fast</translation>
     </message>
@@ -1635,177 +1760,177 @@
         <translation type="vanished">Hmm3 Build</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="20"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="20"/>
         <source>HMM3 Build</source>
         <translation type="unfinished">HMM3 Build</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="39"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="42"/>
         <source>Input and output</source>
         <translation>Input and output</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="49"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="52"/>
         <source>Input alignment file</source>
         <translation>Input alignment file</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="66"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="69"/>
         <source>Build to profile</source>
         <translation>Build to profile</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="101"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="104"/>
         <source>Construction strategies</source>
         <translation>Construction strategies</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="139"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="142"/>
         <source>Sym fraction</source>
         <translation>Sym fraction</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="161"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="164"/>
         <source>Manual construction</source>
         <translation>Manual construction</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="164"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="167"/>
         <source>Hand (requires reference annotation)</source>
         <translation>Hand (requires reference annotation)</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="182"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="185"/>
         <source>Tag sequence as a fragment, if L &lt; x*&lt;L&gt;, where x is:</source>
         <translation>Tag sequence as a fragment, if L &lt; x*&lt;L&gt;, where x is:</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="223"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="226"/>
         <source>Relative weighting</source>
         <translation>Relative weighting</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="231"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="234"/>
         <source>Henikoff position-based weights</source>
         <translation>Henikoff position-based weights</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="247"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="250"/>
         <source>Gerstein/Sonnhammer/Chothia tree weights</source>
         <translation>Gerstein/Sonnhammer/Chothia tree weights</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="271"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="274"/>
         <source>Henikoff simple filter weights</source>
         <translation>Henikoff simple filter weights</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="281"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="284"/>
         <source>Identity cutoff</source>
         <translation>Identity cutoff</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="306"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="309"/>
         <source>Skip relative weighting; set all to 1</source>
         <translation>Skip relative weighting; set all to 1</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="313"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="316"/>
         <source>Use weights given in alignment file</source>
         <translation>Use weights given in alignment file</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="336"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="339"/>
         <source>Effective weighting</source>
         <translation>Effective weighting</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="344"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="347"/>
         <source>Adjust effective sequence number to achieve relative entropy target</source>
         <translation>Adjust effective sequence number to achieve relative entropy target</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="378"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="381"/>
         <source>Minimum relative entropy/position</source>
         <translation>Minimum relative entropy/position</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="430"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="433"/>
         <source>Sigma parameter</source>
         <translation>Sigma parameter</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="463"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="466"/>
         <source>Use number of single linkage clusters as effective</source>
         <translation>Use number of single linkage clusters as effective</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="473"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="476"/>
         <source>Fractional identity cutoff</source>
         <translation>Fractional identity cutoff</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="498"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="501"/>
         <source>Use number of sequences as effective</source>
         <translation>Use number of sequences as effective</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="513"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="516"/>
         <source>Effective sequence number for all models to</source>
         <translation>Effective sequence number for all models to</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="551"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="554"/>
         <source>E-value calibration</source>
         <translation>E-value calibration</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="570"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="573"/>
         <source>Length of sequences for MSV Gumbel mu fit</source>
         <translation>Length of sequences for MSV Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="606"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="609"/>
         <source>Number of sequences for MSV Gumbel mu fit</source>
         <translation>Number of sequences for MSV Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="639"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="642"/>
         <source>Length of sequences for Viterbi Gumbel mu fit</source>
         <translation>Length of sequences for Viterbi Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="669"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="672"/>
         <source>Number of sequences for Viterbi Gumbel mu fit</source>
         <translation>Number of sequences for Viterbi Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="699"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="702"/>
         <source>Length of sequences for Forward exp tail mu fit</source>
         <translation>Length of sequences for Forward exp tail mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="729"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="732"/>
         <source>Number of sequences for Forward exp tail mu fit</source>
         <translation>Number of sequences for Forward exp tail mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="759"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="762"/>
         <source>Tail mass for Forward exponential tail mu fit</source>
         <translation>Tail mass for Forward exponential tail mu fit</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="800"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="803"/>
         <source>Other</source>
         <translation>Other</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="816"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="819"/>
         <source>Random generator seed</source>
         <translation>Random generator seed</translation>
     </message>
     <message>
-        <location filename="../src/build/ui/UHMM3BuildDialog.ui" line="859"/>
+        <location filename="../src/build/UHMM3BuildDialog.ui" line="862"/>
         <source>* 0 means that one-time arbitrary seed will be used</source>
         <translation>* 0 means that one-time arbitrary seed will be used</translation>
     </message>
@@ -1813,152 +1938,152 @@
 <context>
     <name>UHMM3PhmmerDialog</name>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="20"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="20"/>
         <source>Phmmer Search</source>
         <translation>Phmmer Search</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="36"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="36"/>
         <source>Input and output</source>
         <translation>Input and output</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="50"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="50"/>
         <source>Query sequence file:</source>
         <translation>Query sequence file:</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="60"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="60"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="87"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="87"/>
         <source>Reporting tresholds</source>
         <translation>Reporting tresholds</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="103"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="103"/>
         <source>Report domains with E-value less than</source>
         <translation>Report domains with E-value less than</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="142"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="142"/>
         <source>Report domains with score greater than</source>
         <translation>Report domains with score greater than</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="166"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="166"/>
         <source>Number of significant sequences for domain E-value calculation</source>
         <translation>Number of significant sequences for domain E-value calculation</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="201"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="201"/>
         <source>Scoring system</source>
         <translation>Scoring system</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="217"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="217"/>
         <source>Gap open probability</source>
         <translation>Gap open probability</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="247"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="247"/>
         <source>Gap extend probability</source>
         <translation>Gap extend probability</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="285"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="285"/>
         <source>Acceleration</source>
         <translation>Acceleration</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="297"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="297"/>
         <source>Turn off composition bias filter</source>
         <translation>Turn off composition bias filter</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="310"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="310"/>
         <source>Turn off biased composition score corrections</source>
         <translation>Turn off biased composition score corrections</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="338"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="338"/>
         <source>Viterbi filter treshold</source>
         <translation>Viterbi filter treshold</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="368"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="368"/>
         <source>MSV filter treshold</source>
         <translation>MSV filter treshold</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="401"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="401"/>
         <source>Forward filter treshold</source>
         <translation>Forward filter treshold</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="437"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="437"/>
         <source>E-value calibration</source>
         <translation>E-value calibration</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="456"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="456"/>
         <source>Length of sequences for MSV Gumbel mu fit</source>
         <translation>Length of sequences for MSV Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="492"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="492"/>
         <source>Number of sequences for MSV Gumbel mu fit</source>
         <translation>Number of sequences for MSV Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="525"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="525"/>
         <source>Length of sequences for Viterbi Gumbel mu fit</source>
         <translation>Length of sequences for Viterbi Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="555"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="555"/>
         <source>Number of sequences for Viterbi Gumbel mu fit</source>
         <translation>Number of sequences for Viterbi Gumbel mu fit</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="585"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="585"/>
         <source>Length of sequences for Forward exp tail mu fit</source>
         <translation>Length of sequences for Forward exp tail mu fit</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="615"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="615"/>
         <source>Number of sequences for Forward exp tail mu fit</source>
         <translation>Number of sequences for Forward exp tail mu fit</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="645"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="645"/>
         <source>Tail mass for Forward exponential tail mu fit</source>
         <translation>Tail mass for Forward exponential tail mu fit</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="686"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="686"/>
         <source>Other</source>
         <translation>Other</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="702"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="702"/>
         <source>Random generator seed</source>
         <translation>Random generator seed</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="745"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="745"/>
         <source>* 0 means that one-time arbitrary seed will be used</source>
         <translation>* 0 means that one-time arbitrary seed will be used</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="113"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="113"/>
         <source>1E+</source>
         <translation>1E+</translation>
     </message>
     <message>
-        <location filename="../src/phmmer/ui/UHMM3PhmmerDialog.ui" line="323"/>
+        <location filename="../src/phmmer/UHMM3PhmmerDialog.ui" line="323"/>
         <source>Turn all heuristic filters off (less speed, more power)</source>
         <translation>Turn all heuristic filters off (less speed, more power)</translation>
     </message>
@@ -1966,117 +2091,117 @@
 <context>
     <name>UHMM3SearchDialog</name>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="65"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="65"/>
         <source>Query HMM file:</source>
         <translation>Query profile HMM file:</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="75"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="75"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="119"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="119"/>
         <source>1E+</source>
         <translation>1E+</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="54"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="54"/>
         <source>Input and output</source>
         <translation>Input and output</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="92"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="92"/>
         <source>Reporting thresholds</source>
         <translation>Reporting thresholds</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="109"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="109"/>
         <source>Report domains with E-value less than</source>
         <translation>Report domains with E-value less than</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="146"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="146"/>
         <source>Report domains with score greater than</source>
         <translation>Report domains with score greater than</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="20"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="20"/>
         <source>HMM3 Search</source>
         <translation>HMM3 Search</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="180"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="180"/>
         <source>Score threshold:</source>
         <translation>Score threshold:</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="229"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="229"/>
         <source>Use profile&apos;s GA gathering cutoffs</source>
         <translation>Use profile&apos;s GA gathering cutoffs</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="265"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="265"/>
         <source>Use profile&apos;s NC noise cutoffs</source>
         <translation>Use profile&apos;s NC noise cutoffs</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="295"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="295"/>
         <source>Use profile&apos;s TC trusted cutoffs</source>
         <translation>Use profile&apos;s TC trusted cutoffs</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="312"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="312"/>
         <source>Number of significant sequences for domain E-value calculation</source>
         <translation>Number of significant sequences for domain E-value calculation</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="345"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="345"/>
         <source>Acceleration heuristics</source>
         <translation>Acceleration heuristics</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="360"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="360"/>
         <source>Turn off composition bias filter</source>
         <translation>Turn off composition bias filter</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="373"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="373"/>
         <source>Turn off biased composition score corrections</source>
         <translation>Turn off biased composition score corrections</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="401"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="401"/>
         <source>MSV filter threshold:</source>
         <translation>MSV filter threshold:</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="434"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="434"/>
         <source>Viterbi filter threshold:</source>
         <translation>Viterbi filter threshold:</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="464"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="464"/>
         <source>Forward filter threshold:</source>
         <translation>Forward filter threshold:</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="500"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="500"/>
         <source>Other</source>
         <translation>Other</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="522"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="522"/>
         <source>Random generator seed</source>
         <translation>Random generator seed</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="565"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="565"/>
         <source>* 0 means that one-time arbitrary seed will be used</source>
         <translation>* 0 means that one-time arbitrary seed will be used</translation>
     </message>
     <message>
-        <location filename="../src/search/ui/UHMM3SearchDialog.ui" line="386"/>
+        <location filename="../src/search/UHMM3SearchDialog.ui" line="386"/>
         <source>Turn all heuristic filters off (less speed, more power)</source>
         <translation>Turn all heuristic filters off (less speed, more power)</translation>
     </message>

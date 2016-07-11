@@ -117,13 +117,13 @@ QString GTUtilsBookmarksTreeView::getSelectedItem(HI::GUITestOpStatus &os)
 void GTUtilsBookmarksTreeView::addBookmark(HI::GUITestOpStatus &os, const QString &viewName, const QString &bookmarkName) {
     Q_UNUSED(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_ADD_BOOKMARK));
-    GTMouseDriver::moveTo(os, getItemCenter(os, viewName));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(getItemCenter(os, viewName));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(500);
 
     QWidget *bookmarkLineEdit = getTreeWidget(os)->itemWidget(getTreeWidget(os)->currentItem(), 0);
     GTLineEdit::setText(os, qobject_cast<QLineEdit *>(bookmarkLineEdit), bookmarkName);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME
 

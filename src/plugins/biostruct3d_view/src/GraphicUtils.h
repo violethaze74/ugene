@@ -145,8 +145,7 @@ QPair<Vector3D,Vector3D> calcBestAxisThroughPoints(const QVector<Vector3D>& poin
 #define CHECK_GL_ERROR do { checkGlError(__FILE__, __LINE__); } while (0);
 
 inline void checkGlError(const char *file, int line) {
-    QOpenGLFunctions_2_0 *f = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_2_0>();
-    GLenum error = f->glGetError();
+    GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
         QString where = QString("%1:%2: ").arg(file).arg(line);
         QString msg = QString("OpenGL error (%1): %2").arg(error).arg((char*)gluErrorString(error));

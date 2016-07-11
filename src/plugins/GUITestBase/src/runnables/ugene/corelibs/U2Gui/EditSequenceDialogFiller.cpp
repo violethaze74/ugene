@@ -101,12 +101,12 @@ void InsertSequenceFiller::commonScenario() {
         switch(useMethod) {
         case GTGlobals::UseMouse:
             checkPos = QPoint(checkButton->rect().left() + 12, checkButton->rect().top() + 12);
-            GTMouseDriver::moveTo(os, checkButton->mapToGlobal(checkPos));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(checkButton->mapToGlobal(checkPos));
+            GTMouseDriver::click();
             break;
         case GTGlobals::UseKey:
             GTWidget::setFocus(os, checkButton);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+            GTKeyboardDriver::keyClick(Qt::Key_Space);
             break;
         default:
             break;

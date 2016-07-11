@@ -53,6 +53,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"
+#include <utils/GTThread.h>
 
 namespace U2 {
 
@@ -190,44 +191,42 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1){
     CHECK_SET_ERR(l->text()==s, "Found: " + l->text());
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0003){//commit sequenceInfo
+GUI_TEST_CLASS_DEFINITION(test_0003) {
 //    Options panel. Information tab. Sequence length
 //    1. Open file (samples/FASTA/human_T1.fa)
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Activate Information tab on Options panel at the right edge of UGENE window.
-    GTWidget::click(os, GTWidget::findWidget(os,"OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os,"Common Statistics");
-    CHECK_SET_ERR(w != NULL, "No Common Statistics widget");
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QLabel *l = w->findChild<QLabel*>();
-    CHECK_SET_ERR(l != NULL, "No child label in Common Statistics widget");
-    GTWidget::click(os, w);
+    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics label");
 
-    GTGlobals::sleep(1000);
-    CHECK_SET_ERR(l->text().contains("<tr><td><b>Length: </b></td><td>199 950 </td></tr>"),
-                  "Sequence length is wrong");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    Expected state: sequence length must be 199950
+    CHECK_SET_ERR(statisticsLabel->text().contains("<tr><td><b>Length: </b></td><td>199 950 </td></tr>"),
+                  "Sequence length is wrong");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0003_1){//commit sequenceInfo
+GUI_TEST_CLASS_DEFINITION(test_0003_1) {
 //    Options panel. Information tab. Sequence length
 //    1. Open file (_common_data/scenarios/_regression/1093/refrence.fa)
     GTFileDialog::openFile(os,testDir + "_common_data/scenarios/_regression/1093/","refrence.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Activate Information tab on Options panel at the right edge of UGENE window.
-    GTWidget::click(os, GTWidget::findWidget(os,"OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os,"Common Statistics");
-    CHECK_SET_ERR(w != NULL, "No Common Statistics widget");
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QLabel *l = w->findChild<QLabel*>();
-    CHECK_SET_ERR(l != NULL, "No child label in Common Statistics widget");
-    GTWidget::click(os, w);
+    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics label");
 
-    GTGlobals::sleep(1000);
-    CHECK_SET_ERR(l->text().contains("<tr><td><b>Length: </b></td><td>114 </td></tr>"),
-                  "Sequence length is wrong");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    Expected state: sequence length must be 114
+    CHECK_SET_ERR(statisticsLabel->text().contains("<tr><td><b>Length: </b></td><td>114 </td></tr>"),
+                  "Sequence length is wrong");
 }
 GUI_TEST_CLASS_DEFINITION(test_0004){
 //1. Open file (samples/FASTA/human_T1.fa)
@@ -240,13 +239,15 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 
     QPoint point=GTMouseDriver::getMousePosition();
 
-    GTMouseDriver::moveTo(os, point - QPoint(15,0));//move 15 pix left
-    GTMouseDriver::press(os);
+    GTMouseDriver::moveTo(point - QPoint(15,0));//move 15 pix left
+    GTMouseDriver::press();
 
-    GTMouseDriver::moveTo(os,point + QPoint(80,0));//move 80 pix right
-    GTMouseDriver::release(os);
+    GTMouseDriver::moveTo(point + QPoint(80,0));//move 80 pix right
+    GTMouseDriver::release();
 
-    GTKeyboardDriver::keyClick(os,'c',GTKeyboardDriver::key["ctrl"]);
+    GTThread::waitForMainThread();
+
+    GTKeyboardDriver::keyClick('c',Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     QString text = QString("A:  \n"
@@ -303,8 +304,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
 // 2. Open view for "1.gb"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 sequence"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 sequence"));
+    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
 // 3. Press ctrl+f. Check focus. Find subsequence TA
@@ -312,9 +313,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTGlobals::sleep(500);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     GTGlobals::sleep();
 
@@ -330,14 +331,14 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTGlobals::sleep(500);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep();
 }
@@ -347,13 +348,10 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTWidget::findWidget(os,"OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os,"Common Statistics");
-    CHECK_SET_ERR(w != NULL, "No Common Statistics widget");
-    GTWidget::click(os, w);
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QLabel *l = w->findChild<QLabel*>();
-    CHECK_SET_ERR(l != NULL, "No child label in Common Statistics widget");
+    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td><b>Length: </b></td><td>200 </td></tr>"
@@ -364,9 +362,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
                         "<tr><td><b>nmole/OD<sub>260</sub> : </b></td><td>0.43</td></tr>"
                         "<tr><td><b>") + QChar(0x3BC) + QString("g/OD<sub>260</sub> : </b></td><td>26.83</td></tr></table>");
 
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l->text() == s, "Found: " + l->text());
+    CHECK_SET_ERR(statisticsLabel->text() == s, "Found: " + statisticsLabel->text());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
@@ -374,13 +372,11 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTWidget::findWidget(os,"OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os,"Common Statistics");
-    CHECK_SET_ERR(w != NULL, "No Common Statistics widget");
-    GTWidget::click(os, w);
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *l = w->findChild<QLabel*>();
-    CHECK_SET_ERR(l != NULL, "No child label in Common Statistics widget");
+    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
 
     QString s = QString("Length: </b></td><td>199 950");
     QString s1 = QString("GC Content: </b></td><td>38.84%");
@@ -390,8 +386,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QString s5 = QString("nmole/OD<sub>260</sub> : </b></td><td>0.00");
     QString s6 = QString("g/OD<sub>260</sub> : </b></td><td>27.76");
 
-    GTGlobals::sleep(1000);
-    QString labelText = l->text();
+    QString labelText = statisticsLabel->text();
 
     CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contais %2").arg(labelText).arg(s));
     CHECK_SET_ERR(labelText.contains(s1), QString("label text: %1. It does not contais %2").arg(labelText).arg(s1));
@@ -407,22 +402,18 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "titin.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTWidget::findWidget(os,"OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os,"Common Statistics");
-    CHECK_SET_ERR(w != NULL, "No Common Statistics widget");
-    GTWidget::click(os, w);
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *l = w->findChild<QLabel*>();
-    CHECK_SET_ERR(l != NULL, "No child label in Common Statistics widget");
+    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td><b>Length: </b></td><td>26 926 </td></tr>"
                         "<tr><td><b>Molecular Weight: </b></td><td>2993901.23</td></tr>"
                         "<tr><td><b>Isoelectic Point: </b></td><td>6.74</td></tr></table>");
 
-    GTGlobals::sleep(1000);
-
-    CHECK_SET_ERR(l->text() == s, "Found: " + l->text());
+    CHECK_SET_ERR(statisticsLabel->text() == s, "Found: " + statisticsLabel->text());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
@@ -430,17 +421,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTWidget::findWidget(os,"OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os,"Common Statistics");
-    CHECK_SET_ERR(w != NULL, "No Common Statistics widget");
-    GTWidget::click(os, w);
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *l = w->findChild<QLabel*>();
-    CHECK_SET_ERR(l != NULL, "No child label in Common Statistics widget");
-
-    QString labelText = l->text();
-
-    GTGlobals::sleep(1000);
+    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
+    QString labelText = statisticsLabel->text();
 
     QString s = QString("Length: </b></td><td>199 950");
     QString s1 = QString("GC Content: </b></td><td>38.84%");
@@ -460,8 +446,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     // select sequence region
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 40);
-    GTGlobals::sleep(1000);
-    CHECK_SET_ERR(labelText != l->text(), "Statistics did not change");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(labelText != statisticsLabel->text(), "Statistics did not change");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
@@ -471,21 +458,17 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "numbers_in_the_middle.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTWidget::findWidget(os,"OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os,"Common Statistics");
-    CHECK_SET_ERR(w != NULL, "No Common Statistics widget");
-    GTWidget::click(os, w);
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *l = w->findChild<QLabel*>();
-    CHECK_SET_ERR(l != NULL, "No child label in Common Statistics widget");
+    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td><b>Length: </b></td><td>230 </td></tr>"
                         "</table>");
 
-    GTGlobals::sleep(1000);
-
-    CHECK_SET_ERR(l->text() == s, "Found: " + l->text());
+    CHECK_SET_ERR(statisticsLabel->text() == s, "Found: " + statisticsLabel->text());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
@@ -495,13 +478,11 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "numbers_in_the_middle.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTWidget::findWidget(os,"OP_SEQ_INFO"));
-    QWidget *w = GTWidget::findWidget(os,"Common Statistics");
-    CHECK_SET_ERR(w != NULL, "No Common Statistics widget");
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QLabel *l = w->findChild<QLabel*>();
-    CHECK_SET_ERR(l != NULL, "No child label in Common Statistics widget");
-    GTWidget::click(os, w);
+    QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
+    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
 
     QWidget *w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_SET_ERR(w0 != NULL, "ADV single sequence widget 0 is NULL");
@@ -509,7 +490,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     QString s = QString("<table cellspacing=5>"
                         "<tr><td><b>Length: </b></td><td>70 </td></tr>"
                         "</table>");
-    CHECK_SET_ERR(l->text() == s, "Statistics is wrong!");
+    CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
     GTGlobals::sleep(1000);
     QWidget *w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
@@ -523,7 +504,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                 "<tr><td><b>Melting TM: </b></td><td>75.36 C</td></tr>"
                 "<tr><td><b>nmole/OD<sub>260</sub> : </b></td><td>1.35</td></tr>"
                 "<tr><td><b>") + QChar(0x3BC) + QString("g/OD<sub>260</sub> : </b></td><td>28.78</td></tr></table>");
-    CHECK_SET_ERR(l->text() == s, "Statistics is wrong!");
+    CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
     GTGlobals::sleep(1000);
     QWidget *w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
@@ -533,7 +514,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                             "<tr><td><b>Length: </b></td><td>70 </td></tr>"
                             "<tr><td><b>Molecular Weight: </b></td><td>5752.43</td></tr>"
                             "<tr><td><b>Isoelectic Point: </b></td><td>5.15</td></tr></table>");
-    CHECK_SET_ERR(l->text() == s, "Statistics is wrong!");
+    CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {

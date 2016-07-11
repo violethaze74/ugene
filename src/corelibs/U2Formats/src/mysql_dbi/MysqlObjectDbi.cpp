@@ -792,6 +792,19 @@ void MysqlObjectDbi::getObject(U2Object& object, const U2DataId& id, U2OpStatus&
     }
 }
 
+U2DataId MysqlObjectDbi::getObject(qint64 objectId, U2OpStatus& os) {
+    U2SqlQuery q("SELECT id, type FROM Object WHERE id = :id", db, os);
+    q.bindInt64(":id", objectId);
+    if (q.step()) {
+        U2DataId result = q.getDataIdExt(0);
+        q.ensureDone();
+        return result;
+    } else if (!os.hasError()) {
+        os.setError(U2DbiL10n::tr("Object not found."));
+    }
+    return U2DataId();
+}
+
 QHash<U2DataId, QString> MysqlObjectDbi::getObjectNames(qint64 offset, qint64 count, U2OpStatus &os) {
     QHash<U2DataId, QString> result;
 

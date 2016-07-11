@@ -137,7 +137,7 @@ void SaveDocumentController::addFormat(const QString &id, const QString &name, c
 
 QString SaveDocumentController::getSaveFileName() const {
     QString filePath = conf.fileNameEdit->text();
-    if (filePath.startsWith(HOME_DIR_IDENTIFIER)) {
+    if (QDir::fromNativeSeparators(filePath).startsWith(HOME_DIR_IDENTIFIER, Qt::CaseInsensitive)) {
         filePath.remove(0, HOME_DIR_IDENTIFIER.length() - 1);
         filePath.prepend(QDir::homePath());
     }

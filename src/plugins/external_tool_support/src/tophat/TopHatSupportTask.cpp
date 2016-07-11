@@ -258,6 +258,10 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/junctions.bed", outputFiles);
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/insertions.bed", outputFiles);
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/deletions.bed", outputFiles);
+        if (!QFile::exists(getOutBamUrl())) {
+            setError(tr("TopHat was not able to map reads to the reference."));
+            return result;
+        }
 
         // Get assembly output
         Workflow::WorkflowTasksRegistry* registry = Workflow::WorkflowEnv::getWorkflowTasksRegistry();

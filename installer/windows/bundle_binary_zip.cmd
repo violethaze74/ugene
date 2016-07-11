@@ -92,7 +92,6 @@ call %INSTALL_DIR%\copy_lib.cmd U2Formats
 call %INSTALL_DIR%\copy_lib.cmd U2Gui
 call %INSTALL_DIR%\copy_lib.cmd U2Lang
 call %INSTALL_DIR%\copy_lib.cmd U2Private
-call %INSTALL_DIR%\copy_lib.cmd U2Remote
 call %INSTALL_DIR%\copy_lib.cmd U2Script
 call %INSTALL_DIR%\copy_lib.cmd U2Test
 call %INSTALL_DIR%\copy_lib.cmd U2View
@@ -124,7 +123,6 @@ call %INSTALL_DIR%\copy_plugin.cmd primer3
 call %INSTALL_DIR%\copy_plugin.cmd psipred
 call %INSTALL_DIR%\copy_plugin.cmd query_designer
 call %INSTALL_DIR%\copy_plugin.cmd remote_blast
-call %INSTALL_DIR%\copy_plugin.cmd remote_service
 call %INSTALL_DIR%\copy_plugin.cmd repeat_finder
 call %INSTALL_DIR%\copy_plugin.cmd sitecon
 call %INSTALL_DIR%\copy_plugin.cmd smith_waterman

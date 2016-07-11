@@ -46,13 +46,12 @@ FindEnzymesToAnnotationsTask::FindEnzymesToAnnotationsTask(AnnotationTableObject
     : Task(tr("Find and store enzymes"), TaskFlags_NR_FOSCOE), dnaSeqRef(seqRef), enzymes(enzymes), aObj(aobj), cfg(config), fTask(NULL)
 {
     GCOUNTER(cvar, tvar, "FindEnzymesToAnnotationsTask");
-    U2SequenceObject dnaSeq("sequence",dnaSeqRef);
-    seqRange = U2Region(0, dnaSeq.getSequenceLength());
 }
 
 void FindEnzymesToAnnotationsTask::prepare() {
     CHECK_EXT(!enzymes.isEmpty(), stateInfo.setError(tr("No enzymes selected.")), );
-    fTask = new FindEnzymesTask(dnaSeqRef, seqRange, enzymes, cfg.maxResults, cfg.circular);
+    U2SequenceObject dnaSeq("sequence",dnaSeqRef);
+    fTask = new FindEnzymesTask(dnaSeqRef, cfg.searchRegion.isEmpty() ? U2Region(0, dnaSeq.getSequenceLength()) : cfg.searchRegion, enzymes, cfg.maxResults, cfg.circular, cfg.excludedRegions);
     addSubTask(fTask);
 }
 
@@ -65,25 +64,9 @@ QList<Task *> FindEnzymesToAnnotationsTask::onSubTaskFinished(Task *subTask) {
     CHECK_EXT(!aObj->isStateLocked(), stateInfo.setError(tr("Annotation table is read-only")), result);
 
     bool useSubgroups = enzymes.size() > 1 || cfg.groupName.isEmpty();
-    bool useWholeSequenceRange = cfg.excludedRegions.isEmpty();
     QMap<QString, QList<SharedAnnotationData> > resultMap;
     foreach (const SEnzymeData &ed, enzymes) {
         QList<SharedAnnotationData> anns = fTask->getResultsAsAnnotations(ed->id);
-        bool inRegion = false;
-        if (!useWholeSequenceRange) {
-            // filter
-            foreach (const SharedAnnotationData &data, anns) {
-                const U2Region &annRegion = data->location->regions.first();
-                if (annRegion.findOverlappingRegion(cfg.excludedRegions) != -1) {
-                    inRegion = true;
-                    break;
-                }
-            }
-            if (inRegion) {
-                continue;
-            }
-        }
-
         if (anns.size() >= cfg.minHitCount && anns.size() <= cfg.maxHitCount) {
             QString group = useSubgroups ? cfg.groupName + "/" + ed->id : cfg.groupName;
             resultMap[group].append(anns);
@@ -122,8 +105,11 @@ Task::ReportResult FindEnzymesToAnnotationsTask::report() {
 
 //////////////////////////////////////////////////////////////////////////
 // find multiple enzymes task
-FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int mr, bool _circular)
-:Task(tr("Find Enzymes"), TaskFlags_NR_FOSCOE), maxResults(mr), circular(_circular)
+FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int mr, bool _circular, QVector<U2Region> excludedRegions)
+    : Task(tr("Find Enzymes"), TaskFlags_NR_FOSCOE),
+      maxResults(mr),
+      excludedRegions(excludedRegions),
+      circular(_circular)
 {
     U2SequenceObject seq("sequence", seqRef);
 
@@ -136,6 +122,15 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& regi
 }
 
 void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) {
+    if (pos > seqlen) {
+        pos %= seqlen;
+    }
+    foreach (const U2Region &r, excludedRegions) {
+        if (U2Region(pos, enzyme->seq.length()).intersects(r)) {
+            return;
+        }
+    }
+
     QMutexLocker l(&resultsLock);
     if (results.size() > maxResults) {
         if (!isCanceled()) {
@@ -186,6 +181,7 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
                     continue;
                 }
                 SharedAnnotationData ad(new AnnotationData);
+                ad->type = U2FeatureTypes::RestrictionSite;
                 ad->name = r.enzyme->id;
                 ad->location->regions << U2Region(r.pos, seqlen - r.pos);
                 ad->location->regions << U2Region(0, r.enzyme->seq.size() - (seqlen - r.pos));
@@ -199,6 +195,7 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
                 res.append(ad);
             } else {
                 SharedAnnotationData ad(new AnnotationData);
+                ad->type = U2FeatureTypes::RestrictionSite;
                 ad->name = r.enzyme->id;
                 ad->location->regions << U2Region(r.pos, r.enzyme->seq.size());
                 ad->setStrand(r.strand);
@@ -232,8 +229,13 @@ void FindEnzymesTask::cleanup() {
 // find single enzyme task
 FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& _seqRef, const U2Region& region, const SEnzymeData& _enzyme,
                                            FindEnzymesAlgListener* l, bool _circular, int mr)
-: Task(tr("Find enzyme '%1'").arg(_enzyme->id), TaskFlag_NoRun),
-dnaSeqRef(_seqRef), region(region), enzyme(_enzyme), maxResults(mr), resultListener(l), circular(_circular)
+    : Task(tr("Find enzyme '%1'").arg(_enzyme->id), TaskFlag_NoRun),
+      dnaSeqRef(_seqRef),
+      region(region),
+      enzyme(_enzyme),
+      maxResults(mr),
+      resultListener(l),
+      circular(_circular)
 {
     U2SequenceObject dnaSeq("sequence", dnaSeqRef);
 
@@ -241,19 +243,18 @@ dnaSeqRef(_seqRef), region(region), enzyme(_enzyme), maxResults(mr), resultListe
     if (resultListener == NULL) {
         resultListener = this;
     }
-    if (region.length != dnaSeq.getSequenceLength()) {
-        circular = false;
-    }
-    SequenceDbiWalkerConfig swc;
 
     const int BLOCK_READ_FROM_DB = 128000;
     static const int chunkSize = BLOCK_READ_FROM_DB;
 
+    SequenceDbiWalkerConfig swc;
     swc.seqRef = dnaSeqRef;
     swc.range = region;
     swc.chunkSize = qMax(enzyme->seq.size(), chunkSize);
     swc.lastChunkExtraLen = swc.chunkSize/2;
-    swc.overlapSize = enzyme->seq.size()-1;
+    swc.overlapSize = enzyme->seq.size() - 1;
+    swc.walkCircular = circular;
+    swc.walkCircularDistance = swc.overlapSize;
 
     addSubTask(new SequenceDbiWalkerTask(swc, this, tr("Find enzyme '%1' parallel").arg(enzyme->id)));
 }
@@ -278,7 +279,8 @@ void FindSingleEnzymeTask::onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& 
         return;
     }
     U2SequenceObject dnaSequenceObject("sequence", dnaSeqRef);
-    if (dnaSequenceObject.getSequenceLength() < enzyme->seq.length()) {
+    qint64 sequenceLen = dnaSequenceObject.getSequenceLength();
+    if (sequenceLen < enzyme->seq.length()) {
         return;
     }
     SAFE_POINT(enzyme->alphabet != NULL, tr("No enzyme alphabet"), );
@@ -296,8 +298,18 @@ void FindSingleEnzymeTask::onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& 
                                 || seqAlphabet->getId() == BaseDNAAlphabetIds::NUCL_RNA_EXTENDED();
 
     U2Region chunkRegion = t->getGlobalRegion();
-    DNASequence dnaSeq = dnaSequenceObject.getSequence(chunkRegion, ti);
+    DNASequence dnaSeq;
+    if (U2Region(0, sequenceLen).contains(chunkRegion)) {
+        dnaSeq = dnaSequenceObject.getSequence(chunkRegion, ti);
+    } else {
+        U2Region partOne = U2Region(0, sequenceLen).intersect(chunkRegion);
+        dnaSeq = dnaSequenceObject.getSequence(partOne, ti);
+        CHECK_OP(ti, );
+        U2Region partTwo = U2Region(0, chunkRegion.endPos() % sequenceLen);
+        dnaSeq.seq.append(dnaSequenceObject.getSequence(partTwo, ti).seq);
+    }
     CHECK_OP(ti, );
+
     // Note that enzymes algorithm filters N symbols in sequence by itself
     if (useExtendedComparator) {
         FindEnzymesAlgorithm<ExtendedDNAlphabetComparator> algo;
@@ -346,11 +358,10 @@ Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask( const A
     cfg.minHitCount = AppContext::getSettings()->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
     cfg.maxHitCount = AppContext::getSettings()->getValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX).toInt();
     cfg.maxResults = AppContext::getSettings()->getValue(EnzymeSettings::MAX_RESULTS, 500000).toInt();
-
-    QString locationStr = AppContext::getSettings()->getValue(EnzymeSettings::NON_CUT_REGION, "").toString();
+    cfg.searchRegion = AppContext::getSettings()->getValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(U2Region())).value<U2Region>();
 
     QVector<U2Region> excludedRegions =
-        AppContext::getSettings()->getValue(EnzymeSettings::NON_CUT_REGION, QVariant::fromValue(QVector<U2Region>()) ).value< QVector<U2Region> >();
+        AppContext::getSettings()->getValue(EnzymeSettings::EXCLUDED_REGION, QVariant::fromValue(QVector<U2Region>()) ).value< QVector<U2Region> >();
 
     if (!excludedRegions.isEmpty()) {
         cfg.excludedRegions = excludedRegions;

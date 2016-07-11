@@ -17,9 +17,8 @@ HEADERS += src/FindRepeatsDialog.h \
            src/RFSArrayWK.h \
            src/RFTaskFactory.h \
            src/RepeatQuery.h \
-           src/RepeatTest.h \
            src/TandemQuery.h
-FORMS += src/ui/FindRepeatsDialog.ui src/ui/FindTandemsDialog.ui
+FORMS += src/FindRepeatsDialog.ui src/FindTandemsDialog.ui
 SOURCES += src/FindRepeatsDialog.cpp \
            src/FindRepeatsTask.cpp \
            src/FindTandemsDialog.cpp \
@@ -34,7 +33,6 @@ SOURCES += src/FindRepeatsDialog.cpp \
            src/RFSArrayWK.cpp \
            src/RFTaskFactory.cpp \
            src/RepeatQuery.cpp \
-           src/RepeatTest.cpp \
            src/TandemQuery.cpp
 RESOURCES += repeat_finder.qrc
 TRANSLATIONS += transl/english.ts transl/russian.ts

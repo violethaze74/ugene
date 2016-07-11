@@ -104,7 +104,6 @@ add-core-library U2Formats
 add-core-library U2Gui
 add-core-library U2Lang
 add-core-library U2Private
-add-core-library U2Remote
 add-core-library U2Test
 add-core-library U2View
 add-core-library ugenedb
@@ -154,7 +153,7 @@ strip -v "${TARGET_APP_DIR}/platforms/*.so"
 cp -r -v "$PATH_TO_QT_LIBS/../plugins/imageformats" "${TARGET_APP_DIR}"
 strip -v ${TARGET_APP_DIR}/imageformats/*.so
 
-PATH_TO_MYSQL_CLIENT_LIB=`ldd "${TARGET_APP_DIR}/sqldrivers/libqsqlmysql.so" |grep libmysqlclient_r.so |cut -d " " -f3`
+PATH_TO_MYSQL_CLIENT_LIB=`ldd "${TARGET_APP_DIR}/sqldrivers/libqsqlmysql.so" |grep libmysqlclient |cut -d " " -f3`
 cp -v "$PATH_TO_MYSQL_CLIENT_LIB" "${TARGET_APP_DIR}"
 
 PATH_TO_ICU_DATA_LIB=`ldd "${TARGET_APP_DIR}/libQt5Widgets.so.5" |grep libicudata.so |cut -d " " -f3`
@@ -205,7 +204,6 @@ add-plugin smith_waterman
 add-plugin umuscle
 add-plugin workflow_designer
 add-plugin weight_matrix
-add-plugin remote_service
 add-plugin variants
 
 if [ "$1" == "-test" ]; then

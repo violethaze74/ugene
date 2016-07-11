@@ -4,27 +4,27 @@
 <context>
     <name>AddConstraintDialog</name>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="14"/>
+        <location filename="../src/AddConstraintDialog.ui" line="14"/>
         <source>Add Constraint</source>
         <translation>Add Constraint</translation>
     </message>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="30"/>
+        <location filename="../src/AddConstraintDialog.ui" line="30"/>
         <source>From</source>
         <translation>From</translation>
     </message>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="43"/>
+        <location filename="../src/AddConstraintDialog.ui" line="43"/>
         <source>To</source>
         <translation>To</translation>
     </message>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="84"/>
+        <location filename="../src/AddConstraintDialog.ui" line="84"/>
         <source>Min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="97"/>
+        <location filename="../src/AddConstraintDialog.ui" line="97"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
@@ -32,22 +32,22 @@
 <context>
     <name>QDDialog</name>
     <message>
-        <location filename="../src/ui/QDDialog.ui" line="14"/>
+        <location filename="../src/QDDialog.ui" line="14"/>
         <source>Analyze with Query Schema</source>
         <translation>Analyze with Query Schema</translation>
     </message>
     <message>
-        <location filename="../src/ui/QDDialog.ui" line="22"/>
+        <location filename="../src/QDDialog.ui" line="22"/>
         <source>File with query</source>
         <translation>File with query</translation>
     </message>
     <message>
-        <location filename="../src/ui/QDDialog.ui" line="36"/>
+        <location filename="../src/QDDialog.ui" line="36"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/QDDialog.ui" line="54"/>
+        <location filename="../src/QDDialog.ui" line="54"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -110,24 +110,24 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QueryEditorWidget</name>
     <message>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="14"/>
+        <location filename="../src/QueryEditorWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="35"/>
+        <location filename="../src/QueryEditorWidget.ui" line="35"/>
         <source>Property Editor</source>
         <translation>Property Editor</translation>
     </message>
     <message>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="49"/>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="78"/>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="88"/>
+        <location filename="../src/QueryEditorWidget.ui" line="49"/>
+        <location filename="../src/QueryEditorWidget.ui" line="78"/>
+        <location filename="../src/QueryEditorWidget.ui" line="88"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="152"/>
+        <location filename="../src/QueryEditorWidget.ui" line="152"/>
         <source>Parameters</source>
         <translation>Parameters</translation>
     </message>
@@ -135,28 +135,28 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>RunQueryDlg</name>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="26"/>
+        <location filename="../src/RunQueryDialog.ui" line="26"/>
         <source>Run Schema</source>
         <translation>Run Schema</translation>
     </message>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="45"/>
+        <location filename="../src/RunQueryDialog.ui" line="45"/>
         <source>Load sequence</source>
         <translation>Load sequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="58"/>
+        <location filename="../src/RunQueryDialog.ui" line="58"/>
         <source>Save results to</source>
         <translation>Save results to</translation>
     </message>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="83"/>
-        <location filename="../src/ui/RunQueryDialog.ui" line="90"/>
+        <location filename="../src/RunQueryDialog.ui" line="83"/>
+        <location filename="../src/RunQueryDialog.ui" line="90"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="122"/>
+        <location filename="../src/RunQueryDialog.ui" line="122"/>
         <source>Add to project</source>
         <translation>Add to project</translation>
     </message>
@@ -315,44 +315,44 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="296"/>
+        <location filename="../src/QDRunDialog.cpp" line="297"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="297"/>
+        <location filename="../src/QDRunDialog.cpp" line="298"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="337"/>
+        <location filename="../src/QDRunDialog.cpp" line="338"/>
         <source>Select query</source>
         <translation>Select query</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="353"/>
-        <location filename="../src/QDRunDialog.cpp" line="360"/>
+        <location filename="../src/QDRunDialog.cpp" line="354"/>
+        <location filename="../src/QDRunDialog.cpp" line="361"/>
         <source>Can not load %1</source>
         <translation>Can not load %1</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="390"/>
+        <location filename="../src/QDRunDialog.cpp" line="391"/>
         <source>File with query is not selected!</source>
         <translation>File with query is not selected!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="395"/>
+        <location filename="../src/QDRunDialog.cpp" line="396"/>
         <source>Error in schema!</source>
         <translation>Error in schema!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="401"/>
-        <location filename="../src/QDRunDialog.cpp" line="413"/>
+        <location filename="../src/QDRunDialog.cpp" line="402"/>
+        <location filename="../src/QDRunDialog.cpp" line="414"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="413"/>
+        <location filename="../src/QDRunDialog.cpp" line="414"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
@@ -738,32 +738,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRunDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="77"/>
+        <location filename="../src/QDRunDialog.cpp" line="83"/>
         <source>Run</source>
         <translation>Run</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="78"/>
+        <location filename="../src/QDRunDialog.cpp" line="84"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="104"/>
+        <location filename="../src/QDRunDialog.cpp" line="106"/>
         <source>Select input file</source>
         <translation>Select input file</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="107"/>
+        <location filename="../src/QDRunDialog.cpp" line="130"/>
         <source>Select output file</source>
         <translation>Select output file</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="141"/>
+        <location filename="../src/QDRunDialog.cpp" line="142"/>
         <source>The sequence is not specified!</source>
         <translation>The sequence is not specified!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="145"/>
+        <location filename="../src/QDRunDialog.cpp" line="146"/>
         <source>The output file is not selected!</source>
         <translation>The output file is not selected!</translation>
     </message>
@@ -771,17 +771,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRunDialogTask</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="159"/>
+        <location filename="../src/QDRunDialog.cpp" line="160"/>
         <source>Query Designer</source>
         <translation>Query Designer</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="210"/>
+        <location filename="../src/QDRunDialog.cpp" line="211"/>
         <source>Sequence not found!</source>
         <translation>Sequence not found!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="219"/>
+        <location filename="../src/QDRunDialog.cpp" line="220"/>
         <source>Sequence not found, document: %1</source>
         <translation>Sequence not found, document: %1</translation>
     </message>

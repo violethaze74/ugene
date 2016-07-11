@@ -19,13 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include <QApplication>
 #include <QTableView>
 
 #include <U2Core/GUrlUtils.h>
 
 #include <U2Designer/PropertyWidget.h>
-
-#include <U2View/AssemblyNavigationWidget.h>
 
 #include "GTTestsAssemblyBrowser.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -43,19 +42,23 @@
 #include "system/GTFile.h"
 #include <base_dialogs/GTFileDialog.h>
 #include "GTGlobals.h"
+#include <system/GTClipboard.h>
 #include <drivers/GTKeyboardDriver.h>
 #include "utils/GTKeyboardUtils.h"
 #include "primitives/GTMenu.h"
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include "primitives/PopupChooser.h"
+#include "primitives/GTComboBox.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExtractAssemblyRegionDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
@@ -76,16 +79,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 //2. Zoom in until overview selection transforms to cross-hair
     for (int i = 0;i < 24;i++){
-        GTKeyboardDriver::keyClick(os, '=', GTKeyboardDriver::key["shift"]);
+        GTKeyboardDriver::keyClick( '=', Qt::ShiftModifier);
         GTGlobals::sleep(100);
     }
     GTGlobals::sleep(2000);
 //3. Move it to the very left
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["home"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Home);
     GTGlobals::sleep(2000);
 //4. Try to zoom out
     for (int i = 0;i < 24;i++){
-        GTKeyboardDriver::keyClick(os, '-');
+        GTKeyboardDriver::keyClick('-');
         GTGlobals::sleep(100);
     }
 //Expected state: coordinates is not negative
@@ -247,7 +250,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "/chrM_coverage.bedgrap.gz"));
 
 //    15. Set format "Histogram".
-//    Expected state: the file extension is ".histogram.gz".
+//    Expected state: the file extension is ".bedgrap.histogram.gz".
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SetFormat, "Histogram");
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::CheckFilePath, QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "/chrM_coverage.histogram.gz"));
 
@@ -345,7 +348,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTFile::copy(os, testDir + "_common_data/text/text.txt", sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
     const qint64 fileSizeBefore = GTFile::getSize(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
     actions.clear();
-    coreLog.error("Filepath to enter: " + QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt"));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt"));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
@@ -453,7 +455,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 //    Expected state: a popup completer appears, it contains extensions for the compressed format.
     GTUtilsWorkflowDesigner::clickParameter(os, "Output file");
     URLWidget *urlWidget = qobject_cast<URLWidget *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<URLWidget *>());
-    GTKeyboardDriver::keySequence(os, "aaa");
+    GTKeyboardDriver::keySequence("aaa");
     GTGlobals::sleep(1000);
     CHECK_SET_ERR(NULL != urlWidget, "Output file url widget was not found");
     QTreeWidget *completer = urlWidget->findChild<QTreeWidget *>();
@@ -490,6 +492,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsAssemblyBrowser::zoomToMax(os);
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
     GTUtilsAssemblyBrowser::callExportCoverageDialog(os, GTUtilsAssemblyBrowser::Reads);
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
@@ -611,9 +614,9 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Set reference");
 
     //6. Add the "human_T1" object to the selection.
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsProjectTreeView::click(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 
     //7. Click the "Set reference sequence" actions menu item.
     //Expected: message box about two sequences appears.
@@ -767,7 +770,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //	  3. Check expected coverage values
-    CoveredRegionsLabel *coveredRegionsLabel = qobject_cast<CoveredRegionsLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel *coveredRegionsLabel = qobject_cast<QLabel*>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -792,7 +795,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //	  3. Check expected coverage values
-    CoveredRegionsLabel *coveredRegionsLabel = qobject_cast<CoveredRegionsLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -814,7 +817,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     GTWidget::click(os, button);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //	  3. Check expected coverage values
-    CoveredRegionsLabel *coveredRegionsLabel = qobject_cast<CoveredRegionsLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
+    QLabel *coveredRegionsLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(coveredRegionsLabel != NULL, "cannot convert widget to CoveredRegionsLabel");
 
     QString textFromLabel = coveredRegionsLabel->text();
@@ -823,6 +826,228 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     CHECK_SET_ERR(textFromLabel.contains("193"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("187"), "expected coverage value not found");
     CHECK_SET_ERR(textFromLabel.contains("186"), "expected coverage value not found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0027){
+//    1. Open assembly
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+//    2. Open COI.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+//    3. Drag and drop COI object to assembly browser
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok,
+                                                                "Only sequence or variant track  objects can be added to assembly browser"));
+    GTUtilsAssemblyBrowser::addRefFromProject(os, "COI");
+//    Expected: error message box appears
+    GTGlobals::sleep(500);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0028){
+//1. Open assembly
+    GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+//2. Lock document for editing
+    GTUtilsDocument::lockDocument(os, "chrM.sorted.bam.ugenedb");
+//3. Try to add refrence
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok,
+                                                                "This action requires changing the assembly object that is locked for editing"));
+    GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
+//Expected: Error message appears
+    GTGlobals::sleep(500);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0029){
+//    1. Open assembly
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    for(int i = 0; i<15; i++){
+        GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
+    }
+//    2. Go to some position using position selector on the toolbar(check "Go" button and "Enter" hotkey)
+    GTUtilsAssemblyBrowser::goToPosition(os, 1000);
+    int scrollVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
+    CHECK_SET_ERR(scrollVal == 999, QString("Unexpected scroll value1: %1").arg(scrollVal))
+
+    GTUtilsAssemblyBrowser::goToPosition(os, 2000);
+    scrollVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
+    CHECK_SET_ERR(scrollVal == 1999, QString("Unexpected scroll value2: %1").arg(scrollVal))
+
+    GTGlobals::sleep(500);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0030){
+//    1. Open assembly
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+//    2. Move reads area right and down with mouse
+    GTUtilsAssemblyBrowser::zoomToReads(os);
+    for(int i = 0; i<8; i++){
+        GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
+    }
+    GTGlobals::sleep(1000);
+
+    int initHorVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
+    int initVerVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical)->value();
+
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(-200, -200));
+    GTMouseDriver::release();
+
+    GTGlobals::sleep(500);
+//    Check scrollbars, rules values etc.
+    int finalHorVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
+    int finalVerVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical)->value();
+    CHECK_SET_ERR(finalHorVal > initHorVal, QString("Unexpected horisontal scroll values. Initial: %1, final %2").arg(initHorVal).arg(finalHorVal));
+    CHECK_SET_ERR(finalVerVal > initVerVal, QString("Unexpected vertical scroll values. Initial: %1, final %2").arg(initVerVal).arg(finalVerVal));
+
+    GTGlobals::sleep(500);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0031){
+//    1. Open assembly
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+//    2. Click "zoom to reads" link
+    GTUtilsAssemblyBrowser::zoomToReads(os);
+//    Check zoom
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList()<<"Export"));
+    GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
+    GTGlobals::sleep(500);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0032){
+//    1. Open assembly
+    GTFile::copy(os, testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "chrM.sorted.bam.ugenedb");
+    GTFileDialog::openFile(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
+//    2. Rename assembly object
+    GTUtilsProjectTreeView::rename(os, "chrM", "new_name");
+//    Check UGENE title
+    GTUtilsApp::checkUGENETitle(os, "-* UGENE - [chrM.sorted.bam [as] new_name]");
+    GTGlobals::sleep(500);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0033){
+//    1. Open assembly
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+//    2. Open "Assembly browser settings" OP tab
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
+    GTUtilsAssemblyBrowser::zoomToReads(os);
+//    3. Change reads highlighting to "strand direction" and "complement"
+    QComboBox* box = GTWidget::findExactWidget<QComboBox*>(os, "READS_HIGHLIGHTNING_COMBO");
+    GTComboBox::setIndexWithText(os, box, "Strand direction");
+    GTComboBox::setIndexWithText(os, box, "Paired reads");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0034){
+//    1. Open assembly
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+//    2. Open "Assembly browser settings" OP tab
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
+    GTUtilsAssemblyBrowser::zoomToReads(os);
+//    3. Change consensus algorithm
+    QComboBox* box = GTWidget::findExactWidget<QComboBox*>(os, "consensusAlgorithmCombo");
+    GTComboBox::setIndexWithText(os, box, "SAMtools");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0035){
+    GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+
+    GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
+
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            QLineEdit* filepathLineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "filepathLineEdit", dialog);
+            GTLineEdit::setText(os, filepathLineEdit, sandBoxDir + "chrM.snp");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+//    Export consensus
+    GTUtilsDialog::waitForDialog(os, new ExportConsensusDialogFiller(os, new Scenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export consensus variations..."));
+    GTWidget::click(os, GTWidget::findWidget(os, "Consensus area"), Qt::RightButton);
+    GTUtilsProjectTreeView::checkItem(os, "chrM_consensus.gb");
+
+    GTUtilsProjectTreeView::checkItem(os, "chrM.snp");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0036){
+    //1. Open assembly
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    //Check these hotkeys: up, down, left, right, +, -, pageup, pagedown
+    GTUtilsAssemblyBrowser::zoomToReads(os);
+
+    for(int i = 0; i<5; i++){
+        GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
+    }
+    GTGlobals::sleep();
+
+    QScrollBar* ver = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
+    QScrollBar* hor = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
+
+    int initVer = ver->value();
+    int initHor = hor->value();
+
+    for(int i = 0; i < 3; i++){
+        GTKeyboardDriver::keyClick(Qt::Key_Down);
+        GTGlobals::sleep(500);
+    }
+    CHECK_SET_ERR(ver->value() == 3, QString("unexpected vertical value 1: %1").arg(ver->value()));
+
+    for(int i = 0; i < 2; i++){
+        GTKeyboardDriver::keyClick(Qt::Key_Up);
+        GTGlobals::sleep(500);
+    }
+    CHECK_SET_ERR(ver->value() == 1, QString("unexpected vertical value 2: %1").arg(ver->value()));
+
+    for(int i = 0; i < 3; i++){
+        GTKeyboardDriver::keyClick(Qt::Key_Left);
+        GTGlobals::sleep(500);
+    }
+    CHECK_SET_ERR(hor->value() == initHor - 3, QString("unexpected horizontal value 1: %1").arg(hor->value()));
+
+    for(int i = 0; i < 2; i++){
+        GTKeyboardDriver::keyClick(Qt::Key_Right);
+        GTGlobals::sleep(500);
+    }
+    CHECK_SET_ERR(hor->value() == initHor - 1, QString("unexpected horizontal value 2: %1").arg(hor->value()));
+
+    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
+    GTGlobals::sleep(500);
+    CHECK_SET_ERR(ver->value() > 100, QString("unexpected vertical value 3: %1").arg(ver->value()));
+
+    GTKeyboardDriver::keyClick(Qt::Key_PageUp);
+    GTGlobals::sleep(500);
+    CHECK_SET_ERR(ver->value() == 1, QString("unexpected vertical value 4: %1").arg(ver->value()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0037){
+//    1. Open assembly
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+//    2. Use context menu on any read: {copy read data}
+    GTUtilsAssemblyBrowser::zoomToReads(os);
+
+    for(int i = 0; i<10; i++){
+        GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
+    }
+    GTGlobals::sleep();
+//    Check clipboard
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "copy_read_information",
+                                                      GTGlobals::UseMouse));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
+    QString clipboard = GTClipboard::text(os);
+    CHECK_SET_ERR(clipboard.startsWith('>') && clipboard.contains("From") &&
+                  clipboard.contains("Length") && clipboard.contains("Row") &&
+                  clipboard.contains("Cigar") && clipboard.contains("Strand"), "Unexpected clipboard: " + clipboard)
+//    Check reads position
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy current position to clipboard",
+                                                      GTGlobals::UseMouse));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
+    GTGlobals::sleep(1000);
+    clipboard = GTClipboard::text(os);
+    bool ok;
+    clipboard.toInt(&ok);
+    CHECK_SET_ERR(ok, "unexpected clipboard: " + clipboard)
 }
 
 } // namespace GUITest_Assembly_browser

@@ -32,6 +32,7 @@
 
 #include <U2Gui/RegionSelector.h>
 #include <U2Gui/SaveDocumentController.h>
+#include <U2Gui/HelpButton.h>
 
 #include "ExtractAssemblyRegionDialog.h"
 
@@ -40,6 +41,10 @@ namespace U2 {
 ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget * p, ExtractAssemblyRegionTaskSettings *settings) : QDialog(p)
 , settings(settings) {
     setupUi(this);
+
+    new HelpButton(this, buttonBox, "17470623");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     initSaveController();
 

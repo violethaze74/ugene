@@ -41,7 +41,7 @@ SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogCo
       ui(new Ui_SaveSelectedSequenceFromMSADialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17468861");
+    new HelpButton(this, ui->buttonBox, "17470585");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

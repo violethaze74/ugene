@@ -250,9 +250,9 @@ GUI_TEST_CLASS_DEFINITION(test_1001_3) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Build dotplot...", GTGlobals::UseMouse);
     GTGlobals::sleep(5000);
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     GTGlobals::sleep(5000);
 }
@@ -327,7 +327,7 @@ GUI_TEST_CLASS_DEFINITION(test_1013) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "replace_selected_rows_with_reverse-complement"));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(-1, 0));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
 }
 
@@ -391,9 +391,9 @@ GUI_TEST_CLASS_DEFINITION(test_1015_3) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsMdi::click(os, GTGlobals::Close);
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     GTGlobals::sleep(5000);
 }
@@ -411,9 +411,9 @@ GUI_TEST_CLASS_DEFINITION(test_1015_4) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsMdi::click(os, GTGlobals::Minimize);
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     GTGlobals::sleep(5000);
 }
@@ -458,7 +458,7 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
     GTUtilsDialog::waitForDialog(os, new GenerateAlignmentProfileDialogFiller(os));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 
     CHECK_SET_ERR(GTUtilsMdi::activeWindow(os)->windowTitle() == "Alignment profile for COI", "Unexpected active window name: " + GTUtilsMdi::activeWindow(os)->windowTitle());
 
@@ -498,11 +498,11 @@ GUI_TEST_CLASS_DEFINITION(test_1021) {
         GTGlobals::sleep();
 
         // 4) Click on human_T1.fa project tree view item
-        GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+        GTMouseDriver::click();
 
         // 5) Press delete key
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
         GTGlobals::sleep();
 
         // Expected state: there are no empty MDI window opened, no bookmarks
@@ -517,7 +517,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021) {
         CHECK_SET_ERR(bookmarksCount == 0, "there are bookmarks");
     }
 
-//    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F4"], GTKeyboardDriver::key["alt"]);
+//    GTKeyboardDriver::keyClick( GTKeyboardDriver::key["F4"], Qt::AltModifier);
 //    GTGlobals::sleep();
 }
 
@@ -536,11 +536,11 @@ GUI_TEST_CLASS_DEFINITION(test_1021_1) {
         GTGlobals::sleep();
 
         // 4) Click on human_T1.fa project tree view item
-        GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+        GTMouseDriver::click();
 
         // 5) Press delete key
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
         GTGlobals::sleep();
 
         // Expected state: there are no empty MDI window opened, no bookmarks
@@ -555,7 +555,7 @@ GUI_TEST_CLASS_DEFINITION(test_1021_1) {
         CHECK_SET_ERR(bookmarksCount == 0, "there are bookmarks");
     }
 
-//    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F4"], GTKeyboardDriver::key["alt"]);
+//    GTKeyboardDriver::keyClick( GTKeyboardDriver::key["F4"], Qt::AltModifier);
 //    GTGlobals::sleep();
 }
 
@@ -574,11 +574,11 @@ GUI_TEST_CLASS_DEFINITION(test_1021_2) {
         GTGlobals::sleep();
 
         // 4) Click on human_T1.fa project tree view item
-        GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+        GTMouseDriver::click();
 
         // 5) Press delete key
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
         GTGlobals::sleep();
 
         // Expected state: there are no empty MDI window opened, no bookmarks
@@ -614,11 +614,11 @@ GUI_TEST_CLASS_DEFINITION(test_1021_3) {
         }
 
         // 4) Click on human_T1.fa project tree view item
-        GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+        GTMouseDriver::click();
 
         // 5) Press delete key
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
         GTGlobals::sleep();
 
         // Expected state: there are no empty MDI window opened, no bookmarks
@@ -654,11 +654,11 @@ GUI_TEST_CLASS_DEFINITION(test_1021_4) {
         }
 
         // 4) Click on human_T1.fa project tree view item
-        GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-        GTMouseDriver::click(os);
+        GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+        GTMouseDriver::click();
 
         // 5) Press delete key
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
         GTGlobals::sleep();
 
         // Expected state: there are no empty MDI window opened, no bookmarks
@@ -684,10 +684,10 @@ GUI_TEST_CLASS_DEFINITION(test_1022) {
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
     GTGlobals::sleep();
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+    GTMouseDriver::click();
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep();
 
     GTGlobals::sleep(5000);
@@ -877,8 +877,8 @@ GUI_TEST_CLASS_DEFINITION(test_1047){
 //    Bug state: Zoom and color scheme changing simultaneously.
     QWidget* assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
     QPoint p = assembly_reads_area->mapToGlobal(assembly_reads_area->rect().center());
-    GTMouseDriver::moveTo(os, p);
-    GTMouseDriver::scroll(os, 10);
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::scroll(10);
 //    Expected state: only zoom is changed
     QString currText = colorBox->currentText();
     CHECK_SET_ERR(currText == "Strand direction", "Color scheme unexpectidly changed");
@@ -905,11 +905,11 @@ GUI_TEST_CLASS_DEFINITION(test_1048){
     QWidget* w2 = GTUtilsMdi::activeWindow(os);
     GTWidget::click(os, w2);
     for (int i = 0;i < 50;i++){
-        GTKeyboardDriver::keyClick(os, '=', GTKeyboardDriver::key["shift"]);
+        GTKeyboardDriver::keyClick( '=', Qt::ShiftModifier);
         GTGlobals::sleep(50);
     }
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["home"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Home);
     GTGlobals::sleep(500);
     bool vis = GTWidget::findWidget(os, "AssemblyReadsAreaHint", GTUtilsMdi::activeWindow(os))->isVisible();
     CHECK_SET_ERR(!vis, "hint unexpectidly visiable");
@@ -919,12 +919,12 @@ GUI_TEST_CLASS_DEFINITION(test_1048){
     QWidget* w1 = GTUtilsMdi::activeWindow(os);
     GTWidget::click(os, w1);
     for (int i = 0;i < 50;i++){
-        GTKeyboardDriver::keyClick(os, '=', GTKeyboardDriver::key["shift"]);
+        GTKeyboardDriver::keyClick( '=', Qt::ShiftModifier);
         GTGlobals::sleep(50);
     }
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["home"]);
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(10,10));
+    GTKeyboardDriver::keyClick( Qt::Key_Home);
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(10,10));
     GTGlobals::sleep(500);
     vis = GTWidget::findWidget(os, "AssemblyReadsAreaHint", GTUtilsMdi::activeWindow(os))->isVisible();
     CHECK_SET_ERR(vis, "hint unexpectidly invisiable");
@@ -1021,16 +1021,17 @@ GUI_TEST_CLASS_DEFINITION(test_1059) {
     GTUtilsWorkflowDesigner::click(os, GTUtilsWorkflowDesigner::getWorker(os, "Write Sequence"));
     GTGlobals::sleep(1000);
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, 'v', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
     GTGlobals::sleep();
 
     const QPoint workerCenterPos = GTUtilsWorkflowDesigner::getItemCenter(os, "Write Sequence");
-    GTMouseDriver::moveTo(os, workerCenterPos);
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, workerCenterPos + QPoint(100, 0));
-    GTMouseDriver::release(os);
+    GTMouseDriver::moveTo(workerCenterPos);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(workerCenterPos + QPoint(100, 0));
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "nameEdit"), "Write Sequence 1");
 
@@ -1137,8 +1138,8 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
             QList<QTreeWidgetItem *> items = GTTreeWidget::getItems(tree->invisibleRootItem());
             foreach (QTreeWidgetItem *item, items) {
                 if (item->text(0) == "  Workflow Designer") {
-                    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
-                    GTMouseDriver::click(os);
+                    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
+                    GTMouseDriver::click();
                 }
             }
 
@@ -1148,13 +1149,10 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
         }
     };
 
-
-
     //1) Set "Enable debugger" in Settings->WD
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new EnableWdDebuggerFiller()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
 
-    GTLogTracer lt;
     //2) Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -1168,8 +1166,8 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
 
     //4) Right - click on Read sequence element, click "Toggle breakpoint"
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Break at element..."));
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
+    GTMouseDriver::click(Qt::RightButton);
 
     //5) Run workflow
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -1183,7 +1181,7 @@ GUI_TEST_CLASS_DEFINITION(test_1063) {
     GTUtilsNotifications::waitForNotification(os, true, "The task 'Execute workflow' has been finished");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
     //Expected state : run finished successfully
     GTGlobals::sleep();
 }
@@ -1245,14 +1243,14 @@ GUI_TEST_CLASS_DEFINITION(test_1065_2) {
 //    Expected state: SAM importing task successfully finish, the Assembly Viewer opens.
     GTLogTracer l;
 
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "1065_2.ugenedb"));
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/1065_2"));
     AlignShortReadsFiller::Parameters p(testDir + "_common_data/scenarios/_regression/1065/", "e_coli_1000.fa",
                                         testDir + "_common_data/scenarios/_regression/1065/", "e_coli_1000.fq",
                                         AlignShortReadsFiller::Parameters::Bowtie);
     p.prebuiltIndex = true;
     p.useDefaultResultPath = false;
     p.resultDir = sandBoxDir;
-    p.resultFileName = "1065_2.sam";
+    p.resultFileName = "1065_2";
 
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &p));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Map reads to reference...");
@@ -1278,13 +1276,13 @@ GUI_TEST_CLASS_DEFINITION(test_1065_3) {
 //    Expected state: SAM importing task successfully finish, the Assembly Viewer opens.
     GTLogTracer l;
 
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "1065_3.ugenedb"));
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/1065_3"));
     AlignShortReadsFiller::Parameters p(testDir + "_common_data/scenarios/_regression/1065/", "e_coli_1000.fa",
                                         testDir + "_common_data/scenarios/_regression/1065/", "e_coli_1000.fq",
                                         AlignShortReadsFiller::Parameters::Bowtie);
     p.useDefaultResultPath = false;
     p.resultDir = sandBoxDir;
-    p.resultFileName = "1065_3.sam";
+    p.resultFileName = "1065_3";
 
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &p));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Map reads to reference...");
@@ -1316,7 +1314,8 @@ GUI_TEST_CLASS_DEFINITION(test_1069) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3. Close the sequence view
-    GTKeyboardDriver::keyClick(os, 'w', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'w', Qt::ControlModifier);
+    GTThread::waitForMainThread();
 
     //4. Open human_t1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
@@ -1338,7 +1337,7 @@ GUI_TEST_CLASS_DEFINITION(test_1071) {
     //3. Click OK.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "CDS", "asdfsadf12..25"));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["F2"]);
+    GTKeyboardDriver::keyClick( Qt::Key_F2);
     GTGlobals::sleep();
 
     //expected state: Error message appears, UGENE does not crash.
@@ -1389,13 +1388,13 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
     public:
         OkClicker2(HI::GUITestOpStatus& _os) : Filler(_os, "EditMarkerDialog"){}
         virtual void run() {
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["tab"]);
-            GTKeyboardDriver::keySequence(os, "0.001");
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
+            GTKeyboardDriver::keyClick( Qt::Key_Tab);
+            GTKeyboardDriver::keySequence("0.001");
 
             GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Ok);
             GTGlobals::sleep(2000);
@@ -1412,8 +1411,8 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
             CHECK(NULL != w, );
 
             QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os, "table", w));
-            GTMouseDriver::moveTo(os, GTTableView::getCellPosition(os, table, 0,0));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0,0));
+            GTMouseDriver::click();
 
             QToolButton* editButton = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "editButton", w));
             CHECK_SET_ERR( editButton != NULL, "editButton not found!");
@@ -1437,8 +1436,8 @@ GUI_TEST_CLASS_DEFINITION(test_1080) {
     GTUtilsWorkflowDesigner::click(os, "Sequence Marker");
 
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"markerTable"));
-    GTMouseDriver::moveTo(os, GTTableView::getCellPosition(os, table, 0,0));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0,0));
+    GTMouseDriver::click();
 
     QToolButton* editButton = qobject_cast<QToolButton*>(GTWidget::findWidget(os, "editButton"));
     CHECK_SET_ERR( editButton != NULL, "editButton not found!");
@@ -1455,9 +1454,9 @@ GUI_TEST_CLASS_DEFINITION(test_1083) {
     GTFileDialog::openFile(os, dataDir+"samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //2. select sequence oject in projrct tree view. press delete
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "human_T1.fa"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //Expected state: UGENE is not crashed
     GTUtilsProject::checkProject(os, GTUtilsProject::Empty);
 }
@@ -1509,7 +1508,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113){//commit AboutDialogController.cpp
 
             GTGlobals::sleep();
 #ifdef Q_OS_MAC
-            GTKeyboardDriver::keyRelease(os,GTKeyboardDriver::key["f1"]);
+            GTKeyboardDriver::keyRelease(GTKeyboardDriver::key[Qt::Key_F1]);
 #endif
 
             QWidget* dialog = QApplication::activeModalWidget();
@@ -1531,7 +1530,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113){//commit AboutDialogController.cpp
 #ifdef Q_OS_MAC
             GTWidget::click(os,GTWidget::findWidget(os,"close_button"));
 #else
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Escape);
 #endif
         }
     };
@@ -1547,7 +1546,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113){//commit AboutDialogController.cpp
     GTWidget::click(os, w, Qt::LeftButton, QPoint(5,5));
     GTGlobals::sleep(500);
 #endif
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["f1"]);
+    GTKeyboardDriver::keyClick( Qt::Key_F1);
     GTGlobals::sleep(1000);
 //Expected state: About dialog appeared, shown info includes platform info (32/64)
 
@@ -1562,7 +1561,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1){//commit AboutDialogController.cpp
         virtual void run(){
             GTGlobals::sleep();
 #ifdef Q_OS_MAC
-            GTMouseDriver::release(os);
+            GTMouseDriver::release();
 #endif
             QWidget* dialog = QApplication::activeModalWidget();
 //getting an info string
@@ -1583,7 +1582,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1){//commit AboutDialogController.cpp
 #ifdef Q_OS_MAC
             GTWidget::click(os,GTWidget::findWidget(os,"close_button"));
 #else
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Escape);
 #endif
         }
     };
@@ -1643,7 +1642,7 @@ GUI_TEST_CLASS_DEFINITION(test_1121) {
 
     //3) Then delete line with amino alphabet.
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "FOSB_HUMAN");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(500);
 
     //Expected state : Ugene did not crash on assert
@@ -1735,8 +1734,7 @@ GUI_TEST_CLASS_DEFINITION(test_1124){
             //    2. Hover the {Input files (long DNA reads to assembly)} field with mouse and wait the tooltip appeares.
             QListWidget* seqList = GTWidget::findExactWidget<QListWidget*>(os, "seqList", dialog);
             GTWidget::click(os, seqList);
-            GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(20,20));
-            GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(10, 0));
+            GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(20,20));
             GTGlobals::sleep(3000);
             //    Expected state: tooltip is presented.
             GTUtilsToolTip::checkExistingToolTip(os, "The quality scores for FASTA sequences can be provided in an additional file");
@@ -1774,15 +1772,15 @@ GUI_TEST_CLASS_DEFINITION(test_1152) {
 
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    GTKeyboardDriver::keySequence(os, "TAACG");
+    GTKeyboardDriver::keySequence("TAACG");
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"], GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter, Qt::ControlModifier);
     GTGlobals::sleep();
-    GTKeyboardDriver::keySequence(os, "AAAAAA");
+    GTKeyboardDriver::keySequence("AAAAAA");
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"], GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter, Qt::ControlModifier);
     GTGlobals::sleep();
 
     //Expected state : 1 pattern is found
@@ -1823,6 +1821,8 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", dataDir + "samples/Genbank/sars.gb");
+
+
     GTGlobals::sleep(100);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1869,8 +1869,8 @@ GUI_TEST_CLASS_DEFINITION(test_1156) {
             CHECK_SET_ERR(items.size() == 1, "Unexpected number of enzymes starting with 'BamHI'");
 
             const QPoint enzymePosition = availableEnzymeWidget->mapToGlobal(availableEnzymeWidget->visualItemRect(items.first()).center());
-            GTMouseDriver::moveTo(os, enzymePosition);
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(enzymePosition);
+            GTMouseDriver::click();
 
             GTWidget::click(os, GTWidget::findWidget(os, "addAllButton"));
 
@@ -1968,7 +1968,7 @@ GUI_TEST_CLASS_DEFINITION(test_1165){
 //Expected state: UGENE not crashes
     GTWidget::click(os,nameList);
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os,GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1166) {
@@ -1981,17 +1981,19 @@ GUI_TEST_CLASS_DEFINITION(test_1166) {
 
     //2. Select any region in msa with left button, move it left
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(46,7));
-    GTMouseDriver::press(os);
+    GTMouseDriver::press();
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(40,7));
-    GTMouseDriver::release(os);
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     //3. Drag the region you selected to its original place
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(43,7));
-    GTMouseDriver::press(os);
+    GTMouseDriver::press();
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(46,7));
-    GTMouseDriver::release(os);
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     //4. Press right mouse button, choose "Align"->"Align with T-Coffee"
     //Expected state: UGENE not crashes
@@ -2065,8 +2067,8 @@ GUI_TEST_CLASS_DEFINITION(test_1182){
     WorkflowProcessItem* worker = GTUtilsWorkflowDesigner::addElement(os, "Grouper");
 //    2. The slot contains the size of created group which hold a number of element in each group
     WorkflowPortItem* port = GTUtilsWorkflowDesigner::getPortById(os, worker, "output-data");
-    GTMouseDriver::moveTo(os, GTGraphicsItem::getItemCenter(os, port));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTGraphicsItem::getItemCenter(os, port));
+    GTMouseDriver::click();
 
     QWidget* paramBox = GTWidget::findWidget(os, "paramBox");
     QTableWidget* table = paramBox->findChild<QTableWidget*>();
@@ -2089,9 +2091,9 @@ GUI_TEST_CLASS_DEFINITION(test_1184){
     GTUtilsWorkflowDesigner::setParameter(os, "Existing file", "Overwrite", GTUtilsWorkflowDesigner::comboValue);
 
     GTUtilsWorkflowDesigner::click(os, "Write FASTA");
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, 'v', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
     GTGlobals::sleep();
 
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::getParameter(os, "Output file", true) == "file.fa",
@@ -2183,7 +2185,7 @@ GUI_TEST_CLASS_DEFINITION(test_1189){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //2) Press Ctrl+F
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
 //3) Select any region of the sequence
@@ -2212,7 +2214,7 @@ GUI_TEST_CLASS_DEFINITION(test_1189_1){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //2) Press Ctrl+F
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
 //3) Select any region of the sequence
@@ -2220,11 +2222,12 @@ GUI_TEST_CLASS_DEFINITION(test_1189_1){
     QPoint p;
     p=GTMouseDriver::getMousePosition();
     p.setX(p.x() - 100);
-    GTMouseDriver::moveTo(os, p);
-    GTMouseDriver::press(os);
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::press();
     p.setX(p.x() + 200);
-    GTMouseDriver::moveTo(os, p);
-    GTMouseDriver::release(os);
+    GTMouseDriver::moveTo(p);
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
 //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -2275,9 +2278,9 @@ GUI_TEST_CLASS_DEFINITION(test_1199) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //2. Select document in project tree view. Press 'Delete'
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
 //Expected state: document removed, UGENE not crashes.
     GTUtilsProject::checkProject(os, GTUtilsProject::Empty);
@@ -2498,6 +2501,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
     GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "P1_human_T1_5.aln"));
 
     GTUtilsProjectTreeView::doubleClickItem(os, "P1_human_T1_1");
+
     const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     const QStringList expectedNames = QStringList() << "human_T1_39_45" << "P1_1_7";
     CHECK_SET_ERR(expectedNames == names, QString("There are unexpected sequence names in the msa: expect '%1', got '%2'").arg(expectedNames.join(", ")).arg(names.join(", ")));
@@ -2550,16 +2554,16 @@ GUI_TEST_CLASS_DEFINITION(test_1229) {
     GTUtilsProjectTreeView::rename(os, GTUtilsProjectTreeView::findIndex(os, "tub", secondDoc), "tub_2", GTGlobals::UseMouse);
 
     // 3. Select both sequence objects and export them as multiple alignment.
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "tub_1"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "tub_1"));
+    GTMouseDriver::click();
 
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT));
     GTUtilsDialog::waitForDialog(os, new ExportSequenceAsAlignmentFiller(os, sandBoxDir, "test_1229.aln", ExportSequenceAsAlignmentFiller::Clustalw, true));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2752,17 +2756,17 @@ GUI_TEST_CLASS_DEFINITION(test_1252){
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTGlobals::sleep(500);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 //    3. Delete found annotations from human_t1 annotations tree
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    4. Delete created annotations document
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep(500);
 //check delition of annotation document
     GTUtilsProjectTreeView::findIndex(os, "Annotations", GTGlobals::FindOptions(false));
@@ -2771,14 +2775,14 @@ GUI_TEST_CLASS_DEFINITION(test_1252){
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTGlobals::sleep();
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 // delete annotations manually to cache MessageBox
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 //    Expected: pattern is found and annotation is stored in a new document
 
 }
@@ -2793,17 +2797,17 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1){
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 //    3. Delete found annotations from human_t1 annotations tree
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    4. Delete created annotations document
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(500);
 //check delition of annotation document
     GTUtilsProjectTreeView::findIndex(os, "Annotations", GTGlobals::FindOptions(false));//checks inside
@@ -2811,14 +2815,14 @@ GUI_TEST_CLASS_DEFINITION(test_1252_1){
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
     GTGlobals::sleep();
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 // delete annotations manually to cache MessageBox
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 //    Expected: pattern is found and annotation is stored in a new document
 }
 
@@ -2849,8 +2853,8 @@ GUI_TEST_CLASS_DEFINITION(test_1252_real) {
 
     QRect rect = tw->visualItemRect(tw->item(0, 1));
     QPoint globalP = tw->viewport()->mapToGlobal(rect.center());
-    GTMouseDriver::moveTo(os, globalP);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(globalP);
+    GTMouseDriver::click();
     GTGlobals::sleep(500);
     QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
 
@@ -2866,7 +2870,7 @@ GUI_TEST_CLASS_DEFINITION(test_1253){
 //    1. Open Find Pattern on the Options Panel
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep();
 //    2. Input any valid pattern
     GTUtilsOptionPanelSequenceView::enterPattern(os, "AAAAAAA", true);
@@ -2892,10 +2896,10 @@ GUI_TEST_CLASS_DEFINITION(test_1257){
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    GTKeyboardDriver::keySequence(os, ">S");
+    GTKeyboardDriver::keySequence(">S");
     GTGlobals::sleep();
 
     QWidget* prevButton = GTWidget::findWidget(os, "prevPushButton");
@@ -2912,16 +2916,16 @@ GUI_TEST_CLASS_DEFINITION(test_1259) {
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep();
 
-    GTKeyboardDriver::keySequence(os, ">S");
+    GTKeyboardDriver::keySequence(">S");
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"], GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter, Qt::ControlModifier);
     GTGlobals::sleep();
-    GTKeyboardDriver::keySequence(os, "H");
+    GTKeyboardDriver::keySequence("H");
     GTGlobals::sleep();
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["back"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Backspace);
     GTGlobals::sleep();
 
     QTextEdit* textEdit = qobject_cast<QTextEdit*>(GTWidget::findWidget(os, "textPattern"));
@@ -2957,23 +2961,23 @@ GUI_TEST_CLASS_DEFINITION(test_1262) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
 
     //3. Delete created annotations document
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::click(Qt::RightButton);
     //4. Click search again
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, item));
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
     //delete new doc
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__REMOVE_SELECTED));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
 
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1263){
@@ -2991,15 +2995,15 @@ GUI_TEST_CLASS_DEFINITION(test_1263){
     QTreeWidgetItem* first = parent->child(0);
     QTreeWidgetItem* second = parent->child(1);
 //    5. Use context menu {Cloning->Create PCR product}
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, first));
-    GTMouseDriver::click(os);
-    GTMouseDriver::moveTo(os, GTTreeWidget::getItemCenter(os, second));
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, first));
+    GTMouseDriver::click();
+    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, second));
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<"Cloning"<<"Create PCR product"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 //    6. Press 'Ok'
     //TODO: complete after UGENE-4101 is fixed
 //    Excepted state: PCR product has been created
@@ -3056,7 +3060,7 @@ GUI_TEST_CLASS_DEFINITION(test_1274){
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    3. Click the cross button of the window to close it
-    GTKeyboardDriver::keyClick(os, 'w', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'w', Qt::ControlModifier);
 //    Expected state: UGENE not crashes
 }
 
@@ -3162,7 +3166,7 @@ GUI_TEST_CLASS_DEFINITION(test_1295) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreemntDialogFiller(os));
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
             GTComboBox::setIndexWithText(os, algorithmBox, "MrBayes");
@@ -3223,8 +3227,8 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
     }
     QRect rect = tw->visualItemRect(tw->item(row, 1));
     QPoint globalP = tw->viewport()->mapToGlobal(rect.center());
-    GTMouseDriver::moveTo(os, globalP);
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(globalP);
+    GTMouseDriver::click();
     GTGlobals::sleep(500);
     QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
 
@@ -3353,7 +3357,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
 //    Expected state: the sequecne view opens. There are two MSA Editors and one sequence view (active).
 //    5.1 document
     GTUtilsProjectTreeView::doubleClickItem(os, "murine.gb");
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 
     sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
@@ -3367,7 +3371,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
 //    5.2 sequence
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363");
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 
     sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
@@ -3381,7 +3385,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
 //    5.3 sequence
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363 features");
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 
     sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
     CHECK_SET_ERR(sequenceViewIsVisible, "Sequence view is unexpectedly not visible");
@@ -3396,7 +3400,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
 //    Expected state: a popup menu is shown to select a MSA Editor to show. Select the first. There are two MSA Editors (the first one is active) and one sequence view.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Activate view: COI [m] COI"));
     GTUtilsProjectTreeView::doubleClickItem(os, "COI");
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 
     sequenceViewIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "murine [s] NC_001363");
     CHECK_SET_ERR(!sequenceViewIsVisible, "Sequence view is unexpectedly visible");
@@ -3421,7 +3425,7 @@ GUI_TEST_CLASS_DEFINITION(test_1310) {
             CHECK_SET_ERR(NULL != algorithmBox, "algorithmBox is NULL");
             GTComboBox::setIndexWithText(os, algorithmBox, "PHYLIP Neighbor Joining");
 
-            GTUtilsDialog::waitForDialog(os, new LicenseAgreemntDialogFiller(os));
+            GTUtilsDialog::waitForDialog(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -3616,8 +3620,8 @@ GUI_TEST_CLASS_DEFINITION(test_1324) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Search for TFBS with SITECON");
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Search for TFBS with SITECON"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Search for TFBS with SITECON"));
+    GTMouseDriver::click();
     QString val;
 
 #if defined(Q_OS_LINUX) || defined (Q_OS_WIN)
@@ -3666,10 +3670,11 @@ public:
             CHECK_SET_ERR(actualPolicy == expectedPolicy, "size policy dont match");
             QSize prevSize = dialog->size();
             QPoint newBottomRight = QPoint(bottomRight.x() + 5, bottomRight.y() + 5);
-            GTMouseDriver::moveTo(os, bottomRight);
-            GTMouseDriver::press(os);
-            GTMouseDriver::moveTo(os, newBottomRight);
-            GTMouseDriver::release(os);
+            GTMouseDriver::moveTo(bottomRight);
+            GTMouseDriver::press();
+            GTMouseDriver::moveTo(newBottomRight);
+            GTMouseDriver::release();
+            GTThread::waitForMainThread();
             CHECK_SET_ERR(prevSize == dialog->size(), "size should not change");
             GTWidget::click(os, GTWidget::findButtonByText(os,"Cancel"));
         }
@@ -3735,9 +3740,9 @@ GUI_TEST_CLASS_DEFINITION(test_1342) {
             QAction *dataReadersAction = GTMenu::getMenuItem(os, activePopupMenu, "Data Readers", true);
             CHECK_SET_ERR(NULL == dataReadersAction, "Data Readers item is unexpectly found");
 
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Escape);
             GTGlobals::sleep(200);
-            GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+            GTKeyboardDriver::keyClick( Qt::Key_Escape);
         }
     };
 
@@ -3746,8 +3751,8 @@ GUI_TEST_CLASS_DEFINITION(test_1342) {
     GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
 
     // 2. print "mer" in line "Name filter"
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
-    GTKeyboardDriver::keySequence(os, "mer");
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
+    GTKeyboardDriver::keySequence("mer");
 
     // 3. use context menu at the edit field : Add element->Data readers->File lists
     // Expected : there is no "File list" element in the menu. UGENE doesn't crash
@@ -3766,7 +3771,7 @@ GUI_TEST_CLASS_DEFINITION(test_1347) {
     GTGlobals::sleep();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 0));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep();
 
     QString clipboardText = GTClipboard::text(os);
@@ -3807,7 +3812,7 @@ GUI_TEST_CLASS_DEFINITION(test_1348) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "", "Remove element"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove"));
     GTTreeWidget::click(os, treeItem);
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep(4000);
 
@@ -4002,7 +4007,7 @@ GUI_TEST_CLASS_DEFINITION(test_1386){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2) Modify it (e.g. insert a gap)
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(5,5));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Space);
 //    3) Close the view of the document
     GTUtilsMdi::click( os, GTGlobals::Close );
 //    4) Select "Unload selected documents" for the document
@@ -4098,8 +4103,8 @@ GUI_TEST_CLASS_DEFINITION(test_1393) {
     // 3. Make sure that "Add document to project" checkbox is set and press "Export" button.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT));
     GTUtilsDialog::waitForDialog(os, new ExportSequenceAsAlignmentFiller(os, new ExportSeqsAsMsaScenario));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "trim_fa.fa"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "trim_fa.fa"));
+    GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state : New *.aln file appears in project view.Names of sequences in consensus area
@@ -4160,7 +4165,7 @@ GUI_TEST_CLASS_DEFINITION(test_1404) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence"));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedSequenceFromAlignment(os, new ExportMsaToSeqScenario));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1405) {
@@ -4239,7 +4244,7 @@ GUI_TEST_CLASS_DEFINITION(test_1409){
 
 //    3. Press F2 on the keyboard.
     GTUtilsDialog::waitForDialog(os, new EditAnnotationFiller(os, "CDS", "1042..2658"));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["f2"]);
+    GTKeyboardDriver::keyClick( Qt::Key_F2);
     GTGlobals::sleep();
 //    Expected state: the "edit annotation" dialog had opened.
 }
@@ -4306,19 +4311,19 @@ GUI_TEST_CLASS_DEFINITION(test_1424) {
     GTGlobals::sleep();
 
     GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 13, 10 ) );
-    GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["space"] );
+    GTKeyboardDriver::keyClick(Qt::Key_Space );
     GTGlobals::sleep(200);
 
     GTUtilsMsaEditor::clickSequenceName(os, "Conocephalus_sp.");
-    GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsMsaEditor::undo(os);
 
     GTUtilsMsaEditor::clickSequenceName(os, "Conocephalus_sp.");
-    GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
 
     GTUtilsMsaEditor::clickSequenceName(os, "Deracantha_deracantoides_EF540");
-    GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsMsaEditor::undo(os);
     GTUtilsMsaEditor::undo(os);
     GTUtilsMsaEditor::undo(os);
@@ -4351,8 +4356,8 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
     CHECK_SET_ERR(table,"tableView not found");
 
-    GTMouseDriver::moveTo(os,GTTableView::getCellPosition(os,table,1,0));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(os,table,1,0));
+    GTMouseDriver::click();
     GTGlobals::sleep(500);
 
     QLineEdit* line = qobject_cast<QLineEdit*>(table->findChild<QLineEdit*>());
@@ -4363,7 +4368,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     GTGlobals::sleep(1000);
 #ifdef Q_OS_MAC
     GTGlobals::sleep();
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::doubleClick();
 #endif
     CHECK_SET_ERR(GTWidget::findWidget(os, "addButton") != NULL, "addButton is hiden");
 
@@ -4390,18 +4395,18 @@ GUI_TEST_CLASS_DEFINITION(test_1428) {
 
     //2. Select the document and the sequence object itself in the Project View.
     QModelIndex docIdx = GTUtilsProjectTreeView::findIndex(os, "human_T1.fa", QModelIndex());
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, docIdx));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, docIdx));
+    GTMouseDriver::click();
     QModelIndex seqIdx = GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)", docIdx);
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, seqIdx));
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
-    GTMouseDriver::click(os);
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, seqIdx));
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::click();
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 
     //3. Use context menu {Export/Import->Export Sequences} and export sequence to any file.
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, sandBoxDir, "test_1428.fa"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os,  QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: there is only one sequence in the file (it's the same as in human_t1.fa).
@@ -4510,7 +4515,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Open find pattern option panel
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(200);
 
     //3. Use these settings :
@@ -4525,11 +4530,11 @@ GUI_TEST_CLASS_DEFINITION(test_1434_1) {
     GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
 
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
-    GTKeyboardDriver::keySequence(os, "> header");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"], GTKeyboardDriver::key["ctrl"]);
-    GTKeyboardDriver::keySequence(os, "ATTCACCAAAGTTGAA");
-    GTKeyboardDriver::keyClick(os, '8', GTKeyboardDriver::key["shift"]);
-    GTKeyboardDriver::keySequence(os, "TGAAGGAAAAAATGCT");
+    GTKeyboardDriver::keySequence("> header");
+    GTKeyboardDriver::keyClick( Qt::Key_Enter, Qt::ControlModifier);
+    GTKeyboardDriver::keySequence("ATTCACCAAAGTTGAA");
+    GTKeyboardDriver::keyClick( '8', Qt::ShiftModifier);
+    GTKeyboardDriver::keySequence("TGAAGGAAAAAATGCT");
 
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Custom region");
     GTLineEdit::setText(os, qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart")), "1");
@@ -4546,7 +4551,7 @@ GUI_TEST_CLASS_DEFINITION(test_1434_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //2. Open find pattern option panel
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(200);
 
     //3. Use these settings :
@@ -4561,17 +4566,17 @@ GUI_TEST_CLASS_DEFINITION(test_1434_2) {
     GTComboBox::setIndexWithText(os, algorithmBox, "Regular expression");
 
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
-    GTKeyboardDriver::keySequence(os, "ATTCACCAAAGTTGAA");
+    GTKeyboardDriver::keySequence("ATTCACCAAAGTTGAA");
     GTGlobals::sleep(200);
-    GTKeyboardDriver::keyClick(os, '8', GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyClick( '8', Qt::ShiftModifier);
     GTGlobals::sleep(200);
-    GTKeyboardDriver::keySequence(os, "TGAAGGAAAAAATGCT");
+    GTKeyboardDriver::keySequence("TGAAGGAAAAAATGCT");
     GTGlobals::sleep(200);
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["enter"], GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Enter, Qt::ControlModifier);
     GTGlobals::sleep(200);
-    GTKeyboardDriver::keyClick(os, ';');
+    GTKeyboardDriver::keyClick( ';');
     GTGlobals::sleep(200);
-    GTKeyboardDriver::keySequence(os, " comment");
+    GTKeyboardDriver::keySequence(" comment");
 
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Custom region");
     GTLineEdit::setText(os, qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "editStart")), "1");
@@ -4589,12 +4594,12 @@ GUI_TEST_CLASS_DEFINITION(test_1446){
 //    2) Use context menu for COI.aln in project tree view {Export/Import->Export nucleic alignment to amino}
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os,  QStringList() << "action_project__export_import_menu_action"
                                                       << "action_project__export_to_amino_action"));
-    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, "CLUSTALW", sandBoxDir + "test_1446.aln"));
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "test_1446.aln"));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsProjectTreeView::click(os, "COI.aln");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep();
 
 //    Expected state: none of sequences starts from (translated), only sequence names have (translated) in the end
@@ -4625,7 +4630,7 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
 
     //3. Close WD
     GTUtilsMdi::click( os, GTGlobals::Close );
-    GTMouseDriver::click( os );
+    GTMouseDriver::click();
     //4. Reopen the scheme's file
     //   Expected result: scheme is loaded completely without any error messages in log
     GTFileDialog::openFile(os, sandBoxDir + "dump_sequence.uwl");
@@ -4869,7 +4874,7 @@ GUI_TEST_CLASS_DEFINITION(test_1445) {
     CHECK_SET_ERR(numSelectedSequences == 1, "There is no selection in MSA, but expected");
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT << "Remove sequence", GTGlobals::UseMouse));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1461_1) {
@@ -5005,7 +5010,7 @@ GUI_TEST_CLASS_DEFINITION(test_1491) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1497) {
-    GTKeyboardDriver::keyClick(os, '3', GTKeyboardDriver::key["alt"]);
+    GTKeyboardDriver::keyClick( '3', Qt::AltModifier);
     uiLog.error("log should contain some text for test 1497");
 
     // 1. Create or open some scheme in WD.
@@ -5013,18 +5018,18 @@ GUI_TEST_CLASS_DEFINITION(test_1497) {
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
 
     // 2. Select a few items(elements, links) in the scheme.
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Align with MUSCLE"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Align with MUSCLE"));
+    GTMouseDriver::click();
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
+    GTMouseDriver::click();
 
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 
     // 3. Try to copy something from the log widget to the clipboard by hotkey(Ctrl + C).
     // Expected state : you've got in the clipboard selected text from the log widget.
@@ -5033,9 +5038,9 @@ GUI_TEST_CLASS_DEFINITION(test_1497) {
     QWidget *logView = GTWidget::findWidget(os, "dock_log_view");
     GTWidget::click(os, logView);
 
-    GTKeyboardDriver::keyClick(os, 'a', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'a', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
 
     const QString clipboardContent = GTClipboard::text(os);
 
@@ -5053,7 +5058,7 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreemntDialogFiller(os));
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
 
             QComboBox *algorithmBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algorithmBox", dialog));
             GTComboBox::setIndexWithText(os, algorithmBox, "MrBayes");
@@ -5087,13 +5092,12 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
 
     // 6) Click the "Sort alignment by tree" button on the Tree View toolbar.
     // = > UGENE does not crash.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTMouseDriver::moveTo(os, GTUtilsMsaEditor::getSequenceNameRect(os, "Zychia_baranovi").center());
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsMsaEditor::getSequenceNameRect(os, "Zychia_baranovi").center());
+    GTMouseDriver::click();
     GTGlobals::sleep(1000);
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, GTUtilsMsaEditor::getSequenceNameRect(os, "Montana_montana").center());
-    GTMouseDriver::release(os);
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(GTUtilsMsaEditor::getSequenceNameRect(os, "Montana_montana").center());
+    GTMouseDriver::release();
 
     const QStringList msaSequences1 = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(msaSequences1 != msaSequences0, "MSA is not changed");
@@ -5131,7 +5135,7 @@ GUI_TEST_CLASS_DEFINITION(test_1506){
 //    6) Zoom in the tree using mouse scroll.
     GTWidget::click(os, GTWidget::findWidget(os, "treeView"));
     for(int i = 0; i<10; i++){
-        GTMouseDriver::scroll(os, 1);
+        GTMouseDriver::scroll(1);
         GTGlobals::sleep(300);
     }
 //    Expected: UGENE does not crash.
@@ -5175,10 +5179,11 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     GTGlobals::sleep(500);
 
     WorkflowProcessItem* readSeq = GTUtilsWorkflowDesigner::getWorker(os, "Read Sequence 1");
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence 1"));
-    GTMouseDriver::press(os);
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() + QPoint(0, -200));
-    GTMouseDriver::release(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence 1"));
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(0, -200));
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
     CHECK_SET_ERR(readSeq != NULL, "\'Read Sequence 1\' element not found");
     GTGlobals::sleep(500);
     GTUtilsWorkflowDesigner::connect(os, readSeq, toBam);
@@ -5218,7 +5223,7 @@ GUI_TEST_CLASS_DEFINITION(test_1511) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2,2), QPoint(15,6));
     int numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 5, "There is no selection in MSA, but expected (check #1)");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Escape);
     GTGlobals::sleep(200);
     numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 0, "There is selection in MSA, but not expected (check #1)");
@@ -5226,7 +5231,7 @@ GUI_TEST_CLASS_DEFINITION(test_1511) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(-5,2), QPoint(-5,6));
     numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 5, "There is no selection in MSA, but expected (check #2)");
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Escape);
     GTGlobals::sleep(200);
     numSelectedSequences = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
     CHECK_SET_ERR(numSelectedSequences == 0, "There is selection in MSA, but not expected(check #2)");
@@ -5378,7 +5383,7 @@ GUI_TEST_CLASS_DEFINITION(test_1529) {
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
     GTGlobals::sleep();
 
@@ -5479,8 +5484,8 @@ GUI_TEST_CLASS_DEFINITION(test_1551) {
 //    GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new MessageBoxDialogFiller(os));
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() - QPoint(5, 0));
-            GTMouseDriver::click(os);
+            GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() - QPoint(5, 0));
+            GTMouseDriver::click();
             QWidget *contextMenu = QApplication::activePopupWidget();
             CHECK_SET_ERR(NULL == contextMenu, "There is an unexpected context menu");
         }
@@ -5491,7 +5496,7 @@ GUI_TEST_CLASS_DEFINITION(test_1551) {
 
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new PopupChecker(os, new Scenario));
     GTUtilsDialog::waitForDialogWhichMustNotBeRunned(os, new RenameSequenceFiller(os, "test_1551"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
 }
 
@@ -5517,8 +5522,8 @@ GUI_TEST_CLASS_DEFINITION(test_1554) {
 
 //    5. Click somewhere on the tree view to close menu.
 //    Expected state: The context menu closes, there are not any another menus.
-    GTMouseDriver::moveTo(os, GTMouseDriver::getMousePosition() - QPoint(5, 0));
-    GTMouseDriver::click(os, Qt::LeftButton);
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() - QPoint(5, 0));
+    GTMouseDriver::click(Qt::LeftButton);
     contextMenu = QApplication::activePopupWidget();
     CHECK_SET_ERR(NULL == contextMenu, "There is an unexpected context menu");
 }
@@ -5674,11 +5679,11 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
 
 //    3.1 Insert gap by pressing SPACE.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 10));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Space);
 
 //    Expected state: gap was inserted in every sequence of this group.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 10), QPoint(0, 12));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "-\n-\n-", "Unexpected selection: " + clipboardText);
 
@@ -5688,7 +5693,7 @@ GUI_TEST_CLASS_DEFINITION(test_1575) {
 
 //    Expected state: all sequences in the group are changed simultaneously.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 10), QPoint(2, 12));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "-\n-\n-", "Unexpected selection 2: " + clipboardText);
 }
@@ -5779,7 +5784,7 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
 
     // 3. Select a sequence area including collapsed rows, sequences above and below them.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 9), QPoint(10, 12));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
     const QString selection1 = GTClipboard::text(os);
@@ -5787,25 +5792,27 @@ GUI_TEST_CLASS_DEFINITION(test_1585) {
     // 4. Shift selected region.
     // Expected state : all sequences shifted simultaneously.If group is half - selected, the unselected sequences shifts too.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(7, 10));
-    GTMouseDriver::press(os);
+    GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
-    GTMouseDriver::release(os);
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(6, 9), QPoint(13, 12), selection1);
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Escape);
 
     GTUtilsMSAEditorSequenceArea::clickCollapceTriangle(os, "Conocephalus_discolor");
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(6, 9), QPoint(11, 10));
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(9, 9));
-    GTMouseDriver::press(os);
+    GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(11, 9));
-    GTMouseDriver::release(os);
+    GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(8, 9), QPoint(13, 10), "GTCTAT\nGCTTAT");
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["esc"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Escape);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(6, 11), QPoint(14, 12));
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(6, 11), QPoint(14, 12), "--GCTTATT\n--GCTTATT");
@@ -5824,7 +5831,7 @@ GUI_TEST_CLASS_DEFINITION(test_1586) {
     GTGlobals::sleep();
     //Save the initial content
     GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 13, 10 ) );
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
     GTGlobals::sleep(200);
     const QString initialContent = GTClipboard::text( os );
 
@@ -5835,15 +5842,15 @@ GUI_TEST_CLASS_DEFINITION(test_1586) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMsaEditor::undo(os);
-    GTThread::waitForMainThread(os);
+    GTThread::waitForMainThread();
 
     //Deselect alignment
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(15, 15));
-    GTMouseDriver::click( os );
+    GTMouseDriver::click();
 
     //Check the undone state
     GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 13, 10 ) );
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
     GTGlobals::sleep(200);
     const QString undoneContent = GTClipboard::text( os );
     CHECK_SET_ERR( undoneContent == initialContent,
@@ -5919,8 +5926,8 @@ GUI_TEST_CLASS_DEFINITION(test_1588) {
 
 
 
-//    GTMouseDriver::moveTo(os,dashboard->mapToGlobal(result.geometry().center()));
-//    GTMouseDriver::click(os);
+//    GTMouseDriver::moveTo(dashboard->mapToGlobal(result.geometry().center()));
+//    GTMouseDriver::click();
     GTGlobals::sleep(5000);
 }
 
@@ -5976,7 +5983,7 @@ GUI_TEST_CLASS_DEFINITION( test_1595 ){
     QListWidget* items = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea", datasetWidget);
     GTListWidget::click(os, items, "sars.gb");
 //    6) Press Delete button.
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
     GTGlobals::sleep(1000);
 //    Expected: the selected files has been removed from the list.
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
@@ -5992,9 +5999,9 @@ GUI_TEST_CLASS_DEFINITION( test_1597 ) {
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keySequence(os, "ACAATGTATGCCTCTTGGTTTCTTCTATC");
+    GTKeyboardDriver::keySequence("ACAATGTATGCCTCTTGGTTTCTTCTATC");
 
     QLabel *obj = qobject_cast<QLabel*>(GTWidget::findWidget(os, "ArrowHeader_Save annotation(s) to"));
     GTWidget::click(os, obj);
@@ -6002,9 +6009,9 @@ GUI_TEST_CLASS_DEFINITION( test_1597 ) {
     QRadioButton *newTable = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbCreateNewTable"));
     GTWidget::click(os, newTable);
 
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keySequence(os, "ACGTCGTCGTCGTCAATGTATGCCTCTTGGTTTCTTCTATC");
+    GTKeyboardDriver::keySequence("ACGTCGTCGTCGTCAATGTATGCCTCTTGGTTTCTTCTATC");
 }
 
 GUI_TEST_CLASS_DEFINITION( test_1600_1 ){
@@ -6119,7 +6126,7 @@ GUI_TEST_CLASS_DEFINITION( test_1600_5 ){
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(-5, 1));
 //    4. Use the context menu in the name list area { Edit -> Remove sequence }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_EDIT" << "Remove sequence"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 //    Expected state: The chosen sequence has been removed from alignment, collapsing mode has been switched on
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     int num = names.size();
@@ -6170,7 +6177,7 @@ GUI_TEST_CLASS_DEFINITION( test_1600_7 ){
 
 //    3. Select some area in MSA by left mouse button and press "Space" button
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,0));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["space"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Space);
 //    Expected state: New gaps have been added, collapsible item has retained
     QString seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Phaneroptera_falcata");
     CHECK_SET_ERR(seq == "-AAG-CTTCTTTTAA", "unexpected sequence1: " + seq);
@@ -6198,7 +6205,7 @@ GUI_TEST_CLASS_DEFINITION( test_1600_8 ){
 
 //    3. Select some area in MSA by left mouse button, then press "Del" button
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0,0));
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["delete"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Delete);
 //    Expected state: Selected area has been removed, collapsible item has retained
     QString seq = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Phaneroptera_falcata");
     CHECK_SET_ERR(seq == "AG-CTTCTTTTAA-", "unexpected sequence1: " + seq);
@@ -6225,8 +6232,8 @@ GUI_TEST_CLASS_DEFINITION( test_1603 ) {
 
     GTUtilsDocument::unloadDocument(os, docName, false);
     GTGlobals::sleep();
-    GTMouseDriver::moveTo( os, GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
+    GTMouseDriver::doubleClick();
     //TODO: check the expected state
 }
 
@@ -6330,12 +6337,12 @@ GUI_TEST_CLASS_DEFINITION( test_1622 )
 
     // 2. Save the initial content
     GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 11, 17 ) );
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
     GTGlobals::sleep(200);
     const QString initialContent = GTClipboard::text( os );
 
     // 2.1. Remove selection
-    GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["esc"] );
+    GTKeyboardDriver::keyClick(Qt::Key_Escape );
     GTGlobals::sleep(200);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( ) );
 
@@ -6353,7 +6360,7 @@ GUI_TEST_CLASS_DEFINITION( test_1622 )
 
     // 7. Check the undone state
     GTUtilsMSAEditorSequenceArea::selectArea( os, QPoint( 0, 0 ), QPoint( 11, 17 ) );
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
     GTGlobals::sleep(200);
     const QString undoneContent = GTClipboard::text( os );
     CHECK_SET_ERR( undoneContent == initialContent,
@@ -6471,17 +6478,17 @@ GUI_TEST_CLASS_DEFINITION(test_1640) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(4, 3), QPoint(4, 3));
 
     //3. Press ctrl+left arrow to remove the selection.
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["left"], GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Left, Qt::ControlModifier);
 
     //4. Press and hold a bit shift+right arrow.
-    //GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["shift"]);
+    //Qt::Key_Shift
     for (int i=0; i<12; i++) {
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["right"], GTKeyboardDriver::key["shift"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Right, Qt::ShiftModifier);
     }
-    //GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["shift"]);
+    //GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     //Expected state: all sequences of each selected column are selected
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     QString chars = GTClipboard::text(os);
     CHECK_SET_ERR(chars == "TCAGTCTATTAA", "Wrong selection: " + chars);
 }
@@ -6551,10 +6558,10 @@ GUI_TEST_CLASS_DEFINITION(test_1645) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsProject::openFiles(os, testDir + "_common_data/fasta/base_ext_nucl_all_symb.fa");
     GTGlobals::sleep();
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "base_ext_nucl_all_symb.fa"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "base_ext_nucl_all_symb.fa"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ACTION_PROJECT__UNLOAD_SELECTED));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     CHECK_SET_ERR(!GTUtilsDocument::isDocumentLoaded(os, "base_ext_nucl_all_symb.fa"), "Document should't be loaded");
 }
 
@@ -6618,20 +6625,20 @@ GUI_TEST_CLASS_DEFINITION( test_1654 ) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
 
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
-    GTKeyboardDriver::keyClick(os, 'v', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_FIND_PATTERN"));
     GTGlobals::sleep(500);
 
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
-    GTKeyboardDriver::keyClick(os, 'v', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
     GTGlobals::sleep(5000);
 
     QWidget *createAnnotationsButton = GTWidget::findWidget(os, "getAnnotationsPushButton");
@@ -6685,12 +6692,12 @@ GUI_TEST_CLASS_DEFINITION( test_1660 ) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
 
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
-    GTKeyboardDriver::keyClick(os, 'v', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
 
     //TODO setSearchInregion method checking
 }
@@ -6700,11 +6707,11 @@ GUI_TEST_CLASS_DEFINITION(test_1661) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Open find pattern option panel
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
     // 3. Enter pattern ACAATGTATGCCTCTTGGTTTCTTCTATC
-    GTKeyboardDriver::keySequence(os, "ACAATGTATGCCTCTTGGTTTCTTCTATC");
+    GTKeyboardDriver::keySequence("ACAATGTATGCCTCTTGGTTTCTTCTATC");
 
     // 4. Use settings : Region - custom region; 1 - 10000.
     GTUtilsOptionPanelSequenceView::setRegionType(os, "Custom region");
@@ -6758,7 +6765,7 @@ GUI_TEST_CLASS_DEFINITION(test_1664){
 //    2. Select something in the sequence area.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(5,5));
 //    3. Try to modify the selection with SHIFT+arrows.
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["right"], GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Right, Qt::ShiftModifier);
     GTGlobals::sleep();
 //    Expected state: selection changes its size.
     QRect expected = QRect(0, 0, 7, 6);
@@ -6877,10 +6884,10 @@ GUI_TEST_CLASS_DEFINITION(test_1673_2) {
     isTabOpened = GTUtilsOptionPanelMsa::isTabOpened(os, GTUtilsOptionPanelMsa::Statistics);
     CHECK_SET_ERR(isTabOpened, "The 'Statictics' tab is unexpectedly closed");
 
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["Ctrl"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::General);
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
-    GTKeyboardDriver::keyRelease(os, GTKeyboardDriver::key["Ctrl"]);
+    GTKeyboardDriver::keyRelease( Qt::Key_Control);
 
     isTabOpened = GTUtilsOptionPanelMsa::isTabOpened(os, GTUtilsOptionPanelMsa::General);
     CHECK_SET_ERR(!isTabOpened, "The 'General' tab is unexpectedly opened");
@@ -6895,7 +6902,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Press "Ctrl+F"
     //Expected result: "Search in Sequence" tab has been opened, the pattern field is in focus
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
     QWidget* wgt = QApplication::focusWidget();
@@ -6912,7 +6919,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_4) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ANNOT_HIGHLIGHT"));
     GTGlobals::sleep(500);
     GTWidget::findWidget(os, "prevAnnotationButton");
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
     //Expected result: "Search in Sequence" tab has been opened, other tabs have been closed
@@ -6929,7 +6936,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_5){
 //    2. Open Sequence View, "Search in Sequence" tab, remove focus from the pattern field, press "Ctrl+F"
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
     GTWidget::click(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    GTKeyboardDriver::keyClick(os, 'f', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'f', Qt::ControlModifier);
     GTGlobals::sleep(500);
 //    Expected result: "Search in Sequence" tab is still opened, the pattern field is in focus
     QString name = QApplication::focusWidget()->objectName();
@@ -7012,11 +7019,11 @@ GUI_TEST_CLASS_DEFINITION(test_1680) {
 //    3. Press "Shift"+"Arrow Up" a few times, then "Shift"+"Arrow Down" a few times
 //    Expected state: The selection changes on every keystroke, for "Arrow Up" it grows to
 //    the top of sequences list, for "Arrow Down" it does to the bottom
-    GTKeyboardDriver::keyPress(os, GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
 
     int expectedSelectionSize = 1;
     for (int i = 0; i < 9; i++) {
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["up"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Up);
         expectedSelectionSize++;
         const int currentSelectionSize = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
         CHECK_SET_ERR(expectedSelectionSize == currentSelectionSize, QString("An unexpected selection size: expect %1, got %2").arg(expectedSelectionSize).arg(currentSelectionSize));
@@ -7024,14 +7031,14 @@ GUI_TEST_CLASS_DEFINITION(test_1680) {
     }
 
     {
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["up"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Up);
         const int currentSelectionSize = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
         CHECK_SET_ERR(10 == currentSelectionSize, QString("An unexpected selection size: expect %1, got %2").arg(10).arg(currentSelectionSize));
         GTGlobals::sleep(100);
     }
 
     for (int i = 0; i < 9; i++) {
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["down"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Down);
         expectedSelectionSize--;
         const int currentSelectionSize = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
         CHECK_SET_ERR(expectedSelectionSize == currentSelectionSize, QString("An unexpected selection size: expect %1, got %2").arg(expectedSelectionSize).arg(currentSelectionSize));
@@ -7039,7 +7046,7 @@ GUI_TEST_CLASS_DEFINITION(test_1680) {
     }
 
     for (int i = 0; i < 8; i++) {
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["down"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Down);
         expectedSelectionSize++;
         const int currentSelectionSize = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
         CHECK_SET_ERR(expectedSelectionSize == currentSelectionSize, QString("An unexpected selection size: expect %1, got %2").arg(expectedSelectionSize).arg(currentSelectionSize));
@@ -7047,20 +7054,20 @@ GUI_TEST_CLASS_DEFINITION(test_1680) {
     }
 
     {
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["down"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Down);
         const int currentSelectionSize = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
         CHECK_SET_ERR(9 == currentSelectionSize, QString("An unexpected selection size: expect %1, got %2").arg(9).arg(currentSelectionSize));
         GTGlobals::sleep(100);
     }
 
     {
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["up"]);
+        GTKeyboardDriver::keyClick( Qt::Key_Up);
         const int currentSelectionSize = GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os);
         CHECK_SET_ERR(8 == currentSelectionSize, QString("An unexpected selection size: expect %1, got %2").arg(8).arg(currentSelectionSize));
         GTGlobals::sleep(100);
     }
 
-    GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyClick( Qt::Key_Shift);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1681){
@@ -7357,8 +7364,8 @@ GUI_TEST_CLASS_DEFINITION( test_1701 ) {
     GTGlobals::sleep();
     const QPixmap before = GTWidget::getPixmap(os, pdb2);
 
-    GTMouseDriver::moveTo( os, GTUtilsProjectTreeView::getItemCenter(os, "1A5H.pdb"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1A5H.pdb"));
+    GTMouseDriver::doubleClick();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<< "Render Style"<< "Ball-and-Stick"));
     GTMenu::showContextMenu(os, pdb1);
@@ -7383,18 +7390,18 @@ GUI_TEST_CLASS_DEFINITION( test_1703 )
     GTGlobals::sleep(200);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, 6, 12, 1 ) );
 
-    GTKeyboardDriver::keyPress(os,GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
     // 3. Select the upper row
-    GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["up"] );
+    GTKeyboardDriver::keyClick(Qt::Key_Up );
     GTGlobals::sleep(500);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, 5, 12, 2 ) );
 
     // 4. Select the bottom row
-    GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["down"] );
+    GTKeyboardDriver::keyClick(Qt::Key_Down );
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["down"] );
+    GTKeyboardDriver::keyClick(Qt::Key_Down );
     GTGlobals::sleep(500);
-    GTKeyboardDriver::keyRelease(os,GTKeyboardDriver::key["shift"]);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, 6, 12, 2 ) );
 }
 
@@ -7417,7 +7424,6 @@ GUI_TEST_CLASS_DEFINITION( test_1704 ){
     GTFileDialog::openFile(os, sandBoxDir, "1704_exported.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::doubleClickItem(os, "1704_exported.gb");
-    GTGlobals::sleep(1000);
 //    Expected state: all the annotations of the new file are identical to annotations of the old file
     GTUtilsAnnotationsTreeView::findItem(os, "hmm_signal  (0, 27)");
 //    Bug state: only the first annotations without qualifiers is opened
@@ -7429,7 +7435,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(9,1));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString initAln = GTClipboard::text(os);
 
@@ -7444,7 +7450,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708){
 
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(9,1));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     QString changedAln = GTClipboard::text(os);
     CHECK_SET_ERR(changedAln==expectedAln, "Unexpected alignment\n" + changedAln);
@@ -7455,7 +7461,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708){
     GTWidget::click(os,undo);
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,0), QPoint(9,1));
-    GTKeyboardDriver::keyClick(os, 'c', GTKeyboardDriver::key["ctrl"]);
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
     GTGlobals::sleep(500);
     changedAln = GTClipboard::text(os);
 
@@ -7554,7 +7560,7 @@ GUI_TEST_CLASS_DEFINITION(test_1720){
 
     GTGlobals::sleep(8000);
 //4. Fill field "Resource ID" with value D11266. Click "OK"
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "D11266.gb"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "D11266.gb"));
     GTUtilsLog::check(os,l);
 //Expected state: project view with document "D11266.gb", no error messages in log appear
 }
@@ -7599,11 +7605,11 @@ GUI_TEST_CLASS_DEFINITION(test_1756){
 */
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Collect Motifs with SeqPos");
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Collect Motifs with SeqPos"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Collect Motifs with SeqPos"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setParameter(os, "Motif database", QStringList(), GTUtilsWorkflowDesigner::ComboChecks);
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Collect Motifs with SeqPos"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Collect Motifs with SeqPos"));
+    GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog( os, new MessageBoxDialogFiller( os, QMessageBox::Ok,
         "Please fix issues listed in the error list (located under workflow)."));
@@ -7650,12 +7656,12 @@ GUI_TEST_CLASS_DEFINITION(test_1733){
 
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.sam");
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.fa");
 
 }
@@ -7748,12 +7754,12 @@ GUI_TEST_CLASS_DEFINITION(test_1738){
 
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/", "Mycobacterium.sorted.bam");
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/", "Mycobacterium.fna");
 
     GTWidget::click(os,GTAction::button(os,"Run workflow"));
@@ -7989,8 +7995,8 @@ GUI_TEST_CLASS_DEFINITION(test_1784){
     //2. Export it as alignment
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT));
     GTUtilsDialog::waitForDialog(os, new ExportSequenceAsAlignmentFiller(os, testDir + "_common_data/scenarios/sandbox", "test_1784.aln", ExportSequenceAsAlignmentFiller::Clustalw, true));
-    GTMouseDriver::moveTo(os, GTUtilsProjectTreeView::getItemCenter(os, "NC_001363"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363"));
+    GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
     //3. Drag and drop one more murine sequence object to the alignment
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "murine.gb", "NC_001363"));
@@ -8000,11 +8006,11 @@ GUI_TEST_CLASS_DEFINITION(test_1784){
     //4. Select the first sequence as reference
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0,0));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "set_seq_as_reference"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0,1));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "set_seq_as_reference"));
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
     //Expected state: The only selected sequence is the reference.
 }
 
@@ -8056,11 +8062,11 @@ GUI_TEST_CLASS_DEFINITION(test_1808) {
     GTUtilsWorkflowDesigner::connect(os, read, write);
 
     // 3.Select any input and output file
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read Annotations"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Annotations"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank", "sars.gb");
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Write Annotations"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Annotations"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", outputFilePath, GTUtilsWorkflowDesigner::textValue);
 
     // 4.Validate schema
@@ -8103,7 +8109,7 @@ GUI_TEST_CLASS_DEFINITION( test_1821 ) {
 
     //5. Close WD
     GTUtilsMdi::click( os, GTGlobals::Close );
-    GTMouseDriver::click( os );
+    GTMouseDriver::click();
 
     //6. Open the file containing the saved scheme using "Open" button
     GTFileDialog::openFile( os, workflowOutputDirPath, "test.uwl" );
@@ -8121,11 +8127,11 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Align with MUSCLE"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Align with MUSCLE"));
+    GTMouseDriver::doubleClick();
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
-    GTMouseDriver::doubleClick(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write alignment"));
+    GTMouseDriver::doubleClick();
 
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isWorkerExtended(os, "Align with MUSCLE"), "\"Align with MUSCLE\" unexpectedly has extended style");
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isWorkerExtended(os, "Write alignment"), "\"Write alignment\" unexpectedly has extended style");
@@ -8139,7 +8145,7 @@ GUI_TEST_CLASS_DEFINITION(test_1831) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Save workflow", GTGlobals::UseKey);
 
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTMouseDriver::click(os);
+    GTMouseDriver::click();
 
     // 3) Reopen UGENE WD.
     GTFileDialog::openFile(os, workflowOutputDirPath, "test.uwl");
@@ -8205,14 +8211,14 @@ GUI_TEST_CLASS_DEFINITION( test_1859 ) {
 
     // 3) Set output file
 
-    GTMouseDriver::moveTo( os, GTUtilsWorkflowDesigner::getItemCenter( os, annWriterName ) );
-    GTMouseDriver::click( os );
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, annWriterName ) );
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setParameter( os, "Output file", outputFilePath,
         GTUtilsWorkflowDesigner::textValue );
 
     // 4) Set input file
-    GTMouseDriver::moveTo( os, GTUtilsWorkflowDesigner::getItemCenter( os, annReaderName ) );
-    GTMouseDriver::click( os );
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, annReaderName ) );
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/Genbank", "sars.gb" );
 
     GTLogTracer lt;
@@ -8250,11 +8256,11 @@ GUI_TEST_CLASS_DEFINITION(test_1860) {
 
     //4) Try to set output file
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, textWriterName));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, textWriterName));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "test", GTUtilsWorkflowDesigner::textValue );
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, textReaderName));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, textReaderName));
+    GTMouseDriver::click();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1865) {
@@ -8266,8 +8272,8 @@ GUI_TEST_CLASS_DEFINITION(test_1865) {
     //2) Add elements: "Write sequence"
     GTUtilsWorkflowDesigner::addAlgorithm( os, sequenceWriterName);
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, sequenceWriterName));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, sequenceWriterName));
+    GTMouseDriver::click();
 
     }
 
@@ -8285,17 +8291,17 @@ GUI_TEST_CLASS_DEFINITION( test_1883 ){
 // 3. Use context menu: "Edit -> Replace selected rows with complement" or "reverse" or "reverse-complement"
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT
         << "replace_selected_rows_with_reverse") );
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 // Expected state: the bases in the selected area were replaced accordingly to the chosen variant
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
     GTGlobals::sleep(200);
     QString selectionContent = GTClipboard::text( os );
     CHECK_SET_ERR( "AATTATTAGACT" == selectionContent, "MSA changing is failed" );
 // 4. Press "Ctrl + Z"
-    GTKeyboardDriver::keyClick( os, 'z', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('z', Qt::ControlModifier );
     GTGlobals::sleep(200);
 // Expected result: all rows in the selection were restored
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
     GTGlobals::sleep(200);
     selectionContent = GTClipboard::text( os );
     CHECK_SET_ERR( "TCAGATTATTAA" == selectionContent, "MSA changing is failed" );
@@ -8317,10 +8323,10 @@ GUI_TEST_CLASS_DEFINITION( test_1884 )
 
     // 3. Select all the upper rows and make some extra "selection"
     const int extraUpperSelectionCount = 3;
-    GTKeyboardDriver::keyPress( os, GTKeyboardDriver::key["shift"] );
+    GTKeyboardDriver::keyPress(Qt::Key_Shift );
     GTGlobals::sleep(2000);
     for ( int i = 0; i < extraUpperSelectionCount; ++i ) {
-        GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["up"] );
+        GTKeyboardDriver::keyClick(Qt::Key_Up );
         GTGlobals::sleep(200);
     }
     const int upperSequencesCount = 4;
@@ -8330,12 +8336,12 @@ GUI_TEST_CLASS_DEFINITION( test_1884 )
     // 4. Decrease the selection
     const int deselectionCount = extraUpperSelectionCount - 1;
     for ( int i = 0; i < deselectionCount; ++i ) {
-        GTKeyboardDriver::keyClick( os, GTKeyboardDriver::key["down"] );
+        GTKeyboardDriver::keyClick(Qt::Key_Down );
         GTGlobals::sleep(200);
     }
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( 0, startRowNumber-1,
         alignmentLength, upperSequencesCount - deselectionCount ) );
-    GTKeyboardDriver::keyRelease( os, GTKeyboardDriver::key["shift"] );
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift );
 }
 
 GUI_TEST_CLASS_DEFINITION( test_1886_1 )
@@ -8350,12 +8356,12 @@ GUI_TEST_CLASS_DEFINITION( test_1886_1 )
     // 3. Shift the region but don't release left mouse button
     const QPoint mouseDragPosition( 7, 7 );
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition );
-    GTMouseDriver::press( os );
+    GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition + QPoint( 3, 0 ) );
 
     // 4. Call context menu
     GTUtilsDialog::waitForDialog( os, new GTUtilsEscClicker( os, "msa sequence area context menu" ) );
-    GTMouseDriver::click( os, Qt::RightButton );
+    GTMouseDriver::click(Qt::RightButton );
     GTGlobals::sleep( 200 );
     GTUtilsMSAEditorSequenceArea::checkSelectedRect( os, QRect( QPoint( 8, 4 ), QPoint( 13, 12 ) ) );
 }
@@ -8372,7 +8378,7 @@ GUI_TEST_CLASS_DEFINITION( test_1886_2 )
     // 3. Shift the region but don't release left mouse button
     const QPoint mouseDragPosition( 7, 7 );
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition );
-    GTMouseDriver::press( os );
+    GTMouseDriver::press();
     GTUtilsMSAEditorSequenceArea::moveTo( os, mouseDragPosition + QPoint( 1, 0 ) );
     GTGlobals::sleep(500);
     GTUtilsMSAEditorSequenceArea::moveTo(os, mouseDragPosition + QPoint(2, 0));
@@ -8382,10 +8388,10 @@ GUI_TEST_CLASS_DEFINITION( test_1886_2 )
     // 4. Replace selected rows with reverse
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EDIT
         << "replace_selected_rows_with_reverse") );
-    GTMouseDriver::click(os, Qt::RightButton);
+    GTMouseDriver::click(Qt::RightButton);
 
     // 5. Obtain selection
-    GTKeyboardDriver::keyClick( os, 'c', GTKeyboardDriver::key["ctrl"] );
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
     GTGlobals::sleep(200);
     const QString selectionContent = GTClipboard::text( os );
     CHECK_SET_ERR( "--TGAC\n--TGAT\n--AGAC\n--AGAT\n--AGAT\n"
@@ -8404,7 +8410,7 @@ GUI_TEST_CLASS_DEFINITION( test_1897 ) {
     //4) Choose Highlighting/Gaps action from context-menu
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList( ) << "Highlighting"
         << "Gaps" ) );
-    GTMouseDriver::click( os, Qt::RightButton );
+    GTMouseDriver::click(Qt::RightButton );
 
     //5) Look at Hightlighting/Gaps action again
     QAction *action = GTAction::findActionByText( os, "Gaps" );
@@ -8420,12 +8426,12 @@ GUI_TEST_CLASS_DEFINITION(test_1908){
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.sam");
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.fa");
 
 }
@@ -8488,12 +8494,12 @@ GUI_TEST_CLASS_DEFINITION( test_1919 )
 
     GTUtilsWorkflowDesigner::connect(os, fileList, fileConversion);
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "File List"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "File List"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam", "scerevisiae.bam");
 
-    GTMouseDriver::moveTo(os, GTUtilsWorkflowDesigner::getItemCenter(os, "File Format Conversion"));
-    GTMouseDriver::click(os);
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "File Format Conversion"));
+    GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setParameter(os, "Document format", 2, GTUtilsWorkflowDesigner::comboValue);
 
     // add setting source url in input data
@@ -8506,9 +8512,10 @@ GUI_TEST_CLASS_DEFINITION( test_1919 )
 GUI_TEST_CLASS_DEFINITION( test_1921 )
 {
 //    1. Click rapidly on the "Show/hide log" button several (20) times (or use the Alt+3 hotkey).
+    Q_UNUSED(os);
     GTGlobals::sleep(2000);
     for (int i = 0; i < 20; i++) {
-        GTKeyboardDriver::keyClick(os, '3', GTKeyboardDriver::key["alt"]);
+        GTKeyboardDriver::keyClick( '3', Qt::AltModifier);
         GTGlobals::sleep(20);
     }
 //    Expected state: UGENE not crashes.

@@ -1,41 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru">
+<TS version="2.1" language="ru">
 <context>
     <name>Document</name>
     <message>
         <source>Document is empty.</source>
-        <translation>Документ не содержит данных.</translation>
+        <translation type="vanished">Документ не содержит данных.</translation>
     </message>
 </context>
 <context>
     <name>DocumentFormat</name>
     <message>
         <source>DatabaseConnection</source>
-        <translation>DatabaseConnection</translation>
+        <translation type="vanished">DatabaseConnection</translation>
     </message>
     <message>
         <source>A fake format that was added to implement shared database connection within existing document model.</source>
-        <translation>Неверный формат, который был добавлен  в процессе реализации подключения к базе данных в рамках существующей модели документа.</translation>
+        <translation type="vanished">Неверный формат, который был добавлен  в процессе реализации подключения к базе данных в рамках существующей модели документа.</translation>
     </message>
     <message>
         <source>You have no permissions to modify the content of this database</source>
-        <translation>У вас недостаточно прав чтобы изменять содержимое этой базы данных</translation>
+        <translation type="vanished">У вас недостаточно прав чтобы изменять содержимое этой базы данных</translation>
     </message>
     <message>
         <source>Empty object name</source>
-        <translation>Имя объекта пусто</translation>
+        <translation type="vanished">Имя объекта пусто</translation>
+    </message>
+</context>
+<context>
+    <name>EMBLGenbankAbstractDocument</name>
+    <message>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="56"/>
+        <source>The file contains features of another remote GenBank file. These features have been skipped.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="57"/>
+        <source>The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="58"/>
+        <source>Location parsing error.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="59"/>
+        <source>The number of valid sequence characters does not coincide with the declared size in the sequence header.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>L10N</name>
     <message>
         <source>Line is too long</source>
-        <translation>Слишком длинная строка</translation>
+        <translation type="vanished">Слишком длинная строка</translation>
     </message>
     <message>
         <source>Incorrect number of columns in the file</source>
-        <translation>Неверное число столбцов в файле</translation>
+        <translation type="vanished">Неверное число столбцов в файле</translation>
+    </message>
+</context>
+<context>
+    <name>LocationParser</name>
+    <message>
+        <location filename="../src/GenbankLocationParser.cpp" line="635"/>
+        <source>Ignoring remote entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GenbankLocationParser.cpp" line="636"/>
+        <source>Ignoring different strands in JOIN</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -104,7 +140,7 @@
 <context>
     <name>U2</name>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="215"/>
+        <location filename="../src/GFFFormat.cpp" line="219"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
@@ -772,9 +808,9 @@
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="260"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="264"/>
         <location filename="../src/FastaFormat.cpp" line="272"/>
-        <location filename="../src/FastqFormat.cpp" line="337"/>
+        <location filename="../src/FastqFormat.cpp" line="391"/>
         <location filename="../src/PDWFormat.cpp" line="154"/>
         <source>Document is empty.</source>
         <translation>Документ не содержит данных.</translation>
@@ -806,7 +842,7 @@
 <context>
     <name>U2::DocumentFormatUtils</name>
     <message>
-        <location filename="../src/DocumentFormatUtils.cpp" line="231"/>
+        <location filename="../src/DocumentFormatUtils.cpp" line="232"/>
         <source>Undefined sequence alphabet</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -975,7 +1011,7 @@
         <translation>Преобразование файла %1 в %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/MergeBamTask.cpp" line="40"/>
+        <location filename="../src/tasks/MergeBamTask.cpp" line="45"/>
         <source>Merge BAM files with SAMTools merge</source>
         <translation>Слияние BAM файлов с SAMTools</translation>
     </message>
@@ -983,107 +1019,105 @@
 <context>
     <name>U2::EMBLGenbankAbstractDocument</name>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="537"/>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="315"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="580"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="318"/>
         <source>Annotation name is empty</source>
         <translation>Не указано имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="546"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="589"/>
         <source>Error parsing location</source>
         <translation>Не указан регион аннотации</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="647"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="684"/>
         <source>Error parsing sequence: unexpected empty line</source>
         <translation>Ошибка чтения последовательности: пустая строка</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="674"/>
         <source>Error reading sequence: invalid sequence format</source>
-        <translation>Ошибка чтения последовательности: неверный формат</translation>
+        <translation type="vanished">Ошибка чтения последовательности: неверный формат</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="692"/>
         <source>Error reading sequence: memory allocation failed</source>
-        <translation>Ошибка чтения последовательности: не удалось выделить память</translation>
+        <translation type="vanished">Ошибка чтения последовательности: не удалось выделить память</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="574"/>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="369"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="615"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="372"/>
         <source>Unexpected line format</source>
         <translation>Слишком длинная строка или неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="124"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="128"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="141"/>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="310"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="145"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="314"/>
         <source>Reading entry header</source>
         <translation>Чтение заголовка</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="215"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="219"/>
         <source>Merge error: found annotations without sequence</source>
         <translation>Ошибка слияния: обнаружена таблица аннотаций без соотв последовательности</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="466"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="470"/>
         <source>The file contains an incorrect data that describes a qualifier value. </source>
         <translation>Файл содержит некорректные данные, которые описываются value. </translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="467"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="471"/>
         <source>The value cannot contain a single quote character. The qualifier is &apos;%1&apos;</source>
         <translation>Значение не может содержать одиночные кавычки. Квалификатор &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="628"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="669"/>
         <source>Reading sequence %1</source>
         <translation>Чтение последовательности: %1</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="707"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="704"/>
         <source>Sequence is truncated</source>
         <translation>Последовательность повреждена</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="714"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="710"/>
         <source>Reading annotations %1</source>
         <translation>Чтение аннотаций: %1</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="724"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="720"/>
         <source>Invalid format of feature table</source>
         <translation>Таблица аннотаций повреждена</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="787"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="808"/>
         <source>Line is too long.</source>
         <translation>Слишком длинная строка.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="789"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="810"/>
         <source>IO error.</source>
         <translation>Ошибка чтения.</translation>
     </message>
     <message>
-        <location filename="../src/EMBLPlainTextFormat.cpp" line="226"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="253"/>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="207"/>
+        <location filename="../src/EMBLPlainTextFormat.cpp" line="229"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="256"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="210"/>
         <source>Record is truncated.</source>
         <translation>Данные повреждены.</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="324"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="327"/>
         <source>Annotation start position is empty</source>
         <translation>Не указано начало аннотации</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="329"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="332"/>
         <source>Annotation end position is empty</source>
         <translation>Не указан конец аннотации</translation>
     </message>
@@ -1176,50 +1210,58 @@ The following sequences are empty:</translation>
 <context>
     <name>U2::FastqFormat</name>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="50"/>
+        <location filename="../src/FastqFormat.cpp" line="51"/>
         <source>FASTQ</source>
         <translation>FASTQ</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="53"/>
+        <location filename="../src/FastqFormat.cpp" line="54"/>
         <source>FASTQ format is a text-based format for storing both a biological sequence (usually nucleotide sequence) and its corresponding quality scores.         Both the sequence letter and quality score are encoded with a single ASCII character for brevity.         It was originally developed at the Wellcome Trust Sanger Institute to bundle a FASTA sequence and its quality data,         but has recently become the de facto standard for storing the output of high throughput sequencing instruments.</source>
         <translation>Формат FASTQ является текстовым форматом для хранения биологических последовательностей (обычно нуклеотидных) и соответствующих им показателей качества. Последовательность и показатель качества кодируются при помощи одного символа ASCII для краткости. Изначально он был разработан в Wellcome Trust Sanger Institute для связи последовательности в формате FASTA и их данных качества, но в последнее время стал стандартом  для хранения выходных данных инструментов секвенирования.</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="134"/>
+        <location filename="../src/FastqFormat.cpp" line="135"/>
         <source>Error while trying to find sequence name start</source>
         <translation>Не удалось найти начало имени последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="172"/>
-        <location filename="../src/FastqFormat.cpp" line="198"/>
+        <location filename="../src/FastqFormat.cpp" line="173"/>
+        <location filename="../src/FastqFormat.cpp" line="199"/>
         <source>Error while reading sequence</source>
         <translation>Ошибка чтения последовательности</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="290"/>
-        <source>Not a valid FASTQ file: %1, sequence name differs from quality scores name: %2 and %3</source>
-        <translation>Некорректный FASTQ файл: %1, имя последовательности отличается от имени показателей качества: %2 и %3</translation>
+        <location filename="../src/FastqFormat.cpp" line="324"/>
+        <source>Sequence name differs from quality scores name: %1 and %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="311"/>
+        <location filename="../src/FastqFormat.cpp" line="344"/>
+        <source>Bad quality scores: inconsistent size.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not a valid FASTQ file: %1, sequence name differs from quality scores name: %2 and %3</source>
+        <translation type="vanished">Некорректный FASTQ файл: %1, имя последовательности отличается от имени показателей качества: %2 и %3</translation>
+    </message>
+    <message>
+        <location filename="../src/FastqFormat.cpp" line="363"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="489"/>
+        <location filename="../src/FastqFormat.cpp" line="559"/>
         <source>Not a valid FASTQ file, sequence name differs from quality scores name</source>
         <translation>Некорректный FASTQ файл, имя последовательности отличается от имени показателей качества</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="498"/>
+        <location filename="../src/FastqFormat.cpp" line="568"/>
         <source>Not a valid FASTQ file. Bad quality scores: inconsistent size.</source>
         <translation>Некорректный FASTQ файл. Плохие показатели качества: несовместимый размер.</translation>
     </message>
     <message>
-        <location filename="../src/FastqFormat.cpp" line="300"/>
         <source>Not a valid FASTQ file: %1. Bad quality scores: inconsistent size.</source>
-        <translation>Некорректный FASTQ файл: %1. Ошибка вычисления оценки точности: некорректный размер.</translation>
+        <translation type="vanished">Некорректный FASTQ файл: %1. Ошибка вычисления оценки точности: некорректный размер.</translation>
     </message>
 </context>
 <context>
@@ -1308,82 +1350,87 @@ The following sequences are empty:</translation>
         <translation>GFF это формат используемый для хранения аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="87"/>
+        <location filename="../src/GFFFormat.cpp" line="91"/>
         <source>Parsing error: invalid header</source>
         <translation>Parsing error: invalid header</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="91"/>
+        <location filename="../src/GFFFormat.cpp" line="95"/>
         <source>Parsing error: file does not contain version header</source>
         <translation>Parsing error: file does not contain version header</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="95"/>
+        <location filename="../src/GFFFormat.cpp" line="99"/>
         <source>Parsing error: format version is not an integer</source>
         <translation>Parsing error: format version is not an integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="99"/>
+        <location filename="../src/GFFFormat.cpp" line="103"/>
         <source>Parsing error: GFF version %1 is not supported</source>
         <translation>Parsing error: GFF version %1 is not supported</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="259"/>
+        <location filename="../src/GFFFormat.cpp" line="265"/>
         <source>Parsing error: file contains empty line %1, line skipped</source>
         <translation>Parsing error: file contains empty line %1, line skipped</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="292"/>
+        <location filename="../src/GFFFormat.cpp" line="305"/>
         <source>Parsing error: sequence in FASTA sequence has whitespaces at line %1</source>
         <translation>Parsing error: sequence in FASTA sequence has whitespaces at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="299"/>
+        <location filename="../src/GFFFormat.cpp" line="312"/>
         <source>Parsing error: too few fields at line %1</source>
         <translation>Parsing error: too few fields at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="305"/>
+        <location filename="../src/GFFFormat.cpp" line="318"/>
         <source>Parsing error: start position at line %1 is not integer</source>
         <translation>Parsing error: start position at line %1 is not integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="311"/>
+        <location filename="../src/GFFFormat.cpp" line="324"/>
         <source>Parsing error: end position at line %1 is not integer</source>
         <translation>Parsing error: end position at line %1 is not integer</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="316"/>
+        <location filename="../src/GFFFormat.cpp" line="329"/>
         <source>Parsing error: incorrect annotation region at line %1</source>
         <translation>Parsing error: incorrect annotation region at line %1</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="367"/>
+        <location filename="../src/GFFFormat.cpp" line="380"/>
         <source>Parsing error: incorrect attributes field %1 at line %2</source>
         <translation>Parsing error: incorrect attributes field %1 at line %2</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="406"/>
+        <location filename="../src/GFFFormat.cpp" line="419"/>
         <source>Parsing error: incorrect score parameter at line %1. Score can be a float number or &apos;.&apos; symbol</source>
         <translation>Parsing error: incorrect score parameter at line %1. Score can be a float number or &apos;.&apos; symbol</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="416"/>
+        <location filename="../src/GFFFormat.cpp" line="429"/>
         <source>Parsing error: incorrect frame parameter at line %1. Frame can be a number between 0-2 or &apos;.&apos; symbol</source>
         <translation>Parsing error: incorrect frame parameter at line %1. Frame can be a number between 0-2 or &apos;.&apos; symbol</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="426"/>
+        <location filename="../src/GFFFormat.cpp" line="439"/>
         <source>Parsing error: incorrect strand patameter at line %1. Strand can be &apos;+&apos;,&apos;-&apos; or &apos;.&apos;</source>
         <translation>Parsing error: incorrect strand patameter at line %1. Strand can be &apos;+&apos;,&apos;-&apos; or &apos;.&apos;</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="592"/>
+        <location filename="../src/GFFFormat.cpp" line="494"/>
+        <source>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GFFFormat.cpp" line="613"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
         <translation>Can not detect chromosome name. &apos;Chr&apos; name will be used.</translation>
     </message>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="357"/>
+        <location filename="../src/GFFFormat.cpp" line="370"/>
         <source>Wrong location for joined annotation at line %1. Line was skipped.</source>
         <translation>Wrong location for joined annotation at line %1. Line was skipped.</translation>
     </message>
@@ -1467,76 +1514,80 @@ The following sequences are empty:</translation>
 <context>
     <name>U2::Genbank::LocationParser</name>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="309"/>
         <source>Ignoring remote entry: %1.%2</source>
-        <translation>Ignoring remote entry: %1.%2</translation>
+        <translation type="vanished">Ignoring remote entry: %1.%2</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="344"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="414"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="359"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="431"/>
         <source>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</source>
         <translation>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="347"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="362"/>
         <source>Ignoring &apos;&lt;&apos; at start position</source>
         <translation>Ignoring &apos;&lt;&apos; at start position</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="417"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="434"/>
         <source>Ignoring &apos;&gt;&apos; at end position</source>
         <translation>Ignoring &apos;&gt;&apos; at end position</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="479"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="498"/>
         <source>Wrong token after JOIN %1</source>
         <translation>Wrong token after JOIN %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="484"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="503"/>
         <source>Wrong token after JOIN  - order %1</source>
         <translation>Wrong token after JOIN  - order %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="492"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="512"/>
         <source>Can&apos;t parse location on JOIN</source>
         <translation>Can&apos;t parse location on JOIN</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="498"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="522"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="542"/>
-        <location filename="../src/GenbankLocationParser.cpp" line="578"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="518"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="544"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="565"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="611"/>
         <source>Must be RIGHT_PARENTHESIS instead of %1</source>
         <translation>Must be RIGHT_PARENTHESIS instead of %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="504"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="524"/>
         <source>Wrong token after ORDER %1</source>
         <translation>Wrong token after ORDER %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="516"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="529"/>
+        <source>Wrong token after ORDER - join %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GenbankLocationParser.cpp" line="538"/>
         <source>Can&apos;t parse location on ORDER</source>
         <translation>Can&apos;t parse location on ORDER</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="528"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="550"/>
         <source>Wrong token after BOND %1</source>
         <translation>Wrong token after BOND %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="536"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="559"/>
         <source>Can&apos;t parse location on BONDs</source>
         <translation>Can&apos;t parse location on BONDs</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="562"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="587"/>
         <source>Must be LEFT_PARENTHESIS instead of %1</source>
         <translation>Must be LEFT_PARENTHESIS instead of %1</translation>
     </message>
     <message>
-        <location filename="../src/GenbankLocationParser.cpp" line="572"/>
+        <location filename="../src/GenbankLocationParser.cpp" line="604"/>
         <source>Can&apos;t parse location on COMPLEMENT</source>
         <translation>Can&apos;t parse location on COMPLEMENT</translation>
     </message>
@@ -1544,15 +1595,15 @@ The following sequences are empty:</translation>
 <context>
     <name>U2::GenbankPlainTextFormat</name>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="396"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="629"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="634"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="640"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="787"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="816"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="823"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="830"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="840"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="399"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="632"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="637"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="643"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="790"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="819"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="826"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="833"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="843"/>
         <source>Error writing document</source>
         <translation>Ошибка записи</translation>
     </message>
@@ -1582,22 +1633,22 @@ The following sequences are empty:</translation>
         <translation>Данные повреждены: запись SOURCE</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="527"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="530"/>
         <source>There is no IOAdapter registry yet</source>
         <translation>There is no IOAdapter registry yet</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="529"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="532"/>
         <source>IOAdapterFactory is NULL</source>
         <translation>IOAdapterFactory is NULL</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="531"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="534"/>
         <source>IOAdapter is NULL</source>
         <translation>IOAdapter is NULL</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="799"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="802"/>
         <source>Invalid annotation table!</source>
         <translation>Invalid annotation table!</translation>
     </message>
@@ -2016,12 +2067,11 @@ The following sequences are empty:</translation>
         <translation>Сырой файл последовательности - все содержимое файла рассматривается как один нуклеотид или пептидная последовательность. UGENE удалит все символы не принадлежащие алфавиту из результирующей последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="132"/>
         <source>Raw sequence file - a whole content of the file is treated either as a single nucleotide or peptide sequence UGENE will remove all non-alphabetic chars from the result sequence</source>
-        <translation>Сырой файл последовательности - все содержимое файла рассматривается как один нуклеотид или пептидная последовательность. UGENE удалит все символы не принадлежащие алфавиту из результирующей последовательности</translation>
+        <translation type="vanished">Сырой файл последовательности - все содержимое файла рассматривается как один нуклеотид или пептидная последовательность. UGENE удалит все символы не принадлежащие алфавиту из результирующей последовательности</translation>
     </message>
     <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="131"/>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="132"/>
         <source>Sequence is empty</source>
         <translation>Последовательность пуста</translation>
     </message>
@@ -2150,32 +2200,32 @@ The following sequences are empty:</translation>
         <translation>Ошибка распознавания ID строки. Не найдена длина последовательности</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="217"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="220"/>
         <source>Reading sequence %1</source>
         <translation>Чтение последовательности: %1</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="236"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="239"/>
         <source>Error parsing sequence: unexpected empty line</source>
         <translation>Ошибка чтения последовательности: пустая строка</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="259"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="262"/>
         <source>Error reading sequence: memory allocation failed</source>
         <translation>Ошибка чтения последовательности: не удалось выделить память</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="274"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="277"/>
         <source>Sequence is truncated</source>
         <translation>Последовательность повреждена</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="281"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="284"/>
         <source>Reading annotations %1</source>
         <translation>Чтение аннотаций: %1</translation>
     </message>
     <message>
-        <location filename="../src/SwissProtPlainTextFormat.cpp" line="288"/>
+        <location filename="../src/SwissProtPlainTextFormat.cpp" line="291"/>
         <source>Invalid format of feature table</source>
         <translation>Таблица аннотаций повреждена</translation>
     </message>
@@ -2311,8 +2361,8 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="600"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="633"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1100"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1109"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1113"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1122"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Неожиданный тип модификации &apos;%1&apos;</translation>
     </message>
@@ -2393,43 +2443,43 @@ The following sequences are empty:</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="791"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="883"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="896"/>
         <source>Object not found</source>
         <translation>Объект не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="832"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="845"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Папка не найдена: %1 (каноническое: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1013"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1026"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Не является объектом, id: %1, тип: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1036"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1049"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="289"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1078"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1091"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1091"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1104"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1122"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1135"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1140"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1153"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
@@ -2656,12 +2706,14 @@ The following sequences are empty:</translation>
         <translation>Object not found!</translation>
     </message>
     <message>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="803"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="918"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
         <source>Object not found.</source>
         <translation>Object not found.</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="954"/>
+        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="967"/>
         <source>Folder not found: %1</source>
         <translation>Folder not found: %1</translation>
     </message>
@@ -2708,187 +2760,187 @@ The following sequences are empty:</translation>
     <name>U2DbiL10n</name>
     <message>
         <source>There is no assembly object with the specified id.</source>
-        <translation>Не найден объект сборки с указанным идентификатором.</translation>
+        <translation type="vanished">Не найден объект сборки с указанным идентификатором.</translation>
     </message>
     <message>
         <source>Unsupported attribute type: %1</source>
-        <translation>Неподдерживаемый тип атрибута: %1</translation>
+        <translation type="vanished">Неподдерживаемый тип атрибута: %1</translation>
     </message>
     <message>
         <source>Required attribute is not found</source>
-        <translation>Требуемый атрибут не найдет</translation>
+        <translation type="vanished">Требуемый атрибут не найдет</translation>
     </message>
     <message>
         <source>Database url is incorrect</source>
-        <translation>Неправильный путь базы данных</translation>
+        <translation type="vanished">Неправильный путь базы данных</translation>
     </message>
     <message>
         <source>User login is not specified</source>
-        <translation>Не указано имя пользователя</translation>
+        <translation type="vanished">Не указано имя пользователя</translation>
     </message>
     <message>
         <source>Host is not specified</source>
-        <translation>Не указан хост</translation>
+        <translation type="vanished">Не указан хост</translation>
     </message>
     <message>
         <source>Database name is not specified</source>
-        <translation>Не указано имя базы данных</translation>
+        <translation type="vanished">Не указано имя базы данных</translation>
     </message>
     <message>
         <source>Error opening MySQL database: %1</source>
-        <translation>Ошибка открытия базы данных MySQL: %1</translation>
+        <translation type="vanished">Ошибка открытия базы данных MySQL: %1</translation>
     </message>
     <message>
         <source>Not a %1 MySQL database: %2, %3</source>
-        <translation>Не %1 MySQL база данных: %2, %3</translation>
+        <translation type="vanished">Не %1 MySQL база данных: %2, %3</translation>
     </message>
     <message>
         <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
-        <translation>Предупреждение! База данных была создана с более новой %1 версией: %2. Не все возможности базы данных могут быть выполнены! Текущая %1 версия: %3.</translation>
+        <translation type="vanished">Предупреждение! База данных была создана с более новой %1 версией: %2. Не все возможности базы данных могут быть выполнены! Текущая %1 версия: %3.</translation>
     </message>
     <message>
         <source>Illegal database state: %1</source>
-        <translation>Неправильное состояние базы данных: %1</translation>
+        <translation type="vanished">Неправильное состояние базы данных: %1</translation>
     </message>
     <message>
         <source>Can&apos;t synchronize database state</source>
-        <translation>Невозможно синхронизовать состояние базы данных</translation>
+        <translation type="vanished">Невозможно синхронизовать состояние базы данных</translation>
     </message>
     <message>
         <source>Annotation table object is not found.</source>
-        <translation>Не найдена таблица аннотаций.</translation>
+        <translation type="vanished">Не найдена таблица аннотаций.</translation>
     </message>
     <message>
         <source>Feature is not found.</source>
-        <translation>Аннотация не найдена.</translation>
+        <translation type="vanished">Аннотация не найдена.</translation>
     </message>
     <message>
         <source>An object single modification step not found</source>
-        <translation>Объект единичной модификации не найден</translation>
+        <translation type="vanished">Объект единичной модификации не найден</translation>
     </message>
     <message>
         <source>Failed to find user step ID</source>
-        <translation>Невозможно найти идентификатор объекта единичной модификации</translation>
+        <translation type="vanished">Невозможно найти идентификатор объекта единичной модификации</translation>
     </message>
     <message>
         <source>Not main thread</source>
-        <translation>Не основной поток</translation>
+        <translation type="vanished">Не основной поток</translation>
     </message>
     <message>
         <source>Can&apos;t create a common user modifications step, previous one is not complete</source>
-        <translation>Невозможно создать новую единичную модификацию, т.к. прошлая модификация еще не завершена</translation>
+        <translation type="vanished">Невозможно создать новую единичную модификацию, т.к. прошлая модификация еще не завершена</translation>
     </message>
     <message>
         <source>Can&apos;t create a common multiple modifications step, previous one is not complete</source>
-        <translation>Невозможно создать новые модификации, т.к. прошлая модификация еще не завершена</translation>
+        <translation type="vanished">Невозможно создать новые модификации, т.к. прошлая модификация еще не завершена</translation>
     </message>
     <message>
         <source>Failed to create a common user modifications step</source>
-        <translation>Не удалось создать новую единичную модификацию</translation>
+        <translation type="vanished">Не удалось создать новую единичную модификацию</translation>
     </message>
     <message>
         <source>Failed to create a common multiple modifications step</source>
-        <translation>Не удалось создать новые модификации</translation>
+        <translation type="vanished">Не удалось создать новые модификации</translation>
     </message>
     <message>
         <source>Msa object not found</source>
-        <translation>Объект msa не найден</translation>
+        <translation type="vanished">Объект msa не найден</translation>
     </message>
     <message>
         <source>Msa row not found</source>
-        <translation>Столбец msa не найден</translation>
+        <translation type="vanished">Столбец msa не найден</translation>
     </message>
     <message>
         <source>Unexpected modification type &apos;%1&apos;</source>
-        <translation>Неожиданный тип модификации &apos;%1&apos;</translation>
+        <translation type="vanished">Неожиданный тип модификации &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Invalid row position: %1</source>
-        <translation>Неправильное расположение столбца: %1</translation>
+        <translation type="vanished">Неправильное расположение столбца: %1</translation>
     </message>
     <message>
         <source>An error occurred during updating an alignment alphabet</source>
-        <translation>Возникла ошибка во время обновления алфавита выравнивания</translation>
+        <translation type="vanished">Возникла ошибка во время обновления алфавита выравнивания</translation>
     </message>
     <message>
         <source>An error occurred during reverting adding of rows</source>
-        <translation>Возникла ошибка во время отмены добавления столбцов</translation>
+        <translation type="vanished">Возникла ошибка во время отмены добавления столбцов</translation>
     </message>
     <message>
         <source>An error occurred during reverting addition of a row</source>
-        <translation>Возникла ошибка во время отмены добавления столбца</translation>
+        <translation type="vanished">Возникла ошибка во время отмены добавления столбца</translation>
     </message>
     <message>
         <source>An error occurred during reverting removing of rows</source>
-        <translation>Возникла ошибка во время отмены удаления столбцов</translation>
+        <translation type="vanished">Возникла ошибка во время отмены удаления столбцов</translation>
     </message>
     <message>
         <source>An error occurred during reverting removing of a row</source>
-        <translation>Возникла ошибка во время отмены удаления столбца</translation>
+        <translation type="vanished">Возникла ошибка во время отмены удаления столбца</translation>
     </message>
     <message>
         <source>An error occurred during updating an alignment gaps</source>
-        <translation>Возникла ошибка во время обновления пробелов выравнивания</translation>
+        <translation type="vanished">Возникла ошибка во время обновления пробелов выравнивания</translation>
     </message>
     <message>
         <source>An error occurred during updating an alignment row order</source>
-        <translation>Возникла ошибка во время обновления порядка столбцов</translation>
+        <translation type="vanished">Возникла ошибка во время обновления порядка столбцов</translation>
     </message>
     <message>
         <source>An error occurred during updating a row info</source>
-        <translation>Возникла ошибка во время обновления информации о столбце</translation>
+        <translation type="vanished">Возникла ошибка во время обновления информации о столбце</translation>
     </message>
     <message>
         <source>An error occurred during updating an msa length</source>
-        <translation>An error occurred during updating an msa length</translation>
+        <translation type="vanished">An error occurred during updating an msa length</translation>
     </message>
     <message>
         <source>An error occurred during addition of a row</source>
-        <translation>Возникла ошибка во время добавления столбца</translation>
+        <translation type="vanished">Возникла ошибка во время добавления столбца</translation>
     </message>
     <message>
         <source>Can&apos;t undo an operation for the object</source>
-        <translation>Невозможно отменить операцию для объекта</translation>
+        <translation type="vanished">Невозможно отменить операцию для объекта</translation>
     </message>
     <message>
         <source>Can&apos;t redo an operation for the object</source>
-        <translation>Невозможно передвинуться на одну операцию вперед для объекта</translation>
+        <translation type="vanished">Невозможно передвинуться на одну операцию вперед для объекта</translation>
     </message>
     <message>
         <source>Object not found</source>
-        <translation>Объект не найден</translation>
+        <translation type="vanished">Объект не найден</translation>
     </message>
     <message>
         <source>Folder not found: %1 (canonical: %2)</source>
-        <translation>Папка не найдена: %1 (каноническое: %2)</translation>
+        <translation type="vanished">Папка не найдена: %1 (каноническое: %2)</translation>
     </message>
     <message>
         <source>Not an object, id: %1, type: %2</source>
-        <translation>Не является объектом, id: %1, тип: %2</translation>
+        <translation type="vanished">Не является объектом, id: %1, тип: %2</translation>
     </message>
     <message>
         <source>Unknown object type! Id: %1, type: %2</source>
-        <translation>Unknown object type! Id: %1, type: %2</translation>
+        <translation type="vanished">Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
-        <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
+        <translation type="vanished">Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
-        <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
+        <translation type="vanished">Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
         <source>An error occurred during updating an object name</source>
-        <translation>An error occurred during updating an object name</translation>
+        <translation type="vanished">An error occurred during updating an object name</translation>
     </message>
     <message>
         <source>An error occurred during updating an object name!</source>
-        <translation>An error occurred during updating an object name!</translation>
+        <translation type="vanished">An error occurred during updating an object name!</translation>
     </message>
     <message>
         <source>Sequence object not found</source>
-        <translation>Последовательность не найдена</translation>
+        <translation type="vanished">Последовательность не найдена</translation>
     </message>
     <message>
         <source>Exception was thrown</source>
@@ -2896,183 +2948,183 @@ The following sequences are empty:</translation>
     </message>
     <message>
         <source>Internal error occurred during the sequence processing</source>
-        <translation>Internal error occurred during the sequence processing</translation>
+        <translation type="vanished">Internal error occurred during the sequence processing</translation>
     </message>
     <message>
         <source>An exception was thrown during reading sequence data from dbi</source>
-        <translation>An exception was thrown during reading sequence data from dbi</translation>
+        <translation type="vanished">An exception was thrown during reading sequence data from dbi</translation>
     </message>
     <message>
         <source>An error occurred during reverting replacing sequence data</source>
-        <translation>An error occurred during reverting replacing sequence data</translation>
+        <translation type="vanished">An error occurred during reverting replacing sequence data</translation>
     </message>
     <message>
         <source>An error occurred during replacing sequence data</source>
-        <translation>An error occurred during replacing sequence data</translation>
+        <translation type="vanished">An error occurred during replacing sequence data</translation>
     </message>
     <message>
         <source>Invalid variant track type: %1</source>
-        <translation>Invalid variant track type: %1</translation>
+        <translation type="vanished">Invalid variant track type: %1</translation>
     </message>
     <message>
         <source>Sequence name is not set</source>
-        <translation>Sequence name is not set</translation>
+        <translation type="vanished">Sequence name is not set</translation>
     </message>
     <message>
         <source>New variant public ID is empty</source>
-        <translation>New variant public ID is empty</translation>
+        <translation type="vanished">New variant public ID is empty</translation>
     </message>
     <message>
         <source>New variant track ID is empty</source>
-        <translation>New variant track ID is empty</translation>
+        <translation type="vanished">New variant track ID is empty</translation>
     </message>
     <message>
         <source>Packed data is empty</source>
-        <translation>Packed data is empty</translation>
+        <translation type="vanished">Packed data is empty</translation>
     </message>
     <message>
         <source>Packing method prefix is not supported: %1</source>
-        <translation>Packing method prefix is not supported: %1</translation>
+        <translation type="vanished">Packing method prefix is not supported: %1</translation>
     </message>
     <message>
         <source>Data is corrupted, no name end marker found: %1</source>
-        <translation>Data is corrupted, no name end marker found: %1</translation>
+        <translation type="vanished">Data is corrupted, no name end marker found: %1</translation>
     </message>
     <message>
         <source>Data is corrupted, no sequence end marker found: %1</source>
-        <translation>Data is corrupted, no sequence end marker found: %1</translation>
+        <translation type="vanished">Data is corrupted, no sequence end marker found: %1</translation>
     </message>
     <message>
         <source>Data is corrupted, no CIGAR end marker found: %1</source>
-        <translation>Data is corrupted, no CIGAR end marker found: %1</translation>
+        <translation type="vanished">Data is corrupted, no CIGAR end marker found: %1</translation>
     </message>
     <message>
         <source>Data is corrupted, no rnext end marker found: %1</source>
-        <translation>Data is corrupted, no rnext end marker found: %1</translation>
+        <translation type="vanished">Data is corrupted, no rnext end marker found: %1</translation>
     </message>
     <message>
         <source>Can not convert pnext to a number: %1</source>
-        <translation>Can not convert pnext to a number: %1</translation>
+        <translation type="vanished">Can not convert pnext to a number: %1</translation>
     </message>
     <message>
         <source>Bound values: </source>
-        <translation>Связанные значения: </translation>
+        <translation type="vanished">Связанные значения: </translation>
     </message>
     <message>
         <source>Cannot start a transaction</source>
-        <translation>Cannot start a transaction</translation>
+        <translation type="vanished">Cannot start a transaction</translation>
     </message>
     <message>
         <source>Failed to detect assembly storage format: %1</source>
-        <translation>Failed to detect assembly storage format: %1</translation>
+        <translation type="vanished">Failed to detect assembly storage format: %1</translation>
     </message>
     <message>
         <source>Failed to parse range: %1, full: %2</source>
-        <translation>Failed to parse range: %1, full: %2</translation>
+        <translation type="vanished">Failed to parse range: %1, full: %2</translation>
     </message>
     <message>
         <source>Failed to parse packed row range info %1</source>
-        <translation>Failed to parse packed row range info %1</translation>
+        <translation type="vanished">Failed to parse packed row range info %1</translation>
     </message>
     <message>
         <source>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</source>
-        <translation>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</translation>
+        <translation type="vanished">Error during RTree index creation: %1! Check if SQLite library has RTree index support!</translation>
     </message>
     <message>
         <source>Unsupported reads storage type: %1</source>
-        <translation>Unsupported reads storage type: %1</translation>
+        <translation type="vanished">Unsupported reads storage type: %1</translation>
     </message>
     <message>
         <source>Packing method is not supported: %1</source>
-        <translation>Packing method is not supported: %1</translation>
+        <translation type="vanished">Packing method is not supported: %1</translation>
     </message>
     <message>
         <source>Packed data is empty!</source>
-        <translation>Packed data is empty!</translation>
+        <translation type="vanished">Packed data is empty!</translation>
     </message>
     <message>
         <source>Error checking SQLite database: %1!</source>
-        <translation>Error checking SQLite database: %1!</translation>
+        <translation type="vanished">Error checking SQLite database: %1!</translation>
     </message>
     <message>
         <source>Error creating table: %1, error: %2</source>
-        <translation>Error creating table: %1, error: %2</translation>
+        <translation type="vanished">Error creating table: %1, error: %2</translation>
     </message>
     <message>
         <source>Not a %1 SQLite database: %2</source>
-        <translation>Not a %1 SQLite database: %2</translation>
+        <translation type="vanished">Not a %1 SQLite database: %2</translation>
     </message>
     <message>
         <source>Database is already opened!</source>
-        <translation>База данных уже открыта!</translation>
+        <translation type="vanished">База данных уже открыта!</translation>
     </message>
     <message>
         <source>URL is not specified</source>
-        <translation>Не задан путь</translation>
+        <translation type="vanished">Не задан путь</translation>
     </message>
     <message>
         <source>Error opening SQLite database: %1!</source>
-        <translation>Error opening SQLite database: %1!</translation>
+        <translation type="vanished">Error opening SQLite database: %1!</translation>
     </message>
     <message>
         <source>Database is already closed!</source>
-        <translation>База данных уже закрыта!</translation>
+        <translation type="vanished">База данных уже закрыта!</translation>
     </message>
     <message>
         <source>Illegal database state %1!</source>
-        <translation>Illegal database state %1!</translation>
+        <translation type="vanished">Illegal database state %1!</translation>
     </message>
     <message>
         <source>Failed to close database: %1, err: %2</source>
-        <translation>Failed to close database: %1, err: %2</translation>
+        <translation type="vanished">Failed to close database: %1, err: %2</translation>
     </message>
     <message>
         <source>Annotation table object not found.</source>
-        <translation>Annotation table object not found.</translation>
+        <translation type="vanished">Annotation table object not found.</translation>
     </message>
     <message>
         <source>An object single modification step not found!</source>
-        <translation>An object single modification step not found!</translation>
+        <translation type="vanished">An object single modification step not found!</translation>
     </message>
     <message>
         <source>Msa object not found!</source>
-        <translation>Msa object not found!</translation>
+        <translation type="vanished">Msa object not found!</translation>
     </message>
     <message>
         <source>Msa row not found!</source>
-        <translation>Msa row not found!</translation>
+        <translation type="vanished">Msa row not found!</translation>
     </message>
     <message>
         <source>Not an object! Id: %1, type: %2</source>
-        <translation>Not an object! Id: %1, type: %2</translation>
+        <translation type="vanished">Not an object! Id: %1, type: %2</translation>
     </message>
     <message>
         <source>Can&apos;t undo an operation for the object!</source>
-        <translation>Can&apos;t undo an operation for the object!</translation>
+        <translation type="vanished">Can&apos;t undo an operation for the object!</translation>
     </message>
     <message>
         <source>Can&apos;t redo an operation for the object!</source>
-        <translation>Can&apos;t redo an operation for the object!</translation>
+        <translation type="vanished">Can&apos;t redo an operation for the object!</translation>
     </message>
     <message>
         <source>Object not found!</source>
-        <translation>Object not found!</translation>
+        <translation type="vanished">Object not found!</translation>
     </message>
     <message>
         <source>Object not found.</source>
-        <translation>Object not found.</translation>
+        <translation type="vanished">Object not found.</translation>
     </message>
     <message>
         <source>Folder not found: %1</source>
-        <translation>Folder not found: %1</translation>
+        <translation type="vanished">Folder not found: %1</translation>
     </message>
     <message>
         <source>Sequence object not found.</source>
-        <translation>Sequence object not found.</translation>
+        <translation type="vanished">Sequence object not found.</translation>
     </message>
     <message>
         <source>Sequence name is not set!</source>
-        <translation>Sequence name is not set!</translation>
+        <translation type="vanished">Sequence name is not set!</translation>
     </message>
 </context>
 </TS>

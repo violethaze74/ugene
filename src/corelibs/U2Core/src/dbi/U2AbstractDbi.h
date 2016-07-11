@@ -135,6 +135,11 @@ public:
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
     }
 
+    virtual U2DataId getObject(qint64 objectId, U2OpStatus& os) {
+        U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
+        return U2DataId();
+    }
+
     virtual QHash<U2Object, QString> getObjectFolders(U2OpStatus &os) {
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return QHash<U2Object, QString>();

@@ -72,7 +72,7 @@ void EditQualifierFiller::commonScenario()
     if(closeErrormessageBox){
         GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
         GTGlobals::sleep();
-        GTKeyboardDriver::keyClick(os, GTKeyboardDriver::key["Enter"]);
+        GTKeyboardDriver::keyClick(Qt::Key_Enter);
         GTGlobals::sleep();
 
         GTLineEdit::setText(os, nameEdit, "nice_name", noCheck);

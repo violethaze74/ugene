@@ -60,6 +60,11 @@ public:
     */
     virtual void getObject(U2Object& object, const U2DataId& id, U2OpStatus& os) = 0;
 
+    /**
+    Retrieves database object by objectId.
+    */
+    virtual U2DataId getObject(qint64 objectId, U2OpStatus& os) = 0;
+
     /** Lists database top-level objects, starts with 'offset' and limits by 'count'.
     The 'offset' and 'count' can be arbitrarily large but should not be negative. Also, 'count' can have special value 'DBI_NO_LIMIT'. */
     virtual QList<U2DataId> getObjects(qint64 offset, qint64 count, U2OpStatus& os) = 0;
