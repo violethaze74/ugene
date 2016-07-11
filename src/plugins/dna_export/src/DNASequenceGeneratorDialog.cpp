@@ -57,7 +57,7 @@ DNASequenceGeneratorDialog::DNASequenceGeneratorDialog(QWidget* p)
     : QDialog(p),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17469008");
+    new HelpButton(this, buttonBox, "17470733");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -167,7 +167,7 @@ void DNASequenceGeneratorDialog::sl_refButtonToggled(bool checked) {
 BaseContentDialog::BaseContentDialog(QMap<char, qreal>& percentMap_, QWidget* p)
 : QDialog(p), percentMap(percentMap_) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17469008");
+    new HelpButton(this, buttonBox, "17470733");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
 
     percentASpin->setValue(percentMap.value('A')*100.0);

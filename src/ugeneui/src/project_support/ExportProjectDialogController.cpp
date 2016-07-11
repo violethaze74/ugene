@@ -55,7 +55,7 @@ ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const Q
 : QDialog(p) 
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17468674");
+    new HelpButton(this, buttonBox, "17470397");
 
     setModal(true);
     projectFile = fixProjectFile(defaultProjectFileName);

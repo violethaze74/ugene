@@ -132,7 +132,7 @@ void CoveredRegionsLabel::sl_updateContent() {
 const QString AssemblyNavigationWidgetFactory::GROUP_ID = "OP_ASS_NAVIGATION";
 const QString AssemblyNavigationWidgetFactory::GROUP_ICON_STR = ":core/images/goto.png";
 const QString AssemblyNavigationWidgetFactory::GROUP_TITLE = QString(QObject::tr("Navigation"));
-const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "17468900";
+const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "17470625";
 
 AssemblyNavigationWidgetFactory::AssemblyNavigationWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;

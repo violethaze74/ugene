@@ -117,7 +117,11 @@ void CmdlineTaskRunner::prepare() {
         args << ("--log-level-" + logLevel);
     }
 
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    env.insert(ENV_SEND_CRASH_REPORTS, "0");
+
     process = new QProcess(this);
+    process->setProcessEnvironment(env);
     connect(process, SIGNAL(error(QProcess::ProcessError)), SLOT(sl_onError(QProcess::ProcessError)));
     connect(process, SIGNAL(readyReadStandardOutput()), SLOT(sl_onReadStandardOutput()));
     connect(process, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, &CmdlineTaskRunner::sl_onFinish);
@@ -236,7 +240,6 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
 
     foreach(const QString &line, lines) {
         QStringList words = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-        int sz = words.size();
         foreach (const QString &word, words) {
             if (word.startsWith(OUTPUT_PROGRESS_TAG)) {
                 QString numStr = word.mid(OUTPUT_PROGRESS_TAG.size());
