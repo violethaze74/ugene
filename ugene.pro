@@ -88,10 +88,6 @@ use_opencl() {
     SUBDIRS += src/plugins/opencl_support
 }
 
-use_sse2() {
-    SUBDIRS += src/plugins_3rdparty/hmm3
-}
-
 exclude_list_enabled() {
     SUBDIRS -= src/plugins/CoreTests
     SUBDIRS -= src/plugins/test_runner
