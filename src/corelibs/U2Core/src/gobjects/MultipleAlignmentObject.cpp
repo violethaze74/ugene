@@ -61,7 +61,7 @@ const MultipleAlignment & MaSavedState::getState() const{
 }
 
 void MaSavedState::setState(const MultipleAlignment &ma) {
-    lastState.reset(ma->clone());
+    lastState = ma->getCopy();
 }
 
 const int MultipleAlignmentObject::GAP_COLUMN_ONLY = -1;
@@ -72,7 +72,7 @@ MultipleAlignmentObject::MultipleAlignmentObject(const QString &gobjectType,
                                                  const QVariantMap &hintsMap,
                                                  const MultipleAlignment &alignment)
     : GObject(gobjectType, name, hintsMap),
-      cachedMa(NULL != alignment ? alignment->clone() : NULL)
+      cachedMa(NULL != alignment ? alignment->getCopy() : MultipleAlignment())
 {
     entityRef = maRef;
     dataLoaded = false;
@@ -200,7 +200,7 @@ int MultipleAlignmentObject::deleteGap(U2OpStatus &os, const U2Region &rows, int
     QList<qint64> modifiedRowIds;
     modifiedRowIds.reserve(rows.length);
 
-    MultipleAlignment ma(getMultipleAlignment()->clone());
+    MultipleAlignment ma = getMultipleAlignment()->getCopy();
     // iterate through given rows to update each of them in DB
     for (int rowCount = rows.startPos; rowCount < rows.endPos(); ++rowCount) {
         ma->removeRowData(rowCount, pos, removingGapColumnCount, os);
@@ -546,7 +546,7 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
     ensureDataLoaded();
     emit si_startMaUpdating();
 
-    MultipleAlignment maBefore(cachedMa->clone());
+    MultipleAlignment maBefore = cachedMa->getCopy();
     QString oldName = maBefore->getName();
 
     U2OpStatus2Log os;
@@ -611,7 +611,7 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
 void MultipleAlignmentObject::sortRowsByList(const QStringList &order) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    MultipleAlignment ma(getMultipleAlignment()->clone());
+    MultipleAlignment ma = getMultipleAlignment()->getCopy();
     ma->sortRowsByList(order);
     CHECK(ma->getRowsIds() != cachedMa->getRowsIds(), );
 

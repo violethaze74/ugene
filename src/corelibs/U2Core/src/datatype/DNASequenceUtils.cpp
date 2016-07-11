@@ -51,8 +51,8 @@ void DNASequenceUtils::removeChars(DNASequence& sequence, int startPos, int endP
 
 void DNASequenceUtils::removeChars(QByteArray& sequence, int startPos, int endPos, U2OpStatus& os) {
     if ((endPos <= startPos) || (startPos < 0) || (endPos > sequence.length())) {
-        coreLog.trace(L10N::internalError("incorrect parameters was passed to DNASequenceUtils::removeChars,"
-            "startPos '%1', endPos '%2', sequence length '%3'!").arg(startPos).arg(endPos).arg(sequence.length()));
+        coreLog.trace(L10N::internalError("incorrect parameters was passed to DNASequenceUtils::removeChars, "
+            "startPos '%1', endPos '%2', sequence length '%3'").arg(startPos).arg(endPos).arg(sequence.length()));
         os.setError("Can't remove chars from a sequence.");
         return;
     }

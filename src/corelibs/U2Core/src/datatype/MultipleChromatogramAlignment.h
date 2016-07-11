@@ -19,38 +19,32 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_H_
-#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_H_
+#ifndef _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_H_
+#define _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_H_
 
 #include "MultipleAlignment.h"
-#include "MultipleSequenceAlignmentRow.h"
+#include "MultipleChromatogramAlignmentRow.h"
 
 namespace U2 {
 
-class MultipleSequenceAlignmentData;
-typedef QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
+class MultipleChromatogramAlignmentData;
+typedef QSharedPointer<MultipleChromatogramAlignmentData> MultipleChromatogramAlignment;
 
-/**
- * Multiple sequence alignment
- * The length of the alignment is the maximum length of its rows.
- * There are minimal checks on the alignment's alphabet, but the client of the class
- * is expected to keep the conformance of the data and the alphabet.
- */
-class U2CORE_EXPORT MultipleSequenceAlignmentData : public MultipleAlignmentData {
+class U2CORE_EXPORT MultipleChromatogramAlignmentData : public MultipleAlignmentData {
 private:
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
      */
-    MultipleSequenceAlignmentData(const QString &name = QString(),
+    MultipleChromatogramAlignmentData(const QString &name = QString(),
                                   const DNAAlphabet *alphabet = NULL,
-                                  const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
-    MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData &msa);
+                                  const QList<MultipleChromatogramAlignmentRow> &rows = QList<MultipleChromatogramAlignmentRow>());
+    MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData &mca);
 
 public:
-    static MultipleSequenceAlignment createMsa(const QString &name = QString(),
+    static MultipleChromatogramAlignment createMca(const QString &name = QString(),
                                                const DNAAlphabet *alphabet = NULL,
-                                               const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
+                                               const QList<MultipleChromatogramAlignmentRow> &rows = QList<MultipleChromatogramAlignmentRow>());
 
     /** Returns a character (a gap or a non-gap) in the specified row and position */
     char charAt(int rowIndex, int pos) const;
@@ -69,7 +63,7 @@ public:
      * Creates a new alignment from the sub-alignment. Do not trims the result.
      * Assumes that 'start' >= 0, and 'start + len' is less or equal than the alignment length.
      */
-    MultipleSequenceAlignment mid(int start, int len) const;
+    MultipleChromatogramAlignment mid(int start, int len) const;
 
     /**
      * Adds a new row to the alignment.
@@ -101,33 +95,35 @@ public:
     void appendChars(int row, const char* str, int len);
     void appendChars(int row, int afterPos, const char *str, int len);
 
-    MultipleSequenceAlignmentRow getMsaRow(int i);
-    const MultipleSequenceAlignmentRow getMsaRow(int i) const;
-    const MultipleSequenceAlignmentRow getMsaRow(const QString &name) const;
-    QList<MultipleSequenceAlignmentRow> getMsaRows() const;
-    const MultipleSequenceAlignmentRow getMsaRowByRowId(qint64 rowId, U2OpStatus &os) const;
+    MultipleChromatogramAlignmentRow getMcaRow(int i);
+    const MultipleChromatogramAlignmentRow getMcaRow(int i) const;
+    const MultipleChromatogramAlignmentRow getMcaRow(const QString &name) const;
+    QList<MultipleChromatogramAlignmentRow> getMcaRows() const;
+    const MultipleChromatogramAlignmentRow getMcaRowByRowId(qint64 rowId, U2OpStatus &os) const;
 
     MultipleAlignment getCopy() const;
-    MultipleSequenceAlignment getExplicitCopy() const;
+    MultipleChromatogramAlignment getExplicitCopy() const;
 
-    static MultipleSequenceAlignment getEmptyMsa();
-    static MultipleSequenceAlignmentRow getEmptyRow();
+    static MultipleChromatogramAlignment getEmptyMca();
+    static MultipleChromatogramAlignmentRow getEmptyRow();
 
 private:
-    static const MultipleSequenceAlignment EMPTY_MSA;
-    static const MultipleSequenceAlignmentRow EMPTY_ROW;
+    static const MultipleChromatogramAlignment EMPTY_MCA;
+    static const MultipleChromatogramAlignmentRow EMPTY_ROW;
 
     /** Create a new row (sequence + gap model) from the bytes */
-    MultipleSequenceAlignmentRow createSequenceRow(const QString &name, const QByteArray &rawData) const;
+    MultipleChromatogramAlignmentRow createSequenceRow(const QString &name, const QByteArray &rawData) const;
 
     /**
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleSequenceAlignmentRow createSequenceRow(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, U2OpStatus &os);
+    MultipleChromatogramAlignmentRow createSequenceRow(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, U2OpStatus &os);
     MultipleAlignmentRow createRow(const MultipleAlignmentRow &row) const;
+
+    DNASequence referenceSequence;
 };
 
 }   // namespace U2
 
-#endif
+#endif // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_H_

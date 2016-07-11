@@ -49,7 +49,7 @@ const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsa() const 
 }
 
 const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() const {
-    return MultipleSequenceAlignment(getMsa()->explicitClone());
+    return getMsa()->getExplicitCopy();
 }
 
 GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
@@ -61,7 +61,7 @@ GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2Op
     gHints->setAll(hints);
     const QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-    MultipleSequenceAlignment msa(getMsa()->explicitClone());
+    MultipleSequenceAlignment msa = getMsa()->getExplicitCopy();
     MultipleSequenceAlignmentObject *clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
     CHECK_OP(os, NULL);
 

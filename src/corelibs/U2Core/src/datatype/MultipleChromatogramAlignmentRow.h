@@ -19,80 +19,80 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_
-#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_
+#ifndef _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_
+#define _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_
 
+#include <U2Core/DNAChromatogram.h>
 #include <U2Core/DNASequence.h>
-#include <U2Core/MsaRowUtils.h>
-#include <U2Core/U2Ma.h>
 
 #include "MultipleAlignmentRow.h"
 
 namespace U2 {
 
-class MultipleSequenceAlignmentData;
-class MultipleSequenceAlignmentRowData;
+class MultipleChromatogramAlignmentData;
+class MultipleChromatogramAlignmentRowData;
 
-typedef QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
-typedef QSharedPointer<MultipleSequenceAlignmentRowData> MultipleSequenceAlignmentRow;
+typedef QSharedPointer<MultipleChromatogramAlignmentData> MultipleChromatogramAlignment;
+typedef QSharedPointer<MultipleChromatogramAlignmentRowData> MultipleChromatogramAlignmentRow;
 
-/**
- * A row in a multiple alignment structure.
- * The row consists of a sequence without gaps
- * and a gap model.
- * A row core is an obsolete concept. Currently,
- * it exactly equals to the row (offset always equals to zero).
- */
-class U2CORE_EXPORT MultipleSequenceAlignmentRowData : public MultipleAlignmentRowData {
-    friend class MultipleSequenceAlignmentData;
+class MultipleChromatogramAlignmentRowData : public MultipleAlignmentRowData {
+    friend class MultipleChromatogramAlignmentData;
 
     /** Do NOT create a row without an alignment! */
-    MultipleSequenceAlignmentRowData();
-    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentData *msa);
+    MultipleChromatogramAlignmentRowData();
+    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mca);
 
     /** Creates a row in memory. */
-    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, const MultipleSequenceAlignmentData *msa);
-    MultipleSequenceAlignmentRowData(const U2MaRow &rowInDb, const QString &rowName, const QByteArray &rawData, const MultipleSequenceAlignmentData *msa);
-    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignmentData *msa);
+    MultipleChromatogramAlignmentRowData(const U2MaRow &rowInDb, const DNAChromatogram &chromatogram, const U2MaRowGapModel &gaps, const MultipleChromatogramAlignmentData *mca);
+    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow &row, const MultipleChromatogramAlignmentData *mca);
 
 public:
+    enum Trace {
+        Trace_A,
+        Trace_C,
+        Trace_G,
+        Trace_T,
+    };
+
+    enum SequenceType {
+        Predicted,
+        Edited
+    };
+
     /** Name of the row (equals to the sequence name), can be empty */
     QString getName() const;
     void setName(const QString &name);
 
     /** Returns the row sequence (without gaps) */
-    const DNASequence & getSequence() const;
+    const DNAChromatogram & getChromatogram() const;
+    const DNASequence & getSequence(SequenceType sequenceType) const;
 
     /**
      * Sets a new sequence. Be careful, gap model validity is not verified.
      * The sequence must not contain gaps.
      */
-    void setSequence(const DNASequence &newSequence);
+    void setChromatogram(const DNAChromatogram &newChromatogram);
+    void setSequence(SequenceType sequenceType, const U2::DNASequence &newSequence);
 
     /**
      * The length must be greater or equal to the row length.
      * When the specified length is greater, an appropriate number of
      * trailing gaps are appended to the end of the byte array.
      */
-    QByteArray toByteArray(int length, U2OpStatus &os) const;
+    QByteArray toByteArray(SequenceType sequenceType, int length, U2OpStatus &os) const;
 
     /** Packed version: returns the row without leading and trailing gaps */
-    QByteArray getCore() const;
+    QByteArray getCore(SequenceType sequenceType) const;
 
     /** Returns the row the way it is -- with leading and trailing gaps */
-    QByteArray getData() const;
-
-    /**
-     * Sets new sequence and gap model.
-     * If the sequence is empty, the offset is ignored (if any).
-     */
-    void setRowContent(const QByteArray &bytes, int offset);
+    QByteArray getData(SequenceType sequenceType) const;
 
     /**
      * Returns a character in row at the specified position.
      * If the specified position is outside the row bounds, returns a gap.
      */
-    char charAt(int pos) const;
+    char charAt(SequenceType sequenceType, int pos) const;
+    ushort traceValueAt(Trace track, int pos) const;
 
     /** Converts the row sequence to upper case */
     void toUpperCase();
@@ -103,15 +103,16 @@ public:
      * The 'resultChar' can be a gap, gaps model is recalculated in this case.
      */
     void replaceChars(char origChar, char resultChar, U2OpStatus &os);
+    void replaceChars(SequenceType sequenceType, char origChar, char resultChar, U2OpStatus &os);
 
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    MultipleSequenceAlignmentRow mid(int pos, int count, U2OpStatus &os) const;
+    MultipleChromatogramAlignmentRow mid(int pos, int count, U2OpStatus &os) const;
 
-    MultipleSequenceAlignmentRow getCopy() const;
+    MultipleChromatogramAlignmentRow getCopy() const;
 
 private:
     int getDataLength() const;
@@ -123,12 +124,18 @@ private:
      * Joins sequence chars and gaps into one byte array.
      * "keepOffset" specifies to take into account gaps at the beginning of the row.
      */
-    QByteArray joinCharsAndGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
+    QByteArray joinCharsAndGaps(SequenceType sequenceType, bool keepLeadingGaps, bool keepTrailingGaps) const;
+
+    DNASequence * selectSequence(SequenceType sequenceType);
+    const DNASequence * selectSequence(SequenceType sequenceType) const;
 
     /** The sequence of the row without gaps (cached) */
-    DNASequence         sequence;
+    QString name;
+    DNAChromatogram chromatogram;
+    DNASequence predictedSequence;
+    DNASequence editedSequence;
 };
 
 }   // namespace U2
 
-#endif // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_
+#endif // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_

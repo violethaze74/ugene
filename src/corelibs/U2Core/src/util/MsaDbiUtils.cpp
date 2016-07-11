@@ -1080,7 +1080,7 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64> rowIds, qi
 
     // Crop or remove each row
     for (int i = 0, n = al->getNumRows(); i < n; ++i) {
-        MultipleSequenceAlignmentRow row(al->getMsaRow(i)->explicitClone());
+        MultipleSequenceAlignmentRow row = al->getMsaRow(i)->getCopy();
         qint64 rowId = row->getRowId();
         if (rowIds.contains(rowId)) {
             U2DataId sequenceId = row->getRowDbInfo().dataObjectId;

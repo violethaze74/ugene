@@ -120,8 +120,8 @@ void ProfileToProfileWorker::sl_taskFinished() {
 /************************************************************************/
 ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, const MultipleSequenceAlignment &secondMsa)
     : Task(tr("Align profile to profile with MUSCLE"), TaskFlag_NoRun),
-      masterMsa(masterMsa->explicitClone()),
-      secondMsa(secondMsa->explicitClone()),
+      masterMsa(masterMsa->getExplicitCopy()),
+      secondMsa(secondMsa->getExplicitCopy()),
       seqIdx(0),
       subtaskCount(0)
 {

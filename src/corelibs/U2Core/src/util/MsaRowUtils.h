@@ -27,6 +27,8 @@
 
 namespace U2 {
 
+class DNASequence;
+
 class U2CORE_EXPORT MsaRowUtils {
 public:
     static int getRowLength(const QByteArray &seq, const U2MaRowGapModel &gaps);
@@ -39,8 +41,8 @@ public:
      * Otherwise if true == 'allowGapInPos' and the gap symbol is located in 'pos' then the method returns
      * the position of a non-gap character left-most to the 'pos'.
      */
-    static int getUngappedPosition(const QList<U2MaGap> &gaps, int pos, bool allowGapInPos = false);
-    static int getCoreStart(const QList<U2MaGap>& gaps);
+    static int getUngappedPosition(const U2MaRowGapModel &gaps, int pos, bool allowGapInPos = false);
+    static int getCoreStart(const U2MaRowGapModel &gaps);
 
     /**
      * Add "offset" of gaps to the beginning of the row
@@ -51,6 +53,7 @@ public:
     static bool isGap(int sequenceLength, const U2MaRowGapModel &gapModel, int position);
     static bool isGap(const U2MaRowGapModel &gapModel, int position);
     static void chopGapModel(U2MaRowGapModel &gapModel, int maxLength);
+    static QByteArray joinCharsAndGaps(const DNASequence &sequence, const U2MaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps);
 };
 
 } // U2

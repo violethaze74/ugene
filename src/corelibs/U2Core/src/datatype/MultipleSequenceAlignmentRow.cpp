@@ -184,17 +184,13 @@ void MultipleSequenceAlignmentRowData::replaceChars(char origChar, char resultCh
 }
 
 MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::mid(int pos, int count, U2OpStatus &os) const {
-    MultipleSequenceAlignmentRow row(new MultipleSequenceAlignmentRowData(*this));
+    MultipleSequenceAlignmentRow row = getCopy();
     row->crop(pos, count, os);
     return row;
 }
 
-MultipleAlignmentRowData * MultipleSequenceAlignmentRowData::clone() const {
-    return explicitClone();
-}
-
-MultipleSequenceAlignmentRowData * MultipleSequenceAlignmentRowData::explicitClone() const {
-    return new MultipleSequenceAlignmentRowData(*this);
+MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getCopy() const {
+    return MultipleSequenceAlignmentRow(new MultipleSequenceAlignmentRowData(*this));
 }
 
 int MultipleSequenceAlignmentRowData::getDataLength() const {
@@ -215,34 +211,8 @@ bool MultipleSequenceAlignmentRowData::isDataEqual(const MultipleAlignmentRowDat
     return MatchExactly == DNASequenceUtils::compare(sequence, msaRowData.sequence);
 }
 
-QByteArray MultipleSequenceAlignmentRowData::joinCharsAndGaps(bool keepOffset, bool keepTrailingGaps) const {
-    QByteArray bytes = sequence.constSequence();
-    int beginningOffset = 0;
-
-    const U2MaRowGapModel &gapModel = getGapModel();
-
-    if (gapModel.isEmpty()) {
-        return bytes;
-    }
-
-    for (int i = 0; i < gapModel.size(); ++i) {
-        QByteArray gapsBytes;
-        if (!keepOffset && (0 == gapModel[i].offset)) {
-            beginningOffset = gapModel[i].gap;
-            continue;
-        }
-
-        gapsBytes.fill(MultipleSequenceAlignmentData::GapChar, gapModel[i].gap);
-        bytes.insert(gapModel[i].offset - beginningOffset, gapsBytes);
-    }
-
-    if (keepTrailingGaps && (bytes.size() < getRowLength())) {
-        QByteArray gapsBytes;
-        gapsBytes.fill(MultipleSequenceAlignmentData::GapChar, getRowLength() - bytes.size());
-        bytes.append(gapsBytes);
-    }
-
-    return bytes;
+QByteArray MultipleSequenceAlignmentRowData::joinCharsAndGaps(bool keepLeadingGaps, bool keepTrailingGaps) const {
+    return MsaRowUtils::joinCharsAndGaps(sequence, getGapModel(), getRowLength(), keepLeadingGaps, keepTrailingGaps);
 }
 
 }   // namespace U2

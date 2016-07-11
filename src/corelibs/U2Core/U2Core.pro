@@ -27,6 +27,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/MultipleAlignment.h \
            src/datatype/MultipleAlignmentInfo.h \
            src/datatype/MultipleAlignmentRow.h \
+           src/datatype/MultipleChromatogramAlignment.h \
+           src/datatype/MultipleChromatogramAlignmentRow.h \
            src/datatype/MultipleSequenceAlignment.h \
            src/datatype/MultipleSequenceAlignmentRow.h \
            src/datatype/PFMatrix.h \
@@ -207,6 +209,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/tasks/shared_db/ImportObjectToDatabaseTask.h \
            src/tasks/shared_db/ImportToDatabaseTask.h \
            src/util/AssemblyImporter.h \
+           src/util/ChromatogramUtils.h \
            src/util/DatatypeSerializeUtils.h \
            src/util/FileAndDirectoryUtils.h \
            src/util/FilesIterator.h \
@@ -269,6 +272,8 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/MultipleAlignment.cpp \
            src/datatype/MultipleAlignmentInfo.cpp \
            src/datatype/MultipleAlignmentRow.cpp \
+           src/datatype/MultipleChromatogramAlignmentRow.cpp \
+           src/datatype/MultipleChromatogramAlignment.cpp \
            src/datatype/MultipleSequenceAlignment.cpp \
            src/datatype/MultipleSequenceAlignmentRow.cpp \
            src/datatype/PFMatrix.cpp \
@@ -411,6 +416,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/tasks/shared_db/ImportObjectToDatabaseTask.cpp \
            src/tasks/shared_db/ImportToDatabaseTask.cpp \
            src/util/AssemblyImporter.cpp \
+           src/util/ChromatogramUtils.cpp \
            src/util/DatatypeSerializeUtils.cpp \
            src/util/FileAndDirectoryUtils.cpp \
            src/util/FilesIterator.cpp \

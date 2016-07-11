@@ -225,9 +225,9 @@ public:
 
     bool isGap(int row, int pos) const;
 
-    static const char GapChar;
+    virtual MultipleAlignment getCopy() const = 0;
 
-    virtual MultipleAlignmentData * clone() const = 0;
+    static const char GapChar;
 
 protected:
     virtual MultipleAlignmentRow createRow(const MultipleAlignmentRow &row) const = 0;

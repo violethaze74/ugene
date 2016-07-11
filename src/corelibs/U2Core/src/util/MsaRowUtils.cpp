@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/DNASequence.h>
+#include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MsaRowUtils.h"
@@ -171,4 +173,32 @@ void MsaRowUtils::chopGapModel(U2MaRowGapModel &gapModel, int maxLength) {
     }
 }
 
-} // U2
+QByteArray MsaRowUtils::joinCharsAndGaps(const DNASequence &sequence, const U2MaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps) {
+    QByteArray bytes = sequence.constSequence();
+    int beginningOffset = 0;
+
+    if (gapModel.isEmpty()) {
+        return bytes;
+    }
+
+    for (int i = 0; i < gapModel.size(); ++i) {
+        QByteArray gapsBytes;
+        if (!keepLeadingGaps && (0 == gapModel[i].offset)) {
+            beginningOffset = gapModel[i].gap;
+            continue;
+        }
+
+        gapsBytes.fill(MultipleAlignmentData::GapChar, gapModel[i].gap);
+        bytes.insert(gapModel[i].offset - beginningOffset, gapsBytes);
+    }
+
+    if (keepTrailingGaps && (bytes.size() < rowLength)) {
+        QByteArray gapsBytes;
+        gapsBytes.fill(MultipleAlignmentData::GapChar, rowLength - bytes.size());
+        bytes.append(gapsBytes);
+    }
+
+    return bytes;
+}
+
+}   // namespace U2

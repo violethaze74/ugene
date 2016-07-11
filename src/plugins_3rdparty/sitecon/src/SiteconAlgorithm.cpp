@@ -157,7 +157,7 @@ QVector<float> SiteconAlgorithm::calculateFirstTypeError(const MultipleSequenceA
     int maLen = ma->getLength();
     for (int i=0; i < ma->getNumRows() && !ts.cancelFlag; i++) {
         const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
-        MultipleSequenceAlignment subMA(ma->explicitClone());
+        MultipleSequenceAlignment subMA = ma->getExplicitCopy();
         subMA->removeRow(i, os);
         QVector<PositionStats> matrix = calculateDispersionAndAverage(subMA, s, ts);
         QVector<PositionStats> normalizedMatrix = normalize(matrix, s);

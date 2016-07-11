@@ -198,20 +198,20 @@ const MultipleSequenceAlignmentRow MultipleSequenceAlignmentData::getMsaRowByRow
     return getRowByRowId(rowId, os).dynamicCast<MultipleSequenceAlignmentRowData>();
 }
 
-MultipleSequenceAlignmentData *MultipleSequenceAlignmentData::explicitClone() const {
-    return new MultipleSequenceAlignmentData(*this);
+MultipleAlignment MultipleSequenceAlignmentData::getCopy() const {
+    return getExplicitCopy();
+}
+
+MultipleSequenceAlignment MultipleSequenceAlignmentData::getExplicitCopy() const {
+    return MultipleSequenceAlignment(new MultipleSequenceAlignmentData(*this));
 }
 
 MultipleSequenceAlignment MultipleSequenceAlignmentData::getEmptyMsa() {
-    return MultipleSequenceAlignment(EMPTY_MSA->explicitClone());
+    return MultipleSequenceAlignment(EMPTY_MSA->getExplicitCopy());
 }
 
 MultipleSequenceAlignmentRow MultipleSequenceAlignmentData::getEmptyRow() {
-    return MultipleSequenceAlignmentRow(EMPTY_ROW->explicitClone());
-}
-
-MultipleAlignmentData * MultipleSequenceAlignmentData::clone() const {
-    return explicitClone();
+    return MultipleSequenceAlignmentRow(EMPTY_ROW->getCopy());
 }
 
 MultipleSequenceAlignmentRow MultipleSequenceAlignmentData::createSequenceRow(const QString &name, const QByteArray &rawData) const {

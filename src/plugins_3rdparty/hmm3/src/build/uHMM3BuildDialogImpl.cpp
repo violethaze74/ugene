@@ -86,7 +86,7 @@ UHMM3BuildDialogImpl::UHMM3BuildDialogImpl( const MultipleSequenceAlignment & ma
     : QDialog(p),
       saveController(NULL) {
     initialize();
-    model.alignment.reset(ma->explicitClone());
+    model.alignment = ma->getExplicitCopy();
     model.alignmentUsing = !model.alignment->isEmpty();
     
     if( model.alignmentUsing ) {

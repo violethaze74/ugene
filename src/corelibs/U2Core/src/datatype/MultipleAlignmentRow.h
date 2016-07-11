@@ -144,8 +144,6 @@ public:
      */
     void crop(int pos, int count, U2OpStatus &os);
 
-    virtual MultipleAlignmentRowData * clone() const = 0;
-
     void setParentAlignment(const MultipleAlignment &newAlignment);
 
     static const qint64 INVALID_ROW_ID;

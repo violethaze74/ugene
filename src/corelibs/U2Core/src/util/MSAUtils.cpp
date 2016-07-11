@@ -389,7 +389,7 @@ void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2Se
 }
 
 MultipleSequenceAlignment MSAUtils::setUniqueRowNames(const MultipleSequenceAlignment &ma) {
-    MultipleSequenceAlignment res(ma->explicitClone());
+    MultipleSequenceAlignment res = ma->getExplicitCopy();
     int rowNumber = res->getNumRows();
     for (int i = 0; i < rowNumber; i++) {
         res->renameRow(i, QString::number(i));
