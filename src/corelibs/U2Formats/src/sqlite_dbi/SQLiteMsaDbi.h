@@ -84,7 +84,8 @@ public:
 
     /**
      * Creates rows (and gap models for them) in the database.
-     * Ignores 'length' of the 'rows' (recalculates them).
+     * Enlarges msa length, if 'length' of any of the 'rows' is greater than current msa length.
+     * Recalculates 'length' of the 'rows'.
      * The rows are appended to the end of the MSA.
      * Assigns MSA as a parent for all the sequences.
      * If a row ID equals "-1", sets a valid ID to the passed U2MaRow instances.
@@ -97,7 +98,9 @@ public:
 
     /**
      * Creates a new row and gap model records in the database.
-     * Ignores 'row.length' (recalculates it) and 'row.rowId'. Sets valid to the passed U2MaRow instance.
+     * Enlarges msa length, if 'row.length' is greater than current msa length.
+     * Ignores 'row.rowId'.
+     * Recalculates 'row.length' and and 'row.rowId'. Sets valid to the passed U2MsaRow instance.
      * If 'posInMsa' equals to '-1' the row is appended to the end of the MSA,
      * otherwise it is inserted to the specified position and all positions are updated.
      * Assigns MSA as a parent for the sequence.
@@ -233,7 +236,7 @@ private:
     ///////////////////////////////////////////////////////////
     // Core methods
     void updateGapModelCore(const U2DataId &msaId, qint64 msaRowId, const QList<U2MaGap> &gapModel, U2OpStatus &os);
-    void addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const QList<qint64> &rowsOrder, U2OpStatus &os);
+    void addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const QList<qint64> &rowsOrder, qint64 maxRowLength, U2OpStatus &os);
     void addRowCore(const U2DataId& msaId, qint64 posInMsa, U2MaRow& row, U2OpStatus& os);
     void addRowsCore(const U2DataId &msaId, const QList<qint64> &posInMsa, QList<U2MaRow> &rows, U2OpStatus &os);
     void removeRowSubcore(const U2DataId &msaId, qint64 numOfRows, U2OpStatus &os);

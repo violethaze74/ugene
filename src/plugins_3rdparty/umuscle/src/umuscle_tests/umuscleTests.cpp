@@ -515,7 +515,7 @@ MultipleSequenceAlignment GTest_Muscle_Load_Align_QScore::dna_to_ma(QList<GObjec
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignmentData::createMsa());
         ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;
@@ -660,7 +660,7 @@ MultipleSequenceAlignment Muscle_Load_Align_Compare_Task::dna_to_ma(QList<GObjec
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
+        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignmentData::createMsa());
         ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;

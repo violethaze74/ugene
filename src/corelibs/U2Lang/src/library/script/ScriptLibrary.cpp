@@ -621,8 +621,6 @@ QScriptValue WorkflowScriptLibrary::addToAlignment(QScriptContext *ctx, QScriptE
     }
 
     if(align->isEmpty()) {
-        //return ctx->throwError(QObject::tr("Invalid alignment"));
-        //align = new MultipleSequenceAlignment("alignment");
         align->setAlphabet(seq.alphabet);
     }
 

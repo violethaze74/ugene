@@ -88,7 +88,7 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpS
         //TODO: handle memory overflow
         ma->addRow(seq.getName(), seq.seq);
     }
-    CHECK_OP(os, MultipleSequenceAlignment());
+    CHECK_OP(os, MultipleSequenceAlignmentData::createMsa());
     return ma;
 }
 
@@ -149,7 +149,7 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
     MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME);
 
     int i = 0;
-    SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", MultipleSequenceAlignment());
+    SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", MultipleSequenceAlignmentData::createMsa());
     QListIterator<U2SequenceObject *> listIterator(dnaList);
     QListIterator<QString> nameIterator(nameList);
     while (listIterator.hasNext()) {
@@ -158,13 +158,13 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
 
         const DNAAlphabet *alphabet = seq.getAlphabet();
         updateAlignmentAlphabet(ma, alphabet, os);
-        CHECK_OP(os, MultipleSequenceAlignment());
+        CHECK_OP(os, MultipleSequenceAlignmentData::createMsa());
 
         ma->addRow(objName, QByteArray(""));
 
-        SAFE_POINT(i < ma->getNumRows(), "Row count differ from expected after adding row", MultipleSequenceAlignment());
+        SAFE_POINT(i < ma->getNumRows(), "Row count differ from expected after adding row", MultipleSequenceAlignmentData::createMsa());
         appendSequenceToAlignmentRow(ma, i, 0, seq, os);
-        CHECK_OP(os, MultipleSequenceAlignment());
+        CHECK_OP(os, MultipleSequenceAlignmentData::createMsa());
         i++;
     }
 

@@ -881,9 +881,15 @@ void MysqlMsaDbi::updateGapModelCore(const U2DataId &msaId, qint64 msaRowId, con
     CHECK_OP(os, );
 }
 
-void MysqlMsaDbi::addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const QList<qint64> &rowsOrder, U2OpStatus &os) {
+void MysqlMsaDbi::addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const QList<qint64> &rowsOrder, qint64 maxRowLength, U2OpStatus &os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
+
+    // Ensure that the alignment length is correct
+    qint64 msaLength = getMsaLength(msaId, os);
+    if (maxRowLength > msaLength) {
+        updateMsaLength(msaId, maxRowLength, os);
+    }
 
     // Re-calculate position, if needed
     setNewRowsOrderCore(msaId, rowsOrder, os);
@@ -921,7 +927,7 @@ void MysqlMsaDbi::addRowCore(const U2DataId& msaId, qint64 posInMsa, U2MaRow& ro
         rowsOrder.insert(posInMsa, row.rowId);
     }
 
-    addRowSubcore(msaId, numOfRows+1, rowsOrder, os);
+    addRowSubcore(msaId, numOfRows+1, rowsOrder, row.length, os);
 }
 
 void MysqlMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &posInMsa, QList<U2MaRow> &rows, U2OpStatus &os) {
@@ -936,6 +942,7 @@ void MysqlMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &posInM
     SAFE_POINT(rowsOrder.count() == numOfRows, "Incorrect number of rows", );
 
     // Add new rows
+    qint64 maxRowLength = 0;
     QList<qint64>::ConstIterator pi = posInMsa.begin();
     QList<U2MaRow>::Iterator ri = rows.begin();
     for (; ri != rows.end(); ri++, pi++) {
@@ -949,11 +956,12 @@ void MysqlMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &posInM
         CHECK_OP(os, );
 
         ri->length = calculateRowLength(ri->gend - ri->gstart, ri->gaps);
+        maxRowLength = qMax(maxRowLength, ri->length);
         numOfRows++;
         rowsOrder.insert(pos, ri->rowId);
     }
 
-    addRowSubcore(msaId, numOfRows, rowsOrder, os);
+    addRowSubcore(msaId, numOfRows, rowsOrder, maxRowLength, os);
 }
 
 void MysqlMsaDbi::removeRowSubcore(const U2DataId &msaId, qint64 numOfRows, U2OpStatus &os) {
