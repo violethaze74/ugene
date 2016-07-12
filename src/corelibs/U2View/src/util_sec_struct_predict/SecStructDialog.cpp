@@ -58,11 +58,11 @@ SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) :
     sspr = AppContext::getSecStructPredictAlgRegistry();
     algorithmComboBox->addItems(sspr->getAlgNameList());
 
+    startButton = buttonBox->button(QDialogButtonBox::Ok);
     saveAnnotationButton = buttonBox->button(QDialogButtonBox::Save);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
-    startButton = buttonBox->button(QDialogButtonBox::Ok);
 
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Predict"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Save)->setText(tr("Save"));
 
