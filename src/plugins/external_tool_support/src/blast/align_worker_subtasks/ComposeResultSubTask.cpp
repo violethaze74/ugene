@@ -24,6 +24,7 @@
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MAlignmentImporter.h>
@@ -104,15 +105,15 @@ MAlignment ComposeResultSubTask::createAlignment() {
     insertShiftedGapsIntoReference(result, referenceGaps);
     CHECK_OP(stateInfo, result);
 
-    for (int i=0; i<reads.size(); i++) {
+    for (int i = 0; i < reads.size(); i++) {
         // add the read row
         DNASequence readSeq = getReadSequence(i);
         CHECK_OP(stateInfo, result);
 
-        result.addRow(readSeq.getName(), readSeq.seq, i + 1, stateInfo);
+        BlastAndSwReadTask *subTask = getBlastSwTask(i);
+        result.addRow(subTask->getInitialReadName(), readSeq.seq, i + 1, stateInfo);
         CHECK_OP(stateInfo, result);
 
-        BlastAndSwReadTask *subTask = getBlastSwTask(i);
         CHECK_OP(stateInfo, result);
         foreach (const U2MsaGap &gap, subTask->getReadGaps()) {
             result.insertGaps(i + 1, gap.offset, gap.gap, stateInfo);
@@ -216,6 +217,9 @@ DNASequence ComposeResultSubTask::getReadSequence(int readNum) {
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), DNASequence());
     DNASequence seq = readObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, DNASequence());
+    if (subTask->isComplement()) {
+        seq.seq = DNASequenceUtils::reverseComplement(seq.seq);
+    }
     return seq;
 }
 

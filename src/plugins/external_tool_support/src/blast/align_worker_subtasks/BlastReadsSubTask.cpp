@@ -28,6 +28,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MAlignmentImporter.h>
@@ -77,10 +78,15 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       read(read),
       reference(reference),
       offset(0),
+      readExtension(0),
       storage(storage),
-      blastTask(NULL)
+      blastTask(NULL),
+      complement(false)
 {
     blastResultDir = ExternalToolSupportUtils::createTmpDir("blast_reads", stateInfo);
+
+    QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
+    referneceLength = refObject->getSequenceLength();
 }
 
 void BlastAndSwReadTask::prepare() {
@@ -148,12 +154,12 @@ void BlastAndSwReadTask::run() {
     CHECK(offset > 0, );
     shiftGaps(referenceGaps);
     shiftGaps(readGaps);
+
     readGaps.prepend(U2MsaGap(0, offset));
 }
 
 bool BlastAndSwReadTask::isComplement() const {
-    //! TODO
-    return false;
+    return complement;
 }
 
 SharedDbiDataHandler BlastAndSwReadTask::getRead() const {
@@ -168,27 +174,50 @@ QList<U2MsaGap> BlastAndSwReadTask::getReadGaps() const {
     return readGaps;
 }
 
+//! Rename
 QString BlastAndSwReadTask::getInitialReadName() const {
-    return initialReadName;
+    return initialReadName + (complement ? "(rev-compl)" : "");
+}
+
+MAlignment BlastAndSwReadTask::getMAlignment() {
+    MAlignmentObject* msaObj = StorageUtils::getMsaObject(storage, msa);
+    CHECK(msaObj != NULL, MAlignment());
+
+    return msaObj->getMAlignment();
+
 }
 
 U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData> &blastAnnotations) {
     U2Region r;
     int maxIdentity = 0;
+    double percantage = 0;
     foreach (const SharedAnnotationData& ann, blastAnnotations) {
-        complement = ann->findFirstQualifierValue("hit_frame") != "direct";
-
         QString percentQualifier = ann->findFirstQualifierValue("identities");
         int annIdentity = percentQualifier.left(percentQualifier.indexOf('/')).toInt();
         if (annIdentity  > maxIdentity ) {
             maxIdentity = annIdentity;
-            r = ann->getRegions().first(); // extra check the result choul
-            if (ann->getRegions().size() != 1) { // should be impossible
-                r = U2Region::containingRegion(ann->getRegions());
-            }
+
+            qint64 hitFrom = ann->findFirstQualifierValue("hit-from").toInt();
+            qint64 hitTo = ann->findFirstQualifierValue("hit-to").toInt();
+            U2Region annotationRegion = ann->getRegions().first();
+            r = U2Region(hitFrom - 1 - annotationRegion.startPos, hitTo - hitFrom + 1);
+
+            QString frame = ann->findFirstQualifierValue("source_frame");
+            complement = (frame == "complement");
+
+            int start = percentQualifier.indexOf('(') + 1;
+            int len = percentQualifier.indexOf('%') - percentQualifier.indexOf('(') - 1;
+            QString part = percentQualifier.mid(start, len);
+            percantage = part.toDouble();
         }
     }
-    //TODO: extend the region on the sides
+    CHECK(percantage != 0, U2Region());
+
+    //! TODO: works too long if search
+    readExtension = (maxIdentity / percantage) * (100 - percantage) / 2; // /2 -> to reduce search time, temp
+    qint64 initialStart = r.startPos;
+    r.startPos = qMax((qint64)0, r.startPos - readExtension);
+    r.length += qMin(referneceLength, initialStart + r.length + readExtension) - r.startPos;
 
     return r;
 }
@@ -207,7 +236,15 @@ void BlastAndSwReadTask::createAlignment(const U2Region& refRegion) {
     CHECK_OP(stateInfo, );
     QByteArray readData = readObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
-    alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
+
+    if (readExtension != 0) {
+        alignment.addRow(readObject->getSequenceName(),
+                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, QList<U2MsaGap>() << U2MsaGap(0, readExtension), stateInfo);
+    } else {
+        alignment.addRow(readObject->getSequenceName(),
+                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, stateInfo);
+    }
+
     CHECK_OP(stateInfo, );
 
     QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
