@@ -83,6 +83,9 @@ public:
     QList<U2MsaGap> getReadGaps() const;
     QString getInitialReadName() const;
 
+    MAlignment getMAlignment();
+    qint64 getOffset() { return offset; }
+
 private:
     U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
     void createAlignment(const U2Region& refRegion);
@@ -94,6 +97,7 @@ private:
     const QString dbPath;
     const SharedDbiDataHandler read;
     const SharedDbiDataHandler reference;
+    qint64 referneceLength;
 
     SharedDbiDataHandler msa;
     qint64 offset;
@@ -106,6 +110,7 @@ private:
     QList<U2MsaGap> referenceGaps;
     QList<U2MsaGap> readGaps;
     QString initialReadName;
+    bool complement;
 };
 
 } // namespace Workflow

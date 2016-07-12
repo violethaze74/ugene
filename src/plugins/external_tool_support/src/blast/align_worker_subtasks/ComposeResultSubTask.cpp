@@ -109,10 +109,10 @@ MAlignment ComposeResultSubTask::createAlignment() {
         DNASequence readSeq = getReadSequence(i);
         CHECK_OP(stateInfo, result);
 
-        result.addRow(readSeq.getName(), readSeq.seq, i + 1, stateInfo);
+        BlastAndSwReadTask *subTask = getBlastSwTask(i);
+        result.addRow(subTask->getInitialReadName(), readSeq.seq, i + 1, stateInfo);
         CHECK_OP(stateInfo, result);
 
-        BlastAndSwReadTask *subTask = getBlastSwTask(i);
         CHECK_OP(stateInfo, result);
         foreach (const U2MsaGap &gap, subTask->getReadGaps()) {
             result.insertGaps(i + 1, gap.offset, gap.gap, stateInfo);
