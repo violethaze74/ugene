@@ -28,6 +28,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MAlignmentImporter.h>
@@ -77,6 +78,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       read(read),
       reference(reference),
       offset(0),
+      readExtension(0),
       storage(storage),
       blastTask(NULL),
       complement(false)
@@ -213,10 +215,10 @@ U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData
     CHECK(percantage != 0, U2Region());
 
     //! TODO: works too long if search
-    qint64 extention = (maxIdentity / percantage) * (100 - percantage) / 2; // /2 -> to reduce search time, temp
+    readExtension = (maxIdentity / percantage) * (100 - percantage) / 2; // /2 -> to reduce search time, temp
     qint64 initialStart = r.startPos;
-    r.startPos = qMax((qint64)0, r.startPos - extention);
-    r.length += qMin(referneceLength, initialStart + r.length + extention) - r.startPos;
+    r.startPos = qMax((qint64)0, r.startPos - readExtension);
+    r.length += qMin(referneceLength, initialStart + r.length + readExtension) - r.startPos;
 
     return r;
 }
@@ -235,7 +237,15 @@ void BlastAndSwReadTask::createAlignment(const U2Region& refRegion) {
     CHECK_OP(stateInfo, );
     QByteArray readData = readObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
-    alignment.addRow(readObject->getSequenceName(), readData, stateInfo);
+
+    if (readExtension != 0) {
+        alignment.addRow(readObject->getSequenceName(),
+                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, QList<U2MsaGap>() << U2MsaGap(0, readExtension), stateInfo);
+    } else {
+        alignment.addRow(readObject->getSequenceName(),
+                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, stateInfo);
+    }
+
     CHECK_OP(stateInfo, );
 
     QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));

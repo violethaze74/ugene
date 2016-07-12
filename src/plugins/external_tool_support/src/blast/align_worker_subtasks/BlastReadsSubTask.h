@@ -101,6 +101,7 @@ private:
 
     SharedDbiDataHandler msa;
     qint64 offset;
+    qint64 readExtension;
 
     DbiDataStorage *storage;
 
