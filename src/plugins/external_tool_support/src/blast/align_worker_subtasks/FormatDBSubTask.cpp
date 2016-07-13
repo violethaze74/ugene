@@ -37,7 +37,7 @@ namespace Workflow {
 FormatDBSubTask::FormatDBSubTask(const QString &referenceUrl,
                                  const SharedDbiDataHandler &referenceDbHandler,
                                  DbiDataStorage *storage)
-    : Task("Format DB task wrapper", TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Format DB task wrapper"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(referenceUrl),
       referenceDbHandler(referenceDbHandler),
       storage(storage)
@@ -65,7 +65,7 @@ void FormatDBSubTask::prepare() {
     databaseNameAndPath = settings.outputPath;
 }
 
-QString FormatDBSubTask::getResultPath() const {
+const QString& FormatDBSubTask::getResultPath() const {
     return databaseNameAndPath;
 }
 

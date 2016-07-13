@@ -80,11 +80,11 @@ void ComposeResultSubTask::run() {
     CHECK_OP(stateInfo, );
 }
 
-SharedDbiDataHandler ComposeResultSubTask::getAlignment() const {
+const SharedDbiDataHandler& ComposeResultSubTask::getAlignment() const {
     return msa;
 }
 
-SharedDbiDataHandler ComposeResultSubTask::getAnnotations() const {
+const SharedDbiDataHandler& ComposeResultSubTask::getAnnotations() const {
     return annotations;
 }
 

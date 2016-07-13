@@ -27,6 +27,8 @@
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/GUrlUtils.h>
@@ -44,13 +46,13 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
                                      const QList<SharedDbiDataHandler> &reads,
                                      const SharedDbiDataHandler &reference,
                                      DbiDataStorage *storage)
-    : Task("Blast reads task", TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Align reads with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
       dbPath(dbPath),
       reads(reads),
       reference(reference),
       storage(storage)
 {
-
+    setMaxParallelSubtasks(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 }
 
 void BlastReadsSubTask::prepare() {
@@ -62,7 +64,7 @@ void BlastReadsSubTask::prepare() {
     }
 }
 
-QList<BlastAndSwReadTask*> BlastReadsSubTask::getBlastSubtasks() const {
+const QList<BlastAndSwReadTask*>& BlastReadsSubTask::getBlastSubtasks() const {
     return blastSubTasks;
 }
 
@@ -73,7 +75,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
                                        const SharedDbiDataHandler &read,
                                        const SharedDbiDataHandler &reference,
                                        DbiDataStorage *storage)
-    : Task("Blast and SW one read", TaskFlags_FOSE_COSC),
+    : Task(tr("Align one read with BLAST & SW task"), TaskFlags_FOSE_COSC),
       dbPath(dbPath),
       read(read),
       reference(reference),
@@ -108,7 +110,7 @@ void BlastAndSwReadTask::prepare() {
     settings.needCreateAnnotations = false;
     settings.groupName = "blast";
 
-    settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequnece", "gb", stateInfo);
+    settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequence", "gb", stateInfo);
     settings.outputType = 8;
 
     blastTask = new BlastAllSupportTask(settings);
@@ -117,8 +119,6 @@ void BlastAndSwReadTask::prepare() {
 
 QList<Task*> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
-
-    // check with ext?
     CHECK(subTask != NULL, result);
     CHECK(!subTask->hasError() && !subTask->isCanceled(), result);
 
@@ -153,24 +153,22 @@ void BlastAndSwReadTask::run() {
 
     CHECK(offset > 0, );
     shiftGaps(referenceGaps);
-    shiftGaps(readGaps);
-
-    readGaps.prepend(U2MsaGap(0, offset));
+    MsaRowUtils::addOffsetToGapModel(readGaps, offset);
 }
 
 bool BlastAndSwReadTask::isComplement() const {
     return complement;
 }
 
-SharedDbiDataHandler BlastAndSwReadTask::getRead() const {
+const SharedDbiDataHandler& BlastAndSwReadTask::getRead() const {
     return read;
 }
 
-QList<U2MsaGap> BlastAndSwReadTask::getReferenceGaps() const {
+const QList<U2MsaGap>& BlastAndSwReadTask::getReferenceGaps() const {
     return referenceGaps;
 }
 
-QList<U2MsaGap> BlastAndSwReadTask::getReadGaps() const {
+const QList<U2MsaGap>& BlastAndSwReadTask::getReadGaps() const {
     return readGaps;
 }
 
@@ -183,7 +181,10 @@ MAlignment BlastAndSwReadTask::getMAlignment() {
     CHECK(msaObj != NULL, MAlignment());
 
     return msaObj->getMAlignment();
+}
 
+qint64 BlastAndSwReadTask::getOffset() {
+    return offset;
 }
 
 U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData> &blastAnnotations) {

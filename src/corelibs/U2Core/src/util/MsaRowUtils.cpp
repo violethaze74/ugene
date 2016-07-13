@@ -113,4 +113,37 @@ int MsaRowUtils::getCoreStart(const QList<U2MsaGap> &gaps) {
     return 0;
 }
 
+void MsaRowUtils::addOffsetToGapModel(QList<U2MsaGap>& gapModel, int offset) {
+    if (0 == offset) {
+        return;
+    }
+
+    if (!gapModel.isEmpty()) {
+
+        U2MsaGap& firstGap = gapModel[0];
+        if (0 == firstGap.offset) {
+            firstGap.gap += offset;
+        }
+        else {
+            SAFE_POINT(offset >= 0, "Negative gap offset!", );
+            U2MsaGap beginningGap(0, offset);
+            gapModel.insert(0, beginningGap);
+        }
+
+        // Shift other gaps
+        if (gapModel.count() > 1) {
+            for (int i = 1; i < gapModel.count(); ++i) {
+                qint64 newOffset = gapModel[i].offset + offset;
+                SAFE_POINT(newOffset >= 0, "Negative gap offset!", );
+                gapModel[i].offset = newOffset;
+            }
+        }
+    }
+    else {
+        SAFE_POINT(offset >= 0, "Negative gap offset!", );
+        U2MsaGap gap(0, offset);
+        gapModel.append(gap);
+    }
+}
+
 } // U2
