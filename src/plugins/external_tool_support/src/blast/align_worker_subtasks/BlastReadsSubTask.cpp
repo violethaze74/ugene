@@ -27,6 +27,8 @@
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/GUrlUtils.h>
@@ -44,13 +46,13 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
                                      const QList<SharedDbiDataHandler> &reads,
                                      const SharedDbiDataHandler &reference,
                                      DbiDataStorage *storage)
-    : Task("Blast reads task", TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Align reads with BLAST & SW task"), TaskFlags_NR_FOSE_COSC),
       dbPath(dbPath),
       reads(reads),
       reference(reference),
       storage(storage)
 {
-
+    setMaxParallelSubtasks(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 }
 
 void BlastReadsSubTask::prepare() {
@@ -62,7 +64,7 @@ void BlastReadsSubTask::prepare() {
     }
 }
 
-QList<BlastAndSwReadTask*> BlastReadsSubTask::getBlastSubtasks() const {
+const QList<BlastAndSwReadTask*>& BlastReadsSubTask::getBlastSubtasks() const {
     return blastSubTasks;
 }
 
@@ -73,7 +75,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
                                        const SharedDbiDataHandler &read,
                                        const SharedDbiDataHandler &reference,
                                        DbiDataStorage *storage)
-    : Task("Blast and SW one read", TaskFlags_FOSE_COSC),
+    : Task(tr("Align one read with BLAST & SW task"), TaskFlags_FOSE_COSC),
       dbPath(dbPath),
       read(read),
       reference(reference),
@@ -86,7 +88,7 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
     blastResultDir = ExternalToolSupportUtils::createTmpDir("blast_reads", stateInfo);
 
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
-    referneceLength = refObject->getSequenceLength();
+    referenceLength = refObject->getSequenceLength();
 }
 
 void BlastAndSwReadTask::prepare() {
@@ -108,7 +110,7 @@ void BlastAndSwReadTask::prepare() {
     settings.needCreateAnnotations = false;
     settings.groupName = "blast";
 
-    settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequnece", "gb", stateInfo);
+    settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequence", "gb", stateInfo);
     settings.outputType = 8;
 
     blastTask = new BlastAllSupportTask(settings);
@@ -117,8 +119,6 @@ void BlastAndSwReadTask::prepare() {
 
 QList<Task*> BlastAndSwReadTask::onSubTaskFinished(Task *subTask) {
     QList<Task*> result;
-
-    // check with ext?
     CHECK(subTask != NULL, result);
     CHECK(!subTask->hasError() && !subTask->isCanceled(), result);
 
@@ -153,29 +153,26 @@ void BlastAndSwReadTask::run() {
 
     CHECK(offset > 0, );
     shiftGaps(referenceGaps);
-    shiftGaps(readGaps);
-
-    readGaps.prepend(U2MsaGap(0, offset));
+    MsaRowUtils::addOffsetToGapModel(readGaps, offset);
 }
 
 bool BlastAndSwReadTask::isComplement() const {
     return complement;
 }
 
-SharedDbiDataHandler BlastAndSwReadTask::getRead() const {
+const SharedDbiDataHandler& BlastAndSwReadTask::getRead() const {
     return read;
 }
 
-QList<U2MsaGap> BlastAndSwReadTask::getReferenceGaps() const {
+const QList<U2MsaGap>& BlastAndSwReadTask::getReferenceGaps() const {
     return referenceGaps;
 }
 
-QList<U2MsaGap> BlastAndSwReadTask::getReadGaps() const {
+const QList<U2MsaGap>& BlastAndSwReadTask::getReadGaps() const {
     return readGaps;
 }
 
-//! Rename
-QString BlastAndSwReadTask::getInitialReadName() const {
+QString BlastAndSwReadTask::getReadName() const {
     return initialReadName + (complement ? "(rev-compl)" : "");
 }
 
@@ -184,27 +181,37 @@ MAlignment BlastAndSwReadTask::getMAlignment() {
     CHECK(msaObj != NULL, MAlignment());
 
     return msaObj->getMAlignment();
+}
 
+qint64 BlastAndSwReadTask::getOffset() {
+    return offset;
 }
 
 U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData> &blastAnnotations) {
-    U2Region r;
+    U2Region refRegion;
+    U2Region blastReadRegion;
     int maxIdentity = 0;
-    double percantage = 0;
+    double percantage = 0; //! consider to remove that variable
     foreach (const SharedAnnotationData& ann, blastAnnotations) {
         QString percentQualifier = ann->findFirstQualifierValue("identities");
         int annIdentity = percentQualifier.left(percentQualifier.indexOf('/')).toInt();
         if (annIdentity  > maxIdentity ) {
+            // identity
             maxIdentity = annIdentity;
 
+            // annotation region on read
+            blastReadRegion = ann->getRegions().first();
+
+            // region on reference
             qint64 hitFrom = ann->findFirstQualifierValue("hit-from").toInt();
             qint64 hitTo = ann->findFirstQualifierValue("hit-to").toInt();
-            U2Region annotationRegion = ann->getRegions().first();
-            r = U2Region(hitFrom - 1 - annotationRegion.startPos, hitTo - hitFrom + 1);
+            refRegion = U2Region(hitFrom - 1, hitTo - hitFrom);
 
+            // frame
             QString frame = ann->findFirstQualifierValue("source_frame");
             complement = (frame == "complement");
 
+            // percentage
             int start = percentQualifier.indexOf('(') + 1;
             int len = percentQualifier.indexOf('%') - percentQualifier.indexOf('(') - 1;
             QString part = percentQualifier.mid(start, len);
@@ -213,13 +220,19 @@ U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData
     }
     CHECK(percantage != 0, U2Region());
 
-    //! TODO: works too long if search
-    readExtension = (maxIdentity / percantage) * (100 - percantage) / 2; // /2 -> to reduce search time, temp
-    qint64 initialStart = r.startPos;
-    r.startPos = qMax((qint64)0, r.startPos - readExtension);
-    r.length += qMin(referneceLength, initialStart + r.length + readExtension) - r.startPos;
+    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
+    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), U2Region());
+    qint64 readLen = readObject->getSequenceLength();
 
-    return r;
+    // set the extention
+    qint64 undefinedLen = readLen - maxIdentity;
+    readExtension = undefinedLen - blastReadRegion.startPos;
+
+    // extend ref region to the read
+    refRegion.startPos = qMax((qint64)0, refRegion.startPos - readExtension);
+    refRegion.length = qMin(referenceLength - refRegion.startPos, blastReadRegion.length + 2 * readExtension);
+
+    return refRegion;
 }
 
 void BlastAndSwReadTask::createAlignment(const U2Region& refRegion) {
@@ -254,7 +267,7 @@ void BlastAndSwReadTask::createAlignment(const U2Region& refRegion) {
 }
 
 void BlastAndSwReadTask::shiftGaps(QList<U2MsaGap> &gaps) const {
-    for (int i=0; i<gaps.size(); i++) {
+    for (int i = 0; i < gaps.size(); i++) {
         gaps[i].offset += offset;
     }
 }

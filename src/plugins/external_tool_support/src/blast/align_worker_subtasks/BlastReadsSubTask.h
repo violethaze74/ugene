@@ -50,7 +50,7 @@ public:
 
     void prepare();
 
-    QList<BlastAndSwReadTask*> getBlastSubtasks() const;
+    const QList<BlastAndSwReadTask*>& getBlastSubtasks() const;
 
 private:
     const QString dbPath;
@@ -78,13 +78,13 @@ public:
     void run();
 
     bool isComplement() const;
-    SharedDbiDataHandler getRead() const;
-    QList<U2MsaGap> getReferenceGaps() const;
-    QList<U2MsaGap> getReadGaps() const;
-    QString getInitialReadName() const;
+    const SharedDbiDataHandler& getRead() const;
+    const QList<U2MsaGap>&      getReferenceGaps() const;
+    const QList<U2MsaGap>&      getReadGaps() const;
 
-    MAlignment getMAlignment();
-    qint64 getOffset() { return offset; }
+    QString     getReadName() const;
+    MAlignment  getMAlignment();
+    qint64      getOffset();
 
 private:
     U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
@@ -97,7 +97,7 @@ private:
     const QString dbPath;
     const SharedDbiDataHandler read;
     const SharedDbiDataHandler reference;
-    qint64 referneceLength;
+    qint64 referenceLength;
 
     SharedDbiDataHandler msa;
     qint64 offset;

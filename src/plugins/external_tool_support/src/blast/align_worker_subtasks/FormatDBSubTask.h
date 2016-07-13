@@ -38,7 +38,7 @@ public:
                     DbiDataStorage *storage);
     void prepare();
 
-    QString getResultPath() const;
+    const QString& getResultPath() const;
 
 private:
     const QString               referenceUrl;

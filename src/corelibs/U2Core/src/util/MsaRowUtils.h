@@ -41,6 +41,12 @@ public:
      */
     static int getUngappedPosition(const QByteArray &seq, const QList<U2MsaGap> &gaps, int pos, bool allowGapInPos = false);
     static int getCoreStart(const QList<U2MsaGap>& gaps);
+
+    /**
+     * Add "offset" of gaps to the beginning of the row
+     * Warning: it is not verified that the row sequence is not empty.
+     */
+    static void addOffsetToGapModel(QList<U2MsaGap>& gapModel, int offset);
 };
 
 } // U2

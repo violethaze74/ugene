@@ -110,39 +110,6 @@ void MAlignmentRow::splitBytesToCharsAndGaps(const QByteArray& input, QByteArray
     MsaDbiUtils::splitBytesToCharsAndGaps(input, seqBytes, gapsModel);
 }
 
-void MAlignmentRow::addOffsetToGapModel(QList<U2MsaGap>& gapModel, int offset) {
-    if (0 == offset) {
-        return;
-    }
-
-    if (!gapModel.isEmpty()) {
-
-        U2MsaGap& firstGap = gapModel[0];
-        if (0 == firstGap.offset) {
-            firstGap.gap += offset;
-        }
-        else {
-            SAFE_POINT(offset >= 0, "Negative gap offset!", );
-            U2MsaGap beginningGap(0, offset);
-            gapModel.insert(0, beginningGap);
-        }
-
-        // Shift other gaps
-        if (gapModel.count() > 1) {
-            for (int i = 1; i < gapModel.count(); ++i) {
-                qint64 newOffset = gapModel[i].offset + offset;
-                SAFE_POINT(newOffset >= 0, "Negative gap offset!", );
-                gapModel[i].offset = newOffset;
-            }
-        }
-    }
-    else {
-        SAFE_POINT(offset >= 0, "Negative gap offset!", );
-        U2MsaGap gap(0, offset);
-        gapModel.append(gap);
-    }
-}
-
 QByteArray MAlignmentRow::joinCharsAndGaps(bool keepOffset, bool keepTrailingGaps) const {
     QByteArray bytes = sequence.constSequence();
     int beginningOffset = 0;
@@ -230,7 +197,7 @@ void MAlignmentRow::setRowContent(const QByteArray& bytes, int offset, U2OpStatu
     splitBytesToCharsAndGaps(bytes, newSequenceBytes, newGapsModel);
     DNASequence newSequence(getName(), newSequenceBytes);
 
-    addOffsetToGapModel(newGapsModel, offset);
+    MsaRowUtils::addOffsetToGapModel(newGapsModel, offset);
 
     sequence = newSequence;
     gaps = newGapsModel;
@@ -265,7 +232,7 @@ void MAlignmentRow::insertGaps(int pos, int count, U2OpStatus& os) {
     }
 
     if (0 == pos) {
-        addOffsetToGapModel(gaps, count);
+        MsaRowUtils::addOffsetToGapModel(gaps, count);
     }
     else {
         // A gap is near

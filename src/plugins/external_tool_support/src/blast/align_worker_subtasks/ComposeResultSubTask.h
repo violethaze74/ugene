@@ -40,8 +40,8 @@ public:
                          const QList<BlastAndSwReadTask*> subTasks, DbiDataStorage *storage);
     void prepare();
     void run();
-    SharedDbiDataHandler getAlignment() const;
-    SharedDbiDataHandler getAnnotations() const;
+    const SharedDbiDataHandler& getAlignment() const;
+    const SharedDbiDataHandler& getAnnotations() const;
 
 private:
     BlastAndSwReadTask * getBlastSwTask(int readNum);

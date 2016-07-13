@@ -19,9 +19,6 @@
 * MA 02110-1301, USA.
 */
 
-#include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -37,6 +34,8 @@
 #include <U2Lang/WorkflowEnv.h>
 
 #include "AlignToReferenceBlastWorker.h"
+
+#include "blast/BlastAllSupport.h"
 
 #include "align_worker_subtasks/BlastReadsSubTask.h"
 #include "align_worker_subtasks/FormatDBSubTask.h"
@@ -101,6 +100,7 @@ void AlignToReferenceBlastWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new AlignToReferenceBlastPrompter(NULL));
+    proto->addExternalTool(ET_BLASTALL);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -137,6 +137,7 @@ AlignToReferenceBlastWorker::AlignToReferenceBlastWorker(Actor *a)
 
 void AlignToReferenceBlastWorker::cleanup() {
     delete referenceDoc;
+    referenceDoc = NULL;
     BaseDatasetWorker::cleanup();
 }
 
@@ -152,7 +153,7 @@ Task * AlignToReferenceBlastWorker::createPrepareTask(U2OpStatus &os) const {
 }
 
 void AlignToReferenceBlastWorker::onPrepared(Task *task, U2OpStatus &os) {
-    LoadDocumentTask *loadTask = dynamic_cast<LoadDocumentTask*>(task);
+    LoadDocumentTask *loadTask = qobject_cast<LoadDocumentTask*>(task);
     CHECK_EXT(NULL != loadTask, os.setError(L10N::internalError("Unexpected prepare task")), );
 
     QScopedPointer<Document> doc(loadTask->takeDocument());
@@ -178,7 +179,7 @@ Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) c
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
-    AlignToReferenceBlastTask *alignTask = dynamic_cast<AlignToReferenceBlastTask*>(task);
+    AlignToReferenceBlastTask *alignTask = qobject_cast<AlignToReferenceBlastTask*>(task);
     CHECK_EXT(NULL != alignTask, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
     QVariantMap result;
     result[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(alignTask->getAlignment());
@@ -208,7 +209,6 @@ AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl,
       composeSubTask(NULL),
       storage(storage)
 {
-    setMaxParallelSubtasks(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 }
 
 void AlignToReferenceBlastTask::prepare() {
