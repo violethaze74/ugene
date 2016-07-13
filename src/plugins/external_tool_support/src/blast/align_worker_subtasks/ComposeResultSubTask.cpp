@@ -111,7 +111,7 @@ MAlignment ComposeResultSubTask::createAlignment() {
         CHECK_OP(stateInfo, result);
 
         BlastAndSwReadTask *subTask = getBlastSwTask(i);
-        result.addRow(subTask->getInitialReadName(), readSeq.seq, i + 1, stateInfo);
+        result.addRow(subTask->getReadName(), readSeq.seq, i + 1, stateInfo);
         CHECK_OP(stateInfo, result);
 
         CHECK_OP(stateInfo, result);
@@ -151,7 +151,7 @@ void ComposeResultSubTask::createAnnotations(const MAlignment &alignment) {
         SharedAnnotationData ann(new AnnotationData);
         ann->location = getLocation(region, task->isComplement());
         ann->name = GBFeatureUtils::getKeyInfo(GBFeatureKey_misc_feature).text;
-        ann->qualifiers << U2Qualifier("label", task->getInitialReadName());
+        ann->qualifiers << U2Qualifier("label", task->getReadName());
         anns.append(ann);
     }
     annsObject->addAnnotations(anns);
