@@ -520,8 +520,8 @@ void U2FeatureUtils::createFeatureEntityFromAnnotationData(const SharedAnnotatio
     resFeature.featureType = annotation->type;
     resFeature.parentFeatureId = parentFeatureId;
     resFeature.rootFeatureId = rootFeatureId;
+    resFeature.location.strand = annotation->location->strand;
     if (annotation->location->isSingleRegion()) {
-        resFeature.location.strand = annotation->location->strand;
         resFeature.location.region = annotation->location->regions.first();
     }
 
