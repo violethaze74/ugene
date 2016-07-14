@@ -57,7 +57,7 @@ BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList &hitCountCo
 {
     ui = new Ui_BreakpointHitCountDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17469356");
+    new HelpButton(this, ui->buttonBox, "17471051");
 
     ui->hitConditionCombo->addItems(hitCountConditions);
     ui->hitConditionCombo->setCurrentIndex(hitCountConditions.indexOf(conditionOnLaunch));

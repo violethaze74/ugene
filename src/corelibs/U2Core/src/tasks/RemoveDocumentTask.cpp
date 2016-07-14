@@ -31,7 +31,7 @@
 namespace U2 {
 
 RemoveMultipleDocumentsTask::RemoveMultipleDocumentsTask(Project* _p, const QList<Document*>& _docs, bool _saveModifiedDocs, bool _useGUI)
-: Task(tr("Remove document"), TaskFlag_NoRun), p(_p), saveModifiedDocs(_saveModifiedDocs), useGUI(_useGUI)
+: Task(tr("Remove document"), TaskFlags(TaskFlag_NoRun) | TaskFlag_CancelOnSubtaskCancel), p(_p), saveModifiedDocs(_saveModifiedDocs), useGUI(_useGUI)
 {
     assert(!_docs.empty());
     assert(p!=NULL);
@@ -85,6 +85,10 @@ Task::ReportResult RemoveMultipleDocumentsTask::report() {
 
     if (p->isStateLocked()) {
         return Task::ReportResult_CallMeAgain;
+    }
+
+    if (isCanceled()) {
+        return ReportResult_Finished;
     }
 
     foreach(Document* doc, docPtrs) {

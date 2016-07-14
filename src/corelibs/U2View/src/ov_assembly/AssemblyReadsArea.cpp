@@ -24,6 +24,7 @@
 
 #include <QApplication>
 #include <QCursor>
+#include <QMessageBox>
 #include <QPainter>
 #include <QResizeEvent>
 #include <QVBoxLayout>
@@ -922,6 +923,9 @@ void AssemblyReadsArea::sl_onExportRead() {
 void AssemblyReadsArea::sl_onExportReadsOnScreen() {
     if(!cachedReads.data.isEmpty()) {
         exportReads(cachedReads.data);
+    } else {
+        QMessageBox::warning(QApplication::activeWindow(), AssemblyReadsArea::tr("Export visible reads as sequence."),
+            AssemblyReadsArea::tr("There are no reads in the current area. Nothing to export!"), QMessageBox::Ok);
     }
 }
 

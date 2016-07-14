@@ -31,6 +31,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
@@ -185,6 +186,14 @@ void SaveDocumentController::sl_fileDialogButtonClicked() {
 void SaveDocumentController::sl_formatChanged(const QString &newFormat) {
     currentFormat = newFormat;
 
+    if (conf.compressCheckbox != NULL) {
+        DocumentFormatRegistry* fr = AppContext::getDocumentFormatRegistry();
+        SAFE_POINT(fr != NULL, L10N::nullPointerError("DocumentFormatRegistry"), );
+        DocumentFormat* format = fr->getFormatById(formatsInfo.getIdByName(newFormat));
+        SAFE_POINT(format != NULL, L10N::nullPointerError("DocumentFormat"), );
+        conf.compressCheckbox->setDisabled(format->checkFlags(DocumentFormatFlag_CannotBeCompressed));
+    }
+
     if (!conf.fileNameEdit->text().isEmpty()) {
         QString oldPath = conf.fileNameEdit->text();
         cutGzExtension(oldPath);
@@ -202,7 +211,7 @@ void SaveDocumentController::sl_formatChanged(const QString &newFormat) {
 }
 
 void SaveDocumentController::sl_compressToggled(bool enable) {
-    CHECK(NULL != conf.compressCheckbox, );
+    CHECK(NULL != conf.compressCheckbox && conf.compressCheckbox->isEnabled(), );
     QString path = conf.fileNameEdit->text();
     if (enable) {
         addGzExtension(path);
@@ -246,7 +255,6 @@ void SaveDocumentController::initSimpleFormatInfo(const QList<DocumentFormatId> 
                               fr->getFormatById(id)->getFormatName(),
                               fr->getFormatById(id)->getSupportedDocumentFileExtensions());
     }
-
 }
 
 void SaveDocumentController::initFormatComboBox() {
@@ -278,7 +286,7 @@ bool SaveDocumentController::cutGzExtension(QString &path) const {
 }
 
 void SaveDocumentController::addGzExtension(QString &path) const {
-    CHECK(NULL != conf.compressCheckbox && conf.compressCheckbox->isChecked(), );
+    CHECK(NULL != conf.compressCheckbox && conf.compressCheckbox->isChecked() && conf.compressCheckbox->isEnabled(), );
     CHECK(!path.endsWith(".gz"), );
     path += ".gz";
 }
@@ -298,7 +306,7 @@ void SaveDocumentController::addFormatExtension(QString &path) const {
 
 QString SaveDocumentController::prepareDefaultFileFilter() const {
     QStringList extraExtensions;
-    if (NULL != conf.compressCheckbox) {
+    if (NULL != conf.compressCheckbox && conf.compressCheckbox->isEnabled()) {
         extraExtensions << ".gz";
     }
 
@@ -312,7 +320,7 @@ QString SaveDocumentController::prepareFileFilter() const {
     }
 
     QStringList extraExtensions;
-    if (NULL != conf.compressCheckbox) {
+    if (NULL != conf.compressCheckbox && conf.compressCheckbox->isEnabled()) {
         extraExtensions << ".gz";
     }
 

@@ -93,7 +93,7 @@ static void setSchemaColors(const ColorSchemeData& customSchema){
 }
 
 
-const QString ColorSchemaSettingsPageController::helpPageId = QString("17468731");
+const QString ColorSchemaSettingsPageController::helpPageId = QString("17470454");
 
 ColorSchemaSettingsPageController::ColorSchemaSettingsPageController(MsaColorSchemeRegistry* mcsr, QObject* p)
 : AppSettingsGUIPageController(tr("Alignment Color Scheme"), ColorSchemaSettingsPageId, p) {

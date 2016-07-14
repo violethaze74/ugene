@@ -795,6 +795,11 @@
         <translation>...</translation>
     </message>
     <message>
+        <location filename="../src/util/ExportImageDialog.ui" line="41"/>
+        <source>Export settings</source>
+        <translation>Настройки экспорта</translation>
+    </message>
+    <message>
         <location filename="../src/util/ExportImageDialog.ui" line="56"/>
         <source>Export to file</source>
         <translation>Экспортировать в файл</translation>
@@ -2164,7 +2169,12 @@ complement(5..15)</translation>
         <translation>Сохранение изображения в &apos;%1&apos;...</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="226"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="147"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ExportImageDialog.cpp" line="227"/>
         <source>Save Image As</source>
         <translation>Сохранить изображение как</translation>
     </message>

@@ -94,6 +94,22 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/fastqc/FastqcSupport.h \
            src/fastqc/FastqcTask.h \
            src/fastqc/FastqcWorker.h \
+           src/hmmer/ConvertAlignment2StockholmTask.h \
+           src/hmmer/HmmerBuildDialog.h \
+           src/hmmer/HmmerBuildFromFileTask.h \
+           src/hmmer/HmmerBuildFromMsaTask.h \
+           src/hmmer/HmmerBuildSettings.h \
+           src/hmmer/HmmerBuildTask.h \
+           src/hmmer/HmmerBuildWorker.h \
+           src/hmmer/HmmerParseSearchResultsTask.h \
+           src/hmmer/HmmerSearchDialog.h \
+           src/hmmer/HmmerSearchSettings.h \
+           src/hmmer/HmmerSearchTask.h \
+           src/hmmer/HmmerSearchWorker.h \
+           src/hmmer/HmmerSupport.h \
+           src/hmmer/PhmmerSearchDialog.h \
+           src/hmmer/PhmmerSearchSettings.h \
+           src/hmmer/PhmmerSearchTask.h \
            src/java/JavaSupport.h \
            src/macs/MACSSettings.h \
            src/macs/MACSSupport.h \
@@ -162,6 +178,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcftools/VcfConsensusSupportTask.h \
            src/vcftools/VcfConsensusWorker.h \
            src/vcfutils/VcfutilsSupport.h
+
 FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/blast_plus/BlastDBCmdDialog.ui \
          src/bowtie/BowtieBuildSettings.ui \
@@ -175,6 +192,9 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/clustalo/ClustalOSupportRunDialog.ui \
          src/clustalw/ClustalWSupportRunDialog.ui \
          src/ETSSettingsWidget.ui \
+         src/hmmer/HmmerBuildDialog.ui \
+         src/hmmer/HmmerSearchDialog.ui \
+         src/hmmer/PhmmerSearchDialog.ui \
          src/mafft/MAFFTSupportRunDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
@@ -182,6 +202,7 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/spades/SpadesSettings.ui \
          src/utils/BlastAllSupportDialog.ui \
          src/utils/BlastDBSelectorWidget.ui
+
 SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/ExternalToolManager.cpp \
            src/ExternalToolSupportPlugin.cpp \
@@ -274,6 +295,22 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/fastqc/FastqcSupport.cpp \
            src/fastqc/FastqcTask.cpp \
            src/fastqc/FastqcWorker.cpp \
+           src/hmmer/ConvertAlignment2StockholmTask.cpp \
+           src/hmmer/HmmerBuildDialog.cpp \
+           src/hmmer/HmmerBuildFromFileTask.cpp \
+           src/hmmer/HmmerBuildFromMsaTask.cpp \
+           src/hmmer/HmmerBuildSettings.cpp \
+           src/hmmer/HmmerBuildTask.cpp \
+           src/hmmer/HmmerBuildWorker.cpp \
+           src/hmmer/HmmerParseSearchResultsTask.cpp \
+           src/hmmer/HmmerSearchDialog.cpp \
+           src/hmmer/HmmerSearchSettings.cpp \
+           src/hmmer/HmmerSearchTask.cpp \
+           src/hmmer/HmmerSearchWorker.cpp \
+           src/hmmer/HmmerSupport.cpp \
+           src/hmmer/PhmmerSearchDialog.cpp \
+           src/hmmer/PhmmerSearchSettings.cpp \
+           src/hmmer/PhmmerSearchTask.cpp \
            src/java/JavaSupport.cpp \
            src/macs/MACSSettings.cpp \
            src/macs/MACSSupport.cpp \
@@ -342,6 +379,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/vcftools/VcfConsensusSupportTask.cpp \
            src/vcftools/VcfConsensusWorker.cpp \
            src/vcfutils/VcfutilsSupport.cpp
+
 RESOURCES += external_tool_support.qrc
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

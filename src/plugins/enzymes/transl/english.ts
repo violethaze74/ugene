@@ -723,42 +723,42 @@ Choose another region.</translation>
 <context>
     <name>U2::DigestSequenceTask</name>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="136"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="131"/>
         <source>Can&apos;t use restriction site %1 for digestion,  cleavage site is unknown </source>
         <translation>Can&apos;t use restriction site %1 for digestion,  cleavage site is unknown </translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="218"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="213"/>
         <source>Unable to digest into fragments: intersecting restriction sites %1 (%2..%3) and %4 (%5..%6)</source>
         <translation>Unable to digest into fragments: intersecting restriction sites %1 (%2..%3) and %4 (%5..%6)</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="324"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="319"/>
         <source>circular</source>
         <translation>circular</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="324"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="319"/>
         <source>linear</source>
         <translation>linear</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="325"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="320"/>
         <source>&lt;h3&gt;&lt;br&gt;Digest into fragments %1 (%2)&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;&lt;br&gt;Digest into fragments %1 (%2)&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="326"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="321"/>
         <source>&lt;br&gt;Generated %1 fragments.</source>
         <translation>&lt;br&gt;Generated %1 fragments.</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="335"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="330"/>
         <source>&lt;br&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;%1:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;From %3 (%2) To %5 (%4) - %6 bp </source>
         <translation>&lt;br&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;%1:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;From %3 (%2) To %5 (%4) - %6 bp </translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="361"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="356"/>
         <source>Conserved annotation %1 (%2) is disrupted by the digestion. Try changing the restriction sites.</source>
         <translation>Conserved annotation %1 (%2) is disrupted by the digestion. Try changing the restriction sites.</translation>
     </message>
@@ -1149,22 +1149,22 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::LigateFragmentsTask</name>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="383"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="378"/>
         <source>Fragments %1 and  %2 are inconsistent. Blunt and sticky ends incompatibility</source>
         <translation>Fragments %1 and  %2 are inconsistent. Blunt and sticky ends incompatibility</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="393"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="388"/>
         <source>Right overhang from %1 and left overhang from %2 are inconsistent.</source>
         <translation>Right overhang from %1 and left overhang from %2 are inconsistent.</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="439"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="434"/>
         <source>Unknown DNA alphabet in fragment %1 of %2</source>
         <translation>Unknown DNA alphabet in fragment %1 of %2</translation>
     </message>
     <message>
-        <location filename="../src/CloningUtilTasks.cpp" line="506"/>
+        <location filename="../src/CloningUtilTasks.cpp" line="501"/>
         <source>Add constructed molecule</source>
         <translation>Add constructed molecule</translation>
     </message>

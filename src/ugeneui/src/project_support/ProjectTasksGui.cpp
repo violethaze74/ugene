@@ -127,7 +127,7 @@ QList<Task*> OpenProjectTask::onSubTaskFinished(Task* subTask) {
 //////////////////////////////////////////////////////////////////////////
 /// Save project
 SaveProjectTask::SaveProjectTask(SaveProjectTaskKind _k, Project* p, const QString& _url, bool silentSave_) 
-    : Task(tr("Save project"), TaskFlag_NoRun), k(_k), proj(p), url(_url), silentSave(silentSave_)
+    : Task(tr("Save project"), TaskFlags(TaskFlag_NoRun) | TaskFlag_CancelOnSubtaskCancel), k(_k), proj(p), url(_url), silentSave(silentSave_)
 {
 }
 
@@ -203,15 +203,9 @@ void SaveProjectTask::prepare() {
         ssTasks.append(new SaveOnlyProjectTask(proj, url));
     }
     if (!ssTasks.isEmpty()) {
-        addSubTask(new MultiTask(tr("Save documents, remove phantom docs, save  project"), ssTasks));
+        addSubTask(new MultiTask(tr("Save documents, remove phantom docs, save project"), ssTasks, false, TaskFlags_NR_FOSE_COSC));
     }
 }
-
-Task::ReportResult SaveProjectTask::report() {
-    return Task::ReportResult_Finished;
-}
-
-
 
 //////////////////////////////////////////////////////////////////////////
 /// SaveOnlyProjectTask

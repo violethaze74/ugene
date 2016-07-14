@@ -44,7 +44,7 @@ ExportDocumentDialogController::ExportDocumentDialogController(Document* d, QWid
 {
     ui = new Ui_ExportDocumentDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17468707");
+    new HelpButton(this, ui->buttonBox, "17470430");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -62,7 +62,7 @@ ExportDocumentDialogController::ExportDocumentDialogController(GObject *object, 
     QList<GObject *> objectList = QList<GObject *>() << sourceObject;
     initSaveController(objectList, initUrl);
 
-    new HelpButton(this, ui->buttonBox, "17468707");
+    new HelpButton(this, ui->buttonBox, "17470430");
 }
 
 void ExportDocumentDialogController::initSaveController(const QList<GObject *> &objects, const QString &fileUrl) {
@@ -71,7 +71,7 @@ void ExportDocumentDialogController::initSaveController(const QList<GObject *> &
     config.fileDialogButton = ui->browseButton;
     config.fileNameEdit = ui->fileNameEdit;
     config.formatCombo = ui->formatCombo;
-    config.compressCheckbox= ui->compressCheck;
+    config.compressCheckbox = ui->compressCheck;
     config.parentWidget = this;
     config.rollOutProjectUrls = true;
     config.rollSuffix = "_copy";
@@ -109,11 +109,11 @@ DocumentFormatConstraints ExportDocumentDialogController::getAcceptableConstrain
 
 QString ExportDocumentDialogController::getDocumentURL() const {
     QString path = saveController->getSaveFileName();
-    if(ui->compressCheck->isChecked()) {
+    if (ui->compressCheck != NULL && ui->compressCheck->isChecked() && ui->compressCheck->isEnabled()) {
         QString suffix = path.split(".").last();
         if(suffix != "gz") {
             return path + ".gz";
-        } 
+        }
     }
     return path;
 }

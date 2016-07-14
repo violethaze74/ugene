@@ -88,7 +88,6 @@ public:
     ~SaveProjectTask();
 
     virtual void prepare();
-    ReportResult report();
 
 private:
     SaveProjectTaskKind k;

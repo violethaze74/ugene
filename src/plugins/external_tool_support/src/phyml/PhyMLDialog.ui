@@ -30,7 +30,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>-1</number>
+    <number>6</number>
    </property>
    <property name="sizeConstraint">
     <enum>QLayout::SetMinAndMaxSize</enum>
@@ -310,23 +310,11 @@ Uncheck to get the maximum likelihood estimate.</string>
         <enum>QFormLayout::ExpandingFieldsGrow</enum>
        </property>
        <item row="0" column="0">
-        <widget class="QCheckBox" name="fastMethodCheckbox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QRadioButton" name="fastMethodCheckbox">
          <property name="text">
           <string>Use fast likelihood-based method</string>
          </property>
          <property name="checked">
-          <bool>true</bool>
-         </property>
-         <property name="autoRepeat">
-          <bool>false</bool>
-         </property>
-         <property name="autoExclusive">
           <bool>true</bool>
          </property>
         </widget>
@@ -342,21 +330,9 @@ Uncheck to get the maximum likelihood estimate.</string>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QCheckBox" name="bootstrapCheckBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QRadioButton" name="bootstrapCheckBox">
          <property name="text">
           <string>Perform bootstrap</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-         <property name="autoExclusive">
-          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -367,6 +343,9 @@ Uncheck to get the maximum likelihood estimate.</string>
          </property>
          <property name="toolTip">
           <string>It is the number of bootstrap replicates.</string>
+         </property>
+         <property name="wrapping">
+          <bool>false</bool>
          </property>
          <property name="maximum">
           <number>990000</number>
@@ -583,5 +562,22 @@ Uncheck to get the maximum likelihood estimate.</string>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>bootstrapCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>bootstrapSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>88</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>311</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -144,31 +144,32 @@ void ExportImageDialog::init() {
     ui = new Ui_ImageExportForm;
     ui->setupUi(this);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     switch (source) {
     case WD:
-        new HelpButton(this, ui->buttonBox, "17469116");
+        new HelpButton(this, ui->buttonBox, "17470833");
         break;
     case CircularView:
-        new HelpButton(this, ui->buttonBox, "17468787");
+        new HelpButton(this, ui->buttonBox, "17470511");
         break;
     case MSA:
-        new HelpButton(this, ui->buttonBox, "17468860");
+        new HelpButton(this, ui->buttonBox, "17470584");
         break;
     case SequenceView:
-        new HelpButton(this, ui->buttonBox, "17468747");
+        new HelpButton(this, ui->buttonBox, "17470471");
         break;
     case AssemblyView:
-        new HelpButton(this, ui->buttonBox, "17468896");
+        new HelpButton(this, ui->buttonBox, "17470620");
         break;
     case PHYTreeView:
-        new HelpButton(this, ui->buttonBox, "17468924");
+        new HelpButton(this, ui->buttonBox, "17470649");
         break;
     case DotPlot:
-        new HelpButton(this, ui->buttonBox, "17468818");
+        new HelpButton(this, ui->buttonBox, "17470542");
         break;
     case MolView:
-        new HelpButton(this, ui->buttonBox, "17468801");
+        new HelpButton(this, ui->buttonBox, "17470525");
         break;
     default:
         FAIL("Can't find help Id",);

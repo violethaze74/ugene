@@ -30,6 +30,8 @@
 
 namespace U2 {
 
+class CloneObjectTask;
+
 /** Save Alignment Task (to CLUSTAL, NEXUS, ...) */
 class SaveAlignmentTask : public Task {
     Q_OBJECT
@@ -38,9 +40,9 @@ public:
 
     void run();
 
-    virtual Document* getDocument() const {return doc.data();}
-
-    MAlignment& getMAlignment() {return ma;}
+    virtual Document* getDocument() const;
+    const MAlignment & getMAlignment() const;
+    const QString & getUrl() const;
 
 private:
     MAlignment              ma;
@@ -69,6 +71,23 @@ private:
     QScopedPointer<Document> doc;
 };
 
-}//namespace
+class SaveSequenceTask : public Task {
+    Q_OBJECT
+public:
+    SaveSequenceTask(const QPointer<U2SequenceObject> &sequence, const QString &url, const DocumentFormatId &formatId);
 
-#endif
+private:
+    void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
+
+    QPointer<U2SequenceObject> sequence;
+    const QString url;
+    const DocumentFormatId formatId;
+
+    StateLocker *locker;
+    CloneObjectTask *cloneTask;
+};
+
+}   // namespace U2
+
+#endif // _U2_EXPORT_PLUGIN_TASKS_H_

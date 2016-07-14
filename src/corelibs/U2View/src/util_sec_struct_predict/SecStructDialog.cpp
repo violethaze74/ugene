@@ -53,14 +53,18 @@ namespace U2 {
 SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) : QDialog(p), rangeStart(0), rangeEnd(0), ctx(_ctx), task(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17468961");
+    new HelpButton(this, buttonBox, "17470686");
 
     sspr = AppContext::getSecStructPredictAlgRegistry();
     algorithmComboBox->addItems(sspr->getAlgNameList());
 
+    startButton = buttonBox->button(QDialogButtonBox::Ok);
     saveAnnotationButton = buttonBox->button(QDialogButtonBox::Save);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
-    startButton = buttonBox->button(QDialogButtonBox::Ok);
+
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Predict"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Save)->setText(tr("Save"));
 
     saveAnnotationButton->setDisabled(true);
 

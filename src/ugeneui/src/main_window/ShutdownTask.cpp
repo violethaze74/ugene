@@ -87,65 +87,6 @@ static bool closeViews() {
     return true;
 }
 
-class CloseWindowsTask : public Task {
-public:
-    CloseWindowsTask() : Task(QObject::tr("Close windows"), TaskFlags(TaskFlag_NoRun)) {}
-    void prepare() {
-        Project* proj = AppContext::getProject();
-        if (proj == NULL) {
-            return;
-        }
-        if ( proj->isTreeItemModified() || proj->getProjectURL().isEmpty() ) {
-            addSubTask(AppContext::getProjectService()->saveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
-        }
-    }
-
-    QList<Task*> onSubTaskFinished(Task* subTask) {
-        if (subTask->isCanceled()) {
-            stateInfo.cancelFlag = true;
-            return QList<Task*>();
-        }
-        coreLog.trace("Closing views");
-        if (!closeViews()) {
-            getTopLevelParentTask()->cancel();
-        }
-        return QList<Task*>();
-    }
-
-    ReportResult report() {
-        // wait for saving/closing tasks if any
-        foreach(Task* t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
-            if (t != getTopLevelParentTask() && !t->isFinished()) {
-                return ReportResult_CallMeAgain;
-            }
-        }
-        return ReportResult_Finished;
-    }
-};
-
-class CancelAllTask : public Task {
-public:
-    CancelAllTask() : Task(ShutdownTask::tr("Cancel active tasks"), TaskFlag_NoRun) {}
-    void prepare() {
-        // cancel all tasks but ShutdownTask
-        QList<Task*> activeTopTasks = AppContext::getTaskScheduler()->getTopLevelTasks();
-        activeTopTasks.removeOne(getTopLevelParentTask());
-        foreach(Task* t, activeTopTasks) {
-            coreLog.trace(QString("Canceling: %1").arg(t->getTaskName()));
-            t->cancel();
-        }
-    }
-
-    ReportResult report() {
-        foreach(Task* t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
-            if (t->isCanceled() && !t->isFinished()) {
-                return ReportResult_CallMeAgain;
-            }
-        }
-        return ReportResult_Finished;
-    }
-};
-
 // This function prepends empty string to RecentProjects in UGENE SETTINGS in order
 // to prevent project auto loading on next UGENE launch
 static void cancelProjectAutoLoad() {
@@ -194,8 +135,8 @@ QList<Task*> ShutdownTask::onSubTaskFinished(Task* subTask) {
 
     stateInfo.cancelFlag = subTask->isCanceled();
     if (isCanceled() || subTask->hasError() ) {
-        mw->setShutDownInProcess(false);
-        return res; //stop shutdown process
+        cancelShutdown();
+        return res;
     }
 
     ServiceRegistry* sr = AppContext::getServiceRegistry();
@@ -220,6 +161,11 @@ QList<Task*> ShutdownTask::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
+void ShutdownTask::cancelShutdown() {
+    mw->setShutDownInProcess(false);
+    cancel();
+}
+
 Task::ReportResult ShutdownTask::report() {
     if (propagateSubtaskError() || hasError() || isCanceled()) {
         setErrorNotificationSuppression(true);
@@ -240,6 +186,69 @@ Task::ReportResult ShutdownTask::report() {
     mw->close();
     QCoreApplication::exit(0);
     return Task::ReportResult_Finished;
+}
+
+CloseWindowsTask::CloseWindowsTask()
+    : Task(QObject::tr("Close windows"), TaskFlags(TaskFlag_NoRun))
+{
+
+}
+
+void CloseWindowsTask::prepare() {
+    Project* proj = AppContext::getProject();
+    if (proj == NULL) {
+        return;
+    }
+    if ( proj->isTreeItemModified() || proj->getProjectURL().isEmpty() ) {
+        addSubTask(AppContext::getProjectService()->saveProjectTask(SaveProjectTaskKind_SaveProjectAndDocumentsAskEach));
+    }
+}
+
+QList<Task *> CloseWindowsTask::onSubTaskFinished(Task *subTask) {
+    if (subTask->isCanceled()) {
+        stateInfo.cancelFlag = true;
+        return QList<Task*>();
+    }
+    coreLog.trace(tr("Closing views"));
+    if (!closeViews()) {
+        getTopLevelParentTask()->cancel();
+    }
+    return QList<Task*>();
+}
+
+Task::ReportResult CloseWindowsTask::report() {
+    // wait for saving/closing tasks if any
+    foreach(Task* t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
+        if (t != getTopLevelParentTask() && !t->isFinished()) {
+            return ReportResult_CallMeAgain;
+        }
+    }
+    return ReportResult_Finished;
+}
+
+CancelAllTask::CancelAllTask()
+    : Task(ShutdownTask::tr("Cancel active tasks"), TaskFlag_NoRun)
+{
+
+}
+
+void CancelAllTask::prepare() {
+    // cancel all tasks but ShutdownTask
+    QList<Task*> activeTopTasks = AppContext::getTaskScheduler()->getTopLevelTasks();
+    activeTopTasks.removeOne(getTopLevelParentTask());
+    foreach(Task* t, activeTopTasks) {
+        coreLog.trace(tr("Canceling: %1").arg(t->getTaskName()));
+        t->cancel();
+    }
+}
+
+Task::ReportResult CancelAllTask::report() {
+    foreach(Task* t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
+        if (t->isCanceled() && !t->isFinished()) {
+            return ReportResult_CallMeAgain;
+        }
+    }
+    return ReportResult_Finished;
 }
 
 }   // namespace U2

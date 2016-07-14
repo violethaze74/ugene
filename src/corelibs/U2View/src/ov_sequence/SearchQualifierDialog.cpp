@@ -44,9 +44,10 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget* p, AnnotationsTreeView *tr
     indexOfPrevResult(-1)
 {
      ui->setupUi(this);
-     new HelpButton(this, ui->buttonBox, "17468783");
+     new HelpButton(this, ui->buttonBox, "17470507");
      ui->buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Select all"));
      ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Next"));
+     ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
 
      ui->valueEdit->installEventFilter(this);
 

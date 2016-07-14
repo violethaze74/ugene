@@ -39,7 +39,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Available fragments:</string>
+          <string>Available fragments (core length - length without sticky ends):</string>
          </property>
          <property name="margin">
           <number>1</number>

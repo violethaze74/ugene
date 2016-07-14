@@ -192,7 +192,6 @@ U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData
     U2Region blastReadRegion;
     int maxIdentity = 0;
     double percantage = 0; //! consider to remove that variable
-
     foreach (const SharedAnnotationData& ann, blastAnnotations) {
         QString percentQualifier = ann->findFirstQualifierValue("identities");
         int annIdentity = percentQualifier.left(percentQualifier.indexOf('/')).toInt();

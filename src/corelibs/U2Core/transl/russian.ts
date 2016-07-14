@@ -794,7 +794,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::CmdlineTaskRunner</name>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="99"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="98"/>
         <source>Run UGENE command line: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -821,6 +821,11 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="216"/>
         <source>Unknown error occurred</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="262"/>
+        <source>An error occurred. Process is not finished successfully.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
