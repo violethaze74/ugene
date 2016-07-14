@@ -75,7 +75,7 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
     report = "Exception with code ";
 
     QStringList list = htmlReport.split("|");
-    if (list.size() == 8) {
+    if (list.size() == 9) {
         report += list.takeFirst() + " - ";
         report += list.takeFirst() + "\n\n";
 
@@ -107,6 +107,8 @@ void ReportSender::parse(const QString &htmlReport, const QString &dumpUrl) {
 #else
         report += list.takeFirst() + getUgeneBitCount() + "\n\n";
 #endif
+        report += "UUID: ";
+        report += list.takeFirst() + "\n\n";
 
         report += "ActiveWindow: ";
         report += list.takeFirst() + "\n\n";

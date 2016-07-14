@@ -152,8 +152,8 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString& url) {
         coreLog.trace(QString("Plugin was built with higher QT version: %1").arg(desc.id));
         return;
     }
-    if (ugeneVersion < desc.ugeneVersion) {
-        coreLog.trace(QString("Plugin was built with higher UGENE version: %1, %2 vs %3").arg(desc.id).arg(desc.ugeneVersion.text).arg(ugeneVersion.text));
+    if (ugeneVersion != desc.ugeneVersion) {
+        coreLog.trace(QString("Plugin was built with another UGENE version: %1, %2 vs %3").arg(desc.id).arg(desc.ugeneVersion.text).arg(ugeneVersion.text));
         return;
     }
 

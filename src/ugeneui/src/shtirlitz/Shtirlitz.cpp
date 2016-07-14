@@ -97,6 +97,7 @@ QList<Task*> Shtirlitz::wakeup() {
     if (minorVersionFirstLaunch) {
         s->setValue(minorVersionFirstLaunchKey, QVariant(true));
     }
+    getUniqueUgeneId();
     
     // Do nothing if Shtirlitz was disabled
      if (QProcess::systemEnvironment().contains(ENV_UGENE_DEV)) {

@@ -456,6 +456,15 @@ QWidget *CreateAnnotationWidgetController::getWidget() const {
     return w;
 }
 
+AnnotationCreationPattern CreateAnnotationWidgetController::getAnnotationPattern() const {
+    AnnotationCreationPattern pattern;
+    pattern.annotationName = model.data->name;
+    pattern.type = model.data->type;
+    pattern.groupName = model.groupName;
+    pattern.description = model.description;
+    return pattern;
+}
+
 QPair<QWidget*, QWidget*> CreateAnnotationWidgetController::getTaborderEntryAndExitPoints() const {
     return w->getTabOrderEntryAndExitPoints();
 }

@@ -37,6 +37,9 @@ public:
     ~ExternalToolSupportPlugin();
 
 private:
+    void registerSettingsController();
+    void registerWorkers();
+
     ExternalToolManagerImpl validationManager;
 };
 

@@ -59,7 +59,13 @@ void StatisticalReportController::paintEvent(QPaintEvent *event) {
         htmlView->setMinimumHeight(htmlView->size().height() + 1);
     }
     htmlView->setMinimumHeight(htmlView->size().height() + 10);
+#ifndef Q_OS_MAC
+    // UGENE crashes on the update event processing on mac
+    // It has some connection with htmlView loading method
+    // There was no crash before f3a45ef1cd53fe28faf90a763d195e964bc6c752 commit
+    // Find a solution and fix it, if you have some free time
     move(x(), (qApp->desktop()->screenGeometry().height() / 2) - htmlView->minimumHeight());
+#endif
 }
 
 }

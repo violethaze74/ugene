@@ -3727,6 +3727,26 @@ GUI_TEST_CLASS_DEFINITION(test_4694) {
     CHECK_SET_ERR(!undo->isEnabled(), "Button should be disabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4700) {
+    //1. Open assembly
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4700/", "almost-empty.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
+    //2. Find area without reads
+    for (int i = 0;i < 24;i++) {
+        GTKeyboardDriver::keyClick('=', Qt::ShiftModifier);
+        GTGlobals::sleep(100);
+    }
+    GTGlobals::sleep(2000);
+
+    GTKeyboardDriver::keyClick(Qt::Key_Home);
+    GTGlobals::sleep(2000);
+    //3. Export visible reads
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export" << "Visible reads as sequences"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4702_1) {
     // 1. Open "samples/Genbank/NC_014267.1.gb"
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
@@ -4291,12 +4311,12 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
 
     //3. Select region with edited sequences, one of sequences should starts with gap
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5,5), QPoint(16, 9));
-    
+
     //4. Copy this subalignment
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy formatted"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTGlobals::sleep();
-    
+
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     QWidget *nameListWidget = editor->getUI()->getEditorNameList();
@@ -4334,7 +4354,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
-    
+
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste" << "Copy selection"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
@@ -5264,6 +5284,46 @@ GUI_TEST_CLASS_DEFINITION(test_4938_1) {
     CHECK_SET_ERR(!annTree->findItems("CDS", Qt::MatchExactly).isEmpty(), "CDS item is missing in OP_ANNOT_HIGHLIGHT_TREE");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4965) {
+    // 1. Open any assembly
+    // 2. Right button click on the assembly object in the project view
+    // 3. Export/Import --> Export object
+    // Expected state: 'Compress' checkbox is disabled for all assembly formats
+
+    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb/toy.sam.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class CheckCompressFiller : public Filler {
+    public:
+        CheckCompressFiller(GUITestOpStatus &os)
+            : Filler(os, "ExportDocumentDialog") {}
+        virtual void run() {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "dialog not found");
+
+            QComboBox *comboBox = dialog->findChild<QComboBox*>("formatCombo");
+            CHECK_SET_ERR(comboBox != NULL, "ComboBox not found");
+
+            QCheckBox *compressCheckBox = dialog->findChild<QCheckBox*>(QString::fromUtf8("compressCheck"));
+            CHECK_SET_ERR(compressCheckBox != NULL, "Check box not found");
+
+            QStringList checkFormats;
+            checkFormats << "BAM" << "SAM" << "UGENE Database";
+            foreach (const QString& format, checkFormats) {
+                GTComboBox::setIndexWithText(os, comboBox, format, true);
+                CHECK_SET_ERR(!compressCheckBox->isEnabled(),
+                              QString("Compress checkbox is unexpectedly enabled for '%1' format!").arg(format));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+
+    };
+
+    GTUtilsDialog::waitForDialog(os, new CheckCompressFiller(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export object..."));
+    GTUtilsProjectTreeView::click(os, "ref", Qt::RightButton);
+}
 
 GUI_TEST_CLASS_DEFINITION(test_4966) {
     //GTLogTracer l;

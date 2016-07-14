@@ -47,7 +47,7 @@ BAMFormat::BAMFormat()
     tr("BAM"),
     QStringList("bam"),
     DocumentFormatFlags(DocumentFormatFlag_NoPack) | DocumentFormatFlag_NoFullMemoryLoad
-    | DocumentFormatFlag_Hidden | DocumentFormatFlag_SupportWriting)
+    | DocumentFormatFlag_Hidden | DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed)
 {
 
 }
