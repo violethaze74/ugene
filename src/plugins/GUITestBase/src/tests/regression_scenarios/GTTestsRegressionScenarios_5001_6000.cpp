@@ -728,6 +728,19 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
     CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn after renderer change");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5314) {
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/CVU55762.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const QStringList defaultEnzymes = QStringList() << "ClaI";
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "Find restriction sites"));
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, testDir + "_common_data/abif/A01.abi");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2

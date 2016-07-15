@@ -1274,6 +1274,8 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
     REGISTER_TEST(GUITest_regression_scenarios::test_5295);
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
+
 //////////////////////////////////////////////////////////////////////////
 // Common scenarios/project/
 //////////////////////////////////////////////////////////////////////////
