@@ -729,6 +729,9 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5314) {
+    //1. Open "data/samples/Genbank/CVU55762.gb".
+    //2. Search any enzyme on the whole sequence.
+    //3. Open "data/samples/ABIF/A01.abi".
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/CVU55762.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -737,8 +740,73 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, defaultEnzymes));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTLogTracer lt;
     GTFileDialog::openFile(os, testDir + "_common_data/abif/A01.abi");
+    CHECK_SET_ERR(!lt.hasError(), "Log shouldn't contain errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5356) {
+//    1. Open WD
+//    2. Create workflow: "Read FASTQ" --> "Cut Adapter" --> "FastQC"
+//       (open _common_data/regression/5356/cutadapter_and_trim.uwl)
+//    3. Set input data:
+//       reads - _common_data/regression/5356/reads.fastq
+//       adapter file -  _common_data/regression/5356/adapter.fa
+//    4. Run the workflow
+//    Expected state: no errors in the log (empty sequences were skipped by CutAdapter)
+
+    GTLogTracer l;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5356/cutadapt_and_trim.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ Files with Reads 1", testDir + "_common_data/regression/5356/reads.fastq");
+
+    GTUtilsWorkflowDesigner::click(os, "Cut Adapter");
+    GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", "Custom", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5352) {
+//    1. Open WD
+//    2. Open any sample (e.g. Align with MUSCLE)
+//    3. Remove some elements and set input data
+//    4. Run the workflow
+//    5. Click "Load dashboard workflow"
+//    Expected state: message box about workflow modification appears
+//    6. Click "Close without saving"
+//    Expected state: the launched workflow is loaded successfully, no errors
+
+    GTLogTracer l;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::removeItem(os, "Align with MUSCLE");
+
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::getWorker(os, "Read alignment");
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::getWorker(os, "Write alignment");
+    GTUtilsWorkflowDesigner::connect(os, read, write);
+
+    GTUtilsWorkflowDesigner::click(os, "Read alignment");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read alignment", dataDir + "samples/CLUSTALW/COI.aln");
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Close without Saving"));
+    HIWebElement element = GTUtilsDashboard::findElement(os, "", "BUTTON");
+    GTUtilsDashboard::click(os, element);
+
+    CHECK_SET_ERR(!l.hasError(), "There is and error in the log");
 }
 
 } // namespace GUITest_regression_scenarios
