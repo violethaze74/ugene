@@ -754,7 +754,42 @@ GUI_TEST_CLASS_DEFINITION(test_5356) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasError(), "There is error in the log");
+    CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5352) {
+//    1. Open WD
+//    2. Open any sample (e.g. Align with MUSCLE)
+//    3. Remove some elements and set input data
+//    4. Run the workflow
+//    5. Click "Load dashboard workflow"
+//    Expected state: message box about workflow modification appears
+//    6. Click "Close without saving"
+//    Expected state: the launched workflow is loaded successfully, no errors
+
+    GTLogTracer l;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::removeItem(os, "Align with MUSCLE");
+
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::getWorker(os, "Read alignment");
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::getWorker(os, "Write alignment");
+    GTUtilsWorkflowDesigner::connect(os, read, write);
+
+    GTUtilsWorkflowDesigner::click(os, "Read alignment");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read alignment", dataDir + "samples/CLUSTALW/COI.aln");
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Close without Saving"));
+    HIWebElement element = GTUtilsDashboard::findElement(os, "", "BUTTON");
+    GTUtilsDashboard::click(os, element);
+
+    CHECK_SET_ERR(!l.hasError(), "There is and error in the log");
 }
 
 } // namespace GUITest_regression_scenarios

@@ -1063,6 +1063,7 @@ void WorkflowView::removeProcessItem(WorkflowProcessItem *item) {
 
     scene->setModified();
     schema->removeProcess(actor);
+    meta.removeActorMeta(actor->getId());
     delete actor;
 
     removeWizards();
