@@ -728,6 +728,35 @@ GUI_TEST_CLASS_DEFINITION(test_5295) {
     CHECK_SET_ERR(colors.size() > 1, "Biostruct was not drawn after renderer change");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5356) {
+//    1. Open WD
+//    2. Create workflow: "Read FASTQ" --> "Cut Adapter" --> "FastQC"
+//       (open _common_data/regression/5356/cutadapter_and_trim.uwl)
+//    3. Set input data:
+//       reads - _common_data/regression/5356/reads.fastq
+//       adapter file -  _common_data/regression/5356/adapter.fa
+//    4. Run the workflow
+//    Expected state: no errors in the log (empty sequences were skipped by CutAdapter)
+
+    GTLogTracer l;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5356/cutadapt_and_trim.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ Files with Reads 1", testDir + "_common_data/regression/5356/reads.fastq");
+
+    GTUtilsWorkflowDesigner::click(os, "Cut Adapter");
+    GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", "Custom", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(!l.hasError(), "There is error in the log");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
