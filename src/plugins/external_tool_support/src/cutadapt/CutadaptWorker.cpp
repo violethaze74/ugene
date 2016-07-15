@@ -288,6 +288,7 @@ QStringList CutAdaptFastqTask::getParameters(U2OpStatus &/*os*/) {
         res << "-f";
         res << "fastq";
     }
+    res << "-m" << "1";
 
     res << settings.inputUrl;
 
