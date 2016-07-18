@@ -354,7 +354,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="14"/>
         <source>Extract Selected as MSA</source>
-        <translation>Сохранить участок выравнивания</translation>
+        <translation>Экспортировать область выравнивания</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="22"/>
@@ -5616,13 +5616,13 @@ Please, check external tools in the settings.</source>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="145"/>
-        <source>Save subalignment</source>
-        <translation>Сохранить область выравнивания</translation>
+        <source>Save subalignment...</source>
+        <translation>Экспортировать область выравнивания...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="149"/>
-        <source>Save sequence</source>
-        <translation>Сохранить последовательность</translation>
+        <source>Save sequence...</source>
+        <translation>Экспортировать последовательность...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="176"/>
