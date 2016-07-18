@@ -62,7 +62,7 @@ QStringList StatisticsWidget::header() {
 }
 
 inline static QString timeStr(qint64 timeMks) {
-    return QTime().addMSecs(timeMks/1000).toString("hh:mm:ss");
+    return QTime(0, 0, 0, timeMks/1000).toString("hh:mm:ss.zzz");
 }
 
 QList<QStringList> StatisticsWidget::data() {
