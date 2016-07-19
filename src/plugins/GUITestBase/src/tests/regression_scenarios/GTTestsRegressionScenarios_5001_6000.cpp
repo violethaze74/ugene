@@ -381,6 +381,24 @@ GUI_TEST_CLASS_DEFINITION(test_5052) {
     CHECK_SET_ERR(title.contains("NC_"), "Wrong MDI window is active");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5069) {
+//    1. Load workflow "_common_data/regression/5069/crash.uwl".
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/5069/crash.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Set "data/samples/Genbank/murine.gb" as input.
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/murine.gb");
+
+//    3. Launch workflow.
+//    Expected state: UGENE doesn't crash.
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    const bool areThereProblems = GTUtilsDashboard::areThereProblems(os);
+    CHECK_SET_ERR(!areThereProblems, "Workflow has finished with problems");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5082) {
     GTLogTracer l;
     // 1. Open "_common_data/clustal/big.aln".
