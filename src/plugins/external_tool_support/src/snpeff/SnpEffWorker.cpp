@@ -21,36 +21,38 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DataPathRegistry.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/SnpeffDictionary.h>
 #include <U2Core/TaskSignalMapper.h>
-#include <U2Core/DataPathRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
+
 #include <U2Designer/DelegateEditors.h>
+
 #include <U2Formats/BAMUtils.h>
-#include <U2Core/FileAndDirectoryUtils.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseAttributes.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "java/JavaSupport.h"
-
 #include "SnpEffSupport.h"
 #include "SnpEffTask.h"
-
 #include "SnpEffWorker.h"
+#include "java/JavaSupport.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -358,46 +360,7 @@ void SnpEffLogProcessor::addNotification(const QString &key, int count) {
 }
 
 QStrStrMap SnpEffLogProcessor::initWellKnownMessages() {
-    QStrStrMap result;
-
-    result["ERROR_CHROMOSOME_NOT_FOUND"] = "Chromosome does not exists in reference genome database. "
-                                                      "Typically indicates a mismatch between the chromosome names "
-                                                      "in the input file and the chromosome names used in the reference genome";
-
-    result["ERROR_OUT_OF_CHROMOSOME_RANGE"] = "The variant’s genomic coordinate "
-                                                         "is greater than chromosome's length";
-
-    result["E1"] = result["ERROR_CHROMOSOME_NOT_FOUND"];
-    result["E2"] = result["ERROR_OUT_OF_CHROMOSOME_RANGE"];
-
-    result["WARNING_REF_DOES_NOT_MATCH_GENOME"] = "This means that the ‘REF’ field "
-                                                               "in the input VCF file does not match the reference genome. This warning may indicate "
-                                                               "a conflict between input data and data from reference genome "
-                                                                "(for instance is the input VCF was aligned to a different reference genome)";
-
-    result["WARNING_SEQUENCE_NOT_AVAILABLE"] = "Reference sequence is not available, "
-                                                            "thus no inference could be performed";
-
-    result["WARNING_TRANSCRIPT_INCOMPLETE"] = "A protein coding transcript having "
-                                                           "a non-multiple of 3 length. It indicates that the reference "
-                                                           "genome has missing information about this particular transcript";
-
-    result["WARNING_TRANSCRIPT_MULTIPLE_STOP_CODONS"] = "A protein coding transcript has "
-                                                                     "two or more STOP codons in the middle of the coding sequence (CDS). "
-                                                                     "This should not happen and it usually means the reference genome "
-                                                                     "may have an error in this transcript";
-
-    result["WARNING_TRANSCRIPT_NO_START_CODON"] = "A protein coding transcript does not have "
-                                                               "a proper START codon. It is rare that a real transcript does not have a START codon, "
-                                                               "so this probably indicates an error or missing information in the reference genome";
-
-    result["W1"] = result["WARNING_REF_DOES_NOT_MATCH_GENOME"];
-    result["W2"] = result["WARNING_SEQUENCE_NOT_AVAILABLE"];
-    result["W3"] = result["WARNING_TRANSCRIPT_INCOMPLETE"];
-    result["W4"] = result["WARNING_TRANSCRIPT_MULTIPLE_STOP_CODONS"];
-    result["W5"] = result["WARNING_TRANSCRIPT_NO_START_CODON"];
-
-    return result;
+    return SnpeffDictionary::messageDescriptions;
 }
 
 QMap<QString, QRegExp> SnpEffLogProcessor::initWellKnownCatchers() {

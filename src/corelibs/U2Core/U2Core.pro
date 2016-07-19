@@ -224,6 +224,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/QObjectScopedPointer.h \
            src/util/QVariantUtils.h \
            src/util/SequenceUtils.h \
+           src/util/SnpeffDictionary.h \
            src/util/SyncHttp.h \
            src/util/TextUtils.h \
            src/util/TaskWatchdog.h \
@@ -272,6 +273,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/U2CoreAttributes.cpp \
            src/datatype/U2FeatureType.cpp \
            src/datatype/U2Mod.cpp \
+           src/datatype/U2Qualifier.cpp \
            src/datatype/U2Region.cpp \
            src/datatype/U2Type.cpp \
            src/datatype/UdrRecord.cpp \
@@ -422,6 +424,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/MSAUtils.cpp \
            src/util/QVariantUtils.cpp \
            src/util/SequenceUtils.cpp \
+           src/util/SnpeffDictionary.cpp \
            src/util/SyncHttp.cpp \
            src/util/TextUtils.cpp \
            src/util/TaskWatchdog.cpp \
