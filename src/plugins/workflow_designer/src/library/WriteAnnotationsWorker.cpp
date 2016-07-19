@@ -314,6 +314,7 @@ Task * WriteAnnotationsWorker::getSaveDocTask(const QString &formatId, SaveDocFl
             hints[DocumentRemovalMode_Synchronous] = QString();
             Document * doc = df->createNewLoadedDocument(iof, filepath, os, hints);
             CHECK_OP(os, new FailTask(os.getError()));
+            doc->setDocumentOwnsDbiResources(false);
 
             QSet<QString> usedNames;
             foreach (AnnotationTableObject *annTable, annTables) {
