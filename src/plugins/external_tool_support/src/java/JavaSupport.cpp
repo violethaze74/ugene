@@ -57,8 +57,6 @@ JavaSupport::JavaSupport(const QString &name, const QString &path)
 void JavaSupport::getAdditionalParameters(const QString& output) {
     if (output.contains("64-Bit")) {
         architecture = x64;
-    } else {
-        architecture = x32;
     }
 }
 
