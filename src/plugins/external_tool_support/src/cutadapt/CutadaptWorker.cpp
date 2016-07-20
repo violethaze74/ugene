@@ -302,7 +302,7 @@ void CutAdaptParser::parseErrOutput( const QString& partOfLog ) {
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
     QString error = parseTextForErrors(lastPartOfLog);
-    if (error.isEmpty()) {
+    if (!error.isEmpty()) {
         setLastError(error);
     }
 }
