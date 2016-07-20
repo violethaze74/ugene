@@ -113,7 +113,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& regi
 {
     U2SequenceObject seq("sequence", seqRef);
 
-    assert(seq.getAlphabet()->isNucleic());
+    SAFE_POINT(seq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
     seqlen = seq.getSequenceLength();
     //for every enzymes in selection create FindSingleEnzymeTask
     foreach(const SEnzymeData& e, enzymes) {
@@ -239,7 +239,7 @@ FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& _seqRef, const U2R
 {
     U2SequenceObject dnaSeq("sequence", dnaSeqRef);
 
-    assert(dnaSeq.getAlphabet()->isNucleic());
+    SAFE_POINT(dnaSeq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
     if (resultListener == NULL) {
         resultListener = this;
     }

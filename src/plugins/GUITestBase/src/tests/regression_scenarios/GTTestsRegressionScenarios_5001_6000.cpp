@@ -742,6 +742,8 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTLogTracer lt;
     GTFileDialog::openFile(os, testDir + "_common_data/abif/A01.abi");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
     CHECK_SET_ERR(!lt.hasError(), "Log shouldn't contain errors");
 }
 
