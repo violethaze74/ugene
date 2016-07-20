@@ -1959,7 +1959,7 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
     <message>
         <location filename="../src/ExportAlignmentViewItems.cpp" line="81"/>
         <source>Amino translation...</source>
-        <translation>Сохранить транслированное выравнивание...</translation>
+        <translation>Экспортировать транслированное выравнивание...</translation>
     </message>
     <message>
         <location filename="../src/ExportAlignmentViewItems.cpp" line="110"/>

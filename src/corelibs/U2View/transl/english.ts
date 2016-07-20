@@ -5370,13 +5370,13 @@ Please, check external tools in the settings.</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="145"/>
-        <source>Save subalignment</source>
-        <translation>Save subalignment</translation>
+        <source>Save subalignment...</source>
+        <translation>Save subalignment...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="149"/>
-        <source>Save sequence</source>
-        <translation>Save sequence</translation>
+        <source>Save sequence...</source>
+        <translation>Save sequence...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="153"/>

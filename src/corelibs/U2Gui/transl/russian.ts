@@ -3257,7 +3257,7 @@ check connection settings</translation>
     <message>
         <location filename="../src/ToolsMenu.cpp" line="178"/>
         <source>Primer</source>
-        <translation>Подбор праймеров</translation>
+        <translation>Олигонуклеотиды</translation>
     </message>
     <message>
         <location filename="../src/ToolsMenu.cpp" line="184"/>
