@@ -100,10 +100,6 @@ QString BowtieWorker::getBaseSubdir() const {
     return BASE_Bowtie_SUBDIR;
 }
 
-DnaAssemblyToReferenceTask* BowtieWorker::getTask(const DnaAssemblyToRefTaskSettings &settings) const {
-    return new BowtieTask(settings);
-}
-
 void BowtieWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings){
     settings.refSeqUrl = getValue<QString>(REFERENCE_GENOME);
 
