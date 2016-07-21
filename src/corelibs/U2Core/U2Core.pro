@@ -274,6 +274,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/U2Mod.cpp \
            src/datatype/U2Region.cpp \
            src/datatype/U2Type.cpp \
+           src/datatype/U2Variant.cpp \
            src/datatype/UdrRecord.cpp \
            src/datatype/UdrSchema.cpp \
            src/datatype/UdrSchemaRegistry.cpp \

@@ -39,7 +39,7 @@ public:
         ColumnRole_PublicId,
         ColumnRole_ChromosomeId,
         ColumnRole_Comment,
-        ColumnRole_AdditionalInfo
+        ColumnRole_Info
     };
 
     enum PositionIndexing{
@@ -69,7 +69,6 @@ protected:
     bool isSupportHeader;
 
     QMap<int,ColumnRole> columnRoles;
-    QString sep;
     int maxColumnNumber;
 
     PositionIndexing indexing;
@@ -77,10 +76,15 @@ protected:
     virtual Document *loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
     virtual bool checkFormatByColumnCount(int columnCount) const = 0;
 
-    static const QString COMMENT_START;
+    static const QString META_INFO_START;
+    static const QString HEADER_START;
+    static const QString COLUMNS_SEPARATOR;
 
 private:
     void storeTrack(IOAdapter *io, const VariantTrackObject *trackObj, U2OpStatus &os);
+
+    static QString getMetaInfo(const VariantTrackObject *variantTrackObject, U2OpStatus &os);
+    static QStringList getHeader(const VariantTrackObject *variantTrackObject, U2OpStatus &os);
 };
 
 } // U2
