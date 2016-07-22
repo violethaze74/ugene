@@ -28,6 +28,7 @@
 #define ET_FORMATDB "FormatDB"
 #define ET_MAKEBLASTDB "MakeBLASTDB"
 #define ET_GPU_MAKEBLASTDB "GPU-MakeBLASTDB"
+#define FORMATDB_TMP_DIR "FormatDB"
 namespace U2 {
 
 class FormatDBSupport : public ExternalTool {
