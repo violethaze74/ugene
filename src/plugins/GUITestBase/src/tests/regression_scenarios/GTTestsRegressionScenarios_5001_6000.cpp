@@ -98,10 +98,13 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+
 
 namespace U2 {
 
@@ -747,35 +750,6 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     CHECK_SET_ERR(!lt.hasError(), "Log shouldn't contain errors");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5356) {
-//    1. Open WD
-//    2. Create workflow: "Read FASTQ" --> "Cut Adapter" --> "FastQC"
-//       (open _common_data/regression/5356/cutadapter_and_trim.uwl)
-//    3. Set input data:
-//       reads - _common_data/regression/5356/reads.fastq
-//       adapter file -  _common_data/regression/5356/adapter.fa
-//    4. Run the workflow
-//    Expected state: no errors in the log (empty sequences were skipped by CutAdapter)
-
-    GTLogTracer l;
-
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5356/cutadapt_and_trim.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ Files with Reads 1", testDir + "_common_data/regression/5356/reads.fastq");
-
-    GTUtilsWorkflowDesigner::click(os, "Cut Adapter");
-    GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", "Custom", GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
-
-    GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
-}
-
 GUI_TEST_CLASS_DEFINITION(test_5352) {
 //    1. Open WD
 //    2. Open any sample (e.g. Align with MUSCLE)
@@ -809,6 +783,122 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
     GTUtilsDashboard::click(os, element);
 
     CHECK_SET_ERR(!l.hasError(), "There is and error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5356) {
+//    1. Open WD
+//    2. Create workflow: "Read FASTQ" --> "Cut Adapter" --> "FastQC"
+//       (open _common_data/regression/5356/cutadapter_and_trim.uwl)
+//    3. Set input data:
+//       reads - _common_data/regression/5356/reads.fastq
+//       adapter file -  _common_data/regression/5356/adapter.fa
+//    4. Run the workflow
+//    Expected state: no errors in the log (empty sequences were skipped by CutAdapter)
+
+    GTLogTracer l;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5356/cutadapt_and_trim.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read FASTQ Files with Reads 1", testDir + "_common_data/regression/5356/reads.fastq");
+
+    GTUtilsWorkflowDesigner::click(os, "Cut Adapter");
+    GTUtilsWorkflowDesigner::setParameter(os, "FASTA file with adapters", QDir(testDir + "_common_data/regression/5356/adapter.fa").absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", "Custom", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Custom directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(!l.hasError(), "There is an error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5363_1) {
+//    1. {Tools --> BLAST --> BLAST make database}
+//    2. Set murine.gb as input file
+//    3. Check nucleotide radiobutton
+//    4. Create database
+//    Expected state: database was successfully created
+//    5. Open murine.gb
+//    6. {Analyze --> Query with local BLAST}
+//    7. Select the created database and accept the dialog
+//    Expected state: blast annotations were found and the annotations locations are equal to 'hit-from' and 'hit-to' qualifier values
+
+    FormatDBSupportRunDialogFiller::Parameters parametersDB;
+    parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
+    parametersDB.outputDirPath = sandBoxDir;
+    GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, parametersDB));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST make database...");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    BlastAllSupportDialogFiller::Parameters parametersSearch;
+    parametersSearch.runBlast = true;
+    parametersSearch.dbPath = sandBoxDir + "/murine.nin";
+
+    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(parametersSearch, os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QTreeWidgetItem* treeItem = GTUtilsAnnotationsTreeView::findItem(os, "blast result");
+    CHECK_SET_ERR(treeItem != NULL, "blast result annotations not found");
+    bool ok;
+    int hitFrom = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-to", treeItem).toInt(&ok);
+    CHECK_SET_ERR(ok, "Cannot get hit-to qualifier value");
+
+    int hitTo = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-from", treeItem).toInt(&ok);
+    CHECK_SET_ERR(ok, "Cannot get hit-from qualifier value");
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(hitFrom, hitTo - hitFrom)),
+                  QString("Cannot find blast result [%1, %2]").arg(hitFrom).arg(hitTo));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5363_2) {
+//    1. {Tools --> BLAST --> BLAST+ make database}
+//    2. Set murine.gb as input file
+//    3. Check nucleotide radiobutton
+//    4. Create database
+//    Expected state: database was successfully created
+//    5. Open murine.gb
+//    6. {Analyze --> Query with local BLAST+}
+//    7. Select the created database and accept the dialog
+//    Expected state: blast annotations were found and the annotations locations are equal to 'hit-from' and 'hit-to' qualifier values
+
+    FormatDBSupportRunDialogFiller::Parameters parametersDB;
+    parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
+    parametersDB.outputDirPath = sandBoxDir;
+    GTUtilsDialog::waitForDialog(os, new FormatDBSupportRunDialogFiller(os, parametersDB));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "BLAST" << "BLAST+ make database...");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    BlastAllSupportDialogFiller::Parameters parametersSearch;
+    parametersSearch.runBlast = true;
+    parametersSearch.dbPath = sandBoxDir + "/murine.nin";
+
+    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(parametersSearch, os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST+...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QTreeWidgetItem* treeItem = GTUtilsAnnotationsTreeView::findItem(os, "blast result");
+    CHECK_SET_ERR(treeItem != NULL, "blast result annotations not found");
+    bool ok;
+    int hitFrom = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-to", treeItem).toInt(&ok);
+    CHECK_SET_ERR(ok, "Cannot get hit-to qualifier value");
+
+    int hitTo = GTUtilsAnnotationsTreeView::getQualifierValue(os, "hit-from", treeItem).toInt(&ok);
+    CHECK_SET_ERR(ok, "Cannot get hit-from qualifier value");
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(hitFrom, hitTo - hitFrom)),
+                  QString("Cannot find blast result [%1, %2]").arg(hitFrom).arg(hitTo));
+
 }
 
 } // namespace GUITest_regression_scenarios
