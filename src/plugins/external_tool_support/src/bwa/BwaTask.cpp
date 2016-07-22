@@ -41,7 +41,7 @@ namespace U2 {
 // BwaBuildIndexTask
 
 BwaBuildIndexTask::BwaBuildIndexTask(const QString &referencePath, const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings):
-    Task("Build Bwa index", TaskFlags_NR_FOSCOE),
+    ExternalToolSupportTask("Build Bwa index", TaskFlags_NR_FOSCOE),
     referencePath(referencePath),
     indexPath(indexPath),
     settings(settings)
@@ -60,6 +60,7 @@ void BwaBuildIndexTask::prepare() {
     arguments.append(indexPath);
     arguments.append(referencePath);
     ExternalToolRunTask *task = new ExternalToolRunTask(ET_BWA, arguments, new LogParser());
+    setListenerForTask(task);
     addSubTask(task);
 }
 
@@ -87,7 +88,7 @@ void cleanupTempDir(const QStringList &tempDirFiles) {
 }
 
 BwaAlignTask::BwaAlignTask(const QString &indexPath, const QList<ShortReadSet>& shortReadSets, const QString &resultPath, const DnaAssemblyToRefTaskSettings &settings):
-    Task("Bwa reads assembly", TaskFlags_NR_FOSCOE),
+    ExternalToolSupportTask("Bwa reads assembly", TaskFlags_NR_FOSCOE),
     indexPath(indexPath),
     readSets(shortReadSets),
     resultPath(resultPath),
@@ -188,7 +189,8 @@ void BwaAlignTask::prepare() {
         arguments.append( getSAIPath(currentReadSet.url.getURLString()));
         arguments.append(indexPath);
         arguments.append(currentReadSet.url.getURLString());
-        Task* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
+        ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
+        setListenerForTask(alignTask);
         alignTasks.append(alignTask);
     }
     alignMultiTask = new MultiTask(tr("Align reads with BWA Multitask"), alignTasks);
@@ -230,6 +232,7 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
                 arguments.append(currentReadsSet.url.getURLString());
             }
             ExternalToolRunTask *task = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
+            setListenerForTask(task);
             samTasks.append(task);
         }
         samMultiTask = new MultiTask(tr("Saming reads with BWA Multitask"), samTasks);
@@ -300,7 +303,7 @@ void BwaAlignTask::LogParser::parseErrOutput(const QString &partOfLog) {
 // BwaMemAlignTask
 
 BwaMemAlignTask::BwaMemAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings):
-    Task("BWA MEM reads assembly", TaskFlags_NR_FOSCOE),
+    ExternalToolSupportTask("BWA MEM reads assembly", TaskFlags_NR_FOSCOE),
     indexPath(indexPath),
     resultPath(settings.resultFileName.getURLString()),
     settings(settings)
@@ -402,6 +405,7 @@ void BwaMemAlignTask::prepare() {
                     QString::number(pairedReadsCounter++) + "." + resultFileInfo.completeSuffix();
                 alignTask->setStandartOutputFile(resultFilePathWithpartNumber);
             }
+            setListenerForTask(alignTask);
             alignTasks.append(alignTask);
         } else if (settings.shortReadSets.size() > 1) {
             arguments.append(currentReadSet.url.getURLString());
@@ -409,11 +413,13 @@ void BwaMemAlignTask::prepare() {
             QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" + 
                 QString::number(resultPartsCounter) + "." + resultFileInfo.completeSuffix();
             alignTask->setStandartOutputFile(resultFilePathWithpartNumber);
+            setListenerForTask(alignTask);
             alignTasks.append(alignTask);
         } else {
             arguments.append(currentReadSet.url.getURLString());
             ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new BwaAlignTask::LogParser(), NULL);
             alignTask->setStandartOutputFile(settings.resultFileName.getURLString());
+            setListenerForTask(alignTask);
             alignTasks.append(alignTask);
         }
     }
@@ -459,7 +465,7 @@ QList<Task *> BwaMemAlignTask::onSubTaskFinished(Task *subTask) {
 // BwaSwAlignTask
 
 BwaSwAlignTask::BwaSwAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings):
-    Task("BWA SW reads assembly", TaskFlags_NR_FOSCOE),
+    ExternalToolSupportTask("BWA SW reads assembly", TaskFlags_NR_FOSCOE),
     indexPath(indexPath),
     settings(settings)
 {
@@ -604,6 +610,7 @@ void BwaTask::prepare() {
     }
     if(!settings.prebuiltIndex) {
         buildIndexTask = new BwaBuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName, settings);
+        buildIndexTask->addListeners(QList <ExternalToolListener*>() << getListener(0));
     }
     int upStreamCount = 0;
     int downStreamCount = 0;
@@ -621,6 +628,7 @@ void BwaTask::prepare() {
                 return;
             }
             alignTask = new BwaSwAlignTask(indexFileName, settings);
+            alignTask->addListeners(QList <ExternalToolListener*>() << getListener(1));
         } else  if (settings.getCustomValue(OPTION_MEM_ALIGNMENT, false) == true) {
             if (downStreamCount != upStreamCount && settings.pairedReads) {
                 setError(tr("Please, provide same number of files with downstream and upstream reads."));
@@ -628,8 +636,10 @@ void BwaTask::prepare() {
             }
             
             alignTask = new BwaMemAlignTask(indexFileName, settings);
+            alignTask->addListeners(QList <ExternalToolListener*>() << getListener(1));
         }else{
             alignTask = new BwaAlignTask(indexFileName, settings.shortReadSets, settings.resultFileName.getURLString(), settings);
+            alignTask->addListeners(QList <ExternalToolListener*>() << getListener(1));
         }
     }
 

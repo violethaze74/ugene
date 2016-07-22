@@ -33,7 +33,7 @@ namespace U2 {
 // BowtieBuildIndexTask
 
 BowtieBuildIndexTask::BowtieBuildIndexTask(const QString &referencePath, const QString &indexPath, bool colorspace):
-    Task("Build Bowtie index", TaskFlags_NR_FOSCOE),
+    ExternalToolSupportTask("Build Bowtie index", TaskFlags_NR_FOSCOE),
     referencePath(referencePath),
     indexPath(indexPath),
     colorspace(colorspace)
@@ -60,6 +60,7 @@ void BowtieBuildIndexTask::prepare() {
     }
 
     ExternalToolRunTask *task = new ExternalToolRunTask(ET_BOWTIE_BUILD, arguments, new LogParser());
+    setListenerForTask(task);
     addSubTask(task);
 }
 
@@ -127,7 +128,7 @@ int BowtieBuildIndexTask::LogParser::getProgress() {
 // BowtieAssembleTask
 
 BowtieAssembleTask::BowtieAssembleTask(const DnaAssemblyToRefTaskSettings &settings):
-    Task("Bowtie reads assembly", TaskFlags_NR_FOSCOE),
+    ExternalToolSupportTask("Bowtie reads assembly", TaskFlags_NR_FOSCOE),
     logParser(NULL),
     settings(settings)
 {
@@ -285,6 +286,7 @@ void BowtieAssembleTask::prepare() {
     arguments.append(settings.resultFileName.getURLString());
     logParser = new LogParser();
     ExternalToolRunTask *task = new ExternalToolRunTask(ET_BOWTIE, arguments, logParser, NULL);
+    setListenerForTask(task);
     addSubTask(task);
 }
 
@@ -378,9 +380,11 @@ void BowtieTask::prepare() {
         }
         buildIndexTask = new BowtieBuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName,
                                                   settings.getCustomValue(BowtieTask::OPTION_COLORSPACE, false).toBool());
+        buildIndexTask->addListeners(QList <ExternalToolListener*>() << getListener(0));
     }
     if(!justBuildIndex) {
         assembleTask = new BowtieAssembleTask(settings);
+        assembleTask->addListeners(QList <ExternalToolListener*>() << getListener(1));
     }
 
     if (unzipTask != NULL) {

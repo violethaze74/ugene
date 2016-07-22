@@ -27,7 +27,7 @@
 namespace U2 {
 
 DnaAssemblyToReferenceTask::DnaAssemblyToReferenceTask(const DnaAssemblyToRefTaskSettings &settings, TaskFlags flags, bool justBuildIndex)
-: Task(tr("Align short reads"), flags), settings(settings), justBuildIndex(justBuildIndex) {
+: ExternalToolSupportTask(tr("Align short reads"), flags), settings(settings), justBuildIndex(justBuildIndex) {
 }
 
 void DnaAssemblyToReferenceTask::setUpIndexBuilding(const QStringList &indexSuffixes) {
