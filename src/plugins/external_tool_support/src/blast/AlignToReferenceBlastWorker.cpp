@@ -46,7 +46,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString AlignToReferenceBlastWorkerFactory::ACTOR_ID("align-to-reference-blast");
+const QString AlignToReferenceBlastWorkerFactory::ACTOR_ID("align-to-reference");
 namespace {
     const QString OUT_PORT_ID = "out";
     const QString REF_ATTR_ID = "reference";
@@ -106,7 +106,7 @@ void AlignToReferenceBlastWorkerFactory::init() {
         delegates[IDENTITY_ID] = new SpinBoxDelegate(m);
     }
 
-    Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Align to Reference with BLAST"),
+    Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Align to Reference"),
         AlignToReferenceBlastWorker::tr("Align input sequences (e.g. Sanger reads) to the reference sequence."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));

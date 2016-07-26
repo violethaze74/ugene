@@ -33,7 +33,6 @@
 namespace U2 {
 namespace Workflow {
 
-//! TRIPLE -- move to some utils file
 namespace {
     qint64 calcMemUsageBytes(DbiDataStorage *storage, const SharedDbiDataHandler &seqId, U2OpStatus &os) {
         QScopedPointer<U2SequenceObject> object(StorageUtils::getSequenceObject(storage, seqId));
@@ -275,7 +274,7 @@ void ComposeResultSubTask::insertShiftedGapsIntoRead(MAlignment &alignment, int 
             ownGaps.removeOne(gap);
             continue;
         }
-        alignment.insertGaps(rowNum/*readNum + 1*/, globalOffset + gap.offset, gap.gap, stateInfo);
+        alignment.insertGaps(rowNum, globalOffset + gap.offset, gap.gap, stateInfo);
         CHECK_OP(stateInfo, );
         globalOffset += gap.gap;
     }
