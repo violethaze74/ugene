@@ -112,10 +112,6 @@ QString BwaWorker::getBaseSubdir() const {
     return BASE_BWA_SUBDIR;
 }
 
-DnaAssemblyToReferenceTask* BwaWorker::getTask(const DnaAssemblyToRefTaskSettings &settings) const {
-    return new BwaTask(settings);
-}
-
 void BwaWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) {
     settings.refSeqUrl = getValue<QString>(REFERENCE_GENOME);
     settings.prebuiltIndex = DnaAssemblyToReferenceTask::isIndexUrl(settings.refSeqUrl.getURLString(), BwaTask::indexSuffixes);

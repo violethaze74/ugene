@@ -2739,7 +2739,7 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/VectorNtiSequenceFormat.cpp" line="46"/>
         <source>Vector NTI sequence</source>
-        <translation>Последовательномть Vector NTI</translation>
+        <translation>Последовательность Vector NTI</translation>
     </message>
     <message>
         <location filename="../src/VectorNtiSequenceFormat.cpp" line="47"/>

@@ -268,7 +268,9 @@ DnaAssemblyTaskWithConversions::DnaAssemblyTaskWithConversions(const DnaAssembly
 {
 
 }
-
+const DnaAssemblyToRefTaskSettings& DnaAssemblyTaskWithConversions::getSettings() const {
+    return settings;
+}
 void DnaAssemblyTaskWithConversions::prepare() {
     DnaAssemblyAlgorithmEnv *env= AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(settings.algName);
     if (env == NULL) {

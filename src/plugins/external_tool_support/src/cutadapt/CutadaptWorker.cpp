@@ -288,6 +288,7 @@ QStringList CutAdaptFastqTask::getParameters(U2OpStatus &/*os*/) {
         res << "-f";
         res << "fastq";
     }
+    res << "-m" << "1";
 
     res << settings.inputUrl;
 
@@ -301,7 +302,7 @@ void CutAdaptParser::parseErrOutput( const QString& partOfLog ) {
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
     QString error = parseTextForErrors(lastPartOfLog);
-    if (error.isEmpty()) {
+    if (!error.isEmpty()) {
         setLastError(error);
     }
 }
