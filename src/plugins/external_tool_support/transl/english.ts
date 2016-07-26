@@ -7246,8 +7246,8 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="143"/>
-        <source>FASTA File with any end adapters</source>
-        <translation>FASTA File with any end adapters</translation>
+        <source>FASTA file with 5&apos; and 3&apos; adapters</source>
+        <translation>FASTA file with 5&apos; and 3&apos; adapters</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="144"/>

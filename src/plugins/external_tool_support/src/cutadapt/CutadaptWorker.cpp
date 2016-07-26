@@ -140,7 +140,7 @@ void CutAdaptFastqWorkerFactory::init() {
                                                             "the adapter itself is trimmed."));
 
 
-        Descriptor anywhere(ANYWHERE_URL, CutAdaptFastqWorker::tr("FASTA File with any end adapters"),
+        Descriptor anywhere(ANYWHERE_URL, CutAdaptFastqWorker::tr("FASTA file with 5' and 3' adapters"),
             CutAdaptFastqWorker::tr("A FASTA file with one or multiple sequences of adapters that were ligated to the 5' end or 3' end."));
 
 
