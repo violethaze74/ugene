@@ -106,7 +106,7 @@ void BlastAndSwReadTask::prepare() {
     settings.xDropoffGA = 20;
     settings.xDropoffUnGA = 10;
     settings.xDropoffFGA = 100;
-    settings.numberOfProcessors = 8;
+    settings.numberOfProcessors = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
     settings.numberOfHits = 100;
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), );
@@ -239,7 +239,6 @@ U2Region BlastAndSwReadTask::getReferenceRegion(const QList<SharedAnnotationData
     int readIdentity = 100 * maxIdentity / readLen;
     CHECK(readIdentity >= minIdentityPercent, U2Region());
 
-    // set the extention
     qint64 undefinedLen = readLen - maxIdentity;
     readShift = undefinedLen - blastReadRegion.startPos;
 
