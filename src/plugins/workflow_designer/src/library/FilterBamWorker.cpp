@@ -256,7 +256,8 @@ Task * FilterBamWorker::tick() {
             setting.skipFilter = getHexValueByFilterString(getValue<QString>(FLAG_ID), getFilterCodes());
             setting.regionFilter = getValue<QString>(REGION_ID);
 
-            Task *t = new SamtoolsViewFilterTask(setting);
+            ExternalToolSupportTask *t = new SamtoolsViewFilterTask(setting);
+            t->addListeners(createLogListeners());
             connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
             return t;
         }

@@ -230,7 +230,8 @@ Task * BedGraphToBigWigWorker::tick() {
         setting.uncompressed = getValue<bool>(UNCOMPRESSED);
         setting.genomePath = getValue<QString>(GENOME);
 
-        Task *t = new BedGraphToBigWigTask (setting);
+        ExternalToolSupportTask *t = new BedGraphToBigWigTask (setting);
+        t->addListeners(createLogListeners());
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
         return t;
     }

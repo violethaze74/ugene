@@ -58,7 +58,7 @@ void BedGraphToBigWigParser::parseErrOutput( const QString& partOfLog ){
 //////////////////////////////////////////////////////////////////////////
 //BedGraphToBigWigTask
 BedGraphToBigWigTask::BedGraphToBigWigTask(const BedGraphToBigWigSetting &settings)
-:Task(QString("bedGrapthToBigWig for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC)
+:ExternalToolSupportTask(QString("bedGrapthToBigWig for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC)
 ,settings(settings)
 {
 
@@ -85,6 +85,7 @@ void BedGraphToBigWigTask::prepare(){
     CHECK_OP(stateInfo, );
 
     ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_BIGWIG, args, new BedGraphToBigWigParser(), settings.outDir);
+    setListenerForTask(etTask);
     addSubTask(etTask);
 }
 

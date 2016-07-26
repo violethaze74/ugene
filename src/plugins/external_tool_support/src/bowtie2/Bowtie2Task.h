@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class Bowtie2BuildIndexTask : public Task {
+class Bowtie2BuildIndexTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     Bowtie2BuildIndexTask(const QString &referencePath, const QString &indexPath);
@@ -39,7 +39,7 @@ private:
     QString indexPath;
 };
 
-class Bowtie2AlignTask : public Task {
+class Bowtie2AlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     Bowtie2AlignTask(const DnaAssemblyToRefTaskSettings &settings);
