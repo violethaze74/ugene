@@ -31,10 +31,19 @@ namespace U2 {
 class JavaSupport : public ExternalTool {
     Q_OBJECT
 public:
+    enum Architecture {
+        x32,
+        x64
+    };
     JavaSupport(const QString &name, const QString &path = "");
+    void getAdditionalParameters(const QString& output);
+    Architecture getArchitecture() const;
 
 private slots:
     void sl_toolValidationStatusChanged(bool isValid);
+
+private:
+    Architecture architecture;
 };
 
 } // U2

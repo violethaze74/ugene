@@ -68,7 +68,7 @@ workflow "Quality control by FastQC"{
                         title:"Input parameters";
                         label-size:120;
                         get-file-list.url-in {
-                            label:"FASTQ URL(s)";
+                            label:"Input file(s)";
                         }
                     }
                     group {

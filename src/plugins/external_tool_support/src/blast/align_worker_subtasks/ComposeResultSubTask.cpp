@@ -73,10 +73,7 @@ void ComposeResultSubTask::prepare() {
 }
 
 void ComposeResultSubTask::run() {
-    MAlignment alignment = createAlignment();
-    CHECK_OP(stateInfo, );
-
-    createAnnotations(alignment);
+    createAlignmentAndAnnotations();
     CHECK_OP(stateInfo, );
 }
 
@@ -88,78 +85,75 @@ const SharedDbiDataHandler& ComposeResultSubTask::getAnnotations() const {
     return annotations;
 }
 
-MAlignment ComposeResultSubTask::createAlignment() {
+void ComposeResultSubTask::createAlignmentAndAnnotations() {
     MAlignment result("Aligned reads");
 
     DNASequence referenceSeq = getReferenceSequence();
-    CHECK_OP(stateInfo, result);
+    CHECK_OP(stateInfo, );
     result.setAlphabet(referenceSeq.alphabet);
 
     // add the reference row
     result.addRow(referenceSeq.getName(), referenceSeq.seq, 0, stateInfo);
-    CHECK_OP(stateInfo, result);
+    CHECK_OP(stateInfo, );
 
     QList<U2MsaGap> referenceGaps = getReferenceGaps();
-    CHECK_OP(stateInfo, result);
+    CHECK_OP(stateInfo, );
 
     insertShiftedGapsIntoReference(result, referenceGaps);
-    CHECK_OP(stateInfo, result);
+    CHECK_OP(stateInfo, );
 
+    // initialize annotations table on reference
+    QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceSeq.getName() + " features", storage->getDbiRef()));
+    QList<SharedAnnotationData> anns;
+
+    int rowsCounter = 1;
     for (int i = 0; i < reads.size(); i++) {
+        BlastAndSwReadTask *subTask = getBlastSwTask(i);
+        CHECK_OP(stateInfo, );
+        if (!subTask->isReadAligned()) {
+            continue;
+        }
+
         // add the read row
         DNASequence readSeq = getReadSequence(i);
-        CHECK_OP(stateInfo, result);
+        CHECK_OP(stateInfo, );
 
-        BlastAndSwReadTask *subTask = getBlastSwTask(i);
-        result.addRow(subTask->getReadName(), readSeq.seq, i + 1, stateInfo);
-        CHECK_OP(stateInfo, result);
+        result.addRow(subTask->getReadName(), readSeq.seq, rowsCounter, stateInfo);
+        CHECK_OP(stateInfo, );
 
-        CHECK_OP(stateInfo, result);
         foreach (const U2MsaGap &gap, subTask->getReadGaps()) {
-            result.insertGaps(i + 1, gap.offset, gap.gap, stateInfo);
-            CHECK_OP(stateInfo, result);
+            result.insertGaps(rowsCounter, gap.offset, gap.gap, stateInfo);
+            CHECK_OP(stateInfo, );
         }
 
         // add reference gaps to the read
-        insertShiftedGapsIntoRead(result, i, referenceGaps);
-        CHECK_OP(stateInfo, result);
-    }
-
-    result.trim(false);
-
-    QScopedPointer<MAlignmentObject> msaObject(MAlignmentImporter::createAlignment(storage->getDbiRef(), result, stateInfo));
-    CHECK_OP(stateInfo, result);
-    msa = storage->getDataHandler(msaObject->getEntityRef());
-
-    // remove gap columns
-    msaObject->deleteColumnWithGaps(GAP_COLUMN_ONLY, stateInfo);
-
-    return msaObject->getMAlignment();
-}
-
-void ComposeResultSubTask::createAnnotations(const MAlignment &alignment) {
-    const MAlignmentRow &referenceRow = alignment.getRow(0);
-    QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceRow.getName() + " features", storage->getDbiRef()));
-
-    QList<SharedAnnotationData> anns;
-    for (int i=1; i<alignment.getNumRows(); i++) {
-        const MAlignmentRow &readRow = alignment.getRow(i);
-        U2Region region = getReadRegion(readRow, referenceRow);
-        BlastAndSwReadTask *task = getBlastSwTask(i - 1);
+        insertShiftedGapsIntoRead(result, i, rowsCounter, referenceGaps);
         CHECK_OP(stateInfo, );
 
+        // add read annotation to the reference
+        const MAlignmentRow &readRow = result.getRow(rowsCounter);
+        U2Region region = getReadRegion(readRow, referenceGaps);
         SharedAnnotationData ann(new AnnotationData);
-        ann->location = getLocation(region, task->isComplement());
+        ann->location = getLocation(region, subTask->isComplement());
         ann->name = GBFeatureUtils::getKeyInfo(GBFeatureKey_misc_feature).text;
-        ann->qualifiers << U2Qualifier("label", task->getReadName());
+        ann->qualifiers << U2Qualifier("label", subTask->getReadName());
         anns.append(ann);
-    }
-    annsObject->addAnnotations(anns);
 
+        ++rowsCounter;
+    }
+    result.trim(false); // just recalculates alignment len
+
+    QScopedPointer<MAlignmentObject> msaObject(MAlignmentImporter::createAlignment(storage->getDbiRef(), result, stateInfo));
+    CHECK_OP(stateInfo, );
+    // remove gap columns
+    msaObject->deleteColumnWithGaps(GAP_COLUMN_ONLY, stateInfo);
+    msa = storage->getDataHandler(msaObject->getEntityRef());
+
+    annsObject->addAnnotations(anns);
     annotations = storage->getDataHandler(annsObject->getEntityRef());
 }
 
-U2Region ComposeResultSubTask::getReadRegion(const MAlignmentRow &readRow, const MAlignmentRow &referenceRow) const {
+U2Region ComposeResultSubTask::getReadRegion(const MAlignmentRow &readRow, const QList<U2MsaGap> &referenceGapModel) const {
     U2Region region(0, readRow.getRowLengthWithoutTrailing());
 
     // calculate read start
@@ -173,7 +167,7 @@ U2Region ComposeResultSubTask::getReadRegion(const MAlignmentRow &readRow, const
 
     qint64 leftGap = 0;
     qint64 innerGap = 0;
-    foreach (const U2MsaGap &gap, referenceRow.getGapModel()) {
+    foreach (const U2MsaGap &gap, referenceGapModel) {
         qint64 endPos = gap.offset + gap.gap;
         if (gap.offset < region.startPos) {
             leftGap += gap.gap;
@@ -263,14 +257,14 @@ QList<U2MsaGap> ComposeResultSubTask::getShiftedGaps(int rowNum) {
 }
 
 void ComposeResultSubTask::insertShiftedGapsIntoReference(MAlignment &alignment, const QList<U2MsaGap> &gaps) {
-    for (int i=gaps.size() - 1; i>=0; i--) {
+    for (int i = gaps.size() - 1; i >= 0; i--) {
         U2MsaGap gap = gaps[i];
         alignment.insertGaps(0, gap.offset, gap.gap, stateInfo);
         CHECK_OP(stateInfo, );
     }
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoRead(MAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps) {
+void ComposeResultSubTask::insertShiftedGapsIntoRead(MAlignment &alignment, int readNum, int rowNum, const QList<U2MsaGap> &gaps) {
     QList<U2MsaGap> ownGaps = getShiftedGaps(readNum);
     CHECK_OP(stateInfo, );
 
@@ -281,7 +275,7 @@ void ComposeResultSubTask::insertShiftedGapsIntoRead(MAlignment &alignment, int 
             ownGaps.removeOne(gap);
             continue;
         }
-        alignment.insertGaps(readNum + 1, globalOffset + gap.offset, gap.gap, stateInfo);
+        alignment.insertGaps(rowNum/*readNum + 1*/, globalOffset + gap.offset, gap.gap, stateInfo);
         CHECK_OP(stateInfo, );
         globalOffset += gap.gap;
     }

@@ -1254,6 +1254,7 @@ if(QSysInfo::WordSize == 64){
     REGISTER_TEST(GUITest_regression_scenarios::test_5029);
     REGISTER_TEST(GUITest_regression_scenarios::test_5039);
     REGISTER_TEST(GUITest_regression_scenarios::test_5052);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5069);
     REGISTER_TEST(GUITest_regression_scenarios::test_5082);
     REGISTER_TEST(GUITest_regression_scenarios::test_5090);
 
@@ -1273,6 +1274,12 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5268);
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
     REGISTER_TEST(GUITest_regression_scenarios::test_5295);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5352);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5356);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5363_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5363_2);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
 
 //////////////////////////////////////////////////////////////////////////
 // Common scenarios/project/

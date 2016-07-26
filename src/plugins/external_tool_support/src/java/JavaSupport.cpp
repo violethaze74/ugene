@@ -27,7 +27,7 @@
 namespace U2 {
 
 JavaSupport::JavaSupport(const QString &name, const QString &path)
-: ExternalTool(name, path)
+: ExternalTool(name, path), architecture(x32)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -52,6 +52,16 @@ JavaSupport::JavaSupport(const QString &name, const QString &path)
     muted = true;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
+}
+
+void JavaSupport::getAdditionalParameters(const QString& output) {
+    if (output.contains("64-Bit")) {
+        architecture = x64;
+    }
+}
+
+U2::JavaSupport::Architecture JavaSupport::getArchitecture() const {
+    return architecture;
 }
 
 void JavaSupport::sl_toolValidationStatusChanged(bool isValid) {

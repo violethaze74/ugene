@@ -36,6 +36,7 @@
 #include "AlignToReferenceBlastWorker.h"
 
 #include "blast/BlastAllSupport.h"
+#include "blast/FormatDBSupport.h"
 
 #include "align_worker_subtasks/BlastReadsSubTask.h"
 #include "align_worker_subtasks/FormatDBSubTask.h"
@@ -49,6 +50,7 @@ const QString AlignToReferenceBlastWorkerFactory::ACTOR_ID("align-to-reference-b
 namespace {
     const QString OUT_PORT_ID = "out";
     const QString REF_ATTR_ID = "reference";
+    const QString IDENTITY_ID = "identity";
 
     const QString ALGORITHM = "algorithm";
 }
@@ -85,22 +87,32 @@ void AlignToReferenceBlastWorkerFactory::init() {
     }
     QList<Attribute*> attributes;
     {
-        Descriptor refDesc(REF_ATTR_ID, AlignToReferenceBlastPrompter::tr("Reference URL"), AlignToReferenceBlastPrompter::tr("A URL to the file with a reference sequence."));
+        Descriptor refDesc(REF_ATTR_ID, AlignToReferenceBlastPrompter::tr("Reference URL"),
+                           AlignToReferenceBlastPrompter::tr("A URL to the file with a reference sequence."));
         attributes << new Attribute(refDesc, BaseTypes::STRING_TYPE(), true);
+
+        Descriptor identityDesc(IDENTITY_ID, AlignToReferenceBlastPrompter::tr("Minimum read identity"),
+                                AlignToReferenceBlastPrompter::tr("Reads, whose identity with the reference is less than the stated value, will be ignored."));
+        attributes << new Attribute(identityDesc, BaseTypes::NUM_TYPE(), false, 80);
     }
 
     QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[REF_ATTR_ID] = new URLDelegate("", "", false, false, false);
+        QVariantMap m;
+        m["minimum"] = 0;
+        m["maximum"] = 100;
+        m["suffix"] = "%";
+        delegates[IDENTITY_ID] = new SpinBoxDelegate(m);
     }
 
-    // temp double worker
     Descriptor desc(ACTOR_ID, AlignToReferenceBlastWorker::tr("Align to Reference with BLAST"),
         AlignToReferenceBlastWorker::tr("Align input sequences (e.g. Sanger reads) to the reference sequence."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new AlignToReferenceBlastPrompter(NULL));
     proto->addExternalTool(ET_BLASTALL);
+    proto->addExternalTool(ET_FORMATDB);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -175,7 +187,8 @@ Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) c
             reads << data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
         }
     }
-    return new AlignToReferenceBlastTask(getValue<QString>(REF_ATTR_ID), reference, reads, context->getDataStorage());
+    int readIdentity = getValue<int>(IDENTITY_ID);
+    return new AlignToReferenceBlastTask(getValue<QString>(REF_ATTR_ID), reference, reads, readIdentity, context->getDataStorage());
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
@@ -199,11 +212,13 @@ MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString &dat
 AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl,
                                                      const SharedDbiDataHandler &reference,
                                                      const QList<SharedDbiDataHandler> &reads,
+                                                     int minIdentityPercent,
                                                      DbiDataStorage *storage)
     : Task(tr("Align to reference"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(refUrl),
       reference(reference),
       reads(reads),
+      minIdentityPercent(minIdentityPercent),
       formatDbSubTask(NULL),
       blastTask(NULL),
       composeSubTask(NULL),
@@ -223,7 +238,7 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == formatDbSubTask) {
         QString dbPath = formatDbSubTask->getResultPath();
-        blastTask = new BlastReadsSubTask(dbPath, reads, reference, storage);
+        blastTask = new BlastReadsSubTask(dbPath, reads, reference, minIdentityPercent, storage);
         result << blastTask;
     } else if (subTask == blastTask) {
         composeSubTask = new ComposeResultSubTask(reference, reads, blastTask->getBlastSubtasks(), storage);

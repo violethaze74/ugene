@@ -50,10 +50,9 @@ private:
     QList<U2MsaGap> getReferenceGaps();
     QList<U2MsaGap> getShiftedGaps(int rowNum);
     void insertShiftedGapsIntoReference(MAlignment &alignment, const QList<U2MsaGap> &gaps);
-    void insertShiftedGapsIntoRead(MAlignment &alignment, int readNum, const QList<U2MsaGap> &gaps);
-    MAlignment createAlignment();
-    void createAnnotations(const MAlignment &alignment);
-    U2Region getReadRegion(const MAlignmentRow &readRow, const MAlignmentRow &referenceRow) const;
+    void insertShiftedGapsIntoRead(MAlignment &alignment, int readNum, int rowNum, const QList<U2MsaGap> &gaps);
+    void createAlignmentAndAnnotations();
+    U2Region getReadRegion(const MAlignmentRow &readRow, const QList<U2MsaGap> &referenceGapModel) const;
     U2Location getLocation(const U2Region &region, bool isComplement);
 
 private:

@@ -93,14 +93,22 @@ class FormatDBSupportTask : public Task {
 public:
     FormatDBSupportTask(const QString& name, const FormatDBSupportTaskSettings& settings);
     void prepare();
+    QList<Task*> onSubTaskFinished(Task *subTask);
     Task::ReportResult report();
     QString generateReport() const;
 private:
+    void                        prepareInputFastaFiles();
     QString                     prepareLink(const QString &path) const;
+    void                        createFormatDbTask();
+
     QString                     externalToolLog;
     ExternalToolRunTask*        formatDBTask;
     QString                     toolName;
     FormatDBSupportTaskSettings settings;
+    int                         convertSubTaskCounter;
+
+    QStringList                 inputFastaFiles;
+    QStringList                 fastaTmpFiles;
 };
 
 }//namespace

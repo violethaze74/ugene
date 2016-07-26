@@ -59,7 +59,7 @@ ExternalToolJustValidateTask::~ExternalToolJustValidateTask() {
 void ExternalToolJustValidateTask::run() {
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry, "An external tool registry is NULL", );
-    ExternalTool* tool = etRegistry->getByName(toolName);
+    tool = etRegistry->getByName(toolName);
     SAFE_POINT(tool, QString("External tool '%1' isn't found in the registry").arg(toolName), );
 
     QFileInfo info(toolPath);
@@ -209,6 +209,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
         if (errLog.contains(QRegExp(validation.expectedMsg))) {
             isValid = true;
             checkVersion(errLog);
+            tool->getAdditionalParameters(errLog);
         } else {
             isValid = false;
             foreach (const QString& errStr, validation.possibleErrorsDescr.keys()) {
@@ -225,6 +226,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
         if (log.contains(QRegExp(validation.expectedMsg))) {
             isValid = true;
             checkVersion(log);
+            tool->getAdditionalParameters(log);
         } else {
             isValid = false;
             foreach (const QString& errStr, validation.possibleErrorsDescr.keys()) {

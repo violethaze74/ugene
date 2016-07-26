@@ -113,7 +113,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& regi
 {
     U2SequenceObject seq("sequence", seqRef);
 
-    assert(seq.getAlphabet()->isNucleic());
+    SAFE_POINT(seq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
     seqlen = seq.getSequenceLength();
     //for every enzymes in selection create FindSingleEnzymeTask
     foreach(const SEnzymeData& e, enzymes) {
@@ -239,7 +239,7 @@ FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& _seqRef, const U2R
 {
     U2SequenceObject dnaSeq("sequence", dnaSeqRef);
 
-    assert(dnaSeq.getAlphabet()->isNucleic());
+    SAFE_POINT(dnaSeq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
     if (resultListener == NULL) {
         resultListener = this;
     }
@@ -333,9 +333,8 @@ FindEnzymesAutoAnnotationUpdater::FindEnzymesAutoAnnotationUpdater()
 
 }
 
-Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask( const AutoAnnotationObject* aa )
-{
-    const QList<SEnzymeData> enzymeList =  EnzymesIO::getDefaultEnzymesList();
+Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const AutoAnnotationObject* aa) {
+    const QList<SEnzymeData> enzymeList = EnzymesIO::getDefaultEnzymesList();
     QString selStr = AppContext::getSettings()->getValue(EnzymeSettings::LAST_SELECTION).toString();
     if (selStr.isEmpty()) {
         selStr = EnzymeSettings::COMMON_ENZYMES;
@@ -343,8 +342,8 @@ Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask( const A
 
     QStringList lastSelection = selStr.split(ENZYME_LIST_SEPARATOR);
     QList<SEnzymeData> selectedEnzymes;
-    foreach (const QString id, lastSelection) {
-        foreach (const SEnzymeData& enzyme, enzymeList) {
+    foreach(const QString id, lastSelection) {
+        foreach(const SEnzymeData& enzyme, enzymeList) {
             if (id == enzyme->id) {
                 selectedEnzymes.append(enzyme);
             }
@@ -358,10 +357,18 @@ Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask( const A
     cfg.minHitCount = AppContext::getSettings()->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
     cfg.maxHitCount = AppContext::getSettings()->getValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX).toInt();
     cfg.maxResults = AppContext::getSettings()->getValue(EnzymeSettings::MAX_RESULTS, 500000).toInt();
-    cfg.searchRegion = AppContext::getSettings()->getValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(U2Region())).value<U2Region>();
+
+    U2Region savedSearchRegion = AppContext::getSettings()->getValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(U2Region())).value<U2Region>();
+
+    U2SequenceObject* dnaObj = aa->getSeqObject();
+    const U2Region wholeSequenceRegion = U2Region(0, dnaObj->getSequenceLength());
+    cfg.searchRegion = savedSearchRegion.intersect(wholeSequenceRegion);
+    if (cfg.searchRegion.isEmpty()) {
+        cfg.searchRegion = wholeSequenceRegion;
+    }
 
     QVector<U2Region> excludedRegions =
-        AppContext::getSettings()->getValue(EnzymeSettings::EXCLUDED_REGION, QVariant::fromValue(QVector<U2Region>()) ).value< QVector<U2Region> >();
+        AppContext::getSettings()->getValue(EnzymeSettings::EXCLUDED_REGION, QVariant::fromValue(QVector<U2Region>())).value< QVector<U2Region> >();
 
     if (!excludedRegions.isEmpty()) {
         cfg.excludedRegions = excludedRegions;
@@ -369,7 +376,7 @@ Task* FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask( const A
 
     AnnotationTableObject *aObj = aa->getAnnotationObject();
     const U2EntityRef& dnaRef = aa->getSeqObject()->getEntityRef();
-    Task* task = new FindEnzymesToAnnotationsTask(aObj, dnaRef, selectedEnzymes, cfg );
+    Task* task = new FindEnzymesToAnnotationsTask(aObj, dnaRef, selectedEnzymes, cfg);
 
     return task;
 }
