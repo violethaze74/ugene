@@ -241,9 +241,10 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
         }
         //converting SAM -> BAM
         QStringList bamUrlstoMerge;
+        int i = 0;
         foreach(const QString &url, urlsToMerge) {
             QFileInfo urlToConvertFileInfo(url);
-            QString convertedBamUrl = urlToConvertFileInfo.dir().canonicalPath() + "/" + urlToConvertFileInfo.baseName() + ".bam";
+            QString convertedBamUrl = tmpDirPath + "/" + resultPathFileInfo.baseName() + "_" + QString::number(i) + ".bam";
             BAMUtils::ConvertOption options(true);
             BAMUtils::convertToSamOrBam(url, convertedBamUrl, options, stateInfo);
             bamUrlstoMerge.append(convertedBamUrl);
@@ -251,6 +252,7 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
                 cleanupTempDir(urlsToMerge);
                 return result;
             }
+            i++;
         }
         mergeTask = new MergeBamTask(bamUrlstoMerge, resultPathFileInfo.dir().canonicalPath(), resultPathFileInfo.baseName() + ".bam", true);
         result.append(mergeTask);
@@ -434,7 +436,7 @@ QList<Task *> BwaMemAlignTask::onSubTaskFinished(Task *subTask) {
         for (int i = 0; i < partsCounter; i++) {
             QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" +
                 QString::number(i) + "." + resultFileInfo.completeSuffix();
-            QString bamFilePath = tmpDirPath + "/" + resultFileInfo.baseName() + ".bam";
+            QString bamFilePath = tmpDirPath + "/" + resultFileInfo.baseName() + "_" + QString::number(i) + ".bam";
             BAMUtils::ConvertOption options(true);
             BAMUtils::convertToSamOrBam(resultFilePathWithpartNumber, bamFilePath, options, stateInfo);
             bamUrlstoMerge.append(bamFilePath);
