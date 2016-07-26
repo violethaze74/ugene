@@ -386,7 +386,8 @@ GUI_TEST_CLASS_DEFINITION(test_5052) {
 
 GUI_TEST_CLASS_DEFINITION(test_5069) {
 //    1. Load workflow "_common_data/regression/5069/crash.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/5069/crash.uwl");
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5069/crash.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Set "data/samples/Genbank/murine.gb" as input.
