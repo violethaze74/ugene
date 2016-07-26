@@ -46,11 +46,13 @@ private slots:
 };
 
 class U2VIEW_EXPORT DnaAssemblyTaskWithConversions : public Task {
+    Q_OBJECT
 public:
     DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings &settings, bool viewResult = false, bool justBuildIndex = false);
 
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
+    const DnaAssemblyToRefTaskSettings& getSettings() const;
 
 private:
     DnaAssemblyToRefTaskSettings settings;
