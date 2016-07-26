@@ -46,6 +46,7 @@ public:
     BlastReadsSubTask(const QString& dbPath,
                       const QList<SharedDbiDataHandler> &reads,
                       const SharedDbiDataHandler &reference,
+                      const int minIdentityPercent,
                       DbiDataStorage *storage);
 
     void prepare();
@@ -56,6 +57,7 @@ private:
     const QString dbPath;
     const QList<SharedDbiDataHandler> reads;
     const SharedDbiDataHandler reference;
+    const int minIdentityPercent;
 
     DbiDataStorage *storage;
 
@@ -71,6 +73,7 @@ public:
     BlastAndSwReadTask(const QString& dbPath,
                        const SharedDbiDataHandler& read,
                        const SharedDbiDataHandler &reference,
+                       const int minIdentityPercent,
                        DbiDataStorage *storage);
 
     void prepare();
@@ -82,9 +85,10 @@ public:
     const QList<U2MsaGap>&      getReferenceGaps() const;
     const QList<U2MsaGap>&      getReadGaps() const;
 
+    bool        isReadAligned() const;
     QString     getReadName() const;
     MAlignment  getMAlignment();
-    qint64      getOffset();
+    qint64      getOffset() const;
 
 private:
     U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
@@ -97,11 +101,12 @@ private:
     const QString dbPath;
     const SharedDbiDataHandler read;
     const SharedDbiDataHandler reference;
+    const int minIdentityPercent;
     qint64 referenceLength;
 
     SharedDbiDataHandler msa;
     qint64 offset;
-    qint64 readExtension;
+    qint64 readShift;
 
     DbiDataStorage *storage;
 
@@ -112,6 +117,7 @@ private:
     QList<U2MsaGap> readGaps;
     QString initialReadName;
     bool complement;
+    bool skipped;
 };
 
 } // namespace Workflow

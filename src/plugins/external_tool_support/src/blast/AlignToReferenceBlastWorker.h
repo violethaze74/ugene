@@ -45,6 +45,7 @@ public:
     AlignToReferenceBlastTask(const QString& refUrl,
                               const SharedDbiDataHandler &reference,
                               const QList<SharedDbiDataHandler> &reads,
+                              int minIdentityPercent,
                               DbiDataStorage *storage);
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
@@ -55,6 +56,7 @@ private:
     const QString referenceUrl;
     const SharedDbiDataHandler reference;
     const QList<SharedDbiDataHandler> reads;
+    const int minIdentityPercent;
 
     FormatDBSubTask* formatDbSubTask;
     BlastReadsSubTask* blastTask;
