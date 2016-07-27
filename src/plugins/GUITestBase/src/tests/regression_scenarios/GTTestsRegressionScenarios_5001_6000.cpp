@@ -91,7 +91,9 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
@@ -917,7 +919,30 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "blast result", U2Region(hitFrom, hitTo - hitFrom)),
                   QString("Cannot find blast result [%1, %2]").arg(hitFrom).arg(hitTo));
+}
 
+GUI_TEST_CLASS_DEFINITION(test_5367) {
+//    1. Open "_common_data/bam/accepted_hits_with_gaps.bam"
+//    2. Export coverage in 'Per base' format
+//    Expected state: gaps are not considered "to cover, the result file is qual to "_common_data/bam/accepted_hits_with_gaps_coverage.txt"
+
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_5367.ugenedb"));
+    GTFileDialog::openFile(os, testDir + "_common_data/bam/accepted_hits_with_gaps.bam");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QList<ExportCoverageDialogFiller::Action> actions;
+    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SetFormat, "Per base");
+    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir(sandBoxDir).absolutePath() + "/test_5367_coverage.txt");
+    actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, QVariant());
+
+    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions) );
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export coverage..."));
+    GTUtilsAssemblyBrowser::callContextMenu(os);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "/test_5367_coverage.txt", testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"), "Exported coverage is wrong!");
 }
 
 } // namespace GUITest_regression_scenarios
