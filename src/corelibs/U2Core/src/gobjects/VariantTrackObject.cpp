@@ -22,6 +22,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
+#include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -75,7 +76,6 @@ GObject* VariantTrackObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, co
     CHECK_OP(os, NULL);
     DbiConnection dstCon(dstDbiRef, true, os);
     CHECK_OP(os, NULL);
-    Q_UNUSED(srcCon);
 
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
@@ -94,6 +94,8 @@ GObject* VariantTrackObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, co
     CHECK_OP(os, NULL);
     dstVDbi->addVariantsToTrack(clonedTrack, varsIter.data(), os);
     CHECK_OP(os, NULL);
+
+    U2AttributeUtils::copyObjectAttributes(entityRef.entityId, clonedTrack.id, srcCon.dbi->getAttributeDbi(), dstCon.dbi->getAttributeDbi(), os);
 
     U2EntityRef clonedTrackRef(dstDbiRef, clonedTrack.id);
     VariantTrackObject *clonedObj = new VariantTrackObject(getGObjectName(), clonedTrackRef, gHints.getMap());
