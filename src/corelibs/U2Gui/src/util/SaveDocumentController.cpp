@@ -190,8 +190,9 @@ void SaveDocumentController::sl_formatChanged(const QString &newFormat) {
         DocumentFormatRegistry* fr = AppContext::getDocumentFormatRegistry();
         SAFE_POINT(fr != NULL, L10N::nullPointerError("DocumentFormatRegistry"), );
         DocumentFormat* format = fr->getFormatById(formatsInfo.getIdByName(newFormat));
-        SAFE_POINT(format != NULL, L10N::nullPointerError("DocumentFormat"), );
-        conf.compressCheckbox->setDisabled(format->checkFlags(DocumentFormatFlag_CannotBeCompressed));
+        if (format != NULL) { // custom format names without DocumentFormat class can be added into the formats combobox (e.g. ExportCoverageDialog)
+            conf.compressCheckbox->setDisabled(format->checkFlags(DocumentFormatFlag_CannotBeCompressed));
+        }
     }
 
     if (!conf.fileNameEdit->text().isEmpty()) {
