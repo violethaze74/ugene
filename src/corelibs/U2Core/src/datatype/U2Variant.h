@@ -65,7 +65,7 @@ public:
 };
 
 /** Database representation of genomic variations such as snps, indels, etc.  */
-class U2Variant : public U2Entity {
+class U2CORE_EXPORT U2Variant : public U2Entity {
 public:
     U2Variant();
 
