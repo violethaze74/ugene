@@ -4728,7 +4728,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="712"/>
         <source>The value is longer than the search region. Please input a shorter value or select another region!</source>
-        <translation>Значение длинее чем регион поиска. Ввведите более короткое значение или выберите другой регион!</translation>
+        <translation>Значение длиннее чем регион поиска. Ввведите более короткое значение или выберите другой регион!</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="719"/>
@@ -4769,13 +4769,13 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="741"/>
         <source>Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.</source>
-        <translation>Инфрмация: добавьте как минимум одну подстроку для поиска. Используйте %1, чтобы ввести несколько подстрок. Также вы можете загрузить подстроки из FASTA файла.
+        <translation>Информация: добавьте как минимум одну подстроку для поиска. Используйте %1, чтобы ввести несколько подстрок. Также вы можете загрузить подстроки из FASTA файла.
         </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="753"/>
-        <source> Please input valid annotation names </source>
-        <translation>Введите корректные имена аннотаций </translation>
+        <source> Please input valid annotation names. </source>
+        <translation>Введите корректные имена аннотаций. </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="759"/>
@@ -4785,7 +4785,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="764"/>
         <source> It will be automatically changed to acceptable name if &apos;Get annotations&apos; button is pressed. </source>
-        <translation> Они будут автоматически изменены на доступные имена после того как кнопка &apos;Получить аннотации&apos; будет нажата. </translation>
+        <translation> Они будут автоматически изменены на доступные имена после того как кнопка &apos;Создать аннотации&apos; будет нажата. </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="770"/>
