@@ -19,7 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QFile>
+#include <cmath>
+
+#include <QBitArray>
+#include <QFile>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -43,7 +46,7 @@ static U2DataId emptyId;
 const QString U2DbiUtils::PUBLIC_DATABASE_NAME = QObject::tr("UGENE public database");
 const QString U2DbiUtils::PUBLIC_DATABASE_LOGIN = "public";
 const QString U2DbiUtils::PUBLIC_DATABASE_PASSWORD = "public";
-const QString U2DbiUtils::PUBLIC_DATABASE_URL = U2DbiUtils::createFullDbiUrl(PUBLIC_DATABASE_LOGIN, "5.9.139.103", 3306, "public_ugene_1_16");
+const QString U2DbiUtils::PUBLIC_DATABASE_URL = U2DbiUtils::createFullDbiUrl(PUBLIC_DATABASE_LOGIN, "5.9.139.103", 3306, "public_ugene_1_24");
 
 void U2DbiUtils::logNotSupported(U2DbiFeature f, U2Dbi* dbi, U2OpStatus& os) {
     QString msg = tr("Feature is not supported: %1, dbi: %2").arg(int(f)).arg(dbi == NULL ? QString("<unknown>") : dbi->getDbiId());
@@ -234,6 +237,88 @@ bool U2DbiUtils::isDatabaseTooOld(const U2DbiRef &dbiRef, const Version &ugeneVe
     const Version minRequiredVersion = getDbMinRequiredVersion(dbiRef, os);
     CHECK_OP(os, false);
     return minRequiredVersion < ugeneVersion;
+}
+
+namespace {
+
+const QString LIST_SEPARATOR = ",";
+const QString MAP_SEPARATOR = ";";
+const QString PAIR_CONNECTOR = "=";
+const QRegExp listSeparatorRegExp(QString("^\\\"|(?!\\\\)\\\"%1\\\"|\\\"$").arg(LIST_SEPARATOR));
+const QRegExp mapSeparatorRegExp(QString("(?!\\\\)\\\"%1\\\"").arg(MAP_SEPARATOR));
+const QRegExp pairSeparatorRegExp(QString("^\\\"|(?!\\\\)\\\"%1\\\"|\\\"$").arg(PAIR_CONNECTOR));
+
+QBitArray initCharactersToEscape() {
+    QBitArray map(pow(2, 8 * sizeof(char)));
+    map[(int)'\\'] = true;
+    map[(int)'\"'] = true;
+    return map;
+}
+
+const QBitArray charactersToEscape = initCharactersToEscape();
+
+QString escapeCharacters(QString string) {
+    for (int i = 0; i < charactersToEscape.size(); i++) {
+        if (charactersToEscape[i]) {
+            const char c = (char)i;
+            string.replace(c, QString("\\") + c);
+        }
+    }
+
+    return string;
+}
+
+QString unescapeCharacters(QString string) {
+    for (int i = 0; i < charactersToEscape.size(); i++) {
+        if (charactersToEscape[i]) {
+            const char c = (char)i;
+            string.replace(QString("\\") + c, QString(1, c));
+        }
+    }
+
+    return string;
+}
+
+QString wrapString(const QString &string) {
+    return "\"" + string + "\"";
+}
+
+}
+
+QString U2DbiUtils::packStringList(const QStringList &list) {
+    QString packedList;
+    foreach (const QString &string, list) {
+        packedList += wrapString(escapeCharacters(string)) + LIST_SEPARATOR;
+    }
+    packedList.chop(LIST_SEPARATOR.size());
+    return packedList;
+}
+
+QStringList U2DbiUtils::unpackStringList(const QString &string) {
+    QStringList unpackedList;
+    foreach (const QString &escapedString, string.split(listSeparatorRegExp, QString::SkipEmptyParts)) {
+        unpackedList << unescapeCharacters(escapedString);
+    }
+    return unpackedList;
+}
+
+QString U2DbiUtils::packMap(const QStrStrMap &map) {
+    QString string;
+    foreach (const QString &key, map.keys()) {
+        string += wrapString(escapeCharacters(key)) + PAIR_CONNECTOR + wrapString(escapeCharacters(map[key])) + MAP_SEPARATOR;
+    }
+    string.chop(MAP_SEPARATOR.size());
+    return string;
+}
+
+QStrStrMap U2DbiUtils::unpackMap(const QString &string) {
+    QStrStrMap map;
+    foreach (const QString &pair, string.split(mapSeparatorRegExp, QString::SkipEmptyParts)) {
+        const QStringList splittedPair = pair.split(pairSeparatorRegExp, QString::SkipEmptyParts);
+        Q_ASSERT(splittedPair.size() <= 2);
+        map.insert(splittedPair.first(), splittedPair.size() > 1 ? splittedPair[1] : "");
+    }
+    return map;
 }
 
 //////////////////////////////////////////////////////////////////////////

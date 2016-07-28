@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2AttributeDbi.h>
+#include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -28,8 +28,7 @@
 namespace U2 {
 
 
-void U2AttributeUtils::init(U2Attribute &attr, U2Object & obj, const QString& name)
-{
+void U2AttributeUtils::init(U2Attribute &attr, const U2Object &obj, const QString &name) {
     attr.objectId = obj.id;
     attr.version = obj.version;
     attr.name = name;
@@ -151,4 +150,4 @@ void U2AttributeUtils::copyObjectAttributes(const U2DataId &srcObjId, const U2Da
     }
 }
 
-} //namespace
+}   // namespace U2

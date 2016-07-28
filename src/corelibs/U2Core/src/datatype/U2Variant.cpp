@@ -19,29 +19,39 @@
  * MA 02110-1301, USA.
  */
 
-#include "VCF4VariationFormat.h"
+#include "U2Variant.h"
 
 namespace U2 {
 
-VCF4VariationFormat::VCF4VariationFormat(QObject *p)
-: AbstractVariationFormat(p, QStringList()<<"vcf", true)
+const QString U2VariantTrack::META_INFO_ATTIBUTE = "meta-info";
+const QString U2VariantTrack::HEADER_ATTIBUTE = "header";
+
+U2VariantTrack::U2VariantTrack()
+    : trackType(TrackType_All)
 {
-    formatName = QString("VCFv4");
 
-    columnRoles.insert(0, ColumnRole_ChromosomeId);
-    columnRoles.insert(1, ColumnRole_StartPos);
-    columnRoles.insert(2, ColumnRole_PublicId);
-    columnRoles.insert(3, ColumnRole_RefData);
-    columnRoles.insert(4, ColumnRole_ObsData);
-    columnRoles.insert(7, ColumnRole_Info);
-
-    maxColumnNumber = columnRoles.keys().last();
-
-    indexing = AbstractVariationFormat::OneBased;
 }
 
-bool VCF4VariationFormat::checkFormatByColumnCount(int columnCount) const {
-    return (columnCount >= maxColumnNumber+1);
+U2VariantTrack::U2VariantTrack(const U2DataId &id, const QString &dbId, VariantTrackType trackType, qint64 version)
+    : U2Object(id, dbId, version),
+      trackType(trackType)
+{
+
 }
 
-} // U2
+U2DataType U2VariantTrack::getType() const {
+    return U2Type::VariantTrack;
+}
+
+const QString U2Variant::VCF4_QUAL = "QUAL";
+const QString U2Variant::VCF4_FILTER = "FILTER";
+const QString U2Variant::VCF4_INFO = "INFO";
+
+U2Variant::U2Variant()
+    : startPos(0),
+      endPos(0)
+{
+
+}
+
+}   // namespace U2
