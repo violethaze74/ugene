@@ -115,7 +115,7 @@ void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &rea
         case U2CigarOp_N:
             // skip the deletion
             deletionsCount++;
-            break;
+            continue;
         default:
             currentBase = read->readSequence[positionOffset - deletionsCount + insertionsCount];
             break;

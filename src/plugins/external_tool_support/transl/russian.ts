@@ -7258,8 +7258,8 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="143"/>
-        <source>FASTA File with any end adapters</source>
-        <translation>FASTA файл с любыми концевыми адаптерами</translation>
+        <source>FASTA file with 5&apos; and 3&apos; adapters</source>
+        <translation>FASTA файл с 5&apos; и 3&apos; концевыми адаптерами</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="144"/>

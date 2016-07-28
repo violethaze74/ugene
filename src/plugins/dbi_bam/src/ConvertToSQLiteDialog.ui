@@ -2,36 +2,22 @@
 <ui version="4.0">
  <class>ConvertToSQLiteDialog</class>
  <widget class="QDialog" name="ConvertToSQLiteDialog">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>515</width>
-    <height>318</height>
-   </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>0</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Import BAM File</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="sourceUrlLabel">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <item row="1" column="0">
+      <widget class="QLabel" name="refUrlLabel">
        <property name="text">
-        <string>Source URL:</string>
+        <string>Reference:</string>
        </property>
       </widget>
      </item>
@@ -42,24 +28,24 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="bamInfoButton">
-       <property name="text">
-        <string>Info</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="refUrlLabel">
-       <property name="text">
-        <string>Reference:</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="1">
       <widget class="QLineEdit" name="refUrlEdit">
        <property name="readOnly">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="sourceUrlLabel">
+       <property name="text">
+        <string>Source URL:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="bamInfoButton">
+       <property name="text">
+        <string>Info</string>
        </property>
       </widget>
      </item>
@@ -111,6 +97,9 @@
    <item>
     <widget class="QWidget" name="selectionButtons" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -169,6 +158,9 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
@@ -190,6 +182,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
      <item>
       <widget class="QCheckBox" name="addToProjectBox">
        <property name="text">

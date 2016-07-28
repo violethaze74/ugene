@@ -1279,6 +1279,7 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5360);
     REGISTER_TEST(GUITest_regression_scenarios::test_5363_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5363_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5367);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5314);
 

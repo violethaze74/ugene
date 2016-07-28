@@ -19,9 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/GAutoDeleteList.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/U2AttributeDbi.h>
+#include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
@@ -33,11 +36,11 @@
 
 #include "AbstractVariationFormat.h"
 
-#include <QtCore/QStringList>
-
 namespace U2 {
 
-const QString AbstractVariationFormat::COMMENT_START("#");
+const QString AbstractVariationFormat::META_INFO_START = "##";
+const QString AbstractVariationFormat::HEADER_START = "#";
+const QString AbstractVariationFormat::COLUMNS_SEPARATOR = "\t";
 
 QList<U2Variant> splitVariants(const U2Variant& v, const QList<QString>& altAllel){
     QList<U2Variant> res;
@@ -55,7 +58,8 @@ QList<U2Variant> splitVariants(const U2Variant& v, const QList<QString>& altAlle
 
 
 AbstractVariationFormat::AbstractVariationFormat(QObject *p, const QStringList &fileExts, bool _isSupportHeader)
-: DocumentFormat(p, DocumentFormatFlags_SW, fileExts), isSupportHeader(_isSupportHeader), sep(QString())
+    : DocumentFormat(p, DocumentFormatFlags_SW, fileExts),
+      isSupportHeader(_isSupportHeader)
 {
     supportedObjectTypes += GObjectTypes::VARIANT_TRACK;
     formatDescription = tr("SNP formats are used to store single-nucleotide polymorphism data");
@@ -77,6 +81,18 @@ namespace {
     }
 }
 
+namespace {
+
+void addStringAttribute(U2OpStatus &os, U2Dbi *dbi, const U2VariantTrack &variantTrack, const QString &name, const QString &value) {
+    CHECK(!value.isEmpty(), );
+    U2StringAttribute attribute;
+    U2AttributeUtils::init(attribute, variantTrack, name);
+    attribute.value = value;
+    dbi->getAttributeDbi()->createStringAttribute(attribute, os);
+}
+
+}
+
 #define CHR_PREFIX "chr"
 
 Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
@@ -96,7 +112,8 @@ Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &d
     //TODO: load snps with chunks of fixed size to avoid memory consumption
     QMap<QString, QList<U2Variant> > snpsMap;
 
-    QString headerText;
+    QString metaInfo;
+    QStringList header;
 
     int lineNumber = 0;
     do {
@@ -107,13 +124,17 @@ Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &d
             continue;
         }
 
-        // skip comments
-        if (line.startsWith(COMMENT_START)) {
-            headerText += line + "\n";
+        if (line.startsWith(META_INFO_START)) {
+            metaInfo += line + "\n";
             continue;
         }
 
-        QStringList columns = sep.isEmpty() ? line.split(QRegExp("\\s+")) : line.split(sep);
+        if (line.startsWith(HEADER_START)) {
+            header = line.split(COLUMNS_SEPARATOR);
+            continue;
+        }
+
+        QStringList columns = line.split(COLUMNS_SEPARATOR);
 
         if (columns.size() < maxColumnNumber) {
             os.addWarning(tr("Line %1: There are too few columns in this line. The line was skipped.").arg(lineNumber));
@@ -125,59 +146,53 @@ Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &d
         U2Variant v;
         QString seqName;
 
-        bool skipVariation = false;
-        foreach (int columnNumber, columnRoles.keys()) {
-            if (columns.size() <= columnNumber) {
-                skipVariation = true;
-                os.addWarning(tr("Line %1: There are too few columns in this line. The line was skipped.").arg(lineNumber));
+        for (int columnNumber = 0; columnNumber < columns.size(); columnNumber++) {
+            const ColumnRole columnRole = columnRoles.value(columnNumber, ColumnRole_Unknown);
+            const QString &columnData = columns[columnNumber];
+            switch (columnRole) {
+            case ColumnRole_ChromosomeId:
+                seqName = columnData;
                 break;
-            }
-            const QString& columnData = columns.at(columnNumber);
-            ColumnRole role = columnRoles.value(columnNumber);
-            switch (role) {
-                case ColumnRole_ChromosomeId:
-                    seqName = columnData;
-                    break;
-                case ColumnRole_StartPos:
-                    v.startPos = columnData.toInt();
-                    if (indexing == AbstractVariationFormat::OneBased){
-                        v.startPos -= 1;
-                    }
-                    break;
-                case ColumnRole_EndPos:
-                    v.endPos = columnData.toInt();
-                    if (indexing == AbstractVariationFormat::OneBased){
-                        v.startPos -= 1;
-                    }
-                    break;
-                case ColumnRole_RefData:
-                    v.refData = columnData.toLatin1();
-                    break;
-                case ColumnRole_ObsData:
-                    if (splitting == AbstractVariationFormat::Split){
-                        altAllele = columnData.trimmed().split(',');
-                    }else{
-                        v.obsData = columnData.toLatin1();
-                    }
-                    break;
-                case ColumnRole_PublicId:
-                    v.publicId = columnData.toLatin1();
-                    break;
-                case ColumnRole_AdditionalInfo:
-                    v.additionalInfo = columnData.toLatin1();
-                    for(int i = columnNumber + 1; i < columns.size(); i++) {
-                        v.additionalInfo += "\t" + columns.at(i);
-                    }
-                    break;
-                default:
-                    assert(0);
-                    coreLog.trace(QString("Warning: unknown column role %1 (line %2, column %3)").arg(role).arg(line).arg(columnNumber));
-                    break;
+            case ColumnRole_StartPos:
+                v.startPos = columnData.toInt();
+                if (indexing == AbstractVariationFormat::OneBased){
+                    v.startPos -= 1;
+                }
+                break;
+            case ColumnRole_EndPos:
+                v.endPos = columnData.toInt();
+                if (indexing == AbstractVariationFormat::OneBased){
+                    v.endPos -= 1;
+                }
+                break;
+            case ColumnRole_RefData:
+                v.refData = columnData.toLatin1();
+                break;
+            case ColumnRole_ObsData:
+                if (splitting == AbstractVariationFormat::Split){
+                    altAllele = columnData.trimmed().split(',');
+                }else{
+                    v.obsData = columnData.toLatin1();
+                }
+                break;
+            case ColumnRole_PublicId:
+                v.publicId = columnData.toLatin1();
+                break;
+            case ColumnRole_Info:
+                v.additionalInfo.insert(U2Variant::VCF4_INFO, columnData);
+                break;
+            case ColumnRole_Unknown:
+                v.additionalInfo.insert(columnNumber < header.size() ? header[columnNumber] : QString::number(columnNumber), columnData);
+                break;
+            default:
+                assert(0);
+                coreLog.trace(QString("Warning: unknown column role %1 (line %2, column %3)").arg(columnRole).arg(line).arg(columnNumber));
+                break;
             }
         }
 
-        if (skipVariation) {
-            continue;
+        if (!columnRoles.values().contains(ColumnRole_EndPos)) {
+            v.endPos = v.startPos + v.refData.size() - 1;
         }
 
         if (v.publicId.isEmpty()) {
@@ -199,7 +214,7 @@ Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &d
 
     } while (!io->isEof());
 
-    QList<GObject*> objects;
+    GAutoDeleteList<GObject> objects;
     QSet<QString> names;
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
@@ -207,36 +222,48 @@ Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &d
     if (snpsMap.isEmpty()){
         U2VariantTrack track;
         track.sequenceName = "unknown";
-        track.fileHeader = headerText;
         dbi->getVariantDbi()->createVariantTrack(track, TrackType_All, folder, os);
+        CHECK_OP(os, NULL);
+
+        addStringAttribute(os, dbi, track, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
+        CHECK_OP(os, NULL);
+        addStringAttribute(os, dbi, track, U2VariantTrack::HEADER_ATTIBUTE, U2DbiUtils::packStringList(header));
+        CHECK_OP(os, NULL);
 
         U2EntityRef trackRef(dbiRef, track.id);
         QString objName = TextUtils::variate(track.sequenceName, "_", names);
         names.insert(objName);
         VariantTrackObject *trackObj = new VariantTrackObject(objName, trackRef);
-        objects << trackObj;
+        objects.qlist << trackObj;
     }
 
     foreach (const QString &seqName, snpsMap.keys().toSet()) {
         U2VariantTrack track;
         track.visualName = "Variant track";
         track.sequenceName = seqName;
-        track.fileHeader = headerText;
         dbi->getVariantDbi()->createVariantTrack(track, TrackType_All, folder, os);
+        CHECK_OP(os, NULL);
+
+        addStringAttribute(os, dbi, track, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
+        CHECK_OP(os, NULL);
+        addStringAttribute(os, dbi, track, U2VariantTrack::HEADER_ATTIBUTE, U2DbiUtils::packStringList(header));
+        CHECK_OP(os, NULL);
 
         const QList<U2Variant>& vars = snpsMap.value(seqName);
         BufferedDbiIterator<U2Variant> bufIter(vars);
         dbi->getVariantDbi()->addVariantsToTrack(track, &bufIter, os);
+        CHECK_OP(os, NULL);
 
         U2EntityRef trackRef(dbiRef, track.id);
         QString objName = TextUtils::variate(track.sequenceName, "_", names);
         names.insert(objName);
         VariantTrackObject *trackObj = new VariantTrackObject(objName, trackRef);
-        objects << trackObj;
+        objects.qlist << trackObj;
     }
 
     QString lockReason;
-    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason);
+    Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects.qlist, fs, lockReason);
+    objects.qlist.clear();
     return doc;
 }
 
@@ -253,7 +280,7 @@ FormatCheckResult AbstractVariationFormat::checkRawData(const QByteArray &dataPr
 
         QString line = l.simplified();
         idx++;
-        if (line.startsWith(COMMENT_START)) {
+        if (line.startsWith(META_INFO_START)) {
             bool isFormatMatched = line.contains("format=" + formatName);
             if(isFormatMatched) {
                 return FormatDetection_Matched;
@@ -261,7 +288,7 @@ FormatCheckResult AbstractVariationFormat::checkRawData(const QByteArray &dataPr
             continue;
         }
 
-        QStringList cols = line.split(QRegExp("\\s"), QString::SkipEmptyParts);
+        QStringList cols = line.split(COLUMNS_SEPARATOR, QString::SkipEmptyParts);
         if (!this->checkFormatByColumnCount(cols.size())) {
             return FormatDetection_NotMatched;
         }
@@ -308,14 +335,14 @@ FormatCheckResult AbstractVariationFormat::checkRawData(const QByteArray &dataPr
 }
 
 void AbstractVariationFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
-    if(!doc->getObjects().isEmpty()) {
-        storeHeader(doc->getObjects().at(0), io, os);
+    const QList<GObject *> variantTrackObjects = doc->findGObjectByType(GObjectTypes::VARIANT_TRACK);
+    if(!variantTrackObjects.isEmpty()) {
+        storeHeader(variantTrackObjects.first(), io, os);
     }
-    foreach (GObject *obj, doc->getObjects()) {
-        if (GObjectTypes::VARIANT_TRACK != obj->getGObjectType()) {
-            continue;
-        }
-        VariantTrackObject *trackObj = dynamic_cast<VariantTrackObject*>(obj);
+
+    foreach (GObject *obj, variantTrackObjects) {
+        VariantTrackObject *trackObj = qobject_cast<VariantTrackObject *>(obj);
+        SAFE_POINT_EXT(NULL != trackObj, os.setError("Can't cast GObject to VariantTrackObject"), );
         storeTrack(io, trackObj, os);
     }
 }
@@ -335,7 +362,10 @@ void AbstractVariationFormat::storeTrack(IOAdapter *io, const VariantTrackObject
     CHECK(NULL != trackObj, );
     U2VariantTrack track = trackObj->getVariantTrack(os);
     CHECK_OP(os, );
-    QScopedPointer< U2DbiIterator<U2Variant> > varsIter(trackObj->getVariants(U2_REGION_MAX, os));
+    QScopedPointer<U2DbiIterator<U2Variant> > varsIter(trackObj->getVariants(U2_REGION_MAX, os));
+    CHECK_OP(os, );
+
+    const QStringList header = getHeader(trackObj, os);
     CHECK_OP(os, );
 
     QByteArray snpString;
@@ -343,54 +373,74 @@ void AbstractVariationFormat::storeTrack(IOAdapter *io, const VariantTrackObject
         U2Variant variant = varsIter->next();
 
         snpString.clear();
-        bool first = true;
-        foreach (int columnNumber, columnRoles.keys()) {
-            if (first) {
-                first = false;
-            } else {
-                snpString += "\t";
+        for (int columnNumber = 0; columnNumber <= maxColumnNumber; columnNumber++) {
+            if (columnNumber != 0) {
+                snpString += COLUMNS_SEPARATOR;
             }
-            ColumnRole role = columnRoles.value(columnNumber);
-            switch (role) {
-                    case ColumnRole_ChromosomeId:
-                        snpString += track.sequenceName;
-                        break;
-                    case ColumnRole_StartPos:
-                        if (indexing == AbstractVariationFormat::OneBased){
-                            snpString += QByteArray::number(variant.startPos + 1);
-                        }else if (indexing == AbstractVariationFormat::ZeroBased){
-                            snpString += QByteArray::number(variant.startPos);
-                        }else{
-                            assert(0);
-                        }
 
-                        break;
-                    case ColumnRole_EndPos:
-                        if (indexing == AbstractVariationFormat::OneBased){
-                            snpString += QByteArray::number(variant.endPos + 1);
-                        }else if (indexing == AbstractVariationFormat::ZeroBased){
-                            snpString += QByteArray::number(variant.endPos);
-                        }else{
-                            assert(0);
-                        }
-                        break;
-                    case ColumnRole_RefData:
-                        snpString += variant.refData;
-                        break;
-                    case ColumnRole_ObsData:
-                        snpString += variant.obsData;
-                        break;
-                    case ColumnRole_PublicId:
-                        snpString += variant.publicId;
-                        break;
-                    case ColumnRole_AdditionalInfo:
-                        snpString += variant.additionalInfo;
-                        break;
-                    default:
-                        coreLog.trace("Warning: unknown column role (%, line %, column %)");
-                        break;
+            ColumnRole role = columnRoles.value(columnNumber, ColumnRole_Unknown);
+            switch (role) {
+            case ColumnRole_ChromosomeId:
+                snpString += track.sequenceName;
+                break;
+            case ColumnRole_StartPos:
+                switch (indexing) {
+                case AbstractVariationFormat::OneBased:
+                    snpString += QByteArray::number(variant.startPos + 1);
+                    break;
+                case AbstractVariationFormat::ZeroBased:
+                    snpString += QByteArray::number(variant.startPos);
+                    break;
+                default:
+                    assert(0);
+                }
+                break;
+            case ColumnRole_EndPos:
+                switch (indexing) {
+                case AbstractVariationFormat::OneBased:
+                    snpString += QByteArray::number(variant.endPos + 1);
+                    break;
+                case AbstractVariationFormat::ZeroBased:
+                    snpString += QByteArray::number(variant.endPos);
+                    break;
+                default:
+                    assert(0);
+                }
+                break;
+            case ColumnRole_RefData:
+                snpString += variant.refData;
+                break;
+            case ColumnRole_ObsData:
+                snpString += variant.obsData;
+                break;
+            case ColumnRole_PublicId:
+                snpString += variant.publicId;
+                break;
+            case ColumnRole_Info:
+                snpString += variant.additionalInfo.value(U2Variant::VCF4_INFO, ".");
+                break;
+            case ColumnRole_Unknown: {
+                const QString columnTitle = columnNumber < header.size() ? header[columnNumber] : QString::number(columnNumber);
+                snpString += variant.additionalInfo.value(columnTitle, ".");
+                break;
+            }
+            default:
+                coreLog.trace("Warning: unknown column role (%, line %, column %)");
+                break;
             }
         }
+
+        for (int i = maxColumnNumber + 1; i < header.size(); i++) {
+            snpString += COLUMNS_SEPARATOR + variant.additionalInfo.value(header[i], ".").toLatin1();
+        }
+
+        for (int i = qMax(maxColumnNumber + 1, header.size()); i <= maxColumnNumber + variant.additionalInfo.size(); i++) {
+            if (!variant.additionalInfo.contains(QString::number(i))) {
+                break;
+            }
+            snpString += COLUMNS_SEPARATOR + variant.additionalInfo[QString::number(i)].toLatin1();
+        }
+
         snpString += "\n";
         io->writeBlock(snpString);
     }
@@ -398,17 +448,37 @@ void AbstractVariationFormat::storeTrack(IOAdapter *io, const VariantTrackObject
 
 void AbstractVariationFormat::storeHeader(GObject *obj, IOAdapter *io, U2OpStatus &os) {
     CHECK(isSupportHeader, );
-    CHECK(NULL != obj, );
+    SAFE_POINT_EXT(NULL != obj, os.setError("NULL object"), );
 
-    CHECK(GObjectTypes::VARIANT_TRACK == obj->getGObjectType(), );
+    SAFE_POINT_EXT(GObjectTypes::VARIANT_TRACK == obj->getGObjectType(), os.setError("Invalid GObjectType"), );
 
-    VariantTrackObject *trackObj = dynamic_cast<VariantTrackObject*>(obj);
-    CHECK(NULL != trackObj, );
+    VariantTrackObject *trackObj = qobject_cast<VariantTrackObject*>(obj);
+    SAFE_POINT_EXT(NULL != trackObj, os.setError("Can't cast GObject to VariantTrackObject"), );
 
-    U2VariantTrack track = trackObj->getVariantTrack(os);
+    const QString metaInfo = getMetaInfo(trackObj, os);
     CHECK_OP(os, );
+    if (!metaInfo.isEmpty()) {
+        io->writeBlock(metaInfo.toLatin1());
+    }
 
-    io->writeBlock(track.fileHeader.toLatin1());
+    const QStringList header = getHeader(trackObj, os);
+    CHECK_OP(os, );
+    if (!header.isEmpty()) {
+        io->writeBlock(header.join(COLUMNS_SEPARATOR).toLatin1() + "\n");
+    }
+}
+
+QString AbstractVariationFormat::getMetaInfo(const VariantTrackObject *variantTrackObject, U2OpStatus &os) {
+    DbiConnection connection(variantTrackObject->getEntityRef().dbiRef, os);
+    CHECK_OP(os, "");
+    return U2AttributeUtils::findStringAttribute(connection.dbi->getAttributeDbi(), variantTrackObject->getEntityRef().entityId, U2VariantTrack::META_INFO_ATTIBUTE, os).value;
+}
+
+QStringList AbstractVariationFormat::getHeader(const VariantTrackObject *variantTrackObject, U2OpStatus &os) {
+    DbiConnection connection(variantTrackObject->getEntityRef().dbiRef, os);
+    CHECK_OP(os, QStringList());
+    const QString packedHeader = U2AttributeUtils::findStringAttribute(connection.dbi->getAttributeDbi(), variantTrackObject->getEntityRef().entityId, U2VariantTrack::HEADER_ATTIBUTE, os).value;
+    return U2DbiUtils::unpackStringList(packedHeader);
 }
 
 } // U2
