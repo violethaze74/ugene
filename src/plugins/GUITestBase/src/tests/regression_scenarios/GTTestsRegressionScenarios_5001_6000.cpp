@@ -848,7 +848,7 @@ GUI_TEST_CLASS_DEFINITION(test_5360) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Read FASTQ Files with Reads");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + QString::fromLocal8Bit("_common_data/scenarios/_regression/5360/папка/риды.fastq"), true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + QString::fromLocal8Bit("_common_data/scenarios/_regression/5360/РїР°РїРєР°/СЂРёРґС‹.fastq"), true);
     
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
