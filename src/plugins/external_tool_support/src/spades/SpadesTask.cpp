@@ -108,11 +108,11 @@ Task::ReportResult SpadesTask::report() {
     CHECK(!hasError(), ReportResult_Finished);
     CHECK(!isCanceled(), ReportResult_Finished);
 
-    QString res = settings.outDir.getURLString() + QDir::separator() + SpadesTask::SCAFFOLDS_NAME;
+    QString res = settings.outDir.getURLString() + QDir::separator() + SpadesTask::CONTIGS_NAME;
     if(!FileAndDirectoryUtils::isFileEmpty(res)){
         resultUrl = res;
     }else{
-        stateInfo.setError(QString("File %1 has not been found in output directory %2").arg(SpadesTask::SCAFFOLDS_NAME).arg(settings.outDir.getURLString()));
+        stateInfo.setError(QString("File %1 has not been found in output directory %2").arg(SpadesTask::CONTIGS_NAME).arg(settings.outDir.getURLString()));
     }
 
 
