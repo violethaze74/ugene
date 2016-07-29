@@ -52,9 +52,19 @@ U2DbiIterator<U2Variant>* VariantTrackObject::getVariants( const U2Region& reg, 
     CHECK_OP(os, NULL);
 
     U2VariantDbi* vdbi = con.dbi->getVariantDbi();
-    SAFE_POINT(vdbi != NULL, "Varian DBI is NULL", NULL);
+    SAFE_POINT(vdbi != NULL, "Variant DBI is NULL", NULL);
 
     return vdbi->getVariants(entityRef.entityId, reg, os);
+}
+
+int VariantTrackObject::getVariantCount(U2OpStatus &os) const {
+    DbiConnection con(entityRef.dbiRef, os);
+    CHECK_OP(os, 0);
+
+    U2VariantDbi *variantDbi = con.dbi->getVariantDbi();
+    SAFE_POINT(variantDbi != NULL, "Variant DBI is NULL", 0);
+
+    return variantDbi->getVariantCount(entityRef.entityId, os);
 }
 
 U2VariantTrack VariantTrackObject::getVariantTrack(U2OpStatus &os) const {
@@ -62,7 +72,7 @@ U2VariantTrack VariantTrackObject::getVariantTrack(U2OpStatus &os) const {
     CHECK_OP(os, U2VariantTrack());
 
     U2VariantDbi* vdbi = con.dbi->getVariantDbi();
-    SAFE_POINT(vdbi != NULL, "Varian DBI is NULL", U2VariantTrack());
+    SAFE_POINT(vdbi != NULL, "Variant DBI is NULL", U2VariantTrack());
 
     return vdbi->getVariantTrack(entityRef.entityId, os);
 }
@@ -107,7 +117,7 @@ void VariantTrackObject::addVariants( const QList<U2Variant>& variants, U2OpStat
     CHECK_OP(os, );
 
     U2VariantDbi* vdbi = con.dbi->getVariantDbi();
-    SAFE_POINT(vdbi != NULL, "Varian DBI is NULL", );
+    SAFE_POINT(vdbi != NULL, "Variant DBI is NULL", );
 
     U2VariantTrack track = vdbi->getVariantTrack(entityRef.entityId, os);
     CHECK_OP(os, );

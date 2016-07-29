@@ -22,6 +22,8 @@
 #ifndef _U2_QUALIFIER_H_
 #define _U2_QUALIFIER_H_
 
+#include <U2Core/global.h>
+
 namespace U2 {
 
 /**
@@ -37,19 +39,22 @@ public:
 
 
     /** Constructs new empty (and invalid) qualifier */
-    U2Qualifier(){}
+    U2Qualifier();
     
     /** Constructs new qualifier instance with name and value set */
-    U2Qualifier(const QString& _name, const QString& _value) : name(_name), value(_value){}
+    U2Qualifier(const QString &name, const QString &value);
 
     /** U2Qualifier is valid if  its name is not empty */
-    bool isValid() const {return !name.isEmpty();}
+    bool isValid() const;
 
     /** Any two qualifiers are equal if their names & values are equal */
-    bool operator== ( const U2Qualifier & q ) const { return q.name == name && q.value == value; }
+    bool operator==(const U2Qualifier &q) const;
     
     /** Any two qualifiers are not equal if either their names or values are  not equal */
-    bool operator!= ( const U2Qualifier & q ) const { return !(*this == q); }
+    bool operator!=(const U2Qualifier &q) const;
+
+    static bool isValidQualifierName(const QString &name);
+    static bool isValidQualifierValue(const QString &value);
 };
 
 } // namespace

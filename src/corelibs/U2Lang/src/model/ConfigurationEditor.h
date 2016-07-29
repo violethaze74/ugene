@@ -165,6 +165,9 @@ public:
     static QStringList getStringList(const DelegateTags *tags, const QString &name);
 
     const DelegateTags &operator = (const DelegateTags &other);
+
+    static const QString PLACEHOLDER_TEXT;
+
 private:
     QVariantMap tags;
 };

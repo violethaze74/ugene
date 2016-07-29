@@ -96,10 +96,12 @@ HEADERS += src/ABIFormat.h \
            src/tasks/BgzipTask.h \
            src/tasks/ConvertAssemblyToSamTask.h \
            src/tasks/ConvertFileTask.h \
+           src/tasks/ConvertSnpeffVariationsToAnnotationsTask.h \
            src/tasks/MergeBamTask.h \
            src/tasks/MysqlUpgradeTask.h \
            src/util/AssemblyAdapter.h \
-           src/util/AssemblyPackAlgorithm.h
+           src/util/AssemblyPackAlgorithm.h \
+           src/util/SnpeffInfoParser.h
 
 SOURCES += src/ABIFormat.cpp \
            src/AbstractVariationFormat.cpp \
@@ -194,9 +196,11 @@ SOURCES += src/ABIFormat.cpp \
            src/tasks/BgzipTask.cpp \
            src/tasks/ConvertAssemblyToSamTask.cpp \
            src/tasks/ConvertFileTask.cpp \
+           src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp \
            src/tasks/MergeBamTask.cpp \
            src/tasks/MysqlUpgradeTask.cpp \
-           src/util/AssemblyPackAlgorithm.cpp
+           src/util/AssemblyPackAlgorithm.cpp \
+           src/util/SnpeffInfoParser.cpp
 
 RESOURCES += U2Formats.qrc
 TRANSLATIONS += transl/english.ts \

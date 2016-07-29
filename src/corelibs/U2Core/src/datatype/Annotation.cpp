@@ -324,13 +324,12 @@ bool Annotation::annotationLessThanByRegion(Annotation *first, Annotation *secon
     return r1 < r2;
 }
 
-bool Annotation::isValidQualifierName(const QString &n) {
-    return !n.isEmpty() && 20 > n.length() && TextUtils::fits(TextUtils::QUALIFIER_NAME_CHARS, n.toLocal8Bit().data(), n.length());
+bool Annotation::isValidQualifierName(const QString &name) {
+    return U2Qualifier::isValidQualifierName(name);
 }
 
-bool Annotation::isValidQualifierValue(const QString & /*v*/) {
-    // todo: check whitespaces!
-    return true;
+bool Annotation::isValidQualifierValue(const QString &value) {
+    return U2Qualifier::isValidQualifierValue(value);
 }
 
 namespace {

@@ -425,6 +425,24 @@ void U1AnnotationUtils::addDescriptionQualifier(SharedAnnotationData &annotation
     annotationData->qualifiers << U2Qualifier(GBFeatureUtils::QUALIFIER_NOTE, description);
 }
 
+bool U1AnnotationUtils::containsQualifier(const QList<U2Qualifier> &qualifiers, const QString &qualifierName) {
+    foreach (const U2Qualifier &qualifier, qualifiers) {
+        if (qualifier.name == qualifierName) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void U1AnnotationUtils::removeAllQualifier(SharedAnnotationData &annotationData, const QString &qualifierName) {
+    QMutableVectorIterator<U2Qualifier> i(annotationData->qualifiers);
+    while (i.hasNext()) {
+        if (i.next().name == qualifierName) {
+            i.remove();
+        }
+    }
+}
+
 QString U1AnnotationUtils::buildLocationString(const U2LocationData &location) {
     bool complement = location.strand.isCompementary();
     bool multi = location.regions.size() > 1;
