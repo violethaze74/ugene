@@ -27,14 +27,13 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
         type:CASAVAFilter;
         name:"Filter Reads by CASAVA Header";
         custom-dir:filtered_fastq;
-        out-mode:1;
     }
     QualityTrim {
         type:QualityTrim;
         name:"Trim Reads by Quality";
         custom-dir:filtered_fastq;
-        out-mode:0;
         len-id:1;
+        out-mode:0;
         qual-id:20;
     }
     get-file-list {
@@ -53,8 +52,8 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
     files-conversion {
         type:files-conversion;
         name:"Convert to BAM";
-        out-mode:0;
         document-format:bam;
+        out-mode:0;
     }
     merge-bam {
         type:merge-bam;
@@ -65,8 +64,8 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
         type:filter-bam;
         name:"Filter Merged BAM File with SAMtools";
         flag:"The read is unmapped";
-        out-mode:0;
         mapq:1;
+        out-mode:0;
     }
     rmdup-bam {
         type:rmdup-bam;
@@ -77,8 +76,8 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
     files-conversion-1 {
         type:files-conversion;
         name:"Convert to BED Format";
-        out-mode:0;
         document-format:bed;
+        out-mode:0;
     }
     Sort-bam {
         type:Sort-bam;
@@ -101,14 +100,13 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
         type:CASAVAFilter;
         name:"Filter Reads by CASAVA Header";
         custom-dir:filtered_fastq;
-        out-mode:1;
     }
     QualityTrim-1 {
         type:QualityTrim;
         name:"Trim Reads by Quality";
         custom-dir:filtered_fastq;
-        out-mode:0;
         len-id:1;
+        out-mode:0;
         qual-id:20;
     }
     CutAdaptFastq {
@@ -124,44 +122,45 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
     fastqc {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
     }
     fastqc-1 {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
     }
     fastqc-2 {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
     }
     fastqc-2-1 {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
+    }
+    fastqc-1-1 {
+        type:fastqc;
+        name:"FastQC Quality Control";
     }
 
     .actor-bindings {
-        QualityTrim.out-file->bwamem-id.in-data
-        QualityTrim.out-file->fastqc-2.in-file
-        bwamem-id.out-data->files-conversion.in-file
-        QualityTrim-1.out-file->bwamem-id.in-data-paired
-        QualityTrim-1.out-file->fastqc-2-1.in-file
-        CutAdaptFastq.out-file->QualityTrim.in-file
-        CutAdaptFastq-1.out-file->QualityTrim-1.in-file
-        merge-bam.out-file->filter-bam.in-file
-        get-file-list-1.out-url->CASAVAFilter-1.in-file
-        get-file-list-1.out-url->fastqc-1.in-file
-        CASAVAFilter-1.out-file->CutAdaptFastq-1.in-file
-        CASAVAFilter.out-file->CutAdaptFastq.in-file
-        Sort-bam.out-file->files-conversion-1.in-file
-        files-conversion.out-file->merge-bam.in-file
         get-file-list.out-url->CASAVAFilter.in-file
         get-file-list.out-url->fastqc.in-file
+        CASAVAFilter-1.out-file->CutAdaptFastq-1.in-file
+        QualityTrim.out-file->bwamem-id.in-data
+        QualityTrim.out-file->fastqc-2.in-file
+        CutAdaptFastq-1.out-file->QualityTrim-1.in-file
+        Sort-bam.out-file->files-conversion-1.in-file
+        Sort-bam.out-file->fastqc-1-1.in-file
+        rmdup-bam.out-file->Sort-bam.in-file
         filter-bam.out-file->Sort-bam-1.in-file
         Sort-bam-1.out-file->rmdup-bam.in-file
-        rmdup-bam.out-file->Sort-bam.in-file
+        merge-bam.out-file->filter-bam.in-file
+        QualityTrim-1.out-file->bwamem-id.in-data-paired
+        QualityTrim-1.out-file->fastqc-2-1.in-file
+        files-conversion.out-file->merge-bam.in-file
+        CASAVAFilter.out-file->CutAdaptFastq.in-file
+        get-file-list-1.out-url->CASAVAFilter-1.in-file
+        get-file-list-1.out-url->fastqc-1.in-file
+        CutAdaptFastq.out-file->QualityTrim.in-file
+        bwamem-id.out-data->files-conversion.in-file
     }
 
     get-file-list.url->CASAVAFilter.in-file.url
@@ -183,6 +182,7 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
     get-file-list-1.url->fastqc-1.in-file.url
     QualityTrim.url->fastqc-2.in-file.url
     QualityTrim-1.url->fastqc-2-1.in-file.url
+    Sort-bam.url->fastqc-1-1.in-file.url
 
     .meta {
         parameter-aliases {
@@ -252,14 +252,14 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
         }
         visual {
             CASAVAFilter {
-                pos:"-840 -645";
+                pos:"-810 -615";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 in-file.angle:186.911;
                 out-file.angle:356.112;
             }
             CASAVAFilter-1 {
-                pos:"-840 -465";
+                pos:"-810 -435";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 bounds:"-30 -30 146.375 97";
@@ -267,7 +267,7 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
                 out-file.angle:356.112;
             }
             CutAdaptFastq {
-                pos:"-570 -630";
+                pos:"-540 -600";
                 style:ext;
                 bg-color-ext:"236 177 178 64";
                 bounds:"-30 -30 99.375 89";
@@ -275,7 +275,7 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
                 out-file.angle:360;
             }
             CutAdaptFastq-1 {
-                pos:"-570 -450";
+                pos:"-540 -420";
                 style:ext;
                 bg-color-ext:"236 177 178 64";
                 bounds:"-30 -30 96.5 92";
@@ -283,14 +283,14 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
                 out-file.angle:360;
             }
             QualityTrim {
-                pos:"-330 -645";
+                pos:"-300 -615";
                 style:ext;
                 bg-color-ext:"204 68 102 64";
                 in-file.angle:190.305;
                 out-file.angle:356.558;
             }
             QualityTrim-1 {
-                pos:"-330 -465";
+                pos:"-300 -435";
                 style:ext;
                 bg-color-ext:"204 68 102 64";
                 bounds:"-30 -30 149.375 87";
@@ -298,21 +298,21 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
                 out-file.angle:356.558;
             }
             Sort-bam {
-                pos:"-120 -45";
+                pos:"-90 -15";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:176.82;
                 out-file.angle:360;
             }
             Sort-bam-1 {
-                pos:"-570 -45";
+                pos:"-540 -15";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:88.5312;
                 out-file.angle:2.38594;
             }
             bwamem-id {
-                pos:"-30 -540";
+                pos:"0 -510";
                 style:ext;
                 bg-color-ext:"0 128 0 64";
                 bounds:"-30 -30 105 92";
@@ -321,73 +321,79 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
                 out-data.angle:296.565;
             }
             fastqc {
-                pos:"-840 -825";
+                pos:"-810 -795";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:231.34;
             }
             fastqc-1 {
-                pos:"-840 -270";
+                pos:"-810 -240";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:147.529;
             }
+            fastqc-1-1 {
+                pos:"-15 105";
+                style:simple;
+                bg-color-simple:"0 128 128 255";
+                in-file.angle:108.435;
+            }
             fastqc-2 {
-                pos:"-30 -750";
+                pos:"0 -720";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:207.699;
             }
             fastqc-2-1 {
-                pos:"-75 -345";
+                pos:"-45 -315";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:149.621;
             }
             files-conversion {
-                pos:"0 -270";
+                pos:"0 -240";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:88.2643;
                 out-file.angle:183.576;
             }
             files-conversion-1 {
-                pos:"60 -60";
+                pos:"60 -30";
                 style:ext;
                 bg-color-ext:"64 26 96 64";
                 in-file.angle:214.778;
                 out-file.angle:360;
             }
             filter-bam {
-                pos:"-600 -270";
+                pos:"-570 -240";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 in-file.angle:356.285;
                 out-file.angle:290.63;
             }
             get-file-list {
-                pos:"-1035 -645";
+                pos:"-1005 -615";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 74 94";
                 out-url.angle:354.447;
             }
             get-file-list-1 {
-                pos:"-1035 -465";
+                pos:"-1005 -435";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 75 94";
                 out-url.angle:354.447;
             }
             merge-bam {
-                pos:"-225 -255";
+                pos:"-195 -225";
                 style:simple;
                 bg-color-simple:"78 151 184 255";
                 in-file.angle:1.7357;
                 out-file.angle:175.486;
             }
             rmdup-bam {
-                pos:"-345 -45";
+                pos:"-315 -15";
                 style:simple;
                 bg-color-simple:"218 98 98 255";
                 in-file.angle:180;
@@ -419,6 +425,9 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
             }
             Sort-bam-1.out-file->rmdup-bam.in-file {
                 text-pos:"-41 -24";
+            }
+            Sort-bam.out-file->fastqc-1-1.in-file {
+                text-pos:"-105 6";
             }
             Sort-bam.out-file->files-conversion-1.in-file {
                 text-pos:"-47 -24";
