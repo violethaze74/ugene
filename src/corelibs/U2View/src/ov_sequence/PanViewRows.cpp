@@ -116,6 +116,9 @@ void PVRowsManager::addAnnotation(Annotation *a) {
     QList<PVRowData *>::iterator i = std::upper_bound(rows.begin(), rows.end(), row, compare_rows);
     rows.insert(i, row);
     rowByName[name].append(row);
+    if (name != data->name) {
+        rowByName[data->name].append(row);
+    }
 }
 
 namespace {
