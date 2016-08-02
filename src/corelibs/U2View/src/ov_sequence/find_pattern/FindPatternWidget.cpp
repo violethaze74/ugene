@@ -738,7 +738,6 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
                 case AnnotationNotValidName:
                     {
                     const QString message = tr("Warning: annotation name or annotation group name are invalid. ");
-                    text += "\n";
                     text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
                         const QString message = tr("Reason: ");
@@ -752,7 +751,6 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
                 case AnnotationNotValidFastaParsedName:
                     {
                     const QString message = tr("Warning: annotation names are invalid. ");
-                    text += "\n";
                     text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
                         const QString message = tr("Reason: ");
