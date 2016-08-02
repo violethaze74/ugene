@@ -23,6 +23,7 @@
 #define __COVERAGE_INFO_H__
 
 #include "AssemblyModel.h"
+#include "CalculateCoveragePerBaseTask.h"
 
 #include <U2Core/BackgroundTaskRunner.h>
 #include <U2Core/U2Region.h>
@@ -57,9 +58,11 @@ struct CalcCoverageInfoTaskSettings {
 class CalcCoverageInfoTask : public BackgroundTask<CoverageInfo> {
 public:
     CalcCoverageInfoTask(const CalcCoverageInfoTaskSettings & settings);
-    virtual void run();
+    void prepare();
+    QList<Task*> onSubTaskFinished(Task *subTask);
 private:
     CalcCoverageInfoTaskSettings settings;
+    CalculateCoveragePerBaseOnRegionTask *calculateTask;
 };
 
 }

@@ -207,10 +207,10 @@ void MysqlAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRead
 }
 
 void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os) {
-    int csize = c.coverage.size();
+    int csize = c.coverage->size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
-    U2Range<int>* cdata = c.coverage.data();
+    U2Range<int>* cdata = c.coverage->data();
     double basesPerRange = double(r.length) / csize;
     while (q.step() && !os.isCoR()) {
         qint64 startPos = q.getInt64(0);
@@ -236,7 +236,7 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
         return;
     }
 
-    int csize = ii.coverage.coverage.size();
+    int csize = ii.coverage.coverage->size();
 
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen - 1) / ii.coverageBasesPerPoint);
@@ -244,7 +244,7 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
         coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
-    U2Range<int>* coverageData = ii.coverage.coverage.data();
+    U2Range<int>* coverageData = ii.coverage.coverage->data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
         coverageData[i].minValue++;
         coverageData[i].maxValue++;

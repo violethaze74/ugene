@@ -238,11 +238,29 @@ public:
 };
 
 /** Statistics information collected during the reads packing algorithm */
-class U2AssemblyCoverageStat {
+class U2CORE_EXPORT U2AssemblyCoverageStat {
 public:
-    U2AssemblyCoverageStat() {}
+    U2AssemblyCoverageStat() {
+        coverage = new QVector<U2Range <int> >();
+    }
 
-    QVector< U2Range<int> > coverage;
+    U2AssemblyCoverageStat(const U2AssemblyCoverageStat& toCopy) {
+        this->coverage = new QVector<U2Range<int> >(*toCopy.coverage);
+    }
+
+    ~U2AssemblyCoverageStat() {
+        delete coverage;
+    }
+    const U2AssemblyCoverageStat& operator=(const U2AssemblyCoverageStat& obj) {
+        if (this == &obj) {
+            return *this;
+        }
+        delete this->coverage;
+        this->coverage = new QVector< U2Range<int> > (*obj.coverage);
+        return *this;
+    }
+
+    QVector< U2Range<int> > *coverage;
 };
 
 } //namespace

@@ -25,17 +25,9 @@
 #include <U2Core/U2Assembly.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Type.h>
+#include <U2Core/U2AssemblyUtils.h>
 
 namespace U2 {
-
-class CoveragePerBaseInfo {
-public:
-    CoveragePerBaseInfo() :
-        coverage(0) {}
-
-    int coverage;
-    QMap<char, int> basesCount;
-};
 
 class CalculateCoveragePerBaseOnRegionTask : public Task {
     Q_OBJECT
@@ -49,9 +41,6 @@ public:
     QVector<CoveragePerBaseInfo> *takeResult();
 
 private:
-    void processRead(const U2AssemblyRead &read);
-    U2CigarOp nextCigarOp(const QByteArray &cigarString, int &index, int &insertionsCount);
-
     const U2DbiRef dbiRef;
     const U2DataId assemblyId;
     const U2Region region;
