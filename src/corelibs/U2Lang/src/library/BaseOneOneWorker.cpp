@@ -36,6 +36,8 @@ BaseOneOneWorker::BaseOneOneWorker(Actor *a, bool autoTransitBus, const QString 
 void BaseOneOneWorker::init() {
     input = ports.value(inPortId);
     output = ports.value(outPortId);
+    SAFE_POINT(NULL != input, QString("Input port '%1' is NULL").arg(inPortId), );
+    SAFE_POINT(NULL != output, QString("Output port '%1' is NULL").arg(outPortId), );
 }
 
 Task * BaseOneOneWorker::tick() {

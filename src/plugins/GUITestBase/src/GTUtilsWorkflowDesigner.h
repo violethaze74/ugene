@@ -121,7 +121,7 @@ public:
     //sets input file with path "filePath" and name "filename" dataset
     //this method should be called after selecting worker which contains dataset on scene
     static void setDatasetInputFile(HI::GUITestOpStatus &os, const QString &folderPath, const QString &fileName);
-    static void setDatasetInputFile(HI::GUITestOpStatus &os, const QString &filePath);
+    static void setDatasetInputFile(HI::GUITestOpStatus &os, const QString &filePath, bool pastePath = false);
 
     static void addInputFile(HI::GUITestOpStatus &os, const QString &elementName, const QString &url);
 

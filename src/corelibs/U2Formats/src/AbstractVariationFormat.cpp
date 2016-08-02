@@ -278,7 +278,7 @@ FormatCheckResult AbstractVariationFormat::checkRawData(const QByteArray &dataPr
             continue;
         }
 
-        QString line = l.simplified();
+        QString line = l.trimmed();
         idx++;
         if (line.startsWith(META_INFO_START)) {
             bool isFormatMatched = line.contains("format=" + formatName);

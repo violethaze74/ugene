@@ -89,7 +89,7 @@ public:
 //iterates over a FASTQ file (including zipped) with kseq from samtools
 class U2FORMATS_EXPORT FASTQIterator {
 public:
-    FASTQIterator(const QString& fileUrl);
+    FASTQIterator(const QString& fileUrl, U2OpStatus &os);
     virtual ~FASTQIterator();
 
     DNASequence next();
