@@ -107,7 +107,7 @@ void ConvertAlignment2Stockholm::prepareResultUrl() {
 void ConvertAlignment2Stockholm::prepareSaveTask() {
     Document *document = loadTask->takeDocument();
     QList<GObject *> objects = document->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
-    CHECK_EXT(!objects.isEmpty(), setError(tr("File doesn't contain any multiple alignmnets.")), );
+    CHECK_EXT(!objects.isEmpty(), setError(tr("File doesn't contain any multiple alignments.")), );
 
     if (1 < objects.size()) {
         stateInfo.addWarning(tr("File contains several multiple alignments. Only the first one is saved to the result file."));
