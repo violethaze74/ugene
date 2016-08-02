@@ -122,7 +122,7 @@ void AssemblyModel::calculateCoverageStat(const U2Region & r, U2AssemblyCoverage
 }
 
 bool AssemblyModel::hasCachedCoverageStat() {
-    if(!cachedCoverageStat.coverage.isEmpty()) {
+    if(!cachedCoverageStat.coverage->isEmpty()) {
         return true;
     }
     U2AttributeDbi * attributeDbi = dbiHandle.dbi->getAttributeDbi();
@@ -140,21 +140,28 @@ bool AssemblyModel::hasCachedCoverageStat() {
 const U2AssemblyCoverageStat &AssemblyModel::getCoverageStat(U2OpStatus & os) {
     QMutexLocker mutexLocker(&mutex);
     Q_UNUSED(mutexLocker);
-    if(cachedCoverageStat.coverage.isEmpty()) {
+    if(cachedCoverageStat.coverage->isEmpty()) {
         U2AttributeDbi * attributeDbi = dbiHandle.dbi->getAttributeDbi();
         if(NULL != attributeDbi) {
             U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, assembly.id, COVERAGE_STAT_ATTRIBUTE_NAME, os);
             if(!os.isCoR()) {
+                /*
                 if(attr.hasValidId()) {
                     // TODO: check version
-                    U2AssemblyUtils::deserializeCoverageStat(attr.value, cachedCoverageStat, os);
+                    U2AssemblyUtils::deserializeCoverageStat(attr.value, *cachedCoverageStat, os);
                 } else {
+                */
                     qint64 length = getModelLength(os);
                     if(!os.isCoR()) {
-                        static const qint64 MAX_COVERAGE_CACHE_SIZE = 1000*1000;
-                        int coverageCacheSize = (int)qMin(MAX_COVERAGE_CACHE_SIZE, length);
-                        cachedCoverageStat.coverage.resize(coverageCacheSize);
-                        calculateCoverageStat(U2Region(0, length), cachedCoverageStat, os);
+                        QScopedPointer<QVector<CoveragePerBaseInfo> > results(new QVector<CoveragePerBaseInfo>(length));
+                        cachedCoverageStat.coverage->clear();
+                        cachedCoverageStat.coverage->reserve(length);
+                        U2AssemblyUtils::calculateCoveragePerBase(getDbiConnection().dbi->getDbiRef(), getAssembly().id, U2Region(0, length), results.data(), os);
+                        for (int i = 0; i < results->size(); i++) {
+                            cachedCoverageStat.coverage->append(U2Range<int>(results->at(i).coverage, results->at(i).coverage));
+                        }
+                        
+                        /*
                         if(!os.isCoR()) {
                             U2ByteArrayAttribute attribute;
                             attribute.objectId = assembly.id;
@@ -165,8 +172,9 @@ const U2AssemblyCoverageStat &AssemblyModel::getCoverageStat(U2OpStatus & os) {
                             attributeDbi->createByteArrayAttribute(attribute, opStatus);
                             LOG_OP(opStatus);
                         }
+                        */
                     }
-                }
+                //}
             }
         } else {
             os.setError("Attribute DBI is not supported");

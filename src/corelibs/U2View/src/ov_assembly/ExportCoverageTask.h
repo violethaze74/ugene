@@ -22,6 +22,7 @@
 #ifndef _U2_EXPORT_COVERAGE_TASK_H_
 #define _U2_EXPORT_COVERAGE_TASK_H_
 
+#include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Task.h>
