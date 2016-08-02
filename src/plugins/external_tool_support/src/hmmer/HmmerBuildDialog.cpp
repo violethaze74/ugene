@@ -59,7 +59,7 @@ void HmmerBuildDialog::setSignalsAndSlots() {
 
 void HmmerBuildDialog::initialize() {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17468974");
+    new HelpButton(this, buttonBox, "18220559");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

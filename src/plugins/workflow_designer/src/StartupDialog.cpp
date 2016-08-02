@@ -36,7 +36,7 @@ StartupDialog::StartupDialog(QWidget *parent)
 : QDialog(parent)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17470810");
+    new HelpButton(this, buttonBox, "18220670");
 
     label->setStyleSheet(L10N::infoHintStyleSheet());
 

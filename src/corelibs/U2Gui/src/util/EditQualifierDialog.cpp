@@ -41,7 +41,7 @@ EditQualifierDialog::EditQualifierDialog(QWidget* p, const U2Qualifier& q, bool 
 {
     ui = new Ui_EditQualifierDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17470501");
+    new HelpButton(this, ui->buttonBox, "18220361");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     

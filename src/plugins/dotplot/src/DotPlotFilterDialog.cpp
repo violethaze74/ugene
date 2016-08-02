@@ -47,7 +47,7 @@ DotPlotFilterDialog::DotPlotFilterDialog(QWidget *parent, ADVSequenceObjectConte
 ,seqYItem(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17470546");
+    new HelpButton(this, buttonBox, "18220406");
 
 
     {
