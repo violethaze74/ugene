@@ -109,7 +109,8 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& regi
     : Task(tr("Find Enzymes"), TaskFlags_NR_FOSCOE),
       maxResults(mr),
       excludedRegions(excludedRegions),
-      circular(_circular)
+      circular(_circular),
+      seqlen(0)
 {
     U2SequenceObject seq("sequence", seqRef);
 
