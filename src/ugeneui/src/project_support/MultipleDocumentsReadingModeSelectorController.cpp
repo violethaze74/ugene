@@ -119,7 +119,7 @@ QString MultipleDocumentsReadingModeDialog::setupNewUrl() {
 bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl>& _urls, QVariantMap& props, const QMap<QString, qint64>& headerSequenceLengths){
     setModal(true);
     setupUi(this);
-    new HelpButton(this, buttonBox, "17470488");
+    new HelpButton(this, buttonBox, "18220348");
 
     // doesn't matter from what position, because excluded fileName all path of documents are the same
     CHECK(!urls.isEmpty(), false);

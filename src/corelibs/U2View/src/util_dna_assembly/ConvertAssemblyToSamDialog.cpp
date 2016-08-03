@@ -44,7 +44,7 @@ ConvertAssemblyToSamDialog::ConvertAssemblyToSamDialog(QWidget* parent, QString 
       saveController(NULL)
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "17470715");
+    new HelpButton(this, ui->buttonBox, "18220575");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Convert"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

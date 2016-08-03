@@ -58,7 +58,7 @@ DigestSequenceDialog::DigestSequenceDialog(ADVSequenceObjectContext* ctx, QWidge
     : QDialog(p),seqCtx(ctx), timer(NULL), animationCounter(0)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17470674");
+    new HelpButton(this, buttonBox, "18220534");
 
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     tabWidget->setCurrentIndex(0);

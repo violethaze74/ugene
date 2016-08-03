@@ -79,7 +79,7 @@ ORFDialog::ORFDialog(ADVSequenceObjectContext* _ctx)
 : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17470658");
+    new HelpButton(this, buttonBox, "18220518");
 
     tabWidget->setCurrentIndex(0);
 
