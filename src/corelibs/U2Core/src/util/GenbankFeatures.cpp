@@ -143,7 +143,7 @@ const QVector<GBFeatureKeyInfo>& GBFeatureUtils::allKeys() {
     FK(GBFeatureKey_unsure,           U2FeatureTypes::Unsure,               "unsure",           cl("000000"), false, QObject::tr("Authors are unsure about the sequence in this region"));
     FK(GBFeatureKey_V_region,         U2FeatureTypes::VRegion,              "V_region",         cl("000000"), false, QObject::tr("Span of the V immunological feature"));
     FK(GBFeatureKey_V_segment,        U2FeatureTypes::VSegment,             "V_segment",        cl("000000"), false, QObject::tr("Variable segment of immunoglobulin light and heavy chains, and T-cell receptor alpha, beta, and gamma chains; codes for most of the variable region (V_region) and the last few amino acids of the leader peptide"));
-    FK(GBFeatureKey_variation,        U2FeatureTypes::Variation,            "variation",        cl("ffff9b"), false, QObject::tr("A related population contains stable mutation"));
+    FK(GBFeatureKey_variation,        U2FeatureTypes::Variation,            "variation",        cl("e32636"), false, QObject::tr("A related population contains stable mutation"));
     FK(GBFeatureKey__10_signal,       U2FeatureTypes::Minus10Signal,        "-10_signal",       cl("000000"), false, QObject::tr("`Pribnow box' in prokaryotic promoters"));
     FK(GBFeatureKey__35_signal,       U2FeatureTypes::Minus35Signal,        "-35_signal",       cl("000000"), false, QObject::tr("`-35 box' in prokaryotic promoters"));
     FK(GBFeatureKey_3_clip,           U2FeatureTypes::ThreePrimeClip,       "3'clip",           cl("000000"), false, QObject::tr("3'-most region of a precursor transcript removed in processing"));
