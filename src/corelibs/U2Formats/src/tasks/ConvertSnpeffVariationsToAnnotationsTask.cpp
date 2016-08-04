@@ -23,9 +23,9 @@
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/GenbankFeatures.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/U2FeatureType.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U1AnnotationUtils.h>
@@ -63,10 +63,6 @@ void ConvertSnpeffVariationsToAnnotationsTask::run() {
         const U2VariantTrack variantTrack = variantTrackObject->getVariantTrack(stateInfo);
         CHECK_OP(stateInfo, );
 
-        const int totalVariants = variantTrackObject->getVariantCount(stateInfo);
-        CHECK_OP(stateInfo, );
-        const int digitsCount = QString::number(totalVariants).size();
-
         QScopedPointer<U2DbiIterator<U2Variant> > variantsIterator(variantTrackObject->getVariants(U2_REGION_MAX, stateInfo));
         CHECK_OP(stateInfo, );
 
@@ -75,12 +71,11 @@ void ConvertSnpeffVariationsToAnnotationsTask::run() {
         tableAnnotationData->type = U2FeatureTypes::Variation;
 
         SnpeffInfoParser infoParser;
-        int counter = 1;
         while (variantsIterator.data()->hasNext()) {
             const U2Variant variant = variantsIterator.data()->next();
 
             SharedAnnotationData entryAnnotationData = tableAnnotationData;
-            entryAnnotationData->name = QString("Variation %1").arg(counter++, digitsCount, 10, QLatin1Char('0'));
+            entryAnnotationData->name = GBFeatureUtils::getKeyInfo(GBFeatureKey_variation).text;
             entryAnnotationData->location->regions << U2Region(variant.startPos, variant.endPos - variant.startPos + 1);
             entryAnnotationData->qualifiers << U2Qualifier(REFERENCE_QUALIFIER_NAME, variant.refData);
             entryAnnotationData->qualifiers << U2Qualifier(ALTERNATE_QUALIFIER_NAME, variant.obsData);
