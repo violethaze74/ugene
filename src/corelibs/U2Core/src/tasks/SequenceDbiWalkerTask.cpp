@@ -52,7 +52,7 @@ QList<SequenceDbiWalkerSubtask*> SequenceDbiWalkerTask::prepareSubtasks() {
     } else {
         U2Region wholeSeqReg(0, sequenceObject.getSequenceLength());
         if (!config.walkCircular) {
-            SAFE_POINT(wholeSeqReg.contains(config.range), tr("Target region out of sequence range"), res);
+            SAFE_POINT_EXT(wholeSeqReg.contains(config.range), stateInfo.setError(tr("Target region out of sequence range")), res);
         }
     }
 
