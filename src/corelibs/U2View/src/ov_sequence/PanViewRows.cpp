@@ -102,6 +102,9 @@ void PVRowsManager::addAnnotation(Annotation *a) {
             if (row->fitToRow(location) || isRestrictionSite) {
                 row->annotations.append(a);
                 rowByAnnotation[a] = row;
+                if (name != data->name) {
+                    rowByName[data->name].append(row);
+                }
                 return;
             }
         }
