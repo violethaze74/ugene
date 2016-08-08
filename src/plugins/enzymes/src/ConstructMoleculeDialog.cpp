@@ -58,7 +58,7 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
             .arg(frag.getSequenceDocName())
             .arg(frag.getName())
             .arg(coreLengthStr)
-            .arg(frag.getLength(true));
+            .arg(frag.getLength());
         fragmentListWidget->addItem(fragItem);
     }
 
