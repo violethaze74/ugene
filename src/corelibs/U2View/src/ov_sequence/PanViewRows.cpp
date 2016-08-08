@@ -142,6 +142,7 @@ void PVRowsManager::removeAnnotation(Annotation *a) {
     PVRowData *row = rowByAnnotation.value(a, NULL);
     CHECK(NULL != row,); // annotation may present in a DB, but has not been added to the panview yet
     rowByAnnotation.remove(a);
+    rowByName.remove(a->getName());
     row->annotations.removeOne(a);
     substractRegions(row->ranges, a->getRegions());
     if (row->annotations.isEmpty()) {
