@@ -81,6 +81,7 @@ MSAGraphOverview::MSAGraphOverview(MSAEditorUI *ui)
 void MSAGraphOverview::cancelRendering() {
     if (isRendering) {
         graphCalculationTaskRunner.cancel();
+        lastDrawnVersion = -1;
     }
 }
 
@@ -271,9 +272,6 @@ void MSAGraphOverview::sl_blockRendering() {
 }
 
 void MSAGraphOverview::sl_unblockRendering(bool update) {
-    if (!isBlocked) {
-        return;
-    }
     isBlocked = false;
 
     if (update && lastDrawnVersion != editor->getMSAObject()->getModificationVersion()) {
