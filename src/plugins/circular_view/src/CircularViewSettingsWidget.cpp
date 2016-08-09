@@ -102,6 +102,25 @@ void CircularViewSettingsWidget::initLayout() {
     rulerFontSizeSpinBox->setValue(settings->rulerFontSize);
     labelFontSizeSpinBox->setValue(settings->labelFontSize);
 
+    titleCheckBox->setChecked(settings->showTitle);
+    lengthCheckBox->setChecked(settings->showLength);
+    rulerLineCheckBox->setChecked(settings->showRulerLine);
+    rulerCoordsCheckBox->setChecked(settings->showRulerCoordinates);
+    boldButton->setChecked(settings->titleBold);
+
+    switch (settings->labelMode) {
+    case CircularViewSettings::Inside:
+        labelPositionComboBox->setCurrentText(tr("Inside"));
+    case CircularViewSettings::Outside:
+        labelPositionComboBox->setCurrentText(tr("Outside"));
+    case CircularViewSettings::None:
+        labelPositionComboBox->setCurrentText(tr("None"));
+        break;
+    default:
+        labelPositionComboBox->setCurrentText(tr("Inside/Outside"));
+
+    }
+
     settingsWidget = new QWidget(this);
     QVBoxLayout* settingsLayout = new QVBoxLayout(settingsWidget);
     settingsLayout->setMargin(0);
