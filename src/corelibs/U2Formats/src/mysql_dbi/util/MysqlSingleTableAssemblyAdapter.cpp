@@ -80,15 +80,33 @@ void MysqlSingleTableAssemblyAdapter::createReadsTables(U2OpStatus& os) {
     inited = true;
 }
 
+//! %1 - database, %2 - table name, %3 - index name, %4 - index column
+//! Example of working query:
+// select if (EXISTS(SELECT distinct index_name FROM INFORMATION_SCHEMA.STATISTICS
+// WHERE table_schema = 'uu' AND table_name = 'AssemblyRead_M2_800_4000_0' and index_name like 'AssemblyRead_M2_800_4000_0_name'),
+// "SELECT id FROM AssemblyRead_M2_800_4000_0;", "CREATE INDEX AssemblyRead_M2_800_4000_0_name ON uu.AssemblyRead_M2_800_4000_0(name);") into @a;
+// prepare smt from @a; execute smt; deallocate prepare smt;
+static const QString CREATE_INDEX_IF_NOT_EXISTS_QUERY =
+        "select if"
+        "("
+            "EXISTS(SELECT distinct index_name FROM INFORMATION_SCHEMA.STATISTICS "
+            "WHERE table_schema = '%1' AND table_name = '%2' and index_name like '%3')"
+        ","
+            "\"SELECT %4 FROM %2;\""
+        ","
+            "\"CREATE INDEX %3 ON %1.%2(%4);\""
+        ") into @a; prepare smt from @a; execute smt; deallocate prepare smt;";
+
 void MysqlSingleTableAssemblyAdapter::createReadsIndexes(U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
-    static QString q1 = "call CreateIndex ('%1', '%2', '%2_gstart', 'gstart')";
-    U2SqlQuery(q1.arg(db->handle.databaseName()).arg(readsTable), db, os).execute();
+    U2SqlQuery(CREATE_INDEX_IF_NOT_EXISTS_QUERY.arg(db->handle.databaseName())
+               .arg(readsTable).arg(readsTable + "_gstart").arg("gstart"), db, os).execute();
+    CHECK_OP(os, );
 
-    static QString q2 = "call CreateIndex ('%1', '%2', '%2_name', 'name')";
-    U2SqlQuery(q2.arg(db->handle.databaseName()).arg(readsTable), db, os).execute();
+    U2SqlQuery(CREATE_INDEX_IF_NOT_EXISTS_QUERY.arg(db->handle.databaseName())
+               .arg(readsTable).arg(readsTable + "_name").arg("name"), db, os).execute();
 }
 
 qint64 MysqlSingleTableAssemblyAdapter::countReads(const U2Region& r, U2OpStatus& os) {

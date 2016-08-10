@@ -134,8 +134,6 @@ private:
 
     void setupTransactions(U2OpStatus& os);
 
-    void setupStoredFunctions(U2OpStatus& os);
-
     void checkUserPermissions(U2OpStatus& os);
 
     static QString getConnectionName();
