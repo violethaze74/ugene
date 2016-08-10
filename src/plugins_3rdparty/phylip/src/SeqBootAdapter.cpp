@@ -38,6 +38,7 @@
 namespace U2{
 
 SeqBoot::SeqBoot() {
+    malignment = MultipleSequenceAlignmentData::createMsa();
     seqLen = 0;
     seqRowCount = 0;
 }

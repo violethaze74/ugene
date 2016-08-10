@@ -55,7 +55,7 @@ public:
 
     QByteArray getConsensusLine(bool withGaps);
 private slots:
-    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&);
+    void sl_alignmentChanged();
     void sl_thresholdChanged(int newValue);
     void sl_invalidateAlignmentObject();
 

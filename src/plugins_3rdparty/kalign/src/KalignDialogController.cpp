@@ -56,7 +56,7 @@ public:
 };
 
 KalignDialogController::KalignDialogController(QWidget* w, const MultipleSequenceAlignment& _ma, KalignTaskSettings& _settings) 
-: QDialog(w), ma(_ma), settings(_settings)
+: QDialog(w), ma(_ma->getExplicitCopy()), settings(_settings)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "17469016");

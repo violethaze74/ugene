@@ -40,7 +40,7 @@
 namespace U2 {
 
 MuscleAlignDialogController::MuscleAlignDialogController(QWidget* w, const MultipleSequenceAlignment& _ma, MuscleTaskSettings& _settings) 
-    : QDialog(w), ma(_ma), settings(_settings)
+    : QDialog(w), ma(_ma->getExplicitCopy()), settings(_settings)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "17468978");

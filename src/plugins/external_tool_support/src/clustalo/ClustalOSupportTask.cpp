@@ -58,7 +58,8 @@ void ClustalOSupportTaskSettings::reset() {
 
 ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalOSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run ClustalO alignment task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa),
+      resultMA(MultipleSequenceAlignmentData::getEmptyMsa()),
+      inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),
       lock(NULL)

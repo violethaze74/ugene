@@ -587,7 +587,7 @@ QScriptValue WorkflowScriptLibrary::createAlignment(QScriptContext *ctx, QScript
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleSequenceAlignment align;
+    MultipleSequenceAlignment align = MultipleSequenceAlignmentData::createMsa();
     DNASequence seq = getSequence(ctx, engine, 0);
     if(seq.seq.isEmpty()) {
         return ctx->throwError(QObject::tr("Empty or invalid sequence"));

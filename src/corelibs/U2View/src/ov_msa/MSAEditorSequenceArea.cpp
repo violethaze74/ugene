@@ -2691,14 +2691,14 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
     Document *doc = msaObject->getDocument();
     SAFE_POINT(NULL != doc, tr("NULL document!"), );
 
-    MultipleAlignment ma = msaObject->getMsaCopy();
+    MultipleSequenceAlignment msa = msaObject->getMsaCopy();
     QVector<U2Region> unitedRows;
-    bool sorted = ma->sortRowsBySimilarity(unitedRows);
+    bool sorted = msa->sortRowsBySimilarity(unitedRows);
     collapsibleModel->reset(unitedRows);
 
     U2OpStatusImpl os;
     if (sorted) {
-        msaObject->updateRowsOrder(os, ma->getRowsIds());
+        msaObject->updateRowsOrder(os, msa->getRowsIds());
         SAFE_POINT_OP(os, );
     }
 

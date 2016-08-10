@@ -147,8 +147,8 @@ void AlignInAminoFormTask::run() {
 
     SAFE_POINT_EXT(NULL != clonedObj, setError(tr("NULL clonedObj in AlignInAminoFormTask::prepare!")),);
 
-    const MultipleSequenceAlignment newMa = clonedObj->getMsa();
-    const QList<MultipleAlignmentRow> rows = newMa->getRows();
+    const MultipleSequenceAlignment newMsa = clonedObj->getMsa();
+    const QList<MultipleAlignmentRow> rows = newMsa->getRows();
 
     //Create gap map from amino-acid alignment
     foreach (const MultipleAlignmentRow &row, rows) {

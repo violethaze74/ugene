@@ -55,7 +55,7 @@ bool PairwiseAlignmentHirschbergTaskSettings::convertCustomSettings() {
 }
 
 PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings) :
-    PairwiseAlignmentTask(TaskFlag_NoRun), settings(_settings), kalignSubTask(NULL), workflowKalignSubTask(NULL), ma(NULL) {
+    PairwiseAlignmentTask(TaskFlag_NoRun), settings(_settings), kalignSubTask(NULL), workflowKalignSubTask(NULL), ma(MultipleSequenceAlignmentData::createMsa()) {
 
     SAFE_POINT(settings != NULL, "Task settings are not defined.", );
     SAFE_POINT(settings->convertCustomSettings() && settings->isValid(), "Invalide task settings.", );

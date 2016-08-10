@@ -62,7 +62,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
     MultipleSequenceAlignmentObject* msaObj = ctx->getMSAObject();
     if (msaObj != NULL) {
         QVector<U2Region> unitedRows;
-        MultipleSequenceAlignment ma(msaObj->getMsaCopy());
+        MultipleSequenceAlignment ma = msaObj->getMsaCopy();
         ma->sortRowsBySimilarity(unitedRows);
         if(unitedRows.size() < 2)
             groupStatisticsCheck->setEnabled(false);
@@ -362,6 +362,7 @@ Task::ReportResult DistanceMatrixMSAProfileTask::report() {
 }
 
 DistanceMatrixMSAProfileTaskSettings::DistanceMatrixMSAProfileTaskSettings() :
+    ma(MultipleSequenceAlignmentData::createMsa()),
     usePercents(false),
     excludeGaps(false),
     showGroupStatistic(false),

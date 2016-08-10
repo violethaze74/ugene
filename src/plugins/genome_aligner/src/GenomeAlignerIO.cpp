@@ -118,6 +118,7 @@ GenomeAlignerCommunicationChanelReader::~GenomeAlignerCommunicationChanelReader(
 /* GenomeAlignerMsaWriter                                        */
 /************************************************************************/
 GenomeAlignerMsaWriter::GenomeAlignerMsaWriter() {
+    result = MultipleSequenceAlignmentData::getEmptyMsa();
     writtenReadsCount = 0;
 }
 

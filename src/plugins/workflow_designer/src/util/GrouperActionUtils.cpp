@@ -271,7 +271,8 @@ QVariantMap MergeSequencePerformer::getParameters() const {
 QString MergeSequencePerformer::PREV_SEQ_LENGTH = QString("prev-seq-length");
 
 Sequence2MSAPerformer::Sequence2MSAPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context)
-: ActionPerformer(outSlot, action, context)
+: ActionPerformer(outSlot, action, context),
+  result(MultipleSequenceAlignmentData::getEmptyMsa())
 {
 
 }
@@ -325,7 +326,8 @@ QVariant Sequence2MSAPerformer::finishAction(U2OpStatus &) {
 }
 
 MergerMSAPerformer::MergerMSAPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context)
-: ActionPerformer(outSlot, action, context)
+: ActionPerformer(outSlot, action, context),
+  result(MultipleSequenceAlignmentData::getEmptyMsa())
 {
 
 }

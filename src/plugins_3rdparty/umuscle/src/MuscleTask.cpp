@@ -65,7 +65,7 @@ void MuscleTaskSettings::reset() {
     maxSecs = 0;
     stableMode = true;
     regionToAlign.startPos = regionToAlign.length = 0;
-    profile.clear();
+    profile = MultipleSequenceAlignmentData::createMsa();
     alignRegion = false;
     inputFilePath = "";
     mode = Default;
@@ -74,7 +74,9 @@ void MuscleTaskSettings::reset() {
 MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSettings& _config)
     : Task(tr("MUSCLE alignment"), TaskFlags_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
       config(_config),
-      inputMA(ma->getExplicitCopy())
+      inputMA(ma->getExplicitCopy()),
+      resultMA(MultipleSequenceAlignmentData::createMsa()),
+      resultSubMA(MultipleSequenceAlignmentData::createMsa())
 {
     GCOUNTER( cvar, tvar, "MuscleTask" );
     config.nThreads = (config.nThreads == 0 ? AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount() : config.nThreads);
@@ -100,7 +102,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSett
     resultMA->setName(inputAlName);
     resultSubMA->setName(inputAlName);
 
-    inputSubMA = inputMA;
+    inputSubMA = inputMA->getExplicitCopy();
     if (config.alignRegion && config.regionToAlign.length != inputMA->getLength()) {
         SAFE_POINT_EXT(config.regionToAlign.length > 0,
             setError(tr("Incorrect region to align")), );

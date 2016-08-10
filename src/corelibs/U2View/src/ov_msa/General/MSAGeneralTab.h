@@ -44,7 +44,7 @@ signals:
     void si_copyFormatted();
 
 public slots:
-    void sl_alignmentChanged(const MultipleSequenceAlignment& al, const MaModificationInfo& modInfo);
+    void sl_alignmentChanged();
     void sl_algorithmChanged(const QString& algoId);
     void sl_thresholdChanged(int value);
     void sl_algorithmSelectionChanged(int index);

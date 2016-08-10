@@ -72,7 +72,7 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MSAEditorUI *_ui)
     connect(ui->seqArea->getHBar(), SIGNAL(actionTriggered(int)), SLOT(sl_onScrollBarActionTriggered(int)));
 
     connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MaModificationInfo &)),
-                                    SLOT(sl_alignmentChanged(const MultipleSequenceAlignment &, const MaModificationInfo &)));
+                                    SLOT(sl_alignmentChanged()));
 
     connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView * , QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
@@ -501,7 +501,7 @@ void MSAEditorConsensusArea::sl_startChanged(const QPoint& p, const QPoint& prev
     update();
 }
 
-void MSAEditorConsensusArea::sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&) {
+void MSAEditorConsensusArea::sl_alignmentChanged() {
     updateConsensusAlgorithm();
     completeRedraw = true;
     update();

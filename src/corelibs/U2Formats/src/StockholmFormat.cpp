@@ -569,7 +569,7 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
     QStringList names_list;
     QString filename = io->getURL().baseFileName();
     while( !io->isEof() ) {
-        MultipleSequenceAlignment msa;
+        MultipleSequenceAlignment msa = MultipleSequenceAlignmentData::createMsa();
         AnnotationBank ann_bank;
         QString name;
         bool notCanceled = true;

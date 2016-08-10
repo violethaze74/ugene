@@ -65,9 +65,7 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor* _msa)
 
 }
 
-void MSAGeneralTab::sl_alignmentChanged(const MultipleSequenceAlignment& al, const MaModificationInfo& modInfo) {
-    Q_UNUSED(al);
-    Q_UNUSED(modInfo);
+void MSAGeneralTab::sl_alignmentChanged() {
     alignmentLength->setText(QString::number(msa->getAlignmentLen()));
     alignmentHeight->setText(QString::number(msa->getNumSequences()));
 }
@@ -144,7 +142,7 @@ void MSAGeneralTab::connectSignals() {
     // Extern signals
     connect(msa->getMSAObject(),
             SIGNAL(si_alignmentChanged(MultipleSequenceAlignment, MaModificationInfo)),
-            SLOT(sl_alignmentChanged(MultipleSequenceAlignment, MaModificationInfo)));
+            SLOT(sl_alignmentChanged()));
 
         //out
     connect(this, SIGNAL(si_algorithmChanged(QString)),

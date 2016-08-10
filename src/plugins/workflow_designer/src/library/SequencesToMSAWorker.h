@@ -68,7 +68,7 @@ class MSAFromSequencesTask : public Task {
     Q_OBJECT
 public:
     MSAFromSequencesTask(const QList<DNASequence>& sequences)
-        : Task(tr("MSAFromSequencesTask"), TaskFlag_None), sequences_(sequences), ma(NULL) {}
+        : Task(tr("MSAFromSequencesTask"), TaskFlag_None), sequences_(sequences), ma(MultipleSequenceAlignmentData::getEmptyMsa()) {}
     void run();
     MultipleSequenceAlignment getResult() const { return ma; }
 private:

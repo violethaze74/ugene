@@ -890,7 +890,7 @@ IMPLEMENT_TEST(MsaUnitTests, operNotEqual_equal) {
 
 IMPLEMENT_TEST(MsaUnitTests, operNotEqual_notEqual) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    MultipleSequenceAlignment almnt2;
+    MultipleSequenceAlignment almnt2 = MultipleSequenceAlignmentData::createMsa();
 
     bool res = (almnt != almnt2);
     CHECK_TRUE(res, "Operator!= returned 'False' unexpectedly!");

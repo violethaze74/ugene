@@ -70,6 +70,7 @@ enum DNAStatMSAProfileOutputFormat {
 class DNAStatMSAProfileTaskSettings {
 public:
     DNAStatMSAProfileTaskSettings(){
+        ma = MultipleSequenceAlignmentData::createMsa();
         outFormat = DNAStatMSAProfileOutputFormat_Show;
         usePercents = false;
         reportGaps = false;

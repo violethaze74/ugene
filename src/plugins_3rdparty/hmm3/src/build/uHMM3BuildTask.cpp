@@ -52,7 +52,7 @@ namespace U2 {
  ***********************************/
 
 UHMM3BuildTask::UHMM3BuildTask( const UHMM3BuildSettings& aset, const MultipleSequenceAlignment & amsa )
-: Task("", TaskFlag_None), settings( aset ), msa( amsa ), hmm( NULL ) {
+: Task("", TaskFlag_None), settings( aset ), msa(amsa->getExplicitCopy()), hmm( NULL ) {
     GCOUNTER( cvar, tvar, "UHMM3BuildTask" );
     setTaskName( tr( "Build HMM profile from %1 alignment" ).arg( msa->getName() ) );
     checkMsa();

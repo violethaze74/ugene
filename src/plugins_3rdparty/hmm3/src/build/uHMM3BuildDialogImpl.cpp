@@ -240,4 +240,11 @@ void UHMM3BuildDialogImpl::sl_esetESWRadioButtonChanged( bool checked ) {
     esetESWDoubleSpinBox->setEnabled( checked );
 }
 
+UHMM3BuildDialogModel::UHMM3BuildDialogModel()
+    : alignment(MultipleSequenceAlignmentData::getEmptyMsa()),
+      alignmentUsing(false)
+{
+
+}
+
 } // GB2

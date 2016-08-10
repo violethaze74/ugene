@@ -31,6 +31,8 @@ namespace U2 {
 class SaveDocumentController;
 
 struct UHMM3BuildDialogModel {
+    UHMM3BuildDialogModel();
+
     UHMM3BuildTaskSettings  buildSettings;
     
     /* one of this is used */

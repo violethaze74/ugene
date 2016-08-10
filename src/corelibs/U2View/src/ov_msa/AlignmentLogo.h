@@ -46,7 +46,7 @@ enum SequenceType {Auto, NA, AA};
 class U2VIEW_EXPORT AlignmentLogoSettings {
 public:
 
-    AlignmentLogoSettings(const MultipleSequenceAlignment& _ma) : ma(_ma) {
+    AlignmentLogoSettings(const MultipleSequenceAlignment& _ma) : ma(_ma->getExplicitCopy()) {
         for (int i = 0; i < 256; i++) {
             colorScheme[i] = Qt::black;
         }
@@ -110,6 +110,9 @@ public:
     int                     startPos;
     int                     len;
     QColor                  colorScheme[256];
+
+private:
+    AlignmentLogoSettings();
 };
 
 /************************************************************************/

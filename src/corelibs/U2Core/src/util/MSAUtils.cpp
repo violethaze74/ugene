@@ -213,7 +213,7 @@ QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool tr
 }
 
 
-bool MSAUtils::checkPackedModelSymmetry(MultipleSequenceAlignment& ali, U2OpStatus& ti) {
+bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2OpStatus& ti) {
     if (ali->getLength() == 0) {
         ti.setError(tr("Alignment is empty!"));
         return false;

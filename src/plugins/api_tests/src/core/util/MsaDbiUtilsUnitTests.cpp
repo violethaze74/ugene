@@ -1760,7 +1760,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, updateMsa_newSequence) {
 
     // Export an alignment from the dbi to the memory (to set actual IDs)
     MultipleSequenceAlignmentExporter exporter;
-    MultipleSequenceAlignment expMa;
+    MultipleSequenceAlignment expMa = MultipleSequenceAlignmentData::createMsa();
     expMa = exporter.getAlignment(dbiRef, msaId, os);
     CHECK_NO_ERROR(os);
 

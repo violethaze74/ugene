@@ -49,7 +49,7 @@ public:
     static int getRowIndexByName(const MultipleAlignment &ma, const QString& name);
 
     //checks that alignment is not empty and all packed sequence parts has equal length
-    static bool checkPackedModelSymmetry(MultipleSequenceAlignment& ali, U2OpStatus& ti);
+    static bool checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2OpStatus& ti);
 
     static MultipleSequenceAlignmentObject * seqDocs2msaObj(QList<Document*> doc, const QVariantMap& hints, U2OpStatus& os);
     static MultipleSequenceAlignmentObject * seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy = false);

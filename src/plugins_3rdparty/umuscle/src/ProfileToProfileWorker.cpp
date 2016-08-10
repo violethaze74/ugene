@@ -122,6 +122,7 @@ ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment &mast
     : Task(tr("Align profile to profile with MUSCLE"), TaskFlag_NoRun),
       masterMsa(masterMsa->getExplicitCopy()),
       secondMsa(secondMsa->getExplicitCopy()),
+      result(MultipleSequenceAlignmentData::createMsa()),
       seqIdx(0),
       subtaskCount(0)
 {
