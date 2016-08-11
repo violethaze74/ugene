@@ -216,7 +216,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 foreach(const U2Region &reg, unitedRows) {
                     MultipleAlignmentRow &row = s.ma->getRow(reg.startPos + qrand() % reg.length);
                     row->setName(QString("Group %1: ").arg(i) + "(" + row->getName() + ")");
-                    rows.append(s.ma->getMsaRow(reg.startPos + qrand() % reg.length));
+                    rows.append(s.ma->getMsaRow(reg.startPos + qrand() % reg.length)->getCopy());
 
                     resultText += "<tr><td><b>" + QString("Group %1: ").arg(i) + "</b></td><td>";
                     for (int x = reg.startPos; x < reg.endPos(); x++) {

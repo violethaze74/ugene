@@ -327,10 +327,10 @@ void MsaDbiUtils::getStartAndEndSequencePositions(const QByteArray &seq, const Q
             }
             i++;
         }
-        startPosInSeq = MsaRowUtils::getUngappedPosition(gaps, pos + i);
+        startPosInSeq = MsaRowUtils::getUngappedPosition(gaps, seq.length(), pos + i);
     }
     else {
-        startPosInSeq = MsaRowUtils::getUngappedPosition(gaps, pos);
+        startPosInSeq = MsaRowUtils::getUngappedPosition(gaps, seq.length(), pos);
     }
 
     // Calculate end position in the sequence
@@ -352,10 +352,10 @@ void MsaDbiUtils::getStartAndEndSequencePositions(const QByteArray &seq, const Q
                 }
                 i++;
             }
-            endPosInSeq = MsaRowUtils::getUngappedPosition(gaps, endRegionPos + i);
+            endPosInSeq = MsaRowUtils::getUngappedPosition(gaps, seq.length(), endRegionPos + i);
         }
         else {
-            endPosInSeq = MsaRowUtils::getUngappedPosition(gaps, endRegionPos);
+            endPosInSeq = MsaRowUtils::getUngappedPosition(gaps, seq.length(), endRegionPos);
         }
     }
 }

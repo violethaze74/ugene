@@ -138,7 +138,7 @@ char MultipleChromatogramAlignmentRowData::charAt(SequenceType sequenceType, int
 }
 
 ushort MultipleChromatogramAlignmentRowData::traceValueAt(Trace trace, int pos) const {
-    int ungappedPos = MsaRowUtils::getUngappedPosition(getGapModel(), pos, false);
+    int ungappedPos = MsaRowUtils::getUngappedPosition(getGapModel(), getDataLength(), pos, false);
     if (-1 == ungappedPos) {
         return 0;
     }

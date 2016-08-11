@@ -245,13 +245,13 @@ void MultipleAlignmentRowData::removeData(int pos, int count, U2OpStatus &os) {
 }
 
 int MultipleAlignmentRowData::getUngappedPosition(int pos) const {
-    return MsaRowUtils::getUngappedPosition(gaps, pos);
+    return MsaRowUtils::getUngappedPosition(gaps, getDataLength(), pos);
 }
 
 int MultipleAlignmentRowData::getDataSize(int before) const {
     const int rowLength = getRowLengthWithoutTrailing();
     const int trimmedRowPos = (before < rowLength ? before : rowLength);
-    return MsaRowUtils::getUngappedPosition(gaps, trimmedRowPos, true);
+    return MsaRowUtils::getUngappedPosition(gaps, getDataLength(), trimmedRowPos, true);
 }
 
 bool MultipleAlignmentRowData::isRowContentEqual(const MultipleAlignmentRow &row) const {
@@ -337,7 +337,17 @@ void MultipleAlignmentRowData::removeTrailingGaps() {
         return;
     }
 
-    MsaRowUtils::chopGapModel(gaps, getRowLengthWithoutTrailing());
+    int acceptedGaps = 0;
+    qint64 accumulatedLength = getDataLength();
+    foreach (const U2MaGap &gap, gaps) {
+        if (gap.offset >= accumulatedLength) {
+            break;
+        }
+        accumulatedLength += gap.gap;
+        acceptedGaps++;
+    }
+
+    gaps = gaps.mid(0, acceptedGaps);
 }
 
 void MultipleAlignmentRowData::mergeConsecutiveGaps() {

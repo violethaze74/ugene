@@ -219,7 +219,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeqWithGaps) {
     QList<U2MaGap> gaps;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);
-    CHECK_EQUAL("Failed to create a multiple alignment row!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to create a multiple alignment row", os.getError(), "opStatus");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_gapPositionTooBig) {
@@ -232,7 +232,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_gapPositionTooBig) {
     gaps << gapBeginning << gapMiddle1 << gapMiddle2;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);
-    CHECK_EQUAL("Failed to create a multiple alignment row!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to create a multiple alignment row", os.getError(), "opStatus");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapPos) {
@@ -243,7 +243,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapPos) {
     gaps << invalidGap;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);
-    CHECK_EQUAL("Failed to create a multiple alignment row!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to create a multiple alignment row", os.getError(), "opStatus");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapOffset) {
@@ -254,7 +254,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapOffset) {
     gaps << invalidGap;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);
-    CHECK_EQUAL("Failed to create a multiple alignment row!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to create a multiple alignment row", os.getError(), "opStatus");
 }
 
 /** Tests rowName */
@@ -306,7 +306,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, toByteArray_incorrectLength) {
     MultipleSequenceAlignmentRow row = MsaRowTestUtils::initTestRowWithGaps(almnt);
     U2OpStatusImpl os;
     QByteArray bytes = row->toByteArray(MsaRowTestUtils::rowWithGapsLength - 1, os);
-    CHECK_EQUAL("Failed to get row data!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to get row data", os.getError(), "opStatus");
     CHECK_EQUAL("", QString(bytes), "row data");
 }
 
@@ -428,7 +428,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, append_invalidLength) {
     U2OpStatusImpl os;
     almnt->appendRow(0, row->getRowLength() - 1, anotherRow, os);
     row = almnt->getMsaRow(0);
-    CHECK_EQUAL("Failed to append one row to another!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to append one row to another", os.getError(), "opStatus");
     CHECK_EQUAL("---AG-T", MsaRowTestUtils::getRowData(row), "row data");
 }
 
@@ -679,7 +679,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, insertGaps_tooBigPosition) {
     U2OpStatusImpl os;
     almnt->insertGaps(0, 10, 1, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
-    CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to insert gaps into an alignment", os.getError(), "opStatus");
     CHECK_EQUAL("---AG-T", MsaRowTestUtils::getRowData(row), "row data");
     CHECK_EQUAL(2, row->getGapModel().count(), "gaps number");
 }
@@ -699,7 +699,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, insertGaps_negativeNumOfChars) {
     U2OpStatusImpl os;
     almnt->insertGaps(0, 1, -1, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
-    CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to insert gaps into an alignment", os.getError(), "opStatus");
     CHECK_EQUAL("---AG-T", MsaRowTestUtils::getRowData(row), "row data");
 }
 
@@ -887,7 +887,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, remove_negativePosition) {
     U2OpStatusImpl os;
     almnt->removeRowData(0, -1, 1, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
-    CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
     CHECK_EQUAL("A---ACG--GTT-A-C---G", MsaRowTestUtils::getRowData(row), "row data");
 }
 
@@ -897,7 +897,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, remove_negativeNumOfChars) {
     U2OpStatusImpl os;
     almnt->removeRowData(0, 1, -1, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
-    CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
     CHECK_EQUAL("A---ACG--GTT-A-C---G", MsaRowTestUtils::getRowData(row), "row data");
 }
 
@@ -1049,8 +1049,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_sameContent) {
     bool result = firstRow->isRowContentEqual(secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
-    CHECK_TRUE(firstRow == secondRow, "Incorrect 'operator=='!");
-    CHECK_FALSE(firstRow != secondRow, "Incorrect 'operator!='!");
+    CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
+    CHECK_FALSE(*firstRow != *secondRow, "Incorrect 'operator!='!");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_noGaps) {
@@ -1063,8 +1063,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_noGaps) {
     bool result = firstRow->isRowContentEqual(secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
-    CHECK_TRUE(firstRow == secondRow, "Incorrect 'operator=='!");
-    CHECK_FALSE(firstRow != secondRow, "Incorrect 'operator!='!");
+    CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
+    CHECK_FALSE(*firstRow != *secondRow, "Incorrect 'operator!='!");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInFirst) {
@@ -1078,8 +1078,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInFirst) {
     bool result = firstRow->isRowContentEqual(secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
-    CHECK_TRUE(firstRow == secondRow, "Incorrect 'operator=='!");
-    CHECK_FALSE(firstRow != secondRow, "Incorrect 'operator!='!");
+    CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
+    CHECK_FALSE(*firstRow != *secondRow, "Incorrect 'operator!='!");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInSecond) {
@@ -1093,8 +1093,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInSecond) {
     bool result = firstRow->isRowContentEqual(secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
-    CHECK_TRUE(firstRow == secondRow, "Incorrect 'operator=='!");
-    CHECK_FALSE(firstRow != secondRow, "Incorrect 'operator!='!");
+    CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
+    CHECK_FALSE(*firstRow != *secondRow, "Incorrect 'operator!='!");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInBoth) {
@@ -1108,8 +1108,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_trailingInBoth) {
     bool result = firstRow->isRowContentEqual(secondRow);
     CHECK_TRUE(result, "The first and the second rows are NOT equal unexpectedly!");
 
-    CHECK_TRUE(firstRow == secondRow, "Incorrect 'operator=='!");
-    CHECK_FALSE(firstRow != secondRow, "Incorrect 'operator!='!");
+    CHECK_TRUE(*firstRow == *secondRow, "Incorrect 'operator=='!");
+    CHECK_FALSE(*firstRow != *secondRow, "Incorrect 'operator!='!");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsGap) {
@@ -1125,8 +1125,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsGap) {
     bool result = firstRow->isRowContentEqual(secondRow);
     CHECK_FALSE(result, "The first and the second rows are EQUAL unexpectedly!");
 
-    CHECK_FALSE(firstRow == secondRow, "Incorrect 'operator=='!");
-    CHECK_TRUE(firstRow != secondRow, "Incorrect 'operator!='!");
+    CHECK_FALSE(*firstRow == *secondRow, "Incorrect 'operator=='!");
+    CHECK_TRUE(*firstRow != *secondRow, "Incorrect 'operator!='!");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsOffset) {
@@ -1142,8 +1142,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffGapModelsOffset) {
     bool result = firstRow->isRowContentEqual(secondRow);
     CHECK_FALSE(result, "The first and the second rows are EQUAL unexpectedly!");
 
-    CHECK_FALSE(firstRow == secondRow, "Incorrect 'operator=='!");
-    CHECK_TRUE(firstRow != secondRow, "Incorrect 'operator!='!");
+    CHECK_FALSE(*firstRow == *secondRow, "Incorrect 'operator=='!");
+    CHECK_TRUE(*firstRow != *secondRow, "Incorrect 'operator!='!");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffNumOfGaps) {
@@ -1159,8 +1159,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffNumOfGaps) {
     bool result = firstRow->isRowContentEqual(secondRow);
     CHECK_FALSE(result, "The first and the second rows are EQUAL unexpectedly!");
 
-    CHECK_FALSE(firstRow == secondRow, "Incorrect 'operator=='!");
-    CHECK_TRUE(firstRow != secondRow, "Incorrect 'operator!='!");
+    CHECK_FALSE(*firstRow == *secondRow, "Incorrect 'operator=='!");
+    CHECK_TRUE(*firstRow != *secondRow, "Incorrect 'operator!='!");
 }
 
 IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffSequences) {
@@ -1175,8 +1175,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, rowsEqual_diffSequences) {
     bool result = firstRow->isRowContentEqual(secondRow);
     CHECK_FALSE(result, "The first and the second rows are EQUAL unexpectedly!");
 
-    CHECK_FALSE(firstRow == secondRow, "Incorrect 'operator=='!");
-    CHECK_TRUE(firstRow != secondRow, "Incorrect 'operator!='!");
+    CHECK_FALSE(*firstRow == *secondRow, "Incorrect 'operator=='!");
+    CHECK_TRUE(*firstRow != *secondRow, "Incorrect 'operator!='!");
 }
 
 /** Tests ungapped */
@@ -1219,7 +1219,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_empty) {
     MsaRowTestUtils::initEmptyRow(almnt);
     U2OpStatusImpl os;
     almnt->crop(0, 1, os);
-    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignment::crop"),
+    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL("", MsaRowTestUtils::getRowData(row), "row data");
@@ -1388,7 +1388,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_negativePosition) {
     U2OpStatusImpl os;
     almnt->crop(-1, 1, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
-    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignment::crop"),
+    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     CHECK_EQUAL("A---ACG--GTT-A-C---G", MsaRowTestUtils::getRowData(row), "row data");
 }
@@ -1399,7 +1399,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_negativeNumOfChars) {
     U2OpStatusImpl os;
     almnt->crop(1, -1, os);
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
-    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignment::crop"),
+    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     CHECK_EQUAL("A---ACG--GTT-A-C---G", MsaRowTestUtils::getRowData(row), "row data");
 }
@@ -1453,7 +1453,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_posMoreThanLength) {
     MsaRowTestUtils::initTestRowWithGaps(almnt);
     U2OpStatusImpl os;
     almnt->crop(13, 1, os);
-    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignment::crop"),
+    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
     CHECK_EQUAL(7, row->getRowLength(), "row length");

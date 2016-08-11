@@ -41,7 +41,7 @@ public:
      * Otherwise if true == 'allowGapInPos' and the gap symbol is located in 'pos' then the method returns
      * the position of a non-gap character left-most to the 'pos'.
      */
-    static int getUngappedPosition(const U2MaRowGapModel &gaps, int pos, bool allowGapInPos = false);
+    static int getUngappedPosition(const U2MaRowGapModel &gaps, int pureDataLength, int pos, bool allowGapInPos = false);
     static int getCoreStart(const U2MaRowGapModel &gaps);
 
     /**

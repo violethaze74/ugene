@@ -763,7 +763,7 @@ void Muscle_Load_Align_Compare_Task::run() {
                     stateInfo.setError(  QString("Aligned sequences \"%1\" length not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(l1).arg(l2) );
                     return;
                 }
-                if (maItem1!= maItem2) {
+                if (*maItem1 != *maItem2) {
                     stateInfo.setError(  QString("Aligned sequences \"%1\" not matched \"%2\", expected \"%3\"").arg(maItem1->getName()).arg(QString(maItem1->getCore())).arg(QString(maItem2->getCore())) );
                     return;
                 }

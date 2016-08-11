@@ -107,7 +107,7 @@ IMPLEMENT_TEST(MsaUnitTests, name_setName) {
 IMPLEMENT_TEST(MsaUnitTests, alphabet_ctor) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     if (NULL == almnt->getAlphabet()) {
-        SetError("NULL alphabet!");
+        SetError("NULL alphabet");
     }
     CHECK_EQUAL(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), almnt->getAlphabet()->getId(), "alphabet ID");
 }
@@ -120,7 +120,7 @@ IMPLEMENT_TEST(MsaUnitTests, alphabet_setAlphabet) {
     almnt->setAlphabet(newAlphabet);
 
     if (NULL == almnt->getAlphabet() || NULL == newAlphabet) {
-        SetError("NULL alphabet!");
+        SetError("NULL alphabet");
     }
     CHECK_EQUAL(newAlphabet->getId(), almnt->getAlphabet()->getId(), "new alignment ID");
 }
@@ -141,12 +141,12 @@ IMPLEMENT_TEST(MsaUnitTests, info_setGet) {
 /** Tests length */
 IMPLEMENT_TEST(MsaUnitTests, length_isEmptyFalse) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    CHECK_FALSE(almnt->isEmpty(), "Method isEmpty() returned 'true' unexpectedly!");
+    CHECK_FALSE(almnt->isEmpty(), "Method isEmpty() returned 'true' unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, length_isEmptyTrue) {
     MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa();
-    CHECK_TRUE(almnt->isEmpty(), "Method isEmpty() returned 'false' unexpectedly!");
+    CHECK_TRUE(almnt->isEmpty(), "Method isEmpty() returned 'false' unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, length_get) {
@@ -187,7 +187,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_biggerLength) {
     int newLength = 100;
     almnt->setLength(newLength);
     bool result = almnt->trim();
-    CHECK_TRUE(result, "Method trim() returned 'false' unexpectedly!");
+    CHECK_TRUE(result, "Method trim() returned 'false' unexpectedly");
     CHECK_EQUAL(9, almnt->getLength(), "alignment length");
     CHECK_EQUAL("AG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "row data");
 }
@@ -202,7 +202,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_leadingGapColumns) {
 
     bool result = almnt->trim();
 
-    CHECK_TRUE(result, "Method trim() returned 'false' unexpectedly!");
+    CHECK_TRUE(result, "Method trim() returned 'false' unexpectedly");
     CHECK_EQUAL(8, almnt->getLength(), "alignment length");
     CHECK_EQUAL("-AG-T---", MsaTestUtils::getRowData(almnt, 0), "first row data");
     CHECK_EQUAL("AG-CT-TA", MsaTestUtils::getRowData(almnt, 1), "second row data");
@@ -211,7 +211,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_leadingGapColumns) {
 IMPLEMENT_TEST(MsaUnitTests, trim_nothingToTrim) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     bool result = almnt->trim();
-    CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
+    CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly");
     CHECK_EQUAL(9, almnt->getLength(), "alignment length");
     CHECK_EQUAL("AG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "row data");
 }
@@ -224,7 +224,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_rowWithoutGaps) {
 
     bool result = almnt->trim();
 
-    CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
+    CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly");
     CHECK_EQUAL(12, almnt->getLength(), "alignment length");
     CHECK_EQUAL("ACGTAGTCGATC", MsaTestUtils::getRowData(almnt, 0), "row data");
 }
@@ -232,7 +232,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_rowWithoutGaps) {
 IMPLEMENT_TEST(MsaUnitTests, trim_empty) {
     MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa();
     bool result = almnt->trim();
-    CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
+    CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, trim_trailingGapInOne) {
@@ -245,7 +245,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_trailingGapInOne) {
 
     bool result = almnt->trim();
 
-    CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly!");
+    CHECK_FALSE(result, "Method trim() returned 'true' unexpectedly");
     CHECK_EQUAL(4, almnt->getLength(), "alignment length");
     CHECK_EQUAL("ACGT", MsaTestUtils::getRowData(almnt, 0), "first row data");
     CHECK_EQUAL("CAC-", MsaTestUtils::getRowData(almnt, 1), "second row data");
@@ -256,7 +256,7 @@ IMPLEMENT_TEST(MsaUnitTests, trim_trailingGapInOne) {
 IMPLEMENT_TEST(MsaUnitTests, simplify_withGaps) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     bool result = almnt->simplify();
-    CHECK_TRUE(result, "Method simplify() returned 'false' unexpectedly!");
+    CHECK_TRUE(result, "Method simplify() returned 'false' unexpectedly");
     CHECK_EQUAL(7, almnt->getLength(), "alignment length");
     CHECK_EQUAL("AGT----", MsaTestUtils::getRowData(almnt, 0), "first row data");
     CHECK_EQUAL("AGCTTAA", MsaTestUtils::getRowData(almnt, 1), "second row data");
@@ -270,7 +270,7 @@ IMPLEMENT_TEST(MsaUnitTests, simplify_withoutGaps) {
 
     bool result = almnt->simplify();
 
-    CHECK_FALSE(result, "Method simplify() returned 'true' unexpectedly!");
+    CHECK_FALSE(result, "Method simplify() returned 'true' unexpectedly");
     CHECK_EQUAL(12, almnt->getLength(), "alignment length");
     CHECK_EQUAL("ACGTAGTCGATC", MsaTestUtils::getRowData(almnt, 0), "row data");
 }
@@ -278,7 +278,7 @@ IMPLEMENT_TEST(MsaUnitTests, simplify_withoutGaps) {
 IMPLEMENT_TEST(MsaUnitTests, simplify_empty) {
     MultipleSequenceAlignment almnt = MultipleSequenceAlignmentData::createMsa();
     bool result = almnt->simplify();
-    CHECK_FALSE(result, "Method simplify() returned 'true' unexpectedly!");
+    CHECK_FALSE(result, "Method simplify() returned 'true' unexpectedly");
 }
 
 /** Tests sortRows */
@@ -483,40 +483,40 @@ IMPLEMENT_TEST(MsaUnitTests, insertGaps_negativeRowIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->insertGaps(-1, 4, 3, os);
-    CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to insert gaps into an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, insertGaps_tooBigRowIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->insertGaps(2, 4, 3, os);
-    CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to insert gaps into an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, insertGaps_negativePos) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->insertGaps(0, -1, 3, os);
-    CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to insert gaps into an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, insertGaps_tooBigPos) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->insertGaps(0, 10, 3, os);
-    CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to insert gaps into an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, insertGaps_negativeCount) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->insertGaps(0, 4, -1, os);
-    CHECK_EQUAL("Failed to insert gaps into an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to insert gaps into an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 /** Tests removeData */
@@ -534,40 +534,40 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeRowIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->removeRowData(-1, 0, 2, os);
-    CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigRowIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->removeRowData(2, 0, 2, os);
-    CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, removeChars_negativePos) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->removeRowData(1, -1, 2, os);
-    CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigPos) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->removeRowData(1, 10, 2, os);
-    CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeCount) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->removeRowData(1, 0, -1, os);
-    CHECK_EQUAL("Failed to remove chars from an alignment!", os.getError(), "opStatus");
-    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly!");
+    CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
+    CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
 
 /** Tests removeRegion */
@@ -770,7 +770,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeRow_negativeIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->removeRow(-1, os);
-    CHECK_EQUAL("Failed to remove a row!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to remove a row", os.getError(), "opStatus");
     CHECK_EQUAL(2, almnt->getNumRows(), "number of rows");
     CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
     CHECK_EQUAL("AG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "second row");
@@ -781,7 +781,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeRow_tooBigIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
     almnt->removeRow(2, os);
-    CHECK_EQUAL("Failed to remove a row!", os.getError(), "opStatus");
+    CHECK_EQUAL("Failed to remove a row", os.getError(), "opStatus");
     CHECK_EQUAL(2, almnt->getNumRows(), "number of rows");
     CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
     CHECK_EQUAL("AG-CT-TAA", MsaTestUtils::getRowData(almnt, 1), "second row");
@@ -884,16 +884,16 @@ IMPLEMENT_TEST(MsaUnitTests, operNotEqual_equal) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     MultipleSequenceAlignment almnt2 = MsaTestUtils::initTestAlignment();
 
-    bool res = (almnt != almnt2);
-    CHECK_FALSE(res, "Operator!= returned 'True' unexpectedly!");
+    bool res = (*almnt != *almnt2);
+    CHECK_FALSE(res, "Operator!= returned 'True' unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, operNotEqual_notEqual) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     MultipleSequenceAlignment almnt2 = MultipleSequenceAlignmentData::createMsa();
 
-    bool res = (almnt != almnt2);
-    CHECK_TRUE(res, "Operator!= returned 'False' unexpectedly!");
+    bool res = (*almnt != *almnt2);
+    CHECK_TRUE(res, "Operator!= returned 'False' unexpectedly");
 }
 
 /** Tests hasEmptyGapModel */
@@ -901,7 +901,7 @@ IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_gaps) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     bool res = almnt->hasEmptyGapModel();
 
-    CHECK_FALSE(res, "Method hasEmptyGapModel() returned 'True' unexpectedly!");
+    CHECK_FALSE(res, "Method hasEmptyGapModel() returned 'True' unexpectedly");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_noGaps) {
@@ -912,7 +912,7 @@ IMPLEMENT_TEST(MsaUnitTests, hasEmptyGapModel_noGaps) {
 
     bool res = almnt->hasEmptyGapModel();
 
-    CHECK_TRUE(res, "Method hasEmptyGapModel() returned 'False' unexpectedly!");
+    CHECK_TRUE(res, "Method hasEmptyGapModel() returned 'False' unexpectedly");
 }
 
 

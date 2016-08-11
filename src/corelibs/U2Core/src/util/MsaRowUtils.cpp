@@ -88,7 +88,7 @@ qint64 MsaRowUtils::getRowLengthWithoutTrailing(const QByteArray &seq, const U2M
     return rowLengthWithoutTrailingGap;
 }
 
-int MsaRowUtils::getUngappedPosition(const U2MaRowGapModel &gaps, int pos, bool allowGapInPos) {
+int MsaRowUtils::getUngappedPosition(const U2MaRowGapModel &gaps, int pureDataLength, int pos, bool allowGapInPos) {
     if (isGap(gaps, pos) && !allowGapInPos) {
         return -1;
     }
@@ -105,6 +105,11 @@ int MsaRowUtils::getUngappedPosition(const U2MaRowGapModel &gaps, int pos, bool 
             break;
         }
     }
+
+    if (pureDataLength + gapsLength <= pos && !allowGapInPos) {
+        return -1;
+    }
+
     return (pos - gapsLength);
 }
 

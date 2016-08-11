@@ -584,7 +584,10 @@ const MultipleAlignmentData & MultipleAlignmentData::operator+=(const MultipleAl
 bool MultipleAlignmentData::operator==(const MultipleAlignmentData &other) const {
     const bool lengthsAreEqual = (length == other.length);
     const bool alphabetsAreEqual = (alphabet == other.alphabet);
-    const bool rowsAreEqual = (rows == other.rows);
+    bool rowsAreEqual = (rows.size() == other.rows.size());
+    for (int i = 0; i < rows.size() && rowsAreEqual; i++) {
+     rowsAreEqual &= (*rows[i] == *other.rows[i]);
+    }
     return lengthsAreEqual && alphabetsAreEqual && rowsAreEqual;
 }
 

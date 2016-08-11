@@ -933,7 +933,7 @@ void SQLiteMsaDbi::addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const 
     // Ensure that the alignment length is correct
     qint64 msaLength = getMsaLength(msaId, os);
     if (maxRowLength > msaLength) {
-        updateMsaLength(msaId, maxRowLength, os);
+        updateMsaLengthCore(msaId, maxRowLength, os);
     }
 
     // Re-calculate position, if needed
