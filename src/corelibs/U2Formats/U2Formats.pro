@@ -75,6 +75,7 @@ HEADERS += src/ABIFormat.h \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_15_To_1_16.h \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_16_To_1_17.h \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_16_To_1_24.h \
+           src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_24_To_1_25.h \
            src/sqlite_dbi/SQLiteAssemblyDbi.h \
            src/sqlite_dbi/SQLiteAttributeDbi.h \
            src/sqlite_dbi/SQLiteBlobInputStream.h \
@@ -175,6 +176,7 @@ SOURCES += src/ABIFormat.cpp \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_15_To_1_16.cpp \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_16_To_1_17.cpp \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_16_To_1_24.cpp \
+           src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_24_To_1_25.cpp \
            src/sqlite_dbi/SQLiteAssemblyDbi.cpp \
            src/sqlite_dbi/SQLiteAttributeDbi.cpp \
            src/sqlite_dbi/SQLiteBlobInputStream.cpp \
