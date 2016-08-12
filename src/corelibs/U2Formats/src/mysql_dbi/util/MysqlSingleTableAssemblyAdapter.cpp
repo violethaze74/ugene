@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-//#include <QtSql/MysqlDbRef>
-
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2SafePoints.h>
 

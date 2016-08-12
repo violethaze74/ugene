@@ -43,6 +43,7 @@
 #include "util/upgraders/MysqlUpgraderFrom_1_15_To_1_16.h"
 #include "util/upgraders/MysqlUpgraderFrom_1_16_To_1_17.h"
 #include "util/upgraders/MysqlUpgraderFrom_1_16_To_1_24.h"
+#include "util/upgraders/MysqlUpgraderFrom_1_24_To_1_25.h"
 
 namespace U2 {
 
@@ -69,6 +70,7 @@ MysqlDbi::MysqlDbi()
     upgraders << new MysqlUpgraderFrom_1_15_To_1_16(this);
     upgraders << new MysqlUpgraderFrom_1_16_To_1_17(this);
     upgraders << new MysqlUpgraderFrom_1_16_To_1_24(this);
+    upgraders << new MysqlUpgraderFrom_1_24_To_1_25(this);
 }
 
 MysqlDbi::~MysqlDbi() {
