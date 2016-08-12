@@ -89,7 +89,6 @@ private:
     QVariantMap              hints;
     U2DbiRef                 hintedDbiRef;
     U2DbiRef                 localDbiRef;
-    GUrl                     destUrl;
     time_t                   startTime;
 };
 

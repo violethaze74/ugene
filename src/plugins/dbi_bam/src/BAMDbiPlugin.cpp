@@ -132,8 +132,7 @@ BAMImporterTask::BAMImporterTask(const GUrl& url, bool _useGui, const QVariantMa
     useGui(_useGui),
     sam(hints.value(SAM_HINT, false).toBool()),
     hints(hints),
-    hintedDbiRef(hints.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>()),
-    destUrl(NULL)
+    hintedDbiRef(hints.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>())
 {
     documentDescription = url.fileName();
     loadInfoTask = new LoadInfoTask( url, sam );

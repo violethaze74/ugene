@@ -27,7 +27,9 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Formats/AceImporter.h>
 
@@ -117,7 +119,8 @@ bool AceImportDialog::isValid() {
 }
 
 void AceImportDialog::applySettings() {
-    settings.insert(AceImporter::DEST_URL, saveController->getSaveFileName());
+    U2DbiRef ref(SQLITE_DBI_ID, saveController->getSaveFileName());
+    settings.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(ref));
 }
 
 void AceImportDialog::initSaveController() {
