@@ -38,5 +38,7 @@ private:
     void dropOldPrecedure(U2OpStatus &os, MysqlDbRef *dbRef) const;
 };
 
+}
+
 #endif // _U2_MYSQL_UPGRADER_FROM_1_24_TO_1_25_H_
 
