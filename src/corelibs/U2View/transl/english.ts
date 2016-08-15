@@ -3476,7 +3476,17 @@ You don&apos;t have enough rights to change file</translation>
 <context>
     <name>U2::BranchSettingsDialog</name>
     <message>
-        <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="75"/>
+        <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="44"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="43"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="77"/>
         <source>Select Color</source>
         <translation>Select Color</translation>
     </message>
@@ -4771,8 +4781,8 @@ Please, check external tools in the settings.</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="753"/>
-        <source> Please input valid annotation names </source>
-        <translation> Please input valid annotation names </translation>
+        <source> Please input valid annotation names. </source>
+        <translation> Please input valid annotation names. </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="759"/>
@@ -5360,13 +5370,13 @@ Please, check external tools in the settings.</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="145"/>
-        <source>Save subalignment</source>
-        <translation>Save subalignment</translation>
+        <source>Save subalignment...</source>
+        <translation>Save subalignment...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="149"/>
-        <source>Save sequence</source>
-        <translation>Save sequence</translation>
+        <source>Save sequence...</source>
+        <translation>Save sequence...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="153"/>
@@ -6626,34 +6636,39 @@ Simple overview is unavailable.</translation>
         <translation>Next</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="128"/>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="137"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="50"/>
+        <source>Close</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="129"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="138"/>
         <source>Search Complete</source>
         <translation>Search Complete</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="129"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="130"/>
         <source>The end of the annotation tree has been reached. Would you like to start the search from the beginning?</source>
         <translation>The end of the annotation tree has been reached. Would you like to start the search from the beginning?</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="138"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="139"/>
         <source>No results found</source>
         <translation>No results found</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="155"/>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="159"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="156"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="160"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="155"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="156"/>
         <source>Illegal qualifier name</source>
         <translation>Illegal qualifier name</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="159"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="160"/>
         <source>Illegal qualifier value</source>
         <translation>Illegal qualifier value</translation>
     </message>
@@ -6661,12 +6676,27 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::SecStructDialog</name>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="82"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="65"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
+        <source>Save</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="86"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="83"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="87"/>
         <source>Structure Type</source>
         <translation>Structure Type</translation>
     </message>

@@ -19,144 +19,132 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/AppContext.h>
+#include <QCoreApplication>
+#include <QDirIterator>
+#include <QMenu>
 
+#include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
+#include <U2Algorithm/DnaAssemblyAlgRegistry.h>
+#include <U2Algorithm/GenomeAssemblyRegistry.h>
+
+#include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/MultiTask.h>
-
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
-#include <U2View/DnaAssemblyUtils.h>
-#include <U2Core/MAlignmentObject.h>
-
 #include <U2Core/GAutoDeleteList.h>
-#include <U2View/AnnotatedDNAView.h>
-#include <U2View/ADVSequenceObjectContext.h>
-#include <U2View/ADVConstants.h>
-#include <U2View/ADVUtils.h>
-
-#include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultiTask.h>
 #include <U2Core/ScriptingToolRegistry.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ToolsMenu.h>
 
-#include <U2Test/XMLTestFormat.h>
+#include <U2View/ADVConstants.h>
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/ADVUtils.h>
+#include <U2View/AnnotatedDNAView.h>
+#include <U2View/DnaAssemblyUtils.h>
+#include <U2View/MSAEditor.h>
+#include <U2View/MSAEditorFactory.h>
+
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
+#include <U2Test/XMLTestFormat.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMenu>
-#endif
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDirIterator>
-
+#include "ETSProjectViewItemsContoller.h"
 #include "ExternalToolSupportPlugin.h"
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
-#include "utils/ExternalToolSupportAction.h"
-#include "utils/ExternalToolValidateTask.h"
-#include "ETSProjectViewItemsContoller.h"
-
-#include "clustalw/ClustalWSupport.h"
-#include "clustalw/ClustalWWorker.h"
-#include "clustalo/ClustalOSupport.h"
-#include "clustalo/ClustalOWorker.h"
-#include "mafft/MAFFTSupport.h"
-#include "mafft/MAFFTWorker.h"
-#include "tcoffee/TCoffeeSupport.h"
-#include "tcoffee/TCoffeeWorker.h"
-#include "mrbayes/MrBayesSupport.h"
-#include "mrbayes/MrBayesTests.h"
-#include "blast/FormatDBSupport.h"
+#include "R/RSupport.h"
+#include "R/RSupport.h"
+#include "bedtools/BedToolsWorkersLibrary.h"
+#include "bedtools/BedtoolsSupport.h"
+#include "bigWigTools/BedGraphToBigWigWorker.h"
+#include "bigWigTools/BigWigSupport.h"
 #include "blast/BlastAllSupport.h"
 #include "blast/BlastAllWorker.h"
+#include "blast/FormatDBSupport.h"
+#include "blast_plus/BlastDBCmdSupport.h"
 #include "blast_plus/BlastPlusSupport.h"
 #include "blast_plus/BlastPlusWorker.h"
-#include "blast_plus/BlastDBCmdSupport.h"
-#include "cap3/CAP3Support.h"
-#include "cap3/CAP3Worker.h"
+#include "blast_plus/RPSBlastSupportTask.h"
+#include "bowtie/BowtieSettingsWidget.h"
 #include "bowtie/BowtieSupport.h"
 #include "bowtie/BowtieTask.h"
-#include "bowtie/BowtieSettingsWidget.h"
-#include "bowtie/bowtie_tests/bowtieTests.h"
 #include "bowtie/BowtieWorker.h"
+#include "bowtie/bowtie_tests/bowtieTests.h"
+#include "bowtie2/Bowtie2SettingsWidget.h"
 #include "bowtie2/Bowtie2Support.h"
 #include "bowtie2/Bowtie2Task.h"
-#include "bowtie2/Bowtie2SettingsWidget.h"
 #include "bowtie2/Bowtie2Worker.h"
+#include "bwa/BwaMemWorker.h"
+#include "bwa/BwaSettingsWidget.h"
 #include "bwa/BwaSupport.h"
 #include "bwa/BwaTask.h"
-#include "bwa/BwaSettingsWidget.h"
+#include "bwa/BwaWorker.h"
 #include "bwa/bwa_tests/bwaTests.h"
-#include "samtools/SamToolsExtToolSupport.h"
-#include "samtools/TabixSupport.h"
-#include "vcftools/VcfConsensusWorker.h"
-#include "vcftools/VcfConsensusSupport.h"
-#include "spidey/SpideySupport.h"
-#include "spidey/SpideySupportTask.h"
+#include "cap3/CAP3Support.h"
+#include "cap3/CAP3Worker.h"
+#include "ceas/CEASReportWorker.h"
+#include "ceas/CEASSupport.h"
+#include "clustalo/ClustalOSupport.h"
+#include "clustalo/ClustalOWorker.h"
+#include "clustalw/ClustalWSupport.h"
+#include "clustalw/ClustalWWorker.h"
+#include "conduct_go/ConductGOSupport.h"
+#include "conduct_go/ConductGOWorker.h"
+#include "conservation_plot/ConservationPlotSupport.h"
+#include "conservation_plot/ConservationPlotWorker.h"
 #include "cufflinks/CuffdiffWorker.h"
 #include "cufflinks/CufflinksSupport.h"
 #include "cufflinks/CufflinksWorker.h"
 #include "cufflinks/CuffmergeWorker.h"
 #include "cufflinks/GffreadWorker.h"
-#include "tophat/TopHatSupport.h"
-#include "tophat/TopHatWorker.h"
-#include "ceas/CEASReportWorker.h"
-#include "ceas/CEASSupport.h"
-#include "macs/MACSWorker.h"
-#include "macs/MACSSupport.h"
-#include "peak2gene/Peak2GeneWorker.h"
-#include "peak2gene/Peak2GeneSupport.h"
-#include "conservation_plot/ConservationPlotWorker.h"
-#include "conservation_plot/ConservationPlotSupport.h"
-#include "seqpos/SeqPosWorker.h"
-#include "seqpos/SeqPosSupport.h"
-#include "conduct_go/ConductGOWorker.h"
-#include "conduct_go/ConductGOSupport.h"
-#include "python/PythonSupport.h"
-#include "perl/PerlSupport.h"
-#include "java/JavaSupport.h"
-#include "R/RSupport.h"
-#include "vcfutils/VcfutilsSupport.h"
-#include "samtools/BcfToolsSupport.h"
-#include "R/RSupport.h"
-#include "phyml/PhyMLSupport.h"
-#include "phyml/PhyMLTests.h"
-
-#include "bwa/BwaMemWorker.h"
-#include "bwa/BwaWorker.h"
-#include "bedtools/BedtoolsSupport.h"
-#include "bedtools/BedToolsWorkersLibrary.h"
-#include "bigWigTools/BigWigSupport.h"
-#include "bigWigTools/BedGraphToBigWigWorker.h"
-
 #include "cutadapt/CutadaptSupport.h"
 #include "cutadapt/CutadaptWorker.h"
-
-#include "spades/SpadesSupport.h"
-#include "spades/SpadesSettingsWidget.h"
-#include "spades/SpadesTask.h"
-#include "spades/SpadesWorker.h"
-
-#include "snpeff/SnpEffSupport.h"
-#include "snpeff/SnpEffWorker.h"
-
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
-
-
-#include <U2Algorithm/CDSearchTaskFactoryRegistry.h>
-#include <U2Algorithm/DnaAssemblyAlgRegistry.h>
-#include <U2Algorithm/GenomeAssemblyRegistry.h>
-#include <blast_plus/RPSBlastSupportTask.h>
-
+#include "hmmer/HmmerBuildWorker.h"
+#include "hmmer/HmmerSearchWorker.h"
+#include "hmmer/HmmerSupport.h"
+#include "java/JavaSupport.h"
+#include "macs/MACSSupport.h"
+#include "macs/MACSWorker.h"
+#include "mafft/MAFFTSupport.h"
+#include "mafft/MAFFTWorker.h"
+#include "mrbayes/MrBayesSupport.h"
+#include "mrbayes/MrBayesTests.h"
+#include "peak2gene/Peak2GeneSupport.h"
+#include "peak2gene/Peak2GeneWorker.h"
+#include "perl/PerlSupport.h"
+#include "phyml/PhyMLSupport.h"
+#include "phyml/PhyMLTests.h"
+#include "python/PythonSupport.h"
+#include "samtools/BcfToolsSupport.h"
+#include "samtools/SamToolsExtToolSupport.h"
+#include "samtools/TabixSupport.h"
+#include "seqpos/SeqPosSupport.h"
+#include "seqpos/SeqPosWorker.h"
+#include "snpeff/SnpEffSupport.h"
+#include "snpeff/SnpEffWorker.h"
+#include "spades/SpadesSettingsWidget.h"
+#include "spades/SpadesSupport.h"
+#include "spades/SpadesTask.h"
+#include "spades/SpadesWorker.h"
+#include "spidey/SpideySupport.h"
+#include "spidey/SpideySupportTask.h"
+#include "tcoffee/TCoffeeSupport.h"
+#include "tcoffee/TCoffeeWorker.h"
+#include "tophat/TopHatSupport.h"
+#include "tophat/TopHatWorker.h"
+#include "utils/ExternalToolSupportAction.h"
+#include "utils/ExternalToolValidateTask.h"
+#include "vcftools/VcfConsensusSupport.h"
+#include "vcftools/VcfConsensusWorker.h"
+#include "vcfutils/VcfutilsSupport.h"
 
 #define EXTERNAL_TOOL_SUPPORT_FACTORY_ID "ExternalToolSupport"
 #define TOOLS "tools"
@@ -324,10 +312,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     FormatDBSupport* makeBLASTDBTool = new FormatDBSupport(ET_MAKEBLASTDB);
     etRegistry->registerEntry(makeBLASTDBTool);
 
-    //MakeBLASTDB from GPU-BLAST+
-//     FormatDBSupport* gpuMakeBLASTDBTool = new FormatDBSupport(GPU_MAKEBLASTDB_TOOL_NAME); // https://ugene.unipro.ru/tracker/browse/UGENE-945
-//     etRegistry->registerEntry(gpuMakeBLASTDBTool);
-
     //BlastAll
     BlastAllSupport* blastallTool = new BlastAllSupport(ET_BLASTALL);
     etRegistry->registerEntry(blastallTool);
@@ -336,8 +320,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     etRegistry->registerEntry(blastNPlusTool);
     BlastPlusSupport* blastPPlusTool = new BlastPlusSupport(ET_BLASTP);
     etRegistry->registerEntry(blastPPlusTool);
-//     BlastPlusSupport* gpuBlastPPlusTool = new BlastPlusSupport(ET_GPU_BLASTP); // https://ugene.unipro.ru/tracker/browse/UGENE-945
-//     etRegistry->registerEntry(gpuBlastPPlusTool);
     BlastPlusSupport* blastXPlusTool = new BlastPlusSupport(ET_BLASTX);
     etRegistry->registerEntry(blastXPlusTool);
     BlastPlusSupport* tBlastNPlusTool = new BlastPlusSupport(ET_TBLASTN);
@@ -460,6 +442,10 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     FastQCSupport *fastqc = new FastQCSupport(ET_FASTQC);
     etRegistry->registerEntry(fastqc);
 
+    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL));
+    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL));
+    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL));
+
     if (AppContext::getMainWindow()) {
         ExternalToolSupportAction* formatDBAction= new ExternalToolSupportAction(tr("BLAST make database..."), this, QStringList(ET_FORMATDB));
         formatDBAction->setObjectName(ToolsMenu::BLAST_DB);
@@ -506,6 +492,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         GObjectViewWindowContext* spideyCtx = spideySupport->getViewContext();
         spideyCtx->setParent(this);
         spideyCtx->init();
+
+        HmmerContext *hmmerContext = new HmmerContext(this);
+        hmmerContext->init();
     }
 
     AppContext::getCDSFactoryRegistry()->registerFactory(new CDSearchLocalTaskFactory(), CDSearchFactoryRegistry::LocalSearch);
@@ -600,11 +589,27 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     etRegistry->setManager(&validationManager);
     validationManager.start();
 
-    //Add viewer for settings
+    registerSettingsController();
+
+    registerWorkers();
+
     if (AppContext::getMainWindow()) {
+        //Add project view service
+        services.push_back(new ExternalToolSupportService());
+    }
+}
+
+ExternalToolSupportPlugin::~ExternalToolSupportPlugin(){
+    ExternalToolSupportSettings::setExternalTools();
+}
+
+void ExternalToolSupportPlugin::registerSettingsController() {
+    if (NULL != AppContext::getMainWindow()) {
         AppContext::getAppSettingsGUI()->registerPage(new ExternalToolSupportSettingsPageController());
     }
-    //Add new workers to WD
+}
+
+void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::ClustalWWorkerFactory::init();
     LocalWorkflow::ClustalOWorkerFactory::init();
     LocalWorkflow::MAFFTWorkerFactory::init();
@@ -636,15 +641,8 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     LocalWorkflow::FastQCFactory::init();
     LocalWorkflow::CutAdaptFastqWorkerFactory::init();
     LocalWorkflow::BedtoolsIntersectWorkerFactory::init();
-
-    if (AppContext::getMainWindow()) {
-        //Add project view service
-        services.push_back(new ExternalToolSupportService());
-    }
-}
-
-ExternalToolSupportPlugin::~ExternalToolSupportPlugin(){
-    ExternalToolSupportSettings::setExternalTools();
+    LocalWorkflow::HmmerBuildWorkerFactory::init();
+    LocalWorkflow::HmmerSearchWorkerFactory::init();
 }
 
 //////////////////////////////////////////////////////////////////////////

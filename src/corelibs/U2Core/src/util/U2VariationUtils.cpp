@@ -66,7 +66,7 @@ AnnotationData U2VariationUtils::variantToAnnotation( const U2Variant &var ) {
 
     U2Region varRegion;
     varRegion.startPos = var.startPos;
-    varRegion.length = var.endPos == 0 ? 1 : ( var.endPos - var.startPos );
+    varRegion.length = var.endPos - var.startPos + 1;
 
     d.location->regions << varRegion;
     d.qualifiers << U2Qualifier( "public_id", var.publicId );
@@ -82,7 +82,7 @@ U2Feature U2VariationUtils::variantToFeature( const U2Variant& var ){
 
     res.id = var.id;
     res.name = "variation";
-    res.location.region = U2Region(var.startPos, var.endPos == 0 ? 1 : var.endPos - var.startPos);
+    res.location.region = U2Region(var.startPos, var.endPos - var.startPos + 1);
 
     return res;
 }

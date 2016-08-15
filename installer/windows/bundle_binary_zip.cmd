@@ -113,7 +113,6 @@ call %INSTALL_DIR%\copy_plugin.cmd external_tool_support
 call %INSTALL_DIR%\copy_plugin.cmd genome_aligner
 call %INSTALL_DIR%\copy_plugin.cmd gor4
 call %INSTALL_DIR%\copy_plugin.cmd hmm2
-call %INSTALL_DIR%\copy_plugin.cmd hmm3
 call %INSTALL_DIR%\copy_plugin.cmd kalign
 call %INSTALL_DIR%\copy_plugin.cmd linkdata_support
 call %INSTALL_DIR%\copy_plugin.cmd opencl_support

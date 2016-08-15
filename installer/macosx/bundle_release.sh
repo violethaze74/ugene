@@ -97,7 +97,6 @@ PLUGIN_LIST="annotator \
             genome_aligner \
             gor4 \
             hmm2 \
-            hmm3 \
             kalign \
             linkdata_support \
             opencl_support \

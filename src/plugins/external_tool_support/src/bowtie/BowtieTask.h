@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class BowtieBuildIndexTask : public Task {
+class BowtieBuildIndexTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BowtieBuildIndexTask(const QString &referencePath, const QString &indexPath, bool colorspace);
@@ -68,7 +68,7 @@ private:
     bool colorspace;
 };
 
-class BowtieAssembleTask : public Task {
+class BowtieAssembleTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BowtieAssembleTask(const DnaAssemblyToRefTaskSettings &settings);

@@ -22,10 +22,11 @@
 #ifndef _U2_DNA_ASSEMBLY_TASK_H_
 #define _U2_DNA_ASSEMBLY_TASK_H_
 
-#include <U2Core/Task.h>
+#include <U2Core/ExternalToolRunTask.h>
+#include <U2Core/DNASequence.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/MAlignment.h>
-#include <U2Core/DNASequence.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
@@ -77,7 +78,7 @@ private:
     QMap<QString, QVariant> customSettings;
 };
 
-class U2ALGORITHM_EXPORT DnaAssemblyToReferenceTask : public Task {
+class U2ALGORITHM_EXPORT DnaAssemblyToReferenceTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     DnaAssemblyToReferenceTask(const DnaAssemblyToRefTaskSettings &settings, TaskFlags flags = TaskFlags_FOSCOE, bool justBuildIndex = false);

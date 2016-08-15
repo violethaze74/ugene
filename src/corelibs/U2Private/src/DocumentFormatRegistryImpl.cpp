@@ -221,7 +221,7 @@ void DocumentFormatRegistryImpl::init() {
     AppContext::getDbiRegistry()->registerDbiFactory(new SQLiteDbiFactory());
     AppContext::getDbiRegistry()->registerDbiFactory(new MysqlDbiFactory());
 
-    DocumentFormatFlags flags(DocumentFormatFlag_SupportWriting);
+    DocumentFormatFlags flags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed);
     DbiDocumentFormat* sdbi = new DbiDocumentFormat(SQLiteDbiFactory::ID, BaseDocumentFormats::UGENEDB, tr("UGENE Database"), QStringList()<<"ugenedb", flags);
     registerFormat(sdbi);
 }

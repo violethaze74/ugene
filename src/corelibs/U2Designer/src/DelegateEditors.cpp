@@ -467,6 +467,10 @@ URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool mu
     *tags() = _tags;
 }
 
+QVariant URLDelegate::getDisplayValue(const QVariant &v) const {
+    return v.toString().isEmpty() ? QVariant(DelegateTags::getString(tags(), DelegateTags::PLACEHOLDER_TEXT)) : v;
+}
+
 URLWidget * URLDelegate::createWidget(QWidget *parent) const {
     URLWidget *result;
     if (noFilesMode) {

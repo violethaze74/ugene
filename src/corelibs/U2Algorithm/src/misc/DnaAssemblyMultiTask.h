@@ -23,14 +23,15 @@
 #define _U2_DNA_ASSEMBLY_MULTI_TASK_
 
 #include <U2Algorithm/DnaAssemblyTask.h>
-#include <U2Core/Task.h>
+
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrl.h>
 
 namespace U2 {
 
 class Document;
 
-class U2ALGORITHM_EXPORT DnaAssemblyMultiTask : public Task {
+class U2ALGORITHM_EXPORT DnaAssemblyMultiTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings& settings, bool viewResult = false, bool justBuildIndex = false);

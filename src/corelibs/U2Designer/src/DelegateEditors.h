@@ -90,6 +90,8 @@ public:
     URLDelegate(const QString& filter, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, const QString &format = "", bool noFilesMode = false);
     URLDelegate(const DelegateTags& tags, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, bool noFilesMode = false);
 
+    QVariant getDisplayValue(const QVariant &v) const;
+
     virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
         const QModelIndex &index) const;
     virtual PropertyWidget * createWizardWidget(U2OpStatus &os, QWidget *parent) const;

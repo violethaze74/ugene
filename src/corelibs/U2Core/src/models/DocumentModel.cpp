@@ -682,7 +682,9 @@ bool Document::unload(bool deleteObjects) {
 
     // deallocate objects
     if (deleteObjects) {
-        removeObjectsDataFromDbi(tmpObjects);
+        if (isDocumentOwnsDbiResources()) {
+            removeObjectsDataFromDbi(tmpObjects);
+        }
         qDeleteAll(tmpObjects);
     }
 

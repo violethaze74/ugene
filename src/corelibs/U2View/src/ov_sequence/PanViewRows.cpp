@@ -89,9 +89,17 @@ void PVRowsManager::addAnnotation(Annotation *a) {
     const SharedAnnotationData &data = a->getData();
     const QVector<U2Region> location = data->getRegions();
 
-    if (rowByName.contains(data->name)) {
-        foreach (PVRowData *row, rowByName[data->name]) {
-            if (row->fitToRow(location)) {
+    QString name;
+    bool isRestrictionSite = data->type == U2FeatureTypes::RestrictionSite;
+    if (isRestrictionSite) {
+        name = QObject::tr("Restriction Site");
+    } else {
+        name = data->name;
+    }
+
+    if (rowByName.contains(name)) {
+        foreach (PVRowData *row, rowByName[name]) {
+            if (row->fitToRow(location) || isRestrictionSite) {
                 row->annotations.append(a);
                 rowByAnnotation[a] = row;
                 return;
@@ -99,15 +107,18 @@ void PVRowsManager::addAnnotation(Annotation *a) {
         }
     }
 
-    PVRowData *row = new PVRowData(data->name);
+    PVRowData *row = new PVRowData(name);
+
     row->ranges << location;
     row->annotations.append(a);
-
     rowByAnnotation[a] = row;
 
     QList<PVRowData *>::iterator i = std::upper_bound(rows.begin(), rows.end(), row, compare_rows);
     rows.insert(i, row);
-    rowByName[data->name].append(row);
+    rowByName[name].append(row);
+    if (name != data->name) {
+        rowByName[data->name].append(row);
+    }
 }
 
 namespace {

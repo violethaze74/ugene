@@ -56,19 +56,7 @@ CalculateCoveragePerBaseOnRegionTask::~CalculateCoveragePerBaseOnRegionTask() {
 }
 
 void CalculateCoveragePerBaseOnRegionTask::run() {
-    DbiConnection con(dbiRef, stateInfo);
-    CHECK_OP(stateInfo, );
-    U2AssemblyDbi *assemblyDbi = con.dbi->getAssemblyDbi();
-    SAFE_POINT_EXT(NULL != assemblyDbi, setError(tr("Assembly DBI is NULL")), );
-
-    results->resize(region.length);
-
-    QScopedPointer<U2DbiIterator<U2AssemblyRead> > readsIterator(assemblyDbi->getReads(assemblyId, region, stateInfo));
-    while (readsIterator->hasNext()) {
-        const U2AssemblyRead read = readsIterator->next();
-        processRead(read);
-        CHECK_OP(stateInfo, );
-    }
+    U2AssemblyUtils::calculateCoveragePerBase(dbiRef, assemblyId, region, results, stateInfo);
 }
 
 const U2Region &CalculateCoveragePerBaseOnRegionTask::getRegion() const {
@@ -79,71 +67,6 @@ QVector<CoveragePerBaseInfo> *CalculateCoveragePerBaseOnRegionTask::takeResult()
     QVector<CoveragePerBaseInfo> *result = results;
     results = NULL;
     return result;
-}
-
-void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &read) {
-    const qint64 startPos = qMax(read->leftmostPos, region.startPos);
-    const qint64 endPos = qMin(read->leftmostPos + read->effectiveLen, region.endPos());
-    const U2Region regionToProcess = U2Region(startPos, endPos - startPos);
-
-    // we have used effective length of the read, so insertions/deletions are already taken into account
-    // cigarString can be longer than needed
-    QByteArray cigarString;
-    foreach (const U2CigarToken &cigar, read->cigar) {
-        cigarString += QByteArray(cigar.count, U2AssemblyUtils::cigar2Char(cigar.op));
-    }
-
-    if (read->leftmostPos < regionToProcess.startPos) {
-        cigarString = cigarString.mid(regionToProcess.startPos - read->leftmostPos);
-    }
-
-    for (int positionOffset = 0, cigarOffset = 0, deletionsCount = 0, insertionsCount = 0; regionToProcess.startPos + positionOffset < regionToProcess.endPos(); positionOffset++) {
-        char currentBase = 'N';
-        CoveragePerBaseInfo &info = (*results)[regionToProcess.startPos + positionOffset - region.startPos];
-        const U2CigarOp cigarOp = nextCigarOp(cigarString, cigarOffset, insertionsCount);
-        CHECK_OP(stateInfo, );
-
-        switch(cigarOp) {
-        case U2CigarOp_I:
-        case U2CigarOp_S:
-            // skip the insertion
-            continue;
-        case U2CigarOp_D:
-            // skip the deletion
-            deletionsCount++;
-            continue;
-        case U2CigarOp_N:
-            // skip the deletion
-            deletionsCount++;
-            break;
-        default:
-            currentBase = read->readSequence[positionOffset - deletionsCount + insertionsCount];
-            break;
-        }
-        info.basesCount[currentBase] = info.basesCount[currentBase] + 1;
-        info.coverage++;
-    }
-}
-
-U2CigarOp CalculateCoveragePerBaseOnRegionTask::nextCigarOp(const QByteArray &cigarString, int &index, int &insertionsCount) {
-    QString errString;
-    U2CigarOp cigarOp = U2CigarOp_Invalid;
-
-    do {
-        SAFE_POINT_EXT(index < cigarString.length(), setError(tr("Cigar string: out of bounds")), U2CigarOp_Invalid);
-        cigarOp = U2AssemblyUtils::char2Cigar(cigarString[index], errString);
-        if (Q_UNLIKELY(!errString.isEmpty() && !hasError())) {
-            setError(errString);
-        }
-        CHECK_OP(stateInfo, U2CigarOp_Invalid);
-        index++;
-
-        if (U2CigarOp_I == cigarOp || U2CigarOp_S == cigarOp) {
-            insertionsCount++;
-        }
-    } while (U2CigarOp_I == cigarOp || U2CigarOp_S == cigarOp || U2CigarOp_P == cigarOp);
-
-    return cigarOp;
 }
 
 CalculateCoveragePerBaseTask::CalculateCoveragePerBaseTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId) :

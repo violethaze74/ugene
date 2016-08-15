@@ -50,14 +50,13 @@ public:
 
     static U2StringAttribute findStringAttribute(U2AttributeDbi* adbi, const U2DataId& objectId, const QString& name, U2OpStatus& os);
 
-    static void init(U2Attribute &attr, U2Object & obj, const QString& name);
+    static void init(U2Attribute &attr, const U2Object &obj, const QString &name);
 
     static void removeAttribute(U2AttributeDbi* adbi, const U2DataId& attrId, U2OpStatus& os);
 
     static void copyObjectAttributes(const U2DataId &srcObjId, const U2DataId &dstObjId,
         U2AttributeDbi *srcAttributeDbi, U2AttributeDbi *dstAttributeDbi,
         U2OpStatus &os);
-
 };
 
 } //namespace

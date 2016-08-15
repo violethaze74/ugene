@@ -42,7 +42,7 @@ extern "C" Q_DECL_EXPORT Plugin * U2_PLUGIN_INIT_FUNC() {
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
     {
-        volatile OpenCLSupportPlugin plug;
+        volatile OpenCLSupportPlugin plug();
         Q_UNUSED(plug);
     }
     return true;

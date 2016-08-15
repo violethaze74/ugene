@@ -19,14 +19,13 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
         type:CASAVAFilter;
         name:"Filter Reads by CASAVA Header";
         custom-dir:filtered_fastq;
-        out-mode:1;
     }
     QualityTrim {
         type:QualityTrim;
         name:"Trim Reads by Quality";
         custom-dir:filtered_fastq;
-        out-mode:0;
         len-id:10;
+        out-mode:0;
         qual-id:20;
     }
     get-file-list {
@@ -59,22 +58,25 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
     fastqc {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
     }
     fastqc-1 {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
+    }
+    fastqc-1-1 {
+        type:fastqc;
+        name:"FastQC Quality Control";
     }
 
     .actor-bindings {
-        CutAdaptFastq.out-file->QualityTrim.in-file
-        get-file-list.out-url->CASAVAFilter.in-file
-        get-file-list.out-url->fastqc.in-file
         CASAVAFilter.out-file->CutAdaptFastq.in-file
+        tophat.out-assembly->fastqc-1-1.in-file
         MergeFastq.out-file->tophat.in-sequence
         MergeFastq.out-file->fastqc-1.in-file
         QualityTrim.out-file->MergeFastq.in-file
+        get-file-list.out-url->CASAVAFilter.in-file
+        get-file-list.out-url->fastqc.in-file
+        CutAdaptFastq.out-file->QualityTrim.in-file
     }
 
     get-file-list.url->CASAVAFilter.in-file.url
@@ -84,6 +86,7 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
     CASAVAFilter.url->CutAdaptFastq.in-file.url
     get-file-list.url->fastqc.in-file.url
     MergeFastq.url->fastqc-1.in-file.url
+    tophat.hits-url->fastqc-1-1.in-file.url
 
     .meta {
         parameter-aliases {
@@ -123,7 +126,7 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
         }
         visual {
             CASAVAFilter {
-                pos:"-795 -510";
+                pos:"-765 -480";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 bounds:"-30 -30 181.875 92";
@@ -131,21 +134,21 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
                 out-file.angle:360;
             }
             CutAdaptFastq {
-                pos:"-435 -510";
+                pos:"-405 -480";
                 style:ext;
                 bg-color-ext:"236 177 178 64";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             MergeFastq {
-                pos:"-90 -270";
+                pos:"-60 -240";
                 style:simple;
                 bg-color-simple:"78 151 184 255";
                 in-file.angle:90;
                 out-file.angle:270;
             }
             QualityTrim {
-                pos:"-135 -510";
+                pos:"-105 -480";
                 style:ext;
                 bg-color-ext:"204 68 102 64";
                 bounds:"-30 -30 106 96";
@@ -153,26 +156,32 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
                 out-file.angle:290.925;
             }
             fastqc {
-                pos:"-960 -285";
+                pos:"-930 -255";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:90;
             }
             fastqc-1 {
-                pos:"-345 -240";
+                pos:"-315 -210";
+                style:simple;
+                bg-color-simple:"0 128 128 255";
+                in-file.angle:358.091;
+            }
+            fastqc-1-1 {
+                pos:"-315 -60";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:358.091;
             }
             get-file-list {
-                pos:"-1065 -510";
+                pos:"-1035 -480";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 102.25 92";
                 out-url.angle:360;
             }
             tophat {
-                pos:"-165 -105";
+                pos:"-135 -75";
                 style:ext;
                 bg-color-ext:"0 128 0 64";
                 in-sequence.angle:21.9745;
@@ -198,6 +207,9 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
             }
             get-file-list.out-url->fastqc.in-file {
                 text-pos:"-49.7578 25";
+            }
+            tophat.out-assembly->fastqc-1-1.in-file {
+                text-pos:"-44.2266 -24";
             }
         }
         wizard {

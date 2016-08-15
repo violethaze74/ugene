@@ -354,7 +354,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="14"/>
         <source>Extract Selected as MSA</source>
-        <translation>Сохранить участок выравнивания</translation>
+        <translation>Экспортировать область выравнивания</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialog.ui" line="22"/>
@@ -953,7 +953,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/LicenseDialog.ui" line="52"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -2617,7 +2617,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="585"/>
         <source>Edit</source>
-        <translation>Редактирование</translation>
+        <translation>Редактировать</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1095"/>
@@ -2741,17 +2741,17 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1773"/>
         <source>Edit Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать группу</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1820"/>
         <source>Edit Annotation</source>
-        <translation type="unfinished">Редактирование аннотации</translation>
+        <translation>Редактирование аннотации</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1820"/>
         <source>Edit</source>
-        <translation type="unfinished">Редактирование</translation>
+        <translation>Редактировать</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="176"/>
@@ -3474,7 +3474,17 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::BranchSettingsDialog</name>
     <message>
-        <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="75"/>
+        <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="44"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="43"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="77"/>
         <source>Select Color</source>
         <translation>Выбрать цвет</translation>
     </message>
@@ -4449,7 +4459,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="50"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="96"/>
@@ -4472,10 +4482,6 @@ Please, check external tools in the settings.</source>
     <message>
         <source>Export</source>
         <translation type="vanished">Экспорт</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Отмена</translation>
     </message>
     <message>
         <source>Warning</source>
@@ -4566,7 +4572,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.cpp" line="47"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.cpp" line="51"/>
@@ -4722,7 +4728,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="712"/>
         <source>The value is longer than the search region. Please input a shorter value or select another region!</source>
-        <translation>Значение длинее чем регион поиска. Ввведите более короткое значение или выберите другой регион!</translation>
+        <translation>Значение длиннее чем регион поиска. Ввведите более короткое значение или выберите другой регион!</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="719"/>
@@ -4763,13 +4769,13 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="741"/>
         <source>Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.</source>
-        <translation>Инфрмация: добавьте как минимум одну подстроку для поиска. Используйте %1, чтобы ввести несколько подстрок. Также вы можете загрузить подстроки из FASTA файла.
+        <translation>Информация: добавьте как минимум одну подстроку для поиска. Используйте %1, чтобы ввести несколько подстрок. Также вы можете загрузить подстроки из FASTA файла.
         </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="753"/>
-        <source> Please input valid annotation names </source>
-        <translation>Введите корректные имена аннотаций </translation>
+        <source> Please input valid annotation names. </source>
+        <translation>Введите корректные имена аннотаций. </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="759"/>
@@ -4779,7 +4785,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="764"/>
         <source> It will be automatically changed to acceptable name if &apos;Get annotations&apos; button is pressed. </source>
-        <translation> Они будут автоматически изменены на доступные имена после того как кнопка &apos;Получить аннотации&apos; будет нажата. </translation>
+        <translation> Они будут автоматически изменены на доступные имена после того как кнопка &apos;Создать аннотации&apos; будет нажата. </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="770"/>
@@ -5610,13 +5616,13 @@ Please, check external tools in the settings.</source>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="145"/>
-        <source>Save subalignment</source>
-        <translation>Сохранить область выравнивания</translation>
+        <source>Save subalignment...</source>
+        <translation>Экспортировать область выравнивания...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="149"/>
-        <source>Save sequence</source>
-        <translation>Сохранить последовательность</translation>
+        <source>Save sequence...</source>
+        <translation>Экспортировать последовательность...</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="176"/>
@@ -5776,7 +5782,7 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
     <message>
         <location filename="../src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp" line="231"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -6623,34 +6629,39 @@ Simple overview is unavailable.</source>
         <translation>Следующий</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="128"/>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="137"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="50"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="129"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="138"/>
         <source>Search Complete</source>
         <translation>Поиск завершен</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="129"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="130"/>
         <source>The end of the annotation tree has been reached. Would you like to start the search from the beginning?</source>
         <translation>Поиск завершен. Хотите начать сначала?</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="138"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="139"/>
         <source>No results found</source>
         <translation>Результатов не найдено</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="155"/>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="159"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="156"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="160"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="155"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="156"/>
         <source>Illegal qualifier name</source>
         <translation>Некорректное имя квалификатора</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="159"/>
+        <location filename="../src/ov_sequence/SearchQualifierDialog.cpp" line="160"/>
         <source>Illegal qualifier value</source>
         <translation>Некорректное значение квалификатора</translation>
     </message>
@@ -6658,12 +6669,27 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::SecStructDialog</name>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="82"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="65"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="86"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="83"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="87"/>
         <source>Structure Type</source>
         <translation>Тип структуры</translation>
     </message>

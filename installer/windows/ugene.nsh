@@ -217,7 +217,6 @@ Section "Build"
     !insertmacro AddPlugin genome_aligner
     !insertmacro AddPlugin gor4
     !insertmacro AddPlugin hmm2
-    !insertmacro AddPlugin hmm3
     !insertmacro AddPlugin kalign
     !insertmacro AddPlugin linkdata_support
     !insertmacro AddPlugin opencl_support

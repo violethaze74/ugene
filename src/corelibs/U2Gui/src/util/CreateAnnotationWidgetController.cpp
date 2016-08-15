@@ -249,7 +249,7 @@ QString CreateAnnotationWidgetController::validate() {
     }
 
     if (!w->isUsePatternNamesChecked() && !model.hideAnnotationName && !Annotation::isValidAnnotationName(model.data->name)) {
-        return tr("Illegal annotation name");
+        return tr("Illegal annotation name! ");
     }
 
     if (model.groupName.isEmpty()) {
@@ -454,6 +454,15 @@ void CreateAnnotationWidgetController::sl_usePatternNamesStateChanged() {
 
 QWidget *CreateAnnotationWidgetController::getWidget() const {
     return w;
+}
+
+AnnotationCreationPattern CreateAnnotationWidgetController::getAnnotationPattern() const {
+    AnnotationCreationPattern pattern;
+    pattern.annotationName = model.data->name;
+    pattern.type = model.data->type;
+    pattern.groupName = model.groupName;
+    pattern.description = model.description;
+    return pattern;
 }
 
 QPair<QWidget*, QWidget*> CreateAnnotationWidgetController::getTaborderEntryAndExitPoints() const {

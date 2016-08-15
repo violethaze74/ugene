@@ -22,6 +22,7 @@
 #ifndef _U2_CREATE_ANNOTATION_WIDGET_CONTROLLER_H_
 #define _U2_CREATE_ANNOTATION_WIDGET_CONTROLLER_H_
 
+#include <U2Core/AnnotationCreationPattern.h>
 #include <U2Core/AnnotationData.h>
 #include <U2Core/GObjectReference.h>
 
@@ -110,6 +111,7 @@ public:
     QWidget* getWidget() const;
 
     const CreateAnnotationModel&    getModel() const {return model;}
+    AnnotationCreationPattern getAnnotationPattern() const;
 
     void updateWidgetForAnnotationModel(const CreateAnnotationModel& model);
 

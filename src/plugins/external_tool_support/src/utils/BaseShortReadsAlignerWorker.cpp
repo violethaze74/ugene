@@ -48,6 +48,7 @@
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
+#include <U2View/DnaAssemblyUtils.h>
 
 #include "BaseShortReadsAlignerWorker.h"
 
@@ -149,7 +150,8 @@ Task *BaseShortReadsAlignerWorker::tick() {
             settings.shortReadSets << toUrls(readsFetcher.takeFullDataset(), READS_URL_SLOT_ID, ShortReadSet::SingleEndReads, ShortReadSet::UpstreamMate);
         }
 
-        DnaAssemblyToReferenceTask* t = getTask(settings);
+        DnaAssemblyTaskWithConversions *t = new DnaAssemblyTaskWithConversions(settings);
+        t->addListeners(createLogListeners(2));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     }
@@ -198,7 +200,7 @@ bool BaseShortReadsAlignerWorker::isReady() const {
 }
 
 void BaseShortReadsAlignerWorker::sl_taskFinished() {
-    DnaAssemblyToReferenceTask *t = dynamic_cast<DnaAssemblyToReferenceTask*>(sender());
+    DnaAssemblyTaskWithConversions *t = qobject_cast<DnaAssemblyTaskWithConversions*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }

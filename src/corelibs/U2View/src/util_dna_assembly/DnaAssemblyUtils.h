@@ -23,6 +23,7 @@
 #define _U2_DNA_ASSEMBLEY_UTILS_H_
 
 #include <U2Algorithm/DnaAssemblyMultiTask.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
@@ -45,12 +46,14 @@ private slots:
 
 };
 
-class U2VIEW_EXPORT DnaAssemblyTaskWithConversions : public Task {
+class U2VIEW_EXPORT DnaAssemblyTaskWithConversions : public ExternalToolSupportTask {
+    Q_OBJECT
 public:
     DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings &settings, bool viewResult = false, bool justBuildIndex = false);
 
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
+    const DnaAssemblyToRefTaskSettings& getSettings() const;
 
 private:
     DnaAssemblyToRefTaskSettings settings;

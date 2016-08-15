@@ -263,12 +263,12 @@ QString DnaAssemblySupport::unknownText(const QList<GUrl> &unknownFormatFiles) {
 /* DnaAssemblyTaskWithConversions */
 /************************************************************************/
 DnaAssemblyTaskWithConversions::DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings &settings, bool viewResult, bool justBuildIndex)
-: Task("Dna assembly task", TaskFlags_NR_FOSCOE), settings(settings), viewResult(viewResult),
-    justBuildIndex(justBuildIndex), conversionTasksCount(0), assemblyTask(NULL)
-{
+    : ExternalToolSupportTask("Dna assembly task", TaskFlags_NR_FOSCOE), settings(settings), viewResult(viewResult),
+    justBuildIndex(justBuildIndex), conversionTasksCount(0), assemblyTask(NULL) {}
 
+const DnaAssemblyToRefTaskSettings& DnaAssemblyTaskWithConversions::getSettings() const {
+    return settings;
 }
-
 void DnaAssemblyTaskWithConversions::prepare() {
     DnaAssemblyAlgorithmEnv *env= AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(settings.algName);
     if (env == NULL) {
@@ -288,6 +288,7 @@ void DnaAssemblyTaskWithConversions::prepare() {
 
     if (0 == conversionTasksCount) {
         assemblyTask = new DnaAssemblyMultiTask(settings, viewResult, justBuildIndex);
+        assemblyTask->addListeners(getListeners());
         addSubTask(assemblyTask);
     }
 }

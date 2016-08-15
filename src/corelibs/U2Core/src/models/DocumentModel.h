@@ -75,6 +75,8 @@ enum DocumentFormatFlag {
     DocumentFormatFlag_DirectWriteOperations        = 1<<9,
     // Document can be locked if created not by UGENE
     DocumentFormatFlag_LockedIfNotCreatedByUGENE    = 1<<10,
+
+    DocumentFormatFlag_CannotBeCompressed           = 1<<11
 };
 
 

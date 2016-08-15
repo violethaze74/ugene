@@ -621,7 +621,7 @@ static QByteArray getNameSeqGap( int diff ) {
     return ret;
 }
 
-static void save( IOAdapter* io, const MAlignment& msa, const QString& name, U2OpStatus &os ) {
+static void save( IOAdapter* io, const MAlignment& msa, QString name, U2OpStatus &os ) {
     assert( NULL != io );
     assert( msa.getNumRows() );
     int ret = 0;
@@ -632,7 +632,7 @@ static void save( IOAdapter* io, const MAlignment& msa, const QString& name, U2O
     QByteArray unimark = StockholmFormat::UNI_ANNOTATION_MARK + "\n\n";
     ret = io->writeBlock( unimark );
     checkValThrowException<int>( true, unimark.size(), ret, StockholmFormat::WriteError(io->getURL()) );
-    QByteArray idAnn = StockholmFormat::FILE_ANNOTATION_ID + " " + name.toLatin1() + "\n\n";
+    QByteArray idAnn = StockholmFormat::FILE_ANNOTATION_ID + " " + name.replace(QRegExp("\\s"), "_").toLatin1() + "\n\n";
     ret = io->writeBlock( idAnn );
     checkValThrowException<int>( true, idAnn.size(), ret, StockholmFormat::WriteError(io->getURL()) );
 

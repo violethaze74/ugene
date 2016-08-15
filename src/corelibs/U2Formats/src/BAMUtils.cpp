@@ -767,10 +767,14 @@ KSEQ_INIT(gzFile, gzread)
 #pragma GCC diagnostic pop
 #endif
 
-FASTQIterator::FASTQIterator(const QString &fileUrl)
+FASTQIterator::FASTQIterator(const QString &fileUrl, U2OpStatus &os)
     : seq(NULL)
 {
-    fp = gzopen(fileUrl.toLatin1().constData(), "r");
+    fp = gzopen(fileUrl.toLocal8Bit().constData(), "r");
+    if (fp == NULL) {
+        os.setError(QObject::tr("Can't open file with given url: %1.").arg(fileUrl));
+        return;
+    }
     seq = kseq_init(static_cast<gzFile>(fp));
     fetchNext();
 }

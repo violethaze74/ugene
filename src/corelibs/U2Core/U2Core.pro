@@ -54,6 +54,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/UdrSchemaRegistry.h \
            src/datatype/Vector3D.h \
            src/datatype/udr/RawDataUdrSchema.h \
+           src/dbi/DbiConnection.h \
            src/dbi/DbiDocumentFormat.h \
            src/dbi/U2AbstractDbi.h \
            src/dbi/U2AssemblyDbi.h \
@@ -201,6 +202,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/tasks/shared_db/ImportFileToDatabaseTask.h \
            src/tasks/shared_db/ImportObjectToDatabaseTask.h \
            src/tasks/shared_db/ImportToDatabaseTask.h \
+           src/util/AnnotationCreationPattern.h \
            src/util/AssemblyImporter.h \
            src/util/DatatypeSerializeUtils.h \
            src/util/FileAndDirectoryUtils.h \
@@ -222,6 +224,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/QObjectScopedPointer.h \
            src/util/QVariantUtils.h \
            src/util/SequenceUtils.h \
+           src/util/SnpeffDictionary.h \
            src/util/SyncHttp.h \
            src/util/TextUtils.h \
            src/util/TaskWatchdog.h \
@@ -237,8 +240,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/U2OpStatusUtils.h \
            src/util/U2SequenceUtils.h \
            src/util/U2VariationUtils.h \
-           src/util/VariationPropertiesUtils.h \
-    src/dbi/DbiConnection.h
+           src/util/VariationPropertiesUtils.h
+
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
            src/cmdline/CMDLineUtils.cpp \
@@ -270,13 +273,16 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/U2CoreAttributes.cpp \
            src/datatype/U2FeatureType.cpp \
            src/datatype/U2Mod.cpp \
+           src/datatype/U2Qualifier.cpp \
            src/datatype/U2Region.cpp \
            src/datatype/U2Type.cpp \
+           src/datatype/U2Variant.cpp \
            src/datatype/UdrRecord.cpp \
            src/datatype/UdrSchema.cpp \
            src/datatype/UdrSchemaRegistry.cpp \
            src/datatype/Vector3D.cpp \
            src/datatype/udr/RawDataUdrSchema.cpp \
+           src/dbi/DbiConnection.cpp \
            src/dbi/DbiDocumentFormat.cpp \
            src/dbi/U2Dbi.cpp \
            src/dbi/U2DbiPackUtils.cpp \
@@ -399,6 +405,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/tasks/shared_db/ImportFileToDatabaseTask.cpp \
            src/tasks/shared_db/ImportObjectToDatabaseTask.cpp \
            src/tasks/shared_db/ImportToDatabaseTask.cpp \
+           src/util/AnnotationCreationPattern.cpp \
            src/util/AssemblyImporter.cpp \
            src/util/DatatypeSerializeUtils.cpp \
            src/util/FileAndDirectoryUtils.cpp \
@@ -418,6 +425,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/MSAUtils.cpp \
            src/util/QVariantUtils.cpp \
            src/util/SequenceUtils.cpp \
+           src/util/SnpeffDictionary.cpp \
            src/util/SyncHttp.cpp \
            src/util/TextUtils.cpp \
            src/util/TaskWatchdog.cpp \
@@ -431,7 +439,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/U2FeatureUtils.cpp \
            src/util/U2ObjectTypeUtils.cpp \
            src/util/U2SequenceUtils.cpp \
-           src/util/U2VariationUtils.cpp \
-    src/dbi/DbiConnection.cpp
+           src/util/U2VariationUtils.cpp
+
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

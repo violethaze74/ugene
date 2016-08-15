@@ -298,9 +298,7 @@ void FindPatternWidget::showCurrentResultAndStopProgress(const int current, cons
 }
 
 void FindPatternWidget::initLayout() {
-    lblErrorMessage->setStyleSheet(
-        "color: " + L10N::errorColorLabelStr() + ";"
-        "font: bold;");
+    lblErrorMessage->setStyleSheet("font: bold;");
     lblErrorMessage->setText("");
     initAlgorithmLayout();
     initStrandSelection();
@@ -692,10 +690,7 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
     }
 
     if (!messageFlags.isEmpty()) {
-        static QString storedTextColor = currentColorOfMessageText();
-        if (storedTextColor != currentColorOfMessageText()) {
-            changeColorOfMessageText(storedTextColor);
-        }
+
 
 #ifndef Q_OS_MAC
         const QString lineBreakShortcut = "Ctrl+Enter";
@@ -706,89 +701,96 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
         foreach (MessageFlag flag, messageFlags) {
             switch (flag) {
                 case PatternIsTooLong:
-                    if (!text.isEmpty()) {
-                        text += "\n";
-                    }
-                    text += QString(tr("The value is longer than the search region."
-                        " Please input a shorter value or select another region!"));
+                    {
+                    const QString message = tr("The value is longer than the search region."
+                                               " Please input a shorter value or select another region!");
+                    text = tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
                     break;
+                    }
                 case PatternAlphabetDoNotMatch:
-                    if (!text.isEmpty()) {
-                        text += "\n";
-                    }
-                    text += QString(tr("Warning: input value contains characters that"
-                        " do not match the active alphabet!"));
+                    {
+                    const QString message = tr("Warning: input value contains characters that"
+                                               " do not match the active alphabet!");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::warningColorLabelHtmlStr()).arg(message);
                     highlightBackground(textPattern);
                     break;
+                    }
                 case PatternsWithBadAlphabetInFile:
-                    if (!text.isEmpty()) {
-                        text += "\n";
-                    }
-                    text += QString(tr("Warning: file contains patterns that"
-                        " do not match the active alphabet! Those patterns were ignored "));
+                    {
+                    const QString message = tr("Warning: file contains patterns that"
+                                               " do not match the active alphabet! Those patterns were ignored ");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::warningColorLabelHtmlStr()).arg(message);
                     break;
+                    }
                 case PatternsWithBadRegionInFile:
-                    if (!text.isEmpty()) {
-                        text += "\n";
-                    }
-                    text += QString(tr("Warning: file contains patterns that"
-                        " longer than the search region! Those patterns were ignored. Please input a shorter value or select another region! "));
+                    {
+                    const QString message = tr("Warning: file contains patterns that"
+                                               " longer than the search region! Those patterns were ignored. Please input a shorter value or select another region! ");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::warningColorLabelHtmlStr()).arg(message);
                     break;
+                    }
                 case UseMultiplePatternsTip:
-                    if (!text.isEmpty()) {
-                        text += "\n";
-                    }
-                    text += QString(tr("Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.").arg(lineBreakShortcut));
-                    changeColorOfMessageText(L10N::infoHintColor().name());
+                    {
+                    const QString message = tr("Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.").arg(lineBreakShortcut);
+                    text = tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::infoColorLabelHtmlStr()).arg(message);
                     break;
+                    }
                 case AnnotationNotValidName:
-                    if (!text.isEmpty()) {
-                        text += "\n";
-                    }
-                    text += QString(tr("Warning: annotation name or annotation group name are invalid. "));
+                    {
+                    const QString message = tr("Warning: annotation name or annotation group name are invalid. ");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
-                        text += QString(tr("Reason: "));
-                        text += additionalMsg;
+                        const QString message = tr("Reason: ");
+                        text += tr("<b><font color=%1>%2</font></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(additionalMsg);
                     }
-                    text += QString(tr(" Please input valid annotation names "));
+                    const QString msg = tr(" Please input valid annotation names. ");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(msg);
                     break;
+                    }
                 case AnnotationNotValidFastaParsedName:
-                    if (!text.isEmpty()) {
-                        text += "\n";
-                    }
-                    text += QString(tr("Warning: annotation names are invalid. "));
+                    {
+                    const QString message = tr("Warning: annotation names are invalid. ");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
-                        text += QString(tr("Reason: "));
-                        text += additionalMsg;
+                        const QString message = tr("Reason: ");
+                        text += tr("<b><font color=%1>%2</font></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(additionalMsg);
                     }
-                    text += QString(tr(" It will be automatically changed to acceptable name if 'Get annotations' button is pressed. "));
+                    const QString msg = tr(" It will be automatically changed to acceptable name if 'Get annotations' button is pressed. ");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(msg);
                     break;
+                    }
                 case NoPatternToSearch:
-                    if (!text.isEmpty()) {
-                        text += "\n";
-                    }
-                    text += QString(tr("Warning: there is no pattern to search. "));
-                    text += QString(tr(" Please input a valid pattern or choose a file with patterns "));
+                    {
+                    const QString message = tr("Warning: there is no pattern to search. ");
+                    text += tr("<b><font color=%1>%2</font></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                    const QString msg = tr(" Please input a valid pattern or choose a file with patterns ");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(msg);
                     break;
+                    }
                 case SearchRegionIncorrect:
-                    if (!text.isEmpty()) {
-                        text += "\n";
-                    }
-                    text += QString(tr("Warning: there is no pattern to search. "));
-                    text += QString(tr(" Please input a valid pattern or choose a file with patterns "));
+                    {
+                    const QString message = tr("Warning: there is no pattern to search. ");
+                    text += tr("<b><font color=%1>%2</font></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
+                    const QString msg = tr(" Please input a valid pattern or choose a file with patterns ");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(msg);
                     break;
-                case PatternWrongRegExp:
-                    if (!text.isEmpty()) {
-                        text += "\n";
                     }
-                    text += QString(tr("Warning: invalid regexp. "));
+                case PatternWrongRegExp:
+                    {
+                    const QString message = tr("Warning: invalid regexp. ");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
                     highlightBackground(textPattern);
                     break;
+                    }
                 case SequenceIsTooBig:
+                    {
                     text.clear(); // the search is blocked at all -- any other messages are meaningless
-                    text += QString(tr("Warning: current sequence is too long to search in."));
-                    changeColorOfMessageText(L10N::errorColorLabelStr());
+                    const QString message = tr("Warning: current sequence is too long to search in.");
+                    text += tr("<b><font color=%1>%2</font><br></br></b>").arg(L10N::errorColorLabelHtmlStr()).arg(message);
                     break;
+                    }
                 default:
                     FAIL("Unexpected value of the error flag in show/hide error message for pattern!",);
             }
@@ -799,27 +801,6 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
         lblErrorMessage->setText("");
         doNotHighlightBackground(textPattern);
     }
-}
-
-void FindPatternWidget::changeColorOfMessageText(const QString &newColorName)
-{
-    QString currentStyleSheet = lblErrorMessage->styleSheet();
-    currentStyleSheet.replace(currentColorOfMessageText(), newColorName);
-    lblErrorMessage->setStyleSheet(currentStyleSheet);
-}
-
-QString FindPatternWidget::currentColorOfMessageText() const
-{
-    const QString currentStyleSheet = lblErrorMessage->styleSheet();
-    const int startOfColorDefinitionPosition = currentStyleSheet.indexOf(STYLESHEET_COLOR_DEFINITION);
-    const int endOfColorDefinitionPosition = currentStyleSheet.indexOf(STYLESHEET_DEFINITIONS_SEPARATOR,
-        startOfColorDefinitionPosition);
-    const QString currentMessageTextColor = currentStyleSheet.mid(startOfColorDefinitionPosition
-                                                                  + STYLESHEET_COLOR_DEFINITION.length(),
-                                                                  endOfColorDefinitionPosition
-                                                                  - startOfColorDefinitionPosition
-                                                                  - STYLESHEET_COLOR_DEFINITION.length());
-    return currentMessageTextColor;
 }
 
 void FindPatternWidget::sl_onSearchPatternChanged()

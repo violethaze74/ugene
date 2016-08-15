@@ -81,6 +81,8 @@ private:
     QString     lastOutLine;
 
     QProcess*   externalToolProcess;
+
+    ExternalTool* tool;
     static const int CHECK_PERIOD_MS = 1000;
     static const int TIMEOUT_MS = 30000;
 };

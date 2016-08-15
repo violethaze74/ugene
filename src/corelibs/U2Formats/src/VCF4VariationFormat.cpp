@@ -33,7 +33,7 @@ VCF4VariationFormat::VCF4VariationFormat(QObject *p)
     columnRoles.insert(2, ColumnRole_PublicId);
     columnRoles.insert(3, ColumnRole_RefData);
     columnRoles.insert(4, ColumnRole_ObsData);
-    columnRoles.insert(5, ColumnRole_AdditionalInfo);
+    columnRoles.insert(7, ColumnRole_Info);
 
     maxColumnNumber = columnRoles.keys().last();
 

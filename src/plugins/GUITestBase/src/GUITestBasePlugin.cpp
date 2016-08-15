@@ -793,6 +793,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2910_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_2923);
     REGISTER_TEST(GUITest_regression_scenarios::test_2924);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2927);
     REGISTER_TEST(GUITest_regression_scenarios::test_2929);
     REGISTER_TEST(GUITest_regression_scenarios::test_2930);
     REGISTER_TEST(GUITest_regression_scenarios::test_2931);
@@ -1168,6 +1169,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4689_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4694);
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_4700);
     REGISTER_TEST(GUITest_regression_scenarios::test_4702_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4702_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4702_3);
@@ -1233,6 +1235,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4936);
     REGISTER_TEST(GUITest_regression_scenarios::test_4938);
     REGISTER_TEST(GUITest_regression_scenarios::test_4938_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4965);
     REGISTER_TEST(GUITest_regression_scenarios::test_4966);
     REGISTER_TEST(GUITest_regression_scenarios::test_4969_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4969_2);
@@ -1249,8 +1252,9 @@ if(QSysInfo::WordSize == 64){
 }
     REGISTER_TEST(GUITest_regression_scenarios::test_5027_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5029);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5039);
     REGISTER_TEST(GUITest_regression_scenarios::test_5052);
-    REGISTER_TEST(GUITest_regression_scenarios::test_5079);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5069);
     REGISTER_TEST(GUITest_regression_scenarios::test_5082);
     REGISTER_TEST(GUITest_regression_scenarios::test_5090);
 
@@ -1270,6 +1274,14 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5268);
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
     REGISTER_TEST(GUITest_regression_scenarios::test_5295);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5352);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5356);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5360);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5363_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5363_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5367);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
 
 //////////////////////////////////////////////////////////////////////////
 // Common scenarios/project/

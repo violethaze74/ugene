@@ -172,7 +172,10 @@ void CASAVAFilterTask::runStep(){
 
     //1:N:0:TAAGGG
     QRegExp pattern (":Y:[^:]:");
-    FASTQIterator iter(settings.inputUrl);
+    FASTQIterator iter(settings.inputUrl, stateInfo);
+    if (stateInfo.hasError()) {
+        return;
+    }
     while(iter.hasNext()){
         if(stateInfo.isCoR()){
             return;
@@ -346,7 +349,10 @@ void QualityTrimTask::runStep(){
     int minLen = settings.customParameters.value(LEN_ID, 0).toInt();
     bool bothEnds = settings.customParameters.value(BOTH_ID, false).toInt();
 
-    FASTQIterator iter(settings.inputUrl);
+    FASTQIterator iter(settings.inputUrl, stateInfo);
+    if (stateInfo.hasError()) {
+        return;
+    }
     while(iter.hasNext()){
         if(stateInfo.isCoR()){
             return;
@@ -553,7 +559,10 @@ void MergeFastqTask::runStep(){
     qint64 numberOfFiles = 0;
 
     foreach (QString url, urls){
-        FASTQIterator iter(url);
+        FASTQIterator iter(url, stateInfo);
+        if (stateInfo.hasError()) {
+            return;
+        }
         while(iter.hasNext()){
             if(stateInfo.isCoR()){
                 return;

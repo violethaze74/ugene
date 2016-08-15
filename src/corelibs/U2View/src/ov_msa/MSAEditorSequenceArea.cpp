@@ -142,11 +142,11 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     addAction(insSymAction);
 
 
-    createSubaligniment = new QAction(tr("Save subalignment"), this);
+    createSubaligniment = new QAction(tr("Save subalignment..."), this);
     createSubaligniment->setObjectName("Save subalignment");
     connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubaligniment()));
 
-    saveSequence = new QAction(tr("Save sequence"), this);
+    saveSequence = new QAction(tr("Save sequence..."), this);
     saveSequence->setObjectName("Save sequence");
     connect(saveSequence, SIGNAL(triggered()), SLOT(sl_saveSequence()));
 

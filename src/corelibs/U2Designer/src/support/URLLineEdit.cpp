@@ -135,11 +135,18 @@ URLLineEdit::URLLineEdit(const QString &type,
                          bool isPath,
                          bool saveFile,
                          URLWidget *_parent)
-: QLineEdit(_parent), schemaConfig(NULL), type(type), multi(multi),
-isPath(isPath), saveFile(saveFile), parent(_parent) {
+    : QLineEdit(_parent),
+      schemaConfig(NULL),
+      type(type),
+      multi(multi),
+      isPath(isPath),
+      saveFile(saveFile),
+      parent(_parent)
+{
     if (saveFile && NULL != parent) {
         new BaseCompleter(new FilenameCompletionFiller(parent), this);
     }
+    setPlaceholderText(DelegateTags::getString(parent->tags(), DelegateTags::PLACEHOLDER_TEXT));
 }
 
 CompletionFiller * URLLineEdit::getCompletionFillerInstance() {

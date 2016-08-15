@@ -53,7 +53,6 @@ protected:
     virtual void setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) = 0;
     virtual QString getDefaultFileName() const = 0;
     virtual QString getBaseSubdir() const = 0;
-    virtual DnaAssemblyToReferenceTask* getTask(const DnaAssemblyToRefTaskSettings &settings) const = 0;
     QList<ShortReadSet> toUrls(const QList<Message> &messages, const QString &urlSlotId, ShortReadSet::LibraryType libType, ShortReadSet::MateOrder order) const;
     bool isReadyToRun() const;
     bool dataFinished() const;

@@ -795,6 +795,11 @@
         <translation>...</translation>
     </message>
     <message>
+        <location filename="../src/util/ExportImageDialog.ui" line="41"/>
+        <source>Export settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/util/ExportImageDialog.ui" line="56"/>
         <source>Export to file</source>
         <translation>Export to file</translation>
@@ -1742,8 +1747,8 @@ To append data to existing file press &apos;Append&apos;.</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="252"/>
-        <source>Illegal annotation name</source>
-        <translation>Illegal annotation name</translation>
+        <source>Illegal annotation name! </source>
+        <translation>Illegal annotation name! </translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="257"/>
@@ -2164,7 +2169,12 @@ complement(5..15)</translation>
         <translation>Saving image to &apos;%1&apos;...</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="226"/>
+        <location filename="../src/util/ExportImageDialog.cpp" line="147"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/util/ExportImageDialog.cpp" line="227"/>
         <source>Save Image As</source>
         <translation>Save Image As</translation>
     </message>

@@ -760,7 +760,11 @@ QList<WorkflowProcessItem*> GTUtilsWorkflowDesigner::getWorkers(HI::GUITestOpSta
 }
 
 #define GT_METHOD_NAME "setDatasetInputFile"
-void GTUtilsWorkflowDesigner::setDatasetInputFile(HI::GUITestOpStatus &os, QString filePath, QString fileName){
+void GTUtilsWorkflowDesigner::setDatasetInputFile(HI::GUITestOpStatus &os, const QString &folderPath, const QString &fileName) {
+    setDatasetInputFile(os, folderPath + "/" + fileName);
+}
+
+void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus &os, const QString &filePath, bool pastePath) {
     GTGlobals::sleep(200);
     QWidget* DatasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     GT_CHECK(DatasetWidget, "DatasetWidget not found");
@@ -768,7 +772,9 @@ void GTUtilsWorkflowDesigner::setDatasetInputFile(HI::GUITestOpStatus &os, QStri
     QWidget* addFileButton = GTWidget::findWidget(os, "addFileButton", DatasetWidget);
     GT_CHECK(addFileButton, "addFileButton not found");
 
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, filePath, fileName, GTFileDialogUtils::Open, GTGlobals::UseMouse);
+    GTFileDialogUtils::TextInput t = pastePath ? GTFileDialogUtils::CopyPaste : GTFileDialogUtils::Typing;
+
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, filePath, GTGlobals::UseMouse, GTFileDialogUtils::Open, t);
     GTUtilsDialog::waitForDialog(os, ob);
 
     GTWidget::click(os, addFileButton);

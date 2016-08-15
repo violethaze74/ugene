@@ -216,7 +216,7 @@ IMPLEMENT_TEST(AnnotationUnitTest, getSet_Qualifiers) {
 
     CHECK_TRUE(annotation->getQualifiers() == initQuals, "Unexpected annotation's qualifiers");
 
-    U2Qualifier supplementedQual("New Key", "New Value");
+    U2Qualifier supplementedQual("New_Key", "New Value");
     annotation->addQualifier(supplementedQual);
 
     CHECK_TRUE(annotation->getQualifiers() == (QVector<U2Qualifier>(initQuals) << supplementedQual), "Unexpected annotation's qualifiers");

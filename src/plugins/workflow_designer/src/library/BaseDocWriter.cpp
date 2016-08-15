@@ -302,6 +302,7 @@ Document * BaseDocWriter::getDocument(IOAdapter *io, U2OpStatus &os) {
     Document *doc = format->createNewLoadedDocument(io->getFactory(), io->getURL(), os, hints);
     CHECK_OP(os, NULL);
 
+    doc->setDocumentOwnsDbiResources(false);
     docs[io] = doc;
     return doc;
 }

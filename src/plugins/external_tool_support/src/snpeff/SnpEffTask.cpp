@@ -181,6 +181,13 @@ QString SnpEffTask::getDataPath() const{
     CHECK(NULL != AppContext::getAppSettings()->getUserAppsSettings(), QString());
     CHECK(NULL != AppContext::getExternalToolRegistry(), QString());
     CHECK(NULL != AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF), QString());
+
+    // The next part is for VEME conferention
+    // It is done instead of UGENE-5318 resolving
+    // Remove it after 1.24 version release
+    if (settings.genome == "NC_002549") {
+        return QFileInfo(AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF)->getPath()).dir().absolutePath() + "/data";
+    }
     return AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath() + "/" + "snpeff_data_" + AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF)->getVersion();
 }
 
