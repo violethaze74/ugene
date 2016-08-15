@@ -79,6 +79,7 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentData::createMca(const
 char MultipleChromatogramAlignmentData::charAt(int rowIndex, int pos) const {
 //    SAFE_POINT(0 <= rowIndex && rowIndex < getRows().size(), QString("Row index is out of range: %1").arg(rowIndex), MultipleAlignmentData::GapChar);
 //    return getMcaRow(rowIndex)->charAt(pos);
+    return MultipleAlignmentData::GapChar;
 }
 
 void MultipleChromatogramAlignmentData::setRowContent(int row, const QByteArray &rawData, int offset) {
@@ -217,6 +218,7 @@ MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createSequen
 //    U2MaRow row;
 //    row.rowId = MultipleAlignmentRowData::INVALID_ROW_ID;
 //    return MultipleChromatogramAlignmentRow(new MultipleChromatogramAlignmentRowData(row, name, rawData, this));
+    return MultipleChromatogramAlignmentRow();
 }
 
 MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createSequenceRow(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, U2OpStatus &os) {
@@ -238,6 +240,7 @@ MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createSequen
 //    }
 
 //    return MultipleChromatogramAlignmentRow(new MultipleChromatogramAlignmentRowData(rowInDb, sequence, gaps, this));
+    return MultipleChromatogramAlignmentRow();
 }
 
 MultipleAlignmentRow MultipleChromatogramAlignmentData::createRow(const MultipleAlignmentRow &row) const {
