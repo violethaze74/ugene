@@ -41,7 +41,7 @@ public:
      * Otherwise if true == 'allowGapInPos' and the gap symbol is located in 'pos' then the method returns
      * the position of a non-gap character left-most to the 'pos'.
      */
-    static int getUngappedPosition(const U2MaRowGapModel &gaps, int pureDataLength, int pos, bool allowGapInPos = false);
+    static int getUngappedPosition(const U2MaRowGapModel &gaps, int dataLength, int pos, bool allowGapInPos = false);
     static int getCoreStart(const U2MaRowGapModel &gaps);
 
     /**
@@ -50,8 +50,7 @@ public:
      */
     static void addOffsetToGapModel(U2MaRowGapModel &gapModel, int offset);
     static void shiftGapModel(U2MaRowGapModel &gapModel, int shiftSize);
-    static bool isGap(int sequenceLength, const U2MaRowGapModel &gapModel, int position);
-    static bool isGap(const U2MaRowGapModel &gapModel, int position);
+    static bool isGap(int dataLength, const U2MaRowGapModel &gapModel, int position);
     static void chopGapModel(U2MaRowGapModel &gapModel, int maxLength);
     static QByteArray joinCharsAndGaps(const DNASequence &sequence, const U2MaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps);
 };

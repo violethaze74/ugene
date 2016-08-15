@@ -463,7 +463,7 @@ void MultipleAlignmentRowData::removeGapsFromGapModel(int pos, int count) {
 }
 
 bool MultipleAlignmentRowData::isGap(int position) const {
-    return MsaRowUtils::isGap(gaps, position);
+    return MsaRowUtils::isGap(getDataLength(), gaps, position);
 }
 
 }   // namespace U2

@@ -88,8 +88,8 @@ qint64 MsaRowUtils::getRowLengthWithoutTrailing(const QByteArray &seq, const U2M
     return rowLengthWithoutTrailingGap;
 }
 
-int MsaRowUtils::getUngappedPosition(const U2MaRowGapModel &gaps, int pureDataLength, int pos, bool allowGapInPos) {
-    if (isGap(gaps, pos) && !allowGapInPos) {
+int MsaRowUtils::getUngappedPosition(const U2MaRowGapModel &gaps, int dataLength, int pos, bool allowGapInPos) {
+    if (isGap(dataLength, gaps, pos) && !allowGapInPos) {
         return -1;
     }
 
@@ -106,11 +106,7 @@ int MsaRowUtils::getUngappedPosition(const U2MaRowGapModel &gaps, int pureDataLe
         }
     }
 
-    if (pureDataLength + gapsLength <= pos && !allowGapInPos) {
-        return -1;
-    }
-
-    return (pos - gapsLength);
+    return pos - gapsLength;
 }
 
 int MsaRowUtils::getCoreStart(const U2MaRowGapModel &gaps) {
@@ -157,7 +153,8 @@ void MsaRowUtils::shiftGapModel(U2MaRowGapModel &gapModel, int shiftSize) {
     }
 }
 
-bool MsaRowUtils::isGap(const U2MaRowGapModel &gapModel, int position) {
+bool MsaRowUtils::isGap(int dataLength, const U2MaRowGapModel &gapModel, int position) {
+    int gapsLength = 0;
     foreach (const U2MaGap &gap, gapModel) {
         if (gap.offset <= position && position < gap.offset + gap.gap) {
             return true;
@@ -165,7 +162,13 @@ bool MsaRowUtils::isGap(const U2MaRowGapModel &gapModel, int position) {
         if (position < gap.offset) {
             return false;
         }
+        gapsLength += gap.gap;
     }
+
+    if (dataLength + gapsLength <= position) {
+        return true;
+    }
+
     return false;
 }
 
