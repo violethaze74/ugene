@@ -73,7 +73,7 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData &multip
 }
 
 MultipleAlignmentData::~MultipleAlignmentData() {
-
+    int a = 0;
 }
 
 const MultipleAlignmentData & MultipleAlignmentData::operator=(const MultipleAlignmentData &other) {

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDebug>
+
 #include <U2Core/DbiConnection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
@@ -55,13 +57,14 @@ MaModificationInfo::MaModificationInfo()
 
 }
 
-
 const MultipleAlignment & MaSavedState::getState() const{
+    qDebug() << "State is get: " << !lastState.isNull();
     return lastState;
 }
 
 void MaSavedState::setState(const MultipleAlignment &ma) {
     lastState = ma->getCopy();
+    qDebug() << "State is set: " << !lastState.isNull();
 }
 
 const int MultipleAlignmentObject::GAP_COLUMN_ONLY = -1;
@@ -637,6 +640,7 @@ void MultipleAlignmentObject::releaseState() {
         emit si_completeStateChanged(true);
 
         MultipleAlignment maBefore = savedState.getState();
+        CHECK(NULL != maBefore, );
         CHECK(*maBefore != *getMultipleAlignment(), );
         setModified(true);
 

@@ -39,6 +39,8 @@ public:
     ~MsaStateCheck() {
 #ifdef _DEBUG
         msa->check();
+#else
+        Q_UNUSED(msa);
 #endif
     }
 

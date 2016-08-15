@@ -58,7 +58,7 @@ private slots:
     void sl_lockedStateChanged();
     void sl_removeSequence();
     void sl_selectReferenceSequence();
-    void sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&);
+    void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
     void sl_onScrollBarActionTriggered( int scrollAction );
     void sl_referenceSeqChanged(qint64);
 
