@@ -27,6 +27,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "HmmerBuildFromMsaTask.h"
@@ -34,7 +35,7 @@
 
 namespace U2 {
 
-HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MAlignment &msa)
+HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings &settings, const MultipleSequenceAlignment &msa)
     : ExternalToolSupportTask(tr("Build HMMER profile from msa"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       msa(msa),
@@ -66,7 +67,7 @@ void HmmerBuildFromMsaTask::prepare() {
     prepareWorkingDir();
     CHECK_OP(stateInfo, );
 
-    QString msaUrl = settings.workingDir + "/" + GUrlUtils::fixFileName(msa.getName()) + ".sto";
+    QString msaUrl = settings.workingDir + "/" + GUrlUtils::fixFileName(msa->getName()) + ".sto";
     saveTask = new SaveAlignmentTask(msa, msaUrl, BaseDocumentFormats::STOCKHOLM);
     saveTask->setSubtaskProgressWeight(5);
     addSubTask(saveTask);

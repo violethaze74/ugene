@@ -36,6 +36,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -88,15 +89,13 @@ void SaveAlignmentTask::run() {
 Document * SaveAlignmentTask::getDocument() const {
     return doc.data();
 }
-
-const MAlignment & SaveAlignmentTask::getMAlignment() const {
-    return ma;
-}
-
-const QString &SaveAlignmentTask::getUrl() const {
+const QString & SaveAlignmentTask::getUrl() const {
     return fileName;
 }
 
+const MultipleSequenceAlignment & SaveAlignmentTask::getMAlignment() const {
+    return ma;
+}
 
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format

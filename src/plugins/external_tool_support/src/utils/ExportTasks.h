@@ -41,7 +41,7 @@ public:
     void run();
 
     virtual Document* getDocument() const;
-
+    const QString & getUrl() const;
     const MultipleSequenceAlignment & getMAlignment() const;
 
 private:

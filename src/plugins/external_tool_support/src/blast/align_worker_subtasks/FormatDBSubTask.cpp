@@ -26,6 +26,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/DbiDataStorage.h>
 

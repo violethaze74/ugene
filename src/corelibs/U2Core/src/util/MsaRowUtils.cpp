@@ -143,4 +143,67 @@ void MsaRowUtils::addOffsetToGapModel(U2MaRowGapModel &gapModel, int offset) {
     }
 }
 
+void MsaRowUtils::shiftGapModel(U2MaRowGapModel &gapModel, int shiftSize) {
+    CHECK(shiftSize > 0, );
+    for (int i = 0; i < gapModel.size(); i++) {
+        gapModel[i].offset += shiftSize;
+    }
+}
+
+bool MsaRowUtils::isGap(int dataLength, const U2MaRowGapModel &gapModel, int position) {
+    int gapsLength = 0;
+    foreach (const U2MaGap &gap, gapModel) {
+        if (gap.offset <= position && position < gap.offset + gap.gap) {
+            return true;
+        }
+        if (position < gap.offset) {
+            return false;
+        }
+        gapsLength += gap.gap;
+    }
+
+    if (dataLength + gapsLength <= position) {
+        return true;
+    }
+
+    return false;
+}
+
+void MsaRowUtils::chopGapModel(U2MaRowGapModel &gapModel, int maxLength) {
+    while (!gapModel.isEmpty() && gapModel.last().offset >= maxLength) {
+        gapModel.removeLast();
+    }
+    if (!gapModel.isEmpty() && gapModel.last().offset + gapModel.last().gap > maxLength) {
+        gapModel.last().gap = maxLength - gapModel.last().offset;
+    }
+}
+
+QByteArray MsaRowUtils::joinCharsAndGaps(const DNASequence &sequence, const U2MaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps) {
+    QByteArray bytes = sequence.constSequence();
+    int beginningOffset = 0;
+
+    if (gapModel.isEmpty()) {
+        return bytes;
+    }
+
+    for (int i = 0; i < gapModel.size(); ++i) {
+        QByteArray gapsBytes;
+        if (!keepLeadingGaps && (0 == gapModel[i].offset)) {
+            beginningOffset = gapModel[i].gap;
+            continue;
+        }
+
+        gapsBytes.fill(MultipleAlignment::GapChar, gapModel[i].gap);
+        bytes.insert(gapModel[i].offset - beginningOffset, gapsBytes);
+    }
+
+    if (keepTrailingGaps && (bytes.size() < rowLength)) {
+        QByteArray gapsBytes;
+        gapsBytes.fill(MultipleAlignment::GapChar, rowLength - bytes.size());
+        bytes.append(gapsBytes);
+    }
+
+    return bytes;
+}
+
 } // U2

@@ -34,7 +34,6 @@
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/MAlignmentObject.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>

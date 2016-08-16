@@ -620,7 +620,7 @@ static QByteArray getNameSeqGap( int diff ) {
     return ret;
 }
 
-static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, const QString& name, U2OpStatus &os ) {
+static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, QString name, U2OpStatus &os ) {
     assert( NULL != io );
     assert( msa->getNumRows() );
     int ret = 0;

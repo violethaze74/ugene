@@ -26,6 +26,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/AppSettingsGUI.h>
 #include <U2Gui/GUIUtils.h>
@@ -81,16 +82,16 @@ void HmmerSupport::sl_buildProfile() {
         return;
     }
 
-    MAlignment ma;
+    MultipleSequenceAlignment ma;
     MWMDIWindow *activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (NULL != activeWindow) {
         GObjectViewWindow *objectViewWindow = qobject_cast<GObjectViewWindow *>(activeWindow);
         if (NULL != objectViewWindow) {
             MSAEditor *msaEditor = qobject_cast<MSAEditor *>(objectViewWindow->getObjectView());
             if (NULL != msaEditor) {
-                MAlignmentObject *maObj = msaEditor->getMSAObject();
+                MultipleSequenceAlignmentObject *maObj = msaEditor->getMSAObject();
                 if (maObj != NULL) {
-                    ma = maObj->getMAlignment();
+                    ma = maObj->getMsa();
                 }
             }
         }
@@ -284,9 +285,9 @@ void HmmerMsaEditorContext::sl_build() {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(action->getObjectView());
     SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
 
-    MAlignmentObject *obj = msaEditor->getMSAObject();
+    MultipleSequenceAlignmentObject *obj = msaEditor->getMSAObject();
     if (obj != NULL) {
-        QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getMAlignment());
+        QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getMsa  ());
         buildDlg->exec();
         CHECK(!buildDlg.isNull(), );
     }

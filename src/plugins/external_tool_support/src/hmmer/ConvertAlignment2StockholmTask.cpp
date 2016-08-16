@@ -27,7 +27,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -106,15 +106,15 @@ void ConvertAlignment2Stockholm::prepareResultUrl() {
 
 void ConvertAlignment2Stockholm::prepareSaveTask() {
     Document *document = loadTask->takeDocument();
-    QList<GObject *> objects = document->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject *> objects = document->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     CHECK_EXT(!objects.isEmpty(), setError(tr("File doesn't contain any multiple alignments.")), );
 
     if (1 < objects.size()) {
         stateInfo.addWarning(tr("File contains several multiple alignments. Only the first one is saved to the result file."));
     }
 
-    MAlignmentObject *maObject = qobject_cast<MAlignmentObject *>(objects.first());
-    saveTask = new SaveAlignmentTask(maObject->getMAlignment(), resultUrl, BaseDocumentFormats::STOCKHOLM);
+    MultipleSequenceAlignmentObject *maObject = qobject_cast<MultipleSequenceAlignmentObject *>(objects.first());
+    saveTask = new SaveAlignmentTask(maObject->getMsa(), resultUrl, BaseDocumentFormats::STOCKHOLM);
     saveTask->setSubtaskProgressWeight(50);
 }
 

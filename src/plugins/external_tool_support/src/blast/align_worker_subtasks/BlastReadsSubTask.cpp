@@ -33,7 +33,7 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 
 
 namespace U2 {
@@ -160,13 +160,13 @@ void BlastAndSwReadTask::run() {
     CHECK_OP(stateInfo, );
     CHECK(!skipped, );
 
-    QScopedPointer<MAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
     CHECK_EXT(!msaObject.isNull(), setError(L10N::nullPointerError("MSA object for %1").arg(getReadName())), );
     int rowCount = msaObject->getNumRows();
     CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
 
-    referenceGaps = msaObject->getRow(0).getGapModel();
-    readGaps = msaObject->getRow(1).getGapModel();
+    referenceGaps = msaObject->getRow(0)->getGapModel();
+    readGaps = msaObject->getRow(1)->getGapModel();
 
     CHECK(offset > 0, );
     shiftGaps(referenceGaps);
@@ -181,11 +181,11 @@ const SharedDbiDataHandler& BlastAndSwReadTask::getRead() const {
     return read;
 }
 
-const QList<U2MsaGap>& BlastAndSwReadTask::getReferenceGaps() const {
+const U2MaRowGapModel& BlastAndSwReadTask::getReferenceGaps() const {
     return referenceGaps;
 }
 
-const QList<U2MsaGap>& BlastAndSwReadTask::getReadGaps() const {
+const U2MaRowGapModel& BlastAndSwReadTask::getReadGaps() const {
     return readGaps;
 }
 
@@ -197,11 +197,11 @@ QString BlastAndSwReadTask::getReadName() const {
     return initialReadName + (complement ? "(rev-compl)" : "");
 }
 
-MAlignment BlastAndSwReadTask::getMAlignment() {
-    QScopedPointer<MAlignmentObject> msaObj(StorageUtils::getMsaObject(storage, msa));
-    CHECK(msaObj != NULL, MAlignment());
+MultipleSequenceAlignment BlastAndSwReadTask::getMAlignment() {
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(storage, msa));
+    CHECK(msaObj != NULL, MultipleSequenceAlignment());
 
-    return msaObj->getMAlignment();
+    return msaObj->getMsa();
 }
 
 qint64 BlastAndSwReadTask::getOffset() const {
@@ -258,29 +258,28 @@ void BlastAndSwReadTask::createAlignment(const U2Region& refRegion) {
     QByteArray referenceData = refObject->getSequenceData(refRegion, stateInfo);
     CHECK_OP(stateInfo, );
 
-    MAlignment alignment("msa", refObject->getAlphabet());
-    alignment.addRow(refObject->getSequenceName(), referenceData, stateInfo);
+    MultipleSequenceAlignment alignment("msa", refObject->getAlphabet());
+    alignment->addRow(refObject->getSequenceName(), referenceData);
     CHECK_OP(stateInfo, );
     QByteArray readData = readObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
 
     if (readShift != 0) {
-        alignment.addRow(readObject->getSequenceName(),
-                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, QList<U2MsaGap>() << U2MsaGap(0, readShift), stateInfo);
+        alignment->addRow(readObject->getSequenceName(),
+                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, U2MaRowGapModel() << U2MaGap(0, readShift), stateInfo);
     } else {
-        alignment.addRow(readObject->getSequenceName(),
-                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, stateInfo);
+        alignment->addRow(readObject->getSequenceName(), complement ? DNASequenceUtils::reverseComplement(readData) : readData);
     }
 
     CHECK_OP(stateInfo, );
 
-    QScopedPointer<MAlignmentObject> msaObj(MAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObj(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), alignment, stateInfo));
     CHECK_OP(stateInfo, );
     msa = storage->getDataHandler(msaObj->getEntityRef());
     offset = refRegion.startPos;
 }
 
-void BlastAndSwReadTask::shiftGaps(QList<U2MsaGap> &gaps) const {
+void BlastAndSwReadTask::shiftGaps(U2MaRowGapModel &gaps) const {
     for (int i = 0; i < gaps.size(); i++) {
         gaps[i].offset += offset;
     }
@@ -297,11 +296,11 @@ AbstractAlignmentTaskFactory* BlastAndSwReadTask::getAbstractAlignmentTaskFactor
 }
 
 PairwiseAlignmentTaskSettings* BlastAndSwReadTask::createSettings(DbiDataStorage *storage, const SharedDbiDataHandler &msa, U2OpStatus &os) {
-    QScopedPointer<MAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
+    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
     CHECK_EXT(!msaObject.isNull(), os.setError(L10N::nullPointerError("MSA object")), NULL);
 
-    U2DataId referenceId = msaObject->getRow(0).getRowDBInfo().sequenceId;
-    U2DataId readId = msaObject->getRow(1).getRowDBInfo().sequenceId;
+    U2DataId referenceId = msaObject->getRow(0)->getRowDbInfo().dataObjectId;
+    U2DataId readId = msaObject->getRow(1)->getRowDbInfo().dataObjectId;
 
     PairwiseAlignmentTaskSettings *settings = new PairwiseAlignmentTaskSettings();
     settings->alphabet = msaObject->getAlphabet()->getId();

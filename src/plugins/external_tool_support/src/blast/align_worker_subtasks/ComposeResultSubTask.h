@@ -47,12 +47,12 @@ private:
     BlastAndSwReadTask * getBlastSwTask(int readNum);
     DNASequence getReadSequence(int readNum);
     DNASequence getReferenceSequence();
-    QList<U2MsaGap> getReferenceGaps();
-    QList<U2MsaGap> getShiftedGaps(int rowNum);
-    void insertShiftedGapsIntoReference(MAlignment &alignment, const QList<U2MsaGap> &gaps);
-    void insertShiftedGapsIntoRead(MAlignment &alignment, int readNum, int rowNum, const QList<U2MsaGap> &gaps);
+    U2MaRowGapModel getReferenceGaps();
+    U2MaRowGapModel getShiftedGaps(int rowNum);
+     void insertShiftedGapsIntoReference(MultipleAlignment &alignment, const U2MaRowGapModel &gaps);
+    void insertShiftedGapsIntoRead(MultipleAlignment &alignment, int readNum, int rowNum, const U2MaRowGapModel &gaps);
     void createAlignmentAndAnnotations();
-    U2Region getReadRegion(const MAlignmentRow &readRow, const QList<U2MsaGap> &referenceGapModel) const;
+    U2Region getReadRegion(const MultipleSequenceAlignmentRow &readRow, const U2MaRowGapModel &referenceGapModel) const;
     U2Location getLocation(const U2Region &region, bool isComplement);
 
 private:
