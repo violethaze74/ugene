@@ -54,9 +54,12 @@ bool PairwiseAlignmentHirschbergTaskSettings::convertCustomSettings() {
     return true;
 }
 
-PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings) :
-    PairwiseAlignmentTask(TaskFlag_NoRun), settings(_settings), kalignSubTask(NULL), workflowKalignSubTask(NULL), ma(MultipleSequenceAlignmentData::createMsa()) {
-
+PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings)
+    : PairwiseAlignmentTask(TaskFlag_NoRun),
+      settings(_settings),
+      kalignSubTask(NULL),
+      workflowKalignSubTask(NULL)
+{
     SAFE_POINT(settings != NULL, "Task settings are not defined.", );
     SAFE_POINT(settings->convertCustomSettings() && settings->isValid(), "Invalide task settings.", );
 
@@ -79,7 +82,7 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     alphabet = U2AlphabetUtils::getById(settings->alphabet);
     SAFE_POINT(alphabet != NULL, "Albhabet is invalid.", );
 
-    ma = MultipleSequenceAlignmentData::createMsa(firstName + " vs. " + secondName, alphabet);
+    ma = MultipleSequenceAlignment(firstName + " vs. " + secondName, alphabet);
     ma->addRow(firstName, first);
     ma->addRow(secondName, second);
 

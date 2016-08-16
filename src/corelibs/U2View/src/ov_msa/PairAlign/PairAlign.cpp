@@ -264,7 +264,7 @@ void PairAlign::updatePercentOfSimilarity() {
     SAFE_POINT(NULL != distanceFactory, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
-    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa();
+    MultipleSequenceAlignment ma;
     const MultipleSequenceAlignment currentAlignment = msa->getMSAObject()->getMsa();
     ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
     ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);

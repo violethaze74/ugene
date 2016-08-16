@@ -685,7 +685,7 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
     U2OpStatusImpl os;
     const int refSeq = msa->getRowIndexByRowId(editor->getReferenceRowId(), os);
     QString refSeqName = editor->getReferenceRowName();
-    MultipleSequenceAlignmentRow row = MultipleSequenceAlignmentData::getEmptyRow();
+    MultipleSequenceAlignmentRow row;
     if (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) {
         row = msa->getMsaRow(refSeq);
     }
@@ -2524,7 +2524,7 @@ void MSAEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
         QRegExp latinCharacterOrGap(QString("([A-Z]| |-|%1)").arg(emDash));
         if (latinCharacterOrGap.exactMatch(text)) {
             QChar newChar = text.at(0);
-            newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? MAlignment_GapChar : newChar;
+            newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? MultipleAlignment::GapChar : newChar;
             replaceSelectedCharacter(newChar.toLatin1());
         }
         else {
@@ -2858,7 +2858,7 @@ QPair<QString, int> MSAEditorSequenceArea::getGappedColumnInfo() const{
     const MultipleSequenceAlignmentRow row = editor->getMSAObject()->getMsaRow(getSelectedRows().startPos);
     int len = row->getUngappedLength();
     QChar current = row->charAt(selection.topLeft().x());
-    if(current == MAlignment_GapChar){
+    if(current == MultipleAlignment::GapChar){
         return QPair<QString, int>(QString("gap"),len);
     }else{
         int pos = row->getUngappedPosition(selection.topLeft().x());
@@ -2932,7 +2932,7 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
 
     U2OpStatusImpl os;
     const int refSeq = editor->getMSAObject()->getMsa()->getRowIndexByRowId(editor->getReferenceRowId(), os);
-    MultipleSequenceAlignmentRow row = MultipleSequenceAlignmentData::getEmptyRow();
+    MultipleSequenceAlignmentRow row;
     if (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) {
         row = msa->getMsaRow(refSeq);
     }

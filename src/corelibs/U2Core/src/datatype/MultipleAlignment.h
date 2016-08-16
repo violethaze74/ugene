@@ -33,11 +33,40 @@ class DNAAlphabet;
 /** Default name for a multiple alignment */
 #define MA_OBJECT_NAME QString("Multiple alignment")
 
-/** Gap character */
-#define MAlignment_GapChar '-'
 #define MAlignment_TailedGapsPattern "\\-+$"
 
-typedef QSharedPointer<MultipleAlignmentData> MultipleAlignment;
+class MultipleAlignmentData;
+
+class MultipleAlignment {
+protected:
+    MultipleAlignment(MultipleAlignmentData *multipleAlignmentData);
+
+public:
+    virtual ~MultipleAlignment();
+
+    MultipleAlignmentData * data() const;
+    template <class Derived> inline Derived dynamicCast() const;
+
+    MultipleAlignmentData & operator*();
+    const MultipleAlignmentData & operator*() const;
+
+    MultipleAlignmentData * operator->();
+    const MultipleAlignmentData * operator->() const;
+
+    void operator+=(const MultipleAlignment &other);
+
+    virtual MultipleAlignment clone() const;
+
+    static const char GapChar;
+
+protected:
+    QSharedPointer<MultipleAlignmentData> maData;
+};
+
+template <class Derived>
+Derived MultipleAlignment::dynamicCast() const {
+    return Derived(*this);
+}
 
 /**
  * Multiple alignment
@@ -52,8 +81,8 @@ protected:
      * The name must be provided if this is not default alignment.
      */
     MultipleAlignmentData(const QString &name = QString(),
-                      const DNAAlphabet *alphabet = NULL,
-                      const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
+                          const DNAAlphabet *alphabet = NULL,
+                          const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
     MultipleAlignmentData(const MultipleAlignmentData &multipleAlignment);
 
 public:
@@ -123,7 +152,7 @@ public:
     bool sortRowsBySimilarity(QVector<U2Region> &united);
 
     /** Returns row of the alignment */
-    MultipleAlignmentRow & getRow(int row);
+    MultipleAlignmentRow getRow(int row);
     const MultipleAlignmentRow & getRow(int row) const;
     const MultipleAlignmentRow & getRow(const QString &name) const;
 
@@ -227,9 +256,8 @@ public:
 
     virtual MultipleAlignment getCopy() const = 0;
 
-    static const char GapChar;
-
 protected:
+    virtual MultipleAlignmentRow getEmptyRow() const = 0;
     virtual MultipleAlignmentRow createRow(const MultipleAlignmentRow &row) const = 0;
 
     /** Helper-method for adding a row to the alignment */
@@ -250,6 +278,13 @@ private:
     /** Additional alignment info */
     QVariantMap info;
 };
+
+inline bool	operator!=(const MultipleAlignment &ptr1, const MultipleAlignment &ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator!=(const MultipleAlignment &ptr1, const MultipleAlignmentData *ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator!=(const MultipleAlignmentData *ptr1, const MultipleAlignment &ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator==(const MultipleAlignment &ptr1, const MultipleAlignment &ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleAlignment &ptr1, const MultipleAlignmentData *ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleAlignmentData *ptr1, const MultipleAlignment &ptr2) { return *ptr1 == *ptr2; }
 
 }   // namespace U2
 

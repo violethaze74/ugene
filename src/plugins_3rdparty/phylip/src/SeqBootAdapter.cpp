@@ -38,7 +38,6 @@
 namespace U2{
 
 SeqBoot::SeqBoot() {
-    malignment = MultipleSequenceAlignmentData::createMsa();
     seqLen = 0;
     seqRowCount = 0;
 }
@@ -70,7 +69,7 @@ void SeqBoot::initGenerSeq(int reps, int rowC, int seqLen){
     seqRowCount = rowC;
         
     for(int i = 0; i < reps; i++){
-        generatedSeq[i] = MultipleSequenceAlignmentData::createMsa(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
+        generatedSeq[i] = MultipleSequenceAlignment(QString("bootstrap %1").arg(reps), malignment->getAlphabet());
     }
     
 }

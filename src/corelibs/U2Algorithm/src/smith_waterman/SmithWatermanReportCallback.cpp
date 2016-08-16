@@ -208,7 +208,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         QByteArray curResultPtrnSubseq = ptrnSequenceData.mid(pairAlignSeqs.ptrnSubseq.startPos, pairAlignSeqs.ptrnSubseq.length);
         alignSequences(curResultRefSubseq, curResultPtrnSubseq, pairAlignSeqs.pairAlignment);
 
-        MultipleSequenceAlignment msa = MultipleSequenceAlignmentData::createMsa(newFileName, alphabet);
+        MultipleSequenceAlignment msa(newFileName, alphabet);
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.refSubseq;
         msa->addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq);
@@ -298,7 +298,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length detected!", QString::null);
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
-    MultipleSequenceAlignment msa = MultipleSequenceAlignmentData::createMsa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
+    MultipleSequenceAlignment msa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
     msa->addRow(refSequence->visualName, refSequenceData);
     msa->addRow(ptrnSequence->visualName, ptrnSequenceData);
 
@@ -410,11 +410,11 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
                 continue;
                 break;
             case SmithWatermanResult::UP:
-                ptrnSequence.insert(ptrnSeqCurrentPosition, MAlignment_GapChar);
+                ptrnSequence.insert(ptrnSeqCurrentPosition, MultipleAlignment::GapChar);
                 --refSeqCurrentPosition;
                 break;
             case SmithWatermanResult::LEFT:
-                refSequence.insert(refSeqCurrentPosition, MAlignment_GapChar);
+                refSequence.insert(refSeqCurrentPosition, MultipleAlignment::GapChar);
                 --ptrnSeqCurrentPosition;
                 break;
             default:

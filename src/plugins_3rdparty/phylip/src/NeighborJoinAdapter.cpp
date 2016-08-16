@@ -185,7 +185,7 @@ void NeighborJoinCalculateTreeTask::run(){
 
                 naym* nayme = getNayme();
                 for (int i = 0; i < sz; ++i) {
-                    const MultipleAlignmentRow& row = inputMA->getRow(i);
+                    const MultipleAlignmentRow row = inputMA->getRow(i);
                     QByteArray name = row->getName().toLatin1();
                     replacePhylipRestrictedSymbols(name);
                     qstrncpy(nayme[i], name.constData(), sizeof(naym));
@@ -265,7 +265,7 @@ void NeighborJoinCalculateTreeTask::run(){
 
             naym* nayme = getNayme();
             for (int i = 0; i < sz; ++i) {
-                const MultipleAlignmentRow& row = inputMA->getRow(i);
+                const MultipleAlignmentRow row = inputMA->getRow(i);
                 QByteArray name = row->getName().toLatin1();
                 replacePhylipRestrictedSymbols(name);
                 qstrncpy(nayme[i], name.constData(), sizeof(naym));

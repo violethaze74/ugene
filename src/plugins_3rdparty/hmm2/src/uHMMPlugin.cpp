@@ -133,7 +133,7 @@ void uHMMPlugin::sl_calibrate() {
 }
 
 void uHMMPlugin::sl_build() {
-    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::getEmptyMsa();
+    MultipleSequenceAlignment ma = MultipleSequenceAlignment();
 
     //try to find alignment check that MSA Editor is active
     QString profileName;

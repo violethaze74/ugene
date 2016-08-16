@@ -57,7 +57,6 @@ void TCoffeeSupportTaskSettings::reset() {
 
 TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const TCoffeeSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run T-Coffee alignment task", TaskFlags_NR_FOSCOE),
-      resultMA(MultipleSequenceAlignmentData::getEmptyMsa()),
       inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),

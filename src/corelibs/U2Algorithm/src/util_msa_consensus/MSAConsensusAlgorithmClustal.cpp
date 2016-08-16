@@ -47,7 +47,7 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
         // for nucleic alphabet work as strict algorithm but use ' ' as default
         char  defChar = ' ';
         char pc = ( seqIdx.isEmpty() ? msa->getMsaRows().first() : msa->getMsaRows()[ seqIdx[0] ] )->charAt(pos);
-        if (pc == MAlignment_GapChar) {
+        if (pc == MultipleAlignment::GapChar) {
             pc = defChar;
         }
         int nSeq =( seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size());
@@ -81,9 +81,9 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
                 currentGroup.append(c);
             }
         }
-        char consChar = MAlignment_GapChar;
+        char consChar = MultipleAlignment::GapChar;
         if (currentGroup.size() == 1) {
-            consChar = (currentGroup[0] == MAlignment_GapChar) ? ' ' : '*';
+            consChar = (currentGroup[0] == MultipleAlignment::GapChar) ? ' ' : '*';
         } else  {
             bool ok = false;
             int currentLen = currentGroup.length();

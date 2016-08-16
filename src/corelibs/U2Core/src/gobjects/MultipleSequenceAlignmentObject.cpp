@@ -45,7 +45,7 @@ MultipleSequenceAlignmentObject::MultipleSequenceAlignmentObject(const QString &
 }
 
 const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsa() const {
-    return getMultipleAlignment().dynamicCast<MultipleSequenceAlignmentData>();
+    return getMultipleAlignment().dynamicCast<MultipleSequenceAlignment>();
 }
 
 const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() const {
@@ -75,7 +75,7 @@ char MultipleSequenceAlignmentObject::charAt(int seqNum, int pos) const {
 }
 
 const MultipleSequenceAlignmentRow MultipleSequenceAlignmentObject::getMsaRow(int row) const {
-    return getRow(row).dynamicCast<MultipleSequenceAlignmentRowData>();
+    return getRow(row).dynamicCast<MultipleSequenceAlignmentRow>();
 }
 
 void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MaRowGapModel &gapModel) {
@@ -99,7 +99,7 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
     qint64 modifiedRowId = msa->getRow(rowIndex)->getRowId();
 
     U2OpStatus2Log os;
-    if (newChar != MultipleAlignmentData::GapChar) {
+    if (newChar != MultipleAlignment::GapChar) {
         MsaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
         MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
@@ -134,7 +134,7 @@ void MultipleSequenceAlignmentObject::loadAlignment(U2OpStatus &os) {
 }
 
 void MultipleSequenceAlignmentObject::updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds) {
-    MultipleSequenceAlignment cachedMsa = cachedMa.dynamicCast<MultipleSequenceAlignmentData>();
+    MultipleSequenceAlignment cachedMsa = cachedMa.dynamicCast<MultipleSequenceAlignment>();
 
     MultipleSequenceAlignmentExporter msaExporter;
     QList<MsaRowReplacementData> rowsAndSeqs = msaExporter.getAlignmentRows(entityRef.dbiRef, entityRef.entityId, rowIds, os);
@@ -149,8 +149,7 @@ void MultipleSequenceAlignmentObject::updateCachedRows(U2OpStatus &os, const QLi
 }
 
 void MultipleSequenceAlignmentObject::updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) {
-    const MultipleSequenceAlignment msa = ma.dynamicCast<MultipleSequenceAlignmentData>();
-    SAFE_POINT_EXT(!msa.isNull(), os.setError("Can't convert MultipleAlignment to MultipleSequenceAlignment"), );
+    const MultipleSequenceAlignment msa = ma.dynamicCast<MultipleSequenceAlignment>();
     MsaDbiUtils::updateMsa(entityRef, msa, os);
 }
 

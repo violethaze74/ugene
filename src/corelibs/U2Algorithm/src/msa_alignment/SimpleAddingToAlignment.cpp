@@ -132,7 +132,7 @@ void BestPositionFindTask::run() {
             char c = row->charAt(p);
             int selLength = 0;
             int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
-            if (MAlignment_GapChar != c && patternSimilarity > similarity) {
+            if (MultipleAlignment::GapChar != c && patternSimilarity > similarity) {
                 similarity = patternSimilarity;
                 bestPosition = p;
             }
@@ -145,7 +145,7 @@ void BestPositionFindTask::run() {
                 char c = row->charAt(p);
                 int selLength = 0;
                 int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
-                if (MAlignment_GapChar != c && patternSimilarity > similarity) {
+                if (MultipleAlignment::GapChar != c && patternSimilarity > similarity) {
                     similarity = patternSimilarity;
                     bestPosition = p;
                 }

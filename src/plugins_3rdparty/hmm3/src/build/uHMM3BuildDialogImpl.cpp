@@ -241,8 +241,7 @@ void UHMM3BuildDialogImpl::sl_esetESWRadioButtonChanged( bool checked ) {
 }
 
 UHMM3BuildDialogModel::UHMM3BuildDialogModel()
-    : alignment(MultipleSequenceAlignmentData::getEmptyMsa()),
-      alignmentUsing(false)
+    : alignmentUsing(false)
 {
 
 }

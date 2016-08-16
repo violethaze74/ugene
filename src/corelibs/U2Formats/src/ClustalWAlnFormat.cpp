@@ -69,7 +69,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
     const QBitArray& WHITES = TextUtils::WHITES;
 
     QString objName = io->getURL().baseFileName();
-    MultipleSequenceAlignment al = MultipleSequenceAlignmentData::createMsa(objName);
+    MultipleSequenceAlignment al(objName);
     bool lineOk = false;
     bool firstBlock = true;
     int sequenceIdx = 0;
@@ -157,7 +157,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
                 break;
             }
             if (rowIdx != -1) {
-                const MultipleAlignmentRow& row = al->getRow(rowIdx);
+                const MultipleAlignmentRow row = al->getRow(rowIdx);
                 if (row->getName() != name) {
                     os.setError( ClustalWAlnFormat::tr("Sequence names are not matched"));
                     break;
@@ -229,7 +229,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
     maxNameLength = qMin(maxNameLength, MAX_NAME_LEN);
 
     int aliLen = msa->getLength();
-    QByteArray consensus(aliLen, MAlignment_GapChar);
+    QByteArray consensus(aliLen, MultipleAlignment::GapChar);
 
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
     QScopedPointer<MSAConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa));

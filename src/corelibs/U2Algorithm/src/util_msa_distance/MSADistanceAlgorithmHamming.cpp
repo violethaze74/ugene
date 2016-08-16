@@ -68,7 +68,7 @@ void MSADistanceAlgorithmHamming::run() {
                 if(!excludeGaps){
                     if (dissimilar) sim++;
                 }else{
-                    if (dissimilar && (ma->charAt(i, k)!=MAlignment_GapChar && ma->charAt(j, k)!=MAlignment_GapChar)) sim++;
+                    if (dissimilar && (ma->charAt(i, k)!=MultipleAlignment::GapChar && ma->charAt(j, k)!=MultipleAlignment::GapChar)) sim++;
                 }
             }
             lock.lock();

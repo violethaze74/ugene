@@ -319,9 +319,9 @@ void MsaDbiUtils::getStartAndEndSequencePositions(const QByteArray &seq, const Q
 
     // Remove chars from the sequence
     // Calculate start position in the sequence
-    if (MAlignment_GapChar == MsaRowUtils::charAt(seq, gaps, pos)) {
+    if (MultipleAlignment::GapChar == MsaRowUtils::charAt(seq, gaps, pos)) {
         int i = 1;
-        while (MAlignment_GapChar == MsaRowUtils::charAt(seq, gaps, pos + i)) {
+        while (MultipleAlignment::GapChar == MsaRowUtils::charAt(seq, gaps, pos + i)) {
             if (MsaRowUtils::getRowLength(seq, gaps) == pos + i) {
                 break;
             }
@@ -344,9 +344,9 @@ void MsaDbiUtils::getStartAndEndSequencePositions(const QByteArray &seq, const Q
         endPosInSeq = seq.length();
     }
     else {
-        if (MAlignment_GapChar == MsaRowUtils::charAt(seq, gaps, endRegionPos)) {
+        if (MultipleAlignment::GapChar == MsaRowUtils::charAt(seq, gaps, endRegionPos)) {
             int i = 1;
-            while (MAlignment_GapChar == MsaRowUtils::charAt(seq, gaps, endRegionPos + i)) {
+            while (MultipleAlignment::GapChar == MsaRowUtils::charAt(seq, gaps, endRegionPos + i)) {
                 if (MsaRowUtils::getRowLength(seq, gaps) == endRegionPos + i) {
                     break;
                 }
@@ -527,7 +527,7 @@ void MsaDbiUtils::splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& 
 
     for (int i = 0; i < input.count(); ++i) {
         // A char
-        if ((MAlignment_GapChar != input.at(i)))
+        if ((MultipleAlignment::GapChar != input.at(i)))
         {
             if (previousCharIsGap) {
                 U2MaGap gap(gapsOffset, gapsCount);
@@ -561,7 +561,7 @@ void MsaDbiUtils::splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& 
         }
     }
 
-    SAFE_POINT(-1 == seqBytes.indexOf(MAlignment_GapChar), "Row sequence contains gaps!", );
+    SAFE_POINT(-1 == seqBytes.indexOf(MultipleAlignment::GapChar), "Row sequence contains gaps!", );
 }
 
 void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAlignment& al, U2OpStatus& os) {
@@ -1080,7 +1080,7 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64> rowIds, qi
 
     // Crop or remove each row
     for (int i = 0, n = al->getNumRows(); i < n; ++i) {
-        MultipleSequenceAlignmentRow row = al->getMsaRow(i)->getCopy();
+        MultipleSequenceAlignmentRow row = al->getMsaRow(i)->getExplicitCopy();
         qint64 rowId = row->getRowId();
         if (rowIds.contains(rowId)) {
             U2DataId sequenceId = row->getRowDbInfo().dataObjectId;

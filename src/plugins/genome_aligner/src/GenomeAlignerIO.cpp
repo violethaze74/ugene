@@ -118,7 +118,6 @@ GenomeAlignerCommunicationChanelReader::~GenomeAlignerCommunicationChanelReader(
 /* GenomeAlignerMsaWriter                                        */
 /************************************************************************/
 GenomeAlignerMsaWriter::GenomeAlignerMsaWriter() {
-    result = MultipleSequenceAlignmentData::getEmptyMsa();
     writtenReadsCount = 0;
 }
 
@@ -133,7 +132,7 @@ MultipleSequenceAlignment& GenomeAlignerMsaWriter::getResult() {
 
 void GenomeAlignerMsaWriter::write(SearchQuery *seq, SAType offset) {
     QByteArray offsetGaps;
-    offsetGaps.fill(MAlignment_GapChar, offset);
+    offsetGaps.fill(MultipleAlignment::GapChar, offset);
     QByteArray seqWithOffset = seq->constSequence();
     seqWithOffset.prepend(offsetGaps);
     result->addRow(seq->getName(), seqWithOffset);

@@ -184,7 +184,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
         for ( ; p < ( aliLen - pat.length( ) + 1 ); p++ ) {
             char c = row->charAt( p );
             int selLength = 0;
-            if ( MAlignment_GapChar != c && MSAUtils::equalsIgnoreGaps(row, p, pat, selLength) ) {
+            if ( MultipleAlignment::GapChar != c && MSAUtils::equalsIgnoreGaps(row, p, pat, selLength) ) {
                 // select the result now
                 MSAEditorSelection sel( p, s, selLength, 1 );
                 seqArea->setSelection( sel, true );
@@ -222,7 +222,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
         int p = ( s == pos.y( ) ? pos.x( ) : ( aliLen - pat.length( ) + 1) );
         while ( 0 <= p ) {
             int selectionLength = 0;
-            if ( MAlignment_GapChar != row->charAt( p )
+            if ( MultipleAlignment::GapChar != row->charAt( p )
                 && MSAUtils::equalsIgnoreGaps( row, p, pat, selectionLength ) )
             {
                 // select the result now

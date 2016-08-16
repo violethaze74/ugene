@@ -214,9 +214,9 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 int i = 1;
                 srand(QDateTime::currentDateTime().toTime_t());
                 foreach(const U2Region &reg, unitedRows) {
-                    MultipleAlignmentRow &row = s.ma->getRow(reg.startPos + qrand() % reg.length);
+                    MultipleAlignmentRow row = s.ma->getRow(reg.startPos + qrand() % reg.length);
                     row->setName(QString("Group %1: ").arg(i) + "(" + row->getName() + ")");
-                    rows.append(s.ma->getMsaRow(reg.startPos + qrand() % reg.length)->getCopy());
+                    rows.append(s.ma->getMsaRow(reg.startPos + qrand() % reg.length)->getExplicitCopy());
 
                     resultText += "<tr><td><b>" + QString("Group %1: ").arg(i) + "</b></td><td>";
                     for (int x = reg.startPos; x < reg.endPos(); x++) {
@@ -362,7 +362,6 @@ Task::ReportResult DistanceMatrixMSAProfileTask::report() {
 }
 
 DistanceMatrixMSAProfileTaskSettings::DistanceMatrixMSAProfileTaskSettings() :
-    ma(MultipleSequenceAlignmentData::createMsa()),
     usePercents(false),
     excludeGaps(false),
     showGroupStatistic(false),

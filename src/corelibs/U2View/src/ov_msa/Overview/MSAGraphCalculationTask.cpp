@@ -155,7 +155,7 @@ int MSAGapOverviewCalculationTask::getGraphValue(int pos) const {
             continue;
         }
         uchar c = static_cast<uchar>(ma->charAt(seq, pos));
-        if (c == MAlignment_GapChar) {
+        if (c == MultipleAlignment::GapChar) {
             gapCounter++;
         }
     }

@@ -69,8 +69,7 @@ enum DNAStatMSAProfileOutputFormat {
 
 class DNAStatMSAProfileTaskSettings {
 public:
-    DNAStatMSAProfileTaskSettings(){
-        ma = MultipleSequenceAlignmentData::createMsa();
+    DNAStatMSAProfileTaskSettings() {
         outFormat = DNAStatMSAProfileOutputFormat_Show;
         usePercents = false;
         reportGaps = false;
@@ -80,7 +79,7 @@ public:
 
     QString                         profileName; // usually object name
     QString                         profileURL;  // document url
-    MultipleSequenceAlignment                      ma;
+    MultipleSequenceAlignment       ma;
     bool                            usePercents; //report percents but not counts
     DNAStatMSAProfileOutputFormat   outFormat;
     QString                         outURL;

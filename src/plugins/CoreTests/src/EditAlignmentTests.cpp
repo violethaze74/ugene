@@ -136,7 +136,7 @@ Task::ReportResult GTest_CreateSubalignimentTask::report(){
         return ReportResult_Finished;
     }
     for(int i = 0; i < actual->getRows().size(); i++){
-        const MultipleAlignmentRow& actItem = actual->getRow(i), expItem = expected->getRow(i);
+        const MultipleAlignmentRow actItem = actual->getRow(i), expItem = expected->getRow(i);
         if (*actItem != *expItem){
             stateInfo.setError(GTest::tr("Expected and actual alignments not equal"));
             return ReportResult_Finished;

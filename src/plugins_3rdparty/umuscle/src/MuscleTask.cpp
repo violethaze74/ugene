@@ -65,7 +65,7 @@ void MuscleTaskSettings::reset() {
     maxSecs = 0;
     stableMode = true;
     regionToAlign.startPos = regionToAlign.length = 0;
-    profile = MultipleSequenceAlignmentData::createMsa();
+    profile = MultipleSequenceAlignment();
     alignRegion = false;
     inputFilePath = "";
     mode = Default;
@@ -74,9 +74,7 @@ void MuscleTaskSettings::reset() {
 MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSettings& _config)
     : Task(tr("MUSCLE alignment"), TaskFlags_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
       config(_config),
-      inputMA(ma->getExplicitCopy()),
-      resultMA(MultipleSequenceAlignmentData::createMsa()),
-      resultSubMA(MultipleSequenceAlignmentData::createMsa())
+      inputMA(ma->getExplicitCopy())
 {
     GCOUNTER( cvar, tvar, "MuscleTask" );
     config.nThreads = (config.nThreads == 0 ? AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount() : config.nThreads);
@@ -107,7 +105,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSett
         SAFE_POINT_EXT(config.regionToAlign.length > 0,
             setError(tr("Incorrect region to align")), );
         inputSubMA = inputMA->mid(config.regionToAlign.startPos, config.regionToAlign.length);
-        CHECK_EXT(*inputSubMA != *MultipleSequenceAlignmentData::createMsa(), setError(tr("Stopping MUSCLE task, because of error in MultipleSequenceAlignment::mid function")), );
+        CHECK_EXT(inputSubMA != MultipleSequenceAlignment(), setError(tr("Stopping MUSCLE task, because of error in MultipleSequenceAlignment::mid function")), );
     }
 
     if (config.nThreads == 1 || (config.op != MuscleTaskOp_Align)) {
@@ -187,7 +185,7 @@ void MuscleTask::doAlign(bool refine) {
             }
         }
         int j = resNSeq;
-        QByteArray gapSeq(resultSubMA->getLength(),MAlignment_GapChar);
+        QByteArray gapSeq(resultSubMA->getLength(),MultipleAlignment::GapChar);
         for(int i=0, n = nSeq; i < n; i++) {
             if(!existID[i]) {
                 QString rowName = inputMA->getRow(i)->getName();
@@ -207,7 +205,7 @@ void MuscleTask::doAlign(bool refine) {
         if (config.alignRegion && config.regionToAlign.length != inputMA->getLength()) {
 
             for(int i=0, n = inputMA->getNumRows(); i < n; i++) {
-                const MultipleAlignmentRow& row= inputMA->getRow(ids[i]);
+                const MultipleAlignmentRow row= inputMA->getRow(ids[i]);
                 resultMA->addRow(row->getName(), emptySeq);
             }
             if (config.regionToAlign.startPos != 0) {

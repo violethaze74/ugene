@@ -165,7 +165,7 @@ void DNAStatMSAProfileTask::run() {
             for (int i = 0; i < columns.size(); i++) {
                 ColumnStat& cs = columns[i];
                 QString posStr;
-                bool nums = s.countGapsInConsensusNumbering || cs.consChar != MAlignment_GapChar;
+                bool nums = s.countGapsInConsensusNumbering || cs.consChar != MultipleAlignment::GapChar;
                 posStr = nums ? QString::number(pos++) : QString("&nbsp;");
                 //            while(posStr.length() < maxLenLen) {posStr = (nums ? "0" : "&nbsp;") + posStr;}
                 resultText += "<td width=20>" + posStr + "</td>";
@@ -185,7 +185,7 @@ void DNAStatMSAProfileTask::run() {
             QByteArray aChars = s.ma->getAlphabet()->getAlphabetChars();
             for (int i = 0; i < aChars.size(); i++) {
                 char c = aChars[i];
-                if (c == MAlignment_GapChar && !s.reportGaps) {
+                if (c == MultipleAlignment::GapChar && !s.reportGaps) {
                     continue;
                 }
                 if (s.stripUnused && unusedChars.contains(c)) {
@@ -251,7 +251,7 @@ void DNAStatMSAProfileTask::run() {
         QByteArray aChars = s.ma->getAlphabet()->getAlphabetChars();
         for (int i = 0; i < aChars.size(); i++) {
             char c = aChars[i];
-            if (c == MAlignment_GapChar && !s.reportGaps) {
+            if (c == MultipleAlignment::GapChar && !s.reportGaps) {
                 continue;
             }
             if (s.stripUnused && unusedChars.contains(c)) {
@@ -304,7 +304,7 @@ void DNAStatMSAProfileTask::computeStats() {
         int topCharCount = 0;
         ColumnStat& cs = columns[pos];
         cs.charFreqs.resize(aChars.size());
-        cs.consChar = MAlignment_GapChar;
+        cs.consChar = MultipleAlignment::GapChar;
         for (int i = 0; i< s.ma->getNumRows(); i++) {
             char c = s.ma->getMsaRow(i)->charAt(pos);
             unusedChars.remove(c);
@@ -314,7 +314,7 @@ void DNAStatMSAProfileTask::computeStats() {
                 topCharCount = v;
                 cs.consChar = c;
             } else if (v == topCharCount) {
-                cs.consChar = MAlignment_GapChar;
+                cs.consChar = MultipleAlignment::GapChar;
             }
         }
     }

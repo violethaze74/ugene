@@ -29,6 +29,78 @@
 
 namespace U2 {
 
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow()
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData)
+{
+
+}
+
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentData *msa)
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(msa))
+{
+
+}
+
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, const MultipleSequenceAlignmentData *msa)
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(rowInDb, sequence, gaps, msa))
+{
+
+}
+
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MaRow &rowInDb, const QString &rowName, const QByteArray &rawData, const MultipleSequenceAlignmentData *msa)
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(rowInDb, rowName, rawData, msa))
+{
+
+}
+
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignmentData *msa)
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(row, msa))
+{
+
+}
+
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &other)
+    : MultipleAlignmentRow(other)
+{
+
+}
+
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleAlignmentRow &multipleAlignmentRow)
+    : MultipleAlignmentRow(multipleAlignmentRow)
+{
+    SAFE_POINT(NULL != maRowData.dynamicCast<MultipleSequenceAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleSequenceAlignmentRow", );
+}
+
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlignmentRowData *msaRowData)
+    : MultipleAlignmentRow(msaRowData)
+{
+
+}
+
+MultipleSequenceAlignmentRowData * MultipleSequenceAlignmentRow::data() const {
+    return maRowData.dynamicCast<MultipleSequenceAlignmentRowData>().data();
+}
+
+MultipleSequenceAlignmentRowData & MultipleSequenceAlignmentRow::operator*() {
+    return *(maRowData.dynamicCast<MultipleSequenceAlignmentRowData>());
+}
+
+const MultipleSequenceAlignmentRowData & MultipleSequenceAlignmentRow::operator*() const {
+    return *(maRowData.dynamicCast<MultipleSequenceAlignmentRowData>());
+}
+
+MultipleSequenceAlignmentRowData * MultipleSequenceAlignmentRow::operator->(){
+    return maRowData.dynamicCast<MultipleSequenceAlignmentRowData>().data();
+}
+
+const MultipleSequenceAlignmentRowData * MultipleSequenceAlignmentRow::operator->() const {
+    return maRowData.dynamicCast<MultipleSequenceAlignmentRowData>().data();
+}
+
+MultipleSequenceAlignmentRow MultipleSequenceAlignmentRow::explicitClone() const {
+    return maRowData.dynamicCast<MultipleSequenceAlignmentRowData>()->getExplicitCopy();
+}
+
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData()
     : MultipleAlignmentRowData()
 {
@@ -81,7 +153,7 @@ const DNASequence & MultipleSequenceAlignmentRowData::getSequence() const {
 }
 
 void MultipleSequenceAlignmentRowData::setSequence(const DNASequence &newSequence) {
-    SAFE_POINT(!newSequence.constSequence().contains(MultipleSequenceAlignmentData::GapChar), "The sequence must be without gaps", );
+    SAFE_POINT(!newSequence.constSequence().contains(MultipleAlignment::GapChar), "The sequence must be without gaps", );
     sequence = newSequence;
 }
 
@@ -103,7 +175,7 @@ QByteArray MultipleSequenceAlignmentRowData::toByteArray(int length, U2OpStatus 
     // Append additional gaps, if necessary
     if (length > bytes.count()) {
         QByteArray gapsBytes;
-        gapsBytes.fill(MultipleSequenceAlignmentData::GapChar, length - bytes.count());
+        gapsBytes.fill(MultipleAlignment::GapChar, length - bytes.count());
         bytes.append(gapsBytes);
     } else if (length < bytes.count()) {
         // cut extra bytes
@@ -144,12 +216,12 @@ void MultipleSequenceAlignmentRowData::toUpperCase() {
 }
 
 void MultipleSequenceAlignmentRowData::replaceChars(char origChar, char resultChar, U2OpStatus &os) {
-    if (MultipleSequenceAlignmentData::GapChar == origChar) {
+    if (MultipleAlignment::GapChar == origChar) {
         coreLog.trace("The original char can't be a gap in MultipleSequenceAlignmentRowData::replaceChars");
         os.setError("Failed to replace chars in an alignment row");
         return;
     }
-    if (MultipleSequenceAlignmentData::GapChar == resultChar) {
+    if (MultipleAlignment::GapChar == resultChar) {
         // Get indexes of all 'origChar' characters in the row sequence
         QList<int> gapsIndexes;
         for (int i = 0; i < getRowLength(); i++) {
@@ -184,12 +256,12 @@ void MultipleSequenceAlignmentRowData::replaceChars(char origChar, char resultCh
 }
 
 MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::mid(int pos, int count, U2OpStatus &os) const {
-    MultipleSequenceAlignmentRow row = getCopy();
+    MultipleSequenceAlignmentRow row = getExplicitCopy();
     row->crop(pos, count, os);
     return row;
 }
 
-MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getCopy() const {
+MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getExplicitCopy() const {
     return MultipleSequenceAlignmentRow(new MultipleSequenceAlignmentRowData(*this));
 }
 

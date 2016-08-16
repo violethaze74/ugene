@@ -72,9 +72,7 @@ void KalignTaskSettings::reset() {
 KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSettings& _config)
     :TLSTask(tr("KALIGN alignment"), TaskFlags_FOSCOE),
       config(_config),
-      inputMA(ma->getExplicitCopy()),
-      resultMA(MultipleSequenceAlignmentData::createMsa()),
-      resultSubMA(MultipleSequenceAlignmentData::createMsa())
+      inputMA(ma->getExplicitCopy())
 {
     GCOUNTER( cvar, tvar, "KalignTask" );
     inputSubMA = inputMA->getExplicitCopy();

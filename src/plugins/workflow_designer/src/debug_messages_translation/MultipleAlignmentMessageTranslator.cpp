@@ -40,9 +40,7 @@ namespace U2 {
 using namespace Workflow;
 
 MultipleAlignmentMessageTranslator::MultipleAlignmentMessageTranslator(const QVariant &atomicMessage, WorkflowContext *initContext)
-    : BaseMessageTranslator(atomicMessage, initContext),
-      malignment(MultipleSequenceAlignmentData::getEmptyMsa())
-
+    : BaseMessageTranslator(atomicMessage, initContext)
 {
     SAFE_POINT( source.canConvert<SharedDbiDataHandler>( ), "Invalid MSA data supplied!", );
     SharedDbiDataHandler malignmentId = source.value<SharedDbiDataHandler>( );

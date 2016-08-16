@@ -52,7 +52,7 @@ MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(cons
 char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleSequenceAlignment& msa, int pos, int& cnt, const QVector<qint64> &seqIdx) const {
     //TODO: use var-length array!
     QVector<QPair<int, char> > freqs(32);
-    int ch = MAlignment_GapChar;
+    int ch = MultipleAlignment::GapChar;
     int nSeq = seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
         uchar c = (uchar)msa->charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
@@ -68,7 +68,7 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleSequen
     int p1 = freqs[freqs.size()-1].first;
     int p2 = freqs[freqs.size()-2].first;
     if (p1 == 0 || (p1 == 1 && nSeq > 1)) {
-        ch = MAlignment_GapChar;
+        ch = MultipleAlignment::GapChar;
         cnt = 0;
     } else {
         int c1 = freqs[freqs.size()-1].second;

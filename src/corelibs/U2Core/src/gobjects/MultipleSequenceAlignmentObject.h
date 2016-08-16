@@ -33,7 +33,7 @@ public:
     MultipleSequenceAlignmentObject(const QString &name,
                                     const U2EntityRef &msaRef,
                                     const QVariantMap &hintsMap = QVariantMap(),
-                                    const MultipleSequenceAlignment &msaData = MultipleSequenceAlignmentData::getEmptyMsa());
+                                    const MultipleSequenceAlignment &msaData = MultipleSequenceAlignment());
 
     const MultipleSequenceAlignment getMsa() const;
     const MultipleSequenceAlignment getMsaCopy() const;

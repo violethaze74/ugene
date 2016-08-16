@@ -193,7 +193,11 @@ void HMMBuildDialogController::initSaveController() {
 //  HMMBuildTask
 
 HMMBuildToFileTask::HMMBuildToFileTask(const QString& inFile, const QString& _outFile, const UHMMBuildSettings& s) 
-    : Task("", TaskFlag_ReportingIsSupported), settings(s), outFile(_outFile), ma(MultipleSequenceAlignmentData::getEmptyMsa()), loadTask(NULL), buildTask(NULL)
+    : Task("", TaskFlag_ReportingIsSupported),
+      settings(s),
+      outFile(_outFile),
+      loadTask(NULL),
+      buildTask(NULL)
 {
     setTaskName(tr("Build HMM profile '%1' -> '%2'").arg(QFileInfo(inFile).fileName()).arg(QFileInfo(outFile).fileName()));
     setVerboseLogMode(true);

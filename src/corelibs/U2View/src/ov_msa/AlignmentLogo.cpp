@@ -58,7 +58,7 @@ AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings& _s
         default:
             QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
             foreach(char ch, chars) {
-                if(ch!=MAlignment_GapChar)
+                if(ch!=MultipleAlignment::GapChar)
                     acceptableChars->append(ch);
             }
             s = 20.0;
@@ -83,7 +83,7 @@ void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings& _s) {
         default:
             QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
             foreach(char ch, chars) {
-                if(ch!=MAlignment_GapChar)
+                if(ch!=MultipleAlignment::GapChar)
                     acceptableChars->append(ch);
             }
             s = 20.0;

@@ -82,7 +82,7 @@ static QVariantMap analyzeRawData(const QByteArray& data) {
             len = 0;
         } else {
             len += line.length();
-            if (!hasGaps && line.contains(MAlignment_GapChar)) {
+            if (!hasGaps && line.contains(MultipleAlignment::GapChar)) {
                 hasGaps = true;
             }
         }

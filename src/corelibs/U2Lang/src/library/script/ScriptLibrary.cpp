@@ -135,11 +135,11 @@ static QList<SharedAnnotationData> getAnnotationTable(QScriptContext *ctx, QScri
 
 static MultipleSequenceAlignment getAlignment(QScriptContext *ctx, QScriptEngine *engine, int argNum) {
     WorkflowScriptEngine *wse = ScriptEngineUtils::workflowEngine(engine);
-    CHECK(NULL != wse, MultipleSequenceAlignmentData::getEmptyMsa());
+    CHECK(NULL != wse, MultipleSequenceAlignment());
 
     SharedDbiDataHandler msaId = ScriptEngineUtils::getDbiId(engine, ctx->argument(argNum));
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(wse->getWorkflowContext()->getDataStorage(), msaId));
-    CHECK(!msaObj.isNull(), MultipleSequenceAlignmentData::getEmptyMsa());
+    CHECK(!msaObj.isNull(), MultipleSequenceAlignment());
     return msaObj->getMsaCopy();
 }
 
@@ -514,7 +514,7 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext *ctx
         return ctx->throwError(QObject::tr("Row is out of range"));
     }
 
-    MultipleSequenceAlignmentRow aRow = align->getMsaRow(row)->getCopy();
+    MultipleSequenceAlignmentRow aRow = align->getMsaRow(row)->getExplicitCopy();
     aRow->simplify();
     U2OpStatus2Log os;
     QByteArray arr = aRow->toByteArray(aRow->getCoreLength(), os);
@@ -587,7 +587,7 @@ QScriptValue WorkflowScriptLibrary::createAlignment(QScriptContext *ctx, QScript
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));
     }
 
-    MultipleSequenceAlignment align = MultipleSequenceAlignmentData::createMsa();
+    MultipleSequenceAlignment align;
     DNASequence seq = getSequence(ctx, engine, 0);
     if(seq.seq.isEmpty()) {
         return ctx->throwError(QObject::tr("Empty or invalid sequence"));

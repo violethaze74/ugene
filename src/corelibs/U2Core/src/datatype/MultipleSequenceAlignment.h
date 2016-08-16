@@ -28,7 +28,27 @@
 namespace U2 {
 
 class MultipleSequenceAlignmentData;
-typedef QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
+
+class MultipleSequenceAlignment : public MultipleAlignment {
+public:
+    MultipleSequenceAlignment(const QString &name = QString(),
+                              const DNAAlphabet *alphabet = NULL,
+                              const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
+    MultipleSequenceAlignment(const MultipleSequenceAlignmentData &msa);
+    MultipleSequenceAlignment(MultipleSequenceAlignmentData *msaData);
+    MultipleSequenceAlignment(const MultipleSequenceAlignment &other);
+    MultipleSequenceAlignment(const MultipleAlignment &multipleAlignment);
+
+    MultipleSequenceAlignmentData * data() const;
+
+    MultipleSequenceAlignmentData & operator*();
+    const MultipleSequenceAlignmentData & operator*() const;
+
+    MultipleSequenceAlignmentData * operator->();
+    const MultipleSequenceAlignmentData * operator->() const;
+
+    MultipleSequenceAlignment explicitClone() const;
+};
 
 /**
  * Multiple sequence alignment
@@ -38,6 +58,8 @@ typedef QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
  */
 class U2CORE_EXPORT MultipleSequenceAlignmentData : public MultipleAlignmentData {
 private:
+    friend class MultipleSequenceAlignment;
+
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
@@ -48,10 +70,6 @@ private:
     MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData &msa);
 
 public:
-    static MultipleSequenceAlignment createMsa(const QString &name = QString(),
-                                               const DNAAlphabet *alphabet = NULL,
-                                               const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
-
     /** Returns a character (a gap or a non-gap) in the specified row and position */
     char charAt(int rowIndex, int pos) const;
 
@@ -110,12 +128,11 @@ public:
     MultipleAlignment getCopy() const;
     MultipleSequenceAlignment getExplicitCopy() const;
 
-    static MultipleSequenceAlignment getEmptyMsa();
-    static MultipleSequenceAlignmentRow getEmptyRow();
-
 private:
     static const MultipleSequenceAlignment EMPTY_MSA;
     static const MultipleSequenceAlignmentRow EMPTY_ROW;
+
+    MultipleAlignmentRow getEmptyRow() const;
 
     /** Create a new row (sequence + gap model) from the bytes */
     MultipleSequenceAlignmentRow createSequenceRow(const QString &name, const QByteArray &rawData) const;

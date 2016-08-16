@@ -136,7 +136,7 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
         QByteArray name =  row->getName().toLocal8Bit();
         ptrSeq->FromString(row->getCore().constData(), name.constData());
         //stripping gaps, original Seq::StripGaps fails on MSVC9
-        Seq::iterator newEnd = std::remove(ptrSeq->begin(), ptrSeq->end(), MAlignment_GapChar);
+        Seq::iterator newEnd = std::remove(ptrSeq->begin(), ptrSeq->end(), MultipleAlignment::GapChar);
         ptrSeq->erase(newEnd, ptrSeq->end());
         if (ptrSeq->Length()!=0) {
             ctx->tmp_uIds[seq_count] = ctx->input_uIds[i];

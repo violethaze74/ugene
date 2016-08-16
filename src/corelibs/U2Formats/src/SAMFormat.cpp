@@ -128,7 +128,7 @@ FormatCheckResult SAMFormat::checkRawData( const QByteArray& rawData, const GUrl
 //
 //    for(int i = 0, coreLen = core.length(); i < coreLen; i++) {
 //        char c = core[i];
-//        if(c == MAlignment_GapChar) {
+//        if(c == MultipleAlignment::GapChar) {
 //            if(!gap) {
 //                if(i != lastCigarPos) {
 //                    cigarTokens.append(U2CigarToken(U2CigarOp_M, i - lastCigarPos));

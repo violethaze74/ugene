@@ -30,11 +30,37 @@
 
 namespace U2 {
 
+class MultipleSequenceAlignment;
 class MultipleSequenceAlignmentData;
 class MultipleSequenceAlignmentRowData;
 
-typedef QSharedPointer<MultipleSequenceAlignmentData> MultipleSequenceAlignment;
-typedef QSharedPointer<MultipleSequenceAlignmentRowData> MultipleSequenceAlignmentRow;
+class MultipleSequenceAlignmentRow : public MultipleAlignmentRow {
+    friend class MultipleSequenceAlignmentData;
+    friend class MultipleSequenceAlignmentRowData;
+
+public:
+    MultipleSequenceAlignmentRow();
+    MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentData *msa);
+
+    /** Creates a row in memory. */
+    MultipleSequenceAlignmentRow(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, const MultipleSequenceAlignmentData *msa);
+    MultipleSequenceAlignmentRow(const U2MaRow &rowInDb, const QString &rowName, const QByteArray &rawData, const MultipleSequenceAlignmentData *msa);
+    MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignmentData *msa);
+
+    MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &other);
+    MultipleSequenceAlignmentRow(const MultipleAlignmentRow &multipleAlignmentRow);
+    MultipleSequenceAlignmentRow(MultipleSequenceAlignmentRowData *msaRowData);
+
+    MultipleSequenceAlignmentRowData * data() const;
+
+    MultipleSequenceAlignmentRowData & operator*();
+    const MultipleSequenceAlignmentRowData & operator*() const;
+
+    MultipleSequenceAlignmentRowData * operator->();
+    const MultipleSequenceAlignmentRowData * operator->() const;
+
+    MultipleSequenceAlignmentRow explicitClone() const;
+};
 
 /**
  * A row in a multiple alignment structure.
@@ -44,7 +70,7 @@ typedef QSharedPointer<MultipleSequenceAlignmentRowData> MultipleSequenceAlignme
  * it exactly equals to the row (offset always equals to zero).
  */
 class U2CORE_EXPORT MultipleSequenceAlignmentRowData : public MultipleAlignmentRowData {
-    friend class MultipleSequenceAlignmentData;
+    friend class MultipleSequenceAlignmentRow;
 
     /** Do NOT create a row without an alignment! */
     MultipleSequenceAlignmentRowData();
@@ -111,7 +137,7 @@ public:
      */
     MultipleSequenceAlignmentRow mid(int pos, int count, U2OpStatus &os) const;
 
-    MultipleSequenceAlignmentRow getCopy() const;
+    MultipleSequenceAlignmentRow getExplicitCopy() const;
 
 private:
     int getDataLength() const;

@@ -248,7 +248,7 @@ void MsaEditorAlignmentDependentWidget::setSettings(const UpdatedWidgetSettings*
 }
 
 void MsaEditorAlignmentDependentWidget::sl_onAlignmentChanged(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo) {
-    const MultipleSequenceAlignment msaBefore = maBefore.dynamicCast<MultipleSequenceAlignmentData>();
+    const MultipleSequenceAlignment msaBefore = maBefore.dynamicCast<MultipleSequenceAlignment>();
     contentWidget->onAlignmentChanged(msaBefore, modInfo);
 }
 

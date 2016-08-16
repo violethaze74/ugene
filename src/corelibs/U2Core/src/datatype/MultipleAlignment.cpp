@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-const char MultipleAlignmentData::GapChar = '-';
+const char MultipleAlignment::GapChar = '-';
 
 // Helper class to call MultipleAlignmentData state check
 class MaStateCheck {
@@ -43,11 +43,52 @@ public:
     ~MaStateCheck() {
 #ifdef _DEBUG
         ma->check();
+#else
+        Q_UNUSED(ma);
 #endif
     }
 
+private:
     const MultipleAlignmentData *ma;
 };
+
+MultipleAlignment::MultipleAlignment(MultipleAlignmentData *multipleAlignmentData)
+    : maData(multipleAlignmentData)
+{
+
+}
+
+MultipleAlignment::~MultipleAlignment() {
+
+}
+
+MultipleAlignmentData * MultipleAlignment::data() const {
+    return maData.data();
+}
+
+MultipleAlignmentData & MultipleAlignment::operator*() {
+    return *maData;
+}
+
+const MultipleAlignmentData & MultipleAlignment::operator*() const {
+    return *maData;
+}
+
+MultipleAlignmentData *MultipleAlignment::operator->() {
+    return maData.data();
+}
+
+const MultipleAlignmentData * MultipleAlignment::operator->() const {
+    return maData.data();
+}
+
+void MultipleAlignment::operator+=(const MultipleAlignment &other) {
+    *maData += *other.maData;
+}
+
+MultipleAlignment MultipleAlignment::clone() const {
+    return maData->getCopy();
+}
 
 MultipleAlignmentData::MultipleAlignmentData(const QString &name, const DNAAlphabet *alphabet, const QList<MultipleAlignmentRow> &rows)
     : alphabet(alphabet),
@@ -73,7 +114,7 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData &multip
 }
 
 MultipleAlignmentData::~MultipleAlignmentData() {
-    int a = 0;
+
 }
 
 const MultipleAlignmentData & MultipleAlignmentData::operator=(const MultipleAlignmentData &other) {
@@ -265,16 +306,15 @@ bool MultipleAlignmentData::sortRowsBySimilarity(QVector<U2Region> &united) {
     return false;
 }
 
-MultipleAlignmentRow & MultipleAlignmentData::getRow(int rowIndex) {
-    static MultipleAlignmentRow emptyRow;
+MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {
     int rowsCount = rows.count();
-    SAFE_POINT(0 != rowsCount, "No rows", emptyRow);
-    SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignmnet::getRow", emptyRow);
+    SAFE_POINT(0 != rowsCount, "No rows", getEmptyRow());
+    SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignmnet::getRow", getEmptyRow());
     return rows[rowIndex];
 }
 
 const MultipleAlignmentRow & MultipleAlignmentData::getRow(int rowIndex) const {
-    static MultipleAlignmentRow emptyRow;
+    static MultipleAlignmentRow emptyRow = getEmptyRow();
     int rowsCount = rows.count();
     SAFE_POINT(0 != rowsCount, "No rows", emptyRow);
     SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignmnet::getRow", emptyRow);
@@ -282,7 +322,7 @@ const MultipleAlignmentRow & MultipleAlignmentData::getRow(int rowIndex) const {
 }
 
 const MultipleAlignmentRow & MultipleAlignmentData::getRow(const QString &name) const {
-    static MultipleAlignmentRow emptyRow;
+    static MultipleAlignmentRow emptyRow = getEmptyRow();
     for (int i = 0; i < rows.count(); i++) {
         if (rows[i]->getName() == name) {
             return rows[i];
@@ -304,7 +344,7 @@ QList<qint64> MultipleAlignmentData::getRowsIds() const {
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStatus &os) const {
-    static MultipleAlignmentRow emptyRow;
+    static MultipleAlignmentRow emptyRow = getEmptyRow();
     foreach (const MultipleAlignmentRow &row, rows) {
         if (row->getRowId() == rowId) {
             return row;

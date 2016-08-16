@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <QDebug>
-
 #include <U2Core/DbiConnection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
@@ -57,14 +55,32 @@ MaModificationInfo::MaModificationInfo()
 
 }
 
-const MultipleAlignment & MaSavedState::getState() const{
-    qDebug() << "State is get: " << !lastState.isNull();
-    return lastState;
+MaSavedState::MaSavedState()
+    : lastState(NULL)
+{
+
+}
+
+MaSavedState::~MaSavedState() {
+    delete lastState;
+}
+
+bool MaSavedState::hasState() const {
+    return NULL != lastState;
+}
+
+const MultipleAlignment MaSavedState::takeState() {
+    const MultipleAlignment state = *lastState;
+    delete lastState;
+    lastState = NULL;
+    return state;
 }
 
 void MaSavedState::setState(const MultipleAlignment &ma) {
-    lastState = ma->getCopy();
-    qDebug() << "State is set: " << !lastState.isNull();
+    if (NULL != lastState) {
+        delete lastState;
+    }
+    lastState = new MultipleAlignment(ma->getCopy());
 }
 
 const int MultipleAlignmentObject::GAP_COLUMN_ONLY = -1;
@@ -75,12 +91,11 @@ MultipleAlignmentObject::MultipleAlignmentObject(const QString &gobjectType,
                                                  const QVariantMap &hintsMap,
                                                  const MultipleAlignment &alignment)
     : GObject(gobjectType, name, hintsMap),
-      cachedMa(NULL != alignment ? alignment->getCopy() : MultipleAlignment())
+      cachedMa(alignment->getCopy())
 {
     entityRef = maRef;
     dataLoaded = false;
 
-    SAFE_POINT(NULL != cachedMa, "Cached multiple alignment is not initialized", );
     if (!cachedMa->isEmpty()) {
         dataLoaded = true;
     }
@@ -639,8 +654,8 @@ void MultipleAlignmentObject::releaseState() {
     if (!isStateLocked()) {
         emit si_completeStateChanged(true);
 
-        MultipleAlignment maBefore = savedState.getState();
-        CHECK(NULL != maBefore, );
+        CHECK(savedState.hasState(), );
+        MultipleAlignment maBefore = savedState.takeState();
         CHECK(*maBefore != *getMultipleAlignment(), );
         setModified(true);
 

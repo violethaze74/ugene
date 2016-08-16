@@ -71,7 +71,7 @@ void TranslateMsa2AminoTask::run() {
     SAFE_POINT_EXT(NULL != translation, setError(tr("Invalid translation object")),);
 
     QList<DNASequence> lst = MSAUtils::ma2seq(maObj->getMsa(), true);
-    resultMA = MultipleSequenceAlignmentData::createMsa(maObj->getMsa()->getName(), translation->getDstAlphabet());
+    resultMA = MultipleSequenceAlignment(maObj->getMsa()->getName(), translation->getDstAlphabet());
 
     foreach (const DNASequence& dna, lst) {
         int buflen = dna.length() / 3;

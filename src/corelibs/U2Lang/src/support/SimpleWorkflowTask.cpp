@@ -219,7 +219,7 @@ void SimpleMSAWorkflow4GObjectTask::releaseModStep(const QString error) {
 }
 
 MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
-    MultipleSequenceAlignment res = MultipleSequenceAlignmentData::createMsa();
+    MultipleSequenceAlignment res;
     CHECK_OP(stateInfo, res);
 
     SAFE_POINT(runWorkflowTask!=NULL,"SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.",res);

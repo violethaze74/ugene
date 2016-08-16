@@ -35,7 +35,7 @@ enum MaModificationType {
     MaModificationType_Redo
 };
 
-class MaModificationInfo {
+class U2CORE_EXPORT MaModificationInfo {
 public:
     MaModificationInfo();
 
@@ -71,11 +71,15 @@ private:
 
 class MaSavedState {
 public:
-    const MultipleAlignment & getState() const;
+    MaSavedState();
+    ~MaSavedState();
+
+    bool hasState() const;
+    const MultipleAlignment takeState();
     void setState(const MultipleAlignment &ma);
 
 private:
-    MultipleAlignment lastState;
+    MultipleAlignment *lastState;
 };
 
 class U2CORE_EXPORT MultipleAlignmentObject : public GObject {

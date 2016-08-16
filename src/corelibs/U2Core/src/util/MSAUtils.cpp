@@ -46,7 +46,7 @@ bool MSAUtils::equalsIgnoreGaps(const MultipleSequenceAlignmentRow& row, int sta
     for (int j = 0; i  < sLen && j < pLen; i++, j++) {
         char c1 = row->charAt(i);
         char c2 = pat[j];
-        while(c1 == MAlignment_GapChar && ++i < sLen) {
+        while(c1 == MultipleAlignment::GapChar && ++i < sLen) {
             gapsCounter++;
             c1 = row->charAt(i);
         }
@@ -70,7 +70,7 @@ int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow&
     for (int j = 0; i  < sLen && j < pLen; i++, j++) {
         char c1 = row->charAt(i);
         char c2 = pat[j];
-        while(c1 == MAlignment_GapChar && ++i < sLen) {
+        while(c1 == MultipleAlignment::GapChar && ++i < sLen) {
             c1 = row->charAt(i);
         }
         if (c1 == c2) {
@@ -82,13 +82,13 @@ int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow&
 }
 
 MultipleSequenceAlignment MSAUtils::seq2ma(const QList<DNASequence>& list, U2OpStatus& os) {
-    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME);
+    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
     foreach(const DNASequence& seq, list) {
         updateAlignmentAlphabet(ma, seq.alphabet, os);
         //TODO: handle memory overflow
         ma->addRow(seq.getName(), seq.seq);
     }
-    CHECK_OP(os, MultipleSequenceAlignmentData::createMsa());
+    CHECK_OP(os, MultipleSequenceAlignment());
     return ma;
 }
 
@@ -146,10 +146,10 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
         return obj->getMsaCopy();
     }
 
-    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME);
+    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
 
     int i = 0;
-    SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", MultipleSequenceAlignmentData::createMsa());
+    SAFE_POINT(dnaList.size() == nameList.size(), "DNA list size differs from name list size", MultipleSequenceAlignment());
     QListIterator<U2SequenceObject *> listIterator(dnaList);
     QListIterator<QString> nameIterator(nameList);
     while (listIterator.hasNext()) {
@@ -158,13 +158,13 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject *> &list, U2OpSta
 
         const DNAAlphabet *alphabet = seq.getAlphabet();
         updateAlignmentAlphabet(ma, alphabet, os);
-        CHECK_OP(os, MultipleSequenceAlignmentData::createMsa());
+        CHECK_OP(os, MultipleSequenceAlignment());
 
         ma->addRow(objName, QByteArray(""));
 
-        SAFE_POINT(i < ma->getNumRows(), "Row count differ from expected after adding row", MultipleSequenceAlignmentData::createMsa());
+        SAFE_POINT(i < ma->getNumRows(), "Row count differ from expected after adding row", MultipleSequenceAlignment());
         appendSequenceToAlignmentRow(ma, i, 0, seq, os);
-        CHECK_OP(os, MultipleSequenceAlignmentData::createMsa());
+        CHECK_OP(os, MultipleSequenceAlignment());
         i++;
     }
 
@@ -197,7 +197,7 @@ void MSAUtils::updateAlignmentAlphabet(MultipleSequenceAlignment& ma, const DNAA
 
 QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps) {
     QList<DNASequence> lst;
-    QBitArray gapCharMap = TextUtils::createBitMap(MAlignment_GapChar);
+    QBitArray gapCharMap = TextUtils::createBitMap(MultipleAlignment::GapChar);
     int len = ma->getLength();
     const DNAAlphabet* al = ma->getAlphabet();
     U2OpStatus2Log os;

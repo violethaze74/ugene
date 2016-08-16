@@ -800,8 +800,8 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
            return ReportResult_Finished;
         }
 
-        const MultipleSequenceAlignment one = myMSequence->getMsa();
-        const MultipleSequenceAlignment two = myMSequence2->getMsa();
+        MultipleSequenceAlignment one = myMSequence->getMsa();
+        MultipleSequenceAlignment two = myMSequence2->getMsa();
         const QList <MultipleAlignmentRow> alignedSeqs1 = one->getRows();
         const QList <MultipleAlignmentRow> alignedSeqs2 = two->getRows();
 

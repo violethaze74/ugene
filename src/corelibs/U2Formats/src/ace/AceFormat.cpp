@@ -256,7 +256,7 @@ static inline void parseConsensus(U2::IOAdapter *io, U2OpStatus &ti, char* buff,
         ti.setError(ACEFormat::tr("Bad consensus data"));
         return ;
     }
-    consensus.replace('*',MAlignment_GapChar);
+    consensus.replace('*',MultipleAlignment::GapChar);
 }
 
 static inline void parseAFTag(U2::IOAdapter *io, U2OpStatus &ti, char* buff, int count, QMap< QString, int> &posMap, QMap< QString, bool> &complMap, QSet<QString> &names){
@@ -384,9 +384,9 @@ static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char* buff
         names.remove(name);
     }
 
-    sequence.replace('*',MAlignment_GapChar);
-    sequence.replace('N',MAlignment_GapChar);
-    sequence.replace('X',MAlignment_GapChar);
+    sequence.replace('*',MultipleAlignment::GapChar);
+    sequence.replace('N',MultipleAlignment::GapChar);
+    sequence.replace('X',MultipleAlignment::GapChar);
 }
 
 /**
@@ -467,7 +467,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             return;
         }
 
-        MultipleSequenceAlignment al = MultipleSequenceAlignmentData::createMsa(consName);
+        MultipleSequenceAlignment al(consName);
         al->addRow(consName, consensus);
 
         //AF
@@ -497,7 +497,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             }
 
             QByteArray offsetGaps;
-            offsetGaps.fill(MAlignment_GapChar, pos);
+            offsetGaps.fill(MultipleAlignment::GapChar, pos);
             sequence.prepend(offsetGaps);
             al->addRow(rowName, sequence);
 

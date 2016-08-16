@@ -103,11 +103,11 @@ MultipleSequenceAlignment NWAligner::align() {
             i--; j--;
         } else if (score == scoreLeft + gapPenalty) {
             aligned1.prepend(seq1[i-1]);
-            aligned2.prepend(MAlignment_GapChar);
+            aligned2.prepend(MultipleAlignment::GapChar);
             i--;
         } else {
             assert(score == scoreUp + gapPenalty);
-            aligned1.prepend(MAlignment_GapChar);
+            aligned1.prepend(MultipleAlignment::GapChar);
             aligned2.prepend(seq2[j-1]);
             j--;
         }
@@ -115,17 +115,17 @@ MultipleSequenceAlignment NWAligner::align() {
 
     while (i>0) {
         aligned1.prepend(seq1[i-1]);
-        aligned2.prepend(MAlignment_GapChar);
+        aligned2.prepend(MultipleAlignment::GapChar);
         i--;
     }
 
     while (j>0) {
-        aligned1.prepend(MAlignment_GapChar);
+        aligned1.prepend(MultipleAlignment::GapChar);
         aligned2.prepend(seq2[j-1]);
         j--;
     }
 
-    MultipleSequenceAlignment result = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME, sMatrix.getAlphabet());
+    MultipleSequenceAlignment result(MA_OBJECT_NAME, sMatrix.getAlphabet());
     result->addRow("seq1", aligned1);
     result->addRow("seq2", aligned2);
 

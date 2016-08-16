@@ -29,12 +29,37 @@
 
 namespace U2 {
 
+class MultipleAlignment;
 class MultipleAlignmentData;
 class MultipleAlignmentRowData;
 class U2OpStatus;
 
-typedef QSharedPointer<MultipleAlignmentData> MultipleAlignment;
-typedef QSharedPointer<MultipleAlignmentRowData> MultipleAlignmentRow;
+class MultipleAlignmentRow {
+    friend class MultipleAlignmentData;
+
+protected:
+    MultipleAlignmentRow(MultipleAlignmentRowData *multipleAlignmentRowData);
+
+public:
+    virtual ~MultipleAlignmentRow();
+
+    MultipleAlignmentRowData * data() const;
+    template <class Derived> inline Derived dynamicCast() const;
+
+    MultipleAlignmentRowData & operator*();
+    const MultipleAlignmentRowData & operator*() const;
+
+    MultipleAlignmentRowData * operator->();
+    const MultipleAlignmentRowData * operator->() const;
+
+protected:
+    QSharedPointer<MultipleAlignmentRowData> maRowData;
+};
+
+template <class Derived>
+Derived MultipleAlignmentRow::dynamicCast() const {
+    return Derived(*this);
+}
 
 /**
  * A row in a multiple alignment structure.
@@ -44,8 +69,6 @@ typedef QSharedPointer<MultipleAlignmentRowData> MultipleAlignmentRow;
  * it exactly equals to the row (offset always equals to zero).
  */
 class U2CORE_EXPORT MultipleAlignmentRowData {
-    friend class MultipleAlignmentData;
-
 protected:
     /** Do NOT create a row without an alignment! */
     MultipleAlignmentRowData(const MultipleAlignmentData *alignment = NULL);
@@ -146,6 +169,8 @@ public:
 
     void setParentAlignment(const MultipleAlignment &newAlignment);
 
+    bool isGap(int position) const;
+
     static const qint64 INVALID_ROW_ID;
 
 protected:
@@ -174,8 +199,6 @@ private:
     /** Removing gaps from the row between position 'pos' and 'pos + count' */
     void removeGapsFromGapModel(int pos, int count);
 
-    bool isGap(int position) const;
-
     const MultipleAlignmentData *alignment;
 
     /**
@@ -188,6 +211,14 @@ private:
     /** The row in the database */
     U2MaRow initialRowInDb;
 };
+
+
+inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator!=(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
 
 }   // namespace U2
 

@@ -115,7 +115,7 @@ int MSFFormat::getCheckSum(const QByteArray& seq) {
 }
 
 void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& ti) {
-    MultipleSequenceAlignment al = MultipleSequenceAlignmentData::createMsa(io->getURL().baseFileName());
+    MultipleSequenceAlignment al(io->getURL().baseFileName());
 
     //skip comments
     int checkSum = -1;
@@ -182,7 +182,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
         int i = 0, n = al->getNumRows();
         for (; i < n; i++) {
-            const MultipleAlignmentRow& row = al->getRow(i);
+            const MultipleAlignmentRow row = al->getRow(i);
             QByteArray t = row->getName().toLocal8Bit();
             if (line.startsWith(t) && line[t.length()] == ' ') {
                 break;
@@ -211,8 +211,8 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             ti.setError(MSFFormat::tr("Check sum test failed"));
             return;
         }
-        al->replaceChars(i, '.', MAlignment_GapChar);
-        al->replaceChars(i, '~', MAlignment_GapChar);
+        al->replaceChars(i, '.', MultipleAlignment::GapChar);
+        al->replaceChars(i, '~', MultipleAlignment::GapChar);
     }
 
     U2AlphabetUtils::assignAlphabet(al);
@@ -271,7 +271,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     static int maxCheckSumLen = 4;
     QMap <QString, int> checkSums;
     foreach(const MultipleSequenceAlignmentRow& row , msa->getMsaRows()) {
-        QByteArray sequence = row->toByteArray(maLen, os).replace(MAlignment_GapChar, '.');
+        QByteArray sequence = row->toByteArray(maLen, os).replace(MultipleAlignment::GapChar, '.');
         int seqCheckSum = getCheckSum(sequence);
         checkSums.insert(row->getName(), seqCheckSum);
         checkSum = (checkSum + seqCheckSum) % CHECK_SUM_MOD;

@@ -104,7 +104,7 @@ MultipleSequenceAlignment Kalign_Load_Align_Compare_Task::dna_to_ma(QList<GObjec
 
     int seqCount = dnaSeqs.count();
     U2SequenceObject *seq = qobject_cast<U2SequenceObject *>(dnaSeqs[0]);
-    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa("Alignment", seq->getAlphabet());
+    MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
     for(int i=0; i<seqCount; i++) {
         seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
         if(seq == NULL) {
@@ -112,7 +112,7 @@ MultipleSequenceAlignment Kalign_Load_Align_Compare_Task::dna_to_ma(QList<GObjec
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignmentData::createMsa());
+        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
         ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;
@@ -357,7 +357,7 @@ MultipleSequenceAlignment GTest_Kalign_Load_Align_QScore::dna_to_ma(QList<GObjec
 
     int seqCount = dnaSeqs.count();
     U2SequenceObject *seq = qobject_cast<U2SequenceObject *>(dnaSeqs[0]);
-    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa("Alignment", seq->getAlphabet());
+    MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
     for(int i=0; i<seqCount; i++) {
         seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
         if(seq == NULL) {
@@ -365,7 +365,7 @@ MultipleSequenceAlignment GTest_Kalign_Load_Align_QScore::dna_to_ma(QList<GObjec
             return ma;
         }
         QByteArray seqData = seq->getWholeSequenceData(stateInfo);
-        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignmentData::createMsa());
+        SAFE_POINT_OP(stateInfo, MultipleSequenceAlignment());
         ma->addRow(seq->getSequenceName(), seqData);
     }
     return ma;

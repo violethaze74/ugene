@@ -29,6 +29,36 @@ namespace U2 {
 
 const qint64 MultipleAlignmentRowData::INVALID_ROW_ID = -1;
 
+MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentRowData *multipleAlignmentRowData)
+    : maRowData(multipleAlignmentRowData)
+{
+
+}
+
+MultipleAlignmentRow::~MultipleAlignmentRow() {
+
+}
+
+MultipleAlignmentRowData * MultipleAlignmentRow::data() const {
+    return maRowData.data();
+}
+
+MultipleAlignmentRowData & MultipleAlignmentRow::operator*() {
+    return *maRowData;
+}
+
+const MultipleAlignmentRowData & MultipleAlignmentRow::operator*() const {
+    return *maRowData;
+}
+
+MultipleAlignmentRowData * MultipleAlignmentRow::operator->() {
+    return maRowData.data();
+}
+
+const MultipleAlignmentRowData * MultipleAlignmentRow::operator->() const {
+    return maRowData.data();
+}
+
 MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentData *alignment)
     : alignment(alignment)
 {
@@ -332,6 +362,10 @@ void MultipleAlignmentRowData::setParentAlignment(const MultipleAlignment &newAl
     alignment = newAlignment.data();
 }
 
+bool MultipleAlignmentRowData::isGap(int position) const {
+    return MsaRowUtils::isGap(getDataLength(), gaps, position);
+}
+
 void MultipleAlignmentRowData::removeTrailingGaps() {
     if (gaps.isEmpty()) {
         return;
@@ -460,10 +494,6 @@ void MultipleAlignmentRowData::removeGapsFromGapModel(int pos, int count) {
     }
 
     gaps = newGapModel;
-}
-
-bool MultipleAlignmentRowData::isGap(int position) const {
-    return MsaRowUtils::isGap(getDataLength(), gaps, position);
 }
 
 }   // namespace U2

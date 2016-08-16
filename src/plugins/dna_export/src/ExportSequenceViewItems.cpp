@@ -514,7 +514,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& 
         if(!subjSeq.isEmpty()){
             ma->addRow(rowName, subjSeq.toLatin1());
         }else{
-            AnnotationSelection::getAnnotationSequence(rowSequence, a, MAlignment_GapChar, seqRef, NULL, NULL, os);
+            AnnotationSelection::getAnnotationSequence(rowSequence, a, MultipleAlignment::GapChar, seqRef, NULL, NULL, os);
             CHECK_OP(os,);
             ma->addRow(rowName, rowSequence);
         }
@@ -571,7 +571,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, b
         bool doComplement = a.annotation->getStrand().isCompementary();
         const DNATranslation* aminoTT = translate ? seqCtx->getAminoTT() : NULL;
         QByteArray rowSequence;
-        AnnotationSelection::getAnnotationSequence(rowSequence, a, MAlignment_GapChar, seqRef, doComplement ? complTT : NULL, aminoTT, os);
+        AnnotationSelection::getAnnotationSequence(rowSequence, a, MultipleAlignment::GapChar, seqRef, doComplement ? complTT : NULL, aminoTT, os);
         CHECK_OP(os,);
 
         ma->addRow(rowName, rowSequence);
@@ -638,7 +638,7 @@ void ADVExportContext::prepareMAFromSequences(MultipleSequenceAlignment& ma, boo
 }
 
 void ADVExportContext::selectionToAlignment(const QString& title, bool annotations, bool translate) {
-    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME);
+    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
     U2OpStatusImpl os;
     if (annotations) {
         prepareMAFromAnnotations(ma, translate, os);
@@ -773,7 +773,7 @@ void ADVExportContext::sl_exportBlastResultToAlignment()
         return;
     }
 
-    MultipleSequenceAlignment ma = MultipleSequenceAlignmentData::createMsa(MA_OBJECT_NAME);
+    MultipleSequenceAlignment ma(MA_OBJECT_NAME);
     U2OpStatusImpl os;
 
     prepareMAFromBlastAnnotations(ma, d->qualiferId, d->addRefFlag, os);

@@ -285,7 +285,7 @@ SharedDbiDataHandler ComposeResultSubTask::getAnnotations() const {
 }
 
 MultipleSequenceAlignment ComposeResultSubTask::createAlignment() {
-    MultipleSequenceAlignment result = MultipleSequenceAlignmentData::createMsa("Aligned reads");
+    MultipleSequenceAlignment result("Aligned reads");
 
     DNASequence referenceSeq = getReferenceSequence();
     CHECK_OP(stateInfo, result);
@@ -609,7 +609,7 @@ void KAlignSubTask::createAlignment() {
     QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, read));
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), );
 
-    MultipleSequenceAlignment alignment = MultipleSequenceAlignmentData::createMsa("msa", refObject->getAlphabet());
+    MultipleSequenceAlignment alignment("msa", refObject->getAlphabet());
     QByteArray refData = refObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
     alignment->addRow(refObject->getSequenceName(), refData);
@@ -827,7 +827,7 @@ void PairwiseAlignmentTask::createSWAlignment(KAlignSubTask *task) {
     QByteArray referenceData = refObject->getSequenceData(task->getCoreRegion(), stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignment alignment = MultipleSequenceAlignmentData::createMsa("msa", refObject->getAlphabet());
+    MultipleSequenceAlignment alignment("msa", refObject->getAlphabet());
     alignment->addRow(refObject->getSequenceName(), referenceData);
     QByteArray readData = readObject->getWholeSequenceData(stateInfo);
     CHECK_OP(stateInfo, );
