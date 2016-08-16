@@ -612,8 +612,9 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0003) {
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Annotations");
     GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Database", 1, GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Database", "ugene_gui_test", GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Output path", "/test", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Merge annotation tables", true, GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Annotation object name", "run_workflow_gui_test_0003", GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read Annotations"),
@@ -643,7 +644,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0004) {
     GTUtilsWorkflowDesigner::click(os, "Write Plain Text");
     GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Database", 0, GTUtilsWorkflowDesigner::comboValue);
-  
+
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok,
         "Please fix issues listed in the error list (located under workflow)."));
 
