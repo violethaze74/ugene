@@ -63,13 +63,14 @@ const QString WriteAnnotationsWorkerFactory::ACTOR_ID("write-annotations");
 
 static const QString WRITE_ANNOTATIONS_IN_TYPE_ID("write-annotations-in-type");
 static const QString CSV_FORMAT_ID("csv");
-static const QString ANNOTATIONS_NAME("annotations-name");
-static const QString ANN_OBJ_NAME("ann-obj-name");
+static const QString ANN_TABLE_NAME_4_LOCAL_ST("annotations-name");
+static const QString ANN_TABLE_NAME_4_SHARED_ST("ann-obj-name");
 static const QString ANNOTATIONS_NAME_DEF_VAL("Unknown features");
 static const QString SEPARATOR("separator");
 static const QString SEPARATOR_DEFAULT_VALUE (",");
 static const QString WRITE_NAMES("write_names");
-static const QString MERGE_TABLES("merge");
+static const QString MERGE_TABLES_LOCAL("merge");
+static const QString MERGE_TABLES_SHARED("merge_in_shared_db");
 
 /*******************************
  * WriteAnnotationsWorker
@@ -138,7 +139,7 @@ Task * WriteAnnotationsWorker::tick() {
     Task *failTask = takeParameters(formatId, fl, resultPath, dstDbiRef, storage);
     CHECK(NULL == failTask, failTask);
 
-    bool merge = getValue<bool>(MERGE_TABLES);
+    bool merge = getValue<bool>(MERGE_TABLES_LOCAL);
     while(annotationsPort->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(annotationsPort);
         if (inputMessage.isEmpty()) {
@@ -179,14 +180,28 @@ QString WriteAnnotationsWorker::fetchIncomingSequenceName(const QVariantMap &inc
     return seqObj.isNull() ? QString() : seqObj->getSequenceName();
 }
 
-QString WriteAnnotationsWorker::getAnnotationName() const {
+bool WriteAnnotationsWorker::getMergeAttribute() const {
+    const QString storageStr = getValue<QString>(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
+
+    bool merge = false;
+    if (BaseAttributes::LOCAL_FS_DATA_STORAGE() == storageStr) {
+        merge = getValue<bool>(MERGE_TABLES_LOCAL);
+    } else if (BaseAttributes::SHARED_DB_DATA_STORAGE() == storageStr) {
+        merge = getValue<bool>(MERGE_TABLES_SHARED);
+    } else {
+        FAIL("Invalid worker data storage attribute", false);
+    }
+    return merge;
+}
+
+QString WriteAnnotationsWorker::getAnnotationTableName() const {
     const QString storageStr = getValue<QString>(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
 
     QString objName;
     if (BaseAttributes::LOCAL_FS_DATA_STORAGE() == storageStr) {
-        objName = getValue<QString>(ANNOTATIONS_NAME);
+        objName = getValue<QString>(ANN_TABLE_NAME_4_LOCAL_ST);
     } else if (BaseAttributes::SHARED_DB_DATA_STORAGE() == storageStr) {
-        objName = getValue<QString>(ANN_OBJ_NAME);
+        objName = getValue<QString>(ANN_TABLE_NAME_4_SHARED_ST);
     } else {
         FAIL("Invalid worker data storage attribute", ANNOTATIONS_NAME_DEF_VAL);
     }
@@ -219,9 +234,13 @@ void WriteAnnotationsWorker::fetchIncomingAnnotations(const QVariantMap &incomin
 
 
 void WriteAnnotationsWorker::mergeAnnTablesIfNecessary(QList<AnnotationTableObject *> &annTables) const {
-    CHECK(getValue<bool>(MERGE_TABLES) && annTables.size() > 1, );
+    CHECK(getMergeAttribute() == true, );
+    QString mergedTableName = getAnnotationTableName();
+    if (annTables.size() == 1) {
+        annTables.first()->setGObjectName(mergedTableName);
+        return;
+    }
 
-    QString mergedTableName = getAnnotationName();
     AnnotationTableObject *mergedTable = new AnnotationTableObject(mergedTableName, context->getDataStorage()->getDbiRef());
     foreach (AnnotationTableObject *annTable, annTables) {
         QList<SharedAnnotationData> anns;
@@ -393,9 +412,10 @@ void WriteAnnotationsWorkerFactory::init() {
         fileModeAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));
         attrs << fileModeAttr;
 
-
-        Descriptor mergeDesc(MERGE_TABLES, WriteAnnotationsWorker::tr("Merge annotation tables"),
-            WriteAnnotationsWorker::tr("If <i>true</i> all annotation tables from dataset will be merged into one."));
+        // Merge for Local storage
+        Descriptor mergeDesc(MERGE_TABLES_LOCAL, WriteAnnotationsWorker::tr("Merge annotation tables"),
+            WriteAnnotationsWorker::tr("If <i>true</i> all annotation tables from dataset will be merged into one. "
+                                       "The value of <i>Annotation table name</i> parameter will be used as the name of result annotation table."));
         Attribute *mergeAttr = new Attribute(mergeDesc, BaseTypes::BOOL_TYPE(), false, false);
         mergeAttr->addRelation(new VisibilityRelation(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(),
             QVariantList()
@@ -406,10 +426,10 @@ void WriteAnnotationsWorkerFactory::init() {
             << BaseDocumentFormats::PLAIN_SWISS_PROT));
         attrs << mergeAttr;
 
-        Descriptor annotationsNameDesc(ANNOTATIONS_NAME, WriteAnnotationsWorker::tr("Annotation table name"),
+        Descriptor annotationsNameDesc(ANN_TABLE_NAME_4_LOCAL_ST, WriteAnnotationsWorker::tr("Annotation table name"),
             WriteAnnotationsWorker::tr("The name for the result annotation table that contains merged annotation data from file or dataset."));
         Attribute *nameAttr = new Attribute(annotationsNameDesc, BaseTypes::STRING_TYPE(), false, ANNOTATIONS_NAME_DEF_VAL);
-        nameAttr->addRelation(new VisibilityRelation(MERGE_TABLES, true));
+        nameAttr->addRelation(new VisibilityRelation(MERGE_TABLES_LOCAL, true));
         nameAttr->addRelation(new VisibilityRelation(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId(),
             QVariantList()
             << CSV_FORMAT_ID
@@ -419,11 +439,20 @@ void WriteAnnotationsWorkerFactory::init() {
             << BaseDocumentFormats::PLAIN_SWISS_PROT));
         attrs << nameAttr;
 
-        Descriptor annObjNameDesc(ANN_OBJ_NAME, WriteAnnotationsWorker::tr("Annotation object name"),
+        // Merge for shared DB
+        Descriptor merge2Desc(MERGE_TABLES_SHARED, WriteAnnotationsWorker::tr("Merge annotation tables"),
+            WriteAnnotationsWorker::tr("If <i>true</i> all annotation tables from dataset will be merged into one annotation object. "
+                                       "The value of <i>Annotation object name</i> parameter will be used as the name of result annotation object."));
+        Attribute *merge2Attr = new Attribute(merge2Desc, BaseTypes::BOOL_TYPE(), false, false);
+        merge2Attr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::SHARED_DB_DATA_STORAGE()));
+        attrs << merge2Attr;
+
+        Descriptor annObjNameDesc(ANN_TABLE_NAME_4_SHARED_ST, WriteAnnotationsWorker::tr("Annotation object name"),
             WriteAnnotationsWorker::tr("Name of the saved annotation object."));
         Attribute *objNameAttr = new Attribute(annObjNameDesc, BaseTypes::STRING_TYPE(), false, ANNOTATIONS_NAME_DEF_VAL);
-        attrs << objNameAttr;
         objNameAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::SHARED_DB_DATA_STORAGE()));
+        objNameAttr->addRelation(new VisibilityRelation(MERGE_TABLES_SHARED, true));
+        attrs << objNameAttr;
 
         // Attributes for CSV format START
         Descriptor separatorDesc(SEPARATOR, WriteAnnotationsWorker::tr("CSV separator"),
@@ -465,7 +494,8 @@ void WriteAnnotationsWorkerFactory::init() {
 
         delegates[BaseAttributes::DATABASE_ATTRIBUTE().getId()] = new ComboBoxWithDbUrlsDelegate;
 
-        delegates[MERGE_TABLES] = new ComboBoxWithBoolsDelegate;
+        delegates[MERGE_TABLES_LOCAL] = new ComboBoxWithBoolsDelegate;
+        delegates[MERGE_TABLES_SHARED] = new ComboBoxWithBoolsDelegate;
     }
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new WriteAnnotationsPrompter());
