@@ -46,6 +46,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/library/CDSearchWorker.h \
            src/library/CfgExternalToolModel.h \
            src/library/ConvertFilesFormatWorker.h \
+           src/library/ConvertSnpeffVariationsToAnnotationsWorker.h \
            src/library/CoreLib.h \
            src/library/CreateExternalProcessDialog.h \
            src/library/DocActors.h \
@@ -96,6 +97,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/util/SaveSchemaImageUtils.h \
            src/util/WorkerNameValidator.h \
            src/util/WriteSequenceValidator.h
+
 FORMS += src/ChooseItemDialog.ui \
            src/CreateScriptBlockDialog.ui \
            src/DashboardsManagerDialog.ui \
@@ -109,6 +111,7 @@ FORMS += src/ChooseItemDialog.ui \
            src/WorkflowEditorWidget.ui \
            src/WorkflowMetaDialog.ui \
            src/WorkflowSettingsWidget.ui
+
 SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/ActorCfgModel.cpp \
            src/BreakpointManagerView.cpp \
@@ -154,6 +157,7 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/library/CDSearchWorker.cpp \
            src/library/CfgExternalToolModel.cpp \
            src/library/ConvertFilesFormatWorker.cpp \
+           src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp \
            src/library/CoreLib.cpp \
            src/library/CreateExternalProcessDialog.cpp \
            src/library/DocActors.cpp \
@@ -204,5 +208,6 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/util/SaveSchemaImageUtils.cpp \
            src/util/WorkerNameValidator.cpp \
            src/util/WriteSequenceValidator.cpp
+
 RESOURCES += workflow_designer.qrc
 TRANSLATIONS += transl/english.ts transl/russian.ts

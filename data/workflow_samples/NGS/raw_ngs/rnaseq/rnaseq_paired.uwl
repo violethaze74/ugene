@@ -24,8 +24,8 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
         type:QualityTrim;
         name:"Trim Reads by Quality";
         custom-dir:filtered_fastq;
-        out-mode:0;
         len-id:10;
+        out-mode:0;
         qual-id:20;
     }
     get-file-list {
@@ -66,8 +66,8 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
         type:QualityTrim;
         name:"Trim Reads by Quality";
         custom-dir:filtered_fastq;
-        out-mode:0;
         len-id:10;
+        out-mode:0;
         qual-id:20;
     }
     MergeFastq-1 {
@@ -94,38 +94,39 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
     fastqc {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
     }
     fastqc-1 {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
     }
     fastqc-2 {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
     }
     fastqc-3 {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
+    }
+    fastqc-2-1 {
+        type:fastqc;
+        name:"FastQC Quality Control";
     }
 
     .actor-bindings {
         CutAdaptFastq-1.out-file->QualityTrim.in-file
+        tophat.out-assembly->fastqc-2-1.in-file
         CASAVAFilter-1.out-file->CutAdaptFastq.in-file
-        CutAdaptFastq.out-file->QualityTrim-1.in-file
-        MergeFastq.out-file->multiplexer.input-data-1
-        MergeFastq.out-file->fastqc-3.in-file
         MergeFastq-1.out-file->multiplexer.input-data-2
         MergeFastq-1.out-file->fastqc-2.in-file
+        MergeFastq.out-file->multiplexer.input-data-1
+        MergeFastq.out-file->fastqc-3.in-file
+        QualityTrim.out-file->MergeFastq.in-file
+        CutAdaptFastq.out-file->QualityTrim-1.in-file
         QualityTrim-1.out-file->MergeFastq-1.in-file
-        get-file-list-1.out-url->CASAVAFilter-1.in-file
-        get-file-list-1.out-url->fastqc.in-file
         CASAVAFilter.out-file->CutAdaptFastq-1.in-file
         multiplexer.output-data->tophat.in-sequence
-        QualityTrim.out-file->MergeFastq.in-file
+        get-file-list-1.out-url->CASAVAFilter-1.in-file
+        get-file-list-1.out-url->fastqc.in-file
         get-file-list.out-url->CASAVAFilter.in-file
         get-file-list.out-url->fastqc-1.in-file
     }
@@ -144,6 +145,7 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
     get-file-list.url->fastqc-1.in-file.url
     MergeFastq-1.url->fastqc-2.in-file.url
     MergeFastq.url->fastqc-3.in-file.url
+    tophat.hits-url->fastqc-2-1.in-file.url
 
     .meta {
         parameter-aliases {
@@ -152,12 +154,6 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
             }
             CASAVAFilter.out-mode {
                 alias:casava1_out_dir_type;
-            }
-            CASAVAFilter-1.custom-dir {
-                alias:casava2_out_dir;
-            }
-            CASAVAFilter-1.out-mode {
-                alias:casava2_out_dir_type;
             }
             QualityTrim.custom-dir {
                 alias:trim_reads2_out_dir;
@@ -179,6 +175,12 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
             }
             get-file-list-1.url-in {
                 alias:in_mate;
+            }
+            CASAVAFilter-1.custom-dir {
+                alias:casava2_out_dir;
+            }
+            CASAVAFilter-1.out-mode {
+                alias:casava2_out_dir_type;
             }
             QualityTrim-1.custom-dir {
                 alias:trim_reads1_out_dir;
@@ -213,7 +215,7 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
         }
         visual {
             CASAVAFilter {
-                pos:"-1275 -600";
+                pos:"-1245 -570";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 bounds:"-30 -30 123.875 82";
@@ -221,7 +223,7 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
                 out-file.angle:268.768;
             }
             CASAVAFilter-1 {
-                pos:"-765 -975";
+                pos:"-735 -945";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 bounds:"-30 -30 119.875 81";
@@ -229,42 +231,42 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
                 out-file.angle:359.076;
             }
             CutAdaptFastq {
-                pos:"-540 -870";
+                pos:"-510 -840";
                 style:ext;
                 bg-color-ext:"236 177 178 64";
                 in-file.angle:49.8991;
                 out-file.angle:344.434;
             }
             CutAdaptFastq-1 {
-                pos:"-1155 -375";
+                pos:"-1125 -345";
                 style:ext;
                 bg-color-ext:"236 177 178 64";
                 in-file.angle:34.1145;
                 out-file.angle:351.588;
             }
             MergeFastq {
-                pos:"-480 -255";
+                pos:"-450 -225";
                 style:simple;
                 bg-color-simple:"78 151 184 255";
                 in-file.angle:171.87;
                 out-file.angle:1.4688;
             }
             MergeFastq-1 {
-                pos:"-210 -480";
+                pos:"-180 -450";
                 style:simple;
                 bg-color-simple:"78 151 184 255";
                 in-file.angle:91.9092;
                 out-file.angle:271.432;
             }
             QualityTrim {
-                pos:"-870 -300";
+                pos:"-840 -270";
                 style:ext;
                 bg-color-ext:"204 68 102 64";
                 in-file.angle:211.827;
                 out-file.angle:347.391;
             }
             QualityTrim-1 {
-                pos:"-255 -750";
+                pos:"-225 -720";
                 style:ext;
                 bg-color-ext:"204 68 102 64";
                 bounds:"-30 -30 107.125 96";
@@ -272,45 +274,51 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
                 out-file.angle:292.859;
             }
             fastqc {
-                pos:"-915 -825";
+                pos:"-885 -795";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:90;
             }
             fastqc-1 {
-                pos:"-1080 -750";
+                pos:"-1050 -720";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:180;
             }
             fastqc-2 {
-                pos:"-15 -435";
+                pos:"0 -405";
+                style:simple;
+                bg-color-simple:"0 128 128 255";
+                in-file.angle:180;
+            }
+            fastqc-2-1 {
+                pos:"-330 -555";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:180;
             }
             fastqc-3 {
-                pos:"-450 -120";
+                pos:"-420 -90";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:88.0251;
             }
             get-file-list {
-                pos:"-1335 -840";
+                pos:"-1305 -810";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 87.25 90";
                 out-url.angle:296.095;
             }
             get-file-list-1 {
-                pos:"-1005 -1020";
+                pos:"-975 -990";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 86 92";
                 out-url.angle:328.062;
             }
             multiplexer {
-                pos:"-210 -255";
+                pos:"-180 -225";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 input-data-1.angle:186.911;
@@ -318,7 +326,7 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
                 output-data.angle:145.62;
             }
             tophat {
-                pos:"-615 -555";
+                pos:"-585 -525";
                 style:ext;
                 bg-color-ext:"0 128 0 64";
                 bounds:"-30 -30 140.375 90";
@@ -369,6 +377,9 @@ workflow "Processing of raw RNA-Seq paired-end reads with mapping"{
             }
             multiplexer.output-data->tophat.in-sequence {
                 text-pos:"-111 -64";
+            }
+            tophat.out-assembly->fastqc-2-1.in-file {
+                text-pos:"-44.2266 -24";
             }
         }
         wizard {

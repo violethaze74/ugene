@@ -1147,7 +1147,7 @@ AddConstraintDialog::AddConstraintDialog(QueryScene* _scene, QDDistanceType _kin
                                          QDElement* defSrc, QDElement* defDst)
 : scene(_scene), kind(_kind) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17470350");
+    new HelpButton(this, buttonBox, "18220210");
 
     QString title = "Add %1 Constraint";
     switch (kind)

@@ -41,12 +41,9 @@
 
 namespace U2 {
 
-DnaAssemblyMultiTask::DnaAssemblyMultiTask( const DnaAssemblyToRefTaskSettings& s, bool view, bool _justBuildIndex )
-: Task("DnaAssemblyMultiTask", TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), settings(s),
-assemblyToRefTask(NULL), shortReadSets(s.shortReadSets), openView(view), justBuildIndex(_justBuildIndex)
-{
-
-}
+DnaAssemblyMultiTask::DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings& s, bool view, bool _justBuildIndex)
+: ExternalToolSupportTask("DnaAssemblyMultiTask", TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), settings(s),
+assemblyToRefTask(NULL), shortReadSets(s.shortReadSets), openView(view), justBuildIndex(_justBuildIndex) {}
 
 void DnaAssemblyMultiTask::prepare() {
     // perform assembly
@@ -58,6 +55,7 @@ void DnaAssemblyMultiTask::prepare() {
         return;
     }
     assemblyToRefTask = env->getTaskFactory()->createTaskInstance(settings, justBuildIndex);
+    assemblyToRefTask->addListeners(getListeners());
     addSubTask(assemblyToRefTask);
 }
 

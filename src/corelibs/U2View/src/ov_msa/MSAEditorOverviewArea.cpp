@@ -103,6 +103,7 @@ void MSAEditorOverviewArea::sl_show() {
         graphOverview->sl_unblockRendering(true);
     } else {
         graphOverview->sl_blockRendering();
+        cancelRendering();
     }
 }
 

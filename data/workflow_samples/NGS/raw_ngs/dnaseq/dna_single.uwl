@@ -26,14 +26,13 @@ workflow "Processing of raw DNA-Seq single-end reads"{
         type:CASAVAFilter;
         name:"Filter Reads by CASAVA Header";
         custom-dir:filtered_fastq;
-        out-mode:1;
     }
     QualityTrim {
         type:QualityTrim;
         name:"Trim Reads by Quality";
         custom-dir:filtered_fastq;
-        out-mode:0;
         len-id:1;
+        out-mode:0;
         qual-id:20;
     }
     get-file-list {
@@ -51,8 +50,8 @@ workflow "Processing of raw DNA-Seq single-end reads"{
     files-conversion {
         type:files-conversion;
         name:"Convert to BAM";
-        out-mode:0;
         document-format:bam;
+        out-mode:0;
     }
     merge-bam {
         type:merge-bam;
@@ -62,9 +61,9 @@ workflow "Processing of raw DNA-Seq single-end reads"{
     filter-bam {
         type:filter-bam;
         name:"Filter Merged BAM File with SAMtools";
-        out-mode:0;
         flag:"The read is unmapped";
         mapq:1;
+        out-mode:0;
     }
     rmdup-bam {
         type:rmdup-bam;
@@ -90,27 +89,30 @@ workflow "Processing of raw DNA-Seq single-end reads"{
     fastqc {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
     }
     fastqc-1 {
         type:fastqc;
         name:"FastQC Quality Control";
-        out-mode:1;
+    }
+    fastqc-1-1 {
+        type:fastqc;
+        name:"FastQC Quality Control";
     }
 
     .actor-bindings {
+        merge-bam.out-file->filter-bam.in-file
+        Sort-bam-1.out-file->rmdup-bam.in-file
         filter-bam.out-file->Sort-bam-1.in-file
-        CutAdaptFastq.out-file->QualityTrim.in-file
+        rmdup-bam.out-file->Sort-bam.in-file
         CASAVAFilter.out-file->CutAdaptFastq.in-file
         get-file-list.out-url->CASAVAFilter.in-file
         get-file-list.out-url->fastqc.in-file
-        Sort-bam-1.out-file->rmdup-bam.in-file
-        rmdup-bam.out-file->Sort-bam.in-file
-        bwamem-id.out-data->files-conversion.in-file
-        merge-bam.out-file->filter-bam.in-file
         QualityTrim.out-file->bwamem-id.in-data
         QualityTrim.out-file->fastqc-1.in-file
         files-conversion.out-file->merge-bam.in-file
+        Sort-bam.out-file->fastqc-1-1.in-file
+        bwamem-id.out-data->files-conversion.in-file
+        CutAdaptFastq.out-file->QualityTrim.in-file
     }
 
     get-file-list.url->CASAVAFilter.in-file.url
@@ -125,6 +127,7 @@ workflow "Processing of raw DNA-Seq single-end reads"{
     CASAVAFilter.url->CutAdaptFastq.in-file.url
     get-file-list.url->fastqc.in-file.url
     QualityTrim.url->fastqc-1.in-file.url
+    Sort-bam.url->fastqc-1-1.in-file.url
 
     .meta {
         parameter-aliases {
@@ -167,7 +170,7 @@ workflow "Processing of raw DNA-Seq single-end reads"{
         }
         visual {
             CASAVAFilter {
-                pos:"-840 -795";
+                pos:"-795 -750";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 bounds:"-30 -30 110.875 92";
@@ -175,35 +178,35 @@ workflow "Processing of raw DNA-Seq single-end reads"{
                 out-file.angle:360;
             }
             CutAdaptFastq {
-                pos:"-600 -795";
+                pos:"-555 -750";
                 style:ext;
                 bg-color-ext:"236 177 178 64";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             QualityTrim {
-                pos:"-315 -795";
+                pos:"-270 -750";
                 style:ext;
                 bg-color-ext:"204 68 102 64";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             Sort-bam {
-                pos:"-30 -360";
+                pos:"-105 -315";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             Sort-bam-1 {
-                pos:"-540 -360";
+                pos:"-495 -315";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:93.4682;
                 out-file.angle:360;
             }
             bwamem-id {
-                pos:"0 -795";
+                pos:"0 -750";
                 style:ext;
                 bg-color-ext:"0 128 0 64";
                 in-data.angle:180;
@@ -211,26 +214,32 @@ workflow "Processing of raw DNA-Seq single-end reads"{
                 out-data.angle:297.532;
             }
             fastqc {
-                pos:"-900 -960";
+                pos:"-855 -915";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:213.69;
             }
             fastqc-1 {
-                pos:"-105 -945";
+                pos:"-60 -900";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:231.843;
             }
+            fastqc-1-1 {
+                pos:"75 -315";
+                style:simple;
+                bg-color-simple:"0 128 128 255";
+                in-file.angle:178.264;
+            }
             files-conversion {
-                pos:"45 -540";
+                pos:"45 -495";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:90;
                 out-file.angle:181.591;
             }
             filter-bam {
-                pos:"-570 -555";
+                pos:"-525 -510";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 bounds:"-30 -30 142.875 61";
@@ -238,21 +247,21 @@ workflow "Processing of raw DNA-Seq single-end reads"{
                 out-file.angle:297.235;
             }
             get-file-list {
-                pos:"-1080 -795";
+                pos:"-1035 -750";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 102.25 86";
                 out-url.angle:360;
             }
             merge-bam {
-                pos:"-180 -540";
+                pos:"-135 -495";
                 style:simple;
                 bg-color-simple:"78 151 184 255";
                 in-file.angle:1.59114;
                 out-file.angle:176.634;
             }
             rmdup-bam {
-                pos:"-255 -360";
+                pos:"-300 -315";
                 style:simple;
                 bg-color-simple:"218 98 98 255";
                 in-file.angle:180;
@@ -272,6 +281,9 @@ workflow "Processing of raw DNA-Seq single-end reads"{
             }
             Sort-bam-1.out-file->rmdup-bam.in-file {
                 text-pos:"-53 -25";
+            }
+            Sort-bam.out-file->fastqc-1-1.in-file {
+                text-pos:"-44 -25";
             }
             bwamem-id.out-data->files-conversion.in-file {
                 text-pos:"-45 -37";

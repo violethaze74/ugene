@@ -21,9 +21,10 @@
 
 #include "SequenceDbiWalkerTask.h"
 
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/DNASequenceObject.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -51,7 +52,7 @@ QList<SequenceDbiWalkerSubtask*> SequenceDbiWalkerTask::prepareSubtasks() {
     } else {
         U2Region wholeSeqReg(0, sequenceObject.getSequenceLength());
         if (!config.walkCircular) {
-            assert(wholeSeqReg.contains(config.range));
+            SAFE_POINT_EXT(wholeSeqReg.contains(config.range), stateInfo.setError(tr("Target region out of sequence range")), res);
         }
     }
 

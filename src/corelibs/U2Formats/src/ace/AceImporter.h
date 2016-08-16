@@ -57,7 +57,6 @@ private:
     U2DbiRef                 localDbiRef;
     U2DbiRef                 hintedDbiRef;
     GUrl                     srcUrl;
-    GUrl                     destUrl;
     qint64                   startTime;
 };
 
@@ -75,7 +74,6 @@ public:
 
     static const QString ID;
     static const QString SRC_URL;
-    static const QString DEST_URL;
 };
 
 }   // namespace U2

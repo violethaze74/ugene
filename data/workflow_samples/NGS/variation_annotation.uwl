@@ -1,11 +1,13 @@
 #@UGENE_WORKFLOW
 #The workflow uses the SnpEff tool to annotate and predict the effects of genetic variations (such as amino acid changes).
 #
-#To use the workflow you're required to input at least one file with variations (SNPs, insertions, deletions, and MNPs). The input file is usually obtained as a result of a sequencing experiment, and it is usually in Variant Call Format (VCF).
+#To use the workflow you're required to input at least one file with variations (SNPs, insertions, deletions, and MNPs). The input file is usually obtained as a result of a sequencing experiment, and it is usually in the Variant Call Format (VCF).
 #
 #To analyze the input variations SnpEff requires the variations file to have a certain chromosome notation. For example, "chr1" specified for a variation works fine, but "NC_000001" will result in an error. Therefore, the workflow contains an automated way for changing the chromosomes notation, which can be tweaked, if required.
 #
 #SnpEff outputs the annotated variations file and a detailed HTML report.
+#
+#Finally, information, added by SnpEff to variations, is converted to standard annotations (in GenBank format by default).
 
 
 
@@ -21,7 +23,6 @@ workflow "Variation annotation with SnpEff"{
     seff {
         type:seff;
         name:"Annotate and Predict Effects with SnpEff";
-        out-mode:1;
     }
     rename-chromosome-in-variation {
         type:rename-chromosome-in-variation;
@@ -29,14 +30,20 @@ workflow "Variation annotation with SnpEff"{
         prefix-replace-with:chr;
         prefixes-to-replace:"NC_00000;NC_0000";
     }
+    convert-snpeff-variations-to-annotations {
+        type:convert-snpeff-variations-to-annotations;
+        name:"Convert SnpEff Variations to Annotations";
+    }
 
     .actor-bindings {
-        get-file-list.out-url->rename-chromosome-in-variation.in-file
         rename-chromosome-in-variation.out-file->seff.in-file
+        seff.out-file->convert-snpeff-variations-to-annotations.in-variations-url
+        get-file-list.out-url->rename-chromosome-in-variation.in-file
     }
 
     rename-chromosome-in-variation.url->seff.in-file.url
     get-file-list.url->rename-chromosome-in-variation.in-file.url
+    seff.url->convert-snpeff-variations-to-annotations.in-variations-url.url
 
     .meta {
         parameter-aliases {
@@ -69,15 +76,22 @@ workflow "Variation annotation with SnpEff"{
             }
         }
         visual {
+            convert-snpeff-variations-to-annotations {
+                pos:"-85 -512";
+                style:ext;
+                bg-color-ext:"120 47 165 64";
+                bounds:"-30 -30 151 125";
+                in-variations-url.angle:228.27;
+            }
             get-file-list {
-                pos:"-873 -501";
+                pos:"-981 -502";
                 style:ext;
                 bg-color-ext:"42 108 251 64";
                 bounds:"-30 -30 108.25 97";
                 out-url.angle:349.38;
             }
             rename-chromosome-in-variation {
-                pos:"-608 -513";
+                pos:"-716 -514";
                 style:ext;
                 bg-color-ext:"128 104 117 64";
                 bounds:"-30 -30 160 136";
@@ -85,7 +99,7 @@ workflow "Variation annotation with SnpEff"{
                 out-file.angle:347.905;
             }
             seff {
-                pos:"-268 -514";
+                pos:"-376 -515";
                 style:ext;
                 bg-color-ext:"0 128 64 64";
                 bounds:"-30 -30 141 130";
@@ -98,10 +112,12 @@ workflow "Variation annotation with SnpEff"{
             rename-chromosome-in-variation.out-file->seff.in-file {
                 text-pos:"-45 -43";
             }
+            seff.out-file->convert-snpeff-variations-to-annotations.in-variations-url {
+                text-pos:"-45 -43";
+            }
         }
         wizard {
             name:"Variation Annotation with SnpEff Wizard";
-            help-page-id:16122730;
             page {
                 id:1;
                 next:2;
@@ -162,6 +178,14 @@ workflow "Variation annotation with SnpEff"{
                 id:4;
                 title:Output;
                 parameters-area {
+                    group {
+                        title:"Convert SnpEff Variations to Annotations";
+                        label-size:100;
+                        convert-snpeff-variations-to-annotations.url-out {
+                        }
+                        convert-snpeff-variations-to-annotations.document-format {
+                        }
+                    }
                     group {
                         title:"Output folder";
                         label-size:100;

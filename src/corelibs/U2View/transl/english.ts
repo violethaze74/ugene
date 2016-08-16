@@ -4781,8 +4781,8 @@ Please, check external tools in the settings.</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="753"/>
-        <source> Please input valid annotation names </source>
-        <translation> Please input valid annotation names </translation>
+        <source> Please input valid annotation names. </source>
+        <translation> Please input valid annotation names. </translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="759"/>

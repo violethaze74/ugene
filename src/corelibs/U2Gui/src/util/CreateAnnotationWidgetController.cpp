@@ -249,7 +249,7 @@ QString CreateAnnotationWidgetController::validate() {
     }
 
     if (!w->isUsePatternNamesChecked() && !model.hideAnnotationName && !Annotation::isValidAnnotationName(model.data->name)) {
-        return tr("Illegal annotation name");
+        return tr("Illegal annotation name! ");
     }
 
     if (model.groupName.isEmpty()) {

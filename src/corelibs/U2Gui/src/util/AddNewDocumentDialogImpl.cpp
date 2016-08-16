@@ -50,7 +50,7 @@ AddNewDocumentDialogImpl::AddNewDocumentDialogImpl(QWidget* p, AddNewDocumentDia
       model(m)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17470528");
+    new HelpButton(this, buttonBox, "18220388");
     if (model.format.isEmpty()) {
         model.format = AppContext::getSettings()->getValue(SETTINGS_LASTFORMAT, QString("")).toString();
     }

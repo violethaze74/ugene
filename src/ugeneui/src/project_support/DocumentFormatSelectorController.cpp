@@ -58,7 +58,7 @@ DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatD
 : QDialog(p), formatDetectionResults(results)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "17470424");
+    new HelpButton(this, buttonBox, "18220284");
 
     setObjectName("DocumentFormatSelectorDialog");
 }

@@ -4725,14 +4725,11 @@ GUI_TEST_CLASS_DEFINITION(test_2711){
 
 GUI_TEST_CLASS_DEFINITION(test_2713) {
 //    1. Open file {data/samples/Genbank/murine.gb}
-    QDir().mkpath(sandBoxDir + "test_2713");
-    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_2713/murine.gb");
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    GTFileDialog::openFile(os, sandBoxDir + "test_2713", "murine.gb");
+    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_2713.gb");
+    GTFileDialog::openFile(os, sandBoxDir, "test_2713.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Open file {data/samples/FASTA/human_T1.fa}
-
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4741,26 +4738,43 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
 //    4. Press "OK"
 //    Expected state: annotations has appeared on the sequence view
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsProjectTreeView::dragAndDrop(os, GTUtilsProjectTreeView::findIndex(os, "NC_001363 features"), GTUtilsAnnotationsTreeView::getTreeWidget(os));
 
-//    5. Open file {data/samples/Genbank/murine.gb} with text editor, then make some identical modification (i.e. delete and type the same character) and save file
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+    QPoint point = GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features");
+    point.setX(point.x() + 1);
+    point.setY(point.y() + 1);
+    GTMouseDriver::moveTo(point);
+    GTMouseDriver::click();
+
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(os, GTUtilsAnnotationsTreeView::getTreeWidget(os)));
+    GTMouseDriver::release();
+
+//    5. Open file {data/samples/Genbank/murine.gb} with text editor, then make some modification and save file
 //    Expected state: dialog about detected file modification has appeared in UGENE window
 //    6. Press "Yes"
 //    Expected state: "human_T1" view has disappeared from the "Bookmarks" list, "murine.gb" has been reloaded.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
 
-    QFile murineFile(sandBoxDir + "test_2713/murine.gb");
-    const bool opened = murineFile.open(QFile::Append);
-    CHECK_SET_ERR(opened, "Can't open the file: " + sandBoxDir + "test_2713/murine.gb");
-    murineFile.write(" ");
-    murineFile.close();
+    QFile file(sandBoxDir + "/test_2713.gb");
+    bool opened = file.open(QIODevice::ReadOnly | QIODevice::Text);
+    CHECK_SET_ERR(opened, "Can't open the file: " + sandBoxDir + "test_2713.gb");
+    QByteArray fileData = file.readAll();
+    file.close();
+
+    fileData.replace("gag polyprotein", "ggg_polyprotein");
+
+    opened = file.open(QIODevice::WriteOnly);
+    CHECK_SET_ERR(opened, "Can't open the file: " + sandBoxDir + "test_2713.gb");
+    file.write(fileData);
+    file.close();
 
     GTGlobals::sleep(5000);
 
 //    7. Open "human_T1" sequence view
 //    Expected state: annotations from "murine.gb" present on the sequence view
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
-       GTGlobals::sleep(5000);
+    GTGlobals::sleep(5000);
     GTUtilsAnnotationsTreeView::findFirstAnnotation(os);
 }
 

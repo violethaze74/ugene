@@ -110,9 +110,9 @@ public:
 
     static bool                     isValidAnnotationName(const QString &n);
 
-    static bool                     isValidQualifierName(const QString &n);
+    static bool                     isValidQualifierName(const QString &name);
 
-    static bool                     isValidQualifierValue(const QString &v);
+    static bool                     isValidQualifierValue(const QString &value);
 
     static QString                  produceValidAnnotationName(const QString &name);
 

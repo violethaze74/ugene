@@ -634,24 +634,48 @@ GUI_TEST_CLASS_DEFINITION(test_3103) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3112) {
-//     1. Open "_common_data\scenarios\msa\big.aln".
-//     Expected state: the MSA editor is shown, there is an overview.
-//     2. Click the "Overview" button on the main toolbar.
-//     Expected state: the overview widget hides, the render task cancels.
-//     Current state: the overview widget hides, the render task still works. If you change the msa (insert a gap somewhere), a safe point triggers.
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "10000_sequences.aln");
+//    1. Open big alignment, e.g. "_common_data/clustal/big.aln"
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTGlobals::sleep(20000); //in case of failing test try to increase this pause
 
     QToolButton* button = qobject_cast<QToolButton*>(GTAction::button(os, "Show overview"));
     CHECK_SET_ERR(button->isChecked(), "Overview button is not pressed");
 
-    GTWidget::click(os, button);//uncheck
-    GTWidget::click(os, button);//check
-    GTWidget::click(os, button);//uncheck
-    GTGlobals::sleep();
-    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "There are unfinished tasks");
+//    2. Modify the alignment
+//    Expected state: the task starts
+    GTUtilsMsaEditor::removeColumn(os, 5);
+    GTGlobals::sleep(500);
+    CHECK_SET_ERR(0 != GTUtilsTaskTreeView::getTopLevelTasksCount(os), "1: There are no active tasks ");
+
+//    3. Click the "Overview" button on the main toolbar
+//    Expected state: the task is canceled, the overview is hidden
+    GTWidget::click(os, button);
+    GTGlobals::sleep(500); // wait for task to be canceled
+    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "2: There are unfinished tasks");
+
+//    4. Click the "Overview" button again and wait till overview calculation and rendering ends
+    GTWidget::click(os, button);
+    CHECK_SET_ERR(0 != GTUtilsTaskTreeView::getTopLevelTasksCount(os), "3: There are no active tasks");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    5. Hide the overview
+//    6. Open the overview
+//    Expected state: no task starts because nothing have been changed
+    GTWidget::click(os, button);
+    GTWidget::click(os, button);
+    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "4: There are unfinished tasks");
+
+//    7. Hide the overview
+    GTWidget::click(os, button);
+
+//    8. Edit the alignment
+    GTUtilsMsaEditor::removeColumn(os, 5);
+
+//    9. Open the overview
+//    Expected state: overview calculation task starts
+    GTWidget::click(os, button);
+    GTGlobals::sleep(500);
+    CHECK_SET_ERR(0 != GTUtilsTaskTreeView::getTopLevelTasksCount(os), "5: There are no active tasks");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3124) {

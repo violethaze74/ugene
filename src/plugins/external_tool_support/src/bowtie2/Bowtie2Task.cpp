@@ -33,7 +33,7 @@ namespace U2 {
 // Bowtie2BuildIndexTask
 
 Bowtie2BuildIndexTask::Bowtie2BuildIndexTask(const QString &referencePath, const QString &indexPath):
-    Task("Build Bowtie2 index", TaskFlags_NR_FOSE_COSC),
+    ExternalToolSupportTask("Build Bowtie2 index", TaskFlags_NR_FOSE_COSC),
     referencePath(referencePath),
     indexPath(indexPath)
 {
@@ -53,13 +53,14 @@ void Bowtie2BuildIndexTask::prepare() {
     arguments.append(indexPath);
 
     ExternalToolRunTask *task = new ExternalToolRunTask(ET_BOWTIE2_BUILD, arguments, new ExternalToolLogParser());
+    setListenerForTask(task);
     addSubTask(task);
 }
 
 // Bowtie2AlignTask
 
 Bowtie2AlignTask::Bowtie2AlignTask(const DnaAssemblyToRefTaskSettings &settings):
-    Task("Bowtie2 reads assembly", TaskFlags_NR_FOSE_COSC),
+    ExternalToolSupportTask("Bowtie2 reads assembly", TaskFlags_NR_FOSE_COSC),
     settings(settings)
 {
 }
@@ -194,6 +195,7 @@ void Bowtie2AlignTask::prepare() {
     arguments.append(settings.resultFileName.getURLString());
 
     ExternalToolRunTask *task = new ExternalToolRunTask(ET_BOWTIE2_ALIGN, arguments, new ExternalToolLogParser());
+    setListenerForTask(task);
     addSubTask(task);
 }
 
@@ -252,9 +254,11 @@ void Bowtie2Task::prepare() {
             }
         }
         buildIndexTask = new Bowtie2BuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName);
+        buildIndexTask->addListeners(QList <ExternalToolListener*>() << getListener(0));
     }
     if(!justBuildIndex) {
         alignTask = new Bowtie2AlignTask(settings);
+        alignTask->addListeners(QList <ExternalToolListener*>() << getListener(1));
     }
 
     if (unzipTask != NULL) {

@@ -38,6 +38,15 @@ namespace U2 {
 /**
     U2Assembly and related structures utility functions
 */
+class U2CORE_EXPORT CoveragePerBaseInfo {
+public:
+    CoveragePerBaseInfo() :
+        coverage(0) {}
+
+    int coverage;
+    QMap<char, int> basesCount;
+};
+
 class U2CORE_EXPORT U2AssemblyUtils : public QObject {
     Q_OBJECT
 private:
@@ -95,6 +104,8 @@ public:
         Builds a vector where each item is max value of corresponding item of coverageStat
     */
     static QVector<qint64> coverageStatToVector(const U2AssemblyCoverageStat &coverageStat);
+
+    static void calculateCoveragePerBase(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const U2Region &region, QVector<CoveragePerBaseInfo> *results, U2OpStatus &os);
 
     /**
         Size of array of cached coverage

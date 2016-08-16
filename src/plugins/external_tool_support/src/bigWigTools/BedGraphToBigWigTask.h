@@ -40,7 +40,7 @@ public:
     bool    uncompressed;
 };
 
-class BedGraphToBigWigTask : public Task {
+class BedGraphToBigWigTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BedGraphToBigWigTask(const BedGraphToBigWigSetting &settings);

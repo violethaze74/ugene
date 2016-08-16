@@ -31,7 +31,7 @@ namespace U2 {
 
 class MultiTask;
 
-class BwaBuildIndexTask : public Task {
+class BwaBuildIndexTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BwaBuildIndexTask(const QString &referencePath, const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings);
@@ -51,7 +51,7 @@ private:
     DnaAssemblyToRefTaskSettings settings;
 };
 
-class BwaAlignTask : public Task {
+class BwaAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BwaAlignTask(const QString &indexPath, const QList<ShortReadSet>& shortReadSets, const QString &resultPath, const DnaAssemblyToRefTaskSettings &settings);
@@ -80,7 +80,7 @@ private:
     inline QString getSAIPath(const QString& pathToReads);
 };
 
-class BwaSwAlignTask : public Task {
+class BwaSwAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BwaSwAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings);
@@ -91,7 +91,7 @@ private:
     DnaAssemblyToRefTaskSettings settings;
 };
 
-class BwaMemAlignTask : public Task {
+class BwaMemAlignTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
     BwaMemAlignTask(const QString &indexPath, const DnaAssemblyToRefTaskSettings &settings);
@@ -194,7 +194,7 @@ public:
 
 private:
     BwaBuildIndexTask *buildIndexTask;
-    Task *alignTask;
+    ExternalToolSupportTask *alignTask;
 };
 
 class BwaTaskFactory : public DnaAssemblyToRefTaskFactory {

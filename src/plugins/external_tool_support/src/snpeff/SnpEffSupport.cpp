@@ -62,14 +62,14 @@ const QStringList SnpEffSupport::getToolRunnerAdditionalOptions() {
     CHECK(s != NULL, result);
     //java VM can't allocate whole free memory, Xmx size should be lesser than free memory
     int memSize = s->getMaxMemorySizeInMB();
-#ifdef Q_OS_WIN
+#if (defined(Q_OS_WIN) || defined(Q_OS_LINUX))
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     JavaSupport* java =  qobject_cast<JavaSupport*>(etRegistry->getByName(ET_JAVA));
     CHECK(java != NULL, result);
     if (java->getArchitecture() == JavaSupport::x32) {
         memSize = memSize > 1212 ? 1212 : memSize;
     }
-#endif // Q_OS_WIN
+#endif // windows or linux
     result << "-Xmx" + QString::number(memSize > 150 ? memSize - 150 : memSize) + "M";
     return result;
 }

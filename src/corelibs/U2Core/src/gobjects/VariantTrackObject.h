@@ -42,6 +42,7 @@ public:
 
     /**U2_REGION_MAX to get all variants*/
     U2DbiIterator<U2Variant>* getVariants(const U2Region& reg, U2OpStatus& os ) const;
+    int getVariantCount(U2OpStatus &os) const;
 
     void addVariants(const QList<U2Variant>& variants, U2OpStatus& os);
 

@@ -151,6 +151,7 @@ Task *BaseShortReadsAlignerWorker::tick() {
         }
 
         DnaAssemblyTaskWithConversions *t = new DnaAssemblyTaskWithConversions(settings);
+        t->addListeners(createLogListeners(2));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     }

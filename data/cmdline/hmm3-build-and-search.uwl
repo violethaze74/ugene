@@ -24,7 +24,6 @@ workflow "New workflow"{
         name:"Read Sequence";
         url-in {
             dataset:"Dataset 1";
-            file:"D:/projects/ugene/test/_common_data/hmmer3/test_files_from_hmmer_package/tutorial/dna_target.fa";
         }
     }
     read-msa {
@@ -32,14 +31,13 @@ workflow "New workflow"{
         name:"Read Alignment";
         url-in {
             dataset:"Dataset 1";
-            file:"D:/projects/ugene/test/_common_data/hmmer3/test_files_from_hmmer_package/tutorial/MADE1.sto";
         }
     }
 
     .actor-bindings {
         read-msa.out-msa->hmm3-build.in-msa
-        hmm3-search.out-annotations->write-annotations.in-annotations
         hmm3-build.out-hmm3->hmm3-search.in-hmm3
+        hmm3-search.out-annotations->write-annotations.in-annotations
         read-sequence.out-sequence->hmm3-search.in-sequence
     }
 

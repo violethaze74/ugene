@@ -1747,8 +1747,8 @@ To append data to existing file press &apos;Append&apos;.</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="252"/>
-        <source>Illegal annotation name</source>
-        <translation>Illegal annotation name</translation>
+        <source>Illegal annotation name! </source>
+        <translation>Illegal annotation name! </translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="257"/>

@@ -438,6 +438,8 @@ void GSequenceGraphDrawer::drawGraph(QPainter& p, const QSharedPointer<GSequence
     } else if(!calculationTaskRunner.isIdle()) {
         p.fillRect(rect, Qt::gray);
         p.drawText(rect, Qt::AlignCenter, tr("Graph is rendering..."));
+    } else {
+        p.drawText(rect, Qt::AlignCenter, tr("Graph is not available. Try to change calculation settings."));
     }
 }
 const int mLabelCoordY = 20;

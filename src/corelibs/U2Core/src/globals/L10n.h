@@ -80,7 +80,10 @@ public:
     static QString errorColorLabelStr() { return "rgb(166, 57, 46)"; }
     static QString errorColorLabelHtmlStr() { return "#A6392E"; }   // the same as errorColorLabelStr()
 
+    static QString warningColorLabelHtmlStr() { return "#FF8B19"; }
+
     static QColor infoHintColor() { return QColor("green"); }
+    static QString infoColorLabelHtmlStr() { return "#218F20"; }
     static QString infoHintStyleSheet() { return QString("color: %1; font: bold").arg(infoHintColor().name()); }
 
     static QColor successColor() { return QColor("green"); }
