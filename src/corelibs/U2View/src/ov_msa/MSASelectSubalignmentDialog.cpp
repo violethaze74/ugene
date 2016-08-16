@@ -22,12 +22,13 @@
 #include <QCheckBox>
 #include <QMessageBox>
 
-#include "MSASelectSubalignmentDialog.h"
-#include "MSAEditor.h"
+#include <U2Core/L10n.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 
-#include <U2Core/L10n.h>
+#include "MSASelectSubalignmentDialog.h"
+#include "MSAEditor.h"
 
 namespace U2 {
 
@@ -127,7 +128,7 @@ void SelectSubalignmentDialog::init() {
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
-    MAlignmentObject *mobj = ui->getEditor()->getMSAObject();
+    MultipleSequenceAlignmentObject *mobj = ui->getEditor()->getMSAObject();
     SAFE_POINT(mobj != NULL, tr("MSA Object is NULL"), );
 
     int rowNumber = mobj->getNumRows();
@@ -153,7 +154,7 @@ void SelectSubalignmentDialog::init() {
     endPosBox->setValue(window.endPos());
 
     for (int i = 0; i < rowNumber; i++) {
-        QCheckBox *cb = new QCheckBox(mobj->getMAlignment().getRow(i).getName(), this);
+        QCheckBox *cb = new QCheckBox(mobj->getMsa()->getRow(i)->getName(), this);
         cb->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
         if (selectedIndexes.contains(i)) {
             cb->setChecked(true);

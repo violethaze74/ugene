@@ -23,7 +23,7 @@
 #include "MSAEditor.h"
 
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2Region.h>
 
@@ -237,7 +237,7 @@ void MSACollapsibleItemModel::getVisibleRows(int startPos, int endPos, QVector<U
     }
 
     MSAEditor* ed = ui->getEditor();
-    MAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
     int alnNumRows = obj->getNumRows();
     lastRow = qMin(lastRow, alnNumRows - 1);
     int len = lastRow - start + 1;
@@ -289,7 +289,7 @@ MSACollapsableItem MSACollapsibleItemModel::getItem(int index) const {
 
 int MSACollapsibleItemModel::displayedRowsCount() const {
     MSAEditor *ed = ui->getEditor();
-    MAlignmentObject *o = ed->getMSAObject();
+    MultipleSequenceAlignmentObject *o = ed->getMSAObject();
     int size = o->getNumRows();
     foreach (const MSACollapsableItem &item, items) {
         if (item.isCollapsed) {

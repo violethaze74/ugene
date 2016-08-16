@@ -23,7 +23,7 @@
 #ifndef _U2_MSA_DBI_UTILS_UNIT_TESTS_H_
 #define _U2_MSA_DBI_UTILS_UNIT_TESTS_H_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <unittest.h>
 
@@ -38,7 +38,7 @@ class U2SequenceDbi;
 class Utils {
 public:
     static void addRow(U2Dbi *dbi, const U2DataId &msaId,
-        const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps,
+        const QByteArray &name, const QByteArray &seq, const QList<U2MaGap> &gaps,
         U2OpStatus &os);
 };
 
@@ -52,7 +52,7 @@ public:
 
     static U2EntityRef initTestAlignment(const qint64 rowConut);
     static U2EntityRef initTestAlignment(const QStringList& rowsData);
-    static U2EntityRef initTestAlignment(QList<U2MsaRow>& rows);
+    static U2EntityRef initTestAlignment(QList<U2MaRow>& rows);
     static QStringList getRowNames(U2EntityRef msaRef);
 
     static U2EntityRef removeRegionTestAlignment(U2OpStatus &os);
@@ -67,7 +67,7 @@ private:
     static U2SequenceDbi* sequenceDbi;
 
 private:
-    static U2MsaRow addRow(const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    static U2MaRow addRow(const QByteArray &name, const QByteArray &seq, const QList<U2MaGap> &gaps, U2OpStatus &os);
 };
 
 
@@ -149,18 +149,18 @@ DECLARE_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongId);
 DECLARE_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongCount);
 
 /**
-  * updateMsa - updates a Msa in a database with data from a MAlignment.
+  * updateMsa - updates a Msa in a database with data from a MultipleSequenceAlignment.
   * The msa stored in the database is not empty by default.
-  *     ^   empty               - there is the empty msa stored in the database, the MAlignment contains new rows.
-  *     ^   nothingNew          - the MAlignment contains the same information.
-  *     ^   newOrder            - the MAlignment contains the same rows in other order.
-  *     ^   newName             - the MAlignment contains the same rows, the msa name changes.
-  *     ^   newAlphabet         - the MAlignment contains the same rows, the msa alphabet changes.
-  *     ^   newContent          - the MAlignment doesn't contain new rows, some rows data changes.
-  *     ^   newSequence         - the MAlignment doesn't contain new rows, some rows have new sequences.
-  *     ^   additionalRows      - the MAlignment contains new rows, no rows are deleted.
-  *     ^   removeRows          - the MAlignment doesn't contain some rows.
-  *     ^   clear               - the MAlignment is empty.
+  *     ^   empty               - there is the empty msa stored in the database, the MultipleSequenceAlignment contains new rows.
+  *     ^   nothingNew          - the MultipleSequenceAlignment contains the same information.
+  *     ^   newOrder            - the MultipleSequenceAlignment contains the same rows in other order.
+  *     ^   newName             - the MultipleSequenceAlignment contains the same rows, the msa name changes.
+  *     ^   newAlphabet         - the MultipleSequenceAlignment contains the same rows, the msa alphabet changes.
+  *     ^   newContent          - the MultipleSequenceAlignment doesn't contain new rows, some rows data changes.
+  *     ^   newSequence         - the MultipleSequenceAlignment doesn't contain new rows, some rows have new sequences.
+  *     ^   additionalRows      - the MultipleSequenceAlignment contains new rows, no rows are deleted.
+  *     ^   removeRows          - the MultipleSequenceAlignment doesn't contain some rows.
+  *     ^   clear               - the MultipleSequenceAlignment is empty.
   */
 DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_empty);
 DECLARE_TEST(MsaDbiUtilsUnitTests, updateMsa_nothingNew);

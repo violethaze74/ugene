@@ -30,7 +30,7 @@
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 #include <U2View/UndoRedoFramework.h>
 
@@ -49,7 +49,7 @@
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class PhyTreeObject;
 class MSAEditorUI;
 class MSAEditorSequenceArea;
@@ -58,7 +58,6 @@ class MSAEditorNameList;
 class MSAEditorOffsetsViewController;
 class MSAEditorOverviewArea;
 class MSAEditorStatusWidget;
-class MSAEditorUndoFramework;
 class PhyTreeGeneratorLauncherTask;
 class MSAEditorTreeViewer;
 class MSACollapsibleItemModel;
@@ -84,7 +83,7 @@ class PairwiseAlignmentTask;
 
 class SNPSettings {
 public:
-    SNPSettings() : seqId(MAlignmentRow::invalidRowId()) { }
+    SNPSettings() : seqId(MultipleAlignmentRowData::INVALID_ROW_ID) { }
     QPoint clickPoint;
     qint64 seqId;
     QVariantMap highlightSchemeSettings;
@@ -93,8 +92,8 @@ public:
 class PairwiseAlignmentWidgetsSettings {
 public:
     PairwiseAlignmentWidgetsSettings()
-        : firstSequenceId(MAlignmentRow::invalidRowId()),
-        secondSequenceId(MAlignmentRow::invalidRowId()), inNewWindow(true),
+        : firstSequenceId(MultipleAlignmentRowData::INVALID_ROW_ID),
+        secondSequenceId(MultipleAlignmentRowData::INVALID_ROW_ID), inNewWindow(true),
         pairwiseAlignmentTask(NULL), showSequenceWidget(true), showAlgorithmWidget(false),
         showOutputWidget(false), sequenceSelectionModeOn(false)
     {
@@ -136,7 +135,7 @@ public:
 
     virtual OptionsPanel* getOptionsPanel(){return optionsPanel;}
 
-    MAlignmentObject* getMSAObject() const {return msaObject;}
+    MultipleSequenceAlignmentObject* getMSAObject() const {return msaObject;}
 
     MSAEditorUI* getUI() const {return ui;}
 
@@ -152,7 +151,7 @@ public:
     int getFirstVisibleBase() const;
 
     //Return alignment row that is displayed on target line in MSAEditor
-    const MAlignmentRow& getRowByLineNumber(int lineNumber) const;
+    const MultipleSequenceAlignmentRow getRowByLineNumber(int lineNumber) const;
 
     float getZoomFactor() const {return zoomFactor;}
 
@@ -244,7 +243,7 @@ private:
     void alignSequencesFromObjectsToAlignment(const QList<GObject*>& objects);
     void alignSequencesFromFilesToAlignment();
 
-    MAlignmentObject* msaObject;
+    MultipleSequenceAlignmentObject* msaObject;
     MSAEditorUI*      ui;
     QFont             font;
     ResizeMode        resizeMode;

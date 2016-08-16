@@ -24,14 +24,15 @@
 
 #include <QWidget>
 
+#include <U2Core/MultipleSequenceAlignment.h>
+
 namespace U2 {
 
 class MSAEditor;
-class MAlignmentObject;
-class MAlignment;
-class MAlignmentModInfo;
-class MSAEditorSequenceArea;
 class MSAEditorOffsetsViewWidget;
+class MSAEditorSequenceArea;
+class MaModificationInfo;
+class MultipleSequenceAlignmentObject;
 
 class MSAEditorOffsetsViewController : public QObject {
     Q_OBJECT
@@ -45,7 +46,7 @@ public:
     bool eventFilter(QObject* o, QEvent* e);
 
 private slots:
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged();
     void sl_startChanged(const QPoint& , const QPoint& );
     void sl_fontChanged();
     void sl_modelChanged();

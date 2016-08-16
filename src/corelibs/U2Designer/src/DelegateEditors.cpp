@@ -19,17 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/L10n.h>
-#include <U2Core/Log.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
+#include <U2Core/Log.h>
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/SaveDocumentTask.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ScriptEditorDialog.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowUtils.h>

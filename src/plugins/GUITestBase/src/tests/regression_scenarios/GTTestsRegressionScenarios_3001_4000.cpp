@@ -67,6 +67,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ProjectViewModel.h>
 #include <U2Gui/ToolsMenu.h>

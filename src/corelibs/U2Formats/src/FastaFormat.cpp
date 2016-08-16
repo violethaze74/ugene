@@ -29,7 +29,7 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
@@ -56,7 +56,7 @@ FastaFormat::FastaFormat(QObject* p)
 {
     formatName = tr("FASTA");
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
-    supportedObjectTypes+=GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatDescription = tr("FASTA format is a text-based format for representing either nucleotide sequences or peptide sequences, "
         "in which base pairs or amino acids are represented using single-letter codes. "
         "The format also allows for sequence names and comments to precede the sequences.");
@@ -82,7 +82,7 @@ static QVariantMap analyzeRawData(const QByteArray& data) {
             len = 0;
         } else {
             len += line.length();
-            if (!hasGaps && line.contains(MAlignment_GapChar)) {
+            if (!hasGaps && line.contains(MultipleAlignment::GapChar)) {
                 hasGaps = true;
             }
         }

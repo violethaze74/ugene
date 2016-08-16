@@ -19,27 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAEditorNameList.h"
-#include "MSAEditor.h"
-#include "MSAEditorSequenceArea.h"
+#include <QApplication>
+#include <QClipboard>
+#include <QInputDialog>
+#include <QMouseEvent>
+#include <QPainter>
 
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QInputDialog>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QInputDialog>
-#endif
-#include <QtGui/QClipboard>
-#include <QtGui/QPainter>
-#include <QtGui/QMouseEvent>
-
+#include "MSAEditor.h"
+#include "MSAEditorNameList.h"
+#include "MSAEditorSequenceArea.h"
 
 namespace U2 {
 
@@ -78,8 +73,8 @@ MSAEditorNameList::MSAEditorNameList(MSAEditorUI* _ui, QScrollBar* _nhBar)
 
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
     if (editor->getMSAObject()) {
-        connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-            SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+        connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+            SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
         connect(editor->getMSAObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     }
 
@@ -130,11 +125,11 @@ void MSAEditorNameList::drawNames(QPixmap &p, const QList<qint64> &seqIdx, bool 
 void MSAEditorNameList::drawNames(QPainter &p, const QList<qint64> &seqIdx, bool drawSelection) {
     p.fillRect(QRect(0, 0, width(), ui->editor->getRowHeight() * seqIdx.size()), Qt::white);
 
-    MAlignmentObject* msaObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = editor->getMSAObject();
     SAFE_POINT(NULL != msaObj, tr("MSA Object is NULL"), );
-    const MAlignment &al = msaObj->getMAlignment();
+    const MultipleSequenceAlignment al = msaObj->getMsa();
 
-    QStringList seqNames = al.getRowNames();
+    QStringList seqNames = al->getRowNames();
     for (qint64 i = 0; i < seqIdx.size(); i++) {
         SAFE_POINT(seqIdx[i] < seqNames.size(), tr("Invalid sequence index"), );
         bool isSelected = drawSelection && isRowInSelection(seqIdx[i]);
@@ -149,7 +144,7 @@ void MSAEditorNameList::updateActions() {
 
     copyCurrentSequenceAction->setEnabled(!seqArea->isAlignmentEmpty());
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj){
         removeSequenceAction->setEnabled(!maObj->isStateLocked() && getSelectedRow() != -1);
         editSequenceNameAction->setEnabled(!maObj->isStateLocked());
@@ -170,9 +165,9 @@ void MSAEditorNameList::updateScrollBar() {
     QFontMetrics fm(f,this);
     int maxNameWidth = 0;
 
-    MAlignmentObject* maObj = editor->getMSAObject();
-    foreach(const MAlignmentRow& row, maObj->getMAlignment().getRows()) {
-        maxNameWidth = qMax(fm.width(row.getName()), maxNameWidth);
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
+    foreach (const MultipleAlignmentRow& row, maObj->getMsa()->getRows()) {
+        maxNameWidth = qMax(fm.width(row->getName()), maxNameWidth);
     }
     // adjustment for branch primitive in collapsing mode
     if (ui->isCollapsibleMode()) {
@@ -236,17 +231,17 @@ int MSAEditorNameList::getSelectedRow() const {
 
 void MSAEditorNameList::sl_copyCurrentSequence() {
     int n = getSelectedRow();
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj) {
-        const MAlignmentRow& row = maObj->getMAlignment().getRow(n);
+        const MultipleSequenceAlignmentRow row = maObj->getMsaRow(n);
         //TODO: trim large sequence?
         U2OpStatus2Log os;
-        QApplication::clipboard()->setText(row.toByteArray(maObj->getLength(), os));
+        QApplication::clipboard()->setText(row->toByteArray(maObj->getLength(), os));
     }
 }
 
-void MSAEditorNameList::sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo& mi) {
-    if (mi.sequenceListChanged) {
+void MSAEditorNameList::sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo& mi) {
+    if (mi.rowListChanged) {
         completeRedraw = true;
         updateActions();
         updateScrollBar();
@@ -268,14 +263,14 @@ void MSAEditorNameList::sl_removeSequence() {
 }
 
 void MSAEditorNameList::sl_selectReferenceSequence() {
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj) {
         int n = getSelectedRow();
         if (n < 0) {
             return;
         }
         assert(!maObj->isStateLocked());
-        editor->setReference(maObj->getRow(n).getRowId());
+        editor->setReference(maObj->getRow(n)->getRowId());
     }
 }
 
@@ -664,17 +659,17 @@ void MSAEditorNameList::drawContent(QPainter& p) {
         labels->setObjectName("");
     }
 
-    MAlignmentObject* msaObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = editor->getMSAObject();
     SAFE_POINT(NULL != msaObj, "NULL Msa Object in MSAEditorNameList::drawContent!",);
 
-    const MAlignment &al = msaObj->getMAlignment();
+    const MultipleSequenceAlignment al = msaObj->getMsa();
 
     if (ui->isCollapsibleMode()) {
         MSACollapsibleItemModel* m = ui->getCollapseModel();
         QVector<U2Region> range;
         m->getVisibleRows(startSeq, lastSeq, range);
         U2Region yRange = seqArea->getSequenceYRange(startSeq, true);
-        int numRows = al.getNumRows();
+        int numRows = al->getNumRows();
 
         int pos = startSeq;
         foreach(const U2Region& r, range) {
@@ -701,7 +696,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
     U2Region yRange = ui->seqArea->getSequenceYRange(row, firstVisibleRow, true);
     QRect textRect = calculateTextRect(yRange, selected);
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     CHECK(maObj != NULL, );
 
     p.fillRect(textRect, Qt::white);
@@ -710,7 +705,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
     }
 
     U2OpStatusImpl os;
-    if (row == maObj->getMAlignment().getRowIndexByRowId(editor->getReferenceRowId(), os)) {
+    if (row == maObj->getMsa()->getRowIndexByRowId(editor->getReferenceRowId(), os)) {
         drawRefSequence(p, textRect);
     }
 
@@ -774,9 +769,9 @@ void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, const QString& , bo
     }
 
     const MSAEditor *editor = ui->getEditor();
-    const MAlignment &alignment = editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment alignment = editor->getMSAObject()->getMsa();
     U2OpStatusImpl os;
-    if (s == alignment.getRowIndexByRowId(editor->getReferenceRowId(), os)) {
+    if (s == alignment->getRowIndexByRowId(editor->getReferenceRowId(), os)) {
         drawRefSequence(p, textRect);
     }
 
@@ -791,11 +786,7 @@ void MSAEditorNameList::drawRefSequence(QPainter &p, QRect r){
 }
 
 QString MSAEditorNameList::getTextForRow(int s) {
-    MAlignmentObject* maObj = editor->getMSAObject();
-    const MAlignment& ma = maObj->getMAlignment();
-    const MAlignmentRow& row = ma.getRow(s);
-
-    return row.getName();
+    return editor->getMSAObject()->getRow(s)->getName();
 }
 
 QString MSAEditorNameList::getSeqName(int s) {
@@ -844,7 +835,7 @@ void MSAEditorNameList::sl_onScrollBarActionTriggered(int scrollAction)
 
 void MSAEditorNameList::sl_editSequenceName()
 {
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj->isStateLocked()) {
         return;
     }
@@ -854,8 +845,7 @@ void MSAEditorNameList::sl_editSequenceName()
     if (n<0) {
         return;
     }
-    const MAlignmentRow& row = maObj->getMAlignment().getRow(n);
-    QString curName = row.getName();
+    QString curName =  maObj->getMsa()->getRow(n)->getName();
     QString newName = QInputDialog::getText(this, tr("Rename"),
             tr("New sequence name:"), QLineEdit::Normal, curName, &ok);
     if (ok && !newName.isEmpty() && curName != newName) {
@@ -888,7 +878,7 @@ void MSAEditorNameList::moveSelectedRegion(int shift) {
         return;
     }
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (!maObj->isStateLocked()) {
         maObj->moveRowsBlock(firstRowInSelection, numRowsInSelection, shift);
         curSeq += shift;
@@ -906,7 +896,7 @@ bool MSAEditorNameList::isRowInSelection(int seqnum) {
 }
 
 qint64 MSAEditorNameList::sequenceIdAtPos(const QPoint &p) {
-    qint64 result = MAlignmentRow::invalidRowId();
+    qint64 result = MultipleAlignmentRowData::INVALID_ROW_ID;
     curSeq = ui->seqArea->getSequenceNumByY(p.y());
     if (!ui->seqArea->isSeqInRange(curSeq)) {
         return result;
@@ -915,8 +905,8 @@ qint64 MSAEditorNameList::sequenceIdAtPos(const QPoint &p) {
         curSeq = ui->getCollapseModel()->mapToRow(curSeq);
     }
     if (curSeq != -1) {
-        MAlignmentObject* maObj = editor->getMSAObject();
-        result = maObj->getMAlignment().getRow(curSeq).getRowId();
+        MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
+        result = maObj->getMsa()->getRow(curSeq)->getRowId();
     }
     return result;
 }

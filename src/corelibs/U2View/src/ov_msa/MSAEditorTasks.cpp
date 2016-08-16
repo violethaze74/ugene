@@ -42,7 +42,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/UnloadedObject.h>
 
@@ -60,7 +60,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 /// open new view
 
-OpenMSAEditorTask::OpenMSAEditorTask(MAlignmentObject* _obj)
+OpenMSAEditorTask::OpenMSAEditorTask(MultipleSequenceAlignmentObject* _obj)
 : ObjectViewTask(MSAEditorFactory::ID), msaObject(_obj)
 {
     assert(!msaObject.isNull());
@@ -69,7 +69,7 @@ OpenMSAEditorTask::OpenMSAEditorTask(MAlignmentObject* _obj)
 OpenMSAEditorTask::OpenMSAEditorTask(UnloadedObject* _obj)
 : ObjectViewTask(MSAEditorFactory::ID), unloadedReference(_obj)
 {
-    assert(_obj->getLoadedObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT);
+    assert(_obj->getLoadedObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     documentsToLoad.append(_obj->getDocument());
 }
 
@@ -93,12 +93,12 @@ void OpenMSAEditorTask::open() {
         QList<GObject*> objects;
         if (unloadedReference.isValid()) {
             GObject* obj = doc->findGObjectByName(unloadedReference.objName);
-            if (obj!=NULL && obj->getGObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT) {
-                msaObject = qobject_cast<MAlignmentObject*>(obj);
+            if (obj!=NULL && obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
+                msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
             }
         } else {
-            QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT, UOF_LoadedAndUnloaded);
-            msaObject = objects.isEmpty() ? NULL : qobject_cast<MAlignmentObject*>(objects.first());
+            QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, UOF_LoadedAndUnloaded);
+            msaObject = objects.isEmpty() ? NULL : qobject_cast<MultipleSequenceAlignmentObject*>(objects.first());
         }
         if (msaObject.isNull()) {
             stateInfo.setError(tr("Multiple alignment object not found"));
@@ -119,7 +119,7 @@ void OpenMSAEditorTask::updateTitle(MSAEditor* msaEd) {
     const QString& oldViewName = msaEd->getName();
     GObjectViewWindow* w = GObjectViewUtils::findViewByName(oldViewName);
     if (w != NULL) {
-        MAlignmentObject* msaObject = msaEd->getMSAObject();
+        MultipleSequenceAlignmentObject* msaObject = msaEd->getMSAObject();
         QString newViewName = GObjectViewUtils::genUniqueViewName(msaObject->getDocument(), msaObject);
         msaEd->setName(newViewName);
         w->setWindowTitle(newViewName);
@@ -162,12 +162,12 @@ void OpenSavedMSAEditorTask::open() {
     } else {
         obj = doc->findGObjectByName(ref.objName);
     }
-    if (obj == NULL || obj->getGObjectType() != GObjectTypes::MULTIPLE_ALIGNMENT) {
+    if (obj == NULL || obj->getGObjectType() != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
         stateIsIllegal = true;
         stateInfo.setError(tr("Alignment object not found: %1").arg(ref.objName));
         return;
     }
-    MAlignmentObject* msaObject = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     assert(msaObject!=NULL);
 
     MSAEditor* v = new MSAEditor(viewName, msaObject);
@@ -283,17 +283,17 @@ void ExtractConsensusTask::run() {
     CHECK(msa->getUI()->getConsensusArea()->getConsensusCache(),);
 
     MSAConsensusAlgorithm *algorithm = msa->getUI()->getConsensusArea()->getConsensusAlgorithm();
-    MAlignment ma = msa->getMSAObject()->getMAlignment();
-    for (int i = 0, n = ma.getLength(); i < n; i++) {
+    const MultipleSequenceAlignment ma = msa->getMSAObject()->getMsaCopy();
+    for (int i = 0, n = ma->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;
         }
         int count = 0;
-        int nSeq = ma.getNumRows();
+        int nSeq = ma->getNumRows();
         SAFE_POINT(0 != nSeq, tr("No sequences in alignment"), );
 
         QChar c = algorithm->getConsensusCharAndScore(ma, i, count);
-        if (c != MAlignment_GapChar || keepGaps) {
+        if (c != MultipleAlignment::GapChar || keepGaps) {
             filteredConsensus.append(c);
         }
     }

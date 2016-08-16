@@ -19,12 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/AppContext.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/MAlignmentObject.h>
-
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/DNAAlphabet.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
@@ -64,9 +65,7 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor* _msa)
 
 }
 
-void MSAGeneralTab::sl_alignmentChanged(const MAlignment& al, const MAlignmentModInfo& modInfo) {
-    Q_UNUSED(al);
-    Q_UNUSED(modInfo);
+void MSAGeneralTab::sl_alignmentChanged() {
     alignmentLength->setText(QString::number(msa->getAlignmentLen()));
     alignmentHeight->setText(QString::number(msa->getNumSequences()));
 }
@@ -142,8 +141,8 @@ void MSAGeneralTab::connectSignals() {
 
     // Extern signals
     connect(msa->getMSAObject(),
-            SIGNAL(si_alignmentChanged(MAlignment, MAlignmentModInfo)),
-            SLOT(sl_alignmentChanged(MAlignment, MAlignmentModInfo)));
+            SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
+            SLOT(sl_alignmentChanged()));
 
         //out
     connect(this, SIGNAL(si_algorithmChanged(QString)),
@@ -179,7 +178,7 @@ void MSAGeneralTab::initializeParameters() {
 
     //Copy formatted
     DocumentFormatConstraints constr;
-    constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_ALIGNMENT );
+    constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT );
     constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
     constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
     DocumentFormatRegistry* freg = AppContext::getDocumentFormatRegistry();

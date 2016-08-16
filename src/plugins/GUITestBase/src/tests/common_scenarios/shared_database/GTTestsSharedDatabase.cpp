@@ -38,6 +38,7 @@
 
 #include <U2Core/ImportToDatabaseOptions.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <core/GUITest.h>
 

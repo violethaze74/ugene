@@ -21,7 +21,7 @@
 
 #include "MSADistanceAlgorithmHamming.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -41,7 +41,7 @@ QString MSADistanceAlgorithmFactoryHamming::getName() const {
 }
 
 
-MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHamming::createAlgorithm(const MAlignment& ma, QObject* ) {
+MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHamming::createAlgorithm(const MultipleSequenceAlignment& ma, QObject* ) {
     MSADistanceAlgorithm* res = new MSADistanceAlgorithmHamming(this, ma);
      if(flags.testFlag(DistanceAlgorithmFlag_ExcludeGaps)){
         res->setExcludeGaps(true);
@@ -55,20 +55,20 @@ MSADistanceAlgorithm* MSADistanceAlgorithmFactoryHamming::createAlgorithm(const 
 // Algorithm
 
 void MSADistanceAlgorithmHamming::run() {
-    int nSeq = ma.getNumRows();
+    int nSeq = ma->getNumRows();
     for (int i = 0; i < nSeq; i++) {
         for (int j = i; j < nSeq; j++) {
             int sim = 0;
-            for (int k = 0; k < ma.getLength(); k++) {
+            for (int k = 0; k < ma->getLength(); k++) {
                 if (isCanceled()) {
                     return;
                 }
-                bool dissimilar = (ma.charAt(i, k) != ma.charAt(j, k));
+                bool dissimilar = (ma->charAt(i, k) != ma->charAt(j, k));
 
                 if(!excludeGaps){
                     if (dissimilar) sim++;
                 }else{
-                    if (dissimilar && (ma.charAt(i, k)!=MAlignment_GapChar && ma.charAt(j, k)!=MAlignment_GapChar)) sim++;
+                    if (dissimilar && (ma->charAt(i, k)!=MultipleAlignment::GapChar && ma->charAt(j, k)!=MultipleAlignment::GapChar)) sim++;
                 }
             }
             lock.lock();

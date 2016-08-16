@@ -88,7 +88,7 @@ public:
     static void cleanUpAllModSteps();
 
 private:
-    static U2MsaRow addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os);
+    static U2MaRow addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MaGap> &gaps, U2OpStatus &os);
 
     static TestDbiProvider dbiProvider;
     static const QString& SQLITE_MSA_DB_URL;

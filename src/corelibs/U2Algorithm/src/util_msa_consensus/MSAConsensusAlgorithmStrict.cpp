@@ -21,7 +21,7 @@
 
 #include "MSAConsensusAlgorithmStrict.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include "MSAConsensusUtils.h"
 
 #include <QtCore/QVector>
@@ -43,24 +43,24 @@ QString MSAConsensusAlgorithmFactoryStrict::getName() const  {
     return tr("Strict");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MAlignment&, QObject* p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryStrict::createAlgorithm(const MultipleSequenceAlignment&, QObject* p) {
     return new MSAConsensusAlgorithmStrict(this, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmStrict::getConsensusChar(const MAlignment& msa, int column, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleSequenceAlignment& msa, int column, const QVector<qint64> &seqIdx) const {
     QVector<int> freqsByChar(256, 0);
     int nonGaps = 0;
     uchar topChar = MSAConsensusUtils::getColumnFreqs(msa, column, freqsByChar, nonGaps, seqIdx);
 
     //use gap is top char frequency is lower than threshold
-    int nSeq =( seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size());
+    int nSeq =( seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size());
     int currentThreshold = getThreshold();
     int cntToUseGap = int(currentThreshold / 100.0 * nSeq);
     int topFreq = freqsByChar[topChar];
-    char res = topFreq < cntToUseGap ? MAlignment_GapChar : (char)topChar;
+    char res = topFreq < cntToUseGap ? MultipleAlignment::GapChar : (char)topChar;
     return res;
 }
 

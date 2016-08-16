@@ -19,22 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include "LocalDomain.h"
-
-#include <U2Lang/LastReadyScheduler.h>
-#include <U2Lang/Schema.h>
-#include <U2Lang/IntegralBusType.h>
-#include <U2Lang/WorkflowMonitor.h>
-#include <U2Lang/WorkflowSettings.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/ActorModel.h>
-
-#include <U2Core/Log.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineUtils.h>
+#include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
 
+#include <U2Lang/ActorModel.h>
+#include <U2Lang/BaseAttributes.h>
+#include <U2Lang/IntegralBusType.h>
+#include <U2Lang/LastReadyScheduler.h>
+#include <U2Lang/Schema.h>
+#include <U2Lang/WorkflowMonitor.h>
+#include <U2Lang/WorkflowSettings.h>
+
+#include "LocalDomain.h"
 
 namespace U2 {
 namespace LocalWorkflow {

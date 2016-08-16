@@ -19,10 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include "WizardController.h"
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Lang/URLContainer.h>
 
 #include "UrlAndDatasetWizardController.h"
-#include <U2Lang/URLContainer.h>
+#include "WizardController.h"
 
 namespace U2 {
 

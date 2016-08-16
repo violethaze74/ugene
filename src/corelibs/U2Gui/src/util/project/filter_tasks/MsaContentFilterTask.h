@@ -26,7 +26,7 @@
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 //////////////////////////////////////////////////////////////////////////
 /// MsaContentFilterTask
@@ -40,9 +40,9 @@ protected:
     bool filterAcceptsObject(GObject *obj);
 
 private:
-    bool msaContainsPattern(MAlignmentObject *msaObject, const QString &pattern);
+    bool msaContainsPattern(MultipleSequenceAlignmentObject *msaObject, const QString &pattern);
 
-    static bool patternFitsMsaAlphabet(MAlignmentObject *msaObject, const QString &pattern);
+    static bool patternFitsMsaAlphabet(MultipleSequenceAlignmentObject *msaObject, const QString &pattern);
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeDisagreements::MsaHighlightingSchemeDisagreements(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj)
+MsaHighlightingSchemeDisagreements::MsaHighlightingSchemeDisagreements(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj)
 {
 
@@ -46,7 +46,7 @@ MsaHighlightingSchemeDisagreementsFactory::MsaHighlightingSchemeDisagreementsFac
 
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeDisagreementsFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaHighlightingScheme * MsaHighlightingSchemeDisagreementsFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeDisagreements(parent, this, maObj);
 }
 

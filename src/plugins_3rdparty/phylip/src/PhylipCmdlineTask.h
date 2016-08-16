@@ -27,14 +27,14 @@
 namespace U2 {
 
 class CmdlineInOutTaskRunner;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class PhyTreeObject;
 class TmpDbiHandle;
 
 class PhylipCmdlineTask : public PhyTreeGeneratorTask {
     Q_OBJECT
 public:
-    PhylipCmdlineTask(const MAlignment &msa, const CreatePhyTreeSettings &settings);
+    PhylipCmdlineTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings);
     ~PhylipCmdlineTask();
 
     void prepare();
@@ -57,7 +57,7 @@ private:
 
 private:
     CmdlineInOutTaskRunner *cmdlineTask;
-    MAlignmentObject *msaObject;
+    MultipleSequenceAlignmentObject *msaObject;
     PhyTreeObject *treeObject;
     QString dbiPath;
     U2DbiRef dbiRef;

@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Designer/EditMarkerGroupDialog.h>
 #include <U2Designer/MarkerEditor.h>
-
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Lang/Marker.h>
 #include <U2Lang/MarkerUtils.h>

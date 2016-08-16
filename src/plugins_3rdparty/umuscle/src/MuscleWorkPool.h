@@ -48,7 +48,7 @@ namespace U2 {
     };
 
     struct MuscleWorkPool {
-        MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings  &_config, TaskStateInfo& _ti, int _nThreads, const MAlignment& _ma, MAlignment& _res, bool _mhack);
+        MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings  &_config, TaskStateInfo& _ti, int _nThreads, const MultipleSequenceAlignment& _ma, MultipleSequenceAlignment& _res, bool _mhack);
             
         ~MuscleWorkPool() ;
 
@@ -57,8 +57,8 @@ namespace U2 {
 
         MuscleContext       *ctx;
         const MuscleTaskSettings  &config;
-        MAlignment          ma;
-        MAlignment&         res;
+        MultipleSequenceAlignment          ma;
+        MultipleSequenceAlignment&         res;
         bool                mhack;
         SeqVect             v;
         Tree                GuideTree;

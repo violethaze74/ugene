@@ -24,7 +24,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -186,7 +186,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
     AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
     if (obj == NULL)
             return;
     assert(!obj->isStateLocked());
@@ -200,7 +200,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
         return;
     }
 
-    TCoffeeSupportTask* tCoffeeSupportTask = new TCoffeeSupportTask(obj->getMAlignment(), GObjectReference(obj), settings);
+    TCoffeeSupportTask* tCoffeeSupportTask = new TCoffeeSupportTask(obj->getMsa(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), tCoffeeSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(tCoffeeSupportTask);
 

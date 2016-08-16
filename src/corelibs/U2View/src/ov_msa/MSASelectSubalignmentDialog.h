@@ -25,7 +25,7 @@
 #include "ui_SelectSubalignmentDialog.h"
 
 #include <U2Core/global.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
 

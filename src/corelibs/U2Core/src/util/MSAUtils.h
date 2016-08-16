@@ -22,43 +22,37 @@
 #ifndef _U2_MSA_UTILS_H_
 #define _U2_MSA_UTILS_H_
 
-#include <U2Core/global.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
-
-class GObject;
-class MAlignment;
-class MAlignmentRow;
-class U2OpStatus;
 
 class U2CORE_EXPORT MSAUtils : public QObject {
     Q_OBJECT
 public:
 
-    static bool equalsIgnoreGaps(const MAlignmentRow& row, int startPos, const QByteArray& pattern, int &alternateLen);
+    static bool equalsIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pattern, int &alternateLen);
 
-    static int getPatternSimilarityIgnoreGaps(const MAlignmentRow& row, int startPos, const QByteArray& pattern, int &alternateLen);
+    static int getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pattern, int &alternateLen);
 
-    static MAlignment seq2ma(const QList<GObject*>& dnas, U2OpStatus& os, bool useGenbankHeader = false);
+    static MultipleSequenceAlignment seq2ma(const QList<GObject*>& dnas, U2OpStatus& os, bool useGenbankHeader = false);
 
-    static MAlignment seq2ma(const QList<DNASequence>& dnas, U2OpStatus& os);
+    static MultipleSequenceAlignment seq2ma(const QList<DNASequence>& dnas, U2OpStatus& os);
 
-    static QList<DNASequence> ma2seq(const MAlignment& ma, bool trimGaps);
+    static QList<DNASequence> ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps);
 
     // sets alphabet if no alignment alphabet was set; checks is the new alphabet equal old alphabet, otherwise sets error
-    static void updateAlignmentAlphabet(MAlignment& ma, const DNAAlphabet* a, U2OpStatus& os);
+    static void updateAlignmentAlphabet(MultipleSequenceAlignment& ma, const DNAAlphabet* a, U2OpStatus& os);
 
     // Returns row index or -1 if name is not present
-    static int getRowIndexByName(const MAlignment& ma, const QString& name);
+    static int getRowIndexByName(const MultipleAlignment &ma, const QString& name);
 
     //checks that alignment is not empty and all packed sequence parts has equal length
-    static bool checkPackedModelSymmetry(MAlignment& ali, U2OpStatus& ti);
+    static bool checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2OpStatus& ti);
 
-    static MAlignmentObject * seqDocs2msaObj(QList<Document*> doc, const QVariantMap& hints, U2OpStatus& os);
-    static MAlignmentObject * seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy = false);
+    static MultipleSequenceAlignmentObject * seqDocs2msaObj(QList<Document*> doc, const QVariantMap& hints, U2OpStatus& os);
+    static MultipleSequenceAlignmentObject * seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy = false);
 
     /**
      * Compares rows in the 'origMsa' and 'newMsa' by names of the sequences.
@@ -70,19 +64,19 @@ public:
      * Note, that 'newMsa' may contain less rows than 'origMsa'
      * (e.g. ClustalO may decrease the number of sequences after the alignment).
      */
-    static QList<qint64> compareRowsAfterAlignment(const MAlignment& origMsa, MAlignment& newMsa, U2OpStatus& os);
-    static void copyRowFromSequence(MAlignmentObject *msaObj, U2SequenceObject *seqObj, U2OpStatus &os);
-    static U2MsaRow copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef &dstDbi, U2OpStatus &os);
-    static U2MsaRow copyRowFromSequence(DNASequence seq, const U2DbiRef &dstDbi, U2OpStatus &os);
+    static QList<qint64> compareRowsAfterAlignment(const MultipleSequenceAlignment& origMsa, MultipleSequenceAlignment& newMsa, U2OpStatus& os);
+    static void copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2SequenceObject *seqObj, U2OpStatus &os);
+    static U2MaRow copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef &dstDbi, U2OpStatus &os);
+    static U2MaRow copyRowFromSequence(DNASequence seq, const U2DbiRef &dstDbi, U2OpStatus &os);
 
-    static MAlignment setUniqueRowNames(const MAlignment& ma);
+    static MultipleSequenceAlignment setUniqueRowNames(const MultipleSequenceAlignment& ma);
     /**
       * Renames rows in the 'ma' to 'names' according to the following assumptions:
       *   1) 'ma' row names are integers from [0..n - 1] interval,
       *      where n is equal to row number of 'ma';
       *   2) Row name 'i' will be renamed to 'names[i]' value;
       **/
-    static bool restoreRowNames(MAlignment& ma, const QStringList& names);
+    static bool restoreRowNames(MultipleSequenceAlignment& ma, const QStringList& names);
 };
 
 

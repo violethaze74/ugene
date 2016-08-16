@@ -29,15 +29,16 @@
 #include <U2Core/Counter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Gui/GlassView.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/QueryDesignerRegistry.h>

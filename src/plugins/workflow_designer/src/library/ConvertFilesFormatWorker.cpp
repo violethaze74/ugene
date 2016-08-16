@@ -34,15 +34,19 @@
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
+
 #include <U2Designer/DelegateEditors.h>
+
 #include <U2Formats/BAMUtils.h>
 #include <U2Formats/ConvertFileTask.h>
+
 #include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/BaseAttributes.h>
-#include <U2Lang/BaseTypes.h>
-#include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseActorCategories.h>
+#include <U2Lang/BaseAttributes.h>
+#include <U2Lang/BaseSlots.h>
+#include <U2Lang/BaseTypes.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>

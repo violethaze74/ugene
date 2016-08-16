@@ -81,7 +81,6 @@
 
 #include <U2View/UndoRedoFramework.h>
 
-#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Export/MSAImageExportTask.h"
 #include "ExportHighlightedDialogController.h"
 #include "MSAEditor.h"
@@ -94,8 +93,8 @@
 #include "MSAEditorState.h"
 #include "MSAEditorStatusBar.h"
 #include "MSAEditorTasks.h"
-#include "MSAEditorUndoFramework.h"
 #include "MsaEditorSimilarityColumn.h"
+#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "PhyTrees/MSAEditorTreeViewer.h"
 #include "ov_msa/TreeOptions//TreeOptionsWidgetFactory.h"
@@ -112,7 +111,7 @@ const float MSAEditor::zoomMult = 1.25;
 MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
 : GObjectView(MSAEditorFactory::ID, viewName), ui(NULL), alignSequencesToAlignmentAction(NULL), treeManager(this) {
 
-    msaObject = qobject_cast<MAlignmentObject*>(obj);
+    msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
 
     objects.append(msaObject);
     onObjectAdded(msaObject);
@@ -122,7 +121,7 @@ MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
 
     if (!U2DbiUtils::isDbiReadOnly(msaObject->getEntityRef().dbiRef)) {
         U2OpStatus2Log os;
-        msaObject->setTrackMod(TrackOnUpdate, os);
+        msaObject->setTrackMod(os, TrackOnUpdate);
     }
 
     saveAlignmentAction = new QAction(QIcon(":core/images/msa_save.png"), tr("Save alignment"), this);
@@ -358,11 +357,11 @@ int MSAEditor::getFirstVisibleBase() const {
     return ui->seqArea->getFirstVisibleBase();
 }
 
-const MAlignmentRow& MSAEditor::getRowByLineNumber(int lineNumber) const {
+const MultipleSequenceAlignmentRow MSAEditor::getRowByLineNumber(int lineNumber) const {
     if (ui->isCollapsibleMode()) {
         lineNumber = ui->getCollapseModel()->mapToRow(lineNumber);
     }
-    return getMSAObject()->getRow(lineNumber);
+    return getMSAObject()->getMsaRow(lineNumber);
 }
 
 void MSAEditor::sl_changeFont() {
@@ -445,7 +444,7 @@ void MSAEditor::addExportMenu(QMenu* m) {
     em->addAction(saveScreenshotAction);
     em->addAction(exportHighlightedAction);
     if(!ui->getSequenceArea()->getCurrentHighlightingScheme()->getFactory()->isRefFree() &&
-                getReferenceRowId() != MAlignmentRow::invalidRowId()){
+                getReferenceRowId() != MultipleAlignmentRowData::INVALID_ROW_ID){
         exportHighlightedAction->setEnabled(true);
     }else{
         exportHighlightedAction->setDisabled(true);
@@ -593,14 +592,14 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & pos) {
     snp.clickPoint = QCursor::pos( );
     const QPoint nameMapped = ui->nameList->mapFromGlobal( snp.clickPoint );
     const qint64 hoverRowId = ( 0 <= nameMapped.y( ) )
-        ? ui->nameList->sequenceIdAtPos( nameMapped ) : MAlignmentRow::invalidRowId( );
+        ? ui->nameList->sequenceIdAtPos( nameMapped ) : MultipleAlignmentRowData::INVALID_ROW_ID;
     if ( ( hoverRowId != getReferenceRowId( )
-        || MAlignmentRow::invalidRowId( ) == getReferenceRowId( ) )
-        && hoverRowId != MAlignmentRow::invalidRowId( ) )
+        || MultipleAlignmentRowData::INVALID_ROW_ID == getReferenceRowId( ) )
+        && hoverRowId != MultipleAlignmentRowData::INVALID_ROW_ID )
     {
         m.addAction( setAsReferenceSequenceAction );
     }
-    if ( MAlignmentRow::invalidRowId( ) != getReferenceRowId( ) ) {
+    if ( MultipleAlignmentRowData::INVALID_ROW_ID != getReferenceRowId( ) ) {
         m.addAction( unsetReferenceSequenceAction );
     }
     m.addSeparator();
@@ -634,7 +633,7 @@ void MSAEditor::calcFontPixelToPointSizeCoef() {
 
 void MSAEditor::copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os) {
     MSAUtils::copyRowFromSequence(msaObject, seqObj, os);
-    msaObject->updateCachedMAlignment();
+    msaObject->updateCachedMultipleAlignment();
 }
 
 void MSAEditor::sl_onSeqOrderChanged(const QStringList& order ){
@@ -752,7 +751,7 @@ void MSAEditor::sl_align(){
 }
 
 void MSAEditor::sl_addToAlignment() {
-    MAlignmentObject* msaObject = getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -767,7 +766,7 @@ void MSAEditor::sl_addToAlignment() {
     bool selectFromProject = !objects.isEmpty();
 
     foreach(GObject* object, objects) {
-        if(object == getMSAObject() || (object->getGObjectType() != GObjectTypes::MULTIPLE_ALIGNMENT && object->getGObjectType() != GObjectTypes::SEQUENCE)) {
+        if(object == getMSAObject() || (object->getGObjectType() != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT && object->getGObjectType() != GObjectTypes::SEQUENCE)) {
             selectFromProject = false;
             break;
         }
@@ -820,15 +819,15 @@ void MSAEditor::sl_setSeqAsReference(){
     QPoint nameMapped = ui->nameList->mapFromGlobal(menuCallPos);
     if ( nameMapped.y() >= 0 ) {
         qint64 newRowId = ui->nameList->sequenceIdAtPos(nameMapped);
-        if (MAlignmentRow::invalidRowId() != newRowId && newRowId != snp.seqId) {
+        if (MultipleAlignmentRowData::INVALID_ROW_ID != newRowId && newRowId != snp.seqId) {
             setReference(newRowId);
         }
     }
 }
 
 void MSAEditor::sl_unsetReferenceSeq( ) {
-    if ( MAlignmentRow::invalidRowId( ) != getReferenceRowId( ) ) {
-        setReference( MAlignmentRow::invalidRowId( ) );
+    if ( MultipleAlignmentRowData::INVALID_ROW_ID != getReferenceRowId( ) ) {
+        setReference( MultipleAlignmentRowData::INVALID_ROW_ID );
     }
 }
 
@@ -842,7 +841,7 @@ void MSAEditor::sl_rowsRemoved(const QList<qint64> &rowIds) {
 }
 
 void MSAEditor::setReference(qint64 sequenceId) {
-    if(sequenceId == MAlignmentRow::invalidRowId()){
+    if(sequenceId == MultipleAlignmentRowData::INVALID_ROW_ID){
         exportHighlightedAction->setDisabled(true);
     }else{
         exportHighlightedAction->setEnabled(true);
@@ -856,15 +855,15 @@ void MSAEditor::setReference(qint64 sequenceId) {
 
 void MSAEditor::updateReference(){
     if(msaObject->getRowPosById(snp.seqId) == -1){
-        setReference(MAlignmentRow::invalidRowId());
+        setReference(MultipleAlignmentRowData::INVALID_ROW_ID);
     }
 }
 
 QString MSAEditor::getReferenceRowName() const {
-    const MAlignment &alignment = getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment alignment = getMSAObject()->getMsa();
     U2OpStatusImpl os;
-    const int refSeq = alignment.getRowIndexByRowId(getReferenceRowId(), os);
-    return (MAlignmentRow::invalidRowId() != refSeq) ? alignment.getRowNames().at(refSeq)
+    const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
+    return (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq)
         : QString();
 }
 
@@ -951,7 +950,7 @@ MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
     setContextMenuPolicy(Qt::CustomContextMenu);
     setMinimumSize(300, 200);
 
-    setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_ALIGNMENT).icon);
+    setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
 
     QWidget *label;
     GScrollBar* shBar = new GScrollBar(Qt::Horizontal);

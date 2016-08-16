@@ -31,6 +31,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
@@ -170,7 +171,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_customSchemesListChanged()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
-    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MAlignmentModInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
+    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
 
     connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
@@ -258,7 +259,7 @@ void MSAHighlightingTab::sl_updateHint() {
         thresholdMoreRb->hide();
         lessMoreLabel->hide();
     }
-    if (MAlignmentRow::invalidRowId() == msa->getReferenceRowId()
+    if (MultipleAlignmentRowData::INVALID_ROW_ID == msa->getReferenceRowId()
         && !seqArea->getCurrentHighlightingScheme()->getFactory()->isRefFree())
     {
         hint->setText(tr("Hint: select a reference above"));

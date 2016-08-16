@@ -19,24 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/AppContext.h>
-#include <U2Core/ExternalToolRegistry.h>
-#include <U2Core/U2ObjectDbi.h>
-
-#include <U2Gui/ProjectViewModel.h>
-#include <U2Gui/ToolsMenu.h>
-
-#include <U2View/ADVConstants.h>
-#include <U2View/ADVSingleSequenceWidget.h>
-#include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/AnnotationsTreeView.h>
-#include <U2View/AssemblyBrowser.h>
-#include <U2View/AssemblyModel.h>
-#include <U2View/AssemblyNavigationWidget.h>
-#include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
-#include <U2View/MSAEditorNameList.h>
-
 #include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QHeaderView>
@@ -81,6 +63,25 @@
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 #include <utils/GTUtilsToolTip.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/ProjectViewModel.h>
+#include <U2Gui/ToolsMenu.h>
+
+#include <U2View/ADVConstants.h>
+#include <U2View/ADVSingleSequenceWidget.h>
+#include <U2View/AnnotatedDNAViewFactory.h>
+#include <U2View/AnnotationsTreeView.h>
+#include <U2View/AssemblyBrowser.h>
+#include <U2View/AssemblyModel.h>
+#include <U2View/AssemblyNavigationWidget.h>
+#include <U2View/MSAEditor.h>
+#include <U2View/MSAEditorFactory.h>
+#include <U2View/MSAEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"
@@ -2493,7 +2494,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
     GTUtilsDocument::checkDocument(os, "P1_human_T1_6.aln", GTUtilsDocument::DocumentUnloaded);
     GTUtilsDocument::checkDocument(os, "P1_human_T1_7.aln", GTUtilsDocument::DocumentUnloaded);
 
-    const QSet<GObjectType> acceptableTypes = QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT;
+    const QSet<GObjectType> acceptableTypes = QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "P1_human_T1_1.aln"));
     GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "P1_human_T1_2.aln"));
     GTUtilsProjectTreeView::checkObjectTypes(os, acceptableTypes, GTUtilsProjectTreeView::findIndex(os, "P1_human_T1_3.aln"));
@@ -3965,7 +3966,7 @@ GUI_TEST_CLASS_DEFINITION(test_1371) {
     GTUtilsProjectTreeView::checkItem(os, "Contig1");
     GTUtilsProjectTreeView::checkItem(os, "Contig2");
     GTUtilsProjectTreeView::checkObjectTypes(os,
-                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT,
+                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
                                              GTUtilsProjectTreeView::findIndex(os, "BL060C3.ace"));
 
 //    2. Open file "data/samples/ACE/BL060C3.ace" as assembly.

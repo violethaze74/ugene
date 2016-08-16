@@ -19,14 +19,15 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/MarkerAttribute.h>
 
 #include "Constants.h"
 #include "HRSchemaSerializer.h"
-#include "Utils.h"
-
 #include "OldUWL.h"
+#include "Utils.h"
 
 namespace U2 {
 namespace WorkflowSerialize {

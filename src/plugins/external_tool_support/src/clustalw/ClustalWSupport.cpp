@@ -24,7 +24,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -185,14 +185,14 @@ void ClustalWSupportContext::sl_align_with_ClustalW() {
     AlignMsaAction* action = qobject_cast<AlignMsaAction *>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
     if (obj == NULL) {
         return;
     }
     assert(!obj->isStateLocked());
 
     ClustalWSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalWSupportRunDialog> clustalWRunDialog = new ClustalWSupportRunDialog(obj->getMAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ClustalWSupportRunDialog> clustalWRunDialog = new ClustalWSupportRunDialog(obj->getMsa(), settings, AppContext::getMainWindow()->getQMainWindow());
     clustalWRunDialog->exec();
     CHECK(!clustalWRunDialog.isNull(), );
 
@@ -200,7 +200,7 @@ void ClustalWSupportContext::sl_align_with_ClustalW() {
         return;
     }
 
-    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getMAlignment(), GObjectReference(obj), settings);
+    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getMsa(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalWSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 

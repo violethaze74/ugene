@@ -35,13 +35,13 @@ class SaveDocumentController;
 class ClustalOSupportRunDialog : public QDialog, public Ui_ClustalOSupportRunDialog {
     Q_OBJECT
 public:
-    ClustalOSupportRunDialog(const MAlignment& ma, ClustalOSupportTaskSettings& settings, QWidget* parent);
+    ClustalOSupportRunDialog(const MultipleSequenceAlignment& ma, ClustalOSupportTaskSettings& settings, QWidget* parent);
 
 private slots:
     void accept();
 
 private:
-    MAlignment                      ma;
+    MultipleSequenceAlignment                      ma;
     ClustalOSupportTaskSettings&    settings;
 
 };

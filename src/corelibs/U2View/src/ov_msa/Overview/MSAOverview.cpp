@@ -37,7 +37,7 @@ MSAOverview::MSAOverview(MSAEditorUI *_ui)
     connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
     connect(sequenceArea, SIGNAL(si_selectionChanged(MSAEditorSelection,MSAEditorSelection)),
             SLOT(sl_selectionChanged()));
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(MAlignment,MAlignmentModInfo)),
+    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
             SLOT(sl_redraw()));
 }
 

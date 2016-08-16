@@ -22,10 +22,10 @@
 #ifndef _U2_MSA_COLLAPSIBLE_MODEL_H_
 #define _U2_MSA_COLLAPSIBLE_MODEL_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
+#include <QObject>
+#include <QVector>
 
-#include <U2Core/global.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -42,10 +42,9 @@ public:
     bool isCollapsed;
 };
 
-class U2Region;
 class MSAEditorUI;
-class MAlignment;
-class MAlignmentModInfo;
+class MaModificationInfo;
+class U2Region;
 
 class U2VIEW_EXPORT MSACollapsibleItemModel : public QObject {
     Q_OBJECT

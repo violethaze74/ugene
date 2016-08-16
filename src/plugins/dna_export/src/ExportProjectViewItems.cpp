@@ -39,7 +39,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultiTask.h>
 #include <U2Core/ProjectModel.h>
@@ -154,13 +154,13 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             }
         }
     } else {
-        set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_ALIGNMENT, &ms, UOF_LoadedOnly);
+        set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly);
         if (set.size() == 1) {
             sub = new QMenu(tr("Export/Import"));
             sub->addAction(exportAlignmentAsSequencesAction);
             GObject* obj = set.first();
-            const MAlignment &ma = qobject_cast<MAlignmentObject*>(obj)->getMAlignment();
-            if (ma.getAlphabet()->isNucleic()) {
+            const MultipleSequenceAlignment &ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMsa();
+            if (ma->getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
             }
         }
@@ -199,7 +199,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
     const bool exportedObjectsFound = (1 == os->getSelectedObjects().size()) &&
         (  1 == SelectionUtils::findObjects(GObjectTypes::TEXT, &ms, UOF_LoadedOnly).size()
         || 1 == SelectionUtils::findObjects(GObjectTypes::VARIANT_TRACK, &ms, UOF_LoadedOnly).size()
-        || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_ALIGNMENT, &ms, UOF_LoadedOnly).size()
+        || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly).size()
         || 1 == SelectionUtils::findObjects(GObjectTypes::PHYLOGENETIC_TREE, &ms, UOF_LoadedOnly).size()
         || 1 == SelectionUtils::findObjects(GObjectTypes::ASSEMBLY, &ms, UOF_LoadedOnly).size());
     if (exportedObjectsFound) {
@@ -402,13 +402,13 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
         return;
     }
 
-    MAlignment ma = MSAUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
+    MultipleSequenceAlignment ma = MSAUtils::seq2ma(sequenceObjects, os, d->useGenbankHeader);
     if (os.hasError()) {
         QMessageBox::critical(NULL, L10N::errorTitle(), os.getError());
         return;
     }
     QString objName = GUrl(d->url).baseFileName();
-    ma.setName(objName);
+    ma->setName(objName);
     Task* t = ExportUtils::wrapExportTask(new ExportAlignmentTask(ma, d->url, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
@@ -418,14 +418,14 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     assert(pv!=NULL);
 
     MultiGSelection ms; ms.addSelection(pv->getGObjectSelection()); ms.addSelection(pv->getDocumentSelection());
-    QList<GObject*> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_ALIGNMENT, &ms, UOF_LoadedOnly);
+    QList<GObject*> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly);
     if (set.size()!=1) {
         QMessageBox::critical(NULL, L10N::errorTitle(), tr("Select one alignment object to export"));
         return;
     }
     GObject* obj = set.first();
-    MAlignmentObject* maObject = qobject_cast<MAlignmentObject*>(obj);
-    const MAlignment& ma = maObject->getMAlignment();
+    MultipleSequenceAlignmentObject* maObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    const MultipleSequenceAlignment msa = maObject->getMsa();
 
     QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
@@ -434,7 +434,7 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     if (rc == QDialog::Rejected) {
         return;
     }
-    Task* t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(ma, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
+    Task* t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(msa, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
@@ -443,18 +443,18 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     assert(pv!=NULL);
 
     MultiGSelection ms; ms.addSelection(pv->getGObjectSelection()); ms.addSelection(pv->getDocumentSelection());
-    QList<GObject*> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_ALIGNMENT, &ms, UOF_LoadedOnly);
+    QList<GObject*> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly);
     if (set.size()!=1) {
         QMessageBox::critical(NULL, L10N::errorTitle(), tr("Select one alignment object to export"));
         return;
     }
 
     GObject* obj = set.first();
-    const MAlignment &ma = qobject_cast<MAlignmentObject*>(obj)->getMAlignment();
+    const MultipleSequenceAlignment msa = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMsa();
 
     GObject* firstObject = set.first();
     Document* doc = firstObject->getDocument();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), ma.getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(doc->getURL(), msa->getName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
     QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, true, AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
@@ -467,7 +467,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     QList<DNATranslation*> trans;
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
-    Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma, 0, ma.getNumRows(), d->file, trans, d->formatId), d->addToProjectFlag);
+    Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(msa, 0, msa->getNumRows(), d->file, trans, d->formatId), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

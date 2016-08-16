@@ -22,32 +22,23 @@
 #ifndef _U2_MSA_EDITOR_NAME_LIST_H_
 #define _U2_MSA_EDITOR_NAME_LIST_H_
 
-#include "MSACollapsibleModel.h"
+#include <QMenu>
+#include <QRubberBand>
+#include <QScrollBar>
 
-#include <U2Core/global.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#include <QtGui/QScrollBar>
-#include <QtGui/QRubberBand>
-#else
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QScrollBar>
-#include <QtWidgets/QRubberBand>
-#endif
-
+#include "MSACollapsibleModel.h"
 #include "PhyTrees/MSAEditorTreeViewer.h"
 
 namespace U2 {
 
-
-class MSAEditor;
-class MSAEditorUI;
 class GObjectView;
-class MAlignment;
-class MAlignmentModInfo;
+class MSAEditor;
 class MSAEditorSelection;
+class MSAEditorUI;
+class MaModificationInfo;
 
 class U2VIEW_EXPORT MSAEditorNameList: public QWidget {
     Q_OBJECT
@@ -67,7 +58,7 @@ private slots:
     void sl_lockedStateChanged();
     void sl_removeSequence();
     void sl_selectReferenceSequence();
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
     void sl_onScrollBarActionTriggered( int scrollAction );
     void sl_referenceSeqChanged(qint64);
 

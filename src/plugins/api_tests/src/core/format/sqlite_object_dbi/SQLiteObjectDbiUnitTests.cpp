@@ -147,8 +147,8 @@ void SQLiteObjectDbiTestData::addTestRow(const U2DataId& msaId, U2OpStatus& os) 
     sqliteDbi->getSQLiteSequenceDbi()->createSequenceObject(seq, "", os, U2DbiObjectRank_TopLevel);
     SAFE_POINT_OP(os, );
 
-    U2MsaRow row;
-    row.sequenceId = seq.id;
+    U2MaRow row;
+    row.dataObjectId = seq.id;
     row.gstart = 0;
     row.gend = 0;
     row.length = 0;
@@ -184,32 +184,32 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     CHECK_NO_ERROR(os);
 
     // Add rows
-    U2MsaRow row1;
+    U2MaRow row1;
     row1.rowId = 0;
-    row1.sequenceId = seq1.id;
+    row1.dataObjectId = seq1.id;
     row1.gstart = 0;
     row1.gend = 5;
 
-    U2MsaGap row1gap1(0, 2);
-    U2MsaGap row1gap2(3, 1);
-    QList<U2MsaGap> row1gaps;
+    U2MaGap row1gap1(0, 2);
+    U2MaGap row1gap2(3, 1);
+    QList<U2MaGap> row1gaps;
     row1gaps << row1gap1 << row1gap2;
 
     row1.gaps = row1gaps;
 
-    U2MsaRow row2;
+    U2MaRow row2;
     row2.rowId = 1;
-    row2.sequenceId = seq2.id;
+    row2.dataObjectId = seq2.id;
     row2.gstart = 2;
     row2.gend = 4;
 
-    U2MsaGap row2gap(1, 2);
-    QList<U2MsaGap> row2gaps;
+    U2MaGap row2gap(1, 2);
+    QList<U2MaGap> row2gaps;
     row2gaps << row2gap;
 
     row2.gaps = row2gaps;
 
-    QList<U2MsaRow> rows;
+    QList<U2MaRow> rows;
     rows << row1 << row2;
 
     msaDbi->addRows(msaId, rows, os);
@@ -231,19 +231,19 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, removeMsaObject) {
     CHECK_NO_ERROR(os);
 
     // Add rows
-    U2MsaRow al2Row;
+    U2MaRow al2Row;
     al2Row.rowId = 0;
-    al2Row.sequenceId = al2Seq.id;
+    al2Row.dataObjectId = al2Seq.id;
     al2Row.gstart = 0;
     al2Row.gend = 15;
 
-    U2MsaGap al2RowGap(1, 12);
-    QList<U2MsaGap> al2RowGaps;
+    U2MaGap al2RowGap(1, 12);
+    QList<U2MaGap> al2RowGaps;
     al2RowGaps << al2RowGap;
 
     al2Row.gaps = al2RowGaps;
 
-    QList<U2MsaRow> al2Rows;
+    QList<U2MaRow> al2Rows;
     al2Rows << al2Row;
 
     msaDbi->addRows(msaId2, al2Rows, os);
@@ -350,27 +350,27 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, setTrackModType) {
     // Create alignment 1
     U2DataId msaId1 = msaDbi->createMsaObject("", "Test name 1", BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
     CHECK_NO_ERROR(os);
-    Utils::addRow(msaDbi->getRootDbi(), msaId1, "1", "ACGTACGT", QList<U2MsaGap>(), os);
+    Utils::addRow(msaDbi->getRootDbi(), msaId1, "1", "ACGTACGT", QList<U2MaGap>(), os);
     CHECK_NO_ERROR(os);
-    QList<U2MsaRow> rows1 = msaDbi->getRows(msaId1, os);
+    QList<U2MaRow> rows1 = msaDbi->getRows(msaId1, os);
     CHECK_NO_ERROR(os);
 
     // Create alignment 2
     U2DataId msaId2 = msaDbi->createMsaObject("", "Test name 2", BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
     CHECK_NO_ERROR(os);
-    Utils::addRow(msaDbi->getRootDbi(), msaId2, "2", "CCCCCCC", QList<U2MsaGap>(), os);
+    Utils::addRow(msaDbi->getRootDbi(), msaId2, "2", "CCCCCCC", QList<U2MaGap>(), os);
     CHECK_NO_ERROR(os);
-    QList<U2MsaRow> rows2 = msaDbi->getRows(msaId2, os);
+    QList<U2MaRow> rows2 = msaDbi->getRows(msaId2, os);
     CHECK_NO_ERROR(os);
 
     // Change mod track 1
     objectDbi->setTrackModType(msaId1, TrackOnUpdate, os);
     CHECK_NO_ERROR(os);
 
-    U2TrackModType newType1_1 = objectDbi->getTrackModType(rows1[0].sequenceId, os);
+    U2TrackModType newType1_1 = objectDbi->getTrackModType(rows1[0].dataObjectId, os);
     CHECK_EQUAL(TrackOnUpdate, newType1_1, "new mod track type 1_1");
 
-    U2TrackModType newType1_2 = objectDbi->getTrackModType(rows2[0].sequenceId, os);
+    U2TrackModType newType1_2 = objectDbi->getTrackModType(rows2[0].dataObjectId, os);
     CHECK_EQUAL(NoTrack, newType1_2, "new mod track type 1_2");
 
     // Change mod track 2
@@ -379,10 +379,10 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, setTrackModType) {
     objectDbi->setTrackModType(msaId2, TrackOnUpdate, os);
     CHECK_NO_ERROR(os);
 
-    U2TrackModType newType2_1 = objectDbi->getTrackModType(rows1[0].sequenceId, os);
+    U2TrackModType newType2_1 = objectDbi->getTrackModType(rows1[0].dataObjectId, os);
     CHECK_EQUAL(NoTrack, newType2_1, "new mod track type 2_1");
 
-    U2TrackModType newType2_2 = objectDbi->getTrackModType(rows2[0].sequenceId, os);
+    U2TrackModType newType2_2 = objectDbi->getTrackModType(rows2[0].dataObjectId, os);
     CHECK_EQUAL(TrackOnUpdate, newType2_2, "new mod track type 2_2");
 }
 
@@ -1009,8 +1009,8 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Single6) {
     sqliteDbi->getSQLiteSequenceDbi()->createSequenceObject(seq, "", os, U2DbiObjectRank_TopLevel);
     CHECK_NO_ERROR(os);
 
-    U2MsaRow row;
-    row.sequenceId = seq.id;
+    U2MaRow row;
+    row.dataObjectId = seq.id;
     row.gstart = 0;
     row.gend = 0;
     row.length = 0;
@@ -1023,7 +1023,7 @@ IMPLEMENT_TEST(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Single6) {
         sqliteDbi->getMsaDbi()->addRow(msaId, -1, row, os); // multi/single step 4
         CHECK_NO_ERROR(os);
 
-        sqliteDbi->getMsaDbi()->updateRowContent(msaId, row.rowId, "ACGT", QList<U2MsaGap>(), os); // multi step 5, single steps 5-6
+        sqliteDbi->getMsaDbi()->updateRowContent(msaId, row.rowId, "ACGT", QList<U2MaGap>(), os); // multi step 5, single steps 5-6
         CHECK_NO_ERROR(os);
     }
 

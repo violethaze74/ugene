@@ -38,7 +38,7 @@ namespace U2 {
 
 const int AddSequenceObjectsToAlignmentTask::maxErrorListSize = 5;
 
-AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MAlignmentObject* obj, const QList<DNASequence>& seqList)
+AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QList<DNASequence>& seqList)
     : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC)), seqList(seqList), maObj(obj), 
     stateLock(NULL), msaAlphabet(maObj->getAlphabet()), dbi(NULL), modStep(NULL) {
     entityRef = maObj->getEntityRef();
@@ -69,7 +69,7 @@ void AddSequenceObjectsToAlignmentTask::run() {
     if (seqList.isEmpty()) {
         return;
     }
-    QList<U2MsaRow> rows;
+    QList<U2MaRow> rows;
     qint64 maxLength = createRows(rows);
     if (isCanceled() || hasError()) {
         return;
@@ -103,7 +103,7 @@ Task::ReportResult AddSequenceObjectsToAlignmentTask::report() {
     }
 
     // Update object
-    maObj->updateCachedMAlignment(mi);
+    maObj->updateCachedMultipleAlignment(mi);
 
     if (!errorList.isEmpty()) {
         setupError();
@@ -111,14 +111,14 @@ Task::ReportResult AddSequenceObjectsToAlignmentTask::report() {
     return ReportResult_Finished;
 }
 
-qint64 AddSequenceObjectsToAlignmentTask::createRows(QList<U2MsaRow> &rows) {
+qint64 AddSequenceObjectsToAlignmentTask::createRows(QList<U2MaRow> &rows) {
     qint64 maxLength = 0;
     U2EntityRef entityRef = maObj->getEntityRef();
     foreach (const DNASequence& seqObj, seqList) {
         if (isCanceled() || hasError()) {
             return 0;
         }
-        U2MsaRow row = MSAUtils::copyRowFromSequence(seqObj, entityRef.dbiRef, stateInfo);
+        U2MaRow row = MSAUtils::copyRowFromSequence(seqObj, entityRef.dbiRef, stateInfo);
         if (0 < row.gend) {
             rows << row;
             maxLength = qMax(maxLength, (qint64)seqObj.length());
@@ -128,7 +128,7 @@ qint64 AddSequenceObjectsToAlignmentTask::createRows(QList<U2MsaRow> &rows) {
     return maxLength;
 }
 
-void AddSequenceObjectsToAlignmentTask::addRows(QList<U2MsaRow> &rows, qint64 maxLength) {
+void AddSequenceObjectsToAlignmentTask::addRows(QList<U2MaRow> &rows, qint64 maxLength) {
     // Add rows
     dbi->addRows(entityRef.entityId, rows, stateInfo);
     CHECK_OP(stateInfo, );
@@ -170,7 +170,7 @@ void AddSequenceObjectsToAlignmentTask::releaseLock(){
     }
 }
 
-AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(MAlignmentObject* obj, const QStringList& urls)
+AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls)
     : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>()), urlList(urls), loadTask(NULL) {
     connect(maObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_onCancel()));
 }
@@ -216,7 +216,7 @@ QList<Task*> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task* subTa
 
 ////////////////////////////////////////////////////////////////////////////////
 //AddSequencesFromDocumentsToAlignmentTask
-AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MAlignmentObject* obj, const QList<Document*>& docs)
+AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QList<Document*>& docs)
     : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>()), docs(docs) {}
 
 void AddSequencesFromDocumentsToAlignmentTask::prepare() {

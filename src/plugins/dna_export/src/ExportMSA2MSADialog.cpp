@@ -99,7 +99,7 @@ void ExportMSA2MSADialog::initSaveController(const QString& defaultFileName, con
     config.saveTitle = tr("Export alignment");
 
     DocumentFormatConstraints formatConstraints;
-    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_ALIGNMENT;
+    formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
 
     saveController = new SaveDocumentController(config, formatConstraints, this);

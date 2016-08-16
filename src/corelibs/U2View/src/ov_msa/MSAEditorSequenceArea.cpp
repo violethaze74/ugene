@@ -42,8 +42,8 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/ProjectModel.h>
@@ -202,8 +202,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     complementAction->setObjectName("replace_selected_rows_with_complement");
     connect(complementAction, SIGNAL(triggered()), SLOT(sl_complementCurrentSelection()));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
     connect(editor->getMSAObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(editor->getMSAObject(), SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_updateCollapsingMode()));
 
@@ -227,8 +227,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     connect(undoAction, SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
     connect(redoAction, SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alphabetChanged(const MAlignmentModInfo &, const DNAAlphabet*)),
-        SLOT(sl_alphabetChanged(const MAlignmentModInfo &, const DNAAlphabet*)));
+    connect(editor->getMSAObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet*)),
+        SLOT(sl_alphabetChanged(const MaModificationInfo &, const DNAAlphabet*)));
 
     updateColorAndHighlightSchemes();
     updateActions();
@@ -246,7 +246,7 @@ void MSAEditorSequenceArea::updateColorAndHighlightSchemes() {
     if (!s || !editor){
         return;
     }
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (!maObj){
         return;
     }
@@ -288,7 +288,7 @@ void MSAEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* h
     highlightingSchemeMenuActions.clear();
     SAFE_POINT(hsf != NULL, "Highlight scheme factory is NULL", );
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     delete highlightingScheme;
 
     highlightingScheme = hsf->create(this, maObj);
@@ -443,8 +443,8 @@ void MSAEditorSequenceArea::setCopyFormatedAlgorithmId(const QString& algoId){
 }
 
 bool MSAEditorSequenceArea::hasAminoAlphabet() {
-    MAlignmentObject* maObj = editor->getMSAObject();
-    SAFE_POINT(NULL != maObj, tr("MAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()"), false);
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
+    SAFE_POINT(NULL != maObj, tr("MultipleSequenceAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()"), false);
     const DNAAlphabet* alphabet = maObj->getAlphabet();
     SAFE_POINT(NULL != maObj, tr("DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()"), false);
     return DNAAlphabet_AMINO == alphabet->getType();
@@ -542,10 +542,10 @@ void MSAEditorSequenceArea::sl_changeHighlightScheme(){
     highlightingScheme = factory->create(this, ui->editor->getMSAObject());
     highlightingScheme->applySettings(editor->getHighlightingSettings(id));
 
-    const MAlignment &msa = ui->editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment ma = ui->editor->getMSAObject()->getMsa();
 
     U2OpStatusImpl os;
-    const int refSeq = msa.getRowIndexByRowId(editor->getReferenceRowId(), os);
+    const int refSeq = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
 
     MSAHighlightingFactory msaHighlightingFactory;
     QString msaHighlightingId = msaHighlightingFactory.getOPGroupParameters().getGroupId();
@@ -592,7 +592,7 @@ void MSAEditorSequenceArea::exitFromEditCharacterMode() {
 }
 
 void MSAEditorSequenceArea::updateActions() {
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     assert(maObj != NULL);
     bool readOnly = maObj->isStateLocked();
 
@@ -678,16 +678,16 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
     p.setPen(Qt::black);
     p.setFont(editor->getFont());
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     SAFE_POINT(maObj != NULL, tr("Alignment object is NULL"), false);
-    const MAlignment &msa = maObj->getMAlignment();
+    const MultipleSequenceAlignment msa = maObj->getMsa();
 
     U2OpStatusImpl os;
-    const int refSeq = msa.getRowIndexByRowId(editor->getReferenceRowId(), os);
+    const int refSeq = msa->getRowIndexByRowId(editor->getReferenceRowId(), os);
     QString refSeqName = editor->getReferenceRowName();
-    const MAlignmentRow *r = NULL;
-    if (MAlignmentRow::invalidRowId() != refSeq) {
-        r = &(msa.getRow(refSeq));
+    MultipleSequenceAlignmentRow row;
+    if (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) {
+        row = msa->getMsaRow(refSeq);
     }
 
     //Use dots to draw regions, which are similar to reference sequence
@@ -706,7 +706,7 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
         for (int pos = region.startPos; pos <= regionEnd; pos++) {
             U2Region baseXRange = U2Region(columnWidth * (pos - region.startPos), columnWidth);
             QRect cr(baseXRange.startPos, baseYRange.startPos, baseXRange.length + 1, baseYRange.length);
-            char c = msa.charAt(seq, pos);
+            char c = msa->charAt(seq, pos);
 
             bool highlight = false;
             QColor color = colorScheme->getColor(seq, pos, c);
@@ -716,7 +716,8 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
             } else if (seq == refSeq || refSeqName.isEmpty()) {
                 highlight = true;
             } else {
-                const char refChar = r->charAt(pos);
+                SAFE_POINT(NULL != row, "MSA row is NULL", false);
+                const char refChar = row->charAt(pos);
                 highlightingScheme->process(refChar, c, color, highlight, pos, seq);
             }
 
@@ -966,7 +967,7 @@ void MSAEditorSequenceArea::onVisibleRangeChanged() {
     qint64 firstVisibleSeq = getFirstVisibleSequence();
     qint64 lastVisibleSeq  = getLastVisibleSequence(true);
 
-    QStringList rowNames = editor->getMSAObject()->getMAlignment().getRowNames();
+    QStringList rowNames = editor->getMSAObject()->getMsa()->getRowNames();
     QStringList visibleSeqs;
 
     if (!isAlignmentEmpty()) {
@@ -990,7 +991,7 @@ void MSAEditorSequenceArea::onVisibleRangeChanged() {
 }
 
 bool MSAEditorSequenceArea::isAlignmentLocked() {
-    MAlignmentObject* obj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = editor->getMSAObject();
     SAFE_POINT(NULL != obj, tr("Alignment object is not available"), true);
     return obj->isStateLocked();
 }
@@ -1687,7 +1688,7 @@ void MSAEditorSequenceArea::setSelection(const MSAEditorSelection& s, bool newHi
 
     selectedRowNames.clear();
     for (int x = selectedRowsRegion.startPos; x < selectedRowsRegion.endPos(); x++) {
-        selectedRowNames.append(editor->getMSAObject()->getRow(x).getName());
+        selectedRowNames.append(editor->getMSAObject()->getRow(x)->getName());
     }
     emit si_selectionChanged(selectedRowNames);
     emit si_selectionChanged(selection, prevSelection);
@@ -1760,7 +1761,7 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
         topLeftCornerOfRemovedRegion.setX(0);
     }
 
-    MAlignmentObject *maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *maObj = editor->getMSAObject();
     if (NULL == maObj || maObj->isStateLocked()) {
         return;
     }
@@ -1774,8 +1775,8 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
 
-    const int countOfDeletedSymbols = maObj->deleteGap(rowsContainingRemovedGaps,
-        topLeftCornerOfRemovedRegion.x(), removedRegionWidth, os);
+    const int countOfDeletedSymbols = maObj->deleteGap(os, rowsContainingRemovedGaps,
+        topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
 
     // if some symbols were actually removed and the selection is not located
     // at the alignment end, then it's needed to move the selection
@@ -1788,7 +1789,7 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     }
 }
 
-void MSAEditorSequenceArea::sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo& modInfo) {
+void MSAEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo& modInfo) {
     exitFromEditCharacterMode();
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
@@ -1824,33 +1825,33 @@ void MSAEditorSequenceArea::sl_alignmentChanged(const MAlignment&, const MAlignm
     update();
 }
 
-void MSAEditorSequenceArea::updateCollapsedGroups(const MAlignmentModInfo& modInfo) {
+void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modInfo) {
     U2OpStatus2Log os;
-    if(modInfo.sequenceContentChanged) {
+    if(modInfo.rowContentChanged) {
         QList<qint64> updatedRows;
         bool isModelChanged = false;
-        QMap<qint64, QList<U2MsaGap> > curGapModel = editor->getMSAObject()->getGapModel();
+        QMap<qint64, QList<U2MaGap> > curGapModel = editor->getMSAObject()->getGapModel();
         QList<U2Region> updatedRegions;
         foreach (qint64 modifiedSeqId, modInfo.modifiedRowIds) {
             int modifiedRowPos = editor->getMSAObject()->getRowPosById(modifiedSeqId);
-            const MAlignmentRow& modifiedRowRef = editor->getMSAObject()->getRow(modifiedRowPos);
+            const MultipleAlignmentRow &modifiedRowRef = editor->getMSAObject()->getRow(modifiedRowPos);
             modifiedRowPos = ui->getCollapseModel()->rowToMap(modifiedRowPos);
             const U2Region rowsCollapsibleGroup = ui->getCollapseModel()->mapSelectionRegionToRows(U2Region(modifiedRowPos, 1));
             if (updatedRegions.contains(rowsCollapsibleGroup)) {
                 continue;
             }
             for(int i = rowsCollapsibleGroup.startPos; i < rowsCollapsibleGroup.endPos(); i++) {
-                qint64 identicalRowId = editor->getMSAObject()->getRow(i).getRowId();
+                qint64 identicalRowId = editor->getMSAObject()->getRow(i)->getRowId();
                 if(!updatedRows.contains(identicalRowId) && !modInfo.modifiedRowIds.contains(identicalRowId)) {
-                    isModelChanged = isModelChanged || modifiedRowRef.getGapModel() != curGapModel[identicalRowId];
-                    curGapModel[identicalRowId] = modifiedRowRef.getGapModel();
+                    isModelChanged = isModelChanged || modifiedRowRef->getGapModel() != curGapModel[identicalRowId];
+                    curGapModel[identicalRowId] = modifiedRowRef->getGapModel();
                     updatedRows.append(identicalRowId);
                 }
             }
             updatedRegions.append(rowsCollapsibleGroup);
         }
         if(isModelChanged) {
-            editor->getMSAObject()->updateGapModel(curGapModel, os);
+            editor->getMSAObject()->updateGapModel(os, curGapModel);
             return;
         }
     }
@@ -1973,11 +1974,11 @@ void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
     repaint();
 }
 
-void MSAEditorSequenceArea::sl_alphabetChanged(const MAlignmentModInfo &mi, const DNAAlphabet *prevAlphabet) {
+void MSAEditorSequenceArea::sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet) {
     updateColorAndHighlightSchemes();
 
     QString message;
-    if (mi.alphabetChanged || mi.type != MAlignmentModType_Undo) {
+    if (mi.alphabetChanged || mi.type != MaModificationType_Undo) {
         message = tr("The alignment has been modified, so that its alphabet has been switched from \"%1\" to \"%2\". Use \"Undo\", if you'd like to restore the original alignment.")
             .arg(prevAlphabet->getName()).arg(editor->getMSAObject()->getAlphabet()->getName());
     }
@@ -2007,7 +2008,7 @@ void MSAEditorSequenceArea::sl_delCol() {
         // then shifting should be canceled
         cancelShiftTracking();
 
-        MAlignmentObject* msaObj = editor->getMSAObject();
+        MultipleSequenceAlignmentObject* msaObj = editor->getMSAObject();
         int gapCount = GAP_COLUMN_ONLY;
         switch(deleteMode) {
         case DeleteByAbsoluteVal:
@@ -2091,7 +2092,7 @@ void MSAEditorSequenceArea::wheelEvent (QWheelEvent * we) {
 }
 
 void MSAEditorSequenceArea::sl_removeAllGaps() {
-    MAlignmentObject* msa = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msa = editor->getMSAObject();
     SAFE_POINT(NULL != msa, tr("NULL msa object!"), );
     assert(!msa->isStateLocked());
 
@@ -2108,16 +2109,15 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    QMap<qint64, QList<U2MsaGap> > noGapModel;
-    const MAlignment &ma = msa->getMAlignment();
-    foreach (qint64 rowId, ma.getRowsIds()) {
-        noGapModel[rowId] = QList<U2MsaGap>();
+    QMap<qint64, QList<U2MaGap> > noGapModel;
+    foreach (qint64 rowId, msa->getMsa()->getRowsIds()) {
+        noGapModel[rowId] = QList<U2MaGap>();
     }
 
-    msa->updateGapModel(noGapModel, os);
+    msa->updateGapModel(os, noGapModel);
 
     MsaDbiUtils::trim(msa->getEntityRef(), os);
-    msa->updateCachedMAlignment();
+    msa->updateCachedMultipleAlignment();
 
     SAFE_POINT_OP(os, );
 
@@ -2128,7 +2128,7 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
 
 bool MSAEditorSequenceArea::checkState() const {
 #ifdef _DEBUG
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     int aliLen = maObj->getLength();
     int nSeqs = maObj->getNumRows();
 
@@ -2209,7 +2209,7 @@ void MSAEditorSequenceArea::sl_saveSequence(){
         return;
     }
 
-    QString seqName = editor->getMSAObject()->getMAlignment().getRow(seqIndex).getName();
+    QString seqName = editor->getMSAObject()->getMsa()->getRow(seqIndex)->getName();
     QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController((QWidget*)AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
     CHECK(!d.isNull(), );
@@ -2219,7 +2219,7 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     }
     //TODO: OPTIMIZATION code below can be wrapped to task
     DNASequence seq;
-    foreach(DNASequence s,  MSAUtils::ma2seq(editor->getMSAObject()->getMAlignment(), d->trimGapsFlag)){
+    foreach(const DNASequence &s,  MSAUtils::ma2seq(editor->getMSAObject()->getMsa(), d->trimGapsFlag)){
         if (s.getName() == seqName){
             seq = s;
             break;
@@ -2370,11 +2370,10 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
     assert(isInRange(selection.topLeft()));
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (selection.isNull()) {
         return;
     }
-    const MAlignment& msa = maObj->getMAlignment();
 
     MSACollapsibleItemModel* m = ui->getCollapseModel();
     U2Region sel(m->mapToRow(selection.y()), m->mapToRow(selection.y() + selection.height()) - m->mapToRow(selection.y()));
@@ -2385,9 +2384,8 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
         if (ui->getCollapseModel()->rowToMap(i, true) < 0) {
             continue;
         }
-        const MAlignmentRow& row = msa.getRow(i);
         int len = selection.width();
-        QByteArray seqPart = row.mid(selection.x(), len, os).toByteArray(len, os);
+        QByteArray seqPart = maObj->getMsaRow(i)->mid(selection.x(), len, os)->toByteArray(len, os);
         selText.append(seqPart);
         if (i + 1 != sel.endPos()) { // do not add line break into the last line
             selText.append("\n");
@@ -2403,7 +2401,7 @@ void MSAEditorSequenceArea::sl_copyFormattedSelection(){
 }
 
 void MSAEditorSequenceArea::sl_paste(){
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -2419,7 +2417,7 @@ void MSAEditorSequenceArea::sl_paste(){
 }
 
 void MSAEditorSequenceArea::sl_pasteFinished(Task* _pasteTask){
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -2439,7 +2437,7 @@ bool MSAEditorSequenceArea::shiftSelectedRegion(int shift) {
         return true;
     }
 
-    MAlignmentObject *maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *maObj = editor->getMSAObject();
     if (!maObj->isStateLocked()) {
         const U2Region rows = getSelectedRows();
         const int x = selection.x();
@@ -2479,7 +2477,7 @@ void MSAEditorSequenceArea::deleteCurrentSelection() {
     }
     assert(isInRange(selection.topLeft()));
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj == NULL || maObj->isStateLocked()) {
         return;
     }
@@ -2526,7 +2524,7 @@ void MSAEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
         QRegExp latinCharacterOrGap(QString("([A-Z]| |-|%1)").arg(emDash));
         if (latinCharacterOrGap.exactMatch(text)) {
             QChar newChar = text.at(0);
-            newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? MAlignment_GapChar : newChar;
+            newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? MultipleAlignment::GapChar : newChar;
             replaceSelectedCharacter(newChar.toLatin1());
         }
         else {
@@ -2544,7 +2542,7 @@ void MSAEditorSequenceArea::replaceSelectedCharacter(char newCharacter) {
         return;
     }
     SAFE_POINT(isInRange(selection.topLeft()), "Incorrect selection is detected!", );
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj == NULL || maObj->isStateLocked()) {
         return;
     }
@@ -2576,7 +2574,7 @@ void MSAEditorSequenceArea::clearSelection() {
 
 void MSAEditorSequenceArea::sl_addSeqFromFile()
 {
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -2604,7 +2602,7 @@ void MSAEditorSequenceArea::sl_addSeqFromFile()
 
 void MSAEditorSequenceArea::sl_addSeqFromProject()
 {
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -2630,16 +2628,16 @@ void MSAEditorSequenceArea::sl_addSeqFromProject()
 }
 
 void MSAEditorSequenceArea::sl_sortByName() {
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     if (msaObject->isStateLocked()) {
         return;
     }
-    MAlignment ma = msaObject->getMAlignment();
-    ma.sortRowsByName();
-    QStringList rowNames = ma.getRowNames();
-    if (rowNames != msaObject->getMAlignment().getRowNames()) {
+    MultipleSequenceAlignment msa = msaObject->getMsaCopy();
+    msa->sortRowsByName();
+    QStringList rowNames = msa->getRowNames();
+    if (rowNames != msaObject->getMsa()->getRowNames()) {
         U2OpStatusImpl os;
-        msaObject->updateRowsOrder(ma.getRowsIds(), os);
+        msaObject->updateRowsOrder(os, msa->getRowsIds());
         SAFE_POINT_OP(os, );
     }
     if (ui->isCollapsibleMode()) {
@@ -2650,7 +2648,7 @@ void MSAEditorSequenceArea::sl_sortByName() {
 void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
     GCOUNTER(cvar, tvar, "Switch collapsing mode");
 
-    MAlignmentObject* msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
     int prevNumVisibleSequences = getNumVisibleSequences(false);
     if (msaObject == NULL  || msaObject->isStateLocked()) {
         if (collapseModeSwitchAction->isChecked()) {
@@ -2685,7 +2683,7 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
     GCOUNTER(cvar, tvar, "Update collapsing mode");
 
     CHECK(ui->isCollapsibleMode(), );
-    MAlignmentObject *msaObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *msaObject = editor->getMSAObject();
     SAFE_POINT(NULL != msaObject, tr("NULL Msa Object!"), );
 
     MSACollapsibleItemModel *collapsibleModel = ui->getCollapseModel();
@@ -2693,20 +2691,20 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
     Document *doc = msaObject->getDocument();
     SAFE_POINT(NULL != doc, tr("NULL document!"), );
 
-    MAlignment ma = msaObject->getMAlignment();
+    MultipleSequenceAlignment msa = msaObject->getMsaCopy();
     QVector<U2Region> unitedRows;
-    bool sorted = ma.sortRowsBySimilarity(unitedRows);
+    bool sorted = msa->sortRowsBySimilarity(unitedRows);
     collapsibleModel->reset(unitedRows);
 
     U2OpStatusImpl os;
     if (sorted) {
-        msaObject->updateRowsOrder(ma.getRowsIds(), os);
+        msaObject->updateRowsOrder(os, msa->getRowsIds());
         SAFE_POINT_OP(os, );
     }
 
-    MAlignmentModInfo mi;
+    MaModificationInfo mi;
     mi.alignmentLengthChanged = false;
-    msaObject->updateCachedMAlignment(mi);
+    msaObject->updateCachedMultipleAlignment(mi);
 }
 
 void MSAEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps)
@@ -2722,7 +2720,7 @@ void MSAEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps)
     // then shifting should be canceled
     cancelShiftTracking();
 
-    MAlignmentObject *maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *maObj = editor->getMSAObject();
     if (NULL == maObj || maObj->isStateLocked()) {
         return;
     }
@@ -2731,8 +2729,8 @@ void MSAEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps)
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os,);
 
-    const MAlignment &msa = maObj->getMAlignment();
-    if (selection.width() == msa.getLength() && selection.height() == msa.getNumRows()) {
+    const MultipleSequenceAlignment ma = maObj->getMsa();
+    if (selection.width() == ma->getLength() && selection.height() == ma->getNumRows()) {
         return;
     }
 
@@ -2745,7 +2743,7 @@ void MSAEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps)
 void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type) {
     if (type == ModificationType::NoType)
         return;
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     if (maObj == NULL || maObj->isStateLocked()) {
         return;
     }
@@ -2762,15 +2760,15 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
         // then shifting should be canceled
         cancelShiftTracking();
 
-        const MAlignment &ma = maObj->getMAlignment();
-        DNATranslation* trans =
-            AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma.getAlphabet());
+        const MultipleSequenceAlignment ma = maObj->getMsa();
+        DNATranslation* trans = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma->getAlphabet());
         if (trans == NULL || !trans->isOne2One()) {
             return;
         }
 
         U2OpStatus2Log os;
         U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
+        Q_UNUSED(userModStep);
         SAFE_POINT_OP(os, );
 
         const U2Region& sel = getSelectedRows();
@@ -2778,8 +2776,8 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
         QList<qint64> modifiedRowIds;
         modifiedRowIds.reserve(sel.length);
         for (int i = sel.startPos; i < sel.endPos(); i++) {
-            const MAlignmentRow &currentRow = ma.getRow(i);
-            QByteArray currentRowContent = currentRow.toByteArray(ma.getLength(), os);
+            const MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(i);
+            QByteArray currentRowContent = currentRow->toByteArray(ma->getLength(), os);
             switch (type.getType())
             {
             case ModificationType::Reverse:
@@ -2793,7 +2791,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
                 trans->translate(currentRowContent.data(), currentRowContent.length());
                 break;
             }
-            QString name = currentRow.getName();
+            QString name = currentRow->getName();
             ModificationType oldType(ModificationType::NoType);
             if (name.endsWith("|revcompl")) {
                 name.resize(name.length() - QString("|revcompl").length());
@@ -2823,17 +2821,17 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
 
             // Split the sequence into gaps and chars
             QByteArray seqBytes;
-            QList<U2MsaGap> gapModel;
+            QList<U2MaGap> gapModel;
             MsaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
 
-            maObj->updateRow(i, name, seqBytes, gapModel, os);
-            modifiedRowIds << currentRow.getRowId();
+            maObj->updateRow(os, i, name, seqBytes, gapModel);
+            modifiedRowIds << currentRow->getRowId();
         }
 
-        MAlignmentModInfo modInfo;
+        MaModificationInfo modInfo;
         modInfo.modifiedRowIds = modifiedRowIds;
         modInfo.alignmentLengthChanged = false;
-        maObj->updateCachedMAlignment(modInfo);
+        maObj->updateCachedMultipleAlignment(modInfo);
     }
 }
 
@@ -2857,14 +2855,13 @@ QPair<QString, int> MSAEditorSequenceArea::getGappedColumnInfo() const{
         return QPair<QString, int>(QString::number(0), 0);
     }
 
-    const MAlignment& msa = editor->getMSAObject()->getMAlignment();
-    const MAlignmentRow& row = msa.getRow(getSelectedRows().startPos);
-    int len = row.getUngappedLength();
-    QChar current = row.charAt(selection.topLeft().x());
-    if(current == MAlignment_GapChar){
+    const MultipleSequenceAlignmentRow row = editor->getMSAObject()->getMsaRow(getSelectedRows().startPos);
+    int len = row->getUngappedLength();
+    QChar current = row->charAt(selection.topLeft().x());
+    if(current == MultipleAlignment::GapChar){
         return QPair<QString, int>(QString("gap"),len);
     }else{
-        int pos = row.getUngappedPosition(selection.topLeft().x());
+        int pos = row->getUngappedPosition(selection.topLeft().x());
         return QPair<QString, int>(QString::number(pos + 1),len);
     }
 }
@@ -2878,9 +2875,8 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
     SAFE_POINT(NULL != m, tr("Incorrect pointer to MSACollapsibleItemModel"),);
     m->reset();
 
-    MAlignmentObject* msaObject = editor->getMSAObject();
-    const MAlignment &ma = msaObject->getMAlignment();
-    QStringList rowNames = ma.getRowNames();
+    MultipleSequenceAlignmentObject* msaObject = editor->getMSAObject();
+    QStringList rowNames = msaObject->getMsa()->getRowNames();
     QVector<U2Region> collapsedRegions;
 
     //Calculate regions of the groups
@@ -2909,8 +2905,8 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
 
     m->reset(collapsedRegions);
 
-    MAlignmentModInfo mi;
-    msaObject->updateCachedMAlignment(mi);
+    MaModificationInfo mi;
+    msaObject->updateCachedMultipleAlignment(mi);
 
     updateVScrollBar();
 }
@@ -2928,17 +2924,17 @@ int MSAEditorSequenceArea::getHeight(){
 QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
     QStringList result;
 
-    MAlignmentObject* maObj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
     assert(maObj!=NULL);
 
-    const MAlignment& msa = maObj->getMAlignment();
+    const MultipleSequenceAlignment msa = maObj->getMsa();
     const MSAEditor *editor = ui->getEditor();
-    const MAlignment &alignment = editor->getMSAObject()->getMAlignment();
+
     U2OpStatusImpl os;
-    const int refSeq = alignment.getRowIndexByRowId(editor->getReferenceRowId(), os);
-    const MAlignmentRow *r = NULL;
-    if (MAlignmentRow::invalidRowId() != refSeq) {
-        r = &(msa.getRow(refSeq));
+    const int refSeq = editor->getMSAObject()->getMsa()->getRowIndexByRowId(editor->getReferenceRowId(), os);
+    MultipleSequenceAlignmentRow row;
+    if (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) {
+        row = msa->getMsaRow(refSeq);
     }
 
     QString header;
@@ -2946,7 +2942,7 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
     QString refSeqName = editor->getReferenceRowName();
     header.append(refSeqName);
     header.append("\t");
-    foreach(QString name, maObj->getMAlignment().getRowNames()){
+    foreach(QString name, maObj->getMsa()->getRowNames()){
         if(name != refSeqName){
             header.append(name);
             header.append("\t");
@@ -2961,13 +2957,14 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
     for (int pos = startPos-1; pos < endPos; pos++) {
         QString rowStr;
         rowStr.append(QString("%1").arg(posInResult));
-        rowStr.append(QString("\t") + QString(msa.charAt(refSeq, pos)) + QString("\t"));
+        rowStr.append(QString("\t") + QString(msa->charAt(refSeq, pos)) + QString("\t"));
         bool informative = false;
-        for (int seq = 0; seq < msa.getNumRows(); seq++) {  //FIXME possible problems when sequences have moved in view
+        for (int seq = 0; seq < msa->getNumRows(); seq++) {  //FIXME possible problems when sequences have moved in view
             if (seq == refSeq) continue;
-            char c = msa.charAt(seq, pos);
+            char c = msa->charAt(seq, pos);
 
-            const char refChar = r->charAt(pos);
+            SAFE_POINT(NULL != row, "MSA row is NULL", "");
+            const char refChar = row->charAt(pos);
             if (refChar == '-' && !keepGaps) {
                 continue;
             }

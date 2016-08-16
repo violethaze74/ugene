@@ -22,12 +22,11 @@
 #ifndef _U2_MSA_CONSENSUS_ALGORITHM_H_
 #define _U2_MSA_CONSENSUS_ALGORITHM_H_
 
-#include <U2Core/global.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
 namespace U2 {
 
-class MAlignment;
 class MSAConsensusAlgorithm;
 class DNAAlphabet;
 
@@ -47,7 +46,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
 public:
     MSAConsensusAlgorithmFactory(const QString& algoId, ConsensusAlgorithmFlags flags, QObject* p = NULL);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MAlignment& ma, QObject* parent = NULL) = 0;
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleSequenceAlignment& ma, QObject* parent = NULL) = 0;
 
     QString getId() const {return algorithmId;}
 
@@ -88,9 +87,9 @@ public:
         Score is a number: [0, num] sequences. Usually is means count of the char in the row
         Note that consensus character may be out of the to MSA alphabet symbols range
     */
-    virtual char getConsensusCharAndScore(const MAlignment& ma, int column, int& score, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusCharAndScore(const MultipleSequenceAlignment& ma, int column, int& score, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
 
-    virtual char getConsensusChar(const MAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const = 0;
+    virtual char getConsensusChar(const MultipleSequenceAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const = 0;
 
     virtual QString getDescription() const {return factory->getDescription();}
 

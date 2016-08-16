@@ -19,60 +19,51 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsWorkflowDesigner.h"
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QFileInfo>
+#include <QGraphicsItem>
+#include <QGraphicsView>
+#include <QProcess>
+#include <QTextEdit>
 
-#include <drivers/GTMouseDriver.h>
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include <primitives/GTWidget.h>
+#include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
-#include "primitives/GTMenu.h"
-#include "GTGlobals.h"
-#include <primitives/GTTreeWidget.h>
-#include "primitives/GTAction.h"
-#include "system/GTFile.h"
+#include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTMenu.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTableView.h>
-#include "primitives/PopupChooser.h"
-#include <base_dialogs/MessageBoxFiller.h>
-#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
-#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-#include "utils/GTUtilsApp.h"
+#include <primitives/GTTreeWidget.h>
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
+#include <utils/GTUtilsApp.h>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/ToolsMenu.h>
+
+#include <U2Lang/WorkflowSettings.h>
+
+#include "../../workflow_designer/src/WorkflowViewItems.h"
+#include "GTTestsWorkflowDesigner.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-
-#include <U2Core/AppContext.h>
-
-#include <U2Gui/ToolsMenu.h>
-
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QTextEdit>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QGraphicsView>
-#include <QtGui/QDesktopWidget>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QGraphicsItem>
-#include <QtWidgets/QGraphicsView>
-#include <QtWidgets/QDesktopWidget>
-#endif
-
-#include <QProcess>
-//#include <P
-#include "../../workflow_designer/src/WorkflowViewItems.h"
-#include <U2Lang/WorkflowSettings.h>
-#include <QtCore/QFileInfo>
+#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 

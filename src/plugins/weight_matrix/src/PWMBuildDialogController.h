@@ -27,7 +27,7 @@
 #include <U2Algorithm/PWMConversionAlgorithm.h>
 
 #include <U2Core/DNASequence.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/PFMatrix.h>
 #include <U2Core/PWMatrix.h>
 #include <U2Core/Task.h>
@@ -74,20 +74,20 @@ private:
     AlignmentLogoRenderArea* logoArea;
     QPushButton* okButton;
     QPushButton* cancelButton;
-    void replaceLogo(const MAlignment& ma);
+    void replaceLogo(const MultipleSequenceAlignment& ma);
 };
 
 
 class PFMatrixBuildTask : public Task {
     Q_OBJECT
 public:
-    PFMatrixBuildTask(const PMBuildSettings& s, const MAlignment& ma);
+    PFMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma);
     void run();
     PFMatrix getResult() const {return m;}
 
 private:
     PMBuildSettings        settings;
-    MAlignment              ma;
+    MultipleSequenceAlignment              ma;
     PFMatrix                m;
 };
 
@@ -107,14 +107,14 @@ private:
 class PWMatrixBuildTask : public Task {
     Q_OBJECT
 public:
-    PWMatrixBuildTask(const PMBuildSettings& s, const MAlignment& ma);
+    PWMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma);
     PWMatrixBuildTask(const PMBuildSettings& s, const PFMatrix& m);
     void run();
     PWMatrix getResult() const {return m;}
 
 private:
     PMBuildSettings         settings;
-    MAlignment              ma;
+    MultipleSequenceAlignment              ma;
     PFMatrix                tempMatrix;
     PWMatrix                m;
 };

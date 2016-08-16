@@ -19,11 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include "DatasetValidator.h"
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/Dataset.h>
 #include <U2Lang/Attribute.h>
 #include <U2Lang/BaseAttributes.h>
+
+#include "DatasetValidator.h"
 
 namespace U2 {
 namespace Workflow {

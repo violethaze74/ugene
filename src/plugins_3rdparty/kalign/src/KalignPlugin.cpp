@@ -32,15 +32,16 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/TaskSignalMapper.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/Notification.h>
 #include <U2Gui/ToolsMenu.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Lang/WorkflowSettings.h>
 
@@ -175,10 +176,10 @@ void KalignMSAEditorContext::sl_align() {
     KalignAction* action = qobject_cast<KalignAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
 
     KalignTaskSettings s;
-    QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMAlignment(), s);
+    QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMsa(), s);
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
 

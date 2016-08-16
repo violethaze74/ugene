@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/HRSchemaSerializer.h>

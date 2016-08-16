@@ -31,7 +31,7 @@
 #include <U2Core/Log.h>
 
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/PhyTreeObject.h>
 
@@ -77,19 +77,19 @@ void GTest_NeighborJoin::prepare() {
         return;
     }
 
-    QList<GObject*> list = maDoc->findGObjectByType(GObjectTypes::MULTIPLE_ALIGNMENT);
+    QList<GObject*> list = maDoc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
 
     GObject *obj = list.first();
     if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
     assert(obj!=NULL);
-    MAlignmentObject* ma = qobject_cast<MAlignmentObject*>(obj);
+    MultipleSequenceAlignmentObject* ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if(ma==NULL){
         stateInfo.setError(  QString("error can't cast to multiple alignment from GObject") );
         return;
@@ -105,7 +105,7 @@ void GTest_NeighborJoin::prepare() {
 
 	QList<GObject*> list2 = treeDoc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
 	if (list2.size() == 0) {
-		stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_ALIGNMENT) );
+		stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
 		return;
 	}
 
@@ -133,7 +133,7 @@ void GTest_NeighborJoin::prepare() {
         settings.replicates = 100;
     }
 
-    task = new PhyTreeGeneratorLauncherTask(input->getMAlignment(), settings);
+    task = new PhyTreeGeneratorLauncherTask(input->getMsa(), settings);
     addSubTask(task);
 }
 

@@ -39,11 +39,11 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2DbiUtils.h>
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Ma.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -63,9 +63,9 @@
 #include "../SequenceSelectorWidgetController.h"
 
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
-    U2::MAlignmentRow row = msa->getMSAObject()->getMAlignment().getRowByRowId(rowId, os);
+    const U2::MultipleAlignmentRow row = msa->getMSAObject()->getMsa()->getRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
-    return row.getRowDBInfo().sequenceId;
+    return row->getRowDbInfo().dataObjectId;
 }
 
 namespace U2 {
@@ -117,9 +117,9 @@ void PairAlign::initLayout() {
 void PairAlign::initParameters() {
     if (2 == msa->getCurrentSelection().height()) {
         int selectionPos = msa->getCurrentSelection().y();
-        qint64 firstRowId = msa->getRowByLineNumber(selectionPos).getRowId();
+        qint64 firstRowId = msa->getRowByLineNumber(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
-        qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1).getRowId();
+        qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1)->getRowId();
         secondSeqSelectorWC->setSequenceId(secondRowId);
     } else {
         firstSeqSelectorWC->setSequenceId(pairwiseAlignmentWidgetsSettings->firstSequenceId);
@@ -187,7 +187,7 @@ void PairAlign::connectSignals() {
     connect(firstSeqSelectorWC,         SIGNAL(si_selectionChanged()),         SLOT(sl_selectorTextChanged()));
     connect(secondSeqSelectorWC,        SIGNAL(si_selectionChanged()),         SLOT(sl_selectorTextChanged()));
     connect(msa->getMSAObject(),        SIGNAL(si_lockedStateChanged()),       SLOT(sl_checkState()));
-    connect(msa->getMSAObject(),        SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)), SLOT(sl_alignmentChanged()));
+    connect(msa->getMSAObject(),        SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
 }
 
 void PairAlign::sl_checkState(){
@@ -232,8 +232,8 @@ void PairAlign::checkState() {
     showHideOutputWidget->setEnabled(alphabetIsOk);
 
     bool readOnly = msa->getMSAObject()->isStateLocked();
-    canDoAlign = ((MAlignmentRow::invalidRowId() != firstSeqSelectorWC->sequenceId())
-                  && (MAlignmentRow::invalidRowId() != secondSeqSelectorWC->sequenceId())
+    canDoAlign = ((MultipleAlignmentRowData::INVALID_ROW_ID != firstSeqSelectorWC->sequenceId())
+                  && (MultipleAlignmentRowData::INVALID_ROW_ID != secondSeqSelectorWC->sequenceId())
                   && (firstSeqSelectorWC->sequenceId() != secondSeqSelectorWC->sequenceId())
                   && sequenceNamesIsOk && alphabetIsOk && (!readOnly || inNewWindowCheckBox->isChecked()));
 
@@ -264,14 +264,10 @@ void PairAlign::updatePercentOfSimilarity() {
     SAFE_POINT(NULL != distanceFactory, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
-    MAlignment ma;
-    const MAlignment &currentAlignment = msa->getMSAObject()->getMAlignment();
-    ma.addRow(firstSeqSelectorWC->text(),
-        currentAlignment.getRowByRowId(firstSeqSelectorWC->sequenceId(), os).getData(), -1, os);
-    CHECK_OP(os, );
-    ma.addRow(secondSeqSelectorWC->text(),
-        currentAlignment.getRowByRowId(secondSeqSelectorWC->sequenceId(), os).getData(), -1, os);
-    CHECK_OP(os, );
+    MultipleSequenceAlignment ma;
+    const MultipleSequenceAlignment currentAlignment = msa->getMSAObject()->getMsa();
+    ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
+    ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
     distanceCalcTask->setExcludeGaps(true);
     connect(distanceCalcTask, SIGNAL(si_stateChanged()), SLOT(sl_distanceCalculated()));
@@ -279,7 +275,7 @@ void PairAlign::updatePercentOfSimilarity() {
 }
 
 bool PairAlign::checkSequenceNames( ) {
-    QList<qint64> rowIds = msa->getMSAObject( )->getMAlignment( ).getRowsIds( );
+    QList<qint64> rowIds = msa->getMSAObject( )->getMsa( )->getRowsIds( );
     return ( rowIds.contains( firstSeqSelectorWC->sequenceId( ) )
         && rowIds.contains( secondSeqSelectorWC->sequenceId( ) ) );
 }
@@ -418,11 +414,11 @@ void PairAlign::sl_alignComplete() {
     SAFE_POINT(NULL != pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask, "Can't process an unexpected align task", );
     if (true == pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask->isFinished()) {
         if(!inNewWindowCheckBox->isChecked()){
-            MAlignmentModInfo mi;
-            mi.sequenceListChanged = false;
+            MaModificationInfo mi;
+            mi.rowListChanged = false;
             mi.modifiedRowIds.append(pairwiseAlignmentWidgetsSettings->firstSequenceId);
             mi.modifiedRowIds.append(pairwiseAlignmentWidgetsSettings->secondSequenceId);
-            msa->getMSAObject()->updateCachedMAlignment(mi);
+            msa->getMSAObject()->updateCachedMultipleAlignment(mi);
         }
         pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask = NULL;
     }

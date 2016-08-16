@@ -40,7 +40,7 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LocalFileAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -51,7 +51,7 @@
 
 namespace U2{
 
-CreateSubalignmentTask::CreateSubalignmentTask(MAlignmentObject *maObj, const CreateSubalignmentSettings &settings)
+CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject *maObj, const CreateSubalignmentSettings &settings)
     : DocumentProviderTask(tr("Create sub-alignment: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE),
     origMAObj(maObj), cfg(settings)
 {
@@ -60,8 +60,6 @@ CreateSubalignmentTask::CreateSubalignmentTask(MAlignmentObject *maObj, const Cr
 }
 
 void CreateSubalignmentTask::prepare() {
-    QString ext = cfg.url.completeFileSuffix();
-
     DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
     DocumentFormat *dfd = dfr->getFormatById(cfg.formatIdToSave);
 
@@ -74,8 +72,8 @@ void CreateSubalignmentTask::prepare() {
         resultDocument = dfd->createNewLoadedDocument(iof, cfg.url, stateInfo, hints);
         CHECK_OP(stateInfo, );
 
-        MAlignment msa = origMAObj->getMAlignment();
-        resultMAObj = MAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
+        MultipleSequenceAlignment msa = origMAObj->getMsaCopy();
+        resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
         resultMAObj->setGHints(new GHintsDefaultImpl(origMAObj->getGHintsMap()));
 

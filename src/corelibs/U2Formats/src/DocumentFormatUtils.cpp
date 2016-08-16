@@ -30,8 +30,8 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -164,14 +164,14 @@ QList<DNASequence> DocumentFormatUtils::toSequences(const GObject* obj) {
         CHECK_OP_EXT(os, res.removeLast(), res);
         return res;
     }
-    const MAlignmentObject* maObj = qobject_cast<const MAlignmentObject*>(obj);
-    CHECK(maObj != NULL, res); //MAlignmentObject is NULL
+    const MultipleSequenceAlignmentObject* maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
+    CHECK(maObj != NULL, res); //MultipleSequenceAlignmentObject is NULL
     const DNAAlphabet* al = maObj->getAlphabet();
-    qint64 alLen = maObj->getMAlignment().getLength();
-    foreach (const MAlignmentRow& row, maObj->getMAlignment().getRows()) {
+    qint64 alLen = maObj->getMsa()->getLength();
+    foreach (const MultipleSequenceAlignmentRow& row, maObj->getMsa()->getMsaRows()) {
         DNASequence seq;
-        seq.seq = row.toByteArray(alLen, os);
-        seq.setName(row.getName());
+        seq.seq = row->toByteArray(alLen, os);
+        seq.setName(row->getName());
         seq.alphabet = al;
         res << seq;
     }

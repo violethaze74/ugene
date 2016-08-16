@@ -21,7 +21,7 @@
 
 #include "MSAConsensusAlgorithmDefault.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <QtCore/QVector>
 
 namespace U2 {
@@ -42,20 +42,20 @@ QString MSAConsensusAlgorithmFactoryDefault::getName() const {
 }
 
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MAlignment&, QObject* p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryDefault::createAlgorithm(const MultipleSequenceAlignment&, QObject* p) {
     return new MSAConsensusAlgorithmDefault(this, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Algorithm
 
-char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MAlignment& msa, int pos, int& cnt, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleSequenceAlignment& msa, int pos, int& cnt, const QVector<qint64> &seqIdx) const {
     //TODO: use var-length array!
     QVector<QPair<int, char> > freqs(32);
-    int ch = MAlignment_GapChar;
-    int nSeq = seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size();
+    int ch = MultipleAlignment::GapChar;
+    int nSeq = seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size();
     for (int seq = 0; seq < nSeq; seq++) {
-        uchar c = (uchar)msa.charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
+        uchar c = (uchar)msa->charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
                                      pos);
         if (c >= 'A' && c <= 'Z') {
             int idx = c - 'A';
@@ -68,7 +68,7 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MAlignment& ms
     int p1 = freqs[freqs.size()-1].first;
     int p2 = freqs[freqs.size()-2].first;
     if (p1 == 0 || (p1 == 1 && nSeq > 1)) {
-        ch = MAlignment_GapChar;
+        ch = MultipleAlignment::GapChar;
         cnt = 0;
     } else {
         int c1 = freqs[freqs.size()-1].second;

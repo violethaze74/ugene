@@ -22,14 +22,14 @@
 #ifndef _U2_MSA_GENERAL_TAB_H_
 #define _U2_MSA_GENERAL_TAB_H_
 
-#include "ui_GeneralTabOptionsPanelWidget.h"
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "../MsaOpSavableTab.h"
+#include "ui_GeneralTabOptionsPanelWidget.h"
 
 namespace U2 {
 
-class MAlignment;
-class MAlignmentModInfo;
+class MaModificationInfo;
 class MSAEditor;
 
 class MSAGeneralTab : public QWidget, public Ui_GeneralTabOptionsPanelWidget {
@@ -44,7 +44,7 @@ signals:
     void si_copyFormatted();
 
 public slots:
-    void sl_alignmentChanged(const MAlignment& al, const MAlignmentModInfo& modInfo);
+    void sl_alignmentChanged();
     void sl_algorithmChanged(const QString& algoId);
     void sl_thresholdChanged(int value);
     void sl_algorithmSelectionChanged(int index);

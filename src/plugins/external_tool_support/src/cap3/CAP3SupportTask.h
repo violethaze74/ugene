@@ -30,7 +30,7 @@
 #include "utils/ExportTasks.h"
 
 #include <U2Core/ExternalToolRunTask.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
 

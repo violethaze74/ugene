@@ -55,8 +55,8 @@ public:
 
 };
 
-KalignDialogController::KalignDialogController(QWidget* w, const MAlignment& _ma, KalignTaskSettings& _settings) 
-: QDialog(w), ma(_ma), settings(_settings)
+KalignDialogController::KalignDialogController(QWidget* w, const MultipleSequenceAlignment& _ma, KalignTaskSettings& _settings) 
+: QDialog(w), ma(_ma->getExplicitCopy()), settings(_settings)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "18220601");
@@ -66,7 +66,7 @@ KalignDialogController::KalignDialogController(QWidget* w, const MAlignment& _ma
     setupUiExt();
     inputGroupBox->setVisible(false);
     this->adjustSize();
-    translateCheckBox->setEnabled(ma.getAlphabet()->isNucleic());
+    translateCheckBox->setEnabled(ma->getAlphabet()->isNucleic());
     const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
     QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
@@ -83,7 +83,7 @@ void KalignDialogController::setupUiExt() {
     terminalGapSpinBox->setEnabled(false);
     bonusScoreSpinBox->setEnabled(false);
 
-    if(ma.getAlphabet()->isAmino()) {
+    if(ma->getAlphabet()->isAmino()) {
         gapOpenSpinBox->setValue(53.9);
         gapExtensionPenaltySpinBox->setValue(8.52);
         terminalGapSpinBox->setValue(4.42);
@@ -144,7 +144,7 @@ KalignAlignWithExtFileSpecifyDialogController::KalignAlignWithExtFileSpecifyDial
 void KalignAlignWithExtFileSpecifyDialogController::sl_inputPathButtonClicked() {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir,
-        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
     if (lod.url.isEmpty()) {
         return;
     }

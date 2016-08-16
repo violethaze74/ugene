@@ -55,11 +55,11 @@ namespace U2 {
 #define MR_BAYES_TEMPR "/mb_tempr"
 #define MR_BAYES_SEED "/mb_seed"
 
-MrBayesWidget::MrBayesWidget(const MAlignment &ma, QWidget *parent) :
+MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment &ma, QWidget *parent) :
     CreatePhyTreeWidget(parent)
 {
     setupUi(this);
-    DNAAlphabetType alphabetType = ma.getAlphabet()->getType();
+    DNAAlphabetType alphabetType = ma->getAlphabet()->getType();
     if ((alphabetType == DNAAlphabet_RAW) || (alphabetType == DNAAlphabet_NUCL)){
         isAminoAcidAlphabet = false;
         modelLabel1->setText(tr("Substitution model"));

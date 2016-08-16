@@ -29,7 +29,7 @@ namespace U2 {
 class MsaHighlightingSchemeNoColors : public MsaHighlightingScheme {
     Q_OBJECT
 public:
-    MsaHighlightingSchemeNoColors(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj);
+    MsaHighlightingSchemeNoColors(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj);
 
     void process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const;
 };
@@ -38,7 +38,7 @@ class U2ALGORITHM_EXPORT MsaHighlightingSchemeNoColorsFactory : public MsaHighli
 public:
     MsaHighlightingSchemeNoColorsFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
 
-    MsaHighlightingScheme * create(QObject *parent, MAlignmentObject *maObj) const;
+    MsaHighlightingScheme * create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const;
 };
 
 }   // namespace U2

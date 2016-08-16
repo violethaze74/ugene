@@ -26,13 +26,14 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ToolsMenu.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Lang/WorkflowSettings.h>
 
@@ -179,7 +180,7 @@ void MuscleMSAEditorContext::sl_align() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
 
     const QRect selection = action->getMSAEditor()->getCurrentSelection();
     MuscleTaskSettings s;
@@ -192,7 +193,7 @@ void MuscleMSAEditorContext::sl_align() {
         }
     }
 
-    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(ed->getWidget(), obj->getMAlignment(), s);
+    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(ed->getWidget(), obj->getMsa(), s);
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
     
@@ -222,13 +223,13 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());
 
     DocumentFormatConstraints c;
-    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, false);
+    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
     QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
     QString filter = f2 + "\n" + f1;
 
@@ -255,7 +256,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());
@@ -264,11 +265,11 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
 #ifdef Q_OS_MAC
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with alignment"), lod,
-            DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true), 0, QFileDialog::DontUseNativeDialog );
+            DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true), 0, QFileDialog::DontUseNativeDialog );
     } else
 #endif
     lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with alignment"), lod,
-        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_ALIGNMENT, true));
+        DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true));
 
     if (lod.url.isEmpty()) {
         return;

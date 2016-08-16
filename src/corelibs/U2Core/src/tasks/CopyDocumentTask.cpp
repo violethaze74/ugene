@@ -129,7 +129,7 @@ void CloneObjectsTask::run() {
         if(df->isObjectOpSupported(dstDoc, DocumentFormat::DocObjectOp_Add, srcObj->getGObjectType())){
             GObject *dstObj = srcObj->clone(dstDoc->getDbiRef(), stateInfo);
             CHECK_OP(stateInfo, );
-            if (dstObj->getGObjectType() == GObjectTypes::MULTIPLE_ALIGNMENT){
+            if (dstObj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT){
                 QString name = QFileInfo(dstDoc->getURLString()).baseName();
                 dstObj->setGObjectName(name);
                 dstObj->setModified(false);

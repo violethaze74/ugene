@@ -41,16 +41,16 @@ public:
     virtual void initSqlSchema(U2OpStatus& os);
 
     /** Reads Msa objects by id */
-    virtual U2Msa getMsaObject(const U2DataId& id, U2OpStatus& os);
+    virtual U2Ma getMsaObject(const U2DataId& id, U2OpStatus& os);
 
     /** Returns the number of rows of the MSA (value cached in Msa table) */
     virtual qint64 getNumOfRows(const U2DataId& msaId, U2OpStatus& os);
 
     /** Returns all rows of a MSA with the specified IDs */
-    virtual QList<U2MsaRow> getRows(const U2DataId& msaId, U2OpStatus& os);
+    virtual QList<U2MaRow> getRows(const U2DataId& msaId, U2OpStatus& os);
 
     /** Returns a row with the specified ID */
-    virtual U2MsaRow getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os);
+    virtual U2MaRow getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os);
 
     /** Returns the list of rows IDs in the database for the specified MSA (in increasing order) */
     virtual QList<qint64> getRowsOrder(const U2DataId& msaId, U2OpStatus& os);
@@ -86,20 +86,23 @@ public:
 
     /**
      * Creates rows (and gap models for them) in the database.
-     * Ignores 'length' of the 'rows' (recalculates them).
+     * Enlarges msa length, if 'length' of any of the 'rows' is greater than current msa length.
+     * Recalculates 'length' of the 'rows'.
      * The rows are appended to the end of the MSA.
      * Assigns MSA as a parent for all the sequences.
-     * If a row ID equals "-1", sets a valid ID to the passed U2MsaRow instances.
+     * If a row ID equals "-1", sets a valid ID to the passed U2MaRow instances.
      * Updates the number of rows of the MSA.
      * Updates the alignment length.
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    virtual void addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpStatus& os);
+    virtual void addRows(const U2DataId& msaId, QList<U2MaRow>& rows, U2OpStatus& os);
 
     /**
      * Creates a new row and gap model records in the database.
-     * Ignores 'row.length' (recalculates it) and 'row.rowId'. Sets valid to the passed U2MsaRow instance.
+     * Enlarges msa length, if 'row.length' is greater than current msa length.
+     * Ignores 'row.rowId'.
+     * Recalculates 'row.length' and and 'row.rowId'. Sets valid to the passed U2MsaRow instance.
      * If 'posInMsa' equals to '-1' the row is appended to the end of the MSA,
      * otherwise it is inserted to the specified position and all positions are updated.
      * Assigns MSA as a parent for the sequence.
@@ -108,7 +111,7 @@ public:
      * Increments the alignment version.
      * Tracks modifications, if required.
      */
-    virtual void addRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os);
+    virtual void addRow(const U2DataId& msaId, qint64 posInMsa, U2MaRow& row, U2OpStatus& os);
 
     /**
      * Removes rows for the specified alignment and with the specified ids
@@ -151,14 +154,14 @@ public:
      * Updates the alignment length.
      * Increments the alignment version.
      */
-    virtual void updateRowContent(const U2DataId& msaId, qint64 rowId, const QByteArray& seqBytes, const QList<U2MsaGap>& gaps, U2OpStatus& os);
+    virtual void updateRowContent(const U2DataId& msaId, qint64 rowId, const QByteArray& seqBytes, const QList<U2MaGap>& gaps, U2OpStatus& os);
 
     /**
      * Removes all previous values and sets a new gap model for a row in a MSA.
      * Updates the alignment length.
      * Increments the alignment version.
      */
-    virtual void updateGapModel(const U2DataId& msaId, qint64 msaRowId, const QList<U2MsaGap>& gapModel, U2OpStatus& os);
+    virtual void updateGapModel(const U2DataId& msaId, qint64 msaRowId, const QList<U2MaGap>& gapModel, U2OpStatus& os);
 
     /** Updates a part of the Msa object info - the length */
     void updateMsaLength(const U2DataId& msaId, qint64 length, U2OpStatus& os);
@@ -180,18 +183,18 @@ private:
     /**
      * Creates new records in MsaRow and MsaRowGap tables for the added row, and
      * sets the parent of the sequence object to the MSA object.
-     * Sets the assigned ID to the passed U2MsaRow instance.
+     * Sets the assigned ID to the passed U2MaRow instance.
      */
-    void addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os);
+    void addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2MaRow& row, U2OpStatus& os);
 
     /**
      * Adds a new MSA row into database.
      * To add a gap for the row, use the "createMsaRowGap" method.
      */
-    void createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& msa, U2OpStatus& os);
+    void createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MaRow& msa, U2OpStatus& os);
 
     /** Adds a new gap for a MSA row into database. */
-    void createMsaRowGap(const U2DataId& msaId, qint64 msaRowId, const U2MsaGap& msaGap, U2OpStatus& os);
+    void createMsaRowGap(const U2DataId& msaId, qint64 msaRowId, const U2MaGap& msaGap, U2OpStatus& os);
 
     /** Removes records from MsaRow and MsaRowGap tables for the row. */
     void removeMsaRowAndGaps(const U2DataId& msaId, qint64 rowId, bool removeSequence, U2OpStatus& os);
@@ -212,7 +215,7 @@ private:
     void recalculateRowsPositions(const U2DataId& msaId, U2OpStatus& os);
 
     /** Calculates length of the row (characters + gaps), does NOT take into account trailing gaps. */
-    qint64 calculateRowLength(qint64 seqLength, const QList<U2MsaGap>& gaps);
+    qint64 calculateRowLength(qint64 seqLength, const QList<U2MaGap>& gaps);
 
     /** Gets length of the sequence in the row (without gaps) */
     qint64 getRowSequenceLength(const U2DataId& msaId, qint64 rowId, U2OpStatus& os);
@@ -228,15 +231,15 @@ private:
 
     ///////////////////////////////////////////////////////////
     // Core methods
-    void updateGapModelCore(const U2DataId &msaId, qint64 msaRowId, const QList<U2MsaGap> &gapModel, U2OpStatus &os);
+    void updateGapModelCore(const U2DataId &msaId, qint64 msaRowId, const QList<U2MaGap> &gapModel, U2OpStatus &os);
     void addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const QList<qint64> &rowsOrder, U2OpStatus &os);
-    void addRowCore(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os);
-    void addRowsCore(const U2DataId &msaId, const QList<qint64> &posInMsa, QList<U2MsaRow> &rows, U2OpStatus &os);
+    void addRowCore(const U2DataId& msaId, qint64 posInMsa, U2MaRow& row, U2OpStatus& os);
+    void addRowsCore(const U2DataId &msaId, const QList<qint64> &posInMsa, QList<U2MaRow> &rows, U2OpStatus &os);
     void removeRowSubcore(const U2DataId &msaId, qint64 numOfRows, U2OpStatus &os);
     void removeRowCore(const U2DataId& msaId, qint64 rowId, bool removeSequence, U2OpStatus& os);
     void removeRowsCore(const U2DataId& msaId, const QList<qint64> &rowIds, bool removeSequence, U2OpStatus& os);
     void setNewRowsOrderCore(const U2DataId &msaId, const QList<qint64> rowIds, U2OpStatus &os);
-    void updateRowInfoCore(const U2DataId &msaId, const U2MsaRow &row, U2OpStatus& os);
+    void updateRowInfoCore(const U2DataId &msaId, const U2MaRow &row, U2OpStatus& os);
     void updateMsaLengthCore(const U2DataId& msaId, qint64 length, U2OpStatus& os);
 
     ///////////////////////////////////////////////////////////
@@ -265,8 +268,8 @@ private:
 
     ///////////////////////////////////////////////////////////
     // Methods included into a multi-action
-    void updateRowInfo(MysqlModificationAction &updateAction, const U2DataId &msaId, const U2MsaRow &row, U2OpStatus &os);
-    void updateGapModel(MysqlModificationAction &updateAction, const U2DataId& msaId, qint64 msaRowId, const QList<U2MsaGap>& gapModel, U2OpStatus& os);
+    void updateRowInfo(MysqlModificationAction &updateAction, const U2DataId &msaId, const U2MaRow &row, U2OpStatus &os);
+    void updateGapModel(MysqlModificationAction &updateAction, const U2DataId& msaId, qint64 msaRowId, const QList<U2MaGap>& gapModel, U2OpStatus& os);
     void updateMsaLength(MysqlModificationAction &updateAction, const U2DataId& msaId, qint64 length, U2OpStatus &os);
 };
 

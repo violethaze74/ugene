@@ -35,8 +35,6 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextUtils.h>
@@ -53,9 +51,9 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
-SaveAlignmentTask::SaveAlignmentTask(const MAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
+SaveAlignmentTask::SaveAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _fileName, DocumentFormatId _f, const QVariantMap& _hints)
 : Task("", TaskFlag_None),
-  ma(_ma),
+  ma(_ma->getExplicitCopy()),
   fileName(_fileName),
   hints(_hints),
   format(_f)
@@ -64,7 +62,7 @@ SaveAlignmentTask::SaveAlignmentTask(const MAlignment& _ma, const QString& _file
     setTaskName(tr("Export alignment to '%1'").arg(QFileInfo(fileName).fileName()));
     setVerboseLogMode(true);
 
-    if (ma.isEmpty()) {
+    if (ma->isEmpty()) {
         setError(tr("An alignment is empty"));
     }
 }
@@ -75,7 +73,7 @@ void SaveAlignmentTask::run() {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(fileName));
     doc.reset(f->createNewLoadedDocument(iof, fileName, stateInfo));
 
-    MAlignmentObject* obj = MAlignmentImporter::createAlignment(doc->getDbiRef(), ma, stateInfo);
+    MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
     GHints* docHints = doc->getGHints();
@@ -103,9 +101,9 @@ const QString &SaveAlignmentTask::getUrl() const {
 //////////////////////////////////////////////////////////////////////////
 // export alignment  2 sequence format
 
-SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MAlignment& _ma, const QString& _url, bool _trimAli, DocumentFormatId _format)
+SaveMSA2SequencesTask::SaveMSA2SequencesTask(const MultipleSequenceAlignment& _ma, const QString& _url, bool _trimAli, DocumentFormatId _format)
 : Task(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
-ma(_ma), url(_url), trimAli(_trimAli), format(_format)
+ma(_ma->getExplicitCopy()), url(_url), trimAli(_trimAli), format(_format)
 {
     GCOUNTER( cvar, tvar, "ExportMSA2SequencesTask" );
     setVerboseLogMode(true);

@@ -33,7 +33,7 @@ public:
     MSAConsensusAlgorithmFactoryClustal(QObject* p = NULL)
             : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO, ConsensusAlgorithmFlags_AllAlphabets, p){}
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MAlignment& ma, QObject* parent);
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleSequenceAlignment& ma, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -53,7 +53,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmClustal : public MSAConsensusAlgor
 public:
     MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal* f, QObject* p = NULL) : MSAConsensusAlgorithm(f, p){}
 
-    virtual char getConsensusChar(const MAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusChar(const MultipleSequenceAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
 };
 
 }//namespace

@@ -39,7 +39,7 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithmFactoryHamming: public MSADistanceA
 public:
     MSADistanceAlgorithmFactoryHamming(QObject* p = NULL);
 
-    virtual MSADistanceAlgorithm* createAlgorithm(const MAlignment& ma, QObject* parent);
+    virtual MSADistanceAlgorithm* createAlgorithm(const MultipleSequenceAlignment& ma, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -51,7 +51,7 @@ public:
 class U2ALGORITHM_EXPORT MSADistanceAlgorithmHamming : public MSADistanceAlgorithm {
     Q_OBJECT
 public:
-    MSADistanceAlgorithmHamming(MSADistanceAlgorithmFactoryHamming* f, const MAlignment& ma)
+    MSADistanceAlgorithmHamming(MSADistanceAlgorithmFactoryHamming* f, const MultipleSequenceAlignment& ma)
         : MSADistanceAlgorithm(f, ma){ isSimilarity = false;}
 
     virtual void run();

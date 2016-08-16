@@ -21,12 +21,12 @@
 
 #include <QPushButton>
 #include <QMessageBox>
-#include <ui_ExportHighlightedDialog.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/HelpButton.h>
@@ -34,6 +34,7 @@
 
 #include "ExportHighlightedDialogController.h"
 #include "ov_msa/MSAEditorSequenceArea.h"
+#include "ui_ExportHighlightedDialog.h"
 
 namespace U2{
 

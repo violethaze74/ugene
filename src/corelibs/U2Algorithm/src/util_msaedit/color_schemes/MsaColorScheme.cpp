@@ -22,7 +22,7 @@
 #include <QColor>
 
 #include <U2Core/FeatureColors.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ColorSchemeUtils.h"
@@ -58,7 +58,7 @@ const QString MsaColorScheme::CUSTOM_AMINO          = "COLOR_SCHEME_CUSTOM_AMINO
 
 const QString MsaColorScheme::EMPTY_RAW             = "COLOR_SCHEME_EMPTY_RAW";
 
-MsaColorScheme::MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj)
+MsaColorScheme::MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj) {
@@ -227,7 +227,7 @@ void fillLightColorsColorScheme(QVector<QColor> &colorsPerChar) {
     for (int i = 0; i < 256; i++) {
         colorsPerChar[i] = FeatureColors::genLightColor(QString((char)i));
     }
-    colorsPerChar[MAlignment_GapChar] = QColor(); //invalid color -> no color at all
+    colorsPerChar[MultipleAlignment::GapChar] = QColor(); //invalid color -> no color at all
 }
 
 void addUgeneAmino(QVector<QColor> &colorsPerChar) {

@@ -119,8 +119,8 @@ bool MSAEditorTreeViewer::sync() {
 
         CHECK(msa != NULL, false);
         MSAEditorUI* msaUI = msa->getUI();
-        connect(msaUI->editor->getMSAObject(),  SIGNAL(si_alignmentChanged(MAlignment,MAlignmentModInfo)),
-                this,                           SLOT(sl_alignmentChanged(MAlignment,MAlignmentModInfo)));
+        connect(msaUI->editor->getMSAObject(),  SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+                this,                           SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
         connect(msaUI,                          SIGNAL(si_stopMsaChanging(bool)),
                 this,                           SLOT(sl_startTracking(bool)));
 
@@ -236,10 +236,10 @@ void MSAEditorTreeViewer::sl_startTracking(bool changed) {
         int res = desyncQuestion->exec();
         if (res == QMessageBox::No) {
             // undo the change and synchronize
-            disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MAlignment,MAlignmentModInfo)),
-                       this,                            SLOT(sl_alignmentChanged(MAlignment,MAlignmentModInfo)));
+            disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+                       this,                            SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
 
-            if (cachedModification.type != MAlignmentModType_Undo) {
+            if (cachedModification.type != MaModificationType_Undo) {
                 if (!msaUI->getUndoAction()->isEnabled()) {
                     desync();
                     FAIL("Processing the alignment change, but undo-redo stack is empty!", );
@@ -276,10 +276,10 @@ void MSAEditorTreeViewer::sl_stopTracking() {
     disconnectSignals();
 }
 
-void MSAEditorTreeViewer::sl_alignmentChanged(const MAlignment &/*ma*/, const MAlignmentModInfo &modInfo) {
+void MSAEditorTreeViewer::sl_alignmentChanged(const MultipleAlignment &/*ma*/, const MaModificationInfo &modInfo) {
     cachedModification = modInfo;
 
-    bool connectionIsNotBrokenOnAlignmentChange = slotsAreConnected && (modInfo.sequenceContentChanged || modInfo.sequenceListChanged || modInfo.alignmentLengthChanged);
+    bool connectionIsNotBrokenOnAlignmentChange = slotsAreConnected && (modInfo.rowContentChanged || modInfo.rowListChanged || modInfo.alignmentLengthChanged);
     if (connectionIsNotBrokenOnAlignmentChange) {
         // alignment was modified by undo-redo or outside of current msa editor
         MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
@@ -298,8 +298,8 @@ void MSAEditorTreeViewer::sl_alignmentChanged(const MAlignment &/*ma*/, const MA
         CHECK(msa != NULL, );
         MSAEditorUI* msaUI = msa->getUI();
         CHECK(msaUI != NULL, );
-        disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MAlignment,MAlignmentModInfo)),
-                   this,                            SLOT(sl_alignmentChanged(MAlignment,MAlignmentModInfo)));
+        disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+                   this,                            SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
         disconnect(msaUI,                          SIGNAL(si_stopMsaChanging(bool)),
                    this,                           SLOT(sl_startTracking(bool)));
         desync();
@@ -476,7 +476,7 @@ bool MSAEditorTreeViewerUI::canSynchronizeWithMSA(MSAEditor* msa) {
     if(!curLayoutIsRectangular) {
         return false;
     }
-    QStringList seqsNames = msa->getMSAObject()->getMAlignment().getRowNames();
+    QStringList seqsNames = msa->getMSAObject()->getMsa()->getRowNames();
     QList<QGraphicsItem*> items = scene()->items();
 
     int counter = 0;

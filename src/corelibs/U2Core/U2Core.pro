@@ -23,9 +23,14 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/DNATranslation.h \
            src/datatype/DNATranslationImpl.h \
            src/datatype/FeatureColors.h \
-           src/datatype/MAlignment.h \
-           src/datatype/MAlignmentInfo.h \
            src/datatype/Matrix44.h \
+           src/datatype/MultipleAlignment.h \
+           src/datatype/MultipleAlignmentInfo.h \
+           src/datatype/MultipleAlignmentRow.h \
+           src/datatype/MultipleChromatogramAlignment.h \
+           src/datatype/MultipleChromatogramAlignmentRow.h \
+           src/datatype/MultipleSequenceAlignment.h \
+           src/datatype/MultipleSequenceAlignmentRow.h \
            src/datatype/PFMatrix.h \
            src/datatype/PhyTree.h \
            src/datatype/PWMatrix.h \
@@ -39,8 +44,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/U2Identity.h \
            src/datatype/U2IdTypes.h \
            src/datatype/U2Location.h \
+           src/datatype/U2Ma.h \
            src/datatype/U2Mod.h \
-           src/datatype/U2Msa.h \
            src/datatype/U2Qualifier.h \
            src/datatype/U2Range.h \
            src/datatype/U2RawData.h \
@@ -123,7 +128,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/gobjects/GObjectRelationRoles.h \
            src/gobjects/GObjectTypes.h \
            src/gobjects/GObjectUtils.h \
-           src/gobjects/MAlignmentObject.h \
+           src/gobjects/MultipleAlignmentObject.h \
+           src/gobjects/MultipleSequenceAlignmentObject.h \
            src/gobjects/PFMatrixObject.h \
            src/gobjects/PhyTreeObject.h \
            src/gobjects/PWMatrixObject.h \
@@ -204,6 +210,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/tasks/shared_db/ImportToDatabaseTask.h \
            src/util/AnnotationCreationPattern.h \
            src/util/AssemblyImporter.h \
+           src/util/ChromatogramUtils.h \
            src/util/DatatypeSerializeUtils.h \
            src/util/FileAndDirectoryUtils.h \
            src/util/FilesIterator.h \
@@ -214,12 +221,12 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/GUrlUtils.h \
            src/util/ImportToDatabaseOptions.h \
            src/util/IOAdapterUtils.h \
-           src/util/MAlignmentExporter.h \
-           src/util/MAlignmentImporter.h \
-           src/util/MAlignmentWalker.h \
            src/util/MsaDbiUtils.h \
            src/util/MsaRowUtils.h \
            src/util/MSAUtils.h \
+           src/util/MultipleSequenceAlignmentExporter.h \
+           src/util/MultipleSequenceAlignmentImporter.h \
+           src/util/MultipleSequenceAlignmentWalker.h \
            src/util/PMatrixSerializeUtils.h \
            src/util/QObjectScopedPointer.h \
            src/util/QVariantUtils.h \
@@ -263,15 +270,21 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/DNATranslation.cpp \
            src/datatype/DNATranslationImpl.cpp \
            src/datatype/FeatureColors.cpp \
-           src/datatype/MAlignment.cpp \
-           src/datatype/MAlignmentInfo.cpp \
            src/datatype/Matrix44.cpp \
+           src/datatype/MultipleAlignment.cpp \
+           src/datatype/MultipleAlignmentInfo.cpp \
+           src/datatype/MultipleAlignmentRow.cpp \
+           src/datatype/MultipleChromatogramAlignmentRow.cpp \
+           src/datatype/MultipleChromatogramAlignment.cpp \
+           src/datatype/MultipleSequenceAlignment.cpp \
+           src/datatype/MultipleSequenceAlignmentRow.cpp \
            src/datatype/PFMatrix.cpp \
            src/datatype/PhyTree.cpp \
            src/datatype/PWMatrix.cpp \
            src/datatype/SMatrix.cpp \
            src/datatype/U2CoreAttributes.cpp \
            src/datatype/U2FeatureType.cpp \
+           src/datatype/U2Ma.cpp \
            src/datatype/U2Mod.cpp \
            src/datatype/U2Qualifier.cpp \
            src/datatype/U2Region.cpp \
@@ -332,7 +345,8 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/gobjects/GObjectRelationRoles.cpp \
            src/gobjects/GObjectTypes.cpp \
            src/gobjects/GObjectUtils.cpp \
-           src/gobjects/MAlignmentObject.cpp \
+           src/gobjects/MultipleAlignmentObject.cpp \
+           src/gobjects/MultipleSequenceAlignmentObject.cpp \
            src/gobjects/PFMatrixObject.cpp \
            src/gobjects/PhyTreeObject.cpp \
            src/gobjects/PWMatrixObject.cpp \
@@ -407,6 +421,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/tasks/shared_db/ImportToDatabaseTask.cpp \
            src/util/AnnotationCreationPattern.cpp \
            src/util/AssemblyImporter.cpp \
+           src/util/ChromatogramUtils.cpp \
            src/util/DatatypeSerializeUtils.cpp \
            src/util/FileAndDirectoryUtils.cpp \
            src/util/FilesIterator.cpp \
@@ -417,12 +432,12 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/GUrlUtils.cpp \
            src/util/ImportToDatabaseOptions.cpp \
            src/util/IOAdapterUtils.cpp \
-           src/util/MAlignmentExporter.cpp \
-           src/util/MAlignmentImporter.cpp \
-           src/util/MAlignmentWalker.cpp \
            src/util/MsaDbiUtils.cpp \
            src/util/MsaRowUtils.cpp \
            src/util/MSAUtils.cpp \
+           src/util/MultipleSequenceAlignmentExporter.cpp \
+           src/util/MultipleSequenceAlignmentImporter.cpp \
+           src/util/MultipleSequenceAlignmentWalker.cpp \
            src/util/QVariantUtils.cpp \
            src/util/SequenceUtils.cpp \
            src/util/SnpeffDictionary.cpp \

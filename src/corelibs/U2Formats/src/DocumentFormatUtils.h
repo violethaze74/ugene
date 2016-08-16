@@ -25,6 +25,7 @@
 #include <QStringList>
 
 #include <U2Core/DocumentModel.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
 
 namespace U2 {
@@ -37,7 +38,6 @@ class Document;
 class GObject;
 class GObjectReference;
 class GUrl;
-class MAlignment;
 class U2DbiRef;
 class U2OpStatus;
 class U2Sequence;
@@ -50,7 +50,7 @@ public:
 
     static QList<AnnotationSettings*> predefinedSettings();
 
-    /** Extracts sequences either from Sequence or MAlignment object */
+    /** Extracts sequences either from Sequence or MultipleSequenceAlignment object */
     static QList<DNASequence> toSequences(const GObject* obj);
 
     static int getMergeGap(const QVariantMap& hints);

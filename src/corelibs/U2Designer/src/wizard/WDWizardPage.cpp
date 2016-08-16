@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include "WizardPageController.h"
+#include <U2Core/U2SafePoints.h>
 
 #include "WDWizardPage.h"
+#include "WizardPageController.h"
 
 namespace U2 {
 

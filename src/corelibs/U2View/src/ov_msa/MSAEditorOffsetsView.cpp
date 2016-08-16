@@ -25,15 +25,15 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "MSAEditor.h"
 #include "MSAEditorNameList.h"
-#include "MSAEditorSequenceArea.h"
-
 #include "MSAEditorOffsetsView.h"
+#include "MSAEditorSequenceArea.h"
 
 namespace U2 {
 
@@ -55,10 +55,10 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEd
     connect(seqArea, SIGNAL(si_startChanged(const QPoint&,const QPoint&)), SLOT(sl_startChanged(const QPoint&,const QPoint&)));
     connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_fontChanged()));
 
-    MAlignmentObject *mobj = editor->getMSAObject();
+    MultipleSequenceAlignmentObject *mobj = editor->getMSAObject();
     SAFE_POINT(NULL != mobj, L10N::nullPointerError("multiple alignment object"), );
-    connect(mobj, SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+        SLOT(sl_alignmentChanged()));
 
     seqArea->installEventFilter(this);
 
@@ -87,7 +87,7 @@ QAction * MSAEditorOffsetsViewController::getToggleColumnsViewAction() const {
     return viewAction;
 }
 
-void MSAEditorOffsetsViewController::sl_alignmentChanged(const MAlignment &, const MAlignmentModInfo &) {
+void MSAEditorOffsetsViewController::sl_alignmentChanged() {
     updateOffsets();
 }
 
@@ -175,11 +175,10 @@ QFont MSAEditorOffsetsViewWidget::getOffsetsFont() {
 }
 
 int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const {
-    const MAlignment &ma = editor->getMSAObject()->getMAlignment();
-    const MAlignmentRow &row = ma.getRow(seqNum);
+    const MultipleAlignmentRow &row = editor->getMSAObject()->getRow(seqNum);
     const int endPos = inclAliPos ? aliPos + 1 : aliPos;
 
-    return (endPos < row.getCoreStart()) ? 0 : row.getBaseCount(endPos);
+    return (endPos < row->getCoreStart()) ? 0 : row->getDataSize(endPos);
 }
 
 void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
@@ -217,9 +216,9 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
 
     int i=0;
     const MSAEditor *editor = ui->getEditor();
-    const MAlignment &alignment = editor->getMSAObject()->getMAlignment();
+    const MultipleSequenceAlignment alignment = editor->getMSAObject()->getMsa();
     U2OpStatusImpl os;
-    const int refSeq = alignment.getRowIndexByRowId(editor->getReferenceRowId(), os);
+    const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);
 
     const qint64 numRows = editor->getMSAObject()->getNumRows();
     foreach(const U2Region& r, visibleRows) {

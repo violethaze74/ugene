@@ -24,7 +24,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
 
@@ -51,7 +51,7 @@ private:
     static bool readSequence(IOAdapter* io, QByteArray &line, U2OpStatus &ti,
                              QByteArray &value, bool *lastIteration);
 
-    static void workUpIndels(MAlignment & al);
+    static void workUpIndels(MultipleSequenceAlignment & al);
     static bool getNextLine(IOAdapter* io, QByteArray& line);
     static bool skipComments(IOAdapter* io, QByteArray &line, U2OpStatus &ti);
     static bool checkName(QByteArray &name);

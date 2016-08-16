@@ -33,7 +33,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryStrict: public MSAConsensus
 public:
     MSAConsensusAlgorithmFactoryStrict(QObject* p = NULL);
 
-    virtual MSAConsensusAlgorithm* createAlgorithm(const MAlignment& ma, QObject* parent);
+    virtual MSAConsensusAlgorithm* createAlgorithm(const MultipleSequenceAlignment& ma, QObject* parent);
 
     virtual QString getDescription() const;
 
@@ -55,7 +55,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmStrict : public MSAConsensusAlgori
 public:
     MSAConsensusAlgorithmStrict(MSAConsensusAlgorithmFactoryStrict* f, QObject* p = NULL) : MSAConsensusAlgorithm(f, p){}
 
-    virtual char getConsensusChar(const MAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
+    virtual char getConsensusChar(const MultipleSequenceAlignment& ma, int column, const QVector<qint64> &seqIdx = QVector<qint64>()) const;
 };
 
 

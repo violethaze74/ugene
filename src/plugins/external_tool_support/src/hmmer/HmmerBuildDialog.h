@@ -39,7 +39,7 @@ public:
     
     /* one of this is used */
     QString                 inputFile;
-    MAlignment              alignment;
+    MultipleSequenceAlignment              alignment;
     bool                    alignmentUsing;
 };
 

@@ -22,39 +22,32 @@
 #ifndef _U2_MSA_EDITOR_STATUS_BAR_H_
 #define _U2_MSA_EDITOR_STATUS_BAR_H_
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-#include <QtCore/QEvent>
+#include <QEvent>
+#include <QLabel>
+#include <QLineEdit>
+#include <QObject>
+#include <QPushButton>
+#include <QVector>
+#include <QWidget>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QLineEdit>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
-#endif
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
-class MAlignmentObject;
-class MAlignment;
-class MAlignmentModInfo;
+class MultipleSequenceAlignmentObject;
+class MaModificationInfo;
 class MSAEditorSequenceArea;
 class MSAEditorSelection;
 
 class MSAEditorStatusWidget : public QWidget {
     Q_OBJECT
 public:
-    MSAEditorStatusWidget(MAlignmentObject* mobj, MSAEditorSequenceArea* seqArea);
+    MSAEditorStatusWidget(MultipleSequenceAlignmentObject* mobj, MSAEditorSequenceArea* seqArea);
 
     bool eventFilter(QObject* obj, QEvent* ev);
 
 private slots:
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&) {updateCoords();}
+    void sl_alignmentChanged() {updateCoords();}
     void sl_lockStateChanged() {updateLock();}
     void sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& ){updateCoords();}
     void sl_findNext();
@@ -64,7 +57,7 @@ private slots:
 private:
     void updateCoords();
     void updateLock();
-    MAlignmentObject*           aliObj;
+    MultipleSequenceAlignmentObject*           aliObj;
     MSAEditorSequenceArea*      seqArea;
     QPixmap                     lockedIcon;
     QPixmap                     unlockedIcon;

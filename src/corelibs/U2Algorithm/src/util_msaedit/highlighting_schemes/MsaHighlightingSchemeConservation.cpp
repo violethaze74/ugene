@@ -19,19 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/MAlignmentObject.h>
+#include <QColor>
+
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MsaHighlightingSchemeConservation.h"
 
 namespace U2 {
 
-MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj)
+MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj),
       threshold(50),
       lessThenThreshold(false)
 {
-    connect(maObj, SIGNAL(si_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)), SLOT(sl_resetMap()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_resetMap()));
 }
 
 void MsaHighlightingSchemeConservation::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
@@ -76,9 +78,9 @@ void MsaHighlightingSchemeConservation::sl_resetMap() {
 void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharColumn) const {
     CHECK(!msaCharCountMap.contains(refCharColumn), );
     CharCountMap columnStatistic;
-    const MAlignment &m = maObj->getMAlignment();
-    for (int row = m.getNumRows() - 1; row >= 0; row--) {
-        char seqChar = m.charAt(row, refCharColumn);
+    const MultipleSequenceAlignment msa = maObj->getMsa();
+    for (int row = msa->getNumRows() - 1; row >= 0; row--) {
+        char seqChar = msa->charAt(row, refCharColumn);
         if (columnStatistic.contains(seqChar)) {
             columnStatistic[seqChar] += 1;
         } else {
@@ -94,7 +96,7 @@ MsaHighlightingSchemeConservationFactory::MsaHighlightingSchemeConservationFacto
 
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeConservationFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaHighlightingScheme * MsaHighlightingSchemeConservationFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeConservation(parent, this, maObj);
 }
 

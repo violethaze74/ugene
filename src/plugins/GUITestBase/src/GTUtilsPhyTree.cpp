@@ -23,14 +23,17 @@
 
 #include <QGraphicsItem>
 
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
+
+#include <U2Core/U2SafePoints.h>
+
 #include <U2View/GraphicsButtonItem.h>
 #include <U2View/GraphicsRectangularBranchItem.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsPhyTree.h"
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTWidget.h>
-#include <utils/GTThread.h>
 
 namespace U2 {
 using namespace HI;

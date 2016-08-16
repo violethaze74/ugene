@@ -27,7 +27,7 @@
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/GObjectReference.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/Task.h>
 
@@ -83,7 +83,7 @@ class ClustalWSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(ClustalWSupportTask)
 public:
-    ClustalWSupportTask(const MAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings);
+    ClustalWSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalWSupportTaskSettings& _settings);
     ~ClustalWSupportTask();
 
     void prepare();
@@ -91,9 +91,9 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 
-    MAlignment                  resultMA;
+    MultipleSequenceAlignment                  resultMA;
 private:
-    MAlignment                  inputMsa;
+    MultipleSequenceAlignment                  inputMsa;
     GObjectReference            objRef;
     QPointer<Document>          tmpDoc;
     QString                     url;
@@ -105,7 +105,7 @@ private:
     QPointer<StateLock>         lock;
 };
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class ClustalWWithExtFileSpecifySupportTask : public Task {
     Q_OBJECT
@@ -118,7 +118,7 @@ public:
 
     QList<Task*> onSubTaskFinished(Task* subTask);
 private:
-    MAlignmentObject*           mAObject;
+    MultipleSequenceAlignmentObject*           mAObject;
     Document*                   currentDocument;
     bool                        cleanDoc;
 

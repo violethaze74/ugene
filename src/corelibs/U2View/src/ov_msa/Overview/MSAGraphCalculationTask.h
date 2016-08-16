@@ -27,14 +27,14 @@
 #include <U2Core/BackgroundTaskRunner.h>
 #include <U2View/MSAEditorConsensusCache.h>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include <QtGui/QPolygonF>
 
 namespace U2 {
 
 class MSAEditor;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class MSAConsensusAlgorithm;
 class MsaColorScheme;
 class MsaHighlightingScheme;
@@ -42,7 +42,7 @@ class MsaHighlightingScheme;
 class MSAGraphCalculationTask : public BackgroundTask<QPolygonF> {
     Q_OBJECT
 public:
-    MSAGraphCalculationTask(MAlignmentObject* msa, int width, int height);
+    MSAGraphCalculationTask(MultipleSequenceAlignmentObject* msa, int width, int height);
 
     void run();
 signals:
@@ -52,7 +52,7 @@ protected:
     void constructPolygon(QPolygonF &polygon);
     virtual int getGraphValue(int) const { return height; }
 
-    QScopedPointer<MAlignment> ma;
+    MultipleSequenceAlignment ma;
     MemoryLocker memLocker;
     int msaLength;
     int seqNumber;
@@ -63,7 +63,7 @@ protected:
 class MSAConsensusOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAConsensusOverviewCalculationTask(MAlignmentObject* msa,
+    MSAConsensusOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
                                         int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -74,7 +74,7 @@ private:
 class MSAGapOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAGapOverviewCalculationTask(MAlignmentObject* msa,
+    MSAGapOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
                                   int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -83,7 +83,7 @@ private:
 class MSAClustalOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAClustalOverviewCalculationTask(MAlignmentObject* msa,
+    MSAClustalOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
                                       int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -99,7 +99,7 @@ public:
                                            const QString &highlightingSchemeId,
                                            int width, int height);
 
-    static bool isCellHighlighted(const MAlignment &msa,
+    static bool isCellHighlighted(const MultipleSequenceAlignment &msa,
                                   MsaHighlightingScheme* highlightingScheme,
                                   MsaColorScheme* colorScheme,
                                   int seq, int pos,

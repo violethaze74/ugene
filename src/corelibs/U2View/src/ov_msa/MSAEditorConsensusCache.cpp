@@ -21,19 +21,19 @@
 
 #include "MSAEditorConsensusCache.h"
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 namespace U2 {
 
-MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MAlignmentObject* o, MSAConsensusAlgorithmFactory* factory)
+MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MultipleSequenceAlignmentObject* o, MSAConsensusAlgorithmFactory* factory)
 : QObject(p), curCacheSize(0), aliObj(o), algorithm(NULL)
 {
     setConsensusAlgorithm(factory);
 
-    connect(aliObj, SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+        SLOT(sl_alignmentChanged()));
     connect(aliObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_invalidateAlignmentObject()));
 
     curCacheSize = aliObj->getLength();
@@ -49,12 +49,12 @@ MSAEditorConsensusCache::~MSAEditorConsensusCache() {
 void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory* factory) {
     delete algorithm;
     algorithm = NULL;
-    algorithm = factory->createAlgorithm(aliObj->getMAlignment());
+    algorithm = factory->createAlgorithm(aliObj->getMsa());
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);
 }
 
-void MSAEditorConsensusCache::sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&) {
+void MSAEditorConsensusCache::sl_alignmentChanged() {
     if(curCacheSize != aliObj->getLength()) {
         curCacheSize = aliObj->getLength();
         updateMap.resize(curCacheSize);
@@ -65,17 +65,17 @@ void MSAEditorConsensusCache::sl_alignmentChanged(const MAlignment&, const MAlig
 
 void MSAEditorConsensusCache::updateCacheItem(int pos) {
     if(!updateMap.at(pos) && aliObj != NULL) {
-        const MAlignment& ma = aliObj->getMAlignment();
+        const MultipleSequenceAlignment msa = aliObj->getMsa();
         QString errorMessage = tr("Can not update consensus chache item");
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage,);
-        SAFE_POINT(curCacheSize == ma.getLength(), errorMessage,);
+        SAFE_POINT(curCacheSize == msa->getLength(), errorMessage,);
 
         CacheItem& ci = cache[pos];
         int count = 0;
-        int nSeq = ma.getNumRows();
+        int nSeq = msa->getNumRows();
         SAFE_POINT(0 != nSeq, errorMessage,);
 
-        ci.topChar = algorithm->getConsensusCharAndScore(ma, pos, count);
+        ci.topChar = algorithm->getConsensusCharAndScore(msa, pos, count);
         ci.topPercent = (char)qRound(count * 100. / nSeq);
         assert(ci.topPercent >=0 && ci.topPercent<=100);
         updateMap.setBit(pos, true);
@@ -96,10 +96,10 @@ int MSAEditorConsensusCache::getConsensusCharPercent(int pos) {
 
 QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
     QByteArray res;
-    const MAlignment& ma = aliObj->getMAlignment();
-    for (int i=0, n = ma.getLength(); i<n; i++) {
+    const MultipleSequenceAlignment ma = aliObj->getMsa();
+    for (int i=0, n = ma->getLength(); i<n; i++) {
         char c = getConsensusChar(i);
-        if (c!=MAlignment_GapChar || withGaps) {
+        if (c!=MultipleAlignment::GapChar || withGaps) {
             res.append(c);
         }
     }

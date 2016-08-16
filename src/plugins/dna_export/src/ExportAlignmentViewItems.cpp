@@ -30,11 +30,12 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorFactory.h>
@@ -93,15 +94,15 @@ void MSAExportContext::updateActions() {
 void MSAExportContext::buildMenu(QMenu* m) {
     QMenu* exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != NULL, "exportMenu", );
-    MAlignmentObject* mObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* mObject = editor->getMSAObject();
     if (mObject->getAlphabet()->isNucleic()) {
         exportMenu->addAction(translateMSAAction);
     }
 }
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
-    const MAlignment& ma = editor->getMSAObject()->getMAlignment();
-    assert(ma.getAlphabet()->isNucleic());
+    const MultipleSequenceAlignment ma = editor->getMSAObject()->getMsa();
+    assert(ma->getAlphabet()->isNucleic());
 
     GUrl msaUrl = editor->getMSAObject()->getDocument()->getURL();
     QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMSAObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
@@ -119,7 +120,7 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
     int offset = d->exportWholeAlignment ? 0 : editor->getCurrentSelection().top();
-    int len = d->exportWholeAlignment ? ma.getNumRows() : editor->getCurrentSelection().height();
+    int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getCurrentSelection().height();
 
     Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma, offset, len, d->file, trans, d->formatId), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);

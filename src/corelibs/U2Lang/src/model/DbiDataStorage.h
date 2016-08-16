@@ -26,7 +26,7 @@
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/DNASequence.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/VariantTrackObject.h>
 
@@ -49,7 +49,7 @@ public:
     /* NOTE: deallocate memory! */
     virtual U2Object *getObject(const SharedDbiDataHandler &handler, const U2DataType &type);
     virtual SharedDbiDataHandler putSequence(const DNASequence &sequence);
-    virtual SharedDbiDataHandler putAlignment(const MAlignment &al);
+    virtual SharedDbiDataHandler putAlignment(const MultipleSequenceAlignment &al);
     virtual SharedDbiDataHandler putAnnotationTable(const QList<SharedAnnotationData> &anns);
     virtual SharedDbiDataHandler putAnnotationTable(AnnotationTableObject *annTable);
 
@@ -83,7 +83,7 @@ public:
     static U2SequenceObject *getSequenceObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler);
     static VariantTrackObject *getVariantTrackObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler);
     static AssemblyObject *getAssemblyObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler);
-    static MAlignmentObject *getMsaObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler);
+    static MultipleSequenceAlignmentObject *getMsaObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler);
 
     static AnnotationTableObject *getAnnotationTableObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler);
     static QList<AnnotationTableObject *> getAnnotationTableObjects(DbiDataStorage *storage, const QList<SharedDbiDataHandler> &handlers);

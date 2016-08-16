@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 class MsaColorSchemeCustomFactory;
 class MsaColorSchemeFactory;
 
@@ -44,7 +44,7 @@ public:
 class U2ALGORITHM_EXPORT MsaColorScheme : public QObject {
     Q_OBJECT
 public:
-    MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj);
+    MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj);
 
     //Get color for symbol "c" on position [seq, pos]. Variable "c" has been added for optimization.
     virtual QColor getColor(int seq, int pos, char c) const = 0;
@@ -76,14 +76,14 @@ public:
 
 protected:
     const MsaColorSchemeFactory * factory;
-    MAlignmentObject *      maObj;
+    MultipleSequenceAlignmentObject *      maObj;
 };
 
 class U2ALGORITHM_EXPORT MsaColorSchemeFactory : public QObject {
     Q_OBJECT
 public:
     MsaColorSchemeFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
-    virtual MsaColorScheme * create(QObject *p, MAlignmentObject *obj) const = 0;
+    virtual MsaColorScheme * create(QObject *p, MultipleSequenceAlignmentObject *obj) const = 0;
 
     const QString & getId() const;
     const QString & getName() const;

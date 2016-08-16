@@ -24,8 +24,8 @@
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentImporter.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -49,7 +49,7 @@ const QString ACEFormat::BQ = "BQ";
 ACEFormat::ACEFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(0), QStringList("ace")) {
     formatName = tr("ACE");
     formatDescription = tr("ACE is a format used for storing information about genomic confgurations");
-    supportedObjectTypes += GObjectTypes::MULTIPLE_ALIGNMENT;
+    supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
 static int modifyLine(QString &line, int pos){
@@ -256,7 +256,7 @@ static inline void parseConsensus(U2::IOAdapter *io, U2OpStatus &ti, char* buff,
         ti.setError(ACEFormat::tr("Bad consensus data"));
         return ;
     }
-    consensus.replace('*',MAlignment_GapChar);
+    consensus.replace('*',MultipleAlignment::GapChar);
 }
 
 static inline void parseAFTag(U2::IOAdapter *io, U2OpStatus &ti, char* buff, int count, QMap< QString, int> &posMap, QMap< QString, bool> &complMap, QSet<QString> &names){
@@ -384,9 +384,9 @@ static inline void parseRDandQATag(U2::IOAdapter *io, U2OpStatus &ti, char* buff
         names.remove(name);
     }
 
-    sequence.replace('*',MAlignment_GapChar);
-    sequence.replace('N',MAlignment_GapChar);
-    sequence.replace('X',MAlignment_GapChar);
+    sequence.replace('*',MultipleAlignment::GapChar);
+    sequence.replace('N',MultipleAlignment::GapChar);
+    sequence.replace('X',MultipleAlignment::GapChar);
 }
 
 /**
@@ -467,9 +467,8 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             return;
         }
 
-        MAlignment al(consName);
-        al.addRow(consName, consensus, os);
-        CHECK_OP(os, );
+        MultipleSequenceAlignment al(consName);
+        al->addRow(consName, consensus);
 
         //AF
         QMap< QString, int> posMap;
@@ -478,7 +477,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
 
         int smallestOffset = getSmallestOffset(posMap);
         if (smallestOffset < 0) {
-            al.insertGaps(0, 0, qAbs(smallestOffset), os);
+            al->insertGaps(0, 0, qAbs(smallestOffset), os);
             CHECK_OP(os, );
         }
 
@@ -498,20 +497,19 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
             }
 
             QByteArray offsetGaps;
-            offsetGaps.fill(MAlignment_GapChar, pos);
+            offsetGaps.fill(MultipleAlignment::GapChar, pos);
             sequence.prepend(offsetGaps);
-            al.addRow(rowName, sequence, os);
-            CHECK_OP(os, );
+            al->addRow(rowName, sequence);
 
             count--;
             os.setProgress(io->getProgress());
         }
         U2AlphabetUtils::assignAlphabet(al);
-        CHECK_EXT(al.getAlphabet() != NULL, ACEFormat::tr("Alphabet unknown"), );
+        CHECK_EXT(al->getAlphabet() != NULL, ACEFormat::tr("Alphabet unknown"), );
 
         const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-        MAlignmentObject* obj = MAlignmentImporter::createAlignment(dbiRef, folder, al, os);
+        MultipleSequenceAlignmentObject* obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
         CHECK_OP(os, );
         objects.append(obj);
     }

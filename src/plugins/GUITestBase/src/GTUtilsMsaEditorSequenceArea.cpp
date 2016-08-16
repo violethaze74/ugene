@@ -23,23 +23,25 @@
 #include <QStyle>
 #include <QStyleOptionSlider>
 
+#include <api/GTMSAEditorStatusWidget.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTWidget.h>
+#include <primitives/PopupChooser.h>
+#include <system/GTClipboard.h>
+#include <utils/GTKeyboardUtils.h>
+#include <utils/GTThread.h>
+
 #include <U2Core/AppContext.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MsaEditorSimilarityColumn.h>
 
-#include "GTUtilsMsaEditor.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
-#include "primitives/GTAction.h"
-#include "system/GTClipboard.h"
-#include <drivers/GTKeyboardDriver.h>
-#include "utils/GTKeyboardUtils.h"
-#include "api/GTMSAEditorStatusWidget.h"
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTWidget.h>
-#include <utils/GTThread.h>
-#include "primitives/PopupChooser.h"
 #include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
 
 namespace U2 {
@@ -241,7 +243,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getNameList(HI::GUITestOpStatus &os) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR_RESULT(editor != NULL, "MsaEditor not found", QStringList());
 
-    QStringList result = editor->getMSAObject()->getMAlignment().getRowNames();
+    QStringList result = editor->getMSAObject()->getMsa()->getRowNames();
 
     return result;
 }
@@ -264,8 +266,9 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(HI::GUITestOpStatus &o
 
     QStringList visiableRowNames;
     foreach(U2Region region, rows){
-        for(int x = region.startPos; x < region.endPos(); x++)
-            visiableRowNames.append(editor->getMSAObject()->getRow(x).getName());
+        for(int x = region.startPos; x < region.endPos(); x++) {
+            visiableRowNames.append(editor->getMSAObject()->getRow(x)->getName());
+        }
     }
 
     return visiableRowNames;
@@ -431,8 +434,9 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(HI::GUITestOpStatus &os, c
 //Seq names are drawn on widget, so this hack is needed
     U2Region selectedRowsRegion = msaEditArea->getSelectedRows();
     QStringList selectedRowNames;
-    for(int x = selectedRowsRegion.startPos; x < selectedRowsRegion.endPos(); x++)
-        selectedRowNames.append(editor->getMSAObject()->getRow(x).getName());
+    for(int x = selectedRowsRegion.startPos; x < selectedRowsRegion.endPos(); x++) {
+        selectedRowNames.append(editor->getMSAObject()->getRow(x)->getName());
+    }
 
     if (selectedRowNames.contains(seqName)) {
         return true;

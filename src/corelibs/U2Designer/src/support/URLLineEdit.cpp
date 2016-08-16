@@ -19,16 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QFocusEvent>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLayout>
-#else
-#include <QtWidgets/QLayout>
-#endif
+#include <QFocusEvent>
+#include <QLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SuggestCompleter.h>

@@ -22,11 +22,13 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Designer/MarkerEditor.h>
 #include <U2Designer/MarkerEditorWidget.h>
 
 #include <U2Gui/HelpButton.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Lang/Marker.h>
 #include <U2Lang/MarkerUtils.h>

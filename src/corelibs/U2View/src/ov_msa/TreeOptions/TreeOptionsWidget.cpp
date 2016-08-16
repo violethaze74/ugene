@@ -30,7 +30,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>

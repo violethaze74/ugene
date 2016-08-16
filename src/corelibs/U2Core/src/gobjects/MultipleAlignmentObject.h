@@ -1,0 +1,211 @@
+/**
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * http://ugene.unipro.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
+
+#ifndef _U2_MULTIPLE_ALIGNMENT_OBJECT_H_
+#define _U2_MULTIPLE_ALIGNMENT_OBJECT_H_
+
+#include <U2Core/GObject.h>
+#include <U2Core/MultipleAlignment.h>
+
+namespace U2 {
+
+const int GAP_COLUMN_ONLY = -1;
+
+enum MaModificationType {
+    MaModificationType_User,
+    MaModificationType_Undo,
+    MaModificationType_Redo
+};
+
+class U2CORE_EXPORT MaModificationInfo {
+public:
+    MaModificationInfo();
+
+    bool rowContentChanged;
+    bool rowListChanged;
+    bool alignmentLengthChanged;
+    bool middleState;
+    bool alphabetChanged;
+    QVariantMap hints;
+    QList<qint64> modifiedRowIds;
+    MaModificationType type;
+
+private:
+    static bool registerMeta;
+};
+
+#define MOBJECT_MIN_FONT_SIZE 8
+#define MOBJECT_MAX_FONT_SIZE 18
+#define MOBJECT_MIN_COLUMN_WIDTH 1
+
+#define MOBJECT_SETTINGS_ROOT QString("msaeditor/")
+#define MOBJECT_SETTINGS_COLOR_NUCL     "color_nucl"
+#define MOBJECT_SETTINGS_COLOR_AMINO    "color_amino"
+#define MOBJECT_SETTINGS_FONT_FAMILY    "font_family"
+#define MOBJECT_SETTINGS_FONT_SIZE      "font_size"
+#define MOBJECT_SETTINGS_FONT_ITALIC    "font_italic"
+#define MOBJECT_SETTINGS_FONT_BOLD      "font_bold"
+#define MOBJECT_SETTINGS_ZOOM_FACTOR    "zoom_factor"
+
+#define MOBJECT_DEFAULT_FONT_FAMILY "Verdana"
+#define MOBJECT_DEFAULT_FONT_SIZE 10
+#define MOBJECT_DEFAULT_ZOOM_FACTOR 1.0f
+
+class MaSavedState {
+public:
+    MaSavedState();
+    ~MaSavedState();
+
+    bool hasState() const;
+    const MultipleAlignment takeState();
+    void setState(const MultipleAlignment &ma);
+
+private:
+    MultipleAlignment *lastState;
+};
+
+class U2CORE_EXPORT MultipleAlignmentObject : public GObject {
+    Q_OBJECT
+public:
+    MultipleAlignmentObject(const QString &gobjectType,
+                            const QString &name,
+                            const U2EntityRef &maRef,
+                            const QVariantMap &hintsMap,
+                            const MultipleAlignment &alignment);
+    ~MultipleAlignmentObject();
+
+    /** Sets type of modifications tracking for the alignment */
+    void setTrackMod(U2OpStatus &os, U2TrackModType trackMod);
+
+    const MultipleAlignment & getMultipleAlignment() const;
+    void setMultipleAlignment(const MultipleAlignment &ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap &hints = QVariantMap());
+
+    /** GObject methods */
+    void setGObjectName(const QString &newName);
+
+    /** Const getters */
+    bool isRegionEmpty(int x, int y, int width, int height) const;
+    const DNAAlphabet * getAlphabet() const;
+    qint64 getLength() const;
+    qint64 getNumRows() const;
+    const MultipleAlignmentRow & getRow(int row) const;
+    int getRowPosById(qint64 rowId) const;
+
+    /** Methods that modify the gap model only */
+    void insertGap(const U2Region &rows, int pos, int nGaps);
+
+    /**
+     * Removes gap region that extends from the @pos column and is no longer than @maxGaps.
+     * If the region starting from @pos and having width of @maxGaps includes any non-gap symbols
+     * then its longest subset starting from @pos and containing gaps only is removed.
+     *
+     * If the given region is a subset of a trailing gaps area then nothing happens.
+     */
+    int deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
+
+    /**
+     * Updates a gap model of the alignment.
+     * The map must contain valid row IDs and corresponding gap models.
+     */
+    void updateGapModel(U2OpStatus &os, const U2MaMapGapModel &rowsGapModel);
+    void updateGapModel(const QList<MultipleAlignmentRow> &sourceRows);
+
+    U2MaMapGapModel getGapModel() const;
+
+    /** Methods to work with rows */
+    void removeRow(int rowIdx);
+    void renameRow(int rowIdx, const QString &newName);
+    void moveRowsBlock(int firstRow, int numRows, int delta);
+
+    /**
+     * Updates the rows order.
+     * There must be one-to-one correspondence between the specified rows IDs
+     * and rows IDs of the alignment.
+     */
+    void updateRowsOrder(U2OpStatus &os, const QList<qint64> &rowIds);
+
+    /** Method that affect the whole alignment, including sequences
+     */
+    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track = true);
+
+    void crop(const U2Region &window, const QSet<QString> &rowNames);
+    /**
+     * Performs shift of the region specified by parameters @startPos (leftmost column number),
+     * @startRow (top row number), @nBases (region width), @nRows (region height) in no more
+     * than @shift bases.
+     *
+     * @startPos and @startRow must be non-negative numbers, @nBases and @nRows - strictly
+     * positive. The sign of @shift parameter specifies the direction of shifting: positive
+     * for right direction, negative for left one. If 0 == @shift nothing happens.
+     *
+     * Shifting to the left may be performed only if a region preceding the selection
+     * and having the same height consists of gaps only. In this case selected region
+     * is moved to the left in the width of the preceding gap region but no more
+     * than |@shift| bases.
+     *
+     * Returns shift size, besides sign of the returning value specifies direction of the shift
+     */
+    int shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift);
+    void deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount);
+    void deleteColumnWithGaps(int requiredGapCount = GAP_COLUMN_ONLY);
+    QList<qint64> getColumnsWithGaps(int requiredGapCount = GAP_COLUMN_ONLY) const;
+    void updateCachedMultipleAlignment(const MaModificationInfo &mi = MaModificationInfo(), const QList<qint64> &removedRowIds = QList<qint64>());
+    void sortRowsByList(const QStringList &order);
+
+    void saveState();
+    void releaseState();
+
+signals:
+    void si_startMaUpdating();
+    void si_alignmentChanged(const MultipleAlignment &maBefore, const MaModificationInfo &modInfo);
+    void si_alignmentBecomesEmpty(bool isEmpty);
+    void si_completeStateChanged(bool complete);
+    void si_rowsRemoved(const QList<qint64> &rowIds);
+    void si_invalidateAlignmentObject();
+    void si_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
+
+protected:
+    virtual void loadAlignment(U2OpStatus &os) = 0;
+    virtual void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds) = 0;
+    virtual void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) = 0;
+
+    MultipleAlignment cachedMa;
+
+private:
+    void loadDataCore(U2OpStatus &os);
+    /**
+     * Returns maximum count of subsequent gap columns in the region that starts from column
+     * with @pos number, has width of @maxGaps and includes the rows specified by @rows.
+     * @maxGaps, @pos are to be non-negative numbers. Gap columns should finish in column
+     * having @pos + @maxGaps number, otherwise 0 is returned. If the region is located
+     * in the MSA trailing gaps area, then 0 is returned.
+     */
+    int getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
+
+
+    MaSavedState savedState;
+
+    static const int GAP_COLUMN_ONLY;
+};
+
+}   // namespace U2
+
+#endif // _U2_MULTIPLE_ALIGNMENT_OBJECT_H_
