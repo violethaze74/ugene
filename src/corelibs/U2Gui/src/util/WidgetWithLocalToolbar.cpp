@@ -42,6 +42,8 @@ WidgetWithLocalToolbar::WidgetWithLocalToolbar(QWidget *p)
     layout->addWidget(toolBar);
     layout->addWidget(contentWidget);
 
+    contentWidget->setMouseTracking(true);
+    setMouseTracking(true);
     QWidget::setLayout(layout);
 }
 
