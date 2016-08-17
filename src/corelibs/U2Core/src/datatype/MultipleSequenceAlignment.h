@@ -29,7 +29,7 @@ namespace U2 {
 
 class MultipleSequenceAlignmentData;
 
-class MultipleSequenceAlignment : public MultipleAlignment {
+class U2CORE_EXPORT MultipleSequenceAlignment : public MultipleAlignment {
 public:
     MultipleSequenceAlignment(const QString &name = QString(),
                               const DNAAlphabet *alphabet = NULL,

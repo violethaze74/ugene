@@ -37,7 +37,7 @@ class DNAAlphabet;
 
 class MultipleAlignmentData;
 
-class MultipleAlignment {
+class U2CORE_EXPORT MultipleAlignment {
 protected:
     MultipleAlignment(MultipleAlignmentData *multipleAlignmentData);
 

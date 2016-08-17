@@ -34,7 +34,7 @@ class MultipleSequenceAlignment;
 class MultipleSequenceAlignmentData;
 class MultipleSequenceAlignmentRowData;
 
-class MultipleSequenceAlignmentRow : public MultipleAlignmentRow {
+class U2CORE_EXPORT MultipleSequenceAlignmentRow : public MultipleAlignmentRow {
     friend class MultipleSequenceAlignmentData;
     friend class MultipleSequenceAlignmentRowData;
 

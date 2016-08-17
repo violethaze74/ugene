@@ -34,7 +34,7 @@ class MultipleAlignmentData;
 class MultipleAlignmentRowData;
 class U2OpStatus;
 
-class MultipleAlignmentRow {
+class U2CORE_EXPORT MultipleAlignmentRow {
     friend class MultipleAlignmentData;
 
 protected:
