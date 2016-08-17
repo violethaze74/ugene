@@ -50,7 +50,7 @@ public:
     virtual U2Object *getObject(const SharedDbiDataHandler &handler, const U2DataType &type);
     virtual SharedDbiDataHandler putSequence(const DNASequence &sequence);
     virtual SharedDbiDataHandler putAlignment(const MAlignment &al);
-    virtual SharedDbiDataHandler putAnnotationTable(const QList<SharedAnnotationData> &anns);
+    virtual SharedDbiDataHandler putAnnotationTable(const QList<SharedAnnotationData> &anns, const QString annTableName = "Annotations");
     virtual SharedDbiDataHandler putAnnotationTable(AnnotationTableObject *annTable);
 
     // returns QVariant with QVariantList inside, which have SharedDbiDataHandler in each QVariant
