@@ -3899,7 +3899,7 @@ GUI_TEST_CLASS_DEFINITION(test_4710_1){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTUtilsWorkflowDesigner::click(os, "Read alignment");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta", "PF07724_full_family.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep();
 //    Expected state: Close dashboard tab button is disabled

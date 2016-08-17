@@ -7889,15 +7889,16 @@ GUI_TEST_CLASS_DEFINITION(test_1763_2){
 //    Improve dashboards: If a workflow contains an element with an external tool, the log or parameters list of the tool run should be added to the dashboard.
 
 //    1. Create Read alignment->Align with ClustalO->Write alignment workflow.
+//    2. Set COI.aln as input file
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+
     WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Alignment");
     WorkflowProcessItem* align = GTUtilsWorkflowDesigner::addElement(os, "Align with ClustalO");
     GTUtilsWorkflowDesigner::connect(os, read, align);
     GTUtilsWorkflowDesigner::connect(os, align, write);
-//    2. Set COI.aln as input file
-    GTUtilsWorkflowDesigner::click(os, read);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+
 //    3. Start workflow
     GTUtilsWorkflowDesigner::runWorkflow(os);
 //    Expected state: Workflow dasboard opened and dashboard has External Tools tab
