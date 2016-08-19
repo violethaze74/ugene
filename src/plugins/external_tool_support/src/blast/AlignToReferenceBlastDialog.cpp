@@ -21,8 +21,14 @@
 
 #include "AlignToReferenceBlastDialog.h"
 
-#include <U2Gui/HelpButton.h>
 #include <U2Core/CmdlineInOutTaskRunner.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/HelpButton.h>
+#include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/U2FileDialog.h>
+
+#include <QMessageBox>
 
 
 namespace U2 {
@@ -47,10 +53,10 @@ AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Setting
 void AlignToReferenceBlastCmdlineTask::prepare() {
     CmdlineInOutTaskConfig config;
 
-    config.command = "--" + ALIGN_TO_REF_CMDLINE;
+    config.command = "--task=" + ALIGN_TO_REF_CMDLINE;
     QString argString = "--%1=\"%2\"";
     config.arguments << argString.arg(REF_ARG).arg(settings.referenceUrl);
-    config.arguments << argString.arg(READS_ARG).arg(settings.readUrl.join(";"));
+    config.arguments << argString.arg(READS_ARG).arg(settings.readUrls.join(";"));
     config.arguments << argString.arg(MIN_ADENTITY_ARG).arg(settings.minIdentity);
     config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
     config.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
@@ -69,6 +75,8 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+
+    connectSlots();
 }
 
 AlignToReferenceBlastCmdlineTask::Settings AlignToReferenceBlastDialog::getSettings() const {
@@ -76,8 +84,96 @@ AlignToReferenceBlastCmdlineTask::Settings AlignToReferenceBlastDialog::getSetti
 }
 
 void AlignToReferenceBlastDialog::accept() {
-    // fill the settings
-    accept();
+    if (referenceLineEdit->text().isEmpty()) {
+        QMessageBox::warning(this, tr("Error"),
+                             tr("Reference sequence is not set."));
+        return;
+    }
+    settings.referenceUrl = referenceLineEdit->text();
+
+    if (readsListWidget->count() == 0) {
+        QMessageBox::warning(this, tr("Error"),
+                             tr("No reads provided."));
+        return;
+    }
+    QStringList readUrls;
+    for (int i = 1; i < readsListWidget->count(); i++) {
+        QListWidgetItem* item = readsListWidget->item(i);
+        SAFE_POINT(item != NULL, "Item is NULL", );
+        QString s = item->text();
+        readUrls.append(s);
+    }
+    settings.readUrls = readUrls;
+
+    settings.minIdentity = minIdentitySpinBox->value();
+    settings.minLength = minLenSpinBox->value();
+    settings.qualityThreshold = qualitySpinBox->value();
+    settings.trimBothEnds = trimCheckBox->isChecked();
+
+    if (outputLineEdit->text().isEmpty()) {
+        QMessageBox::warning(this, tr("Error"),
+                             tr("Output file is not set."));
+        return;
+    }
+    settings.outAlignment = outputLineEdit->text();
+    settings.addResultToProject = addToProjectCheckbox->isChecked();
+
+    QDialog::accept();
+}
+
+void AlignToReferenceBlastDialog::sl_setReference() {
+    LastUsedDirHelper lod;
+    QString filter;
+
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Open reference sequence"), lod.dir, filter);
+    if (lod.url.isEmpty()) {
+        return;
+    }
+    referenceLineEdit->setText(lod.url);
+}
+
+void AlignToReferenceBlastDialog::sl_addRead() {
+    LastUsedDirHelper lod;
+    QString filter;
+
+    QStringList readFiles = U2FileDialog::getOpenFileNames(this, tr("Select file(s) with read(s)"), lod.dir, filter);
+    if (readFiles.isEmpty()) {
+        return;
+    }
+
+    foreach (const QString& read, readFiles) {
+        if (readsListWidget->findItems(read, Qt::MatchExactly).isEmpty()) {
+            readsListWidget->addItem(read);
+        }
+    }
+}
+
+void AlignToReferenceBlastDialog::sl_removeRead() {
+    QList<QListWidgetItem*> selection = readsListWidget->selectedItems();
+    CHECK(!selection.isEmpty(), );
+
+    foreach (QListWidgetItem* item, selection) {
+        readsListWidget->takeItem(readsListWidget->row(item));
+    }
+}
+
+void AlignToReferenceBlastDialog::sl_setOutput() {
+    LastUsedDirHelper lod;
+    QString filter;
+
+    lod.url = U2FileDialog::getSaveFileName(this, tr("Select output file"), lod.dir, filter);
+    if (lod.url.isEmpty()) {
+        return;
+    }
+
+    outputLineEdit->setText(lod.url);
+}
+
+void AlignToReferenceBlastDialog::connectSlots() {
+    connect(setReferenceButton, SIGNAL(clicked(bool)), SLOT(sl_setReference()));
+    connect(addReadButton, SIGNAL(clicked(bool)), SLOT(sl_addRead()));
+    connect(removeReadButton, SIGNAL(clicked(bool)), SLOT(sl_removeRead()));
+    connect(setOutputButton, SIGNAL(clicked(bool)), SLOT(sl_setOutput()));
 }
 
 } // namespace

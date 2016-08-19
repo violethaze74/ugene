@@ -44,7 +44,7 @@ public:
               addResultToProject(true)
         {}
         QString referenceUrl;
-        QStringList readUrl;
+        QStringList readUrls;
         int minIdentity;
         int minLength;
         int qualityThreshold;
@@ -78,7 +78,15 @@ public:
 
     void accept();
 
+private slots:
+    void sl_setReference();
+    void sl_addRead();
+    void sl_removeRead();
+    void sl_setOutput();
+
 private:
+    void connectSlots();
+
     AlignToReferenceBlastCmdlineTask::Settings settings;
 };
 

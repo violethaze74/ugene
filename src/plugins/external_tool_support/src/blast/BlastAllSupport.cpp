@@ -128,6 +128,10 @@ void BlastAllSupport::sl_runAlign() {
     dlg->exec();
     CHECK(!dlg.isNull(), );
     CHECK(dlg->result() == QDialog::Accepted, );
+
+    AlignToReferenceBlastCmdlineTask::Settings settings = dlg->getSettings();
+    AlignToReferenceBlastCmdlineTask* task = new AlignToReferenceBlastCmdlineTask(settings);
+    AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 ////////////////////////////////////////
