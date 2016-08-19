@@ -48,6 +48,8 @@
 #include "utils/BlastTaskSettings.h"
 #include "utils/ExternalToolSupportAction.h"
 
+#include "AlignToReferenceBlastDialog.h"
+
 namespace U2 {
 
 BlastAllSupport::BlastAllSupport(const QString& name, const QString& path) : ExternalTool(name, path)
@@ -120,6 +122,14 @@ void BlastAllSupport::sl_runWithExtFileSpecify(){
     BlastAllSupportMultiTask* blastallSupportMultiTask = new BlastAllSupportMultiTask(settingsList,settingsList[0].outputResFile);
     AppContext::getTaskScheduler()->registerTopLevelTask(blastallSupportMultiTask);
 }
+
+void BlastAllSupport::sl_runAlign() {
+    QObjectScopedPointer<AlignToReferenceBlastDialog> dlg = new AlignToReferenceBlastDialog(AppContext::getMainWindow()->getQMainWindow());
+    dlg->exec();
+    CHECK(!dlg.isNull(), );
+    CHECK(dlg->result() == QDialog::Accepted, );
+}
+
 ////////////////////////////////////////
 //BlastAllSupportContext
 BlastAllSupportContext::BlastAllSupportContext(QObject* p) : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
@@ -139,12 +149,12 @@ void BlastAllSupportContext::initViewContext(GObjectView* view) {
 }
 
 void BlastAllSupportContext::buildMenu(GObjectView* view, QMenu* m) {
-        QList<GObjectViewAction *> actions = getViewActions(view);
-        QMenu* analyseMenu = GUIUtils::findSubMenu(m, ADV_MENU_ANALYSE);
-        SAFE_POINT(analyseMenu != NULL, "analyzeMenu", );
-        foreach(GObjectViewAction* a, actions) {
-                a->addToMenuWithOrder(analyseMenu);
-        }
+    QList<GObjectViewAction *> actions = getViewActions(view);
+    QMenu* analyseMenu = GUIUtils::findSubMenu(m, ADV_MENU_ANALYSE);
+    SAFE_POINT(analyseMenu != NULL, L10N::nullPointerError("analyzeMenu"), );
+    foreach(GObjectViewAction* a, actions) {
+        a->addToMenuWithOrder(analyseMenu);
+    }
 }
 
 void BlastAllSupportContext::sl_showDialog() {
