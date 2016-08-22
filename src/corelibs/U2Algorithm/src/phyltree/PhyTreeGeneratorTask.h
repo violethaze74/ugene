@@ -32,13 +32,13 @@ class U2ALGORITHM_EXPORT PhyTreeGeneratorTask: public Task{
     Q_OBJECT
 public:
     PhyTreeGeneratorTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings);
-    ~PhyTreeGeneratorTask(){};
+    ~PhyTreeGeneratorTask(){}
     void run();
     PhyTree getResult() { return result; }
     const CreatePhyTreeSettings& getSettings() { return settings; }
     ReportResult report();
 protected:
-    const MultipleSequenceAlignment&           inputMA;
+    const MultipleSequenceAlignment inputMA;
     PhyTree                     result;
     CreatePhyTreeSettings       settings;
 };
