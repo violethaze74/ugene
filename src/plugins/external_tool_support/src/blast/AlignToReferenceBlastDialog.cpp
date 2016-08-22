@@ -68,6 +68,8 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     config.arguments << argString.arg(TRIM_ARG).arg(settings.trimBothEnds);
     config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(settings.outAlignment);
 
+    config.emptyOutputPossible = true;
+
     cmdlineTask = new CmdlineInOutTaskRunner(config);
     addSubTask(cmdlineTask);
 }
