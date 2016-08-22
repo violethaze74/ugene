@@ -1036,16 +1036,12 @@ GUI_TEST_CLASS_DEFINITION(test_2093_1) {
     GTGlobals::sleep();
 
 //    2. Select "Load schema" button on the dashboard menu line.
-    GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboard(os));
-
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
-
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "", "BUTTON", true));
-
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "", "BUTTON"));
     GTGlobals::sleep();
 
 //    Expected result: the scheme with parameters is loaded.
-    WorkflowProcessItem* wdElement = GTUtilsWorkflowDesigner::getWorker(os, "File list");
+    WorkflowProcessItem* wdElement = GTUtilsWorkflowDesigner::getWorker(os, "File List");
     CHECK_SET_ERR(wdElement, "Schema wasn't loaded");
 }
 

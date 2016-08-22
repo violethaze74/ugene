@@ -63,13 +63,13 @@ private slots:
 
 private:
     Task * takeParameters(QString &formatId, SaveDocFlags &fl, QString &resultPath, U2DbiRef &dstDbiRef, DataStorage &storage);
-    void updateResultPath(int metadataId, const QString &formatId, DataStorage storage, QString &resultPath);
+    void updateResultPath(int metadataId, const QString &formatId, DataStorage storage, QString &resultPath, bool byDataset = false);
     QString fetchIncomingSequenceName(const QVariantMap &incomingData);
-    QString getAnnotationName() const;
+    bool getMergeAttribute() const;
+    QString getAnnotationTableName() const;
     void fetchIncomingAnnotations(const QVariantMap &incomingData, const QString &resultPath);
 
-    bool shouldAnnotationTablesBeMerged() const;
-    AnnotationTableObject *mergeAnnotationTables(const QList<AnnotationTableObject *> &annTables, const QString &mergedTableName) const;
+    void mergeAnnTablesIfNecessary(QList<AnnotationTableObject *> &annTables) const;
 
     Task * getSaveDocTask(const QString &formatId, SaveDocFlags &fl);
     Task * getSaveObjTask(const U2DbiRef &dstDbiRef) const;
