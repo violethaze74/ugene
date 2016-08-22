@@ -21,11 +21,16 @@
 
 #include "AlignToReferenceBlastDialog.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/CmdlineInOutTaskRunner.h>
+#include <U2Core/DocumentUtils.h>
+#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/LoadDocumentTask.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/OpenViewTask.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <QMessageBox>
@@ -65,6 +70,30 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
 
     cmdlineTask = new CmdlineInOutTaskRunner(config);
     addSubTask(cmdlineTask);
+}
+
+QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) {
+    QList<Task*> result;
+    CHECK(subTask != NULL, result);
+    CHECK(!subTask->isCanceled() && !subTask->hasError(), result);
+
+    if (subTask == cmdlineTask && settings.addResultToProject) {
+        // add load document task
+        FormatDetectionConfig config;
+        QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.outAlignment, config);
+        CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError("wrong output format"), result);
+
+        DocumentFormat *format = formats.first().format;
+        CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), setError("wrong output format"), result);
+
+        LoadDocumentTask *loadTask= new LoadDocumentTask(format->getFormatId(),
+                                                         settings.outAlignment, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.outAlignment)));
+        AddDocumentAndOpenViewTask *openTask = new AddDocumentAndOpenViewTask(loadTask);
+        AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
+
+    }
+
+    return result;
 }
 
 AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)

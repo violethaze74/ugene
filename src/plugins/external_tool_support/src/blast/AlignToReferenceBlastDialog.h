@@ -55,6 +55,7 @@ public:
 
     AlignToReferenceBlastCmdlineTask(const Settings& settings);
     void prepare();
+    QList<Task*> onSubTaskFinished(Task *subTask);
 
     static const QString ALIGN_TO_REF_CMDLINE;
     static const QString REF_ARG;
