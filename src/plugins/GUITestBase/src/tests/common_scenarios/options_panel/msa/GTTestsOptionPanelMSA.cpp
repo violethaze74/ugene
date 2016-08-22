@@ -371,19 +371,20 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0003){
     GTUtilsMSAEditorSequenceArea::deleteColorScheme(os, scheme);
     GTGlobals::sleep(500);
 
-//    UGENE not crashess
-//    no color sheme is selected
-    QString s = colorScheme->currentText();
-    CHECK_SET_ERR(colorScheme->currentText() == "No colors", "wrong color scheme selected");
-    QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,0));
-    QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,2));
-    QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2,0));
-    QString c = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4,0));
-    QString gap = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4,2));
-    CHECK_SET_ERR(a == "#ffffff", QString("a has color %1").arg(a));
-    CHECK_SET_ERR(t == "#ffffff", QString("t has color %1").arg(t));
-    CHECK_SET_ERR(g == "#ffffff", QString("g has color %1").arg(g));
-    CHECK_SET_ERR(c == "#ffffff", QString("c has color %1").arg(c));
+//    UGENE not crashes
+//    default color sheme is selected
+    const QString currentScheme = colorScheme->currentText();
+    CHECK_SET_ERR(currentScheme == "UGENE", QString("wrong color scheme selected: expected '%1', got '%2'").arg("UGENE").arg(currentScheme));
+
+    const QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 0));
+    const QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0, 2));
+    const QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
+    const QString c = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 0));
+    const QString gap = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 2));
+    CHECK_SET_ERR(a == "#fcff92", QString("a has color %1").arg(a));
+    CHECK_SET_ERR(t == "#ff99b1", QString("t has color %1").arg(t));
+    CHECK_SET_ERR(g == "#4eade1", QString("g has color %1").arg(g));
+    CHECK_SET_ERR(c == "#70f970", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 }
 
