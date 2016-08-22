@@ -147,8 +147,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Read Sequence"));
     GTMouseDriver::click();
 
-    QString dirPath = dataDir + "samples/FASTA/";
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dirPath, "human_T1.fa" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/FASTA/human_T1.fa" );
     GTWidget::click( os,GTAction::button( os,"Run workflow" ) );
     GTGlobals::sleep( 200 );
 

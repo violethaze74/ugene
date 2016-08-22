@@ -795,7 +795,7 @@ GUI_TEST_CLASS_DEFINITION(test_1038) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     WorkflowProcessItem* readAsmbl = GTUtilsWorkflowDesigner::addElement(os, "Read Assembly");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam", "small.bam.sorted.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/small.bam.sorted.bam");
 
     WorkflowProcessItem* split = GTUtilsWorkflowDesigner::addElement(os, "Split Assembly into Sequences");
     WorkflowProcessItem* writeSeq = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
@@ -3483,7 +3483,7 @@ GUI_TEST_CLASS_DEFINITION(test_1319){
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: bottom datasets panel is visible.
 //    4) Add one input file.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
 //    Expected state: the element's doc has the blue link to this file.
 //    6) Right click on the link.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Open document(s)"));
@@ -3521,8 +3521,8 @@ GUI_TEST_CLASS_DEFINITION(test_1319_2){
     GTUtilsWorkflowDesigner::click(os, item);
 //    Expected state: bottom datasets panel is visible.
 //    4) Add two input files.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/murine.gb");
 //    Expected state: the element's doc has the blue link to this files.
 //    6) Right click on the link.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList()<<"Open document(s)"));
@@ -3831,7 +3831,7 @@ GUI_TEST_CLASS_DEFINITION(test_1358) {
     CHECK_OP(os, );
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Genbank/", "murine.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Genbank/murine.gb");
     //2. Press "Run schema"
 
     //Expected state: UGENE doesn't crash
@@ -3854,7 +3854,7 @@ GUI_TEST_CLASS_DEFINITION(test_1360){
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    5) Specify any input data
     GTUtilsWorkflowDesigner::click(os, "Read Alignment");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     QString s = read->getProcess()->getDescription()->toPlainText();
     CHECK_SET_ERR(s.contains("COI.aln"), "unexpected worker text: " + s);
@@ -5189,10 +5189,10 @@ GUI_TEST_CLASS_DEFINITION(test_1510) {
     GTUtilsWorkflowDesigner::connect(os, readSeq, toBam);
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/FASTA/", "human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/FASTA/human_T1.fa");
     GTGlobals::sleep();
     GTUtilsWorkflowDesigner::click(os, "Read Sequence 1");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/FASTA/", "human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/FASTA/human_T1.fa");
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
@@ -5939,7 +5939,7 @@ GUI_TEST_CLASS_DEFINITION( test_1594 ) {
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    2. Set the input annotations file: "_common_data/bed/valid_input/Treatment_tags.bed".
     GTUtilsWorkflowDesigner::click(os, read);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Chip-seq/input_data", "chr4.bed");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Chip-seq/input_data/chr4.bed");
 //    3. Set the correct output directory for the MACS element.
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output directory", QDir().absoluteFilePath(sandBoxDir + "test_1594"), GTUtilsWorkflowDesigner::textValue);
@@ -5976,8 +5976,8 @@ GUI_TEST_CLASS_DEFINITION( test_1595 ){
 //    3) Click it.
 //    Expected: datasets widget appears.
 //    4) Add several files.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank", "sars.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/sars.gb");
 //    5) Select some of the added items in the list.
     QWidget* datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     QListWidget* items = GTWidget::findExactWidget<QListWidget*>(os, "itemsArea", datasetWidget);
@@ -7658,11 +7658,11 @@ GUI_TEST_CLASS_DEFINITION(test_1733){
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.fa");
 
 }
 
@@ -7756,11 +7756,11 @@ GUI_TEST_CLASS_DEFINITION(test_1738){
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/", "Mycobacterium.sorted.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/Mycobacterium.sorted.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/", "Mycobacterium.fna");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/Mycobacterium.fna");
 
     GTWidget::click(os,GTAction::button(os,"Run workflow"));
     GTGlobals::sleep(5000);
@@ -7855,7 +7855,7 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1){
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    2. Set any input/output files
     GTUtilsWorkflowDesigner::click(os, read);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
 //    3. Start workflow
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -7892,7 +7892,7 @@ GUI_TEST_CLASS_DEFINITION(test_1763_2){
 //    2. Set COI.aln as input file
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln");
 
     WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Alignment");
     WorkflowProcessItem* align = GTUtilsWorkflowDesigner::addElement(os, "Align with ClustalO");
@@ -7923,7 +7923,7 @@ GUI_TEST_CLASS_DEFINITION(test_1764){
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    3) Set input sequence to "human_T1.fa" from "data/samples/FASTA", set output filename to "readed_fasta.fa"
     GTUtilsWorkflowDesigner::click(os, read);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "readed_fasta.fa", GTUtilsWorkflowDesigner::textValue);
 //    4) Run workflow, click on dashboard "readed_fasta.fa"
@@ -8065,7 +8065,7 @@ GUI_TEST_CLASS_DEFINITION(test_1808) {
     // 3.Select any input and output file
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Annotations"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank", "sars.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/sars.gb");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Write Annotations"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", outputFilePath, GTUtilsWorkflowDesigner::textValue);
@@ -8220,7 +8220,7 @@ GUI_TEST_CLASS_DEFINITION( test_1859 ) {
     // 4) Set input file
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, annReaderName ) );
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/Genbank", "sars.gb" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/Genbank/sars.gb" );
 
     GTLogTracer lt;
 
@@ -8429,11 +8429,11 @@ GUI_TEST_CLASS_DEFINITION(test_1908){
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.fa");
 
 }
 
@@ -8497,7 +8497,7 @@ GUI_TEST_CLASS_DEFINITION( test_1919 )
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "File List"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam", "scerevisiae.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bam/scerevisiae.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "File Format Conversion"));
     GTMouseDriver::click();

@@ -141,23 +141,23 @@ GUI_TEST_CLASS_DEFINITION(test_5012) {
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
     GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam1.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam1.sam");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam2.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam2.sam");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam3.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam3.sam");
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "pBR322.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/pBR322.gb");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "JQ040024.1.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/JQ040024.1.gb");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.fa");
 
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir(sandBoxDir).absoluteFilePath("test_5012.vcf"), GTUtilsWorkflowDesigner::textValue);
@@ -172,17 +172,17 @@ GUI_TEST_CLASS_DEFINITION(test_5012_1) {
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
     GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam1.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam1.sam");
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "pBR322.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/pBR322.gb");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "JQ040024.1.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/JQ040024.1.gb");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.fa");
 
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir(sandBoxDir).absoluteFilePath("test_5012_1.vcf"), GTUtilsWorkflowDesigner::textValue);
@@ -199,14 +199,14 @@ GUI_TEST_CLASS_DEFINITION(test_5012_2) {
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
     GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam1.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam1.sam");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam2.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam2.sam");
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "pBR322.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/pBR322.gb");
 
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir(sandBoxDir).absoluteFilePath("test_5012_2.vcf"), GTUtilsWorkflowDesigner::textValue);
@@ -282,7 +282,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
     GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf", "valid.vcf");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -322,7 +322,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
     GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf", "valid.vcf");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

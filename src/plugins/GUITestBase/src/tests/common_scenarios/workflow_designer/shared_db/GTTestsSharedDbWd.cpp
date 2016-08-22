@@ -257,7 +257,7 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0009) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/ugenedb/", "Klebsislla.sort.bam.ugenedb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/ugenedb/Klebsislla.sort.bam.ugenedb");
 
     QSet<GObjectType> acceptableTypes;
     acceptableTypes << GObjectTypes::ASSEMBLY;
@@ -639,7 +639,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0004) {
     GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
 
     GTUtilsWorkflowDesigner::click(os, "Read Plain Text");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/text/", "text.txt");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/text/text.txt");
 
     GTUtilsWorkflowDesigner::click(os, "Write Plain Text");
     GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
@@ -662,7 +662,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0005_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/", "aaa.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/aaa.fa");
 
     GTUtilsDialog::waitForDialog(os, new AuthenticationDialogFiller(os, GTDatabaseConfig::login(), GTDatabaseConfig::password()));
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
@@ -677,7 +677,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0005_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/", "aaa.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/aaa.fa");
 
     GTUtilsDialog::waitForDialog(os, new AuthenticationDialogFiller(os, GTDatabaseConfig::login(), "invalid_password"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok,
@@ -694,7 +694,7 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Read Assembly");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/ugenedb/", "1.bam.ugenedb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/ugenedb/1.bam.ugenedb");
 
     GTUtilsDialog::waitForDialog(os, new AuthenticationDialogFiller(os, GTDatabaseConfig::login(), GTDatabaseConfig::password()));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok,

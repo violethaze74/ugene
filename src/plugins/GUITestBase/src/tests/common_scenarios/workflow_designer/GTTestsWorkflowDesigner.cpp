@@ -614,10 +614,10 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "Read Annotations A");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/", "introns.bed");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/introns.bed");
 
     GTUtilsWorkflowDesigner::click(os, "Read Annotations B");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/", "mutation.gff");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/mutation.gff");
 
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
     GTGlobals::sleep();
@@ -674,10 +674,10 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir().absoluteFilePath(sandBoxDir + "/test_ugene_5162.vcf"), GTUtilsWorkflowDesigner::lineEditWithFileSelector);
 
     GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly", "chrM.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly/chrM.sam");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly", "chrM.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly/chrM.sam");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

@@ -1507,7 +1507,7 @@ GUI_TEST_CLASS_DEFINITION(test_3229){
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    2. Set input a single file human_T1
     GTUtilsWorkflowDesigner::click(os, read);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
 //    3. Set the output path: ../test.fa or ./test.fa Output file
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "./test.fa", GTUtilsWorkflowDesigner::textValue);
@@ -2466,8 +2466,7 @@ GUI_TEST_CLASS_DEFINITION(test_3373) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Read Sequence"));
     GTMouseDriver::click();
-    QString dirPath = testDir + "_common_data/fasta/";
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dirPath, "seq1.fa" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/fasta/seq1.fa" );
 
     GTWidget::click( os, GTAction::button(os,"Run workflow"));
 
@@ -3797,7 +3796,7 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
 
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Assembly");
     CHECK_SET_ERR(read != NULL, "Added workflow element is NULL");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dirPath, "chrM.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dirPath + "chrM.sam");
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5886,9 +5885,9 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "File List");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "nrsf-chr21.fastq");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/nrsf-chr21.fastq");
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "control-chr21.fastq");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/control-chr21.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align reads with BWA MEM");
     GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", sandBoxDir + "test_3950.fa", GTUtilsWorkflowDesigner::textValue);
