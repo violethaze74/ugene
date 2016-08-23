@@ -2922,7 +2922,7 @@ void MSAEditorSequenceArea::sl_changeSelectionColor() {
 }
 
 int MSAEditorSequenceArea::getHeight(){
-    return editor->getRowHeight() * (getNumVisibleSequences(true) - 1);
+    return editor->getRowHeight() * getNumVisibleSequences(true);
 }
 
 QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
