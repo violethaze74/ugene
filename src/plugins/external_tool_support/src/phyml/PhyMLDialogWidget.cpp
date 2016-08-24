@@ -68,6 +68,7 @@ PhyMlWidget::PhyMlWidget(const MAlignment &ma, QWidget *parent) :
     CreatePhyTreeWidget(parent)
 {
     setupUi(this);
+
     fillComboBoxes(ma);
     createWidgetsControllers();
 
