@@ -707,8 +707,6 @@ void MSAEditorTreeViewerUI::highlightBranches() {
 }
 
 void MSAEditorTreeViewerUI::resizeEvent(QResizeEvent *e) {
-    CHECK(!(curLayoutIsRectangular && curMSATreeViewer->isSynchronized()), );
-
     rectangularTransform = transform();
     QGraphicsView::resizeEvent(e);
     e->accept();
