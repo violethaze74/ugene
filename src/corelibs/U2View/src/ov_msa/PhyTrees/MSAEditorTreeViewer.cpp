@@ -581,7 +581,7 @@ void MSAEditorTreeViewerUI::setTreeLayout(TreeLayout newLayout) {
 }
 
 void MSAEditorTreeViewerUI::onLayoutChanged(const TreeLayout& layout) {
-    if(layout == RECTANGULAR_LAYOUT && !curLayoutIsRectangular) {
+    if (layout == RECTANGULAR_LAYOUT && !curLayoutIsRectangular) {
         setTransform(rectangularTransform);
     }
     curLayoutIsRectangular = (RECTANGULAR_LAYOUT == layout);

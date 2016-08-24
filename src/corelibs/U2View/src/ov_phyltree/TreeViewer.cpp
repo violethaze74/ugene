@@ -72,6 +72,8 @@
 #include "phyltree/TextSettingsDialog.h"
 #include "phyltree/TreeSettingsDialog.h"
 
+#include <U2View/MSAEditorTreeViewer.h>
+
 namespace U2 {
 
 
@@ -1016,6 +1018,11 @@ void TreeViewerUI::paint(QPainter &painter) {
 void TreeViewerUI::updateRect() {
     SAFE_POINT(NULL != root, "Pointer to tree root is NULL",);
     QTransform viewTransform = transform();
+    // the workaround for UGENE-3504
+    if (qobject_cast<MSAEditorTreeViewerUI*>(this) != NULL
+            && (qobject_cast<MSAEditorTreeViewerUI*>(this))->isCurTreeViewerSynchronized()) {
+        viewTransform = QTransform();
+    }
     QRectF rect = root->visibleChildrenBoundingRect(viewTransform) | root->sceneBoundingRect();
     rect.setLeft(rect.left() - MARGIN);
     rect.setRight(rect.right() + MARGIN);
@@ -1175,7 +1182,6 @@ void TreeViewerUI::sl_unrootedLayoutTriggered() {
 void TreeViewerUI::changeLayout(TreeLayout newLayout) {
     root->setSelectedRecurs(false, true); // clear selection
     setOptionValue(TREE_LAYOUT, newLayout);
-    updateTreeSettings();
 
     switch(newLayout) {
         case RECTANGULAR_LAYOUT:
@@ -1187,9 +1193,6 @@ void TreeViewerUI::changeLayout(TreeLayout newLayout) {
             scene()->addItem(root);
             defaultZoom();
             updateRect();
-            updateTreeSettings();
-            fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
-            onLayoutChanged(getTreeLayout());
             break;
         case CIRCULAR_LAYOUT:
             if(getScale() <= GraphicsRectangularBranchItem::DEFAULT_WIDTH){
@@ -1204,11 +1207,12 @@ void TreeViewerUI::changeLayout(TreeLayout newLayout) {
             connect(layoutTask, SIGNAL(si_stateChanged()), SLOT(sl_layoutRecomputed()));
             break;
     }
-    if(newLayout != RECTANGULAR_LAYOUT) {
+    if (newLayout != RECTANGULAR_LAYOUT) {
         TaskScheduler* scheduler = AppContext::getTaskScheduler();
         scheduler->registerTopLevelTask(layoutTask);
-        onLayoutChanged(newLayout);
     }
+    updateTreeSettings();
+    onLayoutChanged(newLayout);
 }
 
 void TreeViewerUI::sl_rectLayoutRecomputed() {
