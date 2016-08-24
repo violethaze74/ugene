@@ -88,7 +88,7 @@ lockedIcon(":core/images/lock.png"), unlockedIcon(":core/images/lock_open.png")
 
     connect(seqArea, SIGNAL(si_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& )),
         SLOT(sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection&)));
-    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
         SLOT(sl_alignmentChanged()));
     connect(mobj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
 
@@ -184,7 +184,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
         for ( ; p < ( aliLen - pat.length( ) + 1 ); p++ ) {
             char c = row->charAt( p );
             int selLength = 0;
-            if ( MultipleAlignment::GapChar != c && MSAUtils::equalsIgnoreGaps(row, p, pat, selLength) ) {
+            if ( MultipleSequenceAlignment::GapChar != c && MSAUtils::equalsIgnoreGaps(row, p, pat, selLength) ) {
                 // select the result now
                 MSAEditorSelection sel( p, s, selLength, 1 );
                 seqArea->setSelection( sel, true );
@@ -222,7 +222,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
         int p = ( s == pos.y( ) ? pos.x( ) : ( aliLen - pat.length( ) + 1) );
         while ( 0 <= p ) {
             int selectionLength = 0;
-            if ( MultipleAlignment::GapChar != row->charAt( p )
+            if ( MultipleSequenceAlignment::GapChar != row->charAt( p )
                 && MSAUtils::equalsIgnoreGaps( row, p, pat, selectionLength ) )
             {
                 // select the result now

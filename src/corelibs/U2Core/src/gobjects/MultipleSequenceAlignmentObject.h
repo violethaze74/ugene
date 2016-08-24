@@ -46,7 +46,7 @@ public:
     const MultipleSequenceAlignmentRow getMsaRow(int row) const;
 
     /** Methods to work with rows */
-    void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MaRowGapModel &gapModel);
+    void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel);
 
     /** Replace character in row and change alphabet, if it does not contain the character
     */
@@ -55,7 +55,7 @@ public:
 private:
     void loadAlignment(U2OpStatus &os);
     void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
-    void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma);
+    void updateDatabase(U2OpStatus &os, const MultipleSequenceAlignment &ma);
 };
 
 }   // namespace U2

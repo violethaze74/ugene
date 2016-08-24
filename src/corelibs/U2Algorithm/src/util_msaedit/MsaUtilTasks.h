@@ -88,8 +88,8 @@ protected:
     //MultipleSequenceAlignment bufMA;
     QString traslId;
     Document* tmpDoc;
-    QMap<qint64, QList<U2MaGap> > rowsGapModel;
-    QMap<qint64, QList<U2MaGap> > emptyGapModel;
+    QMap<qint64, QList<U2MsaGap> > rowsGapModel;
+    QMap<qint64, QList<U2MsaGap> > emptyGapModel;
 };
 
 

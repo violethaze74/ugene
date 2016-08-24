@@ -406,7 +406,7 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
         QList<int> seqGaps = gapPositionsForSeqs[j];
         for (int pos = 0; pos < seq.size(); pos++) {
             char c = seq[pos];
-            if (c == MultipleAlignment::GapChar) {
+            if (c == MultipleSequenceAlignment::GapChar) {
                 bool found = seqGaps.contains(pos);
                 if (!found) {
                     stateInfo.setError(  QString("illegal gap found! pos: %1, sequence: %2").arg(pos).arg(row->getName()) );
@@ -417,7 +417,7 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
         for (int gap = 0; gap < seqGaps.size(); gap++) {
             int pos  = seqGaps[gap];
             char c = seq[pos];
-            if (c != MultipleAlignment::GapChar) {
+            if (c != MultipleSequenceAlignment::GapChar) {
                 stateInfo.setError(  QString("gap not found! pos: %1, sequence: %2").arg(pos).arg(row->getName()) );
                 return ReportResult_Finished;
             }

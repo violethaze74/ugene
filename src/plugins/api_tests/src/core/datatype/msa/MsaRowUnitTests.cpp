@@ -22,7 +22,7 @@
 #include "MsaRowUnitTests.h"
 
 #include <U2Core/DNASequence.h>
-#include <U2Core/U2Ma.h>
+#include <U2Core/U2Msa.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 
@@ -173,10 +173,10 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_noGaps) {
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeq) {
     MultipleSequenceAlignment almnt("Test alignment");
     DNASequence sequence("Test sequence", "GGAT");
-    QList<U2MaGap> gaps;
-    U2MaGap gapBeginning(0, 2);
-    U2MaGap gapMiddle1(4, 1);
-    U2MaGap gapMiddle2(6, 3);
+    QList<U2MsaGap> gaps;
+    U2MsaGap gapBeginning(0, 2);
+    U2MsaGap gapMiddle1(4, 1);
+    U2MsaGap gapMiddle2(6, 3);
     gaps << gapBeginning << gapMiddle1 << gapMiddle2;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);
@@ -194,11 +194,11 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeq) {
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeqTrailing) {
     MultipleSequenceAlignment almnt("Test alignment");
     DNASequence sequence("Test sequence", "GGAT");
-    QList<U2MaGap> gaps;
-    U2MaGap gapBeginning(0, 2);
-    U2MaGap gapMiddle1(4, 1);
-    U2MaGap gapMiddle2(6, 3);
-    U2MaGap gapTrailing(10, 2);
+    QList<U2MsaGap> gaps;
+    U2MsaGap gapBeginning(0, 2);
+    U2MsaGap gapMiddle1(4, 1);
+    U2MsaGap gapMiddle2(6, 3);
+    U2MsaGap gapTrailing(10, 2);
     gaps << gapBeginning << gapMiddle1 << gapMiddle2 << gapTrailing;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);
@@ -216,7 +216,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeqTrailing) {
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeqWithGaps) {
     MultipleSequenceAlignment almnt("Test alignment");
     DNASequence sequence("Test sequence", "GG-AT");
-    QList<U2MaGap> gaps;
+    QList<U2MsaGap> gaps;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);
     CHECK_EQUAL("Failed to create a multiple alignment row", os.getError(), "opStatus");
@@ -225,10 +225,10 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_fromSeqWithGaps) {
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_gapPositionTooBig) {
     MultipleSequenceAlignment almnt("Test alignment");
     DNASequence sequence("Test sequence", "GGAT");
-    QList<U2MaGap> gaps;
-    U2MaGap gapBeginning(0, 2);
-    U2MaGap gapMiddle1(4, 1);
-    U2MaGap gapMiddle2(8, 3);
+    QList<U2MsaGap> gaps;
+    U2MsaGap gapBeginning(0, 2);
+    U2MsaGap gapMiddle1(4, 1);
+    U2MsaGap gapMiddle2(8, 3);
     gaps << gapBeginning << gapMiddle1 << gapMiddle2;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);
@@ -238,8 +238,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_gapPositionTooBig) {
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapPos) {
     MultipleSequenceAlignment almnt("Test alignment");
     DNASequence sequence("Test sequence", "ACGT");
-    QList<U2MaGap> gaps;
-    U2MaGap invalidGap(-1, 2);
+    QList<U2MsaGap> gaps;
+    U2MsaGap invalidGap(-1, 2);
     gaps << invalidGap;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);
@@ -249,8 +249,8 @@ IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapPos) {
 IMPLEMENT_TEST(MsaRowUnitTests, createRow_negativeGapOffset) {
     MultipleSequenceAlignment almnt("Test alignment");
     DNASequence sequence("Test sequence", "ACGT");
-    QList<U2MaGap> gaps;
-    U2MaGap invalidGap(0, -1);
+    QList<U2MsaGap> gaps;
+    U2MsaGap invalidGap(0, -1);
     gaps << invalidGap;
     U2OpStatusImpl os;
     almnt->addRow("Row", sequence, gaps, os);

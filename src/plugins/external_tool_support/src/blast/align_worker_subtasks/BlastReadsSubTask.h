@@ -82,8 +82,8 @@ public:
 
     bool isComplement() const;
     const SharedDbiDataHandler& getRead() const;
-    const U2MaRowGapModel&      getReferenceGaps() const;
-    const U2MaRowGapModel&      getReadGaps() const;
+    const U2MsaRowGapModel&      getReferenceGaps() const;
+    const U2MsaRowGapModel&      getReadGaps() const;
 
     bool        isReadAligned() const;
     QString     getReadName() const;
@@ -93,7 +93,7 @@ public:
 private:
     U2Region getReferenceRegion(const QList<SharedAnnotationData>& blastAnnotations);
     void createAlignment(const U2Region& refRegion);
-    void shiftGaps(U2MaRowGapModel &gaps) const;
+    void shiftGaps(U2MsaRowGapModel &gaps) const;
 
     static AbstractAlignmentTaskFactory* getAbstractAlignmentTaskFactory(const QString &algoId, const QString &implId, U2OpStatus &os);
     static PairwiseAlignmentTaskSettings* createSettings(DbiDataStorage *storage, const SharedDbiDataHandler &msa, U2OpStatus &os);
@@ -113,8 +113,8 @@ private:
     BlastAllSupportTask*    blastTask;
     QString blastResultDir;
 
-    U2MaRowGapModel referenceGaps;
-    U2MaRowGapModel readGaps;
+    U2MsaRowGapModel referenceGaps;
+    U2MsaRowGapModel readGaps;
     QString initialReadName;
     bool complement;
     bool skipped;

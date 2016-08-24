@@ -104,10 +104,10 @@ U2Object *DbiDataStorage::getObject(const SharedDbiDataHandler &handler, const U
         return new U2Sequence(seq);
     } else if (U2Type::Msa == type) {
         U2MsaDbi *dbi = connection->dbi->getMsaDbi();
-        U2Ma msa = dbi->getMsaObject(objectId, os);
+        U2Msa msa = dbi->getMsaObject(objectId, os);
         SAFE_POINT_OP(os, NULL);
 
-        return new U2Ma(msa);
+        return new U2Msa(msa);
     } else if (U2Type::VariantTrack == type) {
         U2VariantDbi *dbi = connection->dbi->getVariantDbi();
         U2VariantTrack track = dbi->getVariantTrack(objectId, os);
@@ -310,7 +310,7 @@ AssemblyObject *StorageUtils::getAssemblyObject(DbiDataStorage *storage, const S
 MultipleSequenceAlignmentObject *StorageUtils::getMsaObject(DbiDataStorage *storage, const SharedDbiDataHandler &handler) {
     CHECK(NULL != handler.constData(), NULL);
     //QScopedPointer<U2Ma> msa(dynamic_cast<U2Ma*>(storage->getObject(handler, U2Type::Msa)));
-    QScopedPointer<U2Ma> msa(dynamic_cast<U2Ma*>(storage->getObject(handler, 2)));
+    QScopedPointer<U2Msa> msa(dynamic_cast<U2Msa*>(storage->getObject(handler, 2)));
     CHECK(NULL != msa.data(), NULL);
 
     U2EntityRef msaRef(handler->getDbiRef(), msa->id);

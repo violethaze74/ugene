@@ -60,7 +60,7 @@ char MSAConsensusAlgorithmStrict::getConsensusChar(const MultipleSequenceAlignme
     int currentThreshold = getThreshold();
     int cntToUseGap = int(currentThreshold / 100.0 * nSeq);
     int topFreq = freqsByChar[topChar];
-    char res = topFreq < cntToUseGap ? MultipleAlignment::GapChar : (char)topChar;
+    char res = topFreq < cntToUseGap ? MultipleSequenceAlignment::GapChar : (char)topChar;
     return res;
 }
 

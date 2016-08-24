@@ -25,23 +25,31 @@
 #include <QSharedPointer>
 
 #include <U2Core/MsaRowUtils.h>
-#include <U2Core/U2Ma.h>
+#include <U2Core/U2Msa.h>
 
 namespace U2 {
 
-class MultipleAlignment;
-class MultipleAlignmentData;
+class MultipleSequenceAlignment;
+class MultipleSequenceAlignmentData;
 class MultipleAlignmentRowData;
 class U2OpStatus;
 
-class U2CORE_EXPORT MultipleAlignmentRow {
-    friend class MultipleAlignmentData;
+class U2CORE_EXPORT MultipleSequenceAlignmentRow {
+    friend class MultipleSequenceAlignmentData;
 
 protected:
-    MultipleAlignmentRow(MultipleAlignmentRowData *multipleAlignmentRowData);
+    MultipleSequenceAlignmentRow(MultipleSequenceAlignmentRowData *msaRowData);
 
 public:
-    virtual ~MultipleAlignmentRow();
+    MultipleSequenceAlignmentRow();
+    MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentData *msaData);
+
+    /** Creates a row in memory. */
+    MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const U2MsaRowGapModel &gaps, const MultipleSequenceAlignmentData *msa);
+    MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const QString &rowName, const QByteArray &rawData, const MultipleSequenceAlignmentData *msa);
+    MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignmentData *msa);
+
+    virtual ~MultipleSequenceAlignmentRow();
 
     MultipleAlignmentRowData * data() const;
     template <class Derived> inline Derived dynamicCast() const;
@@ -52,12 +60,14 @@ public:
     MultipleAlignmentRowData * operator->();
     const MultipleAlignmentRowData * operator->() const;
 
+    MultipleSequenceAlignmentRow clone() const;
+
 protected:
-    QSharedPointer<MultipleAlignmentRowData> maRowData;
+    QSharedPointer<MultipleAlignmentRowData> msaRowData;
 };
 
 template <class Derived>
-Derived MultipleAlignmentRow::dynamicCast() const {
+Derived MultipleSequenceAlignmentRow::dynamicCast() const {
     return Derived(*this);
 }
 
@@ -71,22 +81,25 @@ Derived MultipleAlignmentRow::dynamicCast() const {
 class U2CORE_EXPORT MultipleAlignmentRowData {
 protected:
     /** Do NOT create a row without an alignment! */
-    MultipleAlignmentRowData(const MultipleAlignmentData *alignment = NULL);
-    MultipleAlignmentRowData(const MultipleAlignmentRow &row, const MultipleAlignmentData *alignment);
-    MultipleAlignmentRowData(const U2MaRow &rowInDb, const U2MaRowGapModel &gaps, const MultipleAlignmentData *alignment);
+    MultipleSequenceAlignmentRowData();
+    MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentData *msa);
+
+    MultipleAlignmentRowData(const MultipleSequenceAlignmentData *alignment = NULL);
+    MultipleAlignmentRowData(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignmentData *alignment);
+    MultipleAlignmentRowData(const U2MsaRow &rowInDb, const U2MsaRowGapModel &gaps, const MultipleSequenceAlignmentData *alignment);
 
 public:
     virtual ~MultipleAlignmentRowData();
 
     /** Name of the row, can be empty */
-    virtual QString getName() const = 0;
-    virtual void setName(const QString &name) = 0;
+    QString getName() const;
+    void setName(const QString &name);
 
     /** Returns the list of gaps for the row */
-    const U2MaRowGapModel & getGapModel() const;
+    const U2MsaRowGapModel & getGapModel() const;
 
     /** Careful, the new gap model is not validated! */
-    void setGapModel(const U2MaRowGapModel &newGapModel);
+    void setGapModel(const U2MsaRowGapModel &newGapModel);
 
     /** Returns ID of the row in the database. */
     qint64 getRowId() const;
@@ -96,10 +109,10 @@ public:
     void setDataId(const U2DataId &dataId);
 
     /** Returns ID of the row sequence in the database. */
-    U2MaRow getRowDbInfo() const;
+    U2MsaRow getRowDbInfo() const;
 
     /** Sets database IDs for row and sequence */
-    void setRowDbInfo(const U2MaRow &dbRow);
+    void setRowDbInfo(const U2MsaRow &dbRow);
 
     /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
     int getRowLength() const;
@@ -122,7 +135,7 @@ public:
     bool simplify();
 
     /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
-    void append(const MultipleAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os);
+    void append(const MultipleSequenceAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os);
 
     /**
      * Inserts 'count' gaps into the specified position, if possible.
@@ -153,7 +166,7 @@ public:
      * Exactly compares the rows. Sequences and gap models must match.
      * However, the rows are considered equal if they differ by trailing gaps only.
      */
-    bool isRowContentEqual(const MultipleAlignmentRow &row) const;
+    bool isRowContentEqual(const MultipleSequenceAlignmentRow &row) const;
     bool isRowContentEqual(const MultipleAlignmentRowData &rowData) const;
 
     /** Compares 2 rows. Rows are equal if their contents and names are equal. */
@@ -167,9 +180,62 @@ public:
      */
     void crop(int pos, int count, U2OpStatus &os);
 
-    void setParentAlignment(const MultipleAlignment &newAlignment);
+    void setParentAlignment(const MultipleSequenceAlignment &newAlignment);
 
     bool isGap(int position) const;
+
+    /** Returns the row sequence (without gaps) */
+    const DNASequence & getSequence() const;
+
+    /**
+     * Sets a new sequence. Be careful, gap model validity is not verified.
+     * The sequence must not contain gaps.
+     */
+    void setSequence(const DNASequence &newSequence);
+
+    /**
+     * The length must be greater or equal to the row length.
+     * When the specified length is greater, an appropriate number of
+     * trailing gaps are appended to the end of the byte array.
+     */
+    QByteArray toByteArray(int length, U2OpStatus &os) const;
+
+    /** Packed version: returns the row without leading and trailing gaps */
+    QByteArray getCore() const;
+
+    /** Returns the row the way it is -- with leading and trailing gaps */
+    QByteArray getData() const;
+
+    /**
+     * Sets new sequence and gap model.
+     * If the sequence is empty, the offset is ignored (if any).
+     */
+    void setRowContent(const QByteArray &bytes, int offset);
+
+    /**
+     * Returns a character in row at the specified position.
+     * If the specified position is outside the row bounds, returns a gap.
+     */
+    char charAt(int pos) const;
+
+    /** Converts the row sequence to upper case */
+    void toUpperCase();
+
+    /**
+     * Replaces all occurrences of 'origChar' by 'resultChar'.
+     * The 'origChar' must be a non-gap character.
+     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
+     */
+    void replaceChars(char origChar, char resultChar, U2OpStatus &os);
+
+    /**
+     * Returns new row of the specified 'count' length, started from 'pos'.
+     * 'pos' and 'pos + count' can be greater than the row length.
+     * Keeps trailing gaps.
+     */
+    MultipleSequenceAlignmentRow mid(int pos, int count, U2OpStatus &os) const;
+
+    MultipleSequenceAlignmentRow getExplicitCopy() const;
 
     static const qint64 INVALID_ROW_ID;
 
@@ -182,7 +248,7 @@ protected:
 
     /** Next methods are supposed to work with data ignoring gap model */
     virtual int getDataLength() const = 0;
-    virtual void appendDataCore(const MultipleAlignmentRow &anotherRow) = 0;
+    virtual void appendDataCore(const MultipleSequenceAlignmentRow &anotherRow) = 0;
     virtual void removeDataCore(int startPosInData, int endPosInData, U2OpStatus &os) = 0;
     virtual bool isDataEqual(const MultipleAlignmentRowData &rowData) const = 0;
 
@@ -199,26 +265,26 @@ private:
     /** Removing gaps from the row between position 'pos' and 'pos + count' */
     void removeGapsFromGapModel(int pos, int count);
 
-    const MultipleAlignmentData *alignment;
+    const MultipleSequenceAlignmentData *alignment;
 
     /**
      * Gaps model of the row
      * There should be no trailing gaps!
      * Trailing gaps are 'Virtual': they are stored 'inside' the alignment length
      */
-    U2MaRowGapModel gaps;
+    U2MsaRowGapModel gaps;
 
     /** The row in the database */
-    U2MaRow initialRowInDb;
+    U2MsaRow initialRowInDb;
 };
 
 
-inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator!=(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
-inline bool	operator==(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) { return *ptr1 == *ptr2; }
-inline bool	operator==(const MultipleAlignmentRowData *ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator!=(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator!=(const MultipleSequenceAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator!=(const MultipleAlignmentRowData *ptr1, const MultipleSequenceAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator==(const MultipleSequenceAlignmentRow &ptr1, const MultipleSequenceAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleSequenceAlignmentRow &ptr1, const MultipleAlignmentRowData *ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleAlignmentRowData *ptr1, const MultipleSequenceAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
 
 }   // namespace U2
 

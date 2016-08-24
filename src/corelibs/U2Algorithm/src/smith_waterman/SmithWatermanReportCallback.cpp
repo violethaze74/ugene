@@ -37,7 +37,7 @@
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2DbiRegistry.h>
-#include <U2Core/U2Ma.h>
+#include <U2Core/U2Msa.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -366,11 +366,11 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     U2MsaDbi *msaDbi = sourceMsaConnection.dbi->getMsaDbi();
     SAFE_POINT(NULL != msaDbi, "Invalid MSA DBI detected!", QString::null);
 
-    QList<U2MaRow> rows = msaDbi->getRows(sourceMsaRef.entityId, os);
+    QList<U2MsaRow> rows = msaDbi->getRows(sourceMsaRef.entityId, os);
     CHECK_OP(os, tr("Failed to get msa from dbi"));
 
-    U2MaRow *refRow = NULL;
-    U2MaRow *ptrnRow = NULL;
+    U2MsaRow *refRow = NULL;
+    U2MsaRow *ptrnRow = NULL;
 
     for (int  i = 0; i < rows.length(); ++i) {
         if (rows[i].dataObjectId == refSequence->id) {
@@ -410,11 +410,11 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
                 continue;
                 break;
             case SmithWatermanResult::UP:
-                ptrnSequence.insert(ptrnSeqCurrentPosition, MultipleAlignment::GapChar);
+                ptrnSequence.insert(ptrnSeqCurrentPosition, MultipleSequenceAlignment::GapChar);
                 --refSeqCurrentPosition;
                 break;
             case SmithWatermanResult::LEFT:
-                refSequence.insert(refSeqCurrentPosition, MultipleAlignment::GapChar);
+                refSequence.insert(refSeqCurrentPosition, MultipleSequenceAlignment::GapChar);
                 --ptrnSeqCurrentPosition;
                 break;
             default:
@@ -423,7 +423,7 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
     }
 }
 
-void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MaGap> &refSequenceGapModel, QList<U2MaGap> &ptrnSequenceGapModel,
+void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MsaGap> &refSequenceGapModel, QList<U2MsaGap> &ptrnSequenceGapModel,
     const QByteArray& pairwiseAlignment)
 {
     bool lastSymbolIsGapRef = false;
@@ -435,18 +435,18 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MaGap> &refSequen
         case SmithWatermanResult::DIAG:
             if (lastSymbolIsGapRef) {
                 intervalStart = i;
-                refSequenceGapModel.prepend(U2MaGap(intervalStart, intervalEnd));
+                refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
                 lastSymbolIsGapRef = false;
             }
             if (lastSymbolIsGapPtrn) {
                 intervalStart = i;
-                ptrnSequenceGapModel.prepend(U2MaGap(intervalStart, intervalEnd));
+                ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
                 lastSymbolIsGapPtrn = false;
             }
             break;
         case SmithWatermanResult::UP:
             if (lastSymbolIsGapRef) {
-                refSequenceGapModel.prepend(U2MaGap(intervalStart, intervalEnd));
+                refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
                 lastSymbolIsGapRef = false;
             }
             if (!lastSymbolIsGapPtrn) {
@@ -456,7 +456,7 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MaGap> &refSequen
             break;
         case SmithWatermanResult::LEFT:
             if (lastSymbolIsGapPtrn) {
-                ptrnSequenceGapModel.prepend(U2MaGap(intervalStart, intervalEnd));
+                ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
                 lastSymbolIsGapPtrn = false;
             }
             if (!lastSymbolIsGapRef) {

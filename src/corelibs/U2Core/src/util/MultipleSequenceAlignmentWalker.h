@@ -30,7 +30,7 @@ class RowWalker;
 
 class U2CORE_EXPORT MultipleSequenceAlignmentWalker {
 public:
-    MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar = MultipleAlignment::GapChar);
+    MultipleSequenceAlignmentWalker(const MultipleSequenceAlignment &msa, char gapChar = MultipleSequenceAlignment::GapChar);
     ~MultipleSequenceAlignmentWalker();
 
     bool isEnded() const;

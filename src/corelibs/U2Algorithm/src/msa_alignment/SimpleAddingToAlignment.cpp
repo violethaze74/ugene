@@ -82,15 +82,15 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     foreach(const U2EntityRef& sequence, settings.addedSequencesRefs) {
         QString seqName = namesIterator.peekNext();
         U2SequenceObject seqObject(seqName, sequence);
-        U2MaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
+        U2MsaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
         dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
         posInMsa++;
 
         if(sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
-            QList<U2MaGap> gapModel;
-            gapModel << U2MaGap(0, sequencePositions[seqName]);
+            QList<U2MsaGap> gapModel;
+            gapModel << U2MsaGap(0, sequencePositions[seqName]);
             dbi->updateGapModel(settings.msaRef.entityId, row.rowId, gapModel, stateInfo);
         }
         namesIterator.next();
@@ -132,7 +132,7 @@ void BestPositionFindTask::run() {
             char c = row->charAt(p);
             int selLength = 0;
             int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
-            if (MultipleAlignment::GapChar != c && patternSimilarity > similarity) {
+            if (MultipleSequenceAlignment::GapChar != c && patternSimilarity > similarity) {
                 similarity = patternSimilarity;
                 bestPosition = p;
             }
@@ -145,7 +145,7 @@ void BestPositionFindTask::run() {
                 char c = row->charAt(p);
                 int selLength = 0;
                 int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
-                if (MultipleAlignment::GapChar != c && patternSimilarity > similarity) {
+                if (MultipleSequenceAlignment::GapChar != c && patternSimilarity > similarity) {
                     similarity = patternSimilarity;
                     bestPosition = p;
                 }

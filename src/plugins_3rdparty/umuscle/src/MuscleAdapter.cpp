@@ -408,7 +408,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
     for(int pathPos = 0; pathPos < pathLen; pathPos++) {
         char c = path[pathPos];
         if (c == 'D') { //gap in seq
-            alignedSeq.append((char)MultipleAlignment::GapChar);
+            alignedSeq.append((char)MultipleSequenceAlignment::GapChar);
             continue;
         }
         //for 'M' or 'I' insert original char to seq
@@ -441,7 +441,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
                         insCoordsIdx++;
                         prevInsCoordsPos = insCoordsPos;
                         insCoordsPos = insCoordsIdx < numIns ? insCoords[insCoordsIdx] : -1;
-                        newSeq.append((char)MultipleAlignment::GapChar);
+                        newSeq.append((char)MultipleSequenceAlignment::GapChar);
                         if (i == 0) {
                             msaPathChangesNew.append('I');
                         }
@@ -454,7 +454,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
             }
             while (insCoordsIdx!=numIns) {
                 insCoordsIdx++;
-                newSeq.append((char)MultipleAlignment::GapChar);
+                newSeq.append((char)MultipleSequenceAlignment::GapChar);
                 if (i == 0) {
                     msaPathChangesNew.append('I');
                 }

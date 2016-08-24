@@ -30,9 +30,9 @@ const QByteArray PackUtils::VERSION("0");
 const char PackUtils::SEP = '\t';
 const char PackUtils::SECOND_SEP = 11;
 
-QByteArray PackUtils::packGaps(const QList<U2MaGap> &gaps) {
+QByteArray PackUtils::packGaps(const QList<U2MsaGap> &gaps) {
     QByteArray result;
-    foreach (const U2MaGap &gap, gaps) {
+    foreach (const U2MsaGap &gap, gaps) {
         if (!result.isEmpty()) {
             result += ";";
         }
@@ -43,7 +43,7 @@ QByteArray PackUtils::packGaps(const QList<U2MaGap> &gaps) {
     return "\"" + result + "\"";
 }
 
-bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MaGap> &gaps) {
+bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MsaGap> &gaps) {
     CHECK(str.startsWith('\"') && str.endsWith('\"'), false);
     QByteArray gapsStr = str.mid(1, str.length() - 2);
     if (gapsStr.isEmpty()) {
@@ -55,7 +55,7 @@ bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MaGap> &gaps) {
         QList<QByteArray> gapTokens = t.split(',');
         CHECK(2 == gapTokens.size(), false);
         bool ok = false;
-        U2MaGap gap;
+        U2MsaGap gap;
         gap.offset = gapTokens[0].toLongLong(&ok);
         CHECK(ok, false);
         gap.gap = gapTokens[1].toLongLong(&ok);
@@ -65,7 +65,7 @@ bool PackUtils::unpackGaps(const QByteArray &str, QList<U2MaGap> &gaps) {
     return true;
 }
 
-QByteArray PackUtils::packGapDetails(qint64 rowId, const QList<U2MaGap> &oldGaps, const QList<U2MaGap> &newGaps) {
+QByteArray PackUtils::packGapDetails(qint64 rowId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(rowId);
@@ -76,7 +76,7 @@ QByteArray PackUtils::packGapDetails(qint64 rowId, const QList<U2MaGap> &oldGaps
     return result;
 }
 
-bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MaGap> &oldGaps, QList<U2MaGap> &newGaps) {
+bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(4 == tokens.size(), QString("Invalid gap modDetails string '%1'").arg(QString(modDetails)), false);
     { // version
@@ -183,7 +183,7 @@ bool PackUtils::unpackRowNameDetails(const QByteArray &modDetails, qint64 &rowId
     return true;
 }
 
-QByteArray PackUtils::packRow(qint64 posInMsa, const U2MaRow& row) {
+QByteArray PackUtils::packRow(qint64 posInMsa, const U2MsaRow& row) {
     QByteArray result = VERSION;
     result += SEP;
     result += QByteArray::number(posInMsa);
@@ -200,7 +200,7 @@ QByteArray PackUtils::packRow(qint64 posInMsa, const U2MaRow& row) {
     return result;
 }
 
-bool PackUtils::unpackRow(const QByteArray &modDetails, qint64& posInMsa, U2MaRow& row) {
+bool PackUtils::unpackRow(const QByteArray &modDetails, qint64& posInMsa, U2MsaRow& row) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(7 == tokens.size(), QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
     { // version
@@ -236,7 +236,7 @@ bool PackUtils::unpackRow(const QByteArray &modDetails, qint64& posInMsa, U2MaRo
     return true;
 }
 
-QByteArray PackUtils::packRowInfo(const U2MaRow &row) {
+QByteArray PackUtils::packRowInfo(const U2MsaRow &row) {
     QByteArray result;
     result += QByteArray::number(row.rowId);
     result += SECOND_SEP;
@@ -250,7 +250,7 @@ QByteArray PackUtils::packRowInfo(const U2MaRow &row) {
     return result;
 }
 
-bool PackUtils::unpackRowInfo(const QByteArray &str, U2MaRow& row) {
+bool PackUtils::unpackRowInfo(const QByteArray &str, U2MsaRow& row) {
     QList<QByteArray> tokens = str.split(SECOND_SEP);
     CHECK(5 == tokens.count(), false);
 
@@ -269,7 +269,7 @@ bool PackUtils::unpackRowInfo(const QByteArray &str, U2MaRow& row) {
     return true;
 }
 
-QByteArray PackUtils::packRowInfoDetails(const U2MaRow &oldRow, const U2MaRow &newRow) {
+QByteArray PackUtils::packRowInfoDetails(const U2MsaRow &oldRow, const U2MsaRow &newRow) {
     QByteArray result = VERSION;
     result += SEP;
     result += packRowInfo(oldRow);
@@ -278,7 +278,7 @@ QByteArray PackUtils::packRowInfoDetails(const U2MaRow &oldRow, const U2MaRow &n
     return result;
 }
 
-bool PackUtils::unpackRowInfoDetails(const QByteArray &modDetails, U2MaRow &oldRow, U2MaRow &newRow) {
+bool PackUtils::unpackRowInfoDetails(const QByteArray &modDetails, U2MsaRow &oldRow, U2MsaRow &newRow) {
     QList<QByteArray> tokens = modDetails.split(SEP);
     SAFE_POINT(3 == tokens.count(), QString("Invalid modDetails '%1'!").arg(QString(modDetails)), false);
     SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(QString(tokens[0])), false);
@@ -337,25 +337,25 @@ bool PackUtils::unpackObjectNameDetails(const QByteArray &modDetails, QString &o
     return true;
 }
 
-QByteArray PackUtils::packRows(const QList<qint64> &posInMsa, const QList<U2MaRow> &rows) {
+QByteArray PackUtils::packRows(const QList<qint64> &posInMsa, const QList<U2MsaRow> &rows) {
     SAFE_POINT(posInMsa.size() == rows.size(), "Different lists sizes", "");
     QByteArray result = VERSION;
     QList<qint64>::ConstIterator pi = posInMsa.begin();
-    QList<U2MaRow>::ConstIterator ri = rows.begin();
+    QList<U2MsaRow>::ConstIterator ri = rows.begin();
     for (; ri != rows.end(); ri++, pi++) {
         result += SECOND_SEP + packRow(*pi, *ri);
     }
     return result;
 }
 
-bool PackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMsa, QList<U2MaRow> &rows) {
+bool PackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMsa, QList<U2MsaRow> &rows) {
     QList<QByteArray> tokens = modDetails.split(SECOND_SEP);
     SAFE_POINT(tokens.count() > 0, QString("Invalid modDetails '%1'!").arg(QString(modDetails)), false);
     QByteArray modDetailsVersion = tokens.takeFirst();
     SAFE_POINT(VERSION == modDetailsVersion, QString("Invalid modDetails version '%1'").arg(QString(modDetailsVersion)), false);
     foreach (const QByteArray &token, tokens) {
         qint64 pos = 0;
-        U2MaRow row;
+        U2MsaRow row;
         bool ok = unpackRow(token, pos, row);
         CHECK(ok, false);
         posInMsa << pos;

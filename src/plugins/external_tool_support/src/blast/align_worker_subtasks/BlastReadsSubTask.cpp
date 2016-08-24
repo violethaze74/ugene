@@ -181,11 +181,11 @@ const SharedDbiDataHandler& BlastAndSwReadTask::getRead() const {
     return read;
 }
 
-const U2MaRowGapModel& BlastAndSwReadTask::getReferenceGaps() const {
+const U2MsaRowGapModel& BlastAndSwReadTask::getReferenceGaps() const {
     return referenceGaps;
 }
 
-const U2MaRowGapModel& BlastAndSwReadTask::getReadGaps() const {
+const U2MsaRowGapModel& BlastAndSwReadTask::getReadGaps() const {
     return readGaps;
 }
 
@@ -266,7 +266,7 @@ void BlastAndSwReadTask::createAlignment(const U2Region& refRegion) {
 
     if (readShift != 0) {
         alignment->addRow(readObject->getSequenceName(),
-                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, U2MaRowGapModel() << U2MaGap(0, readShift), stateInfo);
+                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, U2MsaRowGapModel() << U2MsaGap(0, readShift), stateInfo);
     } else {
         alignment->addRow(readObject->getSequenceName(), complement ? DNASequenceUtils::reverseComplement(readData) : readData);
     }
@@ -279,7 +279,7 @@ void BlastAndSwReadTask::createAlignment(const U2Region& refRegion) {
     offset = refRegion.startPos;
 }
 
-void BlastAndSwReadTask::shiftGaps(U2MaRowGapModel &gaps) const {
+void BlastAndSwReadTask::shiftGaps(U2MsaRowGapModel &gaps) const {
     for (int i = 0; i < gaps.size(); i++) {
         gaps[i].offset += offset;
     }

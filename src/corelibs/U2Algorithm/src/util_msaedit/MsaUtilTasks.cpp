@@ -148,17 +148,17 @@ void AlignInAminoFormTask::run() {
     SAFE_POINT_EXT(NULL != clonedObj, setError(tr("NULL clonedObj in AlignInAminoFormTask::prepare!")),);
 
     const MultipleSequenceAlignment newMsa = clonedObj->getMsa();
-    const QList<MultipleAlignmentRow> rows = newMsa->getRows();
+    const QList<MultipleSequenceAlignmentRow> rows = newMsa->getRows();
 
     //Create gap map from amino-acid alignment
-    foreach (const MultipleAlignmentRow &row, rows) {
+    foreach (const MultipleSequenceAlignmentRow &row, rows) {
         const int rowIdx = MSAUtils::getRowIndexByName(maObj->getMsa(), row->getName());
-        const MultipleAlignmentRow curRow = maObj->getMsa()->getRow(row->getName());
+        const MultipleSequenceAlignmentRow curRow = maObj->getMsa()->getRow(row->getName());
         SAFE_POINT_EXT(rowIdx >= 0, setError(tr("Can not find row %1 in original alignment.").arg(row->getName())),);
 
-        QList<U2MaGap> gapsList;
-        foreach(const U2MaGap& gap, row->getGapModel()) {
-            gapsList << U2MaGap(gap.offset * 3, gap.gap * 3);
+        QList<U2MsaGap> gapsList;
+        foreach(const U2MsaGap& gap, row->getGapModel()) {
+            gapsList << U2MsaGap(gap.offset * 3, gap.gap * 3);
         }
         rowsGapModel[curRow->getRowId()] = gapsList;
     }

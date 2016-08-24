@@ -133,7 +133,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
     numprofiles = (numseq << 1) - 1;
     aln = aln_alloc(aln);
     for(quint32 i = 0 ; i < numseq; i++) {
-        const MultipleAlignmentRow row= ma->getRow(i);
+        const MultipleSequenceAlignmentRow row= ma->getRow(i);
         aln->sl[i] = row->getUngappedLength();
         aln->lsn[i] = row->getName().length();
     }

@@ -514,7 +514,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment& 
         if(!subjSeq.isEmpty()){
             ma->addRow(rowName, subjSeq.toLatin1());
         }else{
-            AnnotationSelection::getAnnotationSequence(rowSequence, a, MultipleAlignment::GapChar, seqRef, NULL, NULL, os);
+            AnnotationSelection::getAnnotationSequence(rowSequence, a, MultipleSequenceAlignment::GapChar, seqRef, NULL, NULL, os);
             CHECK_OP(os,);
             ma->addRow(rowName, rowSequence);
         }
@@ -571,7 +571,7 @@ void ADVExportContext::prepareMAFromAnnotations(MultipleSequenceAlignment& ma, b
         bool doComplement = a.annotation->getStrand().isCompementary();
         const DNATranslation* aminoTT = translate ? seqCtx->getAminoTT() : NULL;
         QByteArray rowSequence;
-        AnnotationSelection::getAnnotationSequence(rowSequence, a, MultipleAlignment::GapChar, seqRef, doComplement ? complTT : NULL, aminoTT, os);
+        AnnotationSelection::getAnnotationSequence(rowSequence, a, MultipleSequenceAlignment::GapChar, seqRef, doComplement ? complTT : NULL, aminoTT, os);
         CHECK_OP(os,);
 
         ma->addRow(rowName, rowSequence);

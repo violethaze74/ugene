@@ -157,7 +157,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
                 break;
             }
             if (rowIdx != -1) {
-                const MultipleAlignmentRow row = al->getRow(rowIdx);
+                const MultipleSequenceAlignmentRow row = al->getRow(rowIdx);
                 if (row->getName() != name) {
                     os.setError( ClustalWAlnFormat::tr("Sequence names are not matched"));
                     break;
@@ -223,13 +223,13 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
 
     //precalculate seq writing params
     int maxNameLength = 0;
-    foreach(const MultipleAlignmentRow& row, msa->getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, msa->getRows()) {
         maxNameLength = qMax(maxNameLength, row->getName().length());
     }
     maxNameLength = qMin(maxNameLength, MAX_NAME_LEN);
 
     int aliLen = msa->getLength();
-    QByteArray consensus(aliLen, MultipleAlignment::GapChar);
+    QByteArray consensus(aliLen, MultipleSequenceAlignment::GapChar);
 
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
     QScopedPointer<MSAConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa));
@@ -258,9 +258,9 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
         QList<QByteArray> seqs = walker.nextData(partLen, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleAlignmentRow>::ConstIterator ri = msa->getRows().constBegin();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = msa->getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleAlignmentRow &row = *ri;
+            const MultipleSequenceAlignmentRow &row = *ri;
             QByteArray line = row->getName().toLatin1();
             if (line.length() > MAX_NAME_LEN) {
                 line = line.left(MAX_NAME_LEN);

@@ -29,7 +29,7 @@ namespace U2 {
 
 class MultipleSequenceAlignmentData;
 
-class U2CORE_EXPORT MultipleSequenceAlignment : public MultipleAlignment {
+class U2CORE_EXPORT MultipleSequenceAlignment : public MultipleSequenceAlignment {
 public:
     MultipleSequenceAlignment(const QString &name = QString(),
                               const DNAAlphabet *alphabet = NULL,
@@ -37,7 +37,7 @@ public:
     MultipleSequenceAlignment(const MultipleSequenceAlignmentData &msa);
     MultipleSequenceAlignment(MultipleSequenceAlignmentData *msaData);
     MultipleSequenceAlignment(const MultipleSequenceAlignment &other);
-    MultipleSequenceAlignment(const MultipleAlignment &multipleAlignment);
+    MultipleSequenceAlignment(const MultipleSequenceAlignment &multipleAlignment);
 
     MultipleSequenceAlignmentData * data() const;
 
@@ -56,7 +56,7 @@ public:
  * There are minimal checks on the alignment's alphabet, but the client of the class
  * is expected to keep the conformance of the data and the alphabet.
  */
-class U2CORE_EXPORT MultipleSequenceAlignmentData : public MultipleAlignmentData {
+class U2CORE_EXPORT MultipleSequenceAlignmentData : public MultipleSequenceAlignmentData {
 private:
     friend class MultipleSequenceAlignment;
 
@@ -98,8 +98,8 @@ public:
      */
     void addRow(const QString &name, const QByteArray &bytes);
     void addRow(const QString &name, const QByteArray &bytes, int rowIndex);
-    void addRow(const U2MaRow &rowInDb, const DNASequence &sequence, U2OpStatus &os);
-    void addRow(const QString &name, const DNASequence &sequence, const U2MaRowGapModel &gaps, U2OpStatus &os);
+    void addRow(const U2MsaRow &rowInDb, const DNASequence &sequence, U2OpStatus &os);
+    void addRow(const QString &name, const DNASequence &sequence, const U2MsaRowGapModel &gaps, U2OpStatus &os);
 
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar' in the row with the specified index.
@@ -125,14 +125,14 @@ public:
     QList<MultipleSequenceAlignmentRow> getMsaRows() const;
     const MultipleSequenceAlignmentRow getMsaRowByRowId(qint64 rowId, U2OpStatus &os) const;
 
-    MultipleAlignment getCopy() const;
+    MultipleSequenceAlignment getCopy() const;
     MultipleSequenceAlignment getExplicitCopy() const;
 
 private:
     static const MultipleSequenceAlignment EMPTY_MSA;
     static const MultipleSequenceAlignmentRow EMPTY_ROW;
 
-    MultipleAlignmentRow getEmptyRow() const;
+    MultipleSequenceAlignmentRow getEmptyRow() const;
 
     /** Create a new row (sequence + gap model) from the bytes */
     MultipleSequenceAlignmentRow createSequenceRow(const QString &name, const QByteArray &rawData) const;
@@ -141,8 +141,8 @@ private:
      * Sequence must not contain gaps.
      * All gaps in the gaps model (in 'rowInDb') must be valid and have an offset within the bound of the sequence.
      */
-    MultipleSequenceAlignmentRow createSequenceRow(const U2MaRow &rowInDb, const DNASequence &sequence, const U2MaRowGapModel &gaps, U2OpStatus &os);
-    MultipleAlignmentRow createRow(const MultipleAlignmentRow &row) const;
+    MultipleSequenceAlignmentRow createSequenceRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const U2MsaRowGapModel &gaps, U2OpStatus &os);
+    MultipleSequenceAlignmentRow createRow(const MultipleSequenceAlignmentRow &row) const;
 };
 
 }   // namespace U2

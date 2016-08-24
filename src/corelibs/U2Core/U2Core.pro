@@ -24,13 +24,13 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/DNATranslationImpl.h \
            src/datatype/FeatureColors.h \
            src/datatype/Matrix44.h \
-           src/datatype/MultipleAlignment.h \
-           src/datatype/MultipleAlignmentInfo.h \
-           src/datatype/MultipleAlignmentRow.h \
-           src/datatype/MultipleChromatogramAlignment.h \
-           src/datatype/MultipleChromatogramAlignmentRow.h \
-           src/datatype/MultipleSequenceAlignment.h \
-           src/datatype/MultipleSequenceAlignmentRow.h \
+           src/datatype/msa/MultipleAlignment.h \
+           src/datatype/msa/MultipleAlignmentInfo.h \
+           src/datatype/msa/MultipleAlignmentRow.h \
+           src/datatype/msa/MultipleChromatogramAlignment.h \
+           src/datatype/msa/MultipleChromatogramAlignmentRow.h \
+           src/datatype/msa/MultipleSequenceAlignment.h \
+           src/datatype/msa/MultipleSequenceAlignmentRow.h \
            src/datatype/PFMatrix.h \
            src/datatype/PhyTree.h \
            src/datatype/PWMatrix.h \
@@ -44,7 +44,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/U2Identity.h \
            src/datatype/U2IdTypes.h \
            src/datatype/U2Location.h \
-           src/datatype/U2Ma.h \
            src/datatype/U2Mod.h \
            src/datatype/U2Qualifier.h \
            src/datatype/U2Range.h \
@@ -247,7 +246,10 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/U2OpStatusUtils.h \
            src/util/U2SequenceUtils.h \
            src/util/U2VariationUtils.h \
-           src/util/VariationPropertiesUtils.h
+           src/util/VariationPropertiesUtils.h \
+    src/datatype/msa/MultipleSequenceAlignmentData.h \
+    src/datatype/msa/MultipleSequenceAlignmentRowData.h \
+    src/datatype/U2Msa.h
 
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
@@ -271,20 +273,19 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/DNATranslationImpl.cpp \
            src/datatype/FeatureColors.cpp \
            src/datatype/Matrix44.cpp \
-           src/datatype/MultipleAlignment.cpp \
-           src/datatype/MultipleAlignmentInfo.cpp \
-           src/datatype/MultipleAlignmentRow.cpp \
-           src/datatype/MultipleChromatogramAlignmentRow.cpp \
-           src/datatype/MultipleChromatogramAlignment.cpp \
-           src/datatype/MultipleSequenceAlignment.cpp \
-           src/datatype/MultipleSequenceAlignmentRow.cpp \
+           src/datatype/msa/MultipleAlignment.cpp \
+           src/datatype/msa/MultipleAlignmentInfo.cpp \
+           src/datatype/msa/MultipleAlignmentRow.cpp \
+           src/datatype/msa/MultipleChromatogramAlignmentRow.cpp \
+           src/datatype/msa/MultipleChromatogramAlignment.cpp \
+           src/datatype/msa/MultipleSequenceAlignment.cpp \
+           src/datatype/msa/MultipleSequenceAlignmentRow.cpp \
            src/datatype/PFMatrix.cpp \
            src/datatype/PhyTree.cpp \
            src/datatype/PWMatrix.cpp \
            src/datatype/SMatrix.cpp \
            src/datatype/U2CoreAttributes.cpp \
            src/datatype/U2FeatureType.cpp \
-           src/datatype/U2Ma.cpp \
            src/datatype/U2Mod.cpp \
            src/datatype/U2Qualifier.cpp \
            src/datatype/U2Region.cpp \
@@ -454,7 +455,10 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/U2FeatureUtils.cpp \
            src/util/U2ObjectTypeUtils.cpp \
            src/util/U2SequenceUtils.cpp \
-           src/util/U2VariationUtils.cpp
+           src/util/U2VariationUtils.cpp \
+    src/datatype/msa/MultipleSequenceAlignmentData.cpp \
+    src/datatype/msa/MultipleSequenceAlignmentRowData.cpp \
+    src/datatype/U2Msa.cpp
 
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

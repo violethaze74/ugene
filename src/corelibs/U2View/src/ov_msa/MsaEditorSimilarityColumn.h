@@ -118,7 +118,7 @@ public:
     const UpdatedWidgetSettings* getSettings() const {return settings;}
 
 private slots:
-    void sl_onAlignmentChanged(const MultipleAlignment &maBefore, const MaModificationInfo& modInfo);
+    void sl_onAlignmentChanged(const MultipleSequenceAlignment &maBefore, const MaModificationInfo& modInfo);
     void sl_onUpdateButonPressed();
     void sl_onDataStateChanged(DataState newState);
     void sl_onFontChanged(const QFont&);

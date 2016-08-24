@@ -41,7 +41,7 @@ void DistanceMatrix::calculateOutOfAlignment( const MultipleSequenceAlignment& m
         this->size = size;
         printdata = false;
 
-        foreach(const MultipleAlignmentRow& r, ma->getRows()) {
+        foreach(const MultipleSequenceAlignmentRow& r, ma->getRows()) {
             const QString& str = r->getName();
             index_map.insert(str, index);
             index++;

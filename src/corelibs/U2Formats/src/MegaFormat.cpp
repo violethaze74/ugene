@@ -347,7 +347,7 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObjec
     }
 
     int maxNameLength=0;
-    foreach (const MultipleAlignmentRow &item, msa->getRows()) {
+    foreach (const MultipleSequenceAlignmentRow &item, msa->getRows()) {
         maxNameLength = qMax(maxNameLength, item->getName().length());
     }
 
@@ -359,9 +359,9 @@ void MegaFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObjec
         QList<QByteArray> seqs = walker.nextData(BLOCK_LENGTH, ti);
         CHECK_OP(ti, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleAlignmentRow>::ConstIterator ri = msa->getRows().constBegin();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = msa->getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleAlignmentRow &item = *ri;
+            const MultipleSequenceAlignmentRow &item = *ri;
             QByteArray line;
             line.append(MEGA_SEPARATOR).append(item->getName());
             TextUtils::replace(line.data(), line.length(), TextUtils::WHITES, '_');

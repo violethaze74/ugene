@@ -36,7 +36,7 @@ MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject *parent, const MsaH
 }
 
 void MsaHighlightingSchemeGaps::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
-    if (seqChar == MultipleAlignment::GapChar) {
+    if (seqChar == MultipleSequenceAlignment::GapChar) {
         color = gapColor;
         highlight = true;
     } else {

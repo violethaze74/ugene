@@ -75,11 +75,11 @@ public:
     ~MaSavedState();
 
     bool hasState() const;
-    const MultipleAlignment takeState();
-    void setState(const MultipleAlignment &ma);
+    const MultipleSequenceAlignment takeState();
+    void setState(const MultipleSequenceAlignment &ma);
 
 private:
-    MultipleAlignment *lastState;
+    MultipleSequenceAlignment *lastState;
 };
 
 class U2CORE_EXPORT MultipleAlignmentObject : public GObject {
@@ -89,14 +89,14 @@ public:
                             const QString &name,
                             const U2EntityRef &maRef,
                             const QVariantMap &hintsMap,
-                            const MultipleAlignment &alignment);
+                            const MultipleSequenceAlignment &alignment);
     ~MultipleAlignmentObject();
 
     /** Sets type of modifications tracking for the alignment */
     void setTrackMod(U2OpStatus &os, U2TrackModType trackMod);
 
-    const MultipleAlignment & getMultipleAlignment() const;
-    void setMultipleAlignment(const MultipleAlignment &ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap &hints = QVariantMap());
+    const MultipleSequenceAlignment & getMultipleAlignment() const;
+    void setMultipleAlignment(const MultipleSequenceAlignment &ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap &hints = QVariantMap());
 
     /** GObject methods */
     void setGObjectName(const QString &newName);
@@ -106,7 +106,7 @@ public:
     const DNAAlphabet * getAlphabet() const;
     qint64 getLength() const;
     qint64 getNumRows() const;
-    const MultipleAlignmentRow & getRow(int row) const;
+    const MultipleSequenceAlignmentRow & getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
 
     /** Methods that modify the gap model only */
@@ -125,10 +125,10 @@ public:
      * Updates a gap model of the alignment.
      * The map must contain valid row IDs and corresponding gap models.
      */
-    void updateGapModel(U2OpStatus &os, const U2MaMapGapModel &rowsGapModel);
-    void updateGapModel(const QList<MultipleAlignmentRow> &sourceRows);
+    void updateGapModel(U2OpStatus &os, const U2MsaMapGapModel &rowsGapModel);
+    void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
 
-    U2MaMapGapModel getGapModel() const;
+    U2MsaMapGapModel getGapModel() const;
 
     /** Methods to work with rows */
     void removeRow(int rowIdx);
@@ -175,7 +175,7 @@ public:
 
 signals:
     void si_startMaUpdating();
-    void si_alignmentChanged(const MultipleAlignment &maBefore, const MaModificationInfo &modInfo);
+    void si_alignmentChanged(const MultipleSequenceAlignment &maBefore, const MaModificationInfo &modInfo);
     void si_alignmentBecomesEmpty(bool isEmpty);
     void si_completeStateChanged(bool complete);
     void si_rowsRemoved(const QList<qint64> &rowIds);
@@ -185,9 +185,9 @@ signals:
 protected:
     virtual void loadAlignment(U2OpStatus &os) = 0;
     virtual void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds) = 0;
-    virtual void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) = 0;
+    virtual void updateDatabase(U2OpStatus &os, const MultipleSequenceAlignment &ma) = 0;
 
-    MultipleAlignment cachedMa;
+    MultipleSequenceAlignment cachedMa;
 
 private:
     void loadDataCore(U2OpStatus &os);

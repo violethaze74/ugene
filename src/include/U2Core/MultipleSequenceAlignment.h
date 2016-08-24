@@ -1,1 +1,1 @@
-#include "../../corelibs/U2Core/src/datatype/MultipleSequenceAlignment.h"
+#include "../../corelibs/U2Core/src/datatype/msa/MultipleSequenceAlignment.h"

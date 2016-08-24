@@ -95,7 +95,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
     result->addRow(referenceSeq.getName(), referenceSeq.seq, 0);
     CHECK_OP(stateInfo, );
 
-    U2MaRowGapModel referenceGaps = getReferenceGaps();
+    U2MsaRowGapModel referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, );
 
     insertShiftedGapsIntoReference(result, referenceGaps);
@@ -120,7 +120,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         result->addRow(subTask->getReadName(), readSeq.seq, rowsCounter);
         CHECK_OP(stateInfo, );
 
-        foreach (const U2MaGap &gap, subTask->getReadGaps()) {
+        foreach (const U2MsaGap &gap, subTask->getReadGaps()) {
             result->insertGaps(rowsCounter, gap.offset, gap.gap, stateInfo);
             CHECK_OP(stateInfo, );
         }
@@ -156,12 +156,12 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
     annotations = storage->getDataHandler(annsObject->getEntityRef());
 }
 
-U2Region ComposeResultSubTask::getReadRegion(const MultipleSequenceAlignmentRow &readRow, const U2MaRowGapModel &referenceGapModel) const {
+U2Region ComposeResultSubTask::getReadRegion(const MultipleSequenceAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const {
     U2Region region(0, readRow->getRowLengthWithoutTrailing());
 
     // calculate read start
     if (!readRow->getGapModel().isEmpty()) {
-        U2MaGap firstGap = readRow->getGapModel().first();
+        U2MsaGap firstGap = readRow->getGapModel().first();
         if (0 == firstGap.offset) {
             region.startPos += firstGap.gap;
             region.length -= firstGap.gap;
@@ -170,7 +170,7 @@ U2Region ComposeResultSubTask::getReadRegion(const MultipleSequenceAlignmentRow 
 
     qint64 leftGap = 0;
     qint64 innerGap = 0;
-    foreach (const U2MaGap &gap, referenceGapModel) {
+    foreach (const U2MsaGap &gap, referenceGapModel) {
         qint64 endPos = gap.offset + gap.gap;
         if (gap.offset < region.startPos) {
             leftGap += gap.gap;
@@ -229,13 +229,13 @@ DNASequence ComposeResultSubTask::getReferenceSequence() {
 }
 
 namespace {
-    bool compare(const U2MaGap &gap1, const U2MaGap &gap2) {
+    bool compare(const U2MsaGap &gap1, const U2MsaGap &gap2) {
         return gap1.offset < gap2.offset;
     }
 }
 
-U2MaRowGapModel ComposeResultSubTask::getReferenceGaps() {
-    U2MaRowGapModel result;
+U2MsaRowGapModel ComposeResultSubTask::getReferenceGaps() {
+    U2MsaRowGapModel result;
 
     for (int i=0; i<reads.size(); i++) {
         result << getShiftedGaps(i);
@@ -245,34 +245,34 @@ U2MaRowGapModel ComposeResultSubTask::getReferenceGaps() {
     return result;
 }
 
-U2MaRowGapModel ComposeResultSubTask::getShiftedGaps(int rowNum) {
-    U2MaRowGapModel result;
+U2MsaRowGapModel ComposeResultSubTask::getShiftedGaps(int rowNum) {
+    U2MsaRowGapModel result;
 
     BlastAndSwReadTask *subTask = getBlastSwTask(rowNum);
     CHECK_OP(stateInfo, result);
 
     qint64 wholeGap = 0;
-    foreach (const U2MaGap &gap, subTask->getReferenceGaps()) {
-        result << U2MaGap(gap.offset - wholeGap, gap.gap);
+    foreach (const U2MsaGap &gap, subTask->getReferenceGaps()) {
+        result << U2MsaGap(gap.offset - wholeGap, gap.gap);
         wholeGap += gap.gap;
     }
     return result;
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoReference(MultipleAlignment &alignment, const U2MaRowGapModel &gaps) {
+void ComposeResultSubTask::insertShiftedGapsIntoReference(MultipleSequenceAlignment &alignment, const U2MsaRowGapModel &gaps) {
     for (int i = gaps.size() - 1; i >= 0; i--) {
-        U2MaGap gap = gaps[i];
+        U2MsaGap gap = gaps[i];
         alignment->insertGaps(0, gap.offset, gap.gap, stateInfo);
         CHECK_OP(stateInfo, );
     }
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleAlignment &alignment, int readNum, int rowNum, const U2MaRowGapModel &gaps) {
-    U2MaRowGapModel ownGaps = getShiftedGaps(readNum);
+void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps) {
+    U2MsaRowGapModel ownGaps = getShiftedGaps(readNum);
     CHECK_OP(stateInfo, );
 
     qint64 globalOffset = 0;
-    foreach (const U2MaGap &gap, gaps) {
+    foreach (const U2MsaGap &gap, gaps) {
         if (ownGaps.contains(gap)) { // task own gaps into account but don't insert them
             globalOffset += gap.gap;
             ownGaps.removeOne(gap);

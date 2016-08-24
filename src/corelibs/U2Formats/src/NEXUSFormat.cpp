@@ -418,7 +418,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
 
                 // Replace gaps
                 if (ctx.contains("gap")) {
-                    value.replace(ctx["gap"], QChar(MultipleAlignment::GapChar));
+                    value.replace(ctx["gap"], QChar(MultipleSequenceAlignment::GapChar));
                 }
 
                 U2OpStatus2Log os;
@@ -754,7 +754,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
         dataType = "standard";
     }
 
-    QTextStream(&line) << tabs << "format datatype="<<dataType<<" gap=" << MultipleAlignment::GapChar << ";\n";
+    QTextStream(&line) << tabs << "format datatype="<<dataType<<" gap=" << MultipleSequenceAlignment::GapChar << ";\n";
     io->writeBlock(line);
     line.clear();
 
