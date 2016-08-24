@@ -14,9 +14,8 @@
         <translation>Construction</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.ui" line="42"/>
         <source>Available fragments:</source>
-        <translation>Available fragments:</translation>
+        <translation type="vanished">Available fragments:</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="57"/>
@@ -137,6 +136,11 @@
         <location filename="../src/ConstructMoleculeDialog.ui" line="236"/>
         <source>Setting this option checked will result in ignoring overhangs while constructing new molecule.</source>
         <translation>Setting this option checked will result in ignoring overhangs while constructing new molecule.</translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="42"/>
+        <source>Available fragments (core length - length without sticky ends):</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
@@ -595,14 +599,14 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::ConstructMoleculeDialog</name>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="86"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="89"/>
         <source>No fragments are selected!
  Please construct molecule from available fragments.</source>
         <translation>No fragments are selected!
  Please construct molecule from available fragments.</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="284"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="287"/>
         <source>Set new molecule file name</source>
         <translation>Set new molecule file name</translation>
     </message>
@@ -611,42 +615,47 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Genbank (*.gb )</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="192"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="53"/>
+        <source>core length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="195"/>
         <source>Blunt</source>
         <translation>Blunt</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="193"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="196"/>
         <source>Fwd</source>
         <translation>Fwd</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="194"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="197"/>
         <source>Rev</source>
         <translation>Rev</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="211"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="214"/>
         <source>Left end</source>
         <translation>Left end</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="220"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="223"/>
         <source>Right end</source>
         <translation>Right end</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="222"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="225"/>
         <source>yes</source>
         <translation>yes</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="222"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="225"/>
         <source>no</source>
         <translation>no</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="223"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="226"/>
         <source>Make fragment reverse complement</source>
         <translation>Make fragment reverse complement</translation>
     </message>
@@ -1039,7 +1048,7 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::FindEnzymesAutoAnnotationUpdater</name>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="331"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="332"/>
         <source>Restriction Sites</source>
         <translation>Restriction Sites</translation>
     </message>
@@ -1084,13 +1093,18 @@ To start ligation create a project or open an existing.</translation>
         <translation>Find Enzymes</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="137"/>
-        <location filename="../src/FindEnzymesTask.cpp" line="269"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="117"/>
+        <source>Alphabet is not nucleic.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesTask.cpp" line="138"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="270"/>
         <source>Number of results exceed %1, stopping</source>
         <translation>Number of results exceed %1, stopping</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="217"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="218"/>
         <source>Found %1 restriction sites</source>
         <translation>Number of results exceed %1, stopping</translation>
     </message>
@@ -1121,27 +1135,32 @@ To start ligation create a project or open an existing.</translation>
 <context>
     <name>U2::FindSingleEnzymeTask</name>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="232"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="233"/>
         <source>Find enzyme &apos;%1&apos;</source>
         <translation>Find enzyme &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="259"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="243"/>
+        <source>Alphabet is not nucleic.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesTask.cpp" line="260"/>
         <source>Find enzyme &apos;%1&apos; parallel</source>
         <translation>Find enzyme &apos;%1&apos; parallel</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="286"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="287"/>
         <source>No enzyme alphabet</source>
         <translation>No enzyme alphabet</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="288"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="289"/>
         <source>Non-nucleic enzyme alphabet: %1, enzyme: %2, skipping..</source>
         <translation>Non-nucleic enzyme alphabet: %1, enzyme: %2, skipping..</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesTask.cpp" line="293"/>
+        <location filename="../src/FindEnzymesTask.cpp" line="294"/>
         <source>Failed to get sequence alphabet</source>
         <translation>Failed to get sequence alphabet</translation>
     </message>

@@ -1506,39 +1506,39 @@ The items cannot be recovered once deleted.</translation>
 <context>
     <name>U2::AceImportDialog</name>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="132"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="135"/>
         <source>Destination UGENEDB file</source>
         <translation>Destination UGENEDB file</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="66"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="68"/>
         <source>Destination URL is not specified</source>
         <translation>Destination URL is not specified</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="52"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="54"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="72"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="74"/>
         <source>Destination URL must point to a local file</source>
         <translation>Destination URL must point to a local file</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="80"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="82"/>
         <source>There is opened view with destination file.
 Close it or choose different file</source>
         <translation>There is opened view with destination file.
 Close it or choose different file</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="90"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="92"/>
         <source>Destination directory &apos;%1&apos; is not writable, please choose different destination URL</source>
         <translation>Destination directory &apos;%1&apos; is not writable, please choose different destination URL</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="98"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="100"/>
         <source>Destination file already exists.
 To overwrite the file, press &apos;Replace&apos;.
 To append data to existing file press &apos;Append&apos;.</source>
@@ -1547,23 +1547,23 @@ To overwrite the file, press &apos;Replace&apos;.
 To append data to existing file press &apos;Append&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="101"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="103"/>
         <source>Replace</source>
         <translation>Replace</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="102"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="104"/>
         <source>Append</source>
         <translation>Append</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="53"/>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="103"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="55"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="105"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="107"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="109"/>
         <source>Destination file &apos;%1&apos; cannot be removed</source>
         <translation>Destination file &apos;%1&apos; cannot be removed</translation>
     </message>
@@ -3232,42 +3232,42 @@ check connection settings</translation>
 <context>
     <name>U2::ToolsMenu</name>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="107"/>
+        <location filename="../src/ToolsMenu.cpp" line="108"/>
         <source>Sanger data analysis</source>
         <translation>Sanger data analysis</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="117"/>
+        <location filename="../src/ToolsMenu.cpp" line="118"/>
         <source>NGS data analysis</source>
         <translation>NGS data analysis</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="144"/>
+        <location filename="../src/ToolsMenu.cpp" line="146"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="158"/>
+        <location filename="../src/ToolsMenu.cpp" line="160"/>
         <source>Multiple sequence alignment</source>
         <translation>Multiple sequence alignment</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="170"/>
+        <location filename="../src/ToolsMenu.cpp" line="172"/>
         <source>Cloning</source>
         <translation>Cloning</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="178"/>
+        <location filename="../src/ToolsMenu.cpp" line="180"/>
         <source>Primer</source>
         <translation>Primer</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="184"/>
+        <location filename="../src/ToolsMenu.cpp" line="186"/>
         <source>Search for TFBS</source>
         <translation>Search for TFBS</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="193"/>
+        <location filename="../src/ToolsMenu.cpp" line="195"/>
         <source>HMMER tools</source>
         <translation>HMMER tools</translation>
     </message>

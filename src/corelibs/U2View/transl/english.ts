@@ -1244,137 +1244,137 @@ Double-click to collapse the branch</translation>
         <translation>Navigation</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="166"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="167"/>
         <source>Lock here</source>
         <translation>Lock here</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="317"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="318"/>
         <source>Shift+move mouse</source>
         <translation>Shift+move mouse</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="317"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="318"/>
         <source>Zoom the Assembly Overview to selection</source>
         <translation>Zoom the Assembly Overview to selection</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="318"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="319"/>
         <source>Ctrl+wheel</source>
         <translation>Ctrl+wheel</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="318"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="319"/>
         <source>Zoom the Assembly Overview</source>
         <translation>Zoom the Assembly Overview</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="319"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="320"/>
         <source>Alt+click</source>
         <translation>Alt+click</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="319"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="320"/>
         <source>Zoom the Assembly Overview in 100x</source>
         <translation>Zoom the Assembly Overview in 100x</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="320"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="321"/>
         <source>Wheel+move mouse</source>
         <translation>Wheel+move mouse</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="320"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="321"/>
         <source>Move the Assembly Overview</source>
         <translation>Move the Assembly Overview</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="321"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="322"/>
         <source>Wheel</source>
         <translation>Wheel</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="321"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="322"/>
         <source>Zoom the Reads Area</source>
         <translation>Zoom the Reads Area</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="322"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="323"/>
         <source>Double-click</source>
         <translation>Double-click</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="322"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="323"/>
         <source>Zoom in the Reads Area</source>
         <translation>Zoom in the Reads Area</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="323"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="324"/>
         <source>+/-</source>
         <translation>+/-</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="323"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="324"/>
         <source>Zoom in/Zoom out the Reads Area</source>
         <translation>Zoom in/Zoom out the Reads Area</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="324"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="325"/>
         <source>Click+move mouse</source>
         <translation>Click+move mouse</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="324"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="325"/>
         <source>Move the Reads Area</source>
         <translation>Move the Reads Area</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="325"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="326"/>
         <source>Arrow</source>
         <translation>Arrow</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="325"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="326"/>
         <source>Move one base in the corresponding direction in the Reads Area</source>
         <translation>Move one base in the corresponding direction in the Reads Area</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="326"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="327"/>
         <source>Ctrl+arrow</source>
         <translation>Ctrl+arrow</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="326"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="327"/>
         <source>Move one page in the corresponding direction in the Reads Area</source>
         <translation>Move one page in the corresponding direction in the Reads Area</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="327"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="328"/>
         <source>Page up/Page down</source>
         <translation>Page up/Page down</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="327"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="328"/>
         <source>Move one page up/down in the Reads Area</source>
         <translation>Move one page up/down in the Reads Area</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="328"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="329"/>
         <source>Home/End</source>
         <translation>Home/End</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="328"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="329"/>
         <source>Move to the beginning/end of the assembly in the Reads Area</source>
         <translation>Move to the beginning/end of the assembly in the Reads Area</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="329"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="330"/>
         <source>Ctrl+G</source>
         <translation>Ctrl+G</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="329"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="330"/>
         <source>Focus to the &lt;i&gt;Go to position&lt;/i&gt; field on the toolbar</source>
         <translation>Focus to the &lt;i&gt;Go to position&lt;/i&gt; field on the toolbar</translation>
     </message>
@@ -1515,6 +1515,11 @@ Double-click to collapse the branch</translation>
         <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="41"/>
         <source>Show names for the sequence only</source>
         <translation>Show names for the sequence only</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/PanViewRows.cpp" line="95"/>
+        <source>Restriction Site</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3172,59 +3177,59 @@ Double-click to collapse the branch</translation>
 <context>
     <name>U2::AssemblyModel</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="281"/>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="302"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="289"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="310"/>
         <source>No active project found!</source>
         <translation>No active project found!</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="284"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="292"/>
         <source>No reference document found in the project</source>
         <translation>No reference document found in the project</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="287"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="295"/>
         <source>No reference object found in the project</source>
         <translation>No reference object found in the project</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="320"/>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="650"/>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="657"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="328"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="658"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="665"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="321"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="329"/>
         <source>A file &apos;%1&apos; with the reference sequence &apos;%2&apos; not found!
 Try to open another file with a reference sequence and associate it with the assembly.</source>
         <translation>A file &apos;%1&apos; with the reference sequence &apos;%2&apos; not found!
 Try to open another file with a reference sequence and associate it with the assembly.</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="338"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="346"/>
         <source>Unexected object is set as reference</source>
         <translation>Unexected object is set as reference</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="373"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="381"/>
         <source>Errors</source>
         <translation>Errors</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="374"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="382"/>
         <source>The &apos;%1&apos; sequence is associated with the &apos;%2&apos; assembly?
 Do you want to remove the association?</source>
         <translation>The &apos;%1&apos; sequence is associated with the &apos;%2&apos; assembly?
 Do you want to remove the association?</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="494"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="502"/>
         <source>Reference document is not ready!</source>
         <translation>Reference document is not ready!</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="651"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="659"/>
         <source>This action requires changing file:
 %1
 You don&apos;t have enough rights to change file</source>
@@ -3233,7 +3238,7 @@ You don&apos;t have enough rights to change file</source>
 You don&apos;t have enough rights to change file</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="658"/>
+        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="666"/>
         <source>Database is opened in read-only mode. It might happen because file 
 %1
  is read only. If not try to reload file</source>
@@ -3258,77 +3263,87 @@ You don&apos;t have enough rights to change file</translation>
 <context>
     <name>U2::AssemblyReadsArea</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="105"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="106"/>
         <source>Copy read information to clipboard</source>
         <translation>Copy read information to clipboard</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="109"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="110"/>
         <source>Copy current position to clipboard</source>
         <translation>Copy current position to clipboard</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="112"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="113"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="115"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="116"/>
         <source>Coverage</source>
         <translation>Coverage</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="135"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="136"/>
         <source>Reads highlighting</source>
         <translation>Reads highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="160"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="161"/>
         <source>Optimize rendering when scrolling</source>
         <translation>Optimize rendering when scrolling</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="169"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="170"/>
         <source>Reads shadowing</source>
         <translation>Reads shadowing</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="171"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="172"/>
         <source>Disabled</source>
         <translation>Disabled</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="173"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="174"/>
         <source>Free</source>
         <translation>Free</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="175"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="176"/>
         <source>Centered</source>
         <translation>Centered</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="183"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="184"/>
         <source>Jump to locked base</source>
         <translation>Jump to locked base</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="337"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="338"/>
         <source>&lt;a href=&quot;%1&quot; style=&quot;color: %2&quot;&gt;Zoom in to see the reads&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;%1&quot; style=&quot;color: %2&quot;&gt;Zoom in to see the reads&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="341"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="342"/>
         <source>Please wait until overview rendering is finished, or &lt;a href=&quot;%1&quot;&gt;zoom in to see the reads&lt;/a&gt;</source>
         <translation>Please wait until overview rendering is finished, or &lt;a href=&quot;%1&quot;&gt;zoom in to see the reads&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="343"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="344"/>
         <source> or choose one of the well-covered regions:&lt;br&gt;&lt;br&gt;</source>
         <translation> or choose one of the well-covered regions:&lt;br&gt;&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="930"/>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="927"/>
+        <source>Export visible reads as sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="928"/>
+        <source>There are no reads in the current area. Nothing to export!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="934"/>
         <source>Locked to base</source>
         <translation>Locked to base</translation>
     </message>
@@ -3560,55 +3575,53 @@ You don&apos;t have enough rights to change file</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="47"/>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="62"/>
         <source>Assembly DBI is NULL</source>
         <translation>Assembly DBI is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="133"/>
         <source>Cigar string: out of bounds</source>
-        <translation>Cigar string: out of bounds</translation>
+        <translation type="vanished">Cigar string: out of bounds</translation>
     </message>
 </context>
 <context>
     <name>U2::CalculateCoveragePerBaseTask</name>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="150"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="73"/>
         <source>Calculate coverage per base for assembly %1</source>
         <translation>Calculate coverage per base for assembly %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="154"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="77"/>
         <source>Invalid database reference</source>
         <translation>Invalid database reference</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="155"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="78"/>
         <source>Invalid assembly ID</source>
         <translation>Invalid assembly ID</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="160"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="83"/>
         <source>Assembly DBI is NULL</source>
         <translation>Assembly DBI is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="175"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="98"/>
         <source>Attribute DBI is NULL</source>
         <translation>Attribute DBI is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="179"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="102"/>
         <source>Can&apos;t get the assembly length: attribute is missing</source>
         <translation>Can&apos;t get the assembly length: attribute is missing</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="182"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="105"/>
         <source>Assembly has zero length</source>
         <translation>Assembly has zero length</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="196"/>
+        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="119"/>
         <source>An unexpected subtask</source>
         <translation>An unexpected subtask</translation>
     </message>
@@ -3616,7 +3629,7 @@ You don&apos;t have enough rights to change file</translation>
 <context>
     <name>U2::CalculatePointsTask</name>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="890"/>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="892"/>
         <source>Calculate graph points</source>
         <translation>Calculate graph points</translation>
     </message>
@@ -4659,181 +4672,208 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::FindPatternWidget</name>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="328"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="326"/>
         <source>Exact</source>
         <translation>Exact</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="330"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="328"/>
         <source>InsDel</source>
         <translation>InsDel</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="331"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="329"/>
         <source>Substitute</source>
         <translation>Substitute</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="333"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="331"/>
         <source>Regular expression</source>
         <translation>Regular expression</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="337"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="335"/>
         <source>Should match</source>
         <translation>Should match</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="414"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="412"/>
         <source>Search with ambiguous bases</source>
         <translation>Search with ambiguous bases</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="362"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="360"/>
         <source>Both</source>
         <translation>Both</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="363"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="361"/>
         <source>Direct</source>
         <translation>Direct</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="364"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="362"/>
         <source>Reverse-coml.</source>
         <translation>Reverse-coml.</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="370"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="368"/>
         <source>Sequence</source>
         <translation>Sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="371"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="369"/>
         <source>Translation</source>
         <translation>Translation</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="377"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="375"/>
         <source>Whole sequence</source>
         <translation>Whole sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="378"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="376"/>
         <source>Custom region</source>
         <translation>Custom region</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="379"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="377"/>
         <source>Selected region</source>
         <translation>Selected region</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="437"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="435"/>
         <source>Results no longer than:</source>
         <translation>Results no longer than:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="712"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="705"/>
         <source>The value is longer than the search region. Please input a shorter value or select another region!</source>
         <translation>The value is longer than the search region. Please input a shorter value or select another region!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="719"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="707"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="714"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="722"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="729"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="735"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="741"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="745"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="748"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="754"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="758"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="761"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="769"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="777"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="783"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="791"/>
+        <source>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;br&gt;&lt;/br&gt;&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="712"/>
         <source>Warning: input value contains characters that do not match the active alphabet!</source>
         <translation>Warning: input value contains characters that do not match the active alphabet!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="727"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="720"/>
         <source>Warning: file contains patterns that do not match the active alphabet! Those patterns were ignored </source>
         <translation>Warning: file contains patterns that do not match the active alphabet! Those patterns were ignored </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="734"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="727"/>
         <source>Warning: file contains patterns that longer than the search region! Those patterns were ignored. Please input a shorter value or select another region! </source>
         <translation>Warning: file contains patterns that longer than the search region! Those patterns were ignored. Please input a shorter value or select another region! </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="789"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="744"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="757"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="767"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="775"/>
+        <source>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="790"/>
         <source>Warning: current sequence is too long to search in.</source>
         <translation>Warning: current sequence is too long to search in.</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1469"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1450"/>
         <source>Warning: can not get valid pattern name, annotation will be named &apos;misc_feature&apos;</source>
         <translation>Warning: can not get valid pattern name, annotation will be named &apos;misc_feature&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1607"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1588"/>
         <source>Results:</source>
         <translation>Results:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="750"/>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="761"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="743"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="756"/>
         <source>Reason: </source>
         <translation>Reason: </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="741"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="734"/>
         <source>Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.</source>
         <translation>Info: please input at least one sequence pattern to search for. Use %1 to input multiple patterns. Alternatively, load patterns from a FASTA file.</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="753"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="747"/>
         <source> Please input valid annotation names. </source>
         <translation> Please input valid annotation names. </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="759"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="753"/>
         <source>Warning: annotation names are invalid. </source>
         <translation>Warning: annotation names are invalid. </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="764"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="760"/>
         <source> It will be automatically changed to acceptable name if &apos;Get annotations&apos; button is pressed. </source>
         <translation> It will be automatically changed to acceptable name if &apos;Get annotations&apos; button is pressed. </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="770"/>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="777"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="766"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="774"/>
         <source>Warning: there is no pattern to search. </source>
         <translation>Warning: there is no pattern to search. </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="771"/>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="778"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="768"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="776"/>
         <source> Please input a valid pattern or choose a file with patterns </source>
         <translation> Please input a valid pattern or choose a file with patterns </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="784"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="782"/>
         <source>Warning: invalid regexp. </source>
         <translation>Warning: invalid regexp. </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1124"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1105"/>
         <source>Select file to open...</source>
         <translation>Select file to open...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1176"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1157"/>
         <source>Unable to search on the reverse-complement strand, searching on the direct strand only!</source>
         <translation>Unable to search on the reverse-complement strand, searching on the direct strand only!</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="297"/>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1521"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1502"/>
         <source>Results: %1/%2</source>
         <translation>Results: %1/%2</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="748"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="740"/>
         <source>Warning: annotation name or annotation group name are invalid. </source>
         <translation>Warning: annotation name or annotation group name are invalid. </translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1324"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1305"/>
         <source>Sequence in focus is NULL</source>
         <translation>Sequence in focus is NULL</translation>
     </message>
@@ -4876,6 +4916,11 @@ Please, check external tools in the settings.</translation>
         <source>Graph is rendering...</source>
         <translation>Graph is rendering...</translation>
     </message>
+    <message>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="442"/>
+        <source>Graph is not available. Try to change calculation settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::GSequenceGraphView</name>
@@ -4910,12 +4955,12 @@ Please, check external tools in the settings.</translation>
         <translation>%1 [%2, %3], Window: %4, Step %5</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="623"/>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="625"/>
         <source>[%2, max:%3, min:%4]</source>
         <translation>[%2, max:%3, min:%4]</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="617"/>
+        <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="619"/>
         <source>[%2, %3]</source>
         <translation>[%2, %3]</translation>
     </message>
@@ -5877,17 +5922,17 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MSAGraphOverview</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphOverview.cpp" line="103"/>
+        <location filename="../src/ov_msa/Overview/MSAGraphOverview.cpp" line="104"/>
         <source>Multiple sequence alignment is too big. Overview is unavailable.</source>
         <translation>Multiple sequence alignment is too big. Overview is unavailable.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphOverview.cpp" line="108"/>
+        <location filename="../src/ov_msa/Overview/MSAGraphOverview.cpp" line="109"/>
         <source>Waiting...</source>
         <translation>Waiting...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphOverview.cpp" line="117"/>
+        <location filename="../src/ov_msa/Overview/MSAGraphOverview.cpp" line="118"/>
         <source>Overview is rendering...</source>
         <translation>Overview is rendering...</translation>
     </message>
@@ -6072,77 +6117,77 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
         <translation>Set color...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="134"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="135"/>
         <source>Show simple overview</source>
         <translation>Show simple overview</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="141"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="142"/>
         <source>Export as image</source>
         <translation>Export as image</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="147"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="148"/>
         <source>Display settings...</source>
         <translation>Display settings...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="154"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="155"/>
         <source>Calculation method...</source>
         <translation>Calculation method...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="157"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="158"/>
         <source>Strict</source>
         <translation>Strict</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="158"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="159"/>
         <source>Gaps</source>
         <translation>Gaps</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="159"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="160"/>
         <source>Clustal</source>
         <translation>Clustal</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="160"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="161"/>
         <source>Highlighting</source>
         <translation>Highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="188"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="189"/>
         <source>Graph type</source>
         <translation>Graph type</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="192"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="193"/>
         <source>Histogram</source>
         <translation>Histogram</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="193"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="194"/>
         <source>Line graph</source>
         <translation>Line graph</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="194"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="195"/>
         <source>Area graph</source>
         <translation>Area graph</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="215"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="216"/>
         <source>Orientation</source>
         <translation>Orientation</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="219"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="220"/>
         <source>Top to bottom</source>
         <translation>Top to bottom</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="220"/>
+        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="221"/>
         <source>Bottom to top</source>
         <translation>Bottom to top</translation>
     </message>
@@ -6676,9 +6721,13 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::SecStructDialog</name>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="65"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="vanished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="65"/>
+        <source>Predict</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
@@ -6995,17 +7044,22 @@ Please, load the corresponding plugins.</translation>
 <context>
     <name>U2::SubstMatrixDialog</name>
     <message>
-        <location filename="../src/util_smith_waterman/SubstMatrixDialog.cpp" line="47"/>
+        <location filename="../src/util_smith_waterman/SubstMatrixDialog.cpp" line="46"/>
+        <source>Close</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <location filename="../src/util_smith_waterman/SubstMatrixDialog.cpp" line="48"/>
         <source>Scoring Matrix: %1</source>
         <translation>Scoring Matrix: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SubstMatrixDialog.cpp" line="51"/>
+        <location filename="../src/util_smith_waterman/SubstMatrixDialog.cpp" line="52"/>
         <source>min score:</source>
         <translation>min score:</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SubstMatrixDialog.cpp" line="52"/>
+        <location filename="../src/util_smith_waterman/SubstMatrixDialog.cpp" line="53"/>
         <source>max score:</source>
         <translation>max score:</translation>
     </message>

@@ -40,47 +40,47 @@
 <context>
     <name>U2::AddPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="419"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="408"/>
         <source>Add plugin task: %1</source>
         <translation>Add plugin task: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="434"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="423"/>
         <source>Plugin is already loaded: %1</source>
         <translation>Plugin is already loaded: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="442"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="431"/>
         <source>Plugin %1 depends on %2 which is not loaded</source>
         <translation>Plugin %1 depends on %2 which is not loaded</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="446"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="435"/>
         <source>Plugin %1 depends on %2 which is available, but the version is too old</source>
         <translation>Plugin %1 depends on %2 which is available, but the version is too old</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="457"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="446"/>
         <source>Plugin loading error: %1, Error string %2</source>
         <translation>Plugin loading error: %1, Error string %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="462"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="451"/>
         <source>Settings is NULL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="490"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="481"/>
         <source>Plugin loading error: %1. Verification failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="513"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="504"/>
         <source>Plugin initialization routine was not found: %1</source>
         <translation>Plugin initialization routine was not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="519"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="510"/>
         <source>Plugin initialization failed: %1</source>
         <translation>Plugin initialization failed: %1</translation>
     </message>
@@ -212,7 +212,7 @@ By default, loglevel=&quot;ERROR&quot;.</translation>
 <context>
     <name>U2::LoadAllPluginsTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="83"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="82"/>
         <source>Loading start up plugins</source>
         <translation>Loading start up plugins</translation>
     </message>
@@ -221,12 +221,12 @@ By default, loglevel=&quot;ERROR&quot;.</translation>
         <translation type="vanished">Problem occurred loading the OpenCL driver. Please try to update drivers if                                    you&apos;re going to make calculations on your video card. For details see this page:                                    &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="115"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="114"/>
         <source>File not found: %1</source>
         <translation>File not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="120"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="119"/>
         <source>Invalid file format: %1</source>
         <translation>Invalid file format: %1</translation>
     </message>
@@ -463,7 +463,7 @@ By default, loglevel=&quot;ERROR&quot;.</translation>
 <context>
     <name>U2::VerifyPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="548"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="539"/>
         <source>Verify plugin task: %1</source>
         <translation>Verify plugin task: %1</translation>
     </message>

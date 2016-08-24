@@ -102,7 +102,12 @@
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="475"/>
+        <location filename="../src/BAMUtils.cpp" line="775"/>
+        <source>Can&apos;t open file with given url: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="476"/>
         <source>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</source>
         <translation>Установлены неверные права пользователя базы данных, таким образом UGENE не может использовать эту базу данных. Свяжитесь с вашим администратором для устранения проблемы.</translation>
     </message>
@@ -342,13 +347,12 @@
 <context>
     <name>U2::AbstractVariationFormat</name>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="61"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="65"/>
         <source>SNP formats are used to store single-nucleotide polymorphism data</source>
         <translation>SNP форматы используются для сохранения полиморфизма однонуклеотидных данных</translation>
     </message>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="119"/>
-        <location filename="../src/AbstractVariationFormat.cpp" line="132"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="140"/>
         <source>Line %1: There are too few columns in this line. The line was skipped.</source>
         <translation>Строка %1: Слишком мало столбцов в этой строке. Строка была проигнорирована.</translation>
     </message>
@@ -356,12 +360,12 @@
 <context>
     <name>U2::AceImporter</name>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="161"/>
+        <location filename="../src/ace/AceImporter.cpp" line="153"/>
         <source>ACE file importer</source>
         <translation>Импорт ACE файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="165"/>
+        <location filename="../src/ace/AceImporter.cpp" line="157"/>
         <source>ACE files importer is used to convert conventional ACE files into UGENE database format.Having ACE file converted into UGENE DB format you get an fast and efficient interface to your data with an option to change the content</source>
         <translation>Импорт ACE файлов используется для преобразования обычных ACE файлов в формат базы данных UGENE. Преобразовав ACE файл в формат UGENE DB вы получите быстрый и эффективный интерфейс к вашим данным с возможностью изменять содержимое файла</translation>
     </message>
@@ -374,12 +378,17 @@
         <translation>Импорт ACE файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="86"/>
+        <location filename="../src/ace/AceImporter.cpp" line="66"/>
+        <source>Dbi ref is invalid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImporter.cpp" line="82"/>
         <source>Can&apos;t create a temporary database</source>
         <translation>Невозможно создать временную базу данных</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="146"/>
+        <location filename="../src/ace/AceImporter.cpp" line="139"/>
         <source>Failed to get load task for : %1</source>
         <translation>Не удалось получить загрузку задачи для: %1</translation>
     </message>
@@ -756,6 +765,14 @@
         <location filename="../src/tasks/ConvertAssemblyToSamTask.cpp" line="94"/>
         <source>Given file is not valid UGENE database file</source>
         <translation>Данный файл не является корректным файлом формата базы данных UGENE</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ConvertSnpeffVariationsToAnnotationsTask</name>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="49"/>
+        <source>Convert SnpEff variations to annotations task</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1724,6 +1741,37 @@ The following sequences are empty:</translation>
     </message>
 </context>
 <context>
+    <name>U2::InfoPartParser</name>
+    <message>
+        <location filename="../src/util/SnpeffInfoParser.cpp" line="114"/>
+        <source>Too few values in the entry: &apos;%1&apos;. Expected at least %2 values.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/SnpeffInfoParser.cpp" line="134"/>
+        <source>Too many values in the entry &apos;%1&apos;, extra entries are ignored</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LoadConvertAndSaveSnpeffVariationsToAnnotationsTask</name>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="122"/>
+        <source>Load file and convert SnpEff variations to annotations task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="162"/>
+        <source>&apos;%1&apos; load failed, the result document is NULL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="166"/>
+        <source>File &apos;%1&apos; doesn&apos;t contain variation tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::MSFFormat</name>
     <message>
         <location filename="../src/MSFFormat.cpp" line="64"/>
@@ -2118,6 +2166,14 @@ The following sequences are empty:</translation>
     </message>
 </context>
 <context>
+    <name>U2::SnpeffInfoParser</name>
+    <message>
+        <location filename="../src/util/SnpeffInfoParser.cpp" line="48"/>
+        <source>Can&apos;t parse the next INFO part: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::StockholmFormat</name>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="677"/>
@@ -2250,49 +2306,49 @@ The following sequences are empty:</translation>
         <translation>Требуемый атрибут не найдет</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="264"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="268"/>
         <source>Database url is incorrect</source>
         <translation>Неправильный путь базы данных</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="270"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="274"/>
         <source>User login is not specified</source>
         <translation>Не указано имя пользователя</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="276"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="280"/>
         <source>Host is not specified</source>
         <translation>Не указан хост</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="282"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="286"/>
         <source>Database name is not specified</source>
         <translation>Не указано имя базы данных</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="298"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="302"/>
         <source>Error opening MySQL database: %1</source>
         <translation>Ошибка открытия базы данных MySQL: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="382"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="383"/>
         <source>Not a %1 MySQL database: %2, %3</source>
         <translation>Не %1 MySQL база данных: %2, %3</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="388"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="389"/>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="273"/>
         <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
         <translation>Предупреждение! База данных была создана с более новой %1 версией: %2. Не все возможности базы данных могут быть выполнены! Текущая %1 версия: %3.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="523"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="492"/>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="328"/>
         <source>Illegal database state: %1</source>
         <translation>Неправильное состояние базы данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="554"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="523"/>
         <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="410"/>
         <source>Can&apos;t synchronize database state</source>
         <translation>Невозможно синхронизовать состояние базы данных</translation>

@@ -4,93 +4,93 @@
 <context>
     <name>DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="17"/>
+        <location filename="../src/DotPlotDialog.ui" line="20"/>
         <source>DotPlot</source>
         <translation>DotPlot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="30"/>
+        <location filename="../src/DotPlotDialog.ui" line="33"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot параметры</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="52"/>
+        <location filename="../src/DotPlotDialog.ui" line="55"/>
         <source>Custom algorithm</source>
         <translation>Алгоритм по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="99"/>
+        <location filename="../src/DotPlotDialog.ui" line="102"/>
         <source>X axis sequence</source>
         <translation>Последовательность оси X</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="112"/>
+        <location filename="../src/DotPlotDialog.ui" line="115"/>
         <source>Minimum repeat length</source>
         <translation>Мин длина повторов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="119"/>
+        <location filename="../src/DotPlotDialog.ui" line="122"/>
         <source>Y axis sequence</source>
         <translation>Последовательность оси Y</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="126"/>
+        <location filename="../src/DotPlotDialog.ui" line="129"/>
         <source>Repeats  identity</source>
         <translation>Идентичность повторов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="151"/>
+        <location filename="../src/DotPlotDialog.ui" line="154"/>
         <source>bp</source>
         <translation>нк</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="179"/>
+        <location filename="../src/DotPlotDialog.ui" line="182"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Эвристический подбор длины повторов, с тем чтобы кол-во повторов в последовательности не превысило 1000</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="182"/>
+        <location filename="../src/DotPlotDialog.ui" line="185"/>
         <source>1k</source>
         <translation>1к</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="207"/>
+        <location filename="../src/DotPlotDialog.ui" line="210"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="229"/>
+        <location filename="../src/DotPlotDialog.ui" line="232"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Сбросить к 100%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="232"/>
+        <location filename="../src/DotPlotDialog.ui" line="235"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="287"/>
+        <location filename="../src/DotPlotDialog.ui" line="290"/>
         <source>Search inverted repeats</source>
         <translation>Искать инвертированные повторы</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="294"/>
+        <location filename="../src/DotPlotDialog.ui" line="297"/>
         <source>Search direct repeats</source>
         <translation>Искать прямые повторы</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="333"/>
-        <location filename="../src/DotPlotDialog.ui" line="340"/>
+        <location filename="../src/DotPlotDialog.ui" line="336"/>
+        <location filename="../src/DotPlotDialog.ui" line="343"/>
         <source>default</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="365"/>
+        <location filename="../src/DotPlotDialog.ui" line="368"/>
         <source>Click to load a sequence from the file system. The sequence will be added to the combo boxes when it is loaded to the project</source>
         <translation>Нажмите, чтобы загрузить последовательности из файловой системы. Последовательности будут добавлены в комбо-боксы, когда они будут загружены в проект</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="368"/>
+        <location filename="../src/DotPlotDialog.ui" line="371"/>
         <source>Load Sequence</source>
         <translation>Загрузить</translation>
     </message>

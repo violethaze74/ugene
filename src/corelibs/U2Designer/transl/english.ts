@@ -1292,12 +1292,12 @@ bowtie index file</translation>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="551"/>
+        <location filename="../src/DelegateEditors.cpp" line="555"/>
         <source>This computer</source>
         <translation>This computer</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="552"/>
+        <location filename="../src/DelegateEditors.cpp" line="556"/>
         <source>Remote computer</source>
         <translation>Remote computer</translation>
     </message>
@@ -1349,17 +1349,17 @@ bowtie index file</translation>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="682"/>
+        <location filename="../src/DelegateEditors.cpp" line="686"/>
         <source>Enter items</source>
         <translation>Enter items</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="684"/>
+        <location filename="../src/DelegateEditors.cpp" line="688"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="686"/>
+        <location filename="../src/DelegateEditors.cpp" line="690"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -1398,19 +1398,19 @@ bowtie index file</translation>
 <context>
     <name>U2::URLLineEdit</name>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="183"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="190"/>
         <source>Select a directory</source>
         <translation>Select a directory</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="186"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="193"/>
         <source>Select file(s)</source>
         <translation>Select file(s)</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="201"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="206"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="209"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="208"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="213"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="216"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
@@ -1497,17 +1497,17 @@ bowtie index file</translation>
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="541"/>
+        <location filename="../src/DelegateEditors.cpp" line="545"/>
         <source>Overwrite</source>
         <translation>Overwrite</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="542"/>
+        <location filename="../src/DelegateEditors.cpp" line="546"/>
         <source>Rename</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="544"/>
+        <location filename="../src/DelegateEditors.cpp" line="548"/>
         <source>Append</source>
         <translation>Append</translation>
     </message>

@@ -64,14 +64,14 @@
         <translation>Loaded sequences have different alphabets. That&apos;s why several sequence objects are created, each for specified alphabet. All sequences at one object have the same alphabet and sequences from different objects have different alphabets.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="607"/>
-        <location filename="../src/datatype/Annotation.cpp" line="610"/>
+        <location filename="../src/datatype/Annotation.cpp" line="606"/>
+        <location filename="../src/datatype/Annotation.cpp" line="609"/>
         <source>Sequence</source>
         <translation>Sequence</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="618"/>
-        <location filename="../src/datatype/Annotation.cpp" line="621"/>
+        <location filename="../src/datatype/Annotation.cpp" line="617"/>
+        <location filename="../src/datatype/Annotation.cpp" line="620"/>
         <source>Translation</source>
         <translation>Translation</translation>
     </message>
@@ -111,7 +111,7 @@
         <translation>Document sequences were merged</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiUtils.cpp" line="43"/>
+        <location filename="../src/dbi/U2DbiUtils.cpp" line="46"/>
         <source>UGENE public database</source>
         <translation>UGENE public database</translation>
     </message>
@@ -560,6 +560,11 @@
         <source>Unexpected error on MSA rows import</source>
         <translation>Unexpected error on MSA rows import</translation>
     </message>
+    <message>
+        <location filename="../src/util/U2AlphabetUtils.h" line="101"/>
+        <source>Symbol is not belong to alphabet</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::AbstractProjectFilterTask</name>
@@ -799,32 +804,32 @@ The session database file is removed after closing of UGENE.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="135"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="139"/>
         <source>Cannot start process &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="205"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="209"/>
         <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="209"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="213"/>
         <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="213"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="217"/>
         <source>Error occurred while reading from or writing to channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="216"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="220"/>
         <source>Unknown error occurred</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="262"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="265"/>
         <source>An error occurred. Process is not finished successfully.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1875,17 +1880,17 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>&apos;%1&apos; does not match database folder URL format</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="100"/>
+        <location filename="../src/globals/L10n.h" line="103"/>
         <source>Direct</source>
         <translation>Direct</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="101"/>
+        <location filename="../src/globals/L10n.h" line="104"/>
         <source>Reverse-complementary</source>
         <translation>Reverse-complementary</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="103"/>
+        <location filename="../src/globals/L10n.h" line="106"/>
         <source>Required</source>
         <translation>Required</translation>
     </message>
@@ -2216,22 +2221,22 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::RelocateDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="348"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="358"/>
         <source>Relocate document %1 -&gt; %2</source>
         <translation>Relocate document %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="355"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="365"/>
         <source>No active project found</source>
         <translation>No active project found</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="359"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="369"/>
         <source>Project is locked</source>
         <translation>Project is locked</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="368"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="378"/>
         <source>Only unloaded objects can be relocated</source>
         <translation>Only unloaded objects can be relocated</translation>
     </message>
@@ -2252,7 +2257,7 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>Remove document</translation>
     </message>
     <message>
-        <location filename="../src/tasks/RemoveDocumentTask.cpp" line="94"/>
+        <location filename="../src/tasks/RemoveDocumentTask.cpp" line="98"/>
         <source>Cannot remove document %1, since it is locked by some task.</source>
         <translation>Cannot remove document %1, since it is locked by some task.</translation>
     </message>
@@ -2289,22 +2294,22 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::SaveCopyAndAddToProjectTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="308"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="318"/>
         <source>Save a copy %1</source>
         <translation>Save a copy %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="326"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="336"/>
         <source>No active project found</source>
         <translation>No active project found</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="327"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="337"/>
         <source>Project is locked</source>
         <translation>Project is locked</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="331"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="341"/>
         <source>Document is already added to the project %1</source>
         <translation>Document is already added to the project %1</translation>
     </message>
@@ -2381,24 +2386,24 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>Question?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="213"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="214"/>
         <source>Save document: %1</source>
         <translation>Save document: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="264"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="274"/>
         <source>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</source>
         <translation>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="265"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="275"/>
         <source>Do you want to save changes to another file?</source>
         <translation>Do you want to save changes to another file?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="286"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="296"/>
         <source>Save as</source>
         <translation>Save as</translation>
     </message>
@@ -2419,9 +2424,17 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2::SequenceDbiWalkerSubtask</name>
     <message>
-        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="140"/>
+        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="141"/>
         <source>Sequence walker subtask</source>
         <translation>Sequence walker subtask</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SequenceDbiWalkerTask</name>
+    <message>
+        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="55"/>
+        <source>Target region out of sequence range</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2486,9 +2499,19 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2::U2AssemblyUtils</name>
     <message>
-        <location filename="../src/util/U2AssemblyUtils.cpp" line="55"/>
+        <location filename="../src/util/U2AssemblyUtils.cpp" line="58"/>
         <source>Invalid CIGAR op: &apos;%1&apos;!</source>
         <translation>Invalid CIGAR op: &apos;%1&apos;!</translation>
+    </message>
+    <message>
+        <location filename="../src/util/U2AssemblyUtils.cpp" line="183"/>
+        <source>Cigar string: out of bounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/U2AssemblyUtils.cpp" line="201"/>
+        <source>Assembly DBI is NULL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2593,7 +2616,7 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2::U2DbiUtils</name>
     <message>
-        <location filename="../src/dbi/U2DbiUtils.cpp" line="49"/>
+        <location filename="../src/dbi/U2DbiUtils.cpp" line="52"/>
         <source>Feature is not supported: %1, dbi: %2</source>
         <translation>Feature is not supported: %1, dbi: %2</translation>
     </message>

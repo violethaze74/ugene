@@ -202,7 +202,7 @@
 <context>
     <name>U2::DnaAssemblyMultiTask</name>
     <message>
-        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="86"/>
+        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="84"/>
         <source>The short reads can&apos;t be mapped to the reference sequence!</source>
         <translation>Короткие риды не могут быть отражены в референсной последовательности!</translation>
     </message>

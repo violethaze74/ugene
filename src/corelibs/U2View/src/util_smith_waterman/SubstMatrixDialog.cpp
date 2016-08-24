@@ -43,6 +43,7 @@ SubstMatrixDialog::SubstMatrixDialog(const SMatrix& _m, QWidget* p)
     setupUi(this);
 
     bttnClose = buttonBox->button(QDialogButtonBox::Close);
+    bttnClose->setText(tr("Close"));
 
     setWindowTitle(tr("Scoring Matrix: %1").arg(m.getName()));
     setModal(true);

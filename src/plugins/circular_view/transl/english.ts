@@ -264,36 +264,40 @@
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="65"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="113"/>
         <source>Inside</source>
         <translation>Inside</translation>
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="68"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="115"/>
         <source>Outside</source>
         <translation>Outside</translation>
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="71"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="120"/>
         <source>Inside/Outside</source>
         <translation>Inside/Outside</translation>
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="74"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="117"/>
         <source>None</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="111"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="130"/>
         <source>Title</source>
         <translation>Title</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="114"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="133"/>
         <source>Ruler</source>
         <translation>Ruler</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="117"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="136"/>
         <source>Annotations</source>
         <translation>Annotations</translation>
     </message>
