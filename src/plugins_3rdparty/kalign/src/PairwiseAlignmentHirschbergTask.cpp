@@ -7,7 +7,7 @@
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2MsaDbi.h>
-#include <U2Core/U2Ma.h>
+#include <U2Core/U2Msa.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -140,7 +140,7 @@ QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) {
             DbiConnection con(settings->msaRef.dbiRef, os);
             CHECK_OP(os, res);
 
-            QList<U2MaRow> rows = con.dbi->getMsaDbi()->getRows(settings->msaRef.entityId, os);
+            QList<U2MsaRow> rows = con.dbi->getMsaDbi()->getRows(settings->msaRef.entityId, os);
             CHECK_OP(os, res);
             U2UseCommonUserModStep userModStep(settings->msaRef, os);
             Q_UNUSED(userModStep);

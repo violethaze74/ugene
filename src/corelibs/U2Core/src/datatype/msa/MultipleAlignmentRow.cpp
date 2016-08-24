@@ -29,43 +29,14 @@ namespace U2 {
 
 const qint64 MultipleAlignmentRowData::INVALID_ROW_ID = -1;
 
-MultipleAlignmentRow::MultipleAlignmentRow(MultipleAlignmentRowData *multipleAlignmentRowData)
-    : maRowData(multipleAlignmentRowData)
-{
 
-}
-
-MultipleAlignmentRow::~MultipleAlignmentRow() {
-
-}
-
-MultipleAlignmentRowData * MultipleAlignmentRow::data() const {
-    return maRowData.data();
-}
-
-MultipleAlignmentRowData & MultipleAlignmentRow::operator*() {
-    return *maRowData;
-}
-
-const MultipleAlignmentRowData & MultipleAlignmentRow::operator*() const {
-    return *maRowData;
-}
-
-MultipleAlignmentRowData * MultipleAlignmentRow::operator->() {
-    return maRowData.data();
-}
-
-const MultipleAlignmentRowData * MultipleAlignmentRow::operator->() const {
-    return maRowData.data();
-}
-
-MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentData *alignment)
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleSequenceAlignmentData *alignment)
     : alignment(alignment)
 {
 
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentRow &row, const MultipleAlignmentData *alignment)
+MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleSequenceAlignmentRow &row, const MultipleSequenceAlignmentData *alignment)
     : alignment(alignment),
       gaps(row->gaps),
       initialRowInDb(row->initialRowInDb)
@@ -73,7 +44,7 @@ MultipleAlignmentRowData::MultipleAlignmentRowData(const MultipleAlignmentRow &r
     SAFE_POINT(alignment != NULL, "Parent MultipleAlignment is NULL", );
 }
 
-MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MaRow &rowInDb, const U2MaRowGapModel &gaps, const MultipleAlignmentData *alignment)
+MultipleAlignmentRowData::MultipleAlignmentRowData(const U2MsaRow &rowInDb, const U2MsaRowGapModel &gaps, const MultipleSequenceAlignmentData *alignment)
     : alignment(alignment),
       gaps(gaps),
       initialRowInDb(rowInDb)
@@ -85,11 +56,11 @@ MultipleAlignmentRowData::~MultipleAlignmentRowData() {
 
 }
 
-const U2MaRowGapModel & MultipleAlignmentRowData::getGapModel() const {
+const U2MsaRowGapModel & MultipleAlignmentRowData::getGapModel() const {
     return gaps;
 }
 
-void MultipleAlignmentRowData::setGapModel(const U2MaRowGapModel &newGapModel) {
+void MultipleAlignmentRowData::setGapModel(const U2MsaRowGapModel &newGapModel) {
     gaps = newGapModel;
     removeTrailingGaps();
 }
@@ -106,8 +77,8 @@ void MultipleAlignmentRowData::setDataId(const U2DataId &dataId) {
     initialRowInDb.dataObjectId = dataId;
 }
 
-U2MaRow MultipleAlignmentRowData::getRowDbInfo() const {
-    U2MaRow row;
+U2MsaRow MultipleAlignmentRowData::getRowDbInfo() const {
+    U2MsaRow row;
     row.rowId = initialRowInDb.rowId;
     row.dataObjectId = initialRowInDb.dataObjectId;
     row.gstart = 0;
@@ -117,7 +88,7 @@ U2MaRow MultipleAlignmentRowData::getRowDbInfo() const {
     return row;
 }
 
-void MultipleAlignmentRowData::setRowDbInfo(const U2MaRow &dbRow) {
+void MultipleAlignmentRowData::setRowDbInfo(const U2MsaRow &dbRow) {
     initialRowInDb = dbRow;
 }
 
@@ -158,7 +129,7 @@ bool MultipleAlignmentRowData::simplify() {
     return false;
 }
 
-void MultipleAlignmentRowData::append(const MultipleAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os) {
+void MultipleAlignmentRowData::append(const MultipleSequenceAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os) {
     int rowLength = getRowLengthWithoutTrailing();
 
     if (lengthBefore < rowLength) {
@@ -169,11 +140,11 @@ void MultipleAlignmentRowData::append(const MultipleAlignmentRow &anotherRow, in
 
     // Gap between rows
     if (lengthBefore > rowLength) {
-        gaps.append(U2MaGap(getRowLengthWithoutTrailing(), lengthBefore - getRowLengthWithoutTrailing()));
+        gaps.append(U2MsaGap(getRowLengthWithoutTrailing(), lengthBefore - getRowLengthWithoutTrailing()));
     }
 
     // Merge gaps
-    U2MaRowGapModel anotherRowGaps = anotherRow->getGapModel();
+    U2MsaRowGapModel anotherRowGaps = anotherRow->getGapModel();
     MsaRowUtils::shiftGapModel(anotherRowGaps, lengthBefore);
     gaps.append(anotherRowGaps);
     mergeConsecutiveGaps();
@@ -219,7 +190,7 @@ void MultipleAlignmentRowData::insertGaps(int pos, int count, U2OpStatus &os) {
                     continue;
                 } else {
                     found = true;
-                    U2MaGap newGap(pos, count);
+                    U2MsaGap newGap(pos, count);
                     gaps.insert(i, newGap);
                     indexGreaterGaps = i;
                     break;
@@ -236,7 +207,7 @@ void MultipleAlignmentRowData::insertGaps(int pos, int count, U2OpStatus &os) {
             }
             // This is the last gap
             else {
-                U2MaGap newGap(pos, count);
+                U2MsaGap newGap(pos, count);
                 gaps.append(newGap);
                 return;
             }
@@ -284,7 +255,7 @@ int MultipleAlignmentRowData::getDataSize(int before) const {
     return MsaRowUtils::getUngappedPosition(gaps, getDataLength(), trimmedRowPos, true);
 }
 
-bool MultipleAlignmentRowData::isRowContentEqual(const MultipleAlignmentRow &row) const {
+bool MultipleAlignmentRowData::isRowContentEqual(const MultipleSequenceAlignmentRow &row) const {
     return isRowContentEqual(*row);
 }
 
@@ -293,12 +264,12 @@ bool MultipleAlignmentRowData::isRowContentEqual(const MultipleAlignmentRowData 
         return false;
     }
 
-    U2MaRowGapModel firstRowGaps = gaps;
+    U2MsaRowGapModel firstRowGaps = gaps;
     if (!firstRowGaps.isEmpty() && (firstRowGaps.first().offset == 0)) {
         firstRowGaps.removeFirst();
     }
 
-    U2MaRowGapModel secondRowGaps = rowData.getGapModel();
+    U2MsaRowGapModel secondRowGaps = rowData.getGapModel();
     if (!secondRowGaps.isEmpty() && (secondRowGaps.first().offset == 0)) {
         secondRowGaps.removeFirst();
     }
@@ -358,7 +329,7 @@ void MultipleAlignmentRowData::crop(int pos, int count, U2OpStatus &os) {
     removeTrailingGaps();
 }
 
-void MultipleAlignmentRowData::setParentAlignment(const MultipleAlignment &newAlignment) {
+void MultipleAlignmentRowData::setParentAlignment(const MultipleSequenceAlignment &newAlignment) {
     alignment = newAlignment.data();
 }
 
@@ -373,7 +344,7 @@ void MultipleAlignmentRowData::removeTrailingGaps() {
 
     int acceptedGaps = 0;
     qint64 accumulatedLength = getDataLength();
-    foreach (const U2MaGap &gap, gaps) {
+    foreach (const U2MsaGap &gap, gaps) {
         if (gap.offset >= accumulatedLength) {
             break;
         }
@@ -385,7 +356,7 @@ void MultipleAlignmentRowData::removeTrailingGaps() {
 }
 
 void MultipleAlignmentRowData::mergeConsecutiveGaps() {
-    U2MaRowGapModel newGapModel;
+    U2MsaRowGapModel newGapModel;
     if (gaps.isEmpty()) {
         return;
     }
@@ -461,9 +432,9 @@ void MultipleAlignmentRowData::getStartAndEndDataPositions(int pos, int count, i
 }
 
 void MultipleAlignmentRowData::removeGapsFromGapModel(int pos, int count) {
-    U2MaRowGapModel newGapModel;
+    U2MsaRowGapModel newGapModel;
     int endRegionPos = pos + count; // non-inclusive
-    foreach (U2MaGap gap, gaps) {
+    foreach (U2MsaGap gap, gaps) {
         qint64 gapEnd = gap.offset + gap.gap;
         if (gapEnd < pos) {
             newGapModel << gap;

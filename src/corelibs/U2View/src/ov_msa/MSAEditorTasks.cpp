@@ -293,7 +293,7 @@ void ExtractConsensusTask::run() {
         SAFE_POINT(0 != nSeq, tr("No sequences in alignment"), );
 
         QChar c = algorithm->getConsensusCharAndScore(ma, i, count);
-        if (c != MultipleAlignment::GapChar || keepGaps) {
+        if (c != MultipleSequenceAlignment::GapChar || keepGaps) {
             filteredConsensus.append(c);
         }
     }

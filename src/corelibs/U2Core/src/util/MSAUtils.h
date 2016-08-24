@@ -46,7 +46,7 @@ public:
     static void updateAlignmentAlphabet(MultipleSequenceAlignment& ma, const DNAAlphabet* a, U2OpStatus& os);
 
     // Returns row index or -1 if name is not present
-    static int getRowIndexByName(const MultipleAlignment &ma, const QString& name);
+    static int getRowIndexByName(const MultipleSequenceAlignment &ma, const QString& name);
 
     //checks that alignment is not empty and all packed sequence parts has equal length
     static bool checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2OpStatus& ti);
@@ -66,8 +66,8 @@ public:
      */
     static QList<qint64> compareRowsAfterAlignment(const MultipleSequenceAlignment& origMsa, MultipleSequenceAlignment& newMsa, U2OpStatus& os);
     static void copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2SequenceObject *seqObj, U2OpStatus &os);
-    static U2MaRow copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef &dstDbi, U2OpStatus &os);
-    static U2MaRow copyRowFromSequence(DNASequence seq, const U2DbiRef &dstDbi, U2OpStatus &os);
+    static U2MsaRow copyRowFromSequence(U2SequenceObject *seqObj, const U2DbiRef &dstDbi, U2OpStatus &os);
+    static U2MsaRow copyRowFromSequence(DNASequence seq, const U2DbiRef &dstDbi, U2OpStatus &os);
 
     static MultipleSequenceAlignment setUniqueRowNames(const MultipleSequenceAlignment& ma);
     /**

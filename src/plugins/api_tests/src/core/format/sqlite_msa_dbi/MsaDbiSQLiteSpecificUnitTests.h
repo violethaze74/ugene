@@ -45,12 +45,12 @@ public:
     static U2DataId createTestMsa(bool enableModTracking, U2OpStatus& os);
     static U2DataId createNotSoSmallTestMsa(bool enableModTracking, U2OpStatus& os);
     static U2DataId createTestSequence(bool enableModTracking, qint64 seqLength, U2OpStatus& os);
-    static U2MaRow createRow(qint64 seqLength, U2OpStatus &os);
+    static U2MsaRow createRow(qint64 seqLength, U2OpStatus &os);
 
     static const QString TEST_MSA_NAME;
 
 private:
-    static U2MaRow addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MaGap> &gaps, U2OpStatus &os);
+    static U2MsaRow addRow(const U2DataId &msaId, const QByteArray &name, const QByteArray &seq, const QList<U2MsaGap> &gaps, U2OpStatus &os);
 
     static TestDbiProvider dbiProvider;
     static const QString& SQLITE_MSA_DB_URL;

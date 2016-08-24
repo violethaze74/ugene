@@ -42,7 +42,7 @@ MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSc
     colorByIdx[ClustalColor_CYAN]    = "#15a4a4";
     colorByIdx[ClustalColor_YELLOW]  = "#c0c000";
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemeClustalX::getColor(int seq, int pos, char) const {

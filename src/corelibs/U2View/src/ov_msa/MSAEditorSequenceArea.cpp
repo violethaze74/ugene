@@ -202,8 +202,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     complementAction->setObjectName("replace_selected_rows_with_complement");
     connect(complementAction, SIGNAL(triggered()), SLOT(sl_complementCurrentSelection()));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
-        SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
+    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)));
     connect(editor->getMSAObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(editor->getMSAObject(), SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_updateCollapsingMode()));
 
@@ -1789,7 +1789,7 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     }
 }
 
-void MSAEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo& modInfo) {
+void MSAEditorSequenceArea::sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo& modInfo) {
     exitFromEditCharacterMode();
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
@@ -1830,11 +1830,11 @@ void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modI
     if(modInfo.rowContentChanged) {
         QList<qint64> updatedRows;
         bool isModelChanged = false;
-        QMap<qint64, QList<U2MaGap> > curGapModel = editor->getMSAObject()->getGapModel();
+        QMap<qint64, QList<U2MsaGap> > curGapModel = editor->getMSAObject()->getGapModel();
         QList<U2Region> updatedRegions;
         foreach (qint64 modifiedSeqId, modInfo.modifiedRowIds) {
             int modifiedRowPos = editor->getMSAObject()->getRowPosById(modifiedSeqId);
-            const MultipleAlignmentRow &modifiedRowRef = editor->getMSAObject()->getRow(modifiedRowPos);
+            const MultipleSequenceAlignmentRow &modifiedRowRef = editor->getMSAObject()->getRow(modifiedRowPos);
             modifiedRowPos = ui->getCollapseModel()->rowToMap(modifiedRowPos);
             const U2Region rowsCollapsibleGroup = ui->getCollapseModel()->mapSelectionRegionToRows(U2Region(modifiedRowPos, 1));
             if (updatedRegions.contains(rowsCollapsibleGroup)) {
@@ -2109,9 +2109,9 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    QMap<qint64, QList<U2MaGap> > noGapModel;
+    QMap<qint64, QList<U2MsaGap> > noGapModel;
     foreach (qint64 rowId, msa->getMsa()->getRowsIds()) {
-        noGapModel[rowId] = QList<U2MaGap>();
+        noGapModel[rowId] = QList<U2MsaGap>();
     }
 
     msa->updateGapModel(os, noGapModel);
@@ -2524,7 +2524,7 @@ void MSAEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
         QRegExp latinCharacterOrGap(QString("([A-Z]| |-|%1)").arg(emDash));
         if (latinCharacterOrGap.exactMatch(text)) {
             QChar newChar = text.at(0);
-            newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? MultipleAlignment::GapChar : newChar;
+            newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? MultipleSequenceAlignment::GapChar : newChar;
             replaceSelectedCharacter(newChar.toLatin1());
         }
         else {
@@ -2821,7 +2821,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
 
             // Split the sequence into gaps and chars
             QByteArray seqBytes;
-            QList<U2MaGap> gapModel;
+            QList<U2MsaGap> gapModel;
             MsaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
 
             maObj->updateRow(os, i, name, seqBytes, gapModel);
@@ -2858,7 +2858,7 @@ QPair<QString, int> MSAEditorSequenceArea::getGappedColumnInfo() const{
     const MultipleSequenceAlignmentRow row = editor->getMSAObject()->getMsaRow(getSelectedRows().startPos);
     int len = row->getUngappedLength();
     QChar current = row->charAt(selection.topLeft().x());
-    if(current == MultipleAlignment::GapChar){
+    if(current == MultipleSequenceAlignment::GapChar){
         return QPair<QString, int>(QString("gap"),len);
     }else{
         int pos = row->getUngappedPosition(selection.topLeft().x());

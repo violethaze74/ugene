@@ -182,7 +182,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
 
         int i = 0, n = al->getNumRows();
         for (; i < n; i++) {
-            const MultipleAlignmentRow row = al->getRow(i);
+            const MultipleSequenceAlignmentRow row = al->getRow(i);
             QByteArray t = row->getName().toLocal8Bit();
             if (line.startsWith(t) && line[t.length()] == ' ') {
                 break;
@@ -211,8 +211,8 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             ti.setError(MSFFormat::tr("Check sum test failed"));
             return;
         }
-        al->replaceChars(i, '.', MultipleAlignment::GapChar);
-        al->replaceChars(i, '~', MultipleAlignment::GapChar);
+        al->replaceChars(i, '.', MultipleSequenceAlignment::GapChar);
+        al->replaceChars(i, '~', MultipleSequenceAlignment::GapChar);
     }
 
     U2AlphabetUtils::assignAlphabet(al);
@@ -271,7 +271,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     static int maxCheckSumLen = 4;
     QMap <QString, int> checkSums;
     foreach(const MultipleSequenceAlignmentRow& row , msa->getMsaRows()) {
-        QByteArray sequence = row->toByteArray(maLen, os).replace(MultipleAlignment::GapChar, '.');
+        QByteArray sequence = row->toByteArray(maLen, os).replace(MultipleSequenceAlignment::GapChar, '.');
         int seqCheckSum = getCheckSum(sequence);
         checkSums.insert(row->getName(), seqCheckSum);
         checkSum = (checkSum + seqCheckSum) % CHECK_SUM_MOD;
@@ -292,7 +292,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         return;
 
     //write info
-    foreach(const MultipleAlignmentRow& row, msa->getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, msa->getRows()) {
         QByteArray line = " " + NAME_FIELD;
         line += " " + QString(row->getName()).replace(' ', '_').leftJustified(maxNameLen+1); // since ' ' is a delimeter for MSF parser spaces in name not suppoted
         line += "  " + LEN_FIELD;
@@ -332,9 +332,9 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
         QList<QByteArray> seqs = walker.nextData(CHARS_IN_ROW, os);
         CHECK_OP(os, );
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleAlignmentRow>::ConstIterator ri = msa->getRows().constBegin();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = msa->getRows().constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
-            const MultipleAlignmentRow &row = *ri;
+            const MultipleSequenceAlignmentRow &row = *ri;
             QByteArray line = row->getName().toLocal8Bit();
             line.replace(' ', '_'); // since ' ' is a delimiter for MSF parser spaces in name not supported
             line = line.leftJustified(maxNameLen+1);

@@ -26,7 +26,7 @@
 #include <U2Core/DNAAlphabet.h>
 
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/U2Ma.h>
+#include <U2Core/U2Msa.h>
 #include <U2Core/U2DbiUtils.h>
 
 namespace U2 {
@@ -118,8 +118,8 @@ public:
     static void                 alignSequences(QByteArray &refSequenceData,
                                     QByteArray &ptrnSequence,
                                     const QByteArray &pairwiseAlignment);
-    static void                 alignSequences(QList<U2MaGap> &refSequenceGapModel,
-                                    QList<U2MaGap> &ptrnSequenceGapModel,
+    static void                 alignSequences(QList<U2MsaGap> &refSequenceGapModel,
+                                    QList<U2MsaGap> &ptrnSequenceGapModel,
                                     const QByteArray &pairwiseAlignment);
     static void                 changeGivenUrlIfDocumentExists(QString &givenUrl,
                                     const Project *curProject);

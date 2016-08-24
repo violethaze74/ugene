@@ -28,7 +28,7 @@
 #include <U2Core/U2Assembly.h>
 #include <U2Core/U2Attribute.h>
 #include <U2Core/U2Mod.h>
-#include <U2Core/U2Ma.h>
+#include <U2Core/U2Msa.h>
 #include <U2Core/U2Sequence.h>
 #include <U2Core/GUrl.h>
 

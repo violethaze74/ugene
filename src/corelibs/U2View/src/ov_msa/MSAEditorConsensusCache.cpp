@@ -32,7 +32,7 @@ MSAEditorConsensusCache::MSAEditorConsensusCache(QObject* p, MultipleSequenceAli
 {
     setConsensusAlgorithm(factory);
 
-    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+    connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
         SLOT(sl_alignmentChanged()));
     connect(aliObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_invalidateAlignmentObject()));
 
@@ -99,7 +99,7 @@ QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
     const MultipleSequenceAlignment ma = aliObj->getMsa();
     for (int i=0, n = ma->getLength(); i<n; i++) {
         char c = getConsensusChar(i);
-        if (c!=MultipleAlignment::GapChar || withGaps) {
+        if (c!=MultipleSequenceAlignment::GapChar || withGaps) {
             res.append(c);
         }
     }

@@ -78,7 +78,7 @@ U2DataId SQLiteMsaDbi::createMsaObject(const QString& folder, const QString& nam
 
 U2DataId SQLiteMsaDbi::createMsaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
-    U2Ma msa;
+    U2Msa msa;
     msa.visualName = name;
     msa.alphabet = alphabet;
     msa.length = length;
@@ -118,7 +118,7 @@ void SQLiteMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& 
     // Get modDetails, if required
     QByteArray modDetails;
     if (TrackOnUpdate == trackMod) {
-        U2Ma msaObj = getMsaObject(msaId, os);
+        U2Msa msaObj = getMsaObject(msaId, os);
         CHECK_OP(os, );
         modDetails = PackUtils::packAlphabetDetails(msaObj.alphabet, alphabet);
     }
@@ -139,7 +139,7 @@ void SQLiteMsaDbi::updateMsaAlphabet(const U2DataId& msaId, const U2AlphabetId& 
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MaRow& msaRow, U2OpStatus& os) {
+void SQLiteMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& msaRow, U2OpStatus& os) {
     assert(posInMsa >= 0);
 
     // Calculate the row length
@@ -160,7 +160,7 @@ void SQLiteMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MaRow&
     q.insert();
 }
 
-void SQLiteMsaDbi::createMsaRowGap(const U2DataId& msaId, qint64 msaRowId, const U2MaGap& msaGap, U2OpStatus& os) {
+void SQLiteMsaDbi::createMsaRowGap(const U2DataId& msaId, qint64 msaRowId, const U2MsaGap& msaGap, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
 
     static const QString queryString("INSERT INTO MsaRowGap(msa, rowId, gapStart, gapEnd) VALUES(?1, ?2, ?3, ?4)");
@@ -174,11 +174,11 @@ void SQLiteMsaDbi::createMsaRowGap(const U2DataId& msaId, qint64 msaRowId, const
     q->insert();
 }
 
-void SQLiteMsaDbi::addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2MaRow& row, U2OpStatus& os) {
+void SQLiteMsaDbi::addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os) {
     createMsaRow(msaId, posInMsa, row, os);
     CHECK_OP(os, );
 
-    foreach (const U2MaGap& gap, row.gaps) {
+    foreach (const U2MsaGap& gap, row.gaps) {
         createMsaRowGap(msaId, row.rowId, gap, os);
         CHECK_OP(os, );
     }
@@ -186,7 +186,7 @@ void SQLiteMsaDbi::addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2Ma
     dbi->getSQLiteObjectDbi()->setParent(msaId, row.dataObjectId, os);
 }
 
-void SQLiteMsaDbi::addRow(const U2DataId& msaId, qint64 posInMsa, U2MaRow& row, U2OpStatus& os) {
+void SQLiteMsaDbi::addRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os) {
     ModificationAction updateAction(dbi, msaId);
     U2TrackModType trackMod = updateAction.prepare(os);
     CHECK_OP(os, );
@@ -219,7 +219,7 @@ void SQLiteMsaDbi::addRow(const U2DataId& msaId, qint64 posInMsa, U2MaRow& row, 
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteMsaDbi::addRows(const U2DataId& msaId, QList<U2MaRow>& rows, U2OpStatus& os) {
+void SQLiteMsaDbi::addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
     ModificationAction updateAction(dbi, msaId);
@@ -250,7 +250,7 @@ void SQLiteMsaDbi::addRows(const U2DataId& msaId, QList<U2MaRow>& rows, U2OpStat
 
     // Update msa length
     qint64 maxLength = 0;
-    foreach (const U2MaRow &row, rows) {
+    foreach (const U2MsaRow &row, rows) {
         maxLength = qMax(maxLength, row.length);
     }
     if (maxLength > getMsaLength(msaId, os)) {
@@ -260,7 +260,7 @@ void SQLiteMsaDbi::addRows(const U2DataId& msaId, QList<U2MaRow>& rows, U2OpStat
 
     // Update track mod type for child sequence object
     if (TrackOnUpdate == trackMod) {
-        foreach (const U2MaRow& row, rows) {
+        foreach (const U2MsaRow& row, rows) {
             dbi->getObjectDbi()->setTrackModType(row.dataObjectId, TrackOnUpdate, os);
             CHECK_OP(os, );
         }
@@ -294,7 +294,7 @@ void SQLiteMsaDbi::updateRowName(const U2DataId& msaId, qint64 rowId, const QStr
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteMsaDbi::updateRowContent(const U2DataId& msaId, qint64 rowId, const QByteArray& seqBytes, const QList<U2MaGap>& gaps, U2OpStatus& os) {
+void SQLiteMsaDbi::updateRowContent(const U2DataId& msaId, qint64 rowId, const QByteArray& seqBytes, const QList<U2MsaGap>& gaps, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -304,7 +304,7 @@ void SQLiteMsaDbi::updateRowContent(const U2DataId& msaId, qint64 rowId, const Q
     Q_UNUSED(trackMod);
 
     // Get the row object
-    U2MaRow row = getRow(msaId, rowId, os);
+    U2MsaRow row = getRow(msaId, rowId, os);
     SAFE_POINT_OP(os, );
 
     // Update the sequence data
@@ -314,7 +314,7 @@ void SQLiteMsaDbi::updateRowContent(const U2DataId& msaId, qint64 rowId, const Q
     SAFE_POINT_OP(os, );
 
     // Update the row object
-    U2MaRow newRow(row);
+    U2MsaRow newRow(row);
     qint64 seqLength = seqBytes.length();
     newRow.gstart = 0;
     newRow.gend = seqLength;
@@ -332,10 +332,10 @@ void SQLiteMsaDbi::updateRowContent(const U2DataId& msaId, qint64 rowId, const Q
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteMsaDbi::updateRowInfo(ModificationAction &updateAction, const U2DataId &msaId, const U2MaRow &row, U2OpStatus &os) {
+void SQLiteMsaDbi::updateRowInfo(ModificationAction &updateAction, const U2DataId &msaId, const U2MsaRow &row, U2OpStatus &os) {
     QByteArray modDetails;
     if (TrackOnUpdate == updateAction.getTrackModType()) {
-        U2MaRow oldRow = getRow(msaId, row.rowId, os);
+        U2MsaRow oldRow = getRow(msaId, row.rowId, os);
         SAFE_POINT_OP(os, );
 
         modDetails = PackUtils::packRowInfoDetails(oldRow, row);
@@ -436,7 +436,7 @@ void SQLiteMsaDbi::removeRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os
 
     QByteArray modDetails;
     if (TrackOnUpdate == trackMod) {
-        U2MaRow removedRow = getRow(msaId, rowId, os);
+        U2MsaRow removedRow = getRow(msaId, rowId, os);
         CHECK_OP(os, );
         qint64 posInMsa = getPosInMsa(msaId, rowId, os);
         CHECK_OP(os, );
@@ -466,7 +466,7 @@ void SQLiteMsaDbi::removeRows(const U2DataId& msaId, const QList<qint64>& rowIds
     int numOfRows = getNumOfRows(msaId, os);
     if (TrackOnUpdate == trackMod) {
         QList<qint64> posInMsa;
-        QList<U2MaRow> rows;
+        QList<U2MsaRow> rows;
         foreach (qint64 rowId, rowIds) {
             posInMsa << getPosInMsa(msaId, rowId, os);
             CHECK_OP(os, );
@@ -508,8 +508,8 @@ void SQLiteMsaDbi::deleteRowsData(const U2DataId& msaId, U2OpStatus& os) {
     deleteObjQeury.execute();
 }
 
-U2Ma SQLiteMsaDbi::getMsaObject(const U2DataId& msaId, U2OpStatus& os) {
-    U2Ma res;
+U2Msa SQLiteMsaDbi::getMsaObject(const U2DataId& msaId, U2OpStatus& os) {
+    U2Msa res;
     dbi->getSQLiteObjectDbi()->getObject(res, msaId, os);
 
     SAFE_POINT_OP(os, res);
@@ -542,7 +542,7 @@ qint64 SQLiteMsaDbi::getNumOfRows(const U2DataId& msaId, U2OpStatus& os) {
 }
 
 void SQLiteMsaDbi::recalculateRowsPositions(const U2DataId& msaId, U2OpStatus& os) {
-    QList<U2MaRow> rows = getRows(msaId, os);
+    QList<U2MsaRow> rows = getRows(msaId, os);
     CHECK_OP(os, );
 
     SQLiteTransaction t(db, os);
@@ -573,14 +573,14 @@ qint64 SQLiteMsaDbi::getMaximumRowId(const U2DataId& msaId, U2OpStatus& os) {
     return maxRowId;
 }
 
-QList<U2MaRow> SQLiteMsaDbi::getRows(const U2DataId& msaId, U2OpStatus& os) {
-    QList<U2MaRow> res;
+QList<U2MsaRow> SQLiteMsaDbi::getRows(const U2DataId& msaId, U2OpStatus& os) {
+    QList<U2MsaRow> res;
     SQLiteQuery q("SELECT rowId, sequence, gstart, gend, length FROM MsaRow WHERE msa = ?1 ORDER BY pos", db, os);
     q.bindDataId(1, msaId);
 
     SQLiteQuery gapQ("SELECT gapStart, gapEnd FROM MsaRowGap WHERE msa = ?1 AND rowId = ?2 ORDER BY gapStart", db, os);
     while (q.step()) {
-        U2MaRow row;
+        U2MsaRow row;
         row.rowId = q.getInt64(0);
         row.dataObjectId = q.getDataId(1, U2Type::Sequence);
         row.gstart = q.getInt64(2);
@@ -591,7 +591,7 @@ QList<U2MaRow> SQLiteMsaDbi::getRows(const U2DataId& msaId, U2OpStatus& os) {
         gapQ.bindDataId(1, msaId);
         gapQ.bindInt64(2, row.rowId);
         while (gapQ.step()) {
-            U2MaGap gap;
+            U2MsaGap gap;
             gap.offset = gapQ.getInt64(0);
             gap.gap = gapQ.getInt64(1) - gap.offset;
             SAFE_POINT_EXT(gap.isValid(), os.setError("An invalid gap is stored in the database"), res);
@@ -604,8 +604,8 @@ QList<U2MaRow> SQLiteMsaDbi::getRows(const U2DataId& msaId, U2OpStatus& os) {
     return res;
 }
 
-U2MaRow SQLiteMsaDbi::getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os) {
-    U2MaRow res;
+U2MsaRow SQLiteMsaDbi::getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os) {
+    U2MsaRow res;
     SQLiteQuery q("SELECT sequence, gstart, gend, length FROM MsaRow WHERE msa = ?1 AND rowId = ?2", db, os);
     SAFE_POINT_OP(os, res);
 
@@ -629,7 +629,7 @@ U2MaRow SQLiteMsaDbi::getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os
     gapQ.bindDataId(1, msaId);
     gapQ.bindInt64(2, rowId);
     while (gapQ.step()) {
-        U2MaGap gap;
+        U2MsaGap gap;
         gap.offset = gapQ.getInt64(0);
         gap.gap = gapQ.getInt64(1) - gap.offset;
         res.gaps.append(gap);
@@ -647,7 +647,7 @@ void SQLiteMsaDbi::updateNumOfRows(const U2DataId& msaId, qint64 numOfRows, U2Op
     q.update(1);
 }
 
-void SQLiteMsaDbi::updateGapModel(const U2DataId& msaId, qint64 msaRowId, const QList<U2MaGap>& gapModel, U2OpStatus& os) {
+void SQLiteMsaDbi::updateGapModel(const U2DataId& msaId, qint64 msaRowId, const QList<U2MsaGap>& gapModel, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -662,10 +662,10 @@ void SQLiteMsaDbi::updateGapModel(const U2DataId& msaId, qint64 msaRowId, const 
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteMsaDbi::updateGapModel(ModificationAction &updateAction, const U2DataId& msaId, qint64 msaRowId, const QList<U2MaGap>& gapModel, U2OpStatus& os) {
+void SQLiteMsaDbi::updateGapModel(ModificationAction &updateAction, const U2DataId& msaId, qint64 msaRowId, const QList<U2MsaGap>& gapModel, U2OpStatus& os) {
     QByteArray gapsDetails;
     if (TrackOnUpdate == updateAction.getTrackModType()) {
-        U2MaRow row = getRow(msaId, msaRowId, os);
+        U2MsaRow row = getRow(msaId, msaRowId, os);
         SAFE_POINT_OP(os, );
         gapsDetails = PackUtils::packGapDetails(msaRowId, row.gaps, gapModel);
     }
@@ -674,7 +674,7 @@ void SQLiteMsaDbi::updateGapModel(ModificationAction &updateAction, const U2Data
     SAFE_POINT_OP(os, );
 
     qint64 len = 0;
-    foreach(const U2MaGap& gap, gapModel) {
+    foreach(const U2MsaGap& gap, gapModel) {
         len += gap.gap;
     }
     len += getRowSequenceLength(msaId, msaRowId, os);
@@ -735,9 +735,9 @@ qint64 SQLiteMsaDbi::getMsaLength(const U2DataId& msaId, U2OpStatus& os) {
     return res;
 }
 
-qint64 SQLiteMsaDbi::calculateRowLength(qint64 seqLength, const QList<U2MaGap>& gaps) {
+qint64 SQLiteMsaDbi::calculateRowLength(qint64 seqLength, const QList<U2MsaGap>& gaps) {
     qint64 res = seqLength;
-    foreach (const U2MaGap& gap, gaps) {
+    foreach (const U2MsaGap& gap, gaps) {
         if (gap.offset < res) { // ignore trailing gaps
             res += gap.gap;
         }
@@ -803,13 +803,13 @@ U2DataId SQLiteMsaDbi::getSequenceIdByRowId(const U2DataId& msaId, qint64 rowId,
     return res;
 }
 
-QByteArray SQLiteMsaDbi::getRemovedRowDetails(const U2MaRow& row) {
+QByteArray SQLiteMsaDbi::getRemovedRowDetails(const U2MsaRow& row) {
     QByteArray res;
 
     // Info about gaps
     QByteArray gapsInfo;
     for (int i = 0, n = row.gaps.count(); i < n; ++i) {
-        const U2MaGap& gap = row.gaps[i];
+        const U2MsaGap& gap = row.gaps[i];
         gapsInfo += "offset=";
         gapsInfo += QByteArray::number(gap.offset);
         gapsInfo += "&gap=";
@@ -913,14 +913,14 @@ void SQLiteMsaDbi::redo(const U2DataId& msaId, qint64 modType, const QByteArray&
 /************************************************************************/
 /* Core methods                                                         */
 /************************************************************************/
-void SQLiteMsaDbi::updateGapModelCore(const U2DataId &msaId, qint64 msaRowId, const QList<U2MaGap> &gapModel, U2OpStatus &os) {
+void SQLiteMsaDbi::updateGapModelCore(const U2DataId &msaId, qint64 msaRowId, const QList<U2MsaGap> &gapModel, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
     // Remove obsolete gaps of the row
     removeRecordsFromMsaRowGap(msaId, msaRowId, os);
     CHECK_OP(os, );
 
     // Store the new gap model
-    foreach (const U2MaGap& gap, gapModel) {
+    foreach (const U2MsaGap& gap, gapModel) {
         createMsaRowGap(msaId, msaRowId, gap, os);
         CHECK_OP(os, );
     }
@@ -943,7 +943,7 @@ void SQLiteMsaDbi::addRowSubcore(const U2DataId &msaId, qint64 numOfRows, const 
     updateNumOfRows(msaId, numOfRows, os);
 }
 
-void SQLiteMsaDbi::addRowCore(const U2DataId& msaId, qint64 posInMsa, U2MaRow& row, U2OpStatus& os) {
+void SQLiteMsaDbi::addRowCore(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
 
@@ -974,7 +974,7 @@ void SQLiteMsaDbi::addRowCore(const U2DataId& msaId, qint64 posInMsa, U2MaRow& r
     addRowSubcore(msaId, numOfRows+1, rowsOrder, os);
 }
 
-void SQLiteMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &posInMsa, QList<U2MaRow> &rows, U2OpStatus &os) {
+void SQLiteMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &posInMsa, QList<U2MsaRow> &rows, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
     qint64 numOfRows = getNumOfRows(msaId, os);
@@ -986,7 +986,7 @@ void SQLiteMsaDbi::addRowsCore(const U2DataId &msaId, const QList<qint64> &posIn
 
     // Add new rows
     QList<qint64>::ConstIterator pi = posInMsa.begin();
-    QList<U2MaRow>::Iterator ri = rows.begin();
+    QList<U2MsaRow>::Iterator ri = rows.begin();
     for (; ri != rows.end(); ri++, pi++) {
         qint64 pos = *pi;
         if (-1 == pos) {
@@ -1055,7 +1055,7 @@ void SQLiteMsaDbi::setNewRowsOrderCore(const U2DataId &msaId, const QList<qint64
     }
 }
 
-void SQLiteMsaDbi::updateRowInfoCore(const U2DataId& msaId, const U2MaRow& row, U2OpStatus& os) {
+void SQLiteMsaDbi::updateRowInfoCore(const U2DataId& msaId, const U2MsaRow& row, U2OpStatus& os) {
     SQLiteQuery q("UPDATE MsaRow SET sequence = ?1, gstart = ?2, gend = ?3 WHERE msa = ?4 AND rowId = ?5", db, os);
     SAFE_POINT_OP(os, );
 
@@ -1108,14 +1108,14 @@ void SQLiteMsaDbi::redoUpdateMsaAlphabet(const U2DataId& msaId, const QByteArray
 
 void SQLiteMsaDbi::undoAddRows(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> posInMsa;
-    QList<U2MaRow> rows;
+    QList<U2MsaRow> rows;
     bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
     if (!ok) {
         os.setError("An error occurred during reverting adding of rows!");
         return;
     }
     QList<qint64> rowIds;
-    foreach (const U2MaRow &row, rows) {
+    foreach (const U2MsaRow &row, rows) {
         rowIds << row.rowId;
     }
     removeRowsCore(msaId, rowIds, false, os);
@@ -1123,7 +1123,7 @@ void SQLiteMsaDbi::undoAddRows(const U2DataId& msaId, const QByteArray& modDetai
 
 void SQLiteMsaDbi::redoAddRows(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> posInMsa;
-    QList<U2MaRow> rows;
+    QList<U2MsaRow> rows;
     bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
     if (!ok) {
         os.setError("An error occurred during reverting adding of rows!");
@@ -1134,7 +1134,7 @@ void SQLiteMsaDbi::redoAddRows(const U2DataId& msaId, const QByteArray& modDetai
 }
 
 void SQLiteMsaDbi::undoAddRow(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
-    U2MaRow row;
+    U2MsaRow row;
     qint64 posInMsa;
     bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
     if (!ok) {
@@ -1146,7 +1146,7 @@ void SQLiteMsaDbi::undoAddRow(const U2DataId& msaId, const QByteArray& modDetail
 }
 
 void SQLiteMsaDbi::redoAddRow(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
-    U2MaRow row;
+    U2MsaRow row;
     qint64 posInMsa;
     bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
     if (!ok) {
@@ -1159,7 +1159,7 @@ void SQLiteMsaDbi::redoAddRow(const U2DataId& msaId, const QByteArray& modDetail
 
 void SQLiteMsaDbi::undoRemoveRows(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> posInMsa;
-    QList<U2MaRow> rows;
+    QList<U2MsaRow> rows;
     bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
     if (!ok) {
         os.setError("An error occurred during reverting removing of rows!");
@@ -1171,21 +1171,21 @@ void SQLiteMsaDbi::undoRemoveRows(const U2DataId& msaId, const QByteArray& modDe
 
 void SQLiteMsaDbi::redoRemoveRows(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     QList<qint64> posInMsa;
-    QList<U2MaRow> rows;
+    QList<U2MsaRow> rows;
     bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
     if (!ok) {
         os.setError("An error occurred during reverting removing of rows!");
         return;
     }
     QList<qint64> rowIds;
-    foreach (const U2MaRow &row, rows) {
+    foreach (const U2MsaRow &row, rows) {
         rowIds << row.rowId;
     }
     removeRowsCore(msaId, rowIds, false, os);
 }
 
 void SQLiteMsaDbi::undoRemoveRow(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
-    U2MaRow row;
+    U2MsaRow row;
     qint64 posInMsa;
     bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
     if (!ok) {
@@ -1197,7 +1197,7 @@ void SQLiteMsaDbi::undoRemoveRow(const U2DataId& msaId, const QByteArray& modDet
 }
 
 void SQLiteMsaDbi::redoRemoveRow(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
-    U2MaRow row;
+    U2MsaRow row;
     qint64 posInMsa;
     bool ok = PackUtils::unpackRow(modDetails, posInMsa, row);
     if (!ok) {
@@ -1210,8 +1210,8 @@ void SQLiteMsaDbi::redoRemoveRow(const U2DataId& msaId, const QByteArray& modDet
 
 void SQLiteMsaDbi::undoUpdateGapModel(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     qint64 rowId = 0;
-    QList<U2MaGap> oldGaps;
-    QList<U2MaGap> newGaps;
+    QList<U2MsaGap> oldGaps;
+    QList<U2MsaGap> newGaps;
     bool ok = PackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
     if (!ok) {
         os.setError("An error occurred during updating an alignment gaps!");
@@ -1223,8 +1223,8 @@ void SQLiteMsaDbi::undoUpdateGapModel(const U2DataId& msaId, const QByteArray& m
 
 void SQLiteMsaDbi::redoUpdateGapModel(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
     qint64 rowId = 0;
-    QList<U2MaGap> oldGaps;
-    QList<U2MaGap> newGaps;
+    QList<U2MsaGap> oldGaps;
+    QList<U2MsaGap> newGaps;
     bool ok = PackUtils::unpackGapDetails(modDetails, rowId, oldGaps, newGaps);
     if (!ok) {
         os.setError("An error occurred during updating an alignment gaps!");
@@ -1260,8 +1260,8 @@ void SQLiteMsaDbi::redoSetNewRowsOrder(const U2DataId& msaId, const QByteArray& 
 }
 
 void SQLiteMsaDbi::undoUpdateRowInfo(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
-    U2MaRow oldRow;
-    U2MaRow newRow;
+    U2MsaRow oldRow;
+    U2MsaRow newRow;
     bool ok = PackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
     if (!ok) {
         os.setError("An error occurred during updating a row info!");
@@ -1274,8 +1274,8 @@ void SQLiteMsaDbi::undoUpdateRowInfo(const U2DataId& msaId, const QByteArray& mo
 }
 
 void SQLiteMsaDbi::redoUpdateRowInfo(const U2DataId& msaId, const QByteArray& modDetails, U2OpStatus& os) {
-    U2MaRow oldRow;
-    U2MaRow newRow;
+    U2MsaRow oldRow;
+    U2MsaRow newRow;
     bool ok = PackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
     if (!ok) {
         os.setError("An error occurred during updating a row info!");

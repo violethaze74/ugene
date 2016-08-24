@@ -148,7 +148,7 @@ void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma, char ignore)
     for (int i = 0, n = ma->getNumRows();i<n; i++) {
         const MultipleSequenceAlignmentRow item = ma->getMsaRow(i);
         QByteArray itemSeq = item->getCore();
-        itemSeq.replace(ignore, MultipleAlignment::GapChar);
+        itemSeq.replace(ignore, MultipleSequenceAlignment::GapChar);
         const DNAAlphabet* itemAl = findBestAlphabet(itemSeq);
         if (resAl == NULL) {
             resAl = itemAl;

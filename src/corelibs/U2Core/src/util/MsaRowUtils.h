@@ -23,7 +23,7 @@
 #define _U2_MSAROWUTILS_H_
 
 #include <U2Core/global.h>
-#include <U2Core/U2Ma.h>
+#include <U2Core/U2Msa.h>
 
 namespace U2 {
 
@@ -31,28 +31,28 @@ class DNASequence;
 
 class U2CORE_EXPORT MsaRowUtils {
 public:
-    static int getRowLength(const QByteArray &seq, const U2MaRowGapModel &gaps);
-    static int getGapsLength(const U2MaRowGapModel &gaps);
-    static char charAt(const QByteArray &seq, const U2MaRowGapModel &gaps, int pos);
-    static qint64 getRowLengthWithoutTrailing(const QByteArray &seq, const U2MaRowGapModel &gaps);
+    static int getRowLength(const QByteArray &seq, const U2MsaRowGapModel &gaps);
+    static int getGapsLength(const U2MsaRowGapModel &gaps);
+    static char charAt(const QByteArray &seq, const U2MsaRowGapModel &gaps, int pos);
+    static qint64 getRowLengthWithoutTrailing(const QByteArray &seq, const U2MsaRowGapModel &gaps);
     /**
      * The method maps `pos` in MSA coordinates to a character position in 'seq', i.e. gaps aren't taken into account.
      * If false == 'allowGapInPos' and the gap symbol is located in 'pos' then the method returns -1.
      * Otherwise if true == 'allowGapInPos' and the gap symbol is located in 'pos' then the method returns
      * the position of a non-gap character left-most to the 'pos'.
      */
-    static int getUngappedPosition(const U2MaRowGapModel &gaps, int dataLength, int pos, bool allowGapInPos = false);
-    static int getCoreStart(const U2MaRowGapModel &gaps);
+    static int getUngappedPosition(const U2MsaRowGapModel &gaps, int dataLength, int pos, bool allowGapInPos = false);
+    static int getCoreStart(const U2MsaRowGapModel &gaps);
 
     /**
      * Add "offset" of gaps to the beginning of the row
      * Warning: it is not verified that the row sequence is not empty.
      */
-    static void addOffsetToGapModel(U2MaRowGapModel &gapModel, int offset);
-    static void shiftGapModel(U2MaRowGapModel &gapModel, int shiftSize);
-    static bool isGap(int dataLength, const U2MaRowGapModel &gapModel, int position);
-    static void chopGapModel(U2MaRowGapModel &gapModel, int maxLength);
-    static QByteArray joinCharsAndGaps(const DNASequence &sequence, const U2MaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps);
+    static void addOffsetToGapModel(U2MsaRowGapModel &gapModel, int offset);
+    static void shiftGapModel(U2MsaRowGapModel &gapModel, int shiftSize);
+    static bool isGap(int dataLength, const U2MsaRowGapModel &gapModel, int position);
+    static void chopGapModel(U2MsaRowGapModel &gapModel, int maxLength);
+    static QByteArray joinCharsAndGaps(const DNASequence &sequence, const U2MsaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps);
 };
 
 } // U2

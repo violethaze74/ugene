@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_H_
-#define _U2_MA_H_
+#ifndef _U2_MSA_H_
+#define _U2_MSA_H_
 
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2Type.h>
@@ -31,22 +31,22 @@ namespace U2 {
     Gap model for Multiple Alignment: for every row it keeps gaps map
 */
 
-class U2MaGap;
+class U2MsaGap;
 
-typedef QList<U2MaGap> U2MaRowGapModel;
-typedef QList<U2MaRowGapModel> U2MaListGapModel;
-typedef QMap<qint64, U2MaRowGapModel> U2MaMapGapModel;
+typedef QList<U2MsaGap> U2MsaRowGapModel;
+typedef QList<U2MsaRowGapModel> U2MsaListGapModel;
+typedef QMap<qint64, U2MsaRowGapModel> U2MsaMapGapModel;
 
-class U2CORE_EXPORT U2MaGap  {
+class U2CORE_EXPORT U2MsaGap  {
 public:
-    U2MaGap();
-    U2MaGap(qint64 off, qint64 gap);
+    U2MsaGap();
+    U2MsaGap(qint64 off, qint64 gap);
 
     bool isValid() const;
 
-    bool operator==(const U2MaGap &g) const;
+    bool operator==(const U2MsaGap &g) const;
 
-    static bool lessThan(const U2MaGap &first, const U2MaGap &second);
+    static bool lessThan(const U2MsaGap &first, const U2MsaGap &second);
 
     /** Offset of the gap in sequence*/
     qint64 offset;
@@ -58,9 +58,9 @@ public:
 /**
     Row of multiple alignment: gaps map and sequence id
 */
-class U2CORE_EXPORT U2MaRow {
+class U2CORE_EXPORT U2MsaRow {
 public:
-    U2MaRow();
+    U2MsaRow();
 
     /** Id of the row in the database */
     qint64          rowId;
@@ -75,7 +75,7 @@ public:
     qint64          gend;
 
     /** A gap model for the row */
-    QList<U2MaGap> gaps;
+    QList<U2MsaGap> gaps;
 
     /** Length of the sequence characters and gaps of the row (without trailing) */
     qint64          length;
@@ -84,10 +84,10 @@ public:
 /**
     Multiple sequence alignment representation
 */
-class U2CORE_EXPORT U2Ma : public U2Object {
+class U2CORE_EXPORT U2Msa : public U2Object {
 public:
-    U2Ma();
-    U2Ma(const U2DataId &id, const QString &dbId, qint64 version);
+    U2Msa();
+    U2Msa(const U2DataId &id, const QString &dbId, qint64 version);
 
     U2DataType getType() const;
 
@@ -100,4 +100,4 @@ public:
 
 }   // namespace U2
 
-#endif // _U2_MA_H_
+#endif // _U2_MSA_H_

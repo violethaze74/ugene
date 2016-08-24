@@ -136,10 +136,10 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
                 return false;
             }
 
-            QList<MultipleAlignmentRow> rows1 = al1->getRows();
-            QList<MultipleAlignmentRow> rows2 = al2->getRows();
-            QList<MultipleAlignmentRow>::const_iterator it1 = rows1.constBegin();
-            QList<MultipleAlignmentRow>::const_iterator it2 = rows2.constBegin();
+            QList<MultipleSequenceAlignmentRow> rows1 = al1->getRows();
+            QList<MultipleSequenceAlignmentRow> rows2 = al2->getRows();
+            QList<MultipleSequenceAlignmentRow>::const_iterator it1 = rows1.constBegin();
+            QList<MultipleSequenceAlignmentRow>::const_iterator it2 = rows2.constBegin();
             for (; it1 != rows1.constEnd(); ++it1, ++it2) {
                 if (**it1 != **it2) {
                     return false;

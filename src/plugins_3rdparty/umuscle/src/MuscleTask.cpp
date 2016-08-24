@@ -185,7 +185,7 @@ void MuscleTask::doAlign(bool refine) {
             }
         }
         int j = resNSeq;
-        QByteArray gapSeq(resultSubMA->getLength(),MultipleAlignment::GapChar);
+        QByteArray gapSeq(resultSubMA->getLength(),MultipleSequenceAlignment::GapChar);
         for(int i=0, n = nSeq; i < n; i++) {
             if(!existID[i]) {
                 QString rowName = inputMA->getRow(i)->getName();
@@ -205,7 +205,7 @@ void MuscleTask::doAlign(bool refine) {
         if (config.alignRegion && config.regionToAlign.length != inputMA->getLength()) {
 
             for(int i=0, n = inputMA->getNumRows(); i < n; i++) {
-                const MultipleAlignmentRow row= inputMA->getRow(ids[i]);
+                const MultipleSequenceAlignmentRow row= inputMA->getRow(ids[i]);
                 resultMA->addRow(row->getName(), emptySeq);
             }
             if (config.regionToAlign.startPos != 0) {
@@ -449,10 +449,10 @@ Task::ReportResult MuscleGObjectTask::report() {
             return ReportResult_Finished;
         }
 
-        QMap<qint64, QList<U2MaGap> > rowsGapModel;
+        QMap<qint64, QList<U2MsaGap> > rowsGapModel;
         for (int i = 0, n = muscleTask->resultMA->getNumRows(); i < n; ++i) {
             qint64 rowId = muscleTask->resultMA->getRow(i)->getRowDbInfo().rowId;
-            const QList<U2MaGap>& newGapModel = muscleTask->resultMA->getRow(i)->getGapModel();
+            const QList<U2MsaGap>& newGapModel = muscleTask->resultMA->getRow(i)->getGapModel();
             rowsGapModel.insert(rowId, newGapModel);
         }
 

@@ -78,7 +78,7 @@ const MultipleSequenceAlignmentRow MultipleSequenceAlignmentObject::getMsaRow(in
     return getRow(row).dynamicCast<MultipleSequenceAlignmentRow>();
 }
 
-void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MaRowGapModel &gapModel) {
+void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     const MultipleSequenceAlignment msa = getMsa();
@@ -99,7 +99,7 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
     qint64 modifiedRowId = msa->getRow(rowIndex)->getRowId();
 
     U2OpStatus2Log os;
-    if (newChar != MultipleAlignment::GapChar) {
+    if (newChar != MultipleSequenceAlignment::GapChar) {
         MsaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
         MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
@@ -148,7 +148,7 @@ void MultipleSequenceAlignmentObject::updateCachedRows(U2OpStatus &os, const QLi
     }
 }
 
-void MultipleSequenceAlignmentObject::updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) {
+void MultipleSequenceAlignmentObject::updateDatabase(U2OpStatus &os, const MultipleSequenceAlignment &ma) {
     const MultipleSequenceAlignment msa = ma.dynamicCast<MultipleSequenceAlignment>();
     MsaDbiUtils::updateMsa(entityRef, msa, os);
 }
