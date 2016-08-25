@@ -19,8 +19,8 @@
 * MA 02110-1301, USA.
 */
 
-#ifndef _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H
-#define _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H
+#ifndef _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H_
+#define _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H_
 
 #include "ui_AlignToReferenceBlastDialog.h"
 
@@ -60,7 +60,7 @@ public:
     static const QString ALIGN_TO_REF_CMDLINE;
     static const QString REF_ARG;
     static const QString READS_ARG;
-    static const QString MIN_ADENTITY_ARG;
+    static const QString MIN_IDENTITY_ARG;
     static const QString MIN_LEN_ARG;
     static const QString THRESHOLD_ARG;
     static const QString TRIM_ARG;
@@ -77,6 +77,7 @@ public:
     AlignToReferenceBlastDialog(QWidget* parent);
     AlignToReferenceBlastCmdlineTask::Settings getSettings() const;
 
+public slots:
     void accept();
 
 private slots:
@@ -93,5 +94,4 @@ private:
 
 } // namespace
 
-#endif // _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H
-
+#endif // _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_H_

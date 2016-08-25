@@ -28,6 +28,7 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
@@ -41,14 +42,14 @@ namespace U2 {
 const QString AlignToReferenceBlastCmdlineTask::ALIGN_TO_REF_CMDLINE = "align-to-reference";
 const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
 const QString AlignToReferenceBlastCmdlineTask::READS_ARG = "reads";
-const QString AlignToReferenceBlastCmdlineTask::MIN_ADENTITY_ARG = "min-adentity";
+const QString AlignToReferenceBlastCmdlineTask::MIN_IDENTITY_ARG = "min-identity";
 const QString AlignToReferenceBlastCmdlineTask::MIN_LEN_ARG = "min-length";
 const QString AlignToReferenceBlastCmdlineTask::THRESHOLD_ARG = "threshold";
 const QString AlignToReferenceBlastCmdlineTask::TRIM_ARG = "trim-both-ends";
-const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "out-alignemnt";
+const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "out-alignment";
 
 AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings &settings)
-    : Task(tr("Align to reference workflow wrapper"), TaskFlags_NR_FOSCOE),
+    : Task(tr("Align to reference workflow wrapper"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
       cmdlineTask(NULL)
 {
@@ -62,7 +63,7 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
     QString argString = "--%1=\"%2\"";
     config.arguments << argString.arg(REF_ARG).arg(settings.referenceUrl);
     config.arguments << argString.arg(READS_ARG).arg(settings.readUrls.join(";"));
-    config.arguments << argString.arg(MIN_ADENTITY_ARG).arg(settings.minIdentity);
+    config.arguments << argString.arg(MIN_IDENTITY_ARG).arg(settings.minIdentity);
     config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
     config.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
     config.arguments << argString.arg(TRIM_ARG).arg(settings.trimBothEnds);
@@ -154,9 +155,9 @@ void AlignToReferenceBlastDialog::accept() {
 
 void AlignToReferenceBlastDialog::sl_setReference() {
     LastUsedDirHelper lod;
-    QString filter;
+    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
 
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Open reference sequence"), lod.dir, filter);
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Open Reference Sequence"), lod.dir, filter);
     if (lod.url.isEmpty()) {
         return;
     }
@@ -165,9 +166,9 @@ void AlignToReferenceBlastDialog::sl_setReference() {
 
 void AlignToReferenceBlastDialog::sl_addRead() {
     LastUsedDirHelper lod;
-    QString filter;
+    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
 
-    QStringList readFiles = U2FileDialog::getOpenFileNames(this, tr("Select file(s) with read(s)"), lod.dir, filter);
+    QStringList readFiles = U2FileDialog::getOpenFileNames(this, tr("Select File(s) with Read(s)"), lod.dir, filter);
     if (readFiles.isEmpty()) {
         return;
     }
@@ -186,13 +187,13 @@ void AlignToReferenceBlastDialog::sl_removeRead() {
     foreach (QListWidgetItem* item, selection) {
         readsListWidget->takeItem(readsListWidget->row(item));
     }
+    qDeleteAll(selection);
 }
 
 void AlignToReferenceBlastDialog::sl_setOutput() {
     LastUsedDirHelper lod;
-    QString filter;
 
-    lod.url = U2FileDialog::getSaveFileName(this, tr("Select output file"), lod.dir, filter);
+    lod.url = U2FileDialog::getSaveFileName(this, tr("Select Output File"), lod.dir);
     if (lod.url.isEmpty()) {
         return;
     }
