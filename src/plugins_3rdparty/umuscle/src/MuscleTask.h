@@ -22,12 +22,14 @@
 #ifndef _U2_MUSCLE_TASK_H_
 #define _U2_MUSCLE_TASK_H_
 
-#include <QtCore/QPointer>
-#include <U2Core/Task.h>
+#include <QPointer>
+
+#include <U2Algorithm/MsaUtilTasks.h>
+
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
-#include <U2Algorithm/MsaUtilTasks.h>
 #include <U2Core/U2Mod.h>
+#include <U2Core/U2Region.h>
 
 class MuscleContext;
 

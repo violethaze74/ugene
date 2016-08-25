@@ -58,7 +58,7 @@ AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings& _s
         default:
             QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
             foreach(char ch, chars) {
-                if(ch!=MultipleSequenceAlignment::GapChar)
+                if(ch!=U2Msa::GAP_CHAR)
                     acceptableChars->append(ch);
             }
             s = 20.0;
@@ -83,7 +83,7 @@ void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings& _s) {
         default:
             QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
             foreach(char ch, chars) {
-                if(ch!=MultipleSequenceAlignment::GapChar)
+                if(ch!=U2Msa::GAP_CHAR)
                     acceptableChars->append(ch);
             }
             s = 20.0;
@@ -147,7 +147,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
     for (int pos = settings.startPos; pos < settings.len + settings.startPos; pos++) {
         for (int idx = 0; idx < numRows; idx++) {
-            const MultipleSequenceAlignmentRow row = ma->getMsaRow(idx);
+            const MultipleSequenceAlignmentRow row = ma->getRow(idx);
             assert(pos < ma->getLength());
             char ch = row->charAt(pos);
             if(acceptableChars->contains(ch)) {

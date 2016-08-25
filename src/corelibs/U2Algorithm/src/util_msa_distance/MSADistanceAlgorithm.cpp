@@ -59,7 +59,7 @@ void MSADistanceAlgorithmFactory::resetFlag( DistanceAlgorithmFlag flag ){
 MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory, const MultipleSequenceAlignment& _ma)
 : Task(tr("MSA distance algorithm \"%1\" task").arg(_factory->getName()), TaskFlag_None)
 , factory(_factory)
-, ma(_ma->getExplicitCopy())
+, ma(_ma->getCopy())
 , excludeGaps(true)
 , isSimilarity(true)
 {

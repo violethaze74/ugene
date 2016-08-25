@@ -46,13 +46,13 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
     if (!msa->getAlphabet()->isAmino()) {
         // for nucleic alphabet work as strict algorithm but use ' ' as default
         char  defChar = ' ';
-        char pc = ( seqIdx.isEmpty() ? msa->getMsaRows().first() : msa->getMsaRows()[ seqIdx[0] ] )->charAt(pos);
-        if (pc == MultipleSequenceAlignment::GapChar) {
+        char pc = ( seqIdx.isEmpty() ? msa->getRows().first() : msa->getRows()[ seqIdx[0] ] )->charAt(pos);
+        if (pc == U2Msa::GAP_CHAR) {
             pc = defChar;
         }
         int nSeq =( seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size());
         for (int s = 1; s < nSeq; s++) {
-            char c = msa->getMsaRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
+            char c = msa->getRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
             if (c != pc) {
                 pc = defChar;
                 break;
@@ -76,14 +76,14 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
         QByteArray currentGroup; //TODO: optimize 'currentGroup' related code!
         int nSeq =( seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size());
         for (int s = 0; s < nSeq; s++) {
-            char c = msa->getMsaRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
+            char c = msa->getRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
             if (!currentGroup.contains(c)) {
                 currentGroup.append(c);
             }
         }
-        char consChar = MultipleSequenceAlignment::GapChar;
+        char consChar = U2Msa::GAP_CHAR;
         if (currentGroup.size() == 1) {
-            consChar = (currentGroup[0] == MultipleSequenceAlignment::GapChar) ? ' ' : '*';
+            consChar = (currentGroup[0] == U2Msa::GAP_CHAR) ? ' ' : '*';
         } else  {
             bool ok = false;
             int currentLen = currentGroup.length();

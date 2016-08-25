@@ -89,7 +89,7 @@ QList<Task*> AddExportedDocumentAndOpenViewTask::onSubTaskFinished( Task* subTas
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
 ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment& _ma, const QString& _fileName, DocumentFormatId _f)
-: DocumentProviderTask("", TaskFlag_None), ma(_ma->getExplicitCopy()), fileName(_fileName), format(_f)
+: DocumentProviderTask("", TaskFlag_None), ma(_ma->getCopy()), fileName(_fileName), format(_f)
 {
     GCOUNTER( cvar, tvar, "ExportAlignmentTask" );
     setTaskName(tr("Export alignment to '%1'").arg(QFileInfo(fileName).fileName()));
@@ -118,7 +118,7 @@ void ExportAlignmentTask::run() {
 
 ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment& _ma, const QString& _url, bool _trimAli, DocumentFormatId _format)
 : DocumentProviderTask(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
-ma(_ma->getExplicitCopy()), url(_url), trimAli(_trimAli), format(_format)
+ma(_ma->getCopy()), url(_url), trimAli(_trimAli), format(_format)
 {
     GCOUNTER( cvar, tvar, "ExportMSA2SequencesTask");
     setVerboseLogMode(true);
@@ -152,7 +152,7 @@ void ExportMSA2SequencesTask::run() {
 ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& _ma, int _offset, int _len, const QString& _url,
     const QList<DNATranslation*>& _aminoTranslations, DocumentFormatId _format)
 : DocumentProviderTask(tr("Export alignment to alignment: %1").arg(_url), TaskFlag_None),
-ma(_ma->getExplicitCopy()), offset(_offset), len(_len), url(_url), format(_format), aminoTranslations(_aminoTranslations)
+ma(_ma->getCopy()), offset(_offset), len(_len), url(_url), format(_format), aminoTranslations(_aminoTranslations)
 {
     GCOUNTER( cvar, tvar, "ExportMSA2MSATask" );
     CHECK_EXT( !ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );

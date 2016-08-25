@@ -293,7 +293,7 @@ void ExtractConsensusTask::run() {
         SAFE_POINT(0 != nSeq, tr("No sequences in alignment"), );
 
         QChar c = algorithm->getConsensusCharAndScore(ma, i, count);
-        if (c != MultipleSequenceAlignment::GapChar || keepGaps) {
+        if (c != U2Msa::GAP_CHAR || keepGaps) {
             filteredConsensus.append(c);
         }
     }

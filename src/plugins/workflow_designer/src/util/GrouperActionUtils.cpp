@@ -306,7 +306,7 @@ bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
     }
 
     if (unique) {
-        foreach (const MultipleSequenceAlignmentRow &currRow, result->getMsaRows()) {
+        foreach (const MultipleSequenceAlignmentRow &currRow, result->getRows()) {
             if ((currRow->getName() == rowName) &&
                 (currRow->getData() == bytes)) {
                     return true;
@@ -354,8 +354,8 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     }
 
     U2OpStatus2Log os;
-    const QList<MultipleSequenceAlignmentRow> rows = result->getMsaRows();
-    foreach (const MultipleSequenceAlignmentRow &newRow, newAl->getMsaRows()) {
+    const QList<MultipleSequenceAlignmentRow> rows = result->getRows();
+    foreach (const MultipleSequenceAlignmentRow &newRow, newAl->getRows()) {
         if (unique) {
             if (!rows.contains(newRow)) {
                 result->addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);

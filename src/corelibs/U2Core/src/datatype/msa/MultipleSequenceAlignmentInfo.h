@@ -19,16 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_ALIGNMENT_INFO_H_
-#define _U2_MULTIPLE_ALIGNMENT_INFO_H_
+#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_INFO_H_
+#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_INFO_H_
 
-#include <QtCore/QString>
+#include <QString>
 
 #include <U2Core/global.h>
 
 namespace U2 {
 
-class U2CORE_EXPORT MultipleAlignmentInfo {
+class U2CORE_EXPORT MultipleSequenceAlignmentInfo {
 public:
     static const QString NAME;
     static const QString ACCESSION;
@@ -71,9 +71,8 @@ public:
     static float    getCutoff( const QVariantMap& map, Cutoffs coff );
     static bool     hasCutoff( const QVariantMap& map, Cutoffs coff );
     static void     setCutoff( QVariantMap& map, Cutoffs coff, float val );
+};
 
-}; // MultipleAlignmentInfo
+}   // namespace U2
 
-} // U2
-
-#endif // _U2_MULTIPLE_ALIGNMENT_INFO_H_
+#endif // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_INFO_H_

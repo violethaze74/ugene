@@ -175,7 +175,7 @@ qint64 MultipleAlignmentObject::getNumRows() const {
     return getMultipleAlignment()->getNumRows();
 }
 
-const MultipleSequenceAlignmentRow & MultipleAlignmentObject::getRow(int row) const {
+const MultipleSequenceAlignmentRow MultipleAlignmentObject::getRow(int row) const {
     return getMultipleAlignment()->getRow(row);
 }
 
@@ -221,7 +221,7 @@ int MultipleAlignmentObject::deleteGap(U2OpStatus &os, const U2Region &rows, int
     MultipleSequenceAlignment ma = getMultipleAlignment()->getCopy();
     // iterate through given rows to update each of them in DB
     for (int rowCount = rows.startPos; rowCount < rows.endPos(); ++rowCount) {
-        ma->removeRowData(rowCount, pos, removingGapColumnCount, os);
+        ma->removeChars(rowCount, pos, removingGapColumnCount, os);
         CHECK_OP(os, 0);
 
         const MultipleSequenceAlignmentRow row = ma->getRow(rowCount);

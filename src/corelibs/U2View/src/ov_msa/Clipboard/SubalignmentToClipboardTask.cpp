@@ -199,7 +199,7 @@ void RichTextMsaClipboardTask::run(){
     int numRows = msa->getNumRows();
     for (int seq = 0; seq < numRows; seq++){
         QString res;
-        const MultipleSequenceAlignmentRow row = msa->getMsaRow(seq);
+        const MultipleSequenceAlignmentRow row = msa->getRow(seq);
         if (!names.contains(row->getName())){
             continue;
         }
@@ -212,7 +212,7 @@ void RichTextMsaClipboardTask::run(){
             if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
                 const char refChar = '\n';
                 highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-            } else if (seq == refSeq || MultipleAlignmentRowData::INVALID_ROW_ID == refSeq) {
+            } else if (seq == refSeq || U2MsaRow::INVALID_ROW_ID == refSeq) {
                 highlight = true;
             } else {
                 SAFE_POINT_EXT(NULL != row, setError("MSA row is NULL"), );

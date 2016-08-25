@@ -132,7 +132,7 @@ MultipleSequenceAlignment& GenomeAlignerMsaWriter::getResult() {
 
 void GenomeAlignerMsaWriter::write(SearchQuery *seq, SAType offset) {
     QByteArray offsetGaps;
-    offsetGaps.fill(MultipleSequenceAlignment::GapChar, offset);
+    offsetGaps.fill(U2Msa::GAP_CHAR, offset);
     QByteArray seqWithOffset = seq->constSequence();
     seqWithOffset.prepend(offsetGaps);
     result->addRow(seq->getName(), seqWithOffset);

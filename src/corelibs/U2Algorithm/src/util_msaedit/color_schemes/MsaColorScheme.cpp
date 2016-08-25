@@ -227,7 +227,7 @@ void fillLightColorsColorScheme(QVector<QColor> &colorsPerChar) {
     for (int i = 0; i < 256; i++) {
         colorsPerChar[i] = FeatureColors::genLightColor(QString((char)i));
     }
-    colorsPerChar[MultipleSequenceAlignment::GapChar] = QColor(); //invalid color -> no color at all
+    colorsPerChar[U2Msa::GAP_CHAR] = QColor(); //invalid color -> no color at all
 }
 
 void addUgeneAmino(QVector<QColor> &colorsPerChar) {

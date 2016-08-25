@@ -20,7 +20,7 @@
  */
 
 #include <U2Core/DNASequence.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MsaRowUtils.h"
@@ -41,7 +41,7 @@ int MsaRowUtils::getGapsLength(const U2MsaRowGapModel &gaps) {
 
 char MsaRowUtils::charAt(const QByteArray &seq, const U2MsaRowGapModel &gaps, int pos) {
     if (pos < 0 || pos >= getRowLength(seq, gaps)) {
-        return MultipleSequenceAlignment::GapChar;
+        return U2Msa::GAP_CHAR;
     }
 
     int gapsLength = 0;
@@ -52,7 +52,7 @@ char MsaRowUtils::charAt(const QByteArray &seq, const U2MsaRowGapModel &gaps, in
         }
         // Inside the gap
         else if ((pos >= gap.offset) && (pos < gap.offset + gap.gap)) {
-            return MultipleSequenceAlignment::GapChar;
+            return U2Msa::GAP_CHAR;
         }
         // Go further in the row, calculating the current gaps length
         else {
@@ -61,7 +61,7 @@ char MsaRowUtils::charAt(const QByteArray &seq, const U2MsaRowGapModel &gaps, in
     }
 
     if (pos >= gapsLength + seq.length()) {
-        return MultipleSequenceAlignment::GapChar;
+        return U2Msa::GAP_CHAR;
     }
 
     int index = pos - gapsLength;
@@ -69,7 +69,7 @@ char MsaRowUtils::charAt(const QByteArray &seq, const U2MsaRowGapModel &gaps, in
 
     SAFE_POINT(indexIsInBounds,
         QString("Internal error detected in MultipleSequenceAlignmentRow::charAt,"
-        " row length is '%1', gapsLength is '%2'!").arg(getRowLength(seq, gaps)).arg(index), MultipleSequenceAlignment::GapChar);
+        " row length is '%1', gapsLength is '%2'!").arg(getRowLength(seq, gaps)).arg(index), U2Msa::GAP_CHAR);
     return seq[index];
 }
 
@@ -77,7 +77,7 @@ qint64 MsaRowUtils::getRowLengthWithoutTrailing(const QByteArray &seq, const U2M
     int rowLength = getRowLength(seq, gaps);
     int rowLengthWithoutTrailingGap = rowLength;
     if (!gaps.isEmpty()) {
-        if (MultipleSequenceAlignment::GapChar == charAt(seq, gaps, rowLength - 1)) {
+        if (U2Msa::GAP_CHAR == charAt(seq, gaps, rowLength - 1)) {
             U2MsaGap lastGap = gaps.last();
             rowLengthWithoutTrailingGap -= lastGap.gap;
         }
@@ -193,13 +193,13 @@ QByteArray MsaRowUtils::joinCharsAndGaps(const DNASequence &sequence, const U2Ms
             continue;
         }
 
-        gapsBytes.fill(MultipleSequenceAlignment::GapChar, gapModel[i].gap);
+        gapsBytes.fill(U2Msa::GAP_CHAR, gapModel[i].gap);
         bytes.insert(gapModel[i].offset - beginningOffset, gapsBytes);
     }
 
     if (keepTrailingGaps && (bytes.size() < rowLength)) {
         QByteArray gapsBytes;
-        gapsBytes.fill(MultipleSequenceAlignment::GapChar, rowLength - bytes.size());
+        gapsBytes.fill(U2Msa::GAP_CHAR, rowLength - bytes.size());
         bytes.append(gapsBytes);
     }
 

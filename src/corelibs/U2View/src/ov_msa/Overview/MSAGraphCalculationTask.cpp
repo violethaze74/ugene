@@ -155,7 +155,7 @@ int MSAGapOverviewCalculationTask::getGraphValue(int pos) const {
             continue;
         }
         uchar c = static_cast<uchar>(ma->charAt(seq, pos));
-        if (c == MultipleSequenceAlignment::GapChar) {
+        if (c == U2Msa::GAP_CHAR) {
             gapCounter++;
         }
     }
@@ -222,7 +222,7 @@ bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleSeq
     QString schemeId = highlightingScheme->getFactory()->getId();
 
     if (seq == refSeq || isEmptyScheme(schemeId) ||
-            ((refSeq == MultipleAlignmentRowData::INVALID_ROW_ID) && !isGapScheme(schemeId) &&
+            ((refSeq == U2MsaRow::INVALID_ROW_ID) && !isGapScheme(schemeId) &&
             !highlightingScheme->getFactory()->isRefFree())) {
         if (colorScheme->getColor(seq, pos, ma->charAt(seq, pos)) != QColor()) {
             return true;

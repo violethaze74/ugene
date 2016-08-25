@@ -173,7 +173,7 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
             bool drawColor = true;
             int refPos = -1;;
             qint64 refId = editor->getReferenceRowId();
-            if (refId != MultipleAlignmentRowData::INVALID_ROW_ID) {
+            if (refId != U2MsaRow::INVALID_ROW_ID) {
                 refPos = msa->getRowIndexByRowId(refId, os);
                 SAFE_POINT_OP(os, );
             }

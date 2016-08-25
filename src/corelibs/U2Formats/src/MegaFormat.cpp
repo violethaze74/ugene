@@ -218,10 +218,10 @@ bool MegaFormat::skipComments(IOAdapter *io, QByteArray &line, U2OpStatus &ti) {
 }
 
 void MegaFormat::workUpIndels(MultipleSequenceAlignment& al) {
-    QByteArray firstSequence=al->getMsaRow(0)->getData();
+    QByteArray firstSequence=al->getRow(0)->getData();
 
     for (int i=1; i<al->getNumRows(); i++) {
-        QByteArray newSeq=al->getMsaRow(i)->getData();
+        QByteArray newSeq=al->getRow(i)->getData();
         for (int j=0; j<newSeq.length(); j++) {
             if (MEGA_IDENTICAL==al->charAt(i, j)) {
                 newSeq[j]=firstSequence[j];

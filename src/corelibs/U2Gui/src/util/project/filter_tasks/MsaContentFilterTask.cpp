@@ -71,11 +71,11 @@ bool MsaContentFilterTask::msaContainsPattern(MultipleSequenceAlignmentObject *m
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
     for (int i = 0, n = msa->getNumRows(); i < n; ++i) {
-        const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
+        const MultipleSequenceAlignmentRow row = msa->getRow(i);
         for (int j = 0; j < (msa->getLength() - searchStr.length() + 1); ++j) {
             const char c = row->charAt(j);
             int altenateLength = 0;
-            if (MultipleSequenceAlignment::GapChar != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {
+            if (U2Msa::GAP_CHAR != c && MSAUtils::equalsIgnoreGaps(row, j, searchStr, altenateLength)) {
                 return true;
             }
         }

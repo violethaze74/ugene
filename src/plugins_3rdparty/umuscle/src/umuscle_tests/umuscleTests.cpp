@@ -253,8 +253,8 @@ Task::ReportResult GTest_CompareMAlignment::report() {
     for (int i=0;i<listSize;i++) {
         MultipleSequenceAlignmentObject* ma1 = qobject_cast<MultipleSequenceAlignmentObject*>(objs1.at(i));
         MultipleSequenceAlignmentObject* ma2 = qobject_cast<MultipleSequenceAlignmentObject*>(objs2.at(i));
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
-        const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
+        const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getRows();
+        const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getRows();
         if(ma1->objectName()!=ma2->objectName()) {
             stateInfo.setError(  QString("MAlignmentObjects name not matched \"%1\", expected \"%2\"").arg(ma1->objectName()).arg(ma2->objectName()) );
             return ReportResult_Finished;
@@ -401,12 +401,12 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
 
     U2OpStatus2Log os;
     for (int i = origAliSeqs, j = 0; i < msa->getNumRows(); i++, j++) {
-        const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
+        const MultipleSequenceAlignmentRow row = msa->getRow(i);
         QByteArray seq = row->toByteArray(msa->getLength(), os);
         QList<int> seqGaps = gapPositionsForSeqs[j];
         for (int pos = 0; pos < seq.size(); pos++) {
             char c = seq[pos];
-            if (c == MultipleSequenceAlignment::GapChar) {
+            if (c == U2Msa::GAP_CHAR) {
                 bool found = seqGaps.contains(pos);
                 if (!found) {
                     stateInfo.setError(  QString("illegal gap found! pos: %1, sequence: %2").arg(pos).arg(row->getName()) );
@@ -417,7 +417,7 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
         for (int gap = 0; gap < seqGaps.size(); gap++) {
             int pos  = seqGaps[gap];
             char c = seq[pos];
-            if (c != MultipleSequenceAlignment::GapChar) {
+            if (c != U2Msa::GAP_CHAR) {
                 stateInfo.setError(  QString("gap not found! pos: %1, sequence: %2").arg(pos).arg(row->getName()) );
                 return ReportResult_Finished;
             }
@@ -749,8 +749,8 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 
 void Muscle_Load_Align_Compare_Task::run() {
 
-    const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
-    const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getRows();
+    const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getRows();
 
     foreach(const MultipleSequenceAlignmentRow &maItem1, alignedSeqs1) {
         bool nameFound = false;

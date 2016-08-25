@@ -26,8 +26,7 @@
 
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
-#include <U2Core/global.h>
-
+#include <U2Core/U2Region.h>
 
 namespace U2{
 

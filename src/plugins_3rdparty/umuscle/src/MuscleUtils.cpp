@@ -102,7 +102,7 @@ void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, 
     MuscleContext *ctx = getMuscleContext();
     ctx->fillUidsVectors(ma->getNumRows());
     for (int i=0, n = ma->getNumRows(); i<n; i++) {
-        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
+        const MultipleSequenceAlignmentRow row = ma->getRow(i);
         
         int coreLen = row->getCoreLength();
         int maLen = ma->getLength();
@@ -131,12 +131,12 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
 
     unsigned i=0;
     unsigned seq_count = 0;
-    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getRows()) {
         Seq *ptrSeq = new Seq();
         QByteArray name =  row->getName().toLocal8Bit();
         ptrSeq->FromString(row->getCore().constData(), name.constData());
         //stripping gaps, original Seq::StripGaps fails on MSVC9
-        Seq::iterator newEnd = std::remove(ptrSeq->begin(), ptrSeq->end(), MultipleSequenceAlignment::GapChar);
+        Seq::iterator newEnd = std::remove(ptrSeq->begin(), ptrSeq->end(), U2Msa::GAP_CHAR);
         ptrSeq->erase(newEnd, ptrSeq->end());
         if (ptrSeq->Length()!=0) {
             ctx->tmp_uIds[seq_count] = ctx->input_uIds[i];

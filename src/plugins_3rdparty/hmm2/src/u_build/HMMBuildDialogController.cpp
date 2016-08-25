@@ -47,7 +47,7 @@
 namespace U2 {
 HMMBuildDialogController::HMMBuildDialogController(const QString& _pn, const MultipleSequenceAlignment& _ma, QWidget* p) 
     : QDialog(p),
-      ma(_ma->getExplicitCopy()),
+      ma(_ma->getCopy()),
       profileName(_pn),
       saveController(NULL) {
     setupUi(this);
@@ -227,7 +227,7 @@ HMMBuildToFileTask::HMMBuildToFileTask(const QString& inFile, const QString& _ou
 
 HMMBuildToFileTask::HMMBuildToFileTask(const MultipleSequenceAlignment& _ma, const QString& _outFile, const UHMMBuildSettings& s) 
 : Task("", TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported),
-settings(s), outFile(_outFile), ma(_ma->getExplicitCopy()), loadTask(NULL), buildTask(NULL)
+settings(s), outFile(_outFile), ma(_ma->getCopy()), loadTask(NULL), buildTask(NULL)
 {
     setTaskName(tr("Build HMM profile to '%1'").arg(QFileInfo(outFile).fileName()));
     setVerboseLogMode(true);
@@ -325,7 +325,7 @@ QString HMMBuildToFileTask::generateReport() const {
 
 
 HMMBuildTask::HMMBuildTask(const UHMMBuildSettings& s, const MultipleSequenceAlignment& _ma) 
-  : Task("", TaskFlag_None), ma(_ma->getExplicitCopy()), settings(s), hmm(NULL)
+  : Task("", TaskFlag_None), ma(_ma->getCopy()), settings(s), hmm(NULL)
 {
     GCOUNTER( cvar, tvar, "HMMBuildTask" );
     setTaskName(tr("Build HMM profile '%1'").arg(s.name));
@@ -367,7 +367,7 @@ void HMMBuildTask::_run() {
     }
     U2OpStatus2Log os;
     for (int i=0; i<ma->getNumRows();i++) {
-        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
+        const MultipleSequenceAlignmentRow row = ma->getRow(i);
         QByteArray seq = row->toByteArray(ma->getLength(), os);
         free(msa->aseq[i]);
         msa->aseq[i] = sre_strdup(seq.constData(), seq.size());

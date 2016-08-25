@@ -46,7 +46,7 @@ bool MSAUtils::equalsIgnoreGaps(const MultipleSequenceAlignmentRow& row, int sta
     for (int j = 0; i  < sLen && j < pLen; i++, j++) {
         char c1 = row->charAt(i);
         char c2 = pat[j];
-        while(c1 == MultipleSequenceAlignment::GapChar && ++i < sLen) {
+        while(c1 == U2Msa::GAP_CHAR && ++i < sLen) {
             gapsCounter++;
             c1 = row->charAt(i);
         }
@@ -70,7 +70,7 @@ int MSAUtils::getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow&
     for (int j = 0; i  < sLen && j < pLen; i++, j++) {
         char c1 = row->charAt(i);
         char c2 = pat[j];
-        while(c1 == MultipleSequenceAlignment::GapChar && ++i < sLen) {
+        while(c1 == U2Msa::GAP_CHAR && ++i < sLen) {
             c1 = row->charAt(i);
         }
         if (c1 == c2) {
@@ -197,11 +197,11 @@ void MSAUtils::updateAlignmentAlphabet(MultipleSequenceAlignment& ma, const DNAA
 
 QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps) {
     QList<DNASequence> lst;
-    QBitArray gapCharMap = TextUtils::createBitMap(MultipleSequenceAlignment::GapChar);
+    QBitArray gapCharMap = TextUtils::createBitMap(U2Msa::GAP_CHAR);
     int len = ma->getLength();
     const DNAAlphabet* al = ma->getAlphabet();
     U2OpStatus2Log os;
-    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getRows()) {
         DNASequence s(row->getName(), row->toByteArray(len, os), al);
         if (trimGaps) {
             int newLen = TextUtils::remove(s.seq.data(), s.length(), gapCharMap);
@@ -313,9 +313,9 @@ MultipleSequenceAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs,
 
 QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignment& origMsa, MultipleSequenceAlignment& newMsa, U2OpStatus& os) {
     QList<qint64> rowsOrder;
-    const QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa->getRows();
     for (int i = 0, n = newMsa->getNumRows(); i < n; ++i) {
-        const MultipleSequenceAlignmentRow newMsaRow = newMsa->getMsaRow(i);
+        const MultipleSequenceAlignmentRow newMsaRow = newMsa->getRow(i);
         QString rowName = newMsaRow->getName().replace(" ", "_");
 
         bool rowFound = false;
@@ -326,8 +326,8 @@ QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignmen
                 newMsa->setRowId(i, rowId);
                 rowsOrder.append(rowId);
 
-                U2DataId sequenceId = origMsaRow->getRowDbInfo().dataObjectId;
-                newMsa->setDataId(i, sequenceId);
+                U2DataId sequenceId = origMsaRow->getRowDbInfo().sequenceId;
+                newMsa->setSequenceId(i, sequenceId);
 
                 break;
             }
@@ -356,7 +356,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
     row.rowId = -1; // set the ID automatically
 
     QByteArray oldSeqData = dnaSeq.seq;
-    int tailGapsIndex = QRegExp(MAlignment_TailedGapsPattern).indexIn(oldSeqData);
+    int tailGapsIndex = QRegExp(MSA_TailedGapsPattern).indexIn(oldSeqData);
     if (tailGapsIndex >= 0) {
         oldSeqData.chop(oldSeqData.length() - tailGapsIndex);
     }
@@ -366,7 +366,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef &dstDb
     U2Sequence seq = U2SequenceUtils::copySequence(dnaSeq, dstDbi, U2ObjectDbi::ROOT_FOLDER, os);
     CHECK_OP(os, row);
 
-    row.dataObjectId = seq.id;
+    row.sequenceId = seq.id;
     row.gstart = 0;
     row.gend = seq.length;
     row.length = MsaRowUtils::getRowLengthWithoutTrailing(dnaSeq.seq, row.gaps);
@@ -389,7 +389,7 @@ void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2Se
 }
 
 MultipleSequenceAlignment MSAUtils::setUniqueRowNames(const MultipleSequenceAlignment &ma) {
-    MultipleSequenceAlignment res = ma->getExplicitCopy();
+    MultipleSequenceAlignment res = ma->getCopy();
     int rowNumber = res->getNumRows();
     for (int i = 0; i < rowNumber; i++) {
         res->renameRow(i, QString::number(i));

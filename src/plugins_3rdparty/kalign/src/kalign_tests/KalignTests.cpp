@@ -200,8 +200,8 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
 
 void Kalign_Load_Align_Compare_Task::run() {
 
-    const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
-    const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getRows();
+    const QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getRows();
 
     foreach(const MultipleSequenceAlignmentRow &maItem1, alignedSeqs1) {
         bool nameFound = false;

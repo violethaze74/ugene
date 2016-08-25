@@ -65,7 +65,7 @@
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
     const U2::MultipleSequenceAlignmentRow row = msa->getMSAObject()->getMsa()->getRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
-    return row->getRowDbInfo().dataObjectId;
+    return row->getRowDbInfo().sequenceId;
 }
 
 namespace U2 {
@@ -232,8 +232,8 @@ void PairAlign::checkState() {
     showHideOutputWidget->setEnabled(alphabetIsOk);
 
     bool readOnly = msa->getMSAObject()->isStateLocked();
-    canDoAlign = ((MultipleAlignmentRowData::INVALID_ROW_ID != firstSeqSelectorWC->sequenceId())
-                  && (MultipleAlignmentRowData::INVALID_ROW_ID != secondSeqSelectorWC->sequenceId())
+    canDoAlign = ((U2MsaRow::INVALID_ROW_ID != firstSeqSelectorWC->sequenceId())
+                  && (U2MsaRow::INVALID_ROW_ID != secondSeqSelectorWC->sequenceId())
                   && (firstSeqSelectorWC->sequenceId() != secondSeqSelectorWC->sequenceId())
                   && sequenceNamesIsOk && alphabetIsOk && (!readOnly || inNewWindowCheckBox->isChecked()));
 
@@ -266,8 +266,8 @@ void PairAlign::updatePercentOfSimilarity() {
     U2OpStatusImpl os;
     MultipleSequenceAlignment ma;
     const MultipleSequenceAlignment currentAlignment = msa->getMSAObject()->getMsa();
-    ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
-    ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getMsaRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
+    ma->addRow(firstSeqSelectorWC->text(), currentAlignment->getRowByRowId(firstSeqSelectorWC->sequenceId(), os)->getData(), -1);
+    ma->addRow(secondSeqSelectorWC->text(), currentAlignment->getRowByRowId(secondSeqSelectorWC->sequenceId(), os)->getData(), -1);
     distanceCalcTask = distanceFactory->createAlgorithm(ma);
     distanceCalcTask->setExcludeGaps(true);
     connect(distanceCalcTask, SIGNAL(si_stateChanged()), SLOT(sl_distanceCalculated()));

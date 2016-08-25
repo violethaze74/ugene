@@ -138,11 +138,11 @@ uchar MSAConsensusUtils::getColumnFreqs(const MultipleSequenceAlignment& ma, int
         uchar c = (uchar)ma->charAt( seqIdx.isEmpty() ? seq : seqIdx[ seq ],
                                     pos);
         freqs[c]++;
-        if (c!=MultipleSequenceAlignment::GapChar && freqs[c] > maxCFreq) {
+        if (c!=U2Msa::GAP_CHAR && freqs[c] > maxCFreq) {
             maxCFreq = freqs[c];
             maxC = c;
         }
-        if (c!=MultipleSequenceAlignment::GapChar) {
+        if (c!=U2Msa::GAP_CHAR) {
             nonGapChars++;
         }
     }

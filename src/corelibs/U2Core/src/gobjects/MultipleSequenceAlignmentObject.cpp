@@ -49,7 +49,7 @@ const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsa() const 
 }
 
 const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() const {
-    return getMsa()->getExplicitCopy();
+    return getMsa()->getCopy();
 }
 
 GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
@@ -61,7 +61,7 @@ GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2Op
     gHints->setAll(hints);
     const QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-    MultipleSequenceAlignment msa = getMsa()->getExplicitCopy();
+    MultipleSequenceAlignment msa = getMsa()->getCopy();
     MultipleSequenceAlignmentObject *clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
     CHECK_OP(os, NULL);
 
@@ -99,7 +99,7 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
     qint64 modifiedRowId = msa->getRow(rowIndex)->getRowId();
 
     U2OpStatus2Log os;
-    if (newChar != MultipleSequenceAlignment::GapChar) {
+    if (newChar != U2Msa::GAP_CHAR) {
         MsaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
         MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);

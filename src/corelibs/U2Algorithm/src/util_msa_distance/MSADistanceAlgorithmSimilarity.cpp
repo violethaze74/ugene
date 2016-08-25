@@ -68,7 +68,7 @@ void MSADistanceAlgorithmSimilarity::run() {
                 if(!excludeGaps){
                     if (similar) sim++;
                 }else{
-                    if (similar && ma->charAt(i, k)!=MultipleSequenceAlignment::GapChar) sim++;
+                    if (similar && ma->charAt(i, k)!=U2Msa::GAP_CHAR) sim++;
                 }
 
             }

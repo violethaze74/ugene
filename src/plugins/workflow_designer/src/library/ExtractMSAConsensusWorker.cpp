@@ -188,7 +188,7 @@ ExtractMSAConsensusTaskHelper::ExtractMSAConsensusTaskHelper(const QString &algo
   algoId(algoId),
   threshold(threshold),
   keepGaps(keepGaps),
-  msa(msa->getExplicitCopy()),
+  msa(msa->getCopy()),
   targetDbi(targetDbi)
   //,resultText("")
 {

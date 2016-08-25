@@ -373,10 +373,10 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     U2MsaRow *ptrnRow = NULL;
 
     for (int  i = 0; i < rows.length(); ++i) {
-        if (rows[i].dataObjectId == refSequence->id) {
+        if (rows[i].sequenceId == refSequence->id) {
             refRow = &rows[i];
         }
-        if (rows[i].dataObjectId == ptrnSequence->id) {
+        if (rows[i].sequenceId == ptrnSequence->id) {
             ptrnRow = &rows[i];
         }
     }
@@ -410,11 +410,11 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
                 continue;
                 break;
             case SmithWatermanResult::UP:
-                ptrnSequence.insert(ptrnSeqCurrentPosition, MultipleSequenceAlignment::GapChar);
+                ptrnSequence.insert(ptrnSeqCurrentPosition, U2Msa::GAP_CHAR);
                 --refSeqCurrentPosition;
                 break;
             case SmithWatermanResult::LEFT:
-                refSequence.insert(refSeqCurrentPosition, MultipleSequenceAlignment::GapChar);
+                refSequence.insert(refSeqCurrentPosition, U2Msa::GAP_CHAR);
                 --ptrnSeqCurrentPosition;
                 break;
             default:

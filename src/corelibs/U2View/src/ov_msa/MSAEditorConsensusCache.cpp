@@ -99,7 +99,7 @@ QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
     const MultipleSequenceAlignment ma = aliObj->getMsa();
     for (int i=0, n = ma->getLength(); i<n; i++) {
         char c = getConsensusChar(i);
-        if (c!=MultipleSequenceAlignment::GapChar || withGaps) {
+        if (c!=U2Msa::GAP_CHAR || withGaps) {
             res.append(c);
         }
     }
