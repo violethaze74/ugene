@@ -60,7 +60,7 @@ QString MsaTestUtils::getRowData(const MultipleSequenceAlignment& almnt, int row
         return "";
     }
 
-    MultipleSequenceAlignmentRow row = almnt->getMsaRow(rowNum);
+    MultipleSequenceAlignmentRow row = almnt->getRow(rowNum);
 
     return MsaRowTestUtils::getRowData(row);
 }
@@ -86,7 +86,7 @@ bool MsaTestUtils::testAlignmentNotChanged(const MultipleSequenceAlignment& almn
 IMPLEMENT_TEST(MsaUnitTests, clear_notEmpty) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     almnt->clear();
-    QList<MultipleSequenceAlignmentRow> rows = almnt->getMsaRows();
+    QList<MultipleSequenceAlignmentRow> rows = almnt->getRows();
     CHECK_EQUAL(0, rows.count(), "number of rows");
 }
 
@@ -421,13 +421,13 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_similarTwoRegions) {
 /** Tests getRows */
 IMPLEMENT_TEST(MsaUnitTests, getRows_oneRow) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
+    MultipleSequenceAlignmentRow row = almnt->getRow(0);
     CHECK_EQUAL("---AG-T--", MsaRowTestUtils::getRowData(row), "first row");
 }
 
 IMPLEMENT_TEST(MsaUnitTests, getRows_severalRows) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    QList<MultipleSequenceAlignmentRow> rows = almnt->getMsaRows();
+    QList<MultipleSequenceAlignmentRow> rows = almnt->getRows();
     CHECK_EQUAL(2, rows.count(), "number of rows");
     CHECK_EQUAL("---AG-T--", MsaRowTestUtils::getRowData(rows[0]), "first row");
     CHECK_EQUAL("AG-CT-TAA", MsaRowTestUtils::getRowData(rows[1]), "second row");
@@ -523,7 +523,7 @@ IMPLEMENT_TEST(MsaUnitTests, insertGaps_negativeCount) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_validParams) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt->removeRowData(1, 0, 2, os);
+    almnt->removeChars(1, 0, 2, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(9, almnt->getLength(), "alignment length");
     CHECK_EQUAL("---AG-T--", MsaTestUtils::getRowData(almnt, 0), "first row");
@@ -533,7 +533,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_validParams) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeRowIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt->removeRowData(-1, 0, 2, os);
+    almnt->removeChars(-1, 0, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
@@ -541,7 +541,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeRowIndex) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigRowIndex) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt->removeRowData(2, 0, 2, os);
+    almnt->removeChars(2, 0, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
@@ -549,7 +549,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigRowIndex) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_negativePos) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt->removeRowData(1, -1, 2, os);
+    almnt->removeChars(1, -1, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
@@ -557,7 +557,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_negativePos) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigPos) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt->removeRowData(1, 10, 2, os);
+    almnt->removeChars(1, 10, 2, os);
     CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
@@ -565,7 +565,7 @@ IMPLEMENT_TEST(MsaUnitTests, removeChars_tooBigPos) {
 IMPLEMENT_TEST(MsaUnitTests, removeChars_negativeCount) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     U2OpStatusImpl os;
-    almnt->removeRowData(1, 0, -1, os);
+    almnt->removeChars(1, 0, -1, os);
     CHECK_EQUAL("Failed to remove chars from an alignment", os.getError(), "opStatus");
     CHECK_TRUE(MsaTestUtils::testAlignmentNotChanged(almnt), "Alignment changed unexpectedly");
 }
@@ -625,7 +625,7 @@ IMPLEMENT_TEST(MsaUnitTests, renameRow_validParams) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
     QString newRowName = "New row name";
     almnt->renameRow(0, newRowName);
-    MultipleSequenceAlignmentRow actualRow = almnt->getMsaRow(0);
+    MultipleSequenceAlignmentRow actualRow = almnt->getRow(0);
     CHECK_EQUAL(newRowName, actualRow->getName(), "renamed row name");
 }
 

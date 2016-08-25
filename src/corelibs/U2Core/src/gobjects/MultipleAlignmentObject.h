@@ -23,7 +23,7 @@
 #define _U2_MULTIPLE_ALIGNMENT_OBJECT_H_
 
 #include <U2Core/GObject.h>
-#include <U2Core/MultipleAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
@@ -106,7 +106,7 @@ public:
     const DNAAlphabet * getAlphabet() const;
     qint64 getLength() const;
     qint64 getNumRows() const;
-    const MultipleSequenceAlignmentRow & getRow(int row) const;
+    const MultipleSequenceAlignmentRow getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
 
     /** Methods that modify the gap model only */

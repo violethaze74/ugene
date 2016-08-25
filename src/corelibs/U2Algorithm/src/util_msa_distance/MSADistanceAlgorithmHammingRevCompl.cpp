@@ -68,7 +68,7 @@ void MSADistanceAlgorithmHammingRevCompl::run() {
         if (isCanceled()) {
             return;
         }
-        QByteArray arr = ma->getMsaRow(i)->toByteArray(ma->getLength(), os);
+        QByteArray arr = ma->getRow(i)->toByteArray(ma->getLength(), os);
         trans->translate(arr.data(), arr.length());
         TextUtils::reverse(arr.data(), arr.length());
 

@@ -72,10 +72,10 @@ void KalignTaskSettings::reset() {
 KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSettings& _config)
     :TLSTask(tr("KALIGN alignment"), TaskFlags_FOSCOE),
       config(_config),
-      inputMA(ma->getExplicitCopy())
+      inputMA(ma->getCopy())
 {
     GCOUNTER( cvar, tvar, "KalignTask" );
-    inputSubMA = inputMA->getExplicitCopy();
+    inputSubMA = inputMA->getCopy();
     resultSubMA->setAlphabet(inputSubMA->getAlphabet());
     QString inputMAName = inputMA->getName();
     resultMA->setName(inputMAName);

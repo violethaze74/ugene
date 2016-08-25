@@ -135,7 +135,7 @@ QList<U2MsaRow> MysqlMsaDbi::getRows(const U2DataId& msaId, U2OpStatus& os) {
     while (rowQuery.step()) {
         U2MsaRow row;
         row.rowId = rowQuery.getInt64(0);
-        row.dataObjectId = rowQuery.getDataId(1, U2Type::Sequence);
+        row.sequenceId = rowQuery.getDataId(1, U2Type::Sequence);
         row.gstart = rowQuery.getInt64(2);
         row.gend = rowQuery.getInt64(3);
         row.length = rowQuery.getInt64(4);
@@ -169,7 +169,7 @@ U2MsaRow MysqlMsaDbi::getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& os
     q.bindInt64(":rowId", rowId);
     if (q.step()) {
         res.rowId = rowId;
-        res.dataObjectId = q.getDataId(0, U2Type::Sequence);
+        res.sequenceId = q.getDataId(0, U2Type::Sequence);
         res.gstart = q.getInt64(1);
         res.gend = q.getInt64(2);
         res.length = q.getInt64(3);
@@ -329,7 +329,7 @@ void MysqlMsaDbi::addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpStat
     // Update track mod type for child sequence object
     if (TrackOnUpdate == trackMod) {
         foreach (const U2MsaRow& row, rows) {
-            dbi->getObjectDbi()->setTrackModType(row.dataObjectId, TrackOnUpdate, os);
+            dbi->getObjectDbi()->setTrackModType(row.sequenceId, TrackOnUpdate, os);
             CHECK_OP(os, );
         }
     }
@@ -362,7 +362,7 @@ void MysqlMsaDbi::addRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, 
 
     // Update track mod type for child sequence object
     if (TrackOnUpdate == trackMod) {
-        dbi->getObjectDbi()->setTrackModType(row.dataObjectId, TrackOnUpdate, os);
+        dbi->getObjectDbi()->setTrackModType(row.sequenceId, TrackOnUpdate, os);
         CHECK_OP(os, );
     }
 
@@ -482,7 +482,7 @@ void MysqlMsaDbi::updateRowContent(const U2DataId& msaId, qint64 rowId, const QB
 
     // Update the sequence data
     QVariantMap hints;
-    dbi->getMysqlSequenceDbi()->updateSequenceData(updateAction, row.dataObjectId, U2_REGION_MAX, seqBytes, hints, os);
+    dbi->getMysqlSequenceDbi()->updateSequenceData(updateAction, row.sequenceId, U2_REGION_MAX, seqBytes, hints, os);
     CHECK_OP(os, );
 
     // Update the row object
@@ -668,7 +668,7 @@ void MysqlMsaDbi::addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2Msa
         CHECK_OP(os, );
     }
 
-    dbi->getMysqlObjectDbi()->setParent(msaId, row.dataObjectId, os);
+    dbi->getMysqlObjectDbi()->setParent(msaId, row.sequenceId, os);
 }
 
 void MysqlMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& msaRow, U2OpStatus& os) {
@@ -684,7 +684,7 @@ void MysqlMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow&
     static const QString queryString = "INSERT INTO MsaRow(msa, sequence, pos, gstart, gend, length) VALUES(:msa, :sequence, :pos, :gstart, :gend, :length)";
     U2SqlQuery q(queryString, db, os);
     q.bindDataId(":msa", msaId);
-    q.bindDataId(":sequence", msaRow.dataObjectId);
+    q.bindDataId(":sequence", msaRow.sequenceId);
     q.bindInt64(":pos", posInMsa);
     q.bindInt64(":gstart", msaRow.gstart);
     q.bindInt64(":gend", msaRow.gend);
@@ -1027,7 +1027,7 @@ void MysqlMsaDbi::updateRowInfoCore(const U2DataId& msaId, const U2MsaRow& row, 
 
     static const QString queryString = "UPDATE MsaRow SET sequence = :sequence, gstart = :gstart, gend = :gend WHERE msa = :msa AND rowId = :rowId";
     U2SqlQuery q(queryString, db, os);
-    q.bindDataId(":sequence", row.dataObjectId);
+    q.bindDataId(":sequence", row.sequenceId);
     q.bindInt64(":gstart", row.gstart);
     q.bindInt64(":gend", row.gend);
     q.bindDataId(":msa", msaId);
@@ -1151,7 +1151,7 @@ void MysqlMsaDbi::undoUpdateRowInfo(const U2DataId& msaId, const QByteArray& mod
     bool ok = PackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating a row info")), );
     SAFE_POINT(oldRow.rowId == newRow.rowId, "Incorrect rowId", );
-    SAFE_POINT(oldRow.dataObjectId == newRow.dataObjectId, "Incorrect sequenceId", );
+    SAFE_POINT(oldRow.sequenceId == newRow.sequenceId, "Incorrect sequenceId", );
 
     updateRowInfoCore(msaId, oldRow, os);
 }
@@ -1260,7 +1260,7 @@ void MysqlMsaDbi::redoUpdateRowInfo(const U2DataId& msaId, const QByteArray& mod
     bool ok = PackUtils::unpackRowInfoDetails(modDetails, oldRow, newRow);
     CHECK_EXT(ok, os.setError(U2DbiL10n::tr("An error occurred during updating a row info")), );
     SAFE_POINT(oldRow.rowId == newRow.rowId, "Incorrect rowId", );
-    SAFE_POINT(oldRow.dataObjectId == newRow.dataObjectId, "Incorrect sequenceId", );
+    SAFE_POINT(oldRow.sequenceId == newRow.sequenceId, "Incorrect sequenceId", );
 
     updateRowInfoCore(msaId, newRow, os);
 }

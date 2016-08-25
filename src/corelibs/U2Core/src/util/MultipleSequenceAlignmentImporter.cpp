@@ -21,7 +21,7 @@
 
 #include <U2Core/L10n.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleAlignmentInfo.h>
+#include <U2Core/MultipleSequenceAlignmentInfo.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -132,7 +132,7 @@ void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection& con, 
     SAFE_POINT(NULL != attrDbi, "NULL Attribute Dbi during importing an alignment!",);
 
     foreach (QString key, alInfo.keys()) {
-        if (key != MultipleAlignmentInfo::NAME) { // name is stored in the object
+        if (key != MultipleSequenceAlignmentInfo::NAME) { // name is stored in the object
             QString val =  alInfo.value(key).value<QString>();
             U2StringAttribute attr(msaId, key, val);
 
@@ -148,7 +148,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
 
     QList<U2Sequence> sequences;
     for (int i = 0; i < al->getNumRows(); ++i) {
-        DNASequence dnaSeq = al->getMsaRow(i)->getSequence();
+        DNASequence dnaSeq = al->getRow(i)->getSequence();
 
         U2Sequence sequence = U2Sequence();
         sequence.visualName = dnaSeq.getName();
@@ -211,7 +211,7 @@ QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnectio
     for (int i = 0; i < al->getNumRows(); ++i) {
         U2Sequence seq = sequences[i];
         if (seq.length > 0) {
-            MultipleSequenceAlignmentRow alignmentRow = al->getMsaRow(i);
+            MultipleSequenceAlignmentRow alignmentRow = al->getRow(i);
             const U2MsaRowGapModel gapModel = msaGapModel[i];
             if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
                 // remove trailing gap if it exists
@@ -221,7 +221,7 @@ QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnectio
             }
 
             U2MsaRow row;
-            row.dataObjectId = seq.id;
+            row.sequenceId = seq.id;
             row.gstart = 0;
             row.gend = seq.length;
             row.gaps = alignmentRow->getGapModel();

@@ -24,6 +24,7 @@
 
 #include <QMutex>
 #include <QVarLengthArray>
+#include <QVector>
 
 #include <U2Core/AppResources.h>
 #include <U2Core/MultipleSequenceAlignment.h>

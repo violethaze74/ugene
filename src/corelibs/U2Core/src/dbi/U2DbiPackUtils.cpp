@@ -190,7 +190,7 @@ QByteArray PackUtils::packRow(qint64 posInMsa, const U2MsaRow& row) {
     result += SEP;
     result += QByteArray::number(row.rowId);
     result += SEP;
-    result += row.dataObjectId.toHex();
+    result += row.sequenceId.toHex();
     result += SEP;
     result += QByteArray::number(row.gstart);
     result += SEP;
@@ -217,7 +217,7 @@ bool PackUtils::unpackRow(const QByteArray &modDetails, qint64& posInMsa, U2MsaR
         SAFE_POINT(ok, QString("Invalid added row modDetails rowId '%1'").arg(tokens[2].data()), false);
     }
     { // sequenceId
-        row.dataObjectId = QByteArray::fromHex(tokens[3]);
+        row.sequenceId = QByteArray::fromHex(tokens[3]);
     }
     { // gstart
         bool ok = false;
@@ -240,7 +240,7 @@ QByteArray PackUtils::packRowInfo(const U2MsaRow &row) {
     QByteArray result;
     result += QByteArray::number(row.rowId);
     result += SECOND_SEP;
-    result += row.dataObjectId.toHex();
+    result += row.sequenceId.toHex();
     result += SECOND_SEP;
     result += QByteArray::number(row.gstart);
     result += SECOND_SEP;
@@ -258,7 +258,7 @@ bool PackUtils::unpackRowInfo(const QByteArray &str, U2MsaRow& row) {
 
     row.rowId = tokens[0].toLongLong(&ok);
     CHECK(ok, false);
-    row.dataObjectId = QByteArray::fromHex(tokens[1]);
+    row.sequenceId = QByteArray::fromHex(tokens[1]);
     row.gstart = tokens[2].toLongLong(&ok);
     CHECK(ok, false);
     row.gend = tokens[3].toLongLong(&ok);

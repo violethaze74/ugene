@@ -621,7 +621,7 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
     bool ok_flag=false;
     U2OpStatus2Log os;
     const MultipleSequenceAlignment ma = myMSequence->getMsa();
-    foreach(const MultipleSequenceAlignmentRow& myItem , ma->getMsaRows()){
+    foreach(const MultipleSequenceAlignmentRow& myItem , ma->getRows()){
         if (myItem->getName() == seqName){
             ok_flag=true;
             QByteArray objSubSeq = myItem->mid(startPos, subseq.length(), os)->toByteArray(subseq.length(), os);

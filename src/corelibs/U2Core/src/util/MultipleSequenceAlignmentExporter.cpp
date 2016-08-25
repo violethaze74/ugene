@@ -137,7 +137,7 @@ QList<DNASequence> MultipleSequenceAlignmentExporter::exportSequencesOfRows(QLis
     QList<DNASequence> sequences;
     sequences.reserve( rows.count( ) );
     for (int i = 0, n = rows.count(); i < n; ++i) {
-        const U2DataId& sequenceId = rows[i].dataObjectId;
+        const U2DataId& sequenceId = rows[i].sequenceId;
         qint64 gstart = rows[i].gstart;
         qint64 gend = rows[i].gend;
         U2Region regionInSequence(gstart, gend - gstart);

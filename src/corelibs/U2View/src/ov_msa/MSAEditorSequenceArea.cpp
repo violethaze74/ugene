@@ -686,8 +686,8 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
     const int refSeq = msa->getRowIndexByRowId(editor->getReferenceRowId(), os);
     QString refSeqName = editor->getReferenceRowName();
     MultipleSequenceAlignmentRow row;
-    if (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) {
-        row = msa->getMsaRow(refSeq);
+    if (U2MsaRow::INVALID_ROW_ID != refSeq) {
+        row = msa->getRow(refSeq);
     }
 
     //Use dots to draw regions, which are similar to reference sequence
@@ -2524,7 +2524,7 @@ void MSAEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
         QRegExp latinCharacterOrGap(QString("([A-Z]| |-|%1)").arg(emDash));
         if (latinCharacterOrGap.exactMatch(text)) {
             QChar newChar = text.at(0);
-            newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? MultipleSequenceAlignment::GapChar : newChar;
+            newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? U2Msa::GAP_CHAR : newChar;
             replaceSelectedCharacter(newChar.toLatin1());
         }
         else {
@@ -2776,7 +2776,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
         QList<qint64> modifiedRowIds;
         modifiedRowIds.reserve(sel.length);
         for (int i = sel.startPos; i < sel.endPos(); i++) {
-            const MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(i);
+            const MultipleSequenceAlignmentRow currentRow = ma->getRow(i);
             QByteArray currentRowContent = currentRow->toByteArray(ma->getLength(), os);
             switch (type.getType())
             {
@@ -2858,7 +2858,7 @@ QPair<QString, int> MSAEditorSequenceArea::getGappedColumnInfo() const{
     const MultipleSequenceAlignmentRow row = editor->getMSAObject()->getMsaRow(getSelectedRows().startPos);
     int len = row->getUngappedLength();
     QChar current = row->charAt(selection.topLeft().x());
-    if(current == MultipleSequenceAlignment::GapChar){
+    if(current == U2Msa::GAP_CHAR){
         return QPair<QString, int>(QString("gap"),len);
     }else{
         int pos = row->getUngappedPosition(selection.topLeft().x());
@@ -2933,8 +2933,8 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
     U2OpStatusImpl os;
     const int refSeq = editor->getMSAObject()->getMsa()->getRowIndexByRowId(editor->getReferenceRowId(), os);
     MultipleSequenceAlignmentRow row;
-    if (MultipleAlignmentRowData::INVALID_ROW_ID != refSeq) {
-        row = msa->getMsaRow(refSeq);
+    if (U2MsaRow::INVALID_ROW_ID != refSeq) {
+        row = msa->getRow(refSeq);
     }
 
     QString header;

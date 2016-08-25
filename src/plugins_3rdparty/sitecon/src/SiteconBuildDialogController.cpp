@@ -182,7 +182,7 @@ void SiteconBuildDialogController::reject() {
 // task
 
 SiteconBuildTask::SiteconBuildTask(const SiteconBuildSettings& s, const MultipleSequenceAlignment& ma, const QString& origin) 
-: Task (tr("Build SITECON model"), TaskFlag_None), settings(s), ma(ma->getExplicitCopy())
+: Task (tr("Build SITECON model"), TaskFlag_None), settings(s), ma(ma->getCopy())
 {
     GCOUNTER( cvar, tvar, "SiteconBuildTask" );
     tpm = Task::Progress_Manual;

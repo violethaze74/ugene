@@ -125,7 +125,7 @@ char U2AlphabetUtils::getDefaultSymbol(const U2AlphabetId& alphaId) {
 void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma) {
     const DNAAlphabet* resAl = NULL;
     for (int i = 0, n = ma->getNumRows();i<n; i++) {
-        const MultipleSequenceAlignmentRow item = ma->getMsaRow(i);
+        const MultipleSequenceAlignmentRow item = ma->getRow(i);
         const QByteArray& itemSeq = item->getCore();
         const DNAAlphabet* itemAl = findBestAlphabet(itemSeq);
         if (resAl == NULL) {
@@ -146,9 +146,9 @@ void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma) {
 void U2AlphabetUtils::assignAlphabet(MultipleSequenceAlignment& ma, char ignore) {
     const DNAAlphabet* resAl = NULL;
     for (int i = 0, n = ma->getNumRows();i<n; i++) {
-        const MultipleSequenceAlignmentRow item = ma->getMsaRow(i);
+        const MultipleSequenceAlignmentRow item = ma->getRow(i);
         QByteArray itemSeq = item->getCore();
-        itemSeq.replace(ignore, MultipleSequenceAlignment::GapChar);
+        itemSeq.replace(ignore, U2Msa::GAP_CHAR);
         const DNAAlphabet* itemAl = findBestAlphabet(itemSeq);
         if (resAl == NULL) {
             resAl = itemAl;

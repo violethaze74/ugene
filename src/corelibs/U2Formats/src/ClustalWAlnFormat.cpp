@@ -229,7 +229,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
     maxNameLength = qMin(maxNameLength, MAX_NAME_LEN);
 
     int aliLen = msa->getLength();
-    QByteArray consensus(aliLen, MultipleSequenceAlignment::GapChar);
+    QByteArray consensus(aliLen, U2Msa::GAP_CHAR);
 
     MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
     QScopedPointer<MSAConsensusAlgorithm> algo(algoFactory->createAlgorithm(msa));

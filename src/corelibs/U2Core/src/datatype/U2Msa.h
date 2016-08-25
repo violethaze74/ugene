@@ -66,7 +66,7 @@ public:
     qint64          rowId;
 
     /** Id of the sequence of the row in the database */
-    U2DataId        dataObjectId;
+    U2DataId        sequenceId;
 
     /** Start of the row in the sequence */
     qint64          gstart;
@@ -79,6 +79,8 @@ public:
 
     /** Length of the sequence characters and gaps of the row (without trailing) */
     qint64          length;
+
+    static const qint64 INVALID_ROW_ID;
 };
 
 /**
@@ -96,6 +98,8 @@ public:
 
     /** Length of the alignment */
     qint64          length;
+
+    static const char GAP_CHAR;
 };
 
 }   // namespace U2

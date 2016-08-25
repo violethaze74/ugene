@@ -50,7 +50,7 @@ MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *pare
 
 QColor MsaColorSchemePercentageIdentity::getColor(int /*seq*/, int pos, char c) const {
     updateCache();
-    if (c == MultipleSequenceAlignment::GapChar) {
+    if (c == U2Msa::GAP_CHAR) {
         return QColor();
     }
     quint32 packedVal = indentCache[pos];

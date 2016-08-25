@@ -408,7 +408,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
     for(int pathPos = 0; pathPos < pathLen; pathPos++) {
         char c = path[pathPos];
         if (c == 'D') { //gap in seq
-            alignedSeq.append((char)MultipleSequenceAlignment::GapChar);
+            alignedSeq.append((char)U2Msa::GAP_CHAR);
             continue;
         }
         //for 'M' or 'I' insert original char to seq
@@ -429,7 +429,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
         int newLen = prevLen + numIns;
         QByteArray msaPathChangesNew;
         for (int i = 0, n = ma->getNumRows(); i < n; i++) {
-            const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
+            const MultipleSequenceAlignmentRow row = ma->getRow(i);
             QByteArray newSeq;
             newSeq.reserve(newLen);
             int insCoordsPos = insCoords[0];
@@ -441,7 +441,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
                         insCoordsIdx++;
                         prevInsCoordsPos = insCoordsPos;
                         insCoordsPos = insCoordsIdx < numIns ? insCoords[insCoordsIdx] : -1;
-                        newSeq.append((char)MultipleSequenceAlignment::GapChar);
+                        newSeq.append((char)U2Msa::GAP_CHAR);
                         if (i == 0) {
                             msaPathChangesNew.append('I');
                         }
@@ -454,7 +454,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
             }
             while (insCoordsIdx!=numIns) {
                 insCoordsIdx++;
-                newSeq.append((char)MultipleSequenceAlignment::GapChar);
+                newSeq.append((char)U2Msa::GAP_CHAR);
                 if (i == 0) {
                     msaPathChangesNew.append('I');
                 }
@@ -523,7 +523,7 @@ void MuscleAdapter::addUnalignedSequencesToProfileUnsafe(const MultipleSequenceA
     for (int i=0, n = unalignedSeqs->getNumRows(); i < n; i++) {
         ti.setDescription(tr("Aligning sequence %1 of %2").arg(QString::number(i+1)).arg(QString::number(n)));
         ti.progress = dp + i*(95-dp)/n;
-        const MultipleSequenceAlignmentRow useq = unalignedSeqs->getMsaRow(i);
+        const MultipleSequenceAlignmentRow useq = unalignedSeqs->getRow(i);
         Seq seq;
         seq.FromString(useq->getCore().constData(), useq->getName().toLocal8Bit().constData());
         seq.SetId(0);

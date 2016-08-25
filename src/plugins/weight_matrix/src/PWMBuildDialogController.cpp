@@ -329,14 +329,14 @@ void PWMBuildDialogController::reject() {
 // tasks
 
 PFMatrixBuildTask::PFMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma)
-: Task (tr("Build Frequency Matrix"), TaskFlag_None), settings(s), ma(ma->getExplicitCopy())
+: Task (tr("Build Frequency Matrix"), TaskFlag_None), settings(s), ma(ma->getCopy())
 {
     GCOUNTER( cvar, tvar, "PFMatrixBuildTask" );
     tpm = Task::Progress_Manual;
 }
 
 void PFMatrixBuildTask::run() {
-    if (!ma->hasEqualDataLength()) {
+    if (!ma->hasEqualLength()) {
         stateInfo.setError(  tr("Sequences in alignment have various lengths") );
         return;
     }
@@ -450,7 +450,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
 }
 
 PWMatrixBuildTask::PWMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma)
-: Task (tr("Build Weight Matrix"), TaskFlag_None), settings(s), ma(ma->getExplicitCopy())
+: Task (tr("Build Weight Matrix"), TaskFlag_None), settings(s), ma(ma->getCopy())
 {
     GCOUNTER( cvar, tvar, "PWMatrixBuildTask" );
     tpm = Task::Progress_Manual;
@@ -477,7 +477,7 @@ void PWMatrixBuildTask::run() {
             return;
         }
     } else {
-        if (!ma->hasEqualDataLength()) {
+        if (!ma->hasEqualLength()) {
             stateInfo.setError(  tr("Sequences in alignment have various lengths") );
             return;
         }

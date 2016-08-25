@@ -123,7 +123,7 @@ MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorit
 
     int* freqsData = globalFreqs.data();
     int len = ma->getLength();
-    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
+    foreach (const MultipleSequenceAlignmentRow& row, ma->getRows()) {
         for (int i = 0; i < len; i++) {
             char c = row->charAt(i);
             registerHit(freqsData, c);
@@ -145,7 +145,7 @@ char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleSequenceAlign
     }
 
     //find all symbols with freq > threshold, select one with the lowest global freq
-    char selectedChar = MultipleSequenceAlignment::GapChar;
+    char selectedChar = U2Msa::GAP_CHAR;
     int selectedGlobalFreq = nSeq * msa->getLength();
     int thresholdScore = getThreshold();
     int minFreq = int(float(nSeq) * thresholdScore / 100);

@@ -152,7 +152,7 @@ void SQLiteMsaDbi::createMsaRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow
 
     q.bindDataId(1, msaId);
     q.bindInt64(2, msaRow.rowId);
-    q.bindDataId(3, msaRow.dataObjectId);
+    q.bindDataId(3, msaRow.sequenceId);
     q.bindInt64(4, posInMsa);
     q.bindInt64(5, msaRow.gstart);
     q.bindInt64(6, msaRow.gend);
@@ -183,7 +183,7 @@ void SQLiteMsaDbi::addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2Ms
         CHECK_OP(os, );
     }
 
-    dbi->getSQLiteObjectDbi()->setParent(msaId, row.dataObjectId, os);
+    dbi->getSQLiteObjectDbi()->setParent(msaId, row.sequenceId, os);
 }
 
 void SQLiteMsaDbi::addRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os) {
@@ -207,7 +207,7 @@ void SQLiteMsaDbi::addRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row,
 
     // Update track mod type for child sequence object
     if (TrackOnUpdate == trackMod) {
-        dbi->getObjectDbi()->setTrackModType(row.dataObjectId, TrackOnUpdate, os);
+        dbi->getObjectDbi()->setTrackModType(row.sequenceId, TrackOnUpdate, os);
         CHECK_OP(os, );
     }
 
@@ -261,7 +261,7 @@ void SQLiteMsaDbi::addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpSta
     // Update track mod type for child sequence object
     if (TrackOnUpdate == trackMod) {
         foreach (const U2MsaRow& row, rows) {
-            dbi->getObjectDbi()->setTrackModType(row.dataObjectId, TrackOnUpdate, os);
+            dbi->getObjectDbi()->setTrackModType(row.sequenceId, TrackOnUpdate, os);
             CHECK_OP(os, );
         }
     }
@@ -310,7 +310,7 @@ void SQLiteMsaDbi::updateRowContent(const U2DataId& msaId, qint64 rowId, const Q
     // Update the sequence data
     QVariantMap hints;
     dbi->getSQLiteSequenceDbi()->updateSequenceData(updateAction,
-        row.dataObjectId, U2_REGION_MAX, seqBytes, hints, os);
+        row.sequenceId, U2_REGION_MAX, seqBytes, hints, os);
     SAFE_POINT_OP(os, );
 
     // Update the row object
@@ -582,7 +582,7 @@ QList<U2MsaRow> SQLiteMsaDbi::getRows(const U2DataId& msaId, U2OpStatus& os) {
     while (q.step()) {
         U2MsaRow row;
         row.rowId = q.getInt64(0);
-        row.dataObjectId = q.getDataId(1, U2Type::Sequence);
+        row.sequenceId = q.getDataId(1, U2Type::Sequence);
         row.gstart = q.getInt64(2);
         row.gend = q.getInt64(3);
         row.length = q.getInt64(4);
@@ -613,7 +613,7 @@ U2MsaRow SQLiteMsaDbi::getRow(const U2DataId& msaId, qint64 rowId, U2OpStatus& o
     q.bindInt64(2, rowId);
     if (q.step()) {
         res.rowId = rowId;
-        res.dataObjectId = q.getDataId(0, U2Type::Sequence);
+        res.sequenceId = q.getDataId(0, U2Type::Sequence);
         res.gstart = q.getInt64(1);
         res.gend = q.getInt64(2);
         res.length = q.getInt64(3);
@@ -821,7 +821,7 @@ QByteArray SQLiteMsaDbi::getRemovedRowDetails(const U2MsaRow& row) {
     }
 
     res = QByteArray("rowId=") + QByteArray::number(row.rowId) +
-        QByteArray("&sequenceId=") + row.dataObjectId.toHex() +
+        QByteArray("&sequenceId=") + row.sequenceId.toHex() +
         QByteArray("&gstart=") + QByteArray::number(row.gstart) +
         QByteArray("&gend=") + QByteArray::number(row.gend) +
         QByteArray("&gaps=\"") + gapsInfo + QByteArray("\"") +
@@ -1059,7 +1059,7 @@ void SQLiteMsaDbi::updateRowInfoCore(const U2DataId& msaId, const U2MsaRow& row,
     SQLiteQuery q("UPDATE MsaRow SET sequence = ?1, gstart = ?2, gend = ?3 WHERE msa = ?4 AND rowId = ?5", db, os);
     SAFE_POINT_OP(os, );
 
-    q.bindDataId(1, row.dataObjectId);
+    q.bindDataId(1, row.sequenceId);
     q.bindInt64(2, row.gstart);
     q.bindInt64(3, row.gend);
     q.bindDataId(4, msaId);
@@ -1268,7 +1268,7 @@ void SQLiteMsaDbi::undoUpdateRowInfo(const U2DataId& msaId, const QByteArray& mo
         return;
     }
     SAFE_POINT(oldRow.rowId == newRow.rowId, "Incorrect rowId!", );
-    SAFE_POINT(oldRow.dataObjectId == newRow.dataObjectId, "Incorrect sequenceId!", );
+    SAFE_POINT(oldRow.sequenceId == newRow.sequenceId, "Incorrect sequenceId!", );
 
     updateRowInfoCore(msaId, oldRow, os);
 }
@@ -1282,7 +1282,7 @@ void SQLiteMsaDbi::redoUpdateRowInfo(const U2DataId& msaId, const QByteArray& mo
         return;
     }
     SAFE_POINT(oldRow.rowId == newRow.rowId, "Incorrect rowId!", );
-    SAFE_POINT(oldRow.dataObjectId == newRow.dataObjectId, "Incorrect sequenceId!", );
+    SAFE_POINT(oldRow.sequenceId == newRow.sequenceId, "Incorrect sequenceId!", );
 
     updateRowInfoCore(msaId, newRow, os);
 }

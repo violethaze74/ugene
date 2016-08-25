@@ -74,7 +74,7 @@ void MuscleTaskSettings::reset() {
 MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSettings& _config)
     : Task(tr("MUSCLE alignment"), TaskFlags_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
       config(_config),
-      inputMA(ma->getExplicitCopy())
+      inputMA(ma->getCopy())
 {
     GCOUNTER( cvar, tvar, "MuscleTask" );
     config.nThreads = (config.nThreads == 0 ? AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount() : config.nThreads);
@@ -100,7 +100,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSett
     resultMA->setName(inputAlName);
     resultSubMA->setName(inputAlName);
 
-    inputSubMA = inputMA->getExplicitCopy();
+    inputSubMA = inputMA->getCopy();
     if (config.alignRegion && config.regionToAlign.length != inputMA->getLength()) {
         SAFE_POINT_EXT(config.regionToAlign.length > 0,
             setError(tr("Incorrect region to align")), );
@@ -185,7 +185,7 @@ void MuscleTask::doAlign(bool refine) {
             }
         }
         int j = resNSeq;
-        QByteArray gapSeq(resultSubMA->getLength(),MultipleSequenceAlignment::GapChar);
+        QByteArray gapSeq(resultSubMA->getLength(),U2Msa::GAP_CHAR);
         for(int i=0, n = nSeq; i < n; i++) {
             if(!existID[i]) {
                 QString rowName = inputMA->getRow(i)->getName();
@@ -211,7 +211,7 @@ void MuscleTask::doAlign(bool refine) {
             if (config.regionToAlign.startPos != 0) {
                 for(int i=0; i < nSeq; i++)  {
                     int regionLen = config.regionToAlign.startPos;
-                    const MultipleSequenceAlignmentRow inputRow = inputMA->getMsaRow(ids[i])->mid(0, regionLen, os);
+                    const MultipleSequenceAlignmentRow inputRow = inputMA->getRow(ids[i])->mid(0, regionLen, os);
                     resultMA->appendChars(i, 0, inputRow->toByteArray(regionLen, os).constData(), regionLen);
                 }
             }
@@ -221,7 +221,7 @@ void MuscleTask::doAlign(bool refine) {
                 int subStart = config.regionToAlign.endPos();
                 int subLen = inputMA->getLength() - config.regionToAlign.endPos();
                 for(int i = 0; i < nSeq; i++) {
-                    const MultipleSequenceAlignmentRow inputRow = inputMA->getMsaRow(ids[i])->mid(subStart, subLen, os);
+                    const MultipleSequenceAlignmentRow inputRow = inputMA->getRow(ids[i])->mid(subStart, subLen, os);
                     resultMA->appendChars(i, resultLen, inputRow->toByteArray(subLen, os).constData(), subLen);
                 }
             }

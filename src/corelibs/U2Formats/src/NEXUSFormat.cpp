@@ -418,7 +418,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
 
                 // Replace gaps
                 if (ctx.contains("gap")) {
-                    value.replace(ctx["gap"], QChar(MultipleSequenceAlignment::GapChar));
+                    value.replace(ctx["gap"], QChar(U2Msa::GAP_CHAR));
                 }
 
                 U2OpStatus2Log os;
@@ -754,7 +754,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
         dataType = "standard";
     }
 
-    QTextStream(&line) << tabs << "format datatype="<<dataType<<" gap=" << MultipleSequenceAlignment::GapChar << ";\n";
+    QTextStream(&line) << tabs << "format datatype="<<dataType<<" gap=" << U2Msa::GAP_CHAR << ";\n";
     io->writeBlock(line);
     line.clear();
 
@@ -764,7 +764,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
 
     tabs.append(tab);
 
-    const QList<MultipleSequenceAlignmentRow> rows = ma->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> rows = ma->getRows();
 
     int nameMaxLen = 0;
     foreach (MultipleSequenceAlignmentRow row, rows) {

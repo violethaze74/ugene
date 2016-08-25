@@ -119,7 +119,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, addRows) {
 
     // Add rows
     U2MsaRow row1;
-    row1.dataObjectId = seq1.id;
+    row1.sequenceId = seq1.id;
     row1.gstart = 0;
     row1.gend = 5;
 
@@ -131,7 +131,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, addRows) {
     row1.gaps = row1gaps;
 
     U2MsaRow row2;
-    row2.dataObjectId = seq2.id;
+    row2.sequenceId = seq2.id;
     row2.gstart = 2;
     row2.gend = 4;
 
@@ -152,7 +152,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, addRows) {
 
     const U2MsaRow& actualRow1 = actualRows[0];
     CHECK_EQUAL(rows.at(0).rowId, actualRow1.rowId, "first row id");
-    CHECK_EQUAL(seq1.id, actualRow1.dataObjectId, "first row sequence id");
+    CHECK_EQUAL(seq1.id, actualRow1.sequenceId, "first row sequence id");
     CHECK_EQUAL(0, actualRow1.gstart, "first row global start");
     CHECK_EQUAL(5, actualRow1.gend, "first row global end");
     CHECK_EQUAL(2, actualRow1.gaps.count(), "first row gaps count");
@@ -165,7 +165,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, addRows) {
 
     const U2MsaRow& actualRow2 = actualRows[1];
     CHECK_EQUAL(rows.at(1).rowId, actualRow2.rowId, "second row id");
-    CHECK_EQUAL(seq2.id, actualRow2.dataObjectId, "second row sequence id");
+    CHECK_EQUAL(seq2.id, actualRow2.sequenceId, "second row sequence id");
     CHECK_EQUAL(2, actualRow2.gstart, "second row global start");
     CHECK_EQUAL(4, actualRow2.gend, "second row global end");
     CHECK_EQUAL(0, actualRow2.gaps.count(), "second row gaps");
@@ -194,7 +194,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     // Add rows
     U2MsaRow row1;
     row1.rowId = 0;
-    row1.dataObjectId = seq1.id;
+    row1.sequenceId = seq1.id;
     row1.gstart = 0;
     row1.gend = 5;
 
@@ -206,7 +206,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     row1.gaps = row1gaps;
 
     U2MsaRow row2;
-    row2.dataObjectId = seq2.id;
+    row2.sequenceId = seq2.id;
     row2.gstart = 2;
     row2.gend = 4;
 
@@ -217,7 +217,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
     row2.gaps = row2gaps;
 
     U2MsaRow row3;
-    row3.dataObjectId = seq3.id;
+    row3.sequenceId = seq3.id;
     row3.gstart = 0;
     row3.gend = 10;
 
@@ -246,7 +246,7 @@ IMPLEMENT_TEST(MsaDbiUnitTests, removeRows) {
 
     const U2MsaRow& actualRow = actualRows[0];
     CHECK_EQUAL(rows.at(1).rowId, actualRow.rowId, "row id");
-    CHECK_EQUAL(seq2.id, actualRow.dataObjectId, "row sequence id");
+    CHECK_EQUAL(seq2.id, actualRow.sequenceId, "row sequence id");
     CHECK_EQUAL(2, actualRow.gstart, "row global start");
     CHECK_EQUAL(4, actualRow.gend, "row global end");
     CHECK_EQUAL(1, actualRow.gaps.count(), "row gaps");

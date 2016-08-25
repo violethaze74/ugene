@@ -95,7 +95,7 @@ HmmerBuildDialog::HmmerBuildDialog(const MultipleSequenceAlignment &ma, QWidget 
       saveController(NULL)
 {
     initialize();
-    model.alignment = ma->getExplicitCopy();
+    model.alignment = ma->getCopy();
     model.alignmentUsing = !model.alignment->isEmpty();
     
     if (model.alignmentUsing) {

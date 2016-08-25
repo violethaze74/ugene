@@ -24,9 +24,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/DNATranslationImpl.h \
            src/datatype/FeatureColors.h \
            src/datatype/Matrix44.h \
-           src/datatype/msa/MultipleAlignment.h \
-           src/datatype/msa/MultipleAlignmentInfo.h \
-           src/datatype/msa/MultipleAlignmentRow.h \
            src/datatype/msa/MultipleChromatogramAlignment.h \
            src/datatype/msa/MultipleChromatogramAlignmentRow.h \
            src/datatype/msa/MultipleSequenceAlignment.h \
@@ -247,9 +244,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/U2SequenceUtils.h \
            src/util/U2VariationUtils.h \
            src/util/VariationPropertiesUtils.h \
-    src/datatype/msa/MultipleSequenceAlignmentData.h \
-    src/datatype/msa/MultipleSequenceAlignmentRowData.h \
-    src/datatype/U2Msa.h
+    src/datatype/U2Msa.h \
+    src/datatype/msa/MultipleSequenceAlignmentInfo.h
 
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
@@ -273,9 +269,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/DNATranslationImpl.cpp \
            src/datatype/FeatureColors.cpp \
            src/datatype/Matrix44.cpp \
-           src/datatype/msa/MultipleAlignment.cpp \
-           src/datatype/msa/MultipleAlignmentInfo.cpp \
-           src/datatype/msa/MultipleAlignmentRow.cpp \
            src/datatype/msa/MultipleChromatogramAlignmentRow.cpp \
            src/datatype/msa/MultipleChromatogramAlignment.cpp \
            src/datatype/msa/MultipleSequenceAlignment.cpp \
@@ -456,9 +449,8 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/U2ObjectTypeUtils.cpp \
            src/util/U2SequenceUtils.cpp \
            src/util/U2VariationUtils.cpp \
-    src/datatype/msa/MultipleSequenceAlignmentData.cpp \
-    src/datatype/msa/MultipleSequenceAlignmentRowData.cpp \
-    src/datatype/U2Msa.cpp
+    src/datatype/U2Msa.cpp \
+    src/datatype/msa/MultipleSequenceAlignmentInfo.cpp
 
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

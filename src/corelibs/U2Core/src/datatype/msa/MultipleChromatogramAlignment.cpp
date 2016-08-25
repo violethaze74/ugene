@@ -137,7 +137,7 @@
 
 //void MultipleChromatogramAlignmentData::addRow(const QString &name, const DNASequence &sequence, const U2MaRowGapModel &gaps, U2OpStatus &os) {
 //    U2MaRow row;
-//    row.rowId = MultipleAlignmentRowData::INVALID_ROW_ID;
+//    row.rowId = U2MsaRow::INVALID_ROW_ID;
 
 //    MultipleChromatogramAlignmentRow newRow = createSequenceRow(row, sequence, gaps, os);
 //    CHECK_OP(os, );
@@ -216,7 +216,7 @@
 
 //MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentData::createSequenceRow(const QString &name, const QByteArray &rawData) const {
 ////    U2MaRow row;
-////    row.rowId = MultipleAlignmentRowData::INVALID_ROW_ID;
+////    row.rowId = U2MsaRow::INVALID_ROW_ID;
 ////    return MultipleChromatogramAlignmentRow(new MultipleChromatogramAlignmentRowData(row, name, rawData, this));
 //    return MultipleChromatogramAlignmentRow();
 //}

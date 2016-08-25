@@ -19,21 +19,18 @@
  * MA 02110-1301, USA.
  */
 
-
-#include <QtCore/QStringList>
-
-#include "MultipleAlignmentInfo.h"
+#include "MultipleSequenceAlignmentInfo.h"
 
 namespace U2 {
 
-const QString MultipleAlignmentInfo::NAME                  = "NAME";
-const QString MultipleAlignmentInfo::ACCESSION             = "ACCESSION";
-const QString MultipleAlignmentInfo::DESCRIPTION           = "DESCRIPTION";
-const QString MultipleAlignmentInfo::SS_CONSENSUS          = "SS_CONSENSUS";
-const QString MultipleAlignmentInfo::REFERENCE_LINE        = "REFERENCE_LINE";
-const QString MultipleAlignmentInfo::CUTOFFS               = "CUTOFFS";
+const QString MultipleSequenceAlignmentInfo::NAME                  = "NAME";
+const QString MultipleSequenceAlignmentInfo::ACCESSION             = "ACCESSION";
+const QString MultipleSequenceAlignmentInfo::DESCRIPTION           = "DESCRIPTION";
+const QString MultipleSequenceAlignmentInfo::SS_CONSENSUS          = "SS_CONSENSUS";
+const QString MultipleSequenceAlignmentInfo::REFERENCE_LINE        = "REFERENCE_LINE";
+const QString MultipleSequenceAlignmentInfo::CUTOFFS               = "CUTOFFS";
 
-bool MultipleAlignmentInfo::isValid( const QVariantMap& map ) {
+bool MultipleSequenceAlignmentInfo::isValid( const QVariantMap& map ) {
     return hasName( map );
 }
 
@@ -48,78 +45,78 @@ static void setValue( QVariantMap& map, const QString& tag, const QVariant& val 
     }
 }
 
-QString MultipleAlignmentInfo::getName( const QVariantMap& map ) {
+QString MultipleSequenceAlignmentInfo::getName( const QVariantMap& map ) {
     return getValue( NAME, map ).toString();
 }
 
-void MultipleAlignmentInfo::setName( QVariantMap& map, const QString& name ) {
+void MultipleSequenceAlignmentInfo::setName( QVariantMap& map, const QString& name ) {
     setValue( map, NAME, name );
 }
 
-bool MultipleAlignmentInfo::hasName( const QVariantMap& map ) {
+bool MultipleSequenceAlignmentInfo::hasName( const QVariantMap& map ) {
     return !getName( map ).isEmpty();
 }
 
-QString MultipleAlignmentInfo::getAccession( const QVariantMap& map ) {
+QString MultipleSequenceAlignmentInfo::getAccession( const QVariantMap& map ) {
     return getValue( ACCESSION, map ).toString();
 }
 
-void MultipleAlignmentInfo::setAccession( QVariantMap& map, const QString& acc ) {
+void MultipleSequenceAlignmentInfo::setAccession( QVariantMap& map, const QString& acc ) {
     setValue( map, ACCESSION, acc );
 }
 
-bool MultipleAlignmentInfo::hasAccession( const QVariantMap& map ) {
+bool MultipleSequenceAlignmentInfo::hasAccession( const QVariantMap& map ) {
     return !getAccession( map ).isEmpty();
 }
 
-QString MultipleAlignmentInfo::getDescription( const QVariantMap& map ) {
+QString MultipleSequenceAlignmentInfo::getDescription( const QVariantMap& map ) {
     return getValue( DESCRIPTION, map ).toString();
 }
 
-void MultipleAlignmentInfo::setDescription( QVariantMap& map, const QString& desc ) {
+void MultipleSequenceAlignmentInfo::setDescription( QVariantMap& map, const QString& desc ) {
     setValue( map, DESCRIPTION, desc );
 }
 
-bool MultipleAlignmentInfo::hasDescription( const QVariantMap& map ) {
+bool MultipleSequenceAlignmentInfo::hasDescription( const QVariantMap& map ) {
     return !getDescription( map ).isEmpty();
 }
 
-QString MultipleAlignmentInfo::getSSConsensus( const QVariantMap& map ) {
+QString MultipleSequenceAlignmentInfo::getSSConsensus( const QVariantMap& map ) {
     return getValue( SS_CONSENSUS, map ).toString();
 }
 
-void MultipleAlignmentInfo::setSSConsensus( QVariantMap& map, const QString& cs ) {
+void MultipleSequenceAlignmentInfo::setSSConsensus( QVariantMap& map, const QString& cs ) {
     setValue( map, SS_CONSENSUS, cs );
 }
 
-bool MultipleAlignmentInfo::hasSSConsensus( const QVariantMap& map ) {
+bool MultipleSequenceAlignmentInfo::hasSSConsensus( const QVariantMap& map ) {
     return !getSSConsensus( map ).isEmpty();
 }
 
-QString MultipleAlignmentInfo::getReferenceLine( const QVariantMap& map ) {
+QString MultipleSequenceAlignmentInfo::getReferenceLine( const QVariantMap& map ) {
     return getValue( REFERENCE_LINE, map ).toString();
 }
 
-void MultipleAlignmentInfo::setReferenceLine( QVariantMap& map ,const QString& rf ) {
+void MultipleSequenceAlignmentInfo::setReferenceLine( QVariantMap& map ,const QString& rf ) {
     setValue( map, REFERENCE_LINE, rf );
 }
 
-bool MultipleAlignmentInfo::hasReferenceLine( const QVariantMap& map ) {
+bool MultipleSequenceAlignmentInfo::hasReferenceLine( const QVariantMap& map ) {
     return !getReferenceLine( map ).isEmpty();
 }
 
-void MultipleAlignmentInfo::setCutoff( QVariantMap& map, Cutoffs coff, float val ) {
+void MultipleSequenceAlignmentInfo::setCutoff( QVariantMap& map, Cutoffs coff, float val ) {
     setValue( map, CUTOFFS + QString::number( static_cast< int >( coff ) ), val );
 }
 
-float MultipleAlignmentInfo::getCutoff( const QVariantMap& map, Cutoffs coff ) {
+float MultipleSequenceAlignmentInfo::getCutoff( const QVariantMap& map, Cutoffs coff ) {
     return static_cast< float >( getValue( CUTOFFS + QString::number( static_cast< int >( coff ) ), map ).toDouble() );
 }
 
-bool MultipleAlignmentInfo::hasCutoff( const QVariantMap& map, Cutoffs coff ) {
+bool MultipleSequenceAlignmentInfo::hasCutoff( const QVariantMap& map, Cutoffs coff ) {
     bool ok = false;
     getValue( CUTOFFS + QString::number( static_cast< int >( coff ) ), map ).toDouble( &ok );
     return ok;
 }
 
-} // U2
+}   // namespace U2
