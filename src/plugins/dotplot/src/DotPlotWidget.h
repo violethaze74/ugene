@@ -235,7 +235,6 @@ private:
     QString getRoundedText(QPainter& p, int num, int size) const;
     bool getLineToDraw(const DotPlotResults &r, QLine *line, float ratioX, float ratioY, bool invert = false) const;
 
-    void addCloseDotPlotTask();
     void cancelRepeatFinderTask();
 };
 

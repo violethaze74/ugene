@@ -476,7 +476,7 @@ void DotPlotWidget::sl_sequenceWidgetRemoved(ADVSequenceWidget* w) {
         if (dotPlotTask) {
             cancelRepeatFinderTask();
         } else {
-            addCloseDotPlotTask();
+            emit si_removeDotPlot();
         }
     }
 }
@@ -817,22 +817,7 @@ void DotPlotWidget::sl_showDeleteDialog() {
             break;
     }
 
-    if (!deleteDotPlotFlag) {
-        addCloseDotPlotTask();
-    }
-}
-
-void DotPlotWidget::addCloseDotPlotTask() {
-
-    deleteDotPlotFlag = true;
-
-    Task *t = new Task("Closing dotplot", TaskFlags_NR_FOSCOE);
-    if (!dotPlotTask) {
-        dotPlotTask = t;
-    }
-
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
-    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskStateChanged()));
+    emit si_removeDotPlot();
 }
 
 // dotplot results updated, need to update picture
