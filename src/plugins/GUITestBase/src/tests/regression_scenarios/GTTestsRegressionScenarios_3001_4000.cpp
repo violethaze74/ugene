@@ -1808,7 +1808,7 @@ GUI_TEST_CLASS_DEFINITION(test_3270) {
 
 //    Expected state: there are no warnings.
     warning = GTUtilsOptionPanelSequenceView::getHintText(os);
-    CHECK_SET_ERR(warning.isEmpty(), QString("An unexpected warning: '%1'").arg(warning));
+    CHECK_SET_ERR(!warning.contains("Warning"), QString("An unexpected warning: '%1'").arg(warning));
 
 //    6. Click "Create annotations" button.
     GTUtilsTaskTreeView::waitTaskFinished(os);
