@@ -20,6 +20,7 @@
  */
 
 #include <QMessageBox>
+#include <QPushButton>
 
 #include <U2Algorithm/StructuralAlignmentAlgorithm.h>
 #include <U2Algorithm/StructuralAlignmentAlgorithmFactory.h>
