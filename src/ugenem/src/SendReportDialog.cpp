@@ -208,7 +208,6 @@ bool ReportSender::send(const QString &additionalInfo, const QString &dumpUrl) {
 
     reply = netManager->post(request, multiPart);
     multiPart->setParent(reply);
-    connect(reply, SIGNAL(finished()), SLOT(sl_rreplyFinished()));
 
     loop.exec();
     if (reply->error() != QNetworkReply::NoError) {
