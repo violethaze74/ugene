@@ -1219,7 +1219,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_empty) {
     MsaRowTestUtils::initEmptyRow(almnt);
     U2OpStatusImpl os;
     almnt->crop(0, 1, os);
-    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleAlignmentData::crop"),
+    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     MultipleSequenceAlignmentRow row = almnt->getRow(0);
     CHECK_EQUAL("", MsaRowTestUtils::getRowData(row), "row data");
@@ -1388,7 +1388,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_negativePosition) {
     U2OpStatusImpl os;
     almnt->crop(-1, 1, os);
     MultipleSequenceAlignmentRow row = almnt->getRow(0);
-    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleAlignmentData::crop"),
+    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     CHECK_EQUAL("A---ACG--GTT-A-C---G", MsaRowTestUtils::getRowData(row), "row data");
 }
@@ -1399,7 +1399,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_negativeNumOfChars) {
     U2OpStatusImpl os;
     almnt->crop(1, -1, os);
     MultipleSequenceAlignmentRow row = almnt->getRow(0);
-    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleAlignmentData::crop"),
+    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     CHECK_EQUAL("A---ACG--GTT-A-C---G", MsaRowTestUtils::getRowData(row), "row data");
 }
@@ -1453,7 +1453,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, crop_posMoreThanLength) {
     MsaRowTestUtils::initTestRowWithGaps(almnt);
     U2OpStatusImpl os;
     almnt->crop(13, 1, os);
-    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleAlignmentData::crop"),
+    CHECK_TRUE(os.getError().contains("Incorrect region was passed to MultipleSequenceAlignmentData::crop"),
                QString("opStatus is %1").arg(os.getError()));
     MultipleSequenceAlignmentRow row = almnt->getRow(0);
     CHECK_EQUAL(7, row->getRowLength(), "row length");
