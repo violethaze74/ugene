@@ -102,6 +102,9 @@ void PVRowsManager::addAnnotation(Annotation *a) {
             if (row->fitToRow(location) || isRestrictionSite) {
                 row->annotations.append(a);
                 rowByAnnotation[a] = row;
+                if (name != data->name) {
+                    rowByName[data->name].append(row);
+                }
                 return;
             }
         }
@@ -139,6 +142,7 @@ void PVRowsManager::removeAnnotation(Annotation *a) {
     PVRowData *row = rowByAnnotation.value(a, NULL);
     CHECK(NULL != row,); // annotation may present in a DB, but has not been added to the panview yet
     rowByAnnotation.remove(a);
+    rowByName.remove(a->getName());
     row->annotations.removeOne(a);
     substractRegions(row->ranges, a->getRegions());
     if (row->annotations.isEmpty()) {

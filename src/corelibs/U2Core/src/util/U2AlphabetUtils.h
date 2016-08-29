@@ -98,7 +98,7 @@ private:
 
 int  ExtendedDNAlphabetComparator::getMatchMask(char c) const {
     int i = c - ' ';
-    assert(i>=0 && i<DNA_AL_EX_INDEX_SIZE);
+    SAFE_POINT(i >= 0 && i<DNA_AL_EX_INDEX_SIZE, QObject::tr("Symbol is not belong to alphabet"), 0);
     return index[i];
 }
 

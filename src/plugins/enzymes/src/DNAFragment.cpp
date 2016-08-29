@@ -243,22 +243,13 @@ void DNAFragment::setRightOverhang(const QByteArray& overhang)
     setOverhang(qName, buf);
 }
 
-int DNAFragment::getLength(bool coreLength) const {
+int DNAFragment::getLength() const {
     assert(!isEmpty());
     QVector<U2Region> regions = getFragmentRegions();
     int len = 0;
     foreach(const U2Region& r, regions) {
         len += r.length;
     }
-    if (!coreLength) {
-        if (annotatedFragment->findFirstQualifierValue(QUALIFIER_RIGHT_STRAND) == OVERHANG_STRAND_DIRECT) {
-            len += annotatedFragment->findFirstQualifierValue(QUALIFIER_RIGHT_OVERHANG).length();
-        }
-        if (annotatedFragment->findFirstQualifierValue(QUALIFIER_LEFT_STRAND) == OVERHANG_STRAND_DIRECT) {
-            len += annotatedFragment->findFirstQualifierValue(QUALIFIER_LEFT_OVERHANG).length();
-        }
-    }
-
     return len;
 }
 

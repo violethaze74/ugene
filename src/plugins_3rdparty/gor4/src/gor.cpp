@@ -213,7 +213,7 @@ void readFile(QFile& file, int nprot, char **obs, char **title, int *pnter)
             if (c == '@') {
                 break;
             }
-            if(c == '\n' || c == ' ' || c =='\t') continue;
+            if(c == '\n' || c == ' ' || c =='\t' || c == '\r') continue;
             nres++;
             if(nres > MAXRES) {
                 printf("The value of MAXRES should be increased: %d",MAXRES);
