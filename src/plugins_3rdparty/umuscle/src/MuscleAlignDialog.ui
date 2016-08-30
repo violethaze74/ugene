@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>523</width>
-    <height>494</height>
+    <height>554</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -25,7 +25,7 @@
      <item>
       <widget class="QGroupBox" name="inputGroupBox">
        <property name="title">
-        <string/>
+        <string>Input and output</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
