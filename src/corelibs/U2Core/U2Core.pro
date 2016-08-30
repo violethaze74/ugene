@@ -245,7 +245,9 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/U2VariationUtils.h \
            src/util/VariationPropertiesUtils.h \
     src/datatype/U2Msa.h \
-    src/datatype/msa/MultipleSequenceAlignmentInfo.h
+    src/datatype/msa/MultipleSequenceAlignmentInfo.h \
+    src/datatype/U2Mca.h \
+    src/util/DnaChromatogramUtils.h
 
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
@@ -450,7 +452,8 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/U2SequenceUtils.cpp \
            src/util/U2VariationUtils.cpp \
     src/datatype/U2Msa.cpp \
-    src/datatype/msa/MultipleSequenceAlignmentInfo.cpp
+    src/datatype/msa/MultipleSequenceAlignmentInfo.cpp \
+    src/util/DnaChromatogramUtils.cpp
 
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

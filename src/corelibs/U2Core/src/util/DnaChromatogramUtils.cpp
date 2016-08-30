@@ -19,38 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_CHROMATOGRAM_H_
-#define _U2_DNA_CHROMATOGRAM_H_
+#include <U2Core/DNAChromatogram.h>
 
-#include <QtCore/QVector>
-#include <U2Core/global.h>
+#include "DnaChromatogramUtils.h"
 
 namespace U2 {
 
-class U2CORE_EXPORT DNAChromatogram {
-public:
-    enum Trace {
-        Trace_A,
-        Trace_C,
-        Trace_G,
-        Trace_T,
-    };
+void DnaChromatogramUtils::append(DNAChromatogram &chromatogram, const DNAChromatogram &appendedChromatogram) {
+    chromatogram.traceLength += appendedChromatogram.traceLength;
+    chromatogram.seqLength += appendedChromatogram.seqLength;
+    chromatogram.baseCalls += appendedChromatogram.baseCalls;
+    chromatogram.A += appendedChromatogram.A;
+    chromatogram.C += appendedChromatogram.C;
+    chromatogram.G += appendedChromatogram.G;
+    chromatogram.T += appendedChromatogram.T;
+    chromatogram.prob_A += appendedChromatogram.prob_A;
+    chromatogram.prob_C += appendedChromatogram.prob_C;
+    chromatogram.prob_G += appendedChromatogram.prob_G;
+    chromatogram.hasQV &= appendedChromatogram.hasQV;
+}
 
-    DNAChromatogram() : traceLength(0), seqLength(0), hasQV(false) {}
-    int traceLength;
-    int seqLength;
-    QVector<ushort> baseCalls;
-    QVector<ushort> A;
-    QVector<ushort> C;
-    QVector<ushort> G;
-    QVector<ushort> T;
-    QVector<char> prob_A;
-    QVector<char> prob_C;
-    QVector<char> prob_G;
-    QVector<char> prob_T;
-    bool hasQV;
-};
-
-} //namespace
-
-#endif
+}   // namespace U2

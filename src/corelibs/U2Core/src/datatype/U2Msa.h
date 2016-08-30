@@ -61,6 +61,7 @@ public:
 class U2CORE_EXPORT U2MsaRow {
 public:
     U2MsaRow();
+    virtual ~U2MsaRow();
 
     /** Id of the row in the database */
     qint64          rowId;

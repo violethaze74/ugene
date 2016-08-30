@@ -19,38 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_CHROMATOGRAM_H_
-#define _U2_DNA_CHROMATOGRAM_H_
+#ifndef _U2_DNA_CHROMATOGRAM_UTILS_H_
+#define _U2_DNA_CHROMATOGRAM_UTILS_H_
 
-#include <QtCore/QVector>
 #include <U2Core/global.h>
 
 namespace U2 {
 
-class U2CORE_EXPORT DNAChromatogram {
-public:
-    enum Trace {
-        Trace_A,
-        Trace_C,
-        Trace_G,
-        Trace_T,
-    };
+class DNAChromatogram;
 
-    DNAChromatogram() : traceLength(0), seqLength(0), hasQV(false) {}
-    int traceLength;
-    int seqLength;
-    QVector<ushort> baseCalls;
-    QVector<ushort> A;
-    QVector<ushort> C;
-    QVector<ushort> G;
-    QVector<ushort> T;
-    QVector<char> prob_A;
-    QVector<char> prob_C;
-    QVector<char> prob_G;
-    QVector<char> prob_T;
-    bool hasQV;
+class U2CORE_EXPORT DnaChromatogramUtils {
+public:
+    static void append(DNAChromatogram &chromatogram, const DNAChromatogram &appendedChromatogram);
 };
 
-} //namespace
+}   // namespace U2
 
-#endif
+#endif // _U2_DNA_CHROMATOGRAM_UTILS_H_
