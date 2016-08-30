@@ -97,7 +97,7 @@ public:
     void setName(const QString& name);
 
     /** Returns the list of gaps for the row */
-    inline const QList<U2MsaGap> & getGapModel() const;
+    inline const U2MsaRowGapModel & getGapModel() const;
 
     /** Careful, the new gap model is not validated! */
     void setGapModel(const QList<U2MsaGap> &newGapModel);
@@ -109,7 +109,7 @@ public:
      * Sets a new sequence. Be careful, gap model validity is not verified.
      * The sequence must not contain gaps.
      */
-    void setSequence(const DNASequence &newSequence);
+    virtual void setSequence(const DNASequence &newSequence);
 
     /** Returns ID of the row in the database. */
     qint64 getRowId() const;
@@ -156,14 +156,14 @@ public:
     inline bool simplify();
 
     /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
-    void append(const MultipleSequenceAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os);
-    void append(const MultipleSequenceAlignmentRowData &anotherRow, int lengthBefore, U2OpStatus &os);
+    virtual void append(const MultipleSequenceAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os);
+    virtual void append(const MultipleSequenceAlignmentRowData &anotherRow, int lengthBefore, U2OpStatus &os);
 
     /**
      * Sets new sequence and gap model.
      * If the sequence is empty, the offset is ignored (if any).
      */
-    void setRowContent(const QByteArray &bytes, int offset, U2OpStatus &os);
+    virtual void setRowContent(const QByteArray &bytes, int offset, U2OpStatus &os);
 
     /**
      * Inserts 'count' gaps into the specified position, if possible.
@@ -177,13 +177,13 @@ public:
      * If position is bigger than the row length, does nothing.
      * Returns incorrect status if 'pos' or 'count' is negative.
      */
-    void removeChars(int pos, int count, U2OpStatus& os);
+    virtual void removeChars(int pos, int count, U2OpStatus& os);
 
     /**
      * Returns a character in row at the specified position.
      * If the specified position is outside the row bounds, returns a gap.
      */
-    char charAt(int pos) const;
+    virtual char charAt(int pos) const;
     bool isGap(int pos) const;
 
     /** Length of the sequence without gaps */
@@ -204,19 +204,19 @@ public:
      * Exactly compares the rows. Sequences and gap models must match.
      * However, the rows are considered equal if they differ by trailing gaps only.
      */
-    bool isRowContentEqual(const MultipleSequenceAlignmentRow &row) const;
-    bool isRowContentEqual(const MultipleSequenceAlignmentRowData &row) const;
+    virtual bool isRowContentEqual(const MultipleSequenceAlignmentRow &row) const;
+    virtual bool isRowContentEqual(const MultipleSequenceAlignmentRowData &rowData) const;
 
     /** Compares 2 rows. Rows are equal if their contents and names are equal. */
-    inline bool operator!=(const MultipleSequenceAlignmentRowData &row) const;
-    bool operator==(const MultipleSequenceAlignmentRowData &row) const;
+    virtual inline bool operator!=(const MultipleSequenceAlignmentRowData &rowData) const;
+    virtual bool operator==(const MultipleSequenceAlignmentRowData &rowData) const;
 
     /**
      * Crops the row -> keeps only specified region in the row.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    void crop(int pos, int count, U2OpStatus &os);
+    virtual void crop(int pos, int count, U2OpStatus &os);
 
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
@@ -226,14 +226,14 @@ public:
     MultipleSequenceAlignmentRow mid(int pos, int count, U2OpStatus &os) const;
 
     /** Converts the row sequence to upper case */
-    void toUpperCase();
+    virtual void toUpperCase();
 
     /**
      * Replaces all occurrences of 'origChar' by 'resultChar'.
      * The 'origChar' must be a non-gap character.
      * The 'resultChar' can be a gap, gaps model is recalculated in this case.
      */
-    void replaceChars(char origChar, char resultChar, U2OpStatus &os);
+    virtual void replaceChars(char origChar, char resultChar, U2OpStatus &os);
 
     MultipleSequenceAlignmentRow getCopy() const;
 
@@ -290,7 +290,7 @@ private:
     U2MsaRow initialRowInDb;
 };
 
-inline const QList<U2MsaGap> & MultipleSequenceAlignmentRowData::getGapModel() const {
+inline const U2MsaRowGapModel & MultipleSequenceAlignmentRowData::getGapModel() const {
     return gaps;
 }
 

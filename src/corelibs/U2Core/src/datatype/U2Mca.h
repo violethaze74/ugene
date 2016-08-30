@@ -19,38 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_CHROMATOGRAM_H_
-#define _U2_DNA_CHROMATOGRAM_H_
+#ifndef _U2_MCA_H_
+#define _U2_MCA_H_
 
-#include <QtCore/QVector>
-#include <U2Core/global.h>
+#include "U2Msa.h"
 
 namespace U2 {
 
-class U2CORE_EXPORT DNAChromatogram {
+/**
+    Row of multiple chromatogram alignment: gaps map and sequence id
+*/
+class U2CORE_EXPORT U2McaRow : public U2MsaRow {
 public:
-    enum Trace {
-        Trace_A,
-        Trace_C,
-        Trace_G,
-        Trace_T,
-    };
+    U2McaRow(const U2MsaRow &msaRow)
+        : U2MsaRow(msaRow)
+    {
 
-    DNAChromatogram() : traceLength(0), seqLength(0), hasQV(false) {}
-    int traceLength;
-    int seqLength;
-    QVector<ushort> baseCalls;
-    QVector<ushort> A;
-    QVector<ushort> C;
-    QVector<ushort> G;
-    QVector<ushort> T;
-    QVector<char> prob_A;
-    QVector<char> prob_C;
-    QVector<char> prob_G;
-    QVector<char> prob_T;
-    bool hasQV;
+    }
+
+    U2DataId predictedSequenceId;
+    U2DataId chromatogramId;
 };
 
-} //namespace
+}   // namespace U2
 
-#endif
+#endif // _U2_MCA_H_
