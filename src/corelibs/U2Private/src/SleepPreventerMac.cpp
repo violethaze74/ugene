@@ -30,7 +30,7 @@ class SleepPreventerMac::Private {
 public:
     IOReturn doCapture() {
         CFStringRef reasonForActivity = CFSTR("New UGENE task is started");
-        return IOPMAssertionCreateWithName(kIOPMAssertionTypeNoIdleSleep,
+        return IOPMAssertionCreateWithName(kIOPMAssertPreventUserIdleSystemSleep,
                              kIOPMAssertionLevelOn, reasonForActivity, &assertionID);
     }
 
@@ -60,6 +60,8 @@ void SleepPreventerMac::capture() {
         IOReturn res = d->doCapture();
         if (res == kIOReturnSuccess) {
             isActive = true;
+        } else {
+            coreLog.trace("Can't prevent Mac OS from sleeping");
         }
     }
 }
@@ -67,7 +69,10 @@ void SleepPreventerMac::capture() {
 void SleepPreventerMac::release() {
     refCount--;
     if (refCount == 0 && isActive) {
-        d->doRelease();
+        IOReturn res = d->doRelease();
+        if (res != kIOReturnSuccess) {
+            coreLog.trace("Can't allow Mac OS sleeping");
+        }
         isActive = false;
     }
 }
