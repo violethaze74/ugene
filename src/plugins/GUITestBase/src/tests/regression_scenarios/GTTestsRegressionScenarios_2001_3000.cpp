@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -1344,7 +1344,7 @@ GUI_TEST_CLASS_DEFINITION( test_2156 ){
 
 GUI_TEST_CLASS_DEFINITION( test_2157 )
 {
-//    1. Open file "https://ugene.unipro.ru/tracker/secure/attachment/12864/pdb1a07.ent.gz".
+//    1. Open file "https://ugene.net/tracker/secure/attachment/12864/pdb1a07.ent.gz".
     GTFileDialog::openFile(os, testDir + "_common_data/pdb/", "pdb1a07.ent.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -1016,7 +1016,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3886);
     REGISTER_TEST(GUITest_regression_scenarios::test_3895);
 
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3901, "https://ugene.unipro.ru/tracker/browse/UGENE-3955");
+    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3901, "https://ugene.net/tracker/browse/UGENE-3955");
     REGISTER_TEST(GUITest_regression_scenarios::test_3902);
     REGISTER_TEST(GUITest_regression_scenarios::test_3903);
     REGISTER_TEST(GUITest_regression_scenarios::test_3904);
@@ -2463,9 +2463,9 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002_1)//,"no such scheme on windows");
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0003);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0005)//,"no such scheme on windows");
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);//"no such scheme on windows, https://ugene.unipro.ru/tracker/browse/UGENE-2738 on mac");
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006_1);//"no such scheme on windows, https://ugene.unipro.ru/tracker/browse/UGENE-2738 on mac");
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0007);//"no such scheme on windows, https://ugene.unipro.ru/tracker/browse/UGENE-2738 on mac");
+    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);//"no such scheme on windows, https://ugene.net/tracker/browse/UGENE-2738 on mac");
+    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006_1);//"no such scheme on windows, https://ugene.net/tracker/browse/UGENE-2738 on mac");
+    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0007);//"no such scheme on windows, https://ugene.net/tracker/browse/UGENE-2738 on mac");
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0009)//*,"no such scheme on windows");
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0010)//,"no such scheme on windows");
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0013);

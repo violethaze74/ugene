@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -121,7 +121,7 @@ bool BlastPlusSupportRunDialog::checkToolPath(){
         needSetToolPath=true;
         toolName=ET_BLASTP;
 
-// https://ugene.unipro.ru/tracker/browse/UGENE-945
+// https://ugene.net/tracker/browse/UGENE-945
 //     }else if((programName->currentText() == "gpu-blastp") &&
 //              (AppContext::getExternalToolRegistry()->getByName(GPU_BLASTP_TOOL_NAME)->getPath().isEmpty())){
 //         needSetToolPath=true;
@@ -390,7 +390,7 @@ bool BlastPlusWithExtFileSpecifySupportRunDialog::checkToolPath(){
         needSetToolPath=true;
         toolName=ET_BLASTP;
 
-// https://ugene.unipro.ru/tracker/browse/UGENE-945
+// https://ugene.net/tracker/browse/UGENE-945
 //     }else if((programName->currentText() == "gpu-blastp") &&
 //              (AppContext::getExternalToolRegistry()->getByName(GPU_BLASTP_TOOL_NAME)->getPath().isEmpty())){
 //         needSetToolPath=true;

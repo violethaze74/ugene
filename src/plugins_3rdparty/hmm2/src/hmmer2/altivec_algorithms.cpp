@@ -1,6 +1,6 @@
 /*****************************************************************
 * Unipro UGENE - Genome analysis suite
-* Copyright (C) 2008 Unipro, Russia (http://ugene.unipro.ru)
+* Copyright (C) 2008 Unipro, Russia (http://ugene.net)
 * All Rights Reserved
 *
 *     This source code is distributed under the terms of the

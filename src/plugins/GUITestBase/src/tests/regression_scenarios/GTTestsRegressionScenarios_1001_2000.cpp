@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -1346,7 +1346,7 @@ GUI_TEST_CLASS_DEFINITION(test_1071) {
 
 GUI_TEST_CLASS_DEFINITION(test_1078){ //Need to add the test
 /* 1. File-New Project
- * 2. Open as - HannaRescued.fa(https://ugene.unipro.ru/tracker/browse/UGENE-1078) (FASTA format. Score:13 (Perfect match) - OK, As separate sequences in sequence viewer - OK)
+ * 2. Open as - HannaRescued.fa(https://ugene.net/tracker/browse/UGENE-1078) (FASTA format. Score:13 (Perfect match) - OK, As separate sequences in sequence viewer - OK)
  * Bug state: Then crush and hung of the program
  * Expected state: Error message with format error
  * System: Ubuntu 12.04
@@ -1829,7 +1829,7 @@ GUI_TEST_CLASS_DEFINITION(test_1155) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1154) {
-//    1. Download "read.fa", "read2.fa", "reference.fa" from https://ugene.unipro.ru/tracker/browse/UGENE-1154 or use other sequences
+//    1. Download "read.fa", "read2.fa", "reference.fa" from https://ugene.net/tracker/browse/UGENE-1154 or use other sequences
 //    2. Use menu { Tools -> NGS data analysis -> Map reads to reference... }
 //    Expected state: "Align sequences reads" dialog has appeared
 //    3. Add "read.fa" and "read2.fa" to short reads list in the dialog
@@ -7312,7 +7312,7 @@ GUI_TEST_CLASS_DEFINITION(test_1693) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1700) {
-    //    1. Open file "https://ugene.unipro.ru/tracker/secure/attachment/12864/pdb1a07.ent.gz".
+    //    1. Open file "https://ugene.net/tracker/secure/attachment/12864/pdb1a07.ent.gz".
     GTFileDialog::openFile(os, testDir + "_common_data/pdb/", "pdb1a07.ent.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -7513,7 +7513,7 @@ GUI_TEST_CLASS_DEFINITION(test_1710_2){
 
 GUI_TEST_CLASS_DEFINITION(test_1714){
 //    1. Open the "external tools" configuration window using Settings/Preferences menu
-//    2. Select path for external tools package (if not set). External tools package can be downloaded from http://ugene.unipro.ru/external.html
+//    2. Select path for external tools package (if not set). External tools package can be downloaded from http://ugene.net/external.html
 //    3. Deselect all Cistrome tools
 //    4. Deselect python external tool
 //    Expected state: the python tool is deselected. UGENE doesn't hangs up (or crashes)

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -69,7 +69,7 @@ void UgeneUpdater::update() {
         setUpdateOnClose(true);
         emit si_update();
     } else {
-        GUIUtils::runWebBrowser("http://ugene.unipro.ru/download.html");
+        GUIUtils::runWebBrowser("http://ugene.net/download.html");
     }
 }
 

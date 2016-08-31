@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -429,7 +429,7 @@ void MSAEditorConsensusArea::drawHistogram(QPainter &p, int firstBase, int lastB
     }
 
 #if (QT_VERSION < 0x050000)
-    // A workaround for https://local.ugene.unipro.ru/tracker/browse/UGENE-4484 (see comments)
+    // A workaround for https://local.ugene.net/tracker/browse/UGENE-4484 (see comments)
     // drawRects() incorrectly processes rects with coordinates greater than 16384 on Qt4
     // drawRects() should be used for perfomance reasons
     // this branch should be removed after migrating to Qt5
