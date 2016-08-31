@@ -4389,6 +4389,65 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 8, "Sequence count should be 7");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4782) {
+//    1. Open "data/samples/genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "data/samples/Genbank/sars.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: a Sequence View for "sars.gb" is active.
+    const QString sarsMdiTitle = "sars [s] NC_004718";
+    QString activeMdiTitle = GTUtilsMdi::activeWindowTitle(os);
+    CHECK_SET_ERR(sarsMdiTitle == activeMdiTitle, QString("An incorrect MDI is active: expected '%1', got '%2'").arg(sarsMdiTitle).arg(activeMdiTitle));
+
+//    3. Click "Build dotplot" button on the toolbar.
+//    4. Click "OK" button in the opened dialog.
+    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "DotPlotDialog"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build dotplot");
+
+//    Expected state: a Sequence View for "sars.gb" is active, it contains a dotplot and two sequences.
+    CHECK_SET_ERR(sarsMdiTitle == activeMdiTitle, QString("An incorrect MDI is active: expected '%1', got '%2'").arg(sarsMdiTitle).arg(activeMdiTitle));
+    int sequenceWidgetsNumber = GTUtilsSequenceView::getSeqWidgetsNumber(os);
+    CHECK_SET_ERR(2 == sequenceWidgetsNumber, QString("Expected 2 sequence widgets, got %2").arg(sequenceWidgetsNumber));
+    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
+
+//    5. Activate the Sequence View for "murine.gb", that was opened on the file opening.
+    const QString murineMdiTitle = "murine [s] NC_001363";
+    GTUtilsMdi::activateWindow(os, murineMdiTitle);
+    GTGlobals::sleep(500);
+
+//    Expected state: active view is "murine.gb" sequence view (without dotplot).
+    activeMdiTitle = GTUtilsMdi::activeWindowTitle(os);
+
+    CHECK_SET_ERR(murineMdiTitle == activeMdiTitle, QString("An incorrect MDI is active: expected '%1', got '%2'").arg(murineMdiTitle).arg(activeMdiTitle));
+    sequenceWidgetsNumber = GTUtilsSequenceView::getSeqWidgetsNumber(os);
+    CHECK_SET_ERR(1 == sequenceWidgetsNumber, QString("Expected 1 sequence widget, got %2").arg(sequenceWidgetsNumber));
+    GTGlobals::FindOptions findOptions(false);
+    QWidget *dotplotWidget = GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os), findOptions);
+    CHECK_SET_ERR(NULL == dotplotWidget, "A dotplot widget unexpectedly found");
+
+//    6. Select all documents in project. Press delete.
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+//    Expected state: UGENE doesn't crash, all views are closed, all documents are removed from the project.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProject::checkProject(os, GTUtilsProject::Empty);
+
+    findOptions.matchPolicy = Qt::MatchContains;
+    QWidget *sarsMdi = GTUtilsMdi::findWindow(os, sarsMdiTitle, findOptions);
+    CHECK_SET_ERR(NULL == sarsMdi, "'sars.gb' Sequence View is not closed");
+
+    QWidget *murineMdi = GTUtilsMdi::findWindow(os, murineMdiTitle, findOptions);
+    CHECK_SET_ERR(NULL == murineMdi, "'murine.gb' Sequence View is not closed");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4784_1) {
     QFile::copy(testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/chr6/chr6.fa", sandBoxDir + "regression_test_4784_1.fa");
 
