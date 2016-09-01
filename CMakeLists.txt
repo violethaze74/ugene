@@ -10,9 +10,9 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 1.22.0-dev)
+set(UGENE_VERSION 1.25.0-dev)
 set(UGENE_VER_MAJOR 1)
-set(UGENE_VER_MINOR 22)
+set(UGENE_VER_MINOR 25)
 set(UGENE_VER_PATCH 0)
 
 set(UGENE_MIN_VERSION_SQLITE 1.13.0)
@@ -32,11 +32,13 @@ add_definitions(
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
+# 3rd party libs
 add_subdirectory(src/libs_3rdparty/breakpad)
 add_subdirectory(src/libs_3rdparty/samtools)
 add_subdirectory(src/libs_3rdparty/sqlite3)
 add_subdirectory(src/libs_3rdparty/zlib)
 
+# Core libs
 add_subdirectory(src/corelibs/U2Core)
 add_subdirectory(src/corelibs/U2Algorithm)
 add_subdirectory(src/corelibs/U2Formats)
@@ -47,9 +49,11 @@ add_subdirectory(src/corelibs/U2Test)
 add_subdirectory(src/corelibs/U2Designer)
 add_subdirectory(src/corelibs/U2View)
 
+# launchers
 add_subdirectory(src/ugeneui)
 add_subdirectory(src/ugenecl)
 
+# local plugins
 add_subdirectory(src/plugins/annotator)
 add_subdirectory(src/plugins/api_tests)
 add_subdirectory(src/plugins/biostruct3d_view)
@@ -79,7 +83,7 @@ add_subdirectory(src/plugins/test_runner)
 add_subdirectory(src/plugins/weight_matrix)
 add_subdirectory(src/plugins/workflow_designer)
 
-
+# 3rd party plugins
 add_subdirectory(src/plugins_3rdparty/ball)
 add_subdirectory(src/plugins_3rdparty/gor4)
 add_subdirectory(src/plugins_3rdparty/hmm2)
