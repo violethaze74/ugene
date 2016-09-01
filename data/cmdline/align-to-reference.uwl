@@ -59,9 +59,9 @@ try {
     }
 
     .actor-bindings {
-        get-file-list.out-url->files-conversion.in-file
         files-conversion.out-file->QualityTrim.in-file
         align-to-reference.out->write-msa.in-msa
+        get-file-list.out-url->files-conversion.in-file
         Script-Read-sequence.out->align-to-reference.in-sequence
         QualityTrim.out-file->Script-Read-sequence.in
     }
@@ -87,13 +87,13 @@ try {
                 alias:reads;
             }
             align-to-reference.identity {
-                alias:min-adentity;
+                alias:min-identity;
             }
             align-to-reference.reference {
                 alias:reference;
             }
             write-msa.url-out {
-                alias:out-alignemnt;
+                alias:out-alignment;
             }
             write-msa.url-suffix {
                 alias:alignment-suffix;
@@ -101,41 +101,41 @@ try {
         }
         visual {
             QualityTrim {
-                pos:"-585 -510";
+                pos:"-555 -480";
                 style:ext;
                 bg-color-ext:"208 69 0 64";
                 in-file.angle:180;
                 out-file.angle:296.206;
             }
             Script-Read-sequence {
-                pos:"-540 -300";
+                pos:"-510 -270";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in.angle:93.6914;
                 out.angle:360;
             }
             align-to-reference {
-                pos:"-390 -300";
+                pos:"-360 -270";
                 style:ext;
                 bg-color-ext:"0 128 0 64";
                 in-sequence.angle:180;
                 out.angle:360;
             }
             files-conversion {
-                pos:"-750 -510";
+                pos:"-720 -480";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:177.917;
                 out-file.angle:360;
             }
             get-file-list {
-                pos:"-930 -510";
+                pos:"-900 -480";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 out-url.angle:353.118;
             }
             write-msa {
-                pos:"-120 -300";
+                pos:"-90 -270";
                 style:ext;
                 bg-color-ext:"64 26 96 64";
                 in-msa.angle:180;

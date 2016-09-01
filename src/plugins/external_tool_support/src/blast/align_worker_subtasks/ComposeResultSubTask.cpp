@@ -140,6 +140,10 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
 
         ++rowsCounter;
     }
+    if (rowsCounter == 1) {
+        stateInfo.setError(tr("No read satisfy minimum identity criteria."));
+        return;
+    }
     result->trim(false); // just recalculates alignment len
 
     QScopedPointer<MultipleSequenceAlignmentObject> msaObject(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), result, stateInfo));
