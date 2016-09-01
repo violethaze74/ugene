@@ -33,6 +33,7 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/U2FileDialog.h>
+#include <U2Gui/U2WidgetStateStorage.h>
 
 #include <QMessageBox>
 
@@ -99,8 +100,11 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
     return result;
 }
 
+QStringList AlignToReferenceBlastDialog::lastUsedReadsUrls;
 AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
-    : QDialog(parent) {
+    : QDialog(parent),
+      savableWidget(this)
+{
     setupUi(this);
 
     new HelpButton(this, buttonBox, "18220587"); //! TODO: help link
@@ -109,6 +113,11 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connectSlots();
+
+    U2WidgetStateStorage::restoreWidgetState(savableWidget);
+    foreach (const QString& read, lastUsedReadsUrls) {
+        readsListWidget->addItem(read);
+    }
 }
 
 AlignToReferenceBlastCmdlineTask::Settings AlignToReferenceBlastDialog::getSettings() const {
@@ -129,13 +138,14 @@ void AlignToReferenceBlastDialog::accept() {
         return;
     }
     QStringList readUrls;
-    for (int i = 1; i < readsListWidget->count(); i++) {
+    for (int i = 0; i < readsListWidget->count(); i++) {
         QListWidgetItem* item = readsListWidget->item(i);
         SAFE_POINT(item != NULL, "Item is NULL", );
         QString s = item->text();
         readUrls.append(s);
     }
     settings.readUrls = readUrls;
+    lastUsedReadsUrls = readUrls;
 
     settings.minIdentity = minIdentitySpinBox->value();
     settings.minLength = minLenSpinBox->value();

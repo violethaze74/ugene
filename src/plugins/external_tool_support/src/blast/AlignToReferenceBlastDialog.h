@@ -26,6 +26,8 @@
 
 #include <U2Core/Task.h>
 
+#include <U2Gui/U2SavableWidget.h>
+
 #include <QDialog>
 
 
@@ -90,6 +92,9 @@ private:
     void connectSlots();
 
     AlignToReferenceBlastCmdlineTask::Settings settings;
+    U2SavableWidget savableWidget;
+
+    static QStringList lastUsedReadsUrls;
 };
 
 } // namespace
