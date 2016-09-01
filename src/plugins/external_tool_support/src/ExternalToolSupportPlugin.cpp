@@ -463,6 +463,11 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         blastallAction->setObjectName(ToolsMenu::BLAST_SEARCH);
         connect(blastallAction, SIGNAL(triggered()), blastallTool, SLOT(sl_runWithExtFileSpecify()));
 
+        ExternalToolSupportAction* alignToRefBlastAction = new ExternalToolSupportAction(tr("Align Sanger reads to reference..."),
+                                                                                         this, QStringList() << ET_FORMATDB << ET_BLASTALL);
+        alignToRefBlastAction->setObjectName(ToolsMenu::SANGER_ALIGN);
+        connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastallTool, SLOT(sl_runAlign()));
+
 
         BlastPlusSupportContext* blastPlusViewCtx = new BlastPlusSupportContext(this);
         blastPlusViewCtx->setParent(this);//may be problems???
@@ -488,6 +493,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         cap3Action->setObjectName(ToolsMenu::SANGER_DENOVO);
         connect(cap3Action, SIGNAL(triggered()), cap3Tool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::SANGER_MENU, cap3Action);
+        ToolsMenu::addAction(ToolsMenu::SANGER_MENU, alignToRefBlastAction);
 
         GObjectViewWindowContext* spideyCtx = spideySupport->getViewContext();
         spideyCtx->setParent(this);

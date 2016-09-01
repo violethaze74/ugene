@@ -35,7 +35,6 @@ public:
         MERGE,
         MERGE_FILES
     };
-    static const QString MODE_ATTR;
 
     ReadAnnotationsProto();
 }; // ReadAnnotationsProto
@@ -77,18 +76,18 @@ class ReadAnnotationsTask : public Task {
     Q_OBJECT
 public:
     ReadAnnotationsTask(const QString &url, const QString &datasetName, WorkflowContext *context,
-        bool mergeAnnotations);
+                        bool mergeAnnotations, const QString& mergedAnnTableName = QString());
     virtual void prepare();
     virtual void run();
     virtual void cleanup();
 
     QList<QVariantMap> takeResults();
-    const QString & getDatasetName() const;
 
 private:
     QString url;
     QString datasetName;
     bool mergeAnnotations;
+    QString mergedAnnTableName;
     WorkflowContext *context;
 
     QList<QVariantMap> results;

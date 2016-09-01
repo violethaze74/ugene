@@ -168,10 +168,10 @@ SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleSequenceAlignmen
     return handler;
 }
 
-SharedDbiDataHandler DbiDataStorage::putAnnotationTable(const QList<SharedAnnotationData> &anns) {
+SharedDbiDataHandler DbiDataStorage::putAnnotationTable(const QList<SharedAnnotationData> &anns, const QString annTableName) {
     SAFE_POINT(NULL != dbiHandle, "Invalid DBI handle!", SharedDbiDataHandler());
 
-    AnnotationTableObject obj("Annotations", dbiHandle->getDbiRef());
+    AnnotationTableObject obj(annTableName, dbiHandle->getDbiRef());
     U2OpStatusImpl os;
     obj.addAnnotations(anns);
     SAFE_POINT_OP(os, SharedDbiDataHandler());
