@@ -24,7 +24,8 @@
 #include <U2Core/L10n.h>
 #include <U2Core/GAutoDeleteList.h>
 
-#include <QtXml>
+#include <QtCore/QDir>
+#include <QtXml/QDomDocument>
 
 
 namespace U2 {
