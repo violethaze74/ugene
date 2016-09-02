@@ -285,8 +285,7 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
             attrDbi->createIntegerAttribute(countReadsAttr, stateInfo);
             CHECK_OP(stateInfo, );
         }
-        /*
-        if (!coverageStat.coverage->isEmpty()) {
+        if (!coverageStat.coverage.isEmpty()) {
             U2ByteArrayAttribute attribute;
             attribute.objectId = assembly.id;
             attribute.name = U2BaseAttributeName::coverage_statistics;
@@ -295,7 +294,6 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
             attrDbi->createByteArrayAttribute(attribute, stateInfo);
             CHECK_OP(stateInfo, );
         }
-        */
         stateInfo.setProgress(stateInfo.getProgress() + progressStep);
     }
 }
