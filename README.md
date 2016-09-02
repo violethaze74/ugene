@@ -22,47 +22,49 @@ Make sure the Qt (>= 5.2.1) development libraries are installed:
 
 To build with devenv (Visual Studio)
 
-1) `qmake -r -tp vc ugene.pro`
-2) open ugene.sln from Visual Studio or run `devenv.exe ugene.sln /Build` from MSVC command line
+1. `qmake -r -tp vc ugene.pro`
+2. open ugene.sln from Visual Studio or run `devenv.exe ugene.sln /Build` from MSVC command line
 
 To build with nmake.exe:
 
-1) `qmake -r ugene.pro`
-2) run `nmake`, `nmake debug` or `nmake release` to build UGENE
+1. `qmake -r ugene.pro`
+2. run `nmake`, `nmake debug` or `nmake release` to build UGENE
 
 ### For *nix users:
 
-0) installation paths may be set up in ugene_globals.pri
-1) `qmake -r` (Fedora: `qmake-qt5 -r`)
-2) `make -j 4`
-3) `sudo make install`
-4) `ugene -ui`
+0. installation paths may be set up in ugene_globals.pri
+1. `qmake -r` (Fedora: `qmake-qt5 -r`)
+2. `make -j 4`
+3. `sudo make install`
+4. `ugene -ui`
 
-Note: usually, 'make' builds a release version of UGENE.
-However, on certain platforms default target is debug.
-To enforce release build use 'make release' or 'make all'.
+> Note: usually, `make` builds a release version of UGENE.
+   However, on certain platforms default target is debug.
+   To enforce release build use `make release` or `make all`.
 
 Some more information you can see in installer/_common_data/README file.
 
 ### Build with CUDA
 
-1) Download and install required software from http://www.nvidia.com/object/cuda_get.html for your OS
-2) Make sure that some system variable are set:
-```
-CUDA_LIB_PATH=/path_where_cuda_installed/lib
-CUDA_INC_PATH=/path_where_cuda_installed/include
-PATH=$PATH:/path_where_cuda_installed/bin
-```
+1. Download and install required software from http://www.nvidia.com/object/cuda_get.html for your OS
+2. Make sure that some system variable are set:
+   ```
+   CUDA_LIB_PATH=/path_where_cuda_installed/lib
+   CUDA_INC_PATH=/path_where_cuda_installed/include
+   PATH=$PATH:/path_where_cuda_installed/bin
+   ```
+   
    for *nix: `LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_LIB_PATH`
-3) cd ./src and open ugene_globals.pri, find and set variable UGENE_CUDA_DETECTED = 1
+
+3. cd ./src and open ugene_globals.pri, find and set variable UGENE_CUDA_DETECTED = 1
 
 ### Build with OpenCL
 
-1) Download and install video driver wich supports OpenCL
-2) Download OpenCL headers from http://www.khronos.org/registry/cl/
+1. Download and install video driver wich supports OpenCL
+2. Download OpenCL headers from http://www.khronos.org/registry/cl/
    or find them in video vendor SDK directory.
-3) make sure that you have system variable is set correctly:
+3. make sure that you have system variable is set correctly:
           `OPENCL_INC_PATH=/path_where_open_cl_installed`
-4) cd ./src and open ugene_globals.pri, find and set variable `UGENE_OPENCL_DETECTED = 1`
-Notes:
-1) UGENE_CELL flag in ugene_globals should be uncommented when building on Cell BE platform
+4. cd ./src and open ugene_globals.pri, find and set variable `UGENE_OPENCL_DETECTED = 1`
+
+> Notes: UGENE_CELL flag in ugene_globals should be uncommented when building on Cell BE platform
