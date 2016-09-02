@@ -555,10 +555,10 @@ void AssemblyDbiUnitTests_calculateCoverage::Test() {
     const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
     const U2Region& region = U2Region(20, 1);
     U2AssemblyCoverageStat c;
-    c.coverage->resize(1);
+    c.coverage.resize(1);
     assemblyDbi->calculateCoverage(id, region, c, os);
     CHECK_NO_ERROR(os);
-    int res = c.coverage->first().maxValue;
+    int res = c.coverage.first().maxValue;
     CHECK_TRUE(res == 1, "incorrect calculate Coverage");
 }
 
