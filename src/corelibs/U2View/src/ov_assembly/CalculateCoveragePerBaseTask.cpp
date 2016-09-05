@@ -87,20 +87,20 @@ void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &rea
     const U2Region regionToProcess = U2Region(startPos, endPos - startPos);
 
     // we have used effective length of the read, so insertions/deletions are already taken into account
-    // cigarString can be longer than needed
-    QByteArray cigarString;
+    // cigarVector can be longer than needed
+    QVector<U2CigarOp> cigarVector;
     foreach (const U2CigarToken &cigar, read->cigar) {
-        cigarString += QByteArray(cigar.count, U2AssemblyUtils::cigar2Char(cigar.op));
+        cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
 
     if (read->leftmostPos < regionToProcess.startPos) {
-        cigarString = cigarString.mid(regionToProcess.startPos - read->leftmostPos);
+        cigarVector = cigarVector.mid(regionToProcess.startPos - read->leftmostPos);//cut unneeded cigar string
     }
 
     for (int positionOffset = 0, cigarOffset = 0, deletionsCount = 0, insertionsCount = 0; regionToProcess.startPos + positionOffset < regionToProcess.endPos(); positionOffset++) {
         char currentBase = 'N';
         CoveragePerBaseInfo &info = (*results)[regionToProcess.startPos + positionOffset - region.startPos];
-        const U2CigarOp cigarOp = nextCigarOp(cigarString, cigarOffset, insertionsCount);
+        const U2CigarOp cigarOp = nextCigarOp(cigarVector, cigarOffset, insertionsCount);
         CHECK_OP(stateInfo, );
 
         switch(cigarOp) {
@@ -125,17 +125,12 @@ void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &rea
     }
 }
 
-U2CigarOp CalculateCoveragePerBaseOnRegionTask::nextCigarOp(const QByteArray &cigarString, int &index, int &insertionsCount) {
-    QString errString;
+U2CigarOp CalculateCoveragePerBaseOnRegionTask::nextCigarOp(const QVector<U2CigarOp> &cigarVector, int &index, int &insertionsCount) {
     U2CigarOp cigarOp = U2CigarOp_Invalid;
 
     do {
-        SAFE_POINT_EXT(index < cigarString.length(), setError(tr("Cigar string: out of bounds")), U2CigarOp_Invalid);
-        cigarOp = U2AssemblyUtils::char2Cigar(cigarString[index], errString);
-        if (Q_UNLIKELY(!errString.isEmpty() && !hasError())) {
-            setError(errString);
-        }
-        CHECK_OP(stateInfo, U2CigarOp_Invalid);
+        SAFE_POINT_EXT(index < cigarVector.length(), setError(tr("Cigar string: out of bounds")), U2CigarOp_Invalid);
+        cigarOp = cigarVector[index];
         index++;
 
         if (U2CigarOp_I == cigarOp || U2CigarOp_S == cigarOp) {
