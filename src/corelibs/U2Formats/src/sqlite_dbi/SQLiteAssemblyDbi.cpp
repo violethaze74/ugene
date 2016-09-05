@@ -575,7 +575,9 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U
         cigarVector.removeAll(U2CigarOp_S);
         cigarVector.removeAll(U2CigarOp_P);
 
-        cigarVector = cigarVector.mid(r.startPos - startPos);//cut unneeded cigar string
+        if(r.startPos > startPos){
+            cigarVector = cigarVector.mid(r.startPos - startPos);//cut unneeded cigar string
+        }
 
         int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos)/ basesPerRange);
         int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos ) / basesPerRange) - 1;

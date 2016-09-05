@@ -232,8 +232,13 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2A
         foreach (const U2CigarToken &cigar, read->cigar) {
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
+        cigarVector.removeAll(U2CigarOp_I);
+        cigarVector.removeAll(U2CigarOp_S);
+        cigarVector.removeAll(U2CigarOp_P);
 
-        cigarVector = cigarVector.mid(r.startPos - startPos);//cut unneeded cigar string
+        if(r.startPos > startPos){
+            cigarVector = cigarVector.mid(r.startPos - startPos);//cut unneeded cigar string
+        }
 
         int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos)/ basesPerRange);
         int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos ) / basesPerRange) - 1;
@@ -263,6 +268,9 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
     foreach (const U2CigarToken &cigar, read->cigar) {
         cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
+    cigarVector.removeAll(U2CigarOp_I);
+    cigarVector.removeAll(U2CigarOp_S);
+    cigarVector.removeAll(U2CigarOp_P);
 
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen - 1) / ii.coverageBasesPerPoint);
