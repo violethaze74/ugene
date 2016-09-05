@@ -571,6 +571,9 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U
         foreach (const U2CigarToken &cigar, read->cigar) {
             cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
+        cigarVector.removeAll(U2CigarOp_I);
+        cigarVector.removeAll(U2CigarOp_S);
+        cigarVector.removeAll(U2CigarOp_P);
 
         cigarVector = cigarVector.mid(r.startPos - startPos);//cut unneeded cigar string
 
@@ -601,6 +604,9 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
     foreach (const U2CigarToken &cigar, read->cigar) {
         cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
+    cigarVector.removeAll(U2CigarOp_I);
+    cigarVector.removeAll(U2CigarOp_S);
+    cigarVector.removeAll(U2CigarOp_P);
 
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen) / ii.coverageBasesPerPoint) - 1;
