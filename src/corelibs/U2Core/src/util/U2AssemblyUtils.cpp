@@ -129,15 +129,6 @@ qint64 U2AssemblyUtils::getCigarExtraLength(const QList<U2CigarToken>& cigar) {
     return res;
 }
 
-static QByteArray prepareCigarChars() {
-    return QByteArray("0123456789DIHMNPS=X");
-}
-
-QByteArray U2AssemblyUtils::getCigarAlphabetChars() {
-    static QByteArray res = prepareCigarChars();
-    return res;
-}
-
 QByteArray U2AssemblyUtils::serializeCoverageStat(const U2AssemblyCoverageStat& coverageStat) {
     QByteArray data;
     for(int index = 0;index < coverageStat.coverage.size();index++) {
@@ -161,15 +152,6 @@ void U2AssemblyUtils::deserializeCoverageStat(QByteArray data, U2AssemblyCoverag
     } else {
         os.setError("Invalid attribute size");
     }
-}
-
-QVector<qint64> U2AssemblyUtils::coverageStatToVector(const U2AssemblyCoverageStat &coverageStat) {
-    int size = coverageStat.coverage.size();
-    QVector<qint64> res(size);
-    for(int i = 0; i < size; ++i) {
-        res[i] = coverageStat.coverage[i];
-    }
-    return res;
 }
 
 } //namespace

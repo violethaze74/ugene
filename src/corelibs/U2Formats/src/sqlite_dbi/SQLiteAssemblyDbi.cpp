@@ -548,7 +548,6 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U
     int csize = c.coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
-    int* cdata = c.coverage.data();
     double basesPerRange = double(r.length) / csize;
     while (q.step() && !os.isCoR()) {
         qint64 startPos = q.getInt64(0);
@@ -585,7 +584,7 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U
             case U2CigarOp_N: // skip the skiped
                 continue;
             default:
-                cdata[i]++;
+                c.coverage[i]++;
             }
 
         }

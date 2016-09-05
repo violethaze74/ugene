@@ -77,11 +77,6 @@ public:
     static qint64 getEffectiveReadLength(const U2AssemblyRead& read);
 
     /**
-        Returns all characters that may appear in CIGAR string
-    */
-    static QByteArray getCigarAlphabetChars();
-
-    /**
         Serializes U2AssemblyCoverageStat to byte array for storing in dbi attribute
     */
     static QByteArray serializeCoverageStat(const U2AssemblyCoverageStat& coverageStat);
@@ -90,11 +85,6 @@ public:
         Deserializes U2AssemblyCoverageStat that was serialized with serializeCoverageStat function
     */
     static void deserializeCoverageStat(QByteArray data, U2AssemblyCoverageStat& res, U2OpStatus &os);
-
-    /**
-        Builds a vector where each item is max value of corresponding item of coverageStat
-    */
-    static QVector<qint64> coverageStatToVector(const U2AssemblyCoverageStat &coverageStat);
 
     /**
         Size of array of cached coverage

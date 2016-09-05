@@ -80,8 +80,8 @@ void AssemblyCoverageGraph::drawAll() {
 void AssemblyCoverageGraph::drawGraph(QPainter & p, const CoverageInfo &ci, int alpha) {
     int cellWidth = browser->getCellWidth();
     int visibleBases = browser->basesVisible();
-    const QVector<qint64> & coverageInfo = ci.coverageInfo;
-    qint64 maxCoverage = ci.maxCoverage;
+    const QVector<qint32> & coverageInfo = ci.coverageInfo;
+    qint32 maxCoverage = ci.maxCoverage;
 
     SAFE_POINT(visibleBases == coverageInfo.size(), "in AssemblyCoverageGraph::drawGraph: incorrect coverageInfo size",)
     CHECK(maxCoverage > 0,);

@@ -27,7 +27,7 @@ namespace U2 {
 
 const int CoveredRegionsManager::DESIRED_REGION_LENGTH = 100;
 
-CoveredRegionsManager::CoveredRegionsManager(const U2Region & visibleRegion_, const QVector<qint64> & coverageInfo) :
+CoveredRegionsManager::CoveredRegionsManager(const U2Region & visibleRegion_, const QVector<qint32> & coverageInfo) :
 visibleRegion(visibleRegion_)  {
     assert(!coverageInfo.empty());
     assert(!visibleRegion.isEmpty());
@@ -44,7 +44,7 @@ visibleRegion(visibleRegion_)  {
         step *= regionsToJoin;
     }
     for(int i = 0; i < regionsCount; ++i) {
-        qint64 maxCoverage = 0;
+        qint32 maxCoverage = 0;
         for(int j = 0; j < regionsToJoin; ++j) {
             maxCoverage = qMax(maxCoverage, coverageInfo[i*regionsToJoin + j]);
         }

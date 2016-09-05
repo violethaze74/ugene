@@ -67,7 +67,7 @@ public:
     void setLocalCoverageCache(CoverageInfo coverage);
     // Methods used to optimize getting coverage at any point inside this region:
     bool isInLocalCoverageCache(qint64 position);
-    qint64 getCoverageAtPos(qint64 pos);
+    qint32 getCoverageAtPos(qint64 pos);
     // Methods used to draw coverage for cached part of visible region:
     bool intersectsLocalCoverageCache(U2Region region);
     bool isInLocalCoverageCache(U2Region region);

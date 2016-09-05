@@ -242,7 +242,7 @@ class U2AssemblyCoverageStat {
 public:
     U2AssemblyCoverageStat() {}
 
-    QVector<int> coverage;
+    QVector<qint32> coverage;
 };
 
 } //namespace

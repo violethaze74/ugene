@@ -30,8 +30,7 @@
 namespace U2 {
 
 void CoverageInfo::updateStats() {
-    maxCoverage = 0;
-    minCoverage = std::numeric_limits<qint64>::max();
+    maxCoverage = minCoverage = coverageInfo[0];
 
     qint64 sum = 0;
 
@@ -93,7 +92,7 @@ void CalcCoverageInfoTask::run() {
             int endPosition = qRound((settings.visibleRange.startPos + basesPerRegion*(regionIndex + 1))/coverageStatBasesPerRegion);
             result.coverageInfo[regionIndex] = 0;
             for(int i = startPosition;i < endPosition;i++) {
-                result.coverageInfo[regionIndex] = std::max(result.coverageInfo[regionIndex], (qint64)cachedCoverageStat.coverage[i]);
+                result.coverageInfo[regionIndex] = std::max(result.coverageInfo[regionIndex], cachedCoverageStat.coverage[i]);
             }
         }
     }

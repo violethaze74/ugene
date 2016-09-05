@@ -377,7 +377,7 @@ void AssemblyBrowser::setGlobalCoverageInfo(CoverageInfo newInfo) {
         U2OpStatus2Log status;
         U2AssemblyCoverageStat coverageStat = model->getCoverageStat(status);
         if(!status.isCoR() && coverageStat.coverage.size() > newInfo.coverageInfo.size()) {
-            newInfo.coverageInfo = U2AssemblyUtils::coverageStatToVector(coverageStat);
+            newInfo.coverageInfo = coverageStat.coverage;
             newInfo.updateStats();
         }
     }
@@ -408,7 +408,7 @@ bool AssemblyBrowser::isInLocalCoverageCache(qint64 position) {
     return localCoverageCache.region.contains(position);
 }
 
-qint64 AssemblyBrowser::getCoverageAtPos(qint64 pos) {
+qint32 AssemblyBrowser::getCoverageAtPos(qint64 pos) {
     if(isInLocalCoverageCache(pos)) {
         return localCoverageCache.coverageInfo.at(pos - localCoverageCache.region.startPos);
     } else {
