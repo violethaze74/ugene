@@ -229,17 +229,17 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2A
 
         // we have used effective length of the read, so insertions/deletions are already taken into account
         // cigarString can be longer than needed
-        QVector<U2CigarOp> cigarList;
+        QVector<U2CigarOp> cigarVector;
         foreach (const U2CigarToken &cigar, read->cigar) {
-            cigarList += QVector<U2CigarOp>(cigar.count, cigar.op);
+            cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
         }
 
-        cigarList = cigarList.mid(r.startPos - startPos);//cut unneeded cigar string
+        cigarVector = cigarVector.mid(r.startPos - startPos);//cut unneeded cigar string
 
         int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos)/ basesPerRange);
         int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos ) / basesPerRange) - 1;
         for (int i = firstCoverageIdx; i <= lastCoverageIdx && i < csize; i++) {
-            switch (cigarList[(i-firstCoverageIdx)*basesPerRange]){
+            switch (cigarVector[(i-firstCoverageIdx)*basesPerRange]){
             case U2CigarOp_I:
             case U2CigarOp_S: // skip the insertion
             case U2CigarOp_D: // skip the deletion
@@ -260,6 +260,11 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
 
     int csize = ii.coverage.coverage.size();
 
+    QVector<U2CigarOp> cigarVector;
+    foreach (const U2CigarToken &cigar, read->cigar) {
+        cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
+    }
+
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen - 1) / ii.coverageBasesPerPoint);
     if(endPos > csize - 1) {
@@ -268,7 +273,15 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
     }
     int* coverageData = ii.coverage.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
-        coverageData[i]++;
+        switch (cigarVector[(i-startPos)*ii.coverageBasesPerPoint]){
+        case U2CigarOp_I:
+        case U2CigarOp_S: // skip the insertion
+        case U2CigarOp_D: // skip the deletion
+        case U2CigarOp_N: // skip the skiped
+            continue;
+        default:
+            coverageData[i]++;
+        }
     }
 }
 
