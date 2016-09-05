@@ -544,6 +544,7 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRea
 }
 
 void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os) {
+    // this method is called for calculation only for one possition
     int csize = c.coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
@@ -552,18 +553,42 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U
     while (q.step() && !os.isCoR()) {
         qint64 startPos = q.getInt64(0);
         qint64 len = q.getInt64(1);
+        //read data and convert to data with cigar
+        QByteArray data = q.getBlob(2);
+        U2AssemblyRead read(new U2AssemblyReadData());
+        unpackData(data,read,os);
+
         U2Region readRegion(startPos, len);
         U2Region readCroppedRegion = readRegion.intersect(r);
 
         if (readCroppedRegion.isEmpty()) {
-            continue;
+            GCOUNTER(cvar, tvar, "SQLiteAssemblyDbi::cropped region is empty");
+            continue;//May be dead code
         }
 
+        // we have used effective length of the read, so insertions/deletions are already taken into account
+        // cigarString can be longer than needed
+        QVector<U2CigarOp> cigarList;
+        foreach (const U2CigarToken &cigar, read->cigar) {
+            cigarList += QVector<U2CigarOp>(cigar.count, cigar.op);
+        }
+
+        cigarList = cigarList.mid(r.startPos - startPos);//cut unneeded cigar string
+
         int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos)/ basesPerRange);
-        int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - 1 - r.startPos ) / basesPerRange);
+        int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos ) / basesPerRange) - 1;
         for (int i = firstCoverageIdx; i <= lastCoverageIdx && i < csize; i++) {
-            cdata[i].minValue++;
-            cdata[i].maxValue++;
+            switch (cigarList[(i-firstCoverageIdx)*basesPerRange]){
+            case U2CigarOp_I:
+            case U2CigarOp_S: // skip the insertion
+            case U2CigarOp_D: // skip the deletion
+            case U2CigarOp_N: // skip the skiped
+                continue;
+            default:
+                cdata[i].minValue++;
+                cdata[i].maxValue++;
+            }
+
         }
     }
 }
