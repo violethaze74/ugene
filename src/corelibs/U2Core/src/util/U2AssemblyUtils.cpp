@@ -142,7 +142,7 @@ QByteArray U2AssemblyUtils::serializeCoverageStat(const U2AssemblyCoverageStat& 
     QByteArray data;
     for(int index = 0;index < coverageStat.coverage.size();index++) {
         for(int i = 0;i < 4;i++) {
-            data.append((char)(coverageStat.coverage[index].maxValue >> (i*8)));
+            data.append((char)(coverageStat.coverage[index] >> (i*8)));
         }
     }
     return data;
@@ -156,7 +156,7 @@ void U2AssemblyUtils::deserializeCoverageStat(QByteArray data, U2AssemblyCoverag
             for(int i = 0;i < 4;i++) {
                 value |= ((int)data[index*4 + i] & 0xff) << (i*8);
             }
-            res.coverage.append(U2Range<int>(value, value));
+            res.coverage.append(value);
         }
     } else {
         os.setError("Invalid attribute size");
@@ -167,7 +167,7 @@ QVector<qint64> U2AssemblyUtils::coverageStatToVector(const U2AssemblyCoverageSt
     int size = coverageStat.coverage.size();
     QVector<qint64> res(size);
     for(int i = 0; i < size; ++i) {
-        res[i] = coverageStat.coverage[i].maxValue;
+        res[i] = coverageStat.coverage[i];
     }
     return res;
 }

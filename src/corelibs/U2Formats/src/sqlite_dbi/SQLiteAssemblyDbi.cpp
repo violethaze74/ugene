@@ -548,7 +548,7 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U
     int csize = c.coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
-    U2Range<int>* cdata = c.coverage.data();
+    int* cdata = c.coverage.data();
     double basesPerRange = double(r.length) / csize;
     while (q.step() && !os.isCoR()) {
         qint64 startPos = q.getInt64(0);
@@ -585,8 +585,7 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U
             case U2CigarOp_N: // skip the skiped
                 continue;
             default:
-                cdata[i].minValue++;
-                cdata[i].maxValue++;
+                cdata[i]++;
             }
 
         }
@@ -605,10 +604,9 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
         coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
-    U2Range<int>* coverageData = ii.coverage.coverage.data();
+    int* coverageData = ii.coverage.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
-        coverageData[i].minValue++;
-        coverageData[i].maxValue++;
+        coverageData[i]++;
     }
 }
 

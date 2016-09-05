@@ -85,7 +85,7 @@ void CalcCoverageInfoTask::run() {
         }
         assert(coverageStat.coverage.size() == settings.regions);
         for(int regionIndex = 0;regionIndex < settings.regions;regionIndex++) {
-            result.coverageInfo[regionIndex] = coverageStat.coverage[regionIndex].maxValue;
+            result.coverageInfo[regionIndex] = coverageStat.coverage[regionIndex];
         }
     } else {
         for(int regionIndex = 0;regionIndex < settings.regions;regionIndex++) {
@@ -93,7 +93,7 @@ void CalcCoverageInfoTask::run() {
             int endPosition = qRound((settings.visibleRange.startPos + basesPerRegion*(regionIndex + 1))/coverageStatBasesPerRegion);
             result.coverageInfo[regionIndex] = 0;
             for(int i = startPosition;i < endPosition;i++) {
-                result.coverageInfo[regionIndex] = std::max(result.coverageInfo[regionIndex], (qint64)cachedCoverageStat.coverage[i].maxValue);
+                result.coverageInfo[regionIndex] = std::max(result.coverageInfo[regionIndex], (qint64)cachedCoverageStat.coverage[i]);
             }
         }
     }

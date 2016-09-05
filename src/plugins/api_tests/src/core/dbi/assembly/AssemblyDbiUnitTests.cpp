@@ -558,7 +558,7 @@ void AssemblyDbiUnitTests_calculateCoverage::Test() {
     c.coverage.resize(1);
     assemblyDbi->calculateCoverage(id, region, c, os);
     CHECK_NO_ERROR(os);
-    int res = c.coverage.first().maxValue;
+    int res = c.coverage.first();
     CHECK_TRUE(res == 1, "incorrect calculate Coverage");
 }
 

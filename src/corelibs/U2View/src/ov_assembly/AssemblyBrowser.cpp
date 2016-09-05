@@ -416,7 +416,7 @@ qint64 AssemblyBrowser::getCoverageAtPos(qint64 pos) {
         U2AssemblyCoverageStat coverageStat;
         coverageStat.coverage.resize(1);
         model->calculateCoverageStat(U2Region(pos, 1), coverageStat, status);
-        return coverageStat.coverage.first().maxValue;
+        return coverageStat.coverage.first();
     }
 }
 
