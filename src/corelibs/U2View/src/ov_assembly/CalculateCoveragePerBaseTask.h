@@ -50,7 +50,7 @@ public:
 
 private:
     void processRead(const U2AssemblyRead &read);
-    U2CigarOp nextCigarOp(const /*QByteArray &cigarString*/QVector<U2CigarOp> &cigarVector, int &index, int &insertionsCount);
+    U2CigarOp nextCigarOp(const QVector<U2CigarOp> &cigarVector, int &index, int &insertionsCount);
 
     const U2DbiRef dbiRef;
     const U2DataId assemblyId;

@@ -544,7 +544,6 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRea
 }
 
 void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, QVector<qint32>& coverage, U2OpStatus& os) {
-    // this method is called for calculation only for one possition
     int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 

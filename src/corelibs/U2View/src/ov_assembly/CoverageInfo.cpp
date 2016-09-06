@@ -22,6 +22,7 @@
 #include "CoverageInfo.h"
 
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include "AssemblyModel.h"
 
 #include <algorithm>
@@ -30,6 +31,7 @@
 namespace U2 {
 
 void CoverageInfo::updateStats() {
+    CHECK(!coverageInfo.isEmpty(),)
     maxCoverage = minCoverage = coverageInfo[0];
 
     qint64 sum = 0;
