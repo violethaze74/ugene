@@ -64,7 +64,7 @@ static void enableCoverageOnImport(U2AssemblyCoverageImportInfo &cii, int refere
     cii.computeCoverage = true;
     int coverageInfoSize = qMin(U2AssemblyUtils::MAX_COVERAGE_VECTOR_SIZE, referenceLength);
     cii.coverageBasesPerPoint = qMax(1.0, ((double)referenceLength)/coverageInfoSize);
-    cii.coverage.coverage.resize(coverageInfoSize);
+    cii.coverage.resize(coverageInfoSize);
 }
 
 namespace {
@@ -883,8 +883,8 @@ void ConvertToSQLiteTask::updateImportInfoReadsCountAttribute(const U2AssemblyRe
 }
 
 void ConvertToSQLiteTask::updateImportInfoCoverageStatAttribute(const U2AssemblyReadsImportInfo &importInfo, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
-    const U2AssemblyCoverageStat &coverageStat = importInfo.coverageInfo.coverage;
-    CHECK(!coverageStat.coverage.isEmpty(), );
+    const QVector<qint32> &coverageStat = importInfo.coverageInfo.coverage;
+    CHECK(!coverageStat.isEmpty(), );
 
     U2ByteArrayAttribute attribute;
     attribute.objectId = assembly.id;

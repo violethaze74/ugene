@@ -206,8 +206,8 @@ void MysqlAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRead
     }
 }
 
-void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os) {
-    int csize = c.coverage.size();
+void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, QVector<qint32>& coverage, U2OpStatus& os) {
+    int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
     double basesPerRange = double(r.length) / csize;
@@ -250,7 +250,7 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2A
             case U2CigarOp_N: // skip the skiped
                 continue;
             default:
-                c.coverage[i]++;
+                coverage[i]++;
             }
 
         }
@@ -262,7 +262,7 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
         return;
     }
 
-    int csize = ii.coverage.coverage.size();
+    int csize = ii.coverage.size();
 
     QVector<U2CigarOp> cigarVector;
     foreach (const U2CigarToken &cigar, read->cigar) {
@@ -278,7 +278,7 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
         coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
-    int* coverageData = ii.coverage.coverage.data();
+    int* coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
         switch (cigarVector[(i-startPos)*ii.coverageBasesPerPoint]){
         case U2CigarOp_I:

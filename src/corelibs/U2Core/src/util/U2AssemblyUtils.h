@@ -77,14 +77,14 @@ public:
     static qint64 getEffectiveReadLength(const U2AssemblyRead& read);
 
     /**
-        Serializes U2AssemblyCoverageStat to byte array for storing in dbi attribute
+        Serializes Coverage Statistics to byte array for storing in dbi attribute
     */
-    static QByteArray serializeCoverageStat(const U2AssemblyCoverageStat& coverageStat);
+    static QByteArray serializeCoverageStat(const QVector<qint32>& coverageStat);
 
     /**
-        Deserializes U2AssemblyCoverageStat that was serialized with serializeCoverageStat function
+        Deserializes Coverage Statistics that was serialized with serializeCoverageStat function
     */
-    static void deserializeCoverageStat(QByteArray data, U2AssemblyCoverageStat& res, U2OpStatus &os);
+    static void deserializeCoverageStat(QByteArray data, QVector<qint32>& res, U2OpStatus &os);
 
     /**
         Size of array of cached coverage

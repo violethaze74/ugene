@@ -334,7 +334,7 @@ void SQLiteAssemblyDbi::pack(const U2DataId& assemblyId, U2AssemblyPackStat& sta
     perfLog.trace(QString("Assembly: full pack time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000*1000)));
 }
 
-void SQLiteAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& c, U2OpStatus& os) {
+void SQLiteAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, QVector<qint32> & coverage, U2OpStatus& os) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::calculateCoverage");
 
     quint64 t0 = GTimer::currentTimeMicros();
@@ -343,7 +343,7 @@ void SQLiteAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Re
     if ( a == NULL ) {
         return;
     }
-    a->calculateCoverage(region, c, os);
+    a->calculateCoverage(region, coverage, os);
     perfLog.trace(QString("Assembly: full coverage calculation time for %2..%3: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000*1000)).arg(region.startPos).arg(region.endPos()));
 }
 
@@ -543,9 +543,9 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRea
     }
 }
 
-void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os) {
+void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, QVector<qint32>& coverage, U2OpStatus& os) {
     // this method is called for calculation only for one possition
-    int csize = c.coverage.size();
+    int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
     double basesPerRange = double(r.length) / csize;
@@ -589,7 +589,7 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U
             case U2CigarOp_N: // skip the skiped
                 continue;
             default:
-                c.coverage[i]++;
+                coverage[i]++;
             }
 
         }
@@ -600,7 +600,7 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
     if (!ii.computeCoverage) {
         return;
     }
-    int csize = ii.coverage.coverage.size();
+    int csize = ii.coverage.size();
 
     QVector<U2CigarOp> cigarVector;
     foreach (const U2CigarToken &cigar, read->cigar) {
@@ -616,7 +616,7 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
         coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
-    int* coverageData = ii.coverage.coverage.data();
+    int* coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
         switch (cigarVector[(i-startPos)*ii.coverageBasesPerPoint]){
         case U2CigarOp_I:

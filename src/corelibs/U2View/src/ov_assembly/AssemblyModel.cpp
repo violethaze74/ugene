@@ -117,12 +117,12 @@ U2DbiIterator<U2AssemblyRead>* AssemblyModel::getReads(const U2Region & r, U2OpS
     return assemblyDbi->getReads(assembly.id, r, os);
 }
 
-void AssemblyModel::calculateCoverageStat(const U2Region & r, U2AssemblyCoverageStat & stat, U2OpStatus & os) {
-    return assemblyDbi->calculateCoverage(assembly.id, r, stat, os);
+void AssemblyModel::calculateCoverageStat(const U2Region & r, QVector<qint32>& coverageStat, U2OpStatus & os) {
+    return assemblyDbi->calculateCoverage(assembly.id, r, coverageStat, os);
 }
 
 bool AssemblyModel::hasCachedCoverageStat() {
-    if(!cachedCoverageStat.coverage.isEmpty()) {
+    if(!cachedCoverageStat.isEmpty()) {
         return true;
     }
     U2AttributeDbi * attributeDbi = dbiHandle.dbi->getAttributeDbi();
@@ -137,10 +137,10 @@ bool AssemblyModel::hasCachedCoverageStat() {
     return false;
 }
 
-const U2AssemblyCoverageStat &AssemblyModel::getCoverageStat(U2OpStatus & os) {
+const QVector<qint32> &AssemblyModel::getCoverageStat(U2OpStatus & os) {
     QMutexLocker mutexLocker(&mutex);
     Q_UNUSED(mutexLocker);
-    if(cachedCoverageStat.coverage.isEmpty()) {
+    if(cachedCoverageStat.isEmpty()) {
         U2AttributeDbi * attributeDbi = dbiHandle.dbi->getAttributeDbi();
         if(NULL != attributeDbi) {
             U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, assembly.id, COVERAGE_STAT_ATTRIBUTE_NAME, os);
@@ -153,7 +153,7 @@ const U2AssemblyCoverageStat &AssemblyModel::getCoverageStat(U2OpStatus & os) {
                     if(!os.isCoR()) {
                         static const qint64 MAX_COVERAGE_CACHE_SIZE = 1000*1000;
                         int coverageCacheSize = (int)qMin(MAX_COVERAGE_CACHE_SIZE, length);
-                        cachedCoverageStat.coverage.resize(coverageCacheSize);
+                        cachedCoverageStat.resize(coverageCacheSize);
                         calculateCoverageStat(U2Region(0, length), cachedCoverageStat, os);
                         if(!os.isCoR()) {
                             U2ByteArrayAttribute attribute;

@@ -50,7 +50,7 @@ BackgroundTask<CoverageInfo>("Calculate assembly coverage", TaskFlag_None), sett
 
 void CalcCoverageInfoTask::run() {
 
-    U2AssemblyCoverageStat cachedCoverageStat;
+    QVector<qint32> cachedCoverageStat;
     {
         cachedCoverageStat = settings.model->getCoverageStat(stateInfo);
         if(stateInfo.isCoR()) {
@@ -68,23 +68,23 @@ void CalcCoverageInfoTask::run() {
         }
     }
     double basesPerRegion = (double)settings.visibleRange.length/settings.regions;
-    double coverageStatBasesPerRegion = (double)modelLength/cachedCoverageStat.coverage.size();
+    double coverageStatBasesPerRegion = (double)modelLength/cachedCoverageStat.size();
 
     result.coverageInfo.resize(settings.regions);
     result.region = settings.visibleRange;
 
-    if(cachedCoverageStat.coverage.isEmpty() || (coverageStatBasesPerRegion > basesPerRegion)) {
-        U2AssemblyCoverageStat coverageStat;
-        coverageStat.coverage.resize(settings.regions);
+    if(cachedCoverageStat.isEmpty() || (coverageStatBasesPerRegion > basesPerRegion)) {
+        QVector<qint32> coverageStat;
+        coverageStat.resize(settings.regions);
         {
             settings.model->calculateCoverageStat(settings.visibleRange, coverageStat, stateInfo);
             if(stateInfo.isCoR()) {
                 return;
             }
         }
-        assert(coverageStat.coverage.size() == settings.regions);
+        assert(coverageStat.size() == settings.regions);
         for(int regionIndex = 0;regionIndex < settings.regions;regionIndex++) {
-            result.coverageInfo[regionIndex] = coverageStat.coverage[regionIndex];
+            result.coverageInfo[regionIndex] = coverageStat[regionIndex];
         }
     } else {
         for(int regionIndex = 0;regionIndex < settings.regions;regionIndex++) {
@@ -92,7 +92,7 @@ void CalcCoverageInfoTask::run() {
             int endPosition = qRound((settings.visibleRange.startPos + basesPerRegion*(regionIndex + 1))/coverageStatBasesPerRegion);
             result.coverageInfo[regionIndex] = 0;
             for(int i = startPosition;i < endPosition;i++) {
-                result.coverageInfo[regionIndex] = std::max(result.coverageInfo[regionIndex], cachedCoverageStat.coverage[i]);
+                result.coverageInfo[regionIndex] = std::max(result.coverageInfo[regionIndex], cachedCoverageStat[i]);
             }
         }
     }

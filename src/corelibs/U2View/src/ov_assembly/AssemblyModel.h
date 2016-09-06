@@ -48,9 +48,9 @@ public:
     QList<U2AssemblyRead> getReadsFromAssembly(const U2Region & r, qint64 minRow, qint64 maxRow, U2OpStatus & os);
     U2DbiIterator<U2AssemblyRead> * getReads(const U2Region & r, U2OpStatus & os);
 
-    void calculateCoverageStat(const U2Region & r, U2AssemblyCoverageStat & stat, U2OpStatus & os);
+    void calculateCoverageStat(const U2Region & r, QVector<qint32>& coverageStat, U2OpStatus & os);
 
-    const U2AssemblyCoverageStat &getCoverageStat(U2OpStatus & os);
+    const QVector<qint32> &getCoverageStat(U2OpStatus & os);
 
     // returns true if calling getCoverageStat will not cause recomputation and is safe from main thread
     bool hasCachedCoverageStat();
@@ -151,7 +151,7 @@ private:
     QString referenceUri;
     bool uriRetrieved;
 
-    U2AssemblyCoverageStat cachedCoverageStat;
+    QVector<qint32> cachedCoverageStat;
 
     QMutex mutex;
 }; // AssemblyModel

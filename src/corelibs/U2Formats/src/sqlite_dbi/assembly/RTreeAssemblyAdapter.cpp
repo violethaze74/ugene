@@ -209,7 +209,7 @@ void RTreeAssemblyAdapter::pack(U2AssemblyPackStat& stat, U2OpStatus& os) {
     AssemblyPackAlgorithm::pack(packAdapter, stat, os);
 }
 
-void RTreeAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os) {
+void RTreeAssemblyAdapter::calculateCoverage(const U2Region& r, QVector<qint32>& coverage, U2OpStatus& os) {
     QString queryString = "SELECT gstart, gend - gstart FROM " + indexTable;
     bool rangeArgs = false;
     if (r != U2_REGION_MAX) {
@@ -221,7 +221,7 @@ void RTreeAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCovera
         q.bindInt64(1, r.endPos());
         q.bindInt64(2, r.startPos);
     }
-    SQLiteAssemblyUtils::calculateCoverage(q, r, c, os);
+    SQLiteAssemblyUtils::calculateCoverage(q, r, coverage, os);
 
 }
 
