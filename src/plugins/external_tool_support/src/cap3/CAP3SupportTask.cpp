@@ -81,11 +81,7 @@ QList<Task*> CAP3SupportTask::onSubTaskFinished(Task* subTask) {
     if (subTask == prepareDataForCAP3Task) {
         assert(!prepareDataForCAP3Task->getPreparedPath().isEmpty());
         GUrl inputUrl = prepareDataForCAP3Task->getPreparedPath();
-        if (prepareDataForCAP3Task->onlyCopyInputFiles()) {
-            tmpOutputUrl = inputUrl.getURLString()+ CAP3_EXT;
-        } else {
-            tmpOutputUrl = inputUrl.dirPath() + "/" + inputUrl.baseFileName() + CAP3_EXT;
-        }
+        tmpOutputUrl = inputUrl.getURLString()+ CAP3_EXT;
 
         QStringList arguments = settings.getArgumentsList();
         arguments.prepend( inputUrl.getURLString() );
@@ -241,7 +237,7 @@ void PrepareInputForCAP3Task::prepare() {
         QString outPath = outputDir + "/" + QString("%1_misc").arg(inputGUrls.first().baseFileName());
         qualityFilePath = outPath + ".qual";
 
-        if (!seqWriter.init(outPath)) {
+        if (!seqWriter.init(outPath + ".fa")) {
             setError(tr("Failed to initialize sequence writer."));
             return;
         }
