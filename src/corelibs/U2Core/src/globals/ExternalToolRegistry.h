@@ -78,7 +78,7 @@ public:
     const QString&      getToolKitName()  const { return toolKitName; }
     const QStrStrMap&   getErrorDescriptions()  const { return errorDescriptions; }
 
-    virtual void        getAdditionalParameters(const QString& output) {};
+    virtual void        getAdditionalParameters(const QString& output) { Q_UNUSED(output) };
 
     ExternalToolValidation getToolValidation();
     const QList<ExternalToolValidation>& getToolAdditionalValidations() const { return additionalValidators; }

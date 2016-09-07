@@ -194,7 +194,7 @@ public slots:
     void sl_onPosChangeRequest(int pos);
 
 private slots:
-    void sl_onContextMenuRequested(const QPoint & pos);
+    void sl_onContextMenuRequested();
     void sl_onFindPatternClicked();
     void sl_onShowPosSelectorRequest();
     void sl_toggleHL();

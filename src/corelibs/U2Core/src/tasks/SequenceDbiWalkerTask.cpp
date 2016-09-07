@@ -56,7 +56,7 @@ QList<SequenceDbiWalkerSubtask*> SequenceDbiWalkerTask::prepareSubtasks() {
         }
     }
 
-    if (config.walkCircular && static_cast<quint64>(config.range.length) == sequenceObject.getSequenceLength()) {
+    if (config.walkCircular && config.range.length == sequenceObject.getSequenceLength()) {
         config.range.length += config.walkCircularDistance * (config.aminoTrans == NULL ? 1 : 3);
     }
 

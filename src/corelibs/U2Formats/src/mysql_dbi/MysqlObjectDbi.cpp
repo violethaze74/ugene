@@ -312,6 +312,7 @@ QString createDeleteObjectQueryStr(int objectCount) {
 }
 
 bool MysqlObjectDbi::removeObjects(const QList<U2DataId>& dataIds, bool force, U2OpStatus& os) {
+    Q_UNUSED(force)
     CHECK(!dataIds.isEmpty(), true);
 
     MysqlTransaction t(db, os);

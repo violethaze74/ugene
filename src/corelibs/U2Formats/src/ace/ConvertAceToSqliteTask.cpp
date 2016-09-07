@@ -262,7 +262,7 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
         U2AssemblyReadsImportInfo & importInfo = importInfos[assemblyNum];
         qint64 maxProw = importInfo.packStat.maxProw;
         qint64 readsCount = importInfo.packStat.readsCount;
-        const U2AssemblyCoverageStat & coverageStat = importInfo.coverageInfo.coverage;
+//        const U2AssemblyCoverageStat & coverageStat = importInfo.coverageInfo.coverage;
         if (maxProw > 0) {
             U2IntegerAttribute maxProwAttr;
             maxProwAttr.objectId = assembly.id;

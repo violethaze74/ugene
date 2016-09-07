@@ -133,7 +133,7 @@ protected:
     bool calculateLabelData(const QRect& rect, const PairVector& points, GraphLabel* label);
     void calculatePositionOfLabel(GraphLabel *label, int nPoints);
     float calculateLabelValue(int nPoints, const PairVector &points, GraphLabel *label, int xcoordInRect);
-    float calculatePointValue(int nPoints, const PairVector &points, int xcoordInRect);
+    float calculatePointValue(const PairVector &points, int xcoordInRect);
     bool updateStaticLabels(const QSharedPointer<GSequenceGraphData>& graph, GraphLabel* label, const QRect& rect);
     void updateMovingLabels(const QSharedPointer<GSequenceGraphData>& graph, GraphLabel* label, const QRect& rect);
     void updateStaticLabels(MultiLabel& multiLabel, const QRect& rect);

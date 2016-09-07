@@ -193,7 +193,7 @@ QWidget* AnnotatedDNAView::createWidget() {
     mainSplitter->addWidget(codonTableView);
 
     mainSplitter->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(mainSplitter, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
+    connect(mainSplitter, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested()));
 
     scrollArea = new QScrollArea();
     scrollArea->setObjectName("annotated_DNA_scrollarea");
@@ -739,7 +739,7 @@ void AnnotatedDNAView::updateMultiViewActions() {
     }
 }
 
-void AnnotatedDNAView::sl_onContextMenuRequested(const QPoint &scrollAreaPos) {
+void AnnotatedDNAView::sl_onContextMenuRequested() {
     QMenu m;
 
     m.addAction(posSelectorAction);

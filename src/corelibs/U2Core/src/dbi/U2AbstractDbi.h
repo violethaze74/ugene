@@ -136,6 +136,7 @@ public:
     }
 
     virtual U2DataId getObject(qint64 objectId, U2OpStatus& os) {
+        Q_UNUSED(objectId)
         U2DbiUtils::logNotSupported(U2DbiFeature_RemoveObjects, getRootDbi(), os);
         return U2DataId();
     }
