@@ -154,7 +154,7 @@ QStringList AnnParser::getQualifierNames() const {
     return QStringList() << "Allele"
                          << EFFECT
                          << PUTATIVE_IMPACT
-                         << "Gene_Name"
+                         << "Gene_name"
                          << "Gene_ID"
                          << "Feature_type"
                          << "Feature_ID"
@@ -203,16 +203,16 @@ EffParser::EffParser()
 QStringList EffParser::getQualifierNames() const {
     return QStringList() << EFFECT
                          << EFFECT_IMPACT
-                         << "Functional_Class"
-                         << "Codon_Change_Dist"
-                         << "Amino_Acid_Change"
-                         << "Amino_Acid_Length"
-                         << "Gene_Name"
-                         << "Transcript_BioType"
-                         << "Gene_Coding"
+                         << "Functional_class"
+                         << "Codon_change_dist"
+                         << "Amino_acid_change"
+                         << "Amino_acid_length"
+                         << "Gene_name"
+                         << "Transcript_biotype"
+                         << "Gene_coding"
                          << "Transcript_ID"
-                         << "Exon_Intron_Rank"
-                         << "Genotype_Number";
+                         << "Exon_intron_rank"
+                         << "Genotype_number";
 }
 
 QStringList EffParser::getValues(const QString &entry) const {

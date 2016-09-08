@@ -343,7 +343,7 @@ void WorkflowDesignerService::initSampleActions() {
     ngsRawDna.requiredPlugins << externalToolsPlugin;
     SampleAction ngsVariants(ToolsMenu::NGS_CALL_VARIANTS, ToolsMenu::NGS_MENU, "NGS/call_variants.uwl", SampleAction::Select, tr("Variant calling"));
     ngsVariants.requiredPlugins << externalToolsPlugin;
-    SampleAction ngsVariantsAndEffect(ToolsMenu::NGS_CALL_VARIANTS_AND_EFFECT, ToolsMenu::NGS_MENU, "NGS/call_variants_full.uwl", SampleAction::Select, tr("Variant calling and effect prediction"));
+    SampleAction ngsVariantsAndEffect(ToolsMenu::NGS_CALL_VARIANTS_AND_EFFECT, ToolsMenu::NGS_MENU, "NGS/call_variants_full.uwl", SampleAction::Select, tr("Variant calling and effects prediction"));
     ngsVariantsAndEffect.requiredPlugins << externalToolsPlugin;
     SampleAction ngsEffect(ToolsMenu::NGS_VARIANT_EFFECT, ToolsMenu::NGS_MENU, "NGS/variation_annotation.uwl", SampleAction::Select, tr("Annotate variants and predict effects"));
     ngsEffect.requiredPlugins << externalToolsPlugin;

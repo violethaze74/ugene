@@ -1,9 +1,10 @@
 #@UGENE_WORKFLOW
-#Using this workflow you can filter input sequences with length >= than a specified minumum length. The results will be written to a file in the FASTA format.
+#To use this workflow input a set of sequences and set a minimum sequence length.
+#All sequences with length less than the specified value will be filtered out. The result will be written into a FASTA file by default.
 
 include "LengthMarker.usa" as "Script-LengthMarker"
 
-workflow "Filter long sequences"{
+workflow "Filter out short sequences"{
 
     read-sequence {
         type:read-sequence;
@@ -37,8 +38,8 @@ if (seqObject.length() < SequenceLength) {
 
     .actor-bindings {
         filter-by-values.filtered-data->write-sequence.in-sequence
-        read-sequence.out-sequence->Script-LengthMarker.in
         Script-LengthMarker.out->filter-by-values.in-data
+        read-sequence.out-sequence->Script-LengthMarker.in
     }
 
     Script-LengthMarker.text->filter-by-values.in-data.text
@@ -50,27 +51,27 @@ if (seqObject.length() < SequenceLength) {
     .meta {
         visual {
             Script-LengthMarker {
-                pos:"-630 -480";
+                pos:"-615 -465";
                 style:simple;
                 bg-color-simple:"0 128 128 64";
                 in.angle:180;
                 out.angle:360;
             }
             filter-by-values {
-                pos:"-465 -480";
+                pos:"-450 -465";
                 style:ext;
                 bg-color-ext:"0 129 94 64";
                 filtered-data.angle:360;
                 in-data.angle:180;
             }
             read-sequence {
-                pos:"-825 -480";
+                pos:"-810 -465";
                 style:ext;
                 bg-color-ext:"255 170 127 64";
                 out-sequence.angle:360;
             }
             write-sequence {
-                pos:"-210 -480";
+                pos:"-195 -465";
                 style:ext;
                 bg-color-ext:"170 170 0 64";
                 in-sequence.angle:180;

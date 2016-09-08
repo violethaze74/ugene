@@ -25,7 +25,7 @@ workflow "Variant calling and effects prediction"{
         name:"Call Variants";
         max-dep:100;
         reference-source:port;
-        variants-url:variations.vcf;
+        variants-url:variants.vcf;
     }
     files-conversion-1 {
         type:files-conversion;
@@ -393,12 +393,16 @@ workflow "Variant calling and effects prediction"{
             }
             page {
                 id:7;
-                title:"Output variations";
+                title:"Output files";
                 parameters-area {
                     group {
-                        title:"Output file";
-                        label-size:100;
+                        title:"Output variants";
+                        label-size:110;
                         call_variants.variants-url {
+                            label:"Output VCF file"
+                        }
+                        convert-snpeff-variations-to-annotations.url-out {
+                            label:"Output GenBank file"
                         }
                     }
                 }
