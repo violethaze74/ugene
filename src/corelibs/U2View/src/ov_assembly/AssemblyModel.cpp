@@ -160,7 +160,7 @@ const U2AssemblyCoverageStat &AssemblyModel::getCoverageStat(U2OpStatus & os) {
                         for (int i = 0; i < results->size(); i++) {
                             cachedCoverageStat.coverage->append(U2Range<int>(results->at(i).coverage, results->at(i).coverage));
                         }
-                        
+
                         /*
                         if(!os.isCoR()) {
                             U2ByteArrayAttribute attribute;

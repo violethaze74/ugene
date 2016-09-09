@@ -32,12 +32,12 @@ using namespace HI;
 class ExtractAssemblyRegionDialogFiller : public Filler {
 public:
     ExtractAssemblyRegionDialogFiller(HI::GUITestOpStatus &os, const QString &filepath, const U2Region &region, const QString &format);
-	void commonScenario();
+    void commonScenario();
 
 private:
-	QString filepath;
-	U2Region regionToExtract;
-	QString format;
+    QString filepath;
+    U2Region regionToExtract;
+    QString format;
 };
 
 }

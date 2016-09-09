@@ -39,7 +39,7 @@ namespace U2 {
 const int AddSequenceObjectsToAlignmentTask::maxErrorListSize = 5;
 
 AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MAlignmentObject* obj, const QList<DNASequence>& seqList)
-    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC)), seqList(seqList), maObj(obj), 
+    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC)), seqList(seqList), maObj(obj),
     stateLock(NULL), msaAlphabet(maObj->getAlphabet()), dbi(NULL), modStep(NULL) {
     entityRef = maObj->getEntityRef();
 }

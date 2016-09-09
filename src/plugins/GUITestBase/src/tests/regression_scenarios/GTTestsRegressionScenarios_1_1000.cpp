@@ -710,7 +710,7 @@ GUI_TEST_CLASS_DEFINITION(test_0598) {
 
     GTWidget::click(os, sequenceWidget);
 
-    // 2. Show DNA Flexibility graph 
+    // 2. Show DNA Flexibility graph
     // Expected state: 'Calculate graph points' task is started
     QWidget *graphAction = GTWidget::findWidget(os, "GraphMenuAction", sequenceWidget, false);
     Runnable *chooser = new PopupChooser(os, QStringList() << "DNA Flexibility");

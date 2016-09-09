@@ -489,10 +489,10 @@ void SWResultsPostprocessingTask::run(){
 }
 
 PairwiseAlignmentSmithWatermanTaskSettings::PairwiseAlignmentSmithWatermanTaskSettings(const PairwiseAlignmentTaskSettings &s) :
-    PairwiseAlignmentTaskSettings(s), 
+    PairwiseAlignmentTaskSettings(s),
     reportCallback(NULL),
     resultListener(NULL),
-    resultFilter(NULL), 
+    resultFilter(NULL),
     gapOpen(0),
     gapExtd(0),
     percentOfScore(0) {}

@@ -134,7 +134,7 @@ QMap<int, QList<SharedAnnotationData> > BioStruct3D::generateChainAnnotations() 
         sd->name = BioStruct3D::MoleculeAnnotationTag;
         if ((*iter)->chainId > 0) {
             sd->qualifiers.append(U2Qualifier(ChainIdQualifierName, QString("%1").arg((*iter)->chainId)));
-        } 
+        }
         if (!(*iter)->name.isEmpty()) {
             sd->qualifiers.append(U2Qualifier(molNameQualifier, (*iter)->name));
         }

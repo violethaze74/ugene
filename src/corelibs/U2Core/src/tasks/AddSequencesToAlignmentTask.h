@@ -54,7 +54,7 @@ protected:
 private:
     StateLock*                  stateLock;
     const DNAAlphabet*          msaAlphabet;
-    QStringList                 errorList;    
+    QStringList                 errorList;
     U2MsaDbi*                   dbi;
     U2EntityRef                 entityRef;
     U2UseCommonUserModStep*     modStep;

@@ -69,7 +69,7 @@ void ExtractAssemblyRegionDialog::sl_regionChanged(const U2Region& newRegion) {
         QString baseName = fi.baseName();
         QString newLocation = QString::number(newRegion.startPos + 1) + "_" + QString::number(newRegion.endPos());
         baseName.replace(stringToReplace, newLocation);
-        
+
         filePath = fi.dir().path() + "/" + baseName + "." + fi.completeSuffix();
         saveController->setPath(filePath);
     }
@@ -105,7 +105,7 @@ void ExtractAssemblyRegionDialog::accept() {
         regionSelector->setFocus(Qt::OtherFocusReason);
         return;
     }
-    
+
     if (settings->fileUrl.isEmpty()) {
         QMessageBox::critical(this, tr("Error!"), tr("Select destination file"));
         filepathLineEdit->setFocus(Qt::OtherFocusReason);

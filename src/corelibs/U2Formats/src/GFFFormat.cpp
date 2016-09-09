@@ -63,7 +63,7 @@ Document* GFFFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const Q
     load(io, dbiRef, objects, fs, os);
 
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
-    
+
     DocumentFormatUtils::updateFormatHints(objects, fs);
     fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings();
 
