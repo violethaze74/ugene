@@ -698,25 +698,28 @@ int MAlignmentObject::shiftRegion( int startPos, int startRow, int nBases, int n
 
     int n = 0;
     if (shift > 0) {
-        // if some trailing gaps are selected --> save them!
-        if (startPos + nBases + shift > getLength()) {
-            bool increaseAlignmentLen = true;
-            for (int i = startRow; i < startRow + nRows; i++) {
-                const MAlignmentRow& row = getRow(i);
-                int rowLen = row.getRowLengthWithoutTrailing();
-                if (rowLen >= startPos + nBases + shift) {
-                    increaseAlignmentLen = false;
-                    break;
+        int originalLength = getLength();
+        //if full column selected - do not add gaps at the end
+        if (!(startRow == 0 && nRows == getNumRows())) {
+            // if some trailing gaps are selected --> save them!
+            if (startPos + nBases + shift > getLength()) {
+                bool increaseAlignmentLen = true;
+                for (int i = startRow; i < startRow + nRows; i++) {
+                    const MAlignmentRow& row = getRow(i);
+                    int rowLen = row.getRowLengthWithoutTrailing();
+                    if (rowLen >= startPos + nBases + shift) {
+                        increaseAlignmentLen = false;
+                        break;
+                    }
+                }
+                if (increaseAlignmentLen) {
+                    MsaDbiUtils::updateMsaLength(entityRef, startPos + nBases + shift, os);
+                    SAFE_POINT_OP(os, 0);
+                    updateCachedMAlignment();
                 }
             }
-            if (increaseAlignmentLen) {
-                MsaDbiUtils::updateMsaLength(entityRef, startPos + nBases + shift, os);
-                SAFE_POINT_OP( os, 0 );
-                updateCachedMAlignment();
-            }
         }
-
-        insertGap(U2Region(startRow,nRows), startPos, shift);
+        insertGap(U2Region(startRow, nRows), startPos, shift);
         n = shift;
     } else if ( 0 < startPos ) {
         if (0 > startPos + shift) {
