@@ -32,7 +32,7 @@ class SnpEffSupport : public ExternalTool {
     Q_OBJECT
 public:
     SnpEffSupport(const QString& name, const QString& path = "");
-    
+
     const QStringList getToolRunnerAdditionalOptions();
 };
 

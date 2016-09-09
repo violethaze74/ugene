@@ -53,7 +53,7 @@ public:
 
     /** Return the MSA alphabet */
     virtual U2AlphabetId getMsaAlphabet(const U2DataId& msaId, U2OpStatus& os) = 0;
-    
+
     /** Return the MSA length */
     virtual qint64 getMsaLength(const U2DataId& msaId, U2OpStatus& os) = 0;
 

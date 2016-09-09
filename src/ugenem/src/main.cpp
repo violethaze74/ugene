@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
         sender.send("", dumpUrl);
         return 0;
     }
-    
+
 
     if (useGui) {
         SendReportDialog dlg(message, dumpUrl);

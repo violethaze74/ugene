@@ -46,7 +46,7 @@ public:
     static const QString DOM_E_MINUS_PREFIX;
     static const QString HMM_FILES_DIR_ID;
     static const QString ANNOTATIONS_DEFAULT_NAME;
-    
+
 private slots:
     void sl_okButtonClicked();
     void sl_useEvalTresholdsButtonChanged(bool checked);
@@ -56,7 +56,7 @@ private slots:
     void sl_domESpinBoxChanged(int newVal);
     void sl_queryHmmFileToolButtonClicked();
     void sl_domZCheckBoxChanged(int state);
-    
+
 private:
     void setModelValues();
     void getModelValues();

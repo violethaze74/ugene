@@ -55,7 +55,7 @@ public:
      * Don't delete logParser, it will be deleted automatically.
      */
     ExternalToolRunTask(const QString& toolName, const QStringList& arguments, ExternalToolLogParser* logParser,
-        const QString& workingDirectory = "", const QStringList& additionalPaths = QStringList(), 
+        const QString& workingDirectory = "", const QStringList& additionalPaths = QStringList(),
         const QString &additionalProcessToKill = QString(), bool parseOutputFile = false);
     ~ExternalToolRunTask();
 

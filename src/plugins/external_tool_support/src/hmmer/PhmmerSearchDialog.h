@@ -42,7 +42,7 @@ class PhmmerSearchDialog : public QDialog, public Ui_PhmmerSearchDialog {
     Q_OBJECT
 public:
     PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = NULL);
-    
+
 private slots:
     void accept();
     void sl_queryToolButtonClicked();
@@ -51,7 +51,7 @@ private slots:
     void sl_domZCheckBoxChanged(int state);
     void sl_maxCheckBoxChanged(int state);
     void sl_domESpinBoxChanged(int newVal);
-    
+
 private:
     void setModelValues();
     void getModelValues();

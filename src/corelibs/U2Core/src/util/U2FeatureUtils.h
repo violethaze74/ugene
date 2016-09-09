@@ -131,7 +131,7 @@ public:
      */
     static QList<U2Feature>         getSubGroups(const U2DataId &parentFeatureId, const U2DbiRef &dbiRef, U2OpStatus &os,
                                         OperationScope scope = Recursive, ParentFeatureStatus parent = Nonroot);
-    
+
     static QList<FeatureAndKey>     getSortedSubgroups(QList<FeatureAndKey> &fkList, const U2DataId &parentId);
 
 private:

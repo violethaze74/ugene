@@ -225,7 +225,7 @@ void U2AssemblyUtils::calculateCoveragePerBase(const U2DbiRef &dbiRef, const U2D
             CoveragePerBaseInfo &info = (*results)[regionToProcess.startPos + positionOffset - region.startPos];
             U2CigarOp cigarOp = nextCigarOp(cigarString, cigarOffset, insertionsCount, os);
             CHECK_OP(os, );
-            
+
 
             switch (cigarOp) {
             case U2CigarOp_I:

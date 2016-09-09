@@ -40,7 +40,7 @@ public:
 
     /** Constructs new empty (and invalid) qualifier */
     U2Qualifier();
-    
+
     /** Constructs new qualifier instance with name and value set */
     U2Qualifier(const QString &name, const QString &value);
 
@@ -49,7 +49,7 @@ public:
 
     /** Any two qualifiers are equal if their names & values are equal */
     bool operator==(const U2Qualifier &q) const;
-    
+
     /** Any two qualifiers are not equal if either their names or values are  not equal */
     bool operator!=(const U2Qualifier &q) const;
 

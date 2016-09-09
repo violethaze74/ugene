@@ -747,7 +747,7 @@ IMPLEMENT_TEST(FeatureDbiUnitTests, getFeaturesBySequence) {
 IMPLEMENT_TEST(FeatureDbiUnitTests, sortingSubgroups) {
     U2OpStatusImpl os;
     U2FeatureDbi *subgroupDbi = FeatureTestData::getSubgroupDbi();
-    
+
     U2DataId rootFeatureId = U2DbiUtils::toU2DataId(2, U2Type::AnnotationTable);
     QList<FeatureAndKey> rawData = subgroupDbi->getFeatureTable(rootFeatureId, os);
     QList<FeatureAndKey> groups = U2FeatureUtils::getSortedSubgroups(rawData, rootFeatureId);

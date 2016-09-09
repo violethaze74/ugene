@@ -1080,7 +1080,7 @@ void AssemblyBrowser::sl_setReference() {
 void AssemblyBrowser::sl_extractAssemblyRegion() {
     GUrl url(U2DbiUtils::ref2Url(model->getDbiConnection().dbi->getDbiRef()));
     U2Region visibleRegion = getVisibleBasesRegion();
-    QString extractedFragmentFilename = url.dirPath() + "/" + url.baseFileName() + "_" + QString::number(visibleRegion.startPos + 1) 
+    QString extractedFragmentFilename = url.dirPath() + "/" + url.baseFileName() + "_" + QString::number(visibleRegion.startPos + 1)
         + "_" + QString::number(visibleRegion.endPos()) + "." + url.completeFileSuffix();
     U2OpStatusImpl os;
     ExtractAssemblyRegionTaskSettings ts(extractedFragmentFilename, model->getModelLength(os), gobject);

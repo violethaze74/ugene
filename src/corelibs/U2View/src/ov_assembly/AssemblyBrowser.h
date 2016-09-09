@@ -137,7 +137,7 @@ public slots:
     void sl_zoomOut(const QPoint & pos = QPoint());
     void sl_zoomToReads();
     void sl_coveredRegionClicked(const QString link);
-	void sl_extractAssemblyRegion();
+    void sl_extractAssemblyRegion();
 
 signals:
     void si_offsetsChanged();
