@@ -257,47 +257,47 @@ By default, loglevel=&quot;ERROR&quot;.</translation>
 <context>
     <name>U2::PluginDescriptorHelper</name>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="109"/>
-        <location filename="../src/PluginDescriptor.cpp" line="115"/>
-        <location filename="../src/PluginDescriptor.cpp" line="121"/>
-        <location filename="../src/PluginDescriptor.cpp" line="127"/>
+        <location filename="../src/PluginDescriptor.cpp" line="110"/>
+        <location filename="../src/PluginDescriptor.cpp" line="116"/>
+        <location filename="../src/PluginDescriptor.cpp" line="122"/>
+        <location filename="../src/PluginDescriptor.cpp" line="128"/>
         <source>Required attribute not found %1</source>
         <translation>Required attribute not found %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="138"/>
-        <location filename="../src/PluginDescriptor.cpp" line="149"/>
-        <location filename="../src/PluginDescriptor.cpp" line="155"/>
+        <location filename="../src/PluginDescriptor.cpp" line="139"/>
+        <location filename="../src/PluginDescriptor.cpp" line="150"/>
+        <location filename="../src/PluginDescriptor.cpp" line="156"/>
         <source>Required element not found %1</source>
         <translation>Required element not found %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="162"/>
+        <location filename="../src/PluginDescriptor.cpp" line="163"/>
         <source>Not valid value: &apos;%1&apos;, plugin: %2</source>
         <translation>Not valid value: &apos;%1&apos;, plugin: %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="170"/>
+        <location filename="../src/PluginDescriptor.cpp" line="171"/>
         <source>Platform arch is unknown: %1</source>
         <translation>Platform arch is unknown: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="177"/>
+        <location filename="../src/PluginDescriptor.cpp" line="178"/>
         <source>Platform bits is unknown: %1</source>
         <translation>Platform bits is unknown: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="196"/>
+        <location filename="../src/PluginDescriptor.cpp" line="197"/>
         <source>Invalid depends token: %1</source>
         <translation>Invalid depends token: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="256"/>
+        <location filename="../src/PluginDescriptor.cpp" line="257"/>
         <source>Plugin circular dependency detected: %1 &lt;-&gt; %2</source>
         <translation>Plugin circular dependency detected: %1 &lt;-&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="340"/>
+        <location filename="../src/PluginDescriptor.cpp" line="341"/>
         <source>Can&apos;t satisfy dependencies for %1 !</source>
         <translation>Can&apos;t satisfy dependencies for %1 !</translation>
     </message>

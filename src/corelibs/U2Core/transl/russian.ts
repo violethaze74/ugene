@@ -1367,47 +1367,47 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="348"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="350"/>
         <source>Can not remove temporary directory: path is empty.</source>
         <translation>Невозможно удалить временную директорию: пустой путь.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="354"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="356"/>
         <source>Can not remove files from temporary directory.</source>
         <translation>Невозможно удалить файлы из временной директории.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="359"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="361"/>
         <source>Can not remove directory for temporary files.</source>
         <translation>Невозможно удалить директорию для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="372"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="374"/>
         <source>Can not create directory for temporary files: %1</source>
         <translation>Невозможно создать директорию для временных файлов: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="403"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="405"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="419"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="421"/>
         <source>Undefined tool: &apos;%1&apos;</source>
         <translation>Неопределенный инструмент: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="423"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="425"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Путь до инструмента &apos;%1&apos; не установлен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="467"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="469"/>
         <source>Working directory is &quot;%1&quot;</source>
         <translation>Рабочая директория &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="476"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="478"/>
         <source>Launching %1 tool: %2 %3</source>
         <translation>Запуск инструмента %1: %2 %3</translation>
     </message>

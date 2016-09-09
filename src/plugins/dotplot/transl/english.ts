@@ -447,6 +447,11 @@ Select valid file to build dotplot</source>
         <source>Hand tool (&lt;b&gt;H&lt;/b&gt;)</source>
         <translation>Hand tool (&lt;b&gt;H&lt;/b&gt;)</translation>
     </message>
+    <message>
+        <location filename="../src/DotPlotSplitter.cpp" line="293"/>
+        <source>One of the sequences in dotplot is NULL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::DotPlotViewAction</name>
@@ -595,12 +600,12 @@ Select valid file to build dotplot</source>
         <translation>Save dotplot data before closing?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="963"/>
+        <location filename="../src/DotPlotWidget.cpp" line="948"/>
         <source>Invalid weight and height parameters!</source>
         <translation>Invalid weight and height parameters!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="1057"/>
+        <location filename="../src/DotPlotWidget.cpp" line="1042"/>
         <source> (min length %1, identity %2%)</source>
         <translation> (min length %1, identity %2%)</translation>
     </message>

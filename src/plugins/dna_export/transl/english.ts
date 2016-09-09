@@ -9,9 +9,13 @@
         <translation>Set Base Content</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="26"/>
         <source>Base conetnt</source>
-        <translation>Base conetnt</translation>
+        <translation type="vanished">Base conetnt</translation>
+    </message>
+    <message>
+        <location filename="../src/BaseContentDialog.ui" line="26"/>
+        <source>Base content</source>
+        <translation>Base content</translation>
     </message>
     <message>
         <location filename="../src/BaseContentDialog.ui" line="55"/>
@@ -819,7 +823,7 @@
     <message>
         <location filename="../src/ExportSequenceTask.cpp" line="567"/>
         <source>Sequences of the selected annotations can&apos;t be exported. At least one of the annotations is out of boundaries</source>
-        <translation type="unfinished"></translation>
+        <translation>Sequences of the selected annotations can&apos;t be exported. At least one of the annotations is out of boundaries</translation>
     </message>
     <message>
         <location filename="../src/ExportSequenceTask.cpp" line="585"/>
@@ -2052,7 +2056,8 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</trans
         <source>The sequences from selected BLAST results will be downloaded from
 NCBI Genbank by their GI identifier
 </source>
-        <translation type="unfinished"></translation>
+        <translation>The sequences from selected BLAST results will be downloaded from
+NCBI Genbank by their GI identifier</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>

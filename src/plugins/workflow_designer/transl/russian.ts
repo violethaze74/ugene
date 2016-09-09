@@ -1803,7 +1803,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ConvertSnpeffVariationsToAnnotationsWorker.cpp" line="116"/>
-        <source>The same as input file</source>
+        <source>Produced from the input file name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5569,7 +5569,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/WorkflowDesignerPlugin.cpp" line="346"/>
-        <source>Variant calling and effect prediction</source>
+        <source>Variant calling and effects prediction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

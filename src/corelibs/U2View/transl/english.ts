@@ -1156,12 +1156,12 @@ Probably the data is too big.</translation>
         <translation>Generating tree view</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1496"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1500"/>
         <source>Expand</source>
         <translation>Expand</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1499"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1503"/>
         <source>Collapse</source>
         <translation>Collapse</translation>
     </message>
@@ -7123,115 +7123,115 @@ Please, load the corresponding plugins.</translation>
 <context>
     <name>U2::TreeViewer</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="157"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="159"/>
         <source>Tree Settings...</source>
         <translation>Tree Settings...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="162"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="164"/>
         <source>Rectangular</source>
         <translation>Rectangular</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="167"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="169"/>
         <source>Circular</source>
         <translation>Circular</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="171"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="173"/>
         <source>Unrooted</source>
         <translation>Unrooted</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="176"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="178"/>
         <source>Branch Settings...</source>
         <translation>Branch Settings...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="178"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="180"/>
         <source>Collapse</source>
         <translation>Collapse</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="180"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="182"/>
         <source>Reroot tree</source>
         <translation>Reroot tree</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="182"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="184"/>
         <source>Swap Siblings</source>
         <translation>Swap Siblings</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="186"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="188"/>
         <source>Show Names</source>
         <translation>Show Names</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="191"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="193"/>
         <source>Show Node Labels</source>
         <translation>Show Node Labels</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="196"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="198"/>
         <source>Show Distances</source>
         <translation>Show Distances</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="202"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="204"/>
         <source>Formatting...</source>
         <translation>Formatting...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="206"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="208"/>
         <source>Align Labels</source>
         <translation>Align Labels</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="211"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="213"/>
         <source>Zoom In</source>
         <translation>Zoom In</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="212"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="214"/>
         <source>Zoom Out</source>
         <translation>Zoom Out</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="213"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="215"/>
         <source>Reset Zooming</source>
         <translation>Reset Zooming</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="216"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="218"/>
         <source>Print Tree...</source>
         <translation>Print Tree...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="219"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="221"/>
         <source>Screen Capture...</source>
         <translation>Screen Capture...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="221"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="223"/>
         <source>Whole Tree as SVG...</source>
         <translation>Whole Tree as SVG...</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="249"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="312"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="251"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="314"/>
         <source>Layout</source>
         <translation>Layout</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="268"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="326"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="270"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="328"/>
         <source>Show Labels</source>
         <translation>Show Labels</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="289"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="345"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="291"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="347"/>
         <source>Export Tree Image</source>
         <translation>Export Tree Image</translation>
     </message>
@@ -7252,7 +7252,7 @@ Please, load the corresponding plugins.</translation>
 <context>
     <name>U2::TreeViewerUI</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="471"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="473"/>
         <source>Export Tree Image</source>
         <translation>Export Tree Image</translation>
     </message>

@@ -100,7 +100,7 @@
         <translation>GTF</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="766"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="767"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Unexpected number of modified objects. Expected: 1, actual: %1</translation>
     </message>
@@ -1719,17 +1719,17 @@ The following sequences are empty:</translation>
 <context>
     <name>U2::LoadConvertAndSaveSnpeffVariationsToAnnotationsTask</name>
     <message>
-        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="122"/>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="117"/>
         <source>Load file and convert SnpEff variations to annotations task</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="162"/>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="157"/>
         <source>&apos;%1&apos; load failed, the result document is NULL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="166"/>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="161"/>
         <source>File &apos;%1&apos; doesn&apos;t contain variation tracks</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2376,8 +2376,8 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="600"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="633"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1113"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1122"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1114"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1123"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Unexpected modification type &apos;%1&apos;</translation>
     </message>
@@ -2447,54 +2447,54 @@ The following sequences are empty:</translation>
         <translation>An error occurred during addition of a row</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="586"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="587"/>
         <source>Can&apos;t undo an operation for the object</source>
         <translation>Can&apos;t undo an operation for the object</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="649"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="650"/>
         <source>Can&apos;t redo an operation for the object</source>
         <translation>Can&apos;t redo an operation for the object</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="791"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="896"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="792"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="897"/>
         <source>Object not found</source>
         <translation>Object not found</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="845"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="846"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Folder not found: %1 (canonical: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1026"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1027"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Not an object, id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1049"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1050"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="289"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1091"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1092"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1104"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1105"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1135"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1136"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1153"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1154"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
@@ -2721,7 +2721,7 @@ The following sequences are empty:</translation>
         <translation>Object not found!</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="803"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="804"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="918"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
         <source>Object not found.</source>

@@ -9,9 +9,13 @@
         <translation>Задать состав последовательности</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="26"/>
         <source>Base conetnt</source>
-        <translation>Состав</translation>
+        <translation type="vanished">Состав</translation>
+    </message>
+    <message>
+        <location filename="../src/BaseContentDialog.ui" line="26"/>
+        <source>Base content</source>
+        <translation>Основной состав</translation>
     </message>
     <message>
         <location filename="../src/BaseContentDialog.ui" line="55"/>
@@ -268,12 +272,12 @@
     <message>
         <location filename="../src/ExportChromatogramDialog.ui" line="56"/>
         <source>Reversed</source>
-        <translation>Обратный</translation>
+        <translation>Обратная</translation>
     </message>
     <message>
         <location filename="../src/ExportChromatogramDialog.ui" line="66"/>
         <source>Complemented</source>
-        <translation>Комплементарный</translation>
+        <translation>Комплементарная</translation>
     </message>
     <message>
         <location filename="../src/ExportChromatogramDialog.ui" line="75"/>
@@ -819,7 +823,7 @@
     <message>
         <location filename="../src/ExportSequenceTask.cpp" line="567"/>
         <source>Sequences of the selected annotations can&apos;t be exported. At least one of the annotations is out of boundaries</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательности выбранных аннотаций не могут быть экспортированы. Как минимум одна аннотация выходит за границы</translation>
     </message>
     <message>
         <location filename="../src/ExportSequenceTask.cpp" line="585"/>
@@ -2051,7 +2055,7 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
         <source>The sequences from selected BLAST results will be downloaded from
 NCBI Genbank by their GI identifier
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательности из выбранных результатов BLAST будут скачаны из базы NCBI Genbank по их идентификатору</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>

@@ -1525,6 +1525,11 @@ p, li { white-space: pre-wrap; }
         <translation>Align with Clustal Omega</translation>
     </message>
     <message>
+        <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="34"/>
+        <source>Input and output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="42"/>
         <source>Input file</source>
         <translation>Input file</translation>
@@ -1582,6 +1587,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="26"/>
         <source>Align with ClustalW</source>
         <translation>Align with ClustalW</translation>
+    </message>
+    <message>
+        <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="34"/>
+        <source>Input and output</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="42"/>
@@ -1713,9 +1723,13 @@ p, li { white-space: pre-wrap; }
         <translation>Check latest version of external tools package</translation>
     </message>
     <message>
-        <location filename="../src/ETSSettingsWidget.ui" line="50"/>
         <source>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</translation>
+        <translation type="vanished">&lt;a href=&quot;http://ugene.net/external.html&quot;&gt;external tools package&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/ETSSettingsWidget.ui" line="50"/>
+        <source>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ETSSettingsWidget.ui" line="70"/>
@@ -2201,6 +2215,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="20"/>
         <source>Align with MAFFT</source>
         <translation>Align with MAFFT</translation>
+    </message>
+    <message>
+        <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="28"/>
+        <source>Input and output</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="36"/>
@@ -2792,6 +2811,11 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="20"/>
         <source>Align with T-Coffee</source>
         <translation>Align with T-Coffee</translation>
+    </message>
+    <message>
+        <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="28"/>
+        <source>Input and output</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="36"/>
@@ -3781,17 +3805,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::CAP3SupportTask</name>
     <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="100"/>
+        <location filename="../src/cap3/CAP3SupportTask.cpp" line="96"/>
         <source>Output file not found</source>
         <translation>Output file not found</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="102"/>
+        <location filename="../src/cap3/CAP3SupportTask.cpp" line="98"/>
         <source>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</source>
         <translation>Output file not found. May be %1 tool path &apos;%2&apos; not valid?</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="116"/>
+        <location filename="../src/cap3/CAP3SupportTask.cpp" line="112"/>
         <source>Output file not found: copy from tmp dir failed.</source>
         <translation>Output file not found: copy from tmp dir failed.</translation>
     </message>
@@ -11006,17 +11030,17 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::PhyMlWidget</name>
     <message>
-        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="169"/>
+        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="170"/>
         <source>Open an alignment file</source>
         <translation>Open an alignment file</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="224"/>
+        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="225"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Path for %1 tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="225"/>
+        <location filename="../src/phyml/PhyMLDialogWidget.cpp" line="226"/>
         <source>Do you want to select it now?</source>
         <translation>Do you want to select it now?</translation>
     </message>
@@ -11024,12 +11048,12 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::PrepareInputForCAP3Task</name>
     <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="245"/>
+        <location filename="../src/cap3/CAP3SupportTask.cpp" line="241"/>
         <source>Failed to initialize sequence writer.</source>
         <translation>Failed to initialize sequence writer.</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="272"/>
+        <location filename="../src/cap3/CAP3SupportTask.cpp" line="268"/>
         <source>Failed to write sequence %1</source>
         <translation>Failed to write sequence %1</translation>
     </message>
@@ -11206,17 +11230,17 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::RunCap3AndOpenResultTask</name>
     <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="137"/>
+        <location filename="../src/cap3/CAP3SupportTask.cpp" line="133"/>
         <source>CAP3 run and open result task</source>
         <translation>CAP3 run and open result task</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="146"/>
+        <location filename="../src/cap3/CAP3SupportTask.cpp" line="142"/>
         <source>Invalid CAP3 task</source>
         <translation>Invalid CAP3 task</translation>
     </message>
     <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="162"/>
+        <location filename="../src/cap3/CAP3SupportTask.cpp" line="158"/>
         <source>Project loader is NULL</source>
         <translation>Project loader is NULL</translation>
     </message>
