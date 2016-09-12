@@ -324,7 +324,7 @@ workflow "Processing of raw RNA-Seq paired-end reads"{
                 parameters-area {
                     group {
                         title:Filtration;
-                        label-size:120;
+                        label-size:160;
                         QualityTrim.qual-id {
                         }
                         QualityTrim.len-id {
@@ -336,10 +336,16 @@ workflow "Processing of raw RNA-Seq paired-end reads"{
                         CutAdaptFastq.adapters-url {
                             label:Adapters;
                         }
+                        CutAdaptFastq.front-url {
+                            label:"Reverse adapters";
+                        }
+                        CutAdaptFastq.anywhere-url {
+                            label:"5' and 3' adapters";
+                        }
                     }
                     group {
                         title:"Filtration for pairs";
-                        label-size:120;
+                        label-size:160;
                         QualityTrim-1.qual-id {
                         }
                         QualityTrim-1.len-id {
@@ -350,6 +356,12 @@ workflow "Processing of raw RNA-Seq paired-end reads"{
                         }
                         CutAdaptFastq-1.adapters-url {
                             label:"Adapters for pairs";
+                        }
+                        CutAdaptFastq-1.front-url {
+                            label:"Reverse adapters for pairs";
+                        }
+                        CutAdaptFastq-1.anywhere-url {
+                            label:"5' and 3' adapters for pairs";
                         }
                     }
                 }

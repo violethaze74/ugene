@@ -359,7 +359,13 @@ workflow "Processing of raw ChIP-Seq single-end reads"{
                             label:"Trim both ends";
                         }
                         CutAdaptFastq.adapters-url {
-                            label:Adapters;
+                            label:"Adapters";
+                        }
+                        CutAdaptFastq.front-url {
+                            label:"Reverse adapters";
+                        }
+                        CutAdaptFastq.anywhere-url {
+                            label:"5' and 3' adapters";
                         }
                     }
                 }

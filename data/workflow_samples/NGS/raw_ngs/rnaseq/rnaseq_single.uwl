@@ -247,6 +247,12 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
                         CutAdaptFastq.adapters-url {
                             label:Adapters;
                         }
+                        CutAdaptFastq.front-url {
+                            label:"Reverse adapters";
+                        }
+                        CutAdaptFastq.anywhere-url {
+                            label:"5' and 3' adapters";
+                        }
                     }
                 }
             }
