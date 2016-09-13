@@ -52,7 +52,7 @@ void FastQCParser::parseErrOutput( const QString& partOfLog ){
     lastPartOfLog.first()=lastErrLine+lastPartOfLog.first();
     lastErrLine=lastPartOfLog.takeLast();
     foreach(const QString& buf, lastPartOfLog){
-        if(buf.contains("ERROR", Qt::CaseInsensitive)){
+        if(buf.contains("ERROR", Qt::CaseInsensitive) || buf.contains("Failed to process file", Qt::CaseInsensitive)){
             coreLog.error("FastQC: " + buf);
         }
     }
@@ -87,13 +87,18 @@ FastQCTask::FastQCTask(const FastQCSetting &settings)
 
 void FastQCTask::prepare(){
     if (settings.inputUrl.isEmpty()){
-        setError("No input URL");
+        setError(tr("No input URL"));
         return ;
+    }
+
+    if (QFileInfo(settings.inputUrl).size() == 0) {
+        setError(tr("The input file '%1' is empty.").arg(settings.inputUrl));
+        return;
     }
 
     const QDir outDir = QFileInfo(settings.outDir).absoluteDir();
     if (!outDir.exists()) {
-        setError("Directory does not exist: " + outDir.absolutePath());
+        setError(tr("Directory does not exist: %1").arg(outDir.absolutePath()));
         return ;
     }
 
@@ -110,7 +115,7 @@ void FastQCTask::run(){
 
     const QFileInfo resFile(getResFileUrl());
     if (!resFile.exists()) {
-        setError("Result file does not exist: " + resFile.absoluteFilePath());
+        setError(tr("Result file does not exist: %1. See the log for details.").arg(resFile.absoluteFilePath()));
         return ;
     }
     resultUrl = getResFileUrl();

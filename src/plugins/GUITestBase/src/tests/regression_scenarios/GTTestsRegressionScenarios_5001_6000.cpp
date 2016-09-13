@@ -771,6 +771,29 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     CHECK_SET_ERR(!lt.hasError(), "Log shouldn't contain errors");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5346) {
+    // 1. Open WD
+    // 2. Create the workflow: File List - FastQC Quality Control
+    // 3. Set empty input file
+    // Expected state: there is an error "The input file is empty"
+    GTLogTracer l;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    QString emptyFile = sandBoxDir + "test_5346_empty";
+    GTFile::create(os, emptyFile);
+    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::addElement(os, "File List");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, emptyFile);
+
+    WorkflowProcessItem* fastqc = GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control");
+    GTUtilsWorkflowDesigner::connect(os, fileList, fastqc);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsLog::checkContainsError(os, l, QString("The input file '%1' is empty.").arg(QFileInfo(emptyFile).absoluteFilePath()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5352) {
 //    1. Open WD
 //    2. Open any sample (e.g. Align with MUSCLE)
