@@ -234,7 +234,7 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
                 title:Pre-processing;
                 parameters-area {
                     group {
-                        title:Filtration;
+                        title:"Reads filtration";
                         label-size:120;
                         QualityTrim.qual-id {
                         }
@@ -245,10 +245,10 @@ workflow "Processing of raw RNA-Seq single-end reads with mapping"{
                             label:"Trim both ends";
                         }
                         CutAdaptFastq.adapters-url {
-                            label:Adapters;
+                            label:"3' adapters";
                         }
                         CutAdaptFastq.front-url {
-                            label:"Reverse adapters";
+                            label:"5' adapters";
                         }
                         CutAdaptFastq.anywhere-url {
                             label:"5' and 3' adapters";
