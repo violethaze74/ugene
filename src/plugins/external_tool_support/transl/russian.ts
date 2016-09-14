@@ -337,7 +337,7 @@ a database file</source>
     <name>BlastDBCmdDialog</name>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="26"/>
-        <source>Fetch Sequence from BLAST Database</source>
+        <source>Fetch Sequences from BLAST Database</source>
         <translation>Извлечь последовательность из базы данных BLAST</translation>
     </message>
     <message>

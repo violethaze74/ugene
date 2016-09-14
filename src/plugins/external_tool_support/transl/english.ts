@@ -338,8 +338,8 @@ a database file</translation>
     <name>BlastDBCmdDialog</name>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="26"/>
-        <source>Fetch Sequence from BLAST Database</source>
-        <translation>Fetch Sequence from BLAST Database</translation>
+        <source>Fetch Sequences from BLAST Database</source>
+        <translation>Fetch Sequences from BLAST Database</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="44"/>

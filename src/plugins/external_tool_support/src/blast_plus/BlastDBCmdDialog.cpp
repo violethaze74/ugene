@@ -23,6 +23,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 
+#include <U2Core/GUrlUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -78,6 +79,8 @@ void BlastDBCmdDialog::sl_update() {
 void BlastDBCmdDialog::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultFormatId = BaseDocumentFormats::FASTA;
+    config.defaultFileName = GUrlUtils::getDefaultDataPath() + "/";
+    config.rollFileName = false;
     config.fileDialogButton = browseOutputButton;
     config.fileNameEdit = outputPathLineEdit;
     config.parentWidget = this;
