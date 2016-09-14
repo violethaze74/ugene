@@ -189,7 +189,7 @@ workflow "Processing of raw RNA-Seq single-end reads"{
                             label:"3' adapters";
                         }
                         CutAdaptFastq.front-url {
-                            label:"5' dapters";
+                            label:"5' adapters";
                         }
                         CutAdaptFastq.anywhere-url {
                             label:"5' and 3' adapters";
