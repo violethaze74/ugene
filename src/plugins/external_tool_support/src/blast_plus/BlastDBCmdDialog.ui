@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>537</width>
-    <height>279</height>
+    <width>538</width>
+    <height>300</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>537</width>
-    <height>279</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -23,25 +29,34 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Fetch Sequence from BLAST Database</string>
+   <string>Fetch Sequences from BLAST Database</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="sizeConstraint">
     <enum>QLayout::SetMinAndMaxSize</enum>
    </property>
    <item>
-    <widget class="QGroupBox" name="inputData">
-     <property name="title">
-      <string/>
+    <widget class="QWidget" name="inputData" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>520</width>
+       <height>270</height>
+      </size>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="sizeConstraint">
-       <enum>QLayout::SetMinAndMaxSize</enum>
+       <enum>QLayout::SetDefaultConstraint</enum>
       </property>
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Entery query ID:</string>
+         <string>Query ID</string>
         </property>
        </widget>
       </item>
@@ -49,32 +64,28 @@
        <widget class="QLineEdit" name="queryIdEdit"/>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Select database :</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QWidget" name="dbSelectorWidget" native="true">
+       <widget class="QGroupBox" name="dbSelectorWidget">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Select database</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_10">
          <property name="spacing">
           <number>0</number>
          </property>
          <property name="leftMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <property name="topMargin">
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>10</number>
          </property>
          <property name="bottomMargin">
           <number>0</number>
@@ -85,7 +96,7 @@
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Output path:</string>
+         <string>Output path</string>
         </property>
        </widget>
       </item>
@@ -94,7 +105,7 @@
         <item>
          <widget class="QLineEdit" name="outputPathLineEdit">
           <property name="readOnly">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
