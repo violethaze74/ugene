@@ -39,7 +39,7 @@ namespace U2 {
 /* EditMarkerGroupDialog */
 /************************************************************************/
 EditMarkerGroupDialog::EditMarkerGroupDialog(bool isNew, Marker *marker, Workflow::MarkerGroupListCfgModel *_allModel, QWidget *parent)
-: QDialog(parent), isNew(isNew), marker(NULL), allModel(_allModel)
+    : QDialog(parent), isNew(isNew), marker(NULL), allModel(_allModel), currentTypeIndex(-1)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "18220806");
