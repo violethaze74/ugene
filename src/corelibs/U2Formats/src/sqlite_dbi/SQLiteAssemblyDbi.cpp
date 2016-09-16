@@ -560,8 +560,7 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, Q
         U2Region readCroppedRegion = readRegion.intersect(r);
 
         if (readCroppedRegion.isEmpty()) {
-            GCOUNTER(cvar, tvar, "SQLiteAssemblyDbi::cropped region is empty");
-            continue;//May be dead code
+            continue;
         }
 
         // we have used effective length of the read, so insertions/deletions are already taken into account

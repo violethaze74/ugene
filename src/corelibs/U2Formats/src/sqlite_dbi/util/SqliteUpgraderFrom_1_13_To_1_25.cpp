@@ -19,31 +19,29 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/L10n.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2CoreAttributes.h>
-#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2Dbi.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2SqlHelpers.h>
 
-
-#include "MysqlUpgraderFrom_1_24_To_1_25.h"
-#include "mysql_dbi/MysqlDbi.h"
-#include "mysql_dbi/util/MysqlHelpers.h"
+#include "SqliteUpgraderFrom_1_13_To_1_25.h"
+#include "../SQLiteDbi.h"
+#include "../SQLiteAssemblyDbi.h"
+#include "../SQLiteObjectRelationsDbi.h"
 
 namespace U2 {
 
-MysqlUpgraderFrom_1_24_To_1_25::MysqlUpgraderFrom_1_24_To_1_25(MysqlDbi *dbi) :
-    MysqlUpgrader(Version::parseVersion("1.24.0"), Version::parseVersion("1.25.0"), dbi)
+SqliteUpgraderFrom_1_13_To_1_25::SqliteUpgraderFrom_1_13_To_1_25(SQLiteDbi *dbi) :
+    SqliteUpgrader(Version::parseVersion("1.13.0"), Version::parseVersion("1.25.0"), dbi)
 {
-
 }
 
-void MysqlUpgraderFrom_1_24_To_1_25::upgrade(U2OpStatus &os) const {
-    MysqlTransaction t(dbi->getDbRef(), os);
+void SqliteUpgraderFrom_1_13_To_1_25::upgrade(U2OpStatus &os) const {
+    SQLiteTransaction t(dbi->getDbRef(), os);
     Q_UNUSED(t);
-
-    dropOldPrecedure(os, dbi->getDbRef());
-    CHECK_OP(os, );
 
     upgradeCoverageAttribute(os);
     CHECK_OP(os, );
@@ -51,14 +49,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgrade(U2OpStatus &os) const {
     dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.text, os);
 }
 
-void MysqlUpgraderFrom_1_24_To_1_25::dropOldPrecedure(U2OpStatus &os, MysqlDbRef *dbRef) const {
-    U2OpStatus2Log nonCriticalOs;
-    U2SqlQuery("DROP PROCEDURE IF EXISTS CreateIndex", dbRef, nonCriticalOs).execute();
-
-    CHECK_OP(os, );
-}
-
-void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) const {
+void SqliteUpgraderFrom_1_13_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) const {
     //get assembly ids
     QList<U2DataId> assemblyIds = dbi->getObjectDbi()->getObjects(U2Type::Assembly, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
     CHECK_OP(os, );
@@ -101,6 +92,4 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
     }
 }
 
-
 }   // namespace U2
-

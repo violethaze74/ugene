@@ -163,7 +163,6 @@ QWidget * AssemblyBrowser::createWidget() {
 
     const QString objectName = "assembly_browser_" + getName();
     ui->setObjectName(objectName);
-
     U2OpStatusImpl os;
     if(model->hasReads(os)) {
         updateOverviewTypeActions();
@@ -173,6 +172,7 @@ QWidget * AssemblyBrowser::createWidget() {
         ui->installEventFilter(this);
         ui->setAcceptDrops(true);
     }
+
     return ui;
 }
 
@@ -308,61 +308,60 @@ bool AssemblyBrowser::isAssemblyObjectLocked(bool showDialog) const {
     return isLocked;
 }
 
-void AssemblyBrowser::buildStaticToolbar(QToolBar* tb) {
+void AssemblyBrowser::buildStaticToolbar(QToolBar* staticToolBar) {
     U2OpStatusImpl os;
     if(model->hasReads(os)) {
-        tb->addAction(zoomInAction);
-        tb->addAction(zoomOutAction);
+        staticToolBar->addAction(zoomInAction);
+        staticToolBar->addAction(zoomOutAction);
 
         U2OpStatusImpl st;
-        posSelector = new PositionSelector(tb, 1, model->getModelLength(st));
+        posSelector = new PositionSelector(staticToolBar, 1, model->getModelLength(st));
         if(!st.hasError()) {
             connect(posSelector, SIGNAL(si_positionChanged(int)), SLOT(sl_onPosChangeRequest(int)));
-            tb->addSeparator();
-            tb->addWidget(posSelector);
+            staticToolBar->addSeparator();
+            staticToolBar->addWidget(posSelector);
             posSelector->getPosEdit()->setMinimumWidth(160); // For big numbers we need bigger text box
         }
-        tb->addSeparator();
+        staticToolBar->addSeparator();
         updateZoomingActions();
 
         // commented because do not know if log scale is needed
-        /*QToolButton * overviewScaleTypeToolButton = new QToolButton(tb);
+        /*QToolButton * overviewScaleTypeToolButton = new QToolButton(staticToolBar);
         QMenu * scaleTypeMenu = new QMenu(tr("Scale type"), ui);
         foreach(QAction * a, overviewScaleTypeActions) {
             scaleTypeMenu->addAction(a);
         }
         overviewScaleTypeToolButton->setDefaultAction(scaleTypeMenu->menuAction());
         overviewScaleTypeToolButton->setPopupMode(QToolButton::InstantPopup);
-        tb->addWidget(overviewScaleTypeToolButton);*/
+        staticToolBar->addWidget(overviewScaleTypeToolButton);*/
 
-        tb->addAction(showCoordsOnRulerAction);
-        tb->addAction(showCoverageOnRulerAction);
-        tb->addAction(readHintEnabledAction);
-        tb->addSeparator();
-        tb->addAction(setReferenceAction);
-        tb->addAction(extractAssemblyRegionAction);
-        tb->addAction(saveScreenShotAction);
+        staticToolBar->addAction(showCoordsOnRulerAction);
+        staticToolBar->addAction(showCoverageOnRulerAction);
+        staticToolBar->addAction(readHintEnabledAction);
+        staticToolBar->addSeparator();
+        staticToolBar->addAction(setReferenceAction);
+        staticToolBar->addAction(extractAssemblyRegionAction);
+        staticToolBar->addAction(saveScreenShotAction);
     }
-    GObjectView::buildStaticToolbar(tb);
+    GObjectView::buildStaticToolbar(staticToolBar);
 }
 
 void AssemblyBrowser::sl_onPosChangeRequest(int pos) {
     setXOffsetInAssembly(normalizeXoffset(pos - 1));
     ui->getReadsArea()->setFocus();
 }
-
-void AssemblyBrowser::buildStaticMenu(QMenu* m) {
+void AssemblyBrowser::buildStaticMenu(QMenu* staticMenu) {
     U2OpStatusImpl os;
     if(model->hasReads(os)) {
-        m->addAction(zoomInAction);
-        m->addAction(zoomOutAction);
-        m->addAction(saveScreenShotAction);
-        m->addAction(exportToSamAction);
-        m->addAction(extractAssemblyRegionAction);
-        m->addAction(setReferenceAction);
+        staticMenu->addAction(zoomInAction);
+        staticMenu->addAction(zoomOutAction);
+        staticMenu->addAction(saveScreenShotAction);
+        staticMenu->addAction(exportToSamAction);
+        staticMenu->addAction(extractAssemblyRegionAction);
+        staticMenu->addAction(setReferenceAction);
     }
-    GObjectView::buildStaticMenu(m);
-    GUIUtils::disableEmptySubmenus(m);
+    GObjectView::buildStaticMenu(staticMenu);
+    GUIUtils::disableEmptySubmenus(staticMenu);
 }
 
 void AssemblyBrowser::setGlobalCoverageInfo(CoverageInfo newInfo) {
@@ -370,6 +369,9 @@ void AssemblyBrowser::setGlobalCoverageInfo(CoverageInfo newInfo) {
     U2Region globalRegion(0, model->getModelLength(os));
     SAFE_POINT(newInfo.region == globalRegion, "coverage info is not global",);
     if(newInfo.coverageInfo.size() <= coveredRegionsManager.getSize()) {
+        return;
+    }
+    if(newInfo.isEmpty()){ //wait when coverage will be calculated
         return;
     }
     // prefer model's coverage stat
@@ -412,6 +414,12 @@ qint32 AssemblyBrowser::getCoverageAtPos(qint64 pos) {
     if(isInLocalCoverageCache(pos)) {
         return localCoverageCache.coverageInfo.at(pos - localCoverageCache.region.startPos);
     } else {
+        bool isDbLocked = !(model->getDbiConnection().dbi->getDbMutex()->tryLock());
+        if (isDbLocked){
+            return -1;
+        }
+        model->getDbiConnection().dbi->getDbMutex()->unlock();
+
         U2OpStatus2Log status;
         QVector<qint32> coverageStat;
         coverageStat.resize(1);
@@ -1118,7 +1126,8 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
 //==============================================================================
 
 AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser * browser_) : browser(browser_), zoomableOverview(0),
-referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), nothingToVisualize(true) {
+referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), nothingToVisualize(true)
+{
     U2OpStatusImpl os;
     if(browser->getModel()->hasReads(os)) { // has mapped reads -> show rich visualization
         setMinimumSize(300, 200);
@@ -1192,7 +1201,7 @@ referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), 
     else {
         QVBoxLayout * mainLayout = new QVBoxLayout();
         QString msg = tr("Assembly has no mapped reads. Nothing to visualize.");
-        QLabel * infoLabel = new QLabel(QString("<table align=\"center\"><tr><td>%1</td></tr></table>").arg(msg));
+        QLabel * infoLabel = new QLabel(QString("<table align=\"center\"><tr><td>%1</td></tr></table>").arg(msg), this);
         infoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         mainLayout->addWidget(infoLabel);
         setLayout(mainLayout);

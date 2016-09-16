@@ -55,6 +55,7 @@ struct CalcCoverageInfoTaskSettings {
 };
 
 class CalcCoverageInfoTask : public BackgroundTask<CoverageInfo> {
+    Q_OBJECT
 public:
     CalcCoverageInfoTask(const CalcCoverageInfoTaskSettings & settings);
     virtual void run();

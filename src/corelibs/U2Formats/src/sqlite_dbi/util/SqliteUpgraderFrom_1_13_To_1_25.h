@@ -19,27 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MYSQL_UPGRADER_FROM_1_24_TO_1_25_H_
-#define _U2_MYSQL_UPGRADER_FROM_1_24_TO_1_25_H_
+#ifndef _U2_SQLITE_UPGRADER_FROM_1_13_TO_1_25_H_
+#define _U2_SQLITE_UPGRADER_FROM_1_13_TO_1_25_H_
 
-#include "MysqlUpgrader.h"
+#include "SqliteUpgrader.h"
 
 namespace U2 {
 
-class MysqlDbRef;
-
-class MysqlUpgraderFrom_1_24_To_1_25 : public MysqlUpgrader {
+class SqliteUpgraderFrom_1_13_To_1_25 : public SqliteUpgrader {
 public:
-    MysqlUpgraderFrom_1_24_To_1_25(MysqlDbi *dbi);
+    SqliteUpgraderFrom_1_13_To_1_25(SQLiteDbi *dbi);
 
     void upgrade(U2OpStatus &os) const;
 
 private:
-    void dropOldPrecedure(U2OpStatus &os, MysqlDbRef *dbRef) const;
     void upgradeCoverageAttribute(U2OpStatus &os) const;
 };
 
-}
+}   // namespace U2
 
-#endif // _U2_MYSQL_UPGRADER_FROM_1_24_TO_1_25_H_
-
+#endif // _U2_SQLITE_UPGRADER_FROM_0_TO_1_13_H_

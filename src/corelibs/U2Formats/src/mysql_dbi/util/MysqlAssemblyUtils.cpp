@@ -223,7 +223,7 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, QVe
         U2Region readCroppedRegion = readRegion.intersect(r);
 
         if (readCroppedRegion.isEmpty()) {
-            continue;//May be dead code
+            continue;
         }
 
         // we have used effective length of the read, so insertions/deletions are already taken into account

@@ -67,9 +67,9 @@ namespace U2 {
 const QByteArray AssemblyModel::COVERAGE_STAT_ATTRIBUTE_NAME(U2BaseAttributeName::coverage_statistics.toLatin1());
 
 AssemblyModel::AssemblyModel(const DbiConnection& dbiCon_) :
-cachedModelLength(NO_VAL), cachedModelHeight(NO_VAL), assemblyDbi(0), dbiHandle(dbiCon_),
-loadingReference(false), refObj(NULL), md5Retrieved(false), cachedReadsNumber(NO_VAL), speciesRetrieved(false),
-uriRetrieved(false)
+    cachedModelLength(NO_VAL), cachedModelHeight(NO_VAL), assemblyDbi(NULL), dbiHandle(dbiCon_),
+    loadingReference(false), refObj(NULL), md5Retrieved(false), cachedReadsNumber(NO_VAL), speciesRetrieved(false),
+    uriRetrieved(false)
 {
     Project * prj = AppContext::getProject();
     if (prj != NULL) {
