@@ -163,7 +163,6 @@ private slots:
     void sl_trackRemoved(VariantTrackObject *obj);
     void sl_setReference();
     void sl_onReferenceLoaded();
-    void sl_coverageCalcTaskStateCahnged();
 
 private:
     void initFont();
