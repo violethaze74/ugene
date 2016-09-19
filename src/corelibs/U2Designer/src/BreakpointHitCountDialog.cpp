@@ -69,6 +69,11 @@ BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList &hitCountCo
 
     QPushButton *resetButton = ui->buttonBox->button(QDialogButtonBox::Reset);
     QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton *cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
+
+    resetButton->setText(tr("Reset"));
+    okButton->setText(tr("OK"));
+    cancelButton->setText(tr("Cancel"));
 
     connect(resetButton, SIGNAL(clicked()), this, SLOT(sl_resetHitCount()));
     connect(okButton, SIGNAL(clicked()), this, SLOT(sl_dialogAccepted()));

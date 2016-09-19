@@ -670,6 +670,24 @@ bowtie index file</translation>
     </message>
 </context>
 <context>
+    <name>U2::BreakpointHitCountDialog</name>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="74"/>
+        <source>Reset</source>
+        <translation>Reset</translation>
+    </message>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="75"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="76"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+</context>
+<context>
     <name>U2::ComboBoxWidget</name>
     <message>
         <location filename="../src/PropertyWidget.cpp" line="178"/>
@@ -701,6 +719,19 @@ bowtie index file</translation>
         <location filename="../src/PropertyWidget.cpp" line="319"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
+    </message>
+</context>
+<context>
+    <name>U2::CreateDirectoryDialog</name>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="214"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="215"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -1095,11 +1126,21 @@ bowtie index file</translation>
     <name>U2::OutputFileDialog</name>
     <message>
         <location filename="../src/OutputFileDialog.cpp" line="52"/>
+        <source>Save</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="53"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="57"/>
         <source>Save a directory</source>
         <translation>Save a directory</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="54"/>
+        <location filename="../src/OutputFileDialog.cpp" line="59"/>
         <source>Save a file</source>
         <translation>Save a file</translation>
     </message>
