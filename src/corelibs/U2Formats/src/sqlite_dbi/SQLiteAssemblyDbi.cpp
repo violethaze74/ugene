@@ -581,8 +581,6 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, Q
         int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos ) / basesPerRange) - 1;
         for (int i = firstCoverageIdx; i <= lastCoverageIdx && i < csize; i++) {
             switch (cigarVector[(i-firstCoverageIdx)*basesPerRange]){
-            case U2CigarOp_I:
-            case U2CigarOp_S: // skip the insertion
             case U2CigarOp_D: // skip the deletion
             case U2CigarOp_N: // skip the skiped
                 continue;
@@ -617,8 +615,6 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
     int* coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
         switch (cigarVector[(i-startPos)*ii.coverageBasesPerPoint]){
-        case U2CigarOp_I:
-        case U2CigarOp_S: // skip the insertion
         case U2CigarOp_D: // skip the deletion
         case U2CigarOp_N: // skip the skiped
             continue;
