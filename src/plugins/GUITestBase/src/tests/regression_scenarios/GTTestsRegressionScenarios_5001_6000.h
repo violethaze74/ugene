@@ -69,6 +69,8 @@ GUI_TEST_CLASS_DECLARATION(test_5367)
 
 GUI_TEST_CLASS_DECLARATION(test_5314)
 
+GUI_TEST_CLASS_DECLARATION(test_5425)
+
 #undef GUI_TEST_SUITE
 
 }   // namespace GUITest_regression_scenarios
