@@ -25,6 +25,7 @@
 #include <primitives/GTComboBox.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
 #include "SpadesGenomeAssemblyDialogFiller.h"
@@ -51,6 +52,30 @@ void SpadesGenomeAssemblyDialogFiller::commonScenario(){
     foreach (QString s, rightReads) {
         GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, s));
         GTWidget::click(os, GTWidget::findWidget(os, "addFightButton", dialog));
+    }
+
+    QComboBox *combo;
+    if (!datasetType.isEmpty()) {
+        combo = GTWidget::findExactWidget<QComboBox*>(os, "typeCombo", dialog);
+        GTComboBox::setIndexWithText(os, combo, datasetType);
+    }
+
+    if (!runningMode.isEmpty()) {
+        combo = GTWidget::findExactWidget<QComboBox*>(os, "modeCombo", dialog);
+        GTComboBox::setIndexWithText(os, combo, runningMode);
+    }
+
+    QLineEdit* lineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "kmerEdit", dialog);
+    if (!kmerSizes.isEmpty()) {
+        GTLineEdit::setText(os, lineEdit, kmerSizes);
+    }
+
+    if (numThreads != 0) {
+        GTSpinBox::setValue(os, "numThreadsSpinbox", numThreads, GTGlobals::UseKeyBoard);
+    }
+
+    if (memLimit != 0) {
+        GTSpinBox::setValue(os, "memlimitSpin", memLimit, GTGlobals::UseKeyBoard);
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

@@ -26,6 +26,8 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/L10n.h>
 
+#include <U2Gui/U2WidgetStateStorage.h>
+
 #include "SpadesSettingsWidget.h"
 #include "SpadesTask.h"
 
@@ -33,14 +35,16 @@
 namespace U2 {
 // SpadesSettingsWidget
 
-SpadesSettingsWidget::SpadesSettingsWidget(QWidget *parent):
-    GenomeAssemblyAlgorithmMainWidget(parent)
+SpadesSettingsWidget::SpadesSettingsWidget(QWidget *parent)
+    :GenomeAssemblyAlgorithmMainWidget(parent), U2SavableWidget(this)
 {
     setupUi(this);
     layout()->setContentsMargins(0,0,0,0);
 
     numThreadsSpinbox->setMaximum(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
     numThreadsSpinbox->setValue(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+
+    U2WidgetStateStorage::restoreWidgetState(*this);
 }
 
 QMap<QString,QVariant> SpadesSettingsWidget::getGenomeAssemblyCustomSettings() {
@@ -51,6 +55,9 @@ QMap<QString,QVariant> SpadesSettingsWidget::getGenomeAssemblyCustomSettings() {
     settings.insert(SpadesTask::OPTION_K_MER, kmerEdit->text());
     settings.insert(SpadesTask::OPTION_THREADS, numThreadsSpinbox->value());
     settings.insert(SpadesTask::OPTION_MEMLIMIT, memlimitSpin->value());
+
+    U2WidgetStateStorage::saveWidgetState(*this);
+    widgetStateSaved = true;
 
     return settings;
 }

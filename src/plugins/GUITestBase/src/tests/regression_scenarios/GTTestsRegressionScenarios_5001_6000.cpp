@@ -102,6 +102,7 @@
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
@@ -987,6 +988,47 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "/test_5367_coverage.txt", testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"), "Exported coverage is wrong!");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5425) {
+    class SpadesDialogSettingsChecker : public SpadesGenomeAssemblyDialogFiller {
+    public:
+        SpadesDialogSettingsChecker(HI::GUITestOpStatus &os, QString lib, QString datasetType, QString runningMode, 
+            QString kmerSizes, int numThreads, int memLimit) : SpadesGenomeAssemblyDialogFiller(os, lib, QStringList(), QStringList(), "",
+            datasetType, runningMode, kmerSizes, numThreads, memLimit) {}
+        virtual void commonScenario() {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QComboBox* combo = GTWidget::findExactWidget<QComboBox*>(os, "modeCombo", dialog);
+            CHECK_SET_ERR(combo->currentText() == runningMode, "running mode doesn't match");
+
+            combo = GTWidget::findExactWidget<QComboBox*>(os, "typeCombo", dialog);
+            CHECK_SET_ERR(combo->currentText() == datasetType, "type mode doesn't match");
+
+            QLineEdit* lineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "kmerEdit", dialog);
+            CHECK_SET_ERR(lineEdit->text() == kmerSizes, "kmer doesn't match");
+
+            QSpinBox* spinbox = GTWidget::findExactWidget<QSpinBox*>(os, "memlimitSpin", dialog);
+            CHECK_SET_ERR(spinbox->text() == QString::number(memLimit), "memlimit doesn't match");
+
+            spinbox = GTWidget::findExactWidget<QSpinBox*>(os, "numThreadsSpinbox", dialog);
+            CHECK_SET_ERR(spinbox->text() == QString::number(numThreads), "threads doesn't match");
+
+            combo = GTWidget::findExactWidget<QComboBox*>(os, "libraryComboBox", dialog);
+            CHECK_SET_ERR(combo->currentText() == library, QString("library doesn't match, expected %1, actual:%2.").arg(library).arg(combo->currentText()));
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new SpadesGenomeAssemblyDialogFiller(os, "Paired-end (Interlaced)", QStringList() << testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq",
+        QStringList(), sandBoxDir, "Single Cell", "Error correction only", "aaaaa", 1, 228));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Genome de novo assembly...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new SpadesDialogSettingsChecker(os, "Paired-end (Interlaced)", "Single Cell", "Error correction only", "aaaaa", 1, 228));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Genome de novo assembly...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 } // namespace GUITest_regression_scenarios
