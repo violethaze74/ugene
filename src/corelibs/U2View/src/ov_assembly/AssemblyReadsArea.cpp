@@ -282,8 +282,7 @@ void AssemblyReadsArea::accumulateDelta(int delta) {
 void AssemblyReadsArea::drawAll() {
     GTIMER(c1, t1, "AssemblyReadsArea::drawAll");
     if(!model->isEmpty()) {
-        if(model->getDbiConnection().dbi->getDbMutex()->tryLock(lockTimeout)){
-            model->getDbiConnection().dbi->getDbMutex()->unlock();
+        if(!model->isDbLocked(lockTimeout)){
             lockTimeout = 500;
             if(bdBusyLabel.isVisible()){
                 bdBusyLabel.hide();

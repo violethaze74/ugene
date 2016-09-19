@@ -672,4 +672,11 @@ U2SequenceObject* AssemblyModel::getRefObj() const {
     return refObj;
 }
 
+bool AssemblyModel::isDbLocked(int timeout){
+    if(dbiHandle.dbi->getDbMutex()->tryLock(timeout)){
+        dbiHandle.dbi->getDbMutex()->unlock();
+        return false;
+    }
+    return true;
+}
 } // U2

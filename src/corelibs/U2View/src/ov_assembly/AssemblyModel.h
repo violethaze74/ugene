@@ -97,6 +97,8 @@ public:
     bool checkPermissions(QFile::Permission permission, bool showDialog = true) const;
     void dissociateReference();
 
+    bool isDbLocked(int timeout = 0);
+
 private:
     /**
         Unsets reference only for current session (e.g. when ref doc is closed),

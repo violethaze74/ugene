@@ -254,10 +254,9 @@ QString AssemblyBrowser::tryAddObject(GObject * obj) {
             notificationStack->addNotification(message, Warning_Not);
         }
         if(setRef) {
-            if(!(model->getDbiConnection().dbi->getDbMutex()->tryLock(100))){
+            if(model->isDbLocked(100)){
                 return tr("Internal error: database is busy");
             }
-            model->getDbiConnection().dbi->getDbMutex()->unlock();
             model->setReference(seqObj);
 
             U2Assembly assembly = model->getAssembly();
@@ -418,11 +417,9 @@ qint32 AssemblyBrowser::getCoverageAtPos(qint64 pos) {
     if(isInLocalCoverageCache(pos)) {
         return localCoverageCache.coverageInfo.at(pos - localCoverageCache.region.startPos);
     } else {
-        bool isDbLocked = !(model->getDbiConnection().dbi->getDbMutex()->tryLock());
-        if (isDbLocked){
+        if (model->isDbLocked()){
             return -1;
         }
-        model->getDbiConnection().dbi->getDbMutex()->unlock();
 
         U2OpStatus2Log status;
         QVector<qint32> coverageStat;

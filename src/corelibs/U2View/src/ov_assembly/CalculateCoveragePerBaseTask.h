@@ -39,12 +39,12 @@ public:
 class GetAssemblyLengthTask : public Task {
     Q_OBJECT
 public:
-    GetAssemblyLengthTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, TaskFlags flags = TaskFlags_FOSE_COSC):
+    GetAssemblyLengthTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, TaskFlags flags = TaskFlag_None):
         Task(tr("Get length of Assembly"), flags), dbiRef(dbiRef), assemblyId(assemblyId) { }
 
     void run();
 
-    qint64 getAssemblyLength() { return length; }
+    const qint64 &getAssemblyLength() { return length; }
 private:
     const U2DbiRef dbiRef;
     const U2DataId assemblyId;

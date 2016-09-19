@@ -63,6 +63,7 @@ ExportCoverageTask::ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &a
     dbiRef(dbiRef),
     assemblyId(assemblyId),
     settings(settings),
+    getAssemblyNameTask(NULL),
     calculateTask(NULL),
     alreadyProcessed(0)
 {

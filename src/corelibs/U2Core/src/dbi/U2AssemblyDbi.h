@@ -46,7 +46,6 @@ public:
     bool computeCoverage;
 
     /** Place to save coverage info */
-//    U2AssemblyCoverageStat coverage;
     QVector<qint32> coverage;
 
     /** Shows how many real bases are in 1 coverage point */

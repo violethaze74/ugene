@@ -91,8 +91,7 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
     QWidget * infoGroup = new ShowHideSubgroupWidget("INFO", tr("Assembly Information"), asmWidget, true);
     mainLayout->addWidget(infoGroup);
 
-    if(browser->getModel()->getDbiConnection().dbi->getDbMutex()->tryLock()){
-        browser->getModel()->getDbiConnection().dbi->getDbMutex()->unlock();
+    if(!browser->getModel()->isDbLocked()){
         QByteArray md5 = model->getReferenceMd5(st);
         QByteArray species = model->getReferenceSpecies(st);
         QString uri = model->getReferenceUri(st);

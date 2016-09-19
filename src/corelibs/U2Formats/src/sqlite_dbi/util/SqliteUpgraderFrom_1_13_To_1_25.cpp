@@ -53,21 +53,21 @@ void SqliteUpgraderFrom_1_13_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) c
     //get assembly ids
     QList<U2DataId> assemblyIds = dbi->getObjectDbi()->getObjects(U2Type::Assembly, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
     CHECK_OP(os, );
+    CHECK(!assemblyIds.isEmpty(),);
     U2AttributeDbi * attributeDbi = dbi->getAttributeDbi();
-    CHECK(NULL != attributeDbi,);
+    CHECK_EXT(attributeDbi != NULL, os.setError("Attribute dbi is NULL"),);
 
-    foreach (U2DataId id, assemblyIds) {
+    foreach (const U2DataId &id, assemblyIds) {
         //find and remove coverage attribute from ByteArrayAttribute table
         U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, id, U2BaseAttributeName::coverage_statistics, os);
 
-        if (attr.value.isEmpty()){//if empty, then nothing to upgrade
-            continue;
+        if (!attr.value.isEmpty()){//if empty, then nothing to remove
+            U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
         }
 
-        U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
         //calculate new coverage
         U2AssemblyDbi* assemblyDbi = dbi->getAssemblyDbi();
-        CHECK(NULL != assemblyDbi,);
+        CHECK_EXT(attributeDbi != NULL, os.setError("Assembly dbi is NULL"),);
         U2Assembly assembly = assemblyDbi->getAssemblyObject(id, os);
         CHECK_OP(os, );
 

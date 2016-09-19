@@ -32,7 +32,7 @@
 namespace U2 {
 
 CalculateCoveragePerBaseOnRegionTask::CalculateCoveragePerBaseOnRegionTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const U2Region &region) :
-    Task(tr("Calculate coverage per base for assembly on region (%1, %2)"), TaskFlag_None),
+    Task(tr("Calculate coverage per base for assembly on region (%1, %2)").arg(region.startPos).arg(region.endPos()), TaskFlag_None),
     dbiRef(dbiRef),
     assemblyId(assemblyId),
     region(region),
@@ -40,8 +40,6 @@ CalculateCoveragePerBaseOnRegionTask::CalculateCoveragePerBaseOnRegionTask(const
 {
     SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("Invalid database reference")), );
     SAFE_POINT_EXT(!assemblyId.isEmpty(), setError(tr("Invalid assembly ID")), );
-
-    setTaskName(getTaskName().arg(region.startPos).arg(region.endPos()));
 }
 
 CalculateCoveragePerBaseOnRegionTask::~CalculateCoveragePerBaseOnRegionTask() {
@@ -137,7 +135,8 @@ U2CigarOp CalculateCoveragePerBaseOnRegionTask::nextCigarOp(const QVector<U2Ciga
 CalculateCoveragePerBaseTask::CalculateCoveragePerBaseTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId) :
     Task(tr("Calculate coverage per base for assembly"), TaskFlags_NR_FOSE_COSC),
     dbiRef(dbiRef),
-    assemblyId(assemblyId)
+    assemblyId(assemblyId),
+    getLengthTask(NULL)
 {
     SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("Invalid database reference")), );
     SAFE_POINT_EXT(!assemblyId.isEmpty(), setError(tr("Invalid assembly ID")), );
