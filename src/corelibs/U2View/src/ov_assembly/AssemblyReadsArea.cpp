@@ -84,12 +84,20 @@ AssemblyReadsArea::AssemblyReadsArea(AssemblyBrowserUi * ui_, QScrollBar * hBar_
     hintEnabled(AssemblyBrowserSettings::getReadHintEnabled()),
     scrolling(false),
     optimizeRenderOnScroll(AssemblyBrowserSettings::getOptimizeRenderOnScroll()),
-    readMenu(new QMenu(this))
+    readMenu(new QMenu(this)),
+    lockTimeout(500)
 {
     setObjectName("assembly_reads_area");
     setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Minimum);
+
+    bdBusyLabel.setParent(this);
+    bdBusyLabel.setText(tr("<center><b>Assembly database is busy</b><br>Some task occupied database.<br> When the database is free all functionality of Assemply Browser will be available again.</center>"));
+    bdBusyLabel.installEventFilter(this);
+    bdBusyLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
     QVBoxLayout * coveredRegionsLayout = new QVBoxLayout();
     coveredRegionsLayout->addWidget(&coveredRegionsLabel);
+    coveredRegionsLayout->addWidget(&bdBusyLabel);
     setLayout(coveredRegionsLayout);
     initRedraw();
     connectSlots();
@@ -274,39 +282,52 @@ void AssemblyReadsArea::accumulateDelta(int delta) {
 void AssemblyReadsArea::drawAll() {
     GTIMER(c1, t1, "AssemblyReadsArea::drawAll");
     if(!model->isEmpty()) {
-        if (redraw) {
-            // update cached pixmap
-            redraw = false;
+        if(model->getDbiConnection().dbi->getDbMutex()->tryLock(lockTimeout)){
+            model->getDbiConnection().dbi->getDbMutex()->unlock();
+            lockTimeout = 500;
+            if(bdBusyLabel.isVisible()){
+                bdBusyLabel.hide();
+                redraw = true;
+            }
+            if (redraw) {
+                // update cached pixmap
+                redraw = false;
+
+                if(browser->areReadsVisible()) {
+                    cachedView.fill(Qt::transparent);
+                    QPainter p(&cachedView);
+                    drawReads(p);
+                }
+                else {
+                    QPainter p(this);
+                    p.fillRect(0, 0, width(), height(), Qt::transparent);
+                    showWelcomeScreen();
+                }
+
+                setupHScrollBar();
+                setupVScrollBar();
+            }
 
             if(browser->areReadsVisible()) {
-                cachedView.fill(Qt::transparent);
-                QPainter p(&cachedView);
-                drawReads(p);
-            }
-            else {
                 QPainter p(this);
-                p.fillRect(0, 0, width(), height(), Qt::transparent);
-                showWelcomeScreen();
+                p.drawPixmap(0, 0, cachedView);
+
+                // draw all light stuff which is faster
+                // to redraw than cache into pixmap
+
+                if(hintData.updateHint) {
+                    hintData.updateHint = false;
+                    updateHint();
+                }
+
+                drawReadsShadowing(p);
+                drawCurrentReadHighlight(p);
             }
-
-            setupHScrollBar();
-            setupVScrollBar();
-        }
-
-        if(browser->areReadsVisible()) {
+        }else{
+            lockTimeout = 0;
             QPainter p(this);
-            p.drawPixmap(0, 0, cachedView);
-
-            // draw all light stuff which is faster
-            // to redraw than cache into pixmap
-
-            if(hintData.updateHint) {
-                hintData.updateHint = false;
-                updateHint();
-            }
-
-            drawReadsShadowing(p);
-            drawCurrentReadHighlight(p);
+            p.fillRect(0, 0, width(), height(), Qt::transparent);
+            showDdBusyScreen();
         }
     }
 }
@@ -356,7 +377,12 @@ void AssemblyReadsArea::showWelcomeScreen() {
     coveredRegionsLabel.setAdditionalText(prefix, postfix);
     coveredRegionsLabel.show();
 
-    //p.drawText(rect(), Qt::AlignCenter, );
+}
+
+void AssemblyReadsArea::showDdBusyScreen() {
+    cachedReads.clear();
+    coveredRegionsLabel.hide();
+    bdBusyLabel.show();
 }
 
 void AssemblyReadsArea::drawReads(QPainter & p) {
@@ -364,6 +390,7 @@ void AssemblyReadsArea::drawReads(QPainter & p) {
     GCOUNTER(c2, t2, "AssemblyReadsArea::drawReads");
     qint64 t0 = GTimer::currentTimeMicros();
     coveredRegionsLabel.hide();
+    bdBusyLabel.hide();
 
     p.setFont(browser->getFont());
     p.fillRect(rect(), backgroundColor);
@@ -798,7 +825,7 @@ void AssemblyReadsArea::keyPressEvent(QKeyEvent * e) {
 }
 
 bool AssemblyReadsArea::eventFilter(QObject *obj, QEvent *ev) {
-    if(obj == &coveredRegionsLabel) {
+    if(obj == &coveredRegionsLabel || obj == &bdBusyLabel) {
         if(ev->type() == QEvent::MouseMove) {
             QWidget::event(ev);
         }

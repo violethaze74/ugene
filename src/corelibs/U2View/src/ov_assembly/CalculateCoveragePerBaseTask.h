@@ -36,6 +36,20 @@ public:
     int coverage;
     QMap<char, int> basesCount;
 };
+class GetAssemblyLengthTask : public Task {
+    Q_OBJECT
+public:
+    GetAssemblyLengthTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, TaskFlags flags = TaskFlags_FOSE_COSC):
+        Task(tr("Get length of Assembly"), flags), dbiRef(dbiRef), assemblyId(assemblyId) { }
+
+    void run();
+
+    qint64 getAssemblyLength() { return length; }
+private:
+    const U2DbiRef dbiRef;
+    const U2DataId assemblyId;
+    qint64 length;
+};
 
 class CalculateCoveragePerBaseOnRegionTask : public Task {
     Q_OBJECT
@@ -82,6 +96,7 @@ private:
     QHash<qint64, QVector<CoveragePerBaseInfo> *> results;
 
     static const qint64 MAX_REGION_LENGTH = 100000;
+    GetAssemblyLengthTask *getLengthTask;
 };
 
 }   // namespace U2

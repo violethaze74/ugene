@@ -63,6 +63,20 @@ public:
     static const QString BEDGRAPH_EXTENSION;
     static const QString COMPRESSED_EXTENSION;
 };
+class GetAssemblyVisibleNameTask : public Task {
+    Q_OBJECT
+public:
+    GetAssemblyVisibleNameTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, TaskFlags flags = TaskFlags_FOSE_COSC):
+        Task(tr("Get visible name of Assembly"), flags), dbiRef(dbiRef), assemblyId(assemblyId) { }
+
+    void run();
+
+    QString getAssemblyVisibleName() { return assemblyName; }
+private:
+    const U2DbiRef dbiRef;
+    const U2DataId assemblyId;
+    QString assemblyName;
+};
 
 class U2VIEW_EXPORT ExportCoverageTask : public Task {
     Q_OBJECT
@@ -70,6 +84,7 @@ public:
     ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings, TaskFlags flags = TaskFlags_NR_FOSE_COSC);
 
     void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
     ReportResult report();
 
     const QString &getUrl() const;
@@ -88,6 +103,7 @@ protected:
     const ExportCoverageSettings settings;
 
     QString assemblyName;
+    GetAssemblyVisibleNameTask *getAssemblyNameTask;
     CalculateCoveragePerBaseTask *calculateTask;
     QScopedPointer<IOAdapter> ioAdapter;
     qint64 alreadyProcessed;

@@ -47,8 +47,19 @@ const QString ExportCoverageSettings::COMPRESSED_EXTENSION = ".gz";
 const QByteArray ExportCoverageTask::SEPARATOR = "\t";
 const QList<char> ExportCoverageTask::EXTENDED_CHARACTERS = QList<char>() << 'W' << 'R' << 'M' << 'K' << 'Y' << 'S' << 'B' << 'V' << 'H' << 'D';
 
+void GetAssemblyVisibleNameTask::run(){
+    DbiConnection con(dbiRef, stateInfo);
+    CHECK_OP(stateInfo, );
+    U2AssemblyDbi *assemblyDbi = con.dbi->getAssemblyDbi();
+    SAFE_POINT_EXT(NULL != assemblyDbi, setError(tr("Assembly DBI is NULL")), );
+
+    const U2Assembly assembly = assemblyDbi->getAssemblyObject(assemblyId, stateInfo);
+    CHECK_OP(stateInfo, );
+    assemblyName = assembly.visualName;
+}
+
 ExportCoverageTask::ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings, TaskFlags flags) :
-    Task(tr("Export coverage per base for %1"), flags),
+    Task(tr("Export assembly coverage per base"), flags),
     dbiRef(dbiRef),
     assemblyId(assemblyId),
     settings(settings),
@@ -59,19 +70,13 @@ ExportCoverageTask::ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &a
     SAFE_POINT_EXT(!assemblyId.isEmpty(), setError(tr("Invalid assembly ID")), );
     SAFE_POINT_EXT(!settings.url.isEmpty(), setError(tr("Invalid destination url")), );
 
-    DbiConnection con(dbiRef, stateInfo);
-    CHECK_OP(stateInfo, );
-    U2AssemblyDbi *assemblyDbi = con.dbi->getAssemblyDbi();
-    SAFE_POINT_EXT(NULL != assemblyDbi, setError(tr("Assembly DBI is NULL")), );
-
-    const U2Assembly assembly = assemblyDbi->getAssemblyObject(assemblyId, stateInfo);
-    CHECK_OP(stateInfo, );
-    assemblyName = assembly.visualName;
-    setTaskName(getTaskName().arg(assemblyName));
     alphabetChars << 'A' << 'C' << 'G' << 'T';
 }
 
 void ExportCoverageTask::prepare() {
+    getAssemblyNameTask = new GetAssemblyVisibleNameTask(dbiRef, assemblyId);
+    addSubTask(getAssemblyNameTask);
+
     QDir().mkpath(QFileInfo(settings.url).absoluteDir().absolutePath());
     if (settings.compress) {
         IOAdapterFactory *ioAdapterFactory = IOAdapterUtils::get(BaseIOAdapters::GZIPPED_LOCAL_FILE);
@@ -93,6 +98,12 @@ void ExportCoverageTask::prepare() {
     addSubTask(calculateTask);
 }
 
+QList<Task *> ExportCoverageTask::onSubTaskFinished(Task *subTask){
+    if(subTask == getAssemblyNameTask){
+        assemblyName = getAssemblyNameTask->getAssemblyVisibleName();
+    }
+    return QList<Task *>();
+}
 Task::ReportResult ExportCoverageTask::report() {
     if (NULL != calculateTask) {
         SAFE_POINT_EXT(!calculateTask->areThereUnprocessedResults(), setError(tr("Not all regions were processed")), ReportResult_Finished);
@@ -120,7 +131,6 @@ void ExportCoverageTask::sl_regionIsProcessed(qint64 startPos) {
         }
     }
 }
-
 void ExportCoverageTask::identifyAlphabet(QVector<CoveragePerBaseInfo>* regionCoverage) {
     CHECK(alphabetChars.size() == 4, );
     foreach(const CoveragePerBaseInfo &info, *regionCoverage) {
@@ -255,9 +265,13 @@ ExportCoverageBedgraphTask::ExportCoverageBedgraphTask(const U2DbiRef &dbiRef, c
     GCOUNTER(c, t, "ExportCoverageBedgraphTask");
 }
 
-QList<Task *> ExportCoverageBedgraphTask::onSubTaskFinished(Task *) {
+QList<Task *> ExportCoverageBedgraphTask::onSubTaskFinished(Task *subTask) {
     CHECK_OP(stateInfo, QList<Task *>());
-    writeRegion();
+    if(subTask == getAssemblyNameTask){
+        assemblyName = getAssemblyNameTask->getAssemblyVisibleName();
+    }else{
+        writeRegion();
+    }
     return QList<Task *>();
 }
 

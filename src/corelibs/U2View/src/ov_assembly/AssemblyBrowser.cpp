@@ -254,6 +254,10 @@ QString AssemblyBrowser::tryAddObject(GObject * obj) {
             notificationStack->addNotification(message, Warning_Not);
         }
         if(setRef) {
+            if(!(model->getDbiConnection().dbi->getDbMutex()->tryLock(100))){
+                return tr("Internal error: database is busy");
+            }
+            model->getDbiConnection().dbi->getDbMutex()->unlock();
             model->setReference(seqObj);
 
             U2Assembly assembly = model->getAssembly();

@@ -71,6 +71,8 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
     mainLayout->setSpacing(0);
     setLayout(mainLayout);
 
+
+
     U2OpStatus2Log st;
     QSharedPointer<AssemblyModel> model = browser->getModel();
 
@@ -89,24 +91,28 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
     QWidget * infoGroup = new ShowHideSubgroupWidget("INFO", tr("Assembly Information"), asmWidget, true);
     mainLayout->addWidget(infoGroup);
 
-    QByteArray md5 = model->getReferenceMd5(st);
-    QByteArray species = model->getReferenceSpecies(st);
-    QString uri = model->getReferenceUri(st);
+    if(browser->getModel()->getDbiConnection().dbi->getDbMutex()->tryLock()){
+        browser->getModel()->getDbiConnection().dbi->getDbMutex()->unlock();
+        QByteArray md5 = model->getReferenceMd5(st);
+        QByteArray species = model->getReferenceSpecies(st);
+        QString uri = model->getReferenceUri(st);
 
-    if( !(md5+species+uri).isEmpty() ) {QWidget * refWidget = new QWidget(this);
-        QFormLayout * layout = buildFormLayout(refWidget);
-        if(!md5.isEmpty()) {
-            layout->addRow(buildLabel(tr("MD5"), refWidget), buildLineEdit(QString(md5), refWidget));
-        }
-        if(!species.isEmpty()) {
-            layout->addRow(buildLabel(tr("Species"), refWidget), buildLineEdit(QString(species), refWidget));
-        }
-        if(!uri.isEmpty()) {
-            layout->addRow(buildLabel(tr("URI"), refWidget), buildLineEdit(uri, refWidget));
-        }
+        if( !(md5+species+uri).isEmpty() ) {
+            QWidget * refWidget = new QWidget(this);
+            QFormLayout * layout = buildFormLayout(refWidget);
+            if(!md5.isEmpty()) {
+                layout->addRow(buildLabel(tr("MD5"), refWidget), buildLineEdit(QString(md5), refWidget));
+            }
+            if(!species.isEmpty()) {
+                layout->addRow(buildLabel(tr("Species"), refWidget), buildLineEdit(QString(species), refWidget));
+            }
+            if(!uri.isEmpty()) {
+                layout->addRow(buildLabel(tr("URI"), refWidget), buildLineEdit(uri, refWidget));
+            }
 
-        QWidget * refGroup = new ShowHideSubgroupWidget("REFERENCE", tr("Reference Information"), refWidget, false);
-        mainLayout->addWidget(refGroup);
+            QWidget * refGroup = new ShowHideSubgroupWidget("REFERENCE", tr("Reference Information"), refWidget, false);
+            mainLayout->addWidget(refGroup);
+        }
     }
 
     U2WidgetStateStorage::restoreWidgetState(savableTab);
