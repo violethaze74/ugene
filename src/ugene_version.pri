@@ -4,10 +4,10 @@
 UGENE_VERSION=1.25.0-dev
 
 # minimum UGENE version whose SQLite databases are compatible with this version
-UGENE_MIN_VERSION_SQLITE=1.13.0
+UGENE_MIN_VERSION_SQLITE=1.25.0
 
 # minimum UGENE version whose MySQL databases are compatible with this version
-UGENE_MIN_VERSION_MYSQL=1.24.0
+UGENE_MIN_VERSION_MYSQL=1.25.0
 
 # distribution info
 isEmpty( U2_DISTRIBUTION_INFO ) {

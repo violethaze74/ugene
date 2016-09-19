@@ -237,14 +237,6 @@ public:
     qint64 readsCount;
 };
 
-/** Statistics information collected during the reads packing algorithm */
-class U2AssemblyCoverageStat {
-public:
-    U2AssemblyCoverageStat() {}
-
-    QVector<qint32> coverage;
-};
-
 } //namespace
 
 #endif
