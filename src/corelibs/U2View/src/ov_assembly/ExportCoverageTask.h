@@ -66,12 +66,12 @@ public:
 class GetAssemblyVisibleNameTask : public Task {
     Q_OBJECT
 public:
-    GetAssemblyVisibleNameTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, TaskFlags flags = TaskFlag_None):
-        Task(tr("Get visible name of Assembly"), flags), dbiRef(dbiRef), assemblyId(assemblyId) { }
+    GetAssemblyVisibleNameTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId):
+        Task(tr("Get visible name of Assembly"), TaskFlag_None), dbiRef(dbiRef), assemblyId(assemblyId) { }
 
     void run();
 
-    const QString &getAssemblyVisibleName() { return assemblyName; }
+    const QString &getAssemblyVisibleName() const { return assemblyName; }
 private:
     const U2DbiRef dbiRef;
     const U2DataId assemblyId;
