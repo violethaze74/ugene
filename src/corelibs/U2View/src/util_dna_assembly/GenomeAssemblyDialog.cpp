@@ -52,7 +52,6 @@
 
 namespace U2 {
 
-QString GenomeAssemblyDialog::lastDirUrl;
 QString GenomeAssemblyDialog::methodName;
 QString GenomeAssemblyDialog::library;
 
@@ -111,10 +110,8 @@ GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget* p)
     connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_onAlgorithmChanged(const QString &)));
     connect(libraryComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onLibraryTypeChanged()));
 
-    if (lastDirUrl.isEmpty()) {
-        lastDirUrl = GUrlUtils::getDefaultDataPath();
-    }
-    resultDirNameEdit->setText(lastDirUrl);
+    QString defaultOutputDir = GUrlUtils::getDefaultDataPath() + "/" + methodNamesBox->currentText() + "_output";
+    resultDirNameEdit->setText(GUrlUtils::rollFileName(defaultOutputDir, QSet<QString>() << defaultOutputDir));
 
     if (!library.isEmpty()) {
         int index = libraryComboBox->findText(library);
@@ -236,7 +233,7 @@ void GenomeAssemblyDialog::accept() {
         }
 
         if(validated){
-            lastDirUrl = resultDirNameEdit->text();
+            library = libraryComboBox->currentText();
             library = libraryComboBox->currentText();
 
             //check formats
@@ -269,7 +266,14 @@ void GenomeAssemblyDialog::accept() {
                     return;
                 }
             }
-
+            QString outputDirUrl = resultDirNameEdit->text();
+            QDir d(outputDirUrl);
+            if (!d.exists()) {
+                if (!d.mkdir(outputDirUrl)) {
+                    QMessageBox::information(this, tr("Genome Assembly"),
+                        tr("Unable to create output directory for result assembly.\r\nDirectory Path: %1").arg(outputDirUrl));
+                }
+            }
             QDialog::accept();
         }
     }
