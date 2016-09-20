@@ -108,8 +108,10 @@ void AssemblyRuler::drawCursor(QPainter & p) {
     // pos + 1 because of 1-based coords
     QString cursorLabel = FormatUtils::formatNumberWithSeparators(posXInAsm + 1);
     if(showCoverage) {
-        qint64 coverage = browser->getCoverageAtPos(posXInAsm);
-        cursorLabel += " C " + FormatUtils::formatNumberWithSeparators(coverage);
+        qint32 coverage = browser->getCoverageAtPos(posXInAsm);
+        if (coverage >=0){//not have info about coverage yet
+            cursorLabel += " C " + FormatUtils::formatNumberWithSeparators(coverage);
+        }
     }
     int textWidth = p.fontMetrics().width(cursorLabel);
     int textHeight = p.fontMetrics().height();

@@ -242,8 +242,8 @@ void MysqlSingleTableAssemblyAdapter::pack(U2AssemblyPackStat& stat, U2OpStatus&
     createReadsIndexes(os);
 }
 
-void MysqlSingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os) {
-    QString queryString = "SELECT gstart, elen FROM " + readsTable;
+void MysqlSingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
+    QString queryString = "SELECT gstart, elen, data FROM " + readsTable;
     bool rangeArgs = (r != U2_REGION_MAX);
 
     if (rangeArgs) {
@@ -256,7 +256,7 @@ void MysqlSingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2Ass
         bindRegion(q, r, false);
     }
 
-    MysqlAssemblyUtils::calculateCoverage(q, r, c, os);
+    MysqlAssemblyUtils::calculateCoverage(q, r, coverage, os);
 }
 
 const QString& MysqlSingleTableAssemblyAdapter::getReadsTableName() const {

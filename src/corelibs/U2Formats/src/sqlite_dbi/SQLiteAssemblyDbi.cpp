@@ -334,7 +334,7 @@ void SQLiteAssemblyDbi::pack(const U2DataId& assemblyId, U2AssemblyPackStat& sta
     perfLog.trace(QString("Assembly: full pack time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000*1000)));
 }
 
-void SQLiteAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& c, U2OpStatus& os) {
+void SQLiteAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat & coverage, U2OpStatus& os) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::calculateCoverage");
 
     quint64 t0 = GTimer::currentTimeMicros();
@@ -343,7 +343,7 @@ void SQLiteAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Re
     if ( a == NULL ) {
         return;
     }
-    a->calculateCoverage(region, c, os);
+    a->calculateCoverage(region, coverage, os);
     perfLog.trace(QString("Assembly: full coverage calculation time for %2..%3: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000*1000)).arg(region.startPos).arg(region.endPos()));
 }
 
@@ -543,15 +543,19 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRea
     }
 }
 
-void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os) {
-    int csize = c.coverage->size();
+void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
+    int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
-    U2Range<int>* cdata = c.coverage->data();
     double basesPerRange = double(r.length) / csize;
     while (q.step() && !os.isCoR()) {
         qint64 startPos = q.getInt64(0);
         qint64 len = q.getInt64(1);
+        //read data and convert to data with cigar
+        QByteArray data = q.getBlob(2);
+        U2AssemblyRead read(new U2AssemblyReadData());
+        unpackData(data,read,os);
+
         U2Region readRegion(startPos, len);
         U2Region readCroppedRegion = readRegion.intersect(r);
 
@@ -559,11 +563,31 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U
             continue;
         }
 
+        // we have used effective length of the read, so insertions/deletions are already taken into account
+        // cigarString can be longer than needed
+        QVector<U2CigarOp> cigarVector;
+        foreach (const U2CigarToken &cigar, read->cigar) {
+            cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
+        }
+        cigarVector.removeAll(U2CigarOp_I);
+        cigarVector.removeAll(U2CigarOp_S);
+        cigarVector.removeAll(U2CigarOp_P);
+
+        if(r.startPos > startPos){
+            cigarVector = cigarVector.mid(r.startPos - startPos);//cut unneeded cigar string
+        }
+
         int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos)/ basesPerRange);
-        int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - 1 - r.startPos ) / basesPerRange);
+        int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos ) / basesPerRange) - 1;
         for (int i = firstCoverageIdx; i <= lastCoverageIdx && i < csize; i++) {
-            cdata[i].minValue++;
-            cdata[i].maxValue++;
+            switch (cigarVector[(i-firstCoverageIdx)*basesPerRange]){
+            case U2CigarOp_D: // skip the deletion
+            case U2CigarOp_N: // skip the skiped
+                continue;
+            default:
+                coverage[i]++;
+            }
+
         }
     }
 }
@@ -572,18 +596,31 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
     if (!ii.computeCoverage) {
         return;
     }
-    int csize = ii.coverage.coverage->size();
+    int csize = ii.coverage.size();
+
+    QVector<U2CigarOp> cigarVector;
+    foreach (const U2CigarToken &cigar, read->cigar) {
+        cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
+    }
+    cigarVector.removeAll(U2CigarOp_I);
+    cigarVector.removeAll(U2CigarOp_S);
+    cigarVector.removeAll(U2CigarOp_P);
 
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
-    int endPos = (int)((read->leftmostPos + read->effectiveLen - 1) / ii.coverageBasesPerPoint);
+    int endPos = (int)((read->leftmostPos + read->effectiveLen) / ii.coverageBasesPerPoint) - 1;
     if(endPos > csize - 1) {
         coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
-    U2Range<int>* coverageData = ii.coverage.coverage->data();
+    int* coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
-        coverageData[i].minValue++;
-        coverageData[i].maxValue++;
+        switch (cigarVector[(i-startPos)*ii.coverageBasesPerPoint]){
+        case U2CigarOp_D: // skip the deletion
+        case U2CigarOp_N: // skip the skiped
+            continue;
+        default:
+            coverageData[i]++;
+        }
     }
 }
 

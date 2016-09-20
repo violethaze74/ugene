@@ -1105,9 +1105,13 @@ QVariant ProjectViewModel::getDocumentDisplayData(Document *doc) const {
     if (!doc->isLoaded()) {
         LoadUnloadedDocumentTask *t = LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
         if (t == NULL) {
-            text += ProjectViewModel::tr("[unloaded]");
+            text += ProjectViewModel::tr("[unloaded] ");
         } else {
-            text += ProjectViewModel::tr("[loading %1%]").arg(t->getProgress());
+            if (t->getProgress() == -1){
+                text += ProjectViewModel::tr("[loading] ");
+            } else {
+                text += ProjectViewModel::tr("[loading %1%] ").arg(t->getProgress());
+            }
         }
     }
     return text + doc->getName();
@@ -1212,7 +1216,11 @@ QVariant ProjectViewModel::getObjectDisplayData(GObject *obj, Document *parentDo
     if (unloaded && parentDoc->getObjects().size() < ProjectUtils::MAX_OBJS_TO_SHOW_LOAD_PROGRESS) {
         LoadUnloadedDocumentTask* t = LoadUnloadedDocumentTask::findActiveLoadingTask(parentDoc);
         if (t != NULL) {
-            text += ProjectViewModel::tr("[loading %1%]").arg(t->getProgress());
+            if (t->getProgress() == -1){
+                text += ProjectViewModel::tr("[loading] ");
+            } else {
+                text += ProjectViewModel::tr("[loading %1%] ").arg(t->getProgress());
+            }
         }
     }
 

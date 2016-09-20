@@ -120,7 +120,7 @@ public:
         Calculates coverage information for the given region. Saves result to 'c.coverage' vector.
         Note: Coverage window size depends on 'c.coverage' vector size passed to the method call.
     */
-    virtual void calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& c, U2OpStatus& os);
+    virtual void calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
     virtual void initSqlSchema(U2OpStatus& os);
     virtual void shutdown(U2OpStatus& os);
@@ -163,7 +163,7 @@ public:
 
     static void unpackData(const QByteArray& packed, U2AssemblyRead &read, U2OpStatus& os);
 
-    static void calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os);
+    static void calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
     static void addToCoverage(U2AssemblyCoverageImportInfo& cii, const U2AssemblyRead& read);
 };

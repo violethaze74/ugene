@@ -31,6 +31,7 @@
 #include "SQLiteModDbi.h"
 #include "SQLiteUdrDbi.h"
 #include "util/SqliteUpgraderFrom_0_To_1_13.h"
+#include "util/SqliteUpgraderFrom_1_13_To_1_25.h"
 
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SqlHelpers.h>
@@ -63,6 +64,7 @@ SQLiteDbi::SQLiteDbi()
     udrDbi = new SQLiteUdrDbi(this);
 
     upgraders << new SqliteUpgraderFrom_0_To_1_13(this);
+    upgraders << new SqliteUpgraderFrom_1_13_To_1_25(this);
 }
 
 SQLiteDbi::~SQLiteDbi() {

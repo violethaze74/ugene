@@ -23,7 +23,6 @@
 #define __COVERAGE_INFO_H__
 
 #include "AssemblyModel.h"
-#include "CalculateCoveragePerBaseTask.h"
 
 #include <U2Core/BackgroundTaskRunner.h>
 #include <U2Core/U2Region.h>
@@ -43,10 +42,10 @@ struct CoverageInfo {
     void updateStats();
 
     U2Region region;
-    QVector<qint64> coverageInfo;
+    U2AssemblyCoverageStat coverageInfo;
     double averageCoverage;
-    qint64 maxCoverage;
-    qint64 minCoverage;
+    qint32 maxCoverage;
+    qint32 minCoverage;
 };
 
 struct CalcCoverageInfoTaskSettings {
@@ -56,13 +55,12 @@ struct CalcCoverageInfoTaskSettings {
 };
 
 class CalcCoverageInfoTask : public BackgroundTask<CoverageInfo> {
+    Q_OBJECT
 public:
     CalcCoverageInfoTask(const CalcCoverageInfoTaskSettings & settings);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task *subTask);
+    virtual void run();
 private:
     CalcCoverageInfoTaskSettings settings;
-    CalculateCoveragePerBaseOnRegionTask *calculateTask;
 };
 
 }

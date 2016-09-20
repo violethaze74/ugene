@@ -19,34 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MYSQL_ASSEMBLY_UTILS_H_
-#define _U2_MYSQL_ASSEMBLY_UTILS_H_
+#ifndef _U2_SQLITE_UPGRADER_FROM_1_13_TO_1_25_H_
+#define _U2_SQLITE_UPGRADER_FROM_1_13_TO_1_25_H_
 
-#include <U2Core/U2Assembly.h>
+#include "SqliteUpgrader.h"
 
 namespace U2 {
 
-class U2AssemblyCoverageImportInfo;
-class U2OpStatus;
-class U2SqlQuery;
-
-/** Compression method for assembly data */
-enum MysqlAssemblyDataMethod {
-    /** Merges Name, Sequence, Cigar and Quality values into single byte array separated by '\n' character. Merge prefix is '0'*/
-    MysqlAssemblyDataMethod_NSCQ = 1
-};
-
-class MysqlAssemblyUtils {
+class SqliteUpgraderFrom_1_13_To_1_25 : public SqliteUpgrader {
 public:
-    static QByteArray packData(MysqlAssemblyDataMethod method, const U2AssemblyRead &read, U2OpStatus& os);
+    SqliteUpgraderFrom_1_13_To_1_25(SQLiteDbi *dbi);
 
-    static void unpackData(const QByteArray& packed, U2AssemblyRead &read, U2OpStatus& os);
+    void upgrade(U2OpStatus &os) const;
 
-    static void calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
-
-    static void addToCoverage(U2AssemblyCoverageImportInfo& cii, const U2AssemblyRead& read);
+private:
+    void upgradeCoverageAttribute(U2OpStatus &os) const;
 };
 
 }   // namespace U2
 
-#endif // _U2_MYSQL_ASSEMBLY_UTILS_H_
+#endif // _U2_SQLITE_UPGRADER_FROM_0_TO_1_13_H_
