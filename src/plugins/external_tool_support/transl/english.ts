@@ -3198,7 +3198,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Select a database file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="87"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="92"/>
         <source>Set a result FASTA file name</source>
         <translation>Set a result FASTA file name</translation>
     </message>

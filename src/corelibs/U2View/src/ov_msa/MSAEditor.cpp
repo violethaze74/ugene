@@ -221,7 +221,7 @@ void MSAEditor::sl_saveAlignmentAs(){
 
     QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(srcDoc, ui);
     dialog->setAddToProjectFlag(true);
-    dialog->setWindowTitle(tr("Save alignment"));
+    dialog->setWindowTitle(tr("Save Alignment"));
     ExportObjectUtils::export2Document(dialog);
 }
 

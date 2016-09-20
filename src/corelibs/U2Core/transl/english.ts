@@ -2499,19 +2499,9 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2::U2AssemblyUtils</name>
     <message>
-        <location filename="../src/util/U2AssemblyUtils.cpp" line="58"/>
+        <location filename="../src/util/U2AssemblyUtils.cpp" line="55"/>
         <source>Invalid CIGAR op: &apos;%1&apos;!</source>
         <translation>Invalid CIGAR op: &apos;%1&apos;!</translation>
-    </message>
-    <message>
-        <location filename="../src/util/U2AssemblyUtils.cpp" line="183"/>
-        <source>Cigar string: out of bounds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/util/U2AssemblyUtils.cpp" line="201"/>
-        <source>Assembly DBI is NULL</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

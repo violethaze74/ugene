@@ -2841,23 +2841,37 @@ complement(5..15)</translation>
 <context>
     <name>U2::ProjectViewModel</name>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1108"/>
         <source>[unloaded]</source>
-        <translation>[unloaded]</translation>
+        <translation type="vanished">[unloaded]</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1110"/>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1215"/>
         <source>[loading %1%]</source>
-        <translation>[loading %1%]</translation>
+        <translation type="vanished">[loading %1%]</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1142"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1108"/>
+        <source>[unloaded] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1111"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1220"/>
+        <source>[loading] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1113"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1222"/>
+        <source>[loading %1%] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1146"/>
         <source>Locks:</source>
         <translation>Locks:</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1145"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1149"/>
         <source>Project is locked</source>
         <translation>Project is locked</translation>
     </message>
