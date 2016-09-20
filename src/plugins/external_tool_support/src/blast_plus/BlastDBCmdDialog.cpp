@@ -77,10 +77,15 @@ void BlastDBCmdDialog::sl_update() {
 }
 
 void BlastDBCmdDialog::initSaveController() {
+    QString domain = "blast_result";
+    QString dir = LastUsedDirHelper::getLastUsedDir(domain, GUrlUtils::getDefaultDataPath());
+    QString fileName = GUrlUtils::fixFileName(settings.query.isEmpty() ? "blast_result" : settings.query).replace('.', '_') + ".fa";
+
     SaveDocumentControllerConfig config;
     config.defaultFormatId = BaseDocumentFormats::FASTA;
-    config.defaultFileName = GUrlUtils::getDefaultDataPath() + "/";
-    config.rollFileName = false;
+    config.defaultFileName = dir + "/" + fileName;
+    config.defaultDomain = domain;
+    config.rollFileName = true;
     config.fileDialogButton = browseOutputButton;
     config.fileNameEdit = outputPathLineEdit;
     config.parentWidget = this;
@@ -88,11 +93,15 @@ void BlastDBCmdDialog::initSaveController() {
 
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::FASTA;
 
+
     saveController = new SaveDocumentController(config, formats, this);
 }
 
 void BlastDBCmdDialog::setQueryId( const QString& queryId ) {
     queryIdEdit->setText(queryId);
+    settings.query = queryId;
+    delete saveController;
+    initSaveController();
 }
 
 }//namespace
