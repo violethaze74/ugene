@@ -91,7 +91,7 @@ AssemblyReadsArea::AssemblyReadsArea(AssemblyBrowserUi * ui_, QScrollBar * hBar_
     setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Minimum);
 
     bdBusyLabel.setParent(this);
-    bdBusyLabel.setText(tr("<center><b>Assembly database is busy</b><br>Some task occupied database.<br> When the database is free all functionality of Assemply Browser will be available again.</center>"));
+    bdBusyLabel.setText(tr("<center><b>Assembly database is busy</b><br>Some task occupied database.<br> When the database is free all functionality of Assembly Browser will be available again.</center>"));
     bdBusyLabel.installEventFilter(this);
     bdBusyLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
