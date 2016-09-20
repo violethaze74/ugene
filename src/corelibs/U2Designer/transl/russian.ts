@@ -51,7 +51,7 @@ this merge sequence slot:</source>
     <message>
         <location filename="../src/BreakpointHitCountDialog.ui" line="43"/>
         <source>A breakpoint is hit when the breakpoint location is reached and the condition is&lt;br&gt;satisfied. The hit count is the number of times the breakpoint has been hit.</source>
-        <translation>Остановкапроизойдет когда текущее состояние достигнет критической точки и условия &lt;br&gt;будут выполнены. Количество совпадений это сколько раз сработала точка остановки.</translation>
+        <translation>Остановка произойдет когда текущее состояние достигнет критической точки и условия &lt;br&gt;будут выполнены. Количество совпадений - это сколько раз сработала точка остановки.</translation>
     </message>
 </context>
 <context>
@@ -670,6 +670,24 @@ bowtie index file</source>
     </message>
 </context>
 <context>
+    <name>U2::BreakpointHitCountDialog</name>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="74"/>
+        <source>Reset</source>
+        <translation>Сбросить</translation>
+    </message>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="75"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="76"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
     <name>U2::ComboBoxWidget</name>
     <message>
         <location filename="../src/PropertyWidget.cpp" line="178"/>
@@ -701,6 +719,19 @@ bowtie index file</source>
         <location filename="../src/PropertyWidget.cpp" line="319"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
+    </message>
+</context>
+<context>
+    <name>U2::CreateDirectoryDialog</name>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="214"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="215"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1095,11 +1126,21 @@ bowtie index file</source>
     <name>U2::OutputFileDialog</name>
     <message>
         <location filename="../src/OutputFileDialog.cpp" line="52"/>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="53"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="57"/>
         <source>Save a directory</source>
         <translation>Сохранить директорию</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="54"/>
+        <location filename="../src/OutputFileDialog.cpp" line="59"/>
         <source>Save a file</source>
         <translation>Сохранить файл</translation>
     </message>

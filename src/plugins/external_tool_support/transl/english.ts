@@ -337,22 +337,35 @@ a database file</translation>
 <context>
     <name>BlastDBCmdDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="26"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="32"/>
         <source>Fetch Sequences from BLAST Database</source>
         <translation>Fetch Sequences from BLAST Database</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="44"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="59"/>
+        <source>Query ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="75"/>
+        <source>Select database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="99"/>
+        <source>Output path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Entery query ID:</source>
-        <translation>Enter query ID:</translation>
+        <translation type="vanished">Enter query ID:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="54"/>
         <source>Select database :</source>
-        <translation>Select database :</translation>
+        <translation type="vanished">Select database :</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="104"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="115"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -369,12 +382,11 @@ a database file</translation>
         <translation type="vanished">protein</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="88"/>
         <source>Output path:</source>
-        <translation>Output path:</translation>
+        <translation type="vanished">Output path:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="116"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="127"/>
         <source>Add to project</source>
         <translation>Add to project</translation>
     </message>
@@ -382,26 +394,38 @@ a database file</translation>
 <context>
     <name>BlastDBSelectorWidget</name>
     <message>
-        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="14"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="34"/>
-        <source>Database path:</source>
-        <translation type="unfinished">Database path:</translation>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="40"/>
+        <source>Database path</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="58"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="64"/>
+        <source>Database file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="73"/>
+        <source>Base name for BLAST DB files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Database path:</source>
+        <translation type="obsolete">Database path:</translation>
+    </message>
+    <message>
         <source>Select
 a database file</source>
-        <translation type="unfinished">Select
+        <translation type="obsolete">Select
 a database file</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="68"/>
         <source>Base name for BLAST DB files:</source>
-        <translation type="unfinished">Base name for BLAST DB files:</translation>
+        <translation type="obsolete">Base name for BLAST DB files:</translation>
     </message>
 </context>
 <context>
@@ -3160,12 +3184,12 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastDBCmdDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="42"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="43"/>
         <source>Fetch</source>
         <translation>Fetch</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="43"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="44"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -3174,7 +3198,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Select a database file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="84"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="87"/>
         <source>Set a result FASTA file name</source>
         <translation>Set a result FASTA file name</translation>
     </message>
@@ -4698,6 +4722,29 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/fastqc/FastqcSupport.cpp" line="50"/>
         <source>&lt;i&gt;FastQC&lt;/i&gt;: A quality control tool for high throughput sequence data.</source>
         <translation>&lt;i&gt;FastQC&lt;/i&gt;: A quality control tool for high throughput sequence data.</translation>
+    </message>
+</context>
+<context>
+    <name>U2::FastQCTask</name>
+    <message>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="90"/>
+        <source>No input URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="95"/>
+        <source>The input file &apos;%1&apos; is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="101"/>
+        <source>Directory does not exist: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="118"/>
+        <source>Result file does not exist: %1. See the log for details.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8110,18 +8157,30 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="124"/>
-        <source>FASTA file with adapters</source>
-        <translation>FASTA file with adapters</translation>
+        <source>FASTA file with 3&apos; adapters</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="125"/>
-        <source>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$ character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</source>
-        <translation>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$ character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</translation>
+        <source>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$&apos; character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="131"/>
+        <source>FASTA file with 5&apos; adapters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FASTA file with adapters</source>
+        <translation type="vanished">FASTA file with adapters</translation>
+    </message>
+    <message>
+        <source>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$ character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</source>
+        <translation type="vanished">A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$ character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</translation>
+    </message>
+    <message>
         <source>FASTA file with reverse adapters</source>
-        <translation>FASTA file with reverse adapters</translation>
+        <translation type="vanished">FASTA file with reverse adapters</translation>
     </message>
     <message>
         <location filename="../src/cutadapt/CutadaptWorker.cpp" line="132"/>
