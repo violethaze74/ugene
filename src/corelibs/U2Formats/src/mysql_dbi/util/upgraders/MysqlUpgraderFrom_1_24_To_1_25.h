@@ -36,6 +36,7 @@ public:
 
 private:
     void dropOldPrecedure(U2OpStatus &os, MysqlDbRef *dbRef) const;
+    void upgradeCoverageAttribute(U2OpStatus &os) const;
 };
 
 }

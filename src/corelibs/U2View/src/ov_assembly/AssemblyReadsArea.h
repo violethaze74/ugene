@@ -112,6 +112,8 @@ private:
 
     /** Put welcome screen info on coveredRegionsLabel */
     void showWelcomeScreen();
+    /** Put information screen that database is busy  */
+    void showDdBusyScreen();
 
     int calcFontPointSize() const;
 
@@ -157,6 +159,7 @@ private:
     QScopedPointer<AssemblyCellRenderer> cellRenderer;
 
     CoveredRegionsLabel coveredRegionsLabel;
+    QLabel bdBusyLabel;
     QScrollBar * hBar;
     QScrollBar * vBar;
 
@@ -254,6 +257,7 @@ private:
 
     QList<QAction*> cellRendererActions;
     QAction * optimizeRenderAction;
+    int lockTimeout;
 };
 
 } //ns

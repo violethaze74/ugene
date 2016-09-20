@@ -99,12 +99,12 @@ void MysqlObjectDbi::initSqlSchema(U2OpStatus& os) {
 #define TOP_LEVEL_FILTER ("rank = " + QString::number(U2DbiObjectRank_TopLevel))
 
 qint64 MysqlObjectDbi::countObjects(U2OpStatus& os) {
-    static const QString queryString = "COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER;
+    static const QString queryString = "SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER;
     return U2SqlQuery(queryString, db, os).selectInt64();
 }
 
 qint64 MysqlObjectDbi::countObjects(U2DataType type, U2OpStatus& os) {
-    static const QString queryString = "COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = :type";
+    static const QString queryString = "SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = :type";
     U2SqlQuery q(queryString, db, os);
     q.bindType(":type", type);
     return q.selectInt64();
