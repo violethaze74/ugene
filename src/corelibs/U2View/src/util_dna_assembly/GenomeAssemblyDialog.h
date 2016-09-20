@@ -85,7 +85,6 @@ private:
     const GenomeAssemblyAlgRegistry*   assemblyRegistry;
     GenomeAssemblyAlgorithmMainWidget* customGUI;
     static QString                     methodName;
-    static QString                     lastDirUrl;
     static QString                     library;
 };
 

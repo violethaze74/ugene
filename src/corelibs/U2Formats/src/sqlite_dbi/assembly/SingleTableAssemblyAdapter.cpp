@@ -236,8 +236,8 @@ void SingleTableAssemblyAdapter::pack(U2AssemblyPackStat& stat, U2OpStatus& os) 
     AssemblyPackAlgorithm::pack(packAdapter, stat, os);
 }
 
-void SingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os) {
-    QString queryString = "SELECT gstart, elen FROM " + readsTable;
+void SingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
+    QString queryString = "SELECT gstart, elen, data FROM " + readsTable;
     bool rangeArgs = r != U2_REGION_MAX;
 
     if (rangeArgs) {
@@ -247,7 +247,7 @@ void SingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2Assembly
     if (rangeArgs) {
         bindRegion(q, r, false);
     }
-    SQLiteAssemblyUtils::calculateCoverage(q, r, c, os);
+    SQLiteAssemblyUtils::calculateCoverage(q, r, coverage, os);
 }
 
 //////////////////////////////////////////////////////////////////////////

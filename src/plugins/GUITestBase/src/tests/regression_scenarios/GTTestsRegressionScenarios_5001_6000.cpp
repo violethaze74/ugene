@@ -991,6 +991,10 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5425) {
+    //1. Open de novo assembly dialog
+    //2. Fill it and run
+    //3. Open dialog again
+    //Expected state: all settings except files with reads was saved from previous run
     class SpadesDialogSettingsChecker : public SpadesGenomeAssemblyDialogFiller {
     public:
         SpadesDialogSettingsChecker(HI::GUITestOpStatus &os, QString lib, QString datasetType, QString runningMode, 
