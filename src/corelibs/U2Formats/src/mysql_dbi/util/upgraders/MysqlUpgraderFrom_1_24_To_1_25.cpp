@@ -83,6 +83,9 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
 
         U2IntegerAttribute lengthAttr = U2AttributeUtils::findIntegerAttribute(attributeDbi, id, U2BaseAttributeName::reference_length, os);
         CHECK_OP(os, );
+        if (lengthAttr.value == 0){//Nothing to calculate
+            continue;
+        }
         static const qint64 MAX_COVERAGE_CACHE_SIZE = 1000*1000;
         int coverageSize = (int)qMin(MAX_COVERAGE_CACHE_SIZE, lengthAttr.value);
         U2AssemblyCoverageStat coverageStat;
