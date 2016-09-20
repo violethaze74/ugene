@@ -27,7 +27,7 @@ namespace U2 {
 
 const int CoveredRegionsManager::DESIRED_REGION_LENGTH = 100;
 
-CoveredRegionsManager::CoveredRegionsManager(const U2Region & visibleRegion_, const QVector<qint32> & coverageInfo) :
+CoveredRegionsManager::CoveredRegionsManager(const U2Region & visibleRegion_, const U2AssemblyCoverageStat & coverageInfo) :
 visibleRegion(visibleRegion_)  {
     assert(!coverageInfo.empty());
     assert(!visibleRegion.isEmpty());

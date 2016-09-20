@@ -206,7 +206,7 @@ void MysqlAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRead
     }
 }
 
-void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, QVector<qint32>& coverage, U2OpStatus& os) {
+void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 

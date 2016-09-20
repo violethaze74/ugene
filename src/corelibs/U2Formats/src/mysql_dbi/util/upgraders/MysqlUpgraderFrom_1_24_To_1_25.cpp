@@ -85,7 +85,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
         CHECK_OP(os, );
         static const qint64 MAX_COVERAGE_CACHE_SIZE = 1000*1000;
         int coverageSize = (int)qMin(MAX_COVERAGE_CACHE_SIZE, lengthAttr.value);
-        QVector<qint32> coverageStat;
+        U2AssemblyCoverageStat coverageStat;
         coverageStat.resize(coverageSize);
 
         assemblyDbi->calculateCoverage(id, U2Region(0, lengthAttr.value), coverageStat, os);

@@ -883,7 +883,7 @@ void ConvertToSQLiteTask::updateImportInfoReadsCountAttribute(const U2AssemblyRe
 }
 
 void ConvertToSQLiteTask::updateImportInfoCoverageStatAttribute(const U2AssemblyReadsImportInfo &importInfo, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
-    const QVector<qint32> &coverageStat = importInfo.coverageInfo.coverage;
+    const U2AssemblyCoverageStat &coverageStat = importInfo.coverageInfo.coverage;
     CHECK(!coverageStat.isEmpty(), );
 
     U2ByteArrayAttribute attribute;

@@ -117,7 +117,7 @@ U2DbiIterator<U2AssemblyRead>* AssemblyModel::getReads(const U2Region & r, U2OpS
     return assemblyDbi->getReads(assembly.id, r, os);
 }
 
-void AssemblyModel::calculateCoverageStat(const U2Region & r, QVector<qint32>& coverageStat, U2OpStatus & os) {
+void AssemblyModel::calculateCoverageStat(const U2Region & r, U2AssemblyCoverageStat& coverageStat, U2OpStatus & os) {
     return assemblyDbi->calculateCoverage(assembly.id, r, coverageStat, os);
 }
 
@@ -137,7 +137,7 @@ bool AssemblyModel::hasCachedCoverageStat() {
     return false;
 }
 
-const QVector<qint32> &AssemblyModel::getCoverageStat(U2OpStatus & os) {
+const U2AssemblyCoverageStat &AssemblyModel::getCoverageStat(U2OpStatus & os) {
     QMutexLocker mutexLocker(&mutex);
     Q_UNUSED(mutexLocker);
     if(cachedCoverageStat.isEmpty()) {

@@ -380,7 +380,7 @@ void AssemblyBrowser::setGlobalCoverageInfo(CoverageInfo newInfo) {
     // prefer model's coverage stat
     if(model->hasCachedCoverageStat()) {
         U2OpStatus2Log status;
-        QVector<qint32> coverageStat = model->getCoverageStat(status);
+        U2AssemblyCoverageStat coverageStat = model->getCoverageStat(status);
         if(!status.isCoR() && coverageStat.size() > newInfo.coverageInfo.size()) {
             newInfo.coverageInfo = coverageStat;
             newInfo.updateStats();
@@ -422,7 +422,7 @@ qint32 AssemblyBrowser::getCoverageAtPos(qint64 pos) {
         }
 
         U2OpStatus2Log status;
-        QVector<qint32> coverageStat;
+        U2AssemblyCoverageStat coverageStat;
         coverageStat.resize(1);
         model->calculateCoverageStat(U2Region(pos, 1), coverageStat, status);
         return coverageStat.first();

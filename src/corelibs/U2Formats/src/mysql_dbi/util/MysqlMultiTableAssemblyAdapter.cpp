@@ -335,7 +335,7 @@ void MysqlMultiTableAssemblyAdapter::pack(U2AssemblyPackStat& stat, U2OpStatus& 
     flushTables(os);
 }
 
-void MysqlMultiTableAssemblyAdapter::calculateCoverage(const U2Region& region, QVector<qint32>& coverage, U2OpStatus& os) {
+void MysqlMultiTableAssemblyAdapter::calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     for (int i = 0; i < adapters.size(); ++i) {
         MysqlMtaSingleTableAdapter * a = adapters.at(i);
         a->singleTableAdapter->calculateCoverage(region, coverage, os);

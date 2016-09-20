@@ -334,7 +334,7 @@ void SQLiteAssemblyDbi::pack(const U2DataId& assemblyId, U2AssemblyPackStat& sta
     perfLog.trace(QString("Assembly: full pack time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000*1000)));
 }
 
-void SQLiteAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, QVector<qint32> & coverage, U2OpStatus& os) {
+void SQLiteAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat & coverage, U2OpStatus& os) {
     GTIMER(c2, t2, "SQLiteAssemblyDbi::calculateCoverage");
 
     quint64 t0 = GTimer::currentTimeMicros();
@@ -543,7 +543,7 @@ void SQLiteAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRea
     }
 }
 
-void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, QVector<qint32>& coverage, U2OpStatus& os) {
+void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 

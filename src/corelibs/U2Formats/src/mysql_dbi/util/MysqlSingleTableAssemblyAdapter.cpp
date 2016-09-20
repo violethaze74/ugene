@@ -242,7 +242,7 @@ void MysqlSingleTableAssemblyAdapter::pack(U2AssemblyPackStat& stat, U2OpStatus&
     createReadsIndexes(os);
 }
 
-void MysqlSingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, QVector<qint32>& coverage, U2OpStatus& os) {
+void MysqlSingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     QString queryString = "SELECT gstart, elen, data FROM " + readsTable;
     bool rangeArgs = (r != U2_REGION_MAX);
 

@@ -559,7 +559,7 @@ void MultiTableAssemblyAdapter::pack(U2AssemblyPackStat& stat, U2OpStatus& os) {
     flushTables(os);
 }
 
-void MultiTableAssemblyAdapter::calculateCoverage(const U2Region& region, QVector<qint32>& coverage, U2OpStatus& os) {
+void MultiTableAssemblyAdapter::calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     for(int i = 0; i < adapters.size(); ++i) {
         MTASingleTableAdapter * a = adapters.at(i);
         a->singleTableAdapter->calculateCoverage(region, coverage, os);

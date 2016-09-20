@@ -42,7 +42,7 @@ struct CoverageInfo {
     void updateStats();
 
     U2Region region;
-    QVector<qint32> coverageInfo;
+    U2AssemblyCoverageStat coverageInfo;
     double averageCoverage;
     qint32 maxCoverage;
     qint32 minCoverage;

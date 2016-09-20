@@ -554,7 +554,7 @@ void AssemblyDbiUnitTests_calculateCoverage::Test() {
     U2OpStatusImpl os;
     const U2DataId& id = AssemblyTestData::getAssemblyIds()->first();
     const U2Region& region = U2Region(20, 1);
-    QVector<qint32> c;
+    U2AssemblyCoverageStat c;
     c.resize(1);
     assemblyDbi->calculateCoverage(id, region, c, os);
     CHECK_NO_ERROR(os);
@@ -569,7 +569,7 @@ void AssemblyDbiUnitTests_calculateCoverageInvalid::Test() {
 
     const U2DataId& id = testData.getValue<U2DataId>(INVALID_ASSEMBLY_ID);
     const U2Region& region = U2Region(20, 1);
-    QVector<qint32> c;
+    U2AssemblyCoverageStat c;
     U2OpStatusImpl os;
     assemblyDbi->calculateCoverage(id, region, c, os);
     CHECK_TRUE(os.hasError(), "error should be thrown");

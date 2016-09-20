@@ -44,7 +44,7 @@ struct CoveredRegion {
 class CoveredRegionsManager {
 public:
     CoveredRegionsManager() {}
-    CoveredRegionsManager(const U2Region & visibleRegion_, const QVector<qint32> & coverageInfo_);
+    CoveredRegionsManager(const U2Region & visibleRegion_, const U2AssemblyCoverageStat & coverageInfo_);
 
     inline bool isEmpty() const {return allRegions.empty();}
 

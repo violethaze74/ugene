@@ -129,7 +129,7 @@ qint64 U2AssemblyUtils::getCigarExtraLength(const QList<U2CigarToken>& cigar) {
     return res;
 }
 
-QByteArray U2AssemblyUtils::serializeCoverageStat(const QVector<qint32>& coverageStat) {
+QByteArray U2AssemblyUtils::serializeCoverageStat(const U2AssemblyCoverageStat& coverageStat) {
     QByteArray data;
     for(int index = 0;index < coverageStat.size();index++) {
         for(int i = 0;i < 4;i++) {
@@ -139,7 +139,7 @@ QByteArray U2AssemblyUtils::serializeCoverageStat(const QVector<qint32>& coverag
     return data;
 }
 
-void U2AssemblyUtils::deserializeCoverageStat(QByteArray data, QVector<qint32>& res, U2OpStatus &os) {
+void U2AssemblyUtils::deserializeCoverageStat(QByteArray data, U2AssemblyCoverageStat& res, U2OpStatus &os) {
     res.clear();
     if(!data.isEmpty() && 0 == (data.size() % 4)) {
         for(int index = 0;index < data.size()/4;index++) {

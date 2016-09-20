@@ -57,7 +57,7 @@ public:
 
     virtual void pack(U2AssemblyPackStat& stat, U2OpStatus& os);
 
-    virtual void calculateCoverage(const U2Region& region, QVector<qint32>& coverage, U2OpStatus& os);
+    virtual void calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
     const QString& getReadsTableName() const;
 

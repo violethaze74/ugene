@@ -122,7 +122,7 @@ public:
         Calculates coverage information for the given region. Saves result to 'coverage' vector.
         Note: Coverage window size depends on 'coverage' vector size passed to the method call.
     */
-    virtual void calculateCoverage(const U2DataId& assemblyId, const U2Region& region, QVector<qint32>& coverage, U2OpStatus& os);
+    virtual void calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
 private:
     virtual void addReads(MysqlAssemblyAdapter* a, U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os);

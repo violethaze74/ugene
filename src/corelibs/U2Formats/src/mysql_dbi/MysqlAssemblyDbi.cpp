@@ -361,7 +361,7 @@ void MysqlAssemblyDbi::pack(const U2DataId& assemblyId, U2AssemblyPackStat& stat
     perfLog.trace(QString("Assembly: full pack time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000*1000)));
 }
 
-void MysqlAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, QVector<qint32>& coverage, U2OpStatus& os) {
+void MysqlAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     GTIMER(c2, t2, "MysqlAssemblyDbi::calculateCoverage");
 
     quint64 t0 = GTimer::currentTimeMicros();

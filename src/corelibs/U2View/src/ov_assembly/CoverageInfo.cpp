@@ -52,7 +52,7 @@ BackgroundTask<CoverageInfo>("Calculate assembly coverage", TaskFlag_None), sett
 
 void CalcCoverageInfoTask::run() {
 
-    QVector<qint32> cachedCoverageStat;
+    U2AssemblyCoverageStat cachedCoverageStat;
     {
         cachedCoverageStat = settings.model->getCoverageStat(stateInfo);
         if(stateInfo.isCoR()) {
@@ -76,7 +76,7 @@ void CalcCoverageInfoTask::run() {
     result.region = settings.visibleRange;
 
     if(cachedCoverageStat.isEmpty() || (coverageStatBasesPerRegion > basesPerRegion)) {
-        QVector<qint32> coverageStat;
+        U2AssemblyCoverageStat coverageStat;
         coverageStat.resize(settings.regions);
         {
             settings.model->calculateCoverageStat(settings.visibleRange, coverageStat, stateInfo);

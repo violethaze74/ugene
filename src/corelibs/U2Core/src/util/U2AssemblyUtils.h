@@ -79,12 +79,12 @@ public:
     /**
         Serializes Coverage Statistics to byte array for storing in dbi attribute
     */
-    static QByteArray serializeCoverageStat(const QVector<qint32>& coverageStat);
+    static QByteArray serializeCoverageStat(const U2AssemblyCoverageStat& coverageStat);
 
     /**
         Deserializes Coverage Statistics that was serialized with serializeCoverageStat function
     */
-    static void deserializeCoverageStat(QByteArray data, QVector<qint32>& res, U2OpStatus &os);
+    static void deserializeCoverageStat(QByteArray data, U2AssemblyCoverageStat& res, U2OpStatus &os);
 
     /**
         Size of array of cached coverage
