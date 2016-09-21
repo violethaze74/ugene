@@ -74,6 +74,8 @@ const QString BASE_OUTFILE = "out.sam";
 
 const QString LIBRARY = "library";
 
+const QString FILTER_UNPAIRED = "filter-unpaired";
+
 //////////////////////////////////////////////////////////////////////////
 //BaseShortReadsAlignerWorker
 BaseShortReadsAlignerWorker::BaseShortReadsAlignerWorker(Actor *a, const QString& algName)
@@ -83,6 +85,7 @@ BaseShortReadsAlignerWorker::BaseShortReadsAlignerWorker(Actor *a, const QString
 , inPairedChannel(NULL)
 , output(NULL)
 , pairedReadsInput(false)
+, filterUnpaired(true)
 {
 }
 
@@ -91,6 +94,7 @@ void BaseShortReadsAlignerWorker::init() {
     inPairedChannel = ports.value(IN_PORT_DESCR_PAIRED);
     output = ports.value(OUT_PORT_DESCR);
     pairedReadsInput = getValue<QString>(LIBRARY) == "Paired-end";
+    filterUnpaired = getValue<bool>(FILTER_UNPAIRED);
     readsFetcher = DatasetFetcher(this, inChannel, context);
     pairedReadsFetcher = DatasetFetcher(this, inPairedChannel, context);
 
@@ -142,6 +146,7 @@ Task *BaseShortReadsAlignerWorker::tick() {
             return new FailTask(os.getError());
         }
         settings.pairedReads = pairedReadsInput;
+        settings.filterUnpaired = filterUnpaired;
 
         if (pairedReadsInput) {
             settings.shortReadSets << toUrls(readsFetcher.takeFullDataset(), READS_URL_SLOT_ID, ShortReadSet::PairedEndReads, ShortReadSet::UpstreamMate);
@@ -286,6 +291,10 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
             BaseShortReadsAlignerWorker::tr("Library"),
             BaseShortReadsAlignerWorker::tr("Is this library mate-paired?"));
 
+        Descriptor filter(FILTER_UNPAIRED,
+                          BaseShortReadsAlignerWorker::tr("Filter unpaired reads"),
+                          BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
+
         Descriptor outName(OUTPUT_NAME,
             BaseShortReadsAlignerWorker::tr("Output file name"),
             BaseShortReadsAlignerWorker::tr("Base name of the output file. 'out.sam' by default"));
@@ -299,6 +308,10 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
         visibilityValues << QVariant("Paired-end");
         libraryAttr->addPortRelation(PortRelationDescriptor(IN_PORT_DESCR_PAIRED, visibilityValues));
         attrs << libraryAttr;
+
+        Attribute* filterAttr = new Attribute(filter, BaseTypes::BOOL_TYPE(), false, true);
+        filterAttr->addRelation(new VisibilityRelation(LIBRARY, "Paired-end"));
+        attrs << filterAttr;
     }
 
     {

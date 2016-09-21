@@ -64,6 +64,7 @@ protected:
     IntegralBus *inPairedChannel;
     IntegralBus *output;
     bool pairedReadsInput;
+    bool filterUnpaired;
 
     DatasetFetcher readsFetcher;
     DatasetFetcher pairedReadsFetcher;
