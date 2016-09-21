@@ -1687,13 +1687,18 @@ To append data to existing file press &apos;Append&apos;.</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationDialog.cpp" line="70"/>
-        <location filename="../src/util/CreateAnnotationDialog.cpp" line="75"/>
+        <location filename="../src/util/CreateAnnotationDialog.cpp" line="64"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationDialog.cpp" line="71"/>
+        <location filename="../src/util/CreateAnnotationDialog.cpp" line="76"/>
         <source>Error</source>
         <translation>Ошибка валидации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationDialog.cpp" line="75"/>
+        <location filename="../src/util/CreateAnnotationDialog.cpp" line="76"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте пожалуйста настройки</translation>
     </message>

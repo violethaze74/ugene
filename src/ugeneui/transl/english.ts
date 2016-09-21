@@ -851,62 +851,62 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DocumentFormatSelectorController</name>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="73"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="74"/>
         <source>Options for %1</source>
         <translation>Options for %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="90"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="91"/>
         <source>&lt;b&gt;%1&lt;/b&gt; format. Score: %2 &lt;i&gt;(%3)&lt;/i&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; format. Score: %2 &lt;i&gt;(%3)&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="94"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="95"/>
         <source>&lt;b&gt;&lt;font color=#A6392E&gt;Import: &lt;/font&gt;%1&lt;/b&gt;. Score: %2 (&lt;i&gt;%3&lt;/i&gt;)</source>
         <translation>&lt;b&gt;&lt;font color=#A6392E&gt;Import: &lt;/font&gt;%1&lt;/b&gt;. Score: %2 (&lt;i&gt;%3&lt;/i&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="124"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="125"/>
         <source>Choose format manually</source>
         <translation>Choose format manually</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="175"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="177"/>
         <source>Not matched</source>
         <translation>Not matched</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="178"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="180"/>
         <source>Very low similarity</source>
         <translation>Very low similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="181"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="183"/>
         <source>Low similarity</source>
         <translation>Low similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="184"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="186"/>
         <source>Average similarity</source>
         <translation>Average similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="187"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="189"/>
         <source>High similarity</source>
         <translation>High similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="190"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="192"/>
         <source>Very high similarity</source>
         <translation>Very high similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="192"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
         <source>Perfect match</source>
         <translation>Perfect match</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="200"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="202"/>
         <source>Format details for &apos;%1&apos; format</source>
         <translation>Format details for &apos;%1&apos; format</translation>
     </message>

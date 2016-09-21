@@ -2343,7 +2343,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mrbayes/MrBayesDialog.ui" line="329"/>
         <source>Display Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Опции отображения</translation>
     </message>
 </context>
 <context>
@@ -2551,7 +2551,7 @@ Uncheck to get the maximum likelihood estimate.</source>
     <message>
         <location filename="../src/phyml/PhyMLDialog.ui" line="63"/>
         <source>Substitution Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Модель замен</translation>
     </message>
     <message>
         <location filename="../src/phyml/PhyMLDialog.ui" line="154"/>
@@ -2616,7 +2616,7 @@ Uncheck to get the maximum likelihood estimate.</source>
     <message>
         <location filename="../src/phyml/PhyMLDialog.ui" line="525"/>
         <source>Display Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Опции отображения</translation>
     </message>
 </context>
 <context>
@@ -7847,12 +7847,12 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="134"/>
         <source>Assembly Transcripts with Cufflinks</source>
-        <translation>Сборка транскрипций с помощью Cufflinks</translation>
+        <translation>Сборка транскриптов с помощью Cufflinks</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="135"/>
         <source>Cufflinks accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts. Cufflinks then estimates the relative abundances of these transcripts based on how many reads support each one, taking into account biases in library preparation protocols.</source>
-        <translation>Cufflinks принимает выровненые риды RNA-Seq и собирает выравнивание в набор транскрипций. После этого Cufflinks оценивает относительное содержание этих транскрипций на основе того, сколько ридов поддерживает каждый из них, с учетом пристрастий в библиотеке протоколов подготовки.</translation>
+        <translation>Cufflinks принимает выровненные риды RNA-Seq и собирает выравнивание в набор транскрипций. После этого Cufflinks оценивает относительное содержание этих транскриптов на основе того, сколько ридов поддерживает каждый из них, с учетом возможных систематических ошибок разных протоколов подготовки библиотек.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="143"/>
@@ -7862,7 +7862,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="144"/>
         <source>The base name of output directory. It could be modified with a suffix.</source>
-        <translation>Базовое имя для выходной директории.</translation>
+        <translation>базовое имя для выходной директории.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="147"/>
@@ -7872,7 +7872,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="148"/>
         <source>Tells Cufflinks to use the supplied reference annotation to estimate isoform expression. Cufflinks will not assemble novel transcripts and the program will ignore alignments not structurally compatible with any reference transcript.</source>
-        <translation>Сообщает Cufflinks использовать прилагаемую референсную аннотацию для оценки экспрессии изоформ. Cufflinks не будет собирать новые транскрипции и программа будет игнорировать выравнивания структурно не совместимые с любым эталоном транскрипции.</translation>
+        <translation>указывает Cufflinks использовать прилагаемую референсную аннотацию для оценки экспрессии изоформ. Cufflinks не будет собирать новые транскрипты и программа будет игнорировать выравнивания, по структуре не совместимые с каким-либо референсным транскриптом.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="154"/>
@@ -7882,7 +7882,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="155"/>
         <source>Tells Cufflinks to use the supplied reference annotation to guide Reference Annotation Based Transcript (RABT) assembly. Reference transcripts will be tiled with faux-reads to provide additional information in assembly. Output will include all reference transcripts as well as any novel genes and isoforms that are assembled.</source>
-        <translation>Сообщает Cufflinks использовать прилагаемую референсную аннотацию для сборки базовой транскрипции (Reference Annotation Based Transcript (RABT)). Референсные транскрипции использованы для подготовки дополнительной информации в сборке.</translation>
+        <translation>указывает Cufflinks использовать прилагаемую референсную аннотацию для сборки транскриптома по референсу (Reference Annotation Based Transcript (RABT)). Референсные транскрипции наряду со сгенерированными ридами будут использованы как дополнительная информация в сборке. В итоговый результат войдут как референсные транскрипты, так и гены и изоформы из новой сборки.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="162"/>
@@ -7892,7 +7892,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="163"/>
         <source>Specifies RNA-Seq protocol.</source>
-        <translation>Задает протокол RNA-Seq.</translation>
+        <translation>задает протокол секвенирования РНК.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="166"/>
@@ -7902,7 +7902,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="167"/>
         <source>Ignore all reads that could have come from transcripts in this file. It is recommended to include any annotated rRNA, mitochondrial transcripts other abundant transcripts you wish to ignore in your analysis in this file. Due to variable efficiency of mRNA enrichment methods and rRNA depletion kits, masking these transcripts often improves the overall robustness of transcript abundance estimates.</source>
-        <translation>Игнорирует все риды, которые могли произойти от транскрипций в этом файле.</translation>
+        <translation>игнорирует все риды, которые могли произойти от транскрипций в этом файле.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="175"/>
@@ -7912,27 +7912,27 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="176"/>
         <source>Tells Cufflinks to do an initial estimation procedure to more accurately weight reads mapping to multiple locations in the genome.</source>
-        <translation>Начальная процедура оценки для более точного отображения веса ридов в нескольких местах в геноме.</translation>
+        <translation>начальная процедура оценки для более точного отображения веса ридов в нескольких местах в геноме.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="180"/>
         <source>Min isoform fraction</source>
-        <translation>Содержание изоформ</translation>
+        <translation>Минимальное содержание изоформ</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="181"/>
         <source>After calculating isoform abundance for a gene, Cufflinks filters out transcripts that it believes are very low abundance, because isoforms expressed at extremely low levels often cannot reliably be assembled, and may even be artifacts of incompletely spliced precursors of processed transcripts. This parameter is also used to filter out introns that have far fewer spliced alignments supporting them.</source>
-        <translation>После расчета изоформ для гена, Cufflinks отфильтровывает транскрипции, которые имеют очень низкая численность, потому что изоформы, выраженные на низком уровне часто не могут быть надежно собраны. Этот параметр также используется для фильтрации интронов, которые имеют гораздо меньше склеенных внахлест выравниваний.</translation>
+        <translation>после расчета уровня изоформ конкретного гена Cufflinks удалит транскрипты с очень маленькой обильностью, потому что изоформы с таким низким уровнем экспрессии часто не могут быть надежно собраны. Этот параметр также используется для удаления из анализа предполагаемых интронов в том случае, если их существование поддерживает очень мало сплайсированных выравниваний.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="189"/>
         <source>Frag bias correct</source>
-        <translation>Регулировка смещения</translation>
+        <translation>Корректировка смещения</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="190"/>
         <source>Providing Cufflinks with a multifasta file via this option instructs it to run the bias detection and correction algorithm which can significantly improve accuracy of transcript abundance estimates.</source>
-        <translation>Cufflinks с несколькими файлами Fasta с помощью этой опции указывает на запуск обнаружения и коррекции смещения алгоритма, который может значительно улучшить точность оценок численности транскрипций.</translation>
+        <translation>при указании файла с последовательностями в формате fasta Cufflinks с несколькими файлами запустит алгоритм обнаружения и коррекции смещения, который может значительно улучшить точность оценки обилия транскриптов.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="195"/>
@@ -10335,22 +10335,22 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="245"/>
         <source>Known transcript file</source>
-        <translation>Известный транскрипционный файл</translation>
+        <translation>Файл с известными транскриптами</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="246"/>
         <source>A set of gene model annotations and/or known transcripts.</source>
-        <translation>Набор аннотаций и/или известных транскрипций.</translation>
+        <translation>файл с аннотацией моделей генов и/или известными транскриптами.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="249"/>
         <source>Max multihits</source>
-        <translation>Макс. мультихитов</translation>
+        <translation>Максимальное количество множественных выравниваний</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="250"/>
         <source>Instructs TopHat to allow up to this many alignments to the reference for a given read, and suppresses all alignments for reads with more than this many alignments.</source>
-        <translation>Tophat подавляет все выравнивания для ридов с более чем указанное количество выравниваний.</translation>
+        <translation>Tophat не будет анализировать все выравнивания для ридов с большим количеством выравниваний, чем указанный параметр.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="255"/>
@@ -10360,17 +10360,17 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="256"/>
         <source>Each read is cut up into segments, each at least this long. These segments are mapped independently.</source>
-        <translation>Каждый рид разрезается на сегменты. Эти сегменты отображаются независимо.</translation>
+        <translation>каждый рид разрезается на сегменты указанной длины. Эти сегменты выравниваются независимо.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="268"/>
         <source>Fusion search</source>
-        <translation>Поиск слияния</translation>
+        <translation>Поиск химер</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="269"/>
         <source>Turn on fusion mapping.</source>
-        <translation>Включает отображение слияния.</translation>
+        <translation>искать выравнивание для химерных ридов.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="272"/>

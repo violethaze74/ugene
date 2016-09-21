@@ -2346,7 +2346,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mrbayes/MrBayesDialog.ui" line="329"/>
         <source>Display Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Display Options</translation>
     </message>
 </context>
 <context>
@@ -2554,7 +2554,7 @@ Uncheck to get the maximum likelihood estimate.</translation>
     <message>
         <location filename="../src/phyml/PhyMLDialog.ui" line="63"/>
         <source>Substitution Model</source>
-        <translation type="unfinished"></translation>
+        <translation>Substitution Model</translation>
     </message>
     <message>
         <location filename="../src/phyml/PhyMLDialog.ui" line="154"/>
@@ -2619,7 +2619,7 @@ Uncheck to get the maximum likelihood estimate.</translation>
     <message>
         <location filename="../src/phyml/PhyMLDialog.ui" line="525"/>
         <source>Display Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Display Options</translation>
     </message>
 </context>
 <context>

@@ -245,57 +245,6 @@
     </message>
 </context>
 <context>
-    <name>U2::MSAColorSchemeRegistry</name>
-    <message>
-        <source>No colors</source>
-        <translation type="vanished">Без цвета</translation>
-    </message>
-    <message>
-        <source>Jalview</source>
-        <translation type="vanished">Раскраска Jalview</translation>
-    </message>
-    <message>
-        <source>Percentage Identity</source>
-        <translation type="vanished">По процентному соотношению</translation>
-    </message>
-    <message>
-        <source>Percentage Identity (gray)</source>
-        <translation type="vanished">По процентному соотношению (серый)</translation>
-    </message>
-    <message>
-        <source>Zappo</source>
-        <translation type="vanished">Zappo</translation>
-    </message>
-    <message>
-        <source>Tailor</source>
-        <translation type="vanished">Tailor</translation>
-    </message>
-    <message>
-        <source>Hydrophobicity</source>
-        <translation type="vanished">Гидрофобность</translation>
-    </message>
-    <message>
-        <source>Helix propensity</source>
-        <translation type="vanished">Склонность к спиральности</translation>
-    </message>
-    <message>
-        <source>Strand propensity</source>
-        <translation type="vanished">Склонность к линейности</translation>
-    </message>
-    <message>
-        <source>Turn propensity</source>
-        <translation type="vanished">Склонность к сворачиванию</translation>
-    </message>
-    <message>
-        <source>Buried index</source>
-        <translation type="vanished">Индекс</translation>
-    </message>
-    <message>
-        <source>Clustal X</source>
-        <translation type="vanished">Clustal X</translation>
-    </message>
-</context>
-<context>
     <name>U2::MSAConsensusAlgorithmFactoryClustal</name>
     <message>
         <location filename="../src/util_msa_consensus/MSAConsensusAlgorithmClustal.cpp" line="30"/>
@@ -407,37 +356,6 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
 </context>
 <context>
-    <name>U2::MSAHighlightingSchemeRegistry</name>
-    <message>
-        <source>No highlighting</source>
-        <translation type="vanished">Без выделения</translation>
-    </message>
-    <message>
-        <source>Agreements</source>
-        <translation type="vanished">Совпадающие нуклеотиды</translation>
-    </message>
-    <message>
-        <source>Disagreements</source>
-        <translation type="vanished">Различающиеся нуклеотиды</translation>
-    </message>
-    <message>
-        <source>Gaps</source>
-        <translation type="vanished">Пробелы</translation>
-    </message>
-    <message>
-        <source>Conservation level</source>
-        <translation type="vanished">Уровень сохранения</translation>
-    </message>
-    <message>
-        <source>Transitions</source>
-        <translation type="vanished">Транзиции</translation>
-    </message>
-    <message>
-        <source>Transversions</source>
-        <translation type="vanished">Трансверсии</translation>
-    </message>
-</context>
-<context>
     <name>U2::MolecularSurfaceCalcTask</name>
     <message>
         <location filename="../src/molecular_geometry/MolecularSurface.cpp" line="126"/>
@@ -452,64 +370,64 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="511"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="552"/>
         <source>No colors</source>
-        <translation type="unfinished">Без цвета</translation>
+        <translation>Без цвета</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="504"/>
         <source>Jalview</source>
-        <translation type="unfinished">Раскраска Jalview</translation>
+        <translation>Раскраска Jalview</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="506"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="545"/>
         <source>Percentage Identity</source>
-        <translation type="unfinished">По процентному соотношению</translation>
+        <translation>По процентному соотношению</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="507"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="546"/>
         <source>Percentage Identity (gray)</source>
-        <translation type="unfinished">По процентному соотношению (серый)</translation>
+        <translation>По процентному соотношению (серый)</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="519"/>
         <source>Zappo</source>
-        <translation type="unfinished">Zappo</translation>
+        <translation>Zappo</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="523"/>
         <source>Tailor</source>
-        <translation type="unfinished">Tailor</translation>
+        <translation>Tailor</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="527"/>
         <source>Hydrophobicity</source>
-        <translation type="unfinished">Гидрофобность</translation>
+        <translation>Гидрофобность</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="531"/>
         <source>Helix propensity</source>
-        <translation type="unfinished">Склонность к спиральности</translation>
+        <translation>Склонность к спиральности</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="535"/>
         <source>Strand propensity</source>
-        <translation type="unfinished">Склонность к линейности</translation>
+        <translation>Склонность к линейности</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="539"/>
         <source>Turn propensity</source>
-        <translation type="unfinished">Склонность к сворачиванию</translation>
+        <translation>Склонность к сворачиванию</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="543"/>
         <source>Buried index</source>
-        <translation type="unfinished">Индекс</translation>
+        <translation>Индекс</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="548"/>
         <source>Clustal X</source>
-        <translation type="unfinished">Clustal X</translation>
+        <translation>Clustal X</translation>
     </message>
 </context>
 <context>
@@ -519,42 +437,42 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="121"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="122"/>
         <source>No highlighting</source>
-        <translation type="unfinished">Без выделения</translation>
+        <translation>Без выделения</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="124"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="125"/>
         <source>Agreements</source>
-        <translation type="unfinished">Совпадающие нуклеотиды</translation>
+        <translation>Совпадающие нуклеотиды</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="127"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="128"/>
         <source>Disagreements</source>
-        <translation type="unfinished">Различающиеся нуклеотиды</translation>
+        <translation>Различающиеся нуклеотиды</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="130"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="131"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="132"/>
         <source>Gaps</source>
-        <translation type="unfinished">Пробелы</translation>
+        <translation>Пробелы</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="134"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="135"/>
         <source>Conservation level</source>
-        <translation type="unfinished">Уровень сохранения</translation>
+        <translation>Уровень сохранения</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="137"/>
         <source>Transitions</source>
-        <translation type="unfinished">Транзиции</translation>
+        <translation>Транзиции</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="138"/>
         <source>Transversions</source>
-        <translation type="unfinished">Трансверсии</translation>
+        <translation>Трансверсии</translation>
     </message>
 </context>
 <context>

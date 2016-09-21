@@ -688,7 +688,7 @@ Probably the data is too big.</translation>
     <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui" line="22"/>
         <source>Save to file</source>
-        <translation type="unfinished"></translation>
+        <translation>Save to file</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui" line="32"/>
@@ -1519,7 +1519,7 @@ Double-click to collapse the branch</translation>
     <message>
         <location filename="../src/ov_sequence/PanViewRows.cpp" line="95"/>
         <source>Restriction Site</source>
-        <translation type="unfinished"></translation>
+        <translation>Restriction Site</translation>
     </message>
 </context>
 <context>
@@ -3503,12 +3503,12 @@ You don&apos;t have enough rights to change file</translation>
     <message>
         <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="44"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="43"/>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/phyltree/BranchSettingsDialog.cpp" line="77"/>
@@ -3777,9 +3777,13 @@ You don&apos;t have enough rights to change file</translation>
         <translation>Nucleotide</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="196"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Ok</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="196"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="223"/>
@@ -7130,6 +7134,19 @@ Please, load the corresponding plugins.</translation>
     </message>
 </context>
 <context>
+    <name>U2::TextSettingsDialog</name>
+    <message>
+        <location filename="../src/phyltree/TextSettingsDialog.cpp" line="41"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/phyltree/TextSettingsDialog.cpp" line="42"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+</context>
+<context>
     <name>U2::TreeOptionsWidget</name>
     <message>
         <location filename="../src/ov_msa/TreeOptions/TreeOptionsWidget.cpp" line="124"/>
@@ -7170,17 +7187,27 @@ Please, load the corresponding plugins.</translation>
 <context>
     <name>U2::TreeSettingsDialog</name>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="90"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="34"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="35"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="92"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="93"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="95"/>
         <source>Phylogram</source>
         <translation>Phylogram</translation>
     </message>
     <message>
-        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="96"/>
+        <location filename="../src/phyltree/TreeSettingsDialog.cpp" line="98"/>
         <source>Cladogram</source>
         <translation>Cladogram</translation>
     </message>

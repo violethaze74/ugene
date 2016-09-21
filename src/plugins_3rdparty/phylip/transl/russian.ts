@@ -59,7 +59,7 @@
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="185"/>
         <source>Enable bootstrapping</source>
-        <translation type="unfinished"></translation>
+        <translation>Бутстреп-анализ</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="218"/>
@@ -84,7 +84,7 @@
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="331"/>
         <source>Display Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Опции отображения</translation>
     </message>
 </context>
 <context>

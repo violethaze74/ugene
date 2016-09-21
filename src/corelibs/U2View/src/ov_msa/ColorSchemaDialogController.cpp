@@ -193,7 +193,7 @@ CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData* _newSchema, QS
 
     connect(schemeName, SIGNAL(textEdited ( const QString&)), SLOT(sl_schemaNameEdited(const QString&)));
 
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ok"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     QPushButton *createButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);

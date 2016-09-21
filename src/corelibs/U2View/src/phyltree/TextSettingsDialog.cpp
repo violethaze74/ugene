@@ -38,6 +38,8 @@ TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap& settin
 
     setupUi(this);
     new HelpButton(this, buttonBox, "18220500");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     curColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
 

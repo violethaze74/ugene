@@ -563,7 +563,7 @@
     <message>
         <location filename="../src/util/U2AlphabetUtils.h" line="101"/>
         <source>Symbol is not belong to alphabet</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol is not belong to alphabet</translation>
     </message>
 </context>
 <context>
@@ -788,12 +788,12 @@ The session database file is removed after closing of UGENE.</translation>
     <message>
         <location filename="../src/tasks/CmdlineInOutTaskRunner.cpp" line="73"/>
         <source>An error occurred during the task. See the log for details.</source>
-        <translation type="unfinished"></translation>
+        <translation>An error occurred during the task. See the log for details.</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineInOutTaskRunner.cpp" line="93"/>
         <source>Wrong database string: </source>
-        <translation type="unfinished"></translation>
+        <translation>Wrong database string: </translation>
     </message>
 </context>
 <context>
@@ -801,37 +801,37 @@ The session database file is removed after closing of UGENE.</translation>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="98"/>
         <source>Run UGENE command line: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Run UGENE command line: %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="139"/>
         <source>Cannot start process &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot start process &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="209"/>
         <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
-        <translation type="unfinished"></translation>
+        <translation>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="213"/>
         <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>The process &apos;%1&apos; crashed some time after starting successfully</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="217"/>
         <source>Error occurred while reading from or writing to channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Error occurred while reading from or writing to channel</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="220"/>
         <source>Unknown error occurred</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown error occurred</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="265"/>
         <source>An error occurred. Process is not finished successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>An error occurred. Process is not finished successfully.</translation>
     </message>
 </context>
 <context>
@@ -2434,7 +2434,7 @@ UGENE contains unsaved modifications.</translation>
     <message>
         <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="55"/>
         <source>Target region out of sequence range</source>
-        <translation type="unfinished"></translation>
+        <translation>Target region out of sequence range</translation>
     </message>
 </context>
 <context>
