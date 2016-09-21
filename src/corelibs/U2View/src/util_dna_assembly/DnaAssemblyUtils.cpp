@@ -37,11 +37,14 @@
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultiTask.h>
+#include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Formats/ConvertAssemblyToSamTask.h>
 #include <U2Formats/ConvertFileTask.h>
+#include <U2Formats/FastqFormat.h>
 
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ToolsMenu.h>
@@ -260,6 +263,57 @@ QString DnaAssemblySupport::unknownText(const QList<GUrl> &unknownFormatFiles) {
 }
 
 /************************************************************************/
+/* FilterUnpairedReads */
+/************************************************************************/
+FilterUnpairedReads::FilterUnpairedReads(const DnaAssemblyToRefTaskSettings &settings)
+    : Task(tr("Filter unpaired reads task"), TaskFlags_FOSCOE),
+      settings(settings) {
+}
+
+void FilterUnpairedReads::run() {
+    SAFE_POINT_EXT(settings.pairedReads,
+                   setError(tr("Filtering unpaired reads is launched on not-paired data")), );
+    // unneccessary
+    SAFE_POINT_EXT(settings.shortReadSets.size() % 2 == 0,
+                   setError(tr("Odd number of files with paired reads")), );
+
+    QList<ShortReadSet> upstream;
+    QList<ShortReadSet> downstream;
+    foreach (const ShortReadSet& set, settings.shortReadSets) {
+        if (set.order == ShortReadSet::UpstreamMate) {
+            upstream << set;
+        } else {
+            downstream << set;
+        }
+    }
+    SAFE_POINT_EXT(upstream.size() == downstream.size(), setError(tr("The count of upstream files is not equal to the count of downstream files")), );
+
+    for (int i = 0; i < upstream.size(); i++) {
+        // filter upaired reads and create the list of filtered tmp files
+        // compare
+    }
+
+    for (int i = 0; i < settings.shortReadSets.size(); i += 2) {
+        ShortReadSet set1 = settings.shortReadSets[i];
+        ShortReadSet set2 = settings.shortReadSets[i + 1];
+        stateInfo.addWarning(QString(set1.url.fileName() + (set1.order == ShortReadSet::UpstreamMate ? " upstream" : " downstream")));
+        stateInfo.addWarning(QString(set2.url.fileName() + (set2.order == ShortReadSet::UpstreamMate ? " upstream" : " downstream")));
+    }
+
+    stateInfo.addWarning("FILTERING");
+}
+
+QString FilterUnpairedReads::getTmpFilePath(const GUrl &initialFile) {
+}
+
+void FilterUnpairedReads::compareFiles(const GUrl &upstream, const GUrl &downstream,
+                                                      const GUrl &upstreamFiltered, const GUrl &downstreamFiltered) {
+
+
+//    stateInfo.addWarning(tr("%1 reads are paired, %2 was filtered").arg(seqNumber).arg(filtered));
+}
+
+/************************************************************************/
 /* DnaAssemblyTaskWithConversions */
 /************************************************************************/
 DnaAssemblyTaskWithConversions::DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings &settings, bool viewResult, bool justBuildIndex)
@@ -287,6 +341,10 @@ void DnaAssemblyTaskWithConversions::prepare() {
     }
 
     if (0 == conversionTasksCount) {
+        if (settings.filterUnpaired) {
+            addSubTask(new FilterUnpairedReads(settings));
+            return;
+        }
         assemblyTask = new DnaAssemblyMultiTask(settings, viewResult, justBuildIndex);
         assemblyTask->addListeners(getListeners());
         addSubTask(assemblyTask);
@@ -313,9 +371,17 @@ QList<Task*> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
         conversionTasksCount--;
 
         if (0 == conversionTasksCount) {
+            if (settings.filterUnpaired) {
+                result << new FilterUnpairedReads(settings);
+                return result;
+            }
             assemblyTask = new DnaAssemblyMultiTask(settings, viewResult, justBuildIndex);
             result << assemblyTask;
         }
+    }
+    if (settings.filterUnpaired && dynamic_cast<FilterUnpairedReads*>(subTask) != NULL) {
+        assemblyTask = new DnaAssemblyMultiTask(settings, viewResult, justBuildIndex);
+        result << assemblyTask;
     }
 
     return result;

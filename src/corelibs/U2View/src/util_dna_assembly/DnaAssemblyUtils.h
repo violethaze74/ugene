@@ -25,6 +25,7 @@
 #include <U2Algorithm/DnaAssemblyMultiTask.h>
 #include <U2Core/ExternalToolRunTask.h>
 
+
 namespace U2 {
 
 class DnaAssemblyToRefTaskSettings;
@@ -44,6 +45,22 @@ private slots:
     void sl_showBuildIndexDialog();
     void sl_showConvertToSamDialog();
 
+};
+
+class FilterUnpairedReads : public Task {
+    Q_OBJECT
+public:
+    FilterUnpairedReads(const DnaAssemblyToRefTaskSettings &settings);
+    void run();
+    QList<ShortReadSet> getFilteredReadList() { return filteredReads; }
+
+private:
+    QString getTmpFilePath(const GUrl& initialFile);
+    void compareFiles(const GUrl& upstream, const GUrl& downstream,
+                      const GUrl& upstreamFiltered, const GUrl& downstreamFiltered);
+
+    DnaAssemblyToRefTaskSettings settings;
+    QList<ShortReadSet> filteredReads;
 };
 
 class U2VIEW_EXPORT DnaAssemblyTaskWithConversions : public ExternalToolSupportTask {
