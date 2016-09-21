@@ -314,11 +314,11 @@ QModelIndexList GTUtilsProjectTreeView::findIndecies(HI::GUITestOpStatus &os,
                 s = s.mid(prefix.length() + 1);
             }
         } else {
-            const QString unload = "[unloaded]";
+            const QString unload = "[unloaded] ";
             if (s.startsWith(unload)){
                 s = s.mid(unload.length());
             }
-            const QRegExp loading("^\\[loading \\d+\\%\\]");
+            const QRegExp loading("^\\[loading \\d+\\%\\] ");
             if (-1 != loading.indexIn(s)) {
                 s = s.mid(loading.matchedLength());
             }

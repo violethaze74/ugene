@@ -25,6 +25,7 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/DocumentModel.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -132,7 +133,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, QByteArray& 
         label->installEventFilter(new LabelClickProvider(label, rb));
 
         d->userSelectedFormat = new QComboBox();
-        d->userSelectedFormat->setObjectName("userSelectedFormat");
+        d->userSelectedFormat->setObjectName("userSelectedFormat"); 
         const DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
         SAFE_POINT(formatRegistry != NULL, "FormatRegistry is NULL!", -1);
         DocumentFormatConstraints constraints;
@@ -143,6 +144,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, QByteArray& 
                 d->userSelectedFormat->insertItem(0, formatName, id);
             }
         }
+        d->userSelectedFormat->model()->sort(0);
 
         hbox->addWidget(rb);
         hbox->addWidget(label);

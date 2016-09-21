@@ -673,8 +673,10 @@ U2SequenceObject* AssemblyModel::getRefObj() const {
 }
 
 bool AssemblyModel::isDbLocked(int timeout){
-    if(dbiHandle.dbi->getDbMutex()->tryLock(timeout)){
-        dbiHandle.dbi->getDbMutex()->unlock();
+    QMutex* mutex = dbiHandle.dbi->getDbMutex();
+    CHECK(mutex != NULL, false);
+    if(mutex->tryLock(timeout)){
+        mutex->unlock();
         return false;
     }
     return true;

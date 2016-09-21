@@ -2296,19 +2296,19 @@ The following sequences are empty:</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="389"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="273"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="275"/>
         <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
         <translation>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="492"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="328"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="330"/>
         <source>Illegal database state: %1</source>
         <translation>Illegal database state: %1</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="523"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="410"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="412"/>
         <source>Can&apos;t synchronize database state</source>
         <translation>Can&apos;t synchronize database state</translation>
     </message>
@@ -2632,47 +2632,47 @@ The following sequences are empty:</translation>
         <translation>Packed data is empty!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="222"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="224"/>
         <source>Error checking SQLite database: %1!</source>
         <translation>Error checking SQLite database: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="235"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="237"/>
         <source>Error creating table: %1, error: %2</source>
         <translation>Error creating table: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="267"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="269"/>
         <source>Not a %1 SQLite database: %2</source>
         <translation>Not a %1 SQLite database: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="324"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="326"/>
         <source>Database is already opened!</source>
         <translation>Database is already opened!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="334"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="336"/>
         <source>URL is not specified</source>
         <translation>URL is not specified</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="348"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="350"/>
         <source>Error opening SQLite database: %1!</source>
         <translation>Error opening SQLite database: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="400"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="402"/>
         <source>Database is already closed!</source>
         <translation>Database is already closed!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="404"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="406"/>
         <source>Illegal database state %1!</source>
         <translation>Illegal database state %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="429"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="431"/>
         <source>Failed to close database: %1, err: %2</source>
         <translation>Failed to close database: %1, err: %2</translation>
     </message>

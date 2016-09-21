@@ -2840,23 +2840,37 @@ complement(5..15)</translation>
 <context>
     <name>U2::ProjectViewModel</name>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1108"/>
         <source>[unloaded]</source>
-        <translation>[выгружен]</translation>
+        <translation type="vanished">[выгружен]</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1110"/>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1215"/>
         <source>[loading %1%]</source>
-        <translation>[прочитано %1%]</translation>
+        <translation type="vanished">[прочитано %1%]</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1142"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1108"/>
+        <source>[unloaded] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1111"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1220"/>
+        <source>[loading] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1113"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1222"/>
+        <source>[loading %1%] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1146"/>
         <source>Locks:</source>
         <translation>Блокировки:</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1145"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1149"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
