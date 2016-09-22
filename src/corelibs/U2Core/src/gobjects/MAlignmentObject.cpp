@@ -698,7 +698,6 @@ int MAlignmentObject::shiftRegion( int startPos, int startRow, int nBases, int n
 
     int n = 0;
     if (shift > 0) {
-        int originalLength = getLength();
         //if last symbol selected - do not add gaps at the end
         if (!(startPos + nBases == getLength())) {
             // if some trailing gaps are selected --> save them!
