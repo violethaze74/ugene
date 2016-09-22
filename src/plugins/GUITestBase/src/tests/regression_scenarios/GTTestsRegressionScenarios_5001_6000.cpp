@@ -98,6 +98,8 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
@@ -988,6 +990,24 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "/test_5367_coverage.txt", testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"), "Exported coverage is wrong!");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5417) {
+    //      1. Open "data/samples/Genbank/murine.gb".
+    //      2. Open "data/samples/Genbank/srs.gb".
+    //      3. Build doplot with theese files and try to save it.
+    //      Expected state: warning message ox appeared
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
+    Runnable *filler2 = new BuildDotPlotFiller(os, dataDir + "samples/Genbank/sars.gb", dataDir + "samples/Genbank/murine.gb");
+    GTUtilsDialog::waitForDialog(os, filler2);
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Build dotplot...");
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Dotplot" << "Save/Load" << "Save"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5425) {
