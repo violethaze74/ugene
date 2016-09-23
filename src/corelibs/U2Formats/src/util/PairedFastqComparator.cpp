@@ -38,6 +38,10 @@ FastqSequenceInfo::FastqSequenceInfo(const QString& seqName, qint64 pos)
 
 }
 
+bool FastqSequenceInfo::isValid() const {
+    return !seqName.isEmpty() && pos != -1;
+}
+
 QString FastqSequenceInfo::getSeqName() const {
     return seqName;
 }
@@ -53,17 +57,21 @@ bool FastqSequenceInfo::operator !=(const FastqSequenceInfo& other) {
 //--------------------------------------------------
 const int READ_BUFF_SIZE = 1024; // it should be from the document format
 
-FastqFileIterator::FastqFileIterator(const QString &url, U2OpStatus& os)
+FastqFileIterator::FastqFileIterator(const QString &url)
     : file(url)
 {
-    bool ok = file.open(QIODevice::ReadOnly);
-    if (!ok) {
-        os.setError(PairedFastqComparator::tr("Cannot open the file '%1'.").arg(url));
-    }
+
 }
 
 FastqFileIterator::~FastqFileIterator() {
     file.close();
+}
+
+void FastqFileIterator::open(U2OpStatus &os) {
+    bool ok = file.open(QIODevice::ReadOnly);
+    if (!ok) {
+        os.setError(PairedFastqComparator::tr("Cannot open the file '%1'.").arg(file.fileName()));
+    }
 }
 
 FastqSequenceInfo FastqFileIterator::getNext(U2OpStatus& os) {
@@ -93,9 +101,9 @@ FastqSequenceInfo FastqFileIterator::getNext(U2OpStatus& os) {
     return FastqSequenceInfo(seqName, currentPos);
 }
 
-QByteArray FastqFileIterator::getSeqData(const FastqSequenceInfo &info, U2OpStatus& os) {
+QString FastqFileIterator::getSeqData(const FastqSequenceInfo &info, U2OpStatus& os) {
     qint64 currentPos = file.pos();
-    QByteArray seqData("@");
+    QString seqData("@");
 
     SAFE_POINT_EXT(file.seek(info.pos),
                    os.setError(PairedFastqComparator::tr("Refering to the wrong position in the file '%1'").arg(file.fileName())),
@@ -124,10 +132,10 @@ bool FastqFileIterator::isEOF() const {
 
 PairedFastqComparator::PairedFastqComparator(const QString &inputFile_1, const QString &inputFile_2,
                                              const QString &outputFile_1, const QString &outputFile_2)
-    : input_1(inputFile_1),
-      input_2(inputFile_2),
-      output_1(outputFile_1),
-      output_2(outputFile_2),
+    : inputReads_1(inputFile_1),
+      inputReads_2(inputFile_2),
+      outputFile_1(outputFile_1),
+      outputFile_2(outputFile_2),
       pairedCounter(0),
       droppedCounter(0) {
 
@@ -135,21 +143,27 @@ PairedFastqComparator::PairedFastqComparator(const QString &inputFile_1, const Q
 
 void PairedFastqComparator::compare(U2OpStatus &os) {
 
-    FastqFileIterator reads_1(input_1, os);
+    inputReads_1.open(os);
     CHECK_OP(os, );
-    FastqFileIterator reads_2(input_2, os);
+    inputReads_2.open(os);
     CHECK_OP(os, );
+
+    bool ok = outputFile_1.open(QIODevice::WriteOnly);
+    CHECK_EXT(ok, os.setError(tr("Cannot open the file %1").arg(outputFile_1.fileName())), );
+    ok = outputFile_2.open(QIODevice::WriteOnly);
+    CHECK_EXT(ok, os.setError(tr("Cannot open the file %1").arg(outputFile_2.fileName())), );
 
     QList<FastqSequenceInfo> unpaired_1;
     QList<FastqSequenceInfo> unpaired_2;
 
-    while (!reads_1.isEOF() && !reads_2.isEOF() && os.isCoR()) {
+    FastqSequenceInfo tmp;
+    while (!inputReads_1.isEOF() && !inputReads_2.isEOF() && !os.isCoR()) {
 
-        FastqSequenceInfo seqInfo_1 = reads_1.getNext(os);
-        FastqSequenceInfo seqInfo_2 = reads_2.getNext(os);
+        FastqSequenceInfo seqInfo_1 = inputReads_1.getNext(os);
+        FastqSequenceInfo seqInfo_2 = inputReads_2.getNext(os);
 
         if (seqInfo_1 == seqInfo_2) {
-            pairedCounter++;
+            writePair(os, seqInfo_1, seqInfo_2);
 
             droppedCounter += unpaired_1.size();
             droppedCounter += unpaired_2.size();
@@ -159,15 +173,14 @@ void PairedFastqComparator::compare(U2OpStatus &os) {
             continue;
         }
 
-        if (tryToFindPair(os, unpaired_1, seqInfo_1, unpaired_2)) {
-            pairedCounter++;
+        if ((tmp = tryToFindPair(os, unpaired_1, seqInfo_1, unpaired_2)).isValid() && !os.isCoR()) {
+            writePair(os, seqInfo_1, tmp);
             unpaired_2 << seqInfo_2;
             continue;
         }
         CHECK_OP(os, );
 
-        if (tryToFindPair(os, unpaired_2, seqInfo_2, unpaired_1)) {
-            pairedCounter++;
+        if ((tmp = tryToFindPair(os, unpaired_2, seqInfo_2, unpaired_1)).isValid() && !os.isCoR()) {
             unpaired_1 << seqInfo_1;
             continue;
         }
@@ -176,14 +189,17 @@ void PairedFastqComparator::compare(U2OpStatus &os) {
         unpaired_1 << seqInfo_1;
         unpaired_2 << seqInfo_2;
     }
+    CHECK_OP(os, );
 
     // for correct counters info
-    tryToFindPairIInTail(os, reads_1, unpaired_2);
+    tryToFindPairIInTail(os, inputReads_1, unpaired_2, true);
     CHECK_OP(os, );
-    tryToFindPairIInTail(os, reads_2, unpaired_1);
+    tryToFindPairIInTail(os, inputReads_2, unpaired_1, false);
     CHECK_OP(os, );
-}
 
+    outputFile_1.close();
+    outputFile_2.close();
+}
 
 void PairedFastqComparator::dropUntilItem(U2OpStatus& os, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem) {
     CHECK(!list.isEmpty(), );
@@ -197,41 +213,52 @@ void PairedFastqComparator::dropUntilItem(U2OpStatus& os, QList<FastqSequenceInf
     droppedCounter--; // the sequence that is in the pair was count
 }
 
-bool PairedFastqComparator::tryToFindPair(U2OpStatus& os, QList<FastqSequenceInfo>& initializer, const FastqSequenceInfo& info,
-                   QList<FastqSequenceInfo>& searchIn) {
-    if (searchIn.contains(info)) {
+FastqSequenceInfo PairedFastqComparator::tryToFindPair(U2OpStatus& os,
+                                                       QList<FastqSequenceInfo>& initializer, const FastqSequenceInfo& info,
+                                                       QList<FastqSequenceInfo>& searchIn) {
+    int index = searchIn.indexOf(info);
+    if (index != -1) {
+        FastqSequenceInfo result= searchIn.at(index);
         droppedCounter += initializer.size();
         initializer.clear();
 
         dropUntilItem(os, searchIn, info);
-        return true;
+        return result;
     }
-    return false;
+    return FastqSequenceInfo();
 }
 
-void PairedFastqComparator::tryToFindPairIInTail(U2OpStatus& os, FastqFileIterator& reads, QList<FastqSequenceInfo>& unpaired) {
+void PairedFastqComparator::tryToFindPairIInTail(U2OpStatus& os, FastqFileIterator& reads,
+                                                 QList<FastqSequenceInfo>& unpaired, bool iteratorContentIsFirst) {
     QList<FastqSequenceInfo> emptyList;
     while (!reads.isEOF()) {
         FastqSequenceInfo seqInfo_1 = reads.getNext(os);
-        if (!tryToFindPair(os, emptyList, seqInfo_1, unpaired)) {
+        FastqSequenceInfo seqInfo_2 = tryToFindPair(os, emptyList, seqInfo_1, unpaired); // here we cannot get
+        if (!seqInfo_2.isValid()) {
             droppedCounter++;
         } else {
-            pairedCounter++;
+            if (iteratorContentIsFirst) {
+                writePair(os, seqInfo_1, seqInfo_2);
+            } else {
+                writePair(os, seqInfo_2, seqInfo_1);
+            }
         }
     }
 }
 
-void PairedFastqComparator::writeSeqInfo(U2OpStatus& os, FastqFileIterator& iterator, FastqSequenceInfo& info, QFile& outputFile) {
-    const QByteArray sequenceData = iterator.getSeqData(info, os);
+void writeSeq(U2OpStatus& os, FastqFileIterator& iterator, FastqSequenceInfo &info, QFile& file) {
+    const QString sequenceData = iterator.getSeqData(info, os);
     CHECK_OP(os, );
-    outputFile.write(sequenceData);
+    file.write(sequenceData.toLatin1());
 }
 
-void PairedFastqComparator::writePair(U2OpStatus &os,
-                                      FastqFileIterator &iterator_1, FastqSequenceInfo &info_1, QFile &output_1,
-                                      FastqFileIterator &iterator_2, FastqSequenceInfo &info_2, QFile &output_2) {
-    writeSeqInfo(os, iterator_1, info_1, output_1);
-    writeSeqInfo(os, iterator_2, info_2, output_2);
+void PairedFastqComparator::writePair(U2OpStatus &os, FastqSequenceInfo &info_1, FastqSequenceInfo &info_2) {
+    writeSeq(os, inputReads_1, info_1, outputFile_1);
+    CHECK_OP(os, );
+
+    writeSeq(os, inputReads_2, info_2, outputFile_2);
+    CHECK_OP(os, );
+
     pairedCounter++;
 }
 

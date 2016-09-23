@@ -39,6 +39,8 @@ public:
     FastqSequenceInfo();
     FastqSequenceInfo(const QString& seqName, qint64 pos);
 
+    bool isValid() const;
+
     QString getSeqName() const;
 
     bool operator ==(const FastqSequenceInfo& other);
@@ -54,11 +56,12 @@ private:
  */
 class FastqFileIterator {
 public:
-    FastqFileIterator(const QString& url, U2OpStatus& os); // automaticcaly set to the begining
+    FastqFileIterator(const QString& url);
     ~FastqFileIterator();
 
+    void open(U2OpStatus& os);
     FastqSequenceInfo getNext(U2OpStatus& os);
-    QByteArray getSeqData(const FastqSequenceInfo& info, U2OpStatus& os);
+    QString getSeqData(const FastqSequenceInfo& info, U2OpStatus& os);
     bool isEOF() const;
 
 private:
@@ -74,21 +77,22 @@ public:
                           const QString& outputFile_1, const QString& outputFile_2);
     void compare(U2OpStatus& os);
 
-private:
-    void dropUntilItem(U2OpStatus& os, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem);
-    bool tryToFindPair(U2OpStatus& os, QList<FastqSequenceInfo>& initializer, const FastqSequenceInfo& info,
-                       QList<FastqSequenceInfo>& searchIn);
-    void tryToFindPairIInTail(U2OpStatus& os, FastqFileIterator& reads, QList<FastqSequenceInfo>& unpaired);
-    void writeSeqInfo(U2OpStatus& os, FastqFileIterator& iterator, FastqSequenceInfo& info, QFile& outputFile);
-    void writePair(U2OpStatus& os,
-                   FastqFileIterator& iterator_1, FastqSequenceInfo& info_1, QFile& output_1,
-                   FastqFileIterator& iterator_2, FastqSequenceInfo& info_2, QFile& output_2);
+    int getPairedCount() const { return pairedCounter; }
+    int getDroppedCount() const { return droppedCounter; }
 
 private:
-    QString input_1;
-    QString input_2;
-    QString output_1;
-    QString output_2;
+    void dropUntilItem(U2OpStatus& os, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem);
+    FastqSequenceInfo tryToFindPair(U2OpStatus& os, QList<FastqSequenceInfo>& initializer, const FastqSequenceInfo& info,
+                       QList<FastqSequenceInfo>& searchIn);
+    void tryToFindPairIInTail(U2OpStatus& os, FastqFileIterator& reads,
+                              QList<FastqSequenceInfo>& unpaired, bool iteratorContentIsFirst);
+    void writePair(U2OpStatus& os, FastqSequenceInfo& info_1, FastqSequenceInfo& info_2);
+
+private:
+    FastqFileIterator   inputReads_1;
+    FastqFileIterator   inputReads_2;
+    QFile               outputFile_1;
+    QFile               outputFile_2;
 
     int pairedCounter;
     int droppedCounter;
