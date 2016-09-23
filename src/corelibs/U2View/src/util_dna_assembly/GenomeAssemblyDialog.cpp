@@ -247,7 +247,7 @@ void GenomeAssemblyDialog::accept() {
             for (int i = 0; i < numItems; ++i) {
                 reads.append(rightReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString());
             }
-            
+
             GenomeAssemblyAlgorithmEnv *env = AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(methodNamesBox->currentText());
             SAFE_POINT(NULL != env, "Unknown algorithm: " + methodNamesBox->currentText(), );
             QStringList formats = env->getReadsFormats();

@@ -10,8 +10,8 @@ DST_NAME=$U_NAME-$U_VERSION
 #warning!   if in SRC_FILES file path(no directory) before file name must be stay ./ ;for example: "../.././ugene"
 SRC_FILES=(
     "./COPYRIGHT"
-    "./LICENSE"
-    "./LICENSE.3rd_party"
+    "./../_common_data/./LICENSE"
+    "./../_common_data/./LICENSE.3rd_party"
     "../.././ugene.pro"
     "../../src/gen_bin_script.cmd"
     "../../src/ugene_globals.pri"
