@@ -61,6 +61,7 @@ private:
 
     DnaAssemblyToRefTaskSettings settings;
     QList<ShortReadSet> filteredReads;
+    QString tmpDirPath;
 };
 
 class U2VIEW_EXPORT DnaAssemblyTaskWithConversions : public ExternalToolSupportTask {
@@ -71,6 +72,7 @@ public:
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
     const DnaAssemblyToRefTaskSettings& getSettings() const;
+    ReportResult report();
 
 private:
     DnaAssemblyToRefTaskSettings settings;

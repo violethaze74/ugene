@@ -30,6 +30,8 @@
 
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
@@ -45,6 +47,7 @@
 #include <U2Formats/ConvertAssemblyToSamTask.h>
 #include <U2Formats/ConvertFileTask.h>
 #include <U2Formats/FastqFormat.h>
+#include <U2Formats/PairedFastqComparator.h>
 
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ToolsMenu.h>
@@ -55,6 +58,7 @@
 #include "DnaAssemblyDialog.h"
 #include "DnaAssemblyUtils.h"
 #include "GenomeAssemblyDialog.h"
+
 
 namespace U2 {
 
@@ -268,14 +272,12 @@ QString DnaAssemblySupport::unknownText(const QList<GUrl> &unknownFormatFiles) {
 FilterUnpairedReads::FilterUnpairedReads(const DnaAssemblyToRefTaskSettings &settings)
     : Task(tr("Filter unpaired reads task"), TaskFlags_FOSCOE),
       settings(settings) {
+    tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
 }
 
 void FilterUnpairedReads::run() {
     SAFE_POINT_EXT(settings.pairedReads,
                    setError(tr("Filtering unpaired reads is launched on not-paired data")), );
-    // unneccessary
-    SAFE_POINT_EXT(settings.shortReadSets.size() % 2 == 0,
-                   setError(tr("Odd number of files with paired reads")), );
 
     QList<ShortReadSet> upstream;
     QList<ShortReadSet> downstream;
@@ -289,28 +291,36 @@ void FilterUnpairedReads::run() {
     SAFE_POINT_EXT(upstream.size() == downstream.size(), setError(tr("The count of upstream files is not equal to the count of downstream files")), );
 
     for (int i = 0; i < upstream.size(); i++) {
-        // filter upaired reads and create the list of filtered tmp files
-        // compare
-    }
+        QString tmpFileUpstream = getTmpFilePath(upstream[i].url);
+        QString tmpFileDownstream = getTmpFilePath(downstream[i].url);
+        compareFiles(upstream[i].url.getURLString(), downstream[i].url.getURLString(),
+                     tmpFileUpstream, tmpFileDownstream);
+        CHECK_OP(stateInfo, );
 
-    for (int i = 0; i < settings.shortReadSets.size(); i += 2) {
-        ShortReadSet set1 = settings.shortReadSets[i];
-        ShortReadSet set2 = settings.shortReadSets[i + 1];
-        stateInfo.addWarning(QString(set1.url.fileName() + (set1.order == ShortReadSet::UpstreamMate ? " upstream" : " downstream")));
-        stateInfo.addWarning(QString(set2.url.fileName() + (set2.order == ShortReadSet::UpstreamMate ? " upstream" : " downstream")));
+        filteredReads << ShortReadSet(GUrl(tmpFileUpstream), ShortReadSet::PairedEndReads, ShortReadSet::UpstreamMate);
+        filteredReads << ShortReadSet(GUrl(tmpFileDownstream), ShortReadSet::PairedEndReads, ShortReadSet::DownstreamMate);
     }
-
-    stateInfo.addWarning("FILTERING");
 }
 
 QString FilterUnpairedReads::getTmpFilePath(const GUrl &initialFile) {
+    QString result = GUrlUtils::prepareTmpFileLocation(tmpDirPath, initialFile.baseFileName(), "fastq", stateInfo);
+    CHECK_OP(stateInfo, QString());
+    return result;
 }
 
 void FilterUnpairedReads::compareFiles(const GUrl &upstream, const GUrl &downstream,
                                                       const GUrl &upstreamFiltered, const GUrl &downstreamFiltered) {
 
+    PairedFastqComparator comparator(upstream.getURLString(), downstream.getURLString(),
+                                     upstreamFiltered.getURLString(), downstreamFiltered.getURLString());
+    comparator.compare(stateInfo);
+    CHECK_OP(stateInfo, );
 
-//    stateInfo.addWarning(tr("%1 reads are paired, %2 was filtered").arg(seqNumber).arg(filtered));
+    if (comparator.getDroppedCount() != 0) {
+        stateInfo.addWarning(tr("%1 reads are paired, %2 was filtered in files %3 and %4")
+                             .arg(comparator.getPairedCount()).arg(comparator.getDroppedCount())
+                             .arg(upstream.getURLString()).arg(downstream.getURLString()));
+    }
 }
 
 /************************************************************************/
@@ -379,12 +389,25 @@ QList<Task*> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
             result << assemblyTask;
         }
     }
-    if (settings.filterUnpaired && dynamic_cast<FilterUnpairedReads*>(subTask) != NULL) {
+    FilterUnpairedReads* filterTask = dynamic_cast<FilterUnpairedReads*>(subTask);
+    if (settings.filterUnpaired && filterTask != NULL) {
+        settings.shortReadSets = filterTask->getFilteredReadList();
         assemblyTask = new DnaAssemblyMultiTask(settings, viewResult, justBuildIndex);
         result << assemblyTask;
     }
 
     return result;
+}
+
+Task::ReportResult DnaAssemblyTaskWithConversions::report() {
+    if (settings.filterUnpaired && settings.pairedReads) {
+        foreach (ShortReadSet set, settings.shortReadSets) {
+            if (!QFile::remove(set.url.getURLString())) {
+                stateInfo.setError(tr("Cannot remove temporary file %1").arg(set.url.getURLString()));
+            }
+        }
+    }
+    return ReportResult_Finished;
 }
 
 } // U2
