@@ -1017,7 +1017,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     //Expected state: all settings except files with reads was saved from previous run
     class SpadesDialogSettingsChecker : public SpadesGenomeAssemblyDialogFiller {
     public:
-        SpadesDialogSettingsChecker(HI::GUITestOpStatus &os, QString lib, QString datasetType, QString runningMode, 
+        SpadesDialogSettingsChecker(HI::GUITestOpStatus &os, QString lib, QString datasetType, QString runningMode,
             QString kmerSizes, int numThreads, int memLimit) : SpadesGenomeAssemblyDialogFiller(os, lib, QStringList(), QStringList(), "",
             datasetType, runningMode, kmerSizes, numThreads, memLimit) {}
         virtual void commonScenario() {
