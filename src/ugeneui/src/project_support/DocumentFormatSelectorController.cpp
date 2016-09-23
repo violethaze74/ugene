@@ -138,13 +138,15 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, QByteArray& 
         SAFE_POINT(formatRegistry != NULL, "FormatRegistry is NULL!", -1);
         DocumentFormatConstraints constraints;
         constraints.addFlagToExclude(DocumentFormatFlag_Hidden);
+        QStringList formatsList;
         foreach (const DocumentFormatId &id, formatRegistry->selectFormats(constraints)) {
             if (!detectedIds.contains(id)) {
                 const QString formatName = formatRegistry->getFormatById(id)->getFormatName();
-                d->userSelectedFormat->insertItem(0, formatName, id);
+                formatsList.append(formatName);
             }
         }
-        d->userSelectedFormat->model()->sort(0);
+        formatsList.sort(Qt::CaseInsensitive);
+        d->userSelectedFormat->insertItems(0, formatsList);
 
         hbox->addWidget(rb);
         hbox->addWidget(label);
