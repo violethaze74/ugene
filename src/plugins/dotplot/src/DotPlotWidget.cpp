@@ -528,12 +528,12 @@ void DotPlotWidget::sl_showSaveImageDialog() {
     exitButton->show();
 }
 
-// save dotplot into a dotplot file, return true if successful
+// save dotplot into a dotplot file, return true if not canceled
 bool DotPlotWidget::sl_showSaveFileDialog() {
     LastUsedDirHelper lod("Dotplot");
     if (dpDirectResultListener->dotPlotList->isEmpty() || dpRevComplResultsListener->dotPlotList->isEmpty()) {
         QMessageBox::critical(this, tr("File saving error"), tr("Nothing to save: dotplot is empty.").arg(lod.url));
-        return false;
+        return true;
     }
 
     lod.url = U2FileDialog::getSaveFileName(NULL, tr("Save Dotplot"), lod.dir, tr("Dotplot files (*.dpt)"));
