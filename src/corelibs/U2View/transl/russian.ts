@@ -545,7 +545,7 @@ Probably the data is too big.</source>
     <name>ExportCoverageDialog</name>
     <message>
         <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="14"/>
-        <source>Export the Assembly Coverage</source>
+        <source>Export Assembly Coverage</source>
         <translation>Экспорт покрытия</translation>
     </message>
     <message>
