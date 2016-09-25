@@ -65,7 +65,7 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MSAEditorUI *ui) {
     connect(ui->getEditor(), SIGNAL(si_referenceSeqChanged(qint64)),
             simpleOverview, SLOT(sl_highlightingChanged()));
 
-    contextMenu =  new MSAOverviewContextMenu(simpleOverview, graphOverview);
+    contextMenu =  new MSAOverviewContextMenu(ui->getEditor(), simpleOverview, graphOverview);
 
     connect(contextMenu, SIGNAL(si_graphTypeSelected(MSAGraphOverviewDisplaySettings::GraphType)),
             graphOverview, SLOT(sl_graphTypeChanged(MSAGraphOverviewDisplaySettings::GraphType)));

@@ -37,6 +37,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
@@ -219,11 +220,10 @@ void CircularViewSplitter::sl_export() {
 
     CircularViewImageExportController factory(circularViewList, cvInFocus);
 
+    QString fileName = GUrlUtils::fixFileName(seqObj->getSequenceName());
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::CircularView,
-                                                                      ExportImageDialog::SupportScaling,
-                                                                      p,
-                                                                      "circular_" + seqObj->getSequenceName());
+                                                                      fileName, ExportImageDialog::SupportScaling, p);
     dialog->exec();
     CHECK(!dialog.isNull(), );
 }

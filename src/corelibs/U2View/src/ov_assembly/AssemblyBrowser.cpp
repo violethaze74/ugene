@@ -53,6 +53,7 @@
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2Type.h>
 #include <U2Core/VariantTrackObject.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Formats/ConvertAssemblyToSamTask.h>
 
@@ -697,7 +698,8 @@ void AssemblyBrowser::setupActions() {
 
 void AssemblyBrowser::sl_saveScreenshot() {
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(ui, ExportImageDialog::AssemblyView, ExportImageDialog::NoScaling, p);
+    QString fileName = GUrlUtils::fixFileName(gobject->getGObjectName());
+    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(ui, ExportImageDialog::AssemblyView, fileName, ExportImageDialog::NoScaling, p);
     dialog->exec();
 }
 

@@ -36,6 +36,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
@@ -837,8 +838,9 @@ void ADVSingleSequenceWidget::sl_saveScreenshot() {
 
     SingleSequenceImageExportController controller(this);
 
+    QString fileName = GUrlUtils::fixFileName(getSequenceObject()->getGObjectName());
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&controller, ExportImageDialog::SequenceView, ExportImageDialog::NoScaling, p);
+    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&controller, ExportImageDialog::SequenceView, fileName, ExportImageDialog::NoScaling, p);
 
     dialog->exec();
 }

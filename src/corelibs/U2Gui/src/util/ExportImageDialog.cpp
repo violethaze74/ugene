@@ -43,8 +43,9 @@ namespace U2 {
 
 ExportImageDialog::ExportImageDialog(QWidget *screenShotWidget,
                                      InvokedFrom invoSource,
+                                     const QString &file,
                                      ImageScalingPolicy scalingPolicy,
-                                     QWidget *parent, const QString &file)
+                                     QWidget *parent)
     : QDialog(parent),
       scalingPolicy(scalingPolicy),
       filename(file),
@@ -57,8 +58,9 @@ ExportImageDialog::ExportImageDialog(QWidget *screenShotWidget,
 
 ExportImageDialog::ExportImageDialog(ImageExportController *factory,
                                      InvokedFrom invoSource,
+                                     const QString &file,
                                      ImageScalingPolicy scalingPolicy,
-                                     QWidget *parent, const QString &file)
+                                     QWidget *parent)
     : QDialog(parent),
       exportController(factory),
       scalingPolicy(scalingPolicy),

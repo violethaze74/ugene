@@ -39,6 +39,7 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
@@ -517,9 +518,14 @@ void DotPlotWidget::sl_onSequenceSelectionChanged(LRegionsSelection* s, const QV
 void DotPlotWidget::sl_showSaveImageDialog() {
     exitButton->hide();
 
+    QString s1 = GUrlUtils::fixFileName(sequenceX->getSequenceGObject()->getGObjectName());
+    QString s2 = GUrlUtils::fixFileName(sequenceY->getSequenceGObject()->getGObjectName());
+    QString fileName = s1 == s2 ? s1 : s1 + "_" + s2;
+    
     DotPlotImageExportController factory(this);
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory,
                                                                            ExportImageDialog::DotPlot,
+                                                                           fileName,
                                                                            ExportImageDialog::SupportScaling,
                                                                            this);
     dialog->exec();
