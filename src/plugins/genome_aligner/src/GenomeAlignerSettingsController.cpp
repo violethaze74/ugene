@@ -47,57 +47,5 @@ void GenomeAlignerSettingsUtils::setIndexDir(const QString &indexDir) {
     }
 }
 
-/************************************************************************/
-/* Genome Aligner Settings Controller                                   */
-/************************************************************************/
-
-GenomeAlignerSettingsPageController::GenomeAlignerSettingsPageController(QObject* p)
-: AppSettingsGUIPageController(tr("Genome Aligner"), GenomeAlignerSettingsPageId, p) {}
-
-
-AppSettingsGUIPageState* GenomeAlignerSettingsPageController::getSavedState() {
-    GenomeAlignerSettingsPageState* state = new GenomeAlignerSettingsPageState();
-    state->indexDir = GenomeAlignerSettingsUtils::getIndexDir();
-    return state;
-}
-
-void GenomeAlignerSettingsPageController::saveState(AppSettingsGUIPageState* s) {
-    GenomeAlignerSettingsPageState* state = qobject_cast<GenomeAlignerSettingsPageState*>(s);
-
-    GenomeAlignerSettingsUtils::setIndexDir(state->indexDir);
-}
-
-AppSettingsGUIPageWidget* GenomeAlignerSettingsPageController::createWidget(AppSettingsGUIPageState* state) {
-    GenomeAlignerSettingsPageWidget* r = new GenomeAlignerSettingsPageWidget(this);
-    r->setState(state);
-    return r;
-}
-
-const QString GenomeAlignerSettingsPageController::helpPageId = QString("18220312");
-
-GenomeAlignerSettingsPageWidget::GenomeAlignerSettingsPageWidget(GenomeAlignerSettingsPageController* ) {
-    setupUi(this);
-    connect(indexDirButton, SIGNAL(clicked()), SLOT(sl_onIndexDirButton()));
-}
-
-void GenomeAlignerSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
-    GenomeAlignerSettingsPageState* state = qobject_cast<GenomeAlignerSettingsPageState*>(s);
-    indexDirEdit->setText(state->indexDir);
-}
-
-AppSettingsGUIPageState* GenomeAlignerSettingsPageWidget::getState(QString& ) const {
-    GenomeAlignerSettingsPageState* state = new GenomeAlignerSettingsPageState();
-    state->indexDir = indexDirEdit->text();
-    return state;
-}
-
-void GenomeAlignerSettingsPageWidget::sl_onIndexDirButton() {
-    QString path = indexDirEdit->text();
-    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), path,
-        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if (!dir.isEmpty()) {
-        indexDirEdit->setText(dir);
-    }
-}
 
 } //namespace

@@ -31,6 +31,11 @@
 
 namespace U2 {
 
+class DirectoriesSettingsPageUtils {
+public:
+    static QString getIndexDir();
+    static void setIndexDir(const QString &indexDir);
+};
 
 class DirectoriesSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
@@ -56,6 +61,8 @@ public:
     QString downloadsDirPath;
     QString temporaryDirPath;
     QString fileStorageDirPath;
+    QString indexDirectoryEdit;
+    QString indexDirectory;
 };
 
 
@@ -73,6 +80,8 @@ private slots:
     void sl_browseTmpDirButtonClicked();
     void sl_browseFileStorageButtonClicked();
     void sl_cleanupStorage();
+    void sl_onIndexDirButton();
+    
 };
 
 }//namespace
