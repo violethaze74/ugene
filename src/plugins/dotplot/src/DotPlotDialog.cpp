@@ -22,6 +22,7 @@
 #include <math.h>
 
 #include <QColorDialog>
+#include <QDesktopWidget>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -53,6 +54,9 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
 ,openSequenceTask(NULL), curURL("")
 {
     setupUi(this);
+    const QRect screen = QApplication::desktop()->screenGeometry();
+    this->move(screen.center() - this->rect().center());
+    
     new HelpButton(this, buttonBox, "18220396");
     startButton = buttonBox->button(QDialogButtonBox::Ok);
 
