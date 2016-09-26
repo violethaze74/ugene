@@ -44,6 +44,7 @@ StatisticalReportController::StatisticalReportController(const QString &newHtmlF
     htmlView = new MultilingualHtmlView(newHtmlFilepath, this);
     frameLayout->addWidget(htmlView);
     htmlView->setMinimumSize(400, 10);
+    connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
 }
 
 bool StatisticalReportController::isInfoSharingAccepted() const {
@@ -66,6 +67,10 @@ void StatisticalReportController::paintEvent(QPaintEvent *event) {
     // Find a solution and fix it, if you have some free time
     move(x(), (qApp->desktop()->screenGeometry().height() / 2) - htmlView->minimumHeight());
 #endif
+}
+
+void StatisticalReportController::accept() {
+    QDialog::close();
 }
 
 }
