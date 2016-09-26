@@ -47,7 +47,7 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     fragments(fragmentList),
     saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220536");
+    new HelpButton(this, buttonBox, "18223176");
 
     tabWidget->setCurrentIndex(0);
     const QString coreLengthStr = ConstructMoleculeDialog::tr("core length");
