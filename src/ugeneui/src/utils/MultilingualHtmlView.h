@@ -22,11 +22,20 @@
 #ifndef _U2_MULTILINGUAL_HTML_VIEW_H_
 #define _U2_MULTILINGUAL_HTML_VIEW_H_
 
-#include <QWebView>
+#include <qglobal.h>
+#if (QT_VERSION < 0x050400) //Qt 5.7
+#include <QtWebKitWidgets/QWebView>
+#else
+#include <QtWebEngineWidgets/QWebEngineView>
+#endif
 
 namespace U2 {
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 class MultilingualHtmlView : public QWebView {
+#else
+class MultilingualHtmlView : public QWebEngineView {
+#endif
     Q_OBJECT
 public:
     MultilingualHtmlView(const QString& htmlPath, QWidget* parent = NULL);

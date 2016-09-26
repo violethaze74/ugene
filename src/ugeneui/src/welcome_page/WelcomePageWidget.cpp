@@ -25,8 +25,10 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
+#if (QT_VERSION < 0x050400) //Qt 5.7
 #include <QWebElement>
 #include <QWebFrame>
+#endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
@@ -60,13 +62,17 @@ void WelcomePageWidget::sl_loaded(bool ok) {
 void WelcomePageWidget::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {
     updateRecentFilesContainer("recent_projects", recentProjects, tr("No opened projects yet"));
     updateRecentFilesContainer("recent_files", recentFiles, tr("No opened files yet"));
+#if (QT_VERSION < 0x050400) //Qt 5.7
     page()->mainFrame()->evaluateJavaScript("updateLinksVisibility()");
+#else
+    page()->runJavaScript("updateLinksVisibility()");
+#endif
 }
 
 void WelcomePageWidget::updateRecentFilesContainer(const QString &id, const QStringList &files, const QString &message) {
     static const QString divTemplate = "<div id=\"%1\" class=\"recent_items_content\">%2</div>";
     static const QString linkTemplate = "<a class=\"recentLink\" href=\"#\" onclick=\"ugene.openFile('%1')\" title=\"%1\">- %2</a>";
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement doc = page()->mainFrame()->documentElement();
     QWebElement recentFilesDiv = doc.findFirst("#" + id);
     SAFE_POINT(!recentFilesDiv.isNull(), "No recent files container", );
@@ -84,10 +90,13 @@ void WelcomePageWidget::updateRecentFilesContainer(const QString &id, const QStr
         result = links.join("\n");
     }
     recentFilesDiv.setOuterXml(divTemplate.arg(id).arg(result));
+#endif
 }
 
 void WelcomePageWidget::addController() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     page()->mainFrame()->addToJavaScriptWindowObject("ugene", controller);
+#endif
     controller->onPageLoaded();
 }
 

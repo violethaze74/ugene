@@ -26,18 +26,25 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <QDesktopServices>
+#if (QT_VERSION < 0x050400) //Qt 5.7
 #include <QWebElementCollection>
 #include <QWebFrame>
-
+#endif
 
 namespace U2 {
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
 MultilingualHtmlView::MultilingualHtmlView(const QString& htmlPath, QWidget* parent)
-    : QWebView(parent),
-      loaded(false) {
+    : QWebView(parent),loaded(false)
+#else
+MultilingualHtmlView::MultilingualHtmlView(const QString& htmlPath, QWidget* parent)
+    : QWebEngineView(parent),loaded(false)
+#endif
+{
     setContextMenuPolicy(Qt::NoContextMenu);
     loadPage(htmlPath);
+#if (QT_VERSION < 0x050400) //Qt 5.7
     page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+#endif
 }
 
 bool MultilingualHtmlView::isLoaded() const {
@@ -53,6 +60,7 @@ void MultilingualHtmlView::sl_loaded(bool ok) {
     SAFE_POINT(s != NULL, "AppContext settings is NULL", );
     QString lang = s->getValue("UGENE_CURR_TRANSL", "en").toString();
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebFrame* frame = page()->mainFrame();
     SAFE_POINT(frame != NULL, "MainFrame of webView page is NULL", );
 
@@ -60,6 +68,7 @@ void MultilingualHtmlView::sl_loaded(bool ok) {
     for (int i = 0; i < otherLangsCollection.count(); i++) {
         otherLangsCollection[i].setStyleProperty("display", "none");
     }
+#endif
     emit si_loaded(ok);
 }
 

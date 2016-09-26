@@ -33,68 +33,68 @@ SUBDIRS += \
           src/corelibs/U2Private \
           src/corelibs/U2Gui \
           src/corelibs/U2View \
-          src/corelibs/U2Designer \
+#          src/corelibs/U2Designer \
           src/corelibs/U2Script \
           src/ugeneui \
-          src/ugenecl \
-          src/ugenem \
-          src/plugins_checker \
-          src/plugins_3rdparty/ball \
-          src/plugins_3rdparty/sitecon \
-          src/plugins_3rdparty/umuscle \
-          src/plugins_3rdparty/hmm2 \
-          src/plugins_3rdparty/gor4 \
-          src/plugins_3rdparty/psipred \
-          src/plugins_3rdparty/phylip \
-          src/plugins_3rdparty/kalign \
-          src/plugins_3rdparty/ptools \
-          src/plugins_3rdparty/variants \
-          src/plugins/biostruct3d_view \
-          src/plugins/chroma_view \
-          src/plugins/circular_view \
-          src/plugins/annotator \
-          src/plugins/dbi_bam \
-          src/plugins/dna_export \
-          src/plugins/dna_stat \
-          src/plugins/dna_flexibility \
-          src/plugins/dna_graphpack \
-          src/plugins/orf_marker \
-          src/plugins/pcr \
-          src/plugins/workflow_designer \
-          src/plugins/repeat_finder \
-          src/plugins/test_runner \
-          src/plugins/perf_monitor \
-          src/plugins/smith_waterman \
-          src/plugins_3rdparty/primer3 \
-          src/plugins/enzymes \
-          src/plugins/remote_blast \
-          src/plugins/genome_aligner \
-          src/plugins/weight_matrix \
-          src/plugins/dotplot \
-          src/plugins/query_designer \
-          src/plugins/external_tool_support \
-          src/plugins/CoreTests \
-          src/plugins/api_tests \
-          src/plugins/GUITestBase \
-          src/plugins/browser_support \
-          src/plugins/linkdata_support
+#          src/ugenecl \
+#          src/ugenem \
+#          src/plugins_checker \
+#          src/plugins_3rdparty/ball \
+#          src/plugins_3rdparty/sitecon \
+#          src/plugins_3rdparty/umuscle \
+#          src/plugins_3rdparty/hmm2 \
+#          src/plugins_3rdparty/gor4 \
+#          src/plugins_3rdparty/psipred \
+#          src/plugins_3rdparty/phylip \
+#          src/plugins_3rdparty/kalign \
+#          src/plugins_3rdparty/ptools \
+#          src/plugins_3rdparty/variants \
+#          src/plugins/biostruct3d_view \
+#          src/plugins/chroma_view \
+#          src/plugins/circular_view \
+#          src/plugins/annotator \
+#          src/plugins/dbi_bam \
+#          src/plugins/dna_export \
+#          src/plugins/dna_stat \
+#          src/plugins/dna_flexibility \
+#          src/plugins/dna_graphpack \
+#          src/plugins/orf_marker \
+#          src/plugins/pcr \
+#          src/plugins/workflow_designer \
+#          src/plugins/repeat_finder \
+#          src/plugins/test_runner \
+#          src/plugins/perf_monitor \
+#          src/plugins/smith_waterman \
+#          src/plugins_3rdparty/primer3 \
+#          src/plugins/enzymes \
+#          src/plugins/remote_blast \
+#          src/plugins/genome_aligner \
+#          src/plugins/weight_matrix \
+#          src/plugins/dotplot \
+#          src/plugins/query_designer \
+#          src/plugins/external_tool_support \
+#          src/plugins/CoreTests \
+#          src/plugins/api_tests \
+#          src/plugins/GUITestBase \
+#          src/plugins/browser_support \
+#          src/plugins/linkdata_support
 
 use_cuda() {
-    SUBDIRS += src/plugins/cuda_support
+#    SUBDIRS += src/plugins/cuda_support
 }
 
 use_opencl() {
-    DEFINES += OPENCL_SUPPORT
-    SUBDIRS += src/plugins/opencl_support
+#    DEFINES += OPENCL_SUPPORT
+#    SUBDIRS += src/plugins/opencl_support
 }
 
 exclude_list_enabled() {
-    SUBDIRS -= src/plugins/CoreTests
-    SUBDIRS -= src/plugins/test_runner
-    SUBDIRS -= src/plugins/perf_monitor
-    SUBDIRS -= src/plugins/GUITestBase
-    SUBDIRS -= src/plugins/api_tests
-    SUBDIRS -= src/libs_3rdparty/QSpec
+#    SUBDIRS -= src/plugins/CoreTests
+#    SUBDIRS -= src/plugins/test_runner
+#    SUBDIRS -= src/plugins/perf_monitor
+#    SUBDIRS -= src/plugins/GUITestBase
+#    SUBDIRS -= src/plugins/api_tests
+#    SUBDIRS -= src/libs_3rdparty/QSpec
 }
 
 if(exists( ./src/libs_3rdparty/QSpec/QSpec.pro ):!exclude_list_enabled()) {
