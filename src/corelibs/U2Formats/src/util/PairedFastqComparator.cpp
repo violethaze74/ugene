@@ -28,8 +28,10 @@
 #include <U2Formats/FastqFormat.h>
 #include <zlib.h>
 
+
 namespace U2 {
 
+const int UNPAIRED_LIMIT = 100000;
 
 FastqSequenceInfo::FastqSequenceInfo(const DNASequence& seq)
     : seq(seq) {
@@ -57,11 +59,11 @@ PairedFastqComparator::PairedFastqComparator(const QString &inputFile_1, const Q
                                              U2OpStatus &os)
     : it_1(inputFile_1, os),
       it_2(inputFile_2, os),
-      pairedCounter(0),
+      out_1((LocalFileAdapter*)IOAdapterUtils::open(GUrl(outputFile_1), os, IOAdapterMode_Write)),
+      out_2((LocalFileAdapter*)IOAdapterUtils::open(GUrl(outputFile_2), os, IOAdapterMode_Write)),
+      pairsCounter(0),
       droppedCounter(0)
 {
-    out_1 = IOAdapterUtils::open(GUrl(outputFile_1), os, IOAdapterMode_Write);
-    out_2 = IOAdapterUtils::open(GUrl(outputFile_2), os, IOAdapterMode_Write);
     SAFE_POINT_OP(os, );
 }
 
@@ -72,6 +74,8 @@ void PairedFastqComparator::compare(U2OpStatus &os) {
 
     FastqSequenceInfo tmp;
     while (it_1.hasNext() && it_2.hasNext() && !os.isCoR()) {
+        CHECK_EXT(unpaired_1.size() + unpaired_2.size() < UNPAIRED_LIMIT,
+                  os.setError(tr("Too much reads without a pair(>%1). Check the input data is set correctly.").arg(UNPAIRED_LIMIT)), );
 
         FastqSequenceInfo seqInfo_1(it_1.next());
         FastqSequenceInfo seqInfo_2(it_2.next());
@@ -165,19 +169,19 @@ void PairedFastqComparator::tryToFindPairIInTail(U2OpStatus& os, FASTQIterator& 
 }
 
 void writeSequence(U2OpStatus& os, const DNASequence& seq, IOAdapter* ioAdapter) {
-    FastqFormat::writeEntry(seq.getName(), seq, ioAdapter, "Write error", os); // Error message
+    FastqFormat::writeEntry(seq.getName(), seq, ioAdapter, "Writing error", os);
 }
 
 void PairedFastqComparator::writePair(U2OpStatus &os, const FastqSequenceInfo &seqInfo_1, const FastqSequenceInfo &seqInfo_2) {
     SAFE_POINT(seqInfo_1.isValid() && seqInfo_2.isValid(), "Invalid seq info", );
 
-    writeSequence(os, seqInfo_1.getDNASeq(), out_1);
+    writeSequence(os, seqInfo_1.getDNASeq(), out_1.data());
     CHECK_OP(os, );
 
-    writeSequence(os, seqInfo_2.getDNASeq(), out_2);
+    writeSequence(os, seqInfo_2.getDNASeq(), out_2.data());
     CHECK_OP(os, );
 
-    pairedCounter++;
+    pairsCounter++;
 }
 
 } // namespace

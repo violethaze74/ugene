@@ -320,9 +320,9 @@ void FilterUnpairedReadsTask::compareFiles(const GUrl &upstream, const GUrl &dow
     comparator.compare(stateInfo);
     CHECK_OP(stateInfo, );
 
-    if (comparator.getDroppedCount() != 0) {
-        stateInfo.addWarning(tr("%1 reads are paired, %2 was filtered in files %3 and %4")
-                             .arg(comparator.getPairedCount()).arg(comparator.getDroppedCount())
+    if (comparator.getUnpairedCount() != 0) {
+        stateInfo.addWarning(tr("%1 pairs are complete, %2 reads without a pair were found in files %3 and %4.")
+                             .arg(comparator.getPairsCount()).arg(comparator.getUnpairedCount())
                              .arg(upstream.getURLString()).arg(downstream.getURLString()));
     }
 }

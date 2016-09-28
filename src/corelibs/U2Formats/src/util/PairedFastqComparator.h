@@ -23,6 +23,7 @@
 #define _U2_PAIRED_FASTQ_COMPARATOR_H_
 
 #include <U2Core/global.h>
+#include <U2Core/LocalFileAdapter.h>
 #include <U2Core/U2OpStatus.h>
 
 #include <U2Formats/BAMUtils.h>
@@ -33,7 +34,7 @@
 namespace U2 {
 
 /**
- * @brief The FastqSequenceInfo class
+ * The FastqSequenceInfo class
  */
 class FastqSequenceInfo {
     friend class FastqFileIterator;
@@ -54,7 +55,7 @@ private:
 };
 
 /**
- * @brief The PairedFastqComparator class
+ * The PairedFastqComparator class
  */
 class U2FORMATS_EXPORT PairedFastqComparator : public QObject {
 public:
@@ -63,8 +64,8 @@ public:
                           U2OpStatus &os);
     void compare(U2OpStatus& os);
 
-    int getPairedCount() const { return pairedCounter; }
-    int getDroppedCount() const { return droppedCounter; }
+    int getPairsCount() const { return pairsCounter; }
+    int getUnpairedCount() const { return droppedCounter; }
 
 private:
     template <typename T>
@@ -79,14 +80,13 @@ private:
     void writePair(U2OpStatus& os, const FastqSequenceInfo& seqInfo_1, const FastqSequenceInfo& seqInfo_2);
 
 private:
-
-    /*QScopedPointer<*/IOAdapter* out_1;
-    /*QScopedPointer<*/IOAdapter* out_2;
-
     FASTQIterator it_1;
     FASTQIterator it_2;
 
-    int pairedCounter;
+    QScopedPointer<LocalFileAdapter> out_1;
+    QScopedPointer<LocalFileAdapter> out_2;
+
+    int pairsCounter;
     int droppedCounter;
 };
 
