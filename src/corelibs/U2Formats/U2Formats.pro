@@ -102,8 +102,8 @@ HEADERS += src/ABIFormat.h \
            src/tasks/MysqlUpgradeTask.h \
            src/util/AssemblyAdapter.h \
            src/util/AssemblyPackAlgorithm.h \
-           src/util/SnpeffInfoParser.h \
-           src/util/PairedFastqComparator.h
+           src/util/PairedFastqComparator.h \
+           src/util/SnpeffInfoParser.h
 
 SOURCES += src/ABIFormat.cpp \
            src/AbstractVariationFormat.cpp \
@@ -203,8 +203,8 @@ SOURCES += src/ABIFormat.cpp \
            src/tasks/MergeBamTask.cpp \
            src/tasks/MysqlUpgradeTask.cpp \
            src/util/AssemblyPackAlgorithm.cpp \
-           src/util/SnpeffInfoParser.cpp \
-           src/util/PairedFastqComparator.cpp
+           src/util/PairedFastqComparator.cpp \
+           src/util/SnpeffInfoParser.cpp
 
 RESOURCES += U2Formats.qrc
 TRANSLATIONS += transl/english.ts \

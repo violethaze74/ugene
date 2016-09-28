@@ -323,6 +323,8 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
         libMap["Paired-end"] = "Paired-end";
         ComboBoxDelegate* libDelegate = new ComboBoxDelegate(libMap);
         delegates[LIBRARY] = libDelegate;
+
+        delegates[FILTER_UNPAIRED] = new ComboBoxWithBoolsDelegate();
     }
 }
 

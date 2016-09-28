@@ -47,12 +47,12 @@ private slots:
 
 };
 
-class FilterUnpairedReads : public Task {
+class FilterUnpairedReadsTask : public Task {
     Q_OBJECT
 public:
-    FilterUnpairedReads(const DnaAssemblyToRefTaskSettings &settings);
+    FilterUnpairedReadsTask(const DnaAssemblyToRefTaskSettings &settings);
     void run();
-    QList<ShortReadSet> getFilteredReadList() { return filteredReads; }
+    const QList<ShortReadSet>& getFilteredReadList() const { return filteredReads; }
 
 private:
     QString getTmpFilePath(const GUrl& initialFile);

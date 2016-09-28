@@ -804,7 +804,7 @@ DNASequence FASTQIterator::next(){
     return DNASequence();
 }
 
-bool FASTQIterator::hasNext(){
+bool FASTQIterator::hasNext() const{
     return seq != NULL;
 }
 
