@@ -70,6 +70,7 @@ public:
     QString indexFileName;
     QString algName;
     bool pairedReads;
+    bool filterUnpaired;
     bool prebuiltIndex;
     bool openView;
     bool samOutput;
