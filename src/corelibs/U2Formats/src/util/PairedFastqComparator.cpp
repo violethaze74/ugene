@@ -26,7 +26,6 @@
 #include <U2Core/IOAdapter.h>
 
 #include <U2Formats/FastqFormat.h>
-#include <zlib.h>
 
 
 namespace U2 {
