@@ -736,7 +736,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, const QString& , bo
     MSACollapsibleItemModel const* model = ui->getCollapseModel();
     int index = model->itemAt(pos);
 
-    QStyleOptionViewItemV2 branchOption;
+    QStyleOptionViewItem branchOption;
 
     int delta = 0;
 
