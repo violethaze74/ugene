@@ -66,7 +66,7 @@ void PrimerLineEdit::paintEvent(QPaintEvent *event) {
 }
 
 QRect PrimerLineEdit::placeHolderRect() const {
-    QStyleOptionFrameV2 panel;
+    QStyleOptionFrame panel;
     initStyleOption(&panel);
     QRect r = style()->subElementRect(QStyle::SE_LineEditContents, &panel, this);
     r.setX(r.x() + textMargins().left());

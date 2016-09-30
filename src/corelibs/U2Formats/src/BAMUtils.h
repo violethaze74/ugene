@@ -93,7 +93,7 @@ public:
     virtual ~FASTQIterator();
 
     DNASequence next();
-    bool hasNext();
+    bool hasNext() const;
 
 private:
     void fetchNext();

@@ -85,7 +85,7 @@ public:
         if (value.isValid())
             return qvariant_cast<QSize>(value);
 
-        QStyleOptionViewItemV4 opt = option;
+        QStyleOptionViewItem opt = option;
         initStyleOption(&opt, index);
         const QWidget *widget = qobject_cast<QWidget*>(parent());//QStyledItemDelegatePrivate::widget(option);
         QStyle *style = widget ? widget->style() : QApplication::style();

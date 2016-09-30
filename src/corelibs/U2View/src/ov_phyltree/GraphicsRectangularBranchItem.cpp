@@ -225,8 +225,6 @@ void GraphicsRectangularBranchItem::swapSiblings() {
 }
 
 void GraphicsRectangularBranchItem::redrawBranches(int& current, qreal& minDistance, qreal& maxDistance, const PhyNode* root){
-    assert(this);
-
     int branches = 0;
     const PhyNode* node = NULL;
 
