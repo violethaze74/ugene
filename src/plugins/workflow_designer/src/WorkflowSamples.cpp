@@ -247,7 +247,10 @@ void SamplePane::mouseDoubleClickEvent( QMouseEvent *e) {
     }
 
     QSize ts = doc->size().toSize();
-    QRect textRect;
+    QRect textRect(width() / 2- pageWidth / 2,
+        height() / 2 - pageHeight / 2,
+        pageWidth,
+        pageHeight);
     textRect.setSize(ts);
 
     QPoint position = e->pos();
