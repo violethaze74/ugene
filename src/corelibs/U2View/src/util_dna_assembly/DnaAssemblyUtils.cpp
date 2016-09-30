@@ -272,7 +272,9 @@ QString DnaAssemblySupport::unknownText(const QList<GUrl> &unknownFormatFiles) {
 FilterUnpairedReadsTask::FilterUnpairedReadsTask(const DnaAssemblyToRefTaskSettings &settings)
     : Task(tr("Filter unpaired reads task"), TaskFlags_FOSE_COSC),
       settings(settings) {
-    tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    tmpDirPath = settings.tmpDirectoryForFilteredFiles.isEmpty()
+            ? AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath()
+            : settings.tmpDirectoryForFilteredFiles;
 }
 
 void FilterUnpairedReadsTask::run() {
@@ -331,7 +333,7 @@ void FilterUnpairedReadsTask::compareFiles(const GUrl &upstream, const GUrl &dow
 /* DnaAssemblyTaskWithConversions */
 /************************************************************************/
 DnaAssemblyTaskWithConversions::DnaAssemblyTaskWithConversions(const DnaAssemblyToRefTaskSettings &settings, bool viewResult, bool justBuildIndex)
-    : ExternalToolSupportTask("Dna assembly task", TaskFlags_NR_FOSCOE), settings(settings), viewResult(viewResult),
+    : ExternalToolSupportTask("Dna assembly task", TaskFlags(TaskFlags_NR_FOSCOE | TaskFlag_CollectChildrenWarnings)), settings(settings), viewResult(viewResult),
     justBuildIndex(justBuildIndex), conversionTasksCount(0), assemblyTask(NULL) {}
 
 const DnaAssemblyToRefTaskSettings& DnaAssemblyTaskWithConversions::getSettings() const {
@@ -393,11 +395,8 @@ QList<Task*> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
             result << assemblyTask;
         }
     }
-    FilterUnpairedReadsTask* filterTask = dynamic_cast<FilterUnpairedReadsTask*>(subTask);
+    FilterUnpairedReadsTask* filterTask = qobject_cast<FilterUnpairedReadsTask*>(subTask);
     if (settings.filterUnpaired && filterTask != NULL) {
-        if (filterTask->hasWarning()) {
-            stateInfo.addWarnings(filterTask->getWarnings());
-        }
         settings.shortReadSets = filterTask->getFilteredReadList();
         assemblyTask = new DnaAssemblyMultiTask(settings, viewResult, justBuildIndex);
         result << assemblyTask;
