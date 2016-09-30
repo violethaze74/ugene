@@ -1,6 +1,6 @@
 #db_xref_ID|db_xref_PageLink|db_xref_FileLink|db_xref_Comment
 #Official site: http://www.ncbi.nlm.nih.gov/genbank/collab/db_xref
-AceView/WormGenes|http://www.ncbi.nlm.nih.gov/IEB/Research/Acembly/av.cgi?exdb=AceView&db=worm&term=%1||AceView Worm Genome
+AceView/WormGenes|https://www.ncbi.nlm.nih.gov/IEB/Research/Acembly/av.cgi?exdb=AceView&db=worm&term=%1||AceView Worm Genome
 
 AFTOL|http://aftol1.biology.duke.edu/pub/primers/getPrimersByAFTOLID?aftol_id=%1||Assembling the Fungal Tree of Life
 
@@ -42,19 +42,19 @@ CABRI|||Common Access to Biological Resources and Information Project
 
 CCAP|||Culture Collection of Algae and Protozoa
 
-CDD|http://www.ncbi.nlm.nih.gov/Structure/cdd/cddsrv.cgi?uid=%1||Conserved Domain Database
+CDD|https://www.ncbi.nlm.nih.gov/Structure/cdd/cddsrv.cgi?uid=%1||Conserved Domain Database
 
 CGD|http://www.candidagenome.org/cgi-bin/locus.pl?dbid=%1||Candida Genome Database
 
-CCDS|http://www.ncbi.nlm.nih.gov/projects/CCDS/CcdsBrowse.cgi?REQUEST=CCDS&DATA=%1&ORGANISM=0&BUILDS=CURRENTBUILDS||The Consensus CDS (CCDS) project is a collaborative effort to identify a core set of human and mouse protein coding regions that are consistently annotated and of high quality.
+CCDS|https://www.ncbi.nlm.nih.gov/projects/CCDS/CcdsBrowse.cgi?REQUEST=CCDS&DATA=%1&ORGANISM=0&BUILDS=CURRENTBUILDS||The Consensus CDS (CCDS) project is a collaborative effort to identify a core set of human and mouse protein coding regions that are consistently annotated and of high quality.
 
-dbEST|http://www.ncbi.nlm.nih.gov/sites/entrez?db=nucest&term=%1&pmfilter_MDatLimit=10+Years||EST database maintained at the NCBI.
+dbEST|https://www.ncbi.nlm.nih.gov/sites/entrez?db=nucest&term=%1&pmfilter_MDatLimit=10+Years||EST database maintained at the NCBI.
 
-dbProbe|http://www.ncbi.nlm.nih.gov/sites/entrez?db=probe&cmd=search&term=%1||NCBI Probe database Public registry of nucleic acid reagents
+dbProbe|https://www.ncbi.nlm.nih.gov/sites/entrez?db=probe&cmd=search&term=%1||NCBI Probe database Public registry of nucleic acid reagents
 
-dbSNP|http://www.ncbi.nlm.nih.gov/sites/entrez?db=snp&cmd=search&term=%1||Variation database maintained at the NCBI.
+dbSNP|https://www.ncbi.nlm.nih.gov/sites/entrez?db=snp&cmd=search&term=%1||Variation database maintained at the NCBI.
 
-dbSTS|http://www.ncbi.nlm.nih.gov/sites/entrez?db=unists&cmd=search&term=%1||STS database maintained at the NCBI.
+dbSTS|https://www.ncbi.nlm.nih.gov/sites/entrez?db=unists&cmd=search&term=%1||STS database maintained at the NCBI.
 
 dictyBase|http://dictybase.org/db/cgi-bin/gene_page.pl?primary_id=%1||Dictyostelium genome database
 
@@ -82,9 +82,9 @@ GDB|||Human Genome Database accession numbers
 
 GeneDB|http://www.genedb.org/genedb/Dispatcher?formType=navBar&organism=All%3A*&name=%1&desc=yes||Curated gene database for Schizosaccharomyces pombe, Leishmania major and Trypanosoma brucei
 
-GeneID|http://www.ncbi.nlm.nih.gov/sites/entrez?db=gene&cmd=search&term=%1||Entrez Gene Database (replaces NCBI Locus Link)
+GeneID|https://www.ncbi.nlm.nih.gov/sites/entrez?db=gene&cmd=search&term=%1||Entrez Gene Database (replaces NCBI Locus Link)
 
-GI|http://www.ncbi.nlm.nih.gov/sites/gquery?term=%1||GenInfo identifier, used as a unique sequence identifier for nucleotide and proteins
+GI|https://www.ncbi.nlm.nih.gov/sites/gquery?term=%1||GenInfo identifier, used as a unique sequence identifier for nucleotide and proteins
 
 GO|||Gene Ontology Database identifier
 
@@ -130,11 +130,11 @@ LocusID|||NCBI LocusLink ID **Discontinued March 2005
 
 MaizeGDB|||Maize Genome Database unique identifiers
 
-MedGen|http://www.ncbi.nlm.nih.gov/medgen/?term=%1||Human Medical Genetics
+MedGen|https://www.ncbi.nlm.nih.gov/medgen/?term=%1||Human Medical Genetics
 
 MGI||| Mouse Genome Informatics
 
-MIM|http://www.ncbi.nlm.nih.gov/entrez/dispomim.cgi?id=%1|| Mendelian Inheritance in Man numbers
+MIM|https://www.ncbi.nlm.nih.gov/entrez/dispomim.cgi?id=%1|| Mendelian Inheritance in Man numbers
 
 miRBase|http://microrna.sanger.ac.uk/cgi-bin/sequences/mirna_entry.pl?acc=%1||miRBase is the new home of microRNA data on the web, providing data previously accessible from the miRNA Registry.
 
@@ -224,7 +224,7 @@ UniProtKB/Swiss-Prot|http://www.uniprot.org/uniprot/%1|http://www.uniprot.org/un
 
 UniProtKB/TrEMBL|http://www.uniprot.org/uniprot/%1|http://www.uniprot.org/uniprot/%1.txt|section of the UniProt Knowledgebase, containing computationally analysed records waiting for full manual annotation
 
-UniSTS|http://www.ncbi.nlm.nih.gov/genome/sts/sts.cgi?uid=%1||NCBI UniSTS is a comprehensive database of sequence tagged sites (STSs) derived from STS-based maps and other experiments.
+UniSTS|https://www.ncbi.nlm.nih.gov/genome/sts/sts.cgi?uid=%1||NCBI UniSTS is a comprehensive database of sequence tagged sites (STSs) derived from STS-based maps and other experiments.
 
 UNITE|||Molecular database for the identification of fungi
 
