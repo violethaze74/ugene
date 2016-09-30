@@ -68,13 +68,11 @@ public:
     int getUnpairedCount() const { return droppedCounter; }
 
 private:
-    template <typename T>
-    void dropUntilItem(U2OpStatus& os, QList<T>& list, const T& untilItem);
+    void dropUntilItem(U2OpStatus& os, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem);
 
-    template <typename T>
-    const T tryToFindPair(U2OpStatus& os, QList<T>& initializer, const T& info, QList<T>& searchIn);
+    const FastqSequenceInfo tryToFindPair(U2OpStatus& os, QList<FastqSequenceInfo>& initializer, const FastqSequenceInfo& info, QList<FastqSequenceInfo>& searchIn);
 
-    void tryToFindPairIInTail(U2OpStatus& os, FASTQIterator& reads,
+    void tryToFindPairInTail(U2OpStatus& os, FASTQIterator& reads,
                               QList<FastqSequenceInfo>& unpaired, bool iteratorContentIsFirst);
 
     void writePair(U2OpStatus& os, const FastqSequenceInfo& seqInfo_1, const FastqSequenceInfo& seqInfo_2);

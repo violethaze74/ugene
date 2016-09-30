@@ -147,6 +147,7 @@ Task *BaseShortReadsAlignerWorker::tick() {
         }
         settings.pairedReads = pairedReadsInput;
         settings.filterUnpaired = filterUnpaired;
+        settings.tmpDirectoryForFilteredFiles = context->workingDir();
 
         if (pairedReadsInput) {
             settings.shortReadSets << toUrls(readsFetcher.takeFullDataset(), READS_URL_SLOT_ID, ShortReadSet::PairedEndReads, ShortReadSet::UpstreamMate);
