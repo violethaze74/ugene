@@ -521,7 +521,7 @@ void DotPlotWidget::sl_showSaveImageDialog() {
     QString s1 = GUrlUtils::fixFileName(sequenceX->getSequenceGObject()->getGObjectName());
     QString s2 = GUrlUtils::fixFileName(sequenceY->getSequenceGObject()->getGObjectName());
     QString fileName = s1 == s2 ? s1 : s1 + "_" + s2;
-    
+
     DotPlotImageExportController factory(this);
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory,
                                                                            ExportImageDialog::DotPlot,
@@ -667,7 +667,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
 
     SAFE_POINT(dnaView, "dnaView is NULL", false);
 
-    QObjectScopedPointer<DotPlotDialog> d = new DotPlotDialog(this, dnaView, minLen, identity, sequenceX, sequenceY, direct, inverted, dotPlotDirectColor, dotPlotInvertedColor, disableLoad);
+    QObjectScopedPointer<DotPlotDialog> d = new DotPlotDialog(QApplication::activeWindow(), dnaView, minLen, identity, sequenceX, sequenceY, direct, inverted, dotPlotDirectColor, dotPlotInvertedColor, disableLoad);
     d->exec();
     CHECK(!d.isNull(), false);
 
