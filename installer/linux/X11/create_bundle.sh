@@ -156,11 +156,11 @@ strip -v ${TARGET_APP_DIR}/imageformats/*.so
 PATH_TO_MYSQL_CLIENT_LIB=`ldd "${TARGET_APP_DIR}/sqldrivers/libqsqlmysql.so" |grep libmysqlclient |cut -d " " -f3`
 cp -v "$PATH_TO_MYSQL_CLIENT_LIB" "${TARGET_APP_DIR}"
 
-PATH_TO_ICU_DATA_LIB=`ldd "${TARGET_APP_DIR}/libQt5Widgets.so.5" |grep libicudata.so |cut -d " " -f3`
+PATH_TO_ICU_DATA_LIB=`ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" |grep libicudata.so |cut -d " " -f3`
 cp -v -L "$PATH_TO_ICU_DATA_LIB" "${TARGET_APP_DIR}"
-PATH_TO_ICU_I18N_LIB=`ldd "${TARGET_APP_DIR}/libQt5Widgets.so.5" |grep libicui18n.so |cut -d " " -f3`
+PATH_TO_ICU_I18N_LIB=`ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" |grep libicui18n.so |cut -d " " -f3`
 cp -v -L "$PATH_TO_ICU_I18N_LIB" "${TARGET_APP_DIR}"
-PATH_TO_ICU_UUC_LIB=`ldd "${TARGET_APP_DIR}/libQt5Widgets.so.5" |grep libicuuc.so |cut -d " " -f3`
+PATH_TO_ICU_UUC_LIB=`ldd "${PATH_TO_QT_LIBS}/libQt5Widgets.so.5" |grep libicuuc.so |cut -d " " -f3`
 cp -v -L "$PATH_TO_ICU_UUC_LIB" "${TARGET_APP_DIR}"
 
 if [ "$1" == "-test" ]
