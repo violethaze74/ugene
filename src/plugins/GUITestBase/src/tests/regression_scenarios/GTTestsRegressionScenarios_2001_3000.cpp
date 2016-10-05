@@ -4736,10 +4736,15 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
     point.setY(point.y() + 1);
     GTMouseDriver::moveTo(point);
     GTMouseDriver::click();
+    QPoint endPoint = GTWidget::getWidgetCenter(os, GTUtilsAnnotationsTreeView::getTreeWidget(os));
 
+#ifdef Q_OS_MAC
+    GTMouseDriver::dragAndDrop(point, endPoint);
+#else
     GTMouseDriver::press();
-    GTMouseDriver::moveTo(GTWidget::getWidgetCenter(os, GTUtilsAnnotationsTreeView::getTreeWidget(os)));
+    GTMouseDriver::moveTo(endPoint));
     GTMouseDriver::release();
+#endif
 
 //    5. Open file {data/samples/Genbank/murine.gb} with text editor, then make some modification and save file
 //    Expected state: dialog about detected file modification has appeared in UGENE window
