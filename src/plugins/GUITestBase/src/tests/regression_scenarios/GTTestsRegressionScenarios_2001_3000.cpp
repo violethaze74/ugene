@@ -4742,7 +4742,7 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
     GTMouseDriver::dragAndDrop(point, endPoint);
 #else
     GTMouseDriver::press();
-    GTMouseDriver::moveTo(endPoint));
+    GTMouseDriver::moveTo(endPoint);
     GTMouseDriver::release();
 #endif
 
