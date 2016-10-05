@@ -100,6 +100,7 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
@@ -990,6 +991,62 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "/test_5367_coverage.txt", testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"), "Exported coverage is wrong!");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5377) {
+//    1. Open file "_common_data/genbank/70Bp_new.gb".
+//    2. Search for restriction site HinFI.
+//    3. Digest into fragments, then reconstruct the original molecule.
+//    Expected state: the result sequence is equal to the original sequence. Fragments annotations have the same positions and lengths.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/70Bp_new.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "HinfI"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "Fragment 1", U2Region(36, 35)), "Fragment 1 is incorrect or not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "Fragment 2", U2Region(1, 24)), "Fragment 2 is incorrect or not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "Fragment 3", U2Region(28, 5)), "Fragment 3 is incorrect or not found");
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "takeAllButton"));
+
+            QTreeWidget *tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "molConstructWidget"));
+            GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "Blunt"));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "downButton"));
+            GTWidget::click(os, GTWidget::findWidget(os, "downButton"));
+
+            QTabWidget* tabWidget = GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog);
+            CHECK_SET_ERR(tabWidget != NULL, "tabWidget not found");
+            GTTabWidget::clickTab(os, tabWidget, "Output");
+
+            QLineEdit* linEdit = GTWidget::findExactWidget<QLineEdit*>(os, "filePathEdit");
+            CHECK_SET_ERR(linEdit != NULL, "filePathEdit not found");
+            GTLineEdit::setText(os, linEdit, QFileInfo(sandBoxDir + "test_5377").absoluteFilePath());
+
+            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Construct molecule...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsSequenceView::getSeqWidgetByNumber(os)->getSequenceLength() == 70, "The result length of the constructed molecule is wrong");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "A sequence Fragment 1", U2Region(36, 35)), "Constructed molecule: Fragment 1 is incorrect or not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "A sequence Fragment 2", U2Region(1, 24)), "Constructed molecule: Fragment 2 is incorrect or not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "A sequence Fragment 3", U2Region(28, 5)), "Constructed molecule: Fragment 3 is incorrect or not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5417) {
