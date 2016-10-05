@@ -97,7 +97,7 @@ PrimerValidator::PrimerValidator(QObject *parent, bool allowExtended)
 QValidator::State PrimerValidator::validate(QString &input, int &pos) const {
     input = input.simplified();
     input = input.toUpper();
-    input.replace(" ", "");
+    input.remove(" ");
     return QRegExpValidator::validate(input, pos);
 }
 
