@@ -875,7 +875,7 @@ GUI_TEST_CLASS_DEFINITION(test_5360) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Read FASTQ Files with Reads");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + QString::fromLocal8Bit("_common_data/scenarios/_regression/5360/папка/риды.fastq"), true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + QString::fromUtf8("_common_data/scenarios/_regression/5360/папка/риды.fastq"), true);
 
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -1047,6 +1047,28 @@ GUI_TEST_CLASS_DEFINITION(test_5377) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "A sequence Fragment 1", U2Region(36, 35)), "Constructed molecule: Fragment 1 is incorrect or not found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "A sequence Fragment 2", U2Region(1, 24)), "Constructed molecule: Fragment 2 is incorrect or not found");
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "A sequence Fragment 3", U2Region(28, 5)), "Constructed molecule: Fragment 3 is incorrect or not found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5371) {
+    //1. Open bam assembly with index with path containing non ASCII symbols
+    //Expected state: assembly opened successfully
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "5371.bam.ugenedb"));
+
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open, 
+        HI::GTGlobals::UseMethod::UseKey , GTFileDialogUtils::TextInput::CopyPaste);
+    GTUtilsDialog::waitForDialog(os, ob);
+
+    ob->openFileDialog();
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(100);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5417) {
