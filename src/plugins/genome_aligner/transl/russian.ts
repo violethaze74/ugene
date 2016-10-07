@@ -235,14 +235,12 @@ p, li { white-space: pre-wrap; }
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettingsWidget.ui" line="20"/>
         <source>Directories</source>
-        <translation>Директории</translation>
+        <translation type="vanished">Директории</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerSettingsWidget.ui" line="26"/>
         <source>Directory for built indexes</source>
-        <translation>Директория для сохранения индекса</translation>
+        <translation type="vanished">Директория для сохранения индекса</translation>
     </message>
 </context>
 <context>
@@ -423,12 +421,12 @@ p, li { white-space: pre-wrap; }
         <translation>Сборка контигов по последовательности</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerPlugin.cpp" line="121"/>
+        <location filename="../src/GenomeAlignerPlugin.cpp" line="118"/>
         <source>UGENE Short Reads Aligner</source>
         <translation>Модуль сборки контигов UGENE</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerPlugin.cpp" line="122"/>
+        <location filename="../src/GenomeAlignerPlugin.cpp" line="119"/>
         <source>UGENE Genome Aligner is an efficient and fast tool for short read alignment.It has 2 work modes: build index and align short reads (default mode).
 If there is no index available for reference sequence it will be built on the fly.
 
@@ -469,17 +467,15 @@ ugene --genome-aligner --reference=/path/to/ref --short-reads=/path/to/reads --r
 <context>
     <name>U2::GenomeAlignerSettingsPageController</name>
     <message>
-        <location filename="../src/GenomeAlignerSettingsController.cpp" line="55"/>
         <source>Genome Aligner</source>
-        <translation>Модуль сборки контигов UGENE</translation>
+        <translation type="vanished">Модуль сборки контигов UGENE</translation>
     </message>
 </context>
 <context>
     <name>U2::GenomeAlignerSettingsPageWidget</name>
     <message>
-        <location filename="../src/GenomeAlignerSettingsController.cpp" line="96"/>
         <source>Choose Directory</source>
-        <translation>Выберите директорию</translation>
+        <translation type="vanished">Выберите директорию</translation>
     </message>
 </context>
 <context>

@@ -911,207 +911,211 @@ bowtie is somewhat slower when --best is specified.
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="36"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="45"/>
         <source>Base Options</source>
         <translation>Base Options</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="441"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="450"/>
         <source>Penalty for a mismatch</source>
         <translation>Penalty for a mismatch</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="409"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="418"/>
         <source>Score for a sequence match</source>
         <translation>Score for a sequence match</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="393"/>
         <source>Score for a match (-A)</source>
-        <translation>Score for a match (-A)</translation>
+        <translation type="vanished">Score for a match (-A)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="425"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="434"/>
         <source>Mismatch penalty (-B)</source>
         <translation>Mismatch penalty (-B)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="454"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="463"/>
         <source>Gap open penalty (-O)</source>
         <translation>Gap open penalty (-O)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="557"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="566"/>
         <source>Penalty for an unpaired read pair</source>
         <translation>Penalty for an unpaired read pair</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="586"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="595"/>
         <source>Minimum score to output</source>
         <translation>Minimum score to output</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="541"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="550"/>
         <source>Penalty unpaired (-U)</source>
         <translation>Penalty unpaired (-U)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="528"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="537"/>
         <source>Penalty for clipping </source>
         <translation>Penalty for clipping </translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="470"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="479"/>
         <source>Gap open penalty</source>
         <translation>Gap open penalty</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="499"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="508"/>
         <source>Gap extension penalty; a gap of size k cost {-O} + {-E}*k</source>
         <translation>Gap extension penalty; a gap of size k cost {-O} + {-E}*k</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="512"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="521"/>
         <source>Penalty for clipping (-L)</source>
         <translation>Penalty for clipping (-L)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="483"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="492"/>
         <source>Gap extention penalty (-E)</source>
         <translation>Gap extention penalty (-E)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="570"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="579"/>
         <source>Score threshold (-T)</source>
         <translation>Score threshold (-T)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="209"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="218"/>
         <source>Internall seeds length (-r)</source>
         <translation>Internall seeds length (-r)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="107"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="116"/>
         <source>Min seed length (-k)</source>
         <translation>Min seed length (-k)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="69"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="78"/>
         <source>Look for internal seeds inside a seed longer than {-k} * FLOAT</source>
         <translation>Look for internal seeds inside a seed longer than {-k} * FLOAT</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="56"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="65"/>
         <source>Number of threads</source>
         <translation>Number of threads</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="193"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="202"/>
         <source>Off-diagonal X-dropoff</source>
         <translation>Off-diagonal X-dropoff</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="161"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="170"/>
         <source>Band width for banded alignment</source>
         <translation>Band width for banded alignment</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="145"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="154"/>
         <source>Band width (-w)</source>
         <translation>Band width (-w)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="123"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="132"/>
         <source>Minimum seed length</source>
         <translation>Minimum seed length</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="88"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="97"/>
         <source>Number of threads (-t)</source>
         <translation>Number of threads (-t)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="177"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="186"/>
         <source>Dropoff (-d)</source>
         <translation>Dropoff (-d)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="228"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="237"/>
         <source>Skip seeds threshold (-c)</source>
         <translation>Skip seeds threshold (-c)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="244"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="253"/>
         <source>Skip seeds with more than INT occurrences </source>
         <translation>Skip seeds with more than INT occurrences </translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="266"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="275"/>
         <source>Drop chain threshold (-D)</source>
         <translation>Drop chain threshold (-D)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="282"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="291"/>
         <source>Drop chains shorter than FLOAT fraction of the longest overlapping chain</source>
         <translation>Drop chains shorter than FLOAT fraction of the longest overlapping chain</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="308"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="317"/>
         <source>Index algorithm (-a)</source>
         <translation>Index algorithm (-a)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="325"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="334"/>
         <source>autodetect</source>
         <translation>autodetect</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="330"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="339"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="335"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="344"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="340"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="349"/>
         <source>is</source>
         <translation>is</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="599"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="402"/>
+        <source>Matching score (-A)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="608"/>
         <source>Rounds of mate rescues (-m)</source>
         <translation>Rounds of mate rescues (-m)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="615"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="624"/>
         <source>Perform at most INT rounds of mate rescues for each read</source>
         <translation>Perform at most INT rounds of mate rescues for each read</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="348"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="357"/>
         <source>Skip mate rescue</source>
         <translation>Skip mate rescue</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="351"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="360"/>
         <source>Skip mate rescue (-S)</source>
         <translation>Skip mate rescue (-S)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="358"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="367"/>
         <source>Skip pairing; mate rescue performed unless -S also in use</source>
         <translation>Skip pairing; mate rescue performed unless -S also in use</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="361"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="370"/>
         <source>Skip pairing (-P)</source>
         <translation>Skip pairing (-P)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="633"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="642"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -3184,12 +3188,12 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastDBCmdDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="43"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="48"/>
         <source>Fetch</source>
         <translation>Fetch</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="44"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="49"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -3198,7 +3202,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Select a database file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="92"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="97"/>
         <source>Set a result FASTA file name</source>
         <translation>Set a result FASTA file name</translation>
     </message>
@@ -5289,108 +5293,118 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BaseShortReadsAlignerWorker</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="240"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="245"/>
         <source>Not enough upstream reads datasets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="243"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="248"/>
         <source>Not enough downstream reads datasets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="278"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="283"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="279"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="284"/>
         <source>Directory to save output files.</source>
         <translation>Directory to save output files.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="282"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="287"/>
         <source>Reference genome</source>
         <translation>Reference genome</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="283"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="288"/>
         <source>Path to indexed reference genome.</source>
         <translation>Path to indexed reference genome.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="286"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="291"/>
         <source>Library</source>
         <translation>Library</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="287"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="292"/>
         <source>Is this library mate-paired?</source>
         <translation>Is this library mate-paired?</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="290"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="295"/>
+        <source>Filter unpaired reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="296"/>
+        <source>Should the reads be checked for incomplete pairs?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="299"/>
         <source>Output file name</source>
         <translation>Output file name</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="291"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="300"/>
         <source>Base name of the output file. &apos;out.sam&apos; by default</source>
         <translation>Base name of the output file. &apos;out.sam&apos; by default</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="323"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="338"/>
         <source>URL of a file with reads</source>
         <translation>URL of a file with reads</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="324"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="334"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="339"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="349"/>
         <source>Input reads to be aligned.</source>
         <translation>Input reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="326"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="341"/>
         <source>URL of a file with mate reads</source>
         <translation>URL of a file with mate reads</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="327"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="342"/>
         <source>Input mate reads to be aligned.</source>
         <translation>Input mate reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="333"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="348"/>
         <source>Input data</source>
         <translation>Input data</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="337"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="352"/>
         <source>Reverse FASTQ file</source>
         <translation>Reverse FASTQ file</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="338"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="353"/>
         <source>Reverse paired reads to be aligned.</source>
         <translation>Reverse paired reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="350"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="365"/>
         <source>Assembly URL</source>
         <translation>Assembly URL</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="351"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="366"/>
         <source>Output assembly URL.</source>
         <translation>Output assembly URL.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="354"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="369"/>
         <source>Output data</source>
         <translation>Output data</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="355"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="370"/>
         <source>Output assembly files.</source>
         <translation>Output assembly files.</translation>
     </message>
@@ -6447,6 +6461,10 @@ Default: 64.</translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaMemWorker.cpp" line="177"/>
+        <source>Matching score</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/bwa/BwaMemWorker.cpp" line="181"/>
         <source>Mismatch penalty</source>
         <translation>Mismatch penalty</translation>
@@ -9519,22 +9537,22 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::ShortReadsAlignerPrompter</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="371"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="386"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="377"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="392"/>
         <source>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </source>
         <translation>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="379"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="394"/>
         <source>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </source>
         <translation>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="383"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="398"/>
         <source> to reference genome &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> to reference genome &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -11792,7 +11810,7 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="236"/>
         <location filename="../src/spades/SpadesWorker.cpp" line="189"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="255"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="260"/>
         <source>The slot must be not empty: &apos;%1&apos;</source>
         <translation type="unfinished">The slot must be not empty: &apos;%1&apos;</translation>
     </message>

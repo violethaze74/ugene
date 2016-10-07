@@ -33,7 +33,6 @@ namespace U2 {
 
 const QString MSATreeOptionsWidgetFactory::GROUP_ID = "OP_MSA_TREES_WIDGET";
 const QString MSATreeOptionsWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-const QString MSATreeOptionsWidgetFactory::GROUP_TITLE = QString(QObject::tr("Tree Settings"));
 const QString MSATreeOptionsWidgetFactory::GROUP_DOC_PAGE = "18220494";
 
 
@@ -64,7 +63,7 @@ QWidget* MSATreeOptionsWidgetFactory::createWidget(GObjectView* objView) {
 }
 
 OPGroupParameters MSATreeOptionsWidgetFactory::getOPGroupParameters(){
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), GROUP_TITLE, GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
 void MSATreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettings& settings) {
@@ -74,7 +73,6 @@ void MSATreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSet
 
 const QString TreeOptionsWidgetFactory::GROUP_ID = "OP_TREES_WIDGET";
 const QString TreeOptionsWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-const QString TreeOptionsWidgetFactory::GROUP_TITLE = QString(QObject::tr("Tree Settings"));
 const QString TreeOptionsWidgetFactory::GROUP_DOC_PAGE = "18220494";
 
 TreeOptionsWidgetFactory::TreeOptionsWidgetFactory()
@@ -106,7 +104,7 @@ QWidget* TreeOptionsWidgetFactory::createWidget(GObjectView* objView)
 }
 
 OPGroupParameters TreeOptionsWidgetFactory::getOPGroupParameters(){
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), GROUP_TITLE, GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
 void TreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettings& settings) {
@@ -116,7 +114,6 @@ void TreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettin
 
 const QString AddTreeWidgetFactory::GROUP_ID = "OP_MSA_ADD_TREE_WIDGET";
 const QString AddTreeWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-const QString AddTreeWidgetFactory::GROUP_TITLE = QString(QObject::tr("Tree Settings"));
 const QString AddTreeWidgetFactory::GROUP_DOC_PAGE = "18220494";
 
 AddTreeWidgetFactory::AddTreeWidgetFactory() {
@@ -139,7 +136,7 @@ QWidget* AddTreeWidgetFactory::createWidget(GObjectView* objView)
 }
 
 OPGroupParameters AddTreeWidgetFactory::getOPGroupParameters(){
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), GROUP_TITLE, GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Tree Settings"), GROUP_DOC_PAGE);
 }
 
 } // namespace

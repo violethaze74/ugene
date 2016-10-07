@@ -532,52 +532,52 @@ p, li { white-space: pre-wrap; }
         <translation>The format %1 does not support annotations</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="136"/>
+        <location filename="../src/WorkflowViewController.cpp" line="137"/>
         <source>You opened obsolete workflow in XML format. It is strongly recommended to clear working space and create workflow from scratch.</source>
         <translation>You opened obsolete workflow in XML format. It is strongly recommended to clear working space and create workflow from scratch.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="139"/>
+        <location filename="../src/WorkflowViewController.cpp" line="140"/>
         <source>Sorry! This workflow is obsolete and cannot be opened.</source>
         <translation>Sorry! This workflow is obsolete and cannot be opened.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="141"/>
+        <location filename="../src/WorkflowViewController.cpp" line="142"/>
         <source>Breakpoints</source>
         <translation>Breakpoints</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="147"/>
+        <location filename="../src/WorkflowViewController.cpp" line="148"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="199"/>
+        <location filename="../src/WorkflowViewController.cpp" line="200"/>
         <source>Element style</source>
         <translation>Element style</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="210"/>
+        <location filename="../src/WorkflowViewController.cpp" line="211"/>
         <source>Scripting mode</source>
         <translation>Scripting mode</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="908"/>
+        <location filename="../src/WorkflowViewController.cpp" line="909"/>
         <source>Can not create the directory: </source>
         <translation>Can not create the directory: </translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="914"/>
+        <location filename="../src/WorkflowViewController.cpp" line="915"/>
         <source>The file &apos;%1&apos; already exists</source>
         <translation>The file &apos;%1&apos; already exists</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="919"/>
+        <location filename="../src/WorkflowViewController.cpp" line="920"/>
         <source>Can not copy the file here: </source>
         <translation>Can not copy the file here: </translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1478"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1479"/>
         <source>Run workflow</source>
         <translation>Run workflow</translation>
     </message>
@@ -984,12 +984,12 @@ You could also reset the dialog to the initial state.</translation>
 <context>
     <name>U2::DashboardManagerHelper</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="239"/>
+        <location filename="../src/WorkflowViewController.cpp" line="240"/>
         <source>No Dashboards Found</source>
         <translation>No Dashboards Found</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="240"/>
+        <location filename="../src/WorkflowViewController.cpp" line="241"/>
         <source>You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager.</source>
         <translation>You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager.</translation>
     </message>
@@ -1094,18 +1094,18 @@ You could also reset the dialog to the initial state.</translation>
 <context>
     <name>U2::LoadSamplesTask</name>
     <message>
-        <location filename="../src/WorkflowSamples.cpp" line="293"/>
+        <location filename="../src/WorkflowSamples.cpp" line="296"/>
         <source>Load workflow samples</source>
         <translation>Load workflow samples</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSamples.cpp" line="304"/>
+        <location filename="../src/WorkflowSamples.cpp" line="307"/>
         <source>Sample dir does not exist: %1</source>
         <translation>Sample dir does not exist: %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSamples.cpp" line="316"/>
-        <location filename="../src/WorkflowSamples.cpp" line="328"/>
+        <location filename="../src/WorkflowSamples.cpp" line="319"/>
+        <location filename="../src/WorkflowSamples.cpp" line="331"/>
         <source>Failed to load sample: %1</source>
         <translation>Failed to load sample: %1</translation>
     </message>
@@ -5296,17 +5296,17 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::NameFilterLayout</name>
     <message>
-        <location filename="../src/WorkflowSamples.cpp" line="370"/>
+        <location filename="../src/WorkflowSamples.cpp" line="373"/>
         <source>Type to filter by name...</source>
         <translation>Type to filter by name...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSamples.cpp" line="372"/>
+        <location filename="../src/WorkflowSamples.cpp" line="375"/>
         <source>Name filter:</source>
         <translation>Name filter:</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowSamples.cpp" line="379"/>
+        <location filename="../src/WorkflowSamples.cpp" line="382"/>
         <source>Esc</source>
         <translation>Esc</translation>
     </message>
@@ -6111,22 +6111,22 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowScene</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2536"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2539"/>
         <source>Open document(s)</source>
         <translation>Open document(s)</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2696"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2699"/>
         <source>Workflow Designer</source>
         <translation>Workflow Designer</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2696"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2699"/>
         <source>Unable to open specified documents. Watch log for details.</source>
         <translation>Unable to open specified documents. Watch log for details.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2778"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2781"/>
         <source>Drop an element from the palette here</source>
         <translation>Drop an element from the palette here</translation>
     </message>
@@ -6170,7 +6170,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="927"/>
+        <location filename="../src/WorkflowViewController.cpp" line="928"/>
         <source>UGENE workflow element</source>
         <translation type="unfinished">UGENE workflow element</translation>
     </message>
@@ -6189,361 +6189,361 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/WorkflowSettingsController.cpp" line="82"/>
-        <location filename="../src/WorkflowViewController.cpp" line="781"/>
+        <location filename="../src/WorkflowViewController.cpp" line="782"/>
         <source>Minimal</source>
         <translation>Minimal</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsController.cpp" line="83"/>
-        <location filename="../src/WorkflowViewController.cpp" line="787"/>
+        <location filename="../src/WorkflowViewController.cpp" line="788"/>
         <source>Extended</source>
         <translation>Extended</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="325"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2333"/>
+        <location filename="../src/WorkflowViewController.cpp" line="326"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2336"/>
         <source>Workflow Designer</source>
         <translation>Workflow Designer</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="394"/>
+        <location filename="../src/WorkflowViewController.cpp" line="395"/>
         <source>Elements</source>
         <translation>Elements</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="397"/>
+        <location filename="../src/WorkflowViewController.cpp" line="398"/>
         <source>Samples</source>
         <translation>Samples</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="413"/>
-        <location filename="../src/WorkflowViewController.cpp" line="549"/>
+        <location filename="../src/WorkflowViewController.cpp" line="414"/>
+        <location filename="../src/WorkflowViewController.cpp" line="550"/>
         <source>Error list</source>
         <translation>Error list</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="441"/>
-        <location filename="../src/WorkflowViewController.cpp" line="443"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2256"/>
-        <location filename="../src/WorkflowViewController.cpp" line="2258"/>
+        <location filename="../src/WorkflowViewController.cpp" line="442"/>
+        <location filename="../src/WorkflowViewController.cpp" line="444"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2259"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2261"/>
         <source>Warning!</source>
         <translation>Warning!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="446"/>
+        <location filename="../src/WorkflowViewController.cpp" line="447"/>
         <source>Undefined workflow format for %1</source>
         <translation>Undefined workflow format for %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="446"/>
+        <location filename="../src/WorkflowViewController.cpp" line="447"/>
         <source>file</source>
         <translation>file</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="611"/>
+        <location filename="../src/WorkflowViewController.cpp" line="612"/>
         <source>&amp;Run workflow</source>
         <translation>&amp;Run workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="618"/>
+        <location filename="../src/WorkflowViewController.cpp" line="619"/>
         <source>S&amp;top workflow</source>
         <translation>S&amp;top workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="625"/>
+        <location filename="../src/WorkflowViewController.cpp" line="626"/>
         <source>&amp;Validate workflow</source>
         <translation>&amp;Validate workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="631"/>
+        <location filename="../src/WorkflowViewController.cpp" line="632"/>
         <source>&amp;Estimate workflow</source>
         <translation>&amp;Estimate workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="637"/>
+        <location filename="../src/WorkflowViewController.cpp" line="638"/>
         <source>&amp;Pause workflow</source>
         <translation>&amp;Pause workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="645"/>
+        <location filename="../src/WorkflowViewController.cpp" line="646"/>
         <source>&amp;Next step</source>
         <translation>&amp;Next step</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="655"/>
+        <location filename="../src/WorkflowViewController.cpp" line="656"/>
         <source>Process one &amp;message</source>
         <translation>Process one &amp;message</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="665"/>
+        <location filename="../src/WorkflowViewController.cpp" line="666"/>
         <source>&amp;New workflow...</source>
         <translation>&amp;New workflow...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="671"/>
+        <location filename="../src/WorkflowViewController.cpp" line="672"/>
         <source>&amp;Save workflow</source>
         <translation>&amp;Save workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="678"/>
+        <location filename="../src/WorkflowViewController.cpp" line="679"/>
         <source>&amp;Save workflow as...</source>
         <translation>&amp;Save workflow as...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="683"/>
+        <location filename="../src/WorkflowViewController.cpp" line="684"/>
         <source>Show wizard</source>
         <translation>Show wizard</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="701"/>
+        <location filename="../src/WorkflowViewController.cpp" line="702"/>
         <source>&amp;Load workflow</source>
         <translation>&amp;Load workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="712"/>
+        <location filename="../src/WorkflowViewController.cpp" line="713"/>
         <source>Delete</source>
         <translation>Delete</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="737"/>
+        <location filename="../src/WorkflowViewController.cpp" line="738"/>
         <source>Set parameter aliases...</source>
         <translation>Set parameter aliases...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="742"/>
+        <location filename="../src/WorkflowViewController.cpp" line="743"/>
         <source>Set port and slot aliases...</source>
         <translation>Set port and slot aliases...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="815"/>
+        <location filename="../src/WorkflowViewController.cpp" line="816"/>
         <source>Create element with script...</source>
         <translation>Create element with script...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="820"/>
+        <location filename="../src/WorkflowViewController.cpp" line="821"/>
         <source>Edit script of the element...</source>
         <translation>Edit script of the element...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="826"/>
+        <location filename="../src/WorkflowViewController.cpp" line="827"/>
         <source>Create element with command line tool...</source>
         <translation>Create element with command line tool...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="837"/>
+        <location filename="../src/WorkflowViewController.cpp" line="838"/>
         <source>Add element with command line tool...</source>
         <translation>Add element with command line tool...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="932"/>
-        <location filename="../src/WorkflowViewController.cpp" line="957"/>
+        <location filename="../src/WorkflowViewController.cpp" line="933"/>
+        <location filename="../src/WorkflowViewController.cpp" line="958"/>
         <source>Can&apos;t load element.</source>
         <translation>Can&apos;t load element.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1314"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1375"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1315"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1376"/>
         <source>Element style</source>
         <translation>Element style</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1368"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1369"/>
         <source>Element properties</source>
         <translation>Element properties</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2270"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2273"/>
         <source>New workflow</source>
         <translation type="unfinished">New workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="755"/>
+        <location filename="../src/WorkflowViewController.cpp" line="756"/>
         <source>Select all elements</source>
         <translation>Select all elements</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="707"/>
+        <location filename="../src/WorkflowViewController.cpp" line="708"/>
         <source>&amp;Export workflow as image</source>
         <translation>&amp;Export workflow as image</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="716"/>
+        <location filename="../src/WorkflowViewController.cpp" line="717"/>
         <source>Dashboards manager</source>
         <translation>Dashboards manager</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="750"/>
+        <location filename="../src/WorkflowViewController.cpp" line="751"/>
         <source>Create Galaxy tool config...</source>
         <translation>Create Galaxy tool config...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="758"/>
+        <location filename="../src/WorkflowViewController.cpp" line="759"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copy</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="766"/>
+        <location filename="../src/WorkflowViewController.cpp" line="767"/>
         <source>Cu&amp;t</source>
         <translation>Cu&amp;t</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="773"/>
+        <location filename="../src/WorkflowViewController.cpp" line="774"/>
         <source>&amp;Paste</source>
         <translation>&amp;Paste</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="795"/>
+        <location filename="../src/WorkflowViewController.cpp" line="796"/>
         <source>Hide scripting options</source>
         <translation>Hide scripting options</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="802"/>
+        <location filename="../src/WorkflowViewController.cpp" line="803"/>
         <source>Show scripting options</source>
         <translation>Show scripting options</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="810"/>
+        <location filename="../src/WorkflowViewController.cpp" line="811"/>
         <source>Unlock Scene</source>
         <translation>Unlock Scene</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1320"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1321"/>
         <source>Scripting mode</source>
         <translation>Scripting mode</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="928"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1281"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1385"/>
+        <location filename="../src/WorkflowViewController.cpp" line="929"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1282"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1386"/>
         <source>Add element</source>
         <translation>Add element</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="746"/>
+        <location filename="../src/WorkflowViewController.cpp" line="747"/>
         <source>Import workflow to element...</source>
         <translation>Import workflow to element...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="831"/>
+        <location filename="../src/WorkflowViewController.cpp" line="832"/>
         <source>Edit configuration...</source>
         <translation>Edit configuration...</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="997"/>
+        <location filename="../src/WorkflowViewController.cpp" line="998"/>
         <source>Can&apos;t remove element %1</source>
         <translation>Can&apos;t remove element %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1420"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1421"/>
         <source>Empty workflow!</source>
         <translation>Empty workflow!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1420"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1421"/>
         <source>Nothing to run: empty workflow</source>
         <translation>Nothing to run: empty workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1445"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1446"/>
         <source>Workflow cannot be executed</source>
         <translation>Workflow cannot be executed</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1446"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1447"/>
         <source>Please fix issues listed in the error list (located under workflow).</source>
         <translation>Please fix issues listed in the error list (located under workflow).</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1449"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1450"/>
         <source>Workflow is valid.
 </source>
         <translation>Workflow is valid.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1451"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1452"/>
         <source>Well done!</source>
         <translation>Well done!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1453"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1454"/>
         <source>There are non-critical warnings.</source>
         <translation>There are non-critical warnings.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1455"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1456"/>
         <source>Workflow is valid</source>
         <translation>Workflow is valid</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1697"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1730"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1698"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1731"/>
         <source>Bad input!</source>
         <translation>Bad input!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1697"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1698"/>
         <source>Aliases for workflow parameters should be different!</source>
         <translation>Aliases for workflow parameters should be different!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1800"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1801"/>
         <source>The workflow contains a wizard. Sorry, but current version of UGENE doesn&apos;t support of wizards in the includes.</source>
         <translation>The workflow contains a wizard. Sorry, but current version of UGENE doesn&apos;t support of wizards in the includes.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1802"/>
-        <location filename="../src/WorkflowViewController.cpp" line="1830"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1803"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1831"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1730"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1731"/>
         <source>Workflow does not contain any parameter aliases</source>
         <translation>Workflow does not contain any parameter aliases</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1744"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1745"/>
         <source>Internal error!</source>
         <translation>Internal error!</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1744"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1745"/>
         <source>Can not create Galaxy config</source>
         <translation>Can not create Galaxy config</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="1846"/>
+        <location filename="../src/WorkflowViewController.cpp" line="1847"/>
         <source>Drag the palette element to the scene or just click on the scene to add the element.</source>
         <translation>Drag the palette element to the scene or just click on the scene to add the element.</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2136"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2139"/>
         <source>File is not found: %1</source>
         <translation>File is not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2174"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2177"/>
         <source>Show dashboard</source>
         <translation>Show dashboard</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2183"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2186"/>
         <source>Show workflow</source>
         <translation>Show workflow</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2229"/>
         <location filename="../src/WorkflowViewController.cpp" line="2232"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2235"/>
         <source>Open workflow file</source>
         <translation>Open workflow file</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2302"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2305"/>
         <source>Workflow Designer - %1</source>
         <translation>Workflow Designer - %1</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowViewController.cpp" line="2334"/>
+        <location filename="../src/WorkflowViewController.cpp" line="2337"/>
         <source>The workflow has been modified.
 Do you want to save changes?</source>
         <translation>The workflow has been modified.

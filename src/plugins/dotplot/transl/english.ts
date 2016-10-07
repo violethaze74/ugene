@@ -232,32 +232,32 @@
 <context>
     <name>U2::DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="67"/>
+        <location filename="../src/DotPlotDialog.cpp" line="69"/>
         <source>Auto</source>
         <translation>Auto</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="68"/>
+        <location filename="../src/DotPlotDialog.cpp" line="70"/>
         <source>Suffix index</source>
         <translation>Suffix index</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="69"/>
+        <location filename="../src/DotPlotDialog.cpp" line="71"/>
         <source>Diagonals</source>
         <translation>Diagonals</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="249"/>
+        <location filename="../src/DotPlotDialog.cpp" line="251"/>
         <source>Open file</source>
         <translation>Open file</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="307"/>
+        <location filename="../src/DotPlotDialog.cpp" line="309"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="307"/>
+        <location filename="../src/DotPlotDialog.cpp" line="309"/>
         <source>Error opening files</source>
         <translation>Error opening files</translation>
     </message>
@@ -483,150 +483,160 @@ Select valid file to build dotplot</source>
 <context>
     <name>U2::DotPlotWidget</name>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="127"/>
+        <location filename="../src/DotPlotWidget.cpp" line="128"/>
         <source>Parameters</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="130"/>
+        <location filename="../src/DotPlotWidget.cpp" line="131"/>
         <source>Save as image</source>
         <translation>Save as image</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="134"/>
+        <location filename="../src/DotPlotWidget.cpp" line="135"/>
         <source>Save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="137"/>
+        <location filename="../src/DotPlotWidget.cpp" line="139"/>
         <source>Load</source>
         <translation>Load</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="140"/>
+        <location filename="../src/DotPlotWidget.cpp" line="142"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="144"/>
+        <location filename="../src/DotPlotWidget.cpp" line="146"/>
         <source>Filter Results</source>
         <translation>Filter Results</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="218"/>
+        <location filename="../src/DotPlotWidget.cpp" line="220"/>
         <source>Save/Load</source>
         <translation>Save/Load</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="400"/>
+        <location filename="../src/DotPlotWidget.cpp" line="402"/>
         <source>Too many results</source>
         <translation>Too many results</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="400"/>
+        <location filename="../src/DotPlotWidget.cpp" line="402"/>
         <source>Too many results. Try to increase minimum repeat length</source>
         <translation>Too many results. Try to increase minimum repeat length</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="545"/>
-        <location filename="../src/DotPlotWidget.cpp" line="605"/>
+        <location filename="../src/DotPlotWidget.cpp" line="541"/>
+        <source>File saving error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotWidget.cpp" line="541"/>
+        <source>Nothing to save: dotplot is empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotWidget.cpp" line="556"/>
+        <location filename="../src/DotPlotWidget.cpp" line="616"/>
         <source>File opening error</source>
         <translation>File opening error</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="545"/>
-        <location filename="../src/DotPlotWidget.cpp" line="605"/>
+        <location filename="../src/DotPlotWidget.cpp" line="556"/>
+        <location filename="../src/DotPlotWidget.cpp" line="616"/>
         <source>Error opening file %1</source>
         <translation>Error opening file %1</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="553"/>
-        <location filename="../src/DotPlotWidget.cpp" line="586"/>
-        <location filename="../src/DotPlotWidget.cpp" line="653"/>
+        <location filename="../src/DotPlotWidget.cpp" line="564"/>
+        <location filename="../src/DotPlotWidget.cpp" line="597"/>
+        <location filename="../src/DotPlotWidget.cpp" line="664"/>
         <source>Task is already running</source>
         <translation>Task is already running</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="553"/>
-        <location filename="../src/DotPlotWidget.cpp" line="586"/>
-        <location filename="../src/DotPlotWidget.cpp" line="653"/>
+        <location filename="../src/DotPlotWidget.cpp" line="564"/>
+        <location filename="../src/DotPlotWidget.cpp" line="597"/>
+        <location filename="../src/DotPlotWidget.cpp" line="664"/>
         <source>Build or Load DotPlot task is already running</source>
         <translation>Build or Load DotPlot task is already running</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="609"/>
+        <location filename="../src/DotPlotWidget.cpp" line="620"/>
         <source>Sequences are different</source>
         <translation>Sequences are different</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="609"/>
+        <location filename="../src/DotPlotWidget.cpp" line="620"/>
         <source>Current and loading sequences are different. Continue loading dot-plot anyway?</source>
         <translation>Current and loading sequences are different. Continue loading dot-plot anyway?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="708"/>
-        <location filename="../src/DotPlotWidget.cpp" line="713"/>
+        <location filename="../src/DotPlotWidget.cpp" line="719"/>
+        <location filename="../src/DotPlotWidget.cpp" line="724"/>
         <source>Invalid sequence</source>
         <translation>Invalid sequence</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="708"/>
+        <location filename="../src/DotPlotWidget.cpp" line="719"/>
         <source>First selected sequence is invalid</source>
         <translation>First selected sequence is invalid</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="713"/>
+        <location filename="../src/DotPlotWidget.cpp" line="724"/>
         <source>Second selected sequence is invalid</source>
         <translation>Second selected sequence is invalid</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="723"/>
+        <location filename="../src/DotPlotWidget.cpp" line="734"/>
         <source>Wrong alphabet types</source>
         <translation>Wrong alphabet types</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="723"/>
+        <location filename="../src/DotPlotWidget.cpp" line="734"/>
         <source>Both sequence must have the same alphabet</source>
         <translation>Both sequence must have the same alphabet</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="802"/>
+        <location filename="../src/DotPlotWidget.cpp" line="813"/>
         <source>Save dot-plot</source>
         <translation>Save dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="802"/>
+        <location filename="../src/DotPlotWidget.cpp" line="813"/>
         <source>Save dot-plot data before closing?</source>
         <translation>Save dotplot data before closing?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="948"/>
+        <location filename="../src/DotPlotWidget.cpp" line="959"/>
         <source>Invalid weight and height parameters!</source>
         <translation>Invalid weight and height parameters!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="1042"/>
+        <location filename="../src/DotPlotWidget.cpp" line="1053"/>
         <source> (min length %1, identity %2%)</source>
         <translation> (min length %1, identity %2%)</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="216"/>
+        <location filename="../src/DotPlotWidget.cpp" line="218"/>
         <source>Dotplot</source>
         <translation>Dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="534"/>
+        <location filename="../src/DotPlotWidget.cpp" line="545"/>
         <source>Save Dotplot</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="534"/>
-        <location filename="../src/DotPlotWidget.cpp" line="579"/>
+        <location filename="../src/DotPlotWidget.cpp" line="545"/>
+        <location filename="../src/DotPlotWidget.cpp" line="590"/>
         <source>Dotplot files (*.dpt)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="579"/>
+        <location filename="../src/DotPlotWidget.cpp" line="590"/>
         <source>Load Dotplot</source>
         <translation></translation>
     </message>
