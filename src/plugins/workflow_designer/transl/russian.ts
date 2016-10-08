@@ -332,42 +332,40 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PortAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="17"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="23"/>
         <source>Configure Port and Slot Aliases</source>
         <translation> Конфигурация интерфейса командной строки для портов и слотов</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="37"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="43"/>
         <source>Workflow ports</source>
         <translation>Порты схемы</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="72"/>
-        <source>Available slot</source>
-        <translation>Доступный слот</translation>
+        <source>Slot</source>
+        <translation>Слот</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="77"/>
-        <source>Slot alias</source>
-        <translation>Алиас слота</translation>
+        <source>Alias</source>
+        <translation>Алиас</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="86"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="98"/>
         <source>Port alias</source>
         <translation>Алиас порта</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="95"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="107"/>
         <source>Port type:</source>
         <translation>Тип порта:</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="109"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="121"/>
         <source>Port alias:</source>
         <translation>Алиас порта:</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="119"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="131"/>
         <source>Port description:</source>
         <translation>Описание порта:</translation>
     </message>
@@ -598,29 +596,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SchemaAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="17"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="23"/>
         <source>Configure Parameter Aliases</source>
         <translation>Конфигурация алиасов параметров</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="34"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="40"/>
         <source>Workflow elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="69"/>
-        <source>Schema parameter</source>
-        <translation>Параметр схемы</translation>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="84"/>
+        <source>Parameter</source>
+        <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="74"/>
-        <source>Parameter alias</source>
-        <translation>Алиас параметра</translation>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="89"/>
+        <source>Alias</source>
+        <translation>Алиас</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="79"/>
-        <source>Help message</source>
-        <translation>Вспомогательное сообщение</translation>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="94"/>
+        <source>Description</source>
+        <translation>Описание</translation>
     </message>
 </context>
 <context>

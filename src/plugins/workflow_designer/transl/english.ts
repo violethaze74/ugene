@@ -382,42 +382,40 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PortAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="17"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="23"/>
         <source>Configure Port and Slot Aliases</source>
         <translation>Configure Port and Slot Aliases</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="37"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="43"/>
         <source>Workflow ports</source>
         <translation>Workflow ports</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="72"/>
-        <source>Available slot</source>
-        <translation>Available slot</translation>
+        <source>Slot</source>
+        <translation>Slot</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="77"/>
-        <source>Slot alias</source>
-        <translation>Slot alias</translation>
+        <source>Alias</source>
+        <translation>Alias</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="86"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="98"/>
         <source>Port alias</source>
         <translation>Port alias</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="95"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="107"/>
         <source>Port type:</source>
         <translation>Port type:</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="109"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="121"/>
         <source>Port alias:</source>
         <translation>Port alias:</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.ui" line="119"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="131"/>
         <source>Port description:</source>
         <translation>Port description:</translation>
     </message>
@@ -648,29 +646,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SchemaAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="34"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="40"/>
         <source>Workflow elements</source>
         <translation>Workflow elements</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="17"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="23"/>
         <source>Configure Parameter Aliases</source>
         <translation>Configure Parameter Aliases</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="69"/>
-        <source>Schema parameter</source>
-        <translation>Schema parameter</translation>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="84"/>
+        <source>Parameter</source>
+        <translation>Parameter</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="74"/>
-        <source>Parameter alias</source>
-        <translation>Parameter alias</translation>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="89"/>
+        <source>Alias</source>
+        <translation>Alias</translation>
     </message>
     <message>
-        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="79"/>
-        <source>Help message</source>
-        <translation>Help message</translation>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="94"/>
+        <source>Description</source>
+        <translation>Description</translation>
     </message>
 </context>
 <context>

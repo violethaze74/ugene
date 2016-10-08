@@ -1434,7 +1434,7 @@ Double-click to collapse the branch</translation>
         <translation>Data is being updated</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PairAlign/PairAlignFactory.cpp" line="32"/>
+        <location filename="../src/ov_msa/PairAlign/PairAlignFactory.cpp" line="57"/>
         <source>Pairwise Alignment</source>
         <translation>Pairwise Alignment</translation>
     </message>
@@ -1445,9 +1445,9 @@ Double-click to collapse the branch</translation>
         <translation>Statistics</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.cpp" line="36"/>
-        <location filename="../src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.cpp" line="77"/>
-        <location filename="../src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.cpp" line="119"/>
+        <location filename="../src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.cpp" line="66"/>
+        <location filename="../src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.cpp" line="107"/>
+        <location filename="../src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.cpp" line="139"/>
         <source>Tree Settings</source>
         <translation>Tree Settings</translation>
     </message>
