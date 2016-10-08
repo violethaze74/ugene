@@ -23,17 +23,11 @@
 #define _U2_WINDOW_STEP_SELECTOR_WIDGET_
 
 #include <U2Core/U2Region.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDialog>
-#include <QtGui/QSpinBox>
-#include <QtGui/QDoubleSpinBox>
-#include <QtGui/QGroupBox>
-#else
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGroupBox>
-#endif
+#include <QtWidgets/QFormLayout>
 
 namespace U2 {
 
@@ -45,10 +39,11 @@ public:
 
     int getWindow() const;
     int getStep() const;
-
+    QFormLayout* getFormLayout() const {return formLayout;}
 private:
     QSpinBox*   windowEdit;
     QSpinBox*   stepsPerWindowEdit;
+    QFormLayout* formLayout;
 };
 
 class U2VIEW_EXPORT MinMaxSelectorWidget : public QWidget {
