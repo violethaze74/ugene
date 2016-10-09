@@ -117,7 +117,7 @@ void RegionSelector::initLayout() {
     startEdit->setAlignment(Qt::AlignRight);
 
     endEdit = new RegionLineEdit(this, tr("Set maximum"), maxLen);
-    endEdit->setValidator(new QIntValidator(1, maxLen, startEdit));
+    endEdit->setValidator(new QIntValidator(1, maxLen, endEdit));
     endEdit->setMinimumWidth(w);
     endEdit->setAlignment(Qt::AlignRight);
 
@@ -165,8 +165,7 @@ void RegionSelector::initLayout() {
 //! only for empty field highlight
 void RegionLineEdit::focusOutEvent ( QFocusEvent * event) {
     bool ok = false;
-    int value = text().toInt(&ok);
-    Q_UNUSED(value);
+    text().toInt(&ok);
     if (!ok) {
         QPalette p = palette();
         p.setColor(QPalette::Base, QColor(255,200,200));//pink color
