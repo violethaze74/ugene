@@ -50,9 +50,6 @@ signals:
 private:
     virtual void mousePressEvent(QMouseEvent*);
 
-    static const QString SHOW_ALL_ANNOT_TYPES;
-    static const QString SHOW_ANNOT_TYPES_FOR_SEQ;
-
     bool showAllIsSelected;
 };
 

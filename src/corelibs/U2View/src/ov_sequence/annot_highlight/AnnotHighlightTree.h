@@ -85,10 +85,6 @@ private:
     virtual void insertTopLevelItem(int index, QTreeWidgetItem* item) { QTreeWidget::insertTopLevelItem(index, item); }
     virtual void insertTopLevelItems(int index,  const QList<QTreeWidgetItem *>& items) { QTreeWidget::insertTopLevelItems(index, items); }
 
-    /** Columns names */
-    static const QString HEADER_ANNOT_NAMES;
-    static const QString HEADER_COLORS;
-
     /** Size of the tree elements */
     static const int ANNOT_COLUMN_WIDTH;
     static const int COLOR_COLUMN_WIDTH;

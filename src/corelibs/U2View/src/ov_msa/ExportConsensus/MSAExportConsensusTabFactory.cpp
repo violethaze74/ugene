@@ -33,7 +33,6 @@ namespace U2 {
 
 const QString MSAExportConsensusFactoryTab::GROUP_ID = "OP_EXPORT_CONSENSUS";
 const QString MSAExportConsensusFactoryTab::GROUP_ICON_STR = ":core/images/consensus.png";
-const QString MSAExportConsensusFactoryTab::GROUP_TITLE = QObject::tr("Export Consensus");
 const QString MSAExportConsensusFactoryTab::GROUP_DOC_PAGE = "18220417";
 
 MSAExportConsensusFactoryTab::MSAExportConsensusFactoryTab() {
@@ -55,7 +54,7 @@ QWidget * MSAExportConsensusFactoryTab::createWidget(GObjectView* objView) {
 }
 
 OPGroupParameters MSAExportConsensusFactoryTab::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), GROUP_TITLE, GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Export Consensus"), GROUP_DOC_PAGE);
 }
 
 } // namespace U2

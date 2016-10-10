@@ -37,14 +37,12 @@
 
 namespace U2 {
 
-const QString ShowAllAnnotTypesLabel::SHOW_ALL_ANNOT_TYPES = QObject::tr("Show all annotation names");
-const QString ShowAllAnnotTypesLabel::SHOW_ANNOT_TYPES_FOR_SEQ = QObject::tr("Show names for the sequence only");
 
 ShowAllAnnotTypesLabel::ShowAllAnnotTypesLabel()
 {
     // By default, show only types for the sequence
     showAllIsSelected = false;
-    setText(SHOW_ALL_ANNOT_TYPES);
+    setText(QObject::tr("Show all annotation names"));
 
     setStyleSheet(
         "text-decoration: underline;"
@@ -58,11 +56,11 @@ void ShowAllAnnotTypesLabel::mousePressEvent(QMouseEvent* event)
     Q_UNUSED(event);
     if (showAllIsSelected) {
         showAllIsSelected = false;
-        setText(SHOW_ALL_ANNOT_TYPES);
+        setText(QObject::tr("Show all annotation names"));
     }
     else {
         showAllIsSelected = true;
-        setText(SHOW_ANNOT_TYPES_FOR_SEQ);
+        setText(QObject::tr("Show names for the sequence only"));
     }
 
     emit si_showAllStateChanged();

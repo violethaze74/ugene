@@ -392,10 +392,12 @@ p, li { white-space: pre-wrap; }
         <translation>Workflow ports</translation>
     </message>
     <message>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="84"/>
         <source>Slot</source>
         <translation>Slot</translation>
     </message>
     <message>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="89"/>
         <source>Alias</source>
         <translation>Alias</translation>
     </message>
@@ -5545,36 +5547,36 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::Workflow::PortAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="127"/>
+        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="126"/>
         <source>Input</source>
         <translation>Input</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="129"/>
+        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="128"/>
         <source>Output</source>
         <translation>Output</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="246"/>
-        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="253"/>
-        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="269"/>
+        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="238"/>
+        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="245"/>
+        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="261"/>
         <source>Workflow Designer</source>
         <translation>Workflow Designer</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="247"/>
+        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="239"/>
         <source>There is a port with some aliased slots but without alias name:
 %1</source>
         <translation>There is a port with some aliased slots but without alias name:
 %1</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="254"/>
+        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="246"/>
         <source>Slot aliases of one port must be different!</source>
         <translation>Slot aliases of one port must be different!</translation>
     </message>
     <message>
-        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="270"/>
+        <location filename="../src/PortAliasesConfigurationDialog.cpp" line="262"/>
         <source>Port aliases must be different! Rename one of ports:
 %1 or %2</source>
         <translation>Port aliases must be different! Rename one of ports:
