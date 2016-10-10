@@ -50,7 +50,7 @@ public:
     static const QString SCAFFOLDS_NAME;
 
 private:
-    Task *assemblyTask;
+    ExternalToolRunTask *assemblyTask;
 
 private:
     void writeYamlReads();
