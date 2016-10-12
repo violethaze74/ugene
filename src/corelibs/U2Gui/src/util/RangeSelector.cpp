@@ -81,7 +81,7 @@ void RangeSelector::init() {
     connect(startEdit, SIGNAL(returnPressed()), SLOT(sl_onReturnPressed()));
 
     endEdit = new QLineEdit(this);
-    endEdit->setValidator(new QIntValidator(1, len, startEdit));
+    endEdit->setValidator(new QIntValidator(1, len, endEdit));
     if (dialog == NULL) {
         endEdit->setFixedWidth(w);
     } else {

@@ -54,7 +54,6 @@ private slots:
 private:
     SchemaAliasesCfgDlgModel    model;
     QMap<int, ActorId>          procListMap; // pairs (row, actorId)
-    int                         procNameMaxSz;
 
 }; // SchemaAliasesConfigurationDialogImpl
 
