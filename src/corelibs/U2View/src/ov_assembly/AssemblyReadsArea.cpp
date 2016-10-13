@@ -172,8 +172,6 @@ void AssemblyReadsArea::createMenu() {
     connect(optimizeRenderAction, SIGNAL(toggled(bool)), SLOT(sl_onOptimizeRendering(bool)));
 }
 
-static const QString BIND_HERE(QObject::tr("Lock here"));
-
 QMenu* AssemblyReadsArea::createShadowingMenu() {
     QMenu *shadowingMenu = new QMenu(tr("Reads shadowing"));
 
@@ -185,7 +183,7 @@ QMenu* AssemblyReadsArea::createShadowingMenu() {
     shadowingModeCentered->setCheckable(true);
 
     shadowingMenu->addSeparator();
-    shadowingBindHere = shadowingMenu->addAction(BIND_HERE);
+    shadowingBindHere = shadowingMenu->addAction(QObject::tr("Lock here"));
     shadowingBindHere->setDisabled(true);
     connect(shadowingBindHere, SIGNAL(triggered()), this, SLOT(sl_onBindShadowing()));
 
@@ -963,7 +961,7 @@ void AssemblyReadsArea::shadowingMenuSetBind(bool enable) {
         shadowingJump->setEnabled(true);
     }
     else {
-        shadowingBindHere->setText(BIND_HERE);
+        shadowingBindHere->setText(QObject::tr("Lock here"));
         shadowingBindHere->setCheckable(false);
         shadowingBindHere->setChecked(false);
         shadowingJump->setEnabled(false);

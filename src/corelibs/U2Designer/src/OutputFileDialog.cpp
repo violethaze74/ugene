@@ -37,7 +37,6 @@
 
 namespace U2 {
 
-static const QString OUT_DIR = QObject::tr("Workflow-run output");
 static const QString BAD_CHARS = "\\*\\?\\|\\\"\\:";
 
 OutputFileDialog::OutputFileDialog(RunFileSystem *_rfs, bool _saveDir, CompletionFiller *filler, QWidget *parent)
@@ -168,7 +167,7 @@ void OutputFileDialog::updateSaveButton() {
     nameEdit->setToolTip(path);
     QString dir = selectedPath();
     if (dir.isEmpty()) {
-        dir = OUT_DIR;
+        dir = QObject::tr("Workflow-run output");
     } else {
         dir += "/";
     }
@@ -215,7 +214,7 @@ CreateDirectoryDialog::CreateDirectoryDialog(RunFileSystem *_rfs, const QString 
     cancelButton->setText(tr("Cancel"));
 
     if (parentDir.isEmpty()) {
-        dirLabel->setText(OUT_DIR);
+        dirLabel->setText(QObject::tr("Workflow-run output"));
     } else {
         parentDir += "/";
         dirLabel->setText(parentDir);

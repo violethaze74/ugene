@@ -257,16 +257,14 @@ QString CreateAnnotationWidgetController::validate() {
         return tr("Illegal group name");
     }
 
-    static const QString INVALID_LOCATION = tr("Invalid location! Location must be in GenBank format.\nSimple examples:\n1..10\njoin(1..10,15..45)\ncomplement(5..15)");
-
     if (!model.hideLocation && model.data->location->isEmpty()) {
         w->focusLocation();
-        return INVALID_LOCATION;
+        return tr("Invalid location! Location must be in GenBank format.\nSimple examples:\n1..10\njoin(1..10,15..45)\ncomplement(5..15)");
     }
     if (!model.hideLocation){
         foreach (const U2Region &reg, model.data->getRegions()) {
             if (reg.endPos() > model.sequenceLen || reg.startPos < 0 || reg.endPos() < reg.startPos) {
-                return INVALID_LOCATION;
+                return tr("Invalid location! Location must be in GenBank format.\nSimple examples:\n1..10\njoin(1..10,15..45)\ncomplement(5..15)");
             }
         }
     }
