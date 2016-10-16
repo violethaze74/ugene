@@ -236,32 +236,32 @@
 <context>
     <name>U2::LocalWorkflow::CollocationPrompter</name>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="158"/>
+        <location filename="../src/CollocationWorker.cpp" line="157"/>
         <source> sequence from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>последовательности из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="161"/>
+        <location filename="../src/CollocationWorker.cpp" line="160"/>
         <source> set of annotations from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>набора аннотаций из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="168"/>
+        <location filename="../src/CollocationWorker.cpp" line="167"/>
         <source>For each %1 and %2,</source>
         <translation>Для каждых %1 и %2,</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="170"/>
+        <location filename="../src/CollocationWorker.cpp" line="169"/>
         <source>For each %1%2,</source>
         <translation>Для каждого %1%2,</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="186"/>
+        <location filename="../src/CollocationWorker.cpp" line="185"/>
         <source> Annotations themselves may not span beyond the region.</source>
         <translation>целиком.</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="190"/>
+        <location filename="../src/CollocationWorker.cpp" line="189"/>
         <source>%1 look if &lt;u&gt;%2&lt;/u&gt; annotations appear collocated within same region of length &lt;u&gt;%3&lt;/u&gt;.%4&lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%5&lt;/u&gt;.</source>
         <translation>%1 искать группы аннотаций &lt;u&gt;%2&lt;/u&gt; расположенные &lt;u&gt;%4&lt;/u&gt; внутри регионов не длиннее &lt;u&gt;%3&lt;/u&gt;.&lt;br&gt;Выдать список найденных групп в виде аннотаций &quot;&lt;u&gt;%5&lt;/u&gt;&quot;.</translation>
     </message>
@@ -274,72 +274,72 @@
         <translation>Найденные регионы</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="102"/>
+        <location filename="../src/CollocationWorker.cpp" line="140"/>
         <source>Create new annotations</source>
         <translation>Создать новые аннотации</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="104"/>
+        <location filename="../src/CollocationWorker.cpp" line="103"/>
         <source>Result annotation</source>
         <translation>Имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="105"/>
+        <location filename="../src/CollocationWorker.cpp" line="104"/>
         <source>Name of the result annotations to mark found collocations.</source>
         <translation>Имя результирующих аннотаций отмечающих найденные группы.</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="106"/>
+        <location filename="../src/CollocationWorker.cpp" line="105"/>
         <source>Group of annotations</source>
         <translation>Аннотации в группе</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="108"/>
+        <location filename="../src/CollocationWorker.cpp" line="107"/>
         <source>Region size</source>
         <translation>Размер региона</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="109"/>
+        <location filename="../src/CollocationWorker.cpp" line="108"/>
         <source>Effectively this is the maximum allowed distance between the interesting annotations in a group.</source>
         <translation>Фактически, это максимальная допустимая дистанция между аннотациями в одной группе.</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="110"/>
+        <location filename="../src/CollocationWorker.cpp" line="109"/>
         <source>Must fit into region</source>
         <translation>Компактные группы</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="111"/>
+        <location filename="../src/CollocationWorker.cpp" line="110"/>
         <source>Whether the interesting annotations should entirely fit into the specified region to form a group.</source>
         <translation>Аннотации в группе должны целиком входить в указанный регион - т.е. дистанция в группе считается по внешним границам аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="112"/>
+        <location filename="../src/CollocationWorker.cpp" line="111"/>
         <source>Result type</source>
         <translation>Тип аннотации</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="113"/>
+        <location filename="../src/CollocationWorker.cpp" line="112"/>
         <source>Copy original annotations or annotate found regions with new ones.</source>
         <translation>Копировать оригинальные аннотации или аннотировать найденные регионы новыми.</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="114"/>
+        <location filename="../src/CollocationWorker.cpp" line="113"/>
         <source>Include boundaries</source>
         <translation>Включить границы</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="115"/>
+        <location filename="../src/CollocationWorker.cpp" line="114"/>
         <source>Include most left and most right boundary annotations regions into result or exclude them.</source>
         <translation>Включить границы региона в аннотацию или исключить их.</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="130"/>
+        <location filename="../src/CollocationWorker.cpp" line="129"/>
         <source>Collocation Search</source>
         <translation>Поиск групп аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="140"/>
+        <location filename="../src/CollocationWorker.cpp" line="139"/>
         <source>Copy original annotations</source>
         <translation type="unfinished"></translation>
     </message>
@@ -354,12 +354,12 @@
         <translation>Список аннотаций отмечающих найденные группы аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="107"/>
+        <location filename="../src/CollocationWorker.cpp" line="106"/>
         <source>A list of annotation names to search. Found regions will contain all the named annotations.</source>
         <translation>Список имён интересующих аннотаций в группе. Ищутся регионы содержащие все указанные аннотации.</translation>
     </message>
     <message>
-        <location filename="../src/CollocationWorker.cpp" line="131"/>
+        <location filename="../src/CollocationWorker.cpp" line="130"/>
         <source>Finds groups of specified annotations in each supplied set of annotations, stores found regions as annotations.</source>
         <translation>Поиск сгруппированных аннотаций. Ищутся регионы последовательности, содержащие все аннотации из заданного списка, расположенные друг от друга на расстоянии не более заданного.</translation>
     </message>

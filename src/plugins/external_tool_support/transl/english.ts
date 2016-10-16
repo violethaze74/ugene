@@ -9905,12 +9905,12 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::SpadesPrompter</name>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="341"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="342"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="344"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="345"/>
         <source>Assemble reads from &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation>Assemble reads from &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -9918,127 +9918,127 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::SpadesWorker</name>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="215"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="216"/>
         <source>SPAdes cannot recognize read pairs from the same file. Please, perform demultiplexing first.</source>
         <translation>SPAdes cannot recognize read pairs from the same file. Please, perform demultiplexing first.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="229"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="230"/>
         <source>URL of a file with reads</source>
         <translation>URL of a file with reads</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="230"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="231"/>
         <source>Input reads to be assembled.</source>
         <translation>Input reads to be assembled.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="232"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="233"/>
         <source>URL of a file with right pair reads</source>
         <translation>URL of a file with right pair reads</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="233"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="234"/>
         <source>Input right pair reads to be assembled.</source>
         <translation>Input right pair reads to be assembled.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="239"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="240"/>
         <source>SPAdes data</source>
         <translation>SPAdes data</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="240"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="241"/>
         <source>Input reads to be assembled with Spades.</source>
         <translation>Input reads to be assembled with Spades.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="248"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="249"/>
         <source>Scaffolds URL</source>
         <translation>Scaffolds URL</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="249"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="250"/>
         <source>Output scaffolds URL.</source>
         <translation>Output scaffolds URL.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="252"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="253"/>
         <source>SPAdes output data</source>
         <translation>SPAdes output data</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="253"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="254"/>
         <source>Output assembly files.</source>
         <translation>Output assembly files.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="264"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="265"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="265"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="266"/>
         <source>Directory to save Spades output files.</source>
         <translation>Directory to save Spades output files.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="268"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="269"/>
         <source>Number of threads</source>
         <translation>Number of threads</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="269"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="270"/>
         <source>Number of threads (-t).</source>
         <translation>Number of threads (-t).</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="272"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="273"/>
         <source>Memory limit (GB)</source>
         <translation>Memory limit (GB)</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="273"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="274"/>
         <source>Memory limit (-m).</source>
         <translation>Memory limit (-m).</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="276"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="277"/>
         <source>Dataset type</source>
         <translation>Dataset type</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="277"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="278"/>
         <source>Input dataset type.</source>
         <translation>Input dataset type.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="280"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="281"/>
         <source>Running mode</source>
         <translation>Running mode</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="281"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="282"/>
         <source>Running mode.</source>
         <translation>Running mode.</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="284"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="285"/>
         <source>K-mers</source>
         <translation>K-mers</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="285"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="286"/>
         <source>k-mer sizes (-k).</source>
         <translation>k-mer sizes (-k).</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="320"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="321"/>
         <source>Assemble genomes with SPAdes</source>
         <translation>Assemble genomes with SPAdes</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesWorker.cpp" line="321"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="322"/>
         <source>Performes assembly of input short reads.</source>
         <translation>Performes assembly of input short reads.</translation>
     </message>
@@ -11809,7 +11809,7 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     </message>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="236"/>
-        <location filename="../src/spades/SpadesWorker.cpp" line="189"/>
+        <location filename="../src/spades/SpadesWorker.cpp" line="190"/>
         <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="260"/>
         <source>The slot must be not empty: &apos;%1&apos;</source>
         <translation type="unfinished">The slot must be not empty: &apos;%1&apos;</translation>

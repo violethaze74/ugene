@@ -521,7 +521,8 @@ this merge sequence slot:</source>
         <translation>Примерная оценка длительности выполнения схемы </translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="40"/>
+        <location filename="../src/OutputFileDialog.cpp" line="170"/>
+        <location filename="../src/OutputFileDialog.cpp" line="217"/>
         <source>Workflow-run output</source>
         <translation>Выходная директория схемы</translation>
     </message>
@@ -724,12 +725,12 @@ bowtie index file</source>
 <context>
     <name>U2::CreateDirectoryDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="214"/>
+        <location filename="../src/OutputFileDialog.cpp" line="213"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="215"/>
+        <location filename="../src/OutputFileDialog.cpp" line="214"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1125,22 +1126,22 @@ bowtie index file</source>
 <context>
     <name>U2::OutputFileDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="52"/>
+        <location filename="../src/OutputFileDialog.cpp" line="51"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="53"/>
+        <location filename="../src/OutputFileDialog.cpp" line="52"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="57"/>
+        <location filename="../src/OutputFileDialog.cpp" line="56"/>
         <source>Save a directory</source>
         <translation>Сохранить директорию</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="59"/>
+        <location filename="../src/OutputFileDialog.cpp" line="58"/>
         <source>Save a file</source>
         <translation>Сохранить файл</translation>
     </message>

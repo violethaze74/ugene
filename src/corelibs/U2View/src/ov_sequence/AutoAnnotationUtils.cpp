@@ -43,7 +43,7 @@ const QString AutoAnnotationsADVAction::ACTION_NAME("AutoAnnotationUpdateAction"
 
 AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
                                                    AutoAnnotationObject* obj)
-: ADVSequenceWidgetAction(ACTION_NAME, tr("Automatic Annotations Highlighting")), aaObj(obj), updatesCount(0)
+: ADVSequenceWidgetAction(ACTION_NAME, tr("Automatic annotations highlighting")), aaObj(obj), updatesCount(0)
 {
     seqWidget = v;
     addToBar = true;

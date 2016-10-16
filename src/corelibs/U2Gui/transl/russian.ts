@@ -1753,7 +1753,8 @@ To append data to existing file press &apos;Append&apos;.</source>
         <translation>Нелегальные символы в имени группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="260"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="262"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="267"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1766,7 +1767,7 @@ join(1..10,15..45)
 complement(5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="354"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="352"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>

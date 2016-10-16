@@ -606,7 +606,7 @@ p, li { white-space: pre-wrap; }
  Please construct molecule from available fragments.</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="287"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="283"/>
         <source>Set new molecule file name</source>
         <translation>Set new molecule file name</translation>
     </message>
@@ -620,42 +620,45 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="195"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="208"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="217"/>
         <source>Blunt</source>
         <translation>Blunt</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="196"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="206"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="215"/>
         <source>Fwd</source>
         <translation>Fwd</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="197"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="206"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="215"/>
         <source>Rev</source>
         <translation>Rev</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="214"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="210"/>
         <source>Left end</source>
         <translation>Left end</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="223"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="219"/>
         <source>Right end</source>
         <translation>Right end</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="225"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="221"/>
         <source>yes</source>
         <translation>yes</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="225"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="221"/>
         <source>no</source>
         <translation>no</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="226"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="222"/>
         <source>Make fragment reverse complement</source>
         <translation>Make fragment reverse complement</translation>
     </message>
