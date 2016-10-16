@@ -221,7 +221,7 @@ void ExportImageDialog::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultDomain = IMAGE_DIR;
     config.defaultFileName = dirHelper.dir + "/" + GUrlUtils::fixFileName(origFilename);
-    config.defaultFormatId = "png";
+    config.defaultFormatId = "PNG";
     config.fileDialogButton = ui->browseFileButton;
     config.fileNameEdit = ui->fileNameEdit;
     config.formatCombo = ui->formatsBox;
@@ -232,7 +232,7 @@ void ExportImageDialog::initSaveController() {
     SaveDocumentController::SimpleFormatsInfo formatsInfo;
     QStringList formats = getFormats();
     foreach (const QString &format, formats) {
-        formatsInfo.addFormat(format, format, QStringList() << format);
+        formatsInfo.addFormat(format, QStringList() << format.toLower());
     }
 
     saveController = new SaveDocumentController(config, formatsInfo, this);
@@ -253,10 +253,22 @@ QStringList ExportImageDialog::getFormats() {
 QStringList ExportImageDialog::getRasterFormats() {
     QStringList result;
     CHECK(exportController->isRasterFormatsEnabled(), result);
-    QList<QByteArray> list = QImageWriter::supportedImageFormats();
-    list.removeAll("ico");
-    foreach (const QByteArray &format, list) {
-        result << format;
+    QList<QByteArray> qtList = QImageWriter::supportedImageFormats();
+
+    if (qtList.contains("png")) {
+        result.append("PNG");
+    }
+    if (qtList.contains("bmp")) {
+        result.append("BMP");
+    }
+    if (qtList.contains("gif")) {
+        result.append("GIF");
+    }
+    if (qtList.contains("jpg") || qtList.contains("jpeg")) {
+        result.append("JPG");
+    }
+    if (qtList.contains("tif") || qtList.contains("tiff")) {
+        result.append("TIFF");
     }
     return result;
 }
@@ -281,7 +293,8 @@ bool ExportImageDialog::isVectorGraphicFormat( const QString &formatName ) {
 }
 
 bool ExportImageDialog::isLossyFormat(const QString &formatName) {
-    return ( "jpeg" == formatName ) || ( "jpg" == formatName );
+    QString lcFormat = formatName.toLower();
+    return lcFormat == "jpeg" || lcFormat == "jpg";
 }
 
 } // namespace
