@@ -69,17 +69,35 @@ void WelcomePageWidget::updateRecent(const QStringList &recentProjects, const QS
 #endif
 }
 
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+void addRecentItem(const QString &id, const QString & file, QWebEnginePage *page) {
+    if (id.contains("recent_files")) {
+            page->runJavaScript(QString("addRecentItem(\"recentFilesBlock\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
+    } else if (id.contains("recent_projects")) {
+            page->runJavaScript(QString("addRecentItem(\"recentProjectsBlock\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
+    } else {
+        SAFE_POINT(false, "Unknown containerId", );
+    }
+}
+
+void addNoItems(const QString &id, const QString & message, QWebEnginePage *page) {
+    if (id.contains("recent_files")) {
+        page->runJavaScript(QString("addRecentItem(\"recentFilesBlock\", \"%1\", \"\")").arg(message));
+    } else if (id.contains("recent_projects")) {
+        page->runJavaScript(QString("addRecentItem(\"recentProjectsBlock\", \"%1\", \"\")").arg(message));
+    } else {
+        SAFE_POINT(false, "Unknown containerId", );
+    }
+}
+#endif
+
 void WelcomePageWidget::updateRecentFilesContainer(const QString &id, const QStringList &files, const QString &message) {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     static const QString divTemplate = "<div id=\"%1\" class=\"recent_items_content\">%2</div>";
     static const QString linkTemplate = "<a class=\"recentLink\" href=\"#\" onclick=\"ugene.openFile('%1')\" title=\"%1\">- %2</a>";
-#if (QT_VERSION < 0x050400) //Qt 5.7
-    QWebElement doc = page()->mainFrame()->documentElement();
-    QWebElement recentFilesDiv = doc.findFirst("#" + id);
-    SAFE_POINT(!recentFilesDiv.isNull(), "No recent files container", );
-    recentFilesDiv.removeAllChildren();
 
     QStringList links;
-    foreach (const QString &file, files.mid(0, MAX_RECENT)) {
+    foreach(const QString &file, files.mid(0, MAX_RECENT)) {
         if (file.isEmpty()) {
             continue;
         }
@@ -87,15 +105,35 @@ void WelcomePageWidget::updateRecentFilesContainer(const QString &id, const QStr
     }
     QString result = message;
     if (!links.isEmpty()) {
-        result = links.join("\n");
+        //result = links.join(" ");
+        result = links.first();
     }
+    QWebElement doc = page()->mainFrame()->documentElement();
+    QWebElement recentFilesDiv = doc.findFirst("#" + id);
+    SAFE_POINT(!recentFilesDiv.isNull(), "No recent files container", );
+    recentFilesDiv.removeAllChildren();
     recentFilesDiv.setOuterXml(divTemplate.arg(id).arg(result));
+#else
+    bool emptyList = true;
+    foreach(const QString &file, files.mid(0, MAX_RECENT)) {
+        if (file.isEmpty()) {
+            continue;
+        }
+        emptyList = false;
+        addRecentItem(id, file, page());
+    }
+
+    if (emptyList) {
+        addNoItems(id, message, page());
+    }
 #endif
 }
 
 void WelcomePageWidget::addController() {
 #if (QT_VERSION < 0x050400) //Qt 5.7
     page()->mainFrame()->addToJavaScriptWindowObject("ugene", controller);
+#else
+
 #endif
     controller->onPageLoaded();
 }
