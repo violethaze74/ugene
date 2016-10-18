@@ -68,6 +68,8 @@ void MultilingualHtmlView::sl_loaded(bool ok) {
     for (int i = 0; i < otherLangsCollection.count(); i++) {
         otherLangsCollection[i].setStyleProperty("display", "none");
     }
+#else
+    page()->runJavaScript(QString("setVisibilityStyle(\"%1\")").arg(lang));
 #endif
     emit si_loaded(ok);
 }
@@ -78,8 +80,28 @@ void MultilingualHtmlView::sl_linkActivated(const QUrl &url) {
 
 void MultilingualHtmlView::loadPage(const QString& htmlPath) {
     connect(this, SIGNAL(loadFinished(bool)), this, SLOT(sl_loaded(bool)));
+#if (QT_VERSION < 0x050400) //Qt 5.7
     connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(sl_linkActivated(QUrl)));
     load(QUrl(htmlPath));
+#else
+    MultilingualWebEnginePage *page = new MultilingualWebEnginePage();
+    page->setParent(this);
+    page->load(QUrl(htmlPath));
+    setPage(page);
+#endif
 }
 
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+
+MultilingualWebEnginePage::MultilingualWebEnginePage() : QWebEnginePage() {
+
+}
+
+bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame) {
+    if (type == NavigationTypeLinkClicked) {
+    }    
+    return true;
+}
+
+#endif
 } // namespace

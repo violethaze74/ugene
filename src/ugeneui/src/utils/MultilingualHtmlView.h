@@ -34,6 +34,14 @@ namespace U2 {
 #if (QT_VERSION < 0x050400) //Qt 5.7
 class MultilingualHtmlView : public QWebView {
 #else
+
+class MultilingualWebEnginePage : public QWebEnginePage {
+public:
+    MultilingualWebEnginePage();
+protected:
+    virtual bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
+};
+
 class MultilingualHtmlView : public QWebEngineView {
 #endif
     Q_OBJECT
