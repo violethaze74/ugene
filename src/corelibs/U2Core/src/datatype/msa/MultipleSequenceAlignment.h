@@ -39,7 +39,6 @@ public:
     MultipleSequenceAlignment(const QString &name = QString(),
                               const DNAAlphabet *alphabet = NULL,
                               const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
-    MultipleSequenceAlignment(const MultipleSequenceAlignmentData &msaData);
     MultipleSequenceAlignment(MultipleSequenceAlignmentData *msaData);
 
     virtual ~MultipleSequenceAlignment();
@@ -71,7 +70,9 @@ Derived MultipleSequenceAlignment::dynamicCast() const {
  * is expected to keep the conformance of the data and the alphabet.
  */
 class U2CORE_EXPORT MultipleSequenceAlignmentData {
-public:
+    friend class MultipleSequenceAlignment;
+
+protected:
     /**
      * Creates a new alignment.
      * The name must be provided if this is not default alignment.
@@ -81,6 +82,7 @@ public:
                                   const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
     MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData &msaData);
 
+public:
     MultipleSequenceAlignmentData & operator=(const MultipleSequenceAlignment &msa);
     MultipleSequenceAlignmentData & operator=(const MultipleSequenceAlignmentData &msaData);
 
@@ -221,7 +223,7 @@ public:
 
     U2MsaListGapModel getGapModel() const;
 
-    void setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel);
+    virtual void setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel);
 
     /** Updates row ID of the row at 'rowIndex' position */
     void setRowId(int rowNumber, qint64 rowId);
@@ -291,8 +293,8 @@ public:
     /**
      * Compares two alignments: lengths, alphabets, rows and infos (that include names).
      */
-    bool operator==(const MultipleSequenceAlignmentData &ma) const;
-    bool operator!=(const MultipleSequenceAlignmentData &ma) const;
+    bool operator==(const MultipleSequenceAlignmentData &msaData) const;
+    bool operator!=(const MultipleSequenceAlignmentData &msaData) const;
 
     /** Checks model consistency */
     void check() const;

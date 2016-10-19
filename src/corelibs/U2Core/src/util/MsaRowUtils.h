@@ -28,6 +28,8 @@
 namespace U2 {
 
 class DNASequence;
+class U2OpStatus;
+class U2Region;
 
 class U2CORE_EXPORT MsaRowUtils {
 public:
@@ -41,8 +43,11 @@ public:
      * Otherwise if true == 'allowGapInPos' and the gap symbol is located in 'pos' then the method returns
      * the position of a non-gap character left-most to the 'pos'.
      */
-    static int getUngappedPosition(const U2MsaRowGapModel &gaps, int dataLength, int pos, bool allowGapInPos = false);
+    static qint64 getUngappedPosition(const U2MsaRowGapModel &gaps, qint64 dataLength, qint64 position, bool allowGapInPos = false);
     static int getCoreStart(const U2MsaRowGapModel &gaps);
+
+    static void insertGaps(U2OpStatus &os, U2MsaRowGapModel &gaps, int rowLengthWithoutTrailing, int position, int count);
+    static void removeGaps(U2OpStatus &os, U2MsaRowGapModel &gaps, int rowLengthWithoutTrailing, int position, int count);
 
     /**
      * Add "offset" of gaps to the beginning of the row
@@ -51,8 +56,16 @@ public:
     static void addOffsetToGapModel(U2MsaRowGapModel &gapModel, int offset);
     static void shiftGapModel(U2MsaRowGapModel &gapModel, int shiftSize);
     static bool isGap(int dataLength, const U2MsaRowGapModel &gapModel, int position);
-    static void chopGapModel(U2MsaRowGapModel &gapModel, int maxLength);
+    static void chopGapModel(U2MsaRowGapModel &gapModel, qint64 maxLength);
+    static void chopGapModel(U2MsaRowGapModel &gapModel, const U2Region &boundRegion);  // gaps will be shifted
     static QByteArray joinCharsAndGaps(const DNASequence &sequence, const U2MsaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps);
+    static U2MsaRowGapModel insertGapModel(const U2MsaRowGapModel &firstGapModel, const U2MsaRowGapModel &secondGapModel);
+    static void mergeConsecutiveGaps(U2MsaRowGapModel &gapModel);
+    static void getGapModelsDifference(const U2MsaRowGapModel &firstGapModel,
+                                       const U2MsaRowGapModel &secondGapModel,
+                                       U2MsaRowGapModel &commonPart,
+                                       U2MsaRowGapModel &firstDifference,
+                                       U2MsaRowGapModel &secondDifference);
 };
 
 } // U2

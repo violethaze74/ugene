@@ -23,6 +23,7 @@
 #define _U2_MSA_H_
 
 #include <U2Core/U2Alphabet.h>
+#include <U2Core/U2Region.h>
 #include <U2Core/U2Type.h>
 
 namespace U2 {
@@ -42,11 +43,15 @@ public:
     U2MsaGap();
     U2MsaGap(qint64 off, qint64 gap);
 
+    qint64 endPos() const;    // not inclusive
+
     bool isValid() const;
 
     bool operator==(const U2MsaGap &g) const;
 
     static bool lessThan(const U2MsaGap &first, const U2MsaGap &second);
+
+    U2MsaGap intersect(const U2MsaGap &anotherGap) const;
 
     /** Offset of the gap in sequence*/
     qint64 offset;

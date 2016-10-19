@@ -24,8 +24,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/DNATranslationImpl.h \
            src/datatype/FeatureColors.h \
            src/datatype/Matrix44.h \
-           src/datatype/msa/MultipleChromatogramAlignment.h \
-           src/datatype/msa/MultipleChromatogramAlignmentRow.h \
            src/datatype/msa/MultipleSequenceAlignment.h \
            src/datatype/msa/MultipleSequenceAlignmentRow.h \
            src/datatype/PFMatrix.h \
@@ -247,7 +245,14 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
     src/datatype/U2Msa.h \
     src/datatype/msa/MultipleSequenceAlignmentInfo.h \
     src/datatype/U2Mca.h \
-    src/util/DnaChromatogramUtils.h
+    src/util/DnaChromatogramUtils.h \
+    src/datatype/msa/GappedSequenceWithChromatogram.h \
+    src/datatype/msa/MultipleChromatogramAlignmentRowOld.h \
+    src/datatype/msa/MultipleChromatogramAlignmentRow.h \
+    src/datatype/msa/MultipleChromatogramAlignmentOld.h \
+    src/datatype/msa/MultipleChromatogramAlignment.h \
+    src/gobjects/MultipleChromatogramAlignmentObject.h \
+    src/dbi/U2McaDbi.h
 
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
@@ -271,8 +276,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/DNATranslationImpl.cpp \
            src/datatype/FeatureColors.cpp \
            src/datatype/Matrix44.cpp \
-           src/datatype/msa/MultipleChromatogramAlignmentRow.cpp \
-           src/datatype/msa/MultipleChromatogramAlignment.cpp \
            src/datatype/msa/MultipleSequenceAlignment.cpp \
            src/datatype/msa/MultipleSequenceAlignmentRow.cpp \
            src/datatype/PFMatrix.cpp \
@@ -453,7 +456,15 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/U2VariationUtils.cpp \
     src/datatype/U2Msa.cpp \
     src/datatype/msa/MultipleSequenceAlignmentInfo.cpp \
-    src/util/DnaChromatogramUtils.cpp
+    src/util/DnaChromatogramUtils.cpp \
+    src/datatype/msa/GappedSequenceWithChromatogram.cpp \
+    src/datatype/DNAChromatogram.cpp \
+    src/datatype/msa/MultipleChromatogramAlignmentRowOld.cpp \
+    src/datatype/msa/MultipleChromatogramAlignmentRow.cpp \
+    src/datatype/msa/MultipleChromatogramAlignmentOld.cpp \
+    src/datatype/msa/MultipleChromatogramAlignment.cpp \
+    src/gobjects/MultipleChromatogramAlignmentObject.cpp \
+    src/dbi/U2McaDbi.cpp
 
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts
