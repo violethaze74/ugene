@@ -2698,7 +2698,7 @@ Uncheck to get the maximum likelihood estimate.</source>
     <message>
         <location filename="../src/cufflinks/GffreadWorker.cpp" line="219"/>
         <source>Extract transcript sequences from the genomic sequence(s) with gffread.</source>
-        <translation>Извлекает транскрипционные последовательности из геномных последовательностей при помощи gffread.</translation>
+        <translation>извлекает последовательности транскриптов из геномных последовательностей при помощи gffread.</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="76"/>
@@ -7697,12 +7697,12 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="141"/>
         <source>Multi read correct</source>
-        <translation>Регулировка множественных ридов</translation>
+        <translation>Корректировка множественно выровненных ридов</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="142"/>
         <source>Do an initial estimation procedure to more accurately weight reads mapping to multiple locations in the genome.</source>
-        <translation>Начальная процедура оценки для более точного отображения веса ридов в нескольких местах в геноме.</translation>
+        <translation>указывает Cufflinks применить процедуру первичной оценки для более качественного присвоения веса ридам, выровенным на разные участки генома.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="146"/>
@@ -7721,8 +7721,8 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="151"/>
-        <source>Ignore all reads that could have come from transcripts in this file. It is recommended to include any annotated rRNA, mitochondrial transcripts other abundant transcripts you wish to ignore in your analysis in this file. Due to variable efficiency of mRNA enrichment methods and rRNA depletion kits, masking these transcripts often improves the overall robustness of transcript abundance estimates.</source>
-        <translation>Игнорирует все риды, которые могли произойти от транскрипций в этом файле.</translation>
+        <source>Ignore all reads that could have come from transcripts in this file. It is recommended to include any annotated rRNA, mitochondrial transcripts or other abundant transcripts you wish to ignore in your analysis in this file. Due to variable efficiency of mRNA enrichment methods and rRNA depletion kits, masking these transcripts often improves the overall robustness of transcript abundance estimates.</source>
+        <translation>игнорирует все риды, которые могли произойти от транскриптов в этом файле. Рекомендуется включить в этот файл любые аннотированные последовательности рРНК, транскрипты митохондриального происхождения и другие транскрипты с высокой экспрессией, которые вы хотите игнорировать в своем анализе. В связи с различной эффективностью методов обогащения мРНК и уменьшения количества рРНК такая маскировка обычно улучшает общее качество оценки обильности транскриптов.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="159"/>
@@ -7919,7 +7919,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="167"/>
-        <source>Ignore all reads that could have come from transcripts in this file. It is recommended to include any annotated rRNA, mitochondrial transcripts other abundant transcripts you wish to ignore in your analysis in this file. Due to variable efficiency of mRNA enrichment methods and rRNA depletion kits, masking these transcripts often improves the overall robustness of transcript abundance estimates.</source>
+        <source>Ignore all reads that could have come from transcripts in this file. It is recommended to include any annotated rRNA, mitochondrial transcripts or other abundant transcripts you wish to ignore in your analysis in this file. Due to variable efficiency of mRNA enrichment methods and rRNA depletion kits, masking these transcripts often improves the overall robustness of transcript abundance estimates.</source>
         <translation>игнорирует все риды, которые могли произойти от транскрипций в этом файле.</translation>
     </message>
     <message>
@@ -7955,12 +7955,12 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="195"/>
         <source>Pre-mRNA fraction</source>
-        <translation>Содержание Pre-mRNA</translation>
+        <translation>Содержание пре-мРНК</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="196"/>
         <source>Some RNA-Seq protocols produce a significant amount of reads that originate from incompletely spliced transcripts, and these reads can confound the assembly of fully spliced mRNAs. Cufflinks uses this parameter to filter out alignments that lie within the intronic intervals implied by the spliced alignments. The minimum depth of coverage in the intronic region covered by the alignment is divided by the number of spliced reads, and if the result is lower than this parameter value, the intronic alignments are ignored.</source>
-        <translation>Некоторые протоколы RNA-Seq производят значительное количество ридов, которые происходят из полностью соединенных транскрипций, и эти риды могут затруднить сборку мРНК. Cufflinks использует этот параметр, чтобы отфильтровать выравнивания, которые лежат в интронных интервалах. Минимальная глубина охвата в интронной области, охватываемой выравниванием разделена количеством ридов, и если результат ниже, чем значения этого параметра, интронные выравнивания игнорируются.</translation>
+        <translation>некоторые протоколы секвенирования РНК производят значительное количество ридов, которые происходят из не полностью сплайсированных транскриптов, и эти риды могут затруднить сборку послностью сплайсированных последовательностей мРНК. Cufflinks использует этот параметр, чтобы отфильтровать выравнивания внутри интронов, границы которых определяются по результатам выравнивания сплайсированных последовательностей. Минимальное покрытие в области интронов, присутствующее в выравнивании, делится на число сплайсированных ридов, и если частное от деления меньше значения параметра, выравнивания в области интронов будут исключены из анализа.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CufflinksWorker.cpp" line="206"/>
@@ -10253,12 +10253,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="183"/>
         <source>Find Splice Junctions with TopHat</source>
-        <translation>Поиск сплайсинга с помощью TopHat</translation>
+        <translation>Поиск сайтов сплайсинга с помощью TopHat</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="184"/>
         <source>TopHat is a fast splice junction mapper for RNA-Seq reads. It aligns RNA-Seq reads to mammalian-sized genomes using the ultra high-throughput short read aligner Bowtie, and then analyzes the mapping results to identify splice junctions between exons.</source>
-        <translation>TopHat является быстрым инструментом для определения сплайсинга для ридов RNA-Seq. TopHat выравнивает RNA-Seq риды используя Bowtie, и потом анализирует результаты для определения сплайсинга между экзонами.</translation>
+        <translation>TopHat является быстрым инструментом для определения сплайсинга по данным секвенирования РНК. TopHat выравнивает риды с помощью Bowtie и затем анализирует результаты выравнивания для определения границ экзонов.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="192"/>
@@ -10288,7 +10288,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="201"/>
         <source>The directory with the Bowtie index for the reference sequence.</source>
-        <translation>Директория с индексом Bowtie для референсной последовательности.</translation>
+        <translation>директория, в которой расположен с индексом Bowtie для референсной последовательности.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="209"/>
@@ -10298,27 +10298,27 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="210"/>
         <source>The basename of the Bowtie index for the reference sequence.</source>
-        <translation>Базовое имя для индекса Bowtie для референсной последовательности.</translation>
+        <translation>базовое имя для индекса Bowtie для референсной последовательности.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="223"/>
         <source>Mate inner distance</source>
-        <translation>Внутренняя дистанция напарника</translation>
+        <translation>Внутренняя дистанция в паре</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="224"/>
         <source>The expected (mean) inner distance between mate pairs.</source>
-        <translation>Ожидаемая внутренняя дистанция между напарниками в паре.</translation>
+        <translation>ожидаемая (средняя) внутренняя дистанция между ридами в паре (mate pair).</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="227"/>
         <source>Mate standard deviation</source>
-        <translation>Стандартное отклонение напарника</translation>
+        <translation>Стандартное отклонение в паре</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="228"/>
         <source>The standard deviation for the distribution on inner distances between mate pairs.</source>
-        <translation>Стандартное отклонение для распределения во внутренних расстояниях между напарниками в паре.</translation>
+        <translation>стандартное отклонение для распределения в внутренних дистанций между ридами в паре (mate pair).</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="231"/>
@@ -10328,27 +10328,27 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="232"/>
         <source>Specifies RNA-Seq protocol.</source>
-        <translation>Задает протокол RNA-Seq.</translation>
+        <translation>задает протокол секвенирования РНК.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="235"/>
         <source>No novel junctions</source>
-        <translation>Нет новых переходов</translation>
+        <translation>Не искать новые сайты сплайсинга</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="236"/>
         <source>Only look for reads across junctions indicated in the supplied GFF or junctions file. This parameter is ignored if &lt;i&gt;Raw junctions&lt;/i&gt; or &lt;i&gt;Known transcript file&lt;/i&gt; is not set.</source>
-        <translation>Нет новых переходов.</translation>
+        <translation>Искать только такие сплайсированные риды, которые соответствуют информации в приложенном файле (GFF или файле с описанием сайтов сплайсинга). Если ни один из этих файлов не указан, параметр будет проигнорирован.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="241"/>
         <source>Raw junctions</source>
-        <translation>Сырые переходы</translation>
+        <translation>Новые сайты сплайсинга</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="242"/>
         <source>The list of raw junctions.</source>
-        <translation>Список сырых переходов.</translation>
+        <translation>список обнаруженных сайтов сплайсинга.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="245"/>
@@ -10398,27 +10398,27 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="273"/>
         <source>Only align the reads to the transcriptome and report only those mappings as genomic mappings.</source>
-        <translation>Выровнять только риды транскриптома и сообщить только отображения как отображения генома.</translation>
+        <translation>выравнивать риды только на транскриптом и выдавать только эти выравнивания при выравнивании на геном.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="277"/>
         <source>Transcriptome max hits</source>
-        <translation>Макс. хитов транскриптома</translation>
+        <translation>Максимальное число выравниваний</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="278"/>
         <source>Maximum number of mappings allowed for a read, when aligned to the transcriptome (any reads found with more than this number of mappings will be discarded).</source>
-        <translation>Максимальное число отображения, разрешенных для рида, когда выровнен на транскриптом.</translation>
+        <translation>максимальное число выравниваний, разрешенных для рида при выравнивании на транскриптом (риды с большим числом выравниваний будут исключены из дальнейшего анализа).</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="283"/>
         <source>Prefilter multihits</source>
-        <translation>Предварительный фильтр мультихитов</translation>
+        <translation>Предварительный фильтр множественных выравниваний</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="284"/>
         <source>When mapping reads on the transcriptome, some repetitive or low complexity reads that would be discarded in the context of the genome may appear to align to the transcript sequences and thus may end up reported as mapped to those genes only. This option directs TopHat to first align the reads to the whole genome in order to determine and exclude such multi-mapped reads (according to the value of the &lt;i&gt;Max multihits&lt;/i&gt; option).</source>
-        <translation>При отображении ридов на транскриптом, некоторые повторяющиеся или простые риды могут появиться для выравнивания транскрипционных последовательностей. При выборе этого варианта TopHat сначала выравнивает риды на весь геном, чтобы определить и исключить риды, которые отображены несколько раз.</translation>
+        <translation>при выравнивании ридов на транскриптом, некоторые повторяющиеся риды или риды, содержащие повторы, могут быть выявлены как выровненные, хотя при выравнивании на геном они были бы отброшены. При выборе этой опции TopHat сначала выравнивает риды на весь геном, чтобы определить и исключить риды, которые выравниваются несколько раз (число выравниваний определяется значением опции).</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="293"/>
@@ -10428,7 +10428,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="294"/>
         <source>The &lt;i&gt;anchor length&lt;/i&gt;. TopHat will report junctions spanned by reads with at least this many bases on each side of the junction. Note that individual spliced alignments may span a junction with fewer than this many bases on one side. However, every junction involved in spliced alignments is supported by at least one read with this many bases on each side.</source>
-        <translation>&lt;i&gt;Длина якоря&lt;/i&gt;. TopHat сообщит переходы, соединенные с ридами.</translation>
+        <translation>&lt;i&gt;длина якоря&lt;/i&gt;. TopHat будет указывать в отчете сайты сплайсинга в том случае, если с каждой стороны от стыка прочитано не менее указанного числа нуклеотидов. В отдельных выравниваниях число нуклеотидов может быть меньше, однако для любого указанного в отчете сайта сплайсинга будет существовать хотя бы одно выравнивание с не менее чем указанным числом нуклеотидов с каждой стороны.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="302"/>
