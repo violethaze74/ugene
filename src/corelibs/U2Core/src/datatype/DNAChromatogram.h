@@ -36,7 +36,8 @@ public:
         Trace_T,
     };
 
-    DNAChromatogram() : traceLength(0), seqLength(0), hasQV(false) {}
+    DNAChromatogram();
+
     int traceLength;
     int seqLength;
     QVector<ushort> baseCalls;
@@ -49,6 +50,12 @@ public:
     QVector<char> prob_G;
     QVector<char> prob_T;
     bool hasQV;
+
+    ushort getValue(Trace trace, qint64 position) const;
+
+    bool operator ==(const DNAChromatogram &otherChromatogram) const;
+
+    static const short INVALID_VALUE;       // TODO: fix this value
 };
 
 } //namespace

@@ -22,39 +22,48 @@
 #ifndef _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_
 #define _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_
 
+#include <QSharedPointer>
+
 #include <U2Core/DNAChromatogram.h>
 #include <U2Core/DNASequence.h>
-#include <U2Core/U2Mca.h>
+#include <U2Core/U2Msa.h>
+#include <U2Core/U2Region.h>
 
-#include "MultipleSequenceAlignmentRow.h"
+class QByteArray;
 
 namespace U2 {
 
 class MultipleChromatogramAlignmentData;
 class MultipleChromatogramAlignmentRowData;
+class U2OpStatus;
 
-class U2CORE_EXPORT MultipleChromatogramAlignmentRow : public MultipleSequenceAlignmentRow {
+class U2CORE_EXPORT MultipleChromatogramAlignmentRow {
 public:
     MultipleChromatogramAlignmentRow();
-    MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentData *mcaData);
+    MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentRowData *mcaRowData);
 
     /** Creates a row in memory. */
-    MultipleChromatogramAlignmentRow(const U2MsaRow &rowInDb,
-                                     const DNAChromatogram chromatogram,
+    MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
+                                     const DNAChromatogram &chromatogram,
                                      const DNASequence &predictedSequence,
-                                     const DNASequence &editableSequence,
-                                     const U2MsaRowGapModel &gaps,
-                                     MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignmentRow(const U2MsaRow &rowInDb,
+                                     const U2MsaRowGapModel &gapModel);
+    MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
+                                     const DNAChromatogram &chromatogram,
+                                     const DNASequence &predictedSequence,
+                                     const U2MsaRowGapModel &predictedSequenceGapModel,
+                                     const DNASequence &editedSequence,
+                                     const U2MsaRowGapModel &editedSequenceGapModel,
+                                     const U2Region &workingArea = U2_REGION_MAX);
+    MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
                                      const QString &rowName,
-                                     const DNAChromatogram chromatogram,
-                                     const DNASequence &predictedSequence,
-                                     const QByteArray &rawData,
-                                     MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentRow &row, MultipleChromatogramAlignmentData *mcaData);
+                                     const DNAChromatogram &chromatogram,
+                                     const QByteArray &predictedSequenceRawData);
+    MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
+                                     const MultipleChromatogramAlignmentRowData &mcaRowData);
 
     MultipleChromatogramAlignmentRowData * data() const;
+    template <class Derived> inline Derived dynamicCast() const;
 
     MultipleChromatogramAlignmentRowData & operator*();
     const MultipleChromatogramAlignmentRowData & operator*() const;
@@ -64,120 +73,155 @@ public:
 
     MultipleChromatogramAlignmentRow clone() const;
 
-private:
-    QSharedPointer<MultipleChromatogramAlignmentRowData> getMcaRowData() const;
+protected:
+    QSharedPointer<MultipleChromatogramAlignmentRowData> mcaRowData;
 };
 
-class MultipleChromatogramAlignmentRowData : public MultipleSequenceAlignmentRowData {
+template <class Derived>
+Derived MultipleChromatogramAlignmentRow::dynamicCast() const {
+    return Derived(*this);
+}
+
+// Working area - a part of the core which is shown. It can be expanded to the core size or reduced to some little value (0 or 1 symbol?), it starts from the core start
+// Core - a sequence + gaps whithin it (without leading and trailing gaps)
+// Guaranteed gaps
+class MultipleChromatogramAlignmentRowData {
     friend class MultipleChromatogramAlignmentData;
     friend class MultipleChromatogramAlignmentRow;
 
-    /** Do NOT create a row without an alignment! */
-    MultipleChromatogramAlignmentRowData();
-    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData);
-
-    /** Creates a row in memory. */
-    MultipleChromatogramAlignmentRowData(const U2MsaRow &rowInDb,
+private:
+    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData = NULL);
+    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
                                          const DNAChromatogram &chromatogram,
                                          const DNASequence &predictedSequence,
-                                         const DNASequence &editableSequence,
-                                         const U2MsaRowGapModel &gaps,
-                                         const MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignmentRowData(const U2MsaRow &rowInDb,
+                                         const U2MsaRowGapModel &gapModel);
+    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
+                                         const DNAChromatogram &chromatogram,
+                                         const DNASequence &predictedSequence,
+                                         const U2MsaRowGapModel &predictedSequenceGapModel,
+                                         const DNASequence &editedSequence,
+                                         const U2MsaRowGapModel &editedSequenceGapModel,
+                                         const U2Region &workingArea = U2_REGION_MAX);
+    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
                                          const QString &rowName,
                                          const DNAChromatogram &chromatogram,
-                                         const DNASequence &predictedSequence,
-                                         const QByteArray &rawData,
-                                         const MultipleChromatogramAlignmentData *mcaData);
-    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow &row, const MultipleChromatogramAlignmentData *mcaData);
+                                         const QByteArray &predictedSequenceRawData);
+    MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
+                                         const MultipleChromatogramAlignmentRowData &mcaRowData);
 
 public:
-    enum SequenceType {
-        Predicted,
-        Editable
-    };
+    QString getRowName() const;     // name is defined by the edited sequence
+    void setRowName(const QString &name);
 
-    /** Returns the row sequence (without gaps) */
+    const DNASequence & getPredictedSequence() const;
+    const DNASequence & getEditedSequence() const;
     const DNAChromatogram & getChromatogram() const;
-    const DNASequence & getSequence(SequenceType sequenceType) const;
 
-    /**
-     * Sets a new sequence. Be careful, gap model validity is not verified.
-     * The sequence must not contain gaps.
-     */
-    void setChromatogram(const DNAChromatogram &chromatogram);
-    void setSequence(const DNASequence &sequence);
-    void setSequence(SequenceType sequenceType, const DNASequence &sequence);
+    const U2MsaRowGapModel & getPredictedSequenceGapModel() const;
+    const U2MsaRowGapModel & getEditedSequenceGapModel() const;
+    const U2MsaRowGapModel & getCommonGapModel() const;
 
-    /**
-     * The length must be greater or equal to the row length.
-     * When the specified length is greater, an appropriate number of
-     * trailing gaps are appended to the end of the byte array.
-     */
-    QByteArray toByteArray(SequenceType sequenceType, int length, U2OpStatus &os) const;
+    const U2MsaRowGapModel & getEditedSequenceGuaranteedGapModel() const;
 
-    /** Packed version: returns the row without leading and trailing gaps */
-    QByteArray getCore(SequenceType sequenceType) const;
+    QByteArray getPredictedSequenceData() const;
+    QByteArray getPredictedSequenceCore() const;
+    QByteArray getPredictedSequenceWorkingArea() const;
 
-    /** Returns the row the way it is -- with leading and trailing gaps */
-    QByteArray getData(SequenceType sequenceType) const;
+    QByteArray getEditedSequenceData() const;
+    QByteArray getEditedSequenceCore() const;
+    QByteArray getEditedSequenceWorkingArea() const;
 
-    /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
-    void append(const MultipleSequenceAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os);
-    void append(const MultipleSequenceAlignmentRowData &anotherRow, int lengthBefore, U2OpStatus &os);
-    void append(const MultipleChromatogramAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os);
-    void append(const MultipleChromatogramAlignmentRowData &anotherRow, int lengthBefore, U2OpStatus &os);
+    qint64 getPredictedSequenceDataLength() const;
+    qint64 getEditedSequenceDataLength() const;
+    qint64 getChromatogramDataLength() const;
 
-    void setRowContent(const QByteArray &bytes, int offset, U2OpStatus &os);
+    qint64 getPredictedSequenceWorkingAreaDataLength() const;
+    qint64 getEditedSequenceWorkingAreaDataLength() const;
+    qint64 getChromatogramWorkingAreaDataLength() const;
 
-    void removeChars(int pos, int count, U2OpStatus& os);
+    qint64 getCoreStart() const;    // a position of the first meaningful symbol (a position where leading gaps end)
+    qint64 getCoreLength() const;    // from the first symbol to the last symbol, included gaps whithin, includes hided symbols (if there are gaps guaranteed by difference at the end, then it is included to the core)
+    qint64 getWorkingAreaLength() const;    // from the first nonhided symbol to the last nonhided symbol, included gaps whithin
+    qint64 getRowLength() const;    // returns an MCA length
+    qint64 getRowLengthWithoutTrailing() const; // leading gaps + core length - a real length of the row without trailing gaps
 
-    /**
-     * Returns a character in row at the specified position.
-     * If the specified position is outside the row bounds, returns a gap.
-     */
-    char charAt(int pos) const;
-    char charAt(SequenceType sequenceType, int pos) const;
-    ushort traceValueAt(DNAChromatogram::Trace trace, int pos) const;
+    U2Region getCoreRegion() const;      // a of the core withing whole row (hiding ignoring)
+    U2Region getWorkingAreaRegion() const;      // a region in the core with nonhided symbols
 
-    bool isRowContentEqual(const MultipleSequenceAlignmentRow &row) const;
-    bool isRowContentEqual(const MultipleSequenceAlignmentRowData &rowData) const;
-    bool isRowContentEqual(const MultipleChromatogramAlignmentRow &row) const;
-    bool isRowContentEqual(const MultipleChromatogramAlignmentRowData &rowData) const;
+    // Getters are too strict, check the behavior if the position is out of boundaries
+    char getPredictedSequenceDataChar(qint64 dataPosition) const;   // get a char from sequence data (do not include gap model into calculation)
+    char getPredictedSequenceCoreChar(qint64 corePosition) const;   // get a char from sequence core (include gap model into calculation)
+    char getPredictedSequenceWorkingAreaChar(qint64 workingAreaPosition) const; // get a char from sequence working area (include gap model into calculation, use working area bounds)
+    char getPredictedSequenceChar(qint64 mcaVisiblePosition) const; // get a char from sequence (include gap model into calculation, include leading gaps - the MCA coordinates)
 
-    inline bool operator!=(const MultipleSequenceAlignmentRowData &rowData) const;
-    inline bool operator!=(const MultipleSequenceAlignmentRowData &rowData) const;
-    bool operator==(const MultipleChromatogramAlignmentRowData &rowData) const;
-    bool operator==(const MultipleChromatogramAlignmentRowData &rowData) const;
+    char getEditedSequenceDataChar(qint64 dataPosition) const;   // get a char from sequence data (do not include gap model into calculation)
+    char getEditedSequenceCoreChar(qint64 corePosition) const;   // get a char from sequence core (include gap model into calculation)
+    char getEditedSequenceWorkingAreaChar(qint64 workingAreaPosition) const; // get a char from sequence working area (include gap model into calculation, use working area bounds)
+    char getEditedSequenceChar(qint64 mcaVisiblePosition) const; // get a char from sequence (include gap model into calculation, include leading gaps - the MCA coordinates)
 
-    void crop(int pos, int count, U2OpStatus &os);
+    ushort getChromatogramDataValue(DNAChromatogram::Trace trace, qint64 dataPosition) const;   // get a value from chromatogram data (do not include gap model into calculation)
+    ushort getChromatogramCoreValue(DNAChromatogram::Trace trace, qint64 corePosition) const;   // get a value from chromatogram core (include gap model into calculation)
+    ushort getChromatogramWorkingAreaValue(DNAChromatogram::Trace trace, qint64 workingAreaPosition) const; // get a value from chromatogram working area (include gap model into calculation, use working area bounds)
+    ushort getChromatogramValue(DNAChromatogram::Trace trace, qint64 mcaVisiblePosition) const; // get a value from chromatogram (include gap model into calculation, include leading gaps - the MCA coordinates)
 
-    /**
-     * Returns new row of the specified 'count' length, started from 'pos'.
-     * 'pos' and 'pos + count' can be greater than the row length.
-     * Keeps trailing gaps.
-     */
-    MultipleChromatogramAlignmentRow mid(int pos, int count, U2OpStatus &os) const;
+    void insertGap(U2OpStatus &os, qint64 mcaVisiblePosition);
+    void insertGaps(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count);
 
-    /** Converts the row sequence to upper case */
-    void toUpperCase();
+    void removeGap(U2OpStatus &os, qint64 mcaVisiblePosition);
+    void removeGaps(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count);
 
-    /**
-     * Replaces all occurrences of 'origChar' by 'resultChar'.
-     * The 'origChar' must be a non-gap character.
-     * The 'resultChar' can be a gap, gaps model is recalculated in this case.
-     */
-    void replaceChars(char origChar, char resultChar, U2OpStatus &os);
-    void replaceChars(SequenceType sequenceType, char origChar, char resultChar, U2OpStatus &os);
+    void replaceCharInEditedSequence(U2OpStatus &os, qint64 mcaVisiblePosition, char newChar);
 
-    MultipleChromatogramAlignmentRow getCopy() const;
+    MultipleChromatogramAlignmentRow getCopy(const MultipleChromatogramAlignmentData *mcaData = NULL) const;
+
+    bool operator ==(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
+    bool operator !=(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
+
+    bool isCommonGap(qint64 mcaVisiblePosition) const;
 
 private:
-    QByteArray predictedSequenceToByteArray(int length, U2OpStatus &os) const;
+    // Gap model can be set only by the parent MCA, the MCA should apply guaranteed gaps to other rows to keep whole gap model consistent
+    void setGapModel(const U2MsaRowGapModel &newGapModel);
+
+    void extractCommonGapModel(const U2MsaRowGapModel &predictedSequenceGapModel, const U2MsaRowGapModel &editedSequenceGapModel);
+
+    void removeTrailingGaps();
+    void updateCachedGapModels() const;
+    qint64 getPredictedSequenceGuaranteedGapsLength() const;
+
+    qint64 mapVisiblePositionToCorePosition(qint64 mcaVisiblePosition) const;  // visible position ignores the hidden part, real position include the hidden part, returns -1 if the visible position is outside the core boundaries
+    qint64 mapVisiblePositionToRealPosition(qint64 mcaVisiblePosition) const;  // visible position ignores the hidden part, real position include the hidden part
+
+    U2MsaRowGapModel getPredictedSequenceCoreGapModel() const;
+    U2MsaRowGapModel getPredictedSequenceWorkingAreaGapModel() const;
+    U2MsaRowGapModel getEditedSequenceCoreGapModel() const;
+    U2MsaRowGapModel getEditedSequenceWorkingAreaGapModel() const;
+    U2MsaRowGapModel getCommonCoreGapModel() const;
+
+    void replaceGapToCharInEditedSequence(U2OpStatus &os, qint64 corePosition, char newChar);
+    void replaceCharToGapInEditedSequence(U2OpStatus &os, qint64 corePosition, char newChar);
+    void replaceCharToCharInEditedSequence(U2OpStatus &os, qint64 corePosition, char newChar);
+
+    void copy(const MultipleChromatogramAlignmentRowData &mcaRowData);
 
     DNAChromatogram chromatogram;
     DNASequence predictedSequence;
+    DNASequence editedSequence;
+    U2MsaRowGapModel commonGapModel;
+    mutable U2MsaRowGapModel predictedSequenceCachedGapModel;
+    mutable U2MsaRowGapModel editedSequenceCachedGapModel;
+    U2MsaRowGapModel predictedSequenceGapModelDifference;       // difference is a gap model inside a core, positions of gaps are in core-based coordinates
+    U2MsaRowGapModel editedSequenceGapModelDifference;
+    U2Region workingArea;       // TODO: fix the hidden part idea: the hidden part is replaced wiht gaps, not just hidden (it is incorrect if the hidden part is rigth on the beggining of the mca and no other rows prevent from removing the leading gaps)
+    const MultipleChromatogramAlignmentData *mcaData;
 };
+
+inline bool	operator!=(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator!=(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRowData *ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator!=(const MultipleChromatogramAlignmentRowData *ptr1, const MultipleChromatogramAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
+inline bool	operator==(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRowData *ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleChromatogramAlignmentRowData *ptr1, const MultipleChromatogramAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
 
 }   // namespace U2
 

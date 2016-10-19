@@ -80,7 +80,7 @@ class U2CORE_EXPORT MultipleSequenceAlignmentRowData {
     friend class MultipleSequenceAlignmentData;
     friend class MultipleSequenceAlignmentRow;
 
-private:
+protected:
     /** Do NOT create a row without an alignment! */
     MultipleSequenceAlignmentRowData(MultipleSequenceAlignmentData *msaData = NULL);
 
@@ -109,7 +109,7 @@ public:
      * Sets a new sequence. Be careful, gap model validity is not verified.
      * The sequence must not contain gaps.
      */
-    virtual void setSequence(const DNASequence &newSequence);
+    void setSequence(const DNASequence &newSequence);
 
     /** Returns ID of the row in the database. */
     qint64 getRowId() const;
@@ -153,7 +153,7 @@ public:
     int getCoreLength() const;
 
     /** Removes all gaps. Returns true if changed. */
-    inline bool simplify();
+    virtual inline bool simplify();
 
     /** Adds anotherRow data to this row(ingores trailing gaps), "lengthBefore" must be greater than this row's length. */
     virtual void append(const MultipleSequenceAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os);
@@ -163,14 +163,14 @@ public:
      * Sets new sequence and gap model.
      * If the sequence is empty, the offset is ignored (if any).
      */
-    virtual void setRowContent(const QByteArray &bytes, int offset, U2OpStatus &os);
+    void setRowContent(const QByteArray &bytes, int offset, U2OpStatus &os);
 
     /**
      * Inserts 'count' gaps into the specified position, if possible.
      * If position is bigger than the row length or negative, does nothing.
      * Returns incorrect status if 'count' is negative.
      */
-    void insertGaps(int pos, int count, U2OpStatus &os);
+    virtual void insertGaps(int pos, int count, U2OpStatus &os);
 
     /**
      * Removes up to 'count' characters starting from the specified position
@@ -183,7 +183,7 @@ public:
      * Returns a character in row at the specified position.
      * If the specified position is outside the row bounds, returns a gap.
      */
-    virtual char charAt(int pos) const;
+    char charAt(int pos) const;
     bool isGap(int pos) const;
 
     /** Length of the sequence without gaps */
@@ -269,7 +269,7 @@ private:
     void getStartAndEndSequencePositions(int pos, int count, int &startPosInSeq, int &endPosInSeq);
 
     /** Removing gaps from the row between position 'pos' and 'pos + count' */
-    void removeGapsFromGapModel(int pos, int count);
+    void removeGapsFromGapModel(U2OpStatus &os, int pos, int count);
 
     void setParentAlignment(const MultipleSequenceAlignment &msa);
     void setParentAlignment(MultipleSequenceAlignmentData *msaData);

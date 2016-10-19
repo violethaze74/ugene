@@ -274,66 +274,7 @@ void MultipleSequenceAlignmentRowData::setRowContent(const QByteArray &bytes, in
 }
 
 void MultipleSequenceAlignmentRowData::insertGaps(int pos, int count, U2OpStatus &os) {
-    if (count < 0) {
-        coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleSequenceAlignmentRowData::insertGaps, "
-            "pos '%1', count '%2'").arg(pos).arg(count));
-        os.setError("Failed to insert gaps into a row");
-        return;
-    }
-
-    if (pos < 0 || pos >= getRowLengthWithoutTrailing()) {
-        return;
-    }
-
-    if (0 == pos) {
-        addOffsetToGapModel(gaps, count);
-    } else {
-        // A gap is near
-        if (U2Msa::GAP_CHAR == charAt(pos) || U2Msa::GAP_CHAR == charAt(pos - 1)) {
-            // Find the gaps and append 'count' gaps to it
-            // Shift all gaps that further in the row
-            for (int i = 0; i < gaps.count(); ++i) {
-                if (pos >= gaps[i].offset) {
-                    if (pos <= gaps[i].offset + gaps[i].gap) {
-                        gaps[i].gap += count;
-                    }
-                } else {
-                    gaps[i].offset += count;
-                }
-            }
-        }
-        // Insert between chars
-        else {
-            bool found = false;
-
-            int indexGreaterGaps = 0;
-            for (int i = 0; i < gaps.count(); ++i) {
-                if (pos > gaps[i].offset + gaps[i].gap) {
-                    continue;
-                } else {
-                    found = true;
-                    U2MsaGap newGap(pos, count);
-                    gaps.insert(i, newGap);
-                    indexGreaterGaps = i;
-                    break;
-                }
-            }
-
-            // If found somewhere between existent gaps
-            if (found) {
-                // Shift further gaps
-                for (int i = indexGreaterGaps + 1; i < gaps.count(); ++i) {
-                    gaps[i].offset += count;
-                }
-            }
-            // This is the last gap
-            else {
-                U2MsaGap newGap(pos, count);
-                gaps.append(newGap);
-                return;
-            }
-        }
-    }
+    MsaRowUtils::insertGaps(os, gaps, getRowLengthWithoutTrailing(), pos, count);
 }
 
 void MultipleSequenceAlignmentRowData::removeChars(int pos, int count, U2OpStatus &os) {
@@ -361,7 +302,7 @@ void MultipleSequenceAlignmentRowData::removeChars(int pos, int count, U2OpStatu
     }
 
     // Remove gaps from the gaps model
-    removeGapsFromGapModel(pos, count);
+    removeGapsFromGapModel(os, pos, count);
 
     removeTrailingGaps();
     mergeConsecutiveGaps();
@@ -451,11 +392,11 @@ void MultipleSequenceAlignmentRowData::crop(int pos, int count, U2OpStatus &os) 
     }
 
     if (pos + count < initialRowLength) {
-        removeGapsFromGapModel(pos + count, initialRowLength - pos - count);
+        removeGapsFromGapModel(os, pos + count, initialRowLength - pos - count);
     }
 
     if (pos > 0) {
-        removeGapsFromGapModel(0, pos);
+        removeGapsFromGapModel(os, 0, pos);
     }
     removeTrailingGaps();
 }
@@ -578,29 +519,7 @@ QByteArray MultipleSequenceAlignmentRowData::joinCharsAndGaps(bool keepOffset, b
 }
 
 void MultipleSequenceAlignmentRowData::mergeConsecutiveGaps() {
-    QList<U2MsaGap> newGapModel;
-    if (gaps.isEmpty()) {
-        return;
-    }
-
-    newGapModel << gaps[0];
-    int indexInNewGapModel = 0;
-    for (int i = 1; i < gaps.count(); ++i) {
-        int previousGapEnd = newGapModel[indexInNewGapModel].offset + newGapModel[indexInNewGapModel].gap - 1;
-        int currectGapStart = gaps[i].offset;
-        SAFE_POINT(currectGapStart > previousGapEnd, "Incorrect gap model during merging consecutive gaps", );
-        if (currectGapStart == previousGapEnd + 1) {
-            // Merge gaps
-            qint64 newGapLength = newGapModel[indexInNewGapModel].gap + gaps[i].gap;
-            SAFE_POINT(newGapLength > 0, "Non-positive gap length", )
-            newGapModel[indexInNewGapModel].gap = newGapLength;
-        } else {
-            // Add the gap to the list
-            newGapModel << gaps[i];
-            indexInNewGapModel++;
-        }
-    }
-    gaps = newGapModel;
+    MsaRowUtils::mergeConsecutiveGaps(gaps);
 }
 
 void MultipleSequenceAlignmentRowData::removeTrailingGaps() {
@@ -660,40 +579,8 @@ void MultipleSequenceAlignmentRowData::getStartAndEndSequencePositions(int pos, 
     }
 }
 
-void MultipleSequenceAlignmentRowData::removeGapsFromGapModel(int pos, int count) {
-    QList<U2MsaGap> newGapModel;
-    int endRegionPos = pos + count; // non-inclusive
-    foreach (U2MsaGap gap, gaps) {
-        qint64 gapEnd = gap.offset + gap.gap;
-        if (gapEnd < pos) {
-            newGapModel << gap;
-        } else if (gapEnd <= endRegionPos) {
-            if (gap.offset < pos) {
-                gap.gap = pos - gap.offset;
-                newGapModel << gap;
-            }
-            // Otherwise just remove the gap (do not write to the new gap model)
-        } else {
-            if (gap.offset < pos) {
-                gap.gap -= count;
-                SAFE_POINT(gap.gap >= 0, "Non-positive gap length", );
-                newGapModel << gap;
-            } else if (gap.offset < endRegionPos) {
-                gap.gap = gapEnd - endRegionPos;
-                gap.offset = pos;
-                SAFE_POINT(gap.gap > 0, "Non-positive gap length", );
-                SAFE_POINT(gap.offset >= 0, "Negative gap offset", );
-                newGapModel << gap;
-            } else {
-                // Shift the gap
-                gap.offset -= count;
-                SAFE_POINT(gap.offset >= 0, "Negative gap offset", );
-                newGapModel << gap;
-            }
-        }
-    }
-
-    gaps = newGapModel;
+void MultipleSequenceAlignmentRowData::removeGapsFromGapModel(U2OpStatus &os, int pos, int count) {
+    MsaRowUtils::removeGaps(os, gaps, getRowLengthWithoutTrailing(), pos, count);
 }
 
 void MultipleSequenceAlignmentRowData::setParentAlignment(const MultipleSequenceAlignment &msa) {

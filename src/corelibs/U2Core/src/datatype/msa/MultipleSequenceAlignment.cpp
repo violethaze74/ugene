@@ -57,12 +57,6 @@ MultipleSequenceAlignment::MultipleSequenceAlignment(const QString &name, const 
 
 }
 
-MultipleSequenceAlignment::MultipleSequenceAlignment(const MultipleSequenceAlignmentData &msaData)
-    : msaData(new MultipleSequenceAlignmentData(msaData))
-{
-
-}
-
 MultipleSequenceAlignment::MultipleSequenceAlignment(MultipleSequenceAlignmentData *msaData)
     : msaData(msaData)
 {

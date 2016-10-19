@@ -19,14 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/ChromatogramUtils.h>
-#include <U2Core/DNAChromatogram.h>
-#include <U2Core/DnaChromatogramUtils.h>
-#include <U2Core/DNASequence.h>
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MsaRowUtils.h>
-#include <U2Core/U2OpStatus.h>
-#include <U2Core/U2SafePoints.h>
 
 #include "MultipleChromatogramAlignment.h"
 #include "MultipleChromatogramAlignmentRow.h"
@@ -34,396 +29,507 @@
 namespace U2 {
 
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow()
-    : MultipleSequenceAlignmentRow(new MultipleChromatogramAlignmentRowData)
+    : mcaRowData(new MultipleChromatogramAlignmentRowData)
 {
 
 }
 
-MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentData *mcaData)
-    : MultipleSequenceAlignmentRow(new MultipleChromatogramAlignmentRowData(mcaData))
+MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData)
+    : mcaRowData(new MultipleChromatogramAlignmentRowData(mcaData))
 {
 
 }
 
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentRowData *mcaRowData)
-    : MultipleSequenceAlignmentRow(mcaRowData)
+    : mcaRowData(mcaRowData)
 {
 
 }
 
-MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const U2MsaRow &rowInDb,
-                                                                   const DNAChromatogram chromatogram,
+MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
+                                                                   const DNAChromatogram &chromatogram,
                                                                    const DNASequence &predictedSequence,
-                                                                   const DNASequence &editableSequence,
-                                                                   const U2MsaRowGapModel &gaps,
-                                                                   MultipleChromatogramAlignmentData *mcaData)
-    : MultipleSequenceAlignmentRow(new MultipleChromatogramAlignmentRowData(rowInDb, chromatogram, predictedSequence, editableSequence, gaps, mcaData))
+                                                                   const U2MsaRowGapModel &gapModel)
+    : mcaRowData(new MultipleChromatogramAlignmentRowData(mcaData, chromatogram, predictedSequence, gapModel))
 {
 
 }
 
-MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const U2MsaRow &rowInDb,
+MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
+                                                                   const DNAChromatogram &chromatogram,
+                                                                   const DNASequence &predictedSequence,
+                                                                   const U2MsaRowGapModel &predictedSequenceGapModel,
+                                                                   const DNASequence &editedSequence,
+                                                                   const U2MsaRowGapModel &editedSequenceGapModel,
+                                                                   const U2Region &workingArea)
+    : mcaRowData(new MultipleChromatogramAlignmentRowData(mcaData, chromatogram, predictedSequence, predictedSequenceGapModel, editedSequence, editedSequenceGapModel, workingArea))
+{
+
+}
+
+MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
                                                                    const QString &rowName,
-                                                                   const DNAChromatogram chromatogram,
-                                                                   const DNASequence &predictedSequence,
-                                                                   const QByteArray &rawData,
-                                                                   MultipleChromatogramAlignmentData *mcaData)
-    : MultipleSequenceAlignmentRow(new MultipleChromatogramAlignmentRowData(rowInDb, rowName, chromatogram, predictedSequence, rawData, mcaData))
+                                                                   const DNAChromatogram &chromatogram,
+                                                                   const QByteArray &predictedSequenceRawData)
+    : mcaRowData(new MultipleChromatogramAlignmentRowData(mcaData, rowName, chromatogram, predictedSequenceRawData))
 {
 
 }
 
-MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentRow &row, MultipleChromatogramAlignmentData *mcaData)
-    : MultipleSequenceAlignmentRow(new MultipleChromatogramAlignmentRowData(row, mcaData))
+MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData, const MultipleChromatogramAlignmentRowData &mcaRowData)
+    : mcaRowData(new MultipleChromatogramAlignmentRowData(mcaData, mcaRowData))
 {
 
 }
 
 MultipleChromatogramAlignmentRowData * MultipleChromatogramAlignmentRow::data() const {
-    return getMcaRowData().data();
+    return mcaRowData.data();
 }
 
 MultipleChromatogramAlignmentRowData & MultipleChromatogramAlignmentRow::operator*() {
-    return *getMcaRowData();
+    return *mcaRowData;
 }
 
 const MultipleChromatogramAlignmentRowData & MultipleChromatogramAlignmentRow::operator*() const {
-    return *getMcaRowData();
+    return *mcaRowData;
 }
 
 MultipleChromatogramAlignmentRowData * MultipleChromatogramAlignmentRow::operator->() {
-    return getMcaRowData().data();
+    return mcaRowData.data();
 }
 
 const MultipleChromatogramAlignmentRowData * MultipleChromatogramAlignmentRow::operator->() const {
-    return getMcaRowData().data();
+    return mcaRowData.data();
 }
 
 MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentRow::clone() const {
-    return getMcaRowData()->getCopy();
-}
-
-QSharedPointer<MultipleChromatogramAlignmentRowData> MultipleChromatogramAlignmentRow::getMcaRowData() const {
-    return msaRowData.dynamicCast<MultipleChromatogramAlignmentRowData>();
-}
-
-MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData()
-    : MultipleSequenceAlignmentRowData()
-{
-
+    return mcaRowData->getCopy();
 }
 
 MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData)
-    : MultipleSequenceAlignmentRowData(mcaData)
+    : mcaData(mcaData)
 {
 
 }
 
-MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const U2MsaRow &rowInDb,
+MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
                                                                            const DNAChromatogram &chromatogram,
                                                                            const DNASequence &predictedSequence,
-                                                                           const DNASequence &editableSequence,
-                                                                           const U2MsaRowGapModel &gaps,
-                                                                           const MultipleChromatogramAlignmentData *mcaData)
-    : MultipleSequenceAlignmentRowData(rowInDb, editableSequence, gaps, mcaData),
-      chromatogram(chromatogram),
-      predictedSequence(predictedSequence)
+                                                                           const U2MsaRowGapModel &gapModel)
+    : chromatogram(chromatogram),
+      predictedSequence(predictedSequence),
+      editedSequence(predictedSequence),
+      commonGapModel(gapModel),
+      mcaData(mcaData)
 {
-
+    removeTrailingGaps();
+    workingArea = U2Region(0, MsaRowUtils::getRowLength(predictedSequence.seq, getCommonGapModel()));
 }
 
-MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const U2MsaRow &rowInDb,
+MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
+                                                                           const DNAChromatogram &chromatogram,
+                                                                           const DNASequence &predictedSequence,
+                                                                           const U2MsaRowGapModel &predictedSequenceGapModel,
+                                                                           const DNASequence &editedSequence,
+                                                                           const U2MsaRowGapModel &editedSequenceGapModel,
+                                                                           const U2Region &workingArea)
+    : chromatogram(chromatogram),
+      predictedSequence(predictedSequence),
+      editedSequence(editedSequence),
+      predictedSequenceCachedGapModel(predictedSequenceGapModel),
+      editedSequenceCachedGapModel(editedSequenceGapModel),
+      mcaData(mcaData)
+{
+    extractCommonGapModel(predictedSequenceGapModel, editedSequenceGapModel);
+    removeTrailingGaps();
+    this->workingArea = U2Region(0, getCoreLength()).intersect(workingArea);
+}
+
+MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
                                                                            const QString &rowName,
                                                                            const DNAChromatogram &chromatogram,
-                                                                           const DNASequence &predictedSequence,
-                                                                           const QByteArray &rawData,
-                                                                           const MultipleChromatogramAlignmentData *mcaData)
-    : MultipleSequenceAlignmentRowData(rowInDb, rowName, rawData, mcaData),
-      chromatogram(chromatogram),
-      predictedSequence(predictedSequence)
+                                                                           const QByteArray &predictedSequenceRawData)
+    : chromatogram(chromatogram),
+      mcaData(mcaData)
 {
+    QByteArray sequenceData;
+    U2MsaRowGapModel gapModel;
+    MsaDbiUtils::splitBytesToCharsAndGaps(predictedSequenceRawData, sequenceData, gapModel);
 
+    predictedSequence = DNASequence(rowName, sequenceData);
+    editedSequence = DNASequence(rowName, sequenceData);
+    commonGapModel = gapModel;
+
+    removeTrailingGaps();
+
+    workingArea = U2Region(0, getCoreLength());
 }
 
-MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow &row, const MultipleChromatogramAlignmentData *mcaData)
-    : MultipleSequenceAlignmentRowData(row, mcaData),
-      chromatogram(row->chromatogram),
-      predictedSequence(row->predictedSequence)
+MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *newMcaData, const MultipleChromatogramAlignmentRowData &mcaRowData)
 {
+    copy(mcaRowData);
+    mcaData = newMcaData;
+}
 
+QString MultipleChromatogramAlignmentRowData::getRowName() const {
+    return editedSequence.getName();
+}
+
+void MultipleChromatogramAlignmentRowData::setRowName(const QString &name) {
+    editedSequence.setName(name);
+}
+
+const DNASequence & MultipleChromatogramAlignmentRowData::getPredictedSequence() const {
+    return predictedSequence;
+}
+
+const DNASequence & MultipleChromatogramAlignmentRowData::getEditedSequence() const {
+    return editedSequence;
 }
 
 const DNAChromatogram & MultipleChromatogramAlignmentRowData::getChromatogram() const {
     return chromatogram;
 }
 
-const DNASequence & MultipleChromatogramAlignmentRowData::getSequence(SequenceType sequenceType) const {
-    static const DNASequence emptySequence;
-    switch (sequenceType) {
-    case Predicted:
-        return predictedSequence;
-    case Editable:
-        return MultipleSequenceAlignmentRowData::getSequence();
-    default:
-        SAFE_POINT(false, "An unknown sequence type", emptySequence);
-    }
+const U2MsaRowGapModel & MultipleChromatogramAlignmentRowData::getPredictedSequenceGapModel() const {
+    return predictedSequenceCachedGapModel;
 }
 
-void MultipleChromatogramAlignmentRowData::setChromatogram(const DNAChromatogram &newChromatogram) {
-    chromatogram = newChromatogram;
+const U2MsaRowGapModel & MultipleChromatogramAlignmentRowData::getEditedSequenceGapModel() const {
+    return editedSequenceCachedGapModel;
 }
 
-void MultipleChromatogramAlignmentRowData::setSequence(const DNASequence &newSequence) {
-    setSequence(Editable, newSequence);
+const U2MsaRowGapModel & MultipleChromatogramAlignmentRowData::getCommonGapModel() const {
+    return commonGapModel;
 }
 
-void MultipleChromatogramAlignmentRowData::setSequence(SequenceType sequenceType, const DNASequence &newSequence) {
-    SAFE_POINT(newSequence.length() == getCoreLength(), "Can't set a sequence with an incorrect length", );
-    switch (sequenceType) {
-    case Predicted:
-        predictedSequence = newSequence;
-        break;
-    case Editable:
-        MultipleSequenceAlignmentRowData::setSequence(newSequence);
-        break;
-    default:
-        SAFE_POINT(false, "An unknown sequence type", );
-    }
+const U2MsaRowGapModel & MultipleChromatogramAlignmentRowData::getEditedSequenceGuaranteedGapModel() const {
+    return editedSequenceGapModelDifference;
 }
 
-QByteArray MultipleChromatogramAlignmentRowData::toByteArray(SequenceType sequenceType, int length, U2OpStatus &os) const {
-    if (length < getCoreEnd()) {
-        coreLog.trace("Incorrect length was passed to MultipleChromatogramAlignmentRowData::sequenceToByteArray");
-        os.setError("Failed to get row data");
-        return QByteArray();
-    }
-
-    switch (sequenceType) {
-    case Predicted:
-        return predictedSequenceToByteArray(length, os);
-    case Editable:
-        return MultipleSequenceAlignmentRowData::toByteArray(length, os);
-    default:
-        SAFE_POINT(false, "An unknown sequence type", "");
-    }
+QByteArray MultipleChromatogramAlignmentRowData::getPredictedSequenceData() const {
+    return predictedSequence.seq;
 }
 
-QByteArray MultipleChromatogramAlignmentRowData::getCore(SequenceType sequenceType) const {
-    switch (sequenceType) {
-    case Predicted:
-        return MsaRowUtils::joinCharsAndGaps(predictedSequence, getGapModel(), getRowLength(), false, false);
-    case Editable:
-        return MultipleSequenceAlignmentRowData::getCore();
-    default:
-        SAFE_POINT(false, "An unknown sequence type", "");
-    }
+QByteArray MultipleChromatogramAlignmentRowData::getPredictedSequenceCore() const {
+    return MsaRowUtils::joinCharsAndGaps(predictedSequence.seq, getPredictedSequenceCoreGapModel(), getCoreLength(), true, true);
 }
 
-QByteArray MultipleChromatogramAlignmentRowData::getData(SequenceType sequenceType) const {
-    switch (sequenceType) {
-    case Predicted:
-        return MsaRowUtils::joinCharsAndGaps(predictedSequence, getGapModel(), getRowLength(), true, true);
-    case Editable:
-        return MultipleSequenceAlignmentRowData::getData();
-    default:
-        SAFE_POINT(false, "An unknown sequence type", "");
-    }
+QByteArray MultipleChromatogramAlignmentRowData::getPredictedSequenceWorkingArea() const {
+    return MsaRowUtils::joinCharsAndGaps(predictedSequence.seq, getPredictedSequenceWorkingAreaGapModel(), getWorkingAreaLength(), true, true);
 }
 
-void MultipleChromatogramAlignmentRowData::append(const MultipleSequenceAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os) {
-    append(*anotherRow, lengthBefore, os);
+QByteArray MultipleChromatogramAlignmentRowData::getEditedSequenceData() const {
+    return editedSequence.seq;
 }
 
-void MultipleChromatogramAlignmentRowData::append(const MultipleSequenceAlignmentRowData &anotherRow, int lengthBefore, U2OpStatus &os) {
-    try {
-        const MultipleChromatogramAlignmentRowData &anotherChromatogramRow = dynamic_cast<const MultipleChromatogramAlignmentRowData &>(anotherRow);
-        append(anotherChromatogramRow, lengthBefore, os);
-    } catch(const std::bad_cast &) {
-        const QString error = "Internal error: can't cast MultipleSequenceAlignmentRowData to MultipleChromatogramAlignmentRowData";
-        coreLog.trace(error);
-        SAFE_POINT_EXT(false, os.setError(error), );
-    }
+QByteArray MultipleChromatogramAlignmentRowData::getEditedSequenceCore() const {
+    return MsaRowUtils::joinCharsAndGaps(editedSequence.seq, getEditedSequenceCoreGapModel(), getCoreLength(), true, true);
 }
 
-void MultipleChromatogramAlignmentRowData::append(const MultipleChromatogramAlignmentRow &anotherRow, int lengthBefore, U2OpStatus &os) {
-    append(*anotherRow, lengthBefore, os);
+QByteArray MultipleChromatogramAlignmentRowData::getEditedSequenceWorkingArea() const {
+    return MsaRowUtils::joinCharsAndGaps(editedSequence.seq, getEditedSequenceWorkingAreaGapModel(), getWorkingAreaLength(), true, true);
 }
 
-void MultipleChromatogramAlignmentRowData::append(const MultipleChromatogramAlignmentRowData &anotherRow, int lengthBefore, U2OpStatus &os) {
-    MultipleSequenceAlignmentRowData::append(anotherRow, lengthBefore, os);
-    CHECK_OP(os, );
-    DNASequenceUtils::append(predictedSequence, anotherRow.predictedSequence);
-    DnaChromatogramUtils::append(chromatogram, anotherRow.chromatogram);
+qint64 MultipleChromatogramAlignmentRowData::getPredictedSequenceDataLength() const {
+    return predictedSequence.length();
 }
 
-char MultipleChromatogramAlignmentRowData::charAt(SequenceType sequenceType, int pos) const {
-    const DNASequence *sequence = selectSequence(sequenceType);
-    SAFE_POINT(NULL != sequence, "An unknown sequence type", MultipleSequenceAlignment::GapChar);
-    return MsaRowUtils::charAt(sequence->seq, getGapModel(), pos);
+qint64 MultipleChromatogramAlignmentRowData::getEditedSequenceDataLength() const {
+    return editedSequence.length();
 }
 
-ushort MultipleChromatogramAlignmentRowData::traceValueAt(Trace trace, int pos) const {
-    int ungappedPos = MsaRowUtils::getUngappedPosition(getGapModel(), getDataLength(), pos, false);
-    if (-1 == ungappedPos) {
-        return 0;
-    }
-
-    switch (trace) {
-    case Trace_A:
-        SAFE_POINT(0 < ungappedPos && ungappedPos < chromatogram.A.size(), QString("Position is out of range: %1").arg(ungappedPos), 0);
-        return chromatogram.A[ungappedPos];
-    case Trace_C:
-        SAFE_POINT(0 < ungappedPos && ungappedPos < chromatogram.C.size(), QString("Position is out of range: %1").arg(ungappedPos), 0);
-        return chromatogram.C[ungappedPos];
-    case Trace_G:
-        SAFE_POINT(0 < ungappedPos && ungappedPos < chromatogram.G.size(), QString("Position is out of range: %1").arg(ungappedPos), 0);
-        return chromatogram.G[ungappedPos];
-    case Trace_T:
-        SAFE_POINT(0 < ungappedPos && ungappedPos < chromatogram.T.size(), QString("Position is out of range: %1").arg(ungappedPos), 0);
-        return chromatogram.T[ungappedPos];
-    default:
-        SAFE_POINT(false, "An unknown trace type", 0);
-    }
-}
-
-void MultipleChromatogramAlignmentRowData::toUpperCase() {
-    DNASequenceUtils::toUpperCase(predictedSequence);
-    DNASequenceUtils::toUpperCase(editedSequence);
-}
-
-void MultipleChromatogramAlignmentRowData::replaceChars(char origChar, char resultChar, U2OpStatus &os) {
-    replaceChars(Predicted, origChar, resultChar, os);
-    replaceChars(Editable, origChar, resultChar, os);
-}
-
-void MultipleChromatogramAlignmentRowData::replaceChars(MultipleChromatogramAlignmentRowData::SequenceType sequenceType, char origChar, char resultChar, U2OpStatus &os) {
-    if (MultipleSequenceAlignment::GapChar == origChar) {
-        coreLog.trace("The original char can't be a gap in MultipleChromatogramAlignmentRowData::replaceChars");
-        os.setError("Failed to replace chars in an alignment row");
-        return;
-    }
-
-    DNASequence *sequence = selectSequence(sequenceType);
-    SAFE_POINT_EXT(NULL != sequence, os.setError("An unknown sequence type"), );
-
-    if (MultipleSequenceAlignment::GapChar == resultChar) {
-        // Get indexes of all 'origChar' characters in the row sequence
-        QList<int> gapsIndexes;
-        for (int i = 0; i < getRowLength(); i++) {
-            if (origChar == charAt(sequenceType, i)) {
-                gapsIndexes.append(i);
-            }
-        }
-
-        if (gapsIndexes.isEmpty()) {
-            return; // There is nothing to replace
-        }
-
-        // Remove all 'origChar' characters from the row sequence
-        sequence->seq.replace(origChar, "");
-
-        // Re-calculate the gaps model
-        U2MaRowGapModel newGapModel = getGapModel();
-        for (int i = 0; i < gapsIndexes.size(); ++i) {
-            int index = gapsIndexes[i];
-            U2MaGap gap(index, 1);
-            newGapModel.append(gap);
-        }
-        qSort(newGapModel.begin(), newGapModel.end(), U2MaGap::lessThan);
-
-        // Replace the gaps model with the new one
-        setGapModel(newGapModel);
-        mergeConsecutiveGaps();
-    } else {
-        // Just replace all occurrences of 'origChar' by 'resultChar'
-        sequence->seq.replace(origChar, resultChar);
-    }
-}
-
-MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentRowData::mid(int pos, int count, U2OpStatus &os) const {
-    MultipleChromatogramAlignmentRow row = getCopy();
-    row->crop(pos, count, os);
-    return row;
-}
-
-MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentRowData::getCopy() const {
-    return MultipleChromatogramAlignmentRow(new MultipleChromatogramAlignmentRowData(*this));
-}
-
-QByteArray MultipleChromatogramAlignmentRowData::predictedSequenceToByteArray(int length, U2OpStatus &os) const {
-    const U2MsaRowGapModel &gapModel = getGapModel();
-
-    if (gapModel.isEmpty() && predictedSequence.length() == length) {
-        return predictedSequence.constSequence();
-    }
-
-    QByteArray bytes = MsaRowUtils::joinCharsAndGaps(predictedSequence, gapModel, getRowLength(), true, true);
-
-    // Append additional gaps, if necessary
-    if (length > bytes.count()) {
-        QByteArray gapsBytes;
-        gapsBytes.fill(U2Msa::GAP_CHAR, length - bytes.count());
-        bytes.append(gapsBytes);
-    } else if (length < bytes.count()) {
-        // cut extra bytes
-        bytes = bytes.left(length);
-    }
-
-    return bytes;
-}
-
-int MultipleChromatogramAlignmentRowData::getDataLength() const {
+qint64 MultipleChromatogramAlignmentRowData::getChromatogramDataLength() const {
     return chromatogram.traceLength;
 }
 
-void MultipleChromatogramAlignmentRowData::appendDataCore(const MultipleSequenceAlignmentRow &anotherRow) {
-    const MultipleChromatogramAlignmentRowData *mcaRow = dynamic_cast<const MultipleChromatogramAlignmentRowData *>(anotherRow.data());
-    ChromatogramUtils::append(chromatogram, mcaRow->chromatogram);
-    DNASequenceUtils::append(predictedSequence, mcaRow->predictedSequence);
-    DNASequenceUtils::append(editedSequence, mcaRow->editedSequence);
+qint64 MultipleChromatogramAlignmentRowData::getPredictedSequenceWorkingAreaDataLength() const {
+    return getWorkingAreaLength() - MsaRowUtils::getGapsLength(getPredictedSequenceWorkingAreaGapModel());
 }
 
-void MultipleChromatogramAlignmentRowData::removeDataCore(int startPosInData, int endPosInData, U2OpStatus &os) {
-    ChromatogramUtils::remove(os, chromatogram, startPosInData, endPosInData);
-    DNASequenceUtils::removeChars(predictedSequence, startPosInData, endPosInData, os);
-    DNASequenceUtils::removeChars(editedSequence, startPosInData, endPosInData, os);
+qint64 MultipleChromatogramAlignmentRowData::getEditedSequenceWorkingAreaDataLength() const {
+    return getWorkingAreaLength() - MsaRowUtils::getGapsLength(getEditedSequenceWorkingAreaGapModel());
 }
 
-bool MultipleChromatogramAlignmentRowData::isDataEqual(const MultipleSequenceAlignmentRowData &rowData) const {
-    const MultipleChromatogramAlignmentRowData &mcaRowData = dynamic_cast<const MultipleChromatogramAlignmentRowData &>(rowData);
-    return ChromatogramUtils::areEqual(chromatogram, mcaRowData.chromatogram) &&
-            MatchExactly == DNASequenceUtils::compare(predictedSequence, mcaRowData.predictedSequence) &&
-            MatchExactly == DNASequenceUtils::compare(editedSequence, mcaRowData.editedSequence);
+qint64 MultipleChromatogramAlignmentRowData::getChromatogramWorkingAreaDataLength() const {
+    return getPredictedSequenceWorkingAreaDataLength();
 }
 
-QByteArray MultipleChromatogramAlignmentRowData::joinCharsAndGaps(SequenceType sequenceType, bool keepLeadingGaps, bool keepTrailingGaps) const {
-    const DNASequence *sequence = selectSequence(sequenceType);
-    SAFE_POINT(NULL != sequence, "An unknown sequence type", "");
-    return MsaRowUtils::joinCharsAndGaps(*sequence, getGapModel(), getRowLength(), keepLeadingGaps, keepTrailingGaps);
+qint64 MultipleChromatogramAlignmentRowData::getCoreStart() const {
+    return MsaRowUtils::getCoreStart(commonGapModel);
 }
 
-DNASequence * MultipleChromatogramAlignmentRowData::selectSequence(MultipleChromatogramAlignmentRowData::SequenceType sequenceType) {
-    switch (sequenceType) {
-    case Predicted:
-        return &predictedSequence;
-    case Editable:
-        return &editedSequence;
-    default:
-        assert(false);
-        return NULL;
+qint64 MultipleChromatogramAlignmentRowData::getCoreLength() const {
+    return predictedSequence.length() + MsaRowUtils::getGapsLength(getPredictedSequenceCoreGapModel());
+}
+
+qint64 MultipleChromatogramAlignmentRowData::getWorkingAreaLength() const {
+    return workingArea.length;
+}
+
+qint64 MultipleChromatogramAlignmentRowData::getRowLength() const {
+    return mcaData->getLength();
+}
+
+qint64 MultipleChromatogramAlignmentRowData::getRowLengthWithoutTrailing() const {
+    return getCoreStart() + getCoreLength();
+}
+
+U2Region MultipleChromatogramAlignmentRowData::getCoreRegion() const {
+    return U2Region(getCoreStart(), getCoreLength());
+}
+
+U2Region MultipleChromatogramAlignmentRowData::getWorkingAreaRegion() const {
+    return workingArea;
+}
+
+char MultipleChromatogramAlignmentRowData::getPredictedSequenceDataChar(qint64 dataPosition) const {
+    SAFE_POINT(0 <= dataPosition && dataPosition <= getPredictedSequenceDataLength(), "Position is out of the predicted sequence data boundaries", U2Msa::GAP_CHAR);
+    return predictedSequence.seq.at(dataPosition);
+}
+
+char MultipleChromatogramAlignmentRowData::getPredictedSequenceCoreChar(qint64 corePosition) const {
+    SAFE_POINT(0 <= corePosition && corePosition <= getCoreLength(), "Position is out of the predicted sequence core boundaries", U2Msa::GAP_CHAR);
+    return MsaRowUtils::charAt(predictedSequence.seq, getPredictedSequenceCoreGapModel(), corePosition);
+}
+
+char MultipleChromatogramAlignmentRowData::getPredictedSequenceWorkingAreaChar(qint64 workingAreaPosition) const {
+    SAFE_POINT(0 <= workingAreaPosition && workingAreaPosition <= getWorkingAreaLength(), "Position is out of the working area boundaries", U2Msa::GAP_CHAR);
+    return getPredictedSequenceCoreChar(workingAreaPosition + workingArea.startPos);
+}
+
+char MultipleChromatogramAlignmentRowData::getPredictedSequenceChar(qint64 mcaVisiblePosition) const {
+    SAFE_POINT(0 <= mcaVisiblePosition && mcaVisiblePosition <= getRowLength(), "Position is out of the row boundaries", U2Msa::GAP_CHAR);
+    return getPredictedSequenceWorkingAreaChar(mapVisiblePositionToCorePosition(mcaVisiblePosition));
+}
+
+char MultipleChromatogramAlignmentRowData::getEditedSequenceDataChar(qint64 dataPosition) const {
+    SAFE_POINT(0 <= dataPosition && dataPosition <= getEditedSequenceDataLength(), "Position is out of the edited sequence data boundaries", U2Msa::GAP_CHAR);
+    return editedSequence.seq.at(dataPosition);
+}
+
+char MultipleChromatogramAlignmentRowData::getEditedSequenceCoreChar(qint64 corePosition) const {
+    SAFE_POINT(0 <= corePosition && corePosition <= getCoreLength(), "Position is out of the edited sequence core boundaries", U2Msa::GAP_CHAR);
+    return MsaRowUtils::charAt(editedSequence.seq, getEditedSequenceCoreGapModel(), corePosition);
+}
+
+char MultipleChromatogramAlignmentRowData::getEditedSequenceWorkingAreaChar(qint64 workingAreaPosition) const {
+    SAFE_POINT(0 <= workingAreaPosition && workingAreaPosition <= getWorkingAreaLength(), "Position is out of the working area boundaries", U2Msa::GAP_CHAR);
+    return getEditedSequenceCoreChar(workingAreaPosition + workingArea.startPos);
+}
+
+char MultipleChromatogramAlignmentRowData::getEditedSequenceChar(qint64 mcaVisiblePosition) const {
+    SAFE_POINT(0 <= mcaVisiblePosition && mcaVisiblePosition <= getRowLength(), "Position is out of the row boundaries", U2Msa::GAP_CHAR);
+    return getEditedSequenceWorkingAreaChar(mapVisiblePositionToCorePosition(mcaVisiblePosition));
+}
+
+ushort MultipleChromatogramAlignmentRowData::getChromatogramDataValue(DNAChromatogram::Trace trace, qint64 dataPosition) const {
+    SAFE_POINT(0 <= dataPosition && dataPosition <= getChromatogramDataLength(), "Position is out of the chromatogram data boundaries", 0);
+    return chromatogram.getValue(trace, dataPosition);
+}
+
+ushort MultipleChromatogramAlignmentRowData::getChromatogramCoreValue(DNAChromatogram::Trace trace, qint64 corePosition) const {
+    SAFE_POINT(0 <= corePosition && corePosition <= getCoreLength(), "Position is out of the chromatogram core boundaries", 0);
+    const qint64 dataPosition = MsaRowUtils::getUngappedPosition(predictedSequenceCachedGapModel, chromatogram.traceLength, corePosition);
+    CHECK(-1 != dataPosition, DNAChromatogram::INVALID_VALUE);
+    return getChromatogramDataValue(trace, dataPosition);
+}
+
+ushort MultipleChromatogramAlignmentRowData::getChromatogramWorkingAreaValue(DNAChromatogram::Trace trace, qint64 workingAreaPosition) const {
+    SAFE_POINT(0 <= workingAreaPosition && workingAreaPosition <= getWorkingAreaLength(), "Position is out of the working area boundaries", 0);
+    return getChromatogramCoreValue(trace, workingAreaPosition + workingArea.startPos);
+}
+
+ushort MultipleChromatogramAlignmentRowData::getChromatogramValue(DNAChromatogram::Trace trace, qint64 mcaVisiblePosition) const {
+    SAFE_POINT(0 <= mcaVisiblePosition && mcaVisiblePosition <= getRowLength(), "Position is out of the row boundaries", U2Msa::GAP_CHAR);
+    return getChromatogramWorkingAreaValue(trace, mapVisiblePositionToCorePosition(mcaVisiblePosition));
+}
+
+void MultipleChromatogramAlignmentRowData::insertGap(U2OpStatus &os, qint64 mcaVisiblePosition) {
+    insertGaps(os, mcaVisiblePosition, 1);
+}
+
+void MultipleChromatogramAlignmentRowData::insertGaps(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count) {
+    MsaRowUtils::insertGaps(os, commonGapModel, getRowLengthWithoutTrailing(), mapVisiblePositionToRealPosition(mcaVisiblePosition), count);
+    updateCachedGapModels();
+}
+
+void MultipleChromatogramAlignmentRowData::removeGap(U2OpStatus &os, qint64 mcaVisiblePosition) {
+    removeGaps(os, mcaVisiblePosition, 1);
+}
+
+void MultipleChromatogramAlignmentRowData::removeGaps(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count) {
+    MsaRowUtils::removeGaps(os, commonGapModel, getRowLengthWithoutTrailing(), mapVisiblePositionToRealPosition(mcaVisiblePosition), count);
+}
+
+void MultipleChromatogramAlignmentRowData::replaceCharInEditedSequence(U2OpStatus &os, qint64 mcaVisiblePosition, char newChar) {
+    const qint64 corePosition = mapVisiblePositionToCorePosition(mcaVisiblePosition);
+    SAFE_POINT(-1 != corePosition, "An attempt to change the sequence in the position that is out of boundaries", );
+    const char currentChar = getEditedSequenceChar(mcaVisiblePosition);
+    if (U2Msa::GAP_CHAR == currentChar) {
+        CHECK(newChar != U2Msa::GAP_CHAR, );
+        replaceGapToCharInEditedSequence(os, corePosition, newChar);
+    } else if (U2Msa::GAP_CHAR == newChar) {
+        replaceCharToGapInEditedSequence(os, corePosition, newChar);
+    } else {
+        CHECK(newChar != currentChar, );
+        replaceCharToCharInEditedSequence(os, corePosition, newChar);
     }
 }
 
-const DNASequence * MultipleChromatogramAlignmentRowData::selectSequence(SequenceType sequenceType) const {
-    switch (sequenceType) {
-    case Predicted:
-        return &predictedSequence;
-    case Editable:
-        return &editedSequence;
-    default:
-        assert(false);
-        return NULL;
+MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentRowData::getCopy(const MultipleChromatogramAlignmentData *mcaData) const {
+    return MultipleChromatogramAlignmentRow(new MultipleChromatogramAlignmentRowData(NULL == mcaData ? this->mcaData : mcaData, *this));
+}
+
+bool MultipleChromatogramAlignmentRowData::operator ==(const MultipleChromatogramAlignmentRowData &mcaRowData) const {
+    return MatchExactly == DNASequenceUtils::compare(predictedSequence, mcaRowData.predictedSequence) &&
+            MatchExactly == DNASequenceUtils::compare(editedSequence, mcaRowData.editedSequence) &&
+            predictedSequenceCachedGapModel == mcaRowData.predictedSequenceCachedGapModel &&
+            editedSequenceCachedGapModel == mcaRowData.editedSequenceCachedGapModel &&
+            chromatogram == mcaRowData.chromatogram;
+}
+
+bool MultipleChromatogramAlignmentRowData::operator !=(const MultipleChromatogramAlignmentRowData &mcaRowData) const {
+    return !operator ==(mcaRowData);
+}
+
+bool MultipleChromatogramAlignmentRowData::isCommonGap(qint64 mcaVisiblePosition) const {
+    const qint64 realPosition = mapVisiblePositionToRealPosition(mcaVisiblePosition);
+    return MsaRowUtils::isGap(getCoreLength(), commonGapModel, realPosition);
+}
+
+void MultipleChromatogramAlignmentRowData::setGapModel(const U2MsaRowGapModel &newGapModel) {
+    commonGapModel = newGapModel;
+    updateCachedGapModels();
+}
+
+void MultipleChromatogramAlignmentRowData::extractCommonGapModel(const U2MsaRowGapModel &predictedSequenceGapModel, const U2MsaRowGapModel &editedSequenceGapModel) {
+    MsaRowUtils::getGapModelsDifference(predictedSequenceGapModel, editedSequenceGapModel, commonGapModel, predictedSequenceGapModelDifference, editedSequenceGapModelDifference);
+}
+
+namespace {
+
+void removeTrailingGapsInDifference(qint64 dataLength, qint64 commonCoreGapModelLength, U2MsaRowGapModel &difference) {
+    U2MsaRowGapModel cutDifference;
+    qint64 accumulatedGapsLength = 0;
+    foreach (const U2MsaGap &gap, difference) {
+        if (gap.offset <= dataLength + commonCoreGapModelLength + accumulatedGapsLength) {
+            cutDifference << gap;
+        }
     }
+    difference = cutDifference;
+}
+
+}
+
+void MultipleChromatogramAlignmentRowData::removeTrailingGaps() {
+    const U2MsaRowGapModel commonCoreGapModel = getCommonCoreGapModel();
+    const qint64 commonCoreGapModelLength = MsaRowUtils::getGapsLength(commonCoreGapModel);
+
+    removeTrailingGapsInDifference(getPredictedSequenceDataLength(), commonCoreGapModelLength, predictedSequenceGapModelDifference);
+    removeTrailingGapsInDifference(getEditedSequenceDataLength(), commonCoreGapModelLength, editedSequenceGapModelDifference);
+
+    const qint64 rowLength = getCoreStart() + getPredictedSequenceDataLength() + getPredictedSequenceGuaranteedGapsLength();
+    MsaRowUtils::chopGapModel(commonGapModel, rowLength);
+    updateCachedGapModels();
+}
+
+void MultipleChromatogramAlignmentRowData::updateCachedGapModels() const {
+    predictedSequenceCachedGapModel = MsaRowUtils::insertGapModel(commonGapModel, predictedSequenceGapModelDifference);
+    editedSequenceCachedGapModel = MsaRowUtils::insertGapModel(commonGapModel, editedSequenceGapModelDifference);
+}
+
+qint64 MultipleChromatogramAlignmentRowData::getPredictedSequenceGuaranteedGapsLength() const {
+    return MsaRowUtils::getGapsLength(predictedSequenceGapModelDifference);
+}
+
+qint64 MultipleChromatogramAlignmentRowData::mapVisiblePositionToCorePosition(qint64 mcaVisiblePosition) const {
+    const qint64 realPosition = mapVisiblePositionToRealPosition(mcaVisiblePosition);
+    CHECK(getCoreRegion().contains(realPosition), -1);
+    return realPosition - getCoreStart();
+}
+
+qint64 MultipleChromatogramAlignmentRowData::mapVisiblePositionToRealPosition(qint64 mcaVisiblePosition) const {
+    return mcaVisiblePosition + workingArea.startPos;
+}
+
+U2MsaRowGapModel MultipleChromatogramAlignmentRowData::getPredictedSequenceCoreGapModel() const {
+    U2MsaRowGapModel predictedSequenceCoreGapModel = predictedSequenceCachedGapModel;
+    MsaRowUtils::chopGapModel(predictedSequenceCoreGapModel, getCoreRegion());
+    return predictedSequenceCoreGapModel;
+}
+
+U2MsaRowGapModel MultipleChromatogramAlignmentRowData::getPredictedSequenceWorkingAreaGapModel() const {
+    U2MsaRowGapModel predictedSequenceWorkingAreaGapModel = predictedSequenceCachedGapModel;
+    MsaRowUtils::chopGapModel(predictedSequenceWorkingAreaGapModel, getWorkingAreaRegion());
+    return predictedSequenceWorkingAreaGapModel;
+}
+
+U2MsaRowGapModel MultipleChromatogramAlignmentRowData::getEditedSequenceCoreGapModel() const {
+    U2MsaRowGapModel editedSequenceCoreGapModel = editedSequenceCachedGapModel;
+    MsaRowUtils::chopGapModel(editedSequenceCoreGapModel, getCoreRegion());
+    return editedSequenceCoreGapModel;
+}
+
+U2MsaRowGapModel MultipleChromatogramAlignmentRowData::getEditedSequenceWorkingAreaGapModel() const {
+    U2MsaRowGapModel editedSequenceWorkingAreaGapModel = editedSequenceCachedGapModel;
+    MsaRowUtils::chopGapModel(editedSequenceWorkingAreaGapModel, getWorkingAreaRegion());
+    return editedSequenceWorkingAreaGapModel;
+}
+
+U2MsaRowGapModel MultipleChromatogramAlignmentRowData::getCommonCoreGapModel() const {
+    U2MsaRowGapModel commonCoreGapModel = commonGapModel;
+    MsaRowUtils::chopGapModel(commonCoreGapModel, getCoreRegion());
+    return commonCoreGapModel;
+}
+
+void MultipleChromatogramAlignmentRowData::replaceGapToCharInEditedSequence(U2OpStatus &os, qint64 corePosition, char newChar) {
+    const qint64 dataPosition = MsaRowUtils::getUngappedPosition(editedSequenceCachedGapModel, getEditedSequenceDataLength(), corePosition, true);
+    SAFE_POINT(0 <= dataPosition && dataPosition < editedSequence.length(), "The edited sequence data position is out of boundaries", );
+    editedSequence.seq.insert(dataPosition + 1, newChar);
+
+    if (U2Msa::GAP_CHAR == getPredictedSequenceCoreChar(corePosition)) {
+        MsaRowUtils::removeGaps(os, commonGapModel, getRowLengthWithoutTrailing(), corePosition + getCoreStart(), 1);
+        MsaRowUtils::insertGaps(os, predictedSequenceGapModelDifference, getCoreLength(), corePosition, 1);
+    } else {
+        MsaRowUtils::insertGaps(os, editedSequenceGapModelDifference, getCoreLength(), corePosition, 1);
+    }
+    updateCachedGapModels();
+}
+
+void MultipleChromatogramAlignmentRowData::replaceCharToGapInEditedSequence(U2OpStatus &os, qint64 corePosition, char newChar) {
+    const qint64 dataPosition = MsaRowUtils::getUngappedPosition(editedSequenceCachedGapModel, getEditedSequenceDataLength(), corePosition);
+    SAFE_POINT(-1 != dataPosition, "Expect a symbol on the requested poosition, got a gap", );
+    SAFE_POINT(0 <= dataPosition && dataPosition < editedSequence.length(), "The edited sequence data position is out of boundaries", );
+    editedSequence.seq.remove(dataPosition, 1);
+
+    if (U2Msa::GAP_CHAR == getPredictedSequenceCoreChar(corePosition)) {
+        MsaRowUtils::insertGaps(os, commonGapModel, getRowLengthWithoutTrailing(), corePosition + getCoreStart(), 1);
+        MsaRowUtils::removeGaps(os, predictedSequenceGapModelDifference, getCoreLength(), corePosition, 1);
+    } else {
+        MsaRowUtils::insertGaps(os, editedSequenceGapModelDifference, getCoreLength(), corePosition, 1);
+    }
+    updateCachedGapModels();
+}
+
+void MultipleChromatogramAlignmentRowData::replaceCharToCharInEditedSequence(U2OpStatus &os, qint64 corePosition, char newChar) {
+    const qint64 dataPosition = MsaRowUtils::getUngappedPosition(editedSequenceCachedGapModel, getEditedSequenceDataLength(), corePosition);
+    SAFE_POINT(-1 != dataPosition, "Expect a symbol on the requested poosition, got a gap", );
+    SAFE_POINT(0 <= dataPosition && dataPosition < editedSequence.length(), "The edited sequence data position is out of boundaries", );
+    editedSequence.seq[static_cast<int>(dataPosition)] = newChar;
+}
+
+void MultipleChromatogramAlignmentRowData::copy(const MultipleChromatogramAlignmentRowData &mcaRowData) {
+    chromatogram = mcaRowData.chromatogram;
+    predictedSequence = mcaRowData.predictedSequence;
+    editedSequence = mcaRowData.editedSequence;
+    commonGapModel = mcaRowData.commonGapModel;
+    predictedSequenceCachedGapModel = mcaRowData.predictedSequenceCachedGapModel;
+    editedSequenceCachedGapModel = mcaRowData.editedSequenceCachedGapModel;
+    predictedSequenceGapModelDifference = mcaRowData.predictedSequenceGapModelDifference;
+    editedSequenceGapModelDifference = mcaRowData.editedSequenceGapModelDifference;
+    workingArea = mcaRowData.workingArea;
+    mcaData = mcaRowData.mcaData;
 }
 
 }   // namespace U2
