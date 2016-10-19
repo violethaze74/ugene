@@ -150,7 +150,7 @@ void CuffdiffWorkerFactory::init()
             CuffdiffWorker::tr("Mask file"),
             CuffdiffWorker::tr("Ignore all reads that could have come from transcripts"
             " in this file. It is recommended to include any annotated rRNA, mitochondrial"
-            " transcripts other abundant transcripts you wish to ignore in your analysis"
+            " transcripts or other abundant transcripts you wish to ignore in your analysis"
             " in this file. Due to variable efficiency of mRNA enrichment methods and"
             " rRNA depletion kits, masking these transcripts often improves the overall"
             " robustness of transcript abundance estimates."));

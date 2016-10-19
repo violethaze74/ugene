@@ -437,25 +437,6 @@ Probably the data is too big.</translation>
     </message>
 </context>
 <context>
-    <name>EditAnnotationDialog</name>
-    <message>
-        <source>Edit Annotation</source>
-        <translation type="vanished">Edit Annotation</translation>
-    </message>
-    <message>
-        <source>Annotation name</source>
-        <translation type="vanished">Annotation name</translation>
-    </message>
-    <message>
-        <source>Location</source>
-        <translation type="vanished">Location</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation type="vanished">...</translation>
-    </message>
-</context>
-<context>
     <name>ExportConsensusDialog</name>
     <message>
         <location filename="../src/ov_assembly/ExportConsensusDialog.ui" line="14"/>
@@ -569,10 +550,6 @@ Probably the data is too big.</translation>
         <translation>Compress the file</translation>
     </message>
     <message>
-        <source>Additional options</source>
-        <translation type="vanished">Additional options</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/ExportCoverageDialog.ui" line="142"/>
         <source>Export coverage value</source>
         <translation>Export coverage value</translation>
@@ -680,10 +657,6 @@ Probably the data is too big.</translation>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui" line="14"/>
         <source>Export Assembly Region</source>
         <translation>Export Assembly Region</translation>
-    </message>
-    <message>
-        <source>Export to file</source>
-        <translation type="vanished">Export to file</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.ui" line="22"/>
@@ -2166,35 +2139,27 @@ Double-click to collapse the branch</translation>
     <message>
         <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="217"/>
         <source>Select genetic code</source>
-        <translation type="unfinished"></translation>
+        <translation>Select genetic code</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="229"/>
         <source>Show/hide amino acid translations</source>
-        <translation type="unfinished"></translation>
+        <translation>Show/hide amino acid translations</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="237"/>
         <source>Show direct only</source>
-        <translation type="unfinished"></translation>
+        <translation>Show direct only</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="238"/>
         <source>Show complementary only</source>
-        <translation type="unfinished"></translation>
+        <translation>Show complementary only</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="239"/>
         <source>Show all</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Amino translation</source>
-        <translation type="vanished">Amino translation</translation>
-    </message>
-    <message>
-        <source>Translation frames</source>
-        <translation type="vanished">Translation frames</translation>
+        <translation>Show all</translation>
     </message>
 </context>
 <context>
@@ -2557,10 +2522,6 @@ Double-click to collapse the branch</translation>
         <translation>Go to position...</translation>
     </message>
     <message>
-        <source>Rename item</source>
-        <translation type="vanished">Rename item</translation>
-    </message>
-    <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="141"/>
         <source>Find pattern...</source>
         <translation>Find pattern...</translation>
@@ -2633,7 +2594,7 @@ Double-click to collapse the branch</translation>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1095"/>
         <source>Show codon table</source>
-        <translation type="unfinished"></translation>
+        <translation>Show codon table</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1346"/>
@@ -2780,34 +2741,14 @@ Double-click to collapse the branch</translation>
         <translation>Edit</translation>
     </message>
     <message>
-        <source>Rename item</source>
-        <translation type="vanished">Rename item</translation>
-    </message>
-    <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="568"/>
         <source>At least one dragged annotation is out of the sequence range!</source>
         <translation>At least one dragged annotation is out of the sequence range!</translation>
     </message>
     <message>
-        <source>Rename Group</source>
-        <translation type="vanished">Rename Group</translation>
-    </message>
-    <message>
-        <source>Rename Qualifier</source>
-        <translation type="vanished">Rename Qualifier</translation>
-    </message>
-    <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1970"/>
         <source>Create Permanent Annotation</source>
         <translation>Create Permanent Annotation</translation>
-    </message>
-    <message>
-        <source>Edit qualifier</source>
-        <translation type="vanished">Edit qualifier</translation>
-    </message>
-    <message>
-        <source>View qualifier</source>
-        <translation type="vanished">View qualifier</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="228"/>
@@ -2916,7 +2857,7 @@ Double-click to collapse the branch</translation>
     <message>
         <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="259"/>
         <source>Internal error: database is busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Internal error: database is busy</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="294"/>
@@ -3274,7 +3215,7 @@ You don&apos;t have enough rights to change file</translation>
     <message>
         <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="94"/>
         <source>&lt;center&gt;&lt;b&gt;Assembly database is busy&lt;/b&gt;&lt;br&gt;Some task occupied database.&lt;br&gt; When the database is free all functionality of Assembly Browser will be available again.&lt;/center&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;center&gt;&lt;b&gt;Assembly database is busy&lt;/b&gt;&lt;br&gt;Some task occupied database.&lt;br&gt; When the database is free all functionality of Assembly Browser will be available again.&lt;/center&gt;</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="114"/>
@@ -3349,12 +3290,12 @@ You don&apos;t have enough rights to change file</translation>
     <message>
         <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="951"/>
         <source>Export visible reads as sequence.</source>
-        <translation type="unfinished"></translation>
+        <translation>Export visible reads as sequence.</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="952"/>
         <source>There are no reads in the current area. Nothing to export!</source>
-        <translation type="unfinished"></translation>
+        <translation>There are no reads in the current area. Nothing to export!</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyReadsArea.cpp" line="958"/>
@@ -3488,8 +3429,8 @@ You don&apos;t have enough rights to change file</translation>
     <name>U2::AutoAnnotationsADVAction</name>
     <message>
         <location filename="../src/ov_sequence/AutoAnnotationUtils.cpp" line="46"/>
-        <source>Automatic Annotations Highlighting</source>
-        <translation>Automatic Annotations Highlighting</translation>
+        <source>Automatic annotations highlighting</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AutoAnnotationUtils.cpp" line="58"/>
@@ -3573,13 +3514,9 @@ You don&apos;t have enough rights to change file</translation>
 <context>
     <name>U2::CalculateCoveragePerBaseOnRegionTask</name>
     <message>
-        <source>Calculate coverage per base for assembly %1 on region (%2, %3)</source>
-        <translation type="vanished">Calculate coverage per base for assembly %1 on region (%2, %3)</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="35"/>
         <source>Calculate coverage per base for assembly on region (%1, %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculate coverage per base for assembly on region (%1, %2)</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="41"/>
@@ -3605,13 +3542,9 @@ You don&apos;t have enough rights to change file</translation>
 <context>
     <name>U2::CalculateCoveragePerBaseTask</name>
     <message>
-        <source>Calculate coverage per base for assembly %1</source>
-        <translation type="vanished">Calculate coverage per base for assembly %1</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="136"/>
         <source>Calculate coverage per base for assembly</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculate coverage per base for assembly</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="141"/>
@@ -3622,22 +3555,6 @@ You don&apos;t have enough rights to change file</translation>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="142"/>
         <source>Invalid assembly ID</source>
         <translation>Invalid assembly ID</translation>
-    </message>
-    <message>
-        <source>Assembly DBI is NULL</source>
-        <translation type="vanished">Assembly DBI is NULL</translation>
-    </message>
-    <message>
-        <source>Attribute DBI is NULL</source>
-        <translation type="vanished">Attribute DBI is NULL</translation>
-    </message>
-    <message>
-        <source>Can&apos;t get the assembly length: attribute is missing</source>
-        <translation type="vanished">Can&apos;t get the assembly length: attribute is missing</translation>
-    </message>
-    <message>
-        <source>Assembly has zero length</source>
-        <translation type="vanished">Assembly has zero length</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="167"/>
@@ -3779,10 +3696,6 @@ You don&apos;t have enough rights to change file</translation>
         <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="186"/>
         <source>Nucleotide</source>
         <translation>Nucleotide</translation>
-    </message>
-    <message>
-        <source>Ok</source>
-        <translation type="vanished">Ok</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ColorSchemaDialogController.cpp" line="196"/>
@@ -3954,15 +3867,7 @@ You don&apos;t have enough rights to change file</translation>
         <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="219"/>
         <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="225"/>
         <source>Illegal region!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start position must be less than end position!</source>
-        <translation type="vanished">Start position must be less than end position!</translation>
-    </message>
-    <message>
-        <source>Entered region not contained in current sequence</source>
-        <translation type="vanished">Entered region not contained in current sequence</translation>
+        <translation>Illegal region!</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/CreateSubalignmentDialogController.cpp" line="232"/>
@@ -4033,11 +3938,7 @@ You don&apos;t have enough rights to change file</translation>
     <message>
         <location filename="../src/ov_sequence/DetView.cpp" line="67"/>
         <source>Show/hide translations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show amino translations</source>
-        <translation type="vanished">Show amino translations</translation>
+        <translation>Show/hide translations</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/DetView.cpp" line="71"/>
@@ -4223,34 +4124,7 @@ Please, check external tools in the settings.</translation>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="413"/>
         <source>Cannot remove temporary file %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>U2::EditAnnotationDialogController</name>
-    <message>
-        <source>Location is empty!</source>
-        <translation type="vanished">Location is empty!</translation>
-    </message>
-    <message>
-        <source>Invalid location!</source>
-        <translation type="vanished">Invalid location!</translation>
-    </message>
-    <message>
-        <source>Error!</source>
-        <translation type="vanished">Error!</translation>
-    </message>
-    <message>
-        <source>Annotation location empty or invalid!</source>
-        <translation type="vanished">Annotation location empty or invalid!</translation>
-    </message>
-    <message>
-        <source>Wrong annotation name!</source>
-        <translation type="vanished">Wrong annotation name!</translation>
-    </message>
-    <message>
-        <source>New annotation locations is out of sequence bounds!</source>
-        <translation type="vanished">New annotation locations is out of sequence bounds!</translation>
+        <translation>Cannot remove temporary file %1</translation>
     </message>
 </context>
 <context>
@@ -4424,15 +4298,7 @@ Please, check external tools in the settings.</translation>
     <message>
         <location filename="../src/ov_assembly/ExportCoverageDialog.cpp" line="113"/>
         <source>Export coverage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Compressed </source>
-        <translation type="vanished">Compressed </translation>
-    </message>
-    <message>
-        <source>Export to...</source>
-        <translation type="vanished">Export to...</translation>
+        <translation>Export coverage</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExportCoverageDialog.cpp" line="99"/>
@@ -4461,13 +4327,9 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::ExportCoverageTask</name>
     <message>
-        <source>Export coverage per base for %1</source>
-        <translation type="vanished">Export coverage per base for %1</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="62"/>
         <source>Export assembly coverage per base</source>
-        <translation type="unfinished"></translation>
+        <translation>Export assembly coverage per base</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="70"/>
@@ -4483,10 +4345,6 @@ Please, check external tools in the settings.</translation>
         <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="72"/>
         <source>Invalid destination url</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Assembly DBI is NULL</source>
-        <translation type="vanished">Assembly DBI is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="84"/>
@@ -4509,50 +4367,27 @@ Please, check external tools in the settings.</translation>
     <message>
         <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="49"/>
         <source>Export</source>
-        <translation type="unfinished">Export</translation>
+        <translation>Export</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="50"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="96"/>
         <source>Warning</source>
-        <translation type="unfinished">Warning</translation>
+        <translation>Warning</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="96"/>
         <source>Export to file URL is empty!</source>
-        <translation type="unfinished">Export to file URL is empty!</translation>
+        <translation>Export to file URL is empty!</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="123"/>
         <source>Select file to save...</source>
-        <translation type="unfinished">Select file to save...</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ExportHighligtningDialogController</name>
-    <message>
-        <source>Export</source>
-        <translation type="vanished">Export</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Cancel</translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation type="vanished">Warning</translation>
-    </message>
-    <message>
-        <source>Export to file URL is empty!</source>
-        <translation type="vanished">Export to file URL is empty!</translation>
-    </message>
-    <message>
-        <source>Select file to save...</source>
-        <translation type="vanished">Select file to save...</translation>
+        <translation>Select file to save...</translation>
     </message>
 </context>
 <context>
@@ -4620,18 +4455,14 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::ExtractAssemblyRegionDialog</name>
     <message>
-        <source>Export consensus</source>
-        <translation type="vanished">Export consensus</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.cpp" line="46"/>
         <source>Export</source>
-        <translation type="unfinished">Export</translation>
+        <translation>Export</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.cpp" line="47"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.cpp" line="51"/>
@@ -4642,7 +4473,7 @@ Please, check external tools in the settings.</translation>
     <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.cpp" line="87"/>
         <source>Export Assembly Region</source>
-        <translation type="unfinished">Export Assembly Region</translation>
+        <translation>Export Assembly Region</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExtractAssemblyRegionDialog.cpp" line="110"/>
@@ -4686,22 +4517,22 @@ Please, check external tools in the settings.</translation>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="273"/>
         <source>Filter unpaired reads task</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter unpaired reads task</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="280"/>
         <source>Filtering unpaired reads is launched on not-paired data</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtering unpaired reads is launched on not-paired data</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="291"/>
         <source>The count of upstream files is not equal to the count of downstream files</source>
-        <translation type="unfinished"></translation>
+        <translation>The count of upstream files is not equal to the count of downstream files</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="324"/>
         <source>%1 pairs are complete, %2 reads without a pair were found in files %3 and %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 pairs are complete, %2 reads without a pair were found in files %3 and %4.</translation>
     </message>
 </context>
 <context>
@@ -4829,7 +4660,7 @@ Please, check external tools in the settings.</translation>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="779"/>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="787"/>
         <source>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;br&gt;&lt;/br&gt;&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;br&gt;&lt;/br&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="708"/>
@@ -4852,7 +4683,7 @@ Please, check external tools in the settings.</translation>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="763"/>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="771"/>
         <source>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;&lt;font color=%1&gt;%2&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="786"/>
@@ -4980,7 +4811,7 @@ Please, check external tools in the settings.</translation>
     <message>
         <location filename="../src/ov_sequence/ADVGraphModel.cpp" line="442"/>
         <source>Graph is not available. Try to change calculation settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Graph is not available. Try to change calculation settings.</translation>
     </message>
 </context>
 <context>
@@ -5107,22 +4938,22 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="194"/>
         <source>Attribute DBI is NULL</source>
-        <translation type="unfinished">Attribute DBI is NULL</translation>
+        <translation>Attribute DBI is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="198"/>
         <source>Can&apos;t get the assembly length: attribute is missing</source>
-        <translation type="unfinished">Can&apos;t get the assembly length: attribute is missing</translation>
+        <translation>Can&apos;t get the assembly length: attribute is missing</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="201"/>
         <source>Assembly has zero length</source>
-        <translation type="unfinished">Assembly has zero length</translation>
+        <translation>Assembly has zero length</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.h" line="43"/>
         <source>Get length of Assembly</source>
-        <translation type="unfinished"></translation>
+        <translation>Get length of Assembly</translation>
     </message>
 </context>
 <context>
@@ -5130,12 +4961,12 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="54"/>
         <source>Assembly DBI is NULL</source>
-        <translation type="unfinished">Assembly DBI is NULL</translation>
+        <translation>Assembly DBI is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExportCoverageTask.h" line="70"/>
         <source>Get visible name of Assembly</source>
-        <translation type="unfinished"></translation>
+        <translation>Get visible name of Assembly</translation>
     </message>
 </context>
 <context>
@@ -6356,20 +6187,12 @@ Simple overview is unavailable.</translation>
     <message>
         <location filename="../src/ov_sequence/WindowStepSelectorWidget.cpp" line="107"/>
         <source>Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimum</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/WindowStepSelectorWidget.cpp" line="108"/>
         <source>Maximum</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Minimum:</source>
-        <translation type="vanished">Minimum:</translation>
-    </message>
-    <message>
-        <source>Maximum:</source>
-        <translation type="vanished">Maximum:</translation>
+        <translation>Maximum</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/WindowStepSelectorWidget.cpp" line="138"/>
@@ -6623,10 +6446,6 @@ Simple overview is unavailable.</translation>
         <translation>Save file</translation>
     </message>
     <message>
-        <source>Clustal format (*.aln)</source>
-        <translation type="vanished">Clustal format (*.aln)</translation>
-    </message>
-    <message>
         <location filename="../src/ov_msa/PairAlign/PairAlign.cpp" line="363"/>
         <source>Error</source>
         <translation>Error</translation>
@@ -6837,13 +6656,9 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::SecStructDialog</name>
     <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
-    </message>
-    <message>
         <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="65"/>
         <source>Predict</source>
-        <translation type="unfinished"></translation>
+        <translation>Predict</translation>
     </message>
     <message>
         <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
@@ -7446,22 +7261,14 @@ Please, load the corresponding plugins.</translation>
 <context>
     <name>U2::WindowStepSelectorWidget</name>
     <message>
-        <source>Window:</source>
-        <translation type="vanished">Window:</translation>
-    </message>
-    <message>
-        <source>Steps per window:</source>
-        <translation type="vanished">Steps per window:</translation>
-    </message>
-    <message>
         <location filename="../src/ov_sequence/WindowStepSelectorWidget.cpp" line="51"/>
         <source>Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Window</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/WindowStepSelectorWidget.cpp" line="52"/>
         <source>Steps per window</source>
-        <translation type="unfinished"></translation>
+        <translation>Steps per window</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/WindowStepSelectorWidget.cpp" line="71"/>

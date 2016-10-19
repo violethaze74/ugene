@@ -1159,17 +1159,16 @@ bowtie index file</translation>
         <translation>Producer</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="91"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="87"/>
         <source>Open containing directory</source>
         <translation>Open containing directory</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="82"/>
         <source>Open by operating system</source>
-        <translation>Open by operating system</translation>
+        <translation type="vanished">Open by operating system</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="209"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="204"/>
         <source>files</source>
         <translation>files</translation>
     </message>
