@@ -321,9 +321,9 @@ void FilterUnpairedReadsTask::compareFiles(const GUrl &upstream, const GUrl &dow
     CHECK_OP(stateInfo, );
 
     if (comparator.getUnpairedCount() != 0) {
-        stateInfo.addWarning(tr("%1 pairs are complete, %2 reads without a pair were found in files %3 and %4.")
+        stateInfo.addWarning(tr("%1 read pairs were mapped, %2 reads without a pair from files \"%3\" and \"%4\" were skipped.")
                              .arg(comparator.getPairsCount()).arg(comparator.getUnpairedCount())
-                             .arg(upstream.getURLString()).arg(downstream.getURLString()));
+                             .arg(QFileInfo(upstream.getURLString()).fileName()).arg(QFileInfo(downstream.getURLString()).fileName()));
     }
 }
 
