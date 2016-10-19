@@ -538,7 +538,7 @@ void DotPlotWidget::sl_showSaveImageDialog() {
 bool DotPlotWidget::sl_showSaveFileDialog() {
     LastUsedDirHelper lod("Dotplot");
     if (dpDirectResultListener->dotPlotList->isEmpty() || dpRevComplResultsListener->dotPlotList->isEmpty()) {
-        QMessageBox::critical(this, tr("File saving error"), tr("Nothing to save: dotplot is empty."));
+        QMessageBox::critical(this, tr("Error Saving Dotplot"), tr("The dotplot can't be saved as it is empty."));
         return true;
     }
 
