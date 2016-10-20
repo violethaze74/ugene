@@ -26,7 +26,6 @@
 
 #include <U2View/PanView.h>
 
-
 namespace U2 {
 
 class ADVSequenceObjectContext;

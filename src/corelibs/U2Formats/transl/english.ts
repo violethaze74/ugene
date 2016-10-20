@@ -108,9 +108,8 @@
 <context>
     <name>U2</name>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="219"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
-        <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
+        <translation type="vanished">File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
 </context>
 <context>
@@ -1325,6 +1324,11 @@
         <location filename="../src/GFFFormat.cpp" line="103"/>
         <source>Parsing error: GFF version %1 is not supported</source>
         <translation>Parsing error: GFF version %1 is not supported</translation>
+    </message>
+    <message>
+        <location filename="../src/GFFFormat.cpp" line="219"/>
+        <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
+        <translation type="unfinished">File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
         <location filename="../src/GFFFormat.cpp" line="265"/>

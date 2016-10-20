@@ -29,6 +29,7 @@ namespace U2 {
 class ConvertAlignment2Stockholm;
 
 class HmmerBuildFromFileTask : public ExternalToolSupportTask {
+    Q_OBJECT
 public:
     HmmerBuildFromFileTask(const HmmerBuildSettings &settigngs, const QString &msaUrl);
 

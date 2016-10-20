@@ -30,6 +30,7 @@ class IOAdapter;
 class U2OpStatus;
 
 class TabulatedFormatReader : public QObject {
+    Q_OBJECT
 public:
     TabulatedFormatReader(U2OpStatus &os, IOAdapter *ioAdapter);
 

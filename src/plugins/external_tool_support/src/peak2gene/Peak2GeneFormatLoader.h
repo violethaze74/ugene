@@ -33,6 +33,7 @@ class IOAdapter;
 class U2OpStatus;
 
 class Peak2GeneFormatLoader : public QObject {
+    Q_OBJECT
 public:
     Peak2GeneFormatLoader(U2OpStatus &os, IOAdapter *ioAdapter);
 

@@ -50,6 +50,7 @@ private:
 };
 
 class CloseWindowsTask : public Task {
+    Q_OBJECT
 public:
     CloseWindowsTask();
 
@@ -60,6 +61,7 @@ private:
 };
 
 class CancelAllTask : public Task {
+    Q_OBJECT
 public:
     CancelAllTask();
 
