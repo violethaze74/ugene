@@ -1056,8 +1056,8 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "5371.bam.ugenedb"));
 
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open, 
-        HI::GTGlobals::UseMethod::UseKey , GTFileDialogUtils::TextInput::CopyPaste);
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open,
+        GTGlobals::UseKey , GTFileDialogUtils::CopyPaste);
     GTUtilsDialog::waitForDialog(os, ob);
 
     ob->openFileDialog();
