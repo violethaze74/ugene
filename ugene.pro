@@ -33,7 +33,7 @@ SUBDIRS += \
           src/corelibs/U2Private \
           src/corelibs/U2Gui \
           src/corelibs/U2View \
-#          src/corelibs/U2Designer \
+          src/corelibs/U2Designer \
           src/corelibs/U2Script \
           src/ugeneui \
 #          src/ugenecl \
