@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>614</width>
-    <height>473</height>
+    <height>496</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -130,7 +130,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="../../../U2Gui.qrc">
+              <iconset resource="../../U2Gui.qrc">
                <normaloff>:/core/images/group_auto.png</normaloff>:/core/images/group_auto.png</iconset>
              </property>
             </widget>
@@ -309,7 +309,7 @@
                     <string>...</string>
                    </property>
                    <property name="icon">
-                    <iconset resource="../../../U2Gui.qrc">
+                    <iconset resource="../../U2Gui.qrc">
                      <normaloff>:/core/images/do_complement.png</normaloff>:/core/images/do_complement.png</iconset>
                    </property>
                   </widget>
@@ -388,7 +388,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset resource="../../../U2Gui.qrc">
+         <iconset resource="../../U2Gui.qrc">
           <normaloff>:/core/images/load_selected_documents.png</normaloff>:/core/images/load_selected_documents.png</iconset>
         </property>
        </widget>
@@ -432,8 +432,30 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lwAnnotationType</tabstop>
+  <tabstop>leGroupName</tabstop>
+  <tabstop>tbSelectGroupName</tabstop>
+  <tabstop>leAnnotationName</tabstop>
+  <tabstop>leDescription</tabstop>
+  <tabstop>chbUsePatternNames</tabstop>
+  <tabstop>rbSimpleFormat</tabstop>
+  <tabstop>leRegionStart</tabstop>
+  <tabstop>leRegionEnd</tabstop>
+  <tabstop>chbComplement</tabstop>
+  <tabstop>rbGenbankFormat</tabstop>
+  <tabstop>leLocation</tabstop>
+  <tabstop>tbDoComplement</tabstop>
+  <tabstop>rbExistingTable</tabstop>
+  <tabstop>cbExistingTable</tabstop>
+  <tabstop>tbBrowseExistingTable</tabstop>
+  <tabstop>rbCreateNewTable</tabstop>
+  <tabstop>leNewTablePath</tabstop>
+  <tabstop>tbBrowseNewTable</tabstop>
+  <tabstop>rbUseAutoTable</tabstop>
+ </tabstops>
  <resources>
-  <include location="../../../U2Gui.qrc"/>
+  <include location="../../U2Gui.qrc"/>
  </resources>
  <connections>
   <connection>

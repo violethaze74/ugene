@@ -4830,8 +4830,8 @@ Please, check external tools in the settings.</source>
     </message>
     <message>
         <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="63"/>
-        <source>Delete all labels...</source>
-        <translation>Удалить все надписи...</translation>
+        <source>Delete all labels</source>
+        <translation>Удалить все надписи</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="222"/>

@@ -17,7 +17,16 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -35,7 +44,16 @@
       <property name="sizeConstraint">
        <enum>QLayout::SetMinAndMaxSize</enum>
       </property>
-      <property name="margin">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
@@ -63,7 +81,7 @@
            <string>...</string>
           </property>
           <property name="icon">
-           <iconset resource="../../../U2Gui.qrc">
+           <iconset resource="../../U2Gui.qrc">
             <normaloff>:/core/images/load_selected_documents.png</normaloff>:/core/images/load_selected_documents.png</iconset>
           </property>
          </widget>
@@ -120,7 +138,16 @@
       <property name="sizeConstraint">
        <enum>QLayout::SetMinAndMaxSize</enum>
       </property>
-      <property name="margin">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
@@ -148,7 +175,7 @@
            <string>...</string>
           </property>
           <property name="icon">
-           <iconset resource="../../../U2Gui.qrc">
+           <iconset resource="../../U2Gui.qrc">
             <normaloff>:/core/images/group_auto.png</normaloff>:/core/images/group_auto.png</iconset>
           </property>
          </widget>
@@ -215,7 +242,7 @@
            <string>...</string>
           </property>
           <property name="icon">
-           <iconset resource="../../../U2Gui.qrc">
+           <iconset resource="../../U2Gui.qrc">
             <normaloff>:/core/images/do_complement.png</normaloff>:/core/images/do_complement.png</iconset>
           </property>
          </widget>
@@ -247,8 +274,25 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>rbExistingTable</tabstop>
+  <tabstop>cbExistingTable</tabstop>
+  <tabstop>tbBrowseExistingTable</tabstop>
+  <tabstop>rbCreateNewTable</tabstop>
+  <tabstop>leNewTablePath</tabstop>
+  <tabstop>tbBrowseNewTable</tabstop>
+  <tabstop>rbUseAutoTable</tabstop>
+  <tabstop>leGroupName</tabstop>
+  <tabstop>tbSelectGroupName</tabstop>
+  <tabstop>cbAnnotationType</tabstop>
+  <tabstop>leAnnotationName</tabstop>
+  <tabstop>leLocation</tabstop>
+  <tabstop>tbDoComplement</tabstop>
+  <tabstop>leDescription</tabstop>
+  <tabstop>chbUsePatternNames</tabstop>
+ </tabstops>
  <resources>
-  <include location="../../../U2Gui.qrc"/>
+  <include location="../../U2Gui.qrc"/>
  </resources>
  <connections>
   <connection>
