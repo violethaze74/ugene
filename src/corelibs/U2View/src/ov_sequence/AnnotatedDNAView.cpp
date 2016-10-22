@@ -162,6 +162,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     connect(removeSequenceObjectAction, SIGNAL(triggered()), SLOT(sl_removeSelectedSequenceObject()));
 
     reverseComplementSequenceAction = new QAction(tr("Reverse-complement sequence"), this);
+    reverseComplementSequenceAction ->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R, Qt::CTRL | Qt::Key_C));
     reverseComplementSequenceAction->setObjectName(ACTION_EDIT_RESERVE_COMPLEMENT_SEQUENCE);
     connect(reverseComplementSequenceAction, SIGNAL(triggered()), SLOT(sl_reverseComplementSequence()));
 
