@@ -92,12 +92,6 @@ bool ExportAnnotationsDialog::exportSequenceNames( ) const {
     return ui->exportSequenceNameCheck->isChecked( );
 }
 
-void ExportAnnotationsDialog::setExportSequenceVisible( bool value ) {
-    ui->exportSequenceCheck->setVisible( value );
-    ui->exportSequenceNameCheck->setVisible( value );
-    window()->resize(window()->width(), 0);
-}
-
 void ExportAnnotationsDialog::sl_formatChanged(const QString &newFormatId) {
     const bool isCsvFormat = (CSV_FORMAT_ID == newFormatId);
     ui->exportSequenceCheck->setEnabled(isCsvFormat);
