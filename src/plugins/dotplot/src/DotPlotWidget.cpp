@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -132,6 +132,7 @@ void DotPlotWidget::initActionsAndSignals() {
     connect(saveImageAction, SIGNAL(triggered()), SLOT(sl_showSaveImageDialog()));
 
     saveDotPlotAction = new QAction(tr("Save"), this);
+    saveDotPlotAction->setObjectName("Save");
     connect(saveDotPlotAction, SIGNAL(triggered()), SLOT(sl_showSaveFileDialog()));
 
     loadDotPlotAction = new QAction(tr("Load"), this);
@@ -476,7 +477,7 @@ void DotPlotWidget::sl_sequenceWidgetRemoved(ADVSequenceWidget* w) {
         if (dotPlotTask) {
             cancelRepeatFinderTask();
         } else {
-            addCloseDotPlotTask();
+            emit si_removeDotPlot();
         }
     }
 }
@@ -527,10 +528,14 @@ void DotPlotWidget::sl_showSaveImageDialog() {
     exitButton->show();
 }
 
-// save dotplot into a dotplot file, return true if successful
+// save dotplot into a dotplot file, return true if not canceled
 bool DotPlotWidget::sl_showSaveFileDialog() {
-
     LastUsedDirHelper lod("Dotplot");
+    if (dpDirectResultListener->dotPlotList->isEmpty() || dpRevComplResultsListener->dotPlotList->isEmpty()) {
+        QMessageBox::critical(this, tr("File saving error"), tr("Nothing to save: dotplot is empty.").arg(lod.url));
+        return true;
+    }
+
     lod.url = U2FileDialog::getSaveFileName(NULL, tr("Save Dotplot"), lod.dir, tr("Dotplot files (*.dpt)"));
 
     if (lod.url.length() <= 0) {
@@ -817,22 +822,7 @@ void DotPlotWidget::sl_showDeleteDialog() {
             break;
     }
 
-    if (!deleteDotPlotFlag) {
-        addCloseDotPlotTask();
-    }
-}
-
-void DotPlotWidget::addCloseDotPlotTask() {
-
-    deleteDotPlotFlag = true;
-
-    Task *t = new Task("Closing dotplot", TaskFlags_NR_FOSCOE);
-    if (!dotPlotTask) {
-        dotPlotTask = t;
-    }
-
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
-    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskStateChanged()));
+    emit si_removeDotPlot();
 }
 
 // dotplot results updated, need to update picture

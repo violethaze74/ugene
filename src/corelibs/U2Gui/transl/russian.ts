@@ -1506,39 +1506,39 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>U2::AceImportDialog</name>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="132"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="135"/>
         <source>Destination UGENEDB file</source>
         <translation>Место назначения UGENEDB файла</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="66"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="68"/>
         <source>Destination URL is not specified</source>
         <translation>Не указан путь места назначения</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="52"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="54"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="72"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="74"/>
         <source>Destination URL must point to a local file</source>
         <translation>Место назначения должно указывать на локальный файл</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="80"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="82"/>
         <source>There is opened view with destination file.
 Close it or choose different file</source>
         <translation>Указанный файл используется.
 Закройте его или выберите другой файл</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="90"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="92"/>
         <source>Destination directory &apos;%1&apos; is not writable, please choose different destination URL</source>
         <translation>Директория места назначения &apos;%1&apos; недоступна для записи, выберите другое место назначения</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="98"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="100"/>
         <source>Destination file already exists.
 To overwrite the file, press &apos;Replace&apos;.
 To append data to existing file press &apos;Append&apos;.</source>
@@ -1547,23 +1547,23 @@ To append data to existing file press &apos;Append&apos;.</source>
 Для добавления данных в существующий файл нажмите &apos;Добавить&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="101"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="103"/>
         <source>Replace</source>
         <translation>Переписать</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="102"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="104"/>
         <source>Append</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="53"/>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="103"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="55"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="105"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="107"/>
+        <location filename="../src/util/ImportDialogs/AceImportDialog.cpp" line="109"/>
         <source>Destination file &apos;%1&apos; cannot be removed</source>
         <translation>Файл &apos;%1&apos; не может быть удален</translation>
     </message>
@@ -1687,13 +1687,18 @@ To append data to existing file press &apos;Append&apos;.</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationDialog.cpp" line="70"/>
-        <location filename="../src/util/CreateAnnotationDialog.cpp" line="75"/>
+        <location filename="../src/util/CreateAnnotationDialog.cpp" line="64"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationDialog.cpp" line="71"/>
+        <location filename="../src/util/CreateAnnotationDialog.cpp" line="76"/>
         <source>Error</source>
         <translation>Ошибка валидации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationDialog.cpp" line="75"/>
+        <location filename="../src/util/CreateAnnotationDialog.cpp" line="76"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте пожалуйста настройки</translation>
     </message>
@@ -2840,23 +2845,37 @@ complement(5..15)</translation>
 <context>
     <name>U2::ProjectViewModel</name>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1108"/>
         <source>[unloaded]</source>
-        <translation>[выгружен]</translation>
+        <translation type="vanished">[выгружен]</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1110"/>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1215"/>
         <source>[loading %1%]</source>
-        <translation>[прочитано %1%]</translation>
+        <translation type="vanished">[прочитано %1%]</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1142"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1108"/>
+        <source>[unloaded] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1111"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1220"/>
+        <source>[loading] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1113"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1222"/>
+        <source>[loading %1%] </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1146"/>
         <source>Locks:</source>
         <translation>Блокировки:</translation>
     </message>
     <message>
-        <location filename="../src/util/project/ProjectViewModel.cpp" line="1145"/>
+        <location filename="../src/util/project/ProjectViewModel.cpp" line="1149"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
@@ -3230,42 +3249,42 @@ check connection settings</translation>
 <context>
     <name>U2::ToolsMenu</name>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="107"/>
+        <location filename="../src/ToolsMenu.cpp" line="108"/>
         <source>Sanger data analysis</source>
         <translation>Анализ данных секвенирования по Сэнгеру</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="117"/>
+        <location filename="../src/ToolsMenu.cpp" line="118"/>
         <source>NGS data analysis</source>
         <translation>Анализ данных NGS</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="144"/>
+        <location filename="../src/ToolsMenu.cpp" line="146"/>
         <source>BLAST</source>
         <translation>BLAST</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="158"/>
+        <location filename="../src/ToolsMenu.cpp" line="160"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="170"/>
+        <location filename="../src/ToolsMenu.cpp" line="172"/>
         <source>Cloning</source>
         <translation>Клонирование</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="178"/>
+        <location filename="../src/ToolsMenu.cpp" line="180"/>
         <source>Primer</source>
         <translation>Олигонуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="184"/>
+        <location filename="../src/ToolsMenu.cpp" line="186"/>
         <source>Search for TFBS</source>
         <translation>Поиск сайтов связывания транскрипционных факторов (TFBS)</translation>
     </message>
     <message>
-        <location filename="../src/ToolsMenu.cpp" line="193"/>
+        <location filename="../src/ToolsMenu.cpp" line="195"/>
         <source>HMMER tools</source>
         <translation>Инструменты HMMER</translation>
     </message>

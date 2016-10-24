@@ -488,4 +488,17 @@ You may try to upgrade your system by updating the video card driver.</source>
         <translation>Add</translation>
     </message>
 </context>
+<context>
+    <name>U2::StructuralAlignmentDialog</name>
+    <message>
+        <location filename="../src/StructuralAlignmentDialog.cpp" line="61"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/StructuralAlignmentDialog.cpp" line="62"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+</context>
 </TS>

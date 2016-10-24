@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -60,7 +60,7 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, BlastType blastType,
 : QDialog(parent), ca_c(NULL), useCompValues(useCompValues), compValues(compValues)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220587");
+    new HelpButton(this, buttonBox, "18223227");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Restore to default"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

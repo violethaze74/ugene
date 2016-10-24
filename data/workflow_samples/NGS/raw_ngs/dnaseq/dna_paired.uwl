@@ -462,8 +462,8 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
                 title:Pre-processing;
                 parameters-area {
                     group {
-                        title:Filtration;
                         label-size:120;
+                        title:"Reads filtration";
                         QualityTrim.qual-id {
                             label:"Base quality";
                         }
@@ -473,20 +473,36 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
                         QualityTrim.both-ends {
                             label:"Trim both ends";
                         }
+                        CutAdaptFastq.adapters-url {
+                            label:"3' adapters";
+                        }
+                        CutAdaptFastq.front-url {
+                            label:"5' adapters";
+                        }
+                        CutAdaptFastq.anywhere-url {
+                            label:"5' and 3' adapters";
+                        }
+                    }
+                    group {
+                        label-size:120;
+                        title:"Read pairs filtration";
                         QualityTrim-1.qual-id {
-                            label:"Base quality for pairs";
+                            label:"Base quality";
                         }
                         QualityTrim-1.len-id {
-                            label:"Reads length for pairs";
+                            label:"Reads length";
                         }
                         QualityTrim-1.both-ends {
-                            label:"Trim both ends for pairs";
-                        }
-                        CutAdaptFastq.adapters-url {
-                            label:Adapters;
+                            label:"Trim both ends";
                         }
                         CutAdaptFastq-1.adapters-url {
-                            label:"Adapters for pairs";
+                            label:"3' adapters";
+                        }
+                        CutAdaptFastq-1.front-url {
+                            label:"5' adapters";
+                        }
+                        CutAdaptFastq-1.anywhere-url {
+                            label:"5' and 3' adapters";
                         }
                     }
                 }

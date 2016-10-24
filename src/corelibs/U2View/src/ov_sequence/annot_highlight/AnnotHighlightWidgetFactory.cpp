@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ namespace U2 {
 const QString AnnotHighlightWidgetFactory::GROUP_ID = "OP_ANNOT_HIGHLIGHT";
 const QString AnnotHighlightWidgetFactory::GROUP_ICON_STR = ":core/images/annotation_settings.png";
 const QString AnnotHighlightWidgetFactory::GROUP_TITLE = QObject::tr("Annotations Highlighting");
-const QString AnnotHighlightWidgetFactory::GROUP_DOC_PAGE = "18220356";
+const QString AnnotHighlightWidgetFactory::GROUP_DOC_PAGE = "18222996";
 
 AnnotHighlightWidgetFactory::AnnotHighlightWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;

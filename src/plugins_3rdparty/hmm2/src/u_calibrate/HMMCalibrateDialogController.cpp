@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ HMMCalibrateDialogController::HMMCalibrateDialogController(QWidget* w)
       saveController(NULL) {
     task = NULL;
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220556");
+    new HelpButton(this, buttonBox, "18223196");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Calibrate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Close"));
 

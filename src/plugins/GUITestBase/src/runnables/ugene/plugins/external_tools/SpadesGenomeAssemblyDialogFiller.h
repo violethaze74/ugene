@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,18 +30,29 @@ using namespace HI;
 class SpadesGenomeAssemblyDialogFiller: public Filler
 {
 public:
-    SpadesGenomeAssemblyDialogFiller(HI::GUITestOpStatus &os, QString _library, QStringList _leftReads, QStringList _rightReads, QString _output):
+    SpadesGenomeAssemblyDialogFiller(HI::GUITestOpStatus &os, QString _library, QStringList _leftReads, QStringList _rightReads, QString _output, QString _datasetType = "", QString _runningMode = "",
+        QString _kmerSizes = "", int _numThreads = 0, int _memLimit = 0) :
         Filler(os, "GenomeAssemblyDialog"),
         library(_library),
         leftReads(_leftReads),
         rightReads(_rightReads),
-        output(_output){}
-    void commonScenario();
-private:
+        output(_output),
+        datasetType(_datasetType),
+        runningMode(_runningMode),
+        kmerSizes(_kmerSizes),
+        numThreads(_numThreads),
+        memLimit(_memLimit) {}
+    virtual void commonScenario();
+protected:
     QString library;
     QStringList leftReads;
     QStringList rightReads;
     QString output;
+    QString datasetType;
+    QString runningMode;
+    QString kmerSizes;
+    int numThreads;
+    int memLimit;
 };
 
 }

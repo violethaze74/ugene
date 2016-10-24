@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -168,10 +168,10 @@ SharedDbiDataHandler DbiDataStorage::putAlignment(const MAlignment &al) {
     return handler;
 }
 
-SharedDbiDataHandler DbiDataStorage::putAnnotationTable(const QList<SharedAnnotationData> &anns) {
+SharedDbiDataHandler DbiDataStorage::putAnnotationTable(const QList<SharedAnnotationData> &anns, const QString annTableName) {
     SAFE_POINT(NULL != dbiHandle, "Invalid DBI handle!", SharedDbiDataHandler());
 
-    AnnotationTableObject obj("Annotations", dbiHandle->getDbiRef());
+    AnnotationTableObject obj(annTableName, dbiHandle->getDbiRef());
     U2OpStatusImpl os;
     obj.addAnnotations(anns);
     SAFE_POINT_OP(os, SharedDbiDataHandler());

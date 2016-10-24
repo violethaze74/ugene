@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -198,7 +198,7 @@ void BwaAlignTask::prepare() {
 }
 
 QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
-    QList<Task*> result;    
+    QList<Task*> result;
     QFileInfo resultPathFileInfo(resultPath);
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     if (alignMultiTask == subTask) {
@@ -237,7 +237,7 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
         }
         samMultiTask = new MultiTask(tr("Saming reads with BWA Multitask"), samTasks);
         result.append(samMultiTask);
-    } 
+    }
     if (subTask == samMultiTask) {
         if (settings.shortReadSets.size() == 1 || (settings.shortReadSets.size() == 2 && settings.pairedReads)) {
             return result;
@@ -259,7 +259,7 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
         }
         mergeTask = new MergeBamTask(bamUrlstoMerge, resultPathFileInfo.dir().canonicalPath(), resultPathFileInfo.baseName() + ".bam", true);
         result.append(mergeTask);
-    } 
+    }
     if (subTask == mergeTask) {
         //converting BAM -> SAM
         QString bamResultPath = resultPathFileInfo.dir().canonicalPath() + "/" + resultPathFileInfo.baseName() + ".bam";
@@ -412,7 +412,7 @@ void BwaMemAlignTask::prepare() {
         } else if (settings.shortReadSets.size() > 1) {
             arguments.append(currentReadSet.url.getURLString());
             ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new BwaAlignTask::LogParser(), NULL);
-            QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" + 
+            QString resultFilePathWithpartNumber = resultFileInfo.dir().canonicalPath() + "/" + resultFileInfo.baseName() + "_" +
                 QString::number(resultPartsCounter) + "." + resultFileInfo.completeSuffix();
             alignTask->setStandartOutputFile(resultFilePathWithpartNumber);
             setListenerForTask(alignTask);
@@ -453,7 +453,7 @@ QList<Task *> BwaMemAlignTask::onSubTaskFinished(Task *subTask) {
         }
         mergeTask = new MergeBamTask(bamUrlstoMerge, resultFileInfo.dir().canonicalPath(), resultFileInfo.baseName() + ".bam", true);
         result.append(mergeTask);
-    } 
+    }
     if (mergeTask == subTask) {
         //converting BAM -> SAM
         cleanupTempDir(bamUrlstoMerge);
@@ -636,7 +636,7 @@ void BwaTask::prepare() {
                 setError(tr("Please, provide same number of files with downstream and upstream reads."));
                 return;
             }
-            
+
             alignTask = new BwaMemAlignTask(indexFileName, settings);
             alignTask->addListeners(QList <ExternalToolListener*>() << getListener(1));
         }else{

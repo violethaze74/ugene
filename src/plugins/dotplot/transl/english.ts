@@ -4,93 +4,93 @@
 <context>
     <name>DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="17"/>
+        <location filename="../src/DotPlotDialog.ui" line="20"/>
         <source>DotPlot</source>
         <translation>DotPlot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="30"/>
+        <location filename="../src/DotPlotDialog.ui" line="33"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot parameters</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="52"/>
+        <location filename="../src/DotPlotDialog.ui" line="55"/>
         <source>Custom algorithm</source>
         <translation>Custom algorithm</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="99"/>
+        <location filename="../src/DotPlotDialog.ui" line="102"/>
         <source>X axis sequence</source>
         <translation>X axis sequence</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="112"/>
+        <location filename="../src/DotPlotDialog.ui" line="115"/>
         <source>Minimum repeat length</source>
         <translation>Minimum repeat length</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="119"/>
+        <location filename="../src/DotPlotDialog.ui" line="122"/>
         <source>Y axis sequence</source>
         <translation>Y axis sequence</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="126"/>
+        <location filename="../src/DotPlotDialog.ui" line="129"/>
         <source>Repeats  identity</source>
         <translation>Repeats  identity</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="151"/>
+        <location filename="../src/DotPlotDialog.ui" line="154"/>
         <source>bp</source>
         <translation>bp</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="179"/>
+        <location filename="../src/DotPlotDialog.ui" line="182"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="182"/>
+        <location filename="../src/DotPlotDialog.ui" line="185"/>
         <source>1k</source>
         <translation>1k</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="207"/>
+        <location filename="../src/DotPlotDialog.ui" line="210"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="229"/>
+        <location filename="../src/DotPlotDialog.ui" line="232"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Resets repeats identity to 100%</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="232"/>
+        <location filename="../src/DotPlotDialog.ui" line="235"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="287"/>
+        <location filename="../src/DotPlotDialog.ui" line="290"/>
         <source>Search inverted repeats</source>
         <translation>Search for inverted repeats</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="294"/>
+        <location filename="../src/DotPlotDialog.ui" line="297"/>
         <source>Search direct repeats</source>
         <translation>Search for direct repeats</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="333"/>
-        <location filename="../src/DotPlotDialog.ui" line="340"/>
+        <location filename="../src/DotPlotDialog.ui" line="336"/>
+        <location filename="../src/DotPlotDialog.ui" line="343"/>
         <source>default</source>
         <translation>default</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="365"/>
+        <location filename="../src/DotPlotDialog.ui" line="368"/>
         <source>Click to load a sequence from the file system. The sequence will be added to the combo boxes when it is loaded to the project</source>
         <translation>Click to load a sequence from the file system. The sequence will be added to the combo boxes when it is loaded to the project</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="368"/>
+        <location filename="../src/DotPlotDialog.ui" line="371"/>
         <source>Load Sequence</source>
         <translation>Load Sequence</translation>
     </message>
@@ -447,6 +447,11 @@ Select valid file to build dotplot</source>
         <source>Hand tool (&lt;b&gt;H&lt;/b&gt;)</source>
         <translation>Hand tool (&lt;b&gt;H&lt;/b&gt;)</translation>
     </message>
+    <message>
+        <location filename="../src/DotPlotSplitter.cpp" line="293"/>
+        <source>One of the sequences in dotplot is NULL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::DotPlotViewAction</name>
@@ -595,12 +600,12 @@ Select valid file to build dotplot</source>
         <translation>Save dotplot data before closing?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="963"/>
+        <location filename="../src/DotPlotWidget.cpp" line="948"/>
         <source>Invalid weight and height parameters!</source>
         <translation>Invalid weight and height parameters!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="1057"/>
+        <location filename="../src/DotPlotWidget.cpp" line="1042"/>
         <source> (min length %1, identity %2%)</source>
         <translation> (min length %1, identity %2%)</translation>
     </message>

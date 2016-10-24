@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,7 +37,7 @@ CSVColumnConfigurationDialog::CSVColumnConfigurationDialog(QWidget* w, const Col
 : QDialog(w), config(_config)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220365");
+    new HelpButton(this, buttonBox, "18223005");
 
     connect(complMarkRB, SIGNAL(toggled(bool)), SLOT(sl_complMarkToggle(bool)));
     connect(startRB, SIGNAL(toggled(bool)), SLOT(sl_startToggle(bool)));

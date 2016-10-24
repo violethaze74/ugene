@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ namespace U2 {
 const QString MSAExportConsensusFactoryTab::GROUP_ID = "OP_EXPORT_CONSENSUS";
 const QString MSAExportConsensusFactoryTab::GROUP_ICON_STR = ":core/images/consensus.png";
 const QString MSAExportConsensusFactoryTab::GROUP_TITLE = QObject::tr("Export Consensus");
-const QString MSAExportConsensusFactoryTab::GROUP_DOC_PAGE = "18220417";
+const QString MSAExportConsensusFactoryTab::GROUP_DOC_PAGE = "18223057";
 
 MSAExportConsensusFactoryTab::MSAExportConsensusFactoryTab() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;

@@ -65,7 +65,12 @@
         <translation>Truncated file: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="475"/>
+        <location filename="../src/BAMUtils.cpp" line="775"/>
+        <source>Can&apos;t open file with given url: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="476"/>
         <source>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</source>
         <translation>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</translation>
     </message>
@@ -95,7 +100,7 @@
         <translation>GTF</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="766"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="767"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Unexpected number of modified objects. Expected: 1, actual: %1</translation>
     </message>
@@ -305,13 +310,12 @@
 <context>
     <name>U2::AbstractVariationFormat</name>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="61"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="65"/>
         <source>SNP formats are used to store single-nucleotide polymorphism data</source>
         <translation>SNP formats are used to store single-nucleotide polymorphism data</translation>
     </message>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="119"/>
-        <location filename="../src/AbstractVariationFormat.cpp" line="132"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="140"/>
         <source>Line %1: There are too few columns in this line. The line was skipped.</source>
         <translation>Line %1: There are too few columns in this line. The line was skipped.</translation>
     </message>
@@ -319,12 +323,12 @@
 <context>
     <name>U2::AceImporter</name>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="161"/>
+        <location filename="../src/ace/AceImporter.cpp" line="153"/>
         <source>ACE file importer</source>
         <translation>ACE file importer</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="165"/>
+        <location filename="../src/ace/AceImporter.cpp" line="157"/>
         <source>ACE files importer is used to convert conventional ACE files into UGENE database format.Having ACE file converted into UGENE DB format you get an fast and efficient interface to your data with an option to change the content</source>
         <translation>ACE files importer is used to convert conventional ACE files into UGENE database format.Having ACE file converted into UGENE DB format you get an fast and efficient interface to your data with an option to change the content</translation>
     </message>
@@ -337,12 +341,17 @@
         <translation>ACE file import: %1</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="86"/>
+        <location filename="../src/ace/AceImporter.cpp" line="66"/>
+        <source>Dbi ref is invalid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImporter.cpp" line="82"/>
         <source>Can&apos;t create a temporary database</source>
         <translation>Can&apos;t create a temporary database</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="146"/>
+        <location filename="../src/ace/AceImporter.cpp" line="139"/>
         <source>Failed to get load task for : %1</source>
         <translation>Failed to get load task for : %1</translation>
     </message>
@@ -719,6 +728,14 @@
         <location filename="../src/tasks/ConvertAssemblyToSamTask.cpp" line="94"/>
         <source>Given file is not valid UGENE database file</source>
         <translation>Given file is not valid UGENE database file</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ConvertSnpeffVariationsToAnnotationsTask</name>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="49"/>
+        <source>Convert SnpEff variations to annotations task</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1687,6 +1704,37 @@ The following sequences are empty:</translation>
     </message>
 </context>
 <context>
+    <name>U2::InfoPartParser</name>
+    <message>
+        <location filename="../src/util/SnpeffInfoParser.cpp" line="114"/>
+        <source>Too few values in the entry: &apos;%1&apos;. Expected at least %2 values.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/SnpeffInfoParser.cpp" line="134"/>
+        <source>Too many values in the entry &apos;%1&apos;, extra entries are ignored</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LoadConvertAndSaveSnpeffVariationsToAnnotationsTask</name>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="117"/>
+        <source>Load file and convert SnpEff variations to annotations task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="157"/>
+        <source>&apos;%1&apos; load failed, the result document is NULL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="161"/>
+        <source>File &apos;%1&apos; doesn&apos;t contain variation tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::MSFFormat</name>
     <message>
         <location filename="../src/MSFFormat.cpp" line="64"/>
@@ -2077,6 +2125,14 @@ The following sequences are empty:</translation>
     </message>
 </context>
 <context>
+    <name>U2::SnpeffInfoParser</name>
+    <message>
+        <location filename="../src/util/SnpeffInfoParser.cpp" line="48"/>
+        <source>Can&apos;t parse the next INFO part: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::StockholmFormat</name>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="451"/>
@@ -2209,50 +2265,50 @@ The following sequences are empty:</translation>
         <translation>Required attribute is not found</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="264"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="268"/>
         <source>Database url is incorrect</source>
         <translation>Database url is incorrect</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="270"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="274"/>
         <source>User login is not specified</source>
         <translation>User login is not specified</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="276"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="280"/>
         <source>Host is not specified</source>
         <translation>Host is not specified</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="282"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="286"/>
         <source>Database name is not specified</source>
         <translation>Database name is not specified</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="298"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="302"/>
         <source>Error opening MySQL database: %1</source>
         <translation>Error opening MySQL database: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="382"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="383"/>
         <source>Not a %1 MySQL database: %2, %3</source>
         <translation>Not a %1 MySQL database: %2, %3</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="388"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="273"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="389"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="275"/>
         <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
         <translation>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="523"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="328"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="492"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="330"/>
         <source>Illegal database state: %1</source>
         <translation>Illegal database state: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="554"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="410"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="523"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="412"/>
         <source>Can&apos;t synchronize database state</source>
         <translation>Can&apos;t synchronize database state</translation>
     </message>
@@ -2320,8 +2376,8 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="600"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="633"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1113"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1122"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1114"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1123"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Unexpected modification type &apos;%1&apos;</translation>
     </message>
@@ -2391,54 +2447,54 @@ The following sequences are empty:</translation>
         <translation>An error occurred during addition of a row</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="586"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="587"/>
         <source>Can&apos;t undo an operation for the object</source>
         <translation>Can&apos;t undo an operation for the object</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="649"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="650"/>
         <source>Can&apos;t redo an operation for the object</source>
         <translation>Can&apos;t redo an operation for the object</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="791"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="896"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="792"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="897"/>
         <source>Object not found</source>
         <translation>Object not found</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="845"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="846"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Folder not found: %1 (canonical: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1026"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1027"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Not an object, id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1049"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1050"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="289"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1091"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1092"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1104"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1105"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1135"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1136"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1153"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1154"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
@@ -2576,47 +2632,47 @@ The following sequences are empty:</translation>
         <translation>Packed data is empty!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="222"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="224"/>
         <source>Error checking SQLite database: %1!</source>
         <translation>Error checking SQLite database: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="235"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="237"/>
         <source>Error creating table: %1, error: %2</source>
         <translation>Error creating table: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="267"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="269"/>
         <source>Not a %1 SQLite database: %2</source>
         <translation>Not a %1 SQLite database: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="324"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="326"/>
         <source>Database is already opened!</source>
         <translation>Database is already opened!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="334"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="336"/>
         <source>URL is not specified</source>
         <translation>URL is not specified</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="348"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="350"/>
         <source>Error opening SQLite database: %1!</source>
         <translation>Error opening SQLite database: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="400"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="402"/>
         <source>Database is already closed!</source>
         <translation>Database is already closed!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="404"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="406"/>
         <source>Illegal database state %1!</source>
         <translation>Illegal database state %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="429"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="431"/>
         <source>Failed to close database: %1, err: %2</source>
         <translation>Failed to close database: %1, err: %2</translation>
     </message>
@@ -2665,7 +2721,7 @@ The following sequences are empty:</translation>
         <translation>Object not found!</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="803"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="804"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="918"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
         <source>Object not found.</source>

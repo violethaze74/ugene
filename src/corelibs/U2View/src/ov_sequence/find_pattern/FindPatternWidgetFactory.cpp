@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ namespace U2 {
 const QString FindPatternWidgetFactory::GROUP_ID = "OP_FIND_PATTERN";
 const QString FindPatternWidgetFactory::GROUP_ICON_STR = ":core/images/find_dialog.png";
 const QString FindPatternWidgetFactory::GROUP_TITLE = QString(QObject::tr("Search in Sequence"));
-const QString FindPatternWidgetFactory::GROUP_DOC_PAGE = "18220338";
+const QString FindPatternWidgetFactory::GROUP_DOC_PAGE = "18222978";
 
 FindPatternWidgetFactory::FindPatternWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;

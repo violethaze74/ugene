@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -69,7 +69,7 @@ void GenomeAlignerFindTask::prepare() {
 
 void GenomeAlignerFindTask::run() {
 
-    // TODO: this is a fastfix of reopened https://ugene.unipro.ru/tracker/browse/UGENE-1190
+    // TODO: this is a fastfix of reopened https://ugene.net/tracker/browse/UGENE-1190
     // Problem:
     // If reference sequence contains Ns only, ShortReadAligners will return without waiting for all short reads.
     // GenomeAlignerTask will create another ReadShortReadsSubTask on GenomeAlignerFindTask->WriteAlignedReadsSubTask subtask finish

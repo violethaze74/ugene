@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGrap
     :QDialog(parent), ctx(_ctx), d(_d), gd(_gd)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220394");
+    new HelpButton(this, buttonBox, "18223034");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

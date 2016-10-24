@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -119,7 +119,7 @@ QString MultipleDocumentsReadingModeDialog::setupNewUrl() {
 bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl>& _urls, QVariantMap& props, const QMap<QString, qint64>& headerSequenceLengths){
     setModal(true);
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220348");
+    new HelpButton(this, buttonBox, "18222988");
 
     // doesn't matter from what position, because excluded fileName all path of documents are the same
     CHECK(!urls.isEmpty(), false);

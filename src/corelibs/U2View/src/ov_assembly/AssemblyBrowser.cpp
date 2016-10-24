@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -163,7 +163,6 @@ QWidget * AssemblyBrowser::createWidget() {
 
     const QString objectName = "assembly_browser_" + getName();
     ui->setObjectName(objectName);
-
     U2OpStatusImpl os;
     if(model->hasReads(os)) {
         updateOverviewTypeActions();
@@ -173,6 +172,7 @@ QWidget * AssemblyBrowser::createWidget() {
         ui->installEventFilter(this);
         ui->setAcceptDrops(true);
     }
+
     return ui;
 }
 
@@ -254,6 +254,9 @@ QString AssemblyBrowser::tryAddObject(GObject * obj) {
             notificationStack->addNotification(message, Warning_Not);
         }
         if(setRef) {
+            if(model->isDbLocked(100)){
+                return tr("Internal error: database is busy");
+            }
             model->setReference(seqObj);
 
             U2Assembly assembly = model->getAssembly();
@@ -308,61 +311,60 @@ bool AssemblyBrowser::isAssemblyObjectLocked(bool showDialog) const {
     return isLocked;
 }
 
-void AssemblyBrowser::buildStaticToolbar(QToolBar* tb) {
+void AssemblyBrowser::buildStaticToolbar(QToolBar* staticToolBar) {
     U2OpStatusImpl os;
     if(model->hasReads(os)) {
-        tb->addAction(zoomInAction);
-        tb->addAction(zoomOutAction);
+        staticToolBar->addAction(zoomInAction);
+        staticToolBar->addAction(zoomOutAction);
 
         U2OpStatusImpl st;
-        posSelector = new PositionSelector(tb, 1, model->getModelLength(st));
+        posSelector = new PositionSelector(staticToolBar, 1, model->getModelLength(st));
         if(!st.hasError()) {
             connect(posSelector, SIGNAL(si_positionChanged(int)), SLOT(sl_onPosChangeRequest(int)));
-            tb->addSeparator();
-            tb->addWidget(posSelector);
+            staticToolBar->addSeparator();
+            staticToolBar->addWidget(posSelector);
             posSelector->getPosEdit()->setMinimumWidth(160); // For big numbers we need bigger text box
         }
-        tb->addSeparator();
+        staticToolBar->addSeparator();
         updateZoomingActions();
 
         // commented because do not know if log scale is needed
-        /*QToolButton * overviewScaleTypeToolButton = new QToolButton(tb);
+        /*QToolButton * overviewScaleTypeToolButton = new QToolButton(staticToolBar);
         QMenu * scaleTypeMenu = new QMenu(tr("Scale type"), ui);
         foreach(QAction * a, overviewScaleTypeActions) {
             scaleTypeMenu->addAction(a);
         }
         overviewScaleTypeToolButton->setDefaultAction(scaleTypeMenu->menuAction());
         overviewScaleTypeToolButton->setPopupMode(QToolButton::InstantPopup);
-        tb->addWidget(overviewScaleTypeToolButton);*/
+        staticToolBar->addWidget(overviewScaleTypeToolButton);*/
 
-        tb->addAction(showCoordsOnRulerAction);
-        tb->addAction(showCoverageOnRulerAction);
-        tb->addAction(readHintEnabledAction);
-        tb->addSeparator();
-        tb->addAction(setReferenceAction);
-        tb->addAction(extractAssemblyRegionAction);
-        tb->addAction(saveScreenShotAction);
+        staticToolBar->addAction(showCoordsOnRulerAction);
+        staticToolBar->addAction(showCoverageOnRulerAction);
+        staticToolBar->addAction(readHintEnabledAction);
+        staticToolBar->addSeparator();
+        staticToolBar->addAction(setReferenceAction);
+        staticToolBar->addAction(extractAssemblyRegionAction);
+        staticToolBar->addAction(saveScreenShotAction);
     }
-    GObjectView::buildStaticToolbar(tb);
+    GObjectView::buildStaticToolbar(staticToolBar);
 }
 
 void AssemblyBrowser::sl_onPosChangeRequest(int pos) {
     setXOffsetInAssembly(normalizeXoffset(pos - 1));
     ui->getReadsArea()->setFocus();
 }
-
-void AssemblyBrowser::buildStaticMenu(QMenu* m) {
+void AssemblyBrowser::buildStaticMenu(QMenu* staticMenu) {
     U2OpStatusImpl os;
     if(model->hasReads(os)) {
-        m->addAction(zoomInAction);
-        m->addAction(zoomOutAction);
-        m->addAction(saveScreenShotAction);
-        m->addAction(exportToSamAction);
-        m->addAction(extractAssemblyRegionAction);
-        m->addAction(setReferenceAction);
+        staticMenu->addAction(zoomInAction);
+        staticMenu->addAction(zoomOutAction);
+        staticMenu->addAction(saveScreenShotAction);
+        staticMenu->addAction(exportToSamAction);
+        staticMenu->addAction(extractAssemblyRegionAction);
+        staticMenu->addAction(setReferenceAction);
     }
-    GObjectView::buildStaticMenu(m);
-    GUIUtils::disableEmptySubmenus(m);
+    GObjectView::buildStaticMenu(staticMenu);
+    GUIUtils::disableEmptySubmenus(staticMenu);
 }
 
 void AssemblyBrowser::setGlobalCoverageInfo(CoverageInfo newInfo) {
@@ -372,12 +374,15 @@ void AssemblyBrowser::setGlobalCoverageInfo(CoverageInfo newInfo) {
     if(newInfo.coverageInfo.size() <= coveredRegionsManager.getSize()) {
         return;
     }
+    if(newInfo.isEmpty()){ //wait when coverage will be calculated
+        return;
+    }
     // prefer model's coverage stat
     if(model->hasCachedCoverageStat()) {
         U2OpStatus2Log status;
         U2AssemblyCoverageStat coverageStat = model->getCoverageStat(status);
-        if(!status.isCoR() && coverageStat.coverage->size() > newInfo.coverageInfo.size()) {
-            newInfo.coverageInfo = U2AssemblyUtils::coverageStatToVector(coverageStat);
+        if(!status.isCoR() && coverageStat.size() > newInfo.coverageInfo.size()) {
+            newInfo.coverageInfo = coverageStat;
             newInfo.updateStats();
         }
     }
@@ -408,15 +413,19 @@ bool AssemblyBrowser::isInLocalCoverageCache(qint64 position) {
     return localCoverageCache.region.contains(position);
 }
 
-qint64 AssemblyBrowser::getCoverageAtPos(qint64 pos) {
+qint32 AssemblyBrowser::getCoverageAtPos(qint64 pos) {
     if(isInLocalCoverageCache(pos)) {
         return localCoverageCache.coverageInfo.at(pos - localCoverageCache.region.startPos);
     } else {
+        if (model->isDbLocked()){
+            return -1;
+        }
+
         U2OpStatus2Log status;
         U2AssemblyCoverageStat coverageStat;
-        coverageStat.coverage->resize(1);
+        coverageStat.resize(1);
         model->calculateCoverageStat(U2Region(pos, 1), coverageStat, status);
-        return coverageStat.coverage->first().maxValue;
+        return coverageStat.first();
     }
 }
 
@@ -1080,7 +1089,7 @@ void AssemblyBrowser::sl_setReference() {
 void AssemblyBrowser::sl_extractAssemblyRegion() {
     GUrl url(U2DbiUtils::ref2Url(model->getDbiConnection().dbi->getDbiRef()));
     U2Region visibleRegion = getVisibleBasesRegion();
-    QString extractedFragmentFilename = url.dirPath() + "/" + url.baseFileName() + "_" + QString::number(visibleRegion.startPos + 1) 
+    QString extractedFragmentFilename = url.dirPath() + "/" + url.baseFileName() + "_" + QString::number(visibleRegion.startPos + 1)
         + "_" + QString::number(visibleRegion.endPos()) + "." + url.completeFileSuffix();
     U2OpStatusImpl os;
     ExtractAssemblyRegionTaskSettings ts(extractedFragmentFilename, model->getModelLength(os), gobject);
@@ -1118,7 +1127,8 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
 //==============================================================================
 
 AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser * browser_) : browser(browser_), zoomableOverview(0),
-referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), nothingToVisualize(true) {
+referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), nothingToVisualize(true)
+{
     U2OpStatusImpl os;
     if(browser->getModel()->hasReads(os)) { // has mapped reads -> show rich visualization
         setMinimumSize(300, 200);
@@ -1192,7 +1202,7 @@ referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), 
     else {
         QVBoxLayout * mainLayout = new QVBoxLayout();
         QString msg = tr("Assembly has no mapped reads. Nothing to visualize.");
-        QLabel * infoLabel = new QLabel(QString("<table align=\"center\"><tr><td>%1</td></tr></table>").arg(msg));
+        QLabel * infoLabel = new QLabel(QString("<table align=\"center\"><tr><td>%1</td></tr></table>").arg(msg), this);
         infoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         mainLayout->addWidget(infoLabel);
         setLayout(mainLayout);

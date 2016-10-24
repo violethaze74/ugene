@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 #include <U2Algorithm/DnaAssemblyMultiTask.h>
 #include <U2Core/ExternalToolRunTask.h>
 
+
 namespace U2 {
 
 class DnaAssemblyToRefTaskSettings;
@@ -46,6 +47,23 @@ private slots:
 
 };
 
+class FilterUnpairedReadsTask : public Task {
+    Q_OBJECT
+public:
+    FilterUnpairedReadsTask(const DnaAssemblyToRefTaskSettings &settings);
+    void run();
+    const QList<ShortReadSet>& getFilteredReadList() const { return filteredReads; }
+
+private:
+    QString getTmpFilePath(const GUrl& initialFile);
+    void compareFiles(const GUrl& upstream, const GUrl& downstream,
+                      const GUrl& upstreamFiltered, const GUrl& downstreamFiltered);
+
+    DnaAssemblyToRefTaskSettings settings;
+    QList<ShortReadSet> filteredReads;
+    QString tmpDirPath;
+};
+
 class U2VIEW_EXPORT DnaAssemblyTaskWithConversions : public ExternalToolSupportTask {
     Q_OBJECT
 public:
@@ -54,6 +72,7 @@ public:
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
     const DnaAssemblyToRefTaskSettings& getSettings() const;
+    ReportResult report();
 
 private:
     DnaAssemblyToRefTaskSettings settings;

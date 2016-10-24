@@ -9,6 +9,11 @@
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
+        <location filename="../src/KalignDialog.ui" line="46"/>
+        <source>Input and output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/KalignDialog.ui" line="54"/>
         <source>Input file</source>
         <translation>Входной файл</translation>

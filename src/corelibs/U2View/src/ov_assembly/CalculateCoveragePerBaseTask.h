@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,9 +25,31 @@
 #include <U2Core/U2Assembly.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2Type.h>
-#include <U2Core/U2AssemblyUtils.h>
 
 namespace U2 {
+
+class CoveragePerBaseInfo {
+public:
+    CoveragePerBaseInfo() :
+        coverage(0) {}
+
+    int coverage;
+    QMap<char, int> basesCount;
+};
+class GetAssemblyLengthTask : public Task {
+    Q_OBJECT
+public:
+    GetAssemblyLengthTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId):
+        Task(tr("Get length of Assembly"), TaskFlag_None), dbiRef(dbiRef), assemblyId(assemblyId) { }
+
+    void run();
+
+    qint64 getAssemblyLength() const { return length; }
+private:
+    const U2DbiRef dbiRef;
+    const U2DataId assemblyId;
+    qint64 length;
+};
 
 class CalculateCoveragePerBaseOnRegionTask : public Task {
     Q_OBJECT
@@ -41,6 +63,9 @@ public:
     QVector<CoveragePerBaseInfo> *takeResult();
 
 private:
+    void processRead(const U2AssemblyRead &read);
+    U2CigarOp nextCigarOp(const QVector<U2CigarOp> &cigarVector, int &index, int &insertionsCount);
+
     const U2DbiRef dbiRef;
     const U2DataId assemblyId;
     const U2Region region;
@@ -71,6 +96,7 @@ private:
     QHash<qint64, QVector<CoveragePerBaseInfo> *> results;
 
     static const qint64 MAX_REGION_LENGTH = 100000;
+    GetAssemblyLengthTask *getLengthTask;
 };
 
 }   // namespace U2

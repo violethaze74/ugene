@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ static void enableCoverageOnImport(U2AssemblyCoverageImportInfo &cii, int refere
     cii.computeCoverage = true;
     int coverageInfoSize = qMin(U2AssemblyUtils::MAX_COVERAGE_VECTOR_SIZE, referenceLength);
     cii.coverageBasesPerPoint = qMax(1.0, ((double)referenceLength)/coverageInfoSize);
-    cii.coverage.coverage->resize(coverageInfoSize);
+    cii.coverage.resize(coverageInfoSize);
 }
 
 namespace {
@@ -616,8 +616,7 @@ qint64 ConvertToSQLiteTask::importMappedSortedReads(BamReader *bamReader, Reader
                             .arg(references.size()));
 
             U2AssemblyReadsImportInfo &importInfo = importInfos[referenceId];
-            //workaround for UGENE-5366, uncomment after fixing coverage on import
-            //enableCoverageOnImport(importInfo.coverageInfo, references[referenceId].getLength());
+            enableCoverageOnImport(importInfo.coverageInfo, references[referenceId].getLength());
 
             QScopedPointer<DbiIterator> dbiIterator;
             if(bamInfo.hasIndex()) {
@@ -885,7 +884,7 @@ void ConvertToSQLiteTask::updateImportInfoReadsCountAttribute(const U2AssemblyRe
 
 void ConvertToSQLiteTask::updateImportInfoCoverageStatAttribute(const U2AssemblyReadsImportInfo &importInfo, const U2Assembly &assembly, U2AttributeDbi *attributeDbi) {
     const U2AssemblyCoverageStat &coverageStat = importInfo.coverageInfo.coverage;
-    CHECK(!coverageStat.coverage->isEmpty(), );
+    CHECK(!coverageStat.isEmpty(), );
 
     U2ByteArrayAttribute attribute;
     attribute.objectId = assembly.id;

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ class PhmmerSearchDialog : public QDialog, public Ui_PhmmerSearchDialog {
     Q_OBJECT
 public:
     PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = NULL);
-    
+
 private slots:
     void accept();
     void sl_queryToolButtonClicked();
@@ -51,7 +51,7 @@ private slots:
     void sl_domZCheckBoxChanged(int state);
     void sl_maxCheckBoxChanged(int state);
     void sl_domESpinBoxChanged(int newVal);
-    
+
 private:
     void setModelValues();
     void getModelValues();

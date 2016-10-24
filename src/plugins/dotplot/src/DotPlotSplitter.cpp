@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -290,6 +290,7 @@ void DotPlotSplitter::sl_toggleHand(){
 }
 
 void DotPlotSplitter::sl_dotPlotChanged(ADVSequenceObjectContext* sequenceX, ADVSequenceObjectContext* sequenceY, float shiftX, float shiftY, QPointF zoom) {
+    SAFE_POINT(sequenceX != NULL && sequenceY != NULL, tr("One of the sequences in dotplot is NULL"), );
 
     checkLockButtonState();
 

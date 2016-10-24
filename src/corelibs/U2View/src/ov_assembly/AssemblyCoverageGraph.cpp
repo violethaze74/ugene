@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -80,8 +80,8 @@ void AssemblyCoverageGraph::drawAll() {
 void AssemblyCoverageGraph::drawGraph(QPainter & p, const CoverageInfo &ci, int alpha) {
     int cellWidth = browser->getCellWidth();
     int visibleBases = browser->basesVisible();
-    const QVector<qint64> & coverageInfo = ci.coverageInfo;
-    qint64 maxCoverage = ci.maxCoverage;
+    const U2AssemblyCoverageStat & coverageInfo = ci.coverageInfo;
+    qint32 maxCoverage = ci.maxCoverage;
 
     SAFE_POINT(visibleBases == coverageInfo.size(), "in AssemblyCoverageGraph::drawGraph: incorrect coverageInfo size",)
     CHECK(maxCoverage > 0,);

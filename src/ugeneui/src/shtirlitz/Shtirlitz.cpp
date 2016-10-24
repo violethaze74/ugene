@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ const static char * SETTINGS_UGENE_UID            = "shtirlitz/uid";
 const static int DAYS_BETWEEN_REPORTS = 7;
 
 //This file stores the actual location of reports-receiver script.
-const static char * DESTINATION_URL_KEEPER_SRV = "http://ugene.unipro.ru";
+const static char * DESTINATION_URL_KEEPER_SRV = "http://ugene.net";
 const static char * DESTINATION_URL_KEEPER_PAGE = "/reports_dest.html";
 
 namespace U2 {

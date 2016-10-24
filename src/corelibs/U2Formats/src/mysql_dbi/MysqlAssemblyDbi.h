@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -119,10 +119,10 @@ public:
     virtual void pack(const U2DataId& assemblyId, U2AssemblyPackStat& stat, U2OpStatus& os);
 
     /**
-        Calculates coverage information for the given region. Saves result to 'c.coverage' vector.
-        Note: Coverage window size depends on 'c.coverage' vector size passed to the method call.
+        Calculates coverage information for the given region. Saves result to 'coverage' vector.
+        Note: Coverage window size depends on 'coverage' vector size passed to the method call.
     */
-    virtual void calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& c, U2OpStatus& os);
+    virtual void calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
 private:
     virtual void addReads(MysqlAssemblyAdapter* a, U2DbiIterator<U2AssemblyRead>* it, U2AssemblyReadsImportInfo& ii, U2OpStatus& os);

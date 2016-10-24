@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -98,10 +98,13 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
@@ -141,23 +144,23 @@ GUI_TEST_CLASS_DEFINITION(test_5012) {
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
     GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam1.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam1.sam");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam2.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam2.sam");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam3.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam3.sam");
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "pBR322.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/pBR322.gb");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "JQ040024.1.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/JQ040024.1.gb");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.fa");
 
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir(sandBoxDir).absoluteFilePath("test_5012.vcf"), GTUtilsWorkflowDesigner::textValue);
@@ -172,17 +175,17 @@ GUI_TEST_CLASS_DEFINITION(test_5012_1) {
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
     GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam1.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam1.sam");
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "pBR322.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/pBR322.gb");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "JQ040024.1.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/JQ040024.1.gb");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/", "chrM.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.fa");
 
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir(sandBoxDir).absoluteFilePath("test_5012_1.vcf"), GTUtilsWorkflowDesigner::textValue);
@@ -199,14 +202,14 @@ GUI_TEST_CLASS_DEFINITION(test_5012_2) {
     GTUtilsWorkflowDesigner::addSample(os, "Call variants with SAMtools");
     GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam1.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam1.sam");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/", "scerevisiae.bam2.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/bam/scerevisiae.bam2.sam");
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
 
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/", "pBR322.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir +"_common_data/genbank/pBR322.gb");
 
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir(sandBoxDir).absoluteFilePath("test_5012_2.vcf"), GTUtilsWorkflowDesigner::textValue);
@@ -282,7 +285,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
     GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf", "valid.vcf");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -322,7 +325,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
     GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf", "valid.vcf");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -771,6 +774,29 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     CHECK_SET_ERR(!lt.hasError(), "Log shouldn't contain errors");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5346) {
+    // 1. Open WD
+    // 2. Create the workflow: File List - FastQC Quality Control
+    // 3. Set empty input file
+    // Expected state: there is an error "The input file is empty"
+    GTLogTracer l;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    QString emptyFile = sandBoxDir + "test_5346_empty";
+    GTFile::create(os, emptyFile);
+    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::addElement(os, "File List");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, emptyFile);
+
+    WorkflowProcessItem* fastqc = GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control");
+    GTUtilsWorkflowDesigner::connect(os, fileList, fastqc);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsLog::checkContainsError(os, l, QString("The input file '%1' is empty.").arg(QFileInfo(emptyFile).absoluteFilePath()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5352) {
 //    1. Open WD
 //    2. Open any sample (e.g. Align with MUSCLE)
@@ -849,7 +875,7 @@ GUI_TEST_CLASS_DEFINITION(test_5360) {
 
     GTUtilsWorkflowDesigner::click(os, "Read FASTQ Files with Reads");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + QString::fromLocal8Bit("_common_data/scenarios/_regression/5360/папка/риды.fastq"), true);
-    
+
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -964,6 +990,114 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "/test_5367_coverage.txt", testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"), "Exported coverage is wrong!");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5412) {
+//    1. Open "/_common_data/reads/wrong_order/align_bwa_mem.uwl"
+//    2. Set input data: e_coli_mess_1.fastq nd e_coli_mess_2.fastq (the directory from step 1)
+//    3. Reference: "/_common_data/e_coli/NC_008253.fa"
+//    4. Set requiered output parameters
+//    5. Set "Filter unpaired reads" to false
+//    6. Run workflow
+//    Expected state: error - BWA MEM tool exits with code 1
+//    7. Go back to the workflow and set the filter parameter back to true
+//    8. Run the workflow
+//    Expected state: there is a warning about filtered reads
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "/_common_data/reads/wrong_order/align_bwa_mem.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List 1", testDir + "/_common_data/reads/wrong_order/e_coli_mess_1.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
+
+    GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
+    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file name", "test_5412", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "/_common_data/e_coli/NC_008253.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Filter unpaired reads", false, GTUtilsWorkflowDesigner::comboValue);
+
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    CHECK_SET_ERR(l.checkMessage("exited with code 1"), "No message about failed start of BWA MEM");
+
+    GTToolbar::clickButtonByTooltipOnToolbar(os, "mwtoolbar_activemdi", "Show workflow");
+
+    GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
+    GTUtilsWorkflowDesigner::setParameter(os, "Filter unpaired reads", true, GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file name", "test_5412_1", GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(l.checkMessage("5 pairs are complete, 6 reads without a pair were found in files"), "No message about filtered reads");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5417) {
+    //      1. Open "data/samples/Genbank/murine.gb".
+    //      2. Open "data/samples/Genbank/srs.gb".
+    //      3. Build doplot with theese files and try to save it.
+    //      Expected state: warning message ox appeared
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
+    Runnable *filler2 = new BuildDotPlotFiller(os, dataDir + "samples/Genbank/sars.gb", dataDir + "samples/Genbank/murine.gb");
+    GTUtilsDialog::waitForDialog(os, filler2);
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Build dotplot...");
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Dotplot" << "Save/Load" << "Save"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "dotplot widget"));
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5425) {
+    //1. Open de novo assembly dialog
+    //2. Fill it and run
+    //3. Open dialog again
+    //Expected state: all settings except files with reads was saved from previous run
+    class SpadesDialogSettingsChecker : public SpadesGenomeAssemblyDialogFiller {
+    public:
+        SpadesDialogSettingsChecker(HI::GUITestOpStatus &os, QString lib, QString datasetType, QString runningMode,
+            QString kmerSizes, int numThreads, int memLimit) : SpadesGenomeAssemblyDialogFiller(os, lib, QStringList(), QStringList(), "",
+            datasetType, runningMode, kmerSizes, numThreads, memLimit) {}
+        virtual void commonScenario() {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QComboBox* combo = GTWidget::findExactWidget<QComboBox*>(os, "modeCombo", dialog);
+            CHECK_SET_ERR(combo->currentText() == runningMode, "running mode doesn't match");
+
+            combo = GTWidget::findExactWidget<QComboBox*>(os, "typeCombo", dialog);
+            CHECK_SET_ERR(combo->currentText() == datasetType, "type mode doesn't match");
+
+            QLineEdit* lineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "kmerEdit", dialog);
+            CHECK_SET_ERR(lineEdit->text() == kmerSizes, "kmer doesn't match");
+
+            QSpinBox* spinbox = GTWidget::findExactWidget<QSpinBox*>(os, "memlimitSpin", dialog);
+            CHECK_SET_ERR(spinbox->text() == QString::number(memLimit), "memlimit doesn't match");
+
+            spinbox = GTWidget::findExactWidget<QSpinBox*>(os, "numThreadsSpinbox", dialog);
+            CHECK_SET_ERR(spinbox->text() == QString::number(numThreads), "threads doesn't match");
+
+            combo = GTWidget::findExactWidget<QComboBox*>(os, "libraryComboBox", dialog);
+            CHECK_SET_ERR(combo->currentText() == library, QString("library doesn't match, expected %1, actual:%2.").arg(library).arg(combo->currentText()));
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new SpadesGenomeAssemblyDialogFiller(os, "Paired-end (Interlaced)", QStringList() << testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq",
+        QStringList(), sandBoxDir, "Single Cell", "Error correction only", "aaaaa", 1, 228));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Genome de novo assembly...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new SpadesDialogSettingsChecker(os, "Paired-end (Interlaced)", "Single Cell", "Error correction only", "aaaaa", 1, 228));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Genome de novo assembly...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 } // namespace GUITest_regression_scenarios

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
 ,openSequenceTask(NULL), curURL("")
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220396");
+    new HelpButton(this, buttonBox, "18223036");
     startButton = buttonBox->button(QDialogButtonBox::Ok);
 
     SAFE_POINT(adv != NULL, "DotPlotDialog called without view context!", );

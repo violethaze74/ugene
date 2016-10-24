@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -71,6 +71,8 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
     mainLayout->setSpacing(0);
     setLayout(mainLayout);
 
+
+
     U2OpStatus2Log st;
     QSharedPointer<AssemblyModel> model = browser->getModel();
 
@@ -89,24 +91,27 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
     QWidget * infoGroup = new ShowHideSubgroupWidget("INFO", tr("Assembly Information"), asmWidget, true);
     mainLayout->addWidget(infoGroup);
 
-    QByteArray md5 = model->getReferenceMd5(st);
-    QByteArray species = model->getReferenceSpecies(st);
-    QString uri = model->getReferenceUri(st);
+    if(!browser->getModel()->isDbLocked()){
+        QByteArray md5 = model->getReferenceMd5(st);
+        QByteArray species = model->getReferenceSpecies(st);
+        QString uri = model->getReferenceUri(st);
 
-    if( !(md5+species+uri).isEmpty() ) {QWidget * refWidget = new QWidget(this);
-        QFormLayout * layout = buildFormLayout(refWidget);
-        if(!md5.isEmpty()) {
-            layout->addRow(buildLabel(tr("MD5"), refWidget), buildLineEdit(QString(md5), refWidget));
-        }
-        if(!species.isEmpty()) {
-            layout->addRow(buildLabel(tr("Species"), refWidget), buildLineEdit(QString(species), refWidget));
-        }
-        if(!uri.isEmpty()) {
-            layout->addRow(buildLabel(tr("URI"), refWidget), buildLineEdit(uri, refWidget));
-        }
+        if( !(md5+species+uri).isEmpty() ) {
+            QWidget * refWidget = new QWidget(this);
+            QFormLayout * layout = buildFormLayout(refWidget);
+            if(!md5.isEmpty()) {
+                layout->addRow(buildLabel(tr("MD5"), refWidget), buildLineEdit(QString(md5), refWidget));
+            }
+            if(!species.isEmpty()) {
+                layout->addRow(buildLabel(tr("Species"), refWidget), buildLineEdit(QString(species), refWidget));
+            }
+            if(!uri.isEmpty()) {
+                layout->addRow(buildLabel(tr("URI"), refWidget), buildLineEdit(uri, refWidget));
+            }
 
-        QWidget * refGroup = new ShowHideSubgroupWidget("REFERENCE", tr("Reference Information"), refWidget, false);
-        mainLayout->addWidget(refGroup);
+            QWidget * refGroup = new ShowHideSubgroupWidget("REFERENCE", tr("Reference Information"), refWidget, false);
+            mainLayout->addWidget(refGroup);
+        }
     }
 
     U2WidgetStateStorage::restoreWidgetState(savableTab);
@@ -118,7 +123,7 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
 const QString AssemblyInfoWidgetFactory::GROUP_ID = "OP_ASS_INFO";
 const QString AssemblyInfoWidgetFactory::GROUP_ICON_STR = ":core/images/chart_bar.png";
 const QString AssemblyInfoWidgetFactory::GROUP_TITLE = QString(QObject::tr("Assembly Statistics"));
-const QString AssemblyInfoWidgetFactory::GROUP_DOC_PAGE = "18220487";
+const QString AssemblyInfoWidgetFactory::GROUP_DOC_PAGE = "18223127";
 
 
 AssemblyInfoWidgetFactory::AssemblyInfoWidgetFactory()

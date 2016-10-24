@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -88,7 +88,7 @@ GraphSettingsDialog::GraphSettingsDialog( GSequenceGraphDrawer* d, const U2Regio
 
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
-    new HelpButton(this, buttonBox, "18220393");
+    new HelpButton(this, buttonBox, "18223033");
 
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_onCancelClicked()));
     connect(okButton, SIGNAL(clicked()), SLOT(sl_onOkClicked()));

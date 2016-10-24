@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/DocumentModel.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -58,7 +59,7 @@ DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatD
 : QDialog(p), formatDetectionResults(results)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220284");
+    new HelpButton(this, buttonBox, "18222924");
 
     setObjectName("DocumentFormatSelectorDialog");
 }
@@ -132,7 +133,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, QByteArray& 
         label->installEventFilter(new LabelClickProvider(label, rb));
 
         d->userSelectedFormat = new QComboBox();
-        d->userSelectedFormat->setObjectName("userSelectedFormat");
+        d->userSelectedFormat->setObjectName("userSelectedFormat"); 
         const DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
         SAFE_POINT(formatRegistry != NULL, "FormatRegistry is NULL!", -1);
         DocumentFormatConstraints constraints;
@@ -143,6 +144,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, QByteArray& 
                 d->userSelectedFormat->insertItem(0, formatName, id);
             }
         }
+        d->userSelectedFormat->model()->sort(0);
 
         hbox->addWidget(rb);
         hbox->addWidget(label);

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ namespace U2 {
 PWMJASPARDialogController::PWMJASPARDialogController(QWidget *w)
 : QDialog(w) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220578");
+    new HelpButton(this, buttonBox, "18223218");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

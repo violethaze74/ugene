@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -132,7 +132,7 @@ void CoveredRegionsLabel::sl_updateContent() {
 const QString AssemblyNavigationWidgetFactory::GROUP_ID = "OP_ASS_NAVIGATION";
 const QString AssemblyNavigationWidgetFactory::GROUP_ICON_STR = ":core/images/goto.png";
 const QString AssemblyNavigationWidgetFactory::GROUP_TITLE = QString(QObject::tr("Navigation"));
-const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "18220485";
+const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "18223125";
 
 AssemblyNavigationWidgetFactory::AssemblyNavigationWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;

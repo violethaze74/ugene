@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -205,16 +205,36 @@ void MysqlAssemblyUtils::unpackData(const QByteArray& packedData, U2AssemblyRead
         os.setError(err);
     }
 }
+#if (QT_VERSION < 0x050400) //Qt 5.4
+namespace {
+int removeAll(QVector<U2CigarOp> *vector,const U2CigarOp &t)
+{
+    const QVector<U2CigarOp>::const_iterator ce = vector->cend(), cit = std::find(vector->cbegin(), ce, t);
+    if (cit == ce)
+        return 0;
+    // next operation detaches, so ce, cit may become invalidated:
+    const int firstFoundIdx = std::distance(vector->cbegin(), cit);
+    const QVector<U2CigarOp>::iterator e = vector->end(), it = std::remove(vector->begin() + firstFoundIdx, e, t);
+    const int result = std::distance(it, e);
+    vector->erase(it, e);
+    return result;
+}
+}
+#endif
 
-void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os) {
-    int csize = c.coverage->size();
+void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
+    int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
-    U2Range<int>* cdata = c.coverage->data();
     double basesPerRange = double(r.length) / csize;
     while (q.step() && !os.isCoR()) {
         qint64 startPos = q.getInt64(0);
         qint64 len = q.getInt64(1);
+        //read data and convert to data with cigar
+        QByteArray data = q.getBlob(2);
+        U2AssemblyRead read(new U2AssemblyReadData());
+        unpackData(data,read,os);
+
         U2Region readRegion(startPos, len);
         U2Region readCroppedRegion = readRegion.intersect(r);
 
@@ -222,11 +242,36 @@ void MysqlAssemblyUtils::calculateCoverage(U2SqlQuery& q, const U2Region& r, U2A
             continue;
         }
 
-        int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos) / basesPerRange);
-        int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - 1 - r.startPos ) / basesPerRange);
+        // we have used effective length of the read, so insertions/deletions are already taken into account
+        // cigarString can be longer than needed
+        QVector<U2CigarOp> cigarVector;
+        foreach (const U2CigarToken &cigar, read->cigar) {
+            cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
+        }
+#if (QT_VERSION < 0x050400) //Qt 5.4
+        removeAll(&cigarVector,U2CigarOp_I);
+        removeAll(&cigarVector,U2CigarOp_S);
+        removeAll(&cigarVector,U2CigarOp_P);
+#else
+        cigarVector.removeAll(U2CigarOp_I);
+        cigarVector.removeAll(U2CigarOp_S);
+        cigarVector.removeAll(U2CigarOp_P);
+#endif
+        if(r.startPos > startPos){
+            cigarVector = cigarVector.mid(r.startPos - startPos);//cut unneeded cigar string
+        }
+
+        int firstCoverageIdx = (int)((readCroppedRegion.startPos - r.startPos)/ basesPerRange);
+        int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos ) / basesPerRange) - 1;
         for (int i = firstCoverageIdx; i <= lastCoverageIdx && i < csize; i++) {
-            cdata[i].minValue++;
-            cdata[i].maxValue++;
+            switch (cigarVector[(i-firstCoverageIdx)*basesPerRange]){
+            case U2CigarOp_D: // skip the deletion
+            case U2CigarOp_N: // skip the skiped
+                continue;
+            default:
+                coverage[i]++;
+            }
+
         }
     }
 }
@@ -236,7 +281,21 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
         return;
     }
 
-    int csize = ii.coverage.coverage->size();
+    int csize = ii.coverage.size();
+
+    QVector<U2CigarOp> cigarVector;
+    foreach (const U2CigarToken &cigar, read->cigar) {
+        cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
+    }
+#if (QT_VERSION < 0x050400) //Qt 5.4
+    removeAll(&cigarVector,U2CigarOp_I);
+    removeAll(&cigarVector,U2CigarOp_S);
+    removeAll(&cigarVector,U2CigarOp_P);
+#else
+    cigarVector.removeAll(U2CigarOp_I);
+    cigarVector.removeAll(U2CigarOp_S);
+    cigarVector.removeAll(U2CigarOp_P);
+#endif
 
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen - 1) / ii.coverageBasesPerPoint);
@@ -244,10 +303,15 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
         coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
-    U2Range<int>* coverageData = ii.coverage.coverage->data();
+    int* coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
-        coverageData[i].minValue++;
-        coverageData[i].maxValue++;
+        switch (cigarVector[(i-startPos)*ii.coverageBasesPerPoint]){
+        case U2CigarOp_D: // skip the deletion
+        case U2CigarOp_N: // skip the skiped
+            continue;
+        default:
+            coverageData[i]++;
+        }
     }
 }
 

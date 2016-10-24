@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -118,9 +118,8 @@ public:
     static QList<WorkflowProcessItem*> getWorkers(HI::GUITestOpStatus &os);
 
     static void createDataset(HI::GUITestOpStatus& os, QString datasetName = "");
-    //sets input file with path "filePath" and name "filename" dataset
+    //sets input file with path "filePath" to the current dataset
     //this method should be called after selecting worker which contains dataset on scene
-    static void setDatasetInputFile(HI::GUITestOpStatus &os, const QString &folderPath, const QString &fileName);
     static void setDatasetInputFile(HI::GUITestOpStatus &os, const QString &filePath, bool pastePath = false);
 
     static void addInputFile(HI::GUITestOpStatus &os, const QString &elementName, const QString &url);

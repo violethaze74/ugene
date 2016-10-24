@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -65,7 +65,7 @@ public:
     virtual void dropReadsTables(U2OpStatus& os);
 
     virtual void pack(U2AssemblyPackStat& stat, U2OpStatus& os);
-    virtual void calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& c, U2OpStatus& os);
+    virtual void calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
     virtual void createReadsIndexes(U2OpStatus& os);
 

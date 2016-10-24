@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -262,7 +262,7 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
         U2AssemblyReadsImportInfo & importInfo = importInfos[assemblyNum];
         qint64 maxProw = importInfo.packStat.maxProw;
         qint64 readsCount = importInfo.packStat.readsCount;
-        const U2AssemblyCoverageStat & coverageStat = importInfo.coverageInfo.coverage;
+        const U2AssemblyCoverageStat& coverageStat = importInfo.coverageInfo.coverage;
         if (maxProw > 0) {
             U2IntegerAttribute maxProwAttr;
             maxProwAttr.objectId = assembly.id;
@@ -285,8 +285,7 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
             attrDbi->createIntegerAttribute(countReadsAttr, stateInfo);
             CHECK_OP(stateInfo, );
         }
-        /*
-        if (!coverageStat.coverage->isEmpty()) {
+        if (!coverageStat.isEmpty()) {
             U2ByteArrayAttribute attribute;
             attribute.objectId = assembly.id;
             attribute.name = U2BaseAttributeName::coverage_statistics;
@@ -295,7 +294,6 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
             attrDbi->createByteArrayAttribute(attribute, stateInfo);
             CHECK_OP(stateInfo, );
         }
-        */
         stateInfo.setProgress(stateInfo.getProgress() + progressStep);
     }
 }

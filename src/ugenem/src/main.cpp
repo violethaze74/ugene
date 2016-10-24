@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
         sender.send("", dumpUrl);
         return 0;
     }
-    
+
 
     if (useGui) {
         SendReportDialog dlg(message, dumpUrl);

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -240,7 +240,7 @@ MultipleRangeSelector::MultipleRangeSelector(QWidget* _parent, const QVector<U2R
 
     ui = new Ui_RangeSelectionDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18220336");
+    new HelpButton(this, ui->buttonBox, "18222976");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Go"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

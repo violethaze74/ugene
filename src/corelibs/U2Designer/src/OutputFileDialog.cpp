@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -47,6 +47,11 @@ OutputFileDialog::OutputFileDialog(RunFileSystem *_rfs, bool _saveDir, Completio
     addDirButton->setIcon(QIcon(":U2Designer/images/add_directory.png"));
     absolutePathButton->setIcon(QIcon(":U2Designer/images/outside.png"));
     settingsButton->setIcon(QIcon(":U2Designer/images/settings.png"));
+    QPushButton *saveButton = buttonBox->button(QDialogButtonBox::Save);
+    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    saveButton->setText(tr("Save"));
+    cancelButton->setText(tr("Cancel"));
+
     if (saveDir) {
         nameWidget->setVisible(false);
         setWindowTitle(tr("Save a directory"));
@@ -203,6 +208,11 @@ CreateDirectoryDialog::CreateDirectoryDialog(RunFileSystem *_rfs, const QString 
 : QDialog(parent), rfs(_rfs), parentDir(_parentDir)
 {
     setupUi(this);
+    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+
+    okButton->setText(tr("OK"));
+    cancelButton->setText(tr("Cancel"));
 
     if (parentDir.isEmpty()) {
         dirLabel->setText(OUT_DIR);

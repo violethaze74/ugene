@@ -59,7 +59,7 @@
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="185"/>
         <source>Enable bootstrapping</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable bootstrapping</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="218"/>
@@ -84,7 +84,7 @@
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="331"/>
         <source>Display Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Display Options</translation>
     </message>
 </context>
 <context>

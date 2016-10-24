@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -4224,7 +4224,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5){
     GTGlobals::sleep(3000);
 }
 
-/** These tests are created according to test plan: https://ugene.unipro.ru/wiki/display/PD/MSA**/
+/** These tests are created according to test plan: https://ugene.net/wiki/display/PD/MSA**/
 
 GUI_TEST_CLASS_DEFINITION(test_0054){
 //    Open COI.aln

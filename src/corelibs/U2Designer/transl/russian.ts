@@ -51,7 +51,7 @@ this merge sequence slot:</source>
     <message>
         <location filename="../src/BreakpointHitCountDialog.ui" line="43"/>
         <source>A breakpoint is hit when the breakpoint location is reached and the condition is&lt;br&gt;satisfied. The hit count is the number of times the breakpoint has been hit.</source>
-        <translation>Остановкапроизойдет когда текущее состояние достигнет критической точки и условия &lt;br&gt;будут выполнены. Количество совпадений это сколько раз сработала точка остановки.</translation>
+        <translation>Остановка произойдет когда текущее состояние достигнет критической точки и условия &lt;br&gt;будут выполнены. Количество совпадений - это сколько раз сработала точка остановки.</translation>
     </message>
 </context>
 <context>
@@ -670,6 +670,24 @@ bowtie index file</source>
     </message>
 </context>
 <context>
+    <name>U2::BreakpointHitCountDialog</name>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="74"/>
+        <source>Reset</source>
+        <translation>Сбросить</translation>
+    </message>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="75"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="76"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
     <name>U2::ComboBoxWidget</name>
     <message>
         <location filename="../src/PropertyWidget.cpp" line="178"/>
@@ -701,6 +719,19 @@ bowtie index file</source>
         <location filename="../src/PropertyWidget.cpp" line="319"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
+    </message>
+</context>
+<context>
+    <name>U2::CreateDirectoryDialog</name>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="214"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="215"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1095,11 +1126,21 @@ bowtie index file</source>
     <name>U2::OutputFileDialog</name>
     <message>
         <location filename="../src/OutputFileDialog.cpp" line="52"/>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="53"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="57"/>
         <source>Save a directory</source>
         <translation>Сохранить директорию</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="54"/>
+        <location filename="../src/OutputFileDialog.cpp" line="59"/>
         <source>Save a file</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -1292,12 +1333,12 @@ bowtie index file</source>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="551"/>
+        <location filename="../src/DelegateEditors.cpp" line="555"/>
         <source>This computer</source>
         <translation>Данный компьютер</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="552"/>
+        <location filename="../src/DelegateEditors.cpp" line="556"/>
         <source>Remote computer</source>
         <translation>Удаленный компьютер</translation>
     </message>
@@ -1349,17 +1390,17 @@ bowtie index file</source>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="682"/>
+        <location filename="../src/DelegateEditors.cpp" line="686"/>
         <source>Enter items</source>
         <translation>Введите элементы</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="684"/>
+        <location filename="../src/DelegateEditors.cpp" line="688"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="686"/>
+        <location filename="../src/DelegateEditors.cpp" line="690"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1399,19 +1440,19 @@ bowtie index file</source>
 <context>
     <name>U2::URLLineEdit</name>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="183"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="190"/>
         <source>Select a directory</source>
         <translation>Укажите директорию</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="201"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="206"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="209"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="208"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="213"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="216"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="186"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="193"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
@@ -1498,17 +1539,17 @@ bowtie index file</source>
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="541"/>
+        <location filename="../src/DelegateEditors.cpp" line="545"/>
         <source>Overwrite</source>
         <translation>Переписать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="542"/>
+        <location filename="../src/DelegateEditors.cpp" line="546"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="544"/>
+        <location filename="../src/DelegateEditors.cpp" line="548"/>
         <source>Append</source>
         <translation>Дописать</translation>
     </message>

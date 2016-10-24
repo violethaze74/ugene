@@ -1,7 +1,7 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
 * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
-* http://ugene.unipro.ru
+* http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -581,7 +581,7 @@ void MSAEditorTreeViewerUI::setTreeLayout(TreeLayout newLayout) {
 }
 
 void MSAEditorTreeViewerUI::onLayoutChanged(const TreeLayout& layout) {
-    if(layout == RECTANGULAR_LAYOUT && !curLayoutIsRectangular) {
+    if (layout == RECTANGULAR_LAYOUT && !curLayoutIsRectangular) {
         setTransform(rectangularTransform);
     }
     curLayoutIsRectangular = (RECTANGULAR_LAYOUT == layout);
@@ -707,8 +707,6 @@ void MSAEditorTreeViewerUI::highlightBranches() {
 }
 
 void MSAEditorTreeViewerUI::resizeEvent(QResizeEvent *e) {
-    CHECK(!(curLayoutIsRectangular && curMSATreeViewer->isSynchronized()), );
-
     rectangularTransform = transform();
     QGraphicsView::resizeEvent(e);
     e->accept();

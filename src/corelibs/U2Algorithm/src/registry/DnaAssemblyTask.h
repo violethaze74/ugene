@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,7 +55,11 @@ public:
 
 class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskSettings {
 public:
-    DnaAssemblyToRefTaskSettings() : prebuiltIndex(false), openView(false), samOutput(true) {}
+    DnaAssemblyToRefTaskSettings()
+        : filterUnpaired(false),
+          prebuiltIndex(false),
+          openView(false),
+          samOutput(true) {}
 
     void setCustomSettings(const QMap<QString, QVariant>& settings);
     QVariant getCustomValue(const QString& optionName, const QVariant& defaultVal) const;
@@ -70,6 +74,8 @@ public:
     QString indexFileName;
     QString algName;
     bool pairedReads;
+    bool filterUnpaired;
+    QString tmpDirectoryForFilteredFiles;
     bool prebuiltIndex;
     bool openView;
     bool samOutput;

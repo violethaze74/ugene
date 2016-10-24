@@ -64,14 +64,14 @@
         <translation>Загруженные последовательности имеют разные алфавиты. Поэтому создано несколько объектов типа последовательность для каждого алфавита. Все последовательности одного объекта имеют одинаковый афлфавит и последовательности из разных объектов имеют разные алфавиты.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="607"/>
-        <location filename="../src/datatype/Annotation.cpp" line="610"/>
+        <location filename="../src/datatype/Annotation.cpp" line="606"/>
+        <location filename="../src/datatype/Annotation.cpp" line="609"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="618"/>
-        <location filename="../src/datatype/Annotation.cpp" line="621"/>
+        <location filename="../src/datatype/Annotation.cpp" line="617"/>
+        <location filename="../src/datatype/Annotation.cpp" line="620"/>
         <source>Translation</source>
         <translation>Трансляция</translation>
     </message>
@@ -111,7 +111,7 @@
         <translation>Последовательности из документа были соединены</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2DbiUtils.cpp" line="43"/>
+        <location filename="../src/dbi/U2DbiUtils.cpp" line="46"/>
         <source>UGENE public database</source>
         <translation>Публичная база данных UGENE</translation>
     </message>
@@ -560,6 +560,11 @@
         <source>Unexpected error on MSA rows import</source>
         <translation>Unexpected error on MSA rows import</translation>
     </message>
+    <message>
+        <location filename="../src/util/U2AlphabetUtils.h" line="101"/>
+        <source>Symbol is not belong to alphabet</source>
+        <translation>Symbol is not belong to alphabet</translation>
+    </message>
 </context>
 <context>
     <name>U2::AbstractProjectFilterTask</name>
@@ -783,12 +788,12 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/CmdlineInOutTaskRunner.cpp" line="73"/>
         <source>An error occurred during the task. See the log for details.</source>
-        <translation type="unfinished"></translation>
+        <translation>An error occurred during the task. See the log for details.</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineInOutTaskRunner.cpp" line="93"/>
         <source>Wrong database string: </source>
-        <translation type="unfinished"></translation>
+        <translation>Wrong database string: </translation>
     </message>
 </context>
 <context>
@@ -796,37 +801,37 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="98"/>
         <source>Run UGENE command line: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Run UGENE command line: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="135"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="139"/>
         <source>Cannot start process &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="205"/>
-        <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot start process &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="209"/>
-        <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
-        <translation type="unfinished"></translation>
+        <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
+        <translation>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</translation>
     </message>
     <message>
         <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="213"/>
+        <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
+        <translation>The process &apos;%1&apos; crashed some time after starting successfully</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="217"/>
         <source>Error occurred while reading from or writing to channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Error occurred while reading from or writing to channel</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="216"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="220"/>
         <source>Unknown error occurred</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown error occurred</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="262"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="265"/>
         <source>An error occurred. Process is not finished successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>An error occurred. Process is not finished successfully.</translation>
     </message>
 </context>
 <context>
@@ -1362,47 +1367,47 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="348"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="350"/>
         <source>Can not remove temporary directory: path is empty.</source>
         <translation>Невозможно удалить временную директорию: пустой путь.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="354"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="356"/>
         <source>Can not remove files from temporary directory.</source>
         <translation>Невозможно удалить файлы из временной директории.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="359"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="361"/>
         <source>Can not remove directory for temporary files.</source>
         <translation>Невозможно удалить директорию для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="372"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="374"/>
         <source>Can not create directory for temporary files: %1</source>
         <translation>Невозможно создать директорию для временных файлов: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="403"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="405"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="419"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="421"/>
         <source>Undefined tool: &apos;%1&apos;</source>
         <translation>Неопределенный инструмент: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="423"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="425"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Путь до инструмента &apos;%1&apos; не установлен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="467"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="469"/>
         <source>Working directory is &quot;%1&quot;</source>
         <translation>Рабочая директория &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="476"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="478"/>
         <source>Launching %1 tool: %2 %3</source>
         <translation>Запуск инструмента %1: %2 %3</translation>
     </message>
@@ -1933,17 +1938,17 @@ The session database file is removed after closing of UGENE.</source>
         <translation> п.о</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="100"/>
+        <location filename="../src/globals/L10n.h" line="103"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="101"/>
+        <location filename="../src/globals/L10n.h" line="104"/>
         <source>Reverse-complementary</source>
         <translation>Обратно-комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="103"/>
+        <location filename="../src/globals/L10n.h" line="106"/>
         <source>Required</source>
         <translation>Требуемый</translation>
     </message>
@@ -2219,22 +2224,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::RelocateDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="348"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="358"/>
         <source>Relocate document %1 -&gt; %2</source>
         <translation>Перемещение документа %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="355"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="365"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="359"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="369"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="368"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="378"/>
         <source>Only unloaded objects can be relocated</source>
         <translation>Можно перемещать только выгруженные документы</translation>
     </message>
@@ -2255,7 +2260,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Удаление документа</translation>
     </message>
     <message>
-        <location filename="../src/tasks/RemoveDocumentTask.cpp" line="94"/>
+        <location filename="../src/tasks/RemoveDocumentTask.cpp" line="98"/>
         <source>Cannot remove document %1, since it is locked by some task.</source>
         <translation>Невозможно удалить документ %1, т.к. он заблокирован другой задачей.</translation>
     </message>
@@ -2292,22 +2297,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveCopyAndAddToProjectTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="308"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="318"/>
         <source>Save a copy %1</source>
         <translation>Сохранение копии %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="326"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="336"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="327"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="337"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="331"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="341"/>
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект: %1</translation>
     </message>
@@ -2384,24 +2389,24 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Вопрос?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="213"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="214"/>
         <source>Save document: %1</source>
         <translation>Сохранить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="264"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="274"/>
         <source>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</source>
         <translation>У вас недостаточно прав для записи в &apos;%1&apos; файл.
 UGENE содержит несохраненные изменения.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="265"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="275"/>
         <source>Do you want to save changes to another file?</source>
         <translation>Хотите сохранить изменения в другой файл?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="286"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="296"/>
         <source>Save as</source>
         <translation>Сохранить как</translation>
     </message>
@@ -2422,9 +2427,17 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::SequenceDbiWalkerSubtask</name>
     <message>
-        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="140"/>
+        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="141"/>
         <source>Sequence walker subtask</source>
         <translation>Обход части последовательности</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SequenceDbiWalkerTask</name>
+    <message>
+        <location filename="../src/tasks/SequenceDbiWalkerTask.cpp" line="55"/>
+        <source>Target region out of sequence range</source>
+        <translation>Target region out of sequence range</translation>
     </message>
 </context>
 <context>
@@ -2596,7 +2609,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2DbiUtils</name>
     <message>
-        <location filename="../src/dbi/U2DbiUtils.cpp" line="49"/>
+        <location filename="../src/dbi/U2DbiUtils.cpp" line="52"/>
         <source>Feature is not supported: %1, dbi: %2</source>
         <translation>Функция не поддерживается: %1, dbi: %2</translation>
     </message>

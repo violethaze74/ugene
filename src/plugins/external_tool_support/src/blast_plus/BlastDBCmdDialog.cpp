@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 
+#include <U2Core/GUrlUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -37,7 +38,7 @@ BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWi
     settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220588");
+    new HelpButton(this, buttonBox, "18223228");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Fetch"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -76,8 +77,15 @@ void BlastDBCmdDialog::sl_update() {
 }
 
 void BlastDBCmdDialog::initSaveController() {
+    QString domain = "blast_result";
+    QString dir = LastUsedDirHelper::getLastUsedDir(domain, GUrlUtils::getDefaultDataPath());
+    QString fileName = GUrlUtils::fixFileName(settings.query.isEmpty() ? "blast_result" : settings.query).replace('.', '_') + ".fa";
+
     SaveDocumentControllerConfig config;
     config.defaultFormatId = BaseDocumentFormats::FASTA;
+    config.defaultFileName = dir + "/" + fileName;
+    config.defaultDomain = domain;
+    config.rollFileName = true;
     config.fileDialogButton = browseOutputButton;
     config.fileNameEdit = outputPathLineEdit;
     config.parentWidget = this;
@@ -85,11 +93,15 @@ void BlastDBCmdDialog::initSaveController() {
 
     const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::FASTA;
 
+
     saveController = new SaveDocumentController(config, formats, this);
 }
 
 void BlastDBCmdDialog::setQueryId( const QString& queryId ) {
     queryIdEdit->setText(queryId);
+    settings.query = queryId;
+    delete saveController;
+    initSaveController();
 }
 
 }//namespace

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -50,7 +50,7 @@ public:
     virtual U2Object *getObject(const SharedDbiDataHandler &handler, const U2DataType &type);
     virtual SharedDbiDataHandler putSequence(const DNASequence &sequence);
     virtual SharedDbiDataHandler putAlignment(const MAlignment &al);
-    virtual SharedDbiDataHandler putAnnotationTable(const QList<SharedAnnotationData> &anns);
+    virtual SharedDbiDataHandler putAnnotationTable(const QList<SharedAnnotationData> &anns, const QString annTableName = "Annotations");
     virtual SharedDbiDataHandler putAnnotationTable(AnnotationTableObject *annTable);
 
     // returns QVariant with QVariantList inside, which have SharedDbiDataHandler in each QVariant

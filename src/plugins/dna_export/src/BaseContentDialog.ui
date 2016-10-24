@@ -23,7 +23,7 @@
    <item>
     <widget class="QRadioButton" name="baseContentRadioButton">
      <property name="text">
-      <string>Base conetnt</string>
+      <string>Base content</string>
      </property>
      <property name="checked">
       <bool>true</bool>

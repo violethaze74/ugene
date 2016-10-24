@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -144,27 +144,29 @@ void ExternalToolRunTask::run(){
 }
 
 void ExternalToolRunTask::killProcess(QProcess *process, QString childProcesses) {
+    Q_UNUSED(childProcesses)
+
 #if (!defined(Q_OS_WIN32) && !defined(Q_OS_WINCE)) || defined(qdoc)
-            long numPid = process->pid();
-            Q_UNUSED(numPid);
+    long numPid = process->pid();
+    Q_UNUSED(numPid);
 #else
-            Q_PID pid = process->pid();
-            long numPid = pid->dwProcessId;
-            Q_UNUSED(numPid);
+    Q_PID pid = process->pid();
+    long numPid = pid->dwProcessId;
+    Q_UNUSED(numPid);
 #endif
 #ifdef Q_OS_WIN
-            QProcess::execute(QString("taskkill /PID %1 /T /F").arg(numPid));
-            if (!childProcesses.isEmpty()) {
-                QProcess::execute(QString("taskkill /IM %1 /T /F").arg(childProcesses));
-            }
+    QProcess::execute(QString("taskkill /PID %1 /T /F").arg(numPid));
+    if (!childProcesses.isEmpty()) {
+        QProcess::execute(QString("taskkill /IM %1 /T /F").arg(childProcesses));
+    }
 #endif
 #ifdef Q_OS_UNIX
-            QList<long> pids = getChildPidsRecursive(numPid);
-            pids << numPid;
-            foreach (const long pid, pids) {
-                taskLog.trace(QString("Kill process: %1").arg(pid));
-                kill(pid, SIGTERM);
-            }
+    QList<long> pids = getChildPidsRecursive(numPid);
+    pids << numPid;
+    foreach (const long pid, pids) {
+        taskLog.trace(QString("Kill process: %1").arg(pid));
+        kill(pid, SIGTERM);
+    }
 #endif
 }
 

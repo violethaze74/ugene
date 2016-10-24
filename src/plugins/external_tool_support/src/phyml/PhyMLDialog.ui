@@ -579,5 +579,21 @@ Uncheck to get the maximum likelihood estimate.</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>bootstrapCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>fastMethodCombo</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>88</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>385</x>
+     <y>55</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,7 +44,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI
       ui(new Ui_ExportHighlightedDialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18220418");
+    new HelpButton(this, ui->buttonBox, "18223058");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

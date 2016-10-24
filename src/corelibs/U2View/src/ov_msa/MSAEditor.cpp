@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -221,7 +221,7 @@ void MSAEditor::sl_saveAlignmentAs(){
 
     QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(srcDoc, ui);
     dialog->setAddToProjectFlag(true);
-    dialog->setWindowTitle(tr("Save alignment"));
+    dialog->setWindowTitle(tr("Save Alignment"));
     ExportObjectUtils::export2Document(dialog);
 }
 

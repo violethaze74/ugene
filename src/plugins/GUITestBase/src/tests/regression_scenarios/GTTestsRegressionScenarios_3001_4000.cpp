@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -634,24 +634,48 @@ GUI_TEST_CLASS_DEFINITION(test_3103) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3112) {
-//     1. Open "_common_data\scenarios\msa\big.aln".
-//     Expected state: the MSA editor is shown, there is an overview.
-//     2. Click the "Overview" button on the main toolbar.
-//     Expected state: the overview widget hides, the render task cancels.
-//     Current state: the overview widget hides, the render task still works. If you change the msa (insert a gap somewhere), a safe point triggers.
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "10000_sequences.aln");
+//    1. Open big alignment, e.g. "_common_data/clustal/big.aln"
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTGlobals::sleep(20000); //in case of failing test try to increase this pause
 
     QToolButton* button = qobject_cast<QToolButton*>(GTAction::button(os, "Show overview"));
     CHECK_SET_ERR(button->isChecked(), "Overview button is not pressed");
 
-    GTWidget::click(os, button);//uncheck
-    GTWidget::click(os, button);//check
-    GTWidget::click(os, button);//uncheck
-    GTGlobals::sleep();
-    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "There are unfinished tasks");
+//    2. Modify the alignment
+//    Expected state: the task starts
+    GTUtilsMsaEditor::removeColumn(os, 5);
+    GTGlobals::sleep(500);
+    CHECK_SET_ERR(0 != GTUtilsTaskTreeView::getTopLevelTasksCount(os), "1: There are no active tasks ");
+
+//    3. Click the "Overview" button on the main toolbar
+//    Expected state: the task is canceled, the overview is hidden
+    GTWidget::click(os, button);
+    GTGlobals::sleep(500); // wait for task to be canceled
+    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "2: There are unfinished tasks");
+
+//    4. Click the "Overview" button again and wait till overview calculation and rendering ends
+    GTWidget::click(os, button);
+    CHECK_SET_ERR(0 != GTUtilsTaskTreeView::getTopLevelTasksCount(os), "3: There are no active tasks");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    5. Hide the overview
+//    6. Open the overview
+//    Expected state: no task starts because nothing have been changed
+    GTWidget::click(os, button);
+    GTWidget::click(os, button);
+    CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "4: There are unfinished tasks");
+
+//    7. Hide the overview
+    GTWidget::click(os, button);
+
+//    8. Edit the alignment
+    GTUtilsMsaEditor::removeColumn(os, 5);
+
+//    9. Open the overview
+//    Expected state: overview calculation task starts
+    GTWidget::click(os, button);
+    GTGlobals::sleep(500);
+    CHECK_SET_ERR(0 != GTUtilsTaskTreeView::getTopLevelTasksCount(os), "5: There are no active tasks");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3124) {
@@ -1483,7 +1507,7 @@ GUI_TEST_CLASS_DEFINITION(test_3229){
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    2. Set input a single file human_T1
     GTUtilsWorkflowDesigner::click(os, read);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
 //    3. Set the output path: ../test.fa or ./test.fa Output file
     GTUtilsWorkflowDesigner::click(os, write);
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", "./test.fa", GTUtilsWorkflowDesigner::textValue);
@@ -1784,7 +1808,7 @@ GUI_TEST_CLASS_DEFINITION(test_3270) {
 
 //    Expected state: there are no warnings.
     warning = GTUtilsOptionPanelSequenceView::getHintText(os);
-    CHECK_SET_ERR(warning.isEmpty(), QString("An unexpected warning: '%1'").arg(warning));
+    CHECK_SET_ERR(!warning.contains("Warning"), QString("An unexpected warning: '%1'").arg(warning));
 
 //    6. Click "Create annotations" button.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2442,8 +2466,7 @@ GUI_TEST_CLASS_DEFINITION(test_3373) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Read Sequence"));
     GTMouseDriver::click();
-    QString dirPath = testDir + "_common_data/fasta/";
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dirPath, "seq1.fa" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/fasta/seq1.fa" );
 
     GTWidget::click( os, GTAction::button(os,"Run workflow"));
 
@@ -3773,7 +3796,7 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
 
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Assembly");
     CHECK_SET_ERR(read != NULL, "Added workflow element is NULL");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dirPath, "chrM.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dirPath + "chrM.sam");
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5862,9 +5885,9 @@ GUI_TEST_CLASS_DEFINITION(test_3950) {
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "File List");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "nrsf-chr21.fastq");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/nrsf-chr21.fastq");
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/", "control-chr21.fastq");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bwa/control-chr21.fastq");
 
     GTUtilsWorkflowDesigner::click(os, "Align reads with BWA MEM");
     GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", sandBoxDir + "test_3950.fa", GTUtilsWorkflowDesigner::textValue);

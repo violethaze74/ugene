@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ public:
 
     /** Return the MSA alphabet */
     virtual U2AlphabetId getMsaAlphabet(const U2DataId& msaId, U2OpStatus& os) = 0;
-    
+
     /** Return the MSA length */
     virtual qint64 getMsaLength(const U2DataId& msaId, U2OpStatus& os) = 0;
 

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -101,6 +101,25 @@ void CircularViewSettingsWidget::initLayout() {
     fontSizeSpinBox->setValue(settings->titleFontSize);
     rulerFontSizeSpinBox->setValue(settings->rulerFontSize);
     labelFontSizeSpinBox->setValue(settings->labelFontSize);
+
+    titleCheckBox->setChecked(settings->showTitle);
+    lengthCheckBox->setChecked(settings->showLength);
+    rulerLineCheckBox->setChecked(settings->showRulerLine);
+    rulerCoordsCheckBox->setChecked(settings->showRulerCoordinates);
+    boldButton->setChecked(settings->titleBold);
+
+    switch (settings->labelMode) {
+    case CircularViewSettings::Inside:
+        labelPositionComboBox->setCurrentText(tr("Inside"));
+    case CircularViewSettings::Outside:
+        labelPositionComboBox->setCurrentText(tr("Outside"));
+    case CircularViewSettings::None:
+        labelPositionComboBox->setCurrentText(tr("None"));
+        break;
+    default:
+        labelPositionComboBox->setCurrentText(tr("Inside/Outside"));
+
+    }
 
     settingsWidget = new QWidget(this);
     QVBoxLayout* settingsLayout = new QVBoxLayout(settingsWidget);

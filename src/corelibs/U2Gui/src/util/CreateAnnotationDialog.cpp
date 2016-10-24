@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ CreateAnnotationDialog::CreateAnnotationDialog(QWidget* p, CreateAnnotationModel
     ui->setupUi(this);
     annWidgetController = new CreateAnnotationWidgetController(m, this, CreateAnnotationWidgetController::Full);
 
-    helpButton = new HelpButton(this, ui->buttonBox, "18220354");
+    helpButton = new HelpButton(this, ui->buttonBox, "18222994");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
 
     ui->mainLayout->insertWidget(0, annWidgetController->getWidget());
@@ -61,6 +61,7 @@ CreateAnnotationDialog::~CreateAnnotationDialog() {
 void CreateAnnotationDialog::updateAppearance(const QString &newTitle, const QString &newHelpPage, const QString &newOkButtonName) {
     setWindowTitle(newTitle);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(newOkButtonName);
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     helpButton->updatePageId(newHelpPage);
 }
 

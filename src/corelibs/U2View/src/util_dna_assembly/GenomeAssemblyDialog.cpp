@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -52,21 +52,18 @@
 
 namespace U2 {
 
-QString GenomeAssemblyDialog::lastDirUrl;
-QStringList GenomeAssemblyDialog::lastLeftReadsUrls;
-QStringList GenomeAssemblyDialog::lastRightReadsUrls;
 QString GenomeAssemblyDialog::methodName;
+QString GenomeAssemblyDialog::library;
 
 GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget* p)
 : QDialog(p),
   assemblyRegistry(AppContext::getGenomeAssemblyAlgRegistry()),
   customGUI(NULL)
 {
-
     setupUi(this);
 
     QMap<QString,QString> helpPagesMap;
-    helpPagesMap.insert("SPAdes","18220606");
+    helpPagesMap.insert("SPAdes","18223246");
     new ComboboxDependentHelpButton(this, buttonBox, methodNamesBox, helpPagesMap);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -95,21 +92,12 @@ GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget* p)
     header1->setStretchLastSection( false );
     header2->setStretchLastSection( false );
     header3->setStretchLastSection( false );
-#if (QT_VERSION < 0x050000) //Qt 5
-    header1->setClickable( false );
-    header1->setResizeMode( 0, QHeaderView::Stretch );
-    header2->setClickable( false );
-    header2->setResizeMode( 0, QHeaderView::Stretch );
-    header3->setClickable( false );
-    header3->setResizeMode( 0, QHeaderView::Stretch );
-#else
     header1->setSectionsClickable( false );
     header1->setSectionResizeMode( 0, QHeaderView::Stretch );
     header2->setSectionsClickable( false );
     header2->setSectionResizeMode( 0, QHeaderView::Stretch );
     header3->setSectionsClickable( false );
     header3->setSectionResizeMode( 0, QHeaderView::Stretch );
-#endif
 
     sl_onLibraryTypeChanged();
     sl_onAlgorithmChanged(methodNamesBox->currentText());
@@ -122,16 +110,14 @@ GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget* p)
     connect(methodNamesBox, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_onAlgorithmChanged(const QString &)));
     connect(libraryComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onLibraryTypeChanged()));
 
-    if(!lastDirUrl.isEmpty()){
-        resultDirNameEdit->setText(lastDirUrl);
-    }
+    QString defaultOutputDir = GUrlUtils::getDefaultDataPath() + "/" + methodNamesBox->currentText() + "_output";
+    resultDirNameEdit->setText(GUrlUtils::rollFileName(defaultOutputDir, QSet<QString>() << defaultOutputDir));
 
-    if(!lastLeftReadsUrls.isEmpty()){
-        addReads(lastLeftReadsUrls, leftReadsTable);
-    }
-
-    if(!lastRightReadsUrls.isEmpty()){
-        addReads(lastRightReadsUrls, rightReadsTable);
+    if (!library.isEmpty()) {
+        int index = libraryComboBox->findText(library);
+        if (index != -1) {
+            libraryComboBox->setCurrentIndex(index);
+        }
     }
 }
 
@@ -247,45 +233,47 @@ void GenomeAssemblyDialog::accept() {
         }
 
         if(validated){
-            lastDirUrl = resultDirNameEdit->text();
-
-            lastLeftReadsUrls.clear();
-            int numItems = leftReadsTable->topLevelItemCount();
-            for( int i = 0; i < numItems; ++i) {
-                lastLeftReadsUrls.append(leftReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString());
-            }
-
-            lastRightReadsUrls.clear();
-            numItems = rightReadsTable->topLevelItemCount();
-            for( int i = 0; i < numItems; ++i) {
-                lastRightReadsUrls.append(rightReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString());
-            }
+            library = libraryComboBox->currentText();
+            library = libraryComboBox->currentText();
 
             //check formats
-            QStringList reads = lastLeftReadsUrls;
-            if(GenomeAssemblyUtils::hasRightReads(libraryComboBox->currentText())){
-                reads.append(lastRightReadsUrls);
+            QStringList reads;
+            int numItems = leftReadsTable->topLevelItemCount();
+            for (int i = 0; i < numItems; ++i) {
+                reads.append(leftReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString());
             }
-            GenomeAssemblyAlgorithmEnv *env= AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(methodNamesBox->currentText());
+
+            numItems = rightReadsTable->topLevelItemCount();
+            for (int i = 0; i < numItems; ++i) {
+                reads.append(rightReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString());
+            }
+
+            GenomeAssemblyAlgorithmEnv *env = AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(methodNamesBox->currentText());
             SAFE_POINT(NULL != env, "Unknown algorithm: " + methodNamesBox->currentText(), );
             QStringList formats = env->getReadsFormats();
 
-            foreach (const QString& r, reads){
+            foreach(const QString& r, reads) {
                 const QString detectedFormat = FileAndDirectoryUtils::detectFormat(r);
-                if(detectedFormat.isEmpty()){
+                if (detectedFormat.isEmpty()) {
                     QMessageBox::information(this, tr("Genome Assembly"),
-                        tr("Unknown file format of %1.").arg(r) );
-                    return ;
+                        tr("Unknown file format of %1.").arg(r));
+                    return;
                 }
 
-                if(!formats.contains(detectedFormat)){
+                if (!formats.contains(detectedFormat)) {
                     QMessageBox::information(this, tr("Genome Assembly"),
-                        tr("File format of %1 is %2. Supported file formats of reads: %3.").arg(r).arg(detectedFormat).arg(formats.join(", ")) );
-                    return ;
+                        tr("File format of %1 is %2. Supported file formats of reads: %3.").arg(r).arg(detectedFormat).arg(formats.join(", ")));
+                    return;
                 }
             }
-
-
+            QString outputDirUrl = resultDirNameEdit->text();
+            QDir d(outputDirUrl);
+            if (!d.exists()) {
+                if (!d.mkdir(outputDirUrl)) {
+                    QMessageBox::information(this, tr("Genome Assembly"),
+                        tr("Unable to create output directory for result assembly.\r\nDirectory Path: %1").arg(outputDirUrl));
+                }
+            }
             QDialog::accept();
         }
     }

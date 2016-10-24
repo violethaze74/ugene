@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -202,7 +202,9 @@ void ZoomableAssemblyOverview::drawBackground(QPainter & p) {
         if (!ci.coverageInfo.isEmpty()) {
             switch(scaleType) {
             case AssemblyBrowserSettings::Scale_Linear:
-                grayCoeffD = double(ci.coverageInfo[i]) / ci.maxCoverage;
+                if(ci.maxCoverage != 0){
+                    grayCoeffD = double(ci.coverageInfo[i]) / ci.maxCoverage;
+                }
                 columnPixels = qint64(double(ci.coverageInfo[i]) / readsPerYPixel + 0.5);
                 //grayCoeff = 255 - int(double(255) / ci.maxCoverage * ci.coverageInfo[i] + 0.5);
                 break;

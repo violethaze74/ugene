@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include <U2Core/global.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Gui/HelpButton.h>
+#include <QPushButton>
 
 
 namespace U2 {
@@ -30,7 +31,9 @@ namespace U2 {
 TreeSettingsDialog::TreeSettingsDialog(QWidget *parent, const OptionsMap &settings, bool isRectLayout)
 : BaseSettingsDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220494");
+    new HelpButton(this, buttonBox, "18223134");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     heightSlider->setValue(settings[HEIGHT_COEF].toUInt());
     widthlSlider->setValue(settings[WIDTH_COEF].toUInt());

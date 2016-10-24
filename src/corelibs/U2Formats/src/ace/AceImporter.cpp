@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -56,10 +56,6 @@ AceImporterTask::AceImporterTask(const GUrl& url, const QVariantMap& settings, c
     hints(hints),
     srcUrl(url)
 {
-    if (settings.contains(AceImporter::DEST_URL)) {
-        destUrl = GUrl(settings.value(AceImporter::DEST_URL).toString());
-    }
-
     documentDescription = srcUrl.fileName();
 }
 
@@ -67,28 +63,25 @@ void AceImporterTask::prepare() {
     startTime = GTimer::currentTimeMicros();
 
     hintedDbiRef = hints.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>();
-    isSqliteDbTransit = hintedDbiRef.isValid() && SQLITE_DBI_ID != hintedDbiRef.dbiFactoryId;
+    SAFE_POINT_EXT(hintedDbiRef.isValid(), setError(tr("Dbi ref is invalid")), );
 
-    if (destUrl.isEmpty()) {
-        if (!isSqliteDbTransit) {
-            localDbiRef = U2DbiRef(SQLITE_DBI_ID, srcUrl.dirPath() + QDir::separator() + srcUrl.fileName() + ".ugenedb");
-        } else {
-            const QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("assembly_conversion") + QDir::separator();
-            QDir().mkpath(tmpDir);
-
-            const QString pattern = tmpDir + "XXXXXX.ugenedb";
-            QTemporaryFile *tempLocalDb = new QTemporaryFile(pattern, this);
-
-            tempLocalDb->open();
-            const QString filePath = tempLocalDb->fileName();
-            tempLocalDb->close();
-
-            SAFE_POINT_EXT(QFile::exists(filePath), setError(tr("Can't create a temporary database")), );
-
-            localDbiRef = U2DbiRef(SQLITE_DBI_ID, filePath);
-        }
+    isSqliteDbTransit = SQLITE_DBI_ID != hintedDbiRef.dbiFactoryId;
+    if (!isSqliteDbTransit) {
+        localDbiRef = hintedDbiRef;
     } else {
-        localDbiRef = U2DbiRef(SQLITE_DBI_ID, destUrl.getURLString());
+        const QString tmpDir = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("assembly_conversion") + QDir::separator();
+        QDir().mkpath(tmpDir);
+
+        const QString pattern = tmpDir + "XXXXXX.ugenedb";
+        QTemporaryFile *tempLocalDb = new QTemporaryFile(pattern, this);
+
+        tempLocalDb->open();
+        const QString filePath = tempLocalDb->fileName();
+        tempLocalDb->close();
+
+        SAFE_POINT_EXT(QFile::exists(filePath), setError(tr("Can't create a temporary database")), );
+
+        localDbiRef = U2DbiRef(SQLITE_DBI_ID, filePath);
     }
 
     convertTask = new ConvertAceToSqliteTask(srcUrl, localDbiRef);
@@ -155,7 +148,6 @@ void AceImporterTask::initLoadDocumentTask() {
 
 const QString AceImporter::ID = "ace-importer";
 const QString AceImporter::SRC_URL = "source_url";
-const QString AceImporter::DEST_URL = "destination_url";
 
 AceImporter::AceImporter() :
     DocumentImporter(ID, tr("ACE file importer")) {
@@ -184,7 +176,11 @@ DocumentProviderTask* AceImporter::createImportTask(const FormatDetectionResult&
         CHECK(!dialog.isNull(), NULL);
 
         settings = dialog->getSettings();
-        task = new AceImporterTask(res.url, settings, hints);
+        QVariantMap extendedHints(hints);
+        if (settings.contains(DocumentFormat::DBI_REF_HINT)) {
+            extendedHints.insert(DocumentFormat::DBI_REF_HINT, settings[DocumentFormat::DBI_REF_HINT]);
+        }
+        task = new AceImporterTask(res.url, settings, extendedHints);
         if (result == QDialog::Rejected) {
             task->cancel();
         }

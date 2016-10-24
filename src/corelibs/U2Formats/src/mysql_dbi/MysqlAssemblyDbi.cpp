@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -361,7 +361,7 @@ void MysqlAssemblyDbi::pack(const U2DataId& assemblyId, U2AssemblyPackStat& stat
     perfLog.trace(QString("Assembly: full pack time: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000*1000)));
 }
 
-void MysqlAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& c, U2OpStatus& os) {
+void MysqlAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     GTIMER(c2, t2, "MysqlAssemblyDbi::calculateCoverage");
 
     quint64 t0 = GTimer::currentTimeMicros();
@@ -370,7 +370,7 @@ void MysqlAssemblyDbi::calculateCoverage(const U2DataId& assemblyId, const U2Reg
     if ( a == NULL ) {
         return;
     }
-    a->calculateCoverage(region, c, os);
+    a->calculateCoverage(region, coverage, os);
     perfLog.trace(QString("Assembly: full coverage calculation time for %2..%3: %1 seconds").arg((GTimer::currentTimeMicros() - t0) / float(1000*1000)).arg(region.startPos).arg(region.endPos()));
 }
 

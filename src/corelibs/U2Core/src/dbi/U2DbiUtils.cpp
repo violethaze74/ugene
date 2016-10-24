@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ static U2DataId emptyId;
 const QString U2DbiUtils::PUBLIC_DATABASE_NAME = QObject::tr("UGENE public database");
 const QString U2DbiUtils::PUBLIC_DATABASE_LOGIN = "public";
 const QString U2DbiUtils::PUBLIC_DATABASE_PASSWORD = "public";
-const QString U2DbiUtils::PUBLIC_DATABASE_URL = U2DbiUtils::createFullDbiUrl(PUBLIC_DATABASE_LOGIN, "5.9.139.103", 3306, "public_ugene_1_24");
+const QString U2DbiUtils::PUBLIC_DATABASE_URL = U2DbiUtils::createFullDbiUrl(PUBLIC_DATABASE_LOGIN, "5.9.139.103", 3306, "public_ugene_1_25");
 
 void U2DbiUtils::logNotSupported(U2DbiFeature f, U2Dbi* dbi, U2OpStatus& os) {
     QString msg = tr("Feature is not supported: %1, dbi: %2").arg(int(f)).arg(dbi == NULL ? QString("<unknown>") : dbi->getDbiId());

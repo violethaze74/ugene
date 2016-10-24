@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -91,7 +91,7 @@ Version Version::parseVersion(const QString& text) {
     }
     v.suffix = v.text.mid(textPos);
     v.isDevVersion = v.suffix.contains(VERSION_DEV_SUFFIX);
-    if(v.suffix.isEmpty()){//See issue UGENE-870 (https://ugene.unipro.ru/tracker/browse/UGENE-870)
+    if(v.suffix.isEmpty()){//See issue UGENE-870 (https://ugene.net/tracker/browse/UGENE-870)
         bool ok;
         int val = currentNum.toInt(&ok);
         if (ok) {

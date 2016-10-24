@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ namespace U2 {
 const QString PairAlignFactory::GROUP_ID = "OP_PAIRALIGN";
 const QString PairAlignFactory::GROUP_ICON_STR = ":core/images/pairwise.png";
 const QString PairAlignFactory::GROUP_TITLE = QString(QObject::tr("Pairwise Alignment"));
-const QString PairAlignFactory::GROUP_DOC_PAGE = "18220447";
+const QString PairAlignFactory::GROUP_DOC_PAGE = "18223087";
 
 
 PairAlignFactory::PairAlignFactory() {

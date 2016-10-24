@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -43,6 +43,7 @@
 #include "util/upgraders/MysqlUpgraderFrom_1_15_To_1_16.h"
 #include "util/upgraders/MysqlUpgraderFrom_1_16_To_1_17.h"
 #include "util/upgraders/MysqlUpgraderFrom_1_16_To_1_24.h"
+#include "util/upgraders/MysqlUpgraderFrom_1_24_To_1_25.h"
 
 namespace U2 {
 
@@ -69,6 +70,7 @@ MysqlDbi::MysqlDbi()
     upgraders << new MysqlUpgraderFrom_1_15_To_1_16(this);
     upgraders << new MysqlUpgraderFrom_1_16_To_1_17(this);
     upgraders << new MysqlUpgraderFrom_1_16_To_1_24(this);
+    upgraders << new MysqlUpgraderFrom_1_24_To_1_25(this);
 }
 
 MysqlDbi::~MysqlDbi() {
@@ -347,9 +349,6 @@ void MysqlDbi::populateDefaultSchema(U2OpStatus& os) {
 
     setVersionProperties(Version::minVersionForMySQL(), os);
     CHECK_DB_INIT(os);
-
-    setupStoredFunctions(os);
-    CHECK_DB_INIT(os);
 }
 
 void MysqlDbi::internalInit(const QHash<QString, QString>& props, U2OpStatus& os) {
@@ -484,38 +483,6 @@ void MysqlDbi::setupTransactions(U2OpStatus &os) {
     U2SqlQuery("SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED", db, os).execute();
     CHECK_OP(os, );
     U2SqlQuery("SET autocommit = 0", db, os).execute();
-}
-
-void MysqlDbi::setupStoredFunctions(U2OpStatus &os) {
-    // "Create Index If Not Exists" procedure
-    const QString queryString = "CREATE PROCEDURE `%1`.`CreateIndex` "
-                                "( "
-                                "given_database VARCHAR(64), "
-                                "given_table    VARCHAR(64), "
-                                "given_index    VARCHAR(64), "
-                                "given_columns  VARCHAR(64) "
-                                ") "
-                                "SQL SECURITY INVOKER "
-                                "BEGIN "
-                                "DECLARE IndexIsThere INTEGER; "
-                                "SELECT COUNT(1) INTO IndexIsThere "
-                                "FROM INFORMATION_SCHEMA.STATISTICS "
-                                "WHERE table_schema = given_database "
-                                "AND   table_name   = given_table "
-                                "AND   index_name   = given_index; "
-                                "IF IndexIsThere = 0 THEN "
-                                "SET @sqlstmt = CONCAT('CREATE INDEX ',given_index,' ON ', "
-                                "given_database,'.',given_table,' (',given_columns,')'); "
-                                "PREPARE st FROM @sqlstmt; "
-                                "EXECUTE st; "
-                                "DEALLOCATE PREPARE st; "
-                                "ELSE "
-                                "SELECT CONCAT('Index ',given_index,' already exists on Table ', "
-                                "given_database,'.',given_table) CreateindexErrorMessage; "
-                                "END IF; "
-                                "END";
-
-    U2SqlQuery(queryString.arg(db->handle.databaseName()), db, os).execute();
 }
 
 void MysqlDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U2OpStatus& os) {

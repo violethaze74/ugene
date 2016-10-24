@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -2922,7 +2922,7 @@ void MSAEditorSequenceArea::sl_changeSelectionColor() {
 }
 
 int MSAEditorSequenceArea::getHeight(){
-    return editor->getRowHeight() * (getNumVisibleSequences(true) - 1);
+    return editor->getRowHeight() * getNumVisibleSequences(true);
 }
 
 QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {

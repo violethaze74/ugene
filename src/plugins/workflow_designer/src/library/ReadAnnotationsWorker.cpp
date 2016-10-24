@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -52,6 +52,11 @@ namespace U2 {
 namespace LocalWorkflow {
 
 const QString ReadAnnotationsWorkerFactory::ACTOR_ID("read-annotations");
+namespace {
+const QString MODE_ATTR("mode");
+const QString ANN_TABLE_NAME_ATTR("ann-table-name");
+const QString ANN_TABLE_DEFAULT_NAME("Unknown features");
+}
 
 /************************************************************************/
 /* Worker */
@@ -64,7 +69,7 @@ ReadAnnotationsWorker::ReadAnnotationsWorker(Actor *p)
 
 void ReadAnnotationsWorker::init() {
     GenericDocReader::init();
-    mode = ReadAnnotationsProto::Mode(getValue<int>(ReadAnnotationsProto::MODE_ATTR));
+    mode = ReadAnnotationsProto::Mode(getValue<int>(MODE_ATTR));
     IntegralBus *outBus = dynamic_cast<IntegralBus*>(ch);
     assert(outBus);
     mtype = outBus->getBusType();
@@ -72,7 +77,8 @@ void ReadAnnotationsWorker::init() {
 
 Task * ReadAnnotationsWorker::createReadTask(const QString &url, const QString &datasetName) {
     bool mergeAnnotations = (mode != ReadAnnotationsProto::SPLIT);
-    return new ReadAnnotationsTask(url, datasetName, context, mergeAnnotations);
+    return new ReadAnnotationsTask(url, datasetName, context, mergeAnnotations,
+                                   mergeAnnotations ? getValue<QString>(ANN_TABLE_NAME_ATTR) : "");
 }
 
 QString ReadAnnotationsWorker::addReadDbObjectToData(const QString &objUrl, QVariantMap &data) {
@@ -94,14 +100,13 @@ void ReadAnnotationsWorker::onTaskFinished(Task *task) {
 
 void ReadAnnotationsWorker::sl_datasetEnded() {
     CHECK(datasetData.size() > 0,);
-    QList<SharedDbiDataHandler> annTableIds;
     QList<SharedAnnotationData> anns;
     foreach (const QVariantMap &m, datasetData) {
         const QVariant annsVar = m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()];
         anns << StorageUtils::getAnnotationTable(context->getDataStorage(), annsVar);
     }
 
-    const SharedDbiDataHandler resultTableId = context->getDataStorage()->putAnnotationTable(anns);
+    const SharedDbiDataHandler resultTableId = context->getDataStorage()->putAnnotationTable(anns, getValue<QString>(ANN_TABLE_NAME_ATTR));
 
     QVariantMap m;
     m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(resultTableId);
@@ -124,7 +129,6 @@ void ReadAnnotationsWorker::sendData(const QList<QVariantMap> &data) {
 /************************************************************************/
 /* Factory */
 /************************************************************************/
-const QString ReadAnnotationsProto::MODE_ATTR("mode");
 ReadAnnotationsProto::ReadAnnotationsProto()
 : GenericReadDocProto(ReadAnnotationsWorkerFactory::ACTOR_ID)
 {
@@ -147,20 +151,26 @@ ReadAnnotationsProto::ReadAnnotationsProto()
         ports << new PortDescriptor(outDesc, outTypeSet, false, true);
     }
 
-    Descriptor md(ReadAnnotationsProto::MODE_ATTR, ReadAnnotationsWorker::tr("Mode"),
-        ReadAnnotationsWorker::tr("If the file contains more than one annotation table, <i>Split</i> mode sends them \"as is\" to the output, "
-        "while <i>Merge</i> appends all the annotation tables and outputs the sole merged annotation table."
-        "In <i>Merge files</i> is the same as <i>Merge</i> but it operates with all annotation tables from all files of one dataset."));
+    Descriptor md(MODE_ATTR, ReadAnnotationsWorker::tr("Mode"),
+        ReadAnnotationsWorker::tr("<ul>"
+                                  "<li><i>\"Separate\"</i> mode keeps the tables as they are;</li>"
+                                  "<li><i>\"Merge from file\"</i> unites annotation tables from one file into one annotations table;</li>"
+                                  "<li><i>\"Merge from dataset\"</i> unites all annotation tables from all files from dataset;</li>"
+                                  "</ul>"));
+    attrs << new Attribute(md, BaseTypes::NUM_TYPE(), true, SPLIT);
 
+    Descriptor annTableNameDesc(ANN_TABLE_NAME_ATTR, ReadAnnotationsWorker::tr("Annotation table name"),
+        ReadAnnotationsWorker::tr("The name for the result annotation table that contains merged annotation data from file or dataset."));
+    Attribute *objNameAttr = new Attribute(annTableNameDesc, BaseTypes::STRING_TYPE(), false, ANN_TABLE_DEFAULT_NAME);
+    objNameAttr->addRelation(new VisibilityRelation(MODE_ATTR, QVariantList() << MERGE << MERGE_FILES));
 
-    attrs << new Attribute(md, BaseTypes::NUM_TYPE(), true, MERGE);
+    attrs << objNameAttr;
 
-    QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap modeMap;
-        QString splitStr = ReadAnnotationsWorker::tr("Split");
-        QString mergeStr = ReadAnnotationsWorker::tr("Merge");
-        QString mergeFilesStr = ReadAnnotationsWorker::tr("Merge files");
+        QString splitStr = ReadAnnotationsWorker::tr("Separate annotation tables");
+        QString mergeStr = ReadAnnotationsWorker::tr("Merge annotation tables from file");
+        QString mergeFilesStr = ReadAnnotationsWorker::tr("Merge all annotation tables from dataset");
         modeMap[splitStr] = SPLIT;
         modeMap[mergeStr] = MERGE;
         modeMap[mergeFilesStr] = MERGE_FILES;
@@ -187,16 +197,16 @@ Worker * ReadAnnotationsWorkerFactory::createWorker(Actor *a) {
 /************************************************************************/
 /* Task */
 /************************************************************************/
-ReadAnnotationsTask::ReadAnnotationsTask(const QString &_url, const QString &_datasetName,
-    WorkflowContext *_context, bool _mergeAnnotations)
-    : Task(tr("Read annotations from %1").arg(_url), TaskFlag_None), url(_url),
-    datasetName(_datasetName), mergeAnnotations(_mergeAnnotations), context(_context)
+ReadAnnotationsTask::ReadAnnotationsTask(const QString &url, const QString &datasetName, WorkflowContext *context,
+                                         bool mergeAnnotations, const QString& mergedAnnTableName)
+    : Task(tr("Read annotations from %1").arg(url), TaskFlag_None),
+      url(url),
+      datasetName(datasetName),
+      mergeAnnotations(mergeAnnotations),
+      mergedAnnTableName(mergedAnnTableName),
+      context(context)
 {
     SAFE_POINT(NULL != context, "Invalid workflow context encountered!",);
-}
-
-const QString & ReadAnnotationsTask::getDatasetName() const {
-    return datasetName;
 }
 
 void ReadAnnotationsTask::prepare() {
@@ -263,7 +273,7 @@ void ReadAnnotationsTask::run() {
     }
 
     if (mergeAnnotations && annsObjList.size() > 1) {
-        const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(dataList);
+        const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(dataList, mergedAnnTableName);
         m[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(tableId);
         results.append(m);
     }

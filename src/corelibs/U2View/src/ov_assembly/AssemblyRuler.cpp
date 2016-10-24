@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -108,8 +108,10 @@ void AssemblyRuler::drawCursor(QPainter & p) {
     // pos + 1 because of 1-based coords
     QString cursorLabel = FormatUtils::formatNumberWithSeparators(posXInAsm + 1);
     if(showCoverage) {
-        qint64 coverage = browser->getCoverageAtPos(posXInAsm);
-        cursorLabel += " C " + FormatUtils::formatNumberWithSeparators(coverage);
+        qint32 coverage = browser->getCoverageAtPos(posXInAsm);
+        if (coverage >=0){//not have info about coverage yet
+            cursorLabel += " C " + FormatUtils::formatNumberWithSeparators(coverage);
+        }
     }
     int textWidth = p.fontMetrics().width(cursorLabel);
     int textHeight = p.fontMetrics().height();

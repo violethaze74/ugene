@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -205,13 +205,13 @@ public:
     virtual void pack(const U2DataId& assemblyId, U2AssemblyPackStat& stats, U2OpStatus& os) = 0;
 
     /**
-        Calculates coverage information for the given region and stores it in 'c' structure.
+        Calculates coverage information for the given region and stores it in 'coverage' vector.
 
         U2Region 'region' passed to the method is split into N sequential windows of equal length,
-        where N is 'c.coverage' vector size. Number of reads intersecting each window is guaranteed
-        to be in range stored at corresponding index in vector 'c.coverage'.
+        where N is 'coverage' vector size. Number of reads intersecting each window is guaranteed
+        to be in range stored at corresponding index in vector 'coverage'.
     */
-    virtual void calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& c, U2OpStatus& os) = 0;
+    virtual void calculateCoverage(const U2DataId& assemblyId, const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) = 0;
 
 };
 

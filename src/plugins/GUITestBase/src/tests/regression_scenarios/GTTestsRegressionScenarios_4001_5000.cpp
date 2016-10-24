@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -273,7 +273,7 @@ GUI_TEST_CLASS_DEFINITION(test_4011){
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
 //    3. Align attached file
     GTUtilsWorkflowDesigner::click(os, "Read alignment");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/4011", "human_T1.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/regression/4011/human_T1.aln");
     GTUtilsWorkflowDesigner::runWorkflow(os);
 //    Current state:
 //    Runtime error occured(x86 version of UGENE)
@@ -994,7 +994,7 @@ GUI_TEST_CLASS_DEFINITION(test_4104) {
 
     //2. Set file "data/samples/Genbank/murine.gb" as input.
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/murine.gb");
 
     //3. Run the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -1188,8 +1188,7 @@ GUI_TEST_CLASS_DEFINITION(test_4117){
     GTUtilsWorkflowDesigner::addSample(os, "Quality control by FastQC");
 
     GTUtilsWorkflowDesigner::click(os, "FASTQ File List");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/sandbox/space containing dir",
-                                                 "short_sample.fastq" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/sandbox/space containing dir/short_sample.fastq" );
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::check(os, l);
@@ -1697,7 +1696,7 @@ GUI_TEST_CLASS_DEFINITION(test_4164){
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
 //3. Set input file which contains spaces in path
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/sandbox/space dir", "valid.vcf");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/sandbox/space dir/valid.vcf");
 //4. Run workflow
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(5000);
@@ -2002,7 +2001,7 @@ GUI_TEST_CLASS_DEFINITION(test_4266) {
 
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
     CHECK_SET_ERR( read != NULL, "Failed to add an element");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/", "Gene.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/Gene.fa");
 
     WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
     CHECK_SET_ERR( write != NULL, "Failed to add an element");
@@ -2118,7 +2117,7 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     GTLogTracer logTracer;
 
     GTUtilsWorkflowDesigner::addElement(os, "File List");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTGlobals::sleep(200);
 
     GTUtilsWorkflowDesigner::addElement(os, "Write Plain Text");
@@ -2437,7 +2436,7 @@ GUI_TEST_CLASS_DEFINITION(test_4325) {
     GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
 
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Genbank/", "CVU55762.gb");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Genbank/CVU55762.gb");
 
     GTUtilsWorkflowDesigner::click(os, "In Silico PCR");
     GTUtilsWorkflowDesigner::setParameter(os, "Primers URL", QDir(testDir).absolutePath() + "/_common_data/cmdline/pcr/primers_CVU55762.fa", GTUtilsWorkflowDesigner::textValue);
@@ -3165,8 +3164,8 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
     // 4. Set "_common_data/scenarios/_regression/4563/test_ma.fa" as the input file.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563", "test_ma.fa");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563", "test_ma_1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563/test_ma.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563/test_ma_1.fa");
     GTLogTracer l;
     // 5. Run the workflow.
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
@@ -3338,7 +3337,7 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
 
     WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
     CHECK_SET_ERR(read != NULL, "Failed to add an element");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
 
     WorkflowProcessItem* customWorker = GTUtilsWorkflowDesigner::getWorker(os, "Element_4606");
 
@@ -3850,7 +3849,7 @@ GUI_TEST_CLASS_DEFINITION(test_4710){
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
     GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf", "valid.vcf");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep();
 
@@ -3899,7 +3898,7 @@ GUI_TEST_CLASS_DEFINITION(test_4710_1){
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     GTUtilsWorkflowDesigner::click(os, "Read alignment");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta", "PF07724_full_family.fa");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/PF07724_full_family.fa");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep();
 //    Expected state: Close dashboard tab button is disabled
@@ -4388,6 +4387,65 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     GTGlobals::sleep();
 
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 8, "Sequence count should be 7");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4782) {
+//    1. Open "data/samples/genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "data/samples/Genbank/sars.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: a Sequence View for "sars.gb" is active.
+    const QString sarsMdiTitle = "sars [s] NC_004718";
+    QString activeMdiTitle = GTUtilsMdi::activeWindowTitle(os);
+    CHECK_SET_ERR(sarsMdiTitle == activeMdiTitle, QString("An incorrect MDI is active: expected '%1', got '%2'").arg(sarsMdiTitle).arg(activeMdiTitle));
+
+//    3. Click "Build dotplot" button on the toolbar.
+//    4. Click "OK" button in the opened dialog.
+    GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "DotPlotDialog"));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build dotplot");
+
+//    Expected state: a Sequence View for "sars.gb" is active, it contains a dotplot and two sequences.
+    CHECK_SET_ERR(sarsMdiTitle == activeMdiTitle, QString("An incorrect MDI is active: expected '%1', got '%2'").arg(sarsMdiTitle).arg(activeMdiTitle));
+    int sequenceWidgetsNumber = GTUtilsSequenceView::getSeqWidgetsNumber(os);
+    CHECK_SET_ERR(2 == sequenceWidgetsNumber, QString("Expected 2 sequence widgets, got %2").arg(sequenceWidgetsNumber));
+    GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os));
+
+//    5. Activate the Sequence View for "murine.gb", that was opened on the file opening.
+    const QString murineMdiTitle = "murine [s] NC_001363";
+    GTUtilsMdi::activateWindow(os, murineMdiTitle);
+    GTGlobals::sleep(500);
+
+//    Expected state: active view is "murine.gb" sequence view (without dotplot).
+    activeMdiTitle = GTUtilsMdi::activeWindowTitle(os);
+
+    CHECK_SET_ERR(murineMdiTitle == activeMdiTitle, QString("An incorrect MDI is active: expected '%1', got '%2'").arg(murineMdiTitle).arg(activeMdiTitle));
+    sequenceWidgetsNumber = GTUtilsSequenceView::getSeqWidgetsNumber(os);
+    CHECK_SET_ERR(1 == sequenceWidgetsNumber, QString("Expected 1 sequence widget, got %2").arg(sequenceWidgetsNumber));
+    GTGlobals::FindOptions findOptions(false);
+    QWidget *dotplotWidget = GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os), findOptions);
+    CHECK_SET_ERR(NULL == dotplotWidget, "A dotplot widget unexpectedly found");
+
+//    6. Select all documents in project. Press delete.
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTGlobals::sleep(100);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+//    Expected state: UGENE doesn't crash, all views are closed, all documents are removed from the project.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProject::checkProject(os, GTUtilsProject::Empty);
+
+    findOptions.matchPolicy = Qt::MatchContains;
+    QWidget *sarsMdi = GTUtilsMdi::findWindow(os, sarsMdiTitle, findOptions);
+    CHECK_SET_ERR(NULL == sarsMdi, "'sars.gb' Sequence View is not closed");
+
+    QWidget *murineMdi = GTUtilsMdi::findWindow(os, murineMdiTitle, findOptions);
+    CHECK_SET_ERR(NULL == murineMdi, "'murine.gb' Sequence View is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4784_1) {
@@ -5334,7 +5392,7 @@ GUI_TEST_CLASS_DEFINITION(test_4966) {
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
     //    3. Align "_common_data\clustal\big.aln"
     GTUtilsWorkflowDesigner::click(os, "Read alignment");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal", "big.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/big.aln");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state:

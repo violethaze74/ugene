@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -79,11 +79,11 @@ void SQLiteObjectDbi::initSqlSchema(U2OpStatus& os) {
 #define TOP_LEVEL_FILTER  ("rank = " + QString::number(U2DbiObjectRank_TopLevel))
 
 qint64 SQLiteObjectDbi::countObjects(U2OpStatus& os) {
-    return SQLiteQuery("COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER, db, os).selectInt64();
+    return SQLiteQuery("SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER, db, os).selectInt64();
 }
 
 qint64 SQLiteObjectDbi::countObjects(U2DataType type, U2OpStatus& os) {
-    SQLiteQuery q("COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = ?1", db, os);
+    SQLiteQuery q("SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = ?1", db, os);
     q.bindType(1, type);
     return q.selectInt64();
 }

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -81,6 +81,7 @@ MSAGraphOverview::MSAGraphOverview(MSAEditorUI *ui)
 void MSAGraphOverview::cancelRendering() {
     if (isRendering) {
         graphCalculationTaskRunner.cancel();
+        lastDrawnVersion = -1;
     }
 }
 
@@ -271,9 +272,6 @@ void MSAGraphOverview::sl_blockRendering() {
 }
 
 void MSAGraphOverview::sl_unblockRendering(bool update) {
-    if (!isBlocked) {
-        return;
-    }
     isBlocked = false;
 
     if (update && lastDrawnVersion != editor->getMSAObject()->getModificationVersion()) {

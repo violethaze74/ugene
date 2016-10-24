@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -67,7 +67,7 @@ public:
     void setLocalCoverageCache(CoverageInfo coverage);
     // Methods used to optimize getting coverage at any point inside this region:
     bool isInLocalCoverageCache(qint64 position);
-    qint64 getCoverageAtPos(qint64 pos);
+    qint32 getCoverageAtPos(qint64 pos);
     // Methods used to draw coverage for cached part of visible region:
     bool intersectsLocalCoverageCache(U2Region region);
     bool isInLocalCoverageCache(U2Region region);
@@ -137,7 +137,7 @@ public slots:
     void sl_zoomOut(const QPoint & pos = QPoint());
     void sl_zoomToReads();
     void sl_coveredRegionClicked(const QString link);
-	void sl_extractAssemblyRegion();
+    void sl_extractAssemblyRegion();
 
 signals:
     void si_offsetsChanged();
