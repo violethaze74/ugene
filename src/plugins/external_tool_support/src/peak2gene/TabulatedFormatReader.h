@@ -23,6 +23,7 @@
 #define _U2_TABULATED_FORMAT_READER_H_
 
 #include <QObject>
+#include <QStringList>
 
 namespace U2 {
 
