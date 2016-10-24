@@ -38,7 +38,7 @@ BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWi
     settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220588");
+    new HelpButton(this, buttonBox, "18223228");
 
 #ifdef Q_OS_MAC
     // Add a spacer between 'Query ID' input field and 'BLAST DB' groupbox

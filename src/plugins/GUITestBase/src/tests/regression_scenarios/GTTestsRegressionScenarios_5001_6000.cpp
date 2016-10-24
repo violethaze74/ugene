@@ -1071,6 +1071,51 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5412) {
+//    1. Open "/_common_data/reads/wrong_order/align_bwa_mem.uwl"
+//    2. Set input data: e_coli_mess_1.fastq nd e_coli_mess_2.fastq (the directory from step 1)
+//    3. Reference: "/_common_data/e_coli/NC_008253.fa"
+//    4. Set requiered output parameters
+//    5. Set "Filter unpaired reads" to false
+//    6. Run workflow
+//    Expected state: error - BWA MEM tool exits with code 1
+//    7. Go back to the workflow and set the filter parameter back to true
+//    8. Run the workflow
+//    Expected state: there is a warning about filtered reads
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "/_common_data/reads/wrong_order/align_bwa_mem.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List 1", testDir + "/_common_data/reads/wrong_order/e_coli_mess_1.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
+
+    GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
+    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file name", "test_5412", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "/_common_data/e_coli/NC_008253.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Filter unpaired reads", false, GTUtilsWorkflowDesigner::comboValue);
+
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    CHECK_SET_ERR(l.checkMessage("exited with code 1"), "No message about failed start of BWA MEM");
+
+    GTToolbar::clickButtonByTooltipOnToolbar(os, "mwtoolbar_activemdi", "Show workflow");
+
+    GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
+    GTUtilsWorkflowDesigner::setParameter(os, "Filter unpaired reads", true, GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file name", "test_5412_1", GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(l.checkMessage("5 pairs are complete, 6 reads without a pair were found in files"), "No message about filtered reads");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5417) {
     //      1. Open "data/samples/Genbank/murine.gb".
     //      2. Open "data/samples/Genbank/srs.gb".
