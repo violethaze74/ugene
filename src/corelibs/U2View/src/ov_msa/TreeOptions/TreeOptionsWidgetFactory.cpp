@@ -114,12 +114,7 @@ void TreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSettin
 
 const QString AddTreeWidgetFactory::GROUP_ID = "OP_MSA_ADD_TREE_WIDGET";
 const QString AddTreeWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-<<<<<<< HEAD
-const QString AddTreeWidgetFactory::GROUP_DOC_PAGE = "18220494";
-=======
-const QString AddTreeWidgetFactory::GROUP_TITLE = QString(QObject::tr("Tree Settings"));
 const QString AddTreeWidgetFactory::GROUP_DOC_PAGE = "18223134";
->>>>>>> release-1.25.0
 
 AddTreeWidgetFactory::AddTreeWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
