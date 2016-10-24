@@ -133,6 +133,7 @@ void RegionSelector::initLayout() {
         l->addWidget(startEdit, 1, 0);
         l->addWidget(new QLabel(tr("-"), gb), 1, 1);
         l->addWidget(endEdit, 1, 2);
+        l->addWidget(new QLabel(" ", gb), 2, 0);
 
         QVBoxLayout* rootLayout = new QVBoxLayout(this);
         rootLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
