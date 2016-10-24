@@ -73,12 +73,7 @@ void MSATreeOptionsWidgetFactory::sl_onWidgetViewSaved(const TreeOpWidgetViewSet
 
 const QString TreeOptionsWidgetFactory::GROUP_ID = "OP_TREES_WIDGET";
 const QString TreeOptionsWidgetFactory::GROUP_ICON_STR = ":core/images/tree.png";
-<<<<<<< HEAD
-const QString TreeOptionsWidgetFactory::GROUP_DOC_PAGE = "18220494";
-=======
-const QString TreeOptionsWidgetFactory::GROUP_TITLE = QString(QObject::tr("Tree Settings"));
 const QString TreeOptionsWidgetFactory::GROUP_DOC_PAGE = "18223134";
->>>>>>> release-1.25.0
 
 TreeOptionsWidgetFactory::TreeOptionsWidgetFactory()
     : viewSettings(new TreeOpWidgetViewSettings)
