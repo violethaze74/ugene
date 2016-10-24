@@ -274,7 +274,7 @@ void Bowtie2Task::prepare() {
 
 Task::ReportResult Bowtie2Task::report() {
     if(!justBuildIndex) {
-        haveResults = true;
+        hasResults = true;
     }
     return ReportResult_Finished;
 }

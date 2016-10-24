@@ -73,7 +73,7 @@ class BowtieAssembleTask : public ExternalToolSupportTask {
 public:
     BowtieAssembleTask(const DnaAssemblyToRefTaskSettings &settings);
 
-    bool isHaveResults()const;
+    bool hasResult()const;
 
     void prepare();
 private:
@@ -84,9 +84,9 @@ private:
         void parseOutput(const QString &partOfLog);
         void parseErrOutput(const QString &partOfLog);
 
-        bool isHaveResults()const;
+        bool hasResult()const;
     private:
-        bool haveResults;
+        bool hasResults;
     };
 
     LogParser *logParser;

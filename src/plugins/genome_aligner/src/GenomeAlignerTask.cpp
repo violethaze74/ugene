@@ -83,7 +83,7 @@ GenomeAlignerTask::GenomeAlignerTask( const DnaAssemblyToRefTaskSettings& _setti
 {
     GCOUNTER(cvar,tvar, "GenomeAlignerTask");
     setMaxParallelSubtasks(4);
-    haveResults = true;
+    hasResults = true;
     readsCount = 0;
     readsAligned = 0;
     shortreadLoadTime = 0;
@@ -318,7 +318,7 @@ Task::ReportResult GenomeAlignerTask::report() {
     }
 
     if (seqWriter->getWrittenReadsCount() == 0) {
-        haveResults = false;
+        hasResults = false;
         return ReportResult_Finished;
     }
 
@@ -341,7 +341,7 @@ Task::ReportResult GenomeAlignerTask::report() {
         taskLog.info(tr("Short-reads IO time = %1").arg(shortreadIOTime/(1000*1000)));
     }
 
-    haveResults = (aligned > 0);
+    hasResults = (aligned > 0);
 
     return ReportResult_Finished;
 }

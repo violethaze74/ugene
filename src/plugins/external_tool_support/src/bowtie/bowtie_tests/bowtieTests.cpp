@@ -235,7 +235,7 @@ QList<Task*> GTest_Bowtie::onSubTaskFinished(Task* subTask) {
             subTaskFailed = true;
             return res;
         }
-        if (!bowtieTask->isHaveResult()) {
+        if (!bowtieTask->hasResult()) {
             subTaskFailed = true;
             bowtieTask->setError("Reference assembly failed - no possible alignment found");
             return res;
