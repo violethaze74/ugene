@@ -56,7 +56,8 @@ public:
 class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskSettings {
 public:
     DnaAssemblyToRefTaskSettings()
-        : filterUnpaired(false),
+        : pairedReads(false),
+          filterUnpaired(false),
           prebuiltIndex(false),
           openView(false),
           samOutput(true) {}

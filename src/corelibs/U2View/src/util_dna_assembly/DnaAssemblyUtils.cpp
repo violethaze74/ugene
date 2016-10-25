@@ -357,7 +357,7 @@ void DnaAssemblyTaskWithConversions::prepare() {
     }
 
     if (0 == conversionTasksCount) {
-        if (settings.filterUnpaired) {
+        if (settings.filterUnpaired && settings.pairedReads) {
             addSubTask(new FilterUnpairedReadsTask(settings));
             return;
         }
@@ -387,7 +387,7 @@ QList<Task*> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task *subTask) {
         conversionTasksCount--;
 
         if (0 == conversionTasksCount) {
-            if (settings.filterUnpaired) {
+            if (settings.filterUnpaired && settings.pairedReads) {
                 result << new FilterUnpairedReadsTask(settings);
                 return result;
             }
