@@ -19,26 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_H_
-#define _U2_MCA_H_
+#ifndef _U2_MA_MODIFICATION_INFO_H_
+#define _U2_MA_MODIFICATION_INFO_H_
 
-#include "U2Msa.h"
+#include <U2Core/global.h>
 
 namespace U2 {
 
-/**
-    Row of multiple chromatogram alignment: gaps map and sequence id
-*/
-class U2CORE_EXPORT U2McaRow : public U2MsaRow {
-public:
-    U2McaRow();
-    U2McaRow(const U2MsaRow &msaRow);
+enum MaModificationType {
+    MaModificationType_User,
+    MaModificationType_Undo,
+    MaModificationType_Redo
+};
 
-    U2DataId chromatogramId;
-    U2DataId predictedSequenceId;
-    U2MsaRowGapModel predictedSequenceGaps;
+class U2CORE_EXPORT MaModificationInfo {
+public:
+    MaModificationInfo();
+
+    bool rowContentChanged;
+    bool rowListChanged;
+    bool alignmentLengthChanged;
+    bool middleState;
+    bool alphabetChanged;
+    QVariantMap hints;
+    QList<qint64> modifiedRowIds;
+    MaModificationType type;
+
+private:
+    static bool registerMeta;
 };
 
 }   // namespace U2
 
-#endif // _U2_MCA_H_
+#endif // _U2_MA_MODIFICATION_INFO_H_
