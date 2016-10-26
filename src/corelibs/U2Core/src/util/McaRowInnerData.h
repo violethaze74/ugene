@@ -19,26 +19,43 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_H_
-#define _U2_MCA_H_
+#ifndef _U2_MCA_ROW_INNER_DATA_H_
+#define _U2_MCA_ROW_INNER_DATA_H_
 
-#include "U2Msa.h"
+#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/DNASequence.h>
+#include <U2Core/U2Mca.h>
+#include <U2Core/U2Sequence.h>
 
 namespace U2 {
 
-/**
-    Row of multiple chromatogram alignment: gaps map and sequence id
-*/
-class U2CORE_EXPORT U2McaRow : public U2MsaRow {
+class McaRowMemoryData {
 public:
-    U2McaRow();
-    U2McaRow(const U2MsaRow &msaRow);
+    McaRowMemoryData();
 
-    U2DataId chromatogramId;
-    U2DataId predictedSequenceId;
-    U2MsaRowGapModel predictedSequenceGaps;
+    DNAChromatogram chromatogram;
+    DNASequence predictedSequence;
+    U2MsaRowGapModel predictedSequenceGapModel;
+    DNASequence editedSequence;
+    U2MsaRowGapModel editedSequenceGapModel;
+    U2Region workingArea;
+    qint64 rowLength;
+};
+
+class McaRowDatabaseData {
+public:
+    McaRowDatabaseData();
+
+    U2Chromatogram chromatogram;
+    U2Sequence predictedSequence;
+    U2MsaRowGapModel predictedSequenceGapModel;
+    U2Sequence editedSequence;
+    U2MsaRowGapModel editedSequenceGapModel;
+    U2Region workingArea;
+    qint64 workingAreaLength;   // TODO: replace with a region
+    qint64 rowLength;
 };
 
 }   // namespace U2
 
-#endif // _U2_MCA_H_
+#endif // _U2_MCA_ROW_INNER_DATA_H_

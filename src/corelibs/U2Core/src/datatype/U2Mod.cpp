@@ -42,6 +42,16 @@ const qint64 U2ModType::msaUpdatedGapModel    = 3007;
 const qint64 U2ModType::msaSetNewRowsOrder    = 3008;
 const qint64 U2ModType::msaLengthChanged      = 3009;
 
+const qint64 U2ModType::mcaUpdatedAlphabet    = 4001;
+const qint64 U2ModType::mcaAddedRows          = 4002;
+const qint64 U2ModType::mcaAddedRow           = 4003;
+const qint64 U2ModType::mcaRemovedRows        = 4004;
+const qint64 U2ModType::mcaRemovedRow         = 4005;
+const qint64 U2ModType::mcaUpdatedRowInfo     = 4006;
+const qint64 U2ModType::mcaUpdatedGapModel    = 4007;
+const qint64 U2ModType::mcaSetNewRowsOrder    = 4008;
+const qint64 U2ModType::mcaLengthChanged      = 4009;
+
 
 U2UseCommonUserModStep::U2UseCommonUserModStep(const U2EntityRef &entity, U2OpStatus &os)
 : dbi(NULL), valid(false), con(NULL), masterObjId(entity.entityId)

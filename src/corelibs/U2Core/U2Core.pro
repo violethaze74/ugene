@@ -246,13 +246,14 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
     src/datatype/msa/MultipleSequenceAlignmentInfo.h \
     src/datatype/U2Mca.h \
     src/util/DnaChromatogramUtils.h \
-    src/datatype/msa/GappedSequenceWithChromatogram.h \
-    src/datatype/msa/MultipleChromatogramAlignmentRowOld.h \
     src/datatype/msa/MultipleChromatogramAlignmentRow.h \
-    src/datatype/msa/MultipleChromatogramAlignmentOld.h \
     src/datatype/msa/MultipleChromatogramAlignment.h \
     src/gobjects/MultipleChromatogramAlignmentObject.h \
-    src/dbi/U2McaDbi.h
+    src/dbi/U2McaDbi.h \
+    src/util/MaModificationInfo.h \
+    src/util/MultipleChromatogramAlignmentImporter.h \
+    src/util/MultipleChromatogramAlignmentExporter.h \
+    src/util/McaRowInnerData.h
 
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
@@ -457,14 +458,16 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
     src/datatype/U2Msa.cpp \
     src/datatype/msa/MultipleSequenceAlignmentInfo.cpp \
     src/util/DnaChromatogramUtils.cpp \
-    src/datatype/msa/GappedSequenceWithChromatogram.cpp \
     src/datatype/DNAChromatogram.cpp \
-    src/datatype/msa/MultipleChromatogramAlignmentRowOld.cpp \
     src/datatype/msa/MultipleChromatogramAlignmentRow.cpp \
-    src/datatype/msa/MultipleChromatogramAlignmentOld.cpp \
     src/datatype/msa/MultipleChromatogramAlignment.cpp \
     src/gobjects/MultipleChromatogramAlignmentObject.cpp \
-    src/dbi/U2McaDbi.cpp
+    src/dbi/U2McaDbi.cpp \
+    src/util/MaModificationInfo.cpp \
+    src/util/MultipleChromatogramAlignmentImporter.cpp \
+    src/util/MultipleChromatogramAlignmentExporter.cpp \
+    src/datatype/U2Mca.cpp \
+    src/util/McaRowInnerData.cpp
 
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

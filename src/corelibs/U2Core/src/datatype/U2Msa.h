@@ -75,7 +75,7 @@ public:
     U2DataId        sequenceId;
 
     /** Start of the row in the sequence */
-    qint64          gstart;
+    qint64          gstart;         // TODO: rename or remove, if it is not used
 
     /** End of the row in the sequence */
     qint64          gend;
