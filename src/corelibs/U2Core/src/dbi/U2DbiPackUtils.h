@@ -41,6 +41,8 @@ public:
     static QByteArray packGapDetails(qint64 rowId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps);
     static bool unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps);
 
+    // TODO: add pack and unpack methods for MCA rows gaps (modDetails caontain more information)
+
     /** Row order */
     static QByteArray packRowOrder(const QList<qint64>& rowIds);
     static bool unpackRowOrder(const QByteArray& str, QList<qint64>& rowsIds);
@@ -57,6 +59,8 @@ public:
     static QByteArray packRow(qint64 posInMsa, const U2MsaRow& row);
     static bool unpackRow(const QByteArray &modDetails, qint64& posInMsa, U2MsaRow& row);
 
+    // TODO: add pack and unpack methods for U2McaRow
+
     /** Row info details */
     static QByteArray packRowInfoDetails(const U2MsaRow &oldRow, const U2MsaRow &newRow);
     static bool unpackRowInfoDetails(const QByteArray &modDetails, U2MsaRow &oldRow, U2MsaRow &newRow);
@@ -68,6 +72,8 @@ public:
     /** Rows */
     static QByteArray packRows(const QList<qint64> &posInMsa, const QList<U2MsaRow> &rows);
     static bool unpackRows(const QByteArray &modDetails, QList<qint64> &posInMsa, QList<U2MsaRow> &rows);
+
+    // TODO: add pack and unpack methods for U2McaRow
 
     /** Alphabet details*/
     static QByteArray packAlphabetDetails(const U2AlphabetId &oldAlphabet, const U2AlphabetId &newAlphabet);
