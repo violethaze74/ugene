@@ -236,8 +236,8 @@ void MSAEditorConsensusArea::resizeEvent(QResizeEvent *e) {
 }
 
 void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
-    QSize s = size();
-    QSize sas = ui->seqArea->size();
+    QSize s = size() * devicePixelRatio();
+    QSize sas = ui->seqArea->size() * devicePixelRatio();
 
     if (sas.width() != s.width()) { //this can happen due to the manual layouting performed by MSAEditor -> just wait for the next resize+paint
         return;
@@ -249,6 +249,7 @@ void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
         assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
+        cachedView->setDevicePixelRatio(devicePixelRatio());
     }
 
     if (completeRedraw) {
@@ -521,6 +522,11 @@ void MSAEditorConsensusArea::sl_zoomOperationPerformed( bool resizeModeChanged )
     } else {
         setupFontAndHeight();
     }
+}
+
+void MSAEditorConsensusArea::sl_onScreenChanged() {
+    completeRedraw = true;
+    update();
 }
 
 void MSAEditorConsensusArea::sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev) {

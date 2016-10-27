@@ -67,7 +67,7 @@ protected:
     void setVisibleRangeForEmptyAlignment();
 
     virtual void moveVisibleRange(QPoint){}
-    void showWarning(QPainter& painter, QPaintEvent *e, const QString& warningMessage);
+    void showMessage(QPainter& painter, QPaintEvent *e, const QString& message);
 
 protected:
     MSAEditor*      editor;
