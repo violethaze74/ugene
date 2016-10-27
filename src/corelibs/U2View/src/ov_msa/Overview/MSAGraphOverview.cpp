@@ -101,21 +101,17 @@ void MSAGraphOverview::paintEvent(QPaintEvent *e) {
 
     QPainter p(this);
     if (!isValid()) {
-        showWarning(p, e, tr("Multiple sequence alignment is too big. Overview is unavailable."));
+        showMessage(p, e, tr("Multiple sequence alignment is too big. Overview is unavailable."));
         return;
     }
     if (isBlocked) {
-        p.fillRect(cachedView.rect(), Qt::gray);
-        p.drawText(cachedView.rect(), Qt::AlignCenter, tr("Waiting..."));
-        QWidget::paintEvent(e);
+        showMessage(p, e, tr("Waiting..."));
         return;
     }
 
     if (!graphCalculationTaskRunner.isIdle()) {
-        cachedConsensus = QPixmap(size());
-        QPainter pConsensus(&cachedConsensus);
-        pConsensus.fillRect(cachedConsensus.rect(), Qt::gray);
-        pConsensus.drawText(cachedConsensus.rect(), Qt::AlignCenter, tr("Overview is rendering..."));
+        showMessage(p, e, tr("Overview is rendering..."));
+        return;
     } else {
         if (redrawGraph) {
             cachedConsensus = QPixmap(size());
