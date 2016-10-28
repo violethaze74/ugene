@@ -136,7 +136,8 @@ bool MultipleChromatogramAlignmentData::isEmpty() const {
 bool MultipleChromatogramAlignmentData::isCommonGap(qint64 position, int rowNumber) const {
     SAFE_POINT(0 <= position && position < length, "Position is out of boundaries", true);
     SAFE_POINT(0 <= rowNumber && rowNumber < rows.size(), "Row number is out of boundaries", true);
-    rows[rowNumber]->
+    //! TODO: ???
+//    rows[rowNumber]->
 }
 
 QString MultipleChromatogramAlignmentData::getName() const {

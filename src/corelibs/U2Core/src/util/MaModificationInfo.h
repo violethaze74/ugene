@@ -26,28 +26,28 @@
 
 namespace U2 {
 
-enum MaModificationType {
-    MaModificationType_User,
-    MaModificationType_Undo,
-    MaModificationType_Redo
-};
+//enum MaModificationType {
+//    MaModificationType_User,
+//    MaModificationType_Undo,
+//    MaModificationType_Redo
+//};
 
-class U2CORE_EXPORT MaModificationInfo {
-public:
-    MaModificationInfo();
+//class U2CORE_EXPORT MaModificationInfo {
+//public:
+//    MaModificationInfo();
 
-    bool rowContentChanged;
-    bool rowListChanged;
-    bool alignmentLengthChanged;
-    bool middleState;
-    bool alphabetChanged;
-    QVariantMap hints;
-    QList<qint64> modifiedRowIds;
-    MaModificationType type;
+//    bool rowContentChanged;
+//    bool rowListChanged;
+//    bool alignmentLengthChanged;
+//    bool middleState;
+//    bool alphabetChanged;
+//    QVariantMap hints;
+//    QList<qint64> modifiedRowIds;
+//    MaModificationType type;
 
-private:
-    static bool registerMeta;
-};
+//private:
+//    static bool registerMeta;
+//};
 
 }   // namespace U2
 
