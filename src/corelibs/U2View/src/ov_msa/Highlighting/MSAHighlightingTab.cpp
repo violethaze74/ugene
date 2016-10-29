@@ -124,12 +124,13 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
     layout->addWidget(highlightingScheme);
     layout->addWidget(thresholdLabel);
     layout->addWidget(thresholdSlider);
-    layout->addSpacerItem(verticalSpacer);
+   // layout->addSpacerItem(verticalSpacer);
     layout->addWidget(lessMoreLabel);
     layout->addWidget(thresholdLessRb);
     layout->addWidget(thresholdMoreRb);
-    layout->addWidget(hint);
     layout->addWidget(useDots);
+    layout->addWidget(hint);
+    
 #ifdef Q_OS_MAC
     layout->addSpacerItem(new QSpacerItem(40, 8, QSizePolicy::Expanding, QSizePolicy::Minimum));
 #endif
