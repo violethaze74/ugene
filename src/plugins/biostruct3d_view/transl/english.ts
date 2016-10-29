@@ -351,7 +351,9 @@
         <source>Unfortunately, your system does not have OpenGL Support.
 The 3D Structure Viewer is not available.
 You may try to upgrade your system by updating the video card driver.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unfortunately, your system does not have OpenGL Support.
+The 3D Structure Viewer is not available.
+You may try to upgrade your system by updating the video card driver.</translation>
     </message>
     <message>
         <location filename="../src/BioStruct3DViewPlugin.cpp" line="98"/>

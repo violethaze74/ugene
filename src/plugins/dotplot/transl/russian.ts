@@ -528,16 +528,6 @@ Select valid file to build dotplot</source>
         <translation>Слишком много результатов. Попробуйте уменьшить минимальную длину повтора</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="541"/>
-        <source>File saving error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/DotPlotWidget.cpp" line="541"/>
-        <source>Nothing to save: dotplot is empty.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/DotPlotWidget.cpp" line="556"/>
         <location filename="../src/DotPlotWidget.cpp" line="616"/>
         <source>File opening error</source>
@@ -623,6 +613,16 @@ Select valid file to build dotplot</source>
         <location filename="../src/DotPlotWidget.cpp" line="218"/>
         <source>Dotplot</source>
         <translation>Dotplot</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotWidget.cpp" line="541"/>
+        <source>Error Saving Dotplot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotWidget.cpp" line="541"/>
+        <source>The dotplot can&apos;t be saved as it is empty.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="545"/>

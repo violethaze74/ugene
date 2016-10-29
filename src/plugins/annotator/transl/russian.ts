@@ -341,7 +341,7 @@
     <message>
         <location filename="../src/CollocationWorker.cpp" line="139"/>
         <source>Copy original annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать исходные аннотации</translation>
     </message>
     <message>
         <location filename="../src/CollocationWorker.cpp" line="74"/>

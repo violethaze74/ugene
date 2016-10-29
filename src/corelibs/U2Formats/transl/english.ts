@@ -1947,12 +1947,17 @@
     <name>U2::PairedFastqComparator</name>
     <message>
         <location filename="../src/util/PairedFastqComparator.cpp" line="77"/>
-        <source>Too much reads without a pair(&gt;%1). Check the input data is set correctly.</source>
+        <source>Too much reads without a pair (&gt;%1). Check the input data is set correctly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/util/PairedFastqComparator.cpp" line="126"/>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="125"/>
         <source>The list doesn&apos;t contains the item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="173"/>
+        <source>Invalid sequence info</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
