@@ -96,7 +96,6 @@
 #include "MSAEditorState.h"
 #include "MSAEditorStatusBar.h"
 #include "MSAEditorTasks.h"
-#include "MSAEditorUndoFramework.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "PhyTrees/MSAEditorTreeViewer.h"
@@ -913,7 +912,6 @@ void MSAEditor::saveHighlightingSettings( const QString &highlightingFactoryId, 
 //////////////////////////////////////////////////////////////////////////
 MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
 : editor(_editor), seqArea(NULL), offsetsView(NULL), statusWidget(NULL), collapsibleMode(false), multiTreeViewer(NULL), similarityStatistics(NULL) {
-    //undoFWK = new MSAEditorUndoFramework(this, editor->getMSAObject());
     undoFWK = new MsaUndoRedoFramework(this, editor->getMSAObject());
 
     collapseModel = new MSACollapsibleItemModel(this);
