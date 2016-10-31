@@ -162,6 +162,7 @@ public:
     ResizeMode getResizeMode() const { return resizeMode; }
 
     int getRowHeight() const;
+    int getSequenceRowHeight() const;
 
     int getColumnWidth() const;
 
@@ -197,6 +198,7 @@ signals:
     void si_zoomOperationPerformed(bool resizeModeChanged);
     void si_referenceSeqChanged(qint64 referenceId);
     void si_sizeChanged(int newHeight, bool isMinimumSize, bool isMaximumSize);
+    void si_completeUpdate();
 
 protected slots:
     void sl_saveAlignment();
@@ -211,6 +213,7 @@ protected slots:
     void sl_unsetReferenceSeq();
     void sl_exportHighlighted();
     void sl_lockedStateChanged();
+    void sl_showHideChromatograms(bool show);
 
     void sl_onSeqOrderChanged(const QStringList& order);
     void sl_showTreeOP();
@@ -249,6 +252,7 @@ private:
     ResizeMode        resizeMode;
     float             zoomFactor;
     float             fontPixelToPointSize;
+    bool              showChromatograms;
 
     QAction*          saveAlignmentAction;
     QAction*          saveAlignmentAsAction;
@@ -256,6 +260,7 @@ private:
     QAction*          zoomOutAction;
     QAction*          zoomToSelectionAction;
     QAction*          showOverviewAction;
+    QAction*          showChromatogramsAction;
     QAction*          changeFontAction;
     QAction*          resetFontAction;
     QAction*          buildTreeAction;
@@ -263,7 +268,7 @@ private:
     QAction*          alignAction;
     QAction*          alignSequencesToAlignmentAction;
     QAction*          setAsReferenceSequenceAction;
-    QAction *         unsetReferenceSequenceAction;
+    QAction*          unsetReferenceSequenceAction;
     QAction*          exportHighlightedAction;
 
     QToolBar*         toolbar;

@@ -215,10 +215,11 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     connect(editor, SIGNAL(si_buildStaticMenu(GObjectView*, QMenu*)), SLOT(sl_buildStaticMenu(GObjectView*, QMenu*)));
     connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
-    connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_zoomOperationPerformed(bool)));
+    connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
     connect(ui->getCollapseModel(), SIGNAL(toggled()), SLOT(sl_modelChanged()));
-    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_referenceSeqChanged(qint64)));
+    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
+    connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
 
     QAction* undoAction = ui->getUndoAction();
     QAction* redoAction = ui->getRedoAction();
@@ -696,7 +697,7 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
 
-    U2Region baseYRange = U2Region(0, editor->getRowHeight());
+    U2Region baseYRange = U2Region(0, editor->getSequenceRowHeight());
     int columnWidth = editor->getColumnWidth();
 
     bool isResizeMode = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
@@ -727,6 +728,7 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
             if (isResizeMode) {
                 p.drawText(cr, Qt::AlignCenter, QString(c));
             }
+            // SANGER_TODO: draw chromotogram below
         }
         baseYRange.startPos += editor->getRowHeight();
     }
@@ -1150,8 +1152,9 @@ U2Region MSAEditorSequenceArea::getSequenceYRange(int seqNum, bool useVirtualCoo
     return getSequenceYRange(seqNum, startSeq, useVirtualCoords);
 }
 
+// SANGER_TODO: check the method is used correctly
 U2Region MSAEditorSequenceArea::getSequenceYRange(int seq, int firstVisibleRow, bool useVirtualCoords) const {
-    U2Region res(editor->getRowHeight()* (seq - firstVisibleRow), editor->getRowHeight());
+    U2Region res(editor->getRowHeight()* (seq - firstVisibleRow), editor->getSequenceRowHeight());
     if (!useVirtualCoords) {
         int h = height();
         res = res.intersect(U2Region(0, h));
@@ -2146,15 +2149,6 @@ bool MSAEditorSequenceArea::checkState() const {
     return true;
 }
 
-void MSAEditorSequenceArea::sl_zoomOperationPerformed(bool resizeModeChanged) {
-    Q_UNUSED(resizeModeChanged);
-    completeRedraw = true;
-    validateRanges();
-    updateActions();
-    update();
-    onVisibleRangeChanged();
-}
-
 void MSAEditorSequenceArea::sl_modelChanged() {
     MSACollapsibleItemModel *collapsibleModel = ui->getCollapseModel();
     SAFE_POINT(NULL != collapsibleModel, tr("NULL collapsible model!"), );
@@ -2180,9 +2174,12 @@ void MSAEditorSequenceArea::sl_modelChanged() {
     update();
 }
 
-void MSAEditorSequenceArea::sl_referenceSeqChanged(qint64){
+void MSAEditorSequenceArea::sl_completeUpdate(){
     completeRedraw = true;
+    validateRanges();
+    updateActions();
     update();
+    onVisibleRangeChanged();
 }
 
 void MSAEditorSequenceArea::sl_createSubaligniment(){

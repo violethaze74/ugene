@@ -52,13 +52,13 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEd
     rw = new MSAEditorOffsetsViewWidget(ed, seqArea, false);
     rw->setObjectName("msa_editor_offsets_view_widget_right");
 
-    connect(seqArea, SIGNAL(si_startChanged(const QPoint&,const QPoint&)), SLOT(sl_startChanged(const QPoint&,const QPoint&)));
-    connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_fontChanged()));
+    connect(seqArea, SIGNAL(si_startChanged(const QPoint&,const QPoint&)), SLOT(sl_updateOffsets()));
+    connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_updateOffsets()));
 
     MultipleSequenceAlignmentObject *mobj = editor->getMSAObject();
     SAFE_POINT(NULL != mobj, L10N::nullPointerError("multiple alignment object"), );
     connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
-        SLOT(sl_alignmentChanged()));
+        SLOT(sl_updateOffsets()));
 
     seqArea->installEventFilter(this);
 
@@ -70,7 +70,8 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEd
     viewAction->setCheckable(true);
     viewAction->setChecked(showOffsets);
     connect(viewAction, SIGNAL(triggered(bool)), SLOT(sl_showOffsets(bool)));
-    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_refSeqChanged(qint64)));
+    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateOffsets()));
+    connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_updateOffsets()));
 
     updateOffsets();
 }
@@ -87,23 +88,7 @@ QAction * MSAEditorOffsetsViewController::getToggleColumnsViewAction() const {
     return viewAction;
 }
 
-void MSAEditorOffsetsViewController::sl_alignmentChanged() {
-    updateOffsets();
-}
-
-void MSAEditorOffsetsViewController::sl_startChanged(const QPoint &, const QPoint &) {
-    updateOffsets();
-}
-
-void MSAEditorOffsetsViewController::sl_fontChanged() {
-    updateOffsets();
-}
-
-void MSAEditorOffsetsViewController::sl_modelChanged() {
-    updateOffsets();
-}
-
-void MSAEditorOffsetsViewController::sl_refSeqChanged(qint64) {
+void MSAEditorOffsetsViewController::sl_updateOffsets() {
     updateOffsets();
 }
 

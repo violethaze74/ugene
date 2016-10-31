@@ -379,12 +379,10 @@ private slots:
     void sl_changeColorScheme();
     void sl_changeHighlightScheme();
 
-    void sl_zoomOperationPerformed(bool resizeModeChanged);
-
     void sl_modelChanged();
 
     void sl_showCustomSettings();
-    void sl_referenceSeqChanged(qint64);
+    void sl_completeUpdate();
 
     void sl_resetCollapsibleModel();
     void sl_setCollapsingRegions(const QList<QStringList>&);

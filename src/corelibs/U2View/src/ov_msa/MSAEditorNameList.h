@@ -66,8 +66,7 @@ private slots:
     void sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev);
 
     void sl_nameBarMoved(int n);
-    void sl_fontChanged();
-    void sl_modelChanged();
+    void sl_completeUpdate();
 
     void sl_onGroupColorsChanged(const GroupColorSchema&);
 protected:

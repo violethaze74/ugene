@@ -450,7 +450,7 @@ U2Region MSAEditorConsensusArea::getYRange(MSAEditorConsElement e) const {
             res = U2Region(0, 50);
             break;
         case MSAEditorConsElement_CONSENSUS_TEXT:
-            res = U2Region(0, editor->getRowHeight());
+            res = U2Region(0, editor->getSequenceRowHeight());
             res.startPos += getYRange(MSAEditorConsElement(e-1)).endPos();
             break;
         case MSAEditorConsElement_RULER:

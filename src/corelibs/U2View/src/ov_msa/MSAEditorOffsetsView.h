@@ -46,11 +46,7 @@ public:
     bool eventFilter(QObject* o, QEvent* e);
 
 private slots:
-    void sl_alignmentChanged();
-    void sl_startChanged(const QPoint& , const QPoint& );
-    void sl_fontChanged();
-    void sl_modelChanged();
-    void sl_refSeqChanged(qint64);
+    void sl_updateOffsets();
     void sl_showOffsets(bool);
 
 private:

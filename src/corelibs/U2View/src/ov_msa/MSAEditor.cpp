@@ -109,9 +109,14 @@ namespace U2 {
 const float MSAEditor::zoomMult = 1.25;
 
 MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
-: GObjectView(MSAEditorFactory::ID, viewName), ui(NULL), alignSequencesToAlignmentAction(NULL), treeManager(this) {
+    : GObjectView(MSAEditorFactory::ID, viewName),
+      ui(NULL),
+      alignSequencesToAlignmentAction(NULL),
+      treeManager(this) {
 
     msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+
+    showChromatograms = true; // SANGER_TODO: check if there are chromatograms
 
     objects.append(msaObject);
     onObjectAdded(msaObject);
@@ -189,6 +194,12 @@ MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
 }
 
 int MSAEditor::getRowHeight() const {
+    QFontMetrics fm(font, ui);
+    int chromHeigth = 100; // SANGER_TODO: set const chrom height
+    return (fm.height() + chromHeigth * showChromatograms )* zoomMult;
+}
+
+int MSAEditor::getSequenceRowHeight() const {
     QFontMetrics fm(font, ui);
     return fm.height() * zoomMult;
 }
@@ -399,6 +410,7 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(zoomToSelectionAction);
     tb->addAction(resetFontAction);
     tb->addAction(showOverviewAction);
+    tb->addAction(showChromatogramsAction);
     tb->addAction(changeFontAction);
     tb->addAction(buildTreeAction);
     tb->addAction(saveScreenshotAction);
@@ -524,12 +536,18 @@ QWidget* MSAEditor::createWidget() {
     unsetReferenceSequenceAction->setObjectName("unset_reference");
     connect(unsetReferenceSequenceAction, SIGNAL(triggered()), SLOT(sl_unsetReferenceSeq()));
 
-    //! TODO: set icon
-    showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), "Overview", this);
+    showOverviewAction = new QAction(QIcon(":/core/images/msa_show_overview.png"), tr("Overview"), this);
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
     connect(showOverviewAction, SIGNAL(triggered()), ui->getOverviewArea(), SLOT(sl_show()));
+
+    // SANGER_TODO: set new proper icon
+    showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show/hide chromatogram(s)"), this);
+    showChromatogramsAction->setObjectName("chromatograms");
+    showChromatogramsAction->setCheckable(true);
+    showChromatogramsAction->setChecked(showChromatograms);
+    connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
 
     optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry *opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
@@ -891,6 +909,11 @@ void MSAEditor::sl_lockedStateChanged() {
     updateActions();
 }
 
+void MSAEditor::sl_showHideChromatograms(bool show) {
+    showChromatograms = show;
+    emit si_completeUpdate();
+}
+
 QVariantMap MSAEditor::getHighlightingSettings(const QString &highlightingFactoryId) const {
     const QVariant v = snp.highlightSchemeSettings.value(highlightingFactoryId);
     if (v.isNull()) {
@@ -1024,7 +1047,7 @@ MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
 
     setLayout(mainLayout);
 
-    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_modelChanged()));
+    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
     connect(collapseModel, SIGNAL(toggled()), seqArea,     SLOT(sl_modelChanged()));
 
     connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));

@@ -87,11 +87,12 @@ MSAEditorNameList::MSAEditorNameList(MSAEditorUI* _ui, QScrollBar* _nhBar)
         connect(ui->seqArea, SIGNAL(si_startChanged(const QPoint &, const QPoint &)), SLOT(sl_startChanged(const QPoint &, const QPoint &)));
         connect(ui->seqArea, SIGNAL(si_selectionChanged(const MSAEditorSelection &, const MSAEditorSelection &)),
             SLOT(sl_selectionChanged(const MSAEditorSelection &, const MSAEditorSelection &)));
-        connect(ui->editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_fontChanged()));
+        connect(ui->editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_completeUpdate()));
         connect(ui->seqArea->getVBar(), SIGNAL(actionTriggered(int)), SLOT(sl_onScrollBarActionTriggered(int)));
     }
-    connect(ui->getCollapseModel(), SIGNAL(toggled()), SLOT(sl_modelChanged()));
+    connect(ui->getCollapseModel(), SIGNAL(toggled()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_referenceSeqChanged(qint64)));
+    connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
 
     nhBar->setParent(this);
     nhBar->setVisible(false);
@@ -575,14 +576,9 @@ void MSAEditorNameList::focusOutEvent(QFocusEvent* fe) {
     update();
 }
 
-void MSAEditorNameList::sl_fontChanged() {
+void MSAEditorNameList::sl_completeUpdate() {
     completeRedraw = true;
     updateScrollBar();
-    update();
-}
-
-void MSAEditorNameList::sl_modelChanged() {
-    completeRedraw = true;
     update();
 }
 
