@@ -22,15 +22,18 @@
 #ifndef _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_H_
 #define _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_H_
 
+#include "MultipleAlignment.h"
 #include "MultipleChromatogramAlignmentRow.h"
 
 namespace U2 {
 
+class McaRowMemoryData;
 class MultipleChromatogramAlignmentData;
 
-class U2CORE_EXPORT MultipleChromatogramAlignment {
+class U2CORE_EXPORT MultipleChromatogramAlignment : public MultipleAlignment {
 public:
     MultipleChromatogramAlignment();
+    MultipleChromatogramAlignment(const MultipleAlignment &ma);
     MultipleChromatogramAlignment(MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignment(const QString &name,
                                   const DNAAlphabet *alphabet = NULL,
@@ -45,18 +48,12 @@ public:
     const MultipleChromatogramAlignmentData * operator->() const;
 
     MultipleChromatogramAlignment clone() const;
-    template <class Derived> inline Derived dynamicCast() const;
 
 private:
-    QSharedPointer<MultipleChromatogramAlignmentData> mcaData;
+    QSharedPointer<MultipleChromatogramAlignmentData> getMcaData() const;
 };
 
-template <class Derived>
-Derived MultipleChromatogramAlignment::dynamicCast() const {
-    return Derived(*this);
-}
-
-class U2CORE_EXPORT MultipleChromatogramAlignmentData {
+class U2CORE_EXPORT MultipleChromatogramAlignmentData : public MultipleAlignmentData {
     friend class MultipleChromatogramAlignment;
 
 private:
@@ -67,36 +64,16 @@ private:
     MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData &mcaData);
 
 public:
-    enum Order {
-        Ascending,
-        Descending
-    };
+    MultipleChromatogramAlignmentRow getMcaRow(int rowIndex);
+    const MultipleChromatogramAlignmentRow getMcaRow(int rowIndex) const;
+    const MultipleChromatogramAlignmentRow getMcaRow(const QString &name) const;
+    const QList<MultipleChromatogramAlignmentRow> getMcaRows() const;
+    MultipleChromatogramAlignmentRow getMcaRowByRowId(qint64 rowId, U2OpStatus &os) const;
 
-    MultipleChromatogramAlignmentRow getRow(int rowIndex);
-    const MultipleChromatogramAlignmentRow getRow(int rowIndex) const;
-    const MultipleChromatogramAlignmentRow getRow(const QString &name) const;
-    const QList<MultipleChromatogramAlignmentRow> & getRows() const;
+    MultipleChromatogramAlignmentData & operator=(const MultipleChromatogramAlignment &mca);
+    MultipleChromatogramAlignmentData & operator=(const MultipleChromatogramAlignmentData &mcaData);
 
-    MultipleChromatogramAlignmentData & operator=(const MultipleChromatogramAlignment &msa);
-    MultipleChromatogramAlignmentData & operator=(const MultipleChromatogramAlignmentData &msaData);
-
-    void clear();
-    bool isEmpty() const;
     bool isCommonGap(qint64 position, int rowNumber) const;
-
-    QString getName() const;
-    void setName(const QString &name);
-
-    const DNAAlphabet * getAlphabet() const;
-    void setAlphabet(const DNAAlphabet *alphabet);
-
-    QVariantMap getInfo() const;
-    void setInfo(const QVariantMap &info);
-
-    qint64 getLength() const;
-    void setLength(int length);
-
-    int getNumRows() const;
 
     /**
      * Recomputes the length of the alignment and makes it as minimal
@@ -111,27 +88,17 @@ public:
      */
     bool simplify();
 
-    void sortRowsByName(Order order = Ascending);
-
     /**
      * Sorts rows by similarity making identical rows sequential.
      * Returns 'true' if the rows were resorted, and 'false' otherwise.
      */
     bool sortRowsBySimilarity();
 
-    QStringList getRowNames() const;
-
     /**
      * Inserts 'count' gaps into the specified position.
      * Can increase the overall alignment length.
      */
     void insertGaps(int row, qint64 pos, qint64 count, U2OpStatus &os);
-
-    /**
-     * Renames the row with the specified index.
-     * Assumes that the row index is valid and the name is not empty.
-     */
-    void renameRow(int row, const QString &name);
 
     /**
      * Modifies the alignment by keeping data from the specified region and rows only.
@@ -147,19 +114,6 @@ public:
      */
     MultipleChromatogramAlignment mid(qint64 start, qint64 len) const;
 
-    /**
-     * Removes a row from alignment.
-     * The alignment is changed only (to zero) if the alignment becomes empty.
-     */
-    void removeRow(int rowIndex, U2OpStatus &os);
-
-    /**
-     * Shifts a selection of consequent rows.
-     * 'delta' can be positive or negative.
-     * It is assumed that indexes of shifted rows are within the bounds of the [0, number of rows).
-     */
-    void moveRowsBlock(int startRow, int numRows, int delta);
-
     bool operator==(const MultipleChromatogramAlignmentData &mcaData) const;
     bool operator!=(const MultipleChromatogramAlignmentData &mcaData) const;
 
@@ -167,6 +121,8 @@ public:
 
     U2MsaListGapModel getPredictedSequencesGapModel() const;
     U2MsaListGapModel getEditedSequencesGapModel() const;
+
+    void setRowContent(int rowNumber, const McaRowMemoryData &mcaRowMemoryData);
     void setRowGapModel(int rowNumber, const U2MsaRowGapModel &gapModel);
     void setGapModel(const U2MsaListGapModel &gapModel);
 
@@ -183,16 +139,18 @@ public:
                 const DNAChromatogram &chromatogram,
                 const QByteArray &predictedSequenceRawData);
 
-    MultipleChromatogramAlignment getCopy() const;
+    MultipleAlignment getCopy() const;
+    MultipleChromatogramAlignment getExplicitCopy() const;
 
 private:
+    MultipleAlignmentRow getEmptyRow() const;
+
+    void copy(const MultipleAlignmentData &maData);
     void copy(const MultipleChromatogramAlignmentData &mcaData);
+
     void addRowPrivate(const MultipleChromatogramAlignmentRow &row);
 
-    const DNAAlphabet *alphabet;
-    QList<MultipleChromatogramAlignmentRow> rows;
-    qint64 length;
-    QVariantMap info;
+    void setRows(const QList<MultipleChromatogramAlignmentRow> &mcaRows);
 };
 
 inline bool	operator!=(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignment &ptr2) { return *ptr1 != *ptr2; }

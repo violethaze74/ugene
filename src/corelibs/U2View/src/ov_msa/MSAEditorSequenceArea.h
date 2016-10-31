@@ -342,7 +342,7 @@ protected:
 private slots:
     void sl_onHScrollMoved(int pos);
     void sl_onVScrollMoved(int pos);
-    void sl_alignmentChanged(const MultipleSequenceAlignment &, const MaModificationInfo&);
+    void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
 
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);

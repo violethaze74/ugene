@@ -141,7 +141,7 @@ void MSAGeneralTab::connectSignals() {
 
     // Extern signals
     connect(msa->getMSAObject(),
-            SIGNAL(si_alignmentChanged(MultipleSequenceAlignment, MaModificationInfo)),
+            SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
             SLOT(sl_alignmentChanged()));
 
         //out

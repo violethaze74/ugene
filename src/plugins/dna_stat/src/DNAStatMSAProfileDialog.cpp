@@ -306,7 +306,7 @@ void DNAStatMSAProfileTask::computeStats() {
         cs.charFreqs.resize(aChars.size());
         cs.consChar = U2Msa::GAP_CHAR;
         for (int i = 0; i< s.ma->getNumRows(); i++) {
-            char c = s.ma->getRow(i)->charAt(pos);
+            char c = s.ma->getMsaRow(i)->charAt(pos);
             unusedChars.remove(c);
             int idx = char2index.value(c);
             int v = ++cs.charFreqs[idx];

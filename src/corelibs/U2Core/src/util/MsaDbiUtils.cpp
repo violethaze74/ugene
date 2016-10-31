@@ -19,18 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#include "MsaDbiUtils.h"
-
-#include <U2Core/U2AlphabetUtils.h>
+#include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/MultipleChromatogramAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/RawDataUdrSchema.h>
+#include <U2Core/U2AlphabetUtils.h>
+#include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2DbiUtils.h>
+#include <U2Core/U2McaDbi.h>
 #include <U2Core/U2MsaDbi.h>
+#include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
-#include <U2Core/U2AttributeDbi.h>
 
+#include "MsaDbiUtils.h"
+#include "McaRowInnerData.h"
 
 namespace U2 {
 
@@ -612,7 +617,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
         // Update data for rows with the same row and sequence IDs
         if (newRowsIds.contains(currentRow.rowId)) {
             // Update sequence and row info
-            const U2MsaRow newRow = al->getRowByRowId(currentRow.rowId, os)->getRowDbInfo();
+            const U2MsaRow newRow = al->getMsaRowByRowId(currentRow.rowId, os)->getRowDbInfo();
             CHECK_OP(os, );
 
             if (newRow.sequenceId != currentRow.sequenceId) {
@@ -624,7 +629,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
                 continue;
             }
 
-            DNASequence sequence = (al->getRowByRowId(newRow.rowId, os))->getSequence();
+            DNASequence sequence = (al->getMsaRowByRowId(newRow.rowId, os))->getSequence();
             CHECK_OP(os, );
 
             msaDbi->updateRowName(msaRef.entityId, newRow.rowId, sequence.getName(), os);
@@ -645,7 +650,7 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     // remember the rows order
     QList<qint64> rowsOrder;
     for (int i = 0, n = al->getNumRows(); i < n; ++i) {
-        const MultipleSequenceAlignmentRow alRow = al->getRow(i);
+        const MultipleSequenceAlignmentRow alRow = al->getMsaRow(i);
         U2MsaRow row = alRow->getRowDbInfo();
 
         if (row.sequenceId.isEmpty() || !currentRowIds.contains(row.rowId)) {
@@ -694,6 +699,179 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
         U2StringAttribute attr(msaRef.entityId, key, val);
 
         attrDbi->createStringAttribute(attr, os);
+        CHECK_OP(os, );
+    }
+}
+
+namespace {
+
+U2Chromatogram importChromatogram(U2OpStatus &os, DbiConnection &connection, const QString &folder, const DNAChromatogram &chromatogram, const QString &chromatogramName) {
+    // TODO: extract to a new class ChromatogramImporter
+    U2Chromatogram dbChromatogram;
+    dbChromatogram.visualName = chromatogramName;
+    dbChromatogram.serializer = DNAChromatogramSerializer::ID;
+
+    const U2DbiRef dbiRef = connection.dbi->getDbiRef();
+    RawDataUdrSchema::createObject(dbiRef, folder, dbChromatogram, os);
+    CHECK_OP(os, U2Chromatogram());
+
+    const U2EntityRef entityRef(dbiRef, dbChromatogram.id);
+    QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
+    RawDataUdrSchema::writeContent(data, entityRef, os);
+    CHECK_OP(os, U2Chromatogram());
+
+    return dbChromatogram;
+}
+
+U2Sequence importSequence(U2OpStatus &os, DbiConnection &connection, const QString &folder, const DNASequence &sequence, const QString &alphabetId) {
+    // TODO: extract to a new class SequenceImporter (U2SequenceImporter should be renamed to U2SequenceSequentialImporter)
+    U2Sequence dbSequence;
+    dbSequence.visualName = sequence.getName();
+    dbSequence.circular = sequence.circular;
+    dbSequence.length = sequence.length();
+    dbSequence.alphabet.id = alphabetId;
+
+    connection.dbi->getSequenceDbi()->createSequenceObject(dbSequence, folder, os);
+    CHECK_OP(os, U2Sequence());
+
+    QVariantMap hints;
+    connection.dbi->getSequenceDbi()->updateSequenceData(dbSequence.id, U2_REGION_MAX, sequence.constSequence(), hints, os);
+    CHECK_OP(os, U2Sequence());
+
+    return dbSequence;
+}
+
+}
+
+void MsaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const MultipleChromatogramAlignment &mca) {
+    // Move to the MCAImporter
+    // TODO: check, if a transaction or an operation block should be started
+    DbiConnection connection(mcaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
+    SAFE_POINT_EXT(NULL != attributeDbi, os.setError("NULL Attribute Dbi"), );
+
+    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
+    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Msa Dbi"), );
+
+    U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
+    SAFE_POINT_EXT(NULL != sequenceDbi, os.setError("NULL Sequence Dbi"), );
+
+    const DNAAlphabet *alphabet = mca->getAlphabet();
+    SAFE_POINT_EXT(NULL != alphabet, os.setError("The alignment alphabet is NULL"), );
+
+    //// UPDATE MCA
+    U2Msa dbMca;
+    dbMca.id = mcaRef.entityId;
+    dbMca.visualName = mca->getName();
+    dbMca.alphabet.id = alphabet->getId();
+    dbMca.length = mca->getLength();
+
+    mcaDbi->updateMcaName(mcaRef.entityId, mca->getName(), os);
+    CHECK_OP(os, );
+
+    mcaDbi->updateMcaAlphabet(mcaRef.entityId, alphabet->getId(), os);
+    CHECK_OP(os, );
+
+    mcaDbi->updateMcaLength(mcaRef.entityId, mca->getLength(), os);
+    CHECK_OP(os, );
+
+    //// UPDATE ROWS AND SEQUENCES
+    // Get rows that are currently stored in the database
+    const QList<U2McaRow> currentRows = mcaDbi->getRows(mcaRef.entityId, os);
+    CHECK_OP(os, );
+
+    QList<qint64> currentRowIds;
+    QList<qint64> newRowsIds = mca->getRowsIds();
+    QList<qint64> eliminatedRows;
+    // TODO: get the mca folder and create child objects there
+    const QString dbFolder = U2ObjectDbi::ROOT_FOLDER;
+
+    foreach (const U2McaRow &currentRow, currentRows) {
+        currentRowIds << currentRow.rowId;
+
+        // Update data for rows with the same row and child objects IDs
+        if (newRowsIds.contains(currentRow.rowId)) {
+            // Update sequence and row info
+            const U2McaRow newRow = mca->getMcaRowByRowId(currentRow.rowId, os)->getRowDbInfo();
+            CHECK_OP(os, );
+
+            if (newRow.chromatogramId != currentRow.chromatogramId ||
+                newRow.predictedSequenceId != currentRow.predictedSequenceId ||
+                newRow.sequenceId != currentRow.sequenceId) {
+                // Kill the row from the current alignment, it is incorrect. New row with this ID will be created later.
+                // TODO: replace with specific utils
+                MsaDbiUtils::removeRow(mcaRef, currentRow.rowId, os);
+                CHECK_OP(os, );
+
+                currentRowIds.removeOne(currentRow.rowId);
+                continue;
+            }
+
+            const McaRowMemoryData rowMemoryData = mca->getMcaRowByRowId(newRow.rowId, os)->getRowMemoryData();
+            CHECK_OP(os, );
+
+            mcaDbi->updateRowName(mcaRef.entityId, newRow.rowId, rowMemoryData.editedSequence.getName(), os);
+            CHECK_OP(os, );
+
+            mcaDbi->updateRowContent(mcaRef.entityId, newRow.rowId, rowMemoryData, os);
+            CHECK_OP(os, );
+        } else {
+            // Remove rows that are no more present in the alignment
+            eliminatedRows.append(currentRow.rowId);
+        }
+    }
+
+    mcaDbi->removeRows(mcaRef.entityId, eliminatedRows, os);
+    CHECK_OP(os, );
+
+    // Add rows that are stored in memory, but are not present in the database,
+    // remember the rows order
+    QList<qint64> rowsOrder;
+    for (int i = 0, n = mca->getNumRows(); i < n; ++i) {
+        const MultipleChromatogramAlignmentRow mcaRow = mca->getMcaRow(i);
+        U2McaRow dbRow = mcaRow->getRowDbInfo();
+
+        if (!dbRow.hasValidChildObjectIds() || !currentRowIds.contains(dbRow.rowId)) {
+            // Import the child objects
+            const DNAChromatogram &chromatogram = mcaRow->getChromatogram();
+            const U2Chromatogram dbChromatogram = importChromatogram(os, connection, dbFolder, chromatogram, chromatogram.name);
+            CHECK_OP(os, );
+
+            const U2Sequence dbPredictedSequence = importSequence(os, connection, dbFolder, mcaRow->getPredictedSequence(), dbMca.alphabet.id);
+            CHECK_OP(os, );
+
+            const U2Sequence dbEditedSequence = importSequence(os, connection, dbFolder, mcaRow->getEditedSequence(), dbMca.alphabet.id);
+            CHECK_OP(os, );
+
+            // Create the row
+            dbRow.rowId = U2MsaRow::INVALID_ROW_ID; // set the row ID automatically
+            dbRow.chromatogramId = dbChromatogram.id;
+            dbRow.predictedSequenceId = dbPredictedSequence.id;
+            dbRow.sequenceId = dbEditedSequence.id;
+            dbRow.gstart = mcaRow->getWorkingAreaRegion().startPos;
+            dbRow.gend = mcaRow->getWorkingAreaRegion().endPos();
+            dbRow.predictedSequenceGaps = mcaRow->getPredictedSequenceGapModel();
+            dbRow.gaps = mcaRow->getEditedSequenceGapModel();
+            // TODO: replace with specific utils
+            MsaDbiUtils::addRow(mcaRef, -1, dbRow, os);
+            CHECK_OP(os, );
+        }
+        rowsOrder << dbRow.rowId;
+    }
+
+    //// UPDATE ROWS POSITIONS
+    mcaDbi->setNewRowsOrder(mcaRef.entityId, rowsOrder, os);
+
+    //// UPDATE ALIGNMENT ATTRIBUTES
+    QVariantMap info = mca->getInfo();
+
+    foreach (const QString &key, info.keys()) {
+        QString value = info.value(key).toString();
+        U2StringAttribute attribute(mcaRef.entityId, key, value);
+
+        attributeDbi->createStringAttribute(attribute, os);
         CHECK_OP(os, );
     }
 }
@@ -1080,7 +1258,7 @@ void MsaDbiUtils::crop(const U2EntityRef& msaRef, const QList<qint64> rowIds, qi
 
     // Crop or remove each row
     for (int i = 0, n = al->getNumRows(); i < n; ++i) {
-        MultipleSequenceAlignmentRow row = al->getRow(i)->getCopy();
+        MultipleSequenceAlignmentRow row = al->getMsaRow(i)->getExplicitCopy();
         qint64 rowId = row->getRowId();
         if (rowIds.contains(rowId)) {
             U2DataId sequenceId = row->getRowDbInfo().sequenceId;

@@ -73,8 +73,8 @@ MSAEditorNameList::MSAEditorNameList(MSAEditorUI* _ui, QScrollBar* _nhBar)
 
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
     if (editor->getMSAObject()) {
-        connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
-            SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)));
+        connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+            SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
         connect(editor->getMSAObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     }
 
@@ -166,7 +166,7 @@ void MSAEditorNameList::updateScrollBar() {
     int maxNameWidth = 0;
 
     MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
-    foreach (const MultipleSequenceAlignmentRow& row, maObj->getMsa()->getRows()) {
+    foreach (const MultipleSequenceAlignmentRow& row, maObj->getMsa()->getMsaRows()) {
         maxNameWidth = qMax(fm.width(row->getName()), maxNameWidth);
     }
     // adjustment for branch primitive in collapsing mode
@@ -240,7 +240,7 @@ void MSAEditorNameList::sl_copyCurrentSequence() {
     }
 }
 
-void MSAEditorNameList::sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo& mi) {
+void MSAEditorNameList::sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo& mi) {
     if (mi.rowListChanged) {
         completeRedraw = true;
         updateActions();
@@ -845,7 +845,7 @@ void MSAEditorNameList::sl_editSequenceName()
     if (n<0) {
         return;
     }
-    QString curName =  maObj->getMsa()->getRow(n)->getName();
+    QString curName =  maObj->getMsa()->getMsaRow(n)->getName();
     QString newName = QInputDialog::getText(this, tr("Rename"),
             tr("New sequence name:"), QLineEdit::Normal, curName, &ok);
     if (ok && !newName.isEmpty() && curName != newName) {
@@ -906,7 +906,7 @@ qint64 MSAEditorNameList::sequenceIdAtPos(const QPoint &p) {
     }
     if (curSeq != -1) {
         MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
-        result = maObj->getMsa()->getRow(curSeq)->getRowId();
+        result = maObj->getMsa()->getMsaRow(curSeq)->getRowId();
     }
     return result;
 }

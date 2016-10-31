@@ -621,7 +621,7 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
     bool ok_flag=false;
     U2OpStatus2Log os;
     const MultipleSequenceAlignment ma = myMSequence->getMsa();
-    foreach(const MultipleSequenceAlignmentRow& myItem , ma->getRows()){
+    foreach(const MultipleSequenceAlignmentRow& myItem , ma->getMsaRows()){
         if (myItem->getName() == seqName){
             ok_flag=true;
             QByteArray objSubSeq = myItem->mid(startPos, subseq.length(), os)->toByteArray(subseq.length(), os);
@@ -678,7 +678,7 @@ Task::ReportResult GTest_DNAMulSequenceQuality::report() {
     }
 
     bool ok_flag=false;
-    foreach(const MultipleSequenceAlignmentRow& myItem , myMSequence->getMsa()->getRows()){
+    foreach(const MultipleSequenceAlignmentRow& myItem , myMSequence->getMsa()->getMsaRows()){
         if (myItem->getName() == seqName){
             ok_flag = true;
             //QByteArray qualityCodes = myItem.getCoreQuality().qualCodes;
@@ -802,8 +802,8 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
 
         MultipleSequenceAlignment one = myMSequence->getMsa();
         MultipleSequenceAlignment two = myMSequence2->getMsa();
-        const QList <MultipleSequenceAlignmentRow> alignedSeqs1 = one->getRows();
-        const QList <MultipleSequenceAlignmentRow> alignedSeqs2 = two->getRows();
+        const QList <MultipleSequenceAlignmentRow> alignedSeqs1 = one->getMsaRows();
+        const QList <MultipleSequenceAlignmentRow> alignedSeqs2 = two->getMsaRows();
 
         if( alignedSeqs1.size() != alignedSeqs2.size() ) {
             stateInfo.setError(QString( "different_sequences_number_in_msa_in_%1_object" ).arg( i ));
@@ -894,8 +894,8 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
     }
     const MultipleSequenceAlignment one = myMSequence->getMsa();
     const MultipleSequenceAlignment two = myMSequence2->getMsa();
-    const QList<MultipleSequenceAlignmentRow> &myQList1 = one->getRows();
-    const QList<MultipleSequenceAlignmentRow> &myQList2 = two->getRows();
+    const QList<MultipleSequenceAlignmentRow> &myQList1 = one->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> &myQList2 = two->getMsaRows();
 
     for (int n = 0; (n != myQList1.size()) || (n != myQList2.size()); n++) {
         const MultipleSequenceAlignmentRow &myItem1 = myQList1.at(i);

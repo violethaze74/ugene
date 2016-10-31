@@ -35,4 +35,8 @@ U2McaRow::U2McaRow(const U2MsaRow &msaRow)
 
 }
 
+bool U2McaRow::hasValidChildObjectIds() const {
+    return !(chromatogramId.isEmpty() || predictedSequenceId.isEmpty() || sequenceId.isEmpty());
+}
+
 }   // namespace U2

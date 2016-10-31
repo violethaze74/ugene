@@ -329,7 +329,7 @@ void PWMBuildDialogController::reject() {
 // tasks
 
 PFMatrixBuildTask::PFMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma)
-: Task (tr("Build Frequency Matrix"), TaskFlag_None), settings(s), ma(ma->getCopy())
+: Task (tr("Build Frequency Matrix"), TaskFlag_None), settings(s), ma(ma->getExplicitCopy())
 {
     GCOUNTER( cvar, tvar, "PFMatrixBuildTask" );
     tpm = Task::Progress_Manual;
@@ -450,7 +450,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
 }
 
 PWMatrixBuildTask::PWMatrixBuildTask(const PMBuildSettings& s, const MultipleSequenceAlignment& ma)
-: Task (tr("Build Weight Matrix"), TaskFlag_None), settings(s), ma(ma->getCopy())
+: Task (tr("Build Weight Matrix"), TaskFlag_None), settings(s), ma(ma->getExplicitCopy())
 {
     GCOUNTER( cvar, tvar, "PWMatrixBuildTask" );
     tpm = Task::Progress_Manual;

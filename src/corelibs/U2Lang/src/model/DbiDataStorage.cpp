@@ -156,7 +156,7 @@ SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleSequenceAlignmen
     assert(NULL != dbiHandle);
 
     U2OpStatus2Log os;
-    MultipleSequenceAlignment copiedAlignment = al->getCopy();
+    MultipleSequenceAlignment copiedAlignment = al->getExplicitCopy();
     QScopedPointer<MultipleSequenceAlignmentObject> obj(MultipleSequenceAlignmentImporter::createAlignment(dbiHandle->getDbiRef(), copiedAlignment, os));
     CHECK_OP(os, SharedDbiDataHandler());
 

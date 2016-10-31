@@ -29,6 +29,7 @@ namespace U2 {
 
 class DNAChromatogram;
 class DNASequence;
+class McaRowMemoryData;
 
 /**
     An interface to obtain access to multiple chromatogram alignment
@@ -123,17 +124,20 @@ public:
                                   const U2MsaRowGapModel &editedSequenceGapModel,
                                   U2OpStatus &os) = 0;
 
+    virtual void updateRowContent(const U2DataId &mcaId,
+                                  qint64 rowId,
+                                  const McaRowMemoryData &rowMemoryData,
+                                  U2OpStatus &os) = 0;
+
     /**
      * Updates a chromatogram with the specified ID in a row.
      * Be careful, keep the row consistency (core length of all parts should be the same)!
      * Requires: U2DbiFeature_WriteMca feature support
      */
     virtual void updateRowChromatogram(const U2DataId &mcaId,
-                                  qint64 rowId,
-                                  qint64 sequenceId,
-                                  const QByteArray &sequenceData,
-                                  const U2MsaRowGapModel &gapModel,
-                                  U2OpStatus &os) = 0;
+                               qint64 rowId,
+                               const DNAChromatogram &chromatogram,
+                               U2OpStatus &os) = 0;
 
     /**
      * Updates a sequence with the specified ID in a row.

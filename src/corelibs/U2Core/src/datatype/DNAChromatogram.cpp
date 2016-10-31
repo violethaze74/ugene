@@ -30,7 +30,8 @@ const short DNAChromatogram::INVALID_VALUE = -1;
 DNAChromatogram::DNAChromatogram()
     : traceLength(0),
       seqLength(0),
-      hasQV(false)
+      hasQV(false),
+      name("chromatogram")
 {
 
 }

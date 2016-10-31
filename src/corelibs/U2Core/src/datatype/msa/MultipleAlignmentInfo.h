@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_INFO_H_
-#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_INFO_H_
+#ifndef _U2_MULTIPLE_ALIGNMENT_INFO_H_
+#define _U2_MULTIPLE_ALIGNMENT_INFO_H_
 
 #include <QString>
 
@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class U2CORE_EXPORT MultipleSequenceAlignmentInfo {
+class U2CORE_EXPORT MultipleAlignmentInfo {
 public:
     static const QString NAME;
     static const QString ACCESSION;
@@ -75,4 +75,4 @@ public:
 
 }   // namespace U2
 
-#endif // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_INFO_H_
+#endif // _U2_MULTIPLE_ALIGNMENT_INFO_H_

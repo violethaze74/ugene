@@ -27,7 +27,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
-#include <U2Core/MultipleSequenceAlignmentInfo.h>
+#include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
@@ -419,7 +419,7 @@ static bool nameWasBefore( const MultipleSequenceAlignment& msa, const QString& 
     bool ret = false;
 
     for( int i = 0; i < n; ++i ) {
-        if ( name == msa->getRow(i)->getName()) {
+        if ( name == msa->getMsaRow(i)->getName()) {
             ret = true;
             break;
         }
@@ -494,7 +494,7 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MultipleSequenceAlignmen
                 }
             }
             else {
-                if( name != msa->getRow(seq_ind)->getName()) {
+                if( name != msa->getMsaRow(seq_ind)->getName()) {
                     throw StockholmFormat::BadFileData( StockholmFormat::tr( "invalid file: sequence names are not equal in blocks" ) );
                 }
                 msa->appendChars(seq_ind, currentLen, seq.constData(), seq.size());
@@ -524,43 +524,43 @@ static bool loadOneMsa( IOAdapter* io, U2OpStatus& tsi, MultipleSequenceAlignmen
     return true;
 }
 
-static void setMsaInfoCutoffs( QVariantMap& info, const QString& string, MultipleSequenceAlignmentInfo::Cutoffs cof1,
-                               MultipleSequenceAlignmentInfo::Cutoffs cof2 ) {
+static void setMsaInfoCutoffs( QVariantMap& info, const QString& string, MultipleAlignmentInfo::Cutoffs cof1,
+                               MultipleAlignmentInfo::Cutoffs cof2 ) {
     QByteArray str = string.toLatin1();
     QTextStream txtStream( str );
     float val1 = .0f;
     float val2 = .0f;
     txtStream >> val1 >> val2;
-    MultipleSequenceAlignmentInfo::setCutoff( info, cof1, val1 );
-    MultipleSequenceAlignmentInfo::setCutoff( info, cof2, val2 );
+    MultipleAlignmentInfo::setCutoff( info, cof1, val1 );
+    MultipleAlignmentInfo::setCutoff( info, cof2, val2 );
 }
 
 static void setMsaInfo( const QHash< QString, QString>& annMap, MultipleSequenceAlignment& ma ) {
     QVariantMap info = ma->getInfo();
 
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_AC ) ) {
-        MultipleSequenceAlignmentInfo::setAccession( info, annMap[StockholmFormat::FILE_ANNOTATION_AC] );
+        MultipleAlignmentInfo::setAccession( info, annMap[StockholmFormat::FILE_ANNOTATION_AC] );
     }
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_DE ) ) {
-        MultipleSequenceAlignmentInfo::setDescription( info, annMap[StockholmFormat::FILE_ANNOTATION_DE] );
+        MultipleAlignmentInfo::setDescription( info, annMap[StockholmFormat::FILE_ANNOTATION_DE] );
     }
     if (annMap.contains( StockholmFormat::COLUMN_ANNOTATION_SS_CONS ) ) {
-        MultipleSequenceAlignmentInfo::setSSConsensus( info, annMap[StockholmFormat::COLUMN_ANNOTATION_SS_CONS] );
+        MultipleAlignmentInfo::setSSConsensus( info, annMap[StockholmFormat::COLUMN_ANNOTATION_SS_CONS] );
     }
     if (annMap.contains( StockholmFormat::COLUMN_ANNOTATION_RF ) ) {
-        MultipleSequenceAlignmentInfo::setReferenceLine( info, annMap[StockholmFormat::COLUMN_ANNOTATION_RF] );
+        MultipleAlignmentInfo::setReferenceLine( info, annMap[StockholmFormat::COLUMN_ANNOTATION_RF] );
     }
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_GA ) ) {
-        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_GA], MultipleSequenceAlignmentInfo::CUTOFF_GA1,
-                                                                              MultipleSequenceAlignmentInfo::CUTOFF_GA2 );
+        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_GA], MultipleAlignmentInfo::CUTOFF_GA1,
+                                                                              MultipleAlignmentInfo::CUTOFF_GA2 );
     }
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_NC ) ) {
-        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_NC], MultipleSequenceAlignmentInfo::CUTOFF_NC1,
-                                                                              MultipleSequenceAlignmentInfo::CUTOFF_NC2 );
+        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_NC], MultipleAlignmentInfo::CUTOFF_NC1,
+                                                                              MultipleAlignmentInfo::CUTOFF_NC2 );
     }
     if (annMap.contains( StockholmFormat::FILE_ANNOTATION_TC ) ) {
-        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_TC], MultipleSequenceAlignmentInfo::CUTOFF_TC1,
-                                                                              MultipleSequenceAlignmentInfo::CUTOFF_TC2 );
+        setMsaInfoCutoffs( info, annMap[StockholmFormat::FILE_ANNOTATION_TC], MultipleAlignmentInfo::CUTOFF_TC1,
+                                                                              MultipleAlignmentInfo::CUTOFF_TC2 );
     }
     ma->setInfo(info);
 }
@@ -602,10 +602,10 @@ static void load( IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& l, con
 static int getMaxNameLen( const MultipleSequenceAlignment& msa ) {
     assert( msa->getNumRows() != 0 );
     int sz = msa->getNumRows();
-    int max_len = msa->getRow(0)->getName().size();
+    int max_len = msa->getMsaRow(0)->getName().size();
 
     for( int i = 0; i < sz; ++i ) {
-        int name_len =  msa->getRow(i)->getName().size();
+        int name_len =  msa->getMsaRow(i)->getName().size();
         max_len = ( max_len < name_len )? name_len: max_len;
     }
     return max_len;
@@ -649,7 +649,7 @@ static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, QString n
         //write block
         U2OpStatus2Log os;
         QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        const QList<MultipleSequenceAlignmentRow> rows = msa->getRows();
+        const QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
         QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
         for (; si != seqs.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;

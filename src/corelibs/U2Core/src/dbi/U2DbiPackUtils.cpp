@@ -98,6 +98,14 @@ bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QL
     return true;
 }
 
+QByteArray PackUtils::packGapDetails(qint64 rowId, qint64 relatedObjectId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps) {
+    return "";
+}
+
+bool PackUtils::unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, qint64 relatedObjectId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps) {
+    return false;
+}
+
 QByteArray PackUtils::packRowOrder(const QList<qint64>& rowIds) {
     QByteArray result;
     foreach (qint64 rowId, rowIds) {
@@ -362,6 +370,14 @@ bool PackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMsa
         rows << row;
     }
     return true;
+}
+
+QByteArray PackUtils::packRows(const QList<qint64> &posInMca, const QList<U2McaRow> &rows) {
+    return "";
+}
+
+bool PackUtils::unpackRows(const QByteArray &modDetails, QList<qint64> &posInMca, QList<U2McaRow> &rows) {
+    return false;
 }
 
 QByteArray PackUtils::packSequenceDataDetails(const U2Region &replacedRegion, const QByteArray &oldData,

@@ -202,8 +202,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     complementAction->setObjectName("replace_selected_rows_with_complement");
     connect(complementAction, SIGNAL(triggered()), SLOT(sl_complementCurrentSelection()));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
-        SLOT(sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)));
+    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
     connect(editor->getMSAObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(editor->getMSAObject(), SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_updateCollapsingMode()));
 
@@ -687,7 +687,7 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, con
     QString refSeqName = editor->getReferenceRowName();
     MultipleSequenceAlignmentRow row;
     if (U2MsaRow::INVALID_ROW_ID != refSeq) {
-        row = msa->getRow(refSeq);
+        row = msa->getMsaRow(refSeq);
     }
 
     //Use dots to draw regions, which are similar to reference sequence
@@ -1789,7 +1789,7 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
     }
 }
 
-void MSAEditorSequenceArea::sl_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo& modInfo) {
+void MSAEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo& modInfo) {
     exitFromEditCharacterMode();
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
@@ -2209,7 +2209,7 @@ void MSAEditorSequenceArea::sl_saveSequence(){
         return;
     }
 
-    QString seqName = editor->getMSAObject()->getMsa()->getRow(seqIndex)->getName();
+    QString seqName = editor->getMSAObject()->getMsa()->getMsaRow(seqIndex)->getName();
     QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController((QWidget*)AppContext::getMainWindow()->getQMainWindow());
     const int rc = d->exec();
     CHECK(!d.isNull(), );
@@ -2776,7 +2776,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
         QList<qint64> modifiedRowIds;
         modifiedRowIds.reserve(sel.length);
         for (int i = sel.startPos; i < sel.endPos(); i++) {
-            const MultipleSequenceAlignmentRow currentRow = ma->getRow(i);
+            const MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(i);
             QByteArray currentRowContent = currentRow->toByteArray(ma->getLength(), os);
             switch (type.getType())
             {
@@ -2934,7 +2934,7 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
     const int refSeq = editor->getMSAObject()->getMsa()->getRowIndexByRowId(editor->getReferenceRowId(), os);
     MultipleSequenceAlignmentRow row;
     if (U2MsaRow::INVALID_ROW_ID != refSeq) {
-        row = msa->getRow(refSeq);
+        row = msa->getMsaRow(refSeq);
     }
 
     QString header;

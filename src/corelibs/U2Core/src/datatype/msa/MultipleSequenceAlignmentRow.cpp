@@ -29,67 +29,73 @@
 namespace U2 {
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow()
-    : msaRowData(new MultipleSequenceAlignmentRowData)
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData)
 {
 
 }
 
+MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleAlignmentRow &maRow)
+    : MultipleAlignmentRow(maRow)
+{
+    SAFE_POINT(NULL != maRowData.dynamicCast<MultipleSequenceAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleSequenceAlignmentRow", );
+}
+
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlignmentData *msaData)
-    : msaRowData(new MultipleSequenceAlignmentRowData(msaData))
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(msaData))
 {
 
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlignmentRowData *msaRowData)
-    : msaRowData(msaRowData)
+    : MultipleAlignmentRow(msaRowData)
 {
 
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const DNASequence &sequence, const U2MsaRowGapModel &gaps, MultipleSequenceAlignmentData *msaData)
-    : msaRowData(new MultipleSequenceAlignmentRowData(rowInDb, sequence, gaps, msaData))
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(rowInDb, sequence, gaps, msaData))
 {
 
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const QString &rowName, const QByteArray &rawData, MultipleSequenceAlignmentData *msaData)
-    : msaRowData(new MultipleSequenceAlignmentRowData(rowInDb, rowName, rawData, msaData))
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(rowInDb, rowName, rawData, msaData))
 {
 
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &row, MultipleSequenceAlignmentData *msaData)
-    : msaRowData(new MultipleSequenceAlignmentRowData(row, msaData))
+    : MultipleAlignmentRow(new MultipleSequenceAlignmentRowData(row, msaData))
 {
 
 }
 
-MultipleSequenceAlignmentRow::~MultipleSequenceAlignmentRow() {
-
-}
-
 MultipleSequenceAlignmentRowData * MultipleSequenceAlignmentRow::data() const {
-    return msaRowData.data();
+    return getMsaRowData().data();
 }
 
 MultipleSequenceAlignmentRowData & MultipleSequenceAlignmentRow::operator*() {
-    return *msaRowData;
+    return *getMsaRowData();
 }
 
 const MultipleSequenceAlignmentRowData & MultipleSequenceAlignmentRow::operator*() const {
-    return *msaRowData;
+    return *getMsaRowData();
 }
 
 MultipleSequenceAlignmentRowData * MultipleSequenceAlignmentRow::operator->() {
-    return msaRowData.data();
+    return getMsaRowData().data();
 }
 
 const MultipleSequenceAlignmentRowData * MultipleSequenceAlignmentRow::operator->() const {
-    return msaRowData.data();
+    return getMsaRowData().data();
 }
 
 MultipleSequenceAlignmentRow MultipleSequenceAlignmentRow::clone() const {
-    return msaRowData->getCopy();
+    return getMsaRowData()->getExplicitCopy();
+}
+
+QSharedPointer<MultipleSequenceAlignmentRowData> MultipleSequenceAlignmentRow::getMsaRowData() const {
+    return maRowData.dynamicCast<MultipleSequenceAlignmentRowData>();
 }
 
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(MultipleSequenceAlignmentData *msaData)
@@ -354,8 +360,24 @@ bool MultipleSequenceAlignmentRowData::isRowContentEqual(const MultipleSequenceA
     return false;
 }
 
-bool MultipleSequenceAlignmentRowData::operator==(const MultipleSequenceAlignmentRowData &row) const {
-    return isRowContentEqual(row);
+bool MultipleSequenceAlignmentRowData::operator!=(const MultipleSequenceAlignmentRowData &msaRowData) const {
+    return !(*this == msaRowData);
+}
+
+bool MultipleSequenceAlignmentRowData::operator!=(const MultipleAlignmentRowData &maRowData) const {
+    return !(*this == maRowData);
+}
+
+bool MultipleSequenceAlignmentRowData::operator==(const MultipleSequenceAlignmentRowData &msaRowData) const {
+    return isRowContentEqual(msaRowData);
+}
+
+bool MultipleSequenceAlignmentRowData::operator==(const MultipleAlignmentRowData &maRowData) const {
+    try {
+        return  (*this == dynamic_cast<const MultipleSequenceAlignmentRowData &>(maRowData));
+    } catch (std::bad_cast) {
+        FAIL("Can't cast MultipleAlignmentRowData to MultipleSequenceAlignmentRowData", true);
+    }
 }
 
 void MultipleSequenceAlignmentRowData::crop(int pos, int count, U2OpStatus &os) {
@@ -402,7 +424,7 @@ void MultipleSequenceAlignmentRowData::crop(int pos, int count, U2OpStatus &os) 
 }
 
 MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::mid(int pos, int count, U2OpStatus &os) const {
-    MultipleSequenceAlignmentRow row = getCopy();
+    MultipleSequenceAlignmentRow row = getExplicitCopy();
     row->crop(pos, count, os);
     return row;
 }
@@ -452,7 +474,7 @@ void MultipleSequenceAlignmentRowData::replaceChars(char origChar, char resultCh
     }
 }
 
-MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getCopy() const {
+MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getExplicitCopy() const {
     return MultipleSequenceAlignmentRow(new MultipleSequenceAlignmentRowData(*this));
 }
 

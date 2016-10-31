@@ -22,12 +22,13 @@
 #ifndef _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_
 #define _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_
 
-#include <QSharedPointer>
-
 #include <U2Core/DNAChromatogram.h>
 #include <U2Core/DNASequence.h>
-#include <U2Core/U2Msa.h>
+#include <U2Core/McaRowInnerData.h>
+#include <U2Core/U2Mca.h>
 #include <U2Core/U2Region.h>
+
+#include "MultipleAlignmentRow.h"
 
 class QByteArray;
 
@@ -37,9 +38,10 @@ class MultipleChromatogramAlignmentData;
 class MultipleChromatogramAlignmentRowData;
 class U2OpStatus;
 
-class U2CORE_EXPORT MultipleChromatogramAlignmentRow {
+class U2CORE_EXPORT MultipleChromatogramAlignmentRow : public MultipleAlignmentRow {
 public:
     MultipleChromatogramAlignmentRow();
+    MultipleChromatogramAlignmentRow(const MultipleAlignmentRow &maRow);
     MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentRowData *mcaRowData);
 
@@ -63,7 +65,6 @@ public:
                                      const MultipleChromatogramAlignmentRowData &mcaRowData);
 
     MultipleChromatogramAlignmentRowData * data() const;
-    template <class Derived> inline Derived dynamicCast() const;
 
     MultipleChromatogramAlignmentRowData & operator*();
     const MultipleChromatogramAlignmentRowData & operator*() const;
@@ -73,19 +74,14 @@ public:
 
     MultipleChromatogramAlignmentRow clone() const;
 
-protected:
-    QSharedPointer<MultipleChromatogramAlignmentRowData> mcaRowData;
+private:
+    QSharedPointer<MultipleChromatogramAlignmentRowData> getMcaRowData() const;
 };
-
-template <class Derived>
-Derived MultipleChromatogramAlignmentRow::dynamicCast() const {
-    return Derived(*this);
-}
 
 // Working area - a part of the core which is shown. It can be expanded to the core size or reduced to some little value (0 or 1 symbol?), it starts from the core start
 // Core - a sequence + gaps whithin it (without leading and trailing gaps)
 // Guaranteed gaps
-class MultipleChromatogramAlignmentRowData {
+class MultipleChromatogramAlignmentRowData : public MultipleAlignmentRowData {
     friend class MultipleChromatogramAlignmentData;
     friend class MultipleChromatogramAlignmentRow;
 
@@ -110,12 +106,19 @@ private:
                                          const MultipleChromatogramAlignmentRowData &mcaRowData);
 
 public:
-    QString getRowName() const;     // name is defined by the edited sequence
-    void setRowName(const QString &name);
+    QString getName() const;     // name is defined by the edited sequence
+    void setName(const QString &name);
+
+    qint64 getRowId() const;
+    void setRowId(qint64 rowId);
+
+    U2McaRow getRowDbInfo() const;
+    void setRowDbInfo(const U2McaRow &dbRow);
 
     const DNASequence & getPredictedSequence() const;
     const DNASequence & getEditedSequence() const;
     const DNAChromatogram & getChromatogram() const;
+    McaRowMemoryData getRowMemoryData() const;
 
     const U2MsaRowGapModel & getPredictedSequenceGapModel() const;
     const U2MsaRowGapModel & getEditedSequenceGapModel() const;
@@ -172,10 +175,14 @@ public:
 
     void replaceCharInEditedSequence(U2OpStatus &os, qint64 mcaVisiblePosition, char newChar);
 
-    MultipleChromatogramAlignmentRow getCopy(const MultipleChromatogramAlignmentData *mcaData = NULL) const;
+    MultipleChromatogramAlignmentRow getExplicitCopy(const MultipleChromatogramAlignmentData *mcaData = NULL) const;
 
     bool operator ==(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
+    bool operator ==(const MultipleAlignmentRowData &maRowData) const;
     bool operator !=(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
+    bool operator !=(const MultipleAlignmentRowData &maRowData) const;
+
+    void crop(int pos, int count, U2OpStatus &os);
 
     bool isCommonGap(qint64 mcaVisiblePosition) const;
 
@@ -212,7 +219,8 @@ private:
     mutable U2MsaRowGapModel editedSequenceCachedGapModel;
     U2MsaRowGapModel predictedSequenceGapModelDifference;       // difference is a gap model inside a core, positions of gaps are in core-based coordinates
     U2MsaRowGapModel editedSequenceGapModelDifference;
-    U2Region workingArea;       // TODO: fix the hidden part idea: the hidden part is replaced wiht gaps, not just hidden (it is incorrect if the hidden part is rigth on the beggining of the mca and no other rows prevent from removing the leading gaps)
+    U2Region workingArea;
+    U2McaRow initialRowInDb;        // TODO: support this field
     const MultipleChromatogramAlignmentData *mcaData;
 };
 

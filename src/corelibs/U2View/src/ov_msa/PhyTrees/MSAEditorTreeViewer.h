@@ -90,7 +90,7 @@ private slots:
 
     void sl_stopTracking();
     void sl_startTracking(bool changed);
-    void sl_alignmentChanged(const MultipleSequenceAlignment &ma, const MaModificationInfo& modInfo);
+    void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo& modInfo);
 
 signals:
     void si_refreshTree(MSAEditorTreeViewer* treeViewer);

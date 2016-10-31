@@ -22,7 +22,7 @@
 #ifndef _U2_DBI_PACKUTILS_H_
 #define _U2_DBI_PACKUTILS_H_
 
-#include <U2Core/U2Msa.h>
+#include <U2Core/U2Mca.h>
 
 namespace U2 {
 
@@ -42,6 +42,8 @@ public:
     static bool unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps);
 
     // TODO: add pack and unpack methods for MCA rows gaps (modDetails caontain more information)
+    static QByteArray packGapDetails(qint64 rowId, qint64 relatedObjectId, const QList<U2MsaGap> &oldGaps, const QList<U2MsaGap> &newGaps);
+    static bool unpackGapDetails(const QByteArray &modDetails, qint64 &rowId, qint64 relatedObjectId, QList<U2MsaGap> &oldGaps, QList<U2MsaGap> &newGaps);
 
     /** Row order */
     static QByteArray packRowOrder(const QList<qint64>& rowIds);
@@ -74,6 +76,8 @@ public:
     static bool unpackRows(const QByteArray &modDetails, QList<qint64> &posInMsa, QList<U2MsaRow> &rows);
 
     // TODO: add pack and unpack methods for U2McaRow
+    static QByteArray packRows(const QList<qint64> &posInMca, const QList<U2McaRow> &rows);
+    static bool unpackRows(const QByteArray &modDetails, QList<qint64> &posInMca, QList<U2McaRow> &rows);
 
     /** Alphabet details*/
     static QByteArray packAlphabetDetails(const U2AlphabetId &oldAlphabet, const U2AlphabetId &newAlphabet);

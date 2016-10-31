@@ -68,6 +68,8 @@ public:
     U2MsaRow();
     virtual ~U2MsaRow();
 
+    bool isValid() const;
+
     /** Id of the row in the database */
     qint64          rowId;
 

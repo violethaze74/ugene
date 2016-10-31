@@ -149,26 +149,29 @@ public:
      * The sequences should be without gaps
      * Increments the alignment version.
      */
-    virtual void updateRowContent(const U2DataId &mcaId,
-                                  qint64 rowId,
-                                  const DNAChromatogram &chromatogram,
-                                  const DNASequence &predictedSequence,
-                                  const U2MsaRowGapModel &predictedSequenceGapModel,
-                                  const DNASequence &editedSequence,
-                                  const U2MsaRowGapModel &editedSequenceGapModel,
-                                  U2OpStatus &os);
+    void updateRowContent(const U2DataId &mcaId,
+                          qint64 rowId,
+                          const DNAChromatogram &chromatogram,
+                          const DNASequence &predictedSequence,
+                          const U2MsaRowGapModel &predictedSequenceGapModel,
+                          const DNASequence &editedSequence,
+                          const U2MsaRowGapModel &editedSequenceGapModel,
+                          U2OpStatus &os);
+
+    void updateRowContent(const U2DataId &mcaId,
+                          qint64 rowId,
+                          const McaRowMemoryData &rowMemoryData,
+                          U2OpStatus &os);
 
     /**
      * Updates a chromatogram with the specified ID in a row.
      * Be careful, keep the row consistency (core length of all parts should be the same)!
      * Increments the alignment version.
      */
-    virtual void updateRowChromatogram(const U2DataId &mcaId,
-                                  qint64 rowId,
-                                  qint64 sequenceId,
-                                  const QByteArray &sequenceData,
-                                  const U2MsaRowGapModel &gapModel,
-                                  U2OpStatus &os);
+    void updateRowChromatogram(const U2DataId &mcaId,
+                               qint64 rowId,
+                               const DNAChromatogram &chromatogram,
+                               U2OpStatus &os);
 
     /**
      * Updates a sequence with the specified ID in a row.
@@ -176,19 +179,19 @@ public:
      * Be careful, keep the row consistency (core length of all parts should be the same)!
      * Increments the alignment version.
      */
-    virtual void updateRowSequence(const U2DataId &mcaId,
-                                  qint64 rowId,
-                                  qint64 sequenceId,
-                                  const QByteArray &sequenceData,
-                                  const U2MsaRowGapModel &gapModel,
-                                  U2OpStatus &os);
+    void updateRowSequence(const U2DataId &mcaId,
+                           qint64 rowId,
+                           qint64 sequenceId,
+                           const QByteArray &sequenceData,
+                           const U2MsaRowGapModel &gapModel,
+                           U2OpStatus &os);
 
     /**
      * Removes all previous values and sets a new gap model for a row in a MCA.
      * Updates the alignment length.
      * Increments the alignment version.
      */
-    void updateGapModel(const U2DataId &mcaId, qint64 msaRowId, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
+    void updateGapModel(const U2DataId &mcaId, qint64 msaRowId, qint64 gapModelOwner, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
 
 
     /** Updates a part of the Mca object info - the length */
@@ -255,9 +258,6 @@ private:
     U2DataId getChromatogramIdByRowId(const U2DataId &mcaId, qint64 rowId, U2OpStatus &os);
     U2DataId getPredictedSequenceIdByRowId(const U2DataId &mcaId, qint64 rowId, U2OpStatus &os);
     U2DataId getEditedSequenceIdByRowId(const U2DataId &mcaId, qint64 rowId, U2OpStatus &os);
-
-    /** Required for store modification track of removed rows  */
-    QByteArray getRemovedRowDetails(const U2McaRow &row);
 
     /** Gets position of the row in the msa */
     qint64 getPosInMca(const U2DataId &mcaId, qint64 rowId, U2OpStatus &os);

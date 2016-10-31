@@ -120,8 +120,8 @@ void ProfileToProfileWorker::sl_taskFinished() {
 /************************************************************************/
 ProfileToProfileTask::ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, const MultipleSequenceAlignment &secondMsa)
     : Task(tr("Align profile to profile with MUSCLE"), TaskFlag_NoRun),
-      masterMsa(masterMsa->getCopy()),
-      secondMsa(secondMsa->getCopy()),
+      masterMsa(masterMsa->getExplicitCopy()),
+      secondMsa(secondMsa->getExplicitCopy()),
       seqIdx(0),
       subtaskCount(0)
 {
@@ -136,7 +136,7 @@ void ProfileToProfileTask::prepare() {
     int maxThreads = 1;//AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
     setMaxParallelSubtasks(maxThreads);
 
-    foreach (const MultipleSequenceAlignmentRow &row, masterMsa->getRows()) {
+    foreach (const MultipleSequenceAlignmentRow &row, masterMsa->getMsaRows()) {
         result->addRow(row->getRowDbInfo(), row->getSequence(), stateInfo);
         CHECK_OP(stateInfo, );
     }
@@ -173,8 +173,8 @@ void ProfileToProfileTask::appendResult(Task *task) {
     MuscleTask *t = dynamic_cast<MuscleTask*>(task);
     SAFE_POINT(NULL != t, "NULL Muscle task!",);
 
-    const QList<MultipleSequenceAlignmentRow> newRows = t->resultMA->getRows();
-    if (newRows.size() == masterMsa->getRows().size() + 1) {
+    const QList<MultipleSequenceAlignmentRow> newRows = t->resultMA->getMsaRows();
+    if (newRows.size() == masterMsa->getMsaRows().size() + 1) {
         U2OpStatus2Log os;
         result->addRow(newRows.last()->getRowDbInfo(), newRows.last()->getSequence(), os);
     }
@@ -186,7 +186,7 @@ QList<Task*> ProfileToProfileTask::createAlignTasks() {
         U2OpStatus2Log os;
         MuscleTaskSettings cfg;
         cfg.op = MuscleTaskOp_ProfileToProfile;
-        cfg.profile->addRow(secondMsa->getRow(seqIdx)->getRowDbInfo(), secondMsa->getRow(seqIdx)->getSequence(), os);
+        cfg.profile->addRow(secondMsa->getMsaRow(seqIdx)->getRowDbInfo(), secondMsa->getMsaRow(seqIdx)->getSequence(), os);
         cfg.profile->setAlphabet(secondMsa->getAlphabet());
 
         tasks << new MuscleTask(masterMsa, cfg);
@@ -199,7 +199,7 @@ QList<Task*> ProfileToProfileTask::createAlignTasks() {
 }
 
 bool ProfileToProfileTask::canCreateTask() const {
-    return (seqIdx < secondMsa->getRows().size())
+    return (seqIdx < secondMsa->getMsaRows().size())
         && (subtaskCount < getMaxParallelSubtasks());
 }
 

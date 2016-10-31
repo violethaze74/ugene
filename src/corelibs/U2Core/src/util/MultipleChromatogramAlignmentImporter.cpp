@@ -24,8 +24,9 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultipleChromatogramAlignment.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/MultipleChromatogramAlignmentRow.h>
-#include <U2Core/MultipleSequenceAlignmentInfo.h>
+#include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2DbiUtils.h>
@@ -65,7 +66,7 @@ MultipleChromatogramAlignmentObject * MultipleChromatogramAlignmentImporter::cre
 
     for (int i = 0, n = mca->getNumRows(); i < n; ++i) {
         // TODO: add this method
-        mca->getRow(i)->setRowDbInfo(rows.at(i));
+        mca->getMcaRow(i)->setRowDbInfo(rows.at(i));
     }
 
     return new MultipleChromatogramAlignmentObject(mca->getName(), U2EntityRef(dbiRef, dbMca.id), QVariantMap(), mca);
@@ -102,7 +103,7 @@ void MultipleChromatogramAlignmentImporter::importMcaInfo(U2OpStatus &os, const 
     SAFE_POINT_EXT(NULL != attributeDbi, os.setError("NULL Attribute Dbi during importing an alignment"), );
 
     foreach (const QString key, info.keys()) {
-        if (key != MultipleSequenceAlignmentInfo::NAME) { // name is stored in the object
+        if (key != MultipleAlignmentInfo::NAME) { // name is stored in the object
             const QString value =  info.value(key).toString();
             U2StringAttribute attribute(mcaId, key, value);
             attributeDbi->createStringAttribute(attribute, os);
@@ -125,7 +126,7 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
     SAFE_POINT_EXT(NULL != alphabet, os.setError("MCA alphabet is NULL"), mcaRowsDatabaseData);
     const U2AlphabetId alphabetId = alphabet->getId();
 
-    foreach (const MultipleChromatogramAlignmentRow &row, mca->getRows()) {
+    foreach (const MultipleChromatogramAlignmentRow &row, mca->getMcaRows()) {
         McaRowDatabaseData mcaRowDatabaseData;
 
         mcaRowDatabaseData.chromatogram = importChromatogram(os, connection, folder, row->getChromatogram(), row->getPredictedSequence().getName() + " chromatogram");

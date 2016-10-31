@@ -21,7 +21,7 @@
 
 #include <U2Core/L10n.h>
 #include <U2Core/MsaDbiUtils.h>
-#include <U2Core/MultipleSequenceAlignmentInfo.h>
+#include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -84,7 +84,7 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
     SAFE_POINT_EXT(rows.size() == al->getNumRows(), os.setError(QObject::tr("Unexpected error on MSA rows import")), NULL);
 
     for (int i = 0, n = al->getNumRows(); i < n; ++i) {
-        al->getRow(i)->setRowDbInfo(rows.at(i));
+        al->getMsaRow(i)->setRowDbInfo(rows.at(i));
     }
 
     return new MultipleSequenceAlignmentObject(al->getName(), U2EntityRef(dbiRef, msa.id), QVariantMap(), al);
@@ -132,7 +132,7 @@ void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection& con, 
     SAFE_POINT(NULL != attrDbi, "NULL Attribute Dbi during importing an alignment!",);
 
     foreach (QString key, alInfo.keys()) {
-        if (key != MultipleSequenceAlignmentInfo::NAME) { // name is stored in the object
+        if (key != MultipleAlignmentInfo::NAME) { // name is stored in the object
             QString val =  alInfo.value(key).value<QString>();
             U2StringAttribute attr(msaId, key, val);
 
@@ -148,7 +148,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
 
     QList<U2Sequence> sequences;
     for (int i = 0; i < al->getNumRows(); ++i) {
-        DNASequence dnaSeq = al->getRow(i)->getSequence();
+        DNASequence dnaSeq = al->getMsaRow(i)->getSequence();
 
         U2Sequence sequence = U2Sequence();
         sequence.visualName = dnaSeq.getName();
@@ -211,7 +211,7 @@ QList<U2MsaRow> MultipleSequenceAlignmentImporter::importRows(const DbiConnectio
     for (int i = 0; i < al->getNumRows(); ++i) {
         U2Sequence seq = sequences[i];
         if (seq.length > 0) {
-            MultipleSequenceAlignmentRow alignmentRow = al->getRow(i);
+            MultipleSequenceAlignmentRow alignmentRow = al->getMsaRow(i);
             const U2MsaRowGapModel gapModel = msaGapModel[i];
             if (!gapModel.isEmpty() && (gapModel.last().offset + gapModel.last().gap) == MsaRowUtils::getRowLength(alignmentRow->getSequence().seq, gapModel)) {
                 // remove trailing gap if it exists

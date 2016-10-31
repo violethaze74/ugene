@@ -59,7 +59,7 @@ void MSADistanceAlgorithmFactory::resetFlag( DistanceAlgorithmFlag flag ){
 MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory, const MultipleSequenceAlignment& _ma)
 : Task(tr("MSA distance algorithm \"%1\" task").arg(_factory->getName()), TaskFlag_None)
 , factory(_factory)
-, ma(_ma->getCopy())
+, ma(_ma->getExplicitCopy())
 , excludeGaps(true)
 , isSimilarity(true)
 {
@@ -119,7 +119,7 @@ MSADistanceMatrix::MSADistanceMatrix(const MSADistanceAlgorithm *algo, bool _use
     int nSeq = algo->ma->getNumRows();
     alignmentLength = algo->ma->getLength();
     for (int i = 0; i < nSeq; i++) {
-        seqsUngappedLenghts.append(algo->ma->getRow(i)->getUngappedLength());
+        seqsUngappedLenghts.append(algo->ma->getMsaRow(i)->getUngappedLength());
     }
 }
 

@@ -49,7 +49,7 @@ const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsa() const 
 }
 
 const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() const {
-    return getMsa()->getCopy();
+    return getMsa()->getExplicitCopy();
 }
 
 GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
@@ -61,13 +61,27 @@ GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2Op
     gHints->setAll(hints);
     const QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-    MultipleSequenceAlignment msa = getMsa()->getCopy();
+    MultipleSequenceAlignment msa = getMsa()->getExplicitCopy();
     MultipleSequenceAlignmentObject *clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
     CHECK_OP(os, NULL);
 
     clonedObj->setGHints(gHints.take());
     clonedObj->setIndexInfo(getIndexInfo());
     return clonedObj;
+}
+
+bool MultipleSequenceAlignmentObject::isRegionEmpty(int startPos, int startRow, int numChars, int numRows) const {
+    const MultipleSequenceAlignment msa = getMsa();
+    bool isBlockEmpty = true;
+    for (int row = startRow; row < startRow + numRows && isBlockEmpty; ++row) {
+        for (int pos = startPos; pos < startPos + numChars; ++pos) {
+            if (!msa->isGap(row, pos)) {
+                isBlockEmpty = false;
+                break;
+            }
+        }
+    }
+    return isBlockEmpty;
 }
 
 char MultipleSequenceAlignmentObject::charAt(int seqNum, int pos) const {
@@ -78,12 +92,324 @@ const MultipleSequenceAlignmentRow MultipleSequenceAlignmentObject::getMsaRow(in
     return getRow(row).dynamicCast<MultipleSequenceAlignmentRow>();
 }
 
+void MultipleSequenceAlignmentObject::insertGap(const U2Region &rows, int pos, int count) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    const MultipleSequenceAlignment &msa = getMsa();
+    int startSeq = rows.startPos;
+    int endSeq = startSeq + rows.length;
+
+    QList<qint64> rowIdsToInsert;
+    for (int i = startSeq; i < endSeq; ++i) {
+        qint64 rowId = msa->getRow(i)->getRowId();
+        rowIdsToInsert.append(rowId);
+    }
+
+    U2OpStatus2Log os;
+    MsaDbiUtils::insertGaps(entityRef, rowIdsToInsert, pos, count, os);
+    SAFE_POINT_OP(os, );
+
+    MaModificationInfo mi;
+    mi.rowListChanged = false;
+    mi.modifiedRowIds = rowIdsToInsert;
+    updateCachedMultipleAlignment(mi);
+}
+
+int MultipleSequenceAlignmentObject::deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", 0);
+
+    const int removingGapColumnCount = getMaxWidthOfGapRegion(os, rows, pos, maxGaps);
+    SAFE_POINT_OP(os, 0);
+    if (0 == removingGapColumnCount) {
+        return 0;
+    } else if (removingGapColumnCount < maxGaps) {
+        pos += maxGaps - removingGapColumnCount;
+    }
+    QList<qint64> modifiedRowIds;
+    modifiedRowIds.reserve(rows.length);
+
+    MultipleSequenceAlignment msa = getMsa()->getExplicitCopy();
+    // iterate through given rows to update each of them in DB
+    for (int rowCount = rows.startPos; rowCount < rows.endPos(); ++rowCount) {
+        msa->removeChars(rowCount, pos, removingGapColumnCount, os);
+        CHECK_OP(os, 0);
+
+        const MultipleSequenceAlignmentRow row = msa->getMsaRow(rowCount);
+        MsaDbiUtils::updateRowGapModel(entityRef, row->getRowId(), row->getGapModel(), os);
+        CHECK_OP(os, 0);
+        modifiedRowIds << row->getRowId();
+    }
+    if (rows.startPos == 0 && rows.length == getNumRows()) {
+        // delete columns
+        MsaDbiUtils::updateMsaLength(entityRef, getLength() - removingGapColumnCount, os);
+        CHECK_OP(os, 0);
+    }
+
+    MaModificationInfo mi;
+    mi.rowListChanged = false;
+    mi.modifiedRowIds = modifiedRowIds;
+    updateCachedMultipleAlignment(mi);
+    return removingGapColumnCount;
+}
+
+void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus &os, const U2MsaMapGapModel &rowsGapModel) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+
+    const MultipleSequenceAlignment msa = getMsa();
+
+    const QList<qint64> rowIds = msa->getRowsIds();
+    QList<qint64> modifiedRowIds;
+    foreach (qint64 rowId, rowsGapModel.keys()) {
+        if (!rowIds.contains(rowId)) {
+            os.setError("Can't update gaps of a multiple alignment");
+            return;
+        }
+
+        MsaDbiUtils::updateRowGapModel(entityRef, rowId, rowsGapModel.value(rowId), os);
+        CHECK_OP(os, );
+        modifiedRowIds.append(rowId);
+    }
+
+    MaModificationInfo mi;
+    mi.rowListChanged = false;
+    updateCachedMultipleAlignment(mi);
+}
+
+void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows) {
+    const QList<MultipleSequenceAlignmentRow> oldRows = getMsa()->getMsaRows();
+
+    SAFE_POINT(oldRows.count() == sourceRows.count(), "Different rows count", );
+
+    U2MsaMapGapModel newGapModel;
+    QList<MultipleSequenceAlignmentRow>::ConstIterator oldRowsIterator = oldRows.begin();
+    QList<MultipleSequenceAlignmentRow>::ConstIterator sourceRowsIterator = sourceRows.begin();
+    for (; oldRowsIterator != oldRows.end(); oldRowsIterator++, sourceRowsIterator++) {
+        newGapModel[(*oldRowsIterator)->getRowId()] = (*sourceRowsIterator)->getGapModel();
+    }
+
+    U2OpStatus2Log os;
+    updateGapModel(os, newGapModel);
+}
+
+U2MsaMapGapModel MultipleSequenceAlignmentObject::getGapModel() const {
+    U2MsaMapGapModel rowsGapModel;
+    foreach (const MultipleSequenceAlignmentRow &curRow, getMsa()->getMsaRows()) {
+        rowsGapModel[curRow->getRowId()] = curRow->getGapModel();
+    }
+    return rowsGapModel;
+}
+
+namespace {
+
+template<typename T>
+inline QList<T> mergeLists(const QList<T> &first, const QList<T> &second) {
+    QList<T> result = first;
+    foreach (const T &item, second) {
+        if (!result.contains(item)) {
+            result.append(item);
+        }
+    }
+    return result;
+}
+
+QList<qint64> getRowsAffectedByDeletion(const MultipleSequenceAlignment &ma, const QList<qint64> &removedRowIds) {
+    QList<qint64> rowIdsAffectedByDeletion;
+    U2OpStatus2Log os;
+    const QList<qint64> maRows = ma->getRowsIds();
+    int previousRemovedRowIndex = -1;
+    foreach (qint64 removedRowId, removedRowIds) {
+        if (-1 != previousRemovedRowIndex) {
+            const int currentRemovedRowIndex = ma->getRowIndexByRowId(removedRowId, os);
+            SAFE_POINT_OP(os, QList<qint64>());
+            SAFE_POINT(currentRemovedRowIndex > previousRemovedRowIndex, "Rows order violation", QList<qint64>());
+            const int countOfUnchangedRowsBetween = currentRemovedRowIndex - previousRemovedRowIndex - 1;
+            if (0 < countOfUnchangedRowsBetween) {
+                for (int middleRowIndex = previousRemovedRowIndex + 1; middleRowIndex < currentRemovedRowIndex; ++middleRowIndex) {
+                    rowIdsAffectedByDeletion += maRows[middleRowIndex];
+                }
+            }
+        }
+        previousRemovedRowIndex = ma->getRowIndexByRowId(removedRowId, os);
+        SAFE_POINT_OP(os, QList<qint64>());
+    }
+    const int lastDeletedRowIndex = ma->getRowIndexByRowId(removedRowIds.last(), os);
+    SAFE_POINT_OP(os, QList<qint64>());
+    if (lastDeletedRowIndex < maRows.size() - 1) { // if the last removed row was not in the bottom of the msa
+        rowIdsAffectedByDeletion += maRows.mid(lastDeletedRowIndex + 1);
+    }
+    return rowIdsAffectedByDeletion;
+}
+
+}
+
+void MultipleSequenceAlignmentObject::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+
+    QList<qint64> modifiedRowIds;
+    const MultipleSequenceAlignment &ma = getMultipleAlignment();
+    const QList<MultipleSequenceAlignmentRow> &maRows = ma->getMsaRows();
+    SAFE_POINT(nRows > 0 && startRow >= 0 && startRow + nRows <= maRows.size() && startPos + nBases <= ma->getLength(), "Invalid parameters", );
+    QList<MultipleSequenceAlignmentRow>::ConstIterator it = maRows.begin() + startRow;
+    QList<MultipleSequenceAlignmentRow>::ConstIterator end = it + nRows;
+    for (; it != end; it++) {
+        modifiedRowIds << (*it)->getRowId();
+    }
+
+    U2OpStatus2Log os;
+    MsaDbiUtils::removeRegion(entityRef, modifiedRowIds, startPos, nBases, os);
+    SAFE_POINT_OP(os, );
+
+    QList<qint64> removedRows;
+    if (removeEmptyRows) {
+        removedRows = MsaDbiUtils::removeEmptyRows(entityRef, modifiedRowIds, os);
+        SAFE_POINT_OP(os, );
+        if (!removedRows.isEmpty()) { // suppose that if at least one row in msa was removed then
+            // all the rows below it were changed
+            const QList<qint64> rowIdsAffectedByDeletion = getRowsAffectedByDeletion(ma, removedRows);
+            foreach (qint64 removedRowId, removedRows) { // removed rows ain't need to be update
+                modifiedRowIds.removeAll(removedRowId);
+            }
+            modifiedRowIds = mergeLists(modifiedRowIds, rowIdsAffectedByDeletion);
+        }
+    }
+
+    if (track || !removedRows.isEmpty()) {
+        MaModificationInfo mi;
+        mi.modifiedRowIds = modifiedRowIds;
+        updateCachedMultipleAlignment(mi, removedRows);
+    }
+
+    if (!removedRows.isEmpty()) {
+        emit si_rowsRemoved(removedRows);
+    }
+}
+
+void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QString> &rowNames) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    const MultipleSequenceAlignment &ma = getMultipleAlignment();
+
+    QList<qint64> rowIds;
+    for (int i = 0; i < ma->getNumRows(); ++i) {
+        QString rowName = ma->getRow(i)->getName();
+        if (rowNames.contains(rowName)) {
+            qint64 rowId = ma->getRow(i)->getRowId();
+            rowIds.append(rowId);
+        }
+    }
+
+    U2OpStatus2Log os;
+    MsaDbiUtils::crop(entityRef, rowIds, window.startPos, window.length, os);
+    SAFE_POINT_OP(os, );
+
+    updateCachedMultipleAlignment();
+}
+
+int MultipleSequenceAlignmentObject::shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", 0);
+    SAFE_POINT(!isRegionEmpty(startPos, startRow, nBases, nRows), "Region is empty", 0);
+    SAFE_POINT(0 <= startPos && 0 <= startRow && 0 < nBases && 0 < nRows, "Invalid parameters of selected region encountered", 0);
+    U2OpStatusImpl os;
+
+    int n = 0;
+    if (shift > 0) {
+        // if some trailing gaps are selected --> save them!
+        if (startPos + nBases + shift > getLength()) {
+            bool increaseAlignmentLen = true;
+            for (int i = startRow; i < startRow + nRows; i++) {
+                int rowLen = getMsaRow(i)->getRowLengthWithoutTrailing();
+                if (rowLen >= startPos + nBases + shift) {
+                    increaseAlignmentLen = false;
+                    break;
+                }
+            }
+            if (increaseAlignmentLen) {
+                MsaDbiUtils::updateMsaLength(entityRef, startPos + nBases + shift, os);
+                SAFE_POINT_OP(os, 0);
+                updateCachedMultipleAlignment();
+            }
+        }
+
+        insertGap(U2Region(startRow, nRows), startPos, shift);
+        n = shift;
+    } else if (0 < startPos) {
+        if (0 > startPos + shift) {
+            shift = -startPos;
+        }
+        n = -deleteGap(os, U2Region(startRow, nRows), startPos + shift, -shift);
+        SAFE_POINT_OP(os, 0);
+    }
+    return n;
+}
+
+void MultipleSequenceAlignmentObject::deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount) {
+    QList<qint64> colsForDelete = getColumnsWithGaps(requiredGapCount);
+    if (getLength() == colsForDelete.count()) {
+        return;
+    }
+
+    QList<U2Region> horizontalRegionsToDelete;
+    foreach (qint64 columnNumber, colsForDelete) {
+        bool columnMergedWithPrevious = false;
+        if (!horizontalRegionsToDelete.isEmpty()) {
+            U2Region &lastRegion = horizontalRegionsToDelete.last();
+            if (lastRegion.startPos == columnNumber + 1) {
+                --lastRegion.startPos;
+                ++lastRegion.length;
+                columnMergedWithPrevious = true;
+            } else if (lastRegion.endPos() == columnNumber) {
+                ++lastRegion.length;
+                columnMergedWithPrevious = true;
+            }
+        }
+
+        if (!columnMergedWithPrevious) {
+            horizontalRegionsToDelete.append(U2Region(columnNumber, 1));
+        }
+    }
+
+    QList<U2Region>::const_iterator columns = horizontalRegionsToDelete.constBegin();
+    const QList<U2Region>::const_iterator end = horizontalRegionsToDelete.constEnd();
+
+    for (int counter = 0; columns != end; ++columns, counter++) {
+        removeRegion((*columns).startPos, 0, (*columns).length, getNumRows(), true, (end - 1 == columns));
+        os.setProgress(100 * counter / horizontalRegionsToDelete.size());
+    }
+    updateCachedMultipleAlignment();
+}
+
+void MultipleSequenceAlignmentObject::deleteColumnWithGaps(int requiredGapCount) {
+    U2OpStatusImpl os;
+    deleteColumnWithGaps(os, requiredGapCount);
+    SAFE_POINT_OP(os, );
+}
+
+QList<qint64> MultipleSequenceAlignmentObject::getColumnsWithGaps(int requiredGapCount) const {
+    const MultipleSequenceAlignment &ma = getMultipleAlignment();
+    const int length = ma->getLength();
+    if (GAP_COLUMN_ONLY == requiredGapCount) {
+        requiredGapCount = ma->getNumRows();
+    }
+    QList<qint64> colsForDelete;
+    for (int i = 0; i < length; i++) { //columns
+        int gapCount = 0;
+        for (int j = 0; j < ma->getNumRows(); j++) { //sequences
+            if (ma->isGap(j, i)) {
+                gapCount++;
+            }
+        }
+
+        if (gapCount >= requiredGapCount) {
+            colsForDelete.prepend(i); //invert order
+        }
+    }
+    return colsForDelete;
+}
+
 void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
     const MultipleSequenceAlignment msa = getMsa();
     SAFE_POINT(rowIdx >= 0 && rowIdx < msa->getNumRows(), "Invalid row index", );
-    qint64 rowId = msa->getRow(rowIdx)->getRowDbInfo().rowId;
+    qint64 rowId = msa->getRow(rowIdx)->getRowId();
 
     MsaDbiUtils::updateRowContent(entityRef, rowId, seqBytes, gapModel, os);
     CHECK_OP(os, );
@@ -148,9 +474,64 @@ void MultipleSequenceAlignmentObject::updateCachedRows(U2OpStatus &os, const QLi
     }
 }
 
-void MultipleSequenceAlignmentObject::updateDatabase(U2OpStatus &os, const MultipleSequenceAlignment &ma) {
+void MultipleSequenceAlignmentObject::updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) {
     const MultipleSequenceAlignment msa = ma.dynamicCast<MultipleSequenceAlignment>();
     MsaDbiUtils::updateMsa(entityRef, msa, os);
+}
+
+int MultipleSequenceAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps) {
+    const MultipleSequenceAlignment &ma = getMsa();
+    SAFE_POINT_EXT(U2Region(0, ma->getNumRows()).contains(rows) && 0 <= pos && 0 <= maxGaps && ma->getLength() > pos,
+                   os.setError("Illegal parameters of the gap region"), 0);
+
+    const int maxRemovedGaps = qBound(0, maxGaps, ma->getLength() - pos);
+    // check if there is nothing to remove
+    if (0 == maxRemovedGaps) {
+        return 0;
+    }
+
+    int removingGapColumnCount = maxRemovedGaps;
+    bool isRegionInRowTrailingGaps = true;
+    // iterate through given rows to determine the width of the continuous gap region
+    for (int rowCount = rows.startPos; rowCount < rows.endPos(); ++rowCount) {
+        int gapCountInCurrentRow = 0;
+        // iterate through current row bases to determine gap count
+        while (gapCountInCurrentRow < maxRemovedGaps) {
+            if (!ma->isGap(rowCount, pos + maxGaps - gapCountInCurrentRow - 1)) {
+                break;
+            }
+            gapCountInCurrentRow++;
+        }
+
+        // determine if the given area intersects a row in the area of trailing gaps
+        if (0 != gapCountInCurrentRow && isRegionInRowTrailingGaps) {
+            int trailingPosition = pos + maxRemovedGaps - gapCountInCurrentRow;
+            if (ma->getLength() != trailingPosition) {
+                while (ma->getLength() > trailingPosition && isRegionInRowTrailingGaps) {
+                    isRegionInRowTrailingGaps &= ma->isGap(rowCount, trailingPosition);
+                    ++trailingPosition;
+                }
+            }
+        } else if (isRegionInRowTrailingGaps) {
+            isRegionInRowTrailingGaps = false;
+        }
+
+        if (0 == gapCountInCurrentRow) {
+            // don't do anything if there is a row without gaps
+            return 0;
+        }
+        removingGapColumnCount = qMin(removingGapColumnCount, gapCountInCurrentRow);
+    }
+
+    if (isRegionInRowTrailingGaps) {
+        if (rows.length == getNumRows() && rows.startPos == 0) {
+            return qMin(getLength() - pos, (qint64)maxGaps);
+        } else {
+            return 0;
+        }
+    }
+
+    return removingGapColumnCount;
 }
 
 }   // namespace U2
