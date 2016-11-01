@@ -83,19 +83,19 @@ void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus &os, const
     MultipleChromatogramAlignment cachedMca = cachedMa.dynamicCast<MultipleChromatogramAlignment>();
 
     MultipleChromatogramAlignmentExporter mcaExporter;
-    QList<McaRowMemoryData> mcaRowsMemoryData = mcaExporter.getMcaRowMemoryData(os, entityRef.dbiRef, entityRef.entityId, rowIds);
+    QMap<qint64, McaRowMemoryData> mcaRowsMemoryData = mcaExporter.getMcaRowMemoryData(os, entityRef.dbiRef, entityRef.entityId, rowIds);
     SAFE_POINT_OP(os, );
-    foreach (const McaRowMemoryData &mcaRowMemoryData, mcaRowsMemoryData) {
-//        const int rowIndex = cachedMca->getRowIndexByRowId(dataMcaRowMemoryData.row.rowId, os);
-//        SAFE_POINT_OP(os, );
-//        cachedMca->setRowContent(rowIndex, mcaRowMemoryData);
-//        cachedMca->renameRow(rowIndex, mcaRowMemoryData.editedSequence.getName());
+    foreach (const qint64 rowId, mcaRowsMemoryData.keys()) {
+        const int rowIndex = cachedMca->getRowIndexByRowId(rowId, os);
+        SAFE_POINT_OP(os, );
+        cachedMca->setRowContent(rowIndex, mcaRowsMemoryData[rowId]);
+        cachedMca->renameRow(rowIndex, mcaRowsMemoryData[rowId].editedSequence.getName());
     }
 }
 
 void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) {
     const MultipleChromatogramAlignment mca = ma.dynamicCast<MultipleChromatogramAlignment>();
-    MsaDbiUtils::updateMsa(entityRef, mca, os);
+    MsaDbiUtils::updateMca(os, entityRef, mca);
 }
 
 }   // namespace U2

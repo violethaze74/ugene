@@ -75,19 +75,24 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignmen
     return mca;
 }
 
-QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowMemoryData(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const {
-    SAFE_POINT_EXT(!connection.isOpen(), os.setError("Connection is already opened"), QList<McaRowMemoryData>());
+QMap<qint64, McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowMemoryData(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const {
+    QMap<qint64, McaRowMemoryData> result;
+    SAFE_POINT_EXT(!connection.isOpen(), os.setError("Connection is already opened"), result);
     connection.open(dbiRef, false, os);
-    CHECK_OP(os, QList<McaRowMemoryData>());
+    CHECK_OP(os, result);
 
     QList<U2McaRow> rows = exportRows(os, mcaId, rowIds);
-    CHECK_OP(os, QList<McaRowMemoryData>());
+    CHECK_OP(os, result);
 
     QList<McaRowMemoryData> rowsData = exportDataOfRows(os, rows);
-    CHECK_OP(os, QList<McaRowMemoryData>());
-    SAFE_POINT_EXT(rows.count() == rowsData.count(), os.setError("Different number of rows and sequences"), QList<McaRowMemoryData>());
+    CHECK_OP(os, result);
+    SAFE_POINT_EXT(rows.count() == rowsData.count(), os.setError("Different number of rows and sequences"), result);
 
-    return rowsData;
+    for (int i = 0; i < rows.size(); i++) {
+        result.insert(rows[i].rowId, rowsData[i]);
+    }
+
+    return result;
 }
 
 QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os, const U2DataId &mcaId) const {

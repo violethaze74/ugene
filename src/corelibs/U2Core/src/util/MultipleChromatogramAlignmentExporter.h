@@ -32,7 +32,7 @@ namespace U2 {
 class U2CORE_EXPORT MultipleChromatogramAlignmentExporter {
 public:
     MultipleChromatogramAlignment getAlignment(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId) const;
-    QList<McaRowMemoryData> getMcaRowMemoryData(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const;
+    QMap<qint64, McaRowMemoryData> getMcaRowMemoryData(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const;
 
 private:
     QList<U2McaRow> exportRows(U2OpStatus &os, const U2DataId &mcaId) const;
