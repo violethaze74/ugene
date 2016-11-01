@@ -225,7 +225,7 @@ private:
     void createMcaRow(const U2DataId &mcaId, qint64 posInMca, U2McaRow &mcaRow, U2OpStatus &os);
 
     /** Adds a new gap for a MCA row into database. */
-    void createMcaRowGap(const U2DataId &mcaId, qint64 mcaRowId, qint64 relatedObjectId, const U2MsaGap &mcaGap, U2OpStatus &os);
+    void createMcaRowGap(const U2DataId &mcaId, qint64 mcaRowId, const U2DataId &relatedObjectId, const U2MsaGap &mcaGap, U2OpStatus &os);
 
     /** Removes records from McaRow and McaRowGap tables for the row. */
     void removeMcaRowAndGaps(const U2DataId &mcaId, qint64 rowId, bool removeChilds, U2OpStatus &os);
@@ -266,7 +266,7 @@ private:
 
     ///////////////////////////////////////////////////////////
     // Core methods
-    void updateGapModelCore(const U2DataId &mcaId, qint64 mcaRowId, qint64 relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
+    void updateGapModelCore(const U2DataId &mcaId, qint64 mcaRowId, const U2DataId &relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
     void addRowSubcore(const U2DataId &mcaId, qint64 numOfRows, const QList<qint64> &rowsOrder, U2OpStatus &os);
     void addRowCore(const U2DataId &mcaId, qint64 posInMca, U2McaRow &row, U2OpStatus &os);
     void addRowsCore(const U2DataId &mcaId, const QList<qint64> &posInMca, QList<U2McaRow> &rows, U2OpStatus &os);
@@ -305,7 +305,7 @@ private:
     ///////////////////////////////////////////////////////////
     // Methods included into a multi-action
     void updateRowInfo(ModificationAction &updateAction, const U2DataId &mcaId, const U2McaRow &row, U2OpStatus &os);
-    void updateGapModel(ModificationAction &updateAction, const U2DataId &mcaId, qint64 mcaRowId, qint64 relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
+    void updateGapModel(ModificationAction &updateAction, const U2DataId &mcaId, qint64 mcaRowId, const U2DataId &relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
     void updateMcaLength(ModificationAction &updateAction, const U2DataId &mcaId, qint64 length, U2OpStatus &os);
 };
 

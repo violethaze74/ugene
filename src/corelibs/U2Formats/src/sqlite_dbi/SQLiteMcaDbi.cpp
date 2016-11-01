@@ -552,6 +552,7 @@ void SQLiteMcaDbi::updateRowContent(const U2DataId &mcaId,
 
     QVariantMap hints;
     // Update the chromatogram data
+    // TODO: make chromatogram updating be undoable
     const QByteArray serializedChromatogram = DNAChromatogramSerializer::serialize(chromatogram);
     RawDataUdrSchema::writeContent(serializedChromatogram, U2EntityRef(dbi->getDbiRef(), row.chromatogramId), os);
     SAFE_POINT_OP(os, );
@@ -576,9 +577,9 @@ void SQLiteMcaDbi::updateRowContent(const U2DataId &mcaId,
 
     // Update the gap models
     // WARNING: this update must go after the row info update to recalculate the mca length properly
-    updateGapModel(updateAction, mcaId, rowId, U2DbiUtils::toDbiId(row.predictedSequenceId), predictedSequenceGapModel, os);
+    updateGapModel(updateAction, mcaId, rowId, row.predictedSequenceId, predictedSequenceGapModel, os);
     SAFE_POINT_OP(os, );
-    updateGapModel(updateAction, mcaId, rowId, U2DbiUtils::toDbiId(row.sequenceId), editedSequenceGapModel, os);
+    updateGapModel(updateAction, mcaId, rowId, row.sequenceId, editedSequenceGapModel, os);
     SAFE_POINT_OP(os, );
 
     // Save tracks, if required; increment versions
@@ -759,15 +760,13 @@ void SQLiteMcaDbi::addMcaRowAndGaps(const U2DataId &mcaId, qint64 posInMca, U2Mc
     createMcaRow(mcaId, posInMca, row, os);
     CHECK_OP(os, );
 
-    const qint64 predictedSequenceDbiId = U2DbiUtils::toDbiId(row.predictedSequenceId);
     foreach (const U2MsaGap& gap, row.predictedSequenceGaps) {
-        createMcaRowGap(mcaId, row.rowId, predictedSequenceDbiId, gap, os);
+        createMcaRowGap(mcaId, row.rowId, row.predictedSequenceId, gap, os);
         CHECK_OP(os, );
     }
 
-    const qint64 editedSequenceDbiId = U2DbiUtils::toDbiId(row.sequenceId);
     foreach (const U2MsaGap& gap, row.gaps) {
-        createMcaRowGap(mcaId, row.rowId, editedSequenceDbiId, gap, os);
+        createMcaRowGap(mcaId, row.rowId, row.sequenceId, gap, os);
         CHECK_OP(os, );
     }
 
@@ -797,7 +796,7 @@ void SQLiteMcaDbi::createMcaRow(const U2DataId &mcaId, qint64 posInMca, U2McaRow
     query.insert();
 }
 
-void SQLiteMcaDbi::createMcaRowGap(const U2DataId &mcaId, qint64 mcaRowId, qint64 relatedObjectId, const U2MsaGap &mcaGap, U2OpStatus &os) {
+void SQLiteMcaDbi::createMcaRowGap(const U2DataId &mcaId, qint64 mcaRowId, const U2DataId &relatedObjectId, const U2MsaGap &mcaGap, U2OpStatus &os) {
     // TODO: signature was changed, fix method calls
     SQLiteTransaction t(db, os);
 
@@ -807,7 +806,7 @@ void SQLiteMcaDbi::createMcaRowGap(const U2DataId &mcaId, qint64 mcaRowId, qint6
 
     query->bindDataId(1, mcaId);
     query->bindInt64(2, mcaRowId);
-    query->bindInt64(3, relatedObjectId);
+    query->bindInt64(3, U2DbiUtils::toDbiId(relatedObjectId));
     query->bindInt64(4, mcaGap.offset);
     query->bindInt64(5, mcaGap.offset + mcaGap.gap);
     query->insert();
@@ -1002,7 +1001,7 @@ qint64 SQLiteMcaDbi::getMaximumRowId(const U2DataId &mcaId, U2OpStatus &os) {
     return maxRowId;
 }
 
-void SQLiteMcaDbi::updateGapModelCore(const U2DataId &mcaId, qint64 mcaRowId, qint64 relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os) {
+void SQLiteMcaDbi::updateGapModelCore(const U2DataId &mcaId, qint64 mcaRowId, const U2DataId &relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os) {
     // TODO: signature was changed, update method calls
     SQLiteTransaction t(db, os);
     Q_UNUSED(t);
@@ -1254,7 +1253,7 @@ void SQLiteMcaDbi::undoRemoveRow(const U2DataId &mcaId, const QByteArray &modDet
 
 void SQLiteMcaDbi::undoUpdateGapModel(const U2DataId &mcaId, const QByteArray &modDetails, U2OpStatus &os) {
     qint64 rowId = 0;
-    qint64 relatedObjectId = 0;
+    U2DataId relatedObjectId;
     QList<U2MsaGap> oldGaps;
     QList<U2MsaGap> newGaps;
     bool ok = PackUtils::unpackGapDetails(modDetails, rowId, relatedObjectId, oldGaps, newGaps);
@@ -1373,7 +1372,7 @@ void SQLiteMcaDbi::redoRemoveRow(const U2DataId &mcaId, const QByteArray &modDet
 
 void SQLiteMcaDbi::redoUpdateGapModel(const U2DataId &mcaId, const QByteArray &modDetails, U2OpStatus &os) {
     qint64 rowId = U2McaRow::INVALID_ROW_ID;
-    qint64 relatedObjectId = -1;
+    U2DataId relatedObjectId;
     U2MsaRowGapModel oldGaps;
     U2MsaRowGapModel newGaps;
     bool ok = PackUtils::unpackGapDetails(modDetails, rowId, relatedObjectId, oldGaps, newGaps);
@@ -1442,7 +1441,7 @@ void SQLiteMcaDbi::updateRowInfo(ModificationAction &updateAction, const U2DataI
     SAFE_POINT_OP(os, );
 }
 
-void SQLiteMcaDbi::updateGapModel(ModificationAction &updateAction, const U2DataId &mcaId, qint64 mcaRowId, qint64 relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os) {
+void SQLiteMcaDbi::updateGapModel(ModificationAction &updateAction, const U2DataId &mcaId, qint64 mcaRowId, const U2DataId &relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os) {
     // TODO: check the function
     QByteArray gapsDetails;
     if (TrackOnUpdate == updateAction.getTrackModType()) {
