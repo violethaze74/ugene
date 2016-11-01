@@ -22,7 +22,6 @@
 #include <U2Core/DbiConnection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
-#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -117,7 +116,7 @@ void MultipleAlignmentObject::setGObjectName(const QString &newName) {
 
     if (!isStateLocked()) {
         U2OpStatus2Log os;
-        MsaDbiUtils::renameMsa(entityRef, newName, os);
+        renameMaPrivate(os, entityRef, newName);
         CHECK_OP(os, );
 
         updateCachedMultipleAlignment();
@@ -155,7 +154,7 @@ void MultipleAlignmentObject::removeRow(int rowIdx) {
     qint64 rowId = ma->getRow(rowIdx)->getRowId();
 
     U2OpStatus2Log os;
-    MsaDbiUtils::removeRow(entityRef, rowId, os);
+    removeRowPrivate(os, entityRef, rowId);
     SAFE_POINT_OP(os, );
 
     MaModificationInfo mi;
@@ -176,7 +175,7 @@ void MultipleAlignmentObject::renameRow(int rowIdx, const QString &newName) {
     qint64 rowId = ma->getRow(rowIdx)->getRowId();
 
     U2OpStatus2Log os;
-    MsaDbiUtils::renameRow(entityRef, rowId, newName, os);
+    renameRowPrivate(os, entityRef, rowId, newName);
     SAFE_POINT_OP(os, );
 
     MaModificationInfo mi;
@@ -195,7 +194,7 @@ void MultipleAlignmentObject::moveRowsBlock(int firstRow, int numRows, int shift
     }
 
     U2OpStatusImpl os;
-    MsaDbiUtils::moveRows(entityRef, rowsToMove, shift, os);
+    moveRowsPrivate(os, entityRef, rowsToMove, shift);
     CHECK_OP(os, );
 
     updateCachedMultipleAlignment();
@@ -204,7 +203,7 @@ void MultipleAlignmentObject::moveRowsBlock(int firstRow, int numRows, int shift
 void MultipleAlignmentObject::updateRowsOrder(U2OpStatus &os, const QList<qint64> &rowIds) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
 
-    MsaDbiUtils::updateRowsOrder(entityRef, rowIds, os);
+    updateRowsOrderPrivate(os, entityRef, rowIds);
     CHECK_OP(os, );
 
     MaModificationInfo mi;
@@ -222,7 +221,7 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
     U2OpStatus2Log os;
 
     if (mi.alignmentLengthChanged) {
-        qint64 msaLength = MsaDbiUtils::getMsaLength(entityRef, os);
+        qint64 msaLength = getMaLengthPrivate(os, entityRef);
         SAFE_POINT_OP(os, );
         if (msaLength != cachedMa->getLength()) {
             cachedMa->setLength(msaLength);
@@ -230,7 +229,7 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
     }
 
     if (mi.alphabetChanged) {
-        U2AlphabetId alphabet = MsaDbiUtils::getMsaAlphabet(entityRef, os);
+        U2AlphabetId alphabet = getMaAlphabetPrivate(os, entityRef);
         SAFE_POINT_OP(os, );
         if (alphabet.id != cachedMa->getAlphabet()->getId() && !alphabet.id.isEmpty()) {
             const DNAAlphabet *newAlphabet = U2AlphabetUtils::getById(alphabet);
@@ -286,7 +285,7 @@ void MultipleAlignmentObject::sortRowsByList(const QStringList &order) {
     CHECK(ma->getRowsIds() != cachedMa->getRowsIds(), );
 
     U2OpStatusImpl os;
-    MsaDbiUtils::updateRowsOrder(entityRef, ma->getRowsIds(), os);
+    updateRowsOrderPrivate(os, entityRef, ma->getRowsIds());
     SAFE_POINT_OP(os, );
 
     MaModificationInfo mi;

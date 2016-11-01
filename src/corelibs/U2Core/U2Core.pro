@@ -256,7 +256,8 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
     src/util/MultipleChromatogramAlignmentExporter.h \
     src/util/McaRowInnerData.h \
     src/datatype/msa/MultipleAlignmentInfo.h \
-    src/datatype/msa/MaStateCheck.h
+    src/datatype/msa/MaStateCheck.h \
+    src/util/McaDbiUtils.h
 
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
@@ -473,7 +474,8 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
     src/datatype/U2Mca.cpp \
     src/util/McaRowInnerData.cpp \
     src/datatype/msa/MultipleAlignmentInfo.cpp \
-    src/datatype/msa/MaStateCheck.cpp
+    src/datatype/msa/MaStateCheck.cpp \
+    src/util/McaDbiUtils.cpp
 
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

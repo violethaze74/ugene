@@ -105,6 +105,14 @@ private:
     void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
     void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma);
 
+    void renameMaPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QString &newName);
+    void removeRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId);
+    void renameRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId, const QString &newName);
+    void moveRowsPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QList<qint64> &rowsToMove, int delta);
+    void updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QList<qint64> &rowsOrder);
+    qint64 getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &msaRef);
+    U2AlphabetId getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &msaRef);
+
     /**
      * Returns maximum count of subsequent gap columns in the region that starts from column
      * with @pos number, has width of @maxGaps and includes the rows specified by @rows.

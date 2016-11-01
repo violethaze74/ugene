@@ -118,6 +118,14 @@ protected:
     virtual void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds) = 0;
     virtual void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) = 0;
 
+    virtual void renameMaPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QString &newName) = 0;
+    virtual void removeRowPrivate(U2OpStatus &os, const U2EntityRef &maRef, qint64 rowId) = 0;
+    virtual void renameRowPrivate(U2OpStatus &os, const U2EntityRef &maRef, qint64 rowId, const QString &newName) = 0;
+    virtual void moveRowsPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rowsToMove, int delta) = 0;
+    virtual void updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rowsOrder) = 0;
+    virtual qint64 getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &msaRef) = 0;
+    virtual U2AlphabetId getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &maRef) = 0;
+
     MultipleAlignment cachedMa;
 
     static const int GAP_COLUMN_ONLY;

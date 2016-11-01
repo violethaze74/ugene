@@ -479,6 +479,34 @@ void MultipleSequenceAlignmentObject::updateDatabase(U2OpStatus &os, const Multi
     MsaDbiUtils::updateMsa(entityRef, msa, os);
 }
 
+void MultipleSequenceAlignmentObject::renameMaPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QString &newName) {
+    MsaDbiUtils::renameMsa(msaRef, newName, os);
+}
+
+void MultipleSequenceAlignmentObject::removeRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId) {
+    MsaDbiUtils::removeRow(msaRef, rowId, os);
+}
+
+void MultipleSequenceAlignmentObject::renameRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId, const QString &newName) {
+    MsaDbiUtils::renameRow(msaRef, rowId, newName, os);
+}
+
+void MultipleSequenceAlignmentObject::moveRowsPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QList<qint64> &rowsToMove, int delta) {
+    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+}
+
+void MultipleSequenceAlignmentObject::updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QList<qint64> &rowsOrder) {
+    MsaDbiUtils::updateRowsOrder(msaRef, rowsOrder, os);
+}
+
+qint64 MultipleSequenceAlignmentObject::getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &msaRef) {
+    return MsaDbiUtils::getMsaLength(msaRef, os);
+}
+
+U2AlphabetId MultipleSequenceAlignmentObject::getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &msaRef) {
+    return MsaDbiUtils::getMsaAlphabet(msaRef, os);
+}
+
 int MultipleSequenceAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps) {
     const MultipleSequenceAlignment &ma = getMsa();
     SAFE_POINT_EXT(U2Region(0, ma->getNumRows()).contains(rows) && 0 <= pos && 0 <= maxGaps && ma->getLength() > pos,

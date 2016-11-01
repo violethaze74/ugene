@@ -23,7 +23,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectTypes.h>
-#include <U2Core/MsaDbiUtils.h>
+#include <U2Core/McaDbiUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentExporter.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
 #include <U2Core/U2DbiUtils.h>
@@ -95,7 +95,35 @@ void MultipleChromatogramAlignmentObject::updateCachedRows(U2OpStatus &os, const
 
 void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) {
     const MultipleChromatogramAlignment mca = ma.dynamicCast<MultipleChromatogramAlignment>();
-    MsaDbiUtils::updateMca(os, entityRef, mca);
+    McaDbiUtils::updateMca(os, entityRef, mca);
+}
+
+void MultipleChromatogramAlignmentObject::renameMaPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QString &newName) {
+    McaDbiUtils::renameMca(os, mcaRef, newName);
+}
+
+void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId) {
+    McaDbiUtils::removeRow(os, mcaRef, rowId);
+}
+
+void MultipleChromatogramAlignmentObject::renameRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId, const QString &newName) {
+    McaDbiUtils::renameRow(os, mcaRef, rowId, newName);
+}
+
+void MultipleChromatogramAlignmentObject::moveRowsPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsToMove, int delta) {
+    McaDbiUtils::moveRows(os, mcaRef, rowsToMove, delta);
+}
+
+void MultipleChromatogramAlignmentObject::updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsOrder) {
+    McaDbiUtils::updateRowsOrder(os, mcaRef, rowsOrder);
+}
+
+qint64 MultipleChromatogramAlignmentObject::getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &mcaRef) {
+    return McaDbiUtils::getMcaLength(os, mcaRef);
+}
+
+U2AlphabetId MultipleChromatogramAlignmentObject::getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &mcaRef) {
+    return McaDbiUtils::getMcaAlphabet(os, mcaRef);
 }
 
 }   // namespace U2

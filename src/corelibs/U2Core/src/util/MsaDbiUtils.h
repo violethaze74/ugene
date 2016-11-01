@@ -44,7 +44,6 @@ public:
      * 3) Updates rows positions
      */
     static void updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAlignment& al, U2OpStatus& os);
-    static void updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const MultipleChromatogramAlignment &mca);
 
     /**
     * Get the length of the alignment in the database.

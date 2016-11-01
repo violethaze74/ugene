@@ -56,6 +56,14 @@ private:
     void loadAlignment(U2OpStatus &os);
     void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
     void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma);
+
+    void renameMaPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QString &newName);
+    void removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
+    void renameRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId, const QString &newName);
+    void moveRowsPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsToMove, int delta);
+    void updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsOrder);
+    qint64 getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &mcaRef);
+    U2AlphabetId getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &mcaRef);
 };
 
 }   // namespace U2
