@@ -54,6 +54,7 @@ class MsaHighlightingSchemeRegistry;
 class MaModificationInfo;
 class MultipleSequenceAlignmentObject;
 class Settings;
+class SequenceAreaRenderer;
 
 class ModificationType {
 public:
@@ -150,6 +151,7 @@ private:
 class U2VIEW_EXPORT MSAEditorSequenceArea : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorSequenceArea)
+    friend class SequenceAreaRenderer;
 public:
     MSAEditorSequenceArea(MSAEditorUI* ui, GScrollBar* hb, GScrollBar* vb);
     ~MSAEditorSequenceArea();
@@ -469,6 +471,8 @@ private:
     GScrollBar*     shBar;
     GScrollBar*     svBar;
     QRubberBand*    rubberBand;
+
+    SequenceAreaRenderer*   renderer;
 
     int             startPos; //first visible x pos
     int             startSeq; //first visible y pos

@@ -120,6 +120,7 @@ class U2VIEW_EXPORT MSAEditor : public GObjectView {
 
     friend class OpenSavedMSAEditorTask;
     friend class MSAEditorTreeViewerUI;
+    friend class SequenceAreaRenderer;
 
 public:
     MSAEditor(const QString& viewName, GObject* obj);

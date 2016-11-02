@@ -84,6 +84,8 @@
 #include "MSAEditorNameList.h"
 #include "MSAEditorSequenceArea.h"
 
+#include "ChromView/SequenceAreaRenderer.h"
+
 namespace U2 {
 
 #define SETTINGS_ROOT QString("msaeditor/")
@@ -96,13 +98,22 @@ namespace U2 {
 #define SETTINGS_COPY_FORMATTED "copyformatted"
 
 MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, GScrollBar* vb)
-    : editor(_ui->editor), ui(_ui), shBar(hb), svBar(vb), editModeAnimationTimer(this), prevPressedButton(Qt::NoButton),
-    msaVersionBeforeShifting(-1), useDotsAction(NULL), colorScheme(NULL), highlightingScheme(NULL), changeTracker(editor->getMSAObject()->getEntityRef())
+    : editor(_ui->editor),
+      ui(_ui),
+      shBar(hb),
+      svBar(vb),
+      editModeAnimationTimer(this), prevPressedButton(Qt::NoButton),
+      msaVersionBeforeShifting(-1),
+      useDotsAction(NULL),
+      colorScheme(NULL),
+      highlightingScheme(NULL),
+      changeTracker(editor->getMSAObject()->getEntityRef())
 {
     setObjectName("msa_editor_sequence_area");
     setFocusPolicy(Qt::WheelFocus);
 
     cachedView = new QPixmap();
+    renderer = new SequenceAreaRenderer(this);
 
     completeRedraw = true;
     selectionColor = Qt::black;
@@ -663,79 +674,18 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const QRect &area) {
         }
     }
     p.fillRect(cachedView->rect(), Qt::white);
-    bool ok = drawContent(p, U2Region(area.x(), area.width()), seqIdx);
+    bool ok = renderer->drawContent(p, U2Region(area.x(), area.width()), seqIdx);
     emit si_visibleRangeChanged();
 
     return ok;
 }
 
 bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, const QList<qint64> &seqIdx) {
-    CHECK(!region.isEmpty(), false);
-    CHECK(!seqIdx.isEmpty(), false);
-
-    p.fillRect(QRect(0, 0, editor->getColumnWidth() * region.length,
-                      editor->getRowHeight() * seqIdx.size()),
-               Qt::white);
-    p.setPen(Qt::black);
-    p.setFont(editor->getFont());
-
-    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
-    SAFE_POINT(maObj != NULL, tr("Alignment object is NULL"), false);
-    const MultipleSequenceAlignment msa = maObj->getMsa();
-
-    U2OpStatusImpl os;
-    const int refSeq = msa->getRowIndexByRowId(editor->getReferenceRowId(), os);
-    QString refSeqName = editor->getReferenceRowName();
-    MultipleSequenceAlignmentRow row;
-    if (U2MsaRow::INVALID_ROW_ID != refSeq) {
-        row = msa->getRow(refSeq);
-    }
-
-    //Use dots to draw regions, which are similar to reference sequence
-    highlightingScheme->setUseDots(useDotsAction->isChecked());
-    //Highlighting scheme's settings
-    QString schemeName = highlightingScheme->metaObject()->className();
-    bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
-
-    U2Region baseYRange = U2Region(0, editor->getSequenceRowHeight());
-    int columnWidth = editor->getColumnWidth();
-
-    bool isResizeMode = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
-    for (qint64 iSeq = 0; iSeq < seqIdx.size(); iSeq++) {
-        qint64 seq = seqIdx[iSeq];
-        qint64 regionEnd = region.endPos() - (int)(region.endPos() == editor->getAlignmentLen());
-        for (int pos = region.startPos; pos <= regionEnd; pos++) {
-            U2Region baseXRange = U2Region(columnWidth * (pos - region.startPos), columnWidth);
-            QRect cr(baseXRange.startPos, baseYRange.startPos, baseXRange.length + 1, baseYRange.length);
-            char c = msa->charAt(seq, pos);
-
-            bool highlight = false;
-            QColor color = colorScheme->getColor(seq, pos, c);
-            if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
-                const char refChar = '\n';
-                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-            } else if (seq == refSeq || refSeqName.isEmpty()) {
-                highlight = true;
-            } else {
-                SAFE_POINT(NULL != row, "MSA row is NULL", false);
-                const char refChar = row->charAt(pos);
-                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-            }
-
-            if (color.isValid() && highlight) {
-                p.fillRect(cr, color);
-            }
-            if (isResizeMode) {
-                p.drawText(cr, Qt::AlignCenter, QString(c));
-            }
-            // SANGER_TODO: draw chromotogram below
-        }
-        baseYRange.startPos += editor->getRowHeight();
-    }
-
-    return true;
+    // SANGER_TODO: optimize
+    renderer->drawContent(p, region, seqIdx);
 }
 
+// SANGER_TODO: move to renderer
 void MSAEditorSequenceArea::drawSelection(QPainter &p) {
     int x = selection.x();
     int y = selection.y();
