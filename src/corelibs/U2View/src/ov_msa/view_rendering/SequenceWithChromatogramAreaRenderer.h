@@ -19,14 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_AREA_RENDERER_
-#define _U2_SEQUENCE_AREA_RENDERER_
+#ifndef _U2_SEQUENCE_WITH_CHROMATOGRAM_AREA_RENDERER_
+#define _U2_SEQUENCE_WITH_CHROMATOGRAM_AREA_RENDERER_
 
-#include <U2Core/DNAChromatogram.h>
-
-#include <U2View/MSAEditorSequenceArea.h>
-
-#include <QPen>
+#include "SequenceAreaRenderer.h"
 
 namespace U2 {
 
@@ -40,18 +36,32 @@ struct ChromatogramViewSettings {
     }
 };
 
-class SequenceAreaRenderer : public QObject {
+class SequenceWithChromatogramAreaRenderer : public SequenceAreaRenderer {
     Q_OBJECT
 public:
-    SequenceAreaRenderer(MSAEditorSequenceArea*  seqAreaWgt);
-
-    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
+    SequenceWithChromatogramAreaRenderer(MSAEditorSequenceArea* seqAreaWgt);
 
 private:
+    bool drawRow(QPainter &p, const MultipleSequenceAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
+
     void drawChromatogram(QPainter &p, DNAChromatogram &chroma, U2Region& visibleRange);
 
+    QColor getBaseColor(char base);
+
+    void drawChromatogramTrace(const DNAChromatogram& chroma,
+                               qreal x, qreal y, qreal w, qreal h, QPainter& p,
+                               const U2Region& visible /*, const ChromatogramViewSettings& settings*/);
+    void drawOriginalBaseCalls(const DNAChromatogram& chroma,
+                               qreal x, qreal y, qreal w, qreal h,
+                               QPainter& p, const U2Region& visible, const QByteArray& ba, bool is = true);
+    void drawQualityValues(const DNAChromatogram& chroma,
+                           qreal x, qreal y, qreal w, qreal h,
+                           QPainter& p, const U2Region& visible, const QByteArray& ba);
+    void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma,
+                                        qreal x, qreal y, qreal w, qreal h,
+                                        QPainter& p, const U2Region& visible, const QByteArray& ba/*, const ChromatogramViewSettings& settings*/);
+
 private:
-    MSAEditorSequenceArea*  seqAreaWgt;
     // SANGER_TODO: move to area-wgt - it should be controlled from there
     ChromatogramViewSettings    settings;
 
@@ -75,24 +85,8 @@ private:
     qreal           yBaseCallsOfEdited;
     qreal           wBaseCallsOfEdited;
     qreal           hBaseCallsOfEdited;
-
-    QColor getBaseColor(char base);
-
-    void drawChromatogramTrace(const DNAChromatogram& chroma,
-                               qreal x, qreal y, qreal w, qreal h, QPainter& p,
-                               const U2Region& visible /*, const ChromatogramViewSettings& settings*/);
-    void drawOriginalBaseCalls(const DNAChromatogram& chroma,
-                               qreal x, qreal y, qreal w, qreal h,
-                               QPainter& p, const U2Region& visible, const QByteArray& ba, bool is = true);
-    void drawQualityValues(const DNAChromatogram& chroma,
-                           qreal x, qreal y, qreal w, qreal h,
-                           QPainter& p, const U2Region& visible, const QByteArray& ba);
-    void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma,
-                                        qreal x, qreal y, qreal w, qreal h,
-                                        QPainter& p, const U2Region& visible, const QByteArray& ba/*, const ChromatogramViewSettings& settings*/);
 };
 
 } // namespace
 
-#endif // _U2_SEQUENCE_AREA_RENDERER_
-
+#endif // _U2_SEQUENCE_WITH_CHROMATOGRAM_AREA_RENDERER_

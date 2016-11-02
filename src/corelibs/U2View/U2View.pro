@@ -72,7 +72,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MSASelectSubalignmentDialog.h \
            src/ov_msa/MsaEditorUserModStepController.h \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h \
-           src/ov_msa/ChromView/SequenceAreaRenderer.h \
            src/ov_msa/Overview/MSAGraphCalculationTask.h \
            src/ov_msa/Overview/MSAGraphOverview.h \
            src/ov_msa/Overview/MSAOverview.h \
@@ -91,6 +90,8 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/SequenceSelectorWidgetController.h \
            src/ov_msa/TreeOptions/TreeOptionsWidget.h \
            src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.h \
+           src/ov_msa/view_rendering/SequenceAreaRenderer.h \
+           src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.h \
            src/ov_phyltree/CreateBranchesTask.h \
            src/ov_phyltree/CreateCircularBranchesTask.h \
            src/ov_phyltree/CreateRectangularBranchesTask.h \
@@ -294,7 +295,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/ExportConsensus/MSAExportConsensusTab.cpp \
            src/ov_msa/ExportConsensus/MSAExportConsensusTabFactory.cpp \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.cpp \
-           src/ov_msa/ChromView/SequenceAreaRenderer.cpp \
            src/ov_msa/Overview/MSAGraphCalculationTask.cpp \
            src/ov_msa/Overview/MSAGraphOverview.cpp \
            src/ov_msa/Overview/MSAOverview.cpp \
@@ -313,6 +313,8 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidget.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \
+           src/ov_msa/view_rendering/SequenceAreaRenderer.cpp \
+           src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.cpp \
            src/ov_phyltree/CreateCircularBranchesTask.cpp \
            src/ov_phyltree/CreateRectangularBranchesTask.cpp \
            src/ov_phyltree/CreateUnrootedBranchesTask.cpp \

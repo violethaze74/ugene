@@ -80,11 +80,12 @@
 #include "ColorSchemaSettingsController.h"
 #include "CreateSubalignmentDialogController.h"
 #include "Highlighting/MSAHighlightingTabFactory.h"
+#include "view_rendering/SequenceAreaRenderer.h"
+#include "view_rendering/SequenceWithChromatogramAreaRenderer.h" // SANGER_TODO: monitor unneccessary headers!
 #include "MSAEditor.h"
 #include "MSAEditorNameList.h"
 #include "MSAEditorSequenceArea.h"
 
-#include "ChromView/SequenceAreaRenderer.h"
 
 namespace U2 {
 
@@ -113,7 +114,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, G
     setFocusPolicy(Qt::WheelFocus);
 
     cachedView = new QPixmap();
-    renderer = new SequenceAreaRenderer(this);
+    renderer = new SequenceWithChromatogramAreaRenderer(this);
 
     completeRedraw = true;
     selectionColor = Qt::black;
@@ -682,7 +683,7 @@ bool MSAEditorSequenceArea::drawContent(QPainter &p, const QRect &area) {
 
 bool MSAEditorSequenceArea::drawContent(QPainter &p, const U2Region &region, const QList<qint64> &seqIdx) {
     // SANGER_TODO: optimize
-    renderer->drawContent(p, region, seqIdx);
+    return renderer->drawContent(p, region, seqIdx);
 }
 
 // SANGER_TODO: move to renderer

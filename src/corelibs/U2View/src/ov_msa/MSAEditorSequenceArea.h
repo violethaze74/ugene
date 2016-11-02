@@ -152,6 +152,7 @@ class U2VIEW_EXPORT MSAEditorSequenceArea : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorSequenceArea)
     friend class SequenceAreaRenderer;
+    friend class SequenceWithChromatogramAreaRenderer;
 public:
     MSAEditorSequenceArea(MSAEditorUI* ui, GScrollBar* hb, GScrollBar* vb);
     ~MSAEditorSequenceArea();

@@ -19,20 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#include "SequenceAreaRenderer.h"
+#include "SequenceWithChromatogramAreaRenderer.h"
 
 #include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/MsaColorScheme.h>
 
-#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2OpStatusUtils.h> // check if is needed
 
 #include <QPainter>
 
 namespace U2 {
 
-SequenceAreaRenderer::SequenceAreaRenderer(MSAEditorSequenceArea *seqAreaWgt)
-    : QObject(seqAreaWgt),
-      seqAreaWgt(seqAreaWgt),
+SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MSAEditorSequenceArea *seqAreaWgt)
+    : SequenceAreaRenderer(seqAreaWgt),
       linePen(Qt::gray, 1, Qt::DotLine),
       kLinearTransformTrace(0.0),
       bLinearTransformTrace(0.0) {
@@ -60,41 +59,9 @@ SequenceAreaRenderer::SequenceAreaRenderer(MSAEditorSequenceArea *seqAreaWgt)
 //    }
 }
 
-bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, const QList<qint64> &seqIdx) {
-    CHECK(!region.isEmpty(), false);
-    CHECK(!seqIdx.isEmpty(), false);
-
-    MsaHighlightingScheme* highlightingScheme = seqAreaWgt->highlightingScheme;
-    MSAEditor* editor = seqAreaWgt->editor;
-
-//    p.fillRect(QRect(0, 0, editor->getColumnWidth() * region.length,
-//                      editor->getRowHeight() * seqIdx.size()),
-//               Qt::white);
-    p.setPen(Qt::black);
-    p.setFont(editor->getFont());
-
-    MultipleSequenceAlignmentObject* maObj = editor->getMSAObject();
-    SAFE_POINT(maObj != NULL, tr("Alignment object is NULL"), false);
-    const MultipleSequenceAlignment msa = maObj->getMsa();
-
-    U2OpStatusImpl os;
-    const int refSeq = msa->getRowIndexByRowId(editor->getReferenceRowId(), os);
-    QString refSeqName = editor->getReferenceRowName();
-    MultipleSequenceAlignmentRow row;
-    if (U2MsaRow::INVALID_ROW_ID != refSeq) {
-        row = msa->getRow(refSeq);
-    }
-
-    //Use dots to draw regions, which are similar to reference sequence
-    highlightingScheme->setUseDots(seqAreaWgt->useDotsAction->isChecked());
-    //Highlighting scheme's settings
-    QString schemeName = highlightingScheme->metaObject()->className();
-    bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";
-
-    U2Region baseYRange = U2Region(0, editor->getSequenceRowHeight());
-    int columnWidth = editor->getColumnWidth();
-
-    bool isResizeMode = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
+bool SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleSequenceAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) {
+    bool ok = SequenceAreaRenderer::drawRow(p, msa, seq, region, yStart);
+    CHECK(ok, false);
 
     // SANGER_TODO: test chrom
     DNAChromatogram chrom;
@@ -108,49 +75,18 @@ bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, cons
     chrom.T << 50 << 30 << 30;
     U2Region testVisRegion(0, 3);
 
-    for (qint64 iSeq = 0; iSeq < seqIdx.size(); iSeq++) {
-        qint64 seq = seqIdx[iSeq];
-        qint64 regionEnd = region.endPos() - (int)(region.endPos() == editor->getAlignmentLen());
-
-        for (int pos = region.startPos; pos <= regionEnd; pos++) {
-            U2Region baseXRange = U2Region(columnWidth * (pos - region.startPos), columnWidth);
-            QRect cr(baseXRange.startPos, baseYRange.startPos, baseXRange.length + 1, baseYRange.length);
-            char c = msa->charAt(seq, pos);
-
-            bool highlight = false;
-            QColor color = seqAreaWgt->colorScheme->getColor(seq, pos, c); //! SANGER_TODO: add NULL checks or do smt with the infrastructure
-            if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
-                const char refChar = '\n';
-                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-            } else if (seq == refSeq || refSeqName.isEmpty()) {
-                highlight = true;
-            } else {
-                SAFE_POINT(NULL != row, "MSA row is NULL", false);
-                const char refChar = row->charAt(pos);
-                highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-            }
-
-            if (color.isValid() && highlight) {
-                p.fillRect(cr, color);
-            }
-            if (isResizeMode) {
-                p.drawText(cr, Qt::AlignCenter, QString(c));
-            }
-        }
-        if (editor->showChromatograms) {
-            // SANGER_TODO: draw chromotogram below
-            p.save();
-            p.translate(0, baseYRange.startPos + editor->getSequenceRowHeight());
-            drawChromatogram(p, chrom, testVisRegion);
-            p.restore();
-        }
-        baseYRange.startPos += editor->getRowHeight();
+    MSAEditor* editor = seqAreaWgt->editor;
+    if (editor->showChromatograms) {
+        // SANGER_TODO: draw chromotogram below
+        p.save();
+        p.translate(0, yStart + editor->getSequenceRowHeight());
+        drawChromatogram(p, chrom, testVisRegion);
+        p.restore();
     }
-
     return true;
 }
 
-void SequenceAreaRenderer::drawChromatogram(QPainter &p, DNAChromatogram &chroma, U2Region& visible) {
+void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, DNAChromatogram &chroma, U2Region& visible) {
     // SANGER_TODO: move from the method
     static const QColor colorForIds[4] = { Qt::darkGreen, Qt::blue, Qt::black, Qt::red};
     static const QString baseForIds[4] = { "A", "C", "G", "T" };
@@ -272,7 +208,7 @@ void SequenceAreaRenderer::drawChromatogram(QPainter &p, DNAChromatogram &chroma
 
 }
 
-QColor SequenceAreaRenderer::getBaseColor( char base )
+QColor SequenceWithChromatogramAreaRenderer::getBaseColor( char base )
 {
 
     switch(base) {
@@ -292,7 +228,7 @@ QColor SequenceAreaRenderer::getBaseColor( char base )
 
 //draw functions
 
-void SequenceAreaRenderer::drawChromatogramTrace(const DNAChromatogram& chroma,
+void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChromatogram& chroma,
                                                  qreal x, qreal y, qreal w, qreal h, QPainter& p,
                                                  const U2Region& visible/*, const ChromatogramViewSettings& settings*/)
 {
@@ -363,7 +299,7 @@ void SequenceAreaRenderer::drawChromatogramTrace(const DNAChromatogram& chroma,
 //    p.translate(- x, - y - h);
 }
 
-void SequenceAreaRenderer::drawOriginalBaseCalls(const DNAChromatogram& chroma, qreal x, qreal y, qreal w, qreal h,
+void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(const DNAChromatogram& chroma, qreal x, qreal y, qreal w, qreal h,
                                                  QPainter& p, const U2Region& visible, const QByteArray& ba, bool is)
 {
     QRectF rect;
@@ -421,7 +357,7 @@ void SequenceAreaRenderer::drawOriginalBaseCalls(const DNAChromatogram& chroma, 
 //    p.translate( - x, - y - h);
 }
 
-void SequenceAreaRenderer::drawQualityValues(const DNAChromatogram& chroma,
+void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogram& chroma,
                                              qreal x, qreal y, qreal w, qreal h,
                                              QPainter& p, const U2Region& visible, const QByteArray& ba)
 {
@@ -483,7 +419,7 @@ void SequenceAreaRenderer::drawQualityValues(const DNAChromatogram& chroma,
 }
 
 
-void SequenceAreaRenderer::drawChromatogramBaseCallsLines(const DNAChromatogram& chroma,
+void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const DNAChromatogram& chroma,
                                                           qreal x, qreal y, qreal w, qreal h, QPainter& p,
                                                                 const U2Region& visible, const QByteArray& ba//,
                                                           /*const ChromatogramViewSettings& settings*/)
