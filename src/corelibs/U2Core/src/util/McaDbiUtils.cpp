@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/DbiConnection.h>
 #include <U2Core/DNAAlphabet.h>
@@ -32,6 +33,7 @@
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
+#include <U2Core/U2SequenceUtils.h>
 
 #include "McaDbiUtils.h"
 
@@ -177,45 +179,6 @@ U2AlphabetId McaDbiUtils::getMcaAlphabet(U2OpStatus &os, const U2EntityRef &mcaR
 
     return alphabet;
 }
-namespace {
-
-U2Chromatogram importChromatogram(U2OpStatus &os, DbiConnection &connection, const QString &folder, const DNAChromatogram &chromatogram, const QString &chromatogramName) {
-    // TODO: extract to a new class ChromatogramImporter
-    U2Chromatogram dbChromatogram;
-    dbChromatogram.visualName = chromatogramName;
-    dbChromatogram.serializer = DNAChromatogramSerializer::ID;
-
-    const U2DbiRef dbiRef = connection.dbi->getDbiRef();
-    RawDataUdrSchema::createObject(dbiRef, folder, dbChromatogram, os);
-    CHECK_OP(os, U2Chromatogram());
-
-    const U2EntityRef entityRef(dbiRef, dbChromatogram.id);
-    QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
-    RawDataUdrSchema::writeContent(data, entityRef, os);
-    CHECK_OP(os, U2Chromatogram());
-
-    return dbChromatogram;
-}
-
-U2Sequence importSequence(U2OpStatus &os, DbiConnection &connection, const QString &folder, const DNASequence &sequence, const QString &alphabetId) {
-    // TODO: extract to a new class SequenceImporter (U2SequenceImporter should be renamed to U2SequenceSequentialImporter)
-    U2Sequence dbSequence;
-    dbSequence.visualName = sequence.getName();
-    dbSequence.circular = sequence.circular;
-    dbSequence.length = sequence.length();
-    dbSequence.alphabet.id = alphabetId;
-
-    connection.dbi->getSequenceDbi()->createSequenceObject(dbSequence, folder, os);
-    CHECK_OP(os, U2Sequence());
-
-    QVariantMap hints;
-    connection.dbi->getSequenceDbi()->updateSequenceData(dbSequence.id, U2_REGION_MAX, sequence.constSequence(), hints, os);
-    CHECK_OP(os, U2Sequence());
-
-    return dbSequence;
-}
-
-}
 
 void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const MultipleChromatogramAlignment &mca) {
     // Move to the MCAImporter
@@ -309,26 +272,25 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
 
         if (!dbRow.hasValidChildObjectIds() || !currentRowIds.contains(dbRow.rowId)) {
             // Import the child objects
-            const DNAChromatogram &chromatogram = mcaRow->getChromatogram();
-            const U2Chromatogram dbChromatogram = importChromatogram(os, connection, dbFolder, chromatogram, chromatogram.name);
+            const U2EntityRef chromatogramRef = ChromatogramUtils::import(os, connection.dbi->getDbiRef(), dbFolder, mcaRow->getChromatogram());
             CHECK_OP(os, );
 
-            const U2Sequence dbPredictedSequence = importSequence(os, connection, dbFolder, mcaRow->getPredictedSequence(), dbMca.alphabet.id);
+            const U2EntityRef predictedSequenceRef = U2SequenceUtils::import(os, connection.dbi->getDbiRef(), dbFolder, mcaRow->getPredictedSequence(), dbMca.alphabet.id);
             CHECK_OP(os, );
 
-            const U2Sequence dbEditedSequence = importSequence(os, connection, dbFolder, mcaRow->getEditedSequence(), dbMca.alphabet.id);
+            const U2EntityRef editedSequenceRef = U2SequenceUtils::import(os, connection.dbi->getDbiRef(), dbFolder, mcaRow->getEditedSequence(), dbMca.alphabet.id);
             CHECK_OP(os, );
 
             // Create the row
             dbRow.rowId = U2MsaRow::INVALID_ROW_ID; // set the row ID automatically
-            dbRow.chromatogramId = dbChromatogram.id;
-            dbRow.predictedSequenceId = dbPredictedSequence.id;
-            dbRow.sequenceId = dbEditedSequence.id;
+            dbRow.chromatogramId = chromatogramRef.entityId;
+            dbRow.predictedSequenceId = predictedSequenceRef.entityId;
+            dbRow.sequenceId = editedSequenceRef.entityId;
             dbRow.gstart = mcaRow->getWorkingAreaRegion().startPos;
             dbRow.gend = mcaRow->getWorkingAreaRegion().endPos();
             dbRow.predictedSequenceGaps = mcaRow->getPredictedSequenceGapModel();
             dbRow.gaps = mcaRow->getEditedSequenceGapModel();
-            // TODO: replace with specific utils
+
             McaDbiUtils::addRow(os, mcaRef, -1, dbRow);
             CHECK_OP(os, );
         }

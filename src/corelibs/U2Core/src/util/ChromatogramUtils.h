@@ -22,18 +22,19 @@
 #ifndef _U2_CHROMATOGRAM_UTILS_H_
 #define _U2_CHROMATOGRAM_UTILS_H_
 
-#include <U2Core/global.h>
+#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/U2Type.h>
 
 namespace U2 {
-
-class DNAChromatogram;
-class U2OpStatus;
 
 class U2CORE_EXPORT ChromatogramUtils {
 public:
     static void append(DNAChromatogram chromatogram, const DNAChromatogram &appendedChromatogram);
     static void remove(U2OpStatus &os, DNAChromatogram &chromatogram, int startPos, int endPos);
     static bool areEqual(const DNAChromatogram &first, const DNAChromatogram &second);
+    static void crop(DNAChromatogram &chromatogram, int startPos, int length);
+    static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNAChromatogram &chromatogram);
+    static U2Chromatogram getChromatogramDbInfo(U2OpStatus &os, const U2EntityRef &chromatogramRef);
 };
 
 }   // namespace U2

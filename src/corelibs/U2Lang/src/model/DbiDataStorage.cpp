@@ -141,7 +141,7 @@ SharedDbiDataHandler DbiDataStorage::putSequence(const DNASequence &dnaSeq) {
     assert(NULL != dbiHandle);
 
     U2OpStatusImpl os;
-    U2EntityRef ent = U2SequenceUtils::import(dbiHandle->getDbiRef(), dnaSeq, os);
+    U2EntityRef ent = U2SequenceUtils::import(os, dbiHandle->getDbiRef(), dnaSeq);
     CHECK_OP(os, SharedDbiDataHandler());
 
     DbiConnection *connection = this->getConnection(dbiHandle->getDbiRef(), os);

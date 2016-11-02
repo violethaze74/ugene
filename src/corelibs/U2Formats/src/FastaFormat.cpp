@@ -194,7 +194,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
                 CHECK_OP_BREAK(os);
                 uniqueNames.insert(objName);
             }
-            seqImporter.startSequence(dbiRef, folder, objName, false, os);
+            seqImporter.startSequence(os, dbiRef, folder, objName, false);
             CHECK_OP_BREAK(os);
 
             sequenceRef = GObjectReference(io->getURL().getURLString(), objName, GObjectTypes::SEQUENCE);

@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/DatatypeSerializeUtils.h>
+#include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DbiConnection.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/L10n.h>
@@ -27,14 +27,13 @@
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/MultipleChromatogramAlignmentRow.h>
 #include <U2Core/MultipleAlignmentInfo.h>
-#include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2McaDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
-#include <U2Core/UdrDbi.h>
+#include <U2Core/U2SequenceUtils.h>
 
 #include "MultipleChromatogramAlignmentImporter.h"
 
@@ -129,7 +128,7 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
     foreach (const MultipleChromatogramAlignmentRow &row, mca->getMcaRows()) {
         McaRowDatabaseData mcaRowDatabaseData;
 
-        mcaRowDatabaseData.chromatogram = importChromatogram(os, connection, folder, row->getChromatogram(), row->getPredictedSequence().getName() + " chromatogram");
+        mcaRowDatabaseData.chromatogram = importChromatogram(os, connection, folder, row->getChromatogram());
         CHECK_OP(os, mcaRowsDatabaseData);
 
         mcaRowDatabaseData.predictedSequence = importSequence(os, connection, folder, row->getPredictedSequence(), alphabetId);
@@ -180,22 +179,10 @@ QList<U2McaRow> MultipleChromatogramAlignmentImporter::importRows(U2OpStatus &os
 U2Chromatogram MultipleChromatogramAlignmentImporter::importChromatogram(U2OpStatus &os,
                                                                          const DbiConnection &connection,
                                                                          const QString &folder,
-                                                                         const DNAChromatogram &chromatogram,
-                                                                         const QString chromatogramName) {
-    U2Chromatogram dbChromatogram;
-    dbChromatogram.visualName = chromatogramName;
-    dbChromatogram.serializer = DNAChromatogramSerializer::ID;
-
-    const U2DbiRef dbiRef = connection.dbi->getDbiRef();
-    RawDataUdrSchema::createObject(dbiRef, folder, dbChromatogram, os);
-    CHECK_OP(os, dbChromatogram);
-
-    const U2EntityRef entityRef(dbiRef, dbChromatogram.id);
-    QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
-    RawDataUdrSchema::writeContent(data, entityRef, os);
-    CHECK_OP(os, dbChromatogram);
-
-    return dbChromatogram;
+                                                                         const DNAChromatogram &chromatogram) {
+    const U2EntityRef chromatogramRef = ChromatogramUtils::import(os, connection.dbi->getDbiRef(), folder, chromatogram);
+    CHECK_OP(os, U2Chromatogram());
+    return ChromatogramUtils::getChromatogramDbInfo(os, chromatogramRef);
 }
 
 U2Sequence MultipleChromatogramAlignmentImporter::importSequence(U2OpStatus &os,
@@ -203,25 +190,9 @@ U2Sequence MultipleChromatogramAlignmentImporter::importSequence(U2OpStatus &os,
                                                                  const QString &folder,
                                                                  const DNASequence &sequence,
                                                                  const U2AlphabetId &alphabetId) {
-    U2Sequence dbSequence;
-
-    U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(NULL != sequenceDbi, os.setError("NULL Sequence Dbi during importing an alignment"), dbSequence);
-
-    dbSequence.visualName = sequence.getName();
-    dbSequence.circular = sequence.circular;
-    dbSequence.length = sequence.length();
-    dbSequence.alphabet = alphabetId;
-
-    sequenceDbi->createSequenceObject(dbSequence, folder, os, U2DbiObjectRank_Child);
-    CHECK_OP(os, dbSequence);
-
-    QVariantMap hints;
-    const QByteArray &sequenceData = sequence.constSequence();
-    sequenceDbi->updateSequenceData(dbSequence.id, U2_REGION_MAX, sequenceData, hints, os);
-    CHECK_OP(os, dbSequence);
-
-    return dbSequence;
+    const U2EntityRef sequenceRef = U2SequenceUtils::import(os, connection.dbi->getDbiRef(), folder, sequence, alphabetId);
+    CHECK_OP(os, U2Sequence());
+    return connection.dbi->getSequenceDbi()->getSequenceObject(sequenceRef.entityId, os);
 }
 
 }   // namespace U2

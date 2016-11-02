@@ -138,7 +138,7 @@ void ExportMSA2SequencesTask::run() {
             name = TextUtils::variate(name, " ", usedNames, false, 1);
             s.setName(name);
         }
-        U2EntityRef seqRef = U2SequenceUtils::import(resultDocument->getDbiRef(), s, stateInfo);
+        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, resultDocument->getDbiRef(), s);
         CHECK_OP(stateInfo, );
         resultDocument->addObject(new U2SequenceObject(name, seqRef));
         usedNames.insert(name);

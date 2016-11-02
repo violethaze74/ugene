@@ -40,7 +40,7 @@ private:
     static void importMcaInfo(U2OpStatus &os, const DbiConnection &connection, const U2DataId &mcaId, const MultipleChromatogramAlignment &mca);
     static QList<McaRowDatabaseData> importRowChildObjects(U2OpStatus &os, const DbiConnection &connection, const QString &folder, const MultipleChromatogramAlignment &mca);
     static QList<U2McaRow> importRows(U2OpStatus &os, const DbiConnection &connection, U2Msa &dbMca, const QList<McaRowDatabaseData> &mcaRowDatabaseData);
-    static U2Chromatogram importChromatogram(U2OpStatus &os, const DbiConnection &connection, const QString &folder, const DNAChromatogram &chromatogram, const QString chromatogramName);
+    static U2Chromatogram importChromatogram(U2OpStatus &os, const DbiConnection &connection, const QString &folder, const DNAChromatogram &chromatogram);
     static U2Sequence importSequence(U2OpStatus &os, const DbiConnection &connection, const QString &folder, const DNASequence &sequence, const U2AlphabetId &alphabetId);
 };
 

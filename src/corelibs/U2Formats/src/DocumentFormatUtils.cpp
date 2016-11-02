@@ -62,7 +62,7 @@ U2SequenceObject * DocumentFormatUtils::addSequenceObject(const U2DbiRef& dbiRef
     U2SequenceImporter importer;
 
     const QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
-    importer.startSequence(dbiRef, folder, name, circular, os);
+    importer.startSequence(os, dbiRef, folder, name, circular);
     CHECK_OP(os, NULL);
 
     importer.addBlock(seq.constData(), seq.length(), os);
@@ -237,7 +237,7 @@ U2SequenceObject* DocumentFormatUtils::addSequenceObjectDeprecated(const U2DbiRe
     }
 
     U2SequenceImporter importer;
-    importer.startSequence(dbiRef, folder, sequence.getName(), sequence.circular, os);
+    importer.startSequence(os, dbiRef, folder, sequence.getName(), sequence.circular);
     CHECK_OP(os, NULL);
     importer.addBlock(sequence.seq.constData(), sequence.seq.length(), os);
     CHECK_OP(os, NULL);

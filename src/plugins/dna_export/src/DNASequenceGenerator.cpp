@@ -427,7 +427,7 @@ void GenerateDNASequenceTask::run( ) {
             window = length;
         }
 
-        seqImporter.startSequence( dbiRef, U2ObjectDbi::ROOT_FOLDER, QString( "default" ), false, stateInfo );
+        seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, QString( "default" ), false);
         CHECK_OP_BREAK( stateInfo );
 
         for( int chunkCount = 0; chunkCount < length / window && !isCanceled( );
