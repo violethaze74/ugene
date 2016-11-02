@@ -154,7 +154,7 @@ class U2VIEW_EXPORT MSAEditorSequenceArea : public QWidget {
     friend class SequenceAreaRenderer;
     friend class SequenceWithChromatogramAreaRenderer;
 public:
-    MSAEditorSequenceArea(MSAEditorUI* ui, GScrollBar* hb, GScrollBar* vb);
+    MSAEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
     ~MSAEditorSequenceArea();
 
     // x dimension -> positions
@@ -468,7 +468,7 @@ private:
     void updateCollapsedGroups(const MaModificationInfo& modInfo);
 
     MSAEditor*      editor;
-    MSAEditorUI*    ui;
+    MaEditorWgt*    ui;
     GScrollBar*     shBar;
     GScrollBar*     svBar;
     QRubberBand*    rubberBand;

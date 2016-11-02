@@ -50,7 +50,7 @@ MSACollapsableItem::MSACollapsableItem(int startPos, int length)
 /// MSACollapsibleItemModel
 //////////////////////////////////////////////////////////////////////////
 
-MSACollapsibleItemModel::MSACollapsibleItemModel(MSAEditorUI *p)
+MSACollapsibleItemModel::MSACollapsibleItemModel(MaEditorWgt *p)
     : QObject(p), ui(p)
 {
 

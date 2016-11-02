@@ -98,8 +98,8 @@ namespace U2 {
 #define SETTINGS_HIGHLIGHT_RAW      "highlight_raw"
 #define SETTINGS_COPY_FORMATTED "copyformatted"
 
-MSAEditorSequenceArea::MSAEditorSequenceArea(MSAEditorUI* _ui, GScrollBar* hb, GScrollBar* vb)
-    : editor(_ui->editor),
+MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, GScrollBar* vb)
+    : editor(_ui->getEditor()),
       ui(_ui),
       shBar(hb),
       svBar(vb),
@@ -389,11 +389,11 @@ void MSAEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &h
 }
 
 void MSAEditorSequenceArea::applyColorScheme(const QString &id) {
-    CHECK(NULL != ui->editor->getMSAObject(), );
+    CHECK(NULL != ui->getEditor()->getMSAObject(), );
 
     MsaColorSchemeFactory *factory = AppContext::getMsaColorSchemeRegistry()->getMsaColorSchemeFactoryById(id);
     delete colorScheme;
-    colorScheme = factory->create(this, ui->editor->getMSAObject());
+    colorScheme = factory->create(this, ui->getEditor()->getMSAObject());
 
     connect(factory, SIGNAL(si_factoryChanged()), SLOT(sl_colorSchemeFactoryUpdated()), Qt::UniqueConnection);
     connect(factory, SIGNAL(destroyed(QObject *)), SLOT(sl_setDefaultColorScheme()), Qt::UniqueConnection);
@@ -547,15 +547,15 @@ void MSAEditorSequenceArea::sl_changeHighlightScheme(){
     QString id = a->data().toString();
     MsaHighlightingSchemeFactory* factory = AppContext::getMsaHighlightingSchemeRegistry()->getMsaHighlightingSchemeFactoryById(id);
     SAFE_POINT(NULL != factory, L10N::nullPointerError("highlighting scheme"), );
-    if (ui->editor->getMSAObject() == NULL) {
+    if (ui->getEditor()->getMSAObject() == NULL) {
         return;
     }
 
     delete highlightingScheme;
-    highlightingScheme = factory->create(this, ui->editor->getMSAObject());
+    highlightingScheme = factory->create(this, ui->getEditor()->getMSAObject());
     highlightingScheme->applySettings(editor->getHighlightingSettings(id));
 
-    const MultipleSequenceAlignment ma = ui->editor->getMSAObject()->getMsa();
+    const MultipleSequenceAlignment ma = ui->getEditor()->getMSAObject()->getMsa();
 
     U2OpStatusImpl os;
     const int refSeq = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
@@ -619,7 +619,7 @@ void MSAEditorSequenceArea::updateActions() {
 //Update actions of "Edit" group
     bool canEditAlignment = !readOnly && !isAlignmentEmpty();
     bool canEditSelectedArea = canEditAlignment && !selection.isNull();
-    ui->delSelectionAction->setEnabled(canEditSelectedArea);
+    ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
 
     insSymAction->setEnabled(canEditSelectedArea);
     bool oneCharacterIsSelected = selection.width() == 1 && selection.height() == 1;
@@ -1195,7 +1195,7 @@ void MSAEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
 
     QPoint newCurPos = coordToAbsolutePos(e->pos());
 
-    int firstVisibleSeq = ui->seqArea->getFirstVisibleSequence();
+    int firstVisibleSeq = getFirstVisibleSequence();
     int visibleRowsNums = getNumDisplayedSequences() - 1;
 
     int yPosWithValidations = qMax(firstVisibleSeq, newCurPos.y());
@@ -1236,7 +1236,7 @@ void MSAEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
         if(isInRange(p)) {
             setCursorPos(p);
 
-            const MSAEditorSelection &s = ui->seqArea->getSelection();
+            const MSAEditorSelection &s = getSelection();
             if (s.getRect().contains(cursorPos) && !isAlignmentLocked()) {
                 shifting = true;
                 msaVersionBeforeShifting = editor->getMSAObject()->getModificationVersion();
@@ -1257,7 +1257,7 @@ void MSAEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             }
             rubberBand->setGeometry(QRect(origin, QSize()));
             rubberBand->show();
-            ui->seqArea->cancelSelection();
+            cancelSelection();
         }
     }
 
@@ -1378,7 +1378,7 @@ void MSAEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 moveSelection(0,1);
                 break;
             }
-            if (selectionEnd.y() >= (ui->collapseModel->displayedRowsCount() - 1)) {
+            if (selectionEnd.y() >= (ui->getCollapseModel()->displayedRowsCount() - 1)) {
                 break;
             }
             selectionEnd.setY(selectionEnd.y() + 1);
@@ -1837,7 +1837,7 @@ void MSAEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
 
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
-    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
+    editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
     if (rect().contains(mapFromGlobal(QCursor::pos()))) {
         editMenu->addActions(actions);
         copyMenu->addAction(ui->getCopySelectionAction());

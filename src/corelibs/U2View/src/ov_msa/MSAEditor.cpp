@@ -932,43 +932,12 @@ void MSAEditor::saveHighlightingSettings( const QString &highlightingFactoryId, 
 
 //////////////////////////////////////////////////////////////////////////
 MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
-: editor(_editor), seqArea(NULL), offsetsView(NULL), statusWidget(NULL), collapsibleMode(false), multiTreeViewer(NULL), similarityStatistics(NULL) {
-    //undoFWK = new MSAEditorUndoFramework(this, editor->getMSAObject());
-    undoFWK = new MsaUndoRedoFramework(this, editor->getMSAObject());
-
-    collapseModel = new MSACollapsibleItemModel(this);
-
-    delSelectionAction = new QAction(tr("Remove selection"), this);
-    delSelectionAction->setObjectName("Remove selection");
-    delSelectionAction->setShortcut(QKeySequence::Delete);
-    delSelectionAction->setShortcutContext(Qt::WidgetShortcut);
-
-    copySelectionAction = new QAction(tr("Copy selection"), this);
-    copySelectionAction->setObjectName("copy_selection");
-    copySelectionAction->setShortcut(QKeySequence::Copy);
-    copySelectionAction->setShortcutContext(Qt::WidgetShortcut);
-    copySelectionAction->setToolTip(QString("%1 (%2)").arg(copySelectionAction->text())
-        .arg(copySelectionAction->shortcut().toString()));
-
-    addAction(copySelectionAction);
-
-    copyFormattedSelectionAction = new QAction(QIcon(":core/images/copy_sequence.png"), tr("Copy formatted"), this);
-    copyFormattedSelectionAction->setObjectName("copy_formatted");
-    copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
-    copyFormattedSelectionAction->setShortcutContext(Qt::WidgetShortcut);
-    copyFormattedSelectionAction->setToolTip(QString("%1 (%2)").arg(copyFormattedSelectionAction->text())
-        .arg(copyFormattedSelectionAction->shortcut().toString()));
-
-    addAction(copyFormattedSelectionAction);
-
-    pasteAction = new QAction(tr("Paste"), this);
-    pasteAction->setObjectName("paste");
-    pasteAction->setShortcut(QKeySequence::Paste);
-    pasteAction->setShortcutContext(Qt::WidgetShortcut);
-    pasteAction->setToolTip(QString("%1 (%2)").arg(pasteAction->text())
-        .arg(pasteAction->shortcut().toString()));
-
-    addAction(pasteAction);
+    : MaEditorWgt(_editor),
+      seqArea(NULL),
+      offsetsView(NULL),
+      statusWidget(NULL),
+      multiTreeViewer(NULL),
+      similarityStatistics(NULL) {
 
     setContextMenuPolicy(Qt::CustomContextMenu);
     setMinimumSize(300, 200);
@@ -1057,18 +1026,6 @@ MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
 
 QWidget* MSAEditorUI::createLabelWidget(const QString& text, Qt::Alignment ali){
     return new MSALabelWidget(this, text, ali);
-}
-
-QAction* MSAEditorUI::getUndoAction() const {
-    QAction *a = undoFWK->getUndoAction();
-    a->setObjectName("msa_action_undo");
-    return a;
-}
-
-QAction* MSAEditorUI::getRedoAction() const {
-    QAction *a = undoFWK->getRedoAction();
-    a->setObjectName("msa_action_redo");
-    return a;
 }
 
 void MSAEditorUI::sl_saveScreenshot(){

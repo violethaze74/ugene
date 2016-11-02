@@ -22,30 +22,26 @@
 #ifndef _U2_MSA_EDITOR_H_
 #define _U2_MSA_EDITOR_H_
 
-
-#include <U2Core/U2Region.h>
-#include <U2Core/PhyTree.h>
-#include <U2Core/U2OpStatus.h>
-
 #include <U2Algorithm/CreatePhyTreeSettings.h>
-#include <U2Gui/ObjectViewModel.h>
+
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/PhyTree.h>
+#include <U2Core/U2OpStatus.h>
+#include <U2Core/U2Region.h>
+
+#include <U2Gui/ObjectViewModel.h>
 
 #include <U2View/UndoRedoFramework.h>
 
-#include <QtCore/QVariantMap>
+#include <QMenu>
+#include <QSplitter>
+#include <QTabWidget>
+#include <QVariantMap>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#include <QtGui/QSplitter>
-#include <QtGui/QTabWidget>
-#else
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QSplitter>
-#include <QtWidgets/QTabWidget>
-#endif
 #include "PhyTrees/MSAEditorTreeManager.h"
+
+#include "view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
@@ -299,7 +295,7 @@ private:
 };
 
 // U2VIEW_EXPORT: GUITesting uses MSAEditorUI
-class U2VIEW_EXPORT MSAEditorUI : public QWidget {
+class U2VIEW_EXPORT MSAEditorUI : public MaEditorWgt {
 
     Q_OBJECT
     //todo: make public accessors:
@@ -314,18 +310,8 @@ class U2VIEW_EXPORT MSAEditorUI : public QWidget {
 public:
     MSAEditorUI(MSAEditor* editor);
 
+    // SANGER_TODO: it is for multi tree case - decide if it is neccessary
     QWidget* createLabelWidget(const QString& text = QString(), Qt::Alignment ali = Qt::AlignCenter);
-
-    MSAEditor* getEditor() const {return editor;}
-    QAction* getUndoAction() const;
-    QAction* getRedoAction() const;
-    QAction* getCopySelectionAction() const {return copySelectionAction;}
-    QAction* getCopyFormattedSelectionAction() const {return copyFormattedSelectionAction;}
-    QAction* getPasteAction() const {return pasteAction;}
-
-    bool isCollapsibleMode() const { return collapsibleMode; }
-    void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
-    MSACollapsibleItemModel* getCollapseModel() const { return collapseModel; }
 
     MSAEditorSequenceArea*  getSequenceArea() {return seqArea;}
     MSAEditorNameList*      getEditorNameList() {return nameList;}
@@ -363,7 +349,6 @@ signals:
     void si_stopMsaChanging(bool modifyed = false);
 
 private:
-    MSAEditor*                         editor;
     MSAEditorNameList*                 nameList;
     MSAEditorSequenceArea*             seqArea;
     MSAEditorConsensusArea*            consArea;
@@ -378,21 +363,11 @@ private:
     QList<QWidget*>                 seqAreaWidgets;
     QList<QWidget*>                 lw2Widgets;
     QList<QWidget*>                 treeAreaWidgets;
-    //MSAEditorUndoFramework*         undoFWK;
-    MsaUndoRedoFramework*           undoFWK;
-
-    MSACollapsibleItemModel*        collapseModel;
-    bool                            collapsibleMode;
 
     MsaEditorSimilarityColumn*         dataList;
     MSAEditorMultiTreeViewer*          multiTreeViewer;
     MsaEditorAlignmentDependentWidget* similarityStatistics;
     MSAEditorTreeViewer*               treeViewer;
-
-    QAction                         *delSelectionAction;
-    QAction                         *copySelectionAction;
-    QAction                         *copyFormattedSelectionAction;
-    QAction                         *pasteAction;
 };
 
 class MSAWidget : public QWidget {
