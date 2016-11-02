@@ -100,8 +100,8 @@ public:
                                           QByteArray &oldData, QByteArray &newData, QVariantMap& hints);
 
     /** Chromatogram */
-    static QByteArray packChromatogram(const DNAChromatogram &chromatogram);
-    static bool unpackChromatogram(const QByteArray &modDetails, DNAChromatogram &chromatogram);
+    static QByteArray packChromatogramData(const DNAChromatogram &chromatogram);
+    static bool unpackChromatogramData(const QByteArray &modDetails, DNAChromatogram &chromatogram);
 
     /** Chromatogram details */
     static QByteArray packChromatogramDetails(const DNAChromatogram &oldChromatogram, const DNAChromatogram &newChromatogram);

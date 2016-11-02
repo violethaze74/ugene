@@ -19,7 +19,9 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/U2Region.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "U2DbiPackUtils.h"
@@ -595,22 +597,22 @@ bool PackUtils::unpackSequenceDataDetails(const QByteArray &modDetails, U2Region
     return true;
 }
 
-QByteArray PackUtils::packChromatogram(const DNAChromatogram &chromatogram) {
-    // TODO
-    return "";
+QByteArray PackUtils::packChromatogramData(const DNAChromatogram &chromatogram) {
+    return DNAChromatogramSerializer::serialize(chromatogram).toHex();
 }
 
-bool PackUtils::unpackChromatogram(const QByteArray &modDetails, DNAChromatogram &chromatogram) {
-    // TODO
-    return false;
+bool PackUtils::unpackChromatogramData(const QByteArray &modDetails, DNAChromatogram &chromatogram) {
+    U2OpStatusImpl os;
+    chromatogram = DNAChromatogramSerializer::deserialize(QByteArray::fromHex(modDetails), os);
+    return !os.hasError();
 }
 
 QByteArray PackUtils::packChromatogramDetails(const DNAChromatogram &oldChromatogram, const DNAChromatogram &newChromatogram) {
     QByteArray result = VERSION;
     result += SEP;
-    result += packChromatogram(oldChromatogram);
+    result += packChromatogramData(oldChromatogram);
     result += SEP;
-    result += packChromatogram(newChromatogram);
+    result += packChromatogramData(newChromatogram);
     return result;
 }
 
@@ -620,10 +622,10 @@ bool PackUtils::unpackChromatogramDetails(const QByteArray &modDetails, DNAChrom
     SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(QString(tokens[0])), false);
 
     bool ok = false;
-    ok = unpackChromatogram(tokens[1], oldChromatogram);
+    ok = unpackChromatogramData(tokens[1], oldChromatogram);
     CHECK(ok, false);
 
-    ok = unpackChromatogram(tokens[2], newChromatogram);
+    ok = unpackChromatogramData(tokens[2], newChromatogram);
     CHECK(ok, false);
 
     return true;
