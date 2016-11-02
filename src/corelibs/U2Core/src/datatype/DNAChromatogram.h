@@ -38,6 +38,7 @@ public:
 
     DNAChromatogram();
 
+    QString name;
     int traceLength;
     int seqLength;
     QVector<ushort> baseCalls;
@@ -50,7 +51,6 @@ public:
     QVector<char> prob_G;
     QVector<char> prob_T;
     bool hasQV;
-    QString name;
 
     ushort getValue(Trace trace, qint64 position) const;
 

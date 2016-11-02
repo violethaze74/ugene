@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -118,7 +119,7 @@ QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(
 
     foreach (const U2McaRow &row, rows) {
         McaRowMemoryData mcaRowMemoryData;
-        mcaRowMemoryData.chromatogram = exportChromatogram(os, row.chromatogramId);
+        mcaRowMemoryData.chromatogram = ChromatogramUtils::exportChromatogram(os, U2EntityRef(connection.dbi->getDbiRef(), row.chromatogramId));
         CHECK_OP(os, QList<McaRowMemoryData>());
 
         mcaRowMemoryData.predictedSequence = exportSequence(os, row.predictedSequenceId);
@@ -136,16 +137,6 @@ QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(
     }
 
     return mcaRowsMemoryData;
-}
-
-DNAChromatogram MultipleChromatogramAlignmentExporter::exportChromatogram(U2OpStatus &os, const U2DataId &chromatogramId) const {
-    const U2EntityRef entityRef(connection.dbi->getDbiRef(), chromatogramId);
-    const QString serializer = RawDataUdrSchema::getObject(entityRef, os).serializer;
-    CHECK_OP(os, DNAChromatogram());
-    SAFE_POINT_EXT(DNAChromatogramSerializer::ID == serializer, os.setError(QString("Unknown serializer id: %1").arg(serializer)), DNAChromatogram());
-    const QByteArray data = RawDataUdrSchema::readAllContent(entityRef, os);
-    CHECK_OP(os, DNAChromatogram());
-    return DNAChromatogramSerializer::deserialize(data, os);
 }
 
 DNASequence MultipleChromatogramAlignmentExporter::exportSequence(U2OpStatus &os, const U2DataId &sequenceId) const {

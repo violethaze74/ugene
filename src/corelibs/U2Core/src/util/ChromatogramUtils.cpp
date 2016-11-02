@@ -112,6 +112,15 @@ U2EntityRef ChromatogramUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, co
     return entityRef;
 }
 
+DNAChromatogram ChromatogramUtils::exportChromatogram(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
+    const QString serializer = RawDataUdrSchema::getObject(chromatogramRef, os).serializer;
+    CHECK_OP(os, DNAChromatogram());
+    SAFE_POINT_EXT(DNAChromatogramSerializer::ID == serializer, os.setError(QString("Unknown serializer id: %1").arg(serializer)), DNAChromatogram());
+    const QByteArray data = RawDataUdrSchema::readAllContent(chromatogramRef, os);
+    CHECK_OP(os, DNAChromatogram());
+    return DNAChromatogramSerializer::deserialize(data, os);
+}
+
 U2Chromatogram ChromatogramUtils::getChromatogramDbInfo(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
     return RawDataUdrSchema::getObject(chromatogramRef, os);
 }

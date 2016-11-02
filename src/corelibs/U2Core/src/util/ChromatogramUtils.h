@@ -34,6 +34,7 @@ public:
     static bool areEqual(const DNAChromatogram &first, const DNAChromatogram &second);
     static void crop(DNAChromatogram &chromatogram, int startPos, int length);
     static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNAChromatogram &chromatogram);
+    static DNAChromatogram exportChromatogram(U2OpStatus &os, const U2EntityRef &chromatogramRef);
     static U2Chromatogram getChromatogramDbInfo(U2OpStatus &os, const U2EntityRef &chromatogramRef);
 };
 

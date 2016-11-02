@@ -38,7 +38,6 @@ private:
     QList<U2McaRow> exportRows(U2OpStatus &os, const U2DataId &mcaId) const;
     QList<U2McaRow> exportRows(U2OpStatus &os, const U2DataId &mcaId, const QList<qint64> rowIds) const;
     QList<McaRowMemoryData> exportDataOfRows(U2OpStatus &os, const QList<U2McaRow> &rows) const;
-    DNAChromatogram exportChromatogram(U2OpStatus &os, const U2DataId &chromatogramId) const;
     DNASequence exportSequence(U2OpStatus &os, const U2DataId &sequenceId) const;
     QVariantMap exportAlignmentInfo(U2OpStatus &os, const U2DataId &mcaId) const;
     U2Msa exportAlignmentObject(U2OpStatus &os, const U2DataId &mcaId) const;
