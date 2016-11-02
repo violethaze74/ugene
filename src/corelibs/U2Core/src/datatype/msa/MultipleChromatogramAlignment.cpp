@@ -407,22 +407,25 @@ void MultipleChromatogramAlignmentData::setGapModel(const U2MsaListGapModel &gap
 }
 
 void MultipleChromatogramAlignmentData::addRow(const DNAChromatogram &chromatogram, const DNASequence &predictedSequence, const U2MsaRowGapModel &gapModel) {
-    MultipleChromatogramAlignmentRow row(this, chromatogram, predictedSequence, gapModel);
+    const U2McaRow rowInDb;
+    MultipleChromatogramAlignmentRow row(this, rowInDb, chromatogram, predictedSequence, gapModel);
     addRowPrivate(row);
 }
 
-void MultipleChromatogramAlignmentData::addRow(const DNAChromatogram &chromatogram,
+void MultipleChromatogramAlignmentData::addRow(const U2McaRow &rowInDb,
+                                               const DNAChromatogram &chromatogram,
                                                const DNASequence &predictedSequence,
                                                const U2MsaRowGapModel &predictedSequenceGapModel,
                                                const DNASequence &editedSequence,
                                                const U2MsaRowGapModel &editedSequenceGapModel,
                                                const U2Region &workingArea) {
-    MultipleChromatogramAlignmentRow row(this, chromatogram, predictedSequence, predictedSequenceGapModel, editedSequence, editedSequenceGapModel, workingArea);
+    MultipleChromatogramAlignmentRow row(this, rowInDb, chromatogram, predictedSequence, predictedSequenceGapModel, editedSequence, editedSequenceGapModel, workingArea);
     addRowPrivate(row);
 }
 
 void MultipleChromatogramAlignmentData::addRow(const QString &rowName, const DNAChromatogram &chromatogram, const QByteArray &predictedSequenceRawData) {
-    MultipleChromatogramAlignmentRow row(this, rowName, chromatogram, predictedSequenceRawData);
+    const U2McaRow rowInDb;
+    MultipleChromatogramAlignmentRow row(this, rowInDb, rowName, chromatogram, predictedSequenceRawData);
     addRowPrivate(row);
 }
 

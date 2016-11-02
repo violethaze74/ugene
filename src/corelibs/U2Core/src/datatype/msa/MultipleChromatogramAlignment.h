@@ -129,7 +129,8 @@ public:
     void addRow(const DNAChromatogram &chromatogram,
                 const DNASequence &predictedSequence,
                 const U2MsaRowGapModel &gapModel);
-    void addRow(const DNAChromatogram &chromatogram,
+    void addRow(const U2McaRow &rowInDb,
+                const DNAChromatogram &chromatogram,
                 const DNASequence &predictedSequence,
                 const U2MsaRowGapModel &predictedSequenceGapModel,
                 const DNASequence &editedSequence,

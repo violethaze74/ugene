@@ -47,10 +47,12 @@ public:
 
     /** Creates a row in memory. */
     MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
+                                     const U2McaRow &rowInDb,
                                      const DNAChromatogram &chromatogram,
                                      const DNASequence &predictedSequence,
                                      const U2MsaRowGapModel &gapModel);
     MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
+                                     const U2McaRow &rowInDb,
                                      const DNAChromatogram &chromatogram,
                                      const DNASequence &predictedSequence,
                                      const U2MsaRowGapModel &predictedSequenceGapModel,
@@ -58,6 +60,7 @@ public:
                                      const U2MsaRowGapModel &editedSequenceGapModel,
                                      const U2Region &workingArea = U2_REGION_MAX);
     MultipleChromatogramAlignmentRow(const MultipleChromatogramAlignmentData *mcaData,
+                                     const U2McaRow &rowInDb,
                                      const QString &rowName,
                                      const DNAChromatogram &chromatogram,
                                      const QByteArray &predictedSequenceRawData);
@@ -88,10 +91,12 @@ class MultipleChromatogramAlignmentRowData : public MultipleAlignmentRowData {
 private:
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData = NULL);
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
+                                         const U2McaRow &rowInDb,
                                          const DNAChromatogram &chromatogram,
                                          const DNASequence &predictedSequence,
                                          const U2MsaRowGapModel &gapModel);
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
+                                         const U2McaRow &rowInDb,
                                          const DNAChromatogram &chromatogram,
                                          const DNASequence &predictedSequence,
                                          const U2MsaRowGapModel &predictedSequenceGapModel,
@@ -99,6 +104,7 @@ private:
                                          const U2MsaRowGapModel &editedSequenceGapModel,
                                          const U2Region &workingArea = U2_REGION_MAX);
     MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentData *mcaData,
+                                         const U2McaRow &rowInDb,
                                          const QString &rowName,
                                          const DNAChromatogram &chromatogram,
                                          const QByteArray &predictedSequenceRawData);
@@ -220,7 +226,7 @@ private:
     U2MsaRowGapModel predictedSequenceGapModelDifference;       // difference is a gap model inside a core, positions of gaps are in core-based coordinates
     U2MsaRowGapModel editedSequenceGapModelDifference;
     U2Region workingArea;
-    U2McaRow initialRowInDb;        // TODO: support this field
+    U2McaRow initialRowInDb;
     const MultipleChromatogramAlignmentData *mcaData;
 };
 

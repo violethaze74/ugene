@@ -47,8 +47,8 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignmen
 
     MultipleChromatogramAlignment mca;
     for (int i = 0; i < rows.count(); ++i) {
-        // TODO: fix after rowDbInfo is added
-        mca->addRow(mcaRowsMemoryData[i].chromatogram,
+        mca->addRow(rows[i],
+                    mcaRowsMemoryData[i].chromatogram,
                     mcaRowsMemoryData[i].predictedSequence,
                     mcaRowsMemoryData[i].predictedSequenceGapModel,
                     mcaRowsMemoryData[i].editedSequence,
