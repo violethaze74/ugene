@@ -87,7 +87,7 @@ FunctionEnd
     !endif
 
 
-    Name    ${FullProductName}
+    Name    "${FullProductName}"
     InstallDir "$PROGRAMFILES64\${FullProductName}"
     InstallDirRegKey HKCU "Software\${CompanyName}\${ProductName}" ""
     DirText "Please select the folder below"
