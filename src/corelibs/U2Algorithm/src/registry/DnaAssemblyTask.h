@@ -55,7 +55,12 @@ public:
 
 class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskSettings {
 public:
-    DnaAssemblyToRefTaskSettings() : prebuiltIndex(false), openView(false), samOutput(true) {}
+    DnaAssemblyToRefTaskSettings()
+        : pairedReads(false),
+          filterUnpaired(false),
+          prebuiltIndex(false),
+          openView(false),
+          samOutput(true) {}
 
     void setCustomSettings(const QMap<QString, QVariant>& settings);
     QVariant getCustomValue(const QString& optionName, const QVariant& defaultVal) const;
@@ -71,6 +76,7 @@ public:
     QString algName;
     bool pairedReads;
     bool filterUnpaired;
+    QString tmpDirectoryForFilteredFiles;
     bool prebuiltIndex;
     bool openView;
     bool samOutput;
@@ -84,7 +90,7 @@ class U2ALGORITHM_EXPORT DnaAssemblyToReferenceTask : public ExternalToolSupport
 public:
     DnaAssemblyToReferenceTask(const DnaAssemblyToRefTaskSettings &settings, TaskFlags flags = TaskFlags_FOSCOE, bool justBuildIndex = false);
 
-    bool isHaveResult() const {return haveResults;}
+    bool hasResult() const {return hasResults;}
     const DnaAssemblyToRefTaskSettings& getSettings() const{return settings;}
 
     static bool isIndexUrl(const QString &url, const QStringList &indexSuffixes);
@@ -96,7 +102,7 @@ protected:
 
     DnaAssemblyToRefTaskSettings settings;
     bool justBuildIndex;
-    bool haveResults;
+    bool hasResults;
 };
 
 class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskFactory {

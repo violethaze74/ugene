@@ -108,8 +108,6 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
     thresholdMoreRb->setObjectName("thresholdMoreRb");
     thresholdLessRb->setObjectName("thresholdLessRb");
 
-    QSpacerItem *verticalSpacer = new QSpacerItem(1,15);
-
     thresholdSlider = new QSlider(Qt::Horizontal, this);
     thresholdSlider->setMinimum(0);
     thresholdSlider->setMaximum(100);
@@ -124,16 +122,16 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
     layout->addWidget(highlightingScheme);
     layout->addWidget(thresholdLabel);
     layout->addWidget(thresholdSlider);
-    layout->addSpacerItem(verticalSpacer);
     layout->addWidget(lessMoreLabel);
     layout->addWidget(thresholdLessRb);
     layout->addWidget(thresholdMoreRb);
-    layout->addWidget(hint);
     layout->addWidget(useDots);
+
 #ifdef Q_OS_MAC
     layout->addSpacerItem(new QSpacerItem(40, 8, QSizePolicy::Expanding, QSizePolicy::Minimum));
 #endif
     layout->addWidget(buttonAndSpacer);
+    layout->addWidget(hint);
 
     return group;
 }

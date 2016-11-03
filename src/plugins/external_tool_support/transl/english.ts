@@ -5293,118 +5293,118 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BaseShortReadsAlignerWorker</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="245"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="246"/>
         <source>Not enough upstream reads datasets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="248"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="249"/>
         <source>Not enough downstream reads datasets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="283"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="284"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="284"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="285"/>
         <source>Directory to save output files.</source>
         <translation>Directory to save output files.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="287"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="288"/>
         <source>Reference genome</source>
         <translation>Reference genome</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="288"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="289"/>
         <source>Path to indexed reference genome.</source>
         <translation>Path to indexed reference genome.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="291"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="292"/>
         <source>Library</source>
         <translation>Library</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="292"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="293"/>
         <source>Is this library mate-paired?</source>
         <translation>Is this library mate-paired?</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="295"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="296"/>
         <source>Filter unpaired reads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="296"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="297"/>
         <source>Should the reads be checked for incomplete pairs?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="299"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="300"/>
         <source>Output file name</source>
         <translation>Output file name</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="300"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="301"/>
         <source>Base name of the output file. &apos;out.sam&apos; by default</source>
         <translation>Base name of the output file. &apos;out.sam&apos; by default</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="338"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="339"/>
         <source>URL of a file with reads</source>
         <translation>URL of a file with reads</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="339"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="349"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="340"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="350"/>
         <source>Input reads to be aligned.</source>
         <translation>Input reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="341"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="342"/>
         <source>URL of a file with mate reads</source>
         <translation>URL of a file with mate reads</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="342"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="343"/>
         <source>Input mate reads to be aligned.</source>
         <translation>Input mate reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="348"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="349"/>
         <source>Input data</source>
         <translation>Input data</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="352"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="353"/>
         <source>Reverse FASTQ file</source>
         <translation>Reverse FASTQ file</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="353"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="354"/>
         <source>Reverse paired reads to be aligned.</source>
         <translation>Reverse paired reads to be aligned.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="365"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="366"/>
         <source>Assembly URL</source>
         <translation>Assembly URL</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="366"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="367"/>
         <source>Output assembly URL.</source>
         <translation>Output assembly URL.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="369"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="370"/>
         <source>Output data</source>
         <translation>Output data</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="370"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="371"/>
         <source>Output assembly files.</source>
         <translation>Output assembly files.</translation>
     </message>
@@ -7633,6 +7633,11 @@ Default: 64.</translation>
         <translation>Test for Diff. Expression with Cuffdiff</translation>
     </message>
     <message>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="94"/>
+        <source>Cuffdiff takes a transcript file as input, along with two or more fragment alignments (e.g. in SAM format) for two or more samples. It produces a number of output files that contain test results for changes in expression at the level of transcripts, primary transcripts, and genes. It also tracks changes in the relative abundance of transcripts sharing a common transcription start site, and in the relative abundances of the primary transcripts of each gene. Tracking the former allows one to see changes in splicing, and the latter lets one see changes in relative promoter use within a gene.</source>
+        <translation>Cuffdiff takes a transcript file as input, along with two or more fragment alignments (e.g. in SAM format) for two or more samples. It produces a number of output files that contain test results for changes in expression at the level of transcripts, primary transcripts, and genes. It also tracks changes in the relative abundance of transcripts sharing a common transcription start site, and in the relative abundances of the primary transcripts of each gene. Tracking the former allows one to see changes in splicing, and the latter lets one see changes in relative promoter use within a gene.</translation>
+    </message>
+    <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="107"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
@@ -9545,22 +9550,22 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::ShortReadsAlignerPrompter</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="386"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="387"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="392"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="393"/>
         <source>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </source>
         <translation>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="394"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="395"/>
         <source>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </source>
         <translation>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="398"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="399"/>
         <source> to reference genome &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> to reference genome &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -11818,7 +11823,7 @@ Set it empty if you want to run Tophat once for all input reads</translation>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="236"/>
         <location filename="../src/spades/SpadesWorker.cpp" line="190"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="260"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="261"/>
         <source>The slot must be not empty: &apos;%1&apos;</source>
         <translation type="unfinished">The slot must be not empty: &apos;%1&apos;</translation>
     </message>

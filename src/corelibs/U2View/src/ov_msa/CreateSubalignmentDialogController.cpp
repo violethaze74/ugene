@@ -49,7 +49,7 @@ namespace U2{
 CreateSubalignmentDialogController::CreateSubalignmentDialogController(MAlignmentObject *_mobj, const QRect& selection, QWidget *p)
 : QDialog(p), mobj(_mobj), saveController(NULL){
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220443");
+    new HelpButton(this, buttonBox, "18223083");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Extract"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

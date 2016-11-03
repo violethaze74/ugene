@@ -52,7 +52,7 @@ PhmmerSearchDialog::PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent
     assert(NULL != seqObj);
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "18220561");
+    new HelpButton(this, buttonBox, "18223201");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

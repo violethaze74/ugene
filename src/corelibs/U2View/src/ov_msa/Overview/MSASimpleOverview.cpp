@@ -99,7 +99,7 @@ void MSASimpleOverview::sl_highlightingChanged() {
 void MSASimpleOverview::paintEvent(QPaintEvent *e) {
     if (!isValid()) {
         QPainter p(this);
-        showWarning(p, e, tr("Multiple sequence alignment is too big for current window size.\nSimple overview is unavailable."));
+        showMessage(p, e, tr("Multiple sequence alignment is too big for current window size.\nSimple overview is unavailable."));
         return;
     }
 

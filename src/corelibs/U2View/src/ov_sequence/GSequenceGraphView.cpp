@@ -60,7 +60,7 @@ GSequenceGraphView::GSequenceGraphView(QWidget* p, ADVSequenceObjectContext* ctx
 
     connect(saveGraphCutoffsAction, SIGNAL(triggered(bool)), SLOT(sl_onSaveGraphCutoffs(bool)));
 
-    deleteAllLabelsAction = new QAction(tr("Delete all labels..."), this);
+    deleteAllLabelsAction = new QAction(tr("Delete all labels"), this);
     deleteAllLabelsAction->setObjectName("delete_all_labels");
 
     connect(deleteAllLabelsAction, SIGNAL(triggered()), SLOT(sl_onDeleteAllLabels()));

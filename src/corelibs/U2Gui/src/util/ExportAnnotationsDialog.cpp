@@ -43,7 +43,7 @@ ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidg
     : QDialog( parent ), ui( new Ui_ExportAnnotationsDialog( ) )
 {
     ui->setupUi( this );
-    new HelpButton(this, ui->buttonBox, "18220366");
+    new HelpButton(this, ui->buttonBox, "18223006");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -90,12 +90,6 @@ bool ExportAnnotationsDialog::exportSequence( ) const {
 
 bool ExportAnnotationsDialog::exportSequenceNames( ) const {
     return ui->exportSequenceNameCheck->isChecked( );
-}
-
-void ExportAnnotationsDialog::setExportSequenceVisible( bool value ) {
-    ui->exportSequenceCheck->setVisible( value );
-    ui->exportSequenceNameCheck->setVisible( value );
-    window()->resize(window()->width(), 0);
 }
 
 void ExportAnnotationsDialog::sl_formatChanged(const QString &newFormatId) {

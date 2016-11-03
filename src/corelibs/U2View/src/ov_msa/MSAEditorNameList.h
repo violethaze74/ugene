@@ -79,6 +79,7 @@ private slots:
     void sl_modelChanged();
 
     void sl_onGroupColorsChanged(const GroupColorSchema&);
+    void sl_onScreenChanged(); // For high DPI displays
 protected:
     void updateContent();
     virtual void updateScrollBar();

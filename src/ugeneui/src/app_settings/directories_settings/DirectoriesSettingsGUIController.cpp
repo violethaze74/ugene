@@ -69,6 +69,7 @@ AppSettingsGUIPageState* DirectoriesSettingsPageController::getSavedState() {
     DirectoriesSettingsPageState* state = new DirectoriesSettingsPageState();
     UserAppsSettings* s = AppContext::getAppSettings()->getUserAppsSettings();
     state->downloadsDirPath = s->getDownloadDirPath();
+    state->documentsDirectory = s->getDefaultDataDirPath();
     state->temporaryDirPath = s->getUserTemporaryDirPath();
     state->fileStorageDirPath = s->getFileStorageDir();
     state->indexDirectory = DirectoriesSettingsPageUtils::getIndexDir();
@@ -80,6 +81,7 @@ void DirectoriesSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     DirectoriesSettingsPageState* state = qobject_cast<DirectoriesSettingsPageState*>(s);
     UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setDownloadDirPath(state->downloadsDirPath);
+    st->setDefaultDataDirPath(state->documentsDirectory);
     DirectoriesSettingsPageUtils::setIndexDir(state->indexDirectory);
     TmpDirChecker tmpDirChecker;
     if (!tmpDirChecker.checkPath(state->temporaryDirPath)) {
@@ -101,11 +103,12 @@ AppSettingsGUIPageWidget* DirectoriesSettingsPageController::createWidget(AppSet
     return r;
 }
 
-const QString DirectoriesSettingsPageController::helpPageId = QString("18220315");
+const QString DirectoriesSettingsPageController::helpPageId = QString("18222955");
 
 DirectoriesSettingsPageWidget::DirectoriesSettingsPageWidget(DirectoriesSettingsPageController* /*ctrl*/) {
     setupUi(this);
     connect(browseDownloadDirButton, SIGNAL(clicked()), SLOT(sl_browseDownloadsDirButtonClicked()));
+    connect(documentsDirectoryButton, SIGNAL(clicked()), SLOT(sl_browseDocumentsDirButtonClicked()));
     connect(browseTmpDirButton,SIGNAL(clicked()),SLOT(sl_browseTmpDirButtonClicked()));
     connect(browseFileStorageButton,SIGNAL(clicked()),SLOT(sl_browseFileStorageButtonClicked()));
     connect(cleanupStorageButton,SIGNAL(clicked()),SLOT(sl_cleanupStorage()));
@@ -115,6 +118,7 @@ DirectoriesSettingsPageWidget::DirectoriesSettingsPageWidget(DirectoriesSettings
 void DirectoriesSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
     DirectoriesSettingsPageState* state = qobject_cast<DirectoriesSettingsPageState*>(s);
     downloadsDirPathEdit->setText(state->downloadsDirPath);
+    documentsDirectoryEdit->setText(state->documentsDirectory);
     tmpDirPathEdit->setText(state->temporaryDirPath);
     fileStorageDirPathEdit->setText(state->fileStorageDirPath);
     indexDirectoryEdit->setText(state->indexDirectory);
@@ -125,6 +129,7 @@ AppSettingsGUIPageState* DirectoriesSettingsPageWidget::getState(QString& err) c
     Q_UNUSED(err)
     DirectoriesSettingsPageState* state = new DirectoriesSettingsPageState();
     state->downloadsDirPath = downloadsDirPathEdit->text();
+    state->documentsDirectory = documentsDirectoryEdit->text();
     state->temporaryDirPath = tmpDirPathEdit->text();
     state->fileStorageDirPath = fileStorageDirPathEdit->text();
     state->indexDirectory = indexDirectoryEdit->text();
@@ -138,6 +143,16 @@ void DirectoriesSettingsPageWidget::sl_browseDownloadsDirButtonClicked() {
         QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!dir.isEmpty()) {
         downloadsDirPathEdit->setText(dir);
+    }
+    
+}
+
+void DirectoriesSettingsPageWidget::sl_browseDocumentsDirButtonClicked() {
+    QString path = documentsDirectoryEdit->text();
+    QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Directory"), path,
+        QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (!dir.isEmpty()) {
+        documentsDirectoryEdit->setText(dir);
     }
     
 }

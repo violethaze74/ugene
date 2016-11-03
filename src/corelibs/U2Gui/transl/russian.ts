@@ -284,90 +284,90 @@
         <translation>Создание аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="38"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="47"/>
         <source>Choose a file to store the annotations</source>
         <translation>Выбрать файл для сохранения аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="50"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="68"/>
         <source>Existing table</source>
         <translation>Существующая таблица</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="67"/>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="95"/>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="147"/>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="188"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="85"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="113"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="174"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="215"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="78"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="96"/>
         <source>Create new table</source>
         <translation>Новая таблица</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="102"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="120"/>
         <source>Use auto-annotations table</source>
         <translation>Использовать таблицу автоаннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="130"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="157"/>
         <source>by type</source>
         <translation>по типу</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="137"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="164"/>
         <source>auto</source>
         <translation>авто</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="144"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="171"/>
         <source>Add/remove complement flag</source>
         <translation>Добавить/снять флаг комплементарности</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="158"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="185"/>
         <source>Location</source>
         <translation>Позиция</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="168"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="195"/>
         <source>Use names of patterns as annotations names. In case the patterns are in FASTA format</source>
         <translation>Использовать имена паттернов в качестве имен для аннотаций. Для случая если паттерны заданы в формате FASTA</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="171"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="198"/>
         <source>Use pattern name</source>
         <translation>Использовать имя паттерна</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="178"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="205"/>
         <source>Annotation location in GenBank format</source>
         <translation>Местоположение аннотации (в формате GenBank)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="185"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="212"/>
         <source>Predefined group names</source>
         <translation>Стандартные имена групп</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="199"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="226"/>
         <source>Group name</source>
         <translation>Имя группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="206"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="233"/>
         <source>Annotation name</source>
         <translation>Имя аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="213"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="240"/>
         <source>Annotation type</source>
         <translation>Тип аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="220"/>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="247"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
@@ -380,90 +380,90 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="32"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="41"/>
         <source>Choose a file to store the annotations</source>
         <translation>Выбрать файл для сохранения аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="44"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="62"/>
         <source>Existing table:</source>
         <translation>Существующая таблица:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="63"/>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="95"/>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="148"/>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="215"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="81"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="113"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="175"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="242"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="76"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="94"/>
         <source>Create new table:</source>
         <translation>Новая таблица:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="104"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="122"/>
         <source>Use auto-annotations table</source>
         <translation>Использовать таблицу автоаннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="129"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="156"/>
         <source>Group name:</source>
         <translation>Имя группы:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="138"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="165"/>
         <source>auto</source>
         <translation>авто</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="145"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="172"/>
         <source>Predefined group names</source>
         <translation>Стандартные имена групп</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="161"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="188"/>
         <source>Annotation type:</source>
         <translation>Тип аннотации:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="175"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="202"/>
         <source>Annotation name:</source>
         <translation>Имя аннотации:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="187"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="214"/>
         <source>by type</source>
         <translation>по типу</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="196"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="223"/>
         <source>Location:</source>
         <translation>Позиция:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="205"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="232"/>
         <source>Annotation location in GenBank format</source>
         <translation>Местоположение аннотации (в формате GenBank)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="212"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="239"/>
         <source>Add/remove complement flag</source>
         <translation>Добавить/снять флаг комплементарности</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="228"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="255"/>
         <source>Description:</source>
         <translation>Описание:</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="238"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="265"/>
         <source>Use names of patterns as annotations names. In case the patterns are in FASTA format</source>
         <translation>Использовать имена паттернов в качестве имен для аннотаций. Для случая если паттерны заданы в формате FASTA</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="241"/>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="268"/>
         <source>Use pattern name</source>
         <translation>Использовать имя паттерна</translation>
     </message>
@@ -1053,26 +1053,26 @@ p, li { white-space: pre-wrap; }
         <translation>Выбранный объект не имеет аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="111"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="110"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="112"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="111"/>
         <source>Document with the same URL is added to the project.
 Remove it from the project first.</source>
         <translation>Такой документ уже добавлен в проект.
 Сначала удалите его из проекта.</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="122"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="153"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="121"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="152"/>
         <source>Unable to create I/O factory for </source>
         <translation>Unable to create I/O factory for </translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="127"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="156"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="126"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="155"/>
         <source>Unknown document format I/O factory: </source>
         <translation>Unknown document format I/O factory: </translation>
     </message>
@@ -2895,13 +2895,13 @@ complement(5..15)</translation>
     </message>
     <message>
         <location filename="../src/util/RegionSelector.cpp" line="126"/>
-        <location filename="../src/util/RegionSelector.cpp" line="147"/>
+        <location filename="../src/util/RegionSelector.cpp" line="148"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
         <location filename="../src/util/RegionSelector.cpp" line="134"/>
-        <location filename="../src/util/RegionSelector.cpp" line="153"/>
+        <location filename="../src/util/RegionSelector.cpp" line="154"/>
         <source>-</source>
         <translation>-</translation>
     </message>

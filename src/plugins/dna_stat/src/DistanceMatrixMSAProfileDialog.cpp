@@ -52,7 +52,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
       ctx(_c),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220458");
+    new HelpButton(this, buttonBox, "18223098");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

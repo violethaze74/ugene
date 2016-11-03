@@ -58,7 +58,6 @@ class MSAEditorNameList;
 class MSAEditorOffsetsViewController;
 class MSAEditorOverviewArea;
 class MSAEditorStatusWidget;
-class MSAEditorUndoFramework;
 class PhyTreeGeneratorLauncherTask;
 class MSAEditorTreeViewer;
 class MSACollapsibleItemModel;
@@ -372,7 +371,6 @@ private:
     QList<QWidget*>                 seqAreaWidgets;
     QList<QWidget*>                 lw2Widgets;
     QList<QWidget*>                 treeAreaWidgets;
-    //MSAEditorUndoFramework*         undoFWK;
     MsaUndoRedoFramework*           undoFWK;
 
     MSACollapsibleItemModel*        collapseModel;

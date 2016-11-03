@@ -91,7 +91,7 @@ void CuffdiffWorkerFactory::init()
     // Description of the element
     Descriptor cuffdiffDescriptor(ACTOR_ID,
         CuffdiffWorker::tr("Test for Diff. Expression with Cuffdiff"),
-        "Cuffdiff takes a transcript file as input, along with two or"
+        CuffdiffWorker::tr("Cuffdiff takes a transcript file as input, along with two or"
         " more fragment alignments (e.g. in SAM format) for two or more samples."
         " It produces a number of output files that contain"
         " test results for changes in expression at the level of transcripts,"
@@ -100,7 +100,7 @@ void CuffdiffWorkerFactory::init()
         " start site, and in the relative abundances of the primary transcripts"
         " of each gene. Tracking the former allows one to see changes in splicing,"
         " and the latter lets one see changes in relative promoter use within"
-        " a gene.");
+        " a gene."));
 
     { // Define parameters of the element
         Descriptor outDir(OUT_DIR,

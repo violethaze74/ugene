@@ -154,9 +154,10 @@ void MSAEditorOffsetsViewWidget::updateView() {
 
 void MSAEditorOffsetsViewWidget::paintEvent(QPaintEvent*) {
     SAFE_POINT(isVisible(), "Attempting to paint an invisible widget", );
-    const QSize s = size();
+    const QSize s = size() * devicePixelRatio();
     if (s != cachedView.size()) {
         cachedView = QPixmap(s);
+        cachedView.setDevicePixelRatio(devicePixelRatio());
         completeRedraw = true;
     }
     if (completeRedraw) {

@@ -46,7 +46,7 @@ Primer3Dialog::Primer3Dialog(const Primer3TaskSettings &defaultSettings, ADVSequ
         defaultSettings(defaultSettings)
 {
     ui.setupUi(this);
-    new HelpButton(this, ui.helpButton, "18220580");
+    new HelpButton(this, ui.helpButton, "18223220");
 
     QPushButton* pbPick = ui.pickPrimersButton;
     QPushButton* pbReset = ui.resetButton;

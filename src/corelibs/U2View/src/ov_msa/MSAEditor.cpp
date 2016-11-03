@@ -25,12 +25,14 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QPainter>
 #include <QResizeEvent>
 #include <QSvgGenerator>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <QWindow>
 
 #include <U2Algorithm/MSADistanceAlgorithm.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
@@ -94,7 +96,6 @@
 #include "MSAEditorState.h"
 #include "MSAEditorStatusBar.h"
 #include "MSAEditorTasks.h"
-#include "MSAEditorUndoFramework.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "PhyTrees/MSAEditorTreeViewer.h"
@@ -911,7 +912,6 @@ void MSAEditor::saveHighlightingSettings( const QString &highlightingFactoryId, 
 //////////////////////////////////////////////////////////////////////////
 MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
 : editor(_editor), seqArea(NULL), offsetsView(NULL), statusWidget(NULL), collapsibleMode(false), multiTreeViewer(NULL), similarityStatistics(NULL) {
-    //undoFWK = new MSAEditorUndoFramework(this, editor->getMSAObject());
     undoFWK = new MsaUndoRedoFramework(this, editor->getMSAObject());
 
     collapseModel = new MSACollapsibleItemModel(this);
@@ -1031,6 +1031,12 @@ MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
     connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
 
     nameList->addAction(delSelectionAction);
+
+    // All pixmap-based views must be updated when you drag'n'dron between high DPI and usual displays
+    QWindow *window = AppContext::getMainWindow()->getQMainWindow()->windowHandle();
+    connect(window, SIGNAL(screenChanged(QScreen*)), nameList, SLOT(sl_onScreenChanged()));
+    connect(window, SIGNAL(screenChanged(QScreen*)), seqArea, SLOT(sl_onScreenChanged()));
+    connect(window, SIGNAL(screenChanged(QScreen*)), consArea, SLOT(sl_onScreenChanged()));
 }
 
 QWidget* MSAEditorUI::createLabelWidget(const QString& text, Qt::Alignment ali){

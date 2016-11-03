@@ -58,8 +58,8 @@ PairedFastqComparator::PairedFastqComparator(const QString &inputFile_1, const Q
                                              U2OpStatus &os)
     : it_1(inputFile_1, os),
       it_2(inputFile_2, os),
-      out_1((LocalFileAdapter*)IOAdapterUtils::open(GUrl(outputFile_1), os, IOAdapterMode_Write)),
-      out_2((LocalFileAdapter*)IOAdapterUtils::open(GUrl(outputFile_2), os, IOAdapterMode_Write)),
+      out_1(qobject_cast<LocalFileAdapter*>(IOAdapterUtils::open(GUrl(outputFile_1), os, IOAdapterMode_Write))),
+      out_2(qobject_cast<LocalFileAdapter*>(IOAdapterUtils::open(GUrl(outputFile_2), os, IOAdapterMode_Write))),
       pairsCounter(0),
       droppedCounter(0)
 {
@@ -74,7 +74,7 @@ void PairedFastqComparator::compare(U2OpStatus &os) {
     FastqSequenceInfo tmp;
     while (it_1.hasNext() && it_2.hasNext() && !os.isCoR()) {
         CHECK_EXT(unpaired_1.size() + unpaired_2.size() < UNPAIRED_LIMIT,
-                  os.setError(tr("Too much reads without a pair(>%1). Check the input data is set correctly.").arg(UNPAIRED_LIMIT)), );
+                  os.setError(tr("Too much reads without a pair (>%1). Check the input data is set correctly.").arg(UNPAIRED_LIMIT)), );
 
         FastqSequenceInfo seqInfo_1(it_1.next());
         FastqSequenceInfo seqInfo_2(it_2.next());
@@ -111,21 +111,20 @@ void PairedFastqComparator::compare(U2OpStatus &os) {
     CHECK_OP(os, );
 
     // for correct counters info
-    tryToFindPairIInTail(os, it_1, unpaired_2, true);
+    tryToFindPairInTail(os, it_1, unpaired_2, true);
     CHECK_OP(os, );
-    tryToFindPairIInTail(os, it_2, unpaired_1, false);
+    tryToFindPairInTail(os, it_2, unpaired_1, false);
     CHECK_OP(os, );
 
     out_1->close();
     out_2->close();
 }
 
-template <typename T>
-void PairedFastqComparator::dropUntilItem(U2OpStatus& os, QList<T>& list, const T& untilItem) {
+void PairedFastqComparator::dropUntilItem(U2OpStatus& os, QList<FastqSequenceInfo>& list, const FastqSequenceInfo& untilItem) {
     CHECK(!list.isEmpty(), );
     SAFE_POINT_EXT(list.contains(untilItem), os.setError(tr("The list doesn't contains the item")), );
 
-    T item;
+    FastqSequenceInfo item;
     do {
         item = list.takeFirst();
         droppedCounter++;
@@ -133,21 +132,20 @@ void PairedFastqComparator::dropUntilItem(U2OpStatus& os, QList<T>& list, const 
     droppedCounter--; // the sequence that is in the pair was count
 }
 
-template <typename T>
-const T PairedFastqComparator::tryToFindPair(U2OpStatus& os, QList<T>& initializer, const T& info, QList<T>& searchIn) {
+const FastqSequenceInfo PairedFastqComparator::tryToFindPair(U2OpStatus& os, QList<FastqSequenceInfo>& initializer, const FastqSequenceInfo& info, QList<FastqSequenceInfo>& searchIn) {
     int index = searchIn.indexOf(info);
     if (index != -1) {
-        T result = searchIn.at(index);
+        FastqSequenceInfo result = searchIn.at(index);
         droppedCounter += initializer.size();
         initializer.clear();
 
         dropUntilItem(os, searchIn, info);
         return result;
     }
-    return T();
+    return FastqSequenceInfo();
 }
 
-void PairedFastqComparator::tryToFindPairIInTail(U2OpStatus& os, FASTQIterator& reads,
+void PairedFastqComparator::tryToFindPairInTail(U2OpStatus& os, FASTQIterator& reads,
                                                  QList<FastqSequenceInfo>& unpaired, bool iteratorContentIsFirst) {
     QList<FastqSequenceInfo> emptyList;
     while (reads.hasNext() && !os.isCoR()) {
@@ -172,7 +170,7 @@ void writeSequence(U2OpStatus& os, const DNASequence& seq, IOAdapter* ioAdapter)
 }
 
 void PairedFastqComparator::writePair(U2OpStatus &os, const FastqSequenceInfo &seqInfo_1, const FastqSequenceInfo &seqInfo_2) {
-    SAFE_POINT(seqInfo_1.isValid() && seqInfo_2.isValid(), "Invalid seq info", );
+    SAFE_POINT_EXT(seqInfo_1.isValid() && seqInfo_2.isValid(), os.setError(tr("Invalid sequence info")), );
 
     writeSequence(os, seqInfo_1.getDNASeq(), out_1.data());
     CHECK_OP(os, );

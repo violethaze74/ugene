@@ -1833,7 +1833,7 @@ Double-click to collapse the branch</source>
         <translation>Пример для имен подпоследовательностей</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="721"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="730"/>
         <source>Pattern sequence name</source>
         <translation>Имя подстроки</translation>
     </message>
@@ -2550,82 +2550,82 @@ Double-click to collapse the branch</source>
         <translation>Заменить на обратно-комплементарную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="172"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="173"/>
         <source>Complement sequence</source>
         <translation>Заменить на комплементарную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="363"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="364"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="544"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="545"/>
         <source>Analyze</source>
         <translation>Анализ</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="554"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="555"/>
         <source>Add</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="560"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="561"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="566"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="567"/>
         <source>Align</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="572"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="573"/>
         <source>Remove</source>
         <translation>Удаление</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="585"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="586"/>
         <source>Edit</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1095"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1096"/>
         <source>Show codon table</source>
         <translation>Показать таблицу кодонов</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1346"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="1347"/>
         <source>No sequence in focus</source>
         <translation>No sequence in focus</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="168"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="169"/>
         <source>Reverse sequence</source>
         <translation>Заменить на обратную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="816"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="817"/>
         <source>Select sequence to associate annotations with:</source>
         <translation>Установить связь аннотаций с последовательностью:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="834"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="835"/>
         <source>No sequence object found for annotations</source>
         <translation>Не найдена связанная с аннотациями последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="764"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="765"/>
         <source>Disable &apos;%1&apos; highlighting</source>
         <translation>Не использовать подсветку для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="766"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="767"/>
         <source>Enable &apos;%1&apos; highlighting</source>
         <translation>Задействовать подсветку для &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="903"/>
+        <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="904"/>
         <source>Go To</source>
         <translation>Выбор позиции</translation>
     </message>
@@ -4118,7 +4118,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::DnaAssemblyTaskWithConversions</name>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="413"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="412"/>
         <source>Cannot remove temporary file %1</source>
         <translation>Cannot remove temporary file %1</translation>
     </message>
@@ -4516,19 +4516,23 @@ Please, check external tools in the settings.</source>
         <translation>Filter unpaired reads task</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="280"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="282"/>
         <source>Filtering unpaired reads is launched on not-paired data</source>
         <translation>Filtering unpaired reads is launched on not-paired data</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="291"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="293"/>
         <source>The count of upstream files is not equal to the count of downstream files</source>
         <translation>The count of upstream files is not equal to the count of downstream files</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="324"/>
+        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="326"/>
+        <source>%1 read pairs were mapped, %2 reads without a pair from files &quot;%3&quot; and &quot;%4&quot; were skipped.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>%1 pairs are complete, %2 reads without a pair were found in files %3 and %4.</source>
-        <translation>%1 pairs are complete, %2 reads without a pair were found in files %3 and %4.</translation>
+        <translation type="vanished">%1 pairs are complete, %2 reads without a pair were found in files %3 and %4.</translation>
     </message>
 </context>
 <context>
@@ -4830,8 +4834,8 @@ Please, check external tools in the settings.</source>
     </message>
     <message>
         <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="63"/>
-        <source>Delete all labels...</source>
-        <translation>Удалить все надписи...</translation>
+        <source>Delete all labels</source>
+        <translation>Удалить все надписи</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="222"/>

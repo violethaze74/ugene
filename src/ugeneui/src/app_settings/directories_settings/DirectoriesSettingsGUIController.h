@@ -59,6 +59,7 @@ class DirectoriesSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
     QString downloadsDirPath;
+    QString documentsDirectory;
     QString temporaryDirPath;
     QString fileStorageDirPath;
     QString indexDirectoryEdit;
@@ -77,6 +78,7 @@ public:
 
 private slots:
     void sl_browseDownloadsDirButtonClicked();
+    void sl_browseDocumentsDirButtonClicked();
     void sl_browseTmpDirButtonClicked();
     void sl_browseFileStorageButtonClicked();
     void sl_cleanupStorage();

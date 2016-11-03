@@ -54,7 +54,6 @@ void ExportObjectUtils::exportAnnotations(const QList<Annotation *> &inputAnnota
         + "_annotations.csv", DocumentUtils::getNewDocFileNameExcludesHint());
 
     QObjectScopedPointer<ExportAnnotationsDialog> d = new ExportAnnotationsDialog(fileName, QApplication::activeWindow());
-    d->setExportSequenceVisible(false);
 
     const int dialogResult = d->exec();
     CHECK(!d.isNull(), );

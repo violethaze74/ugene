@@ -5290,118 +5290,118 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BaseShortReadsAlignerWorker</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="245"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="246"/>
         <source>Not enough upstream reads datasets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="248"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="249"/>
         <source>Not enough downstream reads datasets</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="283"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="284"/>
         <source>Output directory</source>
         <translation>Выходная директория</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="284"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="285"/>
         <source>Directory to save output files.</source>
         <translation>Директория для сохранения выходных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="287"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="288"/>
         <source>Reference genome</source>
         <translation>Референсный геном</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="288"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="289"/>
         <source>Path to indexed reference genome.</source>
         <translation>Путь до индексированного референсного генома.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="291"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="292"/>
         <source>Library</source>
         <translation>Библиотека</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="292"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="293"/>
         <source>Is this library mate-paired?</source>
         <translation>Это парная библиотека?</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="295"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="296"/>
         <source>Filter unpaired reads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="296"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="297"/>
         <source>Should the reads be checked for incomplete pairs?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="299"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="300"/>
         <source>Output file name</source>
         <translation>Имя выходного файла</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="300"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="301"/>
         <source>Base name of the output file. &apos;out.sam&apos; by default</source>
         <translation>Базовое имя для выходных файлов. По умолчанию &apos;out.sam&apos;</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="338"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="339"/>
         <source>URL of a file with reads</source>
         <translation>Путь до файла с ридами</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="339"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="349"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="340"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="350"/>
         <source>Input reads to be aligned.</source>
         <translation>Входные риды будут выровнены.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="341"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="342"/>
         <source>URL of a file with mate reads</source>
         <translation>Путь до файла с ридами</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="342"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="343"/>
         <source>Input mate reads to be aligned.</source>
         <translation>Входные риды будут выровнены.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="348"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="349"/>
         <source>Input data</source>
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="352"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="353"/>
         <source>Reverse FASTQ file</source>
         <translation>Обратный FASTQ файл</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="353"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="354"/>
         <source>Reverse paired reads to be aligned.</source>
         <translation>Обратные парные риды будут выровнены.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="365"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="366"/>
         <source>Assembly URL</source>
         <translation>Путь до сборки</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="366"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="367"/>
         <source>Output assembly URL.</source>
         <translation>Путь выходной сборки.</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="369"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="370"/>
         <source>Output data</source>
         <translation>Выходные данные</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="370"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="371"/>
         <source>Output assembly files.</source>
         <translation>Выходные файлы сборки.</translation>
     </message>
@@ -7645,6 +7645,11 @@ bowtie медленнее, когда указан режим --best.</translati
         <translation>Поиск транскриптов с дифференциальной экспрессией с помощью Cuffdiff</translation>
     </message>
     <message>
+        <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="94"/>
+        <source>Cuffdiff takes a transcript file as input, along with two or more fragment alignments (e.g. in SAM format) for two or more samples. It produces a number of output files that contain test results for changes in expression at the level of transcripts, primary transcripts, and genes. It also tracks changes in the relative abundance of transcripts sharing a common transcription start site, and in the relative abundances of the primary transcripts of each gene. Tracking the former allows one to see changes in splicing, and the latter lets one see changes in relative promoter use within a gene.</source>
+        <translation>Cuffdiff принимает на вход файл с транскриптами и два или более файла с выравниванием фрагментов (например, в формате SAM) для разных образцов. На выходе Cuffdiff предоставляет ряд файлов, содержащих результаты анализа изменений уровня экспрессии транскриптов, основных транскриптов и генов. Кроме того, Cuffdiff отмечает изменение относительного уровня транскриптов с общей точкой начала транскрипции и транскриптов одного гена. В первом случае это позволяет зафиксировать изменения сплайсинга, а вот втором — использование разных участков промоторной области гена.</translation>
+    </message>
+    <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="107"/>
         <source>Output directory</source>
         <translation>Выходная директория</translation>
@@ -7662,37 +7667,37 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="112"/>
         <source>If set to &lt;i&gt;True&lt;/i&gt;, instructs Cuffdiff to analyze the provided samples as a time series, rather than testing for differences between all pairs of samples. Samples should be provided in increasing time order.</source>
-        <translation>Если &lt;i&gt;Истина&lt;/i&gt;, указывает Cuffdiff проанализировать предоставленные образцы как временные ряды, а не проверки различий между всеми парами образцов. Образцы должны быть представлены в порядке возрастания времени.</translation>
+        <translation>При выборе этой опции Cuffdiff будет анализировать предоставленные образцы как временные ряды, а не проверки различий между всеми парами образцов. Образцы должны быть представлены в порядке возрастания времени.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="118"/>
         <source>Upper quartile norm</source>
-        <translation>Верхний квартиль</translation>
+        <translation>Квартильная нормализация</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="119"/>
         <source>If set to &lt;i&gt;True&lt;/i&gt;, normalizes by the upper quartile of the number of fragments mapping to individual loci instead of the total number of sequenced fragments. This can improve robustness of differential expression calls for less abundant genes and transcripts.</source>
-        <translation>Если &lt;i&gt;Истина&lt;/i&gt;, нормируется верхней квартилью количества фрагментов отображения на отдельных локусах, а не от общего числа упорядоченных фрагментов. Это может улучшить надежность дифференциального выражения.</translation>
+        <translation>если выбран этот параметр, будет применена нормализация по верхнему квартилю числа фрагментов, выровненных на каждый локус, вместо общего числа отсеквенированных фрагментов. Это может увеличить надежность расчёта дифференциальной экспрессии для генов и транскриптов с невысокой экспрессией.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="125"/>
         <source>Hits norm</source>
-        <translation>Попытки</translation>
+        <translation>Нормализация по числу выровненных фрагментов</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="126"/>
         <source>Instructs how to count all fragments. &lt;i&gt;Total&lt;/i&gt; specifies to count all fragments, including those not compatible with any reference transcript, towards the number of mapped fragments used in the FPKM denominator. &lt;i&gt;Compatible&lt;/i&gt; specifies to use only compatible fragments. Selecting &lt;i&gt;Compatible&lt;/i&gt; is generally recommended in Cuffdiff to reduce certain types of bias caused by differential amounts of ribosomal reads which can create the impression of falsely differentially expressed genes.</source>
-        <translation>Показывает как считать все фрагменты. &lt;i&gt; Всего &lt;/i&gt;рассчитывать все фрагменты, в том числе те, которые не совместимы с любым эталоном транскрипции, к числу отображаемых фрагментов, используемых в RPKM знаменателе. &lt;i&gt; Совместимость &lt;/i&gt; указывает на необходимость использовать только совместимые фрагменты. Рекомендуется выбирать &lt;i&gt; Совместимость &lt;/i&gt; в Cuffdiff, чтобы уменьшить определенные типы смещения, вызванные дифференциальным количеством рибосомных ридов, которые могут создать впечатление ложной дифференциальной экспрессии генов.</translation>
+        <translation>указывает, как считать все фрагменты. “Все”: рассчитывать отношение числах всех фрагментов, в том числе тех, которые не совместимы ни с одним референсным транскриптов, к числу выровненных фрагментов, в знаменателе формулы FPKM. “Совместимые”: использовать только совместимые фрагменты. Рекомендуется выбирать опцию “совместимые”, чтобы уменьшить определенные типы смещения, вызванные вариацией в количестве рибосомных ридов, которые могут создать впечатление ложной дифференциальной экспрессии генов.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="135"/>
         <source>Frag bias correct</source>
-        <translation>Регулировка смещения</translation>
+        <translation>Корректировка смещения</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="136"/>
         <source>Providing the sequences your reads were mapped to instructs Cuffdiff to run bias detection and correction algorithm which can significantly improve accuracy of transcript abundance estimates.</source>
-        <translation>Обеспечение ридов, которые были отображены Cuffdiff для запуска проверки смещения и алгоритм коррекции, которые могут значительно улучшить точность оценок транскрипции.</translation>
+        <translation>при указании файла с  последовательностями в формате fasta Cufflinks с несколькими файлами запустит алгоритм обнаружения и коррекции смещения, который может значительно улучшить точность оценки обилия транскриптов.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="141"/>
@@ -7732,7 +7737,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="160"/>
         <source>The minimum number of alignments in a locus for needed to conduct significance testing on changes in that locus observed between samples. If no testing is performed, changes in the locus are deemed not significant, and the locus&apos; observed changes don&apos;t contribute to correction for multiple testing.</source>
-        <translation>Минимальное число выравниваний в локусе для тестирования значимости изменений в этом локусе наблюдаемом между образцами. Если тестирование не проводится, изменения не считаются существенными.</translation>
+        <translation>минимальное число выравниваний для локуса для тестирования значимости изменений в этом локусе, наблюдаемом между образцами. Если тестирование не проводится, изменения не считаются существенными и не влияют на процедуру поправки на множественные сравнения.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="167"/>
@@ -7742,27 +7747,27 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="168"/>
         <source>The allowed false discovery rate used in testing.</source>
-        <translation>Разрешенное число ложных открытий, используемых в тестировании.</translation>
+        <translation>верхний порог ложноположительных результатов (FDR) для анализа.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="171"/>
         <source>Max MLE iterations</source>
-        <translation>Количество MLE итераций</translation>
+        <translation>Количество итераций MLE</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="172"/>
         <source>Sets the number of iterations allowed during maximum likelihood estimation of abundances.</source>
-        <translation>Устанавливает количество итераций допустимое в течение оценки максимального правдоподобия численности.</translation>
+        <translation>устанавливает количество итераций, допустимое при оценки обилия транскрипта методом максимального правдоподобия.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="176"/>
         <source>Emit count tables</source>
-        <translation>Таблицы рассчетов</translation>
+        <translation>Выдавать таблицы расчетов</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="177"/>
         <source>Include information about the fragment counts, fragment count variances, and fitted variance model into the report.</source>
-        <translation>Включают в себя информацию о количестве фрагментов, отклонениях и встроенную модель вариаций.</translation>
+        <translation>включить в отчет информацию  о количестве фрагментов, разбросе этой величины и подобранные параметры дисперсионного анализа.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffdiffWorker.cpp" line="181"/>
@@ -7998,7 +8003,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="64"/>
         <source>Cuffmerge merges together several assemblies. It also handles running Cuffcompare for you, and automatically filters a number of transfrags that are probably artifacts. If you have a reference file available, you can provide it to Cuffmerge in order to gracefully merge input (e.g. novel) isoforms and known isoforms and maximize overall assembly quality.</source>
-        <translation>Cuffmerge соединяет вместе несколько сборок. Он также работает как Cuffcompare и автоматически отфильтровывает артефакты.</translation>
+        <translation>Cuffmerge соединяет вместе несколько сборок, а также обеспечивает запуска Cuffcompare и автоматически отбрасывает ряд объединенных фрагментов, наиболее вероятно являющихся артефактами. При наличии файла с референсом вы можете указать его, и Cuffmerge объединит известные и новые изоформы, повысив качество итоговой сборки.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="74"/>
@@ -8018,7 +8023,7 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="79"/>
         <source>Merge the input assemblies together with this reference annotation.</source>
-        <translation>Соединяет входные сборки с этой референсной аннотацией.</translation>
+        <translation>объединить входные сборки с этой референсной аннотацией.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="83"/>
@@ -8028,17 +8033,17 @@ bowtie медленнее, когда указан режим --best.</translati
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="84"/>
         <source>The genomic DNA sequences for the reference. It is used to assist in classifying transfrags and excluding artifacts (e.g. repeats). For example, transcripts consisting mostly of lower-case bases are classified as repeats.</source>
-        <translation>ДНК последовательности для референса. Они используются например для исключения артефактов (например, повторов).</translation>
+        <translation>референсная последовательность ДНК. Она используется для классификации химерных фрагментов и исключения артефактов (например, повторов). Например, транскрипты, состоящие в основном из строчных символов будут признаны повторами.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="90"/>
         <source>Minimum isoform fraction</source>
-        <translation>Содержание изоформ</translation>
+        <translation>Минимальное содержание изоформы</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="91"/>
         <source>Discard isoforms with abundance below this.</source>
-        <translation>Отменить изоформы с обилием ниже этого.</translation>
+        <translation>не рассматривать изоформы с обилием ниже указанного уровня.</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeWorker.cpp" line="94"/>
@@ -9542,22 +9547,22 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::ShortReadsAlignerPrompter</name>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="386"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="387"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="392"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="393"/>
         <source>Aligns upstream oriented reads from &lt;u&gt;%1&lt;/u&gt; and downstream oriented reads from &lt;u&gt;%2&lt;/u&gt; </source>
         <translation>Выравнивает верховые риды из &lt;u&gt;%1&lt;/u&gt; и низовые риды из &lt;u&gt;%2&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="394"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="395"/>
         <source>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </source>
         <translation>Выравнивает риды из &lt;u&gt;%1&lt;/u&gt; </translation>
     </message>
     <message>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="398"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="399"/>
         <source> to reference genome &lt;u&gt;%1&lt;/u&gt;.</source>
         <translation> на референсный геном &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
@@ -10273,12 +10278,12 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="196"/>
         <source>Samples map</source>
-        <translation>Карьа примеров</translation>
+        <translation>Карта образцов</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="197"/>
         <source>The map which divide all input datasets into samples. Every sample has the unique name.</source>
-        <translation>Карта, которая разделяет все входные наборы данных на примеры. Каждый пример имеет уникальное имя.</translation>
+        <translation>карта, которая разделяет все входные наборы данных на образцы. Каждый образец имеет уникальное название.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="200"/>
@@ -10433,42 +10438,42 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="302"/>
         <source>Splice mismatches</source>
-        <translation>Сращивание несоответствий</translation>
+        <translation>Замены около сайтов сплайсинга</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="303"/>
         <source>The maximum number of mismatches that may appear in the &lt;i&gt;anchor&lt;/i&gt; region of a spliced alignment.</source>
-        <translation>Максимальное число несоответствий, которые могут появиться в регионе &lt;i&gt;якорь&lt;/i&gt;.</translation>
+        <translation>максимально допустимое число несоответствий в нуклеотидах около сайтов сплайсинга..</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="307"/>
         <source>Read mismatches</source>
-        <translation>Несоответствия рида</translation>
+        <translation>Замены в ридах</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="308"/>
         <source>Final read alignments having more than these many mismatches are discarded.</source>
-        <translation>Финальные выравнивания, которые имеют больше чем это число несоответствий отбрасываются.</translation>
+        <translation>финальные выравнивания, число несоответствий в которых больше указанного, будут отброшены.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="312"/>
         <source>Segment mismatches</source>
-        <translation>Несоответствия сегмента</translation>
+        <translation>Замены в сегментах</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="313"/>
         <source>Read segments are mapped independently, allowing up to this many mismatches in each segment alignment.</source>
-        <translation>Сегменты рида отображаются независимо, так что существует много несоответствий в каждом сегменте выравнивания.</translation>
+        <translation>сегменты рида выравниваются независимо, и при этом при выравнивании каждого сегмента допускается указанное максимальное число несоответствий.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="318"/>
         <source>Solexa 1.3 quals</source>
-        <translation>Solexa 1.3 quals</translation>
+        <translation>Качество в шкале Solexa 1.3</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="319"/>
         <source>As of the Illumina GA pipeline version 1.3, quality scores are encoded in Phred-scaled base-64. Use this option for FASTQ files from pipeline 1.3 or later.</source>
-        <translation>Как в пайплайне Illumina GA версии 1.3, показатели качества кодируются в Phred base64. Используйте эту опцию для FASTQ файлов из пайплайна 1.3 или более поздние версии.</translation>
+        <translation>в пайплайне Illumina GA версии 1.3 показатели качества кодируются в шкале Phred64. Используйте эту опцию для FASTQ файлов из пайплайна 1.3 или более поздних версии.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="324"/>
@@ -10478,7 +10483,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="325"/>
         <source>Specifies which Bowtie version should be used.</source>
-        <translation>Указывает какая версия Bowtie будет использована.</translation>
+        <translation>указывает, какую версию Bowtie необходимо использовать.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="328"/>
@@ -10488,7 +10493,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="329"/>
         <source>TopHat uses &lt;i&gt;-v&lt;/i&gt; in Bowtie for initial read mapping (the default), but with this option, &lt;i&gt;-n&lt;/i&gt; is used instead. Read segments are always mapped using &lt;i&gt;-v&lt;/i&gt; option.</source>
-        <translation>TopHat использует &lt;i&gt;-v&lt;/i&gt; в Bowtie для отображения ридов, но эта опция, &lt;i&gt;-n&lt;/i&gt; используется вместо.</translation>
+        <translation>по умолчанию TopHat использует -v в Bowtie для выравнивания ридов, но при выборе этой опции будет использован параметр -n. Выравнивание сегментов ридов всегда осуществляется с параметром -v.</translation>
     </message>
     <message>
         <location filename="../src/tophat/TopHatWorker.cpp" line="335"/>
@@ -11811,7 +11816,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/macs/MACSWorker.cpp" line="236"/>
         <location filename="../src/spades/SpadesWorker.cpp" line="190"/>
-        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="260"/>
+        <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="261"/>
         <source>The slot must be not empty: &apos;%1&apos;</source>
         <translation type="unfinished">Слот не должен быть пустым: &apos;%1&apos;</translation>
     </message>
