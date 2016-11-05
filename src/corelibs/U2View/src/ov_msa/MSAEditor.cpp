@@ -32,7 +32,6 @@
 #include <QSvgGenerator>
 #include <QToolBar>
 #include <QVBoxLayout>
-#include <QWindow>
 
 #include <U2Algorithm/MSADistanceAlgorithm.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
@@ -1031,12 +1030,6 @@ MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
     connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
 
     nameList->addAction(delSelectionAction);
-
-    // All pixmap-based views must be updated when you drag'n'dron between high DPI and usual displays
-    QWindow *window = AppContext::getMainWindow()->getQMainWindow()->windowHandle();
-    connect(window, SIGNAL(screenChanged(QScreen*)), nameList, SLOT(sl_onScreenChanged()));
-    connect(window, SIGNAL(screenChanged(QScreen*)), seqArea, SLOT(sl_onScreenChanged()));
-    connect(window, SIGNAL(screenChanged(QScreen*)), consArea, SLOT(sl_onScreenChanged()));
 }
 
 QWidget* MSAEditorUI::createLabelWidget(const QString& text, Qt::Alignment ali){

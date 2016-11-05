@@ -101,7 +101,6 @@ private slots:
     void sl_copyConsensusSequenceWithGaps();
     void sl_configureConsensusAction();
     void sl_zoomOperationPerformed(bool resizeModeChanged);
-    void sl_onScreenChanged(); // For high DPI displays
 
 public:
     void drawContent(QPainter& painter);
