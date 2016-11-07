@@ -22,6 +22,7 @@
 #include "MsaEditorSimilarityColumn.h"
 #include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
+#include "view_rendering/MaEditorUtils.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>

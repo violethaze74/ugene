@@ -931,30 +931,10 @@ void MSAEditor::saveHighlightingSettings( const QString &highlightingFactoryId, 
 
 
 //////////////////////////////////////////////////////////////////////////
-MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
-    : MaEditorWgt(_editor),
+MSAEditorUI::MSAEditorUI(MSAEditor* editor)
+    : MaEditorWgt(editor),
       multiTreeViewer(NULL),
       similarityStatistics(NULL) {
-    view.addObject(nameAreaContainer, 0, 0.1);
-    view.addObject(seqAreaContainer, 1, 3);
-
-    QVBoxLayout *mainLayout = new QVBoxLayout();
-    mainLayout->setMargin(0);
-    mainLayout->setSpacing(0);
-
-    mainLayout->addWidget(view.getSpliter());
-    mainLayout->setStretch(0, 1);
-    mainLayout->addWidget(statusWidget);
-    mainLayout->addWidget(overviewArea);
-
-    setLayout(mainLayout);
-
-    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
-    connect(collapseModel, SIGNAL(toggled()), seqArea,     SLOT(sl_modelChanged()));
-
-    connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
-
-    nameList->addAction(delSelectionAction);
 }
 
 void MSAEditorUI::sl_saveScreenshot(){
@@ -966,7 +946,7 @@ void MSAEditorUI::sl_saveScreenshot(){
 
 void MSAEditorUI::sl_onTabsCountChanged(int curTabsNumber) {
     if(curTabsNumber < 1) {
-        view.removeObject(multiTreeViewer);
+        maSplitter.removeWidget(multiTreeViewer);
         delete multiTreeViewer;
         multiTreeViewer = NULL;
         emit si_hideTreeOP();
@@ -980,13 +960,13 @@ void MSAEditorUI::createDistanceColumn(MSADistanceMatrix* matrix)
     dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     MsaEditorAlignmentDependentWidget* statisticsWidget = new MsaEditorAlignmentDependentWidget(dataList);
 
-    view.addObject(nameAreaContainer, statisticsWidget, 0.04, 1);
+    maSplitter.addWidget(nameAreaContainer, statisticsWidget, 0.04, 1);
 }
 
 void MSAEditorUI::addTreeView(GObjectViewWindow* treeView) {
     if(NULL == multiTreeViewer) {
         multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), editor);
-        view.addObject(nameAreaContainer, multiTreeViewer, 0.35);
+        maSplitter.addWidget(nameAreaContainer, multiTreeViewer, 0.35);
         multiTreeViewer->addTreeView(treeView);
         emit si_showTreeOP();
         connect(multiTreeViewer, SIGNAL(si_tabsCountChanged(int)), SLOT(sl_onTabsCountChanged(int)));
@@ -1015,7 +995,7 @@ void MSAEditorUI::showSimilarity() {
         dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
         similarityStatistics = new MsaEditorAlignmentDependentWidget(dataList);
 
-        view.addObject(nameAreaContainer, similarityStatistics, 0.04, 1);
+        maSplitter.addWidget(nameAreaContainer, similarityStatistics, 0.04, 1);
     }
     else {
         similarityStatistics->show();
@@ -1039,68 +1019,6 @@ MSAEditorTreeViewer* MSAEditorUI::getCurrentTree() const
         return NULL;
     }
     return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
-}
-
-SinchronizedObjectView::SinchronizedObjectView()
-    : seqArea(NULL)
-{
-    spliter = new QSplitter(Qt::Horizontal);
-    spliter->setObjectName("msa_editor_horizontal_splitter");
-}
-SinchronizedObjectView::SinchronizedObjectView(QSplitter *_spliter)
-    : seqArea(NULL), spliter(_spliter)
-{
-}
-
-QSplitter* SinchronizedObjectView::getSpliter() {
-    return spliter;
-}
-
-void SinchronizedObjectView::addObject( QWidget *obj, int index, qreal coef)
-{
-    SAFE_POINT(coef >= 0, QString("Incorrect parameters were passed to SinchronizedObjectView::addObject: coef < 0"),);
-
-    objects.append(obj);
-    int baseSize = spliter->width();
-    widgetSizes.insert(index, qRound(coef * baseSize));
-    int widgetsWidth = 0;
-    foreach(int curSize, widgetSizes) {
-        widgetsWidth += curSize;
-    }
-    for(int i = 0; i < widgetSizes.size(); i++) {
-        widgetSizes[i] = widgetSizes[i] * baseSize / widgetsWidth;
-    }
-    spliter->insertWidget(index, obj);
-    spliter->setSizes(widgetSizes);
-}
-void SinchronizedObjectView::addObject(QWidget *neighboringWidget, QWidget *obj, qreal coef, int neighboringShift) {
-    int index = spliter->indexOf(neighboringWidget) + neighboringShift;
-    addObject(obj, index, coef);
-}
-
-void SinchronizedObjectView::removeObject( QWidget *obj )
-{
-    int widgetsWidth = 0;
-    int baseSize = spliter->width();
-    int index = spliter->indexOf(obj);
-    if(index < 0) {
-        return;
-    }
-    widgetSizes.removeAt(index);
-
-    foreach(int curSize, widgetSizes) {
-        widgetsWidth += curSize;
-    }
-    for(int i = 0; i < widgetSizes.size(); i++) {
-        widgetSizes[i] = widgetSizes[i] * baseSize / widgetsWidth;
-    }
-    foreach(QWidget *curObj, objects) {
-        curObj->disconnect(obj);
-        obj->disconnect(curObj);
-    }
-    objects.removeAll(obj);
-    obj->setParent(NULL);
-    spliter->setSizes(widgetSizes);
 }
 
 }//namespace

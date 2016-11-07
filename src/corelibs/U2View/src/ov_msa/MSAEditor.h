@@ -43,6 +43,7 @@
 
 #include "view_rendering/MaEditorWgt.h"
 
+
 namespace U2 {
 
 class MultipleSequenceAlignmentObject;
@@ -276,27 +277,8 @@ private:
     MSAEditorTreeManager           treeManager;
 };
 
-class SinchronizedObjectView : public QObject{
-// U2VIEW_EXPORT: GUITesting uses MSAEditorUI
-    Q_OBJECT
-public:
-    SinchronizedObjectView();
-    SinchronizedObjectView(QSplitter *_spliter);
-    void addSeqArea(MSAEditorSequenceArea* _seqArea) {seqArea = _seqArea;}
-    void addObject(QWidget *obj, int index, qreal coef);
-    void addObject(QWidget *neighboringWidget, QWidget *obj, qreal coef, int neighboringShift = 0);
-    void removeObject(QWidget *obj);
-    QSplitter* getSpliter();
-private:
-    QList<QWidget *>       objects;
-    QList<int>             widgetSizes;
-    MSAEditorSequenceArea* seqArea;
-    QSplitter*             spliter;
-};
-
 // U2VIEW_EXPORT: GUITesting uses MSAEditorUI
 class U2VIEW_EXPORT MSAEditorUI : public MaEditorWgt {
-
     Q_OBJECT
     //todo: make public accessors:
     friend class MSAEditorTreeViewer;
@@ -321,8 +303,6 @@ public:
     MSAEditorTreeViewer* getCurrentTree() const;
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer(){return multiTreeViewer;}
-
-    SinchronizedObjectView                      view;
 
 public slots:
     void sl_saveScreenshot();

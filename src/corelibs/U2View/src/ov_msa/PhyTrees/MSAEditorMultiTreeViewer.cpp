@@ -20,6 +20,8 @@
 */
 #include "MSAEditorMultiTreeViewer.h"
 #include "MsaEditorTreeTabArea.h"
+#include "../view_rendering/MaEditorUtils.h" // SANGER_TODO: add EXPORT and include to the header to avoid ../
+
 #include <U2View/GraphicsRectangularBranchItem.h>
 #include <U2View/MSAEditor.h>
 #include <U2Gui/ObjectViewModel.h>

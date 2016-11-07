@@ -24,6 +24,7 @@
 
 #include <QWidget>
 
+#include "MaEditorUtils.h"
 
 namespace U2 {
 
@@ -84,8 +85,8 @@ protected:
     MSAEditorOffsetsViewController* offsetsView;
     MSAEditorStatusWidget*          statusWidget;
 
-    QWidget*                        seqAreaContainer;// SANGER_TODO: there is no need to store the variable
-    QWidget*                        nameAreaContainer;
+    QWidget*                        nameAreaContainer; // SANGER_TODO: there is no need to store the variable
+    MaSplitterController            maSplitter;
 
     MsaUndoRedoFramework*           undoFWK;
 
@@ -96,47 +97,6 @@ protected:
     QAction                         *copySelectionAction;
     QAction                         *copyFormattedSelectionAction;
     QAction                         *pasteAction;
-};
-
-// SANGER_TODO: rename the class to meaningfull name
-/************************************************************************/
-/* MSAWidget */
-/************************************************************************/
-class MSAWidget : public QWidget {
-    Q_OBJECT
-public:
-    MSAWidget(MaEditorWgt* _ui);
-    virtual ~MSAWidget() {}
-    const QFont& getMsaEditorFont();
-    void setHeightMargin(int _heightMargin);
-
-protected slots:
-    void sl_fontChanged();
-
-protected:
-    virtual void mousePressEvent(QMouseEvent *e);
-    virtual void paintEvent(QPaintEvent *e);
-
-    MaEditorWgt*  ui;
-    int heightMargin;
-};
-
-/************************************************************************/
-/* MSALabelWidget */
-/************************************************************************/
-class MSALabelWidget : public MSAWidget {
-    Q_OBJECT
-public:
-    MSALabelWidget(MaEditorWgt* _ui, const QString & _t, Qt::Alignment _a);
-
-    QString             text;
-    Qt::Alignment       ali;
-
-protected:
-    void paintEvent(QPaintEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
 };
 
 } // namespace

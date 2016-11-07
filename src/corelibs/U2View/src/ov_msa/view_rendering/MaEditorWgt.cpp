@@ -21,6 +21,7 @@
 
 #include "MaEditorWgt.h"
 
+#include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
 
 #include <U2Core/GObjectTypes.h>
@@ -35,8 +36,6 @@
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorStatusBar.h>
 
-#include <QApplication>
-#include <QMouseEvent>
 #include <QGridLayout>
 
 namespace U2 {
@@ -53,7 +52,6 @@ MaEditorWgt::MaEditorWgt(MSAEditor *editor)
       overviewArea(NULL),
       offsetsView(NULL),
       statusWidget(NULL),
-      seqAreaContainer(NULL),
       nameAreaContainer(NULL),
       collapsibleMode(false),
       delSelectionAction(NULL),
@@ -66,6 +64,13 @@ MaEditorWgt::MaEditorWgt(MSAEditor *editor)
 
     initActions();
     initWidgets();
+
+    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
+    connect(collapseModel, SIGNAL(toggled()), seqArea,     SLOT(sl_modelChanged()));
+
+    connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
+
+    nameList->addAction(delSelectionAction);
 }
 
 QWidget* MaEditorWgt::createLabelWidget(const QString& text, Qt::Alignment ali){
@@ -139,7 +144,7 @@ void MaEditorWgt::initWidgets() {
     seqAreaLayout->setRowStretch(1, 1);
     seqAreaLayout->setColumnStretch(1, 1);
 
-    seqAreaContainer = new QWidget();
+    QWidget* seqAreaContainer = new QWidget();
     seqAreaContainer->setLayout(seqAreaLayout);
 
     QVBoxLayout* nameAreaLayout = new QVBoxLayout();
@@ -148,8 +153,23 @@ void MaEditorWgt::initWidgets() {
     nameAreaLayout->addWidget(label);
     nameAreaLayout->addWidget(nameList);
     nameAreaLayout->addWidget(nhBar);
+
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
+
+    maSplitter.addWidget(nameAreaContainer, 0, 0.1);
+    maSplitter.addWidget(seqAreaContainer, 1, 3);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->setMargin(0);
+    mainLayout->setSpacing(0);
+
+    mainLayout->addWidget(maSplitter.getSplitter());
+    mainLayout->setStretch(0, 1);
+    mainLayout->addWidget(statusWidget);
+    mainLayout->addWidget(overviewArea);
+
+    setLayout(mainLayout);
 }
 
 void MaEditorWgt::initActions() {
@@ -185,73 +205,6 @@ void MaEditorWgt::initActions() {
         .arg(pasteAction->shortcut().toString()));
 
     addAction(pasteAction);
-}
-
-/************************************************************************/
-/* MSAWidget */
-/************************************************************************/
-MSAWidget::MSAWidget(MaEditorWgt* ui)
-    : ui(ui),
-      heightMargin(0)
-{
-    connect(ui->getEditor(), SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_fontChanged()));
-    setMinimumHeight(ui->getConsensusArea()->height() + heightMargin);
-}
-
-void MSAWidget::sl_fontChanged() {
-    update();
-    setMinimumHeight(ui->getConsensusArea()->height() + heightMargin);
-}
-
-const QFont& MSAWidget::getMsaEditorFont() {
-    return ui->getEditor()->getFont();
-}
-
-void MSAWidget::setHeightMargin(int _heightMargin) {
-    heightMargin = _heightMargin;
-    setMinimumHeight(ui->getConsensusArea()->height() + heightMargin);
-}
-
-void MSAWidget::mousePressEvent( QMouseEvent * ) {
-    ui->getSequenceArea()->cancelSelection();
-}
-void MSAWidget::paintEvent(QPaintEvent *) {
-    QPainter p(this);
-    p.fillRect(rect(), Qt::white);
-}
-
-/************************************************************************/
-/* MSALabelWidget */
-/************************************************************************/
-MSALabelWidget::MSALabelWidget(MaEditorWgt* ui, const QString & t, Qt::Alignment a)
-    : MSAWidget(ui),
-      text(t),
-      ali(a) {
-}
-
-void MSALabelWidget::paintEvent(QPaintEvent * e) {
-    MSAWidget::paintEvent(e);
-    QPainter p(this);
-    if (!text.isEmpty()) {
-        p.setFont(getMsaEditorFont());
-        p.drawText(rect(), text, ali);
-    }
-}
-
-void MSALabelWidget::mousePressEvent( QMouseEvent * e ) {
-    ui->getSequenceArea()->cancelSelection();
-    QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), 0), e->globalPos(), e->button(), e->buttons(), e->modifiers());
-    QApplication::instance()->notify(ui->getEditorNameList(), &eventForNameListArea);
-}
-
-void MSALabelWidget::mouseReleaseEvent( QMouseEvent * e ) {
-    QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), qMax(e->y() - height(), 0)), e->globalPos(), e->button(), e->buttons(), e->modifiers());
-    QApplication::instance()->notify(ui->getEditorNameList(), &eventForNameListArea);
-}
-
-void MSALabelWidget::mouseMoveEvent( QMouseEvent * e ) {
-    QMouseEvent eventForSequenceArea(e->type(), QPoint(e->x(), e->y() - height()), e->globalPos(), e->button(), e->buttons(), e->modifiers());
-    QApplication::instance()->notify(ui->getEditorNameList(), &eventForSequenceArea);
 }
 
 } // namespace
