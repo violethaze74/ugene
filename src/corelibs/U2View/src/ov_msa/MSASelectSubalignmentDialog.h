@@ -29,12 +29,13 @@
 
 namespace U2 {
 
-class MSAEditorUI;
+class MaEditorWgt;
 
 class SelectSubalignmentDialog : public QDialog, Ui_SelectSubalignmentDialog {
     Q_OBJECT
 public:
-    SelectSubalignmentDialog( MSAEditorUI *ui, const U2Region& region = U2Region(), const QList<qint64>& selectedIndexes = QList<qint64>(), QWidget *p = NULL);
+    // SANGER_TODO: no need for EditorWgt -- only the Editor is in use
+    SelectSubalignmentDialog( MaEditorWgt *ui, const U2Region& region = U2Region(), const QList<qint64>& selectedIndexes = QList<qint64>(), QWidget *p = NULL);
 
     void accept();
 
@@ -51,7 +52,7 @@ public slots:
 private:
     void init();
 
-    MSAEditorUI *ui;
+    MaEditorWgt *ui;
 
     U2Region window;
     QStringList selectedNames;

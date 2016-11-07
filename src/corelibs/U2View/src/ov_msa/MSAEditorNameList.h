@@ -35,7 +35,7 @@
 namespace U2 {
 
 class GObjectView;
-class MSAEditor;
+class MaEditor;
 class MSAEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
@@ -138,7 +138,7 @@ private:
     static const int CROSS_SIZE = 9;
     static const int CHILDREN_OFFSET = 8;
 protected:
-    MSAEditor*          editor;
+    MaEditor*          editor;
 
 };
 

@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MaEditor;
 class MaEditorWgt;
 class MSAEditorSequenceArea;
 
@@ -65,7 +65,7 @@ protected:
     void showWarning(QPainter& painter, QPaintEvent *e, const QString& warningMessage);
 
 protected:
-    MSAEditor*      editor;
+    MaEditor*      editor;
     MaEditorWgt*    ui;
     MSAEditorSequenceArea*  sequenceArea;
 

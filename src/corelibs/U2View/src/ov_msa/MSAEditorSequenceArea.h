@@ -467,7 +467,7 @@ private:
 
     void updateCollapsedGroups(const MaModificationInfo& modInfo);
 
-    MSAEditor*      editor;
+    MaEditor*       editor;
     MaEditorWgt*    ui;
     GScrollBar*     shBar;
     GScrollBar*     svBar;

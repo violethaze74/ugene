@@ -33,7 +33,7 @@
 namespace U2 {
 
 
-SelectSubalignmentDialog::SelectSubalignmentDialog(MSAEditorUI *ui, const U2Region &region, const QList<qint64> &_selectedIndexes, QWidget *p)
+SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditorWgt *ui, const U2Region &region, const QList<qint64> &_selectedIndexes, QWidget *p)
     : QDialog(p),
       ui(ui),
       window(region),

@@ -75,14 +75,15 @@ bool SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleSe
     chrom.T << 50 << 30 << 30;
     U2Region testVisRegion(0, 3);
 
-    MSAEditor* editor = seqAreaWgt->editor;
-    if (editor->showChromatograms) {
-        // SANGER_TODO: draw chromotogram below
-        p.save();
-        p.translate(0, yStart + editor->getSequenceRowHeight());
-        drawChromatogram(p, chrom, testVisRegion);
-        p.restore();
-    }
+    // SANGER_TODO: under comment until mCaEditor with showShomatogramm options is unavailable
+//    MaEditor* editor = seqAreaWgt->editor;
+//    if (editor->showChromatograms) {
+//        // SANGER_TODO: draw chromotogram below
+//        p.save();
+//        p.translate(0, yStart + editor->getSequenceRowHeight());
+//        drawChromatogram(p, chrom, testVisRegion);
+//        p.restore();
+//    }
     return true;
 }
 

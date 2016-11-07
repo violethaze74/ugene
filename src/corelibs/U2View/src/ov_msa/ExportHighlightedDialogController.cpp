@@ -38,7 +38,7 @@
 
 namespace U2{
 
-ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI *msaui_, QWidget* p )
+ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt *msaui_, QWidget* p )
     : QDialog(p),
       msaui(msaui_),
       saveController(NULL),

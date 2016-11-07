@@ -38,7 +38,7 @@ namespace U2 {
 class GObjectView;
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
-class MSAEditor;
+class MaEditor;
 class MSAEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
@@ -135,7 +135,7 @@ private:
     MSAConsensusAlgorithmFactory* getConsensusAlgorithmFactory();
     void updateConsensusAlgorithm();
 
-    MSAEditor*          editor;
+    MaEditor*           editor;
     MaEditorWgt*        ui;
     QFont               rulerFont;
     int                 rulerFontHeight;

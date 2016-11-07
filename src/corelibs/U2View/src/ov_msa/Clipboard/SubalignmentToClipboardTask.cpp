@@ -63,7 +63,7 @@ QString PrepareMsaClipboardDataTask::getResult() const {
     return result;
 }
 
-PrepareMsaClipboardDataTask * MsaClipboardDataTaskFactory::getInstance(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId) {
+PrepareMsaClipboardDataTask * MsaClipboardDataTaskFactory::getInstance(MaEditor *context, const QRect &selection, const DocumentFormatId &formatId) {
     U2Region window = getWindowBySelection(selection);
     QStringList names = getNamesBySelection(context, selection);
     if ("RTF" == formatId) {
@@ -77,7 +77,7 @@ U2Region MsaClipboardDataTaskFactory::getWindowBySelection(const QRect &selectio
     return U2Region (selection.x(), selection.width());;
 }
 
-QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MSAEditor *context, const QRect &selection){
+QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MaEditor *context, const QRect &selection){
     QStringList names;
     MSACollapsibleItemModel* m = context->getUI()->getCollapseModel();
     U2Region sel(m->mapToRow(selection.y()), m->mapToRow(selection.y() + selection.height()) - m->mapToRow(selection.y()));
@@ -154,7 +154,7 @@ CreateSubalignmentSettings FormatsMsaClipboardTask::defineSettings(const QString
     return CreateSubalignmentSettings(window, names, path, true, false, formatId);
 }
 
-RichTextMsaClipboardTask::RichTextMsaClipboardTask(MSAEditor *context, const U2Region &window, const QStringList &names)
+RichTextMsaClipboardTask::RichTextMsaClipboardTask(MaEditor *context, const U2Region &window, const QStringList &names)
     :PrepareMsaClipboardDataTask(window, names), context(context){
 
 }
@@ -235,7 +235,7 @@ void RichTextMsaClipboardTask::run(){
     delete colorScheme;
 }
 
-SubalignmentToClipboardTask::SubalignmentToClipboardTask(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId)
+SubalignmentToClipboardTask::SubalignmentToClipboardTask(MaEditor *context, const QRect &selection, const DocumentFormatId &formatId)
 : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_NR_FOSE_COSC), formatId(formatId)
 {
     prepareDataTask = MsaClipboardDataTaskFactory::getInstance(context, selection, formatId);

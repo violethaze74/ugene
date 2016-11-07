@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MaEditor;
 class MSAEditorOffsetsViewWidget;
 class MSAEditorSequenceArea;
 class MaModificationInfo;
@@ -37,7 +37,7 @@ class MultipleSequenceAlignmentObject;
 class MSAEditorOffsetsViewController : public QObject {
     Q_OBJECT
 public:
-    MSAEditorOffsetsViewController(QObject* p, MSAEditor* editor, MSAEditorSequenceArea* seqArea);
+    MSAEditorOffsetsViewController(QObject* p, MaEditor* editor, MSAEditorSequenceArea* seqArea);
 
     MSAEditorOffsetsViewWidget* getLeftWidget() const;
     MSAEditorOffsetsViewWidget* getRightWidget() const;
@@ -53,7 +53,7 @@ private:
     void updateOffsets();
 
     MSAEditorSequenceArea*      seqArea;
-    MSAEditor*                  editor;
+    MaEditor*                  editor;
     MSAEditorOffsetsViewWidget* lw;
     MSAEditorOffsetsViewWidget* rw;
     QAction*                    viewAction;
@@ -62,7 +62,7 @@ private:
 class MSAEditorOffsetsViewWidget : public QWidget {
     friend class MSAEditorOffsetsViewController;
 public:
-    MSAEditorOffsetsViewWidget(MSAEditor *editor, MSAEditorSequenceArea *seqArea, bool showStartPos);
+    MSAEditorOffsetsViewWidget(MaEditor *editor, MSAEditorSequenceArea *seqArea, bool showStartPos);
 
 protected:
     void paintEvent(QPaintEvent *e);
@@ -75,7 +75,7 @@ private:
     int getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const;
 
     MSAEditorSequenceArea *     seqArea;
-    MSAEditor *                 editor;
+    MaEditor *                 editor;
     bool                        showStartPos;
     bool                        completeRedraw;
     QPixmap                     cachedView;

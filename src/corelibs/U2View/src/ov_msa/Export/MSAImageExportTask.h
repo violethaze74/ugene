@@ -29,7 +29,6 @@
 
 #include <U2Gui/ImageExportTask.h>
 
-#include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
@@ -38,7 +37,7 @@ class Ui_MSAExportSettings;
 
 namespace U2 {
 
-class MSAEditorUI;
+class MaEditorWgt;
 
 class MSAImageExportSettings {
 public:
@@ -76,7 +75,7 @@ public:
 class MSAImageExportTask : public ImageExportTask {
     Q_OBJECT
 public:
-    MSAImageExportTask(MSAEditorUI *ui,
+    MSAImageExportTask(MaEditorWgt *ui,
                        const MSAImageExportSettings &msaSettings,
                        const ImageExportTaskSettings &settings);
     virtual void run() = 0;
@@ -117,14 +116,14 @@ protected:
             return seqArea->drawContent(p, msaSettings.region, msaSettings.seqIdx);
     }
 
-    MSAEditorUI* ui;
+    MaEditorWgt* ui;
     MSAImageExportSettings  msaSettings;
 };
 
 class MSAImageExportToBitmapTask : public MSAImageExportTask {
     Q_OBJECT
 public:
-    MSAImageExportToBitmapTask(MSAEditorUI *ui,
+    MSAImageExportToBitmapTask(MaEditorWgt *ui,
                                const MSAImageExportSettings& msaSettings,
                                const ImageExportTaskSettings &settings);
     void run();
@@ -137,7 +136,7 @@ private:
 class MSAImageExportToSvgTask : public MSAImageExportTask {
     Q_OBJECT
 public:
-    MSAImageExportToSvgTask(MSAEditorUI *ui,
+    MSAImageExportToSvgTask(MaEditorWgt *ui,
                             const MSAImageExportSettings& msaSettings,
                             const ImageExportTaskSettings &settings);
     void run();
@@ -146,7 +145,7 @@ public:
 class MSAImageExportController : public ImageExportController {
     Q_OBJECT
 public:
-    MSAImageExportController(MSAEditorUI *ui);
+    MSAImageExportController(MaEditorWgt *ui);
     ~MSAImageExportController();
 
 public slots:
@@ -167,7 +166,7 @@ private:
     bool canExportToSvg() const;
     void updateSeqIdx() const;
 
-    MSAEditorUI* ui;
+    MaEditorWgt* ui;
     Ui_MSAExportSettings    *settingsUi;
     mutable MSAImageExportSettings      msaSettings;
     QString format;

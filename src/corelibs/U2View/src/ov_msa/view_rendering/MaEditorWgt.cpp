@@ -43,7 +43,7 @@ namespace U2 {
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-MaEditorWgt::MaEditorWgt(MSAEditor *editor)
+MaEditorWgt::MaEditorWgt(MaEditor *editor)
     : editor(editor),
       seqArea(NULL),
       saRenderer(NULL),

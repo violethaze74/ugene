@@ -40,7 +40,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, cons
     CHECK(!seqIdx.isEmpty(), false);
 
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->highlightingScheme;
-    MSAEditor* editor = seqAreaWgt->editor;
+    MaEditor* editor = seqAreaWgt->editor; // SANGER_TODO: renderer should know what editor is in use... or not
 
     p.fillRect(QRect(0, 0,
                      editor->getColumnWidth() * region.length,
@@ -75,7 +75,7 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleSequenceAlignment&
     // SANGER_TODO: deal with frequent handlign of editor or h/color schemes through the editor etc.
     // move to class parameter
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->highlightingScheme;
-    MSAEditor* editor = seqAreaWgt->editor;
+    MaEditor* editor = seqAreaWgt->editor;
     int columnWidth = editor->getColumnWidth();
     QString schemeName = highlightingScheme->metaObject()->className();
     bool isGapsScheme = schemeName == "U2::MSAHighlightingSchemeGaps";

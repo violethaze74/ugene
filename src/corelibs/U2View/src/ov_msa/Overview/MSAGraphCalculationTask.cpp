@@ -190,7 +190,7 @@ int MSAClustalOverviewCalculationTask::getGraphValue(int pos) const {
     }
 }
 
-MSAHighlightingOverviewCalculationTask::MSAHighlightingOverviewCalculationTask(MSAEditor *editor,
+MSAHighlightingOverviewCalculationTask::MSAHighlightingOverviewCalculationTask(MaEditor *editor,
                                                                                const QString &colorSchemeId,
                                                                                const QString &highlightingSchemeId,
                                                                                int width, int height)

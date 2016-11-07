@@ -42,6 +42,7 @@
 #include "PhyTrees/MSAEditorTreeManager.h"
 
 #include "view_rendering/MaEditorWgt.h"
+#include "MaEditor.h"
 
 
 namespace U2 {
@@ -78,14 +79,6 @@ class PairwiseAlignmentTask;
 #define MSAE_MENU_ADVANCED      "MSAE_MENU_ADVANCED"
 #define MSAE_MENU_LOAD          "MSAE_MENU_LOAD_SEQ"
 
-class SNPSettings {
-public:
-    SNPSettings() : seqId(U2MsaRow::INVALID_ROW_ID) { }
-    QPoint clickPoint;
-    qint64 seqId;
-    QVariantMap highlightSchemeSettings;
-};
-
 class PairwiseAlignmentWidgetsSettings {
 public:
     PairwiseAlignmentWidgetsSettings()
@@ -111,7 +104,7 @@ public:
     QVariantMap customSettings;
 };
 
-class U2VIEW_EXPORT MSAEditor : public GObjectView {
+class U2VIEW_EXPORT MSAEditor : public MaEditor {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditor)
 
@@ -134,48 +127,14 @@ public:
 
     virtual OptionsPanel* getOptionsPanel(){return optionsPanel;}
 
-    MultipleSequenceAlignmentObject* getMSAObject() const {return msaObject;}
+    MSAEditorUI* getUI() const { return qobject_cast<MSAEditorUI*>(ui); } // SANGER_TODO: find out if it is legal
 
-    MSAEditorUI* getUI() const {return ui;}
-
-    int getAlignmentLen() const;
-
-    int getNumSequences() const;
-
-    bool isAlignmentEmpty() const;
-
-    const QRect& getCurrentSelection() const;
-
-    const QFont& getFont() const {return font;}
     int getFirstVisibleBase() const;
 
     //Return alignment row that is displayed on target line in MSAEditor
     const MultipleSequenceAlignmentRow getRowByLineNumber(int lineNumber) const;
 
-    float getZoomFactor() const {return zoomFactor;}
-
-    enum ResizeMode {
-        ResizeMode_FontAndContent, ResizeMode_OnlyContent
-    };
-
-    ResizeMode getResizeMode() const { return resizeMode; }
-
-    int getRowHeight() const;
-    int getSequenceRowHeight() const;
-
-    int getColumnWidth() const;
-
     void copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os);
-    void createDistanceColumn(MSADistanceMatrix* algo);
-
-    static const float zoomMult;
-
-    void setReference(qint64 sequenceId);
-    qint64 getReferenceRowId() const { return snp.seqId; }
-    QVariantMap getHighlightingSettings(const QString &highlightingFactoryId) const;
-    void saveHighlightingSettings(const QString &highlightingFactoryId, const QVariantMap &settingsMap = QVariantMap());
-    QString getReferenceRowName() const;
-    void updateReference();
 
     PairwiseAlignmentWidgetsSettings* getPairwiseAlignmentWidgetsSettings() const { return pairwiseAlignmentWidgetsSettings; }
 
@@ -183,21 +142,12 @@ public:
 
     void buildTree();
 
-    void resetCollapsibleModel();
-
     void exportHighlighted(){sl_exportHighlighted();}
 
 public slots:
     void sl_zoomIn();
     void sl_zoomOut();
     void sl_resetZoom();
-
-signals:
-    void si_fontChanged(const QFont& f);
-    void si_zoomOperationPerformed(bool resizeModeChanged);
-    void si_referenceSeqChanged(qint64 referenceId);
-    void si_sizeChanged(int newHeight, bool isMinimumSize, bool isMaximumSize);
-    void si_completeUpdate();
 
 protected slots:
     void sl_saveAlignment();
@@ -245,11 +195,6 @@ private:
     void alignSequencesFromObjectsToAlignment(const QList<GObject*>& objects);
     void alignSequencesFromFilesToAlignment();
 
-    MultipleSequenceAlignmentObject* msaObject;
-    MSAEditorUI*      ui;
-    QFont             font;
-    ResizeMode        resizeMode;
-    float             zoomFactor;
     float             fontPixelToPointSize;
     bool              showChromatograms;
 
@@ -268,11 +213,9 @@ private:
     QAction*          alignSequencesToAlignmentAction;
     QAction*          setAsReferenceSequenceAction;
     QAction*          unsetReferenceSequenceAction;
-    QAction*          exportHighlightedAction;
 
     QToolBar*         toolbar;
 
-    SNPSettings snp;
     PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings;
     MSAEditorTreeManager           treeManager;
 };
@@ -303,6 +246,8 @@ public:
     MSAEditorTreeViewer* getCurrentTree() const;
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer(){return multiTreeViewer;}
+
+    MSAEditor* getEditor() const { return qobject_cast<MSAEditor* >(editor); }  // SANGER_TODO: find out if it is legal
 
 public slots:
     void sl_saveScreenshot();

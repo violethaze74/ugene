@@ -41,7 +41,7 @@ namespace U2 {
 
 #define SETTINGS_SHOW_OFFSETS "show_offsets"
 
-MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEditor* ed, MSAEditorSequenceArea* sa)
+MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MaEditor* ed, MSAEditorSequenceArea* sa)
     : QObject(p)
 {
     seqArea = sa;
@@ -118,8 +118,11 @@ void MSAEditorOffsetsViewController::updateOffsets() {
     rw->updateView();
 }
 
-MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MSAEditor *ed, MSAEditorSequenceArea* sa, bool sp)
-    : seqArea(sa), editor(ed), showStartPos(sp), completeRedraw(true)
+MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MaEditor *ed, MSAEditorSequenceArea* sa, bool sp)
+    : seqArea(sa),
+      editor(ed),
+      showStartPos(sp),
+      completeRedraw(true)
 {
 
 }
@@ -190,7 +193,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
     int pos = showStartPos ? seqArea->getFirstVisibleBase() : seqArea->getLastVisibleBase(true, true);
 
     QVector<U2Region> visibleRows;
-    MSAEditorUI* ui = editor->getUI();
+    MaEditorWgt* ui = editor->getUI();
     if (ui->isCollapsibleMode()) {
         MSACollapsibleItemModel* m = ui->getCollapseModel();
         int lastSeq = seqArea->getLastVisibleSequence(true);
@@ -199,8 +202,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
         visibleRows.append(U2Region(startSeq, nSeqVisible));
     }
 
-    int i=0;
-    const MSAEditor *editor = ui->getEditor();
+    int i = 0;
     const MultipleSequenceAlignment alignment = editor->getMSAObject()->getMsa();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);

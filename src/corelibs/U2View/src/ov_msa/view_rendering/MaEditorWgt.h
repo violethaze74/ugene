@@ -29,7 +29,7 @@
 namespace U2 {
 
 class MSACollapsibleItemModel;
-class MSAEditor;
+class MaEditor;
 class MSAEditorConsensusArea;
 class MSAEditorNameList;
 class MSAEditorSequenceArea;
@@ -45,16 +45,16 @@ class SequenceAreaRenderer;
 class MaEditorWgt : public QWidget {
     Q_OBJECT
 public:
-    MaEditorWgt(MSAEditor* editor);
+    MaEditorWgt(MaEditor* editor);
 
     // SANGER_TODO: it is for multi tree case - decide if it is neccessary
     QWidget* createLabelWidget(const QString& text = QString(), Qt::Alignment ali = Qt::AlignCenter);
 
-    MSAEditor* getEditor() const { return editor; }
-    MSAEditorSequenceArea*  getSequenceArea() { return seqArea; }
-    MSAEditorNameList*      getEditorNameList() { return nameList; }
-    MSAEditorConsensusArea* getConsensusArea() { return consArea; }
-    MSAEditorOverviewArea*  getOverviewArea() { return overviewArea; }
+    MaEditor*                       getEditor() const { return editor; }
+    MSAEditorSequenceArea*          getSequenceArea() { return seqArea; }
+    MSAEditorNameList*              getEditorNameList() { return nameList; }
+    MSAEditorConsensusArea*         getConsensusArea() { return consArea; }
+    MSAEditorOverviewArea*          getOverviewArea() { return overviewArea; }
     MSAEditorOffsetsViewController* getOffsetsViewController() { return offsetsView; }
 
     QAction* getUndoAction() const;
@@ -76,7 +76,7 @@ protected:
     void initActions();
 
 protected:
-    MSAEditor*                      editor;
+    MaEditor*                       editor;
     MSAEditorSequenceArea*          seqArea;
     SequenceAreaRenderer*           saRenderer;
     MSAEditorNameList*              nameList;

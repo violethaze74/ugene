@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-class MSAEditor;
+class MaEditor;
 class MultipleSequenceAlignmentObject;
 class MSAConsensusAlgorithm;
 class MsaColorScheme;
@@ -94,7 +94,7 @@ private:
 class MSAHighlightingOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAHighlightingOverviewCalculationTask(MSAEditor* _editor,
+    MSAHighlightingOverviewCalculationTask(MaEditor* _editor,
                                            const QString &colorSchemeId,
                                            const QString &highlightingSchemeId,
                                            int width, int height);

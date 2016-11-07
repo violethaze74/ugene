@@ -106,28 +106,12 @@ namespace U2 {
 
 /* TRANSLATOR U2::MSAEditor */
 
-const float MSAEditor::zoomMult = 1.25;
-
 MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
-    : GObjectView(MSAEditorFactory::ID, viewName),
-      ui(NULL),
+    : MaEditor(MSAEditorFactory::ID, viewName, obj),
       alignSequencesToAlignmentAction(NULL),
       treeManager(this) {
 
-    msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-
     showChromatograms = true; // SANGER_TODO: check if there are chromatograms
-
-    objects.append(msaObject);
-    onObjectAdded(msaObject);
-
-    requiredObjects.append(msaObject);
-    GCOUNTER(cvar,tvar,"MSAEditor");
-
-    if (!U2DbiUtils::isDbiReadOnly(msaObject->getEntityRef().dbiRef)) {
-        U2OpStatus2Log os;
-        msaObject->setTrackMod(os, TrackOnUpdate);
-    }
 
     saveAlignmentAction = new QAction(QIcon(":core/images/msa_save.png"), tr("Save alignment"), this);
     saveAlignmentAction->setObjectName("Save alignment");
@@ -191,28 +175,6 @@ MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
     exportHighlightedAction->setDisabled(true);
 
     updateActions();
-}
-
-int MSAEditor::getRowHeight() const {
-    QFontMetrics fm(font, ui);
-    int chromHeigth = 100; // SANGER_TODO: set const chrom height
-    return (fm.height() + chromHeigth * showChromatograms )* zoomMult;
-}
-
-int MSAEditor::getSequenceRowHeight() const {
-    QFontMetrics fm(font, ui);
-    return fm.height() * zoomMult;
-}
-
-int MSAEditor::getColumnWidth() const {
-    QFontMetrics fm(font, ui);
-    int width =  fm.width('W') * zoomMult;
-
-    width = (int)(width * zoomFactor);
-    width = qMax(width, MOBJECT_MIN_COLUMN_WIDTH);
-
-    return width;
-
 }
 
 void MSAEditor::sl_saveAlignment(){
@@ -572,18 +534,6 @@ QWidget* MSAEditor::createWidget() {
     return ui;
 }
 
-int MSAEditor::getAlignmentLen() const {
-    return msaObject->getLength();
-}
-
-int MSAEditor::getNumSequences() const {
-    return msaObject->getNumRows();
-}
-
-bool MSAEditor::isAlignmentEmpty() const {
-    return getAlignmentLen() == 0 || getNumSequences() == 0;
-}
-
 void MSAEditor::sl_onContextMenuRequested(const QPoint & pos) {
     Q_UNUSED(pos);
 
@@ -627,10 +577,6 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & pos) {
     GUIUtils::disableEmptySubmenus(&m);
 
     m.exec(QCursor::pos());
-}
-
-const QRect& MSAEditor::getCurrentSelection() const {
-    return ui->getSequenceArea()->getSelection().getRect();
 }
 
 void MSAEditor::updateActions() {
@@ -828,10 +774,6 @@ void MSAEditor::alignSequencesFromFilesToAlignment() {
     }
 }
 
-void MSAEditor::createDistanceColumn(MSADistanceMatrix* algo) {
-    ui->createDistanceColumn(algo);
-}
-
 void MSAEditor::sl_setSeqAsReference(){
     QPoint menuCallPos = snp.clickPoint;
     QPoint nameMapped = ui->getEditorNameList()->mapFromGlobal(menuCallPos);
@@ -858,41 +800,8 @@ void MSAEditor::sl_rowsRemoved(const QList<qint64> &rowIds) {
     }
 }
 
-void MSAEditor::setReference(qint64 sequenceId) {
-    if(sequenceId == U2MsaRow::INVALID_ROW_ID){
-        exportHighlightedAction->setDisabled(true);
-    }else{
-        exportHighlightedAction->setEnabled(true);
-    }
-    if(snp.seqId != sequenceId) {
-        snp.seqId = sequenceId;
-        emit si_referenceSeqChanged(sequenceId);
-    }
-    //REDRAW OTHER WIDGETS
-}
-
-void MSAEditor::updateReference(){
-    if(msaObject->getRowPosById(snp.seqId) == -1){
-        setReference(U2MsaRow::INVALID_ROW_ID);
-    }
-}
-
-QString MSAEditor::getReferenceRowName() const {
-    const MultipleSequenceAlignment alignment = getMSAObject()->getMsa();
-    U2OpStatusImpl os;
-    const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
-    return (U2MsaRow::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq)
-        : QString();
-}
-
 void MSAEditor::buildTree() {
     sl_buildTree();
-}
-
-void MSAEditor::resetCollapsibleModel() {
-    MSACollapsibleItemModel *collapsibleModel = ui->getCollapseModel();
-    SAFE_POINT(NULL != collapsibleModel, "NULL collapsible model!", );
-    collapsibleModel->reset();
 }
 
 void MSAEditor::sl_exportHighlighted(){
@@ -913,22 +822,6 @@ void MSAEditor::sl_showHideChromatograms(bool show) {
     showChromatograms = show;
     emit si_completeUpdate();
 }
-
-QVariantMap MSAEditor::getHighlightingSettings(const QString &highlightingFactoryId) const {
-    const QVariant v = snp.highlightSchemeSettings.value(highlightingFactoryId);
-    if (v.isNull()) {
-        return QVariantMap();
-    } else {
-        CHECK(v.type() == QVariant::Map, QVariantMap());
-        return v.toMap();
-    }
-}
-
-void MSAEditor::saveHighlightingSettings( const QString &highlightingFactoryId, const QVariantMap &settingsMap /* = QVariant()*/ ) {
-    snp.highlightSchemeSettings.insert(highlightingFactoryId, QVariant(settingsMap));
-}
-
-
 
 //////////////////////////////////////////////////////////////////////////
 MSAEditorUI::MSAEditorUI(MSAEditor* editor)
@@ -965,7 +858,8 @@ void MSAEditorUI::createDistanceColumn(MSADistanceMatrix* matrix)
 
 void MSAEditorUI::addTreeView(GObjectViewWindow* treeView) {
     if(NULL == multiTreeViewer) {
-        multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), editor);
+        // SANGER_TODO: avoid qobject_cast???
+        multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), qobject_cast<MSAEditor*>(editor));
         maSplitter.addWidget(nameAreaContainer, multiTreeViewer, 0.35);
         multiTreeViewer->addTreeView(treeView);
         emit si_showTreeOP();

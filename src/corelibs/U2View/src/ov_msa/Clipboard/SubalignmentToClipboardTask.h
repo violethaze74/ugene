@@ -69,21 +69,21 @@ private:
 
 class RichTextMsaClipboardTask : public PrepareMsaClipboardDataTask {
 public:
-    RichTextMsaClipboardTask(MSAEditor *context, const U2Region &window, const QStringList &names);
+    RichTextMsaClipboardTask(MaEditor *context, const U2Region &window, const QStringList &names);
     void run();
 
 private:
-    MSAEditor *context;
+    MaEditor *context;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 class MsaClipboardDataTaskFactory {
 public:
-    static PrepareMsaClipboardDataTask * getInstance(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId);
+    static PrepareMsaClipboardDataTask * getInstance(MaEditor *context, const QRect &selection, const DocumentFormatId &formatId);
 
 private:
     static U2Region getWindowBySelection(const QRect &selection);
-    static QStringList getNamesBySelection(MSAEditor *context, const QRect &selection);
+    static QStringList getNamesBySelection(MaEditor *context, const QRect &selection);
 };
 
 
@@ -91,7 +91,7 @@ private:
 class SubalignmentToClipboardTask : public Task {
     Q_OBJECT
 public:
-    SubalignmentToClipboardTask(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId);
+    SubalignmentToClipboardTask(MaEditor *context, const QRect &selection, const DocumentFormatId &formatId);
 
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);

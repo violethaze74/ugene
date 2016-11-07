@@ -764,7 +764,6 @@ void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, const QString& , bo
         }
     }
 
-    const MSAEditor *editor = ui->getEditor();
     const MultipleSequenceAlignment alignment = editor->getMSAObject()->getMsa();
     U2OpStatusImpl os;
     if (s == alignment->getRowIndexByRowId(editor->getReferenceRowId(), os)) {

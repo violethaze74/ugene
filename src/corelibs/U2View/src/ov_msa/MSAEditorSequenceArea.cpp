@@ -2876,7 +2876,6 @@ QString MSAEditorSequenceArea::exportHighligtning(int startPos, int endPos, int 
     assert(maObj!=NULL);
 
     const MultipleSequenceAlignment msa = maObj->getMsa();
-    const MSAEditor *editor = ui->getEditor();
 
     U2OpStatusImpl os;
     const int refSeq = editor->getMSAObject()->getMsa()->getRowIndexByRowId(editor->getReferenceRowId(), os);
