@@ -597,11 +597,6 @@ void MSAEditorNameList::sl_onGroupColorsChanged(const GroupColorSchema& colors) 
     update();
 }
 
-void MSAEditorNameList::sl_onScreenChanged() {
-    completeRedraw = true;
-    update();
-}
-
 //////////////////////////////////////////////////////////////////////////
 // draw methods
 QFont MSAEditorNameList::getFont(bool selected) const {
@@ -636,10 +631,10 @@ QRect MSAEditorNameList::calculateButtonRect(const QRect& itemRect) const {
 void MSAEditorNameList::drawAll() {
     QSize s = size() * devicePixelRatio();
     if (cachedView->size() != s) {
-        assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
         cachedView->setDevicePixelRatio(devicePixelRatio());
+        completeRedraw = true;
     }
     if (completeRedraw) {
         QPainter pCached(cachedView);

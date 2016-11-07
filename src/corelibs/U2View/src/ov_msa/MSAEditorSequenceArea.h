@@ -403,7 +403,6 @@ private slots:
     void sl_alphabetChanged(const MAlignmentModInfo &mi, const DNAAlphabet *prevAlphabet);
 
     void sl_changeSelectionColor();
-    void sl_onScreenChanged(); // For high DPI displays
 
 
 protected:

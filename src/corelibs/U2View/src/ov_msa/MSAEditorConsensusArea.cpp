@@ -246,10 +246,10 @@ void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
     assert(s.width() == sas.width());
 
     if (cachedView->size() != s) {
-        assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
         cachedView->setDevicePixelRatio(devicePixelRatio());
+        completeRedraw = true;
     }
 
     if (completeRedraw) {
@@ -522,11 +522,6 @@ void MSAEditorConsensusArea::sl_zoomOperationPerformed( bool resizeModeChanged )
     } else {
         setupFontAndHeight();
     }
-}
-
-void MSAEditorConsensusArea::sl_onScreenChanged() {
-    completeRedraw = true;
-    update();
 }
 
 void MSAEditorConsensusArea::sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev) {

@@ -628,10 +628,10 @@ void MSAEditorSequenceArea::paintEvent(QPaintEvent *e) {
 void MSAEditorSequenceArea::drawAll() {
     QSize s = size() * devicePixelRatio();
     if (cachedView->size() != s) {
-        assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
         cachedView->setDevicePixelRatio(devicePixelRatio());
+        completeRedraw = true;
     }
     if (completeRedraw) {
         QPainter pCached(cachedView);
@@ -2919,11 +2919,6 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
 void MSAEditorSequenceArea::sl_changeSelectionColor() {
     QColor black(Qt::black);
     selectionColor = (black == selectionColor) ? Qt::darkGray : Qt::black;
-    update();
-}
-
-void MSAEditorSequenceArea::sl_onScreenChanged() {
-    completeRedraw = true;
     update();
 }
 
