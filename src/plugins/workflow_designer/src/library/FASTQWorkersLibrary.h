@@ -109,6 +109,7 @@ public:
 
 protected:
     void runStep();
+    int getMaxQualityValue();
     QStringList getParameters(U2OpStatus& os);
 };
 
