@@ -282,8 +282,8 @@ void MSAEditor::sl_zoomOut() {
 void MSAEditor::sl_zoomToSelection()
 {
     ResizeMode oldMode = resizeMode;
-    int seqAreaWidth =  ui->seqArea->width();
-    MSAEditorSelection selection = ui->seqArea->getSelection();
+    int seqAreaWidth =  ui->getSequenceArea()->width();
+    MSAEditorSelection selection = ui->getSequenceArea()->getSelection();
     if (selection.isNull()) {
         return;
     }
@@ -306,8 +306,8 @@ void MSAEditor::sl_zoomToSelection()
         zoomFactor = pixelsPerBase / (MOBJECT_MIN_FONT_SIZE * fontPixelToPointSize);
         resizeMode = ResizeMode_OnlyContent;
     }
-    ui->seqArea->setFirstVisibleBase(selection.x());
-    ui->seqArea->setFirstVisibleSequence(selection.y());
+    ui->getSequenceArea()->setFirstVisibleBase(selection.x());
+    ui->getSequenceArea()->setFirstVisibleSequence(selection.y());
 
     updateActions();
 
@@ -358,14 +358,14 @@ void MSAEditor::setFont(const QFont& f) {
 
 void MSAEditor::setFirstVisibleBase(int firstPos) {
 
-    if (ui->seqArea->isPosInRange(firstPos)) {
-        ui->seqArea->setFirstVisibleBase(firstPos);
+    if (ui->getSequenceArea()->isPosInRange(firstPos)) {
+        ui->getSequenceArea()->setFirstVisibleBase(firstPos);
     }
 }
 
 int MSAEditor::getFirstVisibleBase() const {
 
-    return ui->seqArea->getFirstVisibleBase();
+    return ui->getSequenceArea()->getFirstVisibleBase();
 }
 
 const MultipleSequenceAlignmentRow MSAEditor::getRowByLineNumber(int lineNumber) const {
@@ -466,8 +466,8 @@ void MSAEditor::addExportMenu(QMenu* m) {
 void MSAEditor::addViewMenu(QMenu* m) {
     QMenu* em = m->addMenu(tr("View"));
     em->menuAction()->setObjectName(MSAE_MENU_VIEW);
-    if (ui->offsetsView != NULL) {
-        em->addAction(ui->offsetsView->getToggleColumnsViewAction());
+    if (ui->getOffsetsViewController() != NULL) {
+        em->addAction(ui->getOffsetsViewController()->getToggleColumnsViewAction());
     }
 }
 
@@ -589,7 +589,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & pos) {
 
     if (ui->childAt(pos) != NULL) {
         // ignore context menu request if overview area was clicked on
-        if (ui->overviewArea->isOverviewWidget(ui->childAt(pos))) {
+        if (ui->getOverviewArea()->isOverviewWidget(ui->childAt(pos))) {
             return;
         }
     }
@@ -608,9 +608,9 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & pos) {
 
     m.addSeparator();
     snp.clickPoint = QCursor::pos( );
-    const QPoint nameMapped = ui->nameList->mapFromGlobal( snp.clickPoint );
+    const QPoint nameMapped = ui->getEditorNameList()->mapFromGlobal( snp.clickPoint );
     const qint64 hoverRowId = ( 0 <= nameMapped.y( ) )
-        ? ui->nameList->sequenceIdAtPos( nameMapped ) : U2MsaRow::INVALID_ROW_ID;
+        ? ui->getEditorNameList()->sequenceIdAtPos( nameMapped ) : U2MsaRow::INVALID_ROW_ID;
     if ( ( hoverRowId != getReferenceRowId( )
         || U2MsaRow::INVALID_ROW_ID == getReferenceRowId( ) )
         && hoverRowId != U2MsaRow::INVALID_ROW_ID )
@@ -630,7 +630,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & pos) {
 }
 
 const QRect& MSAEditor::getCurrentSelection() const {
-    return ui->seqArea->getSelection().getRect();
+    return ui->getSequenceArea()->getSelection().getRect();
 }
 
 void MSAEditor::updateActions() {
@@ -834,9 +834,9 @@ void MSAEditor::createDistanceColumn(MSADistanceMatrix* algo) {
 
 void MSAEditor::sl_setSeqAsReference(){
     QPoint menuCallPos = snp.clickPoint;
-    QPoint nameMapped = ui->nameList->mapFromGlobal(menuCallPos);
+    QPoint nameMapped = ui->getEditorNameList()->mapFromGlobal(menuCallPos);
     if ( nameMapped.y() >= 0 ) {
-        qint64 newRowId = ui->nameList->sequenceIdAtPos(nameMapped);
+        qint64 newRowId = ui->getEditorNameList()->sequenceIdAtPos(nameMapped);
         if (U2MsaRow::INVALID_ROW_ID != newRowId && newRowId != snp.seqId) {
             setReference(newRowId);
         }
@@ -933,75 +933,8 @@ void MSAEditor::saveHighlightingSettings( const QString &highlightingFactoryId, 
 //////////////////////////////////////////////////////////////////////////
 MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
     : MaEditorWgt(_editor),
-      seqArea(NULL),
-      offsetsView(NULL),
-      statusWidget(NULL),
       multiTreeViewer(NULL),
       similarityStatistics(NULL) {
-
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    setMinimumSize(300, 200);
-
-    setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT).icon);
-
-    QWidget *label;
-    GScrollBar* shBar = new GScrollBar(Qt::Horizontal);
-    shBar->setObjectName("horizontal_sequence_scroll");
-    QScrollBar* nhBar = new QScrollBar(Qt::Horizontal);
-    nhBar->setObjectName("horizontal_names_scroll");
-    GScrollBar* cvBar = new GScrollBar(Qt::Vertical);
-    cvBar->setObjectName("vertical_sequence_scroll");
-
-    seqArea = new MSAEditorSequenceArea(this, shBar, cvBar);
-    nameList = new MSAEditorNameList(this, nhBar);
-    consArea = new MSAEditorConsensusArea(this);
-    offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
-    statusWidget = new MSAEditorStatusWidget(editor->getMSAObject(), seqArea);
-    overviewArea = new MSAEditorOverviewArea(this);
-
-    QWidget* label1 = createLabelWidget();
-    QWidget* label2 = createLabelWidget();
-    label1->setMinimumHeight(consArea->height());
-    label2->setMinimumHeight(consArea->height());
-    offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    offsetsView->getRightWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    seqArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    shBar->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-
-    QGridLayout* seqAreaLayout = new QGridLayout();
-    seqAreaLayout->setMargin(0);
-    seqAreaLayout->setSpacing(0);
-
-    seqAreaLayout->addWidget(label1, 0, 0);
-    seqAreaLayout->addWidget(consArea, 0, 1);
-    seqAreaLayout->addWidget(label2, 0, 2, 1, 2);
-
-    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
-    seqAreaLayout->addWidget(seqArea, 1, 1);
-    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 1, 2);
-    seqAreaLayout->addWidget(cvBar, 1, 3);
-
-    seqAreaLayout->addWidget(shBar, 2, 0, 1, 3);
-
-    seqAreaLayout->setRowStretch(1, 1);
-    seqAreaLayout->setColumnStretch(1, 1);
-
-    seqAreaContainer = new QWidget();
-    seqAreaContainer->setLayout(seqAreaLayout);
-
-    label = createLabelWidget(tr("Consensus"));
-    label->setMinimumHeight(consArea->height());
-    nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-
-    QVBoxLayout* nameAreaLayout = new QVBoxLayout();
-    nameAreaLayout->setMargin(0);
-    nameAreaLayout->setSpacing(0);
-    nameAreaLayout->addWidget(label);
-    nameAreaLayout->addWidget(nameList);
-    nameAreaLayout->addWidget(nhBar);
-    nameAreaContainer = new QWidget();
-    nameAreaContainer->setLayout(nameAreaLayout);
-
     view.addObject(nameAreaContainer, 0, 0.1);
     view.addObject(seqAreaContainer, 1, 3);
 
@@ -1022,10 +955,6 @@ MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
     connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
 
     nameList->addAction(delSelectionAction);
-}
-
-QWidget* MSAEditorUI::createLabelWidget(const QString& text, Qt::Alignment ali){
-    return new MSALabelWidget(this, text, ali);
 }
 
 void MSAEditorUI::sl_saveScreenshot(){
@@ -1112,45 +1041,6 @@ MSAEditorTreeViewer* MSAEditorUI::getCurrentTree() const
     return qobject_cast<MSAEditorTreeViewer*>(page->getObjectView());
 }
 
-MSAWidget::MSAWidget(MSAEditorUI* _ui)
-: ui(_ui), heightMargin(0) {
-    connect(ui->getEditor(), SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_fontChanged()));
-    setMinimumHeight(ui->consArea->height() + heightMargin);
-}
-
-void MSAWidget::sl_fontChanged() {
-    update();
-    setMinimumHeight(ui->consArea->height() + heightMargin);
-}
-void MSAWidget::setHeightMargin(int _heightMargin) {
-    heightMargin = _heightMargin;
-    setMinimumHeight(ui->consArea->height() + heightMargin);
-}
-
-void MSAWidget::mousePressEvent( QMouseEvent * )
-{
-    ui->seqArea->cancelSelection();
-}
-void MSAWidget::paintEvent(QPaintEvent *) {
-    QPainter p(this);
-    p.fillRect(rect(), Qt::white);
-}
-
-MSALabelWidget::MSALabelWidget(MSAEditorUI* _ui, const QString & _t, Qt::Alignment _a)
-: MSAWidget(_ui), text(_t), ali(_a)
-{
-}
-
-
-void MSALabelWidget::paintEvent(QPaintEvent * e) {
-    MSAWidget::paintEvent(e);
-    QPainter p(this);
-    if (!text.isEmpty()) {
-        p.setFont(getMsaEditorFont());
-        p.drawText(rect(), text, ali);
-    }
-}
-
 SinchronizedObjectView::SinchronizedObjectView()
     : seqArea(NULL)
 {
@@ -1164,18 +1054,6 @@ SinchronizedObjectView::SinchronizedObjectView(QSplitter *_spliter)
 
 QSplitter* SinchronizedObjectView::getSpliter() {
     return spliter;
-}
-
-void MSALabelWidget::mousePressEvent( QMouseEvent * e ){
-    ui->getSequenceArea()->cancelSelection();
-    QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), 0), e->globalPos(), e->button(), e->buttons(), e->modifiers());
-    QApplication::instance()->notify(ui->getEditorNameList(), &eventForNameListArea);
-}
-
-void MSALabelWidget::mouseReleaseEvent( QMouseEvent * e )
-{
-    QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), qMax(e->y() - height(), 0)), e->globalPos(), e->button(), e->buttons(), e->modifiers());
-    QApplication::instance()->notify(ui->getEditorNameList(), &eventForNameListArea);
 }
 
 void SinchronizedObjectView::addObject( QWidget *obj, int index, qreal coef)
@@ -1198,12 +1076,6 @@ void SinchronizedObjectView::addObject( QWidget *obj, int index, qreal coef)
 void SinchronizedObjectView::addObject(QWidget *neighboringWidget, QWidget *obj, qreal coef, int neighboringShift) {
     int index = spliter->indexOf(neighboringWidget) + neighboringShift;
     addObject(obj, index, coef);
-}
-
-void MSALabelWidget::mouseMoveEvent( QMouseEvent * e )
-{
-    QMouseEvent eventForSequenceArea(e->type(), QPoint(e->x(), e->y() - height()), e->globalPos(), e->button(), e->buttons(), e->modifiers());
-    QApplication::instance()->notify(ui->getEditorNameList(), &eventForSequenceArea);
 }
 
 void SinchronizedObjectView::removeObject( QWidget *obj )

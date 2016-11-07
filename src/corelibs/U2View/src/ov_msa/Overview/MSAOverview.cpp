@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-MSAOverview::MSAOverview(MSAEditorUI *_ui)
+MSAOverview::MSAOverview(MaEditorWgt *_ui)
     : editor(_ui->getEditor()),
       ui(_ui),
       sequenceArea(_ui->getSequenceArea())

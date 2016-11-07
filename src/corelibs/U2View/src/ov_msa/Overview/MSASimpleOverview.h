@@ -31,7 +31,7 @@
 namespace U2 {
 
 class MSAEditor;
-class MSAEditorUI;
+class MaEditorWgt;
 class MSAEditorSequenceArea;
 class MsaColorScheme;
 class MsaHighlightingScheme;
@@ -40,7 +40,7 @@ class MsaHighlightingScheme;
 class U2VIEW_EXPORT MSASimpleOverview : public MSAOverview {
     Q_OBJECT
 public:
-    MSASimpleOverview(MSAEditorUI *ui);
+    MSASimpleOverview(MaEditorWgt *ui);
     const static int FIXED_HEIGTH = 70;
     bool isValid() const;
     QPixmap getView();

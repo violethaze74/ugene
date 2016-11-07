@@ -24,17 +24,12 @@
 
 #include <U2Core/global.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QWidget>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QWidget>
-#endif
+#include <QAction>
+#include <QWidget>
 
 namespace U2 {
 
-class MSAEditorUI;
+class MaEditorWgt;
 class MSASimpleOverview;
 class MSAGraphOverview;
 class MSAOverviewContextMenu;
@@ -42,7 +37,7 @@ class MSAOverviewContextMenu;
 class U2VIEW_EXPORT MSAEditorOverviewArea : public QWidget {
     Q_OBJECT
 public:
-    MSAEditorOverviewArea(MSAEditorUI* ui);
+    MSAEditorOverviewArea(MaEditorWgt* ui);
     void cancelRendering();
     bool isOverviewWidget(QWidget* wgt) const;
 

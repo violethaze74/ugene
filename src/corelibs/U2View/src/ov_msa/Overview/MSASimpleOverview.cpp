@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-MSASimpleOverview::MSASimpleOverview(MSAEditorUI *_ui)
+MSASimpleOverview::MSASimpleOverview(MaEditorWgt *_ui)
     : MSAOverview(_ui),
       redrawMSAOverview(true),
       redrawSelection(true)

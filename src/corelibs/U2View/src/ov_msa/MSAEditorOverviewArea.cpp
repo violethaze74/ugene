@@ -27,19 +27,15 @@
 #include "Overview/MSAGraphOverview.h"
 #include "Overview/MSAOverviewContextMenu.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QActionGroup>
-#else
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QActionGroup>
-#endif
+#include <QVBoxLayout>
+#include <QActionGroup>
+
 
 namespace U2 {
 
 const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME  = "msa_overview_area";
 
-MSAEditorOverviewArea::MSAEditorOverviewArea(MSAEditorUI *ui) {
+MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui) {
     setObjectName(OVERVIEW_AREA_OBJECT_NAME);
 
     simpleOverview = new MSASimpleOverview(ui);

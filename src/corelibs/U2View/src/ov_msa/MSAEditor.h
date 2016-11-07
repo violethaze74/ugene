@@ -299,24 +299,11 @@ class U2VIEW_EXPORT MSAEditorUI : public MaEditorWgt {
 
     Q_OBJECT
     //todo: make public accessors:
-    friend class MSAWidget;
-    friend class MSAEditorSequenceArea;
-    friend class MSAEditorConsensusArea;
-    friend class MSAEditorNameList;
     friend class MSAEditorTreeViewer;
-    friend class MSAEditor;
     friend class MsaEditorSimilarityColumn;
 
 public:
     MSAEditorUI(MSAEditor* editor);
-
-    // SANGER_TODO: it is for multi tree case - decide if it is neccessary
-    QWidget* createLabelWidget(const QString& text = QString(), Qt::Alignment ali = Qt::AlignCenter);
-
-    MSAEditorSequenceArea*  getSequenceArea() {return seqArea;}
-    MSAEditorNameList*      getEditorNameList() {return nameList;}
-    MSAEditorConsensusArea* getConsensusArea() {return consArea;}
-    MSAEditorOverviewArea*  getOverviewArea() {return overviewArea;}
 
     void createDistanceColumn(MSADistanceMatrix* matrix);
 
@@ -349,61 +336,11 @@ signals:
     void si_stopMsaChanging(bool modifyed = false);
 
 private:
-    MSAEditorNameList*                 nameList;
-    MSAEditorSequenceArea*             seqArea;
-    MSAEditorConsensusArea*            consArea;
-    MSAEditorOverviewArea*             overviewArea;
-    MSAEditorOffsetsViewController*    offsetsView;
-    MSAEditorStatusWidget*             statusWidget;
-    QWidget*                           seqAreaContainer;
-    QWidget*                           nameAreaContainer;
-
-    QList<QWidget*>                 nameAreaWidgets;
-    QList<QWidget*>                 lw1Widgets;
-    QList<QWidget*>                 seqAreaWidgets;
-    QList<QWidget*>                 lw2Widgets;
-    QList<QWidget*>                 treeAreaWidgets;
-
     MsaEditorSimilarityColumn*         dataList;
     MSAEditorMultiTreeViewer*          multiTreeViewer;
     MsaEditorAlignmentDependentWidget* similarityStatistics;
     MSAEditorTreeViewer*               treeViewer;
 };
-
-class MSAWidget : public QWidget {
-    Q_OBJECT
-public:
-    MSAWidget(MSAEditorUI* _ui);
-    virtual ~MSAWidget() {}
-    const QFont& getMsaEditorFont(){return ui->getEditor()->getFont();}
-    void setHeightMargin(int _heightMargin);
-protected slots:
-    void sl_fontChanged();
-protected:
-    virtual void mousePressEvent(QMouseEvent *e);
-    virtual void paintEvent(QPaintEvent *e);
-
-    MSAEditorUI*  ui;
-    int heightMargin;
-};
-
-class MSALabelWidget : public MSAWidget {
-    Q_OBJECT
-public:
-    MSALabelWidget(MSAEditorUI* _ui, const QString & _t, Qt::Alignment _a);
-
-    QString             text;
-    Qt::Alignment       ali;
-
-protected:
-    void paintEvent(QPaintEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-};
-
-
-
 
 }//namespace;
 

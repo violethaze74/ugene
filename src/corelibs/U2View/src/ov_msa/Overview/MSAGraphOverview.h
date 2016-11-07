@@ -69,7 +69,7 @@ enum MSAGraphCalculationMethod {
 class U2VIEW_EXPORT MSAGraphOverview : public MSAOverview {
     Q_OBJECT
 public:
-    MSAGraphOverview(MSAEditorUI* ui);
+    MSAGraphOverview(MaEditorWgt* ui);
     bool isValid() const { return graphCalculationTaskRunner.getError().isEmpty(); }
     QPixmap getView() { return cachedConsensus; }
 

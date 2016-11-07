@@ -38,7 +38,7 @@
 
 namespace U2 {
 
-MSAGraphOverview::MSAGraphOverview(MSAEditorUI *ui)
+MSAGraphOverview::MSAGraphOverview(MaEditorWgt *ui)
     : MSAOverview(ui),
       redrawGraph(true),
       isBlocked(false),

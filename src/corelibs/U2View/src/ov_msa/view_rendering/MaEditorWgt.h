@@ -29,15 +29,32 @@ namespace U2 {
 
 class MSACollapsibleItemModel;
 class MSAEditor;
+class MSAEditorConsensusArea;
+class MSAEditorNameList;
+class MSAEditorSequenceArea;
+class MSAEditorOffsetsViewController;
+class MSAEditorOverviewArea;
+class MSAEditorStatusWidget;
 class MsaUndoRedoFramework;
 class SequenceAreaRenderer;
 
+/************************************************************************/
+/* MaEditorWgt */
+/************************************************************************/
 class MaEditorWgt : public QWidget {
     Q_OBJECT
 public:
     MaEditorWgt(MSAEditor* editor);
 
+    // SANGER_TODO: it is for multi tree case - decide if it is neccessary
+    QWidget* createLabelWidget(const QString& text = QString(), Qt::Alignment ali = Qt::AlignCenter);
+
     MSAEditor* getEditor() const { return editor; }
+    MSAEditorSequenceArea*  getSequenceArea() { return seqArea; }
+    MSAEditorNameList*      getEditorNameList() { return nameList; }
+    MSAEditorConsensusArea* getConsensusArea() { return consArea; }
+    MSAEditorOverviewArea*  getOverviewArea() { return overviewArea; }
+    MSAEditorOffsetsViewController* getOffsetsViewController() { return offsetsView; }
 
     QAction* getUndoAction() const;
     QAction* getRedoAction() const;
@@ -47,13 +64,28 @@ public:
     QAction* getCopyFormattedSelectionAction() const { return copyFormattedSelectionAction; }
     QAction* getPasteAction() const { return pasteAction; }
 
+    // SANGER_TODO: should be muted in case of chromatogram (crutch!)
+    // the best is to store it in the MCA widget, of course
     bool isCollapsibleMode() const { return collapsibleMode; }
     void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
     MSACollapsibleItemModel* getCollapseModel() const { return collapseModel; }
 
 protected:
-    MSAEditor *editor;
-    SequenceAreaRenderer* saRenderer;
+    void initWidgets();
+    void initActions();
+
+protected:
+    MSAEditor*                      editor;
+    MSAEditorSequenceArea*          seqArea;
+    SequenceAreaRenderer*           saRenderer;
+    MSAEditorNameList*              nameList;
+    MSAEditorConsensusArea*         consArea;
+    MSAEditorOverviewArea*          overviewArea;
+    MSAEditorOffsetsViewController* offsetsView;
+    MSAEditorStatusWidget*          statusWidget;
+
+    QWidget*                        seqAreaContainer;// SANGER_TODO: there is no need to store the variable
+    QWidget*                        nameAreaContainer;
 
     MsaUndoRedoFramework*           undoFWK;
 
@@ -64,6 +96,47 @@ protected:
     QAction                         *copySelectionAction;
     QAction                         *copyFormattedSelectionAction;
     QAction                         *pasteAction;
+};
+
+// SANGER_TODO: rename the class to meaningfull name
+/************************************************************************/
+/* MSAWidget */
+/************************************************************************/
+class MSAWidget : public QWidget {
+    Q_OBJECT
+public:
+    MSAWidget(MaEditorWgt* _ui);
+    virtual ~MSAWidget() {}
+    const QFont& getMsaEditorFont();
+    void setHeightMargin(int _heightMargin);
+
+protected slots:
+    void sl_fontChanged();
+
+protected:
+    virtual void mousePressEvent(QMouseEvent *e);
+    virtual void paintEvent(QPaintEvent *e);
+
+    MaEditorWgt*  ui;
+    int heightMargin;
+};
+
+/************************************************************************/
+/* MSALabelWidget */
+/************************************************************************/
+class MSALabelWidget : public MSAWidget {
+    Q_OBJECT
+public:
+    MSALabelWidget(MaEditorWgt* _ui, const QString & _t, Qt::Alignment _a);
+
+    QString             text;
+    Qt::Alignment       ali;
+
+protected:
+    void paintEvent(QPaintEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
 };
 
 } // namespace
