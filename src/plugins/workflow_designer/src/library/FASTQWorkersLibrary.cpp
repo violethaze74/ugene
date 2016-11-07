@@ -41,6 +41,8 @@
 
 #include "FASTQWorkersLibrary.h"
 
+#define MAX_PHRED33_VALUE 74
+
 namespace U2 {
 namespace LocalWorkflow {
 
@@ -379,13 +381,20 @@ int QualityTrimTask::getMaxQualityValue(){
             continue;
         }else{
             for (int pos = 0; pos <= seqLen - 1; pos++){
-                maxValue = ( dna.quality.qualCodes.at(pos) > maxValue ) ? dna.quality.qualCodes.at(pos) : maxValue;
+                maxValue = qMax(static_cast<int>(dna.quality.qualCodes.at(pos)), maxValue);
             }
         }
         counter++;
     }
     return maxValue;
 }
+
+namespace {
+DNAQualityType getQualityType(int maxQualityValue){
+    return (maxQualityValue >= MAX_PHRED33_VALUE) ? DNAQualityType_Illumina : DNAQualityType_Sanger; //also see description in getMaxQualityValue()
+}
+}//anonymous namespace
+
 void QualityTrimTask::runStep(){
     int ncount = 0;
     int ycount = 0;
@@ -409,7 +418,7 @@ void QualityTrimTask::runStep(){
         DNASequence dna = iter.next();
         QString comment = DNAInfo::getFastqComment(dna.info);
         int seqLen = dna.length();
-        dna.quality.type = (maxQualityValue >= 74) ? DNAQualityType_Illumina : DNAQualityType_Sanger;//see description in getMaxQualityValue()
+        dna.quality.type = getQualityType(maxQualityValue);
         if(seqLen > dna.quality.qualCodes.length()){
             ncount++;
             continue;
