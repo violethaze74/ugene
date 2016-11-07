@@ -21,6 +21,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
+#include <U2Core/DNAQuality.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/GUrlUtils.h>
@@ -339,6 +340,52 @@ QualityTrimTask::QualityTrimTask(const BaseNGSSetting &settings)
     GCOUNTER(cvar, tvar, "NGS:FASTQQualityTrimmerTask");
 }
 
+// diagnose
+//   SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS.....................................................
+//   ..........................XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX......................
+//   ...............................IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII......................
+//   .................................JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ......................
+//   LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL....................................................
+//   !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+//   |                         |    |        |                              |                     |
+//  33                        59   64       73                            104                   126 <- maxValue is value from here
+// S 0........................26...31.......40
+// X                          -5....0........9.............................40
+// I                                0........9.............................40
+// J                                   3.....9.............................40
+// L 0.2......................26...31........41
+//
+//  S - Sanger        Phred+33,  raw reads typically (0, 40)
+//  X - Solexa        Solexa+64, raw reads typically (-5, 40)
+//  I - Illumina 1.3+ Phred+64,  raw reads typically (0, 40)
+//  J - Illumina 1.5+ Phred+64,  raw reads typically (3, 40) with 0=unused, 1=unused, 2=Read Segment Quality Control Indicator (bold)
+//  L - Illumina 1.8+ Phred+33,  raw reads typically (0, 41)
+int QualityTrimTask::getMaxQualityValue(){
+    int maxValue = 33;
+    FASTQIterator iter_qual(settings.inputUrl, stateInfo);
+    CHECK(!stateInfo.hasError(), -1);
+
+    int counter = 0;
+    while(iter_qual.hasNext()){
+        CHECK(!stateInfo.isCoR(), -1);
+
+        if(counter > 1000) {//check only first 1000 reads in file
+            break;
+        }
+
+        DNASequence dna = iter_qual.next();
+        int seqLen = dna.length();
+        if(seqLen > dna.quality.qualCodes.length()){
+            continue;
+        }else{
+            for (int pos = 0; pos <= seqLen - 1; pos++){
+                maxValue = ( dna.quality.qualCodes.at(pos) > maxValue ) ? dna.quality.qualCodes.at(pos) : maxValue;
+            }
+        }
+        counter++;
+    }
+    return maxValue;
+}
 void QualityTrimTask::runStep(){
     int ncount = 0;
     int ycount = 0;
@@ -348,6 +395,8 @@ void QualityTrimTask::runStep(){
     int quality = settings.customParameters.value(QUALITY_ID, 20).toInt();
     int minLen = settings.customParameters.value(LEN_ID, 0).toInt();
     bool bothEnds = settings.customParameters.value(BOTH_ID, false).toInt();
+    int maxQualityValue = getMaxQualityValue();
+    CHECK(maxQualityValue != -1, );
 
     FASTQIterator iter(settings.inputUrl, stateInfo);
     if (stateInfo.hasError()) {
@@ -360,6 +409,7 @@ void QualityTrimTask::runStep(){
         DNASequence dna = iter.next();
         QString comment = DNAInfo::getFastqComment(dna.info);
         int seqLen = dna.length();
+        dna.quality.type = (maxQualityValue >= 74) ? DNAQualityType_Illumina : DNAQualityType_Sanger;//see description in getMaxQualityValue()
         if(seqLen > dna.quality.qualCodes.length()){
             ncount++;
             continue;
