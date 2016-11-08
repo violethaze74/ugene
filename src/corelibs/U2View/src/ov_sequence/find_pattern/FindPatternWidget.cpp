@@ -1221,6 +1221,10 @@ void FindPatternWidget::sl_loadPatternTaskStateChanged() {
     updateAnnotationsWidget();
 }
 
+bool compareByRegionStartPos(const SharedAnnotationData &r1, const SharedAnnotationData &r2) {
+    return r1->getRegions().first().startPos < r2->getRegions().first().startPos;
+}
+
 void FindPatternWidget::sl_findPatrernTaskStateChanged() {
     FindPatternListTask *findTask = qobject_cast<FindPatternListTask *>(sender());
     CHECK(NULL != findTask, );
@@ -1236,6 +1240,7 @@ void FindPatternWidget::sl_findPatrernTaskStateChanged() {
             getAnnotationsPushButton->setDisabled(true);
         } else {
             iterPos = 1;
+            qSort(findPatternResults.begin(), findPatternResults.end(), compareByRegionStartPos);
             showCurrentResultAndStopProgress(iterPos, findPatternResults.size());
             nextPushButton->setEnabled(true);
             prevPushButton->setEnabled(true);
