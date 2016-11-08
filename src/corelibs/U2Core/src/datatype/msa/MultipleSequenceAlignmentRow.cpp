@@ -380,10 +380,10 @@ bool MultipleSequenceAlignmentRowData::operator==(const MultipleAlignmentRowData
     }
 }
 
-void MultipleSequenceAlignmentRowData::crop(int pos, int count, U2OpStatus &os) {
-    if (pos < 0 || count < 0) {
+void MultipleSequenceAlignmentRowData::crop(U2OpStatus &os, qint64 startPosition, qint64 count) {
+    if (startPosition < 0 || count < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed to MultipleSequenceAlignmentRowData::crop, "
-            "startPos '%1', length '%2', row length '%3'").arg(pos).arg(count).arg(getRowLength()));
+            "startPos '%1', length '%2', row length '%3'").arg(startPosition).arg(count).arg(getRowLength()));
         os.setError("Can't crop a row!");
         return;
     }
@@ -391,13 +391,13 @@ void MultipleSequenceAlignmentRowData::crop(int pos, int count, U2OpStatus &os) 
     int initialRowLength = getRowLength();
     int initialSeqLength = getUngappedLength();
 
-    if (pos >= getRowLengthWithoutTrailing()) {
+    if (startPosition >= getRowLengthWithoutTrailing()) {
         // Clear the row content
         DNASequenceUtils::makeEmpty(sequence);
     } else {
         int startPosInSeq = -1;
         int endPosInSeq = -1;
-        getStartAndEndSequencePositions(pos, count, startPosInSeq, endPosInSeq);
+        getStartAndEndSequencePositions(startPosition, count, startPosInSeq, endPosInSeq);
 
         // Remove inside a gap
         if ((startPosInSeq <= endPosInSeq) && (-1 != startPosInSeq) && (-1 != endPosInSeq)) {
@@ -413,19 +413,19 @@ void MultipleSequenceAlignmentRowData::crop(int pos, int count, U2OpStatus &os) 
         }
     }
 
-    if (pos + count < initialRowLength) {
-        removeGapsFromGapModel(os, pos + count, initialRowLength - pos - count);
+    if (startPosition + count < initialRowLength) {
+        removeGapsFromGapModel(os, startPosition + count, initialRowLength - startPosition - count);
     }
 
-    if (pos > 0) {
-        removeGapsFromGapModel(os, 0, pos);
+    if (startPosition > 0) {
+        removeGapsFromGapModel(os, 0, startPosition);
     }
     removeTrailingGaps();
 }
 
 MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::mid(int pos, int count, U2OpStatus &os) const {
     MultipleSequenceAlignmentRow row = getExplicitCopy();
-    row->crop(pos, count, os);
+    row->crop(os, pos, count);
     return row;
 }
 

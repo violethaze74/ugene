@@ -44,6 +44,7 @@ public:
     U2MsaGap(qint64 off, qint64 gap);
 
     qint64 endPos() const;    // not inclusive
+    void setEndPos(qint64 endPos);    // not inclusive
 
     bool isValid() const;
 

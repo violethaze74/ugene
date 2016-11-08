@@ -286,7 +286,7 @@ bool MultipleSequenceAlignmentData::crop(const U2Region &region, const QSet<QStr
         MultipleSequenceAlignmentRow row = getMsaRow(i).clone();
         const QString rowName = row->getName();
         if (rowNames.contains(rowName)){
-            row->crop(region.startPos, cropLen, os);
+            row->crop(os, region.startPos, cropLen);
             CHECK_OP(os, false);
             newList << row;
         }

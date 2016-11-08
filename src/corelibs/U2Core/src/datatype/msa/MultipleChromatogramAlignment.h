@@ -57,8 +57,7 @@ class U2CORE_EXPORT MultipleChromatogramAlignmentData : public MultipleAlignment
     friend class MultipleChromatogramAlignment;
 
 private:
-    MultipleChromatogramAlignmentData();
-    MultipleChromatogramAlignmentData(const QString &name,
+    MultipleChromatogramAlignmentData(const QString &name = QString(),
                                       const DNAAlphabet *alphabet = NULL,
                                       const QList<MultipleChromatogramAlignmentRow> &rows = QList<MultipleChromatogramAlignmentRow>());
     MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData &mcaData);
@@ -83,18 +82,6 @@ public:
     bool trim(bool removeLeadingGaps = true);
 
     /**
-     * Removes all gaps from all columns in the alignment.
-     * Returns "true" if the alignment has been changed.
-     */
-    bool simplify();
-
-    /**
-     * Sorts rows by similarity making identical rows sequential.
-     * Returns 'true' if the rows were resorted, and 'false' otherwise.
-     */
-    bool sortRowsBySimilarity();
-
-    /**
      * Inserts 'count' gaps into the specified position.
      * Can increase the overall alignment length.
      */
@@ -106,7 +93,7 @@ public:
      */
     bool crop(const U2Region &region, const QSet<QString> &rowNames, U2OpStatus &os);
     bool crop(const U2Region &region, U2OpStatus &os);
-    bool crop(int start, int count, U2OpStatus &os);
+    bool crop(qint64 start, qint64 count, U2OpStatus &os);
 
     /**
      * Creates a new alignment from the sub-alignment. Do not trims the result.
@@ -122,7 +109,7 @@ public:
     U2MsaListGapModel getPredictedSequencesGapModel() const;
     U2MsaListGapModel getEditedSequencesGapModel() const;
 
-    void setRowContent(int rowNumber, const McaRowMemoryData &mcaRowMemoryData);
+    void setRowContent(U2OpStatus &os, int rowNumber, const McaRowMemoryData &mcaRowMemoryData);
     void setRowGapModel(int rowNumber, const U2MsaRowGapModel &gapModel);
     void setGapModel(const U2MsaListGapModel &gapModel);
 
@@ -152,6 +139,8 @@ private:
     void addRowPrivate(const MultipleChromatogramAlignmentRow &row);
 
     void setRows(const QList<MultipleChromatogramAlignmentRow> &mcaRows);
+
+    U2MsaListGapModel getGuaranteedGaps() const;
 };
 
 inline bool	operator!=(const MultipleChromatogramAlignment &ptr1, const MultipleChromatogramAlignment &ptr2) { return *ptr1 != *ptr2; }

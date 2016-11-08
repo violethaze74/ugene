@@ -146,7 +146,7 @@ void MultipleAlignmentData::setLength(int newLength) {
 
     U2OpStatus2Log os;
     for (int i = 0, n = getNumRows(); i < n; i++) {
-        rows[i]->crop(0, newLength, os);
+        rows[i]->crop(os, 0, newLength);
         CHECK_OP(os, );
     }
     length = newLength;

@@ -211,7 +211,7 @@ public:
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    virtual void crop(int pos, int count, U2OpStatus &os);
+    virtual void crop(U2OpStatus &os, qint64 startPosition, qint64 count);
 
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.

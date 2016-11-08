@@ -94,7 +94,7 @@ public:
 
     virtual qint64 getRowLengthWithoutTrailing() const = 0;
 
-    virtual void crop(int pos, int count, U2OpStatus &os) = 0;    // TODO: implement
+    virtual void crop(U2OpStatus &os, qint64 startPosition, qint64 count) = 0;
 
     virtual bool operator !=(const MultipleAlignmentRowData &other) const = 0;
     virtual bool operator ==(const MultipleAlignmentRowData &other) const = 0;

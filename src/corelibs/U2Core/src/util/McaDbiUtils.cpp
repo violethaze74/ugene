@@ -51,109 +51,6 @@ void McaDbiUtils::renameMca(U2OpStatus &os, const U2EntityRef &mcaRef, const QSt
     mcaDbi->updateMcaName(mcaRef.entityId, newName, os);
 }
 
-void McaDbiUtils::addRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 posInMca, U2McaRow &row) {
-    SAFE_POINT_EXT(row.hasValidChildObjectIds(), os.setError("Invalid child objects references"), );
-
-    DbiConnection connection(mcaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
-
-    mcaDbi->addRow(mcaRef.entityId, posInMca, row, os);
-    CHECK_OP(os, );
-}
-
-void McaDbiUtils::removeRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId) {
-    DbiConnection connection(mcaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
-
-    mcaDbi->removeRow(mcaRef.entityId, rowId, os);
-}
-
-void McaDbiUtils::renameRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId, const QString &newName) {
-    CHECK_EXT(!newName.isEmpty(), os.setError(tr("Can't rename an alignment to an empty name")), );
-
-    DbiConnection connection(mcaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
-
-    mcaDbi->updateRowName(mcaRef.entityId, rowId, newName, os);
-}
-
-void McaDbiUtils::moveRows(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsToMove, int delta) {
-    DbiConnection connection(mcaRef.dbiRef, false, os);
-    CHECK_OP(os, );
-
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
-
-    if (delta == 0 || rowsToMove.isEmpty()) {
-        return;
-    }
-
-    QList<U2McaRow> rows = mcaDbi->getRows(mcaRef.entityId, os);
-    CHECK_OP(os, );
-
-    QList<qint64> rowIds;
-    for (int i = 0; i < rows.length(); ++i) {
-        rowIds << rows[i].rowId;
-    }
-
-    QList<QPair<int, int> > from_To;
-
-    if (delta < 0) {
-        int rowIndex = rowIds.indexOf(rowsToMove.first());
-        CHECK_EXT(-1 != rowIndex, os.setError("Invalid row list"), );
-
-        int moveToIndex = rowIndex + delta >= 0 ? rowIndex + delta : 0;
-        from_To.append(QPair<int, int>(rowIndex, moveToIndex));
-        for (int i = 1; i < rowsToMove.length(); ++i) {
-            rowIndex = rowIds.indexOf(rowsToMove[i]);
-            CHECK_EXT(-1 != rowIndex, os.setError("Invalid row list"), );
-            CHECK_EXT(rowIndex > from_To[i - 1].first, os.setError("List of rows to move is not ordered"), );
-            moveToIndex = rowIndex + delta > from_To[i - 1].second ? rowIndex + delta : from_To[i - 1].second + 1;
-            from_To.append(QPair<int, int>(rowIndex, moveToIndex));
-        }
-    } else {
-        int rowIndex = rowIds.indexOf(rowsToMove.last());
-        CHECK_EXT(-1 != rowIndex, os.setError("Invalid row list"), );
-        int moveToIndex = rowIndex + delta < rowIds.length() ? rowIndex + delta : rowIds.length() - 1;
-        from_To.append(QPair<int, int>(rowIndex, moveToIndex));
-        for (int i = 1; i < rowsToMove.length(); ++i) {
-            rowIndex = rowIds.indexOf(rowsToMove[rowsToMove.length() - i - 1]);
-            CHECK_EXT(-1 != rowIndex, os.setError("Invalid row list"), );
-            CHECK_EXT(rowIndex < from_To[i - 1].first, os.setError("List of rows to move is not ordered"), );
-            moveToIndex = rowIndex + delta < from_To[i - 1].second ? rowIndex + delta : from_To[i - 1].second - 1;
-            from_To.append(QPair<int, int>(rowIndex, moveToIndex));
-        }
-    }
-
-    QPair<int, int> coords;
-    foreach (coords, from_To) {
-        rowIds.move(coords.first, coords.second);
-    }
-
-    mcaDbi->setNewRowsOrder(mcaRef.entityId, rowIds, os);
-    CHECK_OP(os, );
-}
-
-void McaDbiUtils::updateRowsOrder(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsOrder) {
-    DbiConnection connection(mcaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
-
-    // Update the data
-    mcaDbi->setNewRowsOrder(mcaRef.entityId, rowsOrder, os);
-}
-
 qint64 McaDbiUtils::getMcaLength(U2OpStatus &os, const U2EntityRef &mcaRef) {
     DbiConnection connection(mcaRef.dbiRef, os);
     CHECK_OP(os, -1);
@@ -167,6 +64,16 @@ qint64 McaDbiUtils::getMcaLength(U2OpStatus &os, const U2EntityRef &mcaRef) {
     return length;
 }
 
+void McaDbiUtils::updateMcaLength(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 newLength) {
+    DbiConnection connection(mcaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
+    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
+
+    mcaDbi->updateMcaLength(mcaRef.entityId, newLength, os);
+}
+
 U2AlphabetId McaDbiUtils::getMcaAlphabet(U2OpStatus &os, const U2EntityRef &mcaRef) {
     DbiConnection connection(mcaRef.dbiRef, os);
     CHECK_OP(os, U2AlphabetId());
@@ -178,6 +85,17 @@ U2AlphabetId McaDbiUtils::getMcaAlphabet(U2OpStatus &os, const U2EntityRef &mcaR
     CHECK_OP(os, U2AlphabetId());
 
     return alphabet;
+}
+
+void McaDbiUtils::updateMcaAlphabet(U2OpStatus &os, const U2EntityRef &mcaRef, const U2AlphabetId &alphabetId) {
+    SAFE_POINT_EXT(alphabetId.isValid(), os.setError("Invalid alphabet was passed"),);
+    DbiConnection connection(mcaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
+    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
+
+    mcaDbi->updateMcaAlphabet(mcaRef.entityId, alphabetId, os);
 }
 
 void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const MultipleChromatogramAlignment &mca) {
@@ -310,6 +228,109 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
         attributeDbi->createStringAttribute(attribute, os);
         CHECK_OP(os, );
     }
+}
+
+void McaDbiUtils::addRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 posInMca, U2McaRow &row) {
+    SAFE_POINT_EXT(row.hasValidChildObjectIds(), os.setError("Invalid child objects references"), );
+
+    DbiConnection connection(mcaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
+    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
+
+    mcaDbi->addRow(mcaRef.entityId, posInMca, row, os);
+    CHECK_OP(os, );
+}
+
+void McaDbiUtils::removeRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId) {
+    DbiConnection connection(mcaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
+    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
+
+    mcaDbi->removeRow(mcaRef.entityId, rowId, os);
+}
+
+void McaDbiUtils::renameRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId, const QString &newName) {
+    CHECK_EXT(!newName.isEmpty(), os.setError(tr("Can't rename an alignment to an empty name")), );
+
+    DbiConnection connection(mcaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
+    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
+
+    mcaDbi->updateRowName(mcaRef.entityId, rowId, newName, os);
+}
+
+void McaDbiUtils::moveRows(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsToMove, int delta) {
+    DbiConnection connection(mcaRef.dbiRef, false, os);
+    CHECK_OP(os, );
+
+    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
+    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
+
+    if (delta == 0 || rowsToMove.isEmpty()) {
+        return;
+    }
+
+    QList<U2McaRow> rows = mcaDbi->getRows(mcaRef.entityId, os);
+    CHECK_OP(os, );
+
+    QList<qint64> rowIds;
+    for (int i = 0; i < rows.length(); ++i) {
+        rowIds << rows[i].rowId;
+    }
+
+    QList<QPair<int, int> > from_To;
+
+    if (delta < 0) {
+        int rowIndex = rowIds.indexOf(rowsToMove.first());
+        CHECK_EXT(-1 != rowIndex, os.setError("Invalid row list"), );
+
+        int moveToIndex = rowIndex + delta >= 0 ? rowIndex + delta : 0;
+        from_To.append(QPair<int, int>(rowIndex, moveToIndex));
+        for (int i = 1; i < rowsToMove.length(); ++i) {
+            rowIndex = rowIds.indexOf(rowsToMove[i]);
+            CHECK_EXT(-1 != rowIndex, os.setError("Invalid row list"), );
+            CHECK_EXT(rowIndex > from_To[i - 1].first, os.setError("List of rows to move is not ordered"), );
+            moveToIndex = rowIndex + delta > from_To[i - 1].second ? rowIndex + delta : from_To[i - 1].second + 1;
+            from_To.append(QPair<int, int>(rowIndex, moveToIndex));
+        }
+    } else {
+        int rowIndex = rowIds.indexOf(rowsToMove.last());
+        CHECK_EXT(-1 != rowIndex, os.setError("Invalid row list"), );
+        int moveToIndex = rowIndex + delta < rowIds.length() ? rowIndex + delta : rowIds.length() - 1;
+        from_To.append(QPair<int, int>(rowIndex, moveToIndex));
+        for (int i = 1; i < rowsToMove.length(); ++i) {
+            rowIndex = rowIds.indexOf(rowsToMove[rowsToMove.length() - i - 1]);
+            CHECK_EXT(-1 != rowIndex, os.setError("Invalid row list"), );
+            CHECK_EXT(rowIndex < from_To[i - 1].first, os.setError("List of rows to move is not ordered"), );
+            moveToIndex = rowIndex + delta < from_To[i - 1].second ? rowIndex + delta : from_To[i - 1].second - 1;
+            from_To.append(QPair<int, int>(rowIndex, moveToIndex));
+        }
+    }
+
+    QPair<int, int> coords;
+    foreach (coords, from_To) {
+        rowIds.move(coords.first, coords.second);
+    }
+
+    mcaDbi->setNewRowsOrder(mcaRef.entityId, rowIds, os);
+    CHECK_OP(os, );
+}
+
+void McaDbiUtils::updateRowsOrder(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsOrder) {
+    DbiConnection connection(mcaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
+    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL Mca Dbi"), );
+
+    // Update the data
+    mcaDbi->setNewRowsOrder(mcaRef.entityId, rowsOrder, os);
 }
 
 }   // namespace U2

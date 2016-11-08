@@ -116,4 +116,8 @@ QByteArray DNASequenceUtils::reverseComplement(const QByteArray &sequence) {
     return reverse(complement(sequence));
 }
 
+void DNASequenceUtils::crop(DNASequence &sequence, int startPos, int length) {
+    sequence.seq = sequence.seq.mid(startPos, length);
+}
+
 } // namespace

@@ -30,13 +30,11 @@
 
 #include "MultipleAlignmentRow.h"
 
-class QByteArray;
-
 namespace U2 {
 
+class MultipleChromatogramAlignment;
 class MultipleChromatogramAlignmentData;
 class MultipleChromatogramAlignmentRowData;
-class U2OpStatus;
 
 class U2CORE_EXPORT MultipleChromatogramAlignmentRow : public MultipleAlignmentRow {
 public:
@@ -81,6 +79,7 @@ private:
     QSharedPointer<MultipleChromatogramAlignmentRowData> getMcaRowData() const;
 };
 
+// TODO: write a correct class description
 // Working area - a part of the core which is shown. It can be expanded to the core size or reduced to some little value (0 or 1 symbol?), it starts from the core start
 // Core - a sequence + gaps whithin it (without leading and trailing gaps)
 // Guaranteed gaps
@@ -129,8 +128,9 @@ public:
     const U2MsaRowGapModel & getPredictedSequenceGapModel() const;
     const U2MsaRowGapModel & getEditedSequenceGapModel() const;
     const U2MsaRowGapModel & getCommonGapModel() const;
+    void setGapModel(const U2MsaRowGapModel &newGapModel);      // be careful, this method doesn't consider guaranteed gaps from other rows
 
-    const U2MsaRowGapModel & getEditedSequenceGuaranteedGapModel() const;
+    const U2MsaRowGapModel & getEditedSequenceDifferenceGapModel() const;
 
     QByteArray getPredictedSequenceData() const;
     QByteArray getPredictedSequenceCore() const;
@@ -139,6 +139,10 @@ public:
     QByteArray getEditedSequenceData() const;
     QByteArray getEditedSequenceCore() const;
     QByteArray getEditedSequenceWorkingArea() const;
+
+    void setRowContent(U2OpStatus &os, const McaRowMemoryData &mcaRowMemoryData);
+    void setParentAlignment(const MultipleChromatogramAlignment &mca);
+    void setParentAlignment(MultipleChromatogramAlignmentData *mcaData);
 
     qint64 getPredictedSequenceDataLength() const;
     qint64 getEditedSequenceDataLength() const;
@@ -157,7 +161,7 @@ public:
     U2Region getCoreRegion() const;      // a of the core withing whole row (hiding ignoring)
     U2Region getWorkingAreaRegion() const;      // a region in the core with nonhided symbols
 
-    // Getters are too strict, check the behavior if the position is out of boundaries
+    // TODO: Getters are too strict, check the behavior if the position is out of boundaries
     char getPredictedSequenceDataChar(qint64 dataPosition) const;   // get a char from sequence data (do not include gap model into calculation)
     char getPredictedSequenceCoreChar(qint64 corePosition) const;   // get a char from sequence core (include gap model into calculation)
     char getPredictedSequenceWorkingAreaChar(qint64 workingAreaPosition) const; // get a char from sequence working area (include gap model into calculation, use working area bounds)
@@ -188,22 +192,21 @@ public:
     bool operator !=(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
     bool operator !=(const MultipleAlignmentRowData &maRowData) const;
 
-    void crop(int pos, int count, U2OpStatus &os);
+    void crop(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count);
+    MultipleChromatogramAlignmentRow mid(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count) const;
 
     bool isCommonGap(qint64 mcaVisiblePosition) const;
 
 private:
-    // Gap model can be set only by the parent MCA, the MCA should apply guaranteed gaps to other rows to keep whole gap model consistent
-    void setGapModel(const U2MsaRowGapModel &newGapModel);
-
     void extractCommonGapModel(const U2MsaRowGapModel &predictedSequenceGapModel, const U2MsaRowGapModel &editedSequenceGapModel);
 
     void removeTrailingGaps();
     void updateCachedGapModels() const;
     qint64 getPredictedSequenceGuaranteedGapsLength() const;
+    qint64 getEditedSequenceGuaranteedGapsLength() const;
 
-    qint64 mapVisiblePositionToCorePosition(qint64 mcaVisiblePosition) const;  // visible position ignores the hidden part, real position include the hidden part, returns -1 if the visible position is outside the core boundaries
-    qint64 mapVisiblePositionToRealPosition(qint64 mcaVisiblePosition) const;  // visible position ignores the hidden part, real position include the hidden part
+    qint64 mapVisiblePositionToCorePosition(qint64 mcaVisiblePosition) const;  // visible position ignores the hidden part, real position includes the hidden part, returns -1 if the visible position is outside the core boundaries
+    qint64 mapVisiblePositionToRealPosition(qint64 mcaVisiblePosition) const;  // visible position ignores the hidden part, real position includes the hidden part
 
     U2MsaRowGapModel getPredictedSequenceCoreGapModel() const;
     U2MsaRowGapModel getPredictedSequenceWorkingAreaGapModel() const;
