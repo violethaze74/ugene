@@ -55,6 +55,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
            src/ov_msa/MaEditor.h \
+           src/ov_msa/McaEditor.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
@@ -280,6 +281,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp \
            src/ov_msa/MaEditor.cpp \
+           src/ov_msa/McaEditor.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \

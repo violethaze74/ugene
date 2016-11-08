@@ -56,9 +56,9 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     return plug;
 }
 
-    
-MusclePlugin::MusclePlugin() 
-: Plugin(tr("MUSCLE"), 
+
+MusclePlugin::MusclePlugin()
+: Plugin(tr("MUSCLE"),
          tr("A port of MUSCLE package for multiple sequence alignment. Check http://www.drive5.com/muscle/ for the original version")),
          ctx(NULL)
 {
@@ -84,7 +84,7 @@ MusclePlugin::MusclePlugin()
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = UMUSCLETests ::createTestFactories();
 
-    foreach(XMLTestFactory* f, l->qlist) { 
+    foreach(XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
@@ -131,7 +131,8 @@ MuscleMSAEditorContext::MuscleMSAEditorContext(QObject* p) : GObjectViewWindowCo
 
 void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
+    // SANGER_TODO: return assert when MCA factory (and ID) is implemented
+    CHECK(msaed != NULL, );
     if (msaed->getMSAObject() == NULL) {
         return;
     }
@@ -173,14 +174,14 @@ void MuscleMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     SAFE_POINT(alignMenu != NULL, "alignMenu", );
     foreach(GObjectViewAction* a, actions) {
         a->addToMenuWithOrder(alignMenu);
-    }    
+    }
 }
 
 void MuscleMSAEditorContext::sl_align() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
 
     const QRect selection = action->getMSAEditor()->getCurrentSelection();
     MuscleTaskSettings s;
@@ -196,12 +197,12 @@ void MuscleMSAEditorContext::sl_align() {
     QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(ed->getWidget(), obj->getMsa(), s);
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
-    
+
     if (rc != QDialog::Accepted) {
         return;
     }
-    
-    
+
+
     AlignGObjectTask* muscleTask = new MuscleGObjectRunFromSchemaTask(obj, s);
     Task *alignTask = NULL;
 
@@ -223,7 +224,7 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());
@@ -256,7 +257,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());

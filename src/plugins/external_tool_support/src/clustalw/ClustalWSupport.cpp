@@ -123,7 +123,8 @@ ClustalWSupportContext::ClustalWSupportContext(QObject* p) : GObjectViewWindowCo
 
 void ClustalWSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
+    // SANGER_TODO: return assert when MCA factory (and ID) is implemented
+    CHECK(msaed != NULL, );
     if (msaed->getMSAObject() == NULL) {
             return;
     }
@@ -142,12 +143,12 @@ void ClustalWSupportContext::initViewContext(GObjectView* view) {
 }
 
 void ClustalWSupportContext::buildMenu(GObjectView* view, QMenu* m) {
-        QList<GObjectViewAction *> actions = getViewActions(view);
-        QMenu* alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-        SAFE_POINT(alignMenu != NULL, "alignMenu", );
-        foreach(GObjectViewAction* a, actions) {
-                a->addToMenuWithOrder(alignMenu);
-        }
+    QList<GObjectViewAction *> actions = getViewActions(view);
+    QMenu* alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
+    SAFE_POINT(alignMenu != NULL, "alignMenu", );
+    foreach(GObjectViewAction* a, actions) {
+        a->addToMenuWithOrder(alignMenu);
+    }
 }
 
 void ClustalWSupportContext::sl_align_with_ClustalW() {

@@ -125,8 +125,6 @@ public:
 
     virtual QVariantMap saveState();
 
-    virtual OptionsPanel* getOptionsPanel(){return optionsPanel;}
-
     MSAEditorUI* getUI() const { return qobject_cast<MSAEditorUI*>(ui); } // SANGER_TODO: find out if it is legal
 
     int getFirstVisibleBase() const;
@@ -142,27 +140,14 @@ public:
 
     void buildTree();
 
-    void exportHighlighted(){sl_exportHighlighted();}
-
-public slots:
-    void sl_zoomIn();
-    void sl_zoomOut();
-    void sl_resetZoom();
-
 protected slots:
-    void sl_saveAlignment();
-    void sl_saveAlignmentAs();
     void sl_onContextMenuRequested(const QPoint & pos);
-    void sl_zoomToSelection();
-    void sl_changeFont();
+
     void sl_buildTree();
     void sl_align();
     void sl_addToAlignment();
     void sl_setSeqAsReference();
     void sl_unsetReferenceSeq();
-    void sl_exportHighlighted();
-    void sl_lockedStateChanged();
-    void sl_showHideChromatograms(bool show);
 
     void sl_onSeqOrderChanged(const QStringList& order);
     void sl_showTreeOP();
@@ -177,44 +162,21 @@ protected:
     virtual bool onCloseEvent();
 
 private:
-    void addCopyMenu(QMenu* m);
-    void addEditMenu(QMenu* m);
-    void addExportMenu(QMenu* m);
-    void addViewMenu(QMenu* m);
-    void addAlignMenu(QMenu* m);
     void addTreeMenu(QMenu* m);
     void addAdvancedMenu(QMenu* m);
     void addStatisticsMenu(QMenu* m);
-    void addLoadMenu(QMenu* m);
-    void setFont(const QFont& f);
-    void calcFontPixelToPointSizeCoef();
-    void updateActions();
-    void setFirstVisibleBase(int firstPos);
-    void setZoomFactor(float newZoomFactor) {zoomFactor = newZoomFactor;}
+
+    virtual void updateActions();
+
     void initDragAndDropSupport();
     void alignSequencesFromObjectsToAlignment(const QList<GObject*>& objects);
     void alignSequencesFromFilesToAlignment();
 
-    float             fontPixelToPointSize;
-    bool              showChromatograms;
-
-    QAction*          saveAlignmentAction;
-    QAction*          saveAlignmentAsAction;
-    QAction*          zoomInAction;
-    QAction*          zoomOutAction;
-    QAction*          zoomToSelectionAction;
-    QAction*          showOverviewAction;
-    QAction*          showChromatogramsAction;
-    QAction*          changeFontAction;
-    QAction*          resetFontAction;
     QAction*          buildTreeAction;
-    QAction*          saveScreenshotAction;
     QAction*          alignAction;
     QAction*          alignSequencesToAlignmentAction;
     QAction*          setAsReferenceSequenceAction;
     QAction*          unsetReferenceSequenceAction;
-
-    QToolBar*         toolbar;
 
     PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings;
     MSAEditorTreeManager           treeManager;
@@ -228,7 +190,8 @@ class U2VIEW_EXPORT MSAEditorUI : public MaEditorWgt {
     friend class MsaEditorSimilarityColumn;
 
 public:
-    MSAEditorUI(MSAEditor* editor);
+    // SANGER_TODO: return MsaEditor in constructor!
+    MSAEditorUI(MaEditor* editor);
 
     void createDistanceColumn(MSADistanceMatrix* matrix);
 
@@ -256,9 +219,6 @@ private slots:
 signals:
     void si_showTreeOP();
     void si_hideTreeOP();
-
-    void si_startMsaChanging();
-    void si_stopMsaChanging(bool modifyed = false);
 
 private:
     MsaEditorSimilarityColumn*         dataList;

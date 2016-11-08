@@ -77,6 +77,8 @@ void DNAStatMSAEditorContext::initViewContext(GObjectView* v) {
 
 void DNAStatMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
+    // SANGER_TODO: write safe_point later
+    CHECK(msaed != NULL, );
     if (msaed != NULL && !msaed->getMSAObject())
         return;
 
@@ -113,6 +115,8 @@ void DistanceMatrixMSAEditorContext::initViewContext(GObjectView* v) {
 
 void DistanceMatrixMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
+    // SANGER_TODO: safe_point?
+    CHECK(msaed != NULL, );
     if (msaed != NULL && !msaed->getMSAObject())
         return;
 

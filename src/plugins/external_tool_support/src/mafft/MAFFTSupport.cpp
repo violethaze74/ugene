@@ -120,7 +120,8 @@ MAFFTSupportContext::MAFFTSupportContext(QObject* p) : GObjectViewWindowContext(
 
 void MAFFTSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
+    // SANGER_TODO: return assert when MCA factory (and ID) is implemented
+    CHECK(msaed != NULL, );
     if (msaed->getMSAObject() == NULL) {
             return;
     }

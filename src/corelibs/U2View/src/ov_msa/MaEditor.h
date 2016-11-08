@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_EDITOR_
-#define _U2_MA_EDITOR_
+#ifndef _U2_MA_EDITOR_H_
+#define _U2_MA_EDITOR_H_
 
 #include <U2Gui/ObjectViewModel.h>
 
@@ -40,6 +40,7 @@ public:
 
 class MaEditor : public GObjectView {
     Q_OBJECT
+    friend class OpenSavedMSAEditorTask; // SANGER_TODO: ??
 public:
     enum ResizeMode {
         ResizeMode_FontAndContent, ResizeMode_OnlyContent
@@ -49,9 +50,15 @@ public:
 public:
     MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, GObject* obj);
 
+    virtual void buildStaticToolbar(QToolBar* tb);
+
+    virtual void buildStaticMenu(QMenu* m);
+
     MultipleSequenceAlignmentObject* getMSAObject() const { return msaObject; }
 
     MaEditorWgt* getUI() const { return ui; }
+
+    virtual OptionsPanel* getOptionsPanel() { return optionsPanel; }
 
     const QFont& getFont() const { return font; }
 
@@ -65,7 +72,7 @@ public:
 
     const QRect& getCurrentSelection() const;
 
-    int getRowHeight() const;
+    virtual int getRowHeight() const;
     int getSequenceRowHeight() const; // SANGER_TODO: order the methods
 
     int getColumnWidth() const;
@@ -84,6 +91,8 @@ public:
 
     void resetCollapsibleModel(); // SANGER_TODO: collapsible shouldn't be here
 
+    void exportHighlighted(){ sl_exportHighlighted(); }
+
 signals:
     void si_fontChanged(const QFont& f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -91,8 +100,38 @@ signals:
     void si_sizeChanged(int newHeight, bool isMinimumSize, bool isMaximumSize);
     void si_completeUpdate();
 
+protected slots:
+    void sl_zoomIn();
+    void sl_zoomOut();
+    void sl_zoomToSelection();
+    void sl_resetZoom();
+
+    void sl_saveAlignment();
+    void sl_saveAlignmentAs();
+    void sl_changeFont();
+
+    void sl_lockedStateChanged();
+
+    void sl_exportHighlighted(); // MOVE IT NOW
+
 protected:
-    virtual QWidget* createWidget() = 0;
+    virtual QWidget* createWidget();
+    void initActions();
+
+    void addCopyMenu(QMenu* m);
+    void addEditMenu(QMenu* m);
+    void addExportMenu(QMenu* m);
+    void addViewMenu(QMenu* m);
+    void addLoadMenu(QMenu* m);
+    void addAlignMenu(QMenu* m); // SANGER_TODO: should the align menu exist in MCA?
+
+    void setFont(const QFont& f);
+    void calcFontPixelToPointSizeCoef();
+
+    void setFirstVisibleBase(int firstPos);
+    void setZoomFactor(float newZoomFactor) { zoomFactor = newZoomFactor; }
+
+    virtual void updateActions();
 
 protected:
     MultipleSequenceAlignmentObject*    msaObject;
@@ -102,10 +141,20 @@ protected:
     ResizeMode  resizeMode;
     SNPSettings snp;
     float       zoomFactor;
+    float       fontPixelToPointSize;
 
+    QAction*          saveAlignmentAction;
+    QAction*          saveAlignmentAsAction;
+    QAction*          zoomInAction;
+    QAction*          zoomOutAction;
+    QAction*          zoomToSelectionAction;
+    QAction*          showOverviewAction;
+    QAction*          changeFontAction;
+    QAction*          resetFontAction;
+    QAction*          saveScreenshotAction;
     QAction*          exportHighlightedAction;
 };
 
 } // namespace
 
-#endif // _U2_MA_EDITOR_
+#endif // _U2_MA_EDITOR_H_

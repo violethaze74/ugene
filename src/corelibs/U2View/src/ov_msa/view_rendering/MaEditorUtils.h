@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_EDITOR_UTILS_
-#define _U2_MA_EDITOR_UTILS_
+#ifndef _U2_MA_EDITOR_UTILS_H_
+#define _U2_MA_EDITOR_UTILS_H_
 
 #include <QSplitter>
 #include <QWidget>
@@ -101,5 +101,5 @@ protected:
 
 } // namespace
 
-#endif // _U2_MA_EDITOR_UTILS_
+#endif // _U2_MA_EDITOR_UTILS_H_
 

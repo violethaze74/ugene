@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_EDITOR_WGT_
-#define _U2_MA_EDITOR_WGT_
+#ifndef _U2_MA_EDITOR_WGT_H_
+#define _U2_MA_EDITOR_WGT_H_
 
 #include <QWidget>
 
@@ -71,6 +71,10 @@ public:
     void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
     MSACollapsibleItemModel* getCollapseModel() const { return collapseModel; }
 
+signals:
+    void si_startMsaChanging();
+    void si_stopMsaChanging(bool modifyed = false);
+
 protected:
     void initWidgets();
     void initActions();
@@ -101,5 +105,5 @@ protected:
 
 } // namespace
 
-#endif // _U2_MA_EDITOR_WGT_
+#endif // _U2_MA_EDITOR_WGT_H_
 

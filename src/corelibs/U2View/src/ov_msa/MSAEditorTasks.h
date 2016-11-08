@@ -29,6 +29,7 @@ namespace U2 {
 
 class MultipleSequenceAlignmentObject;
 class UnloadedObject;
+class MaEditor;
 class MSAEditor;
 
 class OpenMSAEditorTask : public ObjectViewTask {
@@ -53,8 +54,7 @@ public:
     OpenSavedMSAEditorTask(const QString& viewName, const QVariantMap& stateData);
     virtual void open();
 
-    static void updateRanges(const QVariantMap& stateData, MSAEditor* ctx);
-    static void addAnnotations(const QVariantMap& stateData, MSAEditor* ctx);
+    static void updateRanges(const QVariantMap& stateData, MaEditor* ctx);
 };
 
 

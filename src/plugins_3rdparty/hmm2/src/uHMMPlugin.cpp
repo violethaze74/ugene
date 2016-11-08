@@ -208,7 +208,8 @@ HMMMSAEditorContext::HMMMSAEditorContext(QObject* p) : GObjectViewWindowContext(
 
 void HMMMSAEditorContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
+    // SANGER_TODO: return assert
+    CHECK(msaed != NULL, );
     if (msaed->getMSAObject() == NULL)
         return;
 
@@ -221,9 +222,11 @@ void HMMMSAEditorContext::initViewContext(GObjectView* view) {
 
 void HMMMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
-    assert( NULL != msaed && NULL != m );
-    if (msaed->getMSAObject() == NULL)
+    // SANGER_TODO: return assert
+    CHECK( NULL != msaed && NULL != m, );
+    if (msaed->getMSAObject() == NULL) {
         return;
+    }
 
     QList<GObjectViewAction*> list = getViewActions(v);
     assert(list.size()==1);

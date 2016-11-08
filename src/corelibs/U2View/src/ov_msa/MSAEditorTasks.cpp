@@ -25,6 +25,8 @@
 #include "MSAEditorState.h"
 #include "MSAEditorConsensusArea.h"
 
+#include "McaEditor.h" // SANGER_TODO: deal with includes
+
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 
 #include <U2Core/AppContext.h>
@@ -108,7 +110,9 @@ void OpenMSAEditorTask::open() {
     viewName = GObjectViewUtils::genUniqueViewName(msaObject->getDocument(), msaObject);
     uiLog.details(tr("Opening MSA editor for object: %1").arg(msaObject->getGObjectName()));
 
-    MSAEditor* v = new MSAEditor(viewName, msaObject);
+    // SANGER_TODO: tmp hard code
+    McaEditor* v = new McaEditor(viewName, msaObject);
+//    MSAEditor* v = new MSAEditor(viewName, msaObject);
     GObjectViewWindow* w = new GObjectViewWindow(v, viewName, false);
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
@@ -170,7 +174,9 @@ void OpenSavedMSAEditorTask::open() {
     MultipleSequenceAlignmentObject* msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     assert(msaObject!=NULL);
 
-    MSAEditor* v = new MSAEditor(viewName, msaObject);
+    // SANGER_TODO: tmp hard code
+    McaEditor* v = new McaEditor(viewName, msaObject);
+//    MSAEditor* v = new MSAEditor(viewName, msaObject);
     GObjectViewWindow* w = new GObjectViewWindow(v, viewName, true);
     MWMDIManager* mdiManager =     AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
@@ -178,7 +184,7 @@ void OpenSavedMSAEditorTask::open() {
     updateRanges(stateData, v);
 }
 
-void OpenSavedMSAEditorTask::updateRanges(const QVariantMap& stateData, MSAEditor* ctx) {
+void OpenSavedMSAEditorTask::updateRanges(const QVariantMap& stateData, MaEditor* ctx) {
     Q_UNUSED(ctx);
     MSAEditorState state(stateData);
 

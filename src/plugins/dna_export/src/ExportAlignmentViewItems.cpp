@@ -59,7 +59,8 @@ ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject* 
 
 void ExportAlignmentViewItemsController::initViewContext(GObjectView* v) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
-    assert(msaed!=NULL);
+    // SANGER_TODO: u know what 2 do
+    CHECK(msaed != NULL, );
     MSAExportContext* mc= new MSAExportContext(msaed);
     addViewResource(msaed, mc);
 }

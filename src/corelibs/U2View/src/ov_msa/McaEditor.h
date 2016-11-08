@@ -19,32 +19,34 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_AREA_RENDERER_H_
-#define _U2_SEQUENCE_AREA_RENDERER_H_
+#ifndef _U2_MCA_EDITOR_H_
+#define _U2_MCA_EDITOR_H_
 
-#include <U2Core/DNAChromatogram.h>
-
-#include <U2View/MSAEditorSequenceArea.h>
-
-#include <QPen>
+#include "MaEditor.h"
 
 namespace U2 {
 
-class SequenceAreaRenderer : public QObject {
+class McaEditor : public MaEditor {
     Q_OBJECT
 public:
-    SequenceAreaRenderer(MSAEditorSequenceArea* seqAreaWgt);
+    McaEditor(const QString& viewName, GObject* obj);
 
-    // SANGER_TODO: all draw methods are const???
-    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
+    virtual void buildStaticToolbar(QToolBar* tb);
 
-protected:
-    virtual bool drawRow(QPainter &p, const MultipleSequenceAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
+    virtual void buildStaticMenu(QMenu* m);
 
-    MSAEditorSequenceArea*  seqAreaWgt;
+    virtual int getRowHeight() const;
+
+protected slots:
+    void sl_showHideChromatograms(bool show);
+
+private:
+    bool              showChromatograms;
+
+    QAction*          showChromatogramsAction;
 };
 
 } // namespace
 
-#endif // _U2_SEQUENCE_AREA_RENDERER_H_
+#endif // _U2_MCA_EDITOR_H_
 
