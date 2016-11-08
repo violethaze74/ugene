@@ -23,26 +23,26 @@
 
 namespace U2 {
 
-//namespace {
+namespace {
 
-//bool _registerMeta() {
-//    qRegisterMetaType<MaModificationInfo>("MaModificationInfo");
-//    return true;
-//}
+bool _registerMeta() {
+    qRegisterMetaType<MaModificationInfo>("MaModificationInfo");
+    return true;
+}
 
-//}
+}
 
-//bool MaModificationInfo::registerMeta = _registerMeta();
+bool MaModificationInfo::registerMeta = _registerMeta();
 
-//MaModificationInfo::MaModificationInfo()
-//    : rowContentChanged(true),
-//      rowListChanged(true),
-//      alignmentLengthChanged(true),
-//      middleState(false),
-//      alphabetChanged(false),
-//      type(MaModificationType_User)
-//{
+MaModificationInfo::MaModificationInfo()
+    : rowContentChanged(true),
+      rowListChanged(true),
+      alignmentLengthChanged(true),
+      middleState(false),
+      alphabetChanged(false),
+      type(MaModificationType_User)
+{
 
-//}
+}
 
 }   // namespace U2

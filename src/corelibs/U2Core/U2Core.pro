@@ -248,7 +248,11 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
     src/util/DnaChromatogramUtils.h \
     src/datatype/msa/MultipleChromatogramAlignmentRow.h \
     src/datatype/msa/MultipleChromatogramAlignment.h \
+    src/gobjects/MultipleChromatogramAlignmentObject.h \
+    src/dbi/U2McaDbi.h \
     src/util/MaModificationInfo.h \
+    src/util/MultipleChromatogramAlignmentImporter.h \
+    src/util/MultipleChromatogramAlignmentExporter.h \
     src/util/McaRowInnerData.h
 
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
@@ -457,7 +461,11 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
     src/datatype/DNAChromatogram.cpp \
     src/datatype/msa/MultipleChromatogramAlignmentRow.cpp \
     src/datatype/msa/MultipleChromatogramAlignment.cpp \
+    src/gobjects/MultipleChromatogramAlignmentObject.cpp \
+    src/dbi/U2McaDbi.cpp \
     src/util/MaModificationInfo.cpp \
+    src/util/MultipleChromatogramAlignmentImporter.cpp \
+    src/util/MultipleChromatogramAlignmentExporter.cpp \
     src/datatype/U2Mca.cpp \
     src/util/McaRowInnerData.cpp
 
