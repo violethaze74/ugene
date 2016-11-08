@@ -119,8 +119,8 @@ bool MSAEditorTreeViewer::sync() {
 
         CHECK(msa != NULL, false);
         MSAEditorUI* msaUI = msa->getUI();
-        connect(msaUI->editor->getMSAObject(),  SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)),
-                this,                           SLOT(sl_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)));
+        connect(msaUI->editor->getMSAObject(),  SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+                this,                           SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
         connect(msaUI,                          SIGNAL(si_stopMsaChanging(bool)),
                 this,                           SLOT(sl_startTracking(bool)));
 
@@ -236,8 +236,8 @@ void MSAEditorTreeViewer::sl_startTracking(bool changed) {
         int res = desyncQuestion->exec();
         if (res == QMessageBox::No) {
             // undo the change and synchronize
-            disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)),
-                       this,                            SLOT(sl_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)));
+            disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+                       this,                            SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
 
             if (cachedModification.type != MaModificationType_Undo) {
                 if (!msaUI->getUndoAction()->isEnabled()) {
@@ -276,7 +276,7 @@ void MSAEditorTreeViewer::sl_stopTracking() {
     disconnectSignals();
 }
 
-void MSAEditorTreeViewer::sl_alignmentChanged(const MultipleSequenceAlignment &/*ma*/, const MaModificationInfo &modInfo) {
+void MSAEditorTreeViewer::sl_alignmentChanged(const MultipleAlignment &/*ma*/, const MaModificationInfo &modInfo) {
     cachedModification = modInfo;
 
     bool connectionIsNotBrokenOnAlignmentChange = slotsAreConnected && (modInfo.rowContentChanged || modInfo.rowListChanged || modInfo.alignmentLengthChanged);
@@ -298,8 +298,8 @@ void MSAEditorTreeViewer::sl_alignmentChanged(const MultipleSequenceAlignment &/
         CHECK(msa != NULL, );
         MSAEditorUI* msaUI = msa->getUI();
         CHECK(msaUI != NULL, );
-        disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)),
-                   this,                            SLOT(sl_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)));
+        disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+                   this,                            SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
         disconnect(msaUI,                          SIGNAL(si_stopMsaChanging(bool)),
                    this,                           SLOT(sl_startTracking(bool)));
         desync();

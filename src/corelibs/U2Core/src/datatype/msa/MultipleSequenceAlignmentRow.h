@@ -22,11 +22,11 @@
 #ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_
 #define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_
 
-#include <QSharedPointer>
-
 #include <U2Core/DNASequence.h>
 #include <U2Core/MsaRowUtils.h>
 #include <U2Core/U2Msa.h>
+
+#include "MultipleAlignmentRow.h"
 
 namespace U2 {
 
@@ -36,9 +36,10 @@ class MultipleSequenceAlignmentData;
 class MultipleSequenceAlignmentRowData;
 class U2OpStatus;
 
-class U2CORE_EXPORT MultipleSequenceAlignmentRow {
+class U2CORE_EXPORT MultipleSequenceAlignmentRow : public MultipleAlignmentRow {
 public:
     MultipleSequenceAlignmentRow();
+    MultipleSequenceAlignmentRow(const MultipleAlignmentRow &maRow);
     MultipleSequenceAlignmentRow(MultipleSequenceAlignmentData *msaData);
     MultipleSequenceAlignmentRow(MultipleSequenceAlignmentRowData *msaRowData);
 
@@ -47,10 +48,7 @@ public:
     MultipleSequenceAlignmentRow(const U2MsaRow &rowInDb, const QString &rowName, const QByteArray &rawData, MultipleSequenceAlignmentData *msaData);
     MultipleSequenceAlignmentRow(const MultipleSequenceAlignmentRow &row, MultipleSequenceAlignmentData *msaData);
 
-    virtual ~MultipleSequenceAlignmentRow();
-
     MultipleSequenceAlignmentRowData * data() const;
-    template <class Derived> inline Derived dynamicCast() const;
 
     MultipleSequenceAlignmentRowData & operator*();
     const MultipleSequenceAlignmentRowData & operator*() const;
@@ -60,14 +58,9 @@ public:
 
     MultipleSequenceAlignmentRow clone() const;
 
-protected:
-    QSharedPointer<MultipleSequenceAlignmentRowData> msaRowData;
+private:
+    QSharedPointer<MultipleSequenceAlignmentRowData> getMsaRowData() const;
 };
-
-template <class Derived>
-Derived MultipleSequenceAlignmentRow::dynamicCast() const {
-    return Derived(*this);
-}
 
 /**
  * A row in a multiple alignment structure.
@@ -76,7 +69,7 @@ Derived MultipleSequenceAlignmentRow::dynamicCast() const {
  * A row core is an obsolete concept. Currently,
  * it exactly equals to the row (offset always equals to zero).
  */
-class U2CORE_EXPORT MultipleSequenceAlignmentRowData {
+class U2CORE_EXPORT MultipleSequenceAlignmentRowData : public MultipleAlignmentRowData {
     friend class MultipleSequenceAlignmentData;
     friend class MultipleSequenceAlignmentRow;
 
@@ -135,7 +128,7 @@ public:
     int getRowLength() const;
 
     /** Returns length of the sequence + number of gaps. Doesn't include trailing gaps. */
-    inline int getRowLengthWithoutTrailing() const;
+    inline qint64 getRowLengthWithoutTrailing() const;
 
     /** Packed version: returns the row without leading and trailing gaps */
     QByteArray getCore() const;
@@ -208,15 +201,17 @@ public:
     virtual bool isRowContentEqual(const MultipleSequenceAlignmentRowData &rowData) const;
 
     /** Compares 2 rows. Rows are equal if their contents and names are equal. */
-    virtual inline bool operator!=(const MultipleSequenceAlignmentRowData &rowData) const;
-    virtual bool operator==(const MultipleSequenceAlignmentRowData &rowData) const;
+    bool operator!=(const MultipleSequenceAlignmentRowData &msaRowData) const;
+    bool operator!=(const MultipleAlignmentRowData &maRowData) const;
+    bool operator==(const MultipleSequenceAlignmentRowData &msaRowData) const;
+    bool operator==(const MultipleAlignmentRowData &maRowData) const;
 
     /**
      * Crops the row -> keeps only specified region in the row.
      * 'pos' and 'pos + count' can be greater than the row length.
      * Keeps trailing gaps.
      */
-    virtual void crop(int pos, int count, U2OpStatus &os);
+    virtual void crop(U2OpStatus &os, qint64 startPosition, qint64 count);
 
     /**
      * Returns new row of the specified 'count' length, started from 'pos'.
@@ -235,7 +230,7 @@ public:
      */
     virtual void replaceChars(char origChar, char resultChar, U2OpStatus &os);
 
-    MultipleSequenceAlignmentRow getCopy() const;
+    MultipleSequenceAlignmentRow getExplicitCopy() const;
 
 private:
     /** Splits input to sequence bytes and gaps model */
@@ -298,7 +293,7 @@ inline const DNASequence & MultipleSequenceAlignmentRowData::getSequence() const
     return sequence;
 }
 
-inline int MultipleSequenceAlignmentRowData::getRowLengthWithoutTrailing() const {
+inline qint64 MultipleSequenceAlignmentRowData::getRowLengthWithoutTrailing() const {
     return MsaRowUtils::getRowLength(sequence.seq, gaps);
 }
 
@@ -320,10 +315,6 @@ inline bool MultipleSequenceAlignmentRowData::simplify() {
 
 inline int MultipleSequenceAlignmentRowData::getUngappedLength() const {
     return sequence.length();
-}
-
-inline bool MultipleSequenceAlignmentRowData::operator!=(const MultipleSequenceAlignmentRowData &row) const {
-    return !(*this == row);
 }
 
 inline int MultipleSequenceAlignmentRowData::getGapsLength() const {

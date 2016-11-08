@@ -201,7 +201,7 @@ QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool tr
     int len = ma->getLength();
     const DNAAlphabet* al = ma->getAlphabet();
     U2OpStatus2Log os;
-    foreach(const MultipleSequenceAlignmentRow& row, ma->getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         DNASequence s(row->getName(), row->toByteArray(len, os), al);
         if (trimGaps) {
             int newLen = TextUtils::remove(s.seq.data(), s.length(), gapCharMap);
@@ -224,7 +224,7 @@ bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2
         return false;
     }
     for (int i=0, n = ali->getNumRows(); i < n; i++) {
-        int rowCoreLength = ali->getRow(i)->getCoreLength();
+        int rowCoreLength = ali->getMsaRow(i)->getCoreLength();
         if (rowCoreLength > coreLen) {
             ti.setError(tr("Sequences in alignment have different sizes!"));
             return false;
@@ -236,7 +236,7 @@ bool MSAUtils::checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2
 int MSAUtils::getRowIndexByName(const MultipleSequenceAlignment &ma, const QString &name) {
     int idx = 0;
 
-    foreach(const MultipleSequenceAlignmentRow& row, ma->getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         if (row->getName() == name) {
             return idx;
         }
@@ -313,9 +313,9 @@ MultipleSequenceAlignmentObject* MSAUtils::seqDocs2msaObj(QList<Document*> docs,
 
 QList<qint64> MSAUtils::compareRowsAfterAlignment(const MultipleSequenceAlignment& origMsa, MultipleSequenceAlignment& newMsa, U2OpStatus& os) {
     QList<qint64> rowsOrder;
-    const QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa->getRows();
+    const QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa->getMsaRows();
     for (int i = 0, n = newMsa->getNumRows(); i < n; ++i) {
-        const MultipleSequenceAlignmentRow newMsaRow = newMsa->getRow(i);
+        const MultipleSequenceAlignmentRow newMsaRow = newMsa->getMsaRow(i);
         QString rowName = newMsaRow->getName().replace(" ", "_");
 
         bool rowFound = false;
@@ -389,7 +389,7 @@ void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject *msaObj, U2Se
 }
 
 MultipleSequenceAlignment MSAUtils::setUniqueRowNames(const MultipleSequenceAlignment &ma) {
-    MultipleSequenceAlignment res = ma->getCopy();
+    MultipleSequenceAlignment res = ma->getExplicitCopy();
     int rowNumber = res->getNumRows();
     for (int i = 0; i < rowNumber; i++) {
         res->renameRow(i, QString::number(i));

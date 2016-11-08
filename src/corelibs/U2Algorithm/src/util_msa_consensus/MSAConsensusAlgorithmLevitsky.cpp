@@ -123,7 +123,7 @@ MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorit
 
     int* freqsData = globalFreqs.data();
     int len = ma->getLength();
-    foreach (const MultipleSequenceAlignmentRow& row, ma->getRows()) {
+    foreach (const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         for (int i = 0; i < len; i++) {
             char c = row->charAt(i);
             registerHit(freqsData, c);

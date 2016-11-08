@@ -58,7 +58,7 @@ void ClustalOSupportTaskSettings::reset() {
 
 ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const ClustalOSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run ClustalO alignment task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa->getCopy()),
+      inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),
       lock(NULL)
@@ -241,7 +241,7 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
                     if (rowsOrder.count() != inputMsa->getNumRows()) {
                         // Find rows that were removed by ClustalO and remove them from MSA
                         for (int i = inputMsa->getNumRows() - 1; i >= 0; i--) {
-                            qint64 rowId = inputMsa->getRow(i)->getRowDbInfo().rowId;
+                            qint64 rowId = inputMsa->getMsaRow(i)->getRowDbInfo().rowId;
                             if (!rowsOrder.contains(rowId)) {
                                 alObj->removeRow(i);
                             }
@@ -253,8 +253,8 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
 
                     QMap<qint64, QList<U2MsaGap> > rowsGapModel;
                     for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
-                        qint64 rowId = resultMA->getRow(i)->getRowDbInfo().rowId;
-                        const QList<U2MsaGap>& newGapModel = resultMA->getRow(i)->getGapModel();
+                        qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
+                        const QList<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGapModel();
                         rowsGapModel.insert(rowId, newGapModel);
                     }
 
@@ -366,7 +366,7 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->updateGapModel(clustalOSupportTask->resultMA->getRows());
+        mAObject->updateGapModel(clustalOSupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

@@ -132,12 +132,12 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
         if (GroupOperations::BY_NAME() == groupOp) {
             return al1->getName() == al2->getName();
         } else { // id or value
-            if (al1->getRows().size() != al2->getRows().size()) {
+            if (al1->getMsaRows().size() != al2->getMsaRows().size()) {
                 return false;
             }
 
-            QList<MultipleSequenceAlignmentRow> rows1 = al1->getRows();
-            QList<MultipleSequenceAlignmentRow> rows2 = al2->getRows();
+            QList<MultipleSequenceAlignmentRow> rows1 = al1->getMsaRows();
+            QList<MultipleSequenceAlignmentRow> rows2 = al2->getMsaRows();
             QList<MultipleSequenceAlignmentRow>::const_iterator it1 = rows1.constBegin();
             QList<MultipleSequenceAlignmentRow>::const_iterator it2 = rows2.constBegin();
             for (; it1 != rows1.constEnd(); ++it1, ++it2) {
@@ -235,7 +235,7 @@ bool MergeSequencePerformer::applyAction(const QVariant &newData) {
         } else {
             name = "Merged sequence";
         }
-        importer.startSequence(context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, name, false, os);
+        importer.startSequence(os, context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, name, false);
         CHECK_OP(os, false);
         started = true;
     } else {
@@ -306,7 +306,7 @@ bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
     }
 
     if (unique) {
-        foreach (const MultipleSequenceAlignmentRow &currRow, result->getRows()) {
+        foreach (const MultipleSequenceAlignmentRow &currRow, result->getMsaRows()) {
             if ((currRow->getName() == rowName) &&
                 (currRow->getData() == bytes)) {
                     return true;
@@ -354,8 +354,8 @@ bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     }
 
     U2OpStatus2Log os;
-    const QList<MultipleSequenceAlignmentRow> rows = result->getRows();
-    foreach (const MultipleSequenceAlignmentRow &newRow, newAl->getRows()) {
+    const QList<MultipleSequenceAlignmentRow> rows = result->getMsaRows();
+    foreach (const MultipleSequenceAlignmentRow &newRow, newAl->getMsaRows()) {
         if (unique) {
             if (!rows.contains(newRow)) {
                 result->addRow(newRow->getRowDbInfo(), newRow->getSequence(), os);

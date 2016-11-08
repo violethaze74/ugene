@@ -88,7 +88,7 @@ lockedIcon(":core/images/lock.png"), unlockedIcon(":core/images/lock_open.png")
 
     connect(seqArea, SIGNAL(si_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& )),
         SLOT(sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection&)));
-    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
+    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
         SLOT(sl_alignmentChanged()));
     connect(mobj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
 
@@ -178,7 +178,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
     for (int s = selectionTopLeft.y(); s < nSeq; s++) {
         const U2Region rowsAtPosition = seqArea->getRowsAt( s );
         SAFE_POINT( 0 <= rowsAtPosition.startPos, "Invalid row number!", );
-        const MultipleSequenceAlignmentRow row = msa->getRow( rowsAtPosition.startPos );
+        const MultipleSequenceAlignmentRow row = msa->getMsaRow( rowsAtPosition.startPos );
         // if s == pos.y -> search from the current base, otherwise search from the seq start
         int p = ( s == selectionTopLeft.y( ) ) ? selectionTopLeft.x( ) : 0;
         for ( ; p < ( aliLen - pat.length( ) + 1 ); p++ ) {
@@ -217,7 +217,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
     for ( int s = pos.y( ); 0 <= s; s-- ) {
         const U2Region rowsAtPosition = seqArea->getRowsAt( s );
         SAFE_POINT( 0 <= rowsAtPosition.startPos, "Invalid row number!", );
-        const MultipleSequenceAlignmentRow row = msa->getRow( rowsAtPosition.startPos );
+        const MultipleSequenceAlignmentRow row = msa->getMsaRow( rowsAtPosition.startPos );
         //if s == pos.y -> search from the current base, otherwise search from the seq end
         int p = ( s == pos.y( ) ? pos.x( ) : ( aliLen - pat.length( ) + 1) );
         while ( 0 <= p ) {

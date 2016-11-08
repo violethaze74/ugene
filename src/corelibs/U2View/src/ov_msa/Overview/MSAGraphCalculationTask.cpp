@@ -55,7 +55,7 @@ MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleSequenceAlignmentObject
     ma = msa->getMsaCopy();
     connect(msa, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
     connect(msa, SIGNAL(si_startMaUpdating()), this, SLOT(cancel()));
-    connect(msa, SIGNAL(si_alignmentChanged(MultipleSequenceAlignment,MaModificationInfo)), this, SLOT(cancel()));
+    connect(msa, SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)), this, SLOT(cancel()));
 }
 
 void MSAGraphCalculationTask::run() {

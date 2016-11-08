@@ -141,7 +141,7 @@ U2SequenceObject *importSequence(DNASequence &sequence,
                                  const QString& folder,
                                  U2OpStatus& os)
 {
-    seqImporter.startSequence(dbiRef, folder, sequence.getName(), sequence.circular, os);
+    seqImporter.startSequence(os, dbiRef, folder, sequence.getName(), sequence.circular);
     CHECK_OP(os, NULL);
     seqImporter.addBlock(sequence.seq.constData(), sequence.seq.length(), os);
     CHECK_OP(os, NULL);

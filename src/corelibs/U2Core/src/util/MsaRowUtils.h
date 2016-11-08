@@ -66,6 +66,8 @@ public:
                                        U2MsaRowGapModel &commonPart,
                                        U2MsaRowGapModel &firstDifference,
                                        U2MsaRowGapModel &secondDifference);
+    static U2MsaRowGapModel mergeGapModels(const U2MsaListGapModel &gapModels);
+    static U2MsaRowGapModel subtitudeGapModel(const U2MsaRowGapModel &minuendGapModel, const U2MsaRowGapModel &subtrahendGapModel);
 };
 
 } // U2

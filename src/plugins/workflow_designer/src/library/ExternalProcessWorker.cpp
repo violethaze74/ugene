@@ -454,7 +454,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
             foreach(const U2EntityRef &eRef, refs) {
                 QScopedPointer<U2SequenceObject> obj(new U2SequenceObject("tmp_name", eRef));
                 if (first) {
-                    seqImporter.startSequence(context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, slotId, false, os);
+                    seqImporter.startSequence(os, context->getDataStorage()->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, slotId, false);
                     first = false;
                 }
                 U2Region wholeSeq(0, obj->getSequenceLength());

@@ -41,6 +41,10 @@ qint64 U2MsaGap::endPos() const {
     return offset + gap;
 }
 
+void U2MsaGap::setEndPos(qint64 newEndPos) {
+    gap = newEndPos - offset;
+}
+
 bool U2MsaGap::isValid() const {
     return ((offset >= 0) && (gap > 0));
 }

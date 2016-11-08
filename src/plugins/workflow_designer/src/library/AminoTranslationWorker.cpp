@@ -83,7 +83,7 @@ void TranslateSequence2AminoTask::run(){
         translatedSeq.clear();
 
         U2SequenceImporter importer;
-        importer.startSequence(dbiRef, U2ObjectDbi::ROOT_FOLDER, seqObj->getSequenceName() + " " + resultName + QString(" %1").arg(currentSeq) + " direct", false, stateInfo);
+        importer.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, seqObj->getSequenceName() + " " + resultName + QString(" %1").arg(currentSeq) + " direct", false);
 
         int blockCounter = 0;
         qint64 end = directRegion.startPos +  directRegion.length / 3 * 3;
@@ -112,7 +112,7 @@ void TranslateSequence2AminoTask::run(){
         translatedSeq.clear();
 
         U2SequenceImporter importer;
-        importer.startSequence(dbiRef, U2ObjectDbi::ROOT_FOLDER, seqObj->getSequenceName()+ " " + resultName + QString(" %1").arg(currentSeq) + " complementary", false, stateInfo);
+        importer.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, seqObj->getSequenceName()+ " " + resultName + QString(" %1").arg(currentSeq) + " complementary", false);
 
         QByteArray complementarySeq;
         char* complSeq = NULL;

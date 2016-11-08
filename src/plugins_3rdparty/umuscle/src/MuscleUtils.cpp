@@ -102,7 +102,7 @@ void convertMAlignment2MSA(MSA& muscleMSA, const MultipleSequenceAlignment& ma, 
     MuscleContext *ctx = getMuscleContext();
     ctx->fillUidsVectors(ma->getNumRows());
     for (int i=0, n = ma->getNumRows(); i<n; i++) {
-        const MultipleSequenceAlignmentRow row = ma->getRow(i);
+        const MultipleSequenceAlignmentRow row = ma->getMsaRow(i);
         
         int coreLen = row->getCoreLength();
         int maLen = ma->getLength();
@@ -131,7 +131,7 @@ void convertMAlignment2SecVect(SeqVect& sv, const MultipleSequenceAlignment& ma,
 
     unsigned i=0;
     unsigned seq_count = 0;
-    foreach(const MultipleSequenceAlignmentRow& row, ma->getRows()) {
+    foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
         Seq *ptrSeq = new Seq();
         QByteArray name =  row->getName().toLocal8Bit();
         ptrSeq->FromString(row->getCore().constData(), name.constData());

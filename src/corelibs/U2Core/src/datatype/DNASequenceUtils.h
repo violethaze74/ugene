@@ -64,6 +64,8 @@ public:
 
     /** Returns the reverse-complement DNA sequence */
     static QByteArray reverseComplement(const QByteArray &sequence);
+
+    static void crop(DNASequence &sequence, int startPos, int length);
 };
 
 } // namespace

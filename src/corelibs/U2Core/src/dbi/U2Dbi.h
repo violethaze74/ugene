@@ -40,18 +40,19 @@ class QMutex;
 namespace U2 {
 
 // For the classes below, see description in class definition
-class U2ObjectDbi;
-class U2ObjectRelationsDbi;
-class U2SequenceDbi;
-class U2FeatureDbi;
-class U2CrossDatabaseReferenceDbi;
-class U2MsaDbi;
 class U2AssemblyDbi;
 class U2AttributeDbi;
-class U2VariantDbi;
-class U2ModDbi;
-class U2OpStatus;
+class U2CrossDatabaseReferenceDbi;
 class U2Dbi;
+class U2FeatureDbi;
+class U2McaDbi;
+class U2ModDbi;
+class U2MsaDbi;
+class U2ObjectDbi;
+class U2ObjectRelationsDbi;
+class U2OpStatus;
+class U2SequenceDbi;
+class U2VariantDbi;
 class UdrDbi;
 class Version;
 
@@ -291,6 +292,12 @@ public:
         Not NULL only if U2DbiFeature_ReadFeatures supported
     */
     virtual U2FeatureDbi* getFeatureDbi() = 0;
+
+    /**
+        U2Mca related DBI routines
+        Not NULL only if U2DbiFeature_ReadMca supported
+    */
+    virtual U2McaDbi* getMcaDbi() = 0;
 
     /**
         U2Annotation related DBI routines

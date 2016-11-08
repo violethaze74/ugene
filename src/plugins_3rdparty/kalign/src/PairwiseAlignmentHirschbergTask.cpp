@@ -147,11 +147,11 @@ QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task *subTask) {
             SAFE_POINT_OP(os, res);
             for (int rowNumber = 0; rowNumber < rows.length(); ++rowNumber) {
                 if (rows[rowNumber].sequenceId == settings->firstSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getRow(0)->getGapModel(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getMsaRow(0)->getGapModel(), os);
                     CHECK_OP(os, res);
                 }
                 if (rows[rowNumber].sequenceId == settings->secondSequenceRef.entityId) {
-                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getRow(1)->getGapModel(), os);
+                    con.dbi->getMsaDbi()->updateGapModel(settings->msaRef.entityId, rows[rowNumber].rowId, kalignSubTask->resultMA->getMsaRow(1)->getGapModel(), os);
                     CHECK_OP(os, res);
                 }
             }

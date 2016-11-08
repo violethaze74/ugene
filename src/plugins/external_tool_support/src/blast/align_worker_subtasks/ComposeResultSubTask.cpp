@@ -130,7 +130,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         CHECK_OP(stateInfo, );
 
         // add read annotation to the reference
-        const MultipleSequenceAlignmentRow readRow = result->getRow(rowsCounter);
+        const MultipleSequenceAlignmentRow readRow = result->getMsaRow(rowsCounter);
         U2Region region = getReadRegion(readRow, referenceGaps);
         SharedAnnotationData ann(new AnnotationData);
         ann->location = getLocation(region, subTask->isComplement());

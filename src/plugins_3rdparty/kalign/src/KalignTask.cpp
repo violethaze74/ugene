@@ -72,10 +72,10 @@ void KalignTaskSettings::reset() {
 KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSettings& _config)
     :TLSTask(tr("KALIGN alignment"), TaskFlags_FOSCOE),
       config(_config),
-      inputMA(ma->getCopy())
+      inputMA(ma->getExplicitCopy())
 {
     GCOUNTER( cvar, tvar, "KalignTask" );
-    inputSubMA = inputMA->getCopy();
+    inputSubMA = inputMA->getExplicitCopy();
     resultSubMA->setAlphabet(inputSubMA->getAlphabet());
     QString inputMAName = inputMA->getName();
     resultMA->setName(inputMAName);
@@ -195,8 +195,8 @@ Task::ReportResult KalignGObjectTask::report() {
 
     QMap<qint64, QList<U2MsaGap> > rowsGapModel;
     for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
-        qint64 rowId = resultMA->getRow(i)->getRowDbInfo().rowId;
-        const QList<U2MsaGap>& newGapModel = resultMA->getRow(i)->getGapModel();
+        qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
+        const QList<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGapModel();
         rowsGapModel.insert(rowId, newGapModel);
     }
 

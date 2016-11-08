@@ -38,6 +38,7 @@ public:
 
     DNAChromatogram();
 
+    QString name;
     int traceLength;
     int seqLength;
     QVector<ushort> baseCalls;

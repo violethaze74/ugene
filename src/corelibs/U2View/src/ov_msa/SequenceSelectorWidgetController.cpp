@@ -44,8 +44,8 @@ SequenceSelectorWidgetController::SequenceSelectorWidgetController(MSAEditor* _m
     connect(addSeq, SIGNAL(clicked()), SLOT(sl_addSeqClicked()));
     connect(deleteSeq, SIGNAL(clicked()), SLOT(sl_deleteSeqClicked()));
 
-    connect(msa->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment& , const MaModificationInfo&)),
-        SLOT(sl_seqLineEditEditingFinished(const MultipleSequenceAlignment& , const MaModificationInfo&)));
+    connect(msa->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment& , const MaModificationInfo&)),
+        SLOT(sl_seqLineEditEditingFinished(const MultipleAlignment& , const MaModificationInfo&)));
 
     connect(completer, SIGNAL(si_editingFinished()), SLOT(sl_seqLineEditEditingFinished()));
 
@@ -62,7 +62,7 @@ QString SequenceSelectorWidgetController::text() const {
 
 void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
     U2OpStatusImpl os;
-    const MultipleSequenceAlignmentRow &selectedRow = msa->getMSAObject()->getMsa()->getRowByRowId(newId, os);
+    const MultipleSequenceAlignmentRow &selectedRow = msa->getMSAObject()->getMsa()->getMsaRowByRowId(newId, os);
     CHECK_OP(os, );
     seqId = newId;
     const QString selectedName = selectedRow->getName();
@@ -85,7 +85,7 @@ void SequenceSelectorWidgetController::updateCompleter() {
     }
 }
 
-void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const MultipleSequenceAlignment& , const MaModificationInfo& modInfo){
+void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished(const MultipleAlignment& , const MaModificationInfo& modInfo){
     if(!modInfo.rowListChanged) {
         return;
     }
@@ -114,9 +114,9 @@ void SequenceSelectorWidgetController::sl_seqLineEditEditingFinished() {
                 for ( int sameNameCounter = 0; sameNameCounter <= sequenceIndex; ++sameNameCounter ) {
                     selectedRowIndex = rowNames.indexOf( selectedSeqName, selectedRowIndex + 1 );
                 }
-                seqId = ma->getRow( selectedRowIndex )->getRowId( );
+                seqId = ma->getMsaRow( selectedRowIndex )->getRowId( );
             } else { // case when chosen name is unique in the msa
-                seqId = ma->getRow( selectedSeqName )->getRowId( );
+                seqId = ma->getMsaRow( selectedSeqName )->getRowId( );
             }
         }
     }

@@ -196,7 +196,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
             FileAndDirectoryUtils::dumpStringToFile(f, resultText);
             bool isSimilarity = algo->isSimilarityMeasure();
             try {
-                createDistanceTable(algo, s.ma->getRows(), f);
+                createDistanceTable(algo, s.ma->getMsaRows(), f);
             } catch (std::bad_alloc &e) {
                 Q_UNUSED(e);
                 setError(tr("There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser."));
@@ -214,13 +214,13 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 int i = 1;
                 srand(QDateTime::currentDateTime().toTime_t());
                 foreach(const U2Region &reg, unitedRows) {
-                    MultipleSequenceAlignmentRow row = s.ma->getRow(reg.startPos + qrand() % reg.length);
+                    MultipleSequenceAlignmentRow row = s.ma->getMsaRow(reg.startPos + qrand() % reg.length);
                     row->setName(QString("Group %1: ").arg(i) + "(" + row->getName() + ")");
-                    rows.append(s.ma->getRow(reg.startPos + qrand() % reg.length)->getCopy());
+                    rows.append(s.ma->getMsaRow(reg.startPos + qrand() % reg.length)->getExplicitCopy());
 
                     resultText += "<tr><td><b>" + QString("Group %1: ").arg(i) + "</b></td><td>";
                     for (int x = reg.startPos; x < reg.endPos(); x++) {
-                        resultText += s.ma->getRow(x)->getName() + ", ";
+                        resultText += s.ma->getMsaRow(x)->getName() + ", ";
                     }
                     resultText += "\n";
                     i++;
@@ -263,7 +263,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
             }
             resultText += " ";
             for (int i = 0; i < s.ma->getNumRows(); i++) {
-                QString name = s.ma->getRow(i)->getName();
+                QString name = s.ma->getMsaRow(i)->getName();
                 TextUtils::wrapForCSV(name);
                 resultText += "," + name;
                 FileAndDirectoryUtils::dumpStringToFile(f, resultText);
@@ -271,7 +271,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
             resultText += "\n";
 
             for (int i = 0; i < s.ma->getNumRows(); i++) {
-                QString name = s.ma->getRow(i)->getName();
+                QString name = s.ma->getMsaRow(i)->getName();
                 TextUtils::wrapForCSV(name);
                 resultText += name;
                 for (int j = 0; j < s.ma->getNumRows(); j++) {

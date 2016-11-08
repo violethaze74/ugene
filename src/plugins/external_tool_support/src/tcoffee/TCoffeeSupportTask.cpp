@@ -57,7 +57,7 @@ void TCoffeeSupportTaskSettings::reset() {
 
 TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const TCoffeeSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run T-Coffee alignment task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa->getCopy()),
+      inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),
       lock(NULL)
@@ -230,8 +230,8 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
 
                 QMap<qint64, QList<U2MsaGap> > rowsGapModel;
                 for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
-                    qint64 rowId = resultMA->getRow(i)->getRowDbInfo().rowId;
-                    const QList<U2MsaGap>& newGapModel = resultMA->getRow(i)->getGapModel();
+                    qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
+                    const QList<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGapModel();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 
@@ -359,7 +359,7 @@ QList<Task*> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTa
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->updateGapModel(tCoffeeSupportTask->resultMA->getRows());
+        mAObject->updateGapModel(tCoffeeSupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,
