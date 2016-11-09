@@ -80,7 +80,7 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData &ma)
     : alphabet(NULL),
       length(0)
 {
-    copy(ma);
+//    copy(ma);
 }
 
 MultipleAlignmentData::~MultipleAlignmentData() {
