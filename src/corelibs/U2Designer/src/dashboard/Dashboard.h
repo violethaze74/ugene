@@ -22,24 +22,32 @@
 #ifndef _U2_DASHBOARD_H_
 #define _U2_DASHBOARD_H_
 
-#include <QWebElement>
+#include <qglobal.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
+#if (QT_VERSION < 0x050400) //Qt 5.7
+#include <QWebElement>
 #include <QWebView>
 #else
-#include <QtWebKitWidgets/QWebView>
+#include <QWebEngineView>
 #endif
 
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/WorkflowMonitor.h>
 
+class QWebSocketServer;
+class WebSocketClientWrapper;
+
 namespace U2 {
 using namespace Workflow;
 
 class ExternalToolsWidgetController;
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 class U2DESIGNER_EXPORT Dashboard : public QWebView {
+#else
+class U2DESIGNER_EXPORT Dashboard : public QWebEngineView {
+#endif
     Q_OBJECT
     Q_DISABLE_COPY(Dashboard)
 public:
@@ -50,7 +58,10 @@ public:
     void onShow();
 
     const WorkflowMonitor * monitor();
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement getDocument();
+#endif
+    
     void setClosed();
     QString directory() const;
 
@@ -68,10 +79,16 @@ signals:
     void si_loadSchema(const QString &url);
     void si_hideLoadBtnHint();
     void si_workflowStateChanged(bool isRunning);
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+    void si_serializeContent(const QString& content);
+#endif
 
 public slots:
     /** Hides the hint on the current dashboard instance */
     void sl_hideLoadBtnHint();
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+    void sl_onJsError(const QString& errorMessage);
+#endif
 
 private slots:
     void sl_runStateChanged(bool paused);
@@ -80,6 +97,9 @@ private slots:
     void sl_serialize();
     void sl_setDirectory(const QString &dir);
     void sl_workflowStateChanged(Monitor::TaskState state);
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+    void sl_serializeContent(const QString& content);
+#endif
 
 private:
     bool loaded;
@@ -88,7 +108,9 @@ private:
     QString dir;
     bool opened;
     const WorkflowMonitor *_monitor;
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement doc;
+#endif
     bool initialized;
     bool workflowInProgress;
     ExternalToolsWidgetController* etWidgetController;
@@ -103,26 +125,42 @@ private:
 private:
     void loadDocument();
     /** Returns the content area of the widget */
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement addWidget(const QString &title, DashboardTab dashTab, int cntNum = -1);
 
     /** Returns size of the QWebElement "name", it is searched inside "insideElt" only*/
     int containerSize(const QWebElement &insideElt, const QString &name);
-
+#else
+    QString addWidget(const QString &title, DashboardTab dashTab, int cntNum = -1);
+#endif
     void serialize(U2OpStatus &os);
     void saveSettings();
     void loadSettings();
 
     void createExternalToolTab();
+
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+    QWebSocketServer *server;
+    WebSocketClientWrapper *clientWrapper;
+    QWebChannel *channel;
+#endif
 };
 
 class DashboardWidget : public QObject {
     Q_OBJECT
 public:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     DashboardWidget(const QWebElement &container, Dashboard *parent);
-
+#else
+    DashboardWidget(const QString &container, Dashboard *parent);
+#endif
 protected:
     Dashboard *dashboard;
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement container;
+#else
+    QString container;
+#endif
 };
 
 class JavascriptAgent : public QObject {

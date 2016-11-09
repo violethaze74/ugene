@@ -31,8 +31,11 @@ using namespace Workflow::Monitor;
 class OutputFilesWidget : public TableWidget {
     Q_OBJECT
 public:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     OutputFilesWidget(const QWebElement &content, Dashboard *parent);
-
+#else
+    OutputFilesWidget(const QString &content, Dashboard *parent);
+#endif
     virtual QList<int> widths();
     virtual QStringList header();
     virtual QList<QStringList> data();

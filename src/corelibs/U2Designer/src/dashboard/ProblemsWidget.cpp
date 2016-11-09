@@ -25,7 +25,11 @@
 
 namespace U2 {
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 ProblemsWidget::ProblemsWidget(const QWebElement &content, Dashboard *parent)
+#else
+ProblemsWidget::ProblemsWidget(const QString &content, Dashboard *parent)
+#endif
 : TableWidget(content, parent)
 {
     createTable();

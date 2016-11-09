@@ -24,6 +24,9 @@
 
 #include "utils/MultilingualHtmlView.h"
 
+class QWebSocketServer;
+class WebSocketClientWrapper;
+
 namespace U2 {
 
 class WelcomePageController;
@@ -32,6 +35,9 @@ class WelcomePageWidget : public MultilingualHtmlView {
     Q_OBJECT
 public:
     WelcomePageWidget(QWidget *parent, WelcomePageController *controller);
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+    ~WelcomePageWidget();
+#endif
 
     void updateRecent(const QStringList &recentProjects, const QStringList &recentFiles);
     bool eventFilter(QObject *watched, QEvent *event);
@@ -51,6 +57,11 @@ private:
 private:
     bool loaded;
     WelcomePageController *controller;
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+    QWebSocketServer *server;
+    WebSocketClientWrapper *clientWrapper;
+    QWebChannel *channel;
+#endif
 };
 
 } // U2

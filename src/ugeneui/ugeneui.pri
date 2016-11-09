@@ -13,7 +13,7 @@ equals(QT_MAJOR_VERSION, 5): QT += widgets webkitwidgets
 
 minQtVersion(5, 4, 0){
     QT -= webkit webkitwidgets
-    QT += webengine webenginewidgets
+    QT += webengine webenginewidgets webchannel websockets
 }
 
 TEMPLATE = app

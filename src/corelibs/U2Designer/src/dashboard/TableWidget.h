@@ -29,7 +29,11 @@ namespace U2 {
 class TableWidget : public DashboardWidget {
     Q_OBJECT
 public:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     TableWidget(const QWebElement &container, Dashboard *parent);
+#else
+    TableWidget(const QString &container, Dashboard *parent);
+#endif
 
     /** The list of % */
     virtual QList<int> widths() = 0;
@@ -45,7 +49,11 @@ protected slots:
 
 protected:
     bool useEmptyRows;
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QMap<QString, QWebElement> rows;
+#else
+    QMap<QString, QString> rows;
+#endif
 
 protected:
     void addRow(const QString &dataId, const QStringList &d);

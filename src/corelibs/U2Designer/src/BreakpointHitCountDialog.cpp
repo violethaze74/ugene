@@ -21,13 +21,9 @@
 
 #include <limits>
 #include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QMessageBox>
-#else
+
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QMessageBox>
-#endif
 #include <QtGui/QIntValidator>
 
 #include "ui_BreakpointHitCountDialog.h"

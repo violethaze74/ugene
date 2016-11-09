@@ -25,37 +25,46 @@
 
 
 namespace U2 {
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
 ResourcesWidget::ResourcesWidget(const QWebElement &container, Dashboard *parent)
+#else
+ResourcesWidget::ResourcesWidget(const QString &container, Dashboard *parent)
+#endif
 : DashboardWidget(container, parent)
 {
     connect(parent->monitor(), SIGNAL(si_progressChanged(int)), SLOT(sl_progressChanged(int)));
     connect(parent->monitor(), SIGNAL(si_taskStateChanged(Monitor::TaskState)),
         SLOT(sl_taskStateChanged(Monitor::TaskState)));
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
     this->container.setInnerXml(QString(
         "<div class=\"well well-small vlayout-item\">"
-            "%1: <span id=\"timer\"></span>"
+        "%1: <span id=\"timer\"></span>"
         "</div>"
         "<div class=\"progress-wrapper vlayout-item\">"
-            "<div class=\"progress-container\">"
-                "<div id=\"progressBar\" class=\"progress small-bar\">"
-                    "<div class=\"bar\" style=\"width: 0%;\"></div>"
-                "</div>"
-            "</div>"
+        "<div class=\"progress-container\">"
+        "<div id=\"progressBar\" class=\"progress small-bar\">"
+        "<div class=\"bar\" style=\"width: 0%;\"></div>"
+        "</div>"
+        "</div>"
         "</div>"
         "<div id=\"status-bar\" class=\"vlayout-item alert\">"
-            "<p id=\"status-message\"/>"
+        "<p id=\"status-message\"/>"
         "</div>"
         ).arg(tr("Time")));
+#else
 
+#endif
     sl_progressChanged(0);
     running();
 }
 
 void ResourcesWidget::sl_progressChanged(int progress) {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement bar = container.findFirst(".bar");
     bar.setStyleProperty("width", QString::number(progress) + "%");
+#else
+    assert(false);
+#endif
 }
 
 namespace {
@@ -93,43 +102,72 @@ void ResourcesWidget::sl_taskStateChanged(TaskState state) {
     bool showHint = WorkflowSettings::isShowLoadButtonHint();
 
     if (isFinished(state)) {
+#if (QT_VERSION < 0x050400) //Qt 5.7
         dashboard->getDocument().evaluateJavaScript("showLoadButton(" + QString::number(showHint) + ")");
+#else
+        assert(false);
+#endif
     }
 }
 
 void ResourcesWidget::running() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     statusBar().addClass("alert-info");
     statusMessage().setPlainText(tr("The workflow task is in progress..."));
+#else
+    assert(false);
+#endif
 }
 
 void ResourcesWidget::runningWithProblems() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     statusBar().removeClass("alert-info");
     statusMessage().setPlainText(tr("The workflow task is in progress. There are problems..."));
+#else
+    assert(false);
+#endif
 }
 
 void ResourcesWidget::finishedWithProblems() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     statusBar().removeClass("alert-info");
     statusBar().addClass("alert-warning");
     statusMessage().setPlainText(tr("The workflow task has been finished with warnings!"));
+#else
+    assert(false);
+#endif
 }
 
 void ResourcesWidget::failed() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     statusBar().removeClass("alert-info");
     statusBar().addClass("alert-error");
     statusMessage().setPlainText(tr("The workflow task has been finished with errors!"));
+#else
+    assert(false);
+#endif
 }
 
 void ResourcesWidget::success() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     statusBar().removeClass("alert-info");
     statusBar().addClass("alert-success");
     statusMessage().setPlainText(tr("The workflow task has been finished successfully!"));
+#else
+    assert(false);
+#endif
 }
 
 void ResourcesWidget::canceled() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     statusBar().removeClass("alert-info");
     statusMessage().setPlainText(tr("The workflow task has been canceled!"));
+#else
+    assert(false);
+#endif
 }
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 QWebElement ResourcesWidget::statusBar() {
     return container.findFirst("#status-bar");
 }
@@ -137,5 +175,6 @@ QWebElement ResourcesWidget::statusBar() {
 QWebElement ResourcesWidget::statusMessage() {
     return container.findFirst("#status-message");
 }
+#endif
 
 } // U2

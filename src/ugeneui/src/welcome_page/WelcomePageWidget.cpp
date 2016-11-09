@@ -28,9 +28,18 @@
 #if (QT_VERSION < 0x050400) //Qt 5.7
 #include <QWebElement>
 #include <QWebFrame>
+#else
+#include <QtWebSockets/QWebSocketServer>
+#include <QtWebChannel/QWebChannel>
+
+#include <QDesktopServices>
+
+#include <U2Gui/WebSocketClientWrapper.h>
+#include <U2Gui/WebSocketTransport.h>
 #endif
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -46,12 +55,31 @@ namespace {
 }
 
 WelcomePageWidget::WelcomePageWidget(QWidget *parent, WelcomePageController *controller)
+#if (QT_VERSION < 0x050400) //Qt 5.7
     : MultilingualHtmlView("qrc:///ugene/html/welcome_page.html", parent),
+#else
+    : MultilingualHtmlView("qrc:///ugene/html/welcome_page_webengine.html", parent),
+#endif
       controller(controller)
 {
     installEventFilter(this);
     setObjectName("webView");
-    addController();
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode);
+    if (!server->listen(QHostAddress::LocalHost, 12345)) {
+        coreLog.error("Failed to open web socket server.");
+        return;
+    }
+
+    clientWrapper = new WebSocketClientWrapper(server);
+
+    channel = new QWebChannel();
+
+    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
+        channel, &QWebChannel::connectTo);
+
+    channel->registerObject(QString("ugene"), controller);
+#endif
 }
 
 void WelcomePageWidget::sl_loaded(bool ok) {
@@ -72,9 +100,9 @@ void WelcomePageWidget::updateRecent(const QStringList &recentProjects, const QS
 #if (QT_VERSION >= 0x050400) //Qt 5.7
 void addRecentItem(const QString &id, const QString & file, QWebEnginePage *page) {
     if (id.contains("recent_files")) {
-            page->runJavaScript(QString("addRecentItem(\"recentFilesBlock\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
+            page->runJavaScript(QString("addRecentItem(\"recent_files\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
     } else if (id.contains("recent_projects")) {
-            page->runJavaScript(QString("addRecentItem(\"recentProjectsBlock\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
+            page->runJavaScript(QString("addRecentItem(\"recent_projects\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
     } else {
         SAFE_POINT(false, "Unknown containerId", );
     }
@@ -82,9 +110,9 @@ void addRecentItem(const QString &id, const QString & file, QWebEnginePage *page
 
 void addNoItems(const QString &id, const QString & message, QWebEnginePage *page) {
     if (id.contains("recent_files")) {
-        page->runJavaScript(QString("addRecentItem(\"recentFilesBlock\", \"%1\", \"\")").arg(message));
+        page->runJavaScript(QString("addRecentItem(\"recent_files\", \"%1\", \"\")").arg(message));
     } else if (id.contains("recent_projects")) {
-        page->runJavaScript(QString("addRecentItem(\"recentProjectsBlock\", \"%1\", \"\")").arg(message));
+        page->runJavaScript(QString("addRecentItem(\"recent_projects\", \"%1\", \"\")").arg(message));
     } else {
         SAFE_POINT(false, "Unknown containerId", );
     }
@@ -114,6 +142,7 @@ void WelcomePageWidget::updateRecentFilesContainer(const QString &id, const QStr
     recentFilesDiv.removeAllChildren();
     recentFilesDiv.setOuterXml(divTemplate.arg(id).arg(result));
 #else
+    page()->runJavaScript(QString("clearRecent(\"%1\")").arg(id));
     bool emptyList = true;
     foreach(const QString &file, files.mid(0, MAX_RECENT)) {
         if (file.isEmpty()) {
@@ -132,8 +161,6 @@ void WelcomePageWidget::updateRecentFilesContainer(const QString &id, const QStr
 void WelcomePageWidget::addController() {
 #if (QT_VERSION < 0x050400) //Qt 5.7
     page()->mainFrame()->addToJavaScriptWindowObject("ugene", controller);
-#else
-
 #endif
     controller->onPageLoaded();
 }
@@ -151,6 +178,7 @@ void WelcomePageWidget::dragMoveEvent(QDragMoveEvent *event) {
 }
 
 bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
+    //coreLog.error(QString("Event: %1.").arg(QString::number(event->type())));
     CHECK(this == watched, false);
     switch (event->type()) {
         case QEvent::DragEnter:
@@ -169,5 +197,13 @@ bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
             return false;
     }
 }
+
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+WelcomePageWidget::~WelcomePageWidget() {
+    delete server;
+    delete clientWrapper;
+    delete channel;
+}
+#endif
 
 } // U2

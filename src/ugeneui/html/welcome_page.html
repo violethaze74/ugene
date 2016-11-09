@@ -27,7 +27,6 @@
     <link rel="stylesheet" type="text/css" href="qrc:///ugene/html/welcome_page.css">
     <script type="text/javascript" src="qrc:///javascript/jquery/jquery.js"></script>
     <script type="text/javascript" src="qrc:///javascript/bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="qrc:///javascript/qwebchannel/qwebchannel.js"></script>
 </head>
 <body>
     <table class="main_table">
@@ -45,7 +44,6 @@
                     <tr>
                         <td class="middle">
                             <div class="button_block">
-<!--                            <a href="#" onclick="ugene.performAction('load_data')">  -->
                                 <a href="#" onclick="ugene.performAction('load_data')">
                                     <div class="button_image">
                                         <img align="middle" src="qrc:///ugene/images/welcome_page/welcome_btn_open.png" />
@@ -181,27 +179,6 @@
         </tr>
     </table>
     <script type="text/javascript">
-        function setVisibilityStyle(desiredLang) {
-            var allElems = document.body.getElementsByTagName("*");
-            for (var i = 0; i < allElems.length; i++) {
-                var element = allElems[i];
-                if(element.lang != "" && element.lang != desiredLang) {
-                    element.style.display = "none"
-                }
-            }
-        }
-        function addRecentItem(cintainerId, item, link) {
-            var container = document.getElementById(cintainerId);
-            var stringToAdd;
-            if(link == "") {
-                stringToAdd = item;
-            } else {
-                stringToAdd = "<a class=\"recentLink\" href=\"#\" onclick=\"ugene.openFile('" + item +
-                "')\" title=\"" + item + "\">- " + link + "</a>";
-            }
-            container.insertAdjacentHTML('beforeend', stringToAdd);
-            updateLinksVisibility();
-        }
         function isVisible(el, p) {
             var elRect = el.getBoundingClientRect();
             var pRect = p.getBoundingClientRect();

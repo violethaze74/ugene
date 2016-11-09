@@ -6,7 +6,7 @@ PLUGIN_VENDOR=Unipro
 
 include( ../../ugene_plugin_common.pri )
 
-QT += scripttools
+QT += scripttools printsupport
 equals(QT_MAJOR_VERSION, 5): QT += widgets webkitwidgets
 
 minQtVersion(5, 4, 0){

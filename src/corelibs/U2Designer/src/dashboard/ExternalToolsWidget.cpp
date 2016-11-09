@@ -38,7 +38,11 @@ ExternalToolsWidgetController::ExternalToolsWidgetController() : toolsWidget(NUL
     connect(timer, SIGNAL(timeout()), SLOT(sl_timerShouts()));
 }
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 ExternalToolsWidget* ExternalToolsWidgetController::getWidget(const QWebElement &container, Dashboard *parent) {
+#else
+ExternalToolsWidget* ExternalToolsWidgetController::getWidget(const QString &container, Dashboard *parent) {
+#endif
     if(NULL == toolsWidget) {
         toolsWidget = new ExternalToolsWidget(container, parent, this);
         connect(this, SIGNAL(si_update()), toolsWidget, SLOT(sl_onLogUpdate()));
@@ -66,9 +70,15 @@ const QString ExternalToolsWidget::LINE_BREAK("break_line");
 const QString ExternalToolsWidget::SINGLE_QUOTE("s_quote");
 const QString ExternalToolsWidget::BACK_SLASH("b_slash");
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 ExternalToolsWidget::ExternalToolsWidget(const QWebElement &_container,
-                                         Dashboard *parent,
-                                         const ExternalToolsWidgetController *_ctrl) :
+    Dashboard *parent,
+    const ExternalToolsWidgetController *_ctrl) :
+#else
+ExternalToolsWidget::ExternalToolsWidget(const QString &_container,
+    Dashboard *parent,
+    const ExternalToolsWidgetController *_ctrl) :
+#endif
     DashboardWidget(_container, parent),
     ctrl(_ctrl)
 {
@@ -76,9 +86,11 @@ ExternalToolsWidget::ExternalToolsWidget(const QWebElement &_container,
 
     const WorkflowMonitor *workflowMonitor = dashboard->monitor();
     SAFE_POINT(NULL != workflowMonitor, "NULL workflow monitor!", );
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
     container.evaluateJavaScript("lwInitConteiner(this, 'params_tab_id_0')");
-
+#else
+    assert(false);
+#endif
     foreach (LogEntry entry, ctrl->getLog()) {
         addInfoToWidget(entry);
     }
@@ -130,22 +142,38 @@ void ExternalToolsWidget::addInfoToWidget(const LogEntry &entry) {
     case ERROR_LOG:
         addLogFunc += "'" + lastPartOfLog + "', ";
         addLogFunc += "'error')";
+#if (QT_VERSION < 0x050400) //Qt 5.7
         container.evaluateJavaScript(addLogFunc);
+#else
+        assert(false);
+#endif
         break;
     case OUTPUT_LOG:
         addLogFunc += "'" + lastPartOfLog + "', ";
         addLogFunc += "'output')";
+#if (QT_VERSION < 0x050400) //Qt 5.7
         container.evaluateJavaScript(addLogFunc);
+#else
+        assert(false);
+#endif
         break;
     case PROGRAM_PATH:
         addLogFunc += "'" + lastPartOfLog + "', ";
         addLogFunc += "'program')";
+#if (QT_VERSION < 0x050400) //Qt 5.7
         container.evaluateJavaScript(addLogFunc);
+#else
+        assert(false);
+#endif
         break;
     case ARGUMENTS:
         addLogFunc += "'" + lastPartOfLog + "', ";
         addLogFunc += "'arguments')";
+#if (QT_VERSION < 0x050400) //Qt 5.7
         container.evaluateJavaScript(addLogFunc);
+#else
+        assert(false);
+#endif
         break;
     }
 }

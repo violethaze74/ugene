@@ -12,7 +12,7 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/DirectoryItem.h \
            src/EditBreakpointLabelsDialog.h \
            src/EditMarkerGroupDialog.h \
-#           src/EstimationReporter.h \
+           src/EstimationReporter.h \
            src/FileItem.h \
            src/GrouperEditor.h \
            src/GrouperEditorWidget.h \
@@ -25,14 +25,14 @@ HEADERS += src/BreakpointHitCountDialog.h \
            src/QDScheduler.h \
            src/UrlItem.h \
            src/WorkflowGUIUtils.h \
-#           src/dashboard/Dashboard.h \
-#           src/dashboard/ExternalToolsWidget.h \
-#           src/dashboard/OutputFilesWidget.h \
-#           src/dashboard/ParametersWidget.h \
-#           src/dashboard/ProblemsWidget.h \
-#           src/dashboard/ResourcesWidget.h \
-#           src/dashboard/StatisticsWidget.h \
-#           src/dashboard/TableWidget.h \
+           src/dashboard/Dashboard.h \
+           src/dashboard/ExternalToolsWidget.h \
+           src/dashboard/OutputFilesWidget.h \
+           src/dashboard/ParametersWidget.h \
+           src/dashboard/ProblemsWidget.h \
+           src/dashboard/ResourcesWidget.h \
+           src/dashboard/StatisticsWidget.h \
+           src/dashboard/TableWidget.h \
            src/support/OutputDirectoryWidget.h \
            src/support/URLLineEdit.h \
            src/wizard/BowtieWidgetController.h \
@@ -79,7 +79,7 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/DirectoryItem.cpp \
            src/EditBreakpointLabelsDialog.cpp \
            src/EditMarkerGroupDialog.cpp \
-#           src/EstimationReporter.cpp \
+           src/EstimationReporter.cpp \
            src/FileItem.cpp \
            src/GrouperEditor.cpp \
            src/GrouperEditorWidget.cpp \
@@ -92,14 +92,14 @@ SOURCES += src/BreakpointHitCountDialog.cpp \
            src/QDScheduler.cpp \
            src/UrlItem.cpp \
            src/WorkflowGUIUtils.cpp \
-#           src/dashboard/Dashboard.cpp \
-#           src/dashboard/ExternalToolsWidget.cpp \
-#           src/dashboard/OutputFilesWidget.cpp \
-#           src/dashboard/ParametersWidget.cpp \
-#           src/dashboard/ProblemsWidget.cpp \
-#           src/dashboard/ResourcesWidget.cpp \
-#           src/dashboard/StatisticsWidget.cpp \
-#           src/dashboard/TableWidget.cpp \
+           src/dashboard/Dashboard.cpp \
+           src/dashboard/ExternalToolsWidget.cpp \
+           src/dashboard/OutputFilesWidget.cpp \
+           src/dashboard/ParametersWidget.cpp \
+           src/dashboard/ProblemsWidget.cpp \
+           src/dashboard/ResourcesWidget.cpp \
+           src/dashboard/StatisticsWidget.cpp \
+           src/dashboard/TableWidget.cpp \
            src/support/OutputDirectoryWidget.cpp \
            src/support/URLLineEdit.cpp \
            src/wizard/BowtieWidgetController.cpp \

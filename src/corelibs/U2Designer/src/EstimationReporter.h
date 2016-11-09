@@ -23,12 +23,11 @@
 #define _U2_ESTIMATION_REPORTER_H_
 
 #include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QWebView>
-#include <QMessageBox>
-#else
 #include <QtWidgets/QMessageBox>
+#if (QT_VERSION < 0x050400) //Qt 5.7
 #include <QtWebKitWidgets/QWebView>
+#else
+#include <QWebEngineView>
 #endif
 
 #include <U2Core/global.h>
@@ -38,14 +37,22 @@ namespace U2 {
 
 class U2DESIGNER_EXPORT EstimationReporter {
 public:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     static QWebView * generateReport(const Workflow::EstimationResult &er);
+#else
+    static QWebEngineView* generateReport(const Workflow::EstimationResult &er);
+#endif
     static QMessageBox * createTimeMessage(const Workflow::EstimationResult &er);
 };
 
 class ReportGenerationHelper : public QObject {
     Q_OBJECT
 public:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     ReportGenerationHelper(QWebView *view);
+#else
+    ReportGenerationHelper(QWebEngineView *view);
+#endif
     void waitLoading();
     bool loadedOk;
 

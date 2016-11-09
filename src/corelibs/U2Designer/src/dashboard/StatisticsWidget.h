@@ -31,7 +31,11 @@ using namespace Workflow::Monitor;
 class StatisticsWidget : public TableWidget {
     Q_OBJECT
 public:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     StatisticsWidget(const QWebElement &container, Dashboard *parent);
+#else
+    StatisticsWidget(const QString &container, Dashboard *parent);
+#endif
 
     virtual QList<int> widths();
     virtual QStringList header();

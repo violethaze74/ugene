@@ -24,8 +24,11 @@
 #include "StatisticsWidget.h"
 
 namespace U2 {
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
 StatisticsWidget::StatisticsWidget(const QWebElement &container, Dashboard *parent)
+#else
+StatisticsWidget::StatisticsWidget(const QString &container, Dashboard *parent)
+#endif
 : TableWidget(container, parent)
 {
     useEmptyRows = false;

@@ -25,7 +25,11 @@ namespace U2 {
 
 static const int MIN_ROW_COUNT = 3;
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 TableWidget::TableWidget(const QWebElement &container, Dashboard *parent)
+#else
+TableWidget::TableWidget(const QString &container, Dashboard *parent)
+#endif
 : DashboardWidget(container, parent), useEmptyRows(true)
 {
 
@@ -43,7 +47,11 @@ void TableWidget::createTable() {
     table += "</tr></thead>";
     table += "<tbody scroll=\"yes\"/>";
     table += "</table>";
+#if (QT_VERSION < 0x050400) //Qt 5.7
     container.setInnerXml(table);
+#else
+    assert(false);
+#endif
 
     rows.clear();
     if (useEmptyRows) {
@@ -59,11 +67,12 @@ void TableWidget::fillTable() {
 }
 
 void TableWidget::addEmptyRows() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement body = container.findFirst("tbody");
     int rowIdx = rows.size();
     while (rowIdx < MIN_ROW_COUNT) {
         QString row = "<tr class=\"empty-row\">";
-        foreach (const QString &h, header()) {
+        foreach(const QString &h, header()) {
             Q_UNUSED(h);
             row += "<td>&nbsp;</td>";
         }
@@ -71,6 +80,9 @@ void TableWidget::addEmptyRows() {
         body.appendInside(row);
         rowIdx++;
     }
+#else
+    assert(false);
+#endif
 }
 
 void TableWidget::addRow(const QString &dataId, const QStringList &ds) {
@@ -78,7 +90,7 @@ void TableWidget::addRow(const QString &dataId, const QStringList &ds) {
     row += "<tr class=\"filled-row\">";
     row += createRow(ds);
     row += "</tr>";
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement body = container.findFirst("tbody");
     QWebElement emptyRow = body.findFirst(".empty-row");
     if (emptyRow.isNull()) {
@@ -88,11 +100,18 @@ void TableWidget::addRow(const QString &dataId, const QStringList &ds) {
         emptyRow.setOuterXml(row);
         rows[dataId] = body.findAll(".filled-row").last();
     }
+#else
+    assert(false);
+#endif
 }
 
 void TableWidget::updateRow(const QString &dataId, const QStringList &d) {
     if (rows.contains(dataId)) {
+#if (QT_VERSION < 0x050400) //Qt 5.7
         rows[dataId].setInnerXml(createRow(d));
+#else
+        assert(false);
+#endif
     } else {
         addRow(dataId, d);
     }

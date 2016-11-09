@@ -32,7 +32,11 @@ namespace U2 {
 
 static const int MAX_FILES_COUNT = 10;
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 OutputFilesWidget::OutputFilesWidget(const QWebElement &content, Dashboard *parent)
+#else
+OutputFilesWidget::OutputFilesWidget(const QString &content, Dashboard *parent)
+#endif
 : TableWidget(content, parent), collapsed(false)
 {
     createTable();
@@ -180,6 +184,7 @@ void OutputFilesWidget::collapse() {
     }
 }
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 static bool isFileButton(const QWebElement &row) {
     return row.findAll(".file-button-ctn").count() > 0;
 }
@@ -187,11 +192,12 @@ static bool isFileButton(const QWebElement &row) {
 static int filesCount(const QWebElement &menu) {
     return menu.findAll(".file-sub-menu").count();
 }
+#endif
 
 void OutputFilesWidget::addFileMenu(const Monitor::FileInfo &info) {
     SAFE_POINT(collapsed, "Not collapsed mode", );
     SAFE_POINT(rows.contains(id(info)), "The menu is not created", );
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement row = rows[id(info)];
     if (isFileButton(row)) {
         QList<Monitor::FileInfo> files = MonitorUtils::filesByActor(dashboard->monitor())[info.actor];
@@ -203,6 +209,9 @@ void OutputFilesWidget::addFileMenu(const Monitor::FileInfo &info) {
         button.setInnerXml(buttonLabel(count));
         menu.appendInside(createFileSubMenu(info));
     }
+#else
+    assert(false);
+#endif
 }
 
 QString OutputFilesWidget::buttonLabel(int filesCount) const {

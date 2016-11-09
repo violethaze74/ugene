@@ -31,7 +31,11 @@ using namespace Workflow::Monitor;
 class ResourcesWidget : public DashboardWidget {
     Q_OBJECT
 public:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     ResourcesWidget(const QWebElement &container, Dashboard *parent);
+#else
+    ResourcesWidget(const QString &container, Dashboard *parent);
+#endif
 
 private slots:
     void sl_progressChanged(int progress);
@@ -44,9 +48,10 @@ private:
     void failed();
     void success();
     void canceled();
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement statusBar();
     QWebElement statusMessage();
+#endif
 };
 
 } // U2

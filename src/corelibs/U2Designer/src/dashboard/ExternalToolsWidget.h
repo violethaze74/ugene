@@ -36,8 +36,12 @@ class ExternalToolsWidgetController : public QObject {
 public:
     ExternalToolsWidgetController();
     ~ExternalToolsWidgetController() { delete timer; }
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
     ExternalToolsWidget* getWidget(const QWebElement &container, Dashboard *parent);
+#else
+    ExternalToolsWidget* getWidget(const QString &container, Dashboard *parent);
+#endif
+    
     LogEntry getEntry(int index) const;
     QList<LogEntry> getLog() const { return log; }
     int getLogSize() const { return log.count(); }
@@ -60,7 +64,11 @@ private:
 class ExternalToolsWidget : public DashboardWidget {
     Q_OBJECT
 public:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     ExternalToolsWidget(const QWebElement &container, Dashboard *parent, const ExternalToolsWidgetController* ctrl);
+#else
+    ExternalToolsWidget(const QString &container, Dashboard *parent, const ExternalToolsWidgetController* ctrl);
+#endif
 
 public slots:
     void sl_onLogUpdate();

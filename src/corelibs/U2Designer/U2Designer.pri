@@ -10,7 +10,7 @@ equals(QT_MAJOR_VERSION, 5): QT += widgets webkitwidgets
 
 minQtVersion(5, 4, 0){
     QT -= webkit webkitwidgets
-    QT += webengine webenginewidgets
+    QT += webengine webenginewidgets websockets
 }
 
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2DESIGNER_DLL

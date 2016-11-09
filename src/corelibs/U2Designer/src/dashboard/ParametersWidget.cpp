@@ -31,7 +31,11 @@
 
 namespace U2 {
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 ParametersWidget::ParametersWidget(const QWebElement &container, Dashboard *parent)
+#else
+ParametersWidget::ParametersWidget(const QString &container, Dashboard *parent)
+#endif
     : DashboardWidget(container, parent)
 {
     const WorkflowMonitor *workflowMonitor = dashboard->monitor();
@@ -54,9 +58,11 @@ void ParametersWidget::createWidget(const QList<WorkerParamsInfo> &workersParams
             createTabFunc = "pwAddTab";
         }
         createTabFunc += "(this, '" + info.workerName + "', '" + tabId + "')";
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
         container.evaluateJavaScript(createTabFunc);
-
+#else
+        assert(false);
+#endif
         // Add the parameters
         foreach (Attribute* param, info.parameters) {
             SAFE_POINT(NULL != param, "NULL attribute!", );
@@ -80,8 +86,11 @@ void ParametersWidget::createWidget(const QList<WorkerParamsInfo> &workersParams
                     createParamFunc += "('" + tabId + "', ";
                     createParamFunc += "'" + paramName + "', ";
                     createParamFunc += "'" + paramValue + "', false)";
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
                     container.evaluateJavaScript(createParamFunc);
+#else
+                    assert(false);
+#endif
                 }
             }
             else {
@@ -111,8 +120,11 @@ void ParametersWidget::createWidget(const QList<WorkerParamsInfo> &workersParams
                 }
 
                 createParamFunc += ")";
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
                 container.evaluateJavaScript(createParamFunc);
+#else
+                assert(false);
+#endif
             }
         }
 

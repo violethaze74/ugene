@@ -19,19 +19,19 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QWebFrame>
-#else
+
 #include <QtWidgets/QApplication>
+
+#if (QT_VERSION < 0x050400) //Qt 5.7
 #include <QtWebKitWidgets/QWebFrame>
+#else
+
 #endif
 
 #include "EstimationReporter.h"
 
 namespace U2 {
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
 static QWebFrame * frame(QWebView *view) {
     return view->page()->mainFrame();
 }
@@ -39,6 +39,8 @@ static QWebFrame * frame(QWebView *view) {
 static void eval(QWebView *view, const QString &code) {
     frame(view)->evaluateJavaScript(code);
 }
+#endif
+
 
 static QString getHtml(const QString &loadUrl) {
     QFile file(loadUrl);
@@ -56,6 +58,7 @@ static QString getHtml(const QString &loadUrl) {
     return html;
 }
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 QWebView * EstimationReporter::generateReport(const Workflow::EstimationResult &er) {
     QWebView *result = new QWebView();
     ReportGenerationHelper helper(result);
@@ -71,6 +74,12 @@ QWebView * EstimationReporter::generateReport(const Workflow::EstimationResult &
     result->setContextMenuPolicy(Qt::NoContextMenu);
     return result;
 }
+#else
+QWebEngineView* EstimationReporter::generateReport(const Workflow::EstimationResult &er) {
+    assert(false);
+    return new QWebEngineView();
+}
+#endif
 
 static QString toTimeString(qint64 timeSec) {
     qint64 hours = timeSec / 3600;
@@ -99,12 +108,16 @@ QMessageBox * EstimationReporter::createTimeMessage(const Workflow::EstimationRe
         QMessageBox::Close);
     return result;
 }
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
 ReportGenerationHelper::ReportGenerationHelper(QWebView *view) {
+#else
+ReportGenerationHelper::ReportGenerationHelper(QWebEngineView *view) {
+#endif
     loaded = false;
     loadedOk = false;
     connect(view, SIGNAL(loadFinished(bool)), SLOT(sl_loadFinished(bool)));
 }
+
 
 void ReportGenerationHelper::sl_loadFinished(bool ok) {
     loaded = true;

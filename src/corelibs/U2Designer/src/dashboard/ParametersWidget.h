@@ -37,7 +37,11 @@ struct ParametersWidgetTab {
 class ParametersWidget : public DashboardWidget {
     Q_OBJECT
 public:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     ParametersWidget(const QWebElement &container, Dashboard *parent);
+#else
+    ParametersWidget(const QString &container, Dashboard *parent);
+#endif
 
     void createWidget(const QList<WorkerParamsInfo> &workersParamsInfo);
 };

@@ -44,6 +44,8 @@ MultilingualHtmlView::MultilingualHtmlView(const QString& htmlPath, QWidget* par
     loadPage(htmlPath);
 #if (QT_VERSION < 0x050400) //Qt 5.7
     page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+#else
+
 #endif
 }
 
@@ -84,25 +86,12 @@ void MultilingualHtmlView::loadPage(const QString& htmlPath) {
     connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(sl_linkActivated(QUrl)));
     load(QUrl(htmlPath));
 #else
-    MultilingualWebEnginePage *page = new MultilingualWebEnginePage();
-    page->setParent(this);
-    page->load(QUrl(htmlPath));
+    QWebEnginePage *page = new QWebEnginePage(parentWidget());
+    QUrl url(htmlPath);
+    url.setQuery(QStringLiteral("webChannelBaseUrl=") + "ws://127.0.0.1:12345");
+    page->load(url);
     setPage(page);
 #endif
 }
 
-#if (QT_VERSION >= 0x050400) //Qt 5.7
-
-MultilingualWebEnginePage::MultilingualWebEnginePage() : QWebEnginePage() {
-
-}
-
-bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame) {
-    if (type == NavigationTypeLinkClicked) {
-        return false;
-    }
-    return true;
-}
-
-#endif
 } // namespace

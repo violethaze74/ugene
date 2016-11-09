@@ -20,15 +20,7 @@
  */
 
 #include <QtGui/QFocusEvent>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLineEdit>
-#include <QtGui/QListWidget>
-#include <QtGui/QMessageBox>
-#include <QtGui/QScrollArea>
-#include <QtGui/QScrollBar>
-#include <QtGui/QToolButton>
-#include <QtGui/QVBoxLayout>
-#else
+
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMessageBox>
@@ -36,7 +28,6 @@
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
-#endif
 
 #include <U2Core/U2OpStatusUtils.h>
 
