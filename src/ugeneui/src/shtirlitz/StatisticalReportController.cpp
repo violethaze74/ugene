@@ -46,6 +46,7 @@ StatisticalReportController::StatisticalReportController(const QString &newHtmlF
     htmlView = new MultilingualHtmlView(newHtmlFilepath, this);
     frameLayout->addWidget(htmlView);
     htmlView->setMinimumSize(400, 10);
+    connect(htmlView,SIGNAL(loadFinished(bool)),this,SLOT(sl_changeHeght()));
 }
 
 bool StatisticalReportController::isInfoSharingAccepted() const {
@@ -63,8 +64,8 @@ void StatisticalReportController::paintEvent(QPaintEvent *event) {
     }
     htmlView->setMinimumHeight(htmlView->size().height() + 10);
 #else
-    qreal height = htmlView->page()->contentsSize().height();
     htmlView->setMinimumHeight(height);
+
 #endif
 #ifndef Q_OS_MAC
     // UGENE crashes on the update event processing on mac
@@ -75,4 +76,10 @@ void StatisticalReportController::paintEvent(QPaintEvent *event) {
 #endif
 }
 
+void StatisticalReportController::sl_changeHeght(){
+    htmlView->page()->runJavaScript("getBodyHeight();", [&](const QVariant &var){
+        height = var.toInt();
+        htmlView->setMinimumHeight(height);
+    });
+}
 }

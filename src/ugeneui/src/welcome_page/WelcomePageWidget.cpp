@@ -178,7 +178,6 @@ void WelcomePageWidget::dragMoveEvent(QDragMoveEvent *event) {
 }
 
 bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
-    //coreLog.error(QString("Event: %1.").arg(QString::number(event->type())));
     CHECK(this == watched, false);
     switch (event->type()) {
         case QEvent::DragEnter:

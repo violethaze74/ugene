@@ -71,7 +71,7 @@ void MultilingualHtmlView::sl_loaded(bool ok) {
         otherLangsCollection[i].setStyleProperty("display", "none");
     }
 #else
-    page()->runJavaScript(QString("setVisibilityStyle(\"%1\")").arg(lang));
+    page()->runJavaScript(QString("showOnlyLang(\"%1\");").arg(lang));
 #endif
     emit si_loaded(ok);
 }
