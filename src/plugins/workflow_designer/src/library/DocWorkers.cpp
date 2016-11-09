@@ -239,7 +239,7 @@ static U2SequenceObject *addSeqObject(Document *doc, DNASequence &seq) {
     U2SequenceObject *dna = NULL;
     if (doc->getDocumentFormat()->isObjectOpSupported(doc, DocumentFormat::DocObjectOp_Add, GObjectTypes::SEQUENCE)) {
         U2OpStatus2Log os;
-        U2EntityRef seqRef = U2SequenceUtils::import(doc->getDbiRef(), seq, os);
+        U2EntityRef seqRef = U2SequenceUtils::import(os, doc->getDbiRef(), seq);
         CHECK_OP(os, NULL);
         dna = new U2SequenceObject(seq.getName(), seqRef);
         doc->addObject(dna);
@@ -326,7 +326,7 @@ inline static U2SequenceObject * getCopiedSequenceObject(const QVariantMap &data
     if (refCount > 2) { // need to copy because it is used by another worker
         DNASequence seq = seqObj->getSequence(reg, os);
         CHECK_OP(os, NULL);
-        U2EntityRef seqRef = U2SequenceUtils::import(context->getDataStorage()->getDbiRef(), seq, os);
+        U2EntityRef seqRef = U2SequenceUtils::import(os, context->getDataStorage()->getDbiRef(), seq);
         CHECK_OP(os, NULL);
 
         return new U2SequenceObject(seqObj->getSequenceName(), seqRef);

@@ -19,9 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/DNAChromatogram.h>
+#include <U2Core/DatatypeSerializeUtils.h>
+#include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/Log.h>
 #include <U2Core/L10n.h>
+#include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2OpStatus.h>
 
 #include "ChromatogramUtils.h"
@@ -78,6 +80,49 @@ bool ChromatogramUtils::areEqual(const DNAChromatogram &first, const DNAChromato
             first.prob_G == second.prob_G &&
             first.prob_T == second.prob_T &&
             first.hasQV == second.hasQV;
+}
+
+void ChromatogramUtils::crop(DNAChromatogram &chromatogram, int startPos, int length) {
+    chromatogram.traceLength = qMin(chromatogram.traceLength - startPos, length);
+    chromatogram.seqLength = qMin(chromatogram.seqLength - startPos, length);
+    chromatogram.baseCalls = chromatogram.baseCalls.mid(startPos, length);
+    chromatogram.A = chromatogram.A.mid(startPos, length);
+    chromatogram.C = chromatogram.C.mid(startPos, length);
+    chromatogram.G = chromatogram.G.mid(startPos, length);
+    chromatogram.T = chromatogram.T.mid(startPos, length);
+    chromatogram.prob_A = chromatogram.prob_A.mid(startPos, length);
+    chromatogram.prob_C = chromatogram.prob_C.mid(startPos, length);
+    chromatogram.prob_G = chromatogram.prob_G.mid(startPos, length);
+    chromatogram.prob_T = chromatogram.prob_T.mid(startPos, length);
+}
+
+U2EntityRef ChromatogramUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNAChromatogram &chromatogram) {
+    U2Chromatogram dbChromatogram(dbiRef);
+    dbChromatogram.visualName = chromatogram.name;
+    dbChromatogram.serializer = DNAChromatogramSerializer::ID;
+
+    RawDataUdrSchema::createObject(dbiRef, folder, dbChromatogram, os);
+    CHECK_OP(os, U2EntityRef());
+
+    const U2EntityRef entityRef(dbiRef, dbChromatogram.id);
+    QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
+    RawDataUdrSchema::writeContent(data, entityRef, os);
+    CHECK_OP(os, U2EntityRef());
+
+    return entityRef;
+}
+
+DNAChromatogram ChromatogramUtils::exportChromatogram(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
+    const QString serializer = RawDataUdrSchema::getObject(chromatogramRef, os).serializer;
+    CHECK_OP(os, DNAChromatogram());
+    SAFE_POINT_EXT(DNAChromatogramSerializer::ID == serializer, os.setError(QString("Unknown serializer id: %1").arg(serializer)), DNAChromatogram());
+    const QByteArray data = RawDataUdrSchema::readAllContent(chromatogramRef, os);
+    CHECK_OP(os, DNAChromatogram());
+    return DNAChromatogramSerializer::deserialize(data, os);
+}
+
+U2Chromatogram ChromatogramUtils::getChromatogramDbInfo(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
+    return RawDataUdrSchema::getObject(chromatogramRef, os);
 }
 
 }   // namespace U2

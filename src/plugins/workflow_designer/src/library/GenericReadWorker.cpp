@@ -414,7 +414,7 @@ void LoadSeqTask::run() {
                     continue;
                 }
                 QVariantMap m;
-                U2EntityRef seqRef = U2SequenceUtils::import(storage->getDbiRef(), s, os);
+                U2EntityRef seqRef = U2SequenceUtils::import(os, storage->getDbiRef(), s);
                 CHECK_OP(os,);
                 m[BaseSlots::URL_SLOT().getId()] = url;
                 m[BaseSlots::DATASET_SLOT().getId()] = cfg.value(BaseSlots::DATASET_SLOT().getId(), "");

@@ -213,7 +213,7 @@ void ExtractMSAConsensusTaskHelper::prepare() {
 
     if (algo->getFactory()->isSequenceLikeResult()) {
         U2SequenceImporter seqImporter;
-        seqImporter.startSequence(targetDbi, U2ObjectDbi::ROOT_FOLDER, getResultName(), false, stateInfo);
+        seqImporter.startSequence(stateInfo, targetDbi, U2ObjectDbi::ROOT_FOLDER, getResultName(), false);
         seqImporter.addBlock(resultText.data(), resultText.length(), stateInfo);
         resultSequence = seqImporter.finalizeSequence(stateInfo);
     }

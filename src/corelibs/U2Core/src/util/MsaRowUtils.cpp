@@ -426,7 +426,7 @@ bool forwardToIntersection(QMutableListIterator<U2MsaGap> &firstIterator, QMutab
     return !endReached;
 }
 
-QPair<U2MsaGap, U2MsaGap> subCommonPart(const U2MsaGap &subFrom, const U2MsaGap &subWhat) {
+QPair<U2MsaGap, U2MsaGap> subGap(const U2MsaGap &subFrom, const U2MsaGap &subWhat) {
     QPair<U2MsaGap, U2MsaGap> result;
     if (subFrom.offset < subWhat.offset) {
         result.first = U2MsaGap(subFrom.offset, subWhat.offset - subFrom.offset);
@@ -438,7 +438,7 @@ QPair<U2MsaGap, U2MsaGap> subCommonPart(const U2MsaGap &subFrom, const U2MsaGap 
 }
 
 void removeCommonPart(QMutableListIterator<U2MsaGap> &iterator, const U2MsaGap &commonPart){
-    const QPair<U2MsaGap, U2MsaGap> gapDifference = subCommonPart(iterator.peekNext(), commonPart);
+    const QPair<U2MsaGap, U2MsaGap> gapDifference = subGap(iterator.peekNext(), commonPart);
     if (gapDifference.first.isValid()) {
         iterator.insert(gapDifference.first);
     }
@@ -477,6 +477,83 @@ void MsaRowUtils::getGapModelsDifference(const U2MsaRowGapModel &firstGapModel, 
         commonPart << extractCommonPart(firstIterator, secondIterator);
     }
     mergeConsecutiveGaps(commonPart);
+}
+
+namespace {
+
+void insertGap(U2MsaRowGapModel &gapModel, const U2MsaGap &gap) {
+    for (int i = 0; i < gapModel.size(); i++) {
+        if (gapModel[i].endPos() < gap.offset) {
+            // search the proper location
+            continue;
+        } else if (gapModel[i].offset > gap.endPos()) {
+            // no intersection, just insert
+            gapModel.insert(i, gap);
+        } else {
+            // there is an intersection
+            gapModel[i].offset = qMin(gapModel[i].offset, gap.offset);
+            gapModel[i].setEndPos(qMax(gapModel[i].endPos(), gap.endPos()));
+            int gapsToRemove = 0;
+            for (int j = i + 1; j < gapModel.size(); j++) {
+                if (gapModel[j].endPos() <= gapModel[i].endPos()) {
+                    // this gap is fully covered by a new gap, just remove
+                    gapsToRemove++;
+                } else if (gapModel[j].offset <= gapModel[i].endPos()) {
+                    // this gap is partially covered by a new gap, enlarge the new gap and remove
+                    gapModel[i].setEndPos(qMax(gapModel[i].endPos(), gapModel[j].endPos()));
+                    gapsToRemove++;
+                } else {
+                    break;
+                }
+            }
+
+            gapModel.erase(gapModel.begin() + i + 1, gapModel.begin() + i + gapsToRemove + 1);
+        }
+    }
+}
+
+void subtitudeGap(QMutableListIterator<U2MsaGap> &minuendIterator, QMutableListIterator<U2MsaGap> &subtrahendIterator) {
+    const QPair<U2MsaGap, U2MsaGap> substitutionResult = subGap(minuendIterator.next(), subtrahendIterator.peekNext());
+    minuendIterator.remove();
+
+    if (substitutionResult.second.isValid()) {
+        minuendIterator.insert(substitutionResult.second);
+        minuendIterator.previous();
+    }
+
+    if (substitutionResult.first.isValid()) {
+        minuendIterator.insert(substitutionResult.first);
+        minuendIterator.previous();
+    }
+}
+
+}
+
+U2MsaRowGapModel MsaRowUtils::mergeGapModels(const U2MsaListGapModel &gapModels) {
+    U2MsaRowGapModel mergedGapModel;
+    foreach (const U2MsaRowGapModel &gapModel, gapModels) {
+        foreach (const U2MsaGap &gap, gapModel) {
+            insertGap(mergedGapModel, gap);
+        }
+    }
+    return mergedGapModel;
+}
+
+U2MsaRowGapModel MsaRowUtils::subtitudeGapModel(const U2MsaRowGapModel &minuendGapModel, const U2MsaRowGapModel &subtrahendGapModel) {
+    U2MsaRowGapModel result = minuendGapModel;
+    U2MsaRowGapModel subtrahendGapModelCopy = subtrahendGapModel;
+    QMutableListIterator<U2MsaGap> minuendIterator(result);
+    QMutableListIterator<U2MsaGap> subtrahendIterator(subtrahendGapModelCopy);
+
+    while (minuendIterator.hasNext() && subtrahendIterator.hasNext()) {
+        const bool intersectionFound = forwardToIntersection(minuendIterator, subtrahendIterator);
+        if (!intersectionFound) {
+            break;
+        }
+        subtitudeGap(minuendIterator, subtrahendIterator);
+    }
+
+    return minuendGapModel;
 }
 
 }   // namespace U2

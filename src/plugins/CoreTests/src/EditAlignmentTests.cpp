@@ -129,14 +129,14 @@ void GTest_CreateSubalignimentTask::prepare(){
 Task::ReportResult GTest_CreateSubalignimentTask::report(){
     const MultipleSequenceAlignment actual = maobj->getMsa();
     const MultipleSequenceAlignment expected = expectedMaobj->getMsa();
-    if (actual->getRows().size() != expected->getRows().size()){
+    if (actual->getMsaRows().size() != expected->getMsaRows().size()){
         stateInfo.setError(GTest::tr("Expected and actual alignment sizes are different: %1 , %2")
-            .arg(expected->getRows().size())
-            .arg(actual->getRows().size()));
+            .arg(expected->getMsaRows().size())
+            .arg(actual->getMsaRows().size()));
         return ReportResult_Finished;
     }
-    for(int i = 0; i < actual->getRows().size(); i++){
-        const MultipleSequenceAlignmentRow actItem = actual->getRow(i), expItem = expected->getRow(i);
+    for(int i = 0; i < actual->getMsaRows().size(); i++){
+        const MultipleSequenceAlignmentRow actItem = actual->getMsaRow(i), expItem = expected->getMsaRow(i);
         if (*actItem != *expItem){
             stateInfo.setError(GTest::tr("Expected and actual alignments not equal"));
             return ReportResult_Finished;

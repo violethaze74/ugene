@@ -34,6 +34,8 @@ public:
     U2McaRow();
     U2McaRow(const U2MsaRow &msaRow);
 
+    bool hasValidChildObjectIds() const;
+
     U2DataId chromatogramId;
     U2DataId predictedSequenceId;
     U2MsaRowGapModel predictedSequenceGaps;

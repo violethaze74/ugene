@@ -147,7 +147,7 @@ void AlignmentLogoRenderArea::evaluateHeights() {
 
     for (int pos = settings.startPos; pos < settings.len + settings.startPos; pos++) {
         for (int idx = 0; idx < numRows; idx++) {
-            const MultipleSequenceAlignmentRow row = ma->getRow(idx);
+            const MultipleSequenceAlignmentRow row = ma->getMsaRow(idx);
             assert(pos < ma->getLength());
             char ch = row->charAt(pos);
             if(acceptableChars->contains(ch)) {

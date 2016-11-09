@@ -123,7 +123,7 @@ void SaveMSA2SequencesTask::run() {
         if (usedNames.contains(name)) {
             name = TextUtils::variate(name, " ", usedNames, false, 1);
         }
-        U2EntityRef seqRef = U2SequenceUtils::import(doc->getDbiRef(), s, stateInfo);
+        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, doc->getDbiRef(), s);
         CHECK_OP(stateInfo, );
         doc->addObject(new U2SequenceObject(name, seqRef));
         usedNames.insert(name);

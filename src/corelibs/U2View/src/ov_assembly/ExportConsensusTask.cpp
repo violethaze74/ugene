@@ -89,7 +89,7 @@ void ExportConsensusTask::prepare() {
     consensusTask->setSubtaskProgressWeight(100);
     addSubTask(consensusTask);
 
-    seqImporter.startSequence(dbiRef, U2ObjectDbi::ROOT_FOLDER, settings.seqObjName, false, stateInfo);
+    seqImporter.startSequence(stateInfo, dbiRef, U2ObjectDbi::ROOT_FOLDER, settings.seqObjName, false);
     CHECK_OP(stateInfo, );
 
     if (settings.saveToFile) {

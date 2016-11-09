@@ -202,8 +202,8 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(UpdatedWidg
     SAFE_POINT(NULL != _contentWidget, QString("Argument is NULL in constructor MsaEditorAlignmentDependentWidget()"),);
 
     settings = &contentWidget->getSettings();
-    connect(settings->ma, SIGNAL(si_alignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)),
-        this, SLOT(sl_onAlignmentChanged(const MultipleSequenceAlignment&, const MaModificationInfo&)));
+    connect(settings->ma, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+        this, SLOT(sl_onAlignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
     connect(dynamic_cast<QObject*>(contentWidget), SIGNAL(si_dataStateChanged(DataState)),
         this, SLOT(sl_onDataStateChanged(DataState)));
     connect(settings->ui->getEditor(), SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_onFontChanged(const QFont&)));
@@ -248,7 +248,7 @@ void MsaEditorAlignmentDependentWidget::setSettings(const UpdatedWidgetSettings*
     nameWidget.setText(contentWidget->getHeaderText());
 }
 
-void MsaEditorAlignmentDependentWidget::sl_onAlignmentChanged(const MultipleSequenceAlignment& maBefore, const MaModificationInfo& modInfo) {
+void MsaEditorAlignmentDependentWidget::sl_onAlignmentChanged(const MultipleAlignment& maBefore, const MaModificationInfo& modInfo) {
     const MultipleSequenceAlignment msaBefore = maBefore.dynamicCast<MultipleSequenceAlignment>();
     contentWidget->onAlignmentChanged(msaBefore, modInfo);
 }

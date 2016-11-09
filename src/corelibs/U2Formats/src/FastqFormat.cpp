@@ -281,7 +281,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
                 objName.squeeze();
                 uniqueNames.insert(objName);
             }
-            seqImporter.startSequence(dbiRef, folder, objName, false, warningOs);
+            seqImporter.startSequence(warningOs, dbiRef, folder, objName, false);
             if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
                 U2OpStatusImpl seqOs;
                 U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(seqOs);

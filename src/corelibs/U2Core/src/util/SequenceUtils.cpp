@@ -156,7 +156,7 @@ static U2SequenceObject* storeSequenceUseGenbankHeader(const QVariantMap& hints,
     const QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     U2SequenceImporter seqImport;
-    seqImport.startSequence(dbiRef, folder, seqName, false, os);
+    seqImport.startSequence(os, dbiRef, folder, seqName, false);
     CHECK_OP(os, NULL);
 
     QByteArray symbolsOfNotExistingSequence(sequenceLength, 'N');
@@ -282,7 +282,7 @@ static QList<GObject *> createNewObjects(
                 init = true;
             }
         }
-        seqImport.startSequence( ref, folder, seqName, false, os );
+        seqImport.startSequence(os, ref, folder, seqName, false);
         CHECK_OP( os, QList<GObject*>( ) );
 
         AnnotationTableObject *newAnnObj = new AnnotationTableObject( seqName + " annotations", ref, hints );

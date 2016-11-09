@@ -121,7 +121,7 @@ MultipleSequenceAlignmentWalker::MultipleSequenceAlignmentWalker(const MultipleS
 : msa(msa), currentOffset(0)
 {
     for (int i=0; i<msa->getNumRows(); i++) {
-        rowWalkerList << new RowWalker(msa->getRow(i), gapChar);
+        rowWalkerList << new RowWalker(msa->getMsaRow(i), gapChar);
     }
 }
 

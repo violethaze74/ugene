@@ -86,7 +86,7 @@ QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MaEditor *context, 
         if (m->rowToMap(i, true) < 0) {
             continue;
         }
-        names.append(msaObj->getMsa()->getRow(i)->getName());
+        names.append(msaObj->getMsa()->getMsaRow(i)->getName());
     }
     return names;
 }
@@ -199,7 +199,7 @@ void RichTextMsaClipboardTask::run(){
     int numRows = msa->getNumRows();
     for (int seq = 0; seq < numRows; seq++){
         QString res;
-        const MultipleSequenceAlignmentRow row = msa->getRow(seq);
+        const MultipleSequenceAlignmentRow row = msa->getMsaRow(seq);
         if (!names.contains(row->getName())){
             continue;
         }

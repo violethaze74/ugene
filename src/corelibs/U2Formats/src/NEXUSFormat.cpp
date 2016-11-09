@@ -764,10 +764,10 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
 
     tabs.append(tab);
 
-    const QList<MultipleSequenceAlignmentRow> rows = ma->getRows();
+    const QList<MultipleSequenceAlignmentRow> rows = ma->getMsaRows();
 
     int nameMaxLen = 0;
-    foreach (MultipleSequenceAlignmentRow row, rows) {
+    foreach (const MultipleSequenceAlignmentRow &row, rows) {
         if (row->getName().size() > nameMaxLen) {
             nameMaxLen = row->getName().size();
         }

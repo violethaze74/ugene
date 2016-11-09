@@ -34,6 +34,7 @@ class U2CORE_EXPORT U2Chromatogram : public U2RawData {
 public:
                         U2Chromatogram();
                         U2Chromatogram(const U2DbiRef &dbiRef);
+                        U2Chromatogram(const U2RawData &rawData);
 
     U2DataType          getType() const;
 };

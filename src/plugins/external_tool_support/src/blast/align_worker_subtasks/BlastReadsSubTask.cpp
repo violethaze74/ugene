@@ -165,8 +165,8 @@ void BlastAndSwReadTask::run() {
     int rowCount = msaObject->getNumRows();
     CHECK_EXT(2 == rowCount, setError(L10N::internalError("Wrong rows count: " + QString::number(rowCount))), );
 
-    referenceGaps = msaObject->getRow(0)->getGapModel();
-    readGaps = msaObject->getRow(1)->getGapModel();
+    referenceGaps = msaObject->getMsaRow(0)->getGapModel();
+    readGaps = msaObject->getMsaRow(1)->getGapModel();
 
     CHECK(offset > 0, );
     shiftGaps(referenceGaps);
@@ -299,8 +299,8 @@ PairwiseAlignmentTaskSettings* BlastAndSwReadTask::createSettings(DbiDataStorage
     QScopedPointer<MultipleSequenceAlignmentObject> msaObject(StorageUtils::getMsaObject(storage, msa));
     CHECK_EXT(!msaObject.isNull(), os.setError(L10N::nullPointerError("MSA object")), NULL);
 
-    U2DataId referenceId = msaObject->getRow(0)->getRowDbInfo().sequenceId;
-    U2DataId readId = msaObject->getRow(1)->getRowDbInfo().sequenceId;
+    U2DataId referenceId = msaObject->getMsaRow(0)->getRowDbInfo().sequenceId;
+    U2DataId readId = msaObject->getMsaRow(1)->getRowDbInfo().sequenceId;
 
     PairwiseAlignmentTaskSettings *settings = new PairwiseAlignmentTaskSettings();
     settings->alphabet = msaObject->getAlphabet()->getId();

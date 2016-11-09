@@ -243,13 +243,20 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/U2VariationUtils.h \
            src/util/VariationPropertiesUtils.h \
     src/datatype/U2Msa.h \
-    src/datatype/msa/MultipleSequenceAlignmentInfo.h \
     src/datatype/U2Mca.h \
-    src/util/DnaChromatogramUtils.h \
     src/datatype/msa/MultipleChromatogramAlignmentRow.h \
     src/datatype/msa/MultipleChromatogramAlignment.h \
+    src/datatype/msa/MultipleAlignment.h \
+    src/datatype/msa/MultipleAlignmentRow.h \
+    src/gobjects/MultipleChromatogramAlignmentObject.h \
+    src/dbi/U2McaDbi.h \
     src/util/MaModificationInfo.h \
-    src/util/McaRowInnerData.h
+    src/util/MultipleChromatogramAlignmentImporter.h \
+    src/util/MultipleChromatogramAlignmentExporter.h \
+    src/util/McaRowInnerData.h \
+    src/datatype/msa/MultipleAlignmentInfo.h \
+    src/datatype/msa/MaStateCheck.h \
+    src/util/McaDbiUtils.h
 
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
@@ -452,14 +459,21 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/U2SequenceUtils.cpp \
            src/util/U2VariationUtils.cpp \
     src/datatype/U2Msa.cpp \
-    src/datatype/msa/MultipleSequenceAlignmentInfo.cpp \
-    src/util/DnaChromatogramUtils.cpp \
     src/datatype/DNAChromatogram.cpp \
     src/datatype/msa/MultipleChromatogramAlignmentRow.cpp \
     src/datatype/msa/MultipleChromatogramAlignment.cpp \
+    src/datatype/msa/MultipleAlignment.cpp \
+    src/datatype/msa/MultipleAlignmentRow.cpp \
+    src/gobjects/MultipleChromatogramAlignmentObject.cpp \
+    src/dbi/U2McaDbi.cpp \
     src/util/MaModificationInfo.cpp \
+    src/util/MultipleChromatogramAlignmentImporter.cpp \
+    src/util/MultipleChromatogramAlignmentExporter.cpp \
     src/datatype/U2Mca.cpp \
-    src/util/McaRowInnerData.cpp
+    src/util/McaRowInnerData.cpp \
+    src/datatype/msa/MultipleAlignmentInfo.cpp \
+    src/datatype/msa/MaStateCheck.cpp \
+    src/util/McaDbiUtils.cpp
 
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

@@ -44,6 +44,7 @@ public:
     U2MsaGap(qint64 off, qint64 gap);
 
     qint64 endPos() const;    // not inclusive
+    void setEndPos(qint64 endPos);    // not inclusive
 
     bool isValid() const;
 
@@ -67,6 +68,8 @@ class U2CORE_EXPORT U2MsaRow {
 public:
     U2MsaRow();
     virtual ~U2MsaRow();
+
+    bool isValid() const;
 
     /** Id of the row in the database */
     qint64          rowId;

@@ -57,7 +57,7 @@ void MAFFTSupportTaskSettings::reset() {
 
 MAFFTSupportTask::MAFFTSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const MAFFTSupportTaskSettings& _settings)
     : ExternalToolSupportTask("Run MAFFT alignment task", TaskFlags_NR_FOSCOE),
-      inputMsa(_inputMsa->getCopy()),
+      inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       tmpDoc(NULL),
       logParser(NULL),
@@ -228,8 +228,8 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
 
                 QMap<qint64, QList<U2MsaGap> > rowsGapModel;
                 for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
-                    qint64 rowId = resultMA->getRow(i)->getRowDbInfo().rowId;
-                    const QList<U2MsaGap>& newGapModel = resultMA->getRow(i)->getGapModel();
+                    qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
+                    const QList<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGapModel();
                     rowsGapModel.insert(rowId, newGapModel);
                 }
 
@@ -364,7 +364,7 @@ QList<Task*> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask
         // Set the result alignment to the alignment object of the current document
         mAObject=qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->updateGapModel(mAFFTSupportTask->resultMA->getRows());
+        mAObject->updateGapModel(mAFFTSupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,

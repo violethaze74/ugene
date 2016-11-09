@@ -25,8 +25,9 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2MsaDbi.h>
 
-
 namespace U2 {
+
+class MultipleChromatogramAlignment;
 
 class U2CORE_EXPORT MsaDbiUtils : public QObject {
     Q_OBJECT
