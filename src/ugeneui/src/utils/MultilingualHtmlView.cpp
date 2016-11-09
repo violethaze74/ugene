@@ -41,6 +41,11 @@ MultilingualHtmlView::MultilingualHtmlView(const QString& htmlPath, QWidget* par
 #endif
 {
     setContextMenuPolicy(Qt::NoContextMenu);
+#if !(QT_VERSION < 0x050400)
+    MultilingualWebEnginePage* thisPage = new MultilingualWebEnginePage(this);
+    setPage(thisPage);
+#endif
+
     loadPage(htmlPath);
 #if (QT_VERSION < 0x050400) //Qt 5.7
     page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
@@ -69,7 +74,7 @@ void MultilingualHtmlView::sl_loaded(bool ok) {
         otherLangsCollection[i].setStyleProperty("display", "none");
     }
 #else
-    page()->runJavaScript(QString("setVisibilityStyle(\"%1\")").arg(lang));
+    page()->runJavaScript(QString("showOnlyLang(\"%1\");").arg(lang));
 #endif
     emit si_loaded(ok);
 }
@@ -84,25 +89,16 @@ void MultilingualHtmlView::loadPage(const QString& htmlPath) {
     connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(sl_linkActivated(QUrl)));
     load(QUrl(htmlPath));
 #else
-    MultilingualWebEnginePage *page = new MultilingualWebEnginePage();
-    page->setParent(this);
-    page->load(QUrl(htmlPath));
-    setPage(page);
+    page()->load(QUrl(htmlPath));
 #endif
 }
 
 #if (QT_VERSION >= 0x050400) //Qt 5.7
-
-MultilingualWebEnginePage::MultilingualWebEnginePage() : QWebEnginePage() {
-
-}
-
-bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame) {
+bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &, NavigationType type, bool) {
     if (type == NavigationTypeLinkClicked) {
         return false;
     }
     return true;
 }
-
 #endif
 } // namespace

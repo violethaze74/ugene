@@ -37,8 +37,12 @@ public:
 protected:
     void paintEvent(QPaintEvent *event);
 
+private slots:
+    void sl_changeHeght();
+
 private:
     MultilingualHtmlView*   htmlView;
+    int height;
 };
 
 }

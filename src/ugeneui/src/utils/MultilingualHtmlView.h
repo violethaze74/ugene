@@ -37,7 +37,7 @@ class MultilingualHtmlView : public QWebView {
 
 class MultilingualWebEnginePage : public QWebEnginePage {
 public:
-    MultilingualWebEnginePage();
+    MultilingualWebEnginePage(QObject* parent = 0) : QWebEnginePage(parent){}
 protected:
     virtual bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
 };
