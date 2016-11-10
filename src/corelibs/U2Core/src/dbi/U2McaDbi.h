@@ -40,7 +40,7 @@ protected:
 
 public:
     /** Reads Mca objects by id */
-    virtual U2Msa getMcaObject(const U2DataId &mcaId, U2OpStatus &os) = 0;
+    virtual U2Mca getMcaObject(const U2DataId &mcaId, U2OpStatus &os) = 0;
 
     /** Returns the number of rows in the MCA */
     virtual qint64 getNumOfRows(const U2DataId &mcaId, U2OpStatus &os) = 0;

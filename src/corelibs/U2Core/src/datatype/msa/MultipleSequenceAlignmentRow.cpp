@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <typeinfo>
+
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2OpStatus.h>

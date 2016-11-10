@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <typeinfo>
+
 #include <QSet>
 
 #include <U2Core/MsaRowUtils.h>

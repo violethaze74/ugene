@@ -20,6 +20,7 @@
  */
 
 #include "SQLiteFeatureDbi.h"
+#include "SQLiteMcaDbi.h"
 #include "SQLiteMsaDbi.h"
 #include "SQLiteObjectDbi.h"
 #include "SQLiteUdrDbi.h"
@@ -272,6 +273,9 @@ void SQLiteObjectDbi::removeObjectSpecificData(const U2DataId &objectId, U2OpSta
         case U2Type::VariantTrack:
             // nothing has to be done for object of these types
             break;
+        case U2Type::Mca:
+            dbi->getSQLiteMcaDbi()->deleteRowsData(objectId, os);
+            break;
         case U2Type::Msa:
             dbi->getSQLiteMsaDbi()->deleteRowsData(objectId, os);
             break;
@@ -380,8 +384,9 @@ qint64 SQLiteObjectDbi::countObjects(const QString& folder, U2OpStatus& os) {
 }
 
 QList<U2DataId> SQLiteObjectDbi::getObjects(const QString& folder, qint64 , qint64 , U2OpStatus& os) {
-    SQLiteQuery q("SELECT o.id, o.type FROM Object AS o, FolderContent AS fc, Folder AS f WHERE f.path = ?1 AND fc.folder = f.id AND fc.object=o.id", db, os);
+    SQLiteQuery q("SELECT o.id, o.type FROM Object AS o, FolderContent AS fc, Folder AS f WHERE f.path = ?1 AND fc.folder = f.id AND fc.object=o.id AND o.rank = ?2", db, os);
     q.bindString(1, folder);
+    q.bindInt32(2, U2DbiObjectRank_TopLevel);
     return q.selectDataIdsExt();
 }
 

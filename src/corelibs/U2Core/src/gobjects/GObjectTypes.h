@@ -52,6 +52,7 @@ public:
     static const GObjectType ANNOTATION_TABLE;
     static const GObjectType VARIANT_TRACK;
     static const GObjectType CHROMATOGRAM;
+    static const GObjectType MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     static const GObjectType MULTIPLE_SEQUENCE_ALIGNMENT;
     static const GObjectType PHYLOGENETIC_TREE;
     static const GObjectType BIOSTRUCTURE_3D;

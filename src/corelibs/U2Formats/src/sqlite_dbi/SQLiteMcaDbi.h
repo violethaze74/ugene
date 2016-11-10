@@ -37,7 +37,7 @@ public:
     void initSqlSchema(U2OpStatus &os);
 
     /** Reads Mca objects by id */
-    U2Msa getMcaObject(const U2DataId &id, U2OpStatus &os);
+    U2Mca getMcaObject(const U2DataId &id, U2OpStatus &os);
 
     /** Returns the number of rows of the MCA (value cached in Mca table) */
     qint64 getNumOfRows(const U2DataId &mcaId, U2OpStatus &os);
