@@ -19,12 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include "WindowStepSelectorWidget.h"
-
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QMessageBox>
-
 #include <limits.h>
+
+#include <QPushButton>
+#include <QMessageBox>
+
+#include "WindowStepSelectorWidget.h"
 
 namespace U2 {
 
@@ -48,6 +48,7 @@ WindowStepSelectorWidget::WindowStepSelectorWidget(QWidget* p, const U2Region& w
     stepsPerWindowEdit->setObjectName("stepsPerWindowEdit");
 
     formLayout = new QFormLayout(this);
+    formLayout->setMargin(0);
     formLayout->addRow(tr("Window"), windowEdit);
     formLayout->addRow(tr("Steps per window"), stepsPerWindowEdit);
     setLayout(formLayout);
@@ -104,11 +105,14 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, b
     maxBox->setObjectName("maxBox");
 
     QFormLayout* l = new QFormLayout;
+    l->setSizeConstraint(QLayout::SetMinAndMaxSize);
     l->addRow(tr("Minimum"), minBox);
     l->addRow(tr("Maximum"), maxBox);
     minmaxGroup->setLayout(l);
 
     QVBoxLayout* mainLayout = new QVBoxLayout;
+    mainLayout->setSizeConstraint(QLayout::SetFixedSize);
+    mainLayout->setMargin(0);
     mainLayout->addWidget(minmaxGroup);
     setLayout(mainLayout);
 }
