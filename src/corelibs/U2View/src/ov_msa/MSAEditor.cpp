@@ -41,6 +41,7 @@
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
+#include <U2Core/DNAChromatogram.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentSelection.h>
 #include <U2Core/DocumentUtils.h>
@@ -50,6 +51,9 @@
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MultipleChromatogramAlignment.h>
+#include <U2Core/MultipleChromatogramAlignmentImporter.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/PhyTreeObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>

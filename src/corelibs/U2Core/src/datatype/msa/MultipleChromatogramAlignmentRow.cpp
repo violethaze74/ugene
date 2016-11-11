@@ -349,6 +349,23 @@ qint64 MultipleChromatogramAlignmentRowData::getCoreStart() const {
 }
 
 qint64 MultipleChromatogramAlignmentRowData::getCoreLength() const {
+    qint64 gappedDataLength = predictedSequence.length();
+    foreach (const U2MsaGap &gap, predictedSequenceGapModelDifference) {
+        if (gap.offset > gappedDataLength) {
+            break;
+        }
+        gappedDataLength += gap.gap;
+    }
+
+    qint64 lengthWithoutTrailing = gappedDataLength;
+    foreach (const U2MsaGap &gap, commonGapModel) {
+        if (gap.offset > lengthWithoutTrailing) {
+            break;
+        }
+        lengthWithoutTrailing += gap.gap;
+    }
+
+    return lengthWithoutTrailing - getCoreStart();
     return predictedSequence.length() + MsaRowUtils::getGapsLength(getPredictedSequenceCoreGapModel());
 }
 
@@ -552,6 +569,22 @@ void removeTrailingGapsInDifference(qint64 dataLength, qint64 commonCoreGapModel
 }
 
 void MultipleChromatogramAlignmentRowData::removeTrailingGaps() {
+//    qint64 accumulatedCoreLength = getPredictedSequenceDataLength();
+//    foreach (const U2MsaGap &gap, predictedSequenceGapModelDifference) {
+//        if (gap.offset > accumulatedCoreLength) {
+//            break;
+//        }
+//        accumulatedCoreLength += gap.gap;
+//    }
+
+//    MsaRowUtils::chopGapModel(predictedSequenceGapModelDifference, accumulatedCoreLength);
+//    MsaRowUtils::chopGapModel(editedSequenceGapModelDifference, accumulatedCoreLength);
+
+//    qint64 rowLength = getCoreStart() + accumulatedCoreLength;
+//    MsaRowUtils::chopGapModel(commonGapModel, rowLength);
+
+//    updateCachedGapModels();
+
     const U2MsaRowGapModel commonCoreGapModel = getCommonCoreGapModel();
     const qint64 commonCoreGapModelLength = MsaRowUtils::getGapsLength(commonCoreGapModel);
 

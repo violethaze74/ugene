@@ -39,4 +39,20 @@ bool U2McaRow::hasValidChildObjectIds() const {
     return !(chromatogramId.isEmpty() || predictedSequenceId.isEmpty() || sequenceId.isEmpty());
 }
 
+U2Mca::U2Mca()
+    : U2Msa()
+{
+
+}
+
+U2Mca::U2Mca(const U2DataId &id, const QString &dbId, qint64 version)
+    : U2Msa(id, dbId, version)
+{
+
+}
+
+U2DataType U2Mca::getType() const {
+    return U2Type::Mca;
+}
+
 }   // namespace U2

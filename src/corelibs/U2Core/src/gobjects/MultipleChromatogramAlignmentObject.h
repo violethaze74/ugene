@@ -36,8 +36,8 @@ class U2CORE_EXPORT MultipleChromatogramAlignmentObject : public MultipleAlignme
 public:
     MultipleChromatogramAlignmentObject(const QString &name,
                                         const U2EntityRef &mcaRef,
-                                        const QVariantMap &hintsMap,
-                                        const MultipleChromatogramAlignment &mca);
+                                        const QVariantMap &hintsMap = QVariantMap(),
+                                        const MultipleChromatogramAlignment &mca = MultipleChromatogramAlignment());
 
     GObject * clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 

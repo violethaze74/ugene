@@ -41,6 +41,14 @@ public:
     U2MsaRowGapModel predictedSequenceGaps;
 };
 
+class U2CORE_EXPORT U2Mca : public U2Msa {
+public:
+    U2Mca();
+    U2Mca(const U2DataId &id, const QString &dbId, qint64 version);
+
+    U2DataType getType() const;
+};
+
 }   // namespace U2
 
 #endif // _U2_MCA_H_

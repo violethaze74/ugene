@@ -39,7 +39,7 @@ MultipleChromatogramAlignmentObject::MultipleChromatogramAlignmentObject(const Q
                                                                          const U2EntityRef &mcaRef,
                                                                          const QVariantMap &hintsMap,
                                                                          const MultipleChromatogramAlignment &mca)
-    : MultipleAlignmentObject(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, name, mcaRef, hintsMap, mca)
+    : MultipleAlignmentObject(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, name, mcaRef, hintsMap, mca)
 {
 
 }

@@ -48,7 +48,7 @@ void SQLiteMcaDbi::initSqlSchema(U2OpStatus &os) {
 
      // MCA object row
      //   mca      - mca object id
-     //   rowId    - id of the row in the msa
+     //   rowId    - id of the row in the mca
      //   chromatogram - chromatogram boject id
      //   predictedSequence - predicted sequence object id
      //   editedSequence - edited sequence object id
@@ -86,12 +86,12 @@ void SQLiteMcaDbi::initSqlSchema(U2OpStatus &os) {
                 db, os).execute();
 
     // TODO: review indecies
-    SQLiteQuery("CREATE INDEX McaRowGap_msa_rowId_relatedObjectId ON McaRowGap(mca, rowId, relatedObjectId)", db, os).execute();
-    SQLiteQuery("CREATE INDEX McaRowGap_msa_rowId ON McaRowGap(mca, rowId)", db, os).execute();
+    SQLiteQuery("CREATE INDEX McaRowGap_mca_rowId_relatedObjectId ON McaRowGap(mca, rowId, relatedObjectId)", db, os).execute();
+    SQLiteQuery("CREATE INDEX McaRowGap_mca_rowId ON McaRowGap(mca, rowId)", db, os).execute();
 }
 
-U2Msa SQLiteMcaDbi::getMcaObject(const U2DataId &mcaId, U2OpStatus &os) {
-    U2Msa res;
+U2Mca SQLiteMcaDbi::getMcaObject(const U2DataId &mcaId, U2OpStatus &os) {
+    U2Mca res;
     dbi->getSQLiteObjectDbi()->getObject(res, mcaId, os);
     SAFE_POINT_OP(os, res);
 
@@ -191,7 +191,7 @@ U2McaRow SQLiteMcaDbi::getRow(const U2DataId &mcaId, qint64 rowId, U2OpStatus &o
         SAFE_POINT_OP(os, res);
     }
 
-    SQLiteQuery gapQuery("SELECT gapStart, gapEnd FROM MsaRowGap WHERE msa = ?1 AND rowId = ?2 AND relatedObjectId = ?3 ORDER BY gapStart", db, os);
+    SQLiteQuery gapQuery("SELECT gapStart, gapEnd FROM McaRowGap WHERE mca = ?1 AND rowId = ?2 AND relatedObjectId = ?3 ORDER BY gapStart", db, os);
     SAFE_POINT_OP(os, res);
 
     // predictedSequence gap model
@@ -656,7 +656,7 @@ void SQLiteMcaDbi::updateRowSequence(const U2DataId &mcaId, qint64 rowId, qint64
     // TODO: all
 }
 
-void SQLiteMcaDbi::updateGapModel(const U2DataId &mcaId, qint64 msaRowId, qint64 gapModelOwner, const U2MsaRowGapModel &gapModel, U2OpStatus &os) {
+void SQLiteMcaDbi::updateGapModel(const U2DataId &mcaId, qint64 mcaRowId, qint64 gapModelOwner, const U2MsaRowGapModel &gapModel, U2OpStatus &os) {
     // TODO: all
 }
 
@@ -780,7 +780,7 @@ void SQLiteMcaDbi::createMcaRow(const U2DataId &mcaId, qint64 posInMca, U2McaRow
     qint64 rowLength = calculateRowLength(mcaRow.gend - mcaRow.gstart, mcaRow.gaps);
 
     // Insert the data
-    SQLiteQuery query("INSERT INTO McaRow(msa, rowId, chromatogram, predictedSequence, editedSequence, pos, workingAreaStart, workingAreaEnd, length)"
+    SQLiteQuery query("INSERT INTO McaRow(mca, rowId, chromatogram, predictedSequence, editedSequence, pos, workingAreaStart, workingAreaEnd, length)"
         " VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)", db, os);
     CHECK_OP(os, );
 
@@ -922,7 +922,7 @@ void SQLiteMcaDbi::updateRowLength(const U2DataId &mcaId, qint64 rowId, qint64 n
 
 U2DataId SQLiteMcaDbi::getChromatogramIdByRowId(const U2DataId &mcaId, qint64 rowId, U2OpStatus &os) {
     U2DataId res;
-    SQLiteQuery query("SELECT chromatogram FROM MsaRow WHERE mca = ?1 AND rowId = ?2", db, os);
+    SQLiteQuery query("SELECT chromatogram FROM McaRow WHERE mca = ?1 AND rowId = ?2", db, os);
     CHECK_OP(os, res);
 
     query.bindDataId(1, mcaId);
@@ -931,7 +931,7 @@ U2DataId SQLiteMcaDbi::getChromatogramIdByRowId(const U2DataId &mcaId, qint64 ro
         res = query.getDataId(0, U2Type::Chromatogram);
         query.ensureDone();
     } else if (!os.hasError()) {
-        os.setError(U2DbiL10n::tr("Msa row not found"));
+        os.setError(U2DbiL10n::tr("Mca row not found"));
     }
 
     return res;
@@ -948,7 +948,7 @@ U2DataId SQLiteMcaDbi::getPredictedSequenceIdByRowId(const U2DataId &mcaId, qint
         res = query.getDataId(0, U2Type::Sequence);
         query.ensureDone();
     } else if (!os.hasError()) {
-        os.setError(U2DbiL10n::tr("Msa row not found"));
+        os.setError(U2DbiL10n::tr("Mca row not found"));
     }
 
     return res;
@@ -965,7 +965,7 @@ U2DataId SQLiteMcaDbi::getEditedSequenceIdByRowId(const U2DataId &mcaId, qint64 
         res = query.getDataId(0, U2Type::Sequence);
         query.ensureDone();
     } else if (!os.hasError()) {
-        os.setError(U2DbiL10n::tr("Msa row not found"));
+        os.setError(U2DbiL10n::tr("Mca row not found"));
     }
 
     return res;
@@ -1200,9 +1200,9 @@ void SQLiteMcaDbi::undoUpdateMcaAlphabet(const U2DataId &mcaId, const QByteArray
 }
 
 void SQLiteMcaDbi::undoAddRows(const U2DataId &mcaId, const QByteArray &modDetails, U2OpStatus &os) {
-    QList<qint64> posInMsa;
+    QList<qint64> posInMca;
     QList<U2MsaRow> rows;
-    bool ok = PackUtils::unpackRows(modDetails, posInMsa, rows);
+    bool ok = PackUtils::unpackRows(modDetails, posInMca, rows);
     if (!ok) {
         os.setError("An error occurred during reverting adding of rows");
         return;

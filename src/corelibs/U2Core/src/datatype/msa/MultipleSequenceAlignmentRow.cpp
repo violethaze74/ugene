@@ -20,6 +20,8 @@
  */
 #include <typeinfo>
 
+#include <typeinfo>
+
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2OpStatus.h>
