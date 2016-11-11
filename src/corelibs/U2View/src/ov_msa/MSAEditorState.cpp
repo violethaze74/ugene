@@ -21,7 +21,7 @@
 
 #include "MSAEditorState.h"
 #include "MSAEditor.h"
-#include "MSAEditorFactory.h"
+#include "MaEditorFactory.h"
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>

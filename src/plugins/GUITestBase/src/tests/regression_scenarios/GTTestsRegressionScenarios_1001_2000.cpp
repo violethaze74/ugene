@@ -80,7 +80,7 @@
 #include <U2View/AssemblyModel.h>
 #include <U2View/AssemblyNavigationWidget.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 #include <U2View/MSAEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"

@@ -1811,12 +1811,14 @@ void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modI
     }
 }
 
-void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView*, QToolBar* t) {
+void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     t->addAction(ui->getUndoAction());
     t->addAction(ui->getRedoAction());
     t->addAction(gotoAction);
     t->addAction(removeAllGapsAction);
     t->addSeparator();
+    // SANGER_TODO: depending on the type of editor - the action should be unavailable
+    CHECK(qobject_cast<MSAEditor*>(v) != NULL, );
     t->addAction(collapseModeSwitchAction);
     t->addAction(collapseModeUpdateAction);
     t->addSeparator();

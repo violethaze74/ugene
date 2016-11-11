@@ -48,7 +48,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 namespace U2 {
 

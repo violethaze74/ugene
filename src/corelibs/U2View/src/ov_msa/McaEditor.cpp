@@ -20,6 +20,7 @@
  */
 
 #include "McaEditor.h"
+#include "MaEditorFactory.h"
 
 #include "view_rendering/MaEditorWgt.h"
 
@@ -32,7 +33,7 @@ namespace U2 {
 const GObjectViewFactoryId ID = "MSAEditor";
 
 McaEditor::McaEditor(const QString &viewName, GObject *obj)
-    : MaEditor(ID, viewName, obj) {
+    : MaEditor(McaEditorFactory::ID, viewName, obj) {
     showChromatograms = true; // SANGER_TODO: check if there are chromatograms
 
     // SANGER_TODO: set new proper icon

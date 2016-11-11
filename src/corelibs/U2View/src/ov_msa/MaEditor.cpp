@@ -56,7 +56,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       ui(NULL),
       exportHighlightedAction(NULL)
 {
-    msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj); // SANGER_TODO: NOT SEQUENCE OBJECt
     objects.append(msaObject);
 
     onObjectAdded(msaObject);

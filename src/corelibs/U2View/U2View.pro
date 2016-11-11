@@ -55,13 +55,13 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
            src/ov_msa/MaEditor.h \
+           src/ov_msa/MaEditorFactory.h \
            src/ov_msa/McaEditor.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
            src/ov_msa/MSAEditorConsensusCache.h \
            src/ov_msa/MsaEditorSimilarityColumn.h \
-           src/ov_msa/MSAEditorFactory.h \
            src/ov_msa/MSAEditorNameList.h \
            src/ov_msa/MSAEditorOffsetsView.h \
            src/ov_msa/MSAEditorOverviewArea.h \
@@ -281,13 +281,13 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp \
            src/ov_msa/MaEditor.cpp \
+           src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/McaEditor.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
            src/ov_msa/MSAEditorConsensusCache.cpp \
            src/ov_msa/MsaEditorSimilarityColumn.cpp \
-           src/ov_msa/MSAEditorFactory.cpp \
            src/ov_msa/MSAEditorNameList.cpp \
            src/ov_msa/MSAEditorOffsetsView.cpp \
            src/ov_msa/MSAEditorOverviewArea.cpp \

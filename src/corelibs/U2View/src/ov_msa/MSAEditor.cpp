@@ -81,9 +81,9 @@
 
 #include "Export/MSAImageExportTask.h"
 #include "ExportHighlightedDialogController.h"
+#include "MaEditorFactory.h"
 #include "MSAEditor.h"
 #include "MSAEditorConsensusArea.h"
-#include "MSAEditorFactory.h"
 #include "MSAEditorNameList.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorOverviewArea.h"
@@ -99,6 +99,7 @@
 #include "ov_phyltree/TreeViewer.h"
 #include "ov_phyltree/TreeViewerTasks.h"
 #include "phyltree/CreatePhyTreeDialogController.h"
+
 
 namespace U2 {
 
@@ -139,7 +140,7 @@ bool MSAEditor::onObjectRemoved(GObject* obj) {
 
 void MSAEditor::onObjectRenamed(GObject*, const QString&) {
     // update title
-    OpenMSAEditorTask::updateTitle(this);
+    OpenMaEditorTask::updateTitle(this);
 }
 
 bool MSAEditor::onCloseEvent() {
@@ -228,6 +229,8 @@ QWidget* MSAEditor::createWidget() {
 
     QString objName = "msa_editor_" + msaObject->getGObjectName();
     ui->setObjectName(objName);
+
+    initActions();
 
     connect(ui , SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
 

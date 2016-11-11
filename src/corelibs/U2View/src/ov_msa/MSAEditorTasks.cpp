@@ -21,10 +21,10 @@
 
 #include "MSAEditorTasks.h"
 #include "MSAEditor.h"
-#include "MSAEditorFactory.h"
 #include "MSAEditorState.h"
 #include "MSAEditorConsensusArea.h"
 
+#include "MaEditorFactory.h"
 #include "McaEditor.h" // SANGER_TODO: deal with includes
 
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
@@ -45,6 +45,7 @@
 
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/UnloadedObject.h>
 
@@ -62,64 +63,67 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 /// open new view
 
-OpenMSAEditorTask::OpenMSAEditorTask(MultipleSequenceAlignmentObject* _obj)
-: ObjectViewTask(MSAEditorFactory::ID), msaObject(_obj)
+OpenMaEditorTask::OpenMaEditorTask(MultipleAlignmentObject* _obj, GObjectViewFactoryId fid, GObjectType type)
+    : ObjectViewTask(fid),
+      type(type),
+      maObject(_obj)
 {
-    assert(!msaObject.isNull());
+    assert(!maObject.isNull());
 }
 
-OpenMSAEditorTask::OpenMSAEditorTask(UnloadedObject* _obj)
-: ObjectViewTask(MSAEditorFactory::ID), unloadedReference(_obj)
+OpenMaEditorTask::OpenMaEditorTask(UnloadedObject* _obj, GObjectViewFactoryId fid, GObjectType type)
+    : ObjectViewTask(fid),
+      type(type),
+      unloadedReference(_obj)
 {
-    assert(_obj->getLoadedObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    assert(_obj->getLoadedObjectType() == type);
     documentsToLoad.append(_obj->getDocument());
 }
 
-OpenMSAEditorTask::OpenMSAEditorTask(Document* doc)
-: ObjectViewTask(MSAEditorFactory::ID), msaObject(NULL)
+OpenMaEditorTask::OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObjectType type)
+    : ObjectViewTask(fid),
+      type(type),
+      maObject(NULL)
 {
     assert(!doc->isLoaded());
     documentsToLoad.append(doc);
 }
 
-void OpenMSAEditorTask::open() {
-    if (stateInfo.hasError() || (msaObject.isNull() && documentsToLoad.isEmpty())) {
+void OpenMaEditorTask::open() {
+    if (stateInfo.hasError() || (maObject.isNull() && documentsToLoad.isEmpty())) {
         return;
     }
-    if (msaObject.isNull()) {
+    if (maObject.isNull()) {
         Document* doc = documentsToLoad.first();
         if(!doc){
             stateInfo.setError(tr("Documet removed from project"));
             return;
         }
-        QList<GObject*> objects;
         if (unloadedReference.isValid()) {
             GObject* obj = doc->findGObjectByName(unloadedReference.objName);
-            if (obj!=NULL && obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
-                msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+            if (obj!=NULL && obj->getGObjectType() == type) {
+                maObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
             }
         } else {
-            QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, UOF_LoadedAndUnloaded);
-            msaObject = objects.isEmpty() ? NULL : qobject_cast<MultipleSequenceAlignmentObject*>(objects.first());
+            QList<GObject*> objects = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
+            maObject = objects.isEmpty() ? NULL : qobject_cast<MultipleSequenceAlignmentObject*>(objects.first());
         }
-        if (msaObject.isNull()) {
+        if (maObject.isNull()) {
             stateInfo.setError(tr("Multiple alignment object not found"));
             return;
         }
     }
-    viewName = GObjectViewUtils::genUniqueViewName(msaObject->getDocument(), msaObject);
-    uiLog.details(tr("Opening MSA editor for object: %1").arg(msaObject->getGObjectName()));
+    viewName = GObjectViewUtils::genUniqueViewName(maObject->getDocument(), maObject);
+    uiLog.details(tr("Opening MSA editor for object: %1").arg(maObject->getGObjectName()));
 
-    // SANGER_TODO: tmp hard code
-    McaEditor* v = new McaEditor(viewName, msaObject);
-//    MSAEditor* v = new MSAEditor(viewName, msaObject);
+    MaEditor* v = getEditor(viewName, maObject);
     GObjectViewWindow* w = new GObjectViewWindow(v, viewName, false);
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
 
 }
 
-void OpenMSAEditorTask::updateTitle(MSAEditor* msaEd) {
+void OpenMaEditorTask::updateTitle(MSAEditor* msaEd) {
     const QString& oldViewName = msaEd->getName();
     GObjectViewWindow* w = GObjectViewUtils::findViewByName(oldViewName);
     if (w != NULL) {
@@ -130,11 +134,55 @@ void OpenMSAEditorTask::updateTitle(MSAEditor* msaEd) {
     }
 }
 
+OpenMsaEditorTask::OpenMsaEditorTask(MultipleAlignmentObject* obj)
+    : OpenMaEditorTask(obj, MSAEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
+{
+}
+
+OpenMsaEditorTask::OpenMsaEditorTask(UnloadedObject* obj)
+    : OpenMaEditorTask(obj, MSAEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
+{
+}
+
+OpenMsaEditorTask::OpenMsaEditorTask(Document* doc)
+    : OpenMaEditorTask(doc, MSAEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
+{
+}
+
+MaEditor* OpenMsaEditorTask::getEditor(const QString& viewName, GObject* obj) {
+    SAFE_POINT(qobject_cast<MultipleSequenceAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
+    return new MSAEditor(viewName, obj);
+}
+
+
+OpenMcaEditorTask::OpenMcaEditorTask(MultipleAlignmentObject* obj)
+    : OpenMaEditorTask(obj, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT)
+{
+}
+
+OpenMcaEditorTask::OpenMcaEditorTask(UnloadedObject* obj)
+    : OpenMaEditorTask(obj, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT)
+{
+}
+
+OpenMcaEditorTask::OpenMcaEditorTask(Document* doc)
+    : OpenMaEditorTask(doc, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT)
+{
+}
+
+MaEditor* OpenMcaEditorTask::getEditor(const QString& viewName, GObject* obj) {
+    SAFE_POINT(qobject_cast<MultipleChromatogramAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
+    return new McaEditor(viewName, obj);
+}
+
 //////////////////////////////////////////////////////////////////////////
 // open view from state
 
-OpenSavedMSAEditorTask::OpenSavedMSAEditorTask(const QString& viewName, const QVariantMap& stateData)
-: ObjectViewTask(MSAEditorFactory::ID, viewName, stateData)
+OpenSavedMSAEditorTask::OpenSavedMSAEditorTask(GObjectType type, MaEditorFactory* factory,
+                                               const QString& viewName, const QVariantMap& stateData)
+    : ObjectViewTask(factory->getId(), viewName, stateData),
+      type(type),
+      factory(factory)
 {
     MSAEditorState state(stateData);
     GObjectReference ref = state.getMSAObjectRef();
@@ -166,7 +214,7 @@ void OpenSavedMSAEditorTask::open() {
     } else {
         obj = doc->findGObjectByName(ref.objName);
     }
-    if (obj == NULL || obj->getGObjectType() != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
+    if (obj == NULL || obj->getGObjectType() != type) {
         stateIsIllegal = true;
         stateInfo.setError(tr("Alignment object not found: %1").arg(ref.objName));
         return;
@@ -174,9 +222,7 @@ void OpenSavedMSAEditorTask::open() {
     MultipleSequenceAlignmentObject* msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     assert(msaObject!=NULL);
 
-    // SANGER_TODO: tmp hard code
-    McaEditor* v = new McaEditor(viewName, msaObject);
-//    MSAEditor* v = new MSAEditor(viewName, msaObject);
+    MaEditor* v = factory->getEditor(viewName, msaObject); // SANGER_TODO: rename to maObject
     GObjectViewWindow* w = new GObjectViewWindow(v, viewName, true);
     MWMDIManager* mdiManager =     AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
@@ -209,7 +255,8 @@ UpdateMSAEditorTask::UpdateMSAEditorTask(GObjectView* v, const QString& stateNam
 }
 
 void UpdateMSAEditorTask::update() {
-    if (view.isNull() || view->getFactoryId() != MSAEditorFactory::ID) {
+    // SANGER_TODO: if this valid?
+    if (view.isNull() || (view->getFactoryId() != MSAEditorFactory::ID && view->getFactoryId() != McaEditorFactory::ID)) {
         return; //view was closed;
     }
 

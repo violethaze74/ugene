@@ -35,7 +35,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/AssemblyBrowserFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "DocumentProviderSelectorController.h"
 

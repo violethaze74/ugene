@@ -47,7 +47,7 @@
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/DnaAssemblyUtils.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>

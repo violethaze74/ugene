@@ -38,7 +38,8 @@
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
+//#include <U2View/ma
 
 #include "ExportAlignmentViewItems.h"
 #include "ExportMSA2MSADialog.h"
@@ -68,7 +69,7 @@ void ExportAlignmentViewItemsController::initViewContext(GObjectView* v) {
 
 void ExportAlignmentViewItemsController::buildMenu(GObjectView* v, QMenu* m) {
     QList<QObject*> resources = viewResources.value(v);
-    assert(resources.size() == 1);
+    assert(resources.size() == 1); // SANGER_TODO: whats with the assert
     QObject* r = resources.first();
     MSAExportContext* mc = qobject_cast<MSAExportContext*>(r);
     assert(mc!=NULL);

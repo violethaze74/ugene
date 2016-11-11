@@ -49,7 +49,7 @@
 #include <U2View/ADVUtils.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "HMMIO.h"
 #include "HMMIOWorker.h"

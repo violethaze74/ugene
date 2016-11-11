@@ -31,7 +31,7 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/AssemblyBrowserFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "GTTestsProject.h"
 #include "utils/GTUtilsApp.h"

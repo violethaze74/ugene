@@ -40,7 +40,7 @@
 #include <U2Test/GTestFrameworkComponents.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "MuscleAlignDialogController.h"
 #include "MusclePlugin.h"

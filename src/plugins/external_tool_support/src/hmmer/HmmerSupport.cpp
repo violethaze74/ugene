@@ -38,7 +38,7 @@
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ExternalToolSupportSettingsController.h"
 #include "HmmerBuildDialog.h"
