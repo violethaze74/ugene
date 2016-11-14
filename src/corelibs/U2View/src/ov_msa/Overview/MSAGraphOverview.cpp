@@ -67,7 +67,7 @@ MSAGraphOverview::MSAGraphOverview(MaEditorWgt *ui)
     connect(&graphCalculationTaskRunner,    SIGNAL(si_finished()),
                                             SLOT(sl_redraw()));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
                                     SLOT(sl_drawGraph()));
 
     connect(ui, SIGNAL(si_startMsaChanging()),
@@ -130,7 +130,7 @@ void MSAGraphOverview::paintEvent(QPaintEvent *e) {
     drawVisibleRange(pVisibleRange);
 
     p.drawPixmap(0, 0, cachedView);
-    lastDrawnVersion = editor->getMSAObject()->getModificationVersion();
+    lastDrawnVersion = editor->getMaObject()->getModificationVersion();
 
     QWidget::paintEvent(e);
 }
@@ -178,15 +178,15 @@ void MSAGraphOverview::sl_drawGraph() {
 
     switch (method) {
     case Strict:
-        graphCalculationTask = new MSAConsensusOverviewCalculationTask(editor->getMSAObject(),
+        graphCalculationTask = new MSAConsensusOverviewCalculationTask(editor->getMaObject(),
                                                                        width(), FIXED_HEIGHT);
         break;
     case Gaps:
-        graphCalculationTask = new MSAGapOverviewCalculationTask(editor->getMSAObject(),
+        graphCalculationTask = new MSAGapOverviewCalculationTask(editor->getMaObject(),
                                                                  width(), FIXED_HEIGHT);
         break;
     case Clustal:
-        graphCalculationTask = new MSAClustalOverviewCalculationTask(editor->getMSAObject(),
+        graphCalculationTask = new MSAClustalOverviewCalculationTask(editor->getMaObject(),
                                                                      width(), FIXED_HEIGHT);
         break;
     case Highlighting:
@@ -267,20 +267,20 @@ void MSAGraphOverview::sl_stopRendering() {
 }
 
 void MSAGraphOverview::sl_blockRendering() {
-    disconnect(editor->getMSAObject(), 0, this, 0);
+    disconnect(editor->getMaObject(), 0, this, 0);
     isBlocked = true;
 }
 
 void MSAGraphOverview::sl_unblockRendering(bool update) {
     isBlocked = false;
 
-    if (update && lastDrawnVersion != editor->getMSAObject()->getModificationVersion()) {
+    if (update && lastDrawnVersion != editor->getMaObject()->getModificationVersion()) {
         sl_drawGraph();
     } else {
         this->update();
     }
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
             SLOT(sl_drawGraph()));
 }
 

@@ -145,6 +145,8 @@ public:
 
     MultipleAlignmentRow getRowByRowId(qint64 rowId, U2OpStatus &os) const;
 
+    char charAt(int rowNumber, int pos) const;
+
     /** Returns all rows' names in the alignment */
     QStringList getRowNames() const;
 

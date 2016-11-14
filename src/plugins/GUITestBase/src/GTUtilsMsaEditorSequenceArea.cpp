@@ -243,7 +243,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getNameList(HI::GUITestOpStatus &os) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR_RESULT(editor != NULL, "MsaEditor not found", QStringList());
 
-    QStringList result = editor->getMSAObject()->getMsa()->getRowNames();
+    QStringList result = editor->getMaObject()->getMultipleAlignment()->getRowNames();
 
     return result;
 }
@@ -267,7 +267,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(HI::GUITestOpStatus &o
     QStringList visiableRowNames;
     foreach(U2Region region, rows){
         for(int x = region.startPos; x < region.endPos(); x++) {
-            visiableRowNames.append(editor->getMSAObject()->getRow(x)->getName());
+            visiableRowNames.append(editor->getMaObject()->getRow(x)->getName());
         }
     }
 
@@ -435,7 +435,7 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceSelected(HI::GUITestOpStatus &os, c
     U2Region selectedRowsRegion = msaEditArea->getSelectedRows();
     QStringList selectedRowNames;
     for(int x = selectedRowsRegion.startPos; x < selectedRowsRegion.endPos(); x++) {
-        selectedRowNames.append(editor->getMSAObject()->getRow(x)->getName());
+        selectedRowNames.append(editor->getMaObject()->getRow(x)->getName());
     }
 
     if (selectedRowNames.contains(seqName)) {

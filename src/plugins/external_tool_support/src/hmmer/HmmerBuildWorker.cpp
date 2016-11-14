@@ -169,7 +169,7 @@ Task * HmmerBuildWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment msa = msaObj->getMsa();
+        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
         
         cfg.profileUrl = monitor()->outputDir() + "hmmer_build/" + QFileInfo(context->getMetadataStorage().get(inputMessage.getMetadataId()).getFileUrl()).baseName() + ".hmm";
         HmmerBuildFromMsaTask *task = new HmmerBuildFromMsaTask(cfg, msa);

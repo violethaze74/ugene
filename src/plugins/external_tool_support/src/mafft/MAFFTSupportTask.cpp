@@ -357,7 +357,7 @@ QList<Task*> MAFFTWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        mAFFTSupportTask = new MAFFTSupportTask(mAObject->getMsa(), GObjectReference(), settings);
+        mAFFTSupportTask = new MAFFTSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
         res.append(mAFFTSupportTask);
     }
     else if (subTask == mAFFTSupportTask) {

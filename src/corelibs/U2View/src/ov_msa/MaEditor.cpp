@@ -56,17 +56,17 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       ui(NULL),
       exportHighlightedAction(NULL)
 {
-    msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj); // SANGER_TODO: NOT SEQUENCE OBJECt
-    objects.append(msaObject);
+    maObject = qobject_cast<MultipleAlignmentObject*>(obj);
+    objects.append(maObject);
 
-    onObjectAdded(msaObject);
+    onObjectAdded(maObject);
 
-    requiredObjects.append(msaObject);
+    requiredObjects.append(maObject);
     GCOUNTER(cvar,tvar,factoryId);
 
-    if (!U2DbiUtils::isDbiReadOnly(msaObject->getEntityRef().dbiRef)) {
+    if (!U2DbiUtils::isDbiReadOnly(maObject->getEntityRef().dbiRef)) {
         U2OpStatus2Log os;
-        msaObject->setTrackMod(os, TrackOnUpdate);
+        maObject->setTrackMod(os, TrackOnUpdate);
     }
 
     // SANGER_TODO: move to separate method
@@ -104,7 +104,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     connect(exportHighlightedAction, SIGNAL(triggered()), this, SLOT(sl_exportHighlighted()));
     exportHighlightedAction->setDisabled(true);
 
-    connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+    connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
 
     Settings* s = AppContext::getSettings();
     zoomFactor = MOBJECT_DEFAULT_ZOOM_FACTOR;
@@ -154,11 +154,11 @@ void MaEditor::buildStaticMenu(QMenu* m) {
 }
 
 int MaEditor::getAlignmentLen() const {
-    return msaObject->getLength();
+    return maObject->getLength();
 }
 
 int MaEditor::getNumSequences() const {
-    return msaObject->getNumRows();
+    return maObject->getNumRows();
 }
 
 bool MaEditor::isAlignmentEmpty() const {
@@ -204,7 +204,7 @@ void MaEditor::saveHighlightingSettings( const QString &highlightingFactoryId, c
 }
 
 QString MaEditor::getReferenceRowName() const {
-    const MultipleSequenceAlignment alignment = getMSAObject()->getMsa();
+    const MultipleSequenceAlignment alignment = getMaObject()->getMsa();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
     return (U2MsaRow::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq)
@@ -225,7 +225,7 @@ void MaEditor::setReference(qint64 sequenceId) {
 }
 
 void MaEditor::updateReference(){
-    if(msaObject->getRowPosById(snp.seqId) == -1){
+    if(maObject->getRowPosById(snp.seqId) == -1){
         setReference(U2MsaRow::INVALID_ROW_ID);
     }
 }
@@ -327,12 +327,12 @@ void MaEditor::sl_resetZoom() {
 }
 
 void MaEditor::sl_saveAlignment(){
-    AppContext::getTaskScheduler()->registerTopLevelTask(new SaveDocumentTask(msaObject->getDocument()));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new SaveDocumentTask(maObject->getDocument()));
 }
 
 void MaEditor::sl_saveAlignmentAs(){
 
-    Document* srcDoc = msaObject->getDocument();
+    Document* srcDoc = maObject->getDocument();
     if (srcDoc == NULL) {
         return;
     }
@@ -375,7 +375,7 @@ QWidget* MaEditor::createWidget() {
     Q_ASSERT(ui == NULL);
     ui = new MSAEditorUI(this);
 
-    QString objName = "msa_editor_" + msaObject->getGObjectName();
+    QString objName = "msa_editor_" + maObject->getGObjectName();
     ui->setObjectName(objName);
 
     initActions();

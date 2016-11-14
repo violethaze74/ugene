@@ -85,7 +85,7 @@ void DNAStatMSAProfileDialog::initSaveController() {
 
 void DNAStatMSAProfileDialog::accept() {
     DNAStatMSAProfileTaskSettings s;
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj == NULL) {
         return;
     }

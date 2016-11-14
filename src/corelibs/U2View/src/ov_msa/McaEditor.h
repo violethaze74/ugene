@@ -24,12 +24,16 @@
 
 #include "MaEditor.h"
 
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
+
 namespace U2 {
 
 class McaEditor : public MaEditor {
     Q_OBJECT
 public:
     McaEditor(const QString& viewName, GObject* obj);
+
+    MultipleChromatogramAlignmentObject* getMaObject() const { return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject); }
 
     virtual void buildStaticToolbar(QToolBar* tb);
 

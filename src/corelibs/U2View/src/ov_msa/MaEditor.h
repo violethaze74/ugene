@@ -27,7 +27,7 @@
 namespace U2 {
 
 class MaEditorWgt;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 
 class SNPSettings {
@@ -55,7 +55,7 @@ public:
     virtual void buildStaticMenu(QMenu* m);
 
     // SANGER_TODO: THE SOURSE OF MISSUNDERSTANDING in widgets!!!
-    MultipleSequenceAlignmentObject* getMSAObject() const { return msaObject; }
+    virtual MultipleAlignmentObject* getMaObject() const { return maObject; }
 
     MaEditorWgt* getUI() const { return ui; }
 
@@ -135,8 +135,8 @@ protected:
     virtual void updateActions();
 
 protected:
-    MultipleSequenceAlignmentObject*    msaObject;
-    MaEditorWgt*                        ui;
+    MultipleAlignmentObject*    maObject;
+    MaEditorWgt*                ui;
 
     QFont       font;
     ResizeMode  resizeMode;

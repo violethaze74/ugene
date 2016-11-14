@@ -54,7 +54,7 @@ namespace U2 {
 MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
     : editor(_ui->getEditor()), ui(_ui)
 {
-    assert(editor->getMSAObject());
+    assert(editor->getMaObject());
     completeRedraw = true;
     curPos = -1;
     scribbling = false;
@@ -71,7 +71,7 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
     connect(ui->getEditor(), SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_zoomOperationPerformed(bool)));
     connect(ui->getSequenceArea()->getHBar(), SIGNAL(actionTriggered(int)), SLOT(sl_onScrollBarActionTriggered(int)));
 
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
                                     SLOT(sl_alignmentChanged()));
 
     connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
@@ -95,7 +95,7 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
     setFocusPolicy(Qt::StrongFocus);
 
     MSAConsensusAlgorithmFactory* algo = getConsensusAlgorithmFactory();
-    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMSAObject(), algo));
+    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     addAction(ui->getCopySelectionAction());
     addAction(ui->getPasteAction());
@@ -152,8 +152,8 @@ void MSAEditorConsensusArea::paintConsenusPart(QPainter &p, const U2Region &regi
 
     MSAConsensusAlgorithm *alg = getConsensusAlgorithm();
     SAFE_POINT(alg != NULL, tr("MSA consensus algorothm is NULL"), );
-    SAFE_POINT(editor->getMSAObject() != NULL, tr("MSA object is NULL"), );
-    const MultipleSequenceAlignment msa = editor->getMSAObject()->getMsa();
+    SAFE_POINT(editor->getMaObject() != NULL, tr("MSA object is NULL"), );
+    const MultipleAlignment msa = editor->getMaObject()->getMultipleAlignment();
     for (int pos = 0; pos < region.length; pos++) {
         char c = alg->getConsensusChar(msa, pos + region.startPos, seqIdx.toVector());
         drawConsensusChar(p, pos, 0, c, false, true);
@@ -225,9 +225,9 @@ QString MSAEditorConsensusArea::createToolTip(QHelpEvent* he) const {
     int pos = ui->getSequenceArea()->coordToPos(x);
     QString result;
     if (pos >= 0) {
-        assert(editor->getMSAObject());
-        const MultipleSequenceAlignment msa = editor->getMSAObject()->getMsa();
-        result = MSAConsensusUtils::getConsensusPercentTip(msa, pos, 0, 4);
+        assert(editor->getMaObject());
+        const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+        result = MSAConsensusUtils::getConsensusPercentTip(ma, pos, 0, 4);
     }
     return result;
 }
@@ -468,7 +468,7 @@ MSAConsensusAlgorithmFactory* MSAEditorConsensusArea::getConsensusAlgorithmFacto
     QString lastUsedAlgo = AppContext::getSettings()->getValue(lastUsedAlgoKey).toString();
     MSAConsensusAlgorithmFactory* algo = reg->getAlgorithmFactory(lastUsedAlgo);
 
-    const DNAAlphabet* al = editor->getMSAObject()->getAlphabet();
+    const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
     ConsensusAlgorithmFlags alphaFlags = MSAConsensusAlgorithmFactory::getAphabetFlags(al);
     if (algo == NULL || (algo->getFlags() & alphaFlags) != alphaFlags) {
         algo = reg->getAlgorithmFactory(BuiltInConsensusAlgorithms::DEFAULT_ALGO);
@@ -578,7 +578,7 @@ void MSAEditorConsensusArea::sl_changeConsensusAlgorithm(const QString& algoId) 
 }
 
 QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
-    const DNAAlphabet* al = editor->getMSAObject()->getAlphabet();
+    const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
     const char* suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" : "_raw";
     return SETTINGS_ROOT + "_consensus_algorithm_"+ suffix;
 }

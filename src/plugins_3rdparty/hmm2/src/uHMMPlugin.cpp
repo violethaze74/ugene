@@ -144,7 +144,7 @@ void uHMMPlugin::sl_build() {
             GObjectView* ov = ow->getObjectView();
             MSAEditor* av = qobject_cast<MSAEditor*>(ov);
             if (av!=NULL) {
-                MultipleSequenceAlignmentObject* maObj = av->getMSAObject();
+                MultipleSequenceAlignmentObject* maObj = av->getMaObject();
                 if (maObj!=NULL) {
                     ma = maObj->getMsaCopy();
                     profileName = maObj->getGObjectName() == MA_OBJECT_NAME ? maObj->getDocument()->getName() : maObj->getGObjectName();
@@ -210,7 +210,7 @@ void HMMMSAEditorContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
     // SANGER_TODO: return assert
     CHECK(msaed != NULL, );
-    if (msaed->getMSAObject() == NULL)
+    if (msaed->getMaObject() == NULL)
         return;
 
     GObjectViewAction* a = new GObjectViewAction(this, view, tr("Build HMMER2 profile"));
@@ -224,7 +224,7 @@ void HMMMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
     // SANGER_TODO: return assert
     CHECK( NULL != msaed && NULL != m, );
-    if (msaed->getMSAObject() == NULL) {
+    if (msaed->getMaObject() == NULL) {
         return;
     }
 
@@ -242,10 +242,10 @@ void HMMMSAEditorContext::sl_build() {
     assert(action!=NULL);
     MSAEditor* ed = qobject_cast<MSAEditor*>(action->getObjectView());
     assert(ed!=NULL);
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj) {
         QString profileName = obj->getGObjectName() == MA_OBJECT_NAME ? obj->getDocument()->getName() : obj->getGObjectName();
-        QObjectScopedPointer<HMMBuildDialogController> d = new HMMBuildDialogController(profileName, obj->getMsa());
+        QObjectScopedPointer<HMMBuildDialogController> d = new HMMBuildDialogController(profileName, obj->getMultipleAlignment());
         d->exec();
         CHECK(!d.isNull(), );
     }

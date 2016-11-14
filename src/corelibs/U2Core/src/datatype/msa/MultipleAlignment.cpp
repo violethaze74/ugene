@@ -227,6 +227,10 @@ MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStat
     return emptyRow;
 }
 
+char MultipleAlignmentData::charAt(int rowNumber, int pos) const {
+    return getRow(rowNumber)->charAt(pos);
+}
+
 QStringList MultipleAlignmentData::getRowNames() const {
     QStringList rowNames;
     foreach (const MultipleAlignmentRow &row, rows) {

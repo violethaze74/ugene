@@ -140,7 +140,7 @@ Task* PWMatrixBuildWorker::tick() {
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
 
-        Task* t = new PWMatrixBuildTask(cfg, msaObj->getMsa());
+        Task* t = new PWMatrixBuildTask(cfg, msaObj->getMultipleAlignment());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -229,7 +229,7 @@ Task* PFMatrixBuildWorker::tick() {
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
 
-        Task* t = new PFMatrixBuildTask(cfg, msaObj->getMsa());
+        Task* t = new PFMatrixBuildTask(cfg, msaObj->getMultipleAlignment());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {

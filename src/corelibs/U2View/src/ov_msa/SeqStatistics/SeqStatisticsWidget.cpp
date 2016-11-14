@@ -83,7 +83,7 @@ void SeqStatisticsWidget::copySettings() {
         settings = new SimilarityStatisticsSettings();
         settings->excludeGaps = false;
         settings->autoUpdate = true;
-        settings->ma = msa->getMSAObject();
+        settings->ma = msa->getMaObject();
         settings->usePercents = true;
         settings->ui = msa->getUI();
     }

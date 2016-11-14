@@ -60,7 +60,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       pasteAction(NULL)
 {
     collapseModel = new MSACollapsibleItemModel(this);
-    undoFWK = new MsaUndoRedoFramework(this, editor->getMSAObject());
+    undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
 
     initActions();
     initWidgets();
@@ -111,7 +111,7 @@ void MaEditorWgt::initWidgets() {
 
     consArea = new MSAEditorConsensusArea(this);
     overviewArea = new MSAEditorOverviewArea(this);
-    statusWidget = new MSAEditorStatusWidget(editor->getMSAObject(), seqArea);
+    statusWidget = new MSAEditorStatusWidget(editor->getMaObject(), seqArea);
 
     offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
     offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);

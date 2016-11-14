@@ -288,7 +288,7 @@ QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
             stateInfo.setError(  tr("No alignment found") );
         } else {
             MultipleSequenceAlignmentObject* mobj =  qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
-            const MultipleSequenceAlignment msa = mobj->getMsa();
+            const MultipleSequenceAlignment msa = mobj->getMultipleAlignment();
             QString baseName = mobj->getDocument()->getURL().baseFileName();
             buildTask = new SiteconBuildTask(settings, msa, baseName);
             res.append(buildTask);

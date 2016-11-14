@@ -132,7 +132,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
     QList<GObject*> mobjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (!mobjs.isEmpty()) {
         MultipleSequenceAlignmentObject* mobj =  qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
-        replaceLogo(mobj->getMsa());
+        replaceLogo(mobj->getMultipleAlignment());
     } else {
         mobjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
         if (mobjs.isEmpty()) {
@@ -418,7 +418,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
             MultipleSequenceAlignmentObject* mobj =  qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
-            buildTask = new PFMatrixBuildTask(settings, mobj->getMsa());
+            buildTask = new PFMatrixBuildTask(settings, mobj->getMultipleAlignment());
             res.append(buildTask);
         } else {
             mobjs = d->findGObjectByType(GObjectTypes::SEQUENCE);
@@ -548,7 +548,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
             MultipleSequenceAlignmentObject* mobj =  qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
-            buildTask = new PWMatrixBuildTask(settings, mobj->getMsa());
+            buildTask = new PWMatrixBuildTask(settings, mobj->getMultipleAlignment());
             res.append(buildTask);
         } else {
             mobjs = d->findGObjectByType(GObjectTypes::SEQUENCE);

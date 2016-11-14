@@ -149,7 +149,7 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
     U2OpStatus2Log os;
     userModStep = new U2UseCommonUserModStep(obj->getEntityRef(), os);
 
-    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames(obj->getMsa());
+    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames(obj->getMultipleAlignment());
 
     MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os,);
@@ -200,7 +200,7 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
     CHECK_EXT(!obj->isStateLocked(), releaseModStep(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);
 
     MultipleSequenceAlignment res = getResult();
-    const MultipleSequenceAlignment originalAlignment = obj->getMsa();
+    const MultipleSequenceAlignment originalAlignment = obj->getMultipleAlignment();
     MSAUtils::restoreRowNames(res, originalAlignment->getRowNames());
     res->setName(originalAlignment->getName());
     obj->setMultipleAlignment(res);

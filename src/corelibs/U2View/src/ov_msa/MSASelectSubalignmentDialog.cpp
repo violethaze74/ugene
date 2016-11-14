@@ -128,7 +128,7 @@ void SelectSubalignmentDialog::init() {
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
-    MultipleSequenceAlignmentObject *mobj = ui->getEditor()->getMSAObject();
+    MultipleAlignmentObject *mobj = ui->getEditor()->getMaObject();
     SAFE_POINT(mobj != NULL, tr("MSA Object is NULL"), );
 
     int rowNumber = mobj->getNumRows();
@@ -154,7 +154,7 @@ void SelectSubalignmentDialog::init() {
     endPosBox->setValue(window.endPos());
 
     for (int i = 0; i < rowNumber; i++) {
-        QCheckBox *cb = new QCheckBox(mobj->getMsa()->getMsaRow(i)->getName(), this);
+        QCheckBox *cb = new QCheckBox(mobj->getMultipleAlignment()->getMsaRow(i)->getName(), this);
         cb->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
         if (selectedIndexes.contains(i)) {
             cb->setChecked(true);

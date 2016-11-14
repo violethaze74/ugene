@@ -110,16 +110,19 @@ MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
       alignSequencesToAlignmentAction(NULL),
       treeManager(this)
 {
+    // SANGER_TODO: add object check!
+    SAFE_POINT(qobject_cast<MultipleSequenceAlignmentObject*>(obj) != NULL, "", );
+
     buildTreeAction = new QAction(QIcon(":/core/images/phylip.png"), tr("Build Tree"), this);
     buildTreeAction->setObjectName("Build Tree");
     buildTreeAction->setEnabled(!isAlignmentEmpty());
-    connect(msaObject, SIGNAL(si_alignmentBecomesEmpty(bool)), buildTreeAction, SLOT(setDisabled(bool)));
-    connect(msaObject, SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_rowsRemoved(const QList<qint64> &)));
+    connect(maObject, SIGNAL(si_alignmentBecomesEmpty(bool)), buildTreeAction, SLOT(setDisabled(bool)));
+    connect(maObject, SIGNAL(si_rowsRemoved(const QList<qint64> &)), SLOT(sl_rowsRemoved(const QList<qint64> &)));
     connect(buildTreeAction, SIGNAL(triggered()), SLOT(sl_buildTree()));
 
     pairwiseAlignmentWidgetsSettings = new PairwiseAlignmentWidgetsSettings;
-    if (msaObject->getAlphabet() != NULL) {
-        pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", msaObject->getAlphabet()->getId());
+    if (maObject->getAlphabet() != NULL) {
+        pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", maObject->getAlphabet()->getId());
     }
 
     updateActions();
@@ -159,7 +162,7 @@ const MultipleSequenceAlignmentRow MSAEditor::getRowByLineNumber(int lineNumber)
     if (ui->isCollapsibleMode()) {
         lineNumber = ui->getCollapseModel()->mapToRow(lineNumber);
     }
-    return getMSAObject()->getMsaRow(lineNumber);
+    return getMaObject()->getMsaRow(lineNumber);
 }
 
 MSAEditor::~MSAEditor() {
@@ -227,7 +230,7 @@ QWidget* MSAEditor::createWidget() {
     Q_ASSERT(ui == NULL);
     ui = new MSAEditorUI(this);
 
-    QString objName = "msa_editor_" + msaObject->getGObjectName();
+    QString objName = "msa_editor_" + maObject->getGObjectName();
     ui->setObjectName(objName);
 
     initActions();
@@ -321,18 +324,18 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & pos) {
 void MSAEditor::updateActions() {
     MaEditor::updateActions();
     if(alignSequencesToAlignmentAction != NULL) {
-        alignSequencesToAlignmentAction->setEnabled(!msaObject->isStateLocked());
+        alignSequencesToAlignmentAction->setEnabled(!maObject->isStateLocked());
     }
 }
 
 void MSAEditor::copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os) {
-    MSAUtils::copyRowFromSequence(msaObject, seqObj, os);
-    msaObject->updateCachedMultipleAlignment();
+    MSAUtils::copyRowFromSequence(maObject, seqObj, os);
+    maObject->updateCachedMultipleAlignment();
 }
 
 void MSAEditor::sl_onSeqOrderChanged(const QStringList& order ){
-    if(!msaObject->isStateLocked()) {
-        msaObject->sortRowsByList(order);
+    if(!maObject->isStateLocked()) {
+        maObject->sortRowsByList(order);
     }
 }
 
@@ -389,12 +392,12 @@ bool MSAEditor::eventFilter(QObject*, QEvent* e) {
         const QMimeData* md = de->mimeData();
         const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(md);
         if (gomd != NULL) {
-            if (msaObject->isStateLocked()) {
+            if (maObject->isStateLocked()) {
                 return false;
             }
             U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*> (gomd->objPtr.data());
             if (dnaObj != NULL ) {
-                if (U2AlphabetUtils::deriveCommonAlphabet(dnaObj->getAlphabet(), msaObject->getAlphabet()) == NULL) {
+                if (U2AlphabetUtils::deriveCommonAlphabet(dnaObj->getAlphabet(), maObject->getAlphabet()) == NULL) {
                     return false;
                 }
                 if (e->type() == QEvent::DragEnter) {
@@ -403,8 +406,8 @@ bool MSAEditor::eventFilter(QObject*, QEvent* e) {
                     U2OpStatusImpl os;
                     DNASequence seq = dnaObj->getWholeSequence(os);
                     seq.alphabet = dnaObj->getAlphabet();
-                    Task *task = new AddSequenceObjectsToAlignmentTask(msaObject, QList<DNASequence>() << seq);
-                    TaskWatchdog::trackResourceExistence(msaObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
+                    Task *task = new AddSequenceObjectsToAlignmentTask(maObject, QList<DNASequence>() << seq);
+                    TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
                     AppContext::getTaskScheduler()->registerTopLevelTask(task);
                 }
             }
@@ -445,7 +448,7 @@ void MSAEditor::sl_align(){
 }
 
 void MSAEditor::sl_addToAlignment() {
-    MultipleSequenceAlignmentObject* msaObject = getMSAObject();
+    MultipleSequenceAlignmentObject* msaObject = getMaObject();
     if (msaObject->isStateLocked()) {
         return;
     }
@@ -460,7 +463,7 @@ void MSAEditor::sl_addToAlignment() {
     bool selectFromProject = !objects.isEmpty();
 
     foreach(GObject* object, objects) {
-        if(object == getMSAObject() || (object->getGObjectType() != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT && object->getGObjectType() != GObjectTypes::SEQUENCE)) {
+        if(object == getMaObject() || (object->getGObjectType() != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT && object->getGObjectType() != GObjectTypes::SEQUENCE)) {
             selectFromProject = false;
             break;
         }
@@ -474,12 +477,12 @@ void MSAEditor::sl_addToAlignment() {
 
 void MSAEditor::alignSequencesFromObjectsToAlignment(const QList<GObject*>& objects) {
     SequenceObjectsExtractor extractor;
-    extractor.setAlphabet(msaObject->getAlphabet());
+    extractor.setAlphabet(maObject->getAlphabet());
     extractor.extractSequencesFromObjects(objects);
 
     if(!extractor.getSequenceRefs().isEmpty()) {
-        AlignSequencesToAlignmentTask* task = new AlignSequencesToAlignmentTask(msaObject, extractor);
-        TaskWatchdog::trackResourceExistence(msaObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
+        AlignSequencesToAlignmentTask* task = new AlignSequencesToAlignmentTask(maObject, extractor);
+        TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
 }
@@ -498,8 +501,8 @@ void MSAEditor::alignSequencesFromFilesToAlignment() {
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
-        LoadSequencesAndAlignToAlignmentTask * task = new LoadSequencesAndAlignToAlignmentTask(msaObject, urls);
-        TaskWatchdog::trackResourceExistence(msaObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
+        LoadSequencesAndAlignToAlignmentTask * task = new LoadSequencesAndAlignToAlignmentTask(maObject, urls);
+        TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
 }
@@ -592,7 +595,7 @@ void MSAEditorUI::refreshSimilarityColumn() {
 void MSAEditorUI::showSimilarity() {
     if(NULL == similarityStatistics) {
         SimilarityStatisticsSettings settings;
-        settings.ma = editor->getMSAObject();
+        settings.ma = editor->getMaObject();
         settings.algoName = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
         settings.ui = this;
 

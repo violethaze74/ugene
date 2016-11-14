@@ -66,7 +66,7 @@ Task * Alignment2SequenceWorker::tick() {
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment msa = msaObj->getMsa();
+        const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         if(msa->isEmpty()) {
             return new FailTask(tr("empty input alignment"));

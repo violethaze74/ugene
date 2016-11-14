@@ -130,7 +130,7 @@ void GTest_MrBayes::prepare() {
         "sumt burnin=10;\n"
         "End;\n").arg(mbSeed);
 
-    task = new PhyTreeGeneratorLauncherTask(input->getMsa(), settings);
+    task = new PhyTreeGeneratorLauncherTask(input->getMultipleAlignment(), settings);
     addSubTask(task);
 }
 

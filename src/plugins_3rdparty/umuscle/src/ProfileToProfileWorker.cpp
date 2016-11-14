@@ -71,12 +71,12 @@ Task * ProfileToProfileWorker::tick() {
         SharedDbiDataHandler masterMsaId = qm.value(MASTER_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> masterMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), masterMsaId));
         SAFE_POINT(!masterMsaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment masterMsa = masterMsaObj->getMsa();
+        const MultipleSequenceAlignment masterMsa = masterMsaObj->getMultipleAlignment();
 
         SharedDbiDataHandler secondMsaId = qm.value(SECOND_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> secondMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), secondMsaId));
         SAFE_POINT(!secondMsaObj.isNull(), "NULL MSA Object!", NULL);
-        const MultipleSequenceAlignment secondMsa = secondMsaObj->getMsa();
+        const MultipleSequenceAlignment secondMsa = secondMsaObj->getMultipleAlignment();
 
         Task *t = new ProfileToProfileTask(masterMsa, secondMsa);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));

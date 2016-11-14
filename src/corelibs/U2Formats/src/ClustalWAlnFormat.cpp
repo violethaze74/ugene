@@ -211,7 +211,7 @@ void ClustalWAlnFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList
     const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "Clustal entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment msa = obj->getMsa();
+    const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
     //write header
     QByteArray header("CLUSTAL W 2.0 multiple sequence alignment\n\n");

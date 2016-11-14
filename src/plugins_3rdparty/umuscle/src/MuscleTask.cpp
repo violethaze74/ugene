@@ -398,7 +398,7 @@ void MuscleGObjectTask::prepare() {
 
     lock = new StateLock(MUSCLE_LOCK_REASON);
     obj->lockState(lock);
-    muscleTask = new MuscleTask(obj->getMsa(), config);
+    muscleTask = new MuscleTask(obj->getMultipleAlignment(), config);
 
     addSubTask(muscleTask);
 }

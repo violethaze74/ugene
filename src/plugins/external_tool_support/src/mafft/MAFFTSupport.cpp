@@ -122,11 +122,11 @@ void MAFFTSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
     // SANGER_TODO: return assert when MCA factory (and ID) is implemented
     CHECK(msaed != NULL, );
-    if (msaed->getMSAObject() == NULL) {
+    if (msaed->getMaObject() == NULL) {
             return;
     }
 
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     AlignMsaAction* alignAction = new AlignMsaAction(this, ET_MAFFT, view, tr("Align with MAFFT..."), 2000);
@@ -135,8 +135,8 @@ void MAFFTSupportContext::initViewContext(GObjectView* view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_MAFFT()));
 }
 
@@ -184,7 +184,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MultipleSequenceAlignmentObject* alignmentObject = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* alignmentObject = ed->getMaObject();
     SAFE_POINT(NULL != alignmentObject, "Alignment object is NULL during aligning with MAFFT!",);
     SAFE_POINT(!alignmentObject->isStateLocked(), "Alignment object is locked during aligning with MAFFT!",);
 
@@ -197,7 +197,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
         return;
     }
 
-    MAFFTSupportTask* mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getMsa(), GObjectReference(alignmentObject), settings);
+    MAFFTSupportTask* mAFFTSupportTask = new MAFFTSupportTask(alignmentObject->getMultipleAlignment(), GObjectReference(alignmentObject), settings);
     connect(alignmentObject, SIGNAL(destroyed()), mAFFTSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 

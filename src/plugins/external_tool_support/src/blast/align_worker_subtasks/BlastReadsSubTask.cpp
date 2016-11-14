@@ -201,7 +201,7 @@ MultipleSequenceAlignment BlastAndSwReadTask::getMAlignment() {
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(storage, msa));
     CHECK(msaObj != NULL, MultipleSequenceAlignment());
 
-    return msaObj->getMsa();
+    return msaObj->getMultipleAlignment();
 }
 
 qint64 BlastAndSwReadTask::getOffset() const {

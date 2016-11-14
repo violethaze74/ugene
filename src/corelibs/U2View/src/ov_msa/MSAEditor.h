@@ -117,6 +117,8 @@ public:
     MSAEditor(const QString& viewName, GObject* obj);
     ~MSAEditor();
 
+    MultipleSequenceAlignmentObject* getMaObject() const { return qobject_cast<MultipleSequenceAlignmentObject*>(maObject); }
+
     virtual void buildStaticToolbar(QToolBar* tb);
 
     virtual void buildStaticMenu(QMenu* m);

@@ -78,7 +78,7 @@ void MsaHighlightingSchemeConservation::sl_resetMap() {
 void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharColumn) const {
     CHECK(!msaCharCountMap.contains(refCharColumn), );
     CharCountMap columnStatistic;
-    const MultipleSequenceAlignment msa = maObj->getMsa();
+    const MultipleSequenceAlignment msa = maObj->getMultipleAlignment();
     for (int row = msa->getNumRows() - 1; row >= 0; row--) {
         char seqChar = msa->charAt(row, refCharColumn);
         if (columnStatistic.contains(seqChar)) {

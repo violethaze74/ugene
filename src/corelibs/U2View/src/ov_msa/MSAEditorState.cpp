@@ -90,7 +90,7 @@ QVariantMap MSAEditorState::saveState(MSAEditor* v) {
 
     ss.stateData[VIEW_ID]=MSAEditorFactory::ID;
 
-    MultipleSequenceAlignmentObject* msaObj = v->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = v->getMaObject();
     if (msaObj) {
         ss.setMSAObjectRef(GObjectReference(msaObj));
     }

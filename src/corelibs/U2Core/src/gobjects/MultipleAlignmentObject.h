@@ -73,7 +73,7 @@ public:
     /** Sets type of modifications tracking for the alignment */
     void setTrackMod(U2OpStatus &os, U2TrackModType trackMod);
 
-    const MultipleAlignment & getMultipleAlignment() const;
+    virtual const MultipleAlignment & getMultipleAlignment() const;
     void setMultipleAlignment(const MultipleAlignment &ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap &hints = QVariantMap());
 
     /** GObject methods */

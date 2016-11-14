@@ -164,7 +164,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
     if ( pat.isEmpty( ) ) {
         return;
     }
-    const MultipleSequenceAlignment msa = aliObj->getMsa();
+    const MultipleSequenceAlignment msa = aliObj->getMultipleAlignment();
     if ( !msa->getAlphabet( )->isCaseSensitive( ) ) {
         pat = pat.toUpper( );
     }
@@ -205,7 +205,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
     if ( pat.isEmpty( ) ) {
         return;
     }
-    const MultipleSequenceAlignment msa = aliObj->getMsa();
+    const MultipleSequenceAlignment msa = aliObj->getMultipleAlignment();
     if ( !msa->getAlphabet( )->isCaseSensitive( ) ) {
         pat = pat.toUpper( );
     }

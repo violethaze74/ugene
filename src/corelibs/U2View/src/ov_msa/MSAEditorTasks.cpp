@@ -127,7 +127,7 @@ void OpenMaEditorTask::updateTitle(MSAEditor* msaEd) {
     const QString& oldViewName = msaEd->getName();
     GObjectViewWindow* w = GObjectViewUtils::findViewByName(oldViewName);
     if (w != NULL) {
-        MultipleSequenceAlignmentObject* msaObject = msaEd->getMSAObject();
+        MultipleSequenceAlignmentObject* msaObject = msaEd->getMaObject();
         QString newViewName = GObjectViewUtils::genUniqueViewName(msaObject->getDocument(), msaObject);
         msaEd->setName(newViewName);
         w->setWindowTitle(newViewName);
@@ -336,7 +336,7 @@ void ExtractConsensusTask::run() {
     CHECK(msa->getUI()->getConsensusArea()->getConsensusCache(),);
 
     MSAConsensusAlgorithm *algorithm = msa->getUI()->getConsensusArea()->getConsensusAlgorithm();
-    const MultipleSequenceAlignment ma = msa->getMSAObject()->getMsaCopy();
+    const MultipleSequenceAlignment ma = msa->getMaObject()->getMsaCopy();
     for (int i = 0, n = ma->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;

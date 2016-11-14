@@ -65,7 +65,7 @@ GObjectViewWindowContext(p, MSAEditorFactory::ID) {}
 
 void DNAStatMSAEditorContext::initViewContext(GObjectView* v) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
-    if (msaed != NULL && !msaed->getMSAObject())
+    if (msaed != NULL && !msaed->getMaObject())
         return;
 
     GObjectViewAction* profileAction = new GObjectViewAction(this, v, tr("Generate grid profile"));
@@ -79,7 +79,7 @@ void DNAStatMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
     // SANGER_TODO: write safe_point later
     CHECK(msaed != NULL, );
-    if (msaed != NULL && !msaed->getMSAObject())
+    if (msaed != NULL && !msaed->getMaObject())
         return;
 
     QList<GObjectViewAction *> actions = getViewActions(v);
@@ -104,7 +104,7 @@ GObjectViewWindowContext(p, MSAEditorFactory::ID) {}
 
 void DistanceMatrixMSAEditorContext::initViewContext(GObjectView* v) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
-    if (msaed != NULL && !msaed->getMSAObject())
+    if (msaed != NULL && !msaed->getMaObject())
         return;
 
     GObjectViewAction* profileAction = new GObjectViewAction(this, v, tr("Generate distance matrix"));
@@ -117,7 +117,7 @@ void DistanceMatrixMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
     // SANGER_TODO: safe_point?
     CHECK(msaed != NULL, );
-    if (msaed != NULL && !msaed->getMSAObject())
+    if (msaed != NULL && !msaed->getMaObject())
         return;
 
     QList<GObjectViewAction *> actions = getViewActions(v);

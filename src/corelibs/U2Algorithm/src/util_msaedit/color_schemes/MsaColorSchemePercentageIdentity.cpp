@@ -72,7 +72,7 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     if (cacheVersion == objVersion) {
         return;
     }
-    const MultipleSequenceAlignment msa = maObj->getMsa();
+    const MultipleSequenceAlignment msa = maObj->getMultipleAlignment();
     int aliLen = msa->getLength();
     indentCache.resize(aliLen);
     for (int i = 0; i < aliLen; i++) {

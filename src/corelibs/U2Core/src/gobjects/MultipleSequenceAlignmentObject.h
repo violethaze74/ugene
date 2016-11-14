@@ -35,7 +35,8 @@ public:
                                     const QVariantMap &hintsMap = QVariantMap(),
                                     const MultipleSequenceAlignment &msaData = MultipleSequenceAlignment());
 
-    const MultipleSequenceAlignment getMsa() const;
+    const MultipleSequenceAlignment& getMultipleAlignment() const;
+    // SANGER_TODO: rename??
     const MultipleSequenceAlignment getMsaCopy() const;
 
     /** GObject methods */

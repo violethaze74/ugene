@@ -54,8 +54,8 @@ void MSAImageExportToBitmapTask::run() {
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("MSAImageExportToBitmapTask")), );
 
     SAFE_POINT_EXT( ui->getEditor() != NULL, setError(L10N::nullPointerError("MSAEditor")), );
-    MultipleSequenceAlignmentObject *mObj =  ui->getEditor()->getMSAObject();
-    SAFE_POINT_EXT( mObj != NULL, setError(L10N::nullPointerError("MultipleSequenceAlignmentObject")), );
+    MultipleAlignmentObject *mObj =  ui->getEditor()->getMaObject();
+    SAFE_POINT_EXT( mObj != NULL, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
     StateLock *lock = new StateLock();
     mObj->lockState(lock);
 
@@ -126,8 +126,8 @@ void MSAImageExportToSvgTask::run() {
 
     MaEditor* editor = ui->getEditor();
     SAFE_POINT_EXT( editor != NULL, setError(L10N::nullPointerError("MSAEditor")), );
-    MultipleSequenceAlignmentObject *mObj =  editor->getMSAObject();
-    SAFE_POINT_EXT( mObj != NULL, setError(L10N::nullPointerError("MultipleSequenceAlignmentObject")), );
+    MultipleAlignmentObject *mObj =  editor->getMaObject();
+    SAFE_POINT_EXT( mObj != NULL, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
 
     StateLocker stateLocker(mObj);
     Q_UNUSED(stateLocker);

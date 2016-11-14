@@ -89,9 +89,9 @@ void HmmerSupport::sl_buildProfile() {
         if (NULL != objectViewWindow) {
             MSAEditor *msaEditor = qobject_cast<MSAEditor *>(objectViewWindow->getObjectView());
             if (NULL != msaEditor) {
-                MultipleSequenceAlignmentObject *maObj = msaEditor->getMSAObject();
+                MultipleSequenceAlignmentObject *maObj = msaEditor->getMaObject();
                 if (maObj != NULL) {
-                    ma = maObj->getMsa();
+                    ma = maObj->getMultipleAlignment();
                 }
             }
         }
@@ -259,7 +259,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectView *view) {
     // SANGER_TODO: return SAFE_POINT
     CHECK(msaEditor != NULL, );
 //    SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
-    CHECK(NULL != msaEditor->getMSAObject(), );
+    CHECK(NULL != msaEditor->getMaObject(), );
 
     GObjectViewAction *action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
     action->setObjectName("Build HMMER3 profile");
@@ -274,7 +274,7 @@ void HmmerMsaEditorContext::buildMenu(GObjectView *view, QMenu *menu) {
     CHECK(msaEditor != NULL, );
 //    SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
     SAFE_POINT(NULL != menu, "Menu is NULL", );
-    CHECK(NULL != msaEditor->getMSAObject(), );
+    CHECK(NULL != msaEditor->getMaObject(), );
 
     QList<GObjectViewAction *> list = getViewActions(view);
     SAFE_POINT(1 == list.size(), "List size is incorrect", );
@@ -289,9 +289,9 @@ void HmmerMsaEditorContext::sl_build() {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(action->getObjectView());
     SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
 
-    MultipleSequenceAlignmentObject *obj = msaEditor->getMSAObject();
+    MultipleSequenceAlignmentObject *obj = msaEditor->getMaObject();
     if (obj != NULL) {
-        QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getMsa  ());
+        QObjectScopedPointer<HmmerBuildDialog> buildDlg = new HmmerBuildDialog(obj->getMultipleAlignment  ());
         buildDlg->exec();
         CHECK(!buildDlg.isNull(), );
     }

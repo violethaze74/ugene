@@ -389,6 +389,11 @@ U2Region MultipleChromatogramAlignmentRowData::getWorkingAreaRegion() const {
     return workingArea;
 }
 
+char MultipleChromatogramAlignmentRowData::charAt(int pos) const {
+    // SANGER_TODO: check gaps!
+    return MsaRowUtils::charAt(editedSequence.seq, editedSequenceCachedGapModel, pos);
+}
+
 char MultipleChromatogramAlignmentRowData::getPredictedSequenceDataChar(qint64 dataPosition) const {
     SAFE_POINT(0 <= dataPosition && dataPosition <= getPredictedSequenceDataLength(), "Position is out of the predicted sequence data boundaries", U2Msa::GAP_CHAR);
     return predictedSequence.seq.at(dataPosition);

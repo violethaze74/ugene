@@ -79,7 +79,7 @@ void MsaColorSchemeClustalX::updateCache() const {
 
     // compute colors for whole ali
     // use 4 bits per color
-    const MultipleSequenceAlignment msa = maObj->getMsa();
+    const MultipleSequenceAlignment msa = maObj->getMultipleAlignment();
     int nSeq = msa->getNumRows();
     aliLen = maObj->getLength();
     cacheVersion = objVersion;

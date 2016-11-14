@@ -84,30 +84,30 @@ MSAExportContext::MSAExportContext(MSAEditor* e) : editor(e) {
     translateMSAAction = new QAction(tr("Amino translation..."), this);
     translateMSAAction->setObjectName("amino_translation_of_alignment_rows");
     translateMSAAction->setEnabled(!e->isAlignmentEmpty());
-    connect(e->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), translateMSAAction, SLOT(setDisabled(bool)));
+    connect(e->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), translateMSAAction, SLOT(setDisabled(bool)));
     connect(translateMSAAction, SIGNAL(triggered()), SLOT(sl_exportNucleicMsaToAmino()));
 }
 
 void MSAExportContext::updateActions() {
-    translateMSAAction->setEnabled(editor->getMSAObject()->getAlphabet()->isNucleic() &&
+    translateMSAAction->setEnabled(editor->getMaObject()->getAlphabet()->isNucleic() &&
                                    !editor->isAlignmentEmpty());
 }
 
 void MSAExportContext::buildMenu(QMenu* m) {
     QMenu* exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != NULL, "exportMenu", );
-    MultipleSequenceAlignmentObject* mObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* mObject = editor->getMaObject();
     if (mObject->getAlphabet()->isNucleic()) {
         exportMenu->addAction(translateMSAAction);
     }
 }
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
-    const MultipleSequenceAlignment ma = editor->getMSAObject()->getMsa();
+    const MultipleSequenceAlignment ma = editor->getMaObject()->getMultipleAlignment();
     assert(ma->getAlphabet()->isNucleic());
 
-    GUrl msaUrl = editor->getMSAObject()->getDocument()->getURL();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMSAObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    GUrl msaUrl = editor->getMaObject()->getDocument()->getURL();
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMaObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
     QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, editor->getCurrentSelection().height() < 1, AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle(tr("Export Amino Translation"));

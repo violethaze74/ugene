@@ -67,7 +67,7 @@ bool MsaContentFilterTask::msaContainsPattern(MultipleSequenceAlignmentObject *m
     SAFE_POINT(NULL != msaObject, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
-    const MultipleSequenceAlignment msa = msaObject->getMsa();
+    const MultipleSequenceAlignment msa = msaObject->getMultipleAlignment();
     const QByteArray searchStr = pattern.toUpper().toLatin1();
 
     for (int i = 0, n = msa->getNumRows(); i < n; ++i) {
