@@ -19,10 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCryptographicHash>
-
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlQuery>
+#include <QCryptographicHash>
+#include <QSqlError>
+#include <QSqlQuery>
 
 #include <U2Core/Folder.h>
 #include <U2Core/U2DbiPackUtils.h>
@@ -31,6 +30,7 @@
 #include <U2Core/Version.h>
 
 #include "MysqlFeatureDbi.h"
+#include "MysqlMcaDbi.h"
 #include "MysqlModDbi.h"
 #include "MysqlMsaDbi.h"
 #include "MysqlObjectDbi.h"
@@ -1081,7 +1081,9 @@ void MysqlObjectDbi::setVersion(const U2DataId& id, qint64 version, U2OpStatus& 
 }
 
 void MysqlObjectDbi::undoSingleModStep(const U2SingleModStep& modStep, U2OpStatus& os) {
-    if (U2ModType::isMsaModType(modStep.modType)) {
+    if (U2ModType::isMcaModType(modStep.modType)) {
+        dbi->getMysqlMcaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
+    } else if (U2ModType::isMsaModType(modStep.modType)) {
         dbi->getMysqlMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
     } else if (U2ModType::isSequenceModType(modStep.modType)) {
         dbi->getMysqlSequenceDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
@@ -1094,7 +1096,9 @@ void MysqlObjectDbi::undoSingleModStep(const U2SingleModStep& modStep, U2OpStatu
 }
 
 void MysqlObjectDbi::redoSingleModStep(const U2SingleModStep& modStep, U2OpStatus &os) {
-    if (U2ModType::isMsaModType(modStep.modType)) {
+    if (U2ModType::isMcaModType(modStep.modType)) {
+        dbi->getMysqlMcaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
+    } else if (U2ModType::isMsaModType(modStep.modType)) {
         dbi->getMysqlMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
     } else if (U2ModType::isSequenceModType(modStep.modType)) {
         dbi->getMysqlSequenceDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);

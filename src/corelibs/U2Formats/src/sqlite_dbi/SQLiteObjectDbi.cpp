@@ -717,13 +717,13 @@ void SQLiteObjectDbi::redo(const U2DataId& objId, U2OpStatus& os) {
         QSet<U2DataId> objectIds;
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
-            if (U2ModType::isMsaModType(modStep.modType)) {
+            if (U2ModType::isMcaModType(modStep.modType)) {
+                dbi->getSQLiteMcaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
+            } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
-            }
-            else if (U2ModType::isSequenceModType(modStep.modType)) {
+            } else if (U2ModType::isSequenceModType(modStep.modType)) {
                 dbi->getSQLiteSequenceDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
-            }
-            else if (U2ModType::isObjectModType(modStep.modType)) {
+            } else if (U2ModType::isObjectModType(modStep.modType)) {
                 if (U2ModType::objUpdatedName == modStep.modType) {
                     redoUpdateObjectName(modStep.objectId, modStep.details, os);
                     CHECK_OP(os, );

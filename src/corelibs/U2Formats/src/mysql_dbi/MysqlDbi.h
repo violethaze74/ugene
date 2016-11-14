@@ -22,7 +22,7 @@
 #ifndef _U2_MYSQL_DBI_H_
 #define _U2_MYSQL_DBI_H_
 
-#include <QtCore/QStack>
+#include <QStack>
 
 #include <U2Core/U2AbstractDbi.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -34,6 +34,7 @@ class MysqlAssemblyDbi;
 class MysqlCrossDatabaseReferenceDbi;
 class MysqlDbRef;
 class MysqlFeatureDbi;
+class MysqlMcaDbi;
 class MysqlModDbi;
 class MysqlMsaDbi;
 class MysqlObjectDbi;
@@ -80,6 +81,7 @@ public:
     virtual U2AttributeDbi*                 getAttributeDbi();
     virtual U2CrossDatabaseReferenceDbi*    getCrossDatabaseReferenceDbi();
     virtual U2FeatureDbi*                   getFeatureDbi();
+    virtual U2McaDbi*                       getMcaDbi();
     virtual U2ModDbi*                       getModDbi();
     virtual U2MsaDbi*                       getMsaDbi();
     virtual U2ObjectDbi*                    getObjectDbi();
@@ -92,6 +94,7 @@ public:
     MysqlAttributeDbi*                      getMysqlAttributeDbi();
     MysqlCrossDatabaseReferenceDbi*         getMysqlCrossDatabaseReferenceDbi();
     MysqlFeatureDbi*                        getMysqlFeatureDbi();
+    MysqlMcaDbi*                            getMysqlMcaDbi();
     MysqlModDbi*                            getMysqlModDbi();
     MysqlMsaDbi*                            getMysqlMsaDbi();
     MysqlObjectDbi*                         getMysqlObjectDbi();
@@ -144,6 +147,7 @@ private:
     MysqlAttributeDbi*                 attributeDbi;
     MysqlCrossDatabaseReferenceDbi*    crossDbi;
     MysqlFeatureDbi*                   featureDbi;
+    MysqlMcaDbi*                       mcaDbi;
     MysqlModDbi*                       modDbi;
     MysqlMsaDbi*                       msaDbi;
     MysqlObjectDbi*                    objectDbi;
