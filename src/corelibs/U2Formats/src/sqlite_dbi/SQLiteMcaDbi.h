@@ -156,6 +156,7 @@ public:
                           const U2MsaRowGapModel &predictedSequenceGapModel,
                           const DNASequence &editedSequence,
                           const U2MsaRowGapModel &editedSequenceGapModel,
+                          const U2Region &workingArea,
                           U2OpStatus &os);
 
     void updateRowContent(const U2DataId &mcaId,
@@ -181,7 +182,7 @@ public:
      */
     void updateRowSequence(const U2DataId &mcaId,
                            qint64 rowId,
-                           qint64 sequenceId,
+                           const U2DataId &sequenceId,
                            const QByteArray &sequenceData,
                            const U2MsaRowGapModel &gapModel,
                            U2OpStatus &os);
@@ -191,7 +192,7 @@ public:
      * Updates the alignment length.
      * Increments the alignment version.
      */
-    void updateGapModel(const U2DataId &mcaId, qint64 msaRowId, qint64 gapModelOwner, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
+    void updateGapModel(const U2DataId &mcaId, qint64 msaRowId, const U2DataId &gapModelOwner, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
 
 
     /** Updates a part of the Mca object info - the length */
@@ -246,10 +247,12 @@ private:
     void recalculateRowsPositions(const U2DataId &mcaId, U2OpStatus &os);
 
     /** Calculates length of the row (characters + gaps), does NOT take into account trailing gaps. */
-    qint64 calculateRowLength(qint64 seqLength, const QList<U2MsaGap> &gaps);
+    qint64 calculateRowLength(qint64 dataLength, const QList<U2MsaGap> &gaps);
 
     /** Gets length of the sequence in the row (without gaps) */
-    qint64 getRowSequenceLength(const U2DataId &mcaId, qint64 rowId, U2OpStatus &os);
+    qint64 getRowDataLength(const U2DataId &mcaId, qint64 rowId, const U2DataId &childObjectId, U2OpStatus &os);
+    qint64 getRowSequenceLength(const U2DataId &childObjectId, U2OpStatus &os);
+    qint64 getRowChromatogramLength(const U2DataId &childObjectId, U2OpStatus &os);
 
     /** Updates 'length' field in McaRow for specified */
     void updateRowLength(const U2DataId &mcaId, qint64 rowId, qint64 newLength, U2OpStatus &os);

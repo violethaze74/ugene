@@ -643,13 +643,13 @@ void SQLiteObjectDbi::undo(const U2DataId& objId, U2OpStatus& os) {
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
             // Call an appropriate "undo" depending on the object type
-            if (U2ModType::isMsaModType(modStep.modType)) {
+            if (U2ModType::isMcaModType(modStep.modType)) {
+                dbi->getSQLiteMcaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
+            } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
-            }
-            else if (U2ModType::isSequenceModType(modStep.modType)) {
+            } else if (U2ModType::isSequenceModType(modStep.modType)) {
                 dbi->getSQLiteSequenceDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
-            }
-            else if (U2ModType::isObjectModType(modStep.modType)) {
+            } else if (U2ModType::isObjectModType(modStep.modType)) {
                 if (U2ModType::objUpdatedName == modStep.modType) {
                     undoUpdateObjectName(modStep.objectId, modStep.details, os);
                     CHECK_OP(os, );
