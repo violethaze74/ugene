@@ -204,7 +204,7 @@ void MaEditor::saveHighlightingSettings( const QString &highlightingFactoryId, c
 }
 
 QString MaEditor::getReferenceRowName() const {
-    const MultipleSequenceAlignment alignment = getMaObject()->getMsa();
+    const MultipleAlignment alignment = getMaObject()->getMultipleAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
     return (U2MsaRow::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq)

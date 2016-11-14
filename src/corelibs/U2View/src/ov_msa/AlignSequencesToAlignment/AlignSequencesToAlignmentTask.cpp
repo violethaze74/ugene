@@ -89,7 +89,7 @@ void SequenceObjectsExtractor::extractSequencesFromObjects(const QList<GObject*>
             checkAlphabet(curObj->getAlphabet(), curObj->getGObjectName());
             sequencesMaxLength = qMax(sequencesMaxLength, curObj->getLength());
 
-            foreach(const MultipleSequenceAlignmentRow& row, curObj->getMultipleAlignment()->getMsaRows()) {
+            foreach(const MultipleSequenceAlignmentRow& row, curObj->getMsa()->getMsaRows()) {
                 U2EntityRef seqRef(curObj->getEntityRef().dbiRef, row->getRowDbInfo().sequenceId);
                 sequenceRefs << seqRef;
                 sequenceNames << row->getName();
@@ -222,7 +222,7 @@ const SequenceObjectsExtractor& LoadSequencesTask::getExtractor() const {
 /* AlignSequencesToAlignmentTask */
 /************************************************************************/
 AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor)
-    : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObj(obj), stateLock(NULL), docStateLock(NULL), 
+    : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObj(obj), stateLock(NULL), docStateLock(NULL),
     sequencesMaxLength(extractor.getMaxSequencesLength()), extr(extractor)
 {
     fillSettingsByDefault();
@@ -266,7 +266,7 @@ void AlignSequencesToAlignmentTask::prepare()
 void AlignSequencesToAlignmentTask::fillSettingsByDefault() {
     AlignmentAlgorithmsRegistry* alignmentRegistry = AppContext::getAlignmentAlgorithmsRegistry();
     SAFE_POINT(NULL != alignmentRegistry, "AlignmentAlgorithmsRegistry is NULL.", );
-    if(alignmentRegistry->getAvailableAlgorithmIds(AddToAlignment).contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT) 
+    if(alignmentRegistry->getAvailableAlgorithmIds(AddToAlignment).contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT)
         && maObj->getMultipleAlignment()->getNumRows() != 0) {
         settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
     } else {

@@ -73,8 +73,10 @@ public:
     /** Sets type of modifications tracking for the alignment */
     void setTrackMod(U2OpStatus &os, U2TrackModType trackMod);
 
-    virtual const MultipleAlignment & getMultipleAlignment() const;
+    const MultipleAlignment& getMultipleAlignment() const;
     void setMultipleAlignment(const MultipleAlignment &ma, MaModificationInfo mi = MaModificationInfo(), const QVariantMap &hints = QVariantMap());
+
+    const MultipleAlignment getMultipleAlignmentCopy() const;
 
     /** GObject methods */
     void setGObjectName(const QString &newName);
@@ -85,6 +87,7 @@ public:
     qint64 getNumRows() const;
     const MultipleAlignmentRow getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
+    virtual char charAt(int seqNum, int pos) const = 0;
 
     /** Methods to work with rows */
     void removeRow(int rowIdx);

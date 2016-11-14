@@ -62,7 +62,7 @@ QString SequenceSelectorWidgetController::text() const {
 
 void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
     U2OpStatusImpl os;
-    const MultipleSequenceAlignmentRow &selectedRow = msa->getMaObject()->getMultipleAlignment()->getMsaRowByRowId(newId, os);
+    const MultipleSequenceAlignmentRow &selectedRow = msa->getMaObject()->getMsa()->getMsaRowByRowId(newId, os);
     CHECK_OP(os, );
     seqId = newId;
     const QString selectedName = selectedRow->getName();

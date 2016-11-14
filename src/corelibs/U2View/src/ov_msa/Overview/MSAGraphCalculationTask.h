@@ -42,7 +42,7 @@ class MsaHighlightingScheme;
 class MSAGraphCalculationTask : public BackgroundTask<QPolygonF> {
     Q_OBJECT
 public:
-    MSAGraphCalculationTask(MultipleSequenceAlignmentObject* msa, int width, int height);
+    MSAGraphCalculationTask(MultipleAlignmentObject* msa, int width, int height);
 
     void run();
 signals:
@@ -63,7 +63,7 @@ protected:
 class MSAConsensusOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAConsensusOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
+    MSAConsensusOverviewCalculationTask(MultipleAlignmentObject* msa,
                                         int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -74,7 +74,7 @@ private:
 class MSAGapOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAGapOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
+    MSAGapOverviewCalculationTask(MultipleAlignmentObject* msa,
                                   int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -83,7 +83,7 @@ private:
 class MSAClustalOverviewCalculationTask : public MSAGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAClustalOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
+    MSAClustalOverviewCalculationTask(MultipleAlignmentObject* msa,
                                       int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -99,7 +99,7 @@ public:
                                            const QString &highlightingSchemeId,
                                            int width, int height);
 
-    static bool isCellHighlighted(const MultipleSequenceAlignment &msa,
+    static bool isCellHighlighted(const MultipleAlignment &msa,
                                   MsaHighlightingScheme* highlightingScheme,
                                   MsaColorScheme* colorScheme,
                                   int seq, int pos,

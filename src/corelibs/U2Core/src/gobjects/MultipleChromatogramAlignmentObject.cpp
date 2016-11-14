@@ -62,6 +62,11 @@ GObject * MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, 
     return clonedObject;
 }
 
+char MultipleChromatogramAlignmentObject::charAt(int seqNum, int pos) const {
+    // SANGER_TODO: check boundaries
+    return getMcaRow(seqNum)->charAt(pos);
+}
+
 const MultipleChromatogramAlignment MultipleChromatogramAlignmentObject::getMca() const {
     return getMultipleAlignment().dynamicCast<MultipleChromatogramAlignment>();
 }

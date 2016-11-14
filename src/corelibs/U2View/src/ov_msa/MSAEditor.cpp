@@ -329,7 +329,7 @@ void MSAEditor::updateActions() {
 }
 
 void MSAEditor::copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os) {
-    MSAUtils::copyRowFromSequence(maObject, seqObj, os);
+    MSAUtils::copyRowFromSequence(getMaObject(), seqObj, os);
     maObject->updateCachedMultipleAlignment();
 }
 
@@ -406,7 +406,7 @@ bool MSAEditor::eventFilter(QObject*, QEvent* e) {
                     U2OpStatusImpl os;
                     DNASequence seq = dnaObj->getWholeSequence(os);
                     seq.alphabet = dnaObj->getAlphabet();
-                    Task *task = new AddSequenceObjectsToAlignmentTask(maObject, QList<DNASequence>() << seq);
+                    Task *task = new AddSequenceObjectsToAlignmentTask(getMaObject(), QList<DNASequence>() << seq);
                     TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
                     AppContext::getTaskScheduler()->registerTopLevelTask(task);
                 }
@@ -481,7 +481,7 @@ void MSAEditor::alignSequencesFromObjectsToAlignment(const QList<GObject*>& obje
     extractor.extractSequencesFromObjects(objects);
 
     if(!extractor.getSequenceRefs().isEmpty()) {
-        AlignSequencesToAlignmentTask* task = new AlignSequencesToAlignmentTask(maObject, extractor);
+        AlignSequencesToAlignmentTask* task = new AlignSequencesToAlignmentTask(getMaObject(), extractor);
         TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
@@ -501,7 +501,7 @@ void MSAEditor::alignSequencesFromFilesToAlignment() {
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
-        LoadSequencesAndAlignToAlignmentTask * task = new LoadSequencesAndAlignToAlignmentTask(maObject, urls);
+        LoadSequencesAndAlignToAlignmentTask * task = new LoadSequencesAndAlignToAlignmentTask(getMaObject(), urls);
         TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
@@ -595,7 +595,7 @@ void MSAEditorUI::refreshSimilarityColumn() {
 void MSAEditorUI::showSimilarity() {
     if(NULL == similarityStatistics) {
         SimilarityStatisticsSettings settings;
-        settings.ma = editor->getMaObject();
+        settings.ma = getEditor()->getMaObject();
         settings.algoName = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
         settings.ui = this;
 

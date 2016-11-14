@@ -94,7 +94,7 @@ void MultipleAlignmentObject::setTrackMod(U2OpStatus &os, U2TrackModType trackMo
     objectDbi->setTrackModType(entityRef.entityId, trackMod, os);
 }
 
-const MultipleAlignment & MultipleAlignmentObject::getMultipleAlignment() const {
+const MultipleAlignment& MultipleAlignmentObject::getMultipleAlignment() const {
     ensureDataLoaded();
     return cachedMa;
 }
@@ -108,6 +108,10 @@ void MultipleAlignmentObject::setMultipleAlignment(const MultipleAlignment &newM
 
     mi.hints = hints;
     updateCachedMultipleAlignment(mi);
+}
+
+const MultipleAlignment MultipleAlignmentObject::getMultipleAlignmentCopy() const {
+    return getMultipleAlignment()->getCopy();
 }
 
 void MultipleAlignmentObject::setGObjectName(const QString &newName) {

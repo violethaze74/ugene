@@ -75,7 +75,7 @@ private:
     int getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const;
 
     MSAEditorSequenceArea *     seqArea;
-    MaEditor *                 editor;
+    MaEditor *                  editor;
     bool                        showStartPos;
     bool                        completeRedraw;
     QPixmap                     cachedView;

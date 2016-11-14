@@ -85,7 +85,6 @@ public:
 protected:
     AlignGObjectTask* alignTask;
     MultipleSequenceAlignmentObject *maObj, *clonedObj;
-    //MultipleSequenceAlignment bufMA;
     QString traslId;
     Document* tmpDoc;
     QMap<qint64, QList<U2MsaGap> > rowsGapModel;

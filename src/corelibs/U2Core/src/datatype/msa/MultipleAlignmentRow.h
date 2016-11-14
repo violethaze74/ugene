@@ -94,6 +94,8 @@ public:
 
     virtual char charAt(int pos) const = 0;
 
+    virtual QByteArray toByteArray(int length, U2OpStatus &os) const = 0;
+
     virtual qint64 getRowLengthWithoutTrailing() const = 0;
 
     virtual void crop(U2OpStatus &os, qint64 startPosition, qint64 count) = 0;

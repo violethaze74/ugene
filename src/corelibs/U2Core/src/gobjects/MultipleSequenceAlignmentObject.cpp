@@ -44,12 +44,12 @@ MultipleSequenceAlignmentObject::MultipleSequenceAlignmentObject(const QString &
 
 }
 
-const MultipleSequenceAlignment& MultipleSequenceAlignmentObject::getMultipleAlignment() const {
+const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsa() const {
     return getMultipleAlignment().dynamicCast<MultipleSequenceAlignment>();
 }
 
 const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() const {
-    return getMultipleAlignment()->getExplicitCopy();
+    return getMsa()->getExplicitCopy();
 }
 
 GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
@@ -61,7 +61,7 @@ GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2Op
     gHints->setAll(hints);
     const QString dstFolder = gHints->get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
-    MultipleSequenceAlignment msa = getMultipleAlignment()->getExplicitCopy();
+    MultipleSequenceAlignment msa = getMsa()->getExplicitCopy();
     MultipleSequenceAlignmentObject *clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
     CHECK_OP(os, NULL);
 
@@ -127,7 +127,7 @@ int MultipleSequenceAlignmentObject::deleteGap(U2OpStatus &os, const U2Region &r
     QList<qint64> modifiedRowIds;
     modifiedRowIds.reserve(rows.length);
 
-    MultipleSequenceAlignment msa = getMultipleAlignment()->getExplicitCopy();
+    MultipleSequenceAlignment msa = getMsa()->getExplicitCopy();
     // iterate through given rows to update each of them in DB
     for (int rowCount = rows.startPos; rowCount < rows.endPos(); ++rowCount) {
         msa->removeChars(rowCount, pos, removingGapColumnCount, os);
@@ -175,7 +175,7 @@ void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus &os, const U2Msa
 }
 
 void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows) {
-    const QList<MultipleSequenceAlignmentRow> oldRows = getMultipleAlignment()->getMsaRows();
+    const QList<MultipleSequenceAlignmentRow> oldRows = getMsa()->getMsaRows();
 
     SAFE_POINT(oldRows.count() == sourceRows.count(), "Different rows count", );
 
@@ -192,7 +192,7 @@ void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleSequenc
 
 U2MsaMapGapModel MultipleSequenceAlignmentObject::getGapModel() const {
     U2MsaMapGapModel rowsGapModel;
-    foreach (const MultipleSequenceAlignmentRow &curRow, getMultipleAlignment()->getMsaRows()) {
+    foreach (const MultipleSequenceAlignmentRow &curRow, getMsa()->getMsaRows()) {
         rowsGapModel[curRow->getRowId()] = curRow->getGapModel();
     }
     return rowsGapModel;

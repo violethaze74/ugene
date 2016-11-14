@@ -336,7 +336,7 @@ void ExtractConsensusTask::run() {
     CHECK(msa->getUI()->getConsensusArea()->getConsensusCache(),);
 
     MSAConsensusAlgorithm *algorithm = msa->getUI()->getConsensusArea()->getConsensusAlgorithm();
-    const MultipleSequenceAlignment ma = msa->getMaObject()->getMsaCopy();
+    const MultipleAlignment ma = msa->getMaObject()->getMultipleAlignmentCopy();
     for (int i = 0, n = ma->getLength(); i < n; i++) {
         if (stateInfo.isCoR()) {
             return;

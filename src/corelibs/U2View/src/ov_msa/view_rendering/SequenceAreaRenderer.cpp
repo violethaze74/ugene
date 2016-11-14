@@ -49,7 +49,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, cons
     p.setPen(Qt::black);
     p.setFont(editor->getFont());
 
-    MultipleSequenceAlignmentObject* maObj = editor->getMaObject();
+    MultipleAlignmentObject* maObj = editor->getMaObject();
     SAFE_POINT(maObj != NULL, tr("Alignment object is NULL"), false);
     const MultipleSequenceAlignment msa = maObj->getMultipleAlignment();
 

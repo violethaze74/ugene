@@ -389,6 +389,12 @@ U2Region MultipleChromatogramAlignmentRowData::getWorkingAreaRegion() const {
     return workingArea;
 }
 
+QByteArray MultipleChromatogramAlignmentRowData::toByteArray(int length, U2OpStatus &os) const {
+    // SANGER_TODO: limit to the provider length!
+    return getEditedSequenceData();
+}
+
+
 char MultipleChromatogramAlignmentRowData::charAt(int pos) const {
     // SANGER_TODO: check gaps!
     return MsaRowUtils::charAt(editedSequence.seq, editedSequenceCachedGapModel, pos);

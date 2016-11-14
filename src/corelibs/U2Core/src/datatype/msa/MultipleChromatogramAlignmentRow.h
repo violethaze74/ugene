@@ -161,6 +161,7 @@ public:
     U2Region getCoreRegion() const;      // a of the core withing whole row (hiding ignoring)
     U2Region getWorkingAreaRegion() const;      // a region in the core with nonhided symbols
 
+    QByteArray toByteArray(int length, U2OpStatus &os) const;
     char charAt(int pos) const;
     // TODO: Getters are too strict, check the behavior if the position is out of boundaries
     char getPredictedSequenceDataChar(qint64 dataPosition) const;   // get a char from sequence data (do not include gap model into calculation)

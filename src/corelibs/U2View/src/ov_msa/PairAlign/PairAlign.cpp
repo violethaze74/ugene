@@ -63,7 +63,7 @@
 #include "../SequenceSelectorWidgetController.h"
 
 inline U2::U2DataId getSequenceIdByRowId( U2::MSAEditor* msa, qint64 rowId, U2::U2OpStatus &os ) {
-    const U2::MultipleSequenceAlignmentRow row = msa->getMaObject()->getMultipleAlignment()->getMsaRowByRowId(rowId, os);
+    const U2::MultipleSequenceAlignmentRow row = msa->getMaObject()->getMsa()->getMsaRowByRowId(rowId, os);
     CHECK_OP(os, U2::U2DataId());
     return row->getRowDbInfo().sequenceId;
 }
