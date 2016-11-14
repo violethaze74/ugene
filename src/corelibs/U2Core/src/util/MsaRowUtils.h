@@ -37,6 +37,7 @@ public:
     static int getGapsLength(const U2MsaRowGapModel &gaps);
     static char charAt(const QByteArray &seq, const U2MsaRowGapModel &gaps, int pos);
     static qint64 getRowLengthWithoutTrailing(const QByteArray &seq, const U2MsaRowGapModel &gaps);
+    static qint64 getRowLengthWithoutTrailing(qint64 dataLength, const U2MsaRowGapModel &gaps);
     /**
      * The method maps `pos` in MSA coordinates to a character position in 'seq', i.e. gaps aren't taken into account.
      * If false == 'allowGapInPos' and the gap symbol is located in 'pos' then the method returns -1.

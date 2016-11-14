@@ -56,7 +56,7 @@ public:
 
     bool operator ==(const DNAChromatogram &otherChromatogram) const;
 
-    static const short INVALID_VALUE;       // TODO: fix this value
+    static const ushort INVALID_VALUE;
 };
 
 } //namespace

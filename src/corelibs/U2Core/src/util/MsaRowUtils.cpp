@@ -87,6 +87,17 @@ qint64 MsaRowUtils::getRowLengthWithoutTrailing(const QByteArray &seq, const U2M
     return rowLengthWithoutTrailingGap;
 }
 
+qint64 MsaRowUtils::getRowLengthWithoutTrailing(qint64 dataLength, const U2MsaRowGapModel &gaps) {
+    qint64 gappedDataLength = dataLength;
+    foreach (const U2MsaGap &gap, gaps) {
+        if (gap.offset > gappedDataLength) {
+            break;
+        }
+        gappedDataLength += gap.gap;
+    }
+    return gappedDataLength;
+}
+
 qint64 MsaRowUtils::getUngappedPosition(const U2MsaRowGapModel &gaps, qint64 dataLength, qint64 position, bool allowGapInPos) {
     if (isGap(dataLength, gaps, position) && !allowGapInPos) {
         return -1;
@@ -241,7 +252,9 @@ void MsaRowUtils::addOffsetToGapModel(U2MsaRowGapModel &gapModel, int offset) {
 }
 
 void MsaRowUtils::shiftGapModel(U2MsaRowGapModel &gapModel, int shiftSize) {
-    CHECK(shiftSize > 0, );
+    CHECK(!gapModel.isEmpty(), );
+    CHECK(shiftSize != 0, );
+    CHECK(-shiftSize <= gapModel.first().offset, );
     for (int i = 0; i < gapModel.size(); i++) {
         gapModel[i].offset += shiftSize;
     }
