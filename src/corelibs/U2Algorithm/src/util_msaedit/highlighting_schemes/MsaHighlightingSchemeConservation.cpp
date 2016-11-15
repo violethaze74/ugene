@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
+MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj),
       threshold(50),
       lessThenThreshold(false)
@@ -96,7 +96,7 @@ MsaHighlightingSchemeConservationFactory::MsaHighlightingSchemeConservationFacto
 
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeConservationFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
+MsaHighlightingScheme * MsaHighlightingSchemeConservationFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeConservation(parent, this, maObj);
 }
 

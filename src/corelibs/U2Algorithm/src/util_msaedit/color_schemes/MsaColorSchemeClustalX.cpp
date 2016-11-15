@@ -21,13 +21,13 @@
 
 #include <U2Algorithm/MSAConsensusUtils.h>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 #include "MsaColorSchemeClustalX.h"
 
 namespace U2 {
 
-MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
+MsaColorSchemeClustalX::MsaColorSchemeClustalX(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : MsaColorScheme(parent, factory, maObj),
       objVersion(1),
       cacheVersion(0),
@@ -79,7 +79,7 @@ void MsaColorSchemeClustalX::updateCache() const {
 
     // compute colors for whole ali
     // use 4 bits per color
-    const MultipleSequenceAlignment msa = maObj->getMultipleAlignment();
+    const MultipleAlignment msa = maObj->getMultipleAlignment();
     int nSeq = msa->getNumRows();
     aliLen = maObj->getLength();
     cacheVersion = objVersion;
@@ -257,7 +257,7 @@ MsaColorSchemeClustalXFactory::MsaColorSchemeClustalXFactory(QObject *parent, co
 
 }
 
-MsaColorScheme * MsaColorSchemeClustalXFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemeClustalXFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaColorSchemeClustalX(parent, this, maObj);
 }
 

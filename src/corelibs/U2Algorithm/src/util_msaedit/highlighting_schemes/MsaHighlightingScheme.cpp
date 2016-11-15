@@ -50,7 +50,7 @@ const QString MsaHighlightingScheme::CONSERVATION_NUCL      = "CONSERVATION_SCHE
 const QString MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME           = "threshold";
 const QString MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME = "less_than_threshold";
 
-MsaHighlightingScheme::MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
+MsaHighlightingScheme::MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj),

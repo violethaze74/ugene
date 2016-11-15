@@ -58,7 +58,7 @@ const QString MsaColorScheme::CUSTOM_AMINO          = "COLOR_SCHEME_CUSTOM_AMINO
 
 const QString MsaColorScheme::EMPTY_RAW             = "COLOR_SCHEME_EMPTY_RAW";
 
-MsaColorScheme::MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
+MsaColorScheme::MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj) {

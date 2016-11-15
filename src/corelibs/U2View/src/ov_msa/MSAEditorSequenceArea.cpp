@@ -259,7 +259,7 @@ void MSAEditorSequenceArea::updateColorAndHighlightSchemes() {
     if (!s || !editor){
         return;
     }
-    MultipleSequenceAlignmentObject* maObj = editor->getMaObject();
+    MultipleAlignmentObject* maObj = editor->getMaObject();
     if (!maObj){
         return;
     }
@@ -301,7 +301,7 @@ void MSAEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* h
     highlightingSchemeMenuActions.clear();
     SAFE_POINT(hsf != NULL, "Highlight scheme factory is NULL", );
 
-    MultipleSequenceAlignmentObject* maObj = editor->getMaObject();
+    MultipleAlignmentObject* maObj = editor->getMaObject();
     delete highlightingScheme;
 
     highlightingScheme = hsf->create(this, maObj);
@@ -2582,7 +2582,7 @@ void MSAEditorSequenceArea::sl_sortByName() {
     if (msaObject->isStateLocked()) {
         return;
     }
-    MultipleSequenceAlignment msa = msaObject->getMsaCopy();
+    MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
     msa->sortRowsByName();
     QStringList rowNames = msa->getRowNames();
     if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {
@@ -2641,7 +2641,7 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
     Document *doc = msaObject->getDocument();
     SAFE_POINT(NULL != doc, tr("NULL document!"), );
 
-    MultipleSequenceAlignment msa = msaObject->getMsaCopy();
+    MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
     QVector<U2Region> unitedRows;
     bool sorted = msa->sortRowsBySimilarity(unitedRows);
     collapsibleModel->reset(unitedRows);

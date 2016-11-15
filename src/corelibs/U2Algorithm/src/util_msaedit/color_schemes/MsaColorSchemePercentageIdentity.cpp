@@ -23,14 +23,14 @@
 
 #include <U2Algorithm/MSAConsensusUtils.h>
 
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignment.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 #include "MsaColorSchemePercentageIdentity.h"
 
 namespace U2 {
 
-MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
+MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : MsaColorScheme(parent, factory, maObj),
       cacheVersion(0),
       objVersion(1)
@@ -72,7 +72,7 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     if (cacheVersion == objVersion) {
         return;
     }
-    const MultipleSequenceAlignment msa = maObj->getMultipleAlignment();
+    const MultipleAlignment msa = maObj->getMultipleAlignment();
     int aliLen = msa->getLength();
     indentCache.resize(aliLen);
     for (int i = 0; i < aliLen; i++) {
@@ -87,7 +87,7 @@ MsaColorSchemePercentageIdentityFactory::MsaColorSchemePercentageIdentityFactory
 
 }
 
-MsaColorScheme * MsaColorSchemePercentageIdentityFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemePercentageIdentityFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaColorSchemePercentageIdentity(parent, this, maObj);
 }
 
