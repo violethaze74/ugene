@@ -36,7 +36,7 @@ namespace U2 {
 
 class GObjectView;
 class MaEditor;
-class MSAEditorSelection;
+class MaEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
 
@@ -63,7 +63,7 @@ private slots:
     void sl_referenceSeqChanged(qint64);
 
     void sl_startChanged(const QPoint& p, const QPoint& prev);
-    void sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev);
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
 
     void sl_nameBarMoved(int n);
     void sl_completeUpdate();

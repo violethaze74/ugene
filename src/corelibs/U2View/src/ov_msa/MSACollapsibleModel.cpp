@@ -237,7 +237,7 @@ void MSACollapsibleItemModel::getVisibleRows(int startPos, int endPos, QVector<U
     }
 
     MaEditor* ed = ui->getEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
+    MultipleAlignmentObject* obj = ed->getMaObject();
     int alnNumRows = obj->getNumRows();
     lastRow = qMin(lastRow, alnNumRows - 1);
     int len = lastRow - start + 1;
@@ -289,7 +289,7 @@ MSACollapsableItem MSACollapsibleItemModel::getItem(int index) const {
 
 int MSACollapsibleItemModel::displayedRowsCount() const {
     MaEditor *ed = ui->getEditor();
-    MultipleSequenceAlignmentObject *o = ed->getMSAObject();
+    MultipleAlignmentObject *o = ed->getMaObject();
     int size = o->getNumRows();
     foreach (const MSACollapsableItem &item, items) {
         if (item.isCollapsed) {

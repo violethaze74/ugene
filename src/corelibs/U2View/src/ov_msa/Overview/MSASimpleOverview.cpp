@@ -249,7 +249,7 @@ void MSASimpleOverview::moveVisibleRange(QPoint _pos) {
 void MSASimpleOverview::recalculateSelection() {
     recalculateScale();
 
-    const MSAEditorSelection& selection = sequenceArea->getSelection();
+    const MaEditorSelection& selection = sequenceArea->getSelection();
 
     cachedSelection.setX( qRound( selection.x() * stepX ) );
     cachedSelection.setY( qRound( selection.y() * stepY ) );

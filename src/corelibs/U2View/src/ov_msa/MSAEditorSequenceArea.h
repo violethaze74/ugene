@@ -23,8 +23,6 @@
 #define _U2_MSA_EDITOR_SEQUENCE_AREA_H_
 
 #include <QMenu>
-#include <QRubberBand>
-#include <QTimer>
 #include <QToolBar>
 #include <QWidget>
 
@@ -32,13 +30,13 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
-#include <U2Gui/GScrollBar.h>
-
 #include "DeleteGapsDialog.h"
 #include "ExportHighlightedDialogController.h"
 #include "MSACollapsibleModel.h"
 #include "MsaEditorUserModStepController.h"
 #include "SaveSelectedSequenceFromMSADialogController.h"
+
+#include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
 
@@ -110,129 +108,15 @@ private:
     int type;
 };
 
-class U2VIEW_EXPORT MSAEditorSelection {
-public:
-    MSAEditorSelection() { }
-    MSAEditorSelection(int left, int top, int width, int height) : selArea(left,top,width,height) { }
-    MSAEditorSelection(const QPoint& topLeft, const QPoint& bottomRight) : selArea(topLeft, bottomRight) { }
-    MSAEditorSelection(const QPoint& topLeft, int width, int height) : selArea(topLeft, QSize(width,height)) { }
-
-    // consider that selection may consist of several unconnected areas
-    bool isContiniuous() const { return true; }
-
-    bool isNull() const {return selArea.isNull(); }
-
-    QPoint topLeft() const { return selArea.topLeft(); }
-
-    const QRect& getRect() const {return selArea; }
-
-    int x() const { return selArea.x(); }
-
-    int y() const { return selArea.y(); }
-
-    int width() const { return selArea.width(); }
-
-    int height() const { return selArea.height(); }
-
-    bool operator==(const MSAEditorSelection& other) const {
-        return selArea == other.selArea;
-    }
-
-    MSAEditorSelection intersected(const MSAEditorSelection& selection) const {
-        QRect r = selArea.intersected(selection.selArea);
-        return MSAEditorSelection(r);
-    }
-
-private:
-    explicit MSAEditorSelection(QRect& rect) : selArea(rect) { }
-    QRect selArea;
-};
-
-class U2VIEW_EXPORT MSAEditorSequenceArea : public QWidget {
+class U2VIEW_EXPORT MSAEditorSequenceArea : public MaEditorSequenceArea {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorSequenceArea)
     friend class SequenceAreaRenderer;
     friend class SequenceWithChromatogramAreaRenderer;
 public:
     MSAEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
-    ~MSAEditorSequenceArea();
 
-    // x dimension -> positions
-    int countWidthForBases(bool countClipped, bool forOffset = false) const;
-
-    int getFirstVisibleBase() const {return startPos;}
-
-    int getLastVisibleBase(bool countClipped, bool forOffset = false) const;
-
-    int getNumVisibleBases(bool countClipped, bool forOffset = false) const;
-
-    U2Region getBaseXRange(int pos, bool useVirtualCoords) const;
-    U2Region getBaseXRange(int pos, int firstVisiblePos, bool useVirtualCoords) const;
-
-    int getColumnNumByX(int x, bool selecting = false) const;
-    int getXByColumnNum(int columnNum) const;
-
-    void setFirstVisibleBase(int pos);
-
-
-    // y dimension -> sequences
-    int countHeightForSequences(bool countClipped) const;
-
-    int getFirstVisibleSequence() const {return startSeq;}
-
-    int getLastVisibleSequence(bool countClipped) const;
-    /*
-     * Returns count of sequences that are visible on a screen.
-     * @countClipped specifies whether include to result count or not last partially displayed row.
-     */
-    int getNumVisibleSequences(bool countClipped) const;
-    /*
-     * Returns count of sequences that are drawn on the widget by taking into account
-     * collapsed rows.
-     */
-    int getNumDisplayedSequences() const;
-
-    U2Region getSequenceYRange(int seqNum, bool useVirtualCoords) const;
-    U2Region getSequenceYRange(int seqNum, int firstVisibleRow, bool useVirtualCoords) const;
-
-    int getSequenceNumByY(int y) const;
-    int getYBySequenceNum(int sequenceNum) const;
-
-    void setFirstVisibleSequence(int seq);
-
-    bool isAlignmentEmpty() const { return editor->isAlignmentEmpty(); }
-
-    bool isPosInRange(int p) const;
-
-    bool isSeqInRange(int s) const;
-
-    bool isInRange(const QPoint& p) const;
-
-    bool isVisible(const QPoint& p, bool countClipped) const;
-
-    bool isPosVisible(int pos, bool countClipped) const;
-
-    bool isSeqVisible(int seq, bool countClipped) const;
-
-    int coordToPos(int x) const;
-
-    // returns valid position only for visible area
-    QPoint coordToPos(const QPoint& coord) const;
-
-    // returns valid position if coords are out of visible area
-    QPoint coordToAbsolutePos(const QPoint& coord) const;
-    QPoint coordToAbsolutePosOutOfRange(const QPoint& coord) const;
-
-    const MSAEditorSelection& getSelection() const;
-
-    void updateSelection(const QPoint& newMousePos);
-
-    // update selection when collapsible model changed
-    void updateSelection();
-
-    void setSelection(const MSAEditorSelection& sel, bool newHighlightSelection = false);
-
-    void moveSelection(int dx, int dy, bool allowSelectionResize = false);
+    MSAEditor* getEditor() const { return qobject_cast<MSAEditor*>(editor); }
 
     /**
      * Shifts currently selected region to @shift.
@@ -243,8 +127,6 @@ public:
      */
     bool shiftSelectedRegion(int shift);
 
-    void cancelSelection();
-
     void deleteCurrentSelection();
 
     void processCharacterInEditMode(QKeyEvent *e);
@@ -254,13 +136,9 @@ public:
     void deleteRowFromSelection(int rowNumber);
     void clearSelection();
 
-    U2Region getSelectedRows() const;
-
     U2Region getRowsAt(int seq) const;
 
     QPair<QString, int> getGappedColumnInfo() const;
-
-    int getHeight();
 
     QStringList getAvailableHighlightingSchemes() const;
 
@@ -289,10 +167,6 @@ public:
 
     void setFont(const QFont& f);
 
-    GScrollBar* getVBar() const {return svBar;}
-
-    GScrollBar* getHBar() const {return shBar;}
-
     void updateHBarPosition(int base);
 
     void updateVBarPosition(int seq);
@@ -310,20 +184,6 @@ public:
     MsaColorScheme * getCurrentColorScheme() const;
     MsaHighlightingScheme * getCurrentHighlightingScheme() const;
     bool getUseDotsCheckedState() const;
-
-    void onVisibleRangeChanged();
-
-    bool isAlignmentLocked();
-signals:
-    void si_startChanged(const QPoint& p, const QPoint& prev);
-    void si_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev);
-    void si_selectionChanged(const QStringList& selectedRows);
-    void si_highlightingChanged();
-    void si_visibleRangeChanged(QStringList visibleSequences, int reqHeight);
-    void si_visibleRangeChanged();
-    void si_startMsaChanging();
-    void si_stopMsaChanging(bool msaUpdated);
-    void si_copyFormattedChanging(bool enabled);
 
 public slots:
     void sl_changeColorSchemeOutside(const QString &name);
@@ -401,11 +261,6 @@ protected:
     virtual void wheelEvent (QWheelEvent * event);
 
 private:
-    enum MsaMode {
-        ViewMode,
-        EditCharacterMode
-    };
-
     void buildMenu(QMenu* m);
     void updateColorAndHighlightSchemes();
 
@@ -417,12 +272,7 @@ private:
     void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
     void applyColorScheme(const QString &id);
 
-    void exitFromEditCharacterMode();
-
     void updateActions();
-
-    void updateHScrollBar();
-    void updateVScrollBar();
 
     void drawAll();
     void drawFocus(QPainter& p);
@@ -452,9 +302,6 @@ private:
      */
     void removeGapsPrecedingSelection( int countOfGaps = -1 );
 
-    void deleteOldCustomSchemes();
-
-    bool checkState() const;
     void validateRanges();          //called on resize/refont like events
 
     void reverseComplementModification(ModificationType& type);
@@ -466,31 +313,6 @@ private:
     void cancelShiftTracking( );
 
     void updateCollapsedGroups(const MaModificationInfo& modInfo);
-
-    MaEditor*       editor;
-    MaEditorWgt*    ui;
-    GScrollBar*     shBar;
-    GScrollBar*     svBar;
-    QRubberBand*    rubberBand;
-
-    SequenceAreaRenderer*   renderer;
-
-    int             startPos; //first visible x pos
-    int             startSeq; //first visible y pos
-    MsaMode         msaMode;
-    QTimer          editModeAnimationTimer;
-    QColor          selectionColor;
-
-    bool                shifting;
-    bool                selecting;
-    Qt::MouseButton     prevPressedButton;
-    QPoint              origin; // global window coordinates
-    QPoint              cursorPos; // mouse cursor position in alignment coordinates
-    MSAEditorSelection  selection; // selection with rows indexes in collapsible model coordinates
-    MSAEditorSelection  baseSelection; // selection with rows indexes in absolute coordinates
-    QList<int>          selectedRows;
-    QStringList         selectedRowNames;
-    int                 msaVersionBeforeShifting;
 
     QAction*        copySelectionAction;
     QAction*        delColAction;
@@ -511,17 +333,6 @@ private:
     QAction*        lookMSASchemesSettingsAction;
     QAction*        useDotsAction;
 
-    QPixmap*        cachedView;
-    bool            completeRedraw;
-
-    MsaColorScheme* colorScheme;
-    MsaHighlightingScheme* highlightingScheme;
-    bool            highlightSelection;
-
-    QList<QAction*> colorSchemeMenuActions;
-    QList<QAction* > customColorSchemeMenuActions;
-    QList<QAction* > highlightingSchemeMenuActions;
-
     // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
     // that does not fit into one method, e.g. shifting MSA region with mouse.
     // If the changing action fits within one method it's recommended using
@@ -529,6 +340,7 @@ private:
     MsaEditorUserModStepController changeTracker;
 };
 
+// SANGER_TODO: move to EditorTasks?
 class U2VIEW_EXPORT ExportHighligtningTask : public Task {
     Q_OBJECT
 public:

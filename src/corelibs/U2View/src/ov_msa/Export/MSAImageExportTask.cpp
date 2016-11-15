@@ -232,7 +232,7 @@ void MSAImageExportController::initSettingsWidget() {
     connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
 
     SAFE_POINT( ui->getSequenceArea() != NULL, tr("MSA sequence area is NULL"), );
-    MSAEditorSelection selection = ui->getSequenceArea()->getSelection();
+    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
     CHECK( !selection.isNull(), );
     msaSettings.region = U2Region( selection.x(), selection.width());
     msaSettings.seqIdx.clear();

@@ -34,22 +34,22 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class MaModificationInfo;
 class MSAEditorSequenceArea;
-class MSAEditorSelection;
+class MaEditorSelection;
 
 class MSAEditorStatusWidget : public QWidget {
     Q_OBJECT
 public:
-    MSAEditorStatusWidget(MultipleSequenceAlignmentObject* mobj, MSAEditorSequenceArea* seqArea);
+    MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MSAEditorSequenceArea* seqArea);
 
     bool eventFilter(QObject* obj, QEvent* ev);
 
 private slots:
     void sl_alignmentChanged() {updateCoords();}
     void sl_lockStateChanged() {updateLock();}
-    void sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& ){updateCoords();}
+    void sl_selectionChanged(const MaEditorSelection& , const MaEditorSelection& ){updateCoords();}
     void sl_findNext();
     void sl_findPrev();
     void sl_findFocus();
@@ -57,7 +57,7 @@ private slots:
 private:
     void updateCoords();
     void updateLock();
-    MultipleSequenceAlignmentObject*           aliObj;
+    MultipleAlignmentObject*    aliObj;
     MSAEditorSequenceArea*      seqArea;
     QPixmap                     lockedIcon;
     QPixmap                     unlockedIcon;

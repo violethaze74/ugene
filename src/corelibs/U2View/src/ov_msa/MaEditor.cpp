@@ -283,7 +283,7 @@ void MaEditor::sl_zoomToSelection()
 {
     ResizeMode oldMode = resizeMode;
     int seqAreaWidth =  ui->getSequenceArea()->width();
-    MSAEditorSelection selection = ui->getSequenceArea()->getSelection();
+    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
     if (selection.isNull()) {
         return;
     }

@@ -678,7 +678,7 @@ Task::ReportResult GTest_DNAMulSequenceQuality::report() {
     }
 
     bool ok_flag=false;
-    foreach(const MultipleSequenceAlignmentRow& myItem , myMSequence->getMultipleAlignment()->getMsaRows()){
+    foreach(const MultipleSequenceAlignmentRow& myItem , myMSequence->getMsa()->getMsaRows()){
         if (myItem->getName() == seqName){
             ok_flag = true;
             //QByteArray qualityCodes = myItem.getCoreQuality().qualCodes;

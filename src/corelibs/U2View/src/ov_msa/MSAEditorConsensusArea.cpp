@@ -66,8 +66,8 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
     childObject = new QObject(parent);
 
     connect(ui->getSequenceArea(), SIGNAL(si_startChanged(const QPoint &, const QPoint &)), SLOT(sl_startChanged(const QPoint &, const QPoint &)));
-    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MSAEditorSelection &, const MSAEditorSelection &)),
-        SLOT(sl_selectionChanged(const MSAEditorSelection &, const MSAEditorSelection &)));
+    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+        SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
     connect(ui->getEditor(), SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_zoomOperationPerformed(bool)));
     connect(ui->getSequenceArea()->getHBar(), SIGNAL(actionTriggered(int)), SLOT(sl_onScrollBarActionTriggered(int)));
 
@@ -282,7 +282,7 @@ void MSAEditorConsensusArea::drawSelection(QPainter& p) {
     f.setWeight(QFont::DemiBold);
     p.setFont(f);
 
-    MSAEditorSelection selection = ui->getSequenceArea()->getSelection();
+    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
     int startPos = qMax(selection.x(), ui->getSequenceArea()->getFirstVisibleBase());
     int endPos = qMin(selection.x() + selection.width() - 1,
         ui->getSequenceArea()->getLastVisibleBase(true));
@@ -525,7 +525,7 @@ void MSAEditorConsensusArea::sl_zoomOperationPerformed( bool resizeModeChanged )
     }
 }
 
-void MSAEditorConsensusArea::sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev) {
+void MSAEditorConsensusArea::sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev) {
     // TODO: return if only height of selection changes?
     Q_UNUSED(current);
     Q_UNUSED(prev);
@@ -653,7 +653,7 @@ void MSAEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
         if (curPos !=-1) {
             int height = ui->getSequenceArea()->getNumDisplayedSequences();
             // select current column
-            MSAEditorSelection selection(curPos, 0, 1, height);
+            MaEditorSelection selection(curPos, 0, 1, height);
             ui->getSequenceArea()->setSelection(selection);
             scribbling = true;
         }
@@ -697,7 +697,7 @@ void MSAEditorConsensusArea::updateSelection(int newPos) {
     int height = ui->getSequenceArea()->getNumDisplayedSequences();
     int startPos = qMin(curPos,newPos);
     int width = qAbs(newPos - curPos) + 1;
-    MSAEditorSelection selection(startPos, 0, width, height);
+    MaEditorSelection selection(startPos, 0, width, height);
     ui->getSequenceArea()->setSelection(selection);
 }
 

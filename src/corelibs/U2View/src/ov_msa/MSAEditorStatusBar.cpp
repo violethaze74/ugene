@@ -32,9 +32,11 @@
 
 namespace U2 {
 
-MSAEditorStatusWidget::MSAEditorStatusWidget(MultipleSequenceAlignmentObject* mobj, MSAEditorSequenceArea* sa)
-: aliObj(mobj), seqArea(sa),
-lockedIcon(":core/images/lock.png"), unlockedIcon(":core/images/lock_open.png")
+MSAEditorStatusWidget::MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MSAEditorSequenceArea* sa)
+    : aliObj(mobj),
+      seqArea(sa),
+      lockedIcon(":core/images/lock.png"),
+      unlockedIcon(":core/images/lock_open.png")
 {
     setObjectName("msa_editor_status_bar");
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
@@ -86,8 +88,8 @@ lockedIcon(":core/images/lock.png"), unlockedIcon(":core/images/lock_open.png")
     l->addWidget(lockLabel);
     setLayout(l);
 
-    connect(seqArea, SIGNAL(si_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& )),
-        SLOT(sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection&)));
+    connect(seqArea, SIGNAL(si_selectionChanged(const MaEditorSelection& , const MaEditorSelection& )),
+        SLOT(sl_selectionChanged(const MaEditorSelection& , const MaEditorSelection&)));
     connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
         SLOT(sl_alignmentChanged()));
     connect(mobj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
@@ -164,7 +166,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
     if ( pat.isEmpty( ) ) {
         return;
     }
-    const MultipleSequenceAlignment msa = aliObj->getMultipleAlignment();
+    const MultipleAlignment msa = aliObj->getMultipleAlignment();
     if ( !msa->getAlphabet( )->isCaseSensitive( ) ) {
         pat = pat.toUpper( );
     }
@@ -178,7 +180,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
     for (int s = selectionTopLeft.y(); s < nSeq; s++) {
         const U2Region rowsAtPosition = seqArea->getRowsAt( s );
         SAFE_POINT( 0 <= rowsAtPosition.startPos, "Invalid row number!", );
-        const MultipleSequenceAlignmentRow row = msa->getMsaRow( rowsAtPosition.startPos );
+        const MultipleAlignmentRow row = msa->getRow( rowsAtPosition.startPos );
         // if s == pos.y -> search from the current base, otherwise search from the seq start
         int p = ( s == selectionTopLeft.y( ) ) ? selectionTopLeft.x( ) : 0;
         for ( ; p < ( aliLen - pat.length( ) + 1 ); p++ ) {
@@ -186,7 +188,7 @@ void MSAEditorStatusWidget::sl_findNext( ) {
             int selLength = 0;
             if ( U2Msa::GAP_CHAR != c && MSAUtils::equalsIgnoreGaps(row, p, pat, selLength) ) {
                 // select the result now
-                MSAEditorSelection sel( p, s, selLength, 1 );
+                MaEditorSelection sel( p, s, selLength, 1 );
                 seqArea->setSelection( sel, true );
                 seqArea->centerPos( sel.topLeft( ) );
                 lastSearchPos = seqArea->getSelection( ).topLeft( );
@@ -205,7 +207,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
     if ( pat.isEmpty( ) ) {
         return;
     }
-    const MultipleSequenceAlignment msa = aliObj->getMultipleAlignment();
+    const MultipleAlignment msa = aliObj->getMultipleAlignment();
     if ( !msa->getAlphabet( )->isCaseSensitive( ) ) {
         pat = pat.toUpper( );
     }
@@ -217,7 +219,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
     for ( int s = pos.y( ); 0 <= s; s-- ) {
         const U2Region rowsAtPosition = seqArea->getRowsAt( s );
         SAFE_POINT( 0 <= rowsAtPosition.startPos, "Invalid row number!", );
-        const MultipleSequenceAlignmentRow row = msa->getMsaRow( rowsAtPosition.startPos );
+        const MultipleAlignmentRow row = msa->getRow( rowsAtPosition.startPos );
         //if s == pos.y -> search from the current base, otherwise search from the seq end
         int p = ( s == pos.y( ) ? pos.x( ) : ( aliLen - pat.length( ) + 1) );
         while ( 0 <= p ) {
@@ -226,7 +228,7 @@ void MSAEditorStatusWidget::sl_findPrev( ) {
                 && MSAUtils::equalsIgnoreGaps( row, p, pat, selectionLength ) )
             {
                 // select the result now
-                MSAEditorSelection sel( p, s, selectionLength, 1 );
+                MaEditorSelection sel( p, s, selectionLength, 1 );
                 seqArea->setSelection( sel, true );
                 seqArea->centerPos( sel.topLeft( ) );
                 lastSearchPos = seqArea->getSelection( ).topLeft( );

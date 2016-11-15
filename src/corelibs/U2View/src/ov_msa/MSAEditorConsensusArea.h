@@ -39,7 +39,7 @@ class GObjectView;
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
 class MaEditor;
-class MSAEditorSelection;
+class MaEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
 
@@ -88,7 +88,7 @@ signals:
 
 private slots:
     void sl_startChanged(const QPoint&, const QPoint&);
-    void sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev);
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void sl_alignmentChanged();
     void sl_changeConsensusAlgorithm(const QString& algoId);
     void sl_changeConsensusThreshold(int val);
