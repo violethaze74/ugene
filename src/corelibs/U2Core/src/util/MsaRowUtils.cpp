@@ -356,9 +356,20 @@ U2MsaGap getNextGap(QListIterator<U2MsaGap> &mainGapModelIterator, QListIterator
 
     const U2MsaGap mainGap = mainGapModelIterator.peekNext();
     const U2MsaGap additionalGap = additionalGapModelIterator.peekNext();
+    const U2MsaGap intersection = mainGap.intersect(additionalGap);
+
+    if (intersection.isValid()) {
+        const U2MsaGap unitedGap = U2MsaGap(qMin(mainGap.offset, additionalGap.offset + gapsFromMainModelLength), mainGap.gap + additionalGap.gap);
+        gapsFromMainModelLength += mainGap.gap;
+        mainGapModelIterator.next();
+        additionalGapModelIterator.next();
+        return unitedGap;
+    }
+
     if (mainGap.offset <= additionalGap.offset + gapsFromMainModelLength) {
         gapsFromMainModelLength += mainGap.gap;
-        return mainGapModelIterator.next();
+        mainGapModelIterator.next();
+        return mainGap;
     } else {
         U2MsaGap shiftedAdditionalGap = additionalGapModelIterator.next();
         shiftedAdditionalGap.offset += gapsFromMainModelLength;
