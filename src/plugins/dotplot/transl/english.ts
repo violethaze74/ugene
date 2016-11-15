@@ -295,13 +295,15 @@
         <location filename="../src/DotPlotFilesDialog.cpp" line="151"/>
         <source>Unable to detect file format %1.
 Select valid file to build dotplot</source>
-        <translation type="unfinished"></translation>
+        <translation>Unable to detect file format %1.
+Select valid file to build dotplot</translation>
     </message>
     <message>
         <location filename="../src/DotPlotFilesDialog.cpp" line="159"/>
         <source>Unable to detect format of given file %1.
 Select valid file to build dotplot</source>
-        <translation type="unfinished"></translation>
+        <translation>Unable to detect format of given file %1.
+Select valid file to build dotplot</translation>
     </message>
     <message>
         <location filename="../src/DotPlotFilesDialog.cpp" line="169"/>
@@ -450,7 +452,7 @@ Select valid file to build dotplot</source>
     <message>
         <location filename="../src/DotPlotSplitter.cpp" line="293"/>
         <source>One of the sequences in dotplot is NULL</source>
-        <translation type="unfinished"></translation>
+        <translation>One of the sequences in dotplot is NULL</translation>
     </message>
 </context>
 <context>
@@ -617,12 +619,12 @@ Select valid file to build dotplot</source>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="541"/>
         <source>Error Saving Dotplot</source>
-        <translation type="unfinished"></translation>
+        <translation>Error Saving Dotplot</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="541"/>
         <source>The dotplot can&apos;t be saved as it is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>The dotplot can&apos;t be saved as it is empty.</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="545"/>

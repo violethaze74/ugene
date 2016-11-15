@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="258"/>
         <source>Make circular</source>
-        <translation type="unfinished"></translation>
+        <translation>Сделать круговой</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="236"/>
@@ -566,7 +566,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="118"/>
         <source>Search  in:</source>
-        <translation type="unfinished"></translation>
+        <translation>Искать в:</translation>
     </message>
     <message>
         <source>Enzymes must not cut in the following region</source>

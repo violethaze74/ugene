@@ -193,6 +193,7 @@ void DigestSequenceDialog::addAnnotationWidget()
     QVBoxLayout* l = new QVBoxLayout(this);
     l->setMargin(0);
     l->addWidget(caw);
+    l->addStretch(1);
     annotationsArea->setLayout(l);
     annotationsArea->setMinimumSize(caw->layout()->minimumSize());
 }

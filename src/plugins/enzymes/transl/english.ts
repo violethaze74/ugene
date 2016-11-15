@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="258"/>
         <source>Make circular</source>
-        <translation type="unfinished"></translation>
+        <translation>Make circular</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="236"/>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="42"/>
         <source>Available fragments (core length - length without sticky ends):</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Available fragments (core length - length without sticky ends):</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
@@ -567,7 +567,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="118"/>
         <source>Search  in:</source>
-        <translation type="unfinished"></translation>
+        <translation>Search  in:</translation>
     </message>
     <message>
         <source>Enzymes must not cut in the following region</source>
