@@ -46,7 +46,6 @@ namespace U2 {
 MaEditorWgt::MaEditorWgt(MaEditor *editor)
     : editor(editor),
       seqArea(NULL),
-      saRenderer(NULL),
       nameList(NULL),
       consArea(NULL),
       overviewArea(NULL),

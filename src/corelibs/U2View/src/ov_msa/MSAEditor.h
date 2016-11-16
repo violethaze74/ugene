@@ -44,7 +44,6 @@
 #include "view_rendering/MaEditorWgt.h"
 #include "MaEditor.h"
 
-
 namespace U2 {
 
 class MultipleSequenceAlignmentObject;
@@ -127,7 +126,7 @@ public:
 
     virtual QVariantMap saveState();
 
-    MSAEditorUI* getUI() const { return qobject_cast<MSAEditorUI*>(ui); } // SANGER_TODO: find out if it is legal
+    MSAEditorUI* getUI() const { return qobject_cast<MSAEditorUI*>(ui); }
 
     int getFirstVisibleBase() const;
 
@@ -195,6 +194,10 @@ public:
     // SANGER_TODO: return MsaEditor in constructor!
     MSAEditorUI(MaEditor* editor);
 
+    MSAEditor* getEditor() const { return qobject_cast<MSAEditor* >(editor); }
+
+    MSAEditorSequenceArea* getSequenceArea() const;
+
     void createDistanceColumn(MSADistanceMatrix* matrix);
 
     void addTreeView(GObjectViewWindow* treeView);
@@ -211,8 +214,6 @@ public:
     MSAEditorTreeViewer* getCurrentTree() const;
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer(){return multiTreeViewer;}
-
-    MSAEditor* getEditor() const { return qobject_cast<MSAEditor* >(editor); }  // SANGER_TODO: find out if it is legal
 
 public slots:
     void sl_saveScreenshot();

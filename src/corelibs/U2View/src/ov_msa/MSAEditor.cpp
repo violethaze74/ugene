@@ -542,8 +542,12 @@ MSAEditorUI::MSAEditorUI(MaEditor* editor)
     : MaEditorWgt(editor),
       multiTreeViewer(NULL),
       similarityStatistics(NULL) {
+    // SANGER_TODO: check the editor is MSAEditor? private constructor??
 }
 
+MSAEditorSequenceArea* MSAEditorUI::getSequenceArea() const {
+    return qobject_cast<MSAEditorSequenceArea* >(seqArea);
+}
 void MSAEditorUI::sl_saveScreenshot(){
     MSAImageExportController controller(this);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();

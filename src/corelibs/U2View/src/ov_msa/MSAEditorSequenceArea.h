@@ -136,16 +136,9 @@ public:
     void deleteRowFromSelection(int rowNumber);
     void clearSelection();
 
-    U2Region getRowsAt(int seq) const;
-
-    QPair<QString, int> getGappedColumnInfo() const;
-
     QStringList getAvailableHighlightingSchemes() const;
 
     bool hasAminoAlphabet();
-
-    QString getCopyFormatedAlgorithmId() const;
-    void setCopyFormatedAlgorithmId(const QString& algoId);
 
 private:
     // emulating cursor mode with
@@ -161,35 +154,7 @@ private:
     void highlightCurrentSelection();
 
 public:
-    void centerPos(const QPoint& pos);
-
-    void centerPos(int pos);
-
-    void setFont(const QFont& f);
-
-    void updateHBarPosition(int base);
-
-    void updateVBarPosition(int seq);
-
-    void drawVisibleContent(QPainter& p);
-    bool drawContent(QPainter &p, const QRect &area);
-    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
-
-    bool drawContent(QPainter& p);
-    bool drawContent(QPixmap& pixmap);
-    bool drawContent(QPixmap& pixmap, const U2Region& region, const QList<qint64>& seqIdx);
-
     QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
-
-    MsaColorScheme * getCurrentColorScheme() const;
-    MsaHighlightingScheme * getCurrentHighlightingScheme() const;
-    bool getUseDotsCheckedState() const;
-
-public slots:
-    void sl_changeColorSchemeOutside(const QString &name);
-    void sl_doUseDots();
-    void sl_changeCopyFormat(const QString& alg);
-    void sl_delCurrentSelection();
 
 protected:
     void resizeEvent(QResizeEvent *);
@@ -236,12 +201,6 @@ private slots:
 
     void sl_saveSequence();
 
-    void sl_registerCustomColorSchemes();
-    void sl_colorSchemeFactoryUpdated();
-    void sl_setDefaultColorScheme();
-    void sl_changeColorScheme();
-    void sl_changeHighlightScheme();
-
     void sl_modelChanged();
 
     void sl_showCustomSettings();
@@ -249,7 +208,6 @@ private slots:
 
     void sl_resetCollapsibleModel();
     void sl_setCollapsingRegions(const QList<QStringList>&);
-    void sl_useDots();
     void sl_fontChanged(QFont font);
 
     void sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
@@ -262,15 +220,6 @@ protected:
 
 private:
     void buildMenu(QMenu* m);
-    void updateColorAndHighlightSchemes();
-
-    void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
-    void registerCommonColorSchemes();
-    void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
-
-    MsaColorSchemeFactory * getDefaultColorSchemeFactory();
-    void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
-    void applyColorScheme(const QString &id);
 
     void updateActions();
 
@@ -331,7 +280,6 @@ private:
     QAction*        reverseAction;
     QAction*        complementAction;
     QAction*        lookMSASchemesSettingsAction;
-    QAction*        useDotsAction;
 
     // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
     // that does not fit into one method, e.g. shifting MSA region with mouse.
@@ -344,7 +292,7 @@ private:
 class U2VIEW_EXPORT ExportHighligtningTask : public Task {
     Q_OBJECT
 public:
-    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MSAEditorSequenceArea *msaese_);
+    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditorSequenceArea *msaese_);
 
     void run();
     QString generateReport() const;
@@ -358,7 +306,7 @@ private:
     bool dots;
     bool transpose;
     GUrl url;
-    MSAEditorSequenceArea *msaese;
+    MaEditorSequenceArea *msaese;
 };
 
 }//namespace

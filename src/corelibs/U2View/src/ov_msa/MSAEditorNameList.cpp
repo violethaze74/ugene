@@ -111,7 +111,7 @@ void MSAEditorNameList::drawNames(QPixmap &p, const QList<qint64> &seqIdx, bool 
     CHECK(!seqIdx.isEmpty(), );
 
     SAFE_POINT(NULL != ui, tr("MSA Editor UI is NULL"), );
-    MSAEditorSequenceArea* seqArea = ui->getSequenceArea();
+    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
     SAFE_POINT(NULL != seqArea, tr("MSA Editor sequence area is NULL"), );
     CHECK(!seqArea->isAlignmentEmpty(), );
 
@@ -140,7 +140,7 @@ void MSAEditorNameList::drawNames(QPainter &p, const QList<qint64> &seqIdx, bool
 
 void MSAEditorNameList::updateActions() {
     SAFE_POINT(NULL != ui, tr("MSA Editor UI is NULL"), );
-    MSAEditorSequenceArea* seqArea = ui->getSequenceArea();
+    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
     SAFE_POINT(NULL != seqArea, tr("MSA Editor sequence area is NULL"), );
 
     copyCurrentSequenceAction->setEnabled(!seqArea->isAlignmentEmpty());
@@ -376,7 +376,7 @@ void MSAEditorNameList::keyPressEvent(QKeyEvent *e) {
 
 void MSAEditorNameList::mousePressEvent(QMouseEvent *e) {
     SAFE_POINT(ui, "MSA Editor UI is NULL", );
-    MSAEditorSequenceArea* seqArea = ui->getSequenceArea();
+    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
     SAFE_POINT(seqArea, "MSA Editor sequence area", );
 
     if (seqArea->isAlignmentEmpty()) {
@@ -640,9 +640,9 @@ void MSAEditorNameList::drawAll() {
 void MSAEditorNameList::drawContent(QPainter& p) {
     p.fillRect(cachedView->rect(), Qt::white);
 
-    SAFE_POINT(NULL != ui, "MSA Editor UI is NULL", );
-    MSAEditorSequenceArea* seqArea = ui->getSequenceArea();
-    SAFE_POINT(NULL != seqArea, "MSA Editor sequence area is NULL", );
+    SAFE_POINT(NULL != ui, "MA Editor UI is NULL", );
+    MaEditorSequenceArea* seqArea = ui->getSequenceArea();
+    SAFE_POINT(NULL != seqArea, "MA Editor sequence area is NULL", );
 
     if (seqArea->isAlignmentEmpty()) {
         return;

@@ -36,13 +36,13 @@ namespace U2 {
 
 class MultipleAlignmentObject;
 class MaModificationInfo;
-class MSAEditorSequenceArea;
+class MaEditorSequenceArea;
 class MaEditorSelection;
 
 class MSAEditorStatusWidget : public QWidget {
     Q_OBJECT
 public:
-    MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MSAEditorSequenceArea* seqArea);
+    MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MaEditorSequenceArea* seqArea);
 
     bool eventFilter(QObject* obj, QEvent* ev);
 
@@ -58,7 +58,7 @@ private:
     void updateCoords();
     void updateLock();
     MultipleAlignmentObject*    aliObj;
-    MSAEditorSequenceArea*      seqArea;
+    MaEditorSequenceArea*       seqArea;
     QPixmap                     lockedIcon;
     QPixmap                     unlockedIcon;
 

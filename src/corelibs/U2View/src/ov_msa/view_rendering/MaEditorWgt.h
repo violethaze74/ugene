@@ -28,11 +28,11 @@
 
 namespace U2 {
 
+class MaEditorSequenceArea;
 class MSACollapsibleItemModel;
 class MaEditor;
 class MSAEditorConsensusArea;
 class MSAEditorNameList;
-class MSAEditorSequenceArea;
 class MSAEditorOffsetsViewController;
 class MSAEditorOverviewArea;
 class MSAEditorStatusWidget;
@@ -51,7 +51,7 @@ public:
     QWidget* createLabelWidget(const QString& text = QString(), Qt::Alignment ali = Qt::AlignCenter);
 
     MaEditor*                       getEditor() const { return editor; }
-    MSAEditorSequenceArea*          getSequenceArea() { return seqArea; }
+    MaEditorSequenceArea*           getSequenceArea() const { return seqArea; }
     MSAEditorNameList*              getEditorNameList() { return nameList; }
     MSAEditorConsensusArea*         getConsensusArea() { return consArea; }
     MSAEditorOverviewArea*          getOverviewArea() { return overviewArea; }
@@ -81,8 +81,7 @@ protected:
 
 protected:
     MaEditor*                       editor;
-    MSAEditorSequenceArea*          seqArea;
-    SequenceAreaRenderer*           saRenderer;
+    MaEditorSequenceArea*           seqArea;
     MSAEditorNameList*              nameList;
     MSAEditorConsensusArea*         consArea;
     MSAEditorOverviewArea*          overviewArea;

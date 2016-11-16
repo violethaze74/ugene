@@ -31,7 +31,7 @@ namespace U2 {
 
 class MaEditor;
 class MaEditorWgt;
-class MSAEditorSequenceArea;
+class MaEditorSequenceArea;
 
 #define VISIBLE_RANGE_COLOR QColor(230, 230, 230, 180)
 #define SELECTION_COLOR QColor(80, 160, 200, 180)
@@ -67,7 +67,7 @@ protected:
 protected:
     MaEditor*      editor;
     MaEditorWgt*    ui;
-    MSAEditorSequenceArea*  sequenceArea;
+    MaEditorSequenceArea*  sequenceArea;
 
     QPixmap cachedView;
     QRect   cachedSelection;

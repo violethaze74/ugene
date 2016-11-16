@@ -32,7 +32,7 @@
 
 namespace U2 {
 
-MSAEditorStatusWidget::MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MSAEditorSequenceArea* sa)
+MSAEditorStatusWidget::MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MaEditorSequenceArea* sa)
     : aliObj(mobj),
       seqArea(sa),
       lockedIcon(":core/images/lock.png"),
@@ -133,7 +133,7 @@ void MSAEditorStatusWidget::updateCoords() {
     colsLabel->setToolTip(tr("Column %1 of %2").arg(pos.x() + 1).arg(aliLen));
     colsLabel->setMinimumWidth(10 + fm.width(cpattern.arg(aliLen).arg(aliLen)));
 
-    QPair<QString, int> pp = seqArea->getGappedColumnInfo();
+    QPair<QString, int> pp = seqArea->getGappedColumnInfo(); // SANGER_TODO: the method is used only here, move to this class
     QString ppattern = QString(tr("Pos %1 / %2"));
     QString ptext = ppattern.arg(pp.first).arg(pp.second);
     posLabel->setText(ptext);

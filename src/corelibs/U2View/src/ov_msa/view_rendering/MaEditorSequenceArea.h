@@ -36,13 +36,24 @@ class QRubberBand;
 
 namespace U2 {
 
+#define SETTINGS_ROOT QString("msaeditor/")
+#define SETTINGS_COLOR_NUCL     "color_nucl"
+#define SETTINGS_COLOR_AMINO    "color_amino"
+#define SETTINGS_COLOR_RAW      "color_raw"
+#define SETTINGS_HIGHLIGHT_NUCL     "highlight_nucl"
+#define SETTINGS_HIGHLIGHT_AMINO    "highlight_amino"
+#define SETTINGS_HIGHLIGHT_RAW      "highlight_raw"
+#define SETTINGS_COPY_FORMATTED "copyformatted"
+
 class GScrollBar;
 class MaEditor;
 class MaEditorWgt;
 class SequenceAreaRenderer;
 
 class MsaColorScheme;
+class MsaColorSchemeFactory;
 class MsaHighlightingScheme;
+class MsaHighlightingSchemeFactory;
 
 //SANGER_TODO: no need to export
 class MaEditorSelection {
@@ -89,15 +100,14 @@ public:
     MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
     virtual ~MaEditorSequenceArea();
 
-    virtual MaEditor* getEditor() const { return editor; }
+    MaEditor* getEditor() const { return editor; }
 
+public:
     // x dimension -> positions
     int countWidthForBases(bool countClipped, bool forOffset = false) const;
 
     int getFirstVisibleBase() const;
-
     int getLastVisibleBase(bool countClipped, bool forOffset = false) const;
-
     int getNumVisibleBases(bool countClipped, bool forOffset = false) const;
 
     U2Region getBaseXRange(int pos, bool useVirtualCoords) const;
@@ -108,11 +118,11 @@ public:
 
     void setFirstVisibleBase(int pos);
 
+public:
     // y dimension -> sequences
     int countHeightForSequences(bool countClipped) const;
 
     int getFirstVisibleSequence() const;
-
     int getLastVisibleSequence(bool countClipped) const;
     /*
      * Returns count of sequences that are visible on a screen.
@@ -132,6 +142,11 @@ public:
     int getYBySequenceNum(int sequenceNum) const;
 
     void setFirstVisibleSequence(int seq);
+
+public:
+    U2Region getRowsAt(int seq) const;
+
+    QPair<QString, int> getGappedColumnInfo() const;
 
     // SANGER_TODO: move to cpp
     bool isAlignmentEmpty() const { return editor->isAlignmentEmpty(); }
@@ -174,14 +189,55 @@ public:
 
     int getHeight();
 
-public:
-    GScrollBar* getVBar() const {return svBar;}
+    QString getCopyFormatedAlgorithmId() const;
+    void setCopyFormatedAlgorithmId(const QString& algoId);
 
+    virtual void deleteCurrentSelection() = 0;
+
+public:
+    void centerPos(const QPoint& pos);
+    void centerPos(int pos);
+
+    void setFont(const QFont& f);
+
+    GScrollBar* getVBar() const {return svBar;}
     GScrollBar* getHBar() const {return shBar;}
+
+    void updateHBarPosition(int base);
+    void updateVBarPosition(int seq);
 
     void onVisibleRangeChanged();
 
     bool isAlignmentLocked();
+
+    void drawVisibleContent(QPainter& p);
+
+    bool drawContent(QPainter &p, const QRect &area);
+    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
+
+    bool drawContent(QPainter& p);
+    bool drawContent(QPixmap& pixmap);
+    bool drawContent(QPixmap& pixmap, const U2Region& region, const QList<qint64>& seqIdx);
+
+    QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
+
+    MsaColorScheme * getCurrentColorScheme() const;
+    MsaHighlightingScheme * getCurrentHighlightingScheme() const;
+    bool getUseDotsCheckedState() const;
+
+public slots:
+    void sl_changeColorSchemeOutside(const QString &name);
+    void sl_changeCopyFormat(const QString& alg);
+    void sl_changeColorScheme();
+    void sl_delCurrentSelection();
+
+protected slots:
+    void sl_useDots();
+
+    void sl_registerCustomColorSchemes();
+    void sl_colorSchemeFactoryUpdated();
+    void sl_setDefaultColorScheme();
+    void sl_changeHighlightScheme();
 
 signals:
     void si_startChanged(const QPoint& p, const QPoint& prev);
@@ -197,6 +253,21 @@ signals:
 protected:
     virtual void initRenderer() {}
     virtual void updateActions() = 0;
+
+    virtual void buildMenu(QMenu* m);
+    void updateColorAndHighlightSchemes();
+
+    void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);
+    void registerCommonColorSchemes();
+    void initHighlightSchemes(MsaHighlightingSchemeFactory* hsf, DNAAlphabetType atype);
+
+    MsaColorSchemeFactory * getDefaultColorSchemeFactory();
+    void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
+    void applyColorScheme(const QString &id);
+
+    void drawAll();
+    void drawFocus(QPainter& p);
+    void drawSelection(QPainter &p);
 
     void updateHScrollBar();
     void updateVScrollBar();
@@ -244,6 +315,8 @@ protected:
     QList<int>          selectedRows;
     QStringList         selectedRowNames;
     int                 msaVersionBeforeShifting;
+
+    QAction*        useDotsAction;
 
     QList<QAction*>     colorSchemeMenuActions;
     QList<QAction* >    customColorSchemeMenuActions;

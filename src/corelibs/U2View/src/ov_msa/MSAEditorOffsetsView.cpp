@@ -41,7 +41,7 @@ namespace U2 {
 
 #define SETTINGS_SHOW_OFFSETS "show_offsets"
 
-MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MaEditor* ed, MSAEditorSequenceArea* sa)
+MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MaEditor* ed, MaEditorSequenceArea* sa)
     : QObject(p)
 {
     seqArea = sa;
@@ -118,7 +118,7 @@ void MSAEditorOffsetsViewController::updateOffsets() {
     rw->updateView();
 }
 
-MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MaEditor *ed, MSAEditorSequenceArea* sa, bool sp)
+MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MaEditor *ed, MaEditorSequenceArea* sa, bool sp)
     : seqArea(sa),
       editor(ed),
       showStartPos(sp),

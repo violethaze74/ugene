@@ -30,14 +30,14 @@ namespace U2 {
 
 class MaEditor;
 class MSAEditorOffsetsViewWidget;
-class MSAEditorSequenceArea;
+class MaEditorSequenceArea;
 class MaModificationInfo;
 class MultipleSequenceAlignmentObject;
 
 class MSAEditorOffsetsViewController : public QObject {
     Q_OBJECT
 public:
-    MSAEditorOffsetsViewController(QObject* p, MaEditor* editor, MSAEditorSequenceArea* seqArea);
+    MSAEditorOffsetsViewController(QObject* p, MaEditor* editor, MaEditorSequenceArea* seqArea);
 
     MSAEditorOffsetsViewWidget* getLeftWidget() const;
     MSAEditorOffsetsViewWidget* getRightWidget() const;
@@ -52,8 +52,8 @@ private slots:
 private:
     void updateOffsets();
 
-    MSAEditorSequenceArea*      seqArea;
-    MaEditor*                  editor;
+    MaEditorSequenceArea*       seqArea;
+    MaEditor*                   editor;
     MSAEditorOffsetsViewWidget* lw;
     MSAEditorOffsetsViewWidget* rw;
     QAction*                    viewAction;
@@ -62,7 +62,7 @@ private:
 class MSAEditorOffsetsViewWidget : public QWidget {
     friend class MSAEditorOffsetsViewController;
 public:
-    MSAEditorOffsetsViewWidget(MaEditor *editor, MSAEditorSequenceArea *seqArea, bool showStartPos);
+    MSAEditorOffsetsViewWidget(MaEditor *editor, MaEditorSequenceArea *seqArea, bool showStartPos);
 
 protected:
     void paintEvent(QPaintEvent *e);
@@ -74,7 +74,7 @@ protected:
 private:
     int getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const;
 
-    MSAEditorSequenceArea *     seqArea;
+    MaEditorSequenceArea *      seqArea;
     MaEditor *                  editor;
     bool                        showStartPos;
     bool                        completeRedraw;

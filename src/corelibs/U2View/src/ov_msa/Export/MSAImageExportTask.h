@@ -112,7 +112,7 @@ protected:
 
     template<class P>
     bool paintContent(P& p) {
-        MSAEditorSequenceArea* seqArea = ui->getSequenceArea();
+        MaEditorSequenceArea* seqArea = ui->getSequenceArea();
             return seqArea->drawContent(p, msaSettings.region, msaSettings.seqIdx);
     }
 
