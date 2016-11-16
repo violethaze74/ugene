@@ -70,8 +70,8 @@ TranslateMsa2AminoTask::TranslateMsa2AminoTask( MultipleSequenceAlignmentObject*
 void TranslateMsa2AminoTask::run() {
     SAFE_POINT_EXT(NULL != translation, setError(tr("Invalid translation object")),);
 
-    QList<DNASequence> lst = MSAUtils::ma2seq(maObj->getMsa(), true);
-    resultMA = MultipleSequenceAlignment(maObj->getMsa()->getName(), translation->getDstAlphabet());
+    QList<DNASequence> lst = MSAUtils::ma2seq(maObj->getMultipleAlignment(), true);
+    resultMA = MultipleSequenceAlignment(maObj->getMultipleAlignment()->getName(), translation->getDstAlphabet());
 
     foreach (const DNASequence& dna, lst) {
         int buflen = dna.length() / 3;
@@ -108,7 +108,7 @@ AlignInAminoFormTask::~AlignInAminoFormTask() {
 void AlignInAminoFormTask::prepare() {
     SAFE_POINT_EXT(NULL != maObj, setError(tr("Invalid MSA object detected")),);
     CHECK_EXT(maObj->getAlphabet()->isNucleic(), setError(tr("AlignInAminoFormTask: Input alphabet is not nucleic!")), );
-    CHECK_EXT(!maObj->getMsa()->isEmpty(), setError(tr("AlignInAminoFormTask: Input alignment is empty!")), );
+    CHECK_EXT(!maObj->getMultipleAlignment()->isEmpty(), setError(tr("AlignInAminoFormTask: Input alignment is empty!")), );
 
     MultipleSequenceAlignment msa = maObj->getMsaCopy();
     const U2DbiRef& dbiRef = maObj->getEntityRef().dbiRef;

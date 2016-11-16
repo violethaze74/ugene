@@ -59,7 +59,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
     QStringList algo = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds();
     algoCombo->addItems(algo);
 
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj != NULL) {
         QVector<U2Region> unitedRows;
         MultipleSequenceAlignment ma = msaObj->getMsaCopy();
@@ -93,7 +93,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
 
 void DistanceMatrixMSAProfileDialog::accept() {
     DistanceMatrixMSAProfileTaskSettings s;
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
     if (msaObj == NULL) {
         return;
     }

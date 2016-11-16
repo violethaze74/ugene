@@ -32,7 +32,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemeStatic : public MsaColorScheme {
     Q_OBJECT
 public:
-    MsaColorSchemeStatic(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj, const QVector<QColor> &colorsPerChar);
+    MsaColorSchemeStatic(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj, const QVector<QColor> &colorsPerChar);
 
     QColor getColor(int seq, int pos, char c) const;
 
@@ -45,7 +45,7 @@ class MsaColorSchemeStaticFactory : public MsaColorSchemeFactory {
 public:
     MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType, const QVector<QColor> &colorsPerChar);
 
-    MsaColorScheme * create(QObject* parent, MultipleSequenceAlignmentObject * maObj) const;
+    MsaColorScheme * create(QObject* parent, MultipleAlignmentObject * maObj) const;
 
 private:
     QVector<QColor> colorsPerChar;

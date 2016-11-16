@@ -35,16 +35,16 @@
 namespace U2 {
 
 class GObjectView;
-class MSAEditor;
-class MSAEditorSelection;
-class MSAEditorUI;
+class MaEditor;
+class MaEditorSelection;
+class MaEditorWgt;
 class MaModificationInfo;
 
 class U2VIEW_EXPORT MSAEditorNameList: public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorNameList)
 public:
-    MSAEditorNameList(MSAEditorUI* ui, QScrollBar* nhBar);
+    MSAEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
     virtual ~MSAEditorNameList();
 
     void drawNames( QPixmap &p, const QList<qint64>& seqIdx, bool drawSelection = false);
@@ -63,11 +63,10 @@ private slots:
     void sl_referenceSeqChanged(qint64);
 
     void sl_startChanged(const QPoint& p, const QPoint& prev);
-    void sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev);
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
 
     void sl_nameBarMoved(int n);
-    void sl_fontChanged();
-    void sl_modelChanged();
+    void sl_completeUpdate();
 
     void sl_onGroupColorsChanged(const GroupColorSchema&);
 protected:
@@ -120,7 +119,7 @@ private:
     QRect calculateButtonRect(const QRect& itemRect) const;
 
     QObject*            labels; // used in GUI tests
-    MSAEditorUI*        ui;
+    MaEditorWgt*        ui;
     QScrollBar*         nhBar;
     int                 curSeq;
     int                 startSelectingSeq;
@@ -139,7 +138,7 @@ private:
     static const int CROSS_SIZE = 9;
     static const int CHILDREN_OFFSET = 8;
 protected:
-    MSAEditor*          editor;
+    MaEditor*          editor;
 
 };
 

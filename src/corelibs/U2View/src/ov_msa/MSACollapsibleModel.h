@@ -42,14 +42,14 @@ public:
     bool isCollapsed;
 };
 
-class MSAEditorUI;
+class MaEditorWgt;
 class MaModificationInfo;
 class U2Region;
 
 class U2VIEW_EXPORT MSACollapsibleItemModel : public QObject {
     Q_OBJECT
 public:
-    MSACollapsibleItemModel(MSAEditorUI *p);
+    MSACollapsibleItemModel(MaEditorWgt *p);
 
     // creates model with every item collapsed
     // 'itemRegions' has to be sorted list of non-intersecting regions
@@ -99,7 +99,7 @@ private:
     int mapToRow(int lastItem, int pos) const;
 
 private:
-    MSAEditorUI* ui;
+    MaEditorWgt* ui;
     QVector<MSACollapsableItem> items;
     QVector<int> positions;
 };

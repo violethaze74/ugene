@@ -54,12 +54,15 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTab.h \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.h \
+           src/ov_msa/MaEditor.h \
+           src/ov_msa/MaEditorFactory.h \
+           src/ov_msa/McaEditor.h \
+           src/ov_msa/McaEditorSequenceArea.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
            src/ov_msa/MSAEditorConsensusCache.h \
            src/ov_msa/MsaEditorSimilarityColumn.h \
-           src/ov_msa/MSAEditorFactory.h \
            src/ov_msa/MSAEditorNameList.h \
            src/ov_msa/MSAEditorOffsetsView.h \
            src/ov_msa/MSAEditorOverviewArea.h \
@@ -90,6 +93,11 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/SequenceSelectorWidgetController.h \
            src/ov_msa/TreeOptions/TreeOptionsWidget.h \
            src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.h \
+           src/ov_msa/view_rendering/MaEditorSequenceArea.h \
+           src/ov_msa/view_rendering/MaEditorUtils.h \
+           src/ov_msa/view_rendering/MaEditorWgt.h \
+           src/ov_msa/view_rendering/SequenceAreaRenderer.h \
+           src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.h \
            src/ov_phyltree/CreateBranchesTask.h \
            src/ov_phyltree/CreateCircularBranchesTask.h \
            src/ov_phyltree/CreateRectangularBranchesTask.h \
@@ -274,12 +282,15 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/Highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTab.cpp \
            src/ov_msa/Highlighting/MSAHighlightingTabFactory.cpp \
+           src/ov_msa/MaEditor.cpp \
+           src/ov_msa/MaEditorFactory.cpp \
+           src/ov_msa/McaEditor.cpp \
+           src/ov_msa/McaEditorSequenceArea.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
            src/ov_msa/MSAEditorConsensusCache.cpp \
            src/ov_msa/MsaEditorSimilarityColumn.cpp \
-           src/ov_msa/MSAEditorFactory.cpp \
            src/ov_msa/MSAEditorNameList.cpp \
            src/ov_msa/MSAEditorOffsetsView.cpp \
            src/ov_msa/MSAEditorOverviewArea.cpp \
@@ -311,6 +322,11 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidget.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \
+           src/ov_msa/view_rendering/MaEditorSequenceArea.cpp \
+           src/ov_msa/view_rendering/MaEditorUtils.cpp \
+           src/ov_msa/view_rendering/MaEditorWgt.cpp \
+           src/ov_msa/view_rendering/SequenceAreaRenderer.cpp \
+           src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.cpp \
            src/ov_phyltree/CreateCircularBranchesTask.cpp \
            src/ov_phyltree/CreateRectangularBranchesTask.cpp \
            src/ov_phyltree/CreateUnrootedBranchesTask.cpp \

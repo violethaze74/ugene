@@ -170,7 +170,7 @@ void KalignGObjectTask::prepare() {
 
     lock = new StateLock(KALIGN_LOCK_REASON, StateLockFlag_LiveLock);
     obj->lockState(lock);
-    kalignTask = new KalignTask(obj->getMsa(), config);
+    kalignTask = new KalignTask(obj->getMultipleAlignment(), config);
     addSubTask(kalignTask);
 }
 

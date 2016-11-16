@@ -388,7 +388,7 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
     if (hasError()) {
         return ReportResult_Finished;
     }
-    const MultipleSequenceAlignment msa = aliObj->getMsa();
+    const MultipleSequenceAlignment msa = aliObj->getMultipleAlignment();
     if (msa->getLength()!=resultAliLen) {
         stateInfo.setError(  QString("result alignment length notmatches: %1, expected: %2").arg(msa->getLength()).arg(resultAliLen) );
         return ReportResult_Finished;
@@ -555,7 +555,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        muscleTask = new MuscleTask(ma1->getMsa(), config);
+        muscleTask = new MuscleTask(ma1->getMultipleAlignment(), config);
         res << muscleTask;
         this->connect(muscleTask,SIGNAL(si_progressChanged()),SLOT(sl_muscleProgressChg()));
     }
@@ -604,7 +604,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
 }
 
 void GTest_Muscle_Load_Align_QScore::run() {
-    double qscore = QScore(ma1->getMsa(), ma2->getMsa(), stateInfo);
+    double qscore = QScore(ma1->getMultipleAlignment(), ma2->getMultipleAlignment(), stateInfo);
     if(stateInfo.hasError()) {
         return;
     }
@@ -699,7 +699,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        muscleTask = new MuscleTask(ma1->getMsa(), config);
+        muscleTask = new MuscleTask(ma1->getMultipleAlignment(), config);
 
         res << muscleTask;
         this->connect(muscleTask,SIGNAL(si_progressChanged()),SLOT(sl_muscleProgressChg()));

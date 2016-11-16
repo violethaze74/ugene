@@ -61,7 +61,7 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document*>& docs, U2OpSt
             res.append(seq);
 
         }
-
+        // SANGER_TODO: check if chromatogramm should be copied
         foreach(GObject *msaObj, doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             MultipleSequenceAlignmentObject* casted = qobject_cast<MultipleSequenceAlignmentObject*>(msaObj);
             if (casted == NULL){

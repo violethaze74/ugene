@@ -80,7 +80,7 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData &ma)
     : alphabet(NULL),
       length(0)
 {
-    copy(ma);
+//    copy(ma);
 }
 
 MultipleAlignmentData::~MultipleAlignmentData() {
@@ -225,6 +225,10 @@ MultipleAlignmentRow MultipleAlignmentData::getRowByRowId(qint64 rowId, U2OpStat
     }
     os.setError("Failed to find a row in an alignment");
     return emptyRow;
+}
+
+char MultipleAlignmentData::charAt(int rowNumber, int pos) const {
+    return getRow(rowNumber)->charAt(pos);
 }
 
 QStringList MultipleAlignmentData::getRowNames() const {

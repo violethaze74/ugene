@@ -22,6 +22,7 @@
 #include "MsaEditorSimilarityColumn.h"
 #include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
+#include "view_rendering/MaEditorUtils.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -62,7 +63,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
         return tr("-");
     }
 
-    const MultipleSequenceAlignment ma = editor->getMSAObject()->getMsa();
+    const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
     const qint64 referenceRowId = editor->getReferenceRowId();
     if(U2MsaRow::INVALID_ROW_ID == referenceRowId) {
         return tr("-");
@@ -79,8 +80,7 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
 }
 
 QString MsaEditorSimilarityColumn::getSeqName(int s) {
-    const MultipleSequenceAlignment ma = editor->getMSAObject()->getMsa();
-
+    const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
     return ma->getRowNames().at(s);
 }
 
@@ -175,7 +175,7 @@ void CreateDistanceMatrixTask::prepare() {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
 
-    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.ma->getMsa());
+    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.ma->getMultipleAlignment());
     CHECK(NULL != algo,);
     addSubTask(algo);
 }

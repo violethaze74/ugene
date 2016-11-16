@@ -39,7 +39,7 @@
 #include <primitives/GTTreeWidget.h>
 #include "GTUtilsMdi.h"
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 #include <base_dialogs/GTFileDialog.h>
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "primitives/PopupChooser.h"

@@ -240,7 +240,7 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
         return ReportResult_Finished;
     }
     MultipleSequenceAlignmentObject * expAlign = qobject_cast<MultipleSequenceAlignmentObject*>(explist.first());
-    const MultipleSequenceAlignment expAl = expAlign->getMsa();
+    const MultipleSequenceAlignment expAl = expAlign->getMultipleAlignment();
 
     if (resAl->getLength() != expAl->getLength()) {
         stateInfo.setError(GTest::tr("Unexpected alignment length %1, expected %2").arg(resAl->getLength()).arg(expAl->getLength()));

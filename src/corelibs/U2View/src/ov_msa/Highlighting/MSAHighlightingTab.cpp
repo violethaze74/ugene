@@ -171,7 +171,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_customSchemesListChanged()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
-    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
+    connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
 
     connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
@@ -188,8 +188,8 @@ void MSAHighlightingTab::initColorCB() {
     highlightingScheme->blockSignals(true);
 
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(msa->getMSAObject()->getAlphabet()->getType());
-    colorSchemesFactories << msaColorSchemeRegistry->getMsaCustomColorSchemes(msa->getMSAObject()->getAlphabet()->getType());
+    QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(msa->getMaObject()->getAlphabet()->getType());
+    colorSchemesFactories << msaColorSchemeRegistry->getMsaCustomColorSchemes(msa->getMaObject()->getAlphabet()->getType());
 
     colorScheme->clear();
     foreach (MsaColorSchemeFactory *factory, colorSchemesFactories) {
@@ -197,7 +197,7 @@ void MSAHighlightingTab::initColorCB() {
     }
 
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
-    QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMSAObject()->getAlphabet()->getType());
+    QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMaObject()->getAlphabet()->getType());
 
     highlightingScheme->clear();
     foreach (MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {

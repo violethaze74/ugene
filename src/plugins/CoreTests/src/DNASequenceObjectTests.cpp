@@ -620,7 +620,7 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
     }
     bool ok_flag=false;
     U2OpStatus2Log os;
-    const MultipleSequenceAlignment ma = myMSequence->getMsa();
+    const MultipleSequenceAlignment ma = myMSequence->getMultipleAlignment();
     foreach(const MultipleSequenceAlignmentRow& myItem , ma->getMsaRows()){
         if (myItem->getName() == seqName){
             ok_flag=true;
@@ -796,12 +796,12 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
             }
         }
         if (myMSequence->getLength() != myMSequence2->getLength()) {
-           stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%2").arg(myMSequence->getLength()).arg(myMSequence2->getMsa()->getLength()));
+           stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%2").arg(myMSequence->getLength()).arg(myMSequence2->getMultipleAlignment()->getLength()));
            return ReportResult_Finished;
         }
 
-        MultipleSequenceAlignment one = myMSequence->getMsa();
-        MultipleSequenceAlignment two = myMSequence2->getMsa();
+        MultipleSequenceAlignment one = myMSequence->getMultipleAlignment();
+        MultipleSequenceAlignment two = myMSequence2->getMultipleAlignment();
         const QList <MultipleSequenceAlignmentRow> alignedSeqs1 = one->getMsaRows();
         const QList <MultipleSequenceAlignmentRow> alignedSeqs2 = two->getMsaRows();
 
@@ -889,11 +889,11 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
         }
 ////////////////////////////////////////
      if (myMSequence->getLength() != myMSequence2->getLength()) {
-        stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%").arg(myMSequence->getLength(), myMSequence2->getMsa()->getLength()));
+        stateInfo.setError(QString("sequences size not matched: size1=%1, size2=%").arg(myMSequence->getLength(), myMSequence2->getMultipleAlignment()->getLength()));
         return ReportResult_Finished;
     }
-    const MultipleSequenceAlignment one = myMSequence->getMsa();
-    const MultipleSequenceAlignment two = myMSequence2->getMsa();
+    const MultipleSequenceAlignment one = myMSequence->getMultipleAlignment();
+    const MultipleSequenceAlignment two = myMSequence2->getMultipleAlignment();
     const QList<MultipleSequenceAlignmentRow> &myQList1 = one->getMsaRows();
     const QList<MultipleSequenceAlignmentRow> &myQList2 = two->getMsaRows();
 

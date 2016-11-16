@@ -27,34 +27,72 @@
 #include <U2Core/DocumentProviderTask.h>
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class UnloadedObject;
+class MaEditor;
+class MaEditorFactory;
 class MSAEditor;
 
-class OpenMSAEditorTask : public ObjectViewTask {
+/*!
+ * \brief The OpenMaEditorTask class
+ */
+class OpenMaEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenMSAEditorTask(MultipleSequenceAlignmentObject* obj);
-    OpenMSAEditorTask(UnloadedObject* obj);
-    OpenMSAEditorTask(Document* doc);
+    OpenMaEditorTask(MultipleAlignmentObject* obj, GObjectViewFactoryId fid, GObjectType type);
+    OpenMaEditorTask(UnloadedObject* obj, GObjectViewFactoryId fid, GObjectType type);
+    OpenMaEditorTask(Document* doc, GObjectViewFactoryId fid, GObjectType type);
 
     virtual void open();
 
     static void updateTitle(MSAEditor* msaEd);
 
-private:
-    QPointer<MultipleSequenceAlignmentObject>  msaObject;
-    GObjectReference            unloadedReference;
+    // SANGER_TODO: there is the same method in factory - do smt with it!
+    virtual MaEditor* getEditor(const QString& viewName, GObject* obj) = 0;
+
+protected:
+    GObjectType                         type;
+    QPointer<MultipleAlignmentObject>   maObject;
+    GObjectReference                    unloadedReference;
+};
+
+/*!
+ * \brief The OpenMsaEditorTaskOpenMsaEditorTask class
+ */
+class OpenMsaEditorTask : public OpenMaEditorTask {
+    Q_OBJECT
+public:
+    OpenMsaEditorTask(MultipleAlignmentObject* obj);
+    OpenMsaEditorTask(UnloadedObject* obj);
+    OpenMsaEditorTask(Document* doc);
+
+    MaEditor* getEditor(const QString &viewName, GObject *obj);
+};
+
+/*!
+ * \brief The OpenMcaEditorTask class
+ */
+class OpenMcaEditorTask : public OpenMaEditorTask {
+    Q_OBJECT
+public:
+    OpenMcaEditorTask(MultipleAlignmentObject* obj);
+    OpenMcaEditorTask(UnloadedObject* obj);
+    OpenMcaEditorTask(Document* doc);
+
+    MaEditor* getEditor(const QString &viewName, GObject *obj);
 };
 
 class OpenSavedMSAEditorTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenSavedMSAEditorTask(const QString& viewName, const QVariantMap& stateData);
+    OpenSavedMSAEditorTask(GObjectType type, MaEditorFactory* factory,
+                           const QString& viewName, const QVariantMap& stateData);
     virtual void open();
 
-    static void updateRanges(const QVariantMap& stateData, MSAEditor* ctx);
-    static void addAnnotations(const QVariantMap& stateData, MSAEditor* ctx);
+    static void updateRanges(const QVariantMap& stateData, MaEditor* ctx);
+private:
+    GObjectType         type;
+    MaEditorFactory* factory;
 };
 
 

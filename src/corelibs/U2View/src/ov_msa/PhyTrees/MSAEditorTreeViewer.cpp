@@ -119,7 +119,7 @@ bool MSAEditorTreeViewer::sync() {
 
         CHECK(msa != NULL, false);
         MSAEditorUI* msaUI = msa->getUI();
-        connect(msaUI->editor->getMSAObject(),  SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+        connect(msaUI->editor->getMaObject(),  SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
                 this,                           SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
         connect(msaUI,                          SIGNAL(si_stopMsaChanging(bool)),
                 this,                           SLOT(sl_startTracking(bool)));
@@ -236,7 +236,7 @@ void MSAEditorTreeViewer::sl_startTracking(bool changed) {
         int res = desyncQuestion->exec();
         if (res == QMessageBox::No) {
             // undo the change and synchronize
-            disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+            disconnect(msaUI->editor->getMaObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
                        this,                            SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
 
             if (cachedModification.type != MaModificationType_Undo) {
@@ -298,7 +298,7 @@ void MSAEditorTreeViewer::sl_alignmentChanged(const MultipleAlignment &/*ma*/, c
         CHECK(msa != NULL, );
         MSAEditorUI* msaUI = msa->getUI();
         CHECK(msaUI != NULL, );
-        disconnect(msaUI->editor->getMSAObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+        disconnect(msaUI->editor->getMaObject(),   SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
                    this,                            SLOT(sl_alignmentChanged(MultipleAlignment,MaModificationInfo)));
         disconnect(msaUI,                          SIGNAL(si_stopMsaChanging(bool)),
                    this,                           SLOT(sl_startTracking(bool)));
@@ -476,7 +476,7 @@ bool MSAEditorTreeViewerUI::canSynchronizeWithMSA(MSAEditor* msa) {
     if(!curLayoutIsRectangular) {
         return false;
     }
-    QStringList seqsNames = msa->getMSAObject()->getMsa()->getRowNames();
+    QStringList seqsNames = msa->getMaObject()->getMultipleAlignment()->getRowNames();
     QList<QGraphicsItem*> items = scene()->items();
 
     int counter = 0;

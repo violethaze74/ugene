@@ -36,7 +36,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ClustalWSupport.h"
 #include "ClustalWSupportRunDialog.h"
@@ -123,11 +123,12 @@ ClustalWSupportContext::ClustalWSupportContext(QObject* p) : GObjectViewWindowCo
 
 void ClustalWSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
-    if (msaed->getMSAObject() == NULL) {
+    // SANGER_TODO: return assert when MCA factory (and ID) is implemented
+    CHECK(msaed != NULL, );
+    if (msaed->getMaObject() == NULL) {
             return;
     }
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     AlignMsaAction *alignAction = new AlignMsaAction(this, ET_CLUSTAL, view, tr("Align with ClustalW..."), 2000);
@@ -136,18 +137,18 @@ void ClustalWSupportContext::initViewContext(GObjectView* view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_ClustalW()));
 }
 
 void ClustalWSupportContext::buildMenu(GObjectView* view, QMenu* m) {
-        QList<GObjectViewAction *> actions = getViewActions(view);
-        QMenu* alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-        SAFE_POINT(alignMenu != NULL, "alignMenu", );
-        foreach(GObjectViewAction* a, actions) {
-                a->addToMenuWithOrder(alignMenu);
-        }
+    QList<GObjectViewAction *> actions = getViewActions(view);
+    QMenu* alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
+    SAFE_POINT(alignMenu != NULL, "alignMenu", );
+    foreach(GObjectViewAction* a, actions) {
+        a->addToMenuWithOrder(alignMenu);
+    }
 }
 
 void ClustalWSupportContext::sl_align_with_ClustalW() {
@@ -185,14 +186,14 @@ void ClustalWSupportContext::sl_align_with_ClustalW() {
     AlignMsaAction* action = qobject_cast<AlignMsaAction *>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj == NULL) {
         return;
     }
     assert(!obj->isStateLocked());
 
     ClustalWSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalWSupportRunDialog> clustalWRunDialog = new ClustalWSupportRunDialog(obj->getMsa(), settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ClustalWSupportRunDialog> clustalWRunDialog = new ClustalWSupportRunDialog(obj->getMultipleAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
     clustalWRunDialog->exec();
     CHECK(!clustalWRunDialog.isNull(), );
 
@@ -200,7 +201,7 @@ void ClustalWSupportContext::sl_align_with_ClustalW() {
         return;
     }
 
-    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getMsa(), GObjectReference(obj), settings);
+    ClustalWSupportTask* clustalWSupportTask = new ClustalWSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalWSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 

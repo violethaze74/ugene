@@ -34,12 +34,12 @@
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 
 class MsaUndoRedoFramework : public QObject {
     Q_OBJECT
 public:
-    MsaUndoRedoFramework(QObject *p, MultipleSequenceAlignmentObject* _maObj);
+    MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject* _maObj);
 
     QAction* getUndoAction() const { return undoAction; }
     QAction* getRedoAction() const { return redoAction; }
@@ -55,7 +55,7 @@ private slots:
 private:
     void checkUndoRedoEnabled();
 
-    MultipleSequenceAlignmentObject*   maObj;
+    MultipleAlignmentObject*   maObj;
     bool                stateComplete;
 
     QAction*   undoAction;

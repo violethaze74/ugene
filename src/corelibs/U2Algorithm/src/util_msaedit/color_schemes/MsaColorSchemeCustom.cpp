@@ -34,7 +34,7 @@ MsaColorSchemeCustomFactory::MsaColorSchemeCustomFactory(QObject *parent, const 
 
 }
 
-MsaColorScheme * MsaColorSchemeCustomFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemeCustomFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaColorSchemeStatic(parent, this, maObj, colorsPerChar);
 }
 

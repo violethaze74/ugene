@@ -19,36 +19,32 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_FACTORY_H_
-#define _U2_MSA_EDITOR_FACTORY_H_
+#ifndef _U2_MCA_EDITOR_SEQUENCE_AREA_
+#define _U2_MCA_EDITOR_SEQUENCE_AREA_
 
-#include <U2Gui/ObjectViewModel.h>
+#include "view_rendering/MaEditorSequenceArea.h"
+#include "McaEditor.h"
 
 namespace U2 {
 
-class MultiGSelection;
-class MsaColorSchemeRegistry;
+class McaEditor;
 
-class U2VIEW_EXPORT MSAEditorFactory : public GObjectViewFactory {
+class McaEditorSequenceArea : public MaEditorSequenceArea {
     Q_OBJECT
 public:
-    MSAEditorFactory();
+    McaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
 
-    virtual bool canCreateView(const MultiGSelection& multiSelection);
+    McaEditor* getEditor() const { return qobject_cast<McaEditor*>(editor); }
 
-    virtual Task* createViewTask(const MultiGSelection& multiSelection, bool single = false);
+    void deleteCurrentSelection() {}
 
-    virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
-
-    virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
-
-    virtual bool supportsSavedStates() const {return true;}
-
-    static const GObjectViewFactoryId ID;
+private:
+    void initRenderer();
+    void updateActions() {}
 };
-
 
 
 } // namespace
 
-#endif
+#endif // _U2_MCA_EDITOR_SEQUENCE_AREA_
+

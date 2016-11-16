@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeNoColors::MsaHighlightingSchemeNoColors(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
+MsaHighlightingSchemeNoColors::MsaHighlightingSchemeNoColors(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj)
 {
 
@@ -40,7 +40,7 @@ MsaHighlightingSchemeNoColorsFactory::MsaHighlightingSchemeNoColorsFactory(QObje
 
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeNoColorsFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
+MsaHighlightingScheme * MsaHighlightingSchemeNoColorsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeNoColors(parent, this, maObj);
 }
 

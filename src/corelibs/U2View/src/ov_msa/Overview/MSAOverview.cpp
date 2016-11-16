@@ -29,15 +29,15 @@
 
 namespace U2 {
 
-MSAOverview::MSAOverview(MSAEditorUI *_ui)
+MSAOverview::MSAOverview(MaEditorWgt *_ui)
     : editor(_ui->getEditor()),
       ui(_ui),
       sequenceArea(_ui->getSequenceArea())
 {
     connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
-    connect(sequenceArea, SIGNAL(si_selectionChanged(MSAEditorSelection,MSAEditorSelection)),
+    connect(sequenceArea, SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
             SLOT(sl_selectionChanged()));
-    connect(editor->getMSAObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
             SLOT(sl_redraw()));
 }
 

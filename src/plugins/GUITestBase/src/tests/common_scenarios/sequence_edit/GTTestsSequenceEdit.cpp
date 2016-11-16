@@ -53,7 +53,7 @@
 
 #include <U2Core/DocumentModel.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 #include <U2View/ADVConstants.h>
 
 namespace U2{

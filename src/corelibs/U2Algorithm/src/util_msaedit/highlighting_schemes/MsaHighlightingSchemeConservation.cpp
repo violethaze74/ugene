@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj)
+MsaHighlightingSchemeConservation::MsaHighlightingSchemeConservation(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj),
       threshold(50),
       lessThenThreshold(false)
@@ -78,7 +78,7 @@ void MsaHighlightingSchemeConservation::sl_resetMap() {
 void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharColumn) const {
     CHECK(!msaCharCountMap.contains(refCharColumn), );
     CharCountMap columnStatistic;
-    const MultipleSequenceAlignment msa = maObj->getMsa();
+    const MultipleSequenceAlignment msa = maObj->getMultipleAlignment();
     for (int row = msa->getNumRows() - 1; row >= 0; row--) {
         char seqChar = msa->charAt(row, refCharColumn);
         if (columnStatistic.contains(seqChar)) {
@@ -96,7 +96,7 @@ MsaHighlightingSchemeConservationFactory::MsaHighlightingSchemeConservationFacto
 
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeConservationFactory::create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const {
+MsaHighlightingScheme * MsaHighlightingSchemeConservationFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeConservation(parent, this, maObj);
 }
 

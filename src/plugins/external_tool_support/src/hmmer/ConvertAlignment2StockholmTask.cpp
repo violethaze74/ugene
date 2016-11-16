@@ -114,7 +114,7 @@ void ConvertAlignment2Stockholm::prepareSaveTask() {
     }
 
     MultipleSequenceAlignmentObject *maObject = qobject_cast<MultipleSequenceAlignmentObject *>(objects.first());
-    saveTask = new SaveAlignmentTask(maObject->getMsa(), resultUrl, BaseDocumentFormats::STOCKHOLM);
+    saveTask = new SaveAlignmentTask(maObject->getMultipleAlignment(), resultUrl, BaseDocumentFormats::STOCKHOLM);
     saveTask->setSubtaskProgressWeight(50);
 }
 

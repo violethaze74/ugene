@@ -37,7 +37,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ClustalOSupport.h"
 #include "ClustalOSupportRunDialog.h"
@@ -123,11 +123,12 @@ ClustalOSupportContext::ClustalOSupportContext(QObject* p) : GObjectViewWindowCo
 
 void ClustalOSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
-    if (msaed->getMSAObject() == NULL) {
+    // SANGER_TODO: return assert when MCA factory (and ID) is implemented
+    CHECK(msaed != NULL, );
+    if (msaed->getMaObject() == NULL) {
         return;
     }
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     AlignMsaAction* alignAction = new AlignMsaAction(this, ET_CLUSTALO, view, tr("Align with ClustalO..."), 2000);
@@ -136,8 +137,8 @@ void ClustalOSupportContext::initViewContext(GObjectView* view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_ClustalO()));
 }
 
@@ -185,14 +186,14 @@ void ClustalOSupportContext::sl_align_with_ClustalO() {
     AlignMsaAction* action = qobject_cast<AlignMsaAction *>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj == NULL) {
         return;
     }
     assert(!obj->isStateLocked());
 
     ClustalOSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMsa(), settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMultipleAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
     clustalORunDialog->exec();
     CHECK(!clustalORunDialog.isNull(), );
 
@@ -200,7 +201,7 @@ void ClustalOSupportContext::sl_align_with_ClustalO() {
         return;
     }
 
-    ClustalOSupportTask* clustalOSupportTask = new ClustalOSupportTask(obj->getMsa(), GObjectReference(obj), settings);
+    ClustalOSupportTask* clustalOSupportTask = new ClustalOSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 

@@ -38,9 +38,9 @@ namespace U2 {
 class GObjectView;
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
-class MSAEditor;
-class MSAEditorSelection;
-class MSAEditorUI;
+class MaEditor;
+class MaEditorSelection;
+class MaEditorWgt;
 class MaModificationInfo;
 
 enum MSAEditorConsElement {
@@ -53,7 +53,7 @@ class U2VIEW_EXPORT MSAEditorConsensusArea : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusArea)
 public:
-    MSAEditorConsensusArea(MSAEditorUI* ui);
+    MSAEditorConsensusArea(MaEditorWgt* ui);
     ~MSAEditorConsensusArea();
 
     U2Region getRullerLineYRange() const;
@@ -88,7 +88,7 @@ signals:
 
 private slots:
     void sl_startChanged(const QPoint&, const QPoint&);
-    void sl_selectionChanged(const MSAEditorSelection& current, const MSAEditorSelection& prev);
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
     void sl_alignmentChanged();
     void sl_changeConsensusAlgorithm(const QString& algoId);
     void sl_changeConsensusThreshold(int val);
@@ -135,8 +135,8 @@ private:
     MSAConsensusAlgorithmFactory* getConsensusAlgorithmFactory();
     void updateConsensusAlgorithm();
 
-    MSAEditor*          editor;
-    const MSAEditorUI*  ui;
+    MaEditor*           editor;
+    MaEditorWgt*        ui;
     QFont               rulerFont;
     int                 rulerFontHeight;
     QAction*            copyConsensusAction;

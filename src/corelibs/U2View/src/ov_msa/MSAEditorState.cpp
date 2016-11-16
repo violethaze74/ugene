@@ -21,7 +21,7 @@
 
 #include "MSAEditorState.h"
 #include "MSAEditor.h"
-#include "MSAEditorFactory.h"
+#include "MaEditorFactory.h"
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -90,7 +90,7 @@ QVariantMap MSAEditorState::saveState(MSAEditor* v) {
 
     ss.stateData[VIEW_ID]=MSAEditorFactory::ID;
 
-    MultipleSequenceAlignmentObject* msaObj = v->getMSAObject();
+    MultipleSequenceAlignmentObject* msaObj = v->getMaObject();
     if (msaObj) {
         ss.setMSAObjectRef(GObjectReference(msaObj));
     }

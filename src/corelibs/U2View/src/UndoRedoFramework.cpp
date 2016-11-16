@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleSequenceAlignmentObject *_maObj)
+MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *_maObj)
 : QObject(p),
   maObj(_maObj),
   undoStepsAvailable(0),

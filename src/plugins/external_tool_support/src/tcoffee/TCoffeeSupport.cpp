@@ -35,7 +35,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -123,12 +123,13 @@ TCoffeeSupportContext::TCoffeeSupportContext(QObject* p) : GObjectViewWindowCont
 
 void TCoffeeSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
-    if (msaed->getMSAObject() == NULL) {
+    // SANGER_TODO: return assert when MCA factory (and ID) is implemented
+    CHECK(msaed != NULL, );
+    if (msaed->getMaObject() == NULL) {
             return;
     }
 
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     AlignMsaAction* alignAction = new AlignMsaAction(this, ET_TCOFFEE, view, tr("Align with T-Coffee..."), 2000);
@@ -137,8 +138,8 @@ void TCoffeeSupportContext::initViewContext(GObjectView* view) {
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_TCoffee()));
 }
 
@@ -186,7 +187,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
     AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMsaEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj == NULL)
             return;
     assert(!obj->isStateLocked());
@@ -200,7 +201,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
         return;
     }
 
-    TCoffeeSupportTask* tCoffeeSupportTask = new TCoffeeSupportTask(obj->getMsa(), GObjectReference(obj), settings);
+    TCoffeeSupportTask* tCoffeeSupportTask = new TCoffeeSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), tCoffeeSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(tCoffeeSupportTask);
 

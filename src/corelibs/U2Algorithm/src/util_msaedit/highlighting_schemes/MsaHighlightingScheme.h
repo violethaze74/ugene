@@ -28,13 +28,13 @@ class QColor;
 
 namespace U2 {
 
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class MsaHighlightingSchemeFactory;
 
 class U2ALGORITHM_EXPORT MsaHighlightingScheme : public QObject {
     Q_OBJECT
 public:
-    MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj);
+    MsaHighlightingScheme(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
     virtual void process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const;
     const MsaHighlightingSchemeFactory * getFactory() const;
@@ -65,7 +65,7 @@ public:
 
 protected:
     const MsaHighlightingSchemeFactory *factory;
-    MultipleSequenceAlignmentObject *maObj;
+    MultipleAlignmentObject *maObj;
     bool useDots;
 };
 
@@ -75,7 +75,7 @@ public:
     MsaHighlightingSchemeFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType,
                                  bool refFree = false, bool needThreshold = false);
 
-    virtual MsaHighlightingScheme * create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const = 0;
+    virtual MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const = 0;
 
     const QString & getId() const;
     const QString & getName() const;

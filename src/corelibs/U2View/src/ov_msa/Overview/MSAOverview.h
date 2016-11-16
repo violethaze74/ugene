@@ -22,21 +22,16 @@
 #ifndef _U2_MSA_OVERVIEW_H_
 #define _U2_MSA_OVERVIEW_H_
 
-
 #include <U2Core/global.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#else
-#include <QtWidgets/QWidget>
-#endif
+#include <QWidget>
 
 
 namespace U2 {
 
-class MSAEditor;
-class MSAEditorUI;
-class MSAEditorSequenceArea;
+class MaEditor;
+class MaEditorWgt;
+class MaEditorSequenceArea;
 
 #define VISIBLE_RANGE_COLOR QColor(230, 230, 230, 180)
 #define SELECTION_COLOR QColor(80, 160, 200, 180)
@@ -46,7 +41,7 @@ class MSAEditorSequenceArea;
 class U2VIEW_EXPORT MSAOverview : public QWidget {
     Q_OBJECT
 public:
-    MSAOverview(MSAEditorUI *_ui);
+    MSAOverview(MaEditorWgt *_ui);
     virtual bool isValid() const { return false; }
     virtual QPixmap getView() { return QPixmap(); }
 
@@ -70,9 +65,9 @@ protected:
     void showWarning(QPainter& painter, QPaintEvent *e, const QString& warningMessage);
 
 protected:
-    MSAEditor*      editor;
-    MSAEditorUI*    ui;
-    MSAEditorSequenceArea*  sequenceArea;
+    MaEditor*      editor;
+    MaEditorWgt*    ui;
+    MaEditorSequenceArea*  sequenceArea;
 
     QPixmap cachedView;
     QRect   cachedSelection;

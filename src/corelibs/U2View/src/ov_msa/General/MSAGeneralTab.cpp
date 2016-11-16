@@ -72,7 +72,7 @@ void MSAGeneralTab::sl_alignmentChanged() {
 
 void MSAGeneralTab::sl_algorithmChanged(const QString& algoId) {
     // Update state for the current algorithm
-    const DNAAlphabet* alphabet = msa->getMSAObject()->getAlphabet();
+    const DNAAlphabet* alphabet = msa->getMaObject()->getAlphabet();
     if (curAlphabetId != alphabet->getId()) {
         disconnect(consensusType, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_algorithmSelectionChanged(int)));
         consensusType->clear();
@@ -140,7 +140,7 @@ void MSAGeneralTab::connectSignals() {
     connect(copyButton,             SIGNAL(clicked()),                  SLOT(sl_copyFormatted()));
 
     // Extern signals
-    connect(msa->getMSAObject(),
+    connect(msa->getMaObject(),
             SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
             SLOT(sl_alignmentChanged()));
 
@@ -231,7 +231,7 @@ void MSAGeneralTab::initConsensusTypeCombo() {
     MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     SAFE_POINT(NULL != reg, "Consensus algorithm registry is NULL.", );
 
-    const DNAAlphabet* alphabet = msa->getMSAObject()->getAlphabet();
+    const DNAAlphabet* alphabet = msa->getMaObject()->getAlphabet();
     curAlphabetId = alphabet->getId();
     QList<MSAConsensusAlgorithmFactory*> algos = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAphabetFlags(alphabet));
     foreach(const MSAConsensusAlgorithmFactory* algo, algos) {

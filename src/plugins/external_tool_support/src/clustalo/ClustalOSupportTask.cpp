@@ -359,7 +359,7 @@ QList<Task*> ClustalOWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subT
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        clustalOSupportTask = new ClustalOSupportTask(mAObject->getMsa(), GObjectReference(), settings);
+        clustalOSupportTask = new ClustalOSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
         res.append(clustalOSupportTask);
     }
     else if (subTask == clustalOSupportTask) {

@@ -48,7 +48,7 @@
 #include <U2Test/GTestFrameworkComponents.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "KalignConstants.h"
 #include "KalignDialogController.h"
@@ -144,12 +144,13 @@ KalignMSAEditorContext::KalignMSAEditorContext(QObject* p) : GObjectViewWindowCo
 
 void KalignMSAEditorContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
-    if (msaed->getMSAObject() == NULL) {
+    // SANGER_TODO: return assert when MCA factory (and ID) is implemented
+    CHECK(msaed != NULL, );
+    if (msaed->getMaObject() == NULL) {
         return;
     }
 
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     KalignAction* alignAction = new KalignAction(this, view, tr("Align with Kalign..."), 2000);
@@ -158,8 +159,8 @@ void KalignMSAEditorContext::initViewContext(GObjectView* view) {
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     addViewAction(alignAction);
 }
 
@@ -176,10 +177,10 @@ void KalignMSAEditorContext::sl_align() {
     KalignAction* action = qobject_cast<KalignAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject();
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
 
     KalignTaskSettings s;
-    QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMsa(), s);
+    QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMultipleAlignment(), s);
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
 

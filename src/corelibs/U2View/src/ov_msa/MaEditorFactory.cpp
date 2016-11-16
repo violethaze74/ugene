@@ -19,36 +19,35 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAEditorFactory.h"
+#include "MaEditorFactory.h"
+
+#include "McaEditor.h"
 #include "MSAEditor.h"
-#include "MSAEditorTasks.h"
 #include "MSAEditorState.h"
+#include "MSAEditorTasks.h"
 
-#include <U2Core/DocumentModel.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/ProjectModel.h>
-
-#include <U2Core/MultipleSequenceAlignmentObject.h>
-#include <U2Core/UnloadedObject.h>
-
+#include <U2Core/DocumentModel.h>
 #include <U2Core/SelectionUtils.h>
+#include <U2Core/ProjectModel.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
 
 namespace U2 {
 
-/* TRANSLATOR U2::MSAEditor */
-/* TRANSLATOR U2::ObjectViewTask */
-
 const GObjectViewFactoryId MSAEditorFactory::ID("MSAEditor");
+const GObjectViewFactoryId McaEditorFactory::ID("MCAEditor");
 
-MSAEditorFactory::MSAEditorFactory()
-: GObjectViewFactory(ID, tr("Alignment Editor"))
+
+MaEditorFactory::MaEditorFactory(GObjectType type, GObjectViewFactoryId id)
+: GObjectViewFactory(id, tr("Alignment Editor")),
+  type(type)
 {
 }
 
-bool MSAEditorFactory::canCreateView(const MultiGSelection& multiSelection) {
-    bool hasMSADocuments = !SelectionUtils::findDocumentsWithObjects(
-                                GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &multiSelection, UOF_LoadedAndUnloaded, true).isEmpty();
-    if (hasMSADocuments) {
+bool MaEditorFactory::canCreateView(const MultiGSelection& multiSelection) {
+    bool hasMaDocuments = !SelectionUtils::findDocumentsWithObjects(type, &multiSelection, UOF_LoadedAndUnloaded, true).isEmpty();
+    if (hasMaDocuments) {
         return true;
     }
     return false;
@@ -56,14 +55,14 @@ bool MSAEditorFactory::canCreateView(const MultiGSelection& multiSelection) {
 
 #define MAX_VIEWS 10
 
-Task* MSAEditorFactory::createViewTask(const MultiGSelection& multiSelection, bool single) {
-    QList<GObject*> msaObjects = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &multiSelection, UOF_LoadedAndUnloaded);
-    QSet<Document*> docsWithMSA = SelectionUtils::findDocumentsWithObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
+Task* MaEditorFactory::createViewTask(const MultiGSelection& multiSelection, bool single) {
+    QList<GObject*> msaObjects = SelectionUtils::findObjects(type, &multiSelection, UOF_LoadedAndUnloaded);
+    QSet<Document*> docsWithMSA = SelectionUtils::findDocumentsWithObjects(type,
         &multiSelection, UOF_LoadedAndUnloaded, false);
-    QList<OpenMSAEditorTask*> resTasks;
+    QList<OpenMaEditorTask*> resTasks;
 
     foreach(Document* doc, docsWithMSA) {
-        QList<GObject*> docObjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, UOF_LoadedAndUnloaded);
+        QList<GObject*> docObjs = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
         if (!docObjs.isEmpty()) {
             foreach(GObject* obj, docObjs){
                 if(!msaObjects.contains(obj)){
@@ -72,7 +71,7 @@ Task* MSAEditorFactory::createViewTask(const MultiGSelection& multiSelection, bo
             }
 
         } else {
-            resTasks.append(new OpenMSAEditorTask(doc));
+            resTasks.append(getOpenMaEditorTask(doc));
             if (resTasks.size() == MAX_VIEWS) {
                 break;
             }
@@ -85,10 +84,10 @@ Task* MSAEditorFactory::createViewTask(const MultiGSelection& multiSelection, bo
                 break;
             }
             if (o->getGObjectType() == GObjectTypes::UNLOADED) {
-                resTasks.append(new OpenMSAEditorTask(qobject_cast<UnloadedObject*>(o)));
+                resTasks.append(getOpenMaEditorTask(qobject_cast<UnloadedObject*>(o)));
             } else {
-                assert(o->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
-                resTasks.append(new OpenMSAEditorTask(qobject_cast<MultipleSequenceAlignmentObject*>(o)));
+                assert(o->getGObjectType() == type);
+                resTasks.append(getOpenMaEditorTask(qobject_cast<MultipleAlignmentObject*>(o)));
             }
         }
     }
@@ -108,7 +107,7 @@ Task* MSAEditorFactory::createViewTask(const MultiGSelection& multiSelection, bo
     return result;
 }
 
-bool MSAEditorFactory::isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData) {
+bool MaEditorFactory::isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData) {
     MSAEditorState state(stateData);
     if (!state.isValid()) {
         return false;
@@ -130,9 +129,43 @@ bool MSAEditorFactory::isStateInSelection(const MultiGSelection& multiSelection,
     return res;
 }
 
-Task* MSAEditorFactory::createViewTask(const QString& viewName, const QVariantMap& stateData) {
-    return new OpenSavedMSAEditorTask(viewName, stateData);
+Task* MaEditorFactory::createViewTask(const QString& viewName, const QVariantMap& stateData) {
+    return new OpenSavedMSAEditorTask(type, this, viewName, stateData);
 }
 
-}//namespace
+OpenMaEditorTask* MSAEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
+    return new OpenMsaEditorTask(obj);
+}
 
+OpenMaEditorTask* MSAEditorFactory::getOpenMaEditorTask(UnloadedObject* obj) {
+    return new OpenMsaEditorTask(obj);
+}
+
+OpenMaEditorTask* MSAEditorFactory::getOpenMaEditorTask(Document* doc) {
+    return new OpenMsaEditorTask(doc);
+}
+
+MaEditor* MSAEditorFactory::getEditor(const QString& viewName, GObject* obj) {
+    SAFE_POINT(qobject_cast<MultipleSequenceAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
+    return new MSAEditor(viewName, obj);
+}
+
+
+OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
+    return new OpenMcaEditorTask(obj);
+}
+
+OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(UnloadedObject* obj) {
+    return new OpenMcaEditorTask(obj);
+}
+
+OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(Document* doc) {
+    return new OpenMcaEditorTask(doc);
+}
+
+MaEditor* McaEditorFactory::getEditor(const QString& viewName, GObject* obj) {
+    SAFE_POINT(qobject_cast<MultipleChromatogramAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
+    return new McaEditor(viewName, obj);
+}
+
+} // namespace

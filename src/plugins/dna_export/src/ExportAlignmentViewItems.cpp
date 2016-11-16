@@ -38,7 +38,8 @@
 #include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
+//#include <U2View/ma
 
 #include "ExportAlignmentViewItems.h"
 #include "ExportMSA2MSADialog.h"
@@ -59,7 +60,8 @@ ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject* 
 
 void ExportAlignmentViewItemsController::initViewContext(GObjectView* v) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
-    assert(msaed!=NULL);
+    // SANGER_TODO: u know what 2 do
+    CHECK(msaed != NULL, );
     MSAExportContext* mc= new MSAExportContext(msaed);
     addViewResource(msaed, mc);
 }
@@ -67,7 +69,7 @@ void ExportAlignmentViewItemsController::initViewContext(GObjectView* v) {
 
 void ExportAlignmentViewItemsController::buildMenu(GObjectView* v, QMenu* m) {
     QList<QObject*> resources = viewResources.value(v);
-    assert(resources.size() == 1);
+    assert(resources.size() == 1); // SANGER_TODO: whats with the assert
     QObject* r = resources.first();
     MSAExportContext* mc = qobject_cast<MSAExportContext*>(r);
     assert(mc!=NULL);
@@ -82,30 +84,30 @@ MSAExportContext::MSAExportContext(MSAEditor* e) : editor(e) {
     translateMSAAction = new QAction(tr("Amino translation..."), this);
     translateMSAAction->setObjectName("amino_translation_of_alignment_rows");
     translateMSAAction->setEnabled(!e->isAlignmentEmpty());
-    connect(e->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), translateMSAAction, SLOT(setDisabled(bool)));
+    connect(e->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), translateMSAAction, SLOT(setDisabled(bool)));
     connect(translateMSAAction, SIGNAL(triggered()), SLOT(sl_exportNucleicMsaToAmino()));
 }
 
 void MSAExportContext::updateActions() {
-    translateMSAAction->setEnabled(editor->getMSAObject()->getAlphabet()->isNucleic() &&
+    translateMSAAction->setEnabled(editor->getMaObject()->getAlphabet()->isNucleic() &&
                                    !editor->isAlignmentEmpty());
 }
 
 void MSAExportContext::buildMenu(QMenu* m) {
     QMenu* exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != NULL, "exportMenu", );
-    MultipleSequenceAlignmentObject* mObject = editor->getMSAObject();
+    MultipleSequenceAlignmentObject* mObject = editor->getMaObject();
     if (mObject->getAlphabet()->isNucleic()) {
         exportMenu->addAction(translateMSAAction);
     }
 }
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
-    const MultipleSequenceAlignment ma = editor->getMSAObject()->getMsa();
+    const MultipleSequenceAlignment ma = editor->getMaObject()->getMultipleAlignment();
     assert(ma->getAlphabet()->isNucleic());
 
-    GUrl msaUrl = editor->getMSAObject()->getDocument()->getURL();
-    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMSAObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
+    GUrl msaUrl = editor->getMaObject()->getDocument()->getURL();
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMaObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
     QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, editor->getCurrentSelection().height() < 1, AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle(tr("Export Amino Translation"));

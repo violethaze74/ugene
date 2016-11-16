@@ -129,7 +129,7 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "PHYLIP entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment msa = obj->getMsa();
+    const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
     //write header
     int numberOfSpecies = msa->getNumRows();
@@ -248,7 +248,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(NULL != obj, "PHYLIP entry storing: NULL alignment object", );
 
-    const MultipleSequenceAlignment msa = obj->getMsa();
+    const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
     //write header
     int numberOfSpecies = msa->getNumRows();

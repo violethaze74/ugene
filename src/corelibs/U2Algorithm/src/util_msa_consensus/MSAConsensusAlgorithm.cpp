@@ -25,7 +25,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 
-#include <QtCore/QVector>
+#include <QVector>
 
 namespace U2 {
 
@@ -55,7 +55,7 @@ MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _fact
 {
 }
 
-char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleSequenceAlignment& ma, int column, int& score,
+char MSAConsensusAlgorithm::getConsensusCharAndScore(const MultipleAlignment& ma, int column, int& score,
                                                      const QVector<qint64>& seqIdx) const {
     char consensusChar = getConsensusChar(ma, column, seqIdx);
 

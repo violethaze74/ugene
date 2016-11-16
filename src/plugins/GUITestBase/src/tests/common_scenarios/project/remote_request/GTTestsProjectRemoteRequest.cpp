@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
 
 #include "GTTestsProjectRemoteRequest.h"

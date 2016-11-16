@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleSequenceAlignmentObject* msa, int width, int height)
+MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleAlignmentObject* msa, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
       memLocker(stateInfo),
       msaLength(0),
@@ -48,11 +48,11 @@ MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleSequenceAlignmentObject
     SAFE_POINT_EXT(msa != NULL, setError(tr("MSA is NULL")), );
     msaLength = msa->getLength();
     seqNumber = msa->getNumRows();
-    if(!memLocker.tryAcquire(msa->getMsa()->getLength() * msa->getMsa()->getNumRows())) {
+    if(!memLocker.tryAcquire(msa->getMultipleAlignment()->getLength() * msa->getMultipleAlignment()->getNumRows())) {
         setError(memLocker.getError());
         return;
     }
-    ma = msa->getMsaCopy();
+    ma = msa->getMultipleAlignmentCopy();
     connect(msa, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
     connect(msa, SIGNAL(si_startMaUpdating()), this, SLOT(cancel()));
     connect(msa, SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)), this, SLOT(cancel()));
@@ -125,7 +125,7 @@ void MSAGraphCalculationTask::constructPolygon(QPolygonF &polygon) {
     emit si_progressChanged();
 }
 
-MSAConsensusOverviewCalculationTask::MSAConsensusOverviewCalculationTask(MultipleSequenceAlignmentObject* msa,
+MSAConsensusOverviewCalculationTask::MSAConsensusOverviewCalculationTask(MultipleAlignmentObject* msa,
                                     int width, int height)
     : MSAGraphCalculationTask(msa, width, height)
 {
@@ -135,7 +135,7 @@ MSAConsensusOverviewCalculationTask::MSAConsensusOverviewCalculationTask(Multipl
     SAFE_POINT_EXT(factory != NULL, setError(tr("Strict consensus algorithm factory is NULL")), );
 
     SAFE_POINT_EXT(msa != NULL, setError(tr("MSA is NULL")), );
-    algorithm = factory->createAlgorithm(msa->getMsa());
+    algorithm = factory->createAlgorithm(msa->getMultipleAlignment());
     algorithm->setParent(this);
 }
 
@@ -145,7 +145,7 @@ int MSAConsensusOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(score * 100. / seqNumber);
 }
 
-MSAGapOverviewCalculationTask::MSAGapOverviewCalculationTask(MultipleSequenceAlignmentObject* msa, int width, int height)
+MSAGapOverviewCalculationTask::MSAGapOverviewCalculationTask(MultipleAlignmentObject* msa, int width, int height)
     : MSAGraphCalculationTask(msa, width, height) {}
 
 int MSAGapOverviewCalculationTask::getGraphValue(int pos) const {
@@ -163,7 +163,7 @@ int MSAGapOverviewCalculationTask::getGraphValue(int pos) const {
     return qRound(gapCounter * 100. / seqNumber);
 }
 
-MSAClustalOverviewCalculationTask::MSAClustalOverviewCalculationTask(MultipleSequenceAlignmentObject *msa, int width, int height)
+MSAClustalOverviewCalculationTask::MSAClustalOverviewCalculationTask(MultipleAlignmentObject *msa, int width, int height)
     : MSAGraphCalculationTask(msa, width, height) {
     SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != NULL, setError(tr("MSAConsensusAlgorithmRegistry is NULL!")), );
 
@@ -190,28 +190,30 @@ int MSAClustalOverviewCalculationTask::getGraphValue(int pos) const {
     }
 }
 
-MSAHighlightingOverviewCalculationTask::MSAHighlightingOverviewCalculationTask(MSAEditor *editor,
+MSAHighlightingOverviewCalculationTask::MSAHighlightingOverviewCalculationTask(MaEditor *editor,
                                                                                const QString &colorSchemeId,
                                                                                const QString &highlightingSchemeId,
                                                                                int width, int height)
-    : MSAGraphCalculationTask(editor->getMSAObject(), width, height) {
+    : MSAGraphCalculationTask(editor->getMaObject(), width, height) {
 
     SAFE_POINT_EXT(AppContext::getMsaHighlightingSchemeRegistry() != NULL,
                    setError(tr("MSA highlighting scheme registry is NULL")), );
     MsaHighlightingSchemeFactory* f_hs = AppContext::getMsaHighlightingSchemeRegistry()->getMsaHighlightingSchemeFactoryById( highlightingSchemeId );
     SAFE_POINT_EXT(f_hs != NULL, setError(tr("MSA highlighting scheme factory with '%1' id is NULL").arg(highlightingSchemeId)), );
 
-    highlightingScheme = f_hs->create(this, editor->getMSAObject());
+    // SANGER_TODO: adapt hightlighting schemes
+    highlightingScheme = f_hs->create(this, (MultipleSequenceAlignmentObject*)editor->getMaObject());
     schemeId = f_hs->getId();
 
     MsaColorSchemeFactory* f_cs = AppContext::getMsaColorSchemeRegistry()->getMsaColorSchemeFactoryById( colorSchemeId );
-    colorScheme = f_cs->create(this, editor->getMSAObject());
+    // SANGER_TODO: adapt hightlighting schemes
+    colorScheme = f_cs->create(this, (MultipleSequenceAlignmentObject*)editor->getMaObject());
 
     U2OpStatusImpl os;
     refSequenceId = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
 }
 
-bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleSequenceAlignment &ma, MsaHighlightingScheme *highlightingScheme,
+bool MSAHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleAlignment &ma, MsaHighlightingScheme *highlightingScheme,
                                                                MsaColorScheme *colorScheme,
                                                                int seq, int pos,
                                                                int refSeq)

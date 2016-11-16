@@ -1,0 +1,105 @@
+/**
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
+ * http://ugene.unipro.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
+
+#ifndef _U2_MA_EDITOR_UTILS_H_
+#define _U2_MA_EDITOR_UTILS_H_
+
+#include <QSplitter>
+#include <QWidget>
+
+
+namespace U2 {
+
+class MaEditorWgt;
+class MSAEditorSequenceArea;
+
+/************************************************************************/
+/* MaSplitterController */
+/************************************************************************/
+class MaSplitterController : public QObject {
+    Q_OBJECT
+public:
+    MaSplitterController();
+    MaSplitterController(QSplitter *spliter);
+
+    void setSequenceArea(MSAEditorSequenceArea* _seqArea);
+
+    QSplitter* getSplitter();
+
+    void addWidget(QWidget *wgt, int index, qreal coef);
+    void addWidget(QWidget *neighboringWidget, QWidget *wgt, qreal coef, int neighboringShift = 0);
+
+    void removeWidget(QWidget *wgt);
+
+private:
+    MSAEditorSequenceArea* seqArea;
+    QSplitter*             splitter;
+
+    QList<QWidget *>       widgets;
+    QList<int>             widgetSizes;
+};
+
+// SANGER_TODO: rename the class to meaningfull name
+/************************************************************************/
+/* MSAWidget */
+/************************************************************************/
+class MSAWidget : public QWidget {
+    Q_OBJECT
+public:
+    MSAWidget(MaEditorWgt* _ui);
+    virtual ~MSAWidget() {}
+    const QFont& getMsaEditorFont();
+    void setHeightMargin(int _heightMargin);
+
+protected slots:
+    void sl_fontChanged();
+
+protected:
+    virtual void mousePressEvent(QMouseEvent *e);
+    virtual void paintEvent(QPaintEvent *e);
+
+    MaEditorWgt*  ui;
+    int heightMargin;
+};
+
+/************************************************************************/
+/* MSALabelWidget */
+/************************************************************************/
+class MSALabelWidget : public MSAWidget {
+    Q_OBJECT
+public:
+    MSALabelWidget(MaEditorWgt* _ui, const QString & _t, Qt::Alignment _a);
+
+    QString             text;
+    Qt::Alignment       ali;
+
+protected:
+    void paintEvent(QPaintEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+};
+
+
+} // namespace
+
+#endif // _U2_MA_EDITOR_UTILS_H_
+

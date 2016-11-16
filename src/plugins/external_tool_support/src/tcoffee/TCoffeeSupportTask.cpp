@@ -352,7 +352,7 @@ QList<Task*> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTa
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        tCoffeeSupportTask = new TCoffeeSupportTask(mAObject->getMsa(), GObjectReference(), settings);
+        tCoffeeSupportTask = new TCoffeeSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
         res.append(tCoffeeSupportTask);
     }
     else if (subTask == tCoffeeSupportTask) {

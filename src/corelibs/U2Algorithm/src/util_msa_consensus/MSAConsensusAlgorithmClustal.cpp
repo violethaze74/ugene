@@ -35,24 +35,24 @@ QString MSAConsensusAlgorithmFactoryClustal::getName() const {
 }
 
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleSequenceAlignment&, QObject* p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, QObject* p) {
     return new MSAConsensusAlgorithmClustal(this, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 //Algorithm
 
-char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignment& msa, int pos, const QVector<qint64> &seqIdx) const {
-    if (!msa->getAlphabet()->isAmino()) {
+char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos, const QVector<qint64> &seqIdx) const {
+    if (!ma->getAlphabet()->isAmino()) {
         // for nucleic alphabet work as strict algorithm but use ' ' as default
         char  defChar = ' ';
-        char pc = ( seqIdx.isEmpty() ? msa->getMsaRows().first() : msa->getMsaRows()[ seqIdx[0] ] )->charAt(pos);
+        char pc = ( seqIdx.isEmpty() ? ma->getRows().first() : ma->getRows()[ seqIdx[0] ] )->charAt(pos);
         if (pc == U2Msa::GAP_CHAR) {
             pc = defChar;
         }
-        int nSeq =( seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size());
+        int nSeq =( seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
         for (int s = 1; s < nSeq; s++) {
-            char c = msa->getMsaRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
+            char c = ma->getRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
             if (c != pc) {
                 pc = defChar;
                 break;
@@ -74,9 +74,9 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleSequenceAlignm
         static int maxWeakGroupLen = 6;
 
         QByteArray currentGroup; //TODO: optimize 'currentGroup' related code!
-        int nSeq =( seqIdx.isEmpty() ? msa->getNumRows() : seqIdx.size());
+        int nSeq =( seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
         for (int s = 0; s < nSeq; s++) {
-            char c = msa->getMsaRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
+            char c = ma->getRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
             if (!currentGroup.contains(c)) {
                 currentGroup.append(c);
             }

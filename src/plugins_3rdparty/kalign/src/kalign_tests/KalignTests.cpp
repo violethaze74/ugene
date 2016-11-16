@@ -405,7 +405,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        kalignTask = new KalignTask(ma1->getMsa(), config);
+        kalignTask = new KalignTask(ma1->getMultipleAlignment(), config);
         res << kalignTask;
         this->connect(kalignTask,SIGNAL(si_progressChanged()),SLOT(sl_kalignProgressChg()));
     }
@@ -452,7 +452,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
 }
 
 void GTest_Kalign_Load_Align_QScore::run() {
-    double qscore = QScore(ma1->getMsa(), ma2->getMsa(), stateInfo);
+    double qscore = QScore(ma1->getMultipleAlignment(), ma2->getMultipleAlignment(), stateInfo);
     if (stateInfo.hasError()) {
         return;
     }

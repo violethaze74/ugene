@@ -28,7 +28,7 @@ namespace U2 {
 
 class U2ALGORITHM_EXPORT MsaColorSchemePercentageIdententityGrayscale : public MsaColorSchemePercentageIdentity {
 public:
-    MsaColorSchemePercentageIdententityGrayscale(QObject *parent, const MsaColorSchemeFactory *factory, MultipleSequenceAlignmentObject *maObj);
+    MsaColorSchemePercentageIdententityGrayscale(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
 };
 
 class MsaColorSchemePercentageIdententityGrayscaleFactory : public MsaColorSchemeFactory {
@@ -36,7 +36,7 @@ class MsaColorSchemePercentageIdententityGrayscaleFactory : public MsaColorSchem
 public:
     MsaColorSchemePercentageIdententityGrayscaleFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
 
-    MsaColorScheme * create(QObject *parent, MultipleSequenceAlignmentObject *maObj) const;
+    MsaColorScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
 
 }   // namespace U2

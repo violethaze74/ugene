@@ -79,11 +79,11 @@ void MSAExportConsensusTab::sl_exportClicked(){
     settings.format = saveController->getFormatIdToSave();
     settings.keepGaps = keepGapsChb->isChecked() || keepGapsChb->isHidden();
     settings.msa = msa;
-    settings.name = msa->getMSAObject()->getGObjectName() + "_consensus";
+    settings.name = msa->getMaObject()->getGObjectName() + "_consensus";
     settings.url = saveController->getSaveFileName();
 
     Task *t = new ExportMSAConsensusTask(settings);
-    TaskWatchdog::trackResourceExistence(msa->getMSAObject(), t, tr("A problem occurred during export consensus. The multiple alignment is no more available."));
+    TaskWatchdog::trackResourceExistence(msa->getMaObject(), t, tr("A problem occurred during export consensus. The multiple alignment is no more available."));
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
@@ -140,7 +140,7 @@ void MSAExportConsensusTab::initSaveController() {
 }
 
 QString MSAExportConsensusTab::getDefaultFilePath() const {
-    return GUrlUtils::getDefaultDataPath() + "/" + msa->getMSAObject()->getGObjectName() + "_consensus.txt";
+    return GUrlUtils::getDefaultDataPath() + "/" + msa->getMaObject()->getGObjectName() + "_consensus.txt";
 }
 
 }

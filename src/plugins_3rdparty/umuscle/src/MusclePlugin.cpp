@@ -40,7 +40,7 @@
 #include <U2Test/GTestFrameworkComponents.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "MuscleAlignDialogController.h"
 #include "MusclePlugin.h"
@@ -56,9 +56,9 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     return plug;
 }
 
-    
-MusclePlugin::MusclePlugin() 
-: Plugin(tr("MUSCLE"), 
+
+MusclePlugin::MusclePlugin()
+: Plugin(tr("MUSCLE"),
          tr("A port of MUSCLE package for multiple sequence alignment. Check http://www.drive5.com/muscle/ for the original version")),
          ctx(NULL)
 {
@@ -84,7 +84,7 @@ MusclePlugin::MusclePlugin()
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = UMUSCLETests ::createTestFactories();
 
-    foreach(XMLTestFactory* f, l->qlist) { 
+    foreach(XMLTestFactory* f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
@@ -131,12 +131,13 @@ MuscleMSAEditorContext::MuscleMSAEditorContext(QObject* p) : GObjectViewWindowCo
 
 void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    assert(msaed!=NULL);
-    if (msaed->getMSAObject() == NULL) {
+    // SANGER_TODO: return assert when MCA factory (and ID) is implemented
+    CHECK(msaed != NULL, );
+    if (msaed->getMaObject() == NULL) {
         return;
     }
 
-    bool objLocked = msaed->getMSAObject()->isStateLocked();
+    bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
     MuscleAction* alignAction = new MuscleAction(this, view, tr("Align with MUSCLE..."), 1000);
@@ -144,8 +145,8 @@ void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
     alignAction->setObjectName("Align with muscle");
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     addViewAction(alignAction);
 
     MuscleAction* addSequencesAction = new MuscleAction(this, view, tr("Align sequences to profile with MUSCLE..."), 1001);
@@ -153,8 +154,8 @@ void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
     addSequencesAction->setEnabled(!objLocked && !isMsaEmpty);
     addSequencesAction->setObjectName("Align sequences to profile with MUSCLE");
     connect(addSequencesAction, SIGNAL(triggered()), SLOT(sl_alignSequencesToProfile()));
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), addSequencesAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), addSequencesAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), addSequencesAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), addSequencesAction, SLOT(sl_updateState()));
     addViewAction(addSequencesAction);
 
     MuscleAction* alignProfilesAction = new MuscleAction(this, view, tr("Align profile to profile with MUSCLE..."), 1002);
@@ -162,8 +163,8 @@ void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
     alignProfilesAction->setEnabled(!objLocked && !isMsaEmpty);
     alignProfilesAction->setObjectName("Align profile to profile with MUSCLE");
     connect(alignProfilesAction, SIGNAL(triggered()), SLOT(sl_alignProfileToProfile()));
-    connect(msaed->getMSAObject(), SIGNAL(si_lockedStateChanged()), alignProfilesAction, SLOT(sl_updateState()));
-    connect(msaed->getMSAObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignProfilesAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignProfilesAction, SLOT(sl_updateState()));
+    connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignProfilesAction, SLOT(sl_updateState()));
     addViewAction(alignProfilesAction);
 }
 
@@ -173,14 +174,14 @@ void MuscleMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     SAFE_POINT(alignMenu != NULL, "alignMenu", );
     foreach(GObjectViewAction* a, actions) {
         a->addToMenuWithOrder(alignMenu);
-    }    
+    }
 }
 
 void MuscleMSAEditorContext::sl_align() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
 
     const QRect selection = action->getMSAEditor()->getCurrentSelection();
     MuscleTaskSettings s;
@@ -193,15 +194,15 @@ void MuscleMSAEditorContext::sl_align() {
         }
     }
 
-    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(ed->getWidget(), obj->getMsa(), s);
+    QObjectScopedPointer<MuscleAlignDialogController> dlg = new MuscleAlignDialogController(ed->getWidget(), obj->getMultipleAlignment(), s);
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
-    
+
     if (rc != QDialog::Accepted) {
         return;
     }
-    
-    
+
+
     AlignGObjectTask* muscleTask = new MuscleGObjectRunFromSchemaTask(obj, s);
     Task *alignTask = NULL;
 
@@ -223,7 +224,7 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());
@@ -256,7 +257,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     MuscleAction* action = qobject_cast<MuscleAction*>(sender());
     assert(action!=NULL);
     MSAEditor* ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMSAObject(); 
+    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
     if (obj == NULL)
         return;
     assert(!obj->isStateLocked());

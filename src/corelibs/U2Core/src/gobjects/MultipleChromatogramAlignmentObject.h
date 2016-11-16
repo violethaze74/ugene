@@ -41,6 +41,8 @@ public:
 
     GObject * clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 
+    char charAt(int seqNum, int pos) const;
+
     const MultipleChromatogramAlignment getMca() const;
     const MultipleChromatogramAlignment getMcaCopy() const;
 
