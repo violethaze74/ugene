@@ -23,16 +23,16 @@
 #define _U2_EXPORT_PLUGIN_TASKS_H_
 
 #include <U2Core/BaseDocumentFormats.h>
-
-#include <U2Core/Task.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/DocumentProviderTask.h>
+#include <U2Core/MultipleSequenceAlignment.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
 class DNATranslation;
 class LoadDocumentTask;
+class MultipleSequenceAlignmentObject;
 
 /** A task to adds exported document to project and open view*/
 //TODO: make this task a general purpose routine

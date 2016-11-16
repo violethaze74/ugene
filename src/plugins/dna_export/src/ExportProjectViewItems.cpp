@@ -20,6 +20,7 @@
  */
 
 #include <QAction>
+#include <QInputDialog>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMessageBox>
@@ -39,12 +40,14 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultiTask.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SelectionModel.h>
 #include <U2Core/SelectionUtils.h>
+#include <U2Core/TaskWatchdog.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -55,9 +58,9 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ProjectView.h>
-#include <U2Core/QObjectScopedPointer.h>
 
 #include "ExportChromatogramDialog.h"
+#include "ExportMsa2McaDialog.h"
 #include "ExportMSA2MSADialog.h"
 #include "ExportMSA2SequencesDialog.h"
 #include "ExportProjectViewItems.h"
@@ -69,6 +72,7 @@
 #include "ExportUtils.h"
 #include "ImportAnnotationsFromCSVDialog.h"
 #include "ImportAnnotationsFromCSVTask.h"
+#include "tasks/ExportMsa2McaTask.h"
 
 const char *NO_ANNOTATIONS_MESSAGE = "Selected object doesn't have annotations";
 const char *MESSAGE_BOX_INFO_TITLE = "Information";
@@ -93,6 +97,11 @@ ExportProjectViewItemsContoller::ExportProjectViewItemsContoller(QObject* p)
     exportAlignmentAsSequencesAction = new QAction(tr("Export alignment to sequence format..."), this);
     exportAlignmentAsSequencesAction->setObjectName(ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION);
     connect(exportAlignmentAsSequencesAction, SIGNAL(triggered()), SLOT(sl_saveAlignmentAsSequences()));
+
+    if (qgetenv(ENV_UGENE_DEV).toInt() != 0) {
+        exportMsaToMcaAction = new QAction(tr("Export MSA to MCA..."), this);
+        connect(exportMsaToMcaAction, SIGNAL(triggered()), SLOT(sl_saveMsaAsMca()));
+    }
 
     exportNucleicAlignmentToAminoAction = new QAction(tr("Export nucleic alignment to amino translation..."), this);
     exportNucleicAlignmentToAminoAction->setObjectName(ACTION_PROJECT__EXPORT_TO_AMINO_ACTION);
@@ -162,6 +171,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             const MultipleSequenceAlignment &ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMsa();
             if (ma->getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
+                sub->addAction(exportMsaToMcaAction);
             }
         }
     }
@@ -436,6 +446,37 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     }
     Task* t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(msa, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
+}
+
+void ExportProjectViewItemsContoller::sl_saveMsaAsMca() {
+    ProjectView *projectView = AppContext::getProjectView();
+    SAFE_POINT(projectView != NULL, "Project View is NULL", );
+
+    MultiGSelection ms;
+    ms.addSelection(projectView->getGObjectSelection());
+    ms.addSelection(projectView->getDocumentSelection());
+
+    QList<GObject *> set = SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly);
+    if (set.size() != 1) {
+        QMessageBox::critical(NULL, L10N::errorTitle(), tr("Select one alignment object to export"));
+        return;
+    }
+
+    MultipleSequenceAlignmentObject *mcaObject = qobject_cast<MultipleSequenceAlignmentObject *>(set.first());
+    SAFE_POINT(NULL != mcaObject, "Can't cast the object to MultipleSequenceAlignmentObject", );
+    const MultipleSequenceAlignment msa = mcaObject->getMsa();
+
+    Document *document = mcaObject->getDocument();
+    QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(document->getURL(), msa->getName(), BaseDocumentFormats::UGENEDB, "");
+
+    QObjectScopedPointer<ExportMsa2McaDialog> dialog = new ExportMsa2McaDialog(defaultUrl, AppContext::getMainWindow()->getQMainWindow());
+    const int result = dialog->exec();
+    CHECK(!dialog.isNull(), );
+    CHECK(result != QDialog::Rejected, );
+
+    Task *task = ExportUtils::wrapExportTask(new ExportMsa2McaTask(mcaObject, dialog->getSavePath()), true);
+    TaskWatchdog::trackResourceExistence(mcaObject, task, tr("A problem occurred during export MSA to MCA. The MSA is no more available."));
+    AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
 void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {

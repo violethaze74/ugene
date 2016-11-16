@@ -10,6 +10,7 @@ HEADERS += src/CSVColumnConfiguration.h \
            src/ExportAlignmentViewItems.h \
            src/ExportBlastResultDialog.h \
            src/ExportChromatogramDialog.h \
+           src/ExportMsa2McaDialog.h \
            src/ExportMSA2MSADialog.h \
            src/ExportMSA2SequencesDialog.h \
            src/ExportProjectViewItems.h \
@@ -27,18 +28,22 @@ HEADERS += src/CSVColumnConfiguration.h \
            src/ImportAnnotationsFromCSVDialog.h \
            src/ImportAnnotationsFromCSVTask.h \
            src/ImportQualityScoresTask.h \
-           src/ImportQualityScoresWorker.h
+           src/ImportQualityScoresWorker.h \
+           src/tasks/ExportMsa2McaTask.h
+
 FORMS += src/BaseContentDialog.ui \
          src/CSVColumnConfigurationDialog.ui \
          src/DNASequenceGeneratorDialog.ui \
          src/ExportBlastResultDialog.ui \
          src/ExportChromatogramDialog.ui \
+         src/ExportMsa2McaDialog.ui \
          src/ExportMSA2MSADialog.ui \
          src/ExportMSA2SequencesDialog.ui \
          src/ExportSequences2MSADialog.ui \
          src/ExportSequencesDialog.ui \
          src/GetSequenceByIdDialog.ui \
          src/ImportAnnotationsFromCSVDialog.ui
+
 SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/DNAExportPlugin.cpp \
            src/DNAExportPluginTests.cpp \
@@ -47,6 +52,7 @@ SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/ExportAlignmentViewItems.cpp \
            src/ExportBlastResultDialog.cpp \
            src/ExportChromatogramDialog.cpp \
+           src/ExportMsa2McaDialog.cpp \
            src/ExportMSA2MSADialog.cpp \
            src/ExportMSA2SequencesDialog.cpp \
            src/ExportProjectViewItems.cpp \
@@ -64,5 +70,7 @@ SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/ImportAnnotationsFromCSVDialog.cpp \
            src/ImportAnnotationsFromCSVTask.cpp \
            src/ImportQualityScoresTask.cpp \
-           src/ImportQualityScoresWorker.cpp
+           src/ImportQualityScoresWorker.cpp \
+           src/tasks/ExportMsa2McaTask.cpp
+
 TRANSLATIONS += transl/english.ts transl/russian.ts
