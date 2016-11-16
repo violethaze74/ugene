@@ -118,7 +118,7 @@ void CreateAnnotationFullWidget::setAnnotationNameVisible(bool visible) {
 }
 
 void CreateAnnotationFullWidget::setAutoTableOptionVisible(bool visible) {
-    rbUseAutoTable->setEnabled(visible);
+    rbUseAutoTable->setVisible(visible);
 }
 
 void CreateAnnotationFullWidget::setDescriptionVisible(bool visible) {
