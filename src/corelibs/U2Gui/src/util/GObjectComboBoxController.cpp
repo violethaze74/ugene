@@ -97,7 +97,7 @@ void GObjectComboBoxController::removeDocumentObjects(Document* d) {
 }
 
 QString GObjectComboBoxController::itemText(GObject* o) {
-    QString res = o->getGObjectName() + " [" + o->getDocument()->getName() + "]";
+    QString res = o->getDocument()->getName() + " [" + o->getGObjectName() + "]";
     return res;
 }
 

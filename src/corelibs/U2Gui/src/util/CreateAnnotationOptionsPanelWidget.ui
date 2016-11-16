@@ -59,7 +59,7 @@
       <item>
        <widget class="QRadioButton" name="rbExistingTable">
         <property name="text">
-         <string>Existing table:</string>
+         <string>Existing document:</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -91,7 +91,7 @@
       <item>
        <widget class="QRadioButton" name="rbCreateNewTable">
         <property name="text">
-         <string>Create new table:</string>
+         <string>New document:</string>
         </property>
        </widget>
       </item>
