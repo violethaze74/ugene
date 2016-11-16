@@ -19,19 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SQLITE_MCA_DBI_H_
-#define _U2_SQLITE_MCA_DBI_H_
-
-#include "SQLiteDbi.h"
-#include "SQLiteObjectDbi.h"
+#ifndef _U2_MYSQL_MCA_DBI_H_
+#define _U2_MYSQL_MCA_DBI_H_
 
 #include <U2Core/U2AbstractDbi.h>
+#include <U2Core/U2Mca.h>
+
+#include "MysqlDbi.h"
+#include "MysqlObjectDbi.h"
 
 namespace U2 {
 
-class SQLiteMcaDbi : public U2McaDbi, public SQLiteChildDBICommon {
+class MysqlModificationAction;
+
+class MysqlMcaDbi : public U2McaDbi, public MysqlChildDbiCommon {
 public:
-    SQLiteMcaDbi(SQLiteDbi *dbi);
+    MysqlMcaDbi(MysqlDbi *dbi);
 
     /** Creates all required tables */
     void initSqlSchema(U2OpStatus &os);
@@ -307,11 +310,11 @@ private:
 
     ///////////////////////////////////////////////////////////
     // Methods included into a multi-action
-    void updateRowInfo(ModificationAction &updateAction, const U2DataId &mcaId, const U2McaRow &row, U2OpStatus &os);
-    void updateGapModel(ModificationAction &updateAction, const U2DataId &mcaId, qint64 mcaRowId, const U2DataId &relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
-    void updateMcaLength(ModificationAction &updateAction, const U2DataId &mcaId, qint64 length, U2OpStatus &os);
+    void updateRowInfo(MysqlModificationAction &updateAction, const U2DataId &mcaId, const U2McaRow &row, U2OpStatus &os);
+    void updateGapModel(MysqlModificationAction &updateAction, const U2DataId &mcaId, qint64 mcaRowId, const U2DataId &relatedObjectId, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
+    void updateMcaLength(MysqlModificationAction &updateAction, const U2DataId &mcaId, qint64 length, U2OpStatus &os);
 };
 
 }   // namespace U2
 
-#endif // _U2_SQLITE_MCA_DBI_H_
+#endif // _U2_MYSQL_MCA_DBI_H_

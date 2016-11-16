@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-const short DNAChromatogram::INVALID_VALUE = -1;
+const ushort DNAChromatogram::INVALID_VALUE = 0;
 
 DNAChromatogram::DNAChromatogram()
     : name("chromatogram"),

@@ -105,7 +105,7 @@ U2EntityRef ChromatogramUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, co
     CHECK_OP(os, U2EntityRef());
 
     const U2EntityRef entityRef(dbiRef, dbChromatogram.id);
-    QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
+    const QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
     RawDataUdrSchema::writeContent(data, entityRef, os);
     CHECK_OP(os, U2EntityRef());
 
@@ -123,6 +123,10 @@ DNAChromatogram ChromatogramUtils::exportChromatogram(U2OpStatus &os, const U2En
 
 U2Chromatogram ChromatogramUtils::getChromatogramDbInfo(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
     return RawDataUdrSchema::getObject(chromatogramRef, os);
+}
+
+qint64 ChromatogramUtils::getChromatogramLength(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
+    return exportChromatogram(os, chromatogramRef).traceLength;
 }
 
 }   // namespace U2

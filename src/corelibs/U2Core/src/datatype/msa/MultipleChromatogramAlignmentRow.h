@@ -83,6 +83,36 @@ private:
 // Working area - a part of the core which is shown. It can be expanded to the core size or reduced to some little value (0 or 1 symbol?), it starts from the core start
 // Core - a sequence + gaps whithin it (without leading and trailing gaps)
 // Guaranteed gaps
+
+
+/**
+ * The MultipleChromatogramAlignmentRowData class
+ * The row name is defined by the edited sequence name
+ * There are the next parts of the row:
+ *   commonGapModel - a gap model that contains gaps which present both in predicted and edited sequence
+ *   predictedSequenceGapModelDifference - a gap model that contains gaps which present in the predicted sequence only.
+ *                                         These gaps coordinates don't take into account common gaps.
+ *   editedSequenceGapModelDifference - a gap model that contains gaps which present in the edited sequence only.
+ *                                         These gaps coordinates don't take into account common gaps.
+ *   chromatogram - a chromatogram of the row. It shares a gap model as the predicted sequence.
+ *   predictedSequence - a sequence built from chromatogram. It can't be edited.
+ *   editedSequence - a sequence copied from predictedSequence. It can be edited by user.
+ *
+ * There are the next regions in the row:
+ *   Core - a region without leading and trailing common gaps.
+ *   Data - the row part without common gaps. It includes sequence bytes and difference gap model.
+ *   Sequence data - the row part without any gaps. It includes sequence bytes only.
+ *   Working area - a region within the core region. It is supposed, that the data outside the working area is not shown.
+ *
+ * Examples (the end position is non-including):
+ * -------AAA-----AAAA-----AAA---
+ * -----AAAAAA-----AAAA---AA-----
+ *      ^                     ^
+ *      |  core region        |
+ * commonGapModel: (0, 5), (11, 4), (20, 3), (27, 3)
+ * predictedSequenceGapModelDifference: (0, 2), (5, 1), (10, 2)
+ * predictedSequenceGapModelDifference: (6, 1), (13, 2)
+ */
 class MultipleChromatogramAlignmentRowData : public MultipleAlignmentRowData {
     friend class MultipleChromatogramAlignmentData;
     friend class MultipleChromatogramAlignmentRow;
@@ -144,13 +174,9 @@ public:
     void setParentAlignment(const MultipleChromatogramAlignment &mca);
     void setParentAlignment(MultipleChromatogramAlignmentData *mcaData);
 
-    qint64 getPredictedSequenceDataLength() const;
-    qint64 getEditedSequenceDataLength() const;
-    qint64 getChromatogramDataLength() const;
-
-    qint64 getPredictedSequenceWorkingAreaDataLength() const;
-    qint64 getEditedSequenceWorkingAreaDataLength() const;
-    qint64 getChromatogramWorkingAreaDataLength() const;
+    qint64 getPredictedSequenceLength() const;
+    qint64 getEditedSequenceLength() const;
+    qint64 getChromatogramLength() const;
 
     qint64 getCoreStart() const;    // a position of the first meaningful symbol (a position where leading gaps end)
     qint64 getCoreLength() const;    // from the first symbol to the last symbol, included gaps whithin, includes hided symbols (if there are gaps guaranteed by difference at the end, then it is included to the core)
@@ -158,34 +184,28 @@ public:
     qint64 getRowLength() const;    // returns an MCA length
     qint64 getRowLengthWithoutTrailing() const; // leading gaps + core length - a real length of the row without trailing gaps
 
-    U2Region getCoreRegion() const;      // a of the core withing whole row (hiding ignoring)
-    U2Region getWorkingAreaRegion() const;      // a region in the core with nonhided symbols
+    U2Region getCoreRegion() const;
+    U2Region getWorkingAreaRegion() const;
 
     QByteArray toByteArray(int length, U2OpStatus &os) const;
     char charAt(int pos) const;
-    // TODO: Getters are too strict, check the behavior if the position is out of boundaries
-    char getPredictedSequenceDataChar(qint64 dataPosition) const;   // get a char from sequence data (do not include gap model into calculation)
-    char getPredictedSequenceCoreChar(qint64 corePosition) const;   // get a char from sequence core (include gap model into calculation)
-    char getPredictedSequenceWorkingAreaChar(qint64 workingAreaPosition) const; // get a char from sequence working area (include gap model into calculation, use working area bounds)
-    char getPredictedSequenceChar(qint64 mcaVisiblePosition) const; // get a char from sequence (include gap model into calculation, include leading gaps - the MCA coordinates)
 
-    char getEditedSequenceDataChar(qint64 dataPosition) const;   // get a char from sequence data (do not include gap model into calculation)
-    char getEditedSequenceCoreChar(qint64 corePosition) const;   // get a char from sequence core (include gap model into calculation)
-    char getEditedSequenceWorkingAreaChar(qint64 workingAreaPosition) const; // get a char from sequence working area (include gap model into calculation, use working area bounds)
-    char getEditedSequenceChar(qint64 mcaVisiblePosition) const; // get a char from sequence (include gap model into calculation, include leading gaps - the MCA coordinates)
+    char getPredictedSequenceWorkingAreaChar(qint64 position) const;
+    char getPredictedSequenceChar(qint64 position) const;
 
-    ushort getChromatogramDataValue(DNAChromatogram::Trace trace, qint64 dataPosition) const;   // get a value from chromatogram data (do not include gap model into calculation)
-    ushort getChromatogramCoreValue(DNAChromatogram::Trace trace, qint64 corePosition) const;   // get a value from chromatogram core (include gap model into calculation)
-    ushort getChromatogramWorkingAreaValue(DNAChromatogram::Trace trace, qint64 workingAreaPosition) const; // get a value from chromatogram working area (include gap model into calculation, use working area bounds)
-    ushort getChromatogramValue(DNAChromatogram::Trace trace, qint64 mcaVisiblePosition) const; // get a value from chromatogram (include gap model into calculation, include leading gaps - the MCA coordinates)
+    char getEditedSequenceWorkingAreaChar(qint64 position) const;
+    char getEditedSequenceChar(qint64 position) const;
 
-    void insertGap(U2OpStatus &os, qint64 mcaVisiblePosition);
-    void insertGaps(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count);
+    ushort getChromatogramWorkingAreaValue(DNAChromatogram::Trace trace, qint64 workingAreaPosition) const;
+    ushort getChromatogramValue(DNAChromatogram::Trace trace, qint64 position) const;
 
-    void removeGap(U2OpStatus &os, qint64 mcaVisiblePosition);
-    void removeGaps(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count);
+    void insertGap(U2OpStatus &os, qint64 position);
+    void insertGaps(U2OpStatus &os, qint64 position, qint64 count);
 
-    void replaceCharInEditedSequence(U2OpStatus &os, qint64 mcaVisiblePosition, char newChar);
+    void removeGap(U2OpStatus &os, qint64 position);
+    void removeGaps(U2OpStatus &os, qint64 position, qint64 count);
+
+    void replaceCharInEditedSequence(U2OpStatus &os, qint64 position, char newChar);
 
     MultipleChromatogramAlignmentRow getExplicitCopy(const MultipleChromatogramAlignmentData *mcaData = NULL) const;
 
@@ -194,10 +214,10 @@ public:
     bool operator !=(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
     bool operator !=(const MultipleAlignmentRowData &maRowData) const;
 
-    void crop(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count);
+    void crop(U2OpStatus &os, qint64 position, qint64 count);
     MultipleChromatogramAlignmentRow mid(U2OpStatus &os, qint64 mcaVisiblePosition, qint64 count) const;
 
-    bool isCommonGap(qint64 mcaVisiblePosition) const;
+    bool isCommonGap(qint64 position) const;
 
 private:
     void extractCommonGapModel(const U2MsaRowGapModel &predictedSequenceGapModel, const U2MsaRowGapModel &editedSequenceGapModel);
@@ -207,18 +227,21 @@ private:
     qint64 getPredictedSequenceGuaranteedGapsLength() const;
     qint64 getEditedSequenceGuaranteedGapsLength() const;
 
-    qint64 mapVisiblePositionToCorePosition(qint64 mcaVisiblePosition) const;  // visible position ignores the hidden part, real position includes the hidden part, returns -1 if the visible position is outside the core boundaries
-    qint64 mapVisiblePositionToRealPosition(qint64 mcaVisiblePosition) const;  // visible position ignores the hidden part, real position includes the hidden part
-
     U2MsaRowGapModel getPredictedSequenceCoreGapModel() const;
     U2MsaRowGapModel getPredictedSequenceWorkingAreaGapModel() const;
     U2MsaRowGapModel getEditedSequenceCoreGapModel() const;
     U2MsaRowGapModel getEditedSequenceWorkingAreaGapModel() const;
     U2MsaRowGapModel getCommonCoreGapModel() const;
 
-    void replaceGapToCharInEditedSequence(U2OpStatus &os, qint64 corePosition, char newChar);
-    void replaceCharToGapInEditedSequence(U2OpStatus &os, qint64 corePosition, char newChar);
-    void replaceCharToCharInEditedSequence(U2OpStatus &os, qint64 corePosition, char newChar);
+    char getPredictedSequenceCoreChar(qint64 corePosition) const;
+    char getEditedSequenceCoreChar(qint64 corePosition) const;
+
+    qint64 getPredictedSequenceDataLength() const;
+    qint64 getEditedSequenceDataLength() const;
+
+    void replaceGapToCharInEditedSequence(U2OpStatus &os, qint64 position, char newChar);
+    void replaceCharToGapInEditedSequence(U2OpStatus &os, qint64 position);
+    void replaceCharToCharInEditedSequence(U2OpStatus &os, qint64 position, char newChar);
 
     void copy(const MultipleChromatogramAlignmentRowData &mcaRowData);
 

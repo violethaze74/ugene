@@ -56,6 +56,7 @@ HEADERS += src/ABIFormat.h \
            src/mysql_dbi/MysqlCrossDatabaseReferenceDbi.h \
            src/mysql_dbi/MysqlDbi.h \
            src/mysql_dbi/MysqlFeatureDbi.h \
+           src/mysql_dbi/MysqlMcaDbi.h \
            src/mysql_dbi/MysqlModDbi.h \
            src/mysql_dbi/MysqlMsaDbi.h \
            src/mysql_dbi/MysqlObjectDbi.h \
@@ -76,12 +77,14 @@ HEADERS += src/ABIFormat.h \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_16_To_1_17.h \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_16_To_1_24.h \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_24_To_1_25.h \
+           src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_24_To_1_26.h \
            src/sqlite_dbi/SQLiteAssemblyDbi.h \
            src/sqlite_dbi/SQLiteAttributeDbi.h \
            src/sqlite_dbi/SQLiteBlobInputStream.h \
            src/sqlite_dbi/SQLiteBlobOutputStream.h \
            src/sqlite_dbi/SQLiteDbi.h \
            src/sqlite_dbi/SQLiteFeatureDbi.h \
+           src/sqlite_dbi/SQLiteMcaDbi.h \
            src/sqlite_dbi/SQLiteModDbi.h \
            src/sqlite_dbi/SQLiteMsaDbi.h \
            src/sqlite_dbi/SQLiteObjectDbi.h \
@@ -102,8 +105,7 @@ HEADERS += src/ABIFormat.h \
            src/tasks/MysqlUpgradeTask.h \
            src/util/AssemblyAdapter.h \
            src/util/AssemblyPackAlgorithm.h \
-           src/util/SnpeffInfoParser.h \
-    src/sqlite_dbi/SQLiteMcaDbi.h
+           src/util/SnpeffInfoParser.h
 
 SOURCES += src/ABIFormat.cpp \
            src/AbstractVariationFormat.cpp \
@@ -158,6 +160,7 @@ SOURCES += src/ABIFormat.cpp \
            src/mysql_dbi/MysqlCrossDatabaseReferenceDbi.cpp \
            src/mysql_dbi/MysqlDbi.cpp \
            src/mysql_dbi/MysqlFeatureDbi.cpp \
+           src/mysql_dbi/MysqlMcaDbi.cpp \
            src/mysql_dbi/MysqlModDbi.cpp \
            src/mysql_dbi/MysqlMsaDbi.cpp \
            src/mysql_dbi/MysqlObjectDbi.cpp \
@@ -178,12 +181,14 @@ SOURCES += src/ABIFormat.cpp \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_16_To_1_17.cpp \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_16_To_1_24.cpp \
            src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_24_To_1_25.cpp \
+           src/mysql_dbi/util/upgraders/MysqlUpgraderFrom_1_24_To_1_26.cpp \
            src/sqlite_dbi/SQLiteAssemblyDbi.cpp \
            src/sqlite_dbi/SQLiteAttributeDbi.cpp \
            src/sqlite_dbi/SQLiteBlobInputStream.cpp \
            src/sqlite_dbi/SQLiteBlobOutputStream.cpp \
            src/sqlite_dbi/SQLiteDbi.cpp \
            src/sqlite_dbi/SQLiteFeatureDbi.cpp \
+           src/sqlite_dbi/SQLiteMcaDbi.cpp \
            src/sqlite_dbi/SQLiteModDbi.cpp \
            src/sqlite_dbi/SQLiteMsaDbi.cpp \
            src/sqlite_dbi/SQLiteObjectDbi.cpp \
@@ -203,8 +208,7 @@ SOURCES += src/ABIFormat.cpp \
            src/tasks/MergeBamTask.cpp \
            src/tasks/MysqlUpgradeTask.cpp \
            src/util/AssemblyPackAlgorithm.cpp \
-           src/util/SnpeffInfoParser.cpp \
-    src/sqlite_dbi/SQLiteMcaDbi.cpp
+           src/util/SnpeffInfoParser.cpp
 
 RESOURCES += U2Formats.qrc
 TRANSLATIONS += transl/english.ts \

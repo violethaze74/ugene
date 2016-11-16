@@ -19,46 +19,35 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_CHROMATOGRAM_H_
-#define _U2_DNA_CHROMATOGRAM_H_
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <QtCore/QVector>
-#include <U2Core/global.h>
+#include "MysqlUpgraderFrom_1_24_To_1_26.h"
+#include "mysql_dbi/MysqlDbi.h"
+#include "mysql_dbi/MysqlMcaDbi.h"
+#include "mysql_dbi/util/MysqlHelpers.h"
 
 namespace U2 {
 
-class U2CORE_EXPORT DNAChromatogram {
-public:
-    enum Trace {
-        Trace_A,
-        Trace_C,
-        Trace_G,
-        Trace_T,
-    };
+MysqlUpgraderFrom_1_24_To_1_26::MysqlUpgraderFrom_1_24_To_1_26(MysqlDbi *dbi) :
+    MysqlUpgrader(Version::parseVersion("1.24.0"), Version::parseVersion("1.26.0"), dbi)
+{
 
-    DNAChromatogram();
+}
 
-    QString name;
-    int traceLength;
-    int seqLength;
-    QVector<ushort> baseCalls;
-    QVector<ushort> A;
-    QVector<ushort> C;
-    QVector<ushort> G;
-    QVector<ushort> T;
-    QVector<char> prob_A;
-    QVector<char> prob_C;
-    QVector<char> prob_G;
-    QVector<char> prob_T;
-    bool hasQV;
+void MysqlUpgraderFrom_1_24_To_1_26::upgrade(U2OpStatus &os) const {
+    MysqlTransaction t(dbi->getDbRef(), os);
+    Q_UNUSED(t);
 
-    ushort getValue(Trace trace, qint64 position) const;
+    initMcaDbi(os, dbi);
+    CHECK_OP(os, );
 
-    bool operator ==(const DNAChromatogram &otherChromatogram) const;
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.text, os);
+}
 
-    static const ushort INVALID_VALUE;
-};
+void MysqlUpgraderFrom_1_24_To_1_26::initMcaDbi(U2OpStatus &os, MysqlDbi *dbi) const {
+    dbi->getMysqlMcaDbi()->initSqlSchema(os);
+    CHECK_OP(os, );
+}
 
-} //namespace
-
-#endif
+}   // namespace U2

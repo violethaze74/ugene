@@ -52,6 +52,8 @@ const qint64 U2ModType::mcaUpdatedGapModel    = 4007;
 const qint64 U2ModType::mcaSetNewRowsOrder    = 4008;
 const qint64 U2ModType::mcaLengthChanged      = 4009;
 
+const qint64 U2ModType::chromatogramUpdatedData = 5001;
+
 
 U2UseCommonUserModStep::U2UseCommonUserModStep(const U2EntityRef &entity, U2OpStatus &os)
 : dbi(NULL), valid(false), con(NULL), masterObjId(entity.entityId)

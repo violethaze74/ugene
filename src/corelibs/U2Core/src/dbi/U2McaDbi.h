@@ -122,6 +122,7 @@ public:
                                   const U2MsaRowGapModel &predictedSequenceGapModel,
                                   const DNASequence &editedSequence,
                                   const U2MsaRowGapModel &editedSequenceGapModel,
+                                  const U2Region &workingArea,
                                   U2OpStatus &os) = 0;
 
     virtual void updateRowContent(const U2DataId &mcaId,
@@ -146,7 +147,7 @@ public:
      */
     virtual void updateRowSequence(const U2DataId &mcaId,
                                   qint64 rowId,
-                                  qint64 sequenceId,
+                                  const U2DataId &sequenceId,
                                   const QByteArray &sequenceData,
                                   const U2MsaRowGapModel &gapModel,
                                   U2OpStatus &os) = 0;
@@ -155,7 +156,7 @@ public:
      * Removes all previous values and sets a new gap model for gap model owner in a row in a MCA
      * Requires: U2DbiFeature_WriteMca feature support
      */
-    virtual void updateGapModel(const U2DataId &mcaId, qint64 msaRowId, qint64 gapModelOwner, const U2MsaRowGapModel &gapModel, U2OpStatus &os) = 0;
+    virtual void updateGapModel(const U2DataId &mcaId, qint64 msaRowId, const U2DataId &gapModelOwner, const U2MsaRowGapModel &gapModel, U2OpStatus &os) = 0;
 
     /**
      * Updates positions of the rows in the database according to the order in the list

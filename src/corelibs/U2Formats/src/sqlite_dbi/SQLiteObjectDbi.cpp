@@ -384,7 +384,7 @@ qint64 SQLiteObjectDbi::countObjects(const QString& folder, U2OpStatus& os) {
 }
 
 QList<U2DataId> SQLiteObjectDbi::getObjects(const QString& folder, qint64 , qint64 , U2OpStatus& os) {
-    SQLiteQuery q("SELECT o.id, o.type FROM Object AS o, FolderContent AS fc, Folder AS f WHERE f.path = ?1 AND fc.folder = f.id AND fc.object=o.id AND o.rank = ?2", db, os);
+    SQLiteQuery q("SELECT o.id, o.type FROM Object AS o, FolderContent AS fc, Folder AS f WHERE f.path = ?1 AND fc.folder = f.id AND fc.object=o.id AND o." + TOP_LEVEL_FILTER, db, os);
     q.bindString(1, folder);
     q.bindInt32(2, U2DbiObjectRank_TopLevel);
     return q.selectDataIdsExt();
@@ -643,13 +643,13 @@ void SQLiteObjectDbi::undo(const U2DataId& objId, U2OpStatus& os) {
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
             // Call an appropriate "undo" depending on the object type
-            if (U2ModType::isMsaModType(modStep.modType)) {
+            if (U2ModType::isMcaModType(modStep.modType)) {
+                dbi->getSQLiteMcaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
+            } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
-            }
-            else if (U2ModType::isSequenceModType(modStep.modType)) {
+            } else if (U2ModType::isSequenceModType(modStep.modType)) {
                 dbi->getSQLiteSequenceDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
-            }
-            else if (U2ModType::isObjectModType(modStep.modType)) {
+            } else if (U2ModType::isObjectModType(modStep.modType)) {
                 if (U2ModType::objUpdatedName == modStep.modType) {
                     undoUpdateObjectName(modStep.objectId, modStep.details, os);
                     CHECK_OP(os, );
@@ -717,13 +717,13 @@ void SQLiteObjectDbi::redo(const U2DataId& objId, U2OpStatus& os) {
         QSet<U2DataId> objectIds;
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
-            if (U2ModType::isMsaModType(modStep.modType)) {
+            if (U2ModType::isMcaModType(modStep.modType)) {
+                dbi->getSQLiteMcaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
+            } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
-            }
-            else if (U2ModType::isSequenceModType(modStep.modType)) {
+            } else if (U2ModType::isSequenceModType(modStep.modType)) {
                 dbi->getSQLiteSequenceDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
-            }
-            else if (U2ModType::isObjectModType(modStep.modType)) {
+            } else if (U2ModType::isObjectModType(modStep.modType)) {
                 if (U2ModType::objUpdatedName == modStep.modType) {
                     redoUpdateObjectName(modStep.objectId, modStep.details, os);
                     CHECK_OP(os, );

@@ -19,46 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_CHROMATOGRAM_H_
-#define _U2_DNA_CHROMATOGRAM_H_
+#ifndef _U2_MYSQL_UPGRADER_FROM_1_24_TO_1_26_H_
+#define _U2_MYSQL_UPGRADER_FROM_1_24_TO_1_26_H_
 
-#include <QtCore/QVector>
-#include <U2Core/global.h>
+#include "MysqlUpgrader.h"
 
 namespace U2 {
 
-class U2CORE_EXPORT DNAChromatogram {
+class MysqlDbRef;
+
+class MysqlUpgraderFrom_1_24_To_1_26 : public MysqlUpgrader {
 public:
-    enum Trace {
-        Trace_A,
-        Trace_C,
-        Trace_G,
-        Trace_T,
-    };
+    MysqlUpgraderFrom_1_24_To_1_26(MysqlDbi *dbi);
 
-    DNAChromatogram();
+    void upgrade(U2OpStatus &os) const;
 
-    QString name;
-    int traceLength;
-    int seqLength;
-    QVector<ushort> baseCalls;
-    QVector<ushort> A;
-    QVector<ushort> C;
-    QVector<ushort> G;
-    QVector<ushort> T;
-    QVector<char> prob_A;
-    QVector<char> prob_C;
-    QVector<char> prob_G;
-    QVector<char> prob_T;
-    bool hasQV;
-
-    ushort getValue(Trace trace, qint64 position) const;
-
-    bool operator ==(const DNAChromatogram &otherChromatogram) const;
-
-    static const ushort INVALID_VALUE;
+private:
+    void initMcaDbi(U2OpStatus &os, MysqlDbi *dbi) const;
 };
 
-} //namespace
+}
 
-#endif
+#endif // _U2_MYSQL_UPGRADER_FROM_1_24_TO_1_26_H_
+
