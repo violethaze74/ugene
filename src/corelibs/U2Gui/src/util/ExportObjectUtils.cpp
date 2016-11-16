@@ -23,6 +23,7 @@
 #include <QMessageBox>
 
 #include <U2Core/AnnotationTableObject.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GUrlUtils.h>
@@ -32,6 +33,8 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/L10n.h>
+#include <U2Core/GObjectUtils.h>
 
 #include <U2Gui/ExportAnnotations2CSVTask.h>
 #include <U2Gui/ExportAnnotationsDialog.h>
@@ -42,8 +45,8 @@
 
 namespace U2 {
 
-void ExportObjectUtils::exportAnnotations(const QList<Annotation *> &inputAnnotations, const GUrl &dstUrl) {
-    QList<Annotation *> annotations = inputAnnotations; // copy for further modification
+void ExportObjectUtils::exportAnnotations(const AnnotationTableObject *aObj, const GUrl &dstUrl) {
+    QList<Annotation *> annotations = aObj->getAnnotations(); // copy for further modification
     if (annotations.isEmpty()) {
         QMessageBox::warning(QApplication::activeWindow(), QObject::tr("Export annotations..."),
             QObject::tr("Selected object doesn't have annotations"));
@@ -69,7 +72,27 @@ void ExportObjectUtils::exportAnnotations(const QList<Annotation *> &inputAnnota
     // run task
     Task * t = NULL;
     if (ExportAnnotationsDialog::CSV_FORMAT_ID == d->fileFormat()) {
-        t = new ExportAnnotations2CSVTask(annotations, QByteArray(), QString(), NULL, false, false, d->filePath());
+        QString seqName;
+        QByteArray seqData;
+        Project* project = AppContext::getProject();
+        if (project != NULL) {
+            QList<GObjectRelation> rels = aObj->findRelatedObjectsByRole(ObjectRole_Sequence);
+            if (!rels.isEmpty()) {
+                const GObjectRelation& rel = rels.first();
+                seqName = rel.ref.objName;
+                Document* seqDoc = project->findDocumentByURL(rel.ref.docUrl);
+                if (seqDoc != NULL && seqDoc->isLoaded()) {
+                    GObject* obj = seqDoc->findGObjectByName(rel.ref.objName);
+                    if (obj != NULL && obj->getGObjectType() == GObjectTypes::SEQUENCE) {
+                        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+                        U2OpStatusImpl os;
+                        seqData = seqObj->getWholeSequenceData(os);
+                        CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
+                    }
+                }
+            }
+        }
+        t = new ExportAnnotations2CSVTask(annotations, seqData, seqName, NULL, d->exportSequence(), d->exportSequenceNames(), d->filePath());
     } else {
         t = saveAnnotationsTask(d->filePath(), d->fileFormat(), annotations);
     }

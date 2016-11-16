@@ -126,7 +126,7 @@ void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString &c
             AnnotationTableObject *annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
             annsObj->addAnnotations(annList);
 
-            ExportObjectUtils::exportAnnotations(annsObj->getAnnotations(), baseFileUrl);
+            ExportObjectUtils::exportAnnotations(annsObj, baseFileUrl);
         } else {
             GObject *objectToWrite = fetchObjectFromMessage(messageType, mapData[convertedType]);
             if(Q_LIKELY(NULL != objectToWrite)) {
