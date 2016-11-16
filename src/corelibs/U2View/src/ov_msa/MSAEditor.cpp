@@ -543,6 +543,8 @@ MSAEditorUI::MSAEditorUI(MaEditor* editor)
       multiTreeViewer(NULL),
       similarityStatistics(NULL) {
     // SANGER_TODO: check the editor is MSAEditor? private constructor??
+    initActions();
+    initWidgets();
 }
 
 MSAEditorSequenceArea* MSAEditorUI::getSequenceArea() const {
@@ -619,6 +621,10 @@ void MSAEditorUI::hideSimilarity() {
     if(NULL != similarityStatistics) {
         similarityStatistics->hide();
     }
+}
+
+void MSAEditorUI::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
+    seqArea = new MSAEditorSequenceArea(this, shBar, cvBar);
 }
 
 MSAEditorTreeViewer* MSAEditorUI::getCurrentTree() const

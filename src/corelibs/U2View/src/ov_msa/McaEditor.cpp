@@ -25,12 +25,13 @@
 #include "view_rendering/MaEditorWgt.h"
 
 #include <QToolBar>
+#include "McaEditorSequenceArea.h"
 
 namespace U2 {
 
 // SANGER_TODO: temporary const, should go with factory
 // until there is no factory - do not create separate ID
-const GObjectViewFactoryId ID = "MSAEditor";
+const GObjectViewFactoryId ID = "MCAEditor";
 
 McaEditor::McaEditor(const QString &viewName, GObject *obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj) {
@@ -45,7 +46,7 @@ McaEditor::McaEditor(const QString &viewName, GObject *obj)
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
-    MaEditor::buildStaticToolbar(tb);
+//    MaEditor::buildStaticToolbar(tb);
     tb->addAction(showChromatogramsAction);
 
     GObjectView::buildStaticToolbar(tb);
@@ -53,7 +54,7 @@ void McaEditor::buildStaticToolbar(QToolBar* tb) {
 
 void McaEditor::buildStaticMenu(QMenu* m) {
     // SANGER_TODO: review the menus and toolbar
-    MaEditor::buildStaticMenu(m);
+//    MaEditor::buildStaticMenu(m);
 }
 
 int McaEditor::getRowHeight() const {
@@ -65,6 +66,25 @@ int McaEditor::getRowHeight() const {
 void McaEditor::sl_showHideChromatograms(bool show) {
     showChromatograms = show;
     emit si_completeUpdate();
+}
+
+QWidget* McaEditor::createWidget() {
+    Q_ASSERT(ui == NULL);
+    ui = new McaEditorWgt(this);
+
+    initActions();
+
+    return ui;
+}
+
+McaEditorWgt::McaEditorWgt(MaEditor *editor)
+    : MaEditorWgt(editor) {
+    initActions();
+    initWidgets();
+}
+
+void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
+    seqArea = new McaEditorSequenceArea(this, shBar, cvBar);
 }
 
 } // namespace

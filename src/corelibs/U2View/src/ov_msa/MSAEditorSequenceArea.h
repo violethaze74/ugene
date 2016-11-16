@@ -219,6 +219,8 @@ protected:
     virtual void wheelEvent (QWheelEvent * event);
 
 private:
+    void initRenderer();
+
     void buildMenu(QMenu* m);
 
     void updateActions();

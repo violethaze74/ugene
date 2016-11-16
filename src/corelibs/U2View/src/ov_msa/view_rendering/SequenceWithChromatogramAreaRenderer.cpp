@@ -20,6 +20,7 @@
  */
 
 #include "SequenceWithChromatogramAreaRenderer.h"
+#include "../McaEditorSequenceArea.h"
 
 #include <U2Algorithm/MsaHighlightingScheme.h>
 #include <U2Algorithm/MsaColorScheme.h>
@@ -30,7 +31,7 @@
 
 namespace U2 {
 
-SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MSAEditorSequenceArea *seqAreaWgt)
+SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(McaEditorSequenceArea *seqAreaWgt)
     : SequenceAreaRenderer(seqAreaWgt),
       linePen(Qt::gray, 1, Qt::DotLine),
       kLinearTransformTrace(0.0),
@@ -45,7 +46,7 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MSAEd
     charHeight = fm.ascent();
 
     heightPD = 100;// seqAheight(); SANGER_TODO: get from const in seq area
-    heightAreaBC = seqAreaWgt->editor->getSequenceRowHeight()/*50*/; // also there should not be such hard-codes consts
+    heightAreaBC = seqAreaWgt->getEditor()->getSequenceRowHeight()/*50*/; // also there should not be such hard-codes consts
     addUpIfQVL = 0;
     areaHeight = heightPD - heightAreaBC;
 

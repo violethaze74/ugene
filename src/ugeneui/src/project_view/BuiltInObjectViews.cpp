@@ -45,6 +45,9 @@ void ProjectViewImpl::registerBuiltInObjectViews() {
     f = new MSAEditorFactory();
     reg->registerGObjectViewFactory(f);
 
+    f = new McaEditorFactory();
+    reg->registerGObjectViewFactory(f);
+
     f = new TreeViewerFactory();
     reg->registerGObjectViewFactory(f);
 

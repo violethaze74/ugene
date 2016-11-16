@@ -156,7 +156,7 @@ protected slots:
     void sl_rowsRemoved(const QList<qint64> &rowIds);
 
 protected:
-    virtual QWidget* createWidget();
+    QWidget* createWidget();
     bool eventFilter(QObject* o, QEvent* e);
     virtual bool onObjectRemoved(GObject* obj);
     virtual void onObjectRenamed(GObject* obj, const QString& oldName);
@@ -222,6 +222,9 @@ private slots:
 signals:
     void si_showTreeOP();
     void si_hideTreeOP();
+
+protected:
+    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
 
 private:
     MsaEditorSimilarityColumn*         dataList;

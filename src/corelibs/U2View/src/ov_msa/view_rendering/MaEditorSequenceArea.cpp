@@ -76,8 +76,6 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
 
     cachedView = new QPixmap();
     completeRedraw = true;
-
-    initRenderer();
 }
 
 MaEditorSequenceArea::~MaEditorSequenceArea() {

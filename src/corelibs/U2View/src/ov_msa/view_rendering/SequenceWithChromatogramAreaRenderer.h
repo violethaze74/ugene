@@ -26,6 +26,8 @@
 
 namespace U2 {
 
+class McaEditorSequenceArea;
+
 struct ChromatogramViewSettings {
     bool drawTraceA, drawTraceC, drawTraceG, drawTraceT;
     ChromatogramViewSettings()  {
@@ -39,7 +41,7 @@ struct ChromatogramViewSettings {
 class SequenceWithChromatogramAreaRenderer : public SequenceAreaRenderer {
     Q_OBJECT
 public:
-    SequenceWithChromatogramAreaRenderer(MSAEditorSequenceArea* seqAreaWgt);
+    SequenceWithChromatogramAreaRenderer(McaEditorSequenceArea* seqAreaWgt);
 
 private:
     bool drawRow(QPainter &p, const MultipleSequenceAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);

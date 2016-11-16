@@ -113,10 +113,10 @@ protected slots:
 
     void sl_lockedStateChanged();
 
-    void sl_exportHighlighted(); // MOVE IT NOW
+    void sl_exportHighlighted();
 
 protected:
-    virtual QWidget* createWidget();
+    virtual QWidget* createWidget() = 0;
     void initActions();
 
     void addCopyMenu(QMenu* m);

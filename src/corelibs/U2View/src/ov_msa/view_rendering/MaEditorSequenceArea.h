@@ -251,7 +251,7 @@ signals:
     void si_copyFormattedChanging(bool enabled);
 
 protected:
-    virtual void initRenderer() {}
+    virtual void initRenderer() = 0;
     virtual void updateActions() = 0;
 
     virtual void buildMenu(QMenu* m);
@@ -264,10 +264,6 @@ protected:
     MsaColorSchemeFactory * getDefaultColorSchemeFactory();
     void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
     void applyColorScheme(const QString &id);
-
-    void drawAll();
-    void drawFocus(QPainter& p);
-    void drawSelection(QPainter &p);
 
     void updateHScrollBar();
     void updateVScrollBar();

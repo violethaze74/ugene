@@ -19,32 +19,23 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_AREA_RENDERER_H_
-#define _U2_SEQUENCE_AREA_RENDERER_H_
+#include "McaEditorSequenceArea.h"
 
-#include <U2Core/DNAChromatogram.h>
-
-#include <U2View/MSAEditorSequenceArea.h>
-
-#include <QPen>
+#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
 
-class SequenceAreaRenderer : public QObject {
-    Q_OBJECT
-public:
-    SequenceAreaRenderer(MaEditorSequenceArea* seqAreaWgt);
+McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
+    : MaEditorSequenceArea(ui, hb, vb) {
+    initRenderer();
 
-    // SANGER_TODO: all draw methods are const???
-    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
+    // SANGER_TODO: everything in under comment until the 'out-of-memory' problem is resolved
+//    updateColorAndHighlightSchemes();
+    updateActions();
+}
 
-protected:
-    virtual bool drawRow(QPainter &p, const MultipleSequenceAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
-
-    MaEditorSequenceArea*  seqAreaWgt;
-};
+void McaEditorSequenceArea::initRenderer() {
+    renderer = new SequenceWithChromatogramAreaRenderer(this);
+}
 
 } // namespace
-
-#endif // _U2_SEQUENCE_AREA_RENDERER_H_
-

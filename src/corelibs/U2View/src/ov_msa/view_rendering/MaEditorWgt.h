@@ -28,6 +28,7 @@
 
 namespace U2 {
 
+class GScrollBar;
 class MaEditorSequenceArea;
 class MSACollapsibleItemModel;
 class MaEditor;
@@ -76,8 +77,10 @@ signals:
     void si_stopMsaChanging(bool modifyed = false);
 
 protected:
-    void initWidgets();
-    void initActions();
+    virtual void initWidgets();
+    virtual void initActions();
+
+    virtual void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) = 0;
 
 protected:
     MaEditor*                       editor;

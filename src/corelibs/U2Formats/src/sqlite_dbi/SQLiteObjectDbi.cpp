@@ -386,7 +386,6 @@ qint64 SQLiteObjectDbi::countObjects(const QString& folder, U2OpStatus& os) {
 QList<U2DataId> SQLiteObjectDbi::getObjects(const QString& folder, qint64 , qint64 , U2OpStatus& os) {
     SQLiteQuery q("SELECT o.id, o.type FROM Object AS o, FolderContent AS fc, Folder AS f WHERE f.path = ?1 AND fc.folder = f.id AND fc.object=o.id AND o." + TOP_LEVEL_FILTER, db, os);
     q.bindString(1, folder);
-    q.bindInt32(2, U2DbiObjectRank_TopLevel);
     return q.selectDataIdsExt();
 }
 

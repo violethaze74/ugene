@@ -95,7 +95,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     setObjectName("msa_editor_sequence_area");
     setFocusPolicy(Qt::WheelFocus);
 
-    renderer = new SequenceWithChromatogramAreaRenderer(this);
+    initRenderer();
 
     selectionColor = Qt::black;
 
@@ -933,6 +933,10 @@ void MSAEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
 
 void MSAEditorSequenceArea::sl_showCustomSettings(){
     AppContext::getAppSettingsGUI()->showSettingsDialog(ColorSchemaSettingsPageId);
+}
+
+void MSAEditorSequenceArea::initRenderer() {
+    renderer = new SequenceAreaRenderer(this);
 }
 
 void MSAEditorSequenceArea::buildMenu(QMenu* m) {

@@ -370,30 +370,6 @@ void MaEditor::sl_exportHighlighted(){
     }
 }
 
-QWidget* MaEditor::createWidget() {
-    // SANGER_TODO: tmp!
-    Q_ASSERT(ui == NULL);
-    ui = new MSAEditorUI(this);
-
-    QString objName = "msa_editor_" + maObject->getGObjectName();
-    ui->setObjectName(objName);
-
-    initActions();
-
-//    optionsPanel = new OptionsPanel(this);
-//    OPWidgetFactoryRegistry *opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
-
-//    QList<OPFactoryFilterVisitorInterface*> filters;
-//    filters.append(new OPFactoryFilterVisitor(ObjViewType_AlignmentEditor));
-
-//    QList<OPWidgetFactory*> opWidgetFactories = opWidgetFactoryRegistry->getRegisteredFactories(filters);
-//    foreach (OPWidgetFactory *factory, opWidgetFactories) {
-//        optionsPanel->addGroup(factory);
-//    }
-
-    return ui;
-}
-
 void MaEditor::initActions() {
     saveScreenshotAction = new QAction(QIcon(":/core/images/cam2.png"), tr("Export as image"), this);
     saveScreenshotAction->setObjectName("Export as image");

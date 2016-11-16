@@ -102,11 +102,11 @@ void OpenMaEditorTask::open() {
         if (unloadedReference.isValid()) {
             GObject* obj = doc->findGObjectByName(unloadedReference.objName);
             if (obj!=NULL && obj->getGObjectType() == type) {
-                maObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+                maObject = qobject_cast<MultipleAlignmentObject*>(obj);
             }
         } else {
             QList<GObject*> objects = doc->findGObjectByType(type, UOF_LoadedAndUnloaded);
-            maObject = objects.isEmpty() ? NULL : qobject_cast<MultipleSequenceAlignmentObject*>(objects.first());
+            maObject = objects.isEmpty() ? NULL : qobject_cast<MultipleAlignmentObject*>(objects.first());
         }
         if (maObject.isNull()) {
             stateInfo.setError(tr("Multiple alignment object not found"));
@@ -127,7 +127,7 @@ void OpenMaEditorTask::updateTitle(MSAEditor* msaEd) {
     const QString& oldViewName = msaEd->getName();
     GObjectViewWindow* w = GObjectViewUtils::findViewByName(oldViewName);
     if (w != NULL) {
-        MultipleSequenceAlignmentObject* msaObject = msaEd->getMaObject();
+        MultipleAlignmentObject* msaObject = msaEd->getMaObject();
         QString newViewName = GObjectViewUtils::genUniqueViewName(msaObject->getDocument(), msaObject);
         msaEd->setName(newViewName);
         w->setWindowTitle(newViewName);

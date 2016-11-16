@@ -24,6 +24,8 @@
 
 #include "MaEditor.h"
 
+#include "view_rendering/MaEditorWgt.h"
+
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 
 namespace U2 {
@@ -44,10 +46,23 @@ public:
 protected slots:
     void sl_showHideChromatograms(bool show);
 
-private:
+protected:
+    QWidget* createWidget();
+
     bool              showChromatograms;
 
     QAction*          showChromatogramsAction;
+};
+
+class McaEditorWgt : public MaEditorWgt {
+    Q_OBJECT
+public:
+    McaEditorWgt(MaEditor* editor);
+
+    McaEditor* getEditor() const { return qobject_cast<McaEditor* >(editor); }
+
+protected:
+    void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
 };
 
 } // namespace
