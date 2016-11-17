@@ -256,9 +256,7 @@ HmmerMsaEditorContext::HmmerMsaEditorContext(QObject *parent)
 
 void HmmerMsaEditorContext::initViewContext(GObjectView *view) {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
-    // SANGER_TODO: return SAFE_POINT
-    CHECK(msaEditor != NULL, );
-//    SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
+    SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
     CHECK(NULL != msaEditor->getMaObject(), );
 
     GObjectViewAction *action = new GObjectViewAction(this, view, tr("Build HMMER3 profile"));
@@ -270,9 +268,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectView *view) {
 
 void HmmerMsaEditorContext::buildMenu(GObjectView *view, QMenu *menu) {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
-    // SANGER_TODO: return SAFE_POINT
-    CHECK(msaEditor != NULL, );
-//    SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
+    SAFE_POINT(NULL != msaEditor, "Msa Editor is NULL", );
     SAFE_POINT(NULL != menu, "Menu is NULL", );
     CHECK(NULL != msaEditor->getMaObject(), );
 

@@ -54,7 +54,6 @@ public:
 
     virtual void buildStaticMenu(QMenu* m);
 
-    // SANGER_TODO: THE SOURSE OF MISSUNDERSTANDING in widgets!!!
     virtual MultipleAlignmentObject* getMaObject() const { return maObject; }
 
     MaEditorWgt* getUI() const { return ui; }

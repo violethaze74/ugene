@@ -60,8 +60,7 @@ ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject* 
 
 void ExportAlignmentViewItemsController::initViewContext(GObjectView* v) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
-    // SANGER_TODO: u know what 2 do
-    CHECK(msaed != NULL, );
+    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     MSAExportContext* mc= new MSAExportContext(msaed);
     addViewResource(msaed, mc);
 }
@@ -69,7 +68,7 @@ void ExportAlignmentViewItemsController::initViewContext(GObjectView* v) {
 
 void ExportAlignmentViewItemsController::buildMenu(GObjectView* v, QMenu* m) {
     QList<QObject*> resources = viewResources.value(v);
-    assert(resources.size() == 1); // SANGER_TODO: whats with the assert
+    assert(resources.size() == 1);
     QObject* r = resources.first();
     MSAExportContext* mc = qobject_cast<MSAExportContext*>(r);
     assert(mc!=NULL);

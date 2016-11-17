@@ -123,11 +123,9 @@ ClustalWSupportContext::ClustalWSupportContext(QObject* p) : GObjectViewWindowCo
 
 void ClustalWSupportContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    // SANGER_TODO: return assert when MCA factory (and ID) is implemented
-    CHECK(msaed != NULL, );
-    if (msaed->getMaObject() == NULL) {
-            return;
-    }
+    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
+    CHECK(msaed->getMaObject() != NULL, );
+
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 

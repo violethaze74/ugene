@@ -201,13 +201,11 @@ MSAHighlightingOverviewCalculationTask::MSAHighlightingOverviewCalculationTask(M
     MsaHighlightingSchemeFactory* f_hs = AppContext::getMsaHighlightingSchemeRegistry()->getMsaHighlightingSchemeFactoryById( highlightingSchemeId );
     SAFE_POINT_EXT(f_hs != NULL, setError(tr("MSA highlighting scheme factory with '%1' id is NULL").arg(highlightingSchemeId)), );
 
-    // SANGER_TODO: adapt hightlighting schemes
-    highlightingScheme = f_hs->create(this, (MultipleSequenceAlignmentObject*)editor->getMaObject());
+    highlightingScheme = f_hs->create(this, editor->getMaObject());
     schemeId = f_hs->getId();
 
     MsaColorSchemeFactory* f_cs = AppContext::getMsaColorSchemeRegistry()->getMsaColorSchemeFactoryById( colorSchemeId );
-    // SANGER_TODO: adapt hightlighting schemes
-    colorScheme = f_cs->create(this, (MultipleSequenceAlignmentObject*)editor->getMaObject());
+    colorScheme = f_cs->create(this, editor->getMaObject());
 
     U2OpStatusImpl os;
     refSequenceId = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);

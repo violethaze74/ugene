@@ -208,10 +208,8 @@ HMMMSAEditorContext::HMMMSAEditorContext(QObject* p) : GObjectViewWindowContext(
 
 void HMMMSAEditorContext::initViewContext(GObjectView* view) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
-    // SANGER_TODO: return assert
-    CHECK(msaed != NULL, );
-    if (msaed->getMaObject() == NULL)
-        return;
+    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
+    CHECK(msaed->getMaObject() != NULL, );
 
     GObjectViewAction* a = new GObjectViewAction(this, view, tr("Build HMMER2 profile"));
     a->setObjectName("Build HMMER2 profile");
@@ -222,11 +220,8 @@ void HMMMSAEditorContext::initViewContext(GObjectView* view) {
 
 void HMMMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
-    // SANGER_TODO: return assert
-    CHECK( NULL != msaed && NULL != m, );
-    if (msaed->getMaObject() == NULL) {
-        return;
-    }
+    SAFE_POINT( NULL != msaed && NULL != m, "Invalid GObjectVeiw or QMenu", );
+    CHECK(msaed->getMaObject() != NULL, );
 
     QList<GObjectViewAction*> list = getViewActions(v);
     assert(list.size()==1);
