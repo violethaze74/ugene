@@ -524,6 +524,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
 
     foreach (ADVSequenceWidget* w, adv->getSequenceWidgets()) {
         QList<ADVSequenceWidgetAction*> actions = w->getADVSequenceWidgetActions();
+        bool active = false;
         foreach (ADVSequenceWidgetAction* action, actions) {
             AutoAnnotationsADVAction* aaAction = qobject_cast<AutoAnnotationsADVAction*>(action);
             if (aaAction != NULL) {
@@ -531,8 +532,10 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
                 foreach( QAction* toggleAction, aaToggleActions) {
                     if (toggleAction->isEnabled()) {
                         aaActionMap.insertMulti(toggleAction->text(), toggleAction);
+                        active = true;
                     }
                 }
+                aaAction->setEnabled(active);
             }
         }
     }

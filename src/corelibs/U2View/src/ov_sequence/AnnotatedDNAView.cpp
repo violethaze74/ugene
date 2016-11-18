@@ -1028,9 +1028,8 @@ void AnnotatedDNAView::addGraphs(ADVSequenceObjectContext* seqCtx)
 {
     foreach (ADVSequenceWidget* seqWidget, seqCtx->getSequenceWidgets())
     {
-        GraphMenuAction* graphMenuAction = new GraphMenuAction();
-
         ADVSingleSequenceWidget* singleSeqWidget = qobject_cast<ADVSingleSequenceWidget*>(seqWidget);
+        GraphMenuAction* graphMenuAction = new GraphMenuAction(singleSeqWidget->getSequenceObject()->getAlphabet());
         if (singleSeqWidget != NULL) {
             singleSeqWidget->addADVSequenceWidgetActionToViewsToolbar(graphMenuAction);
         } else {

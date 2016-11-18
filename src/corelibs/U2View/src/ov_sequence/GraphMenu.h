@@ -31,6 +31,7 @@
 
 namespace U2 {
 
+class DNAAlphabet;
 
 /**
  * Action for drawing a graph
@@ -61,7 +62,7 @@ class U2VIEW_EXPORT GraphMenuAction : public ADVSequenceWidgetAction
 {
     Q_OBJECT
 public:
-    GraphMenuAction();
+    GraphMenuAction(const DNAAlphabet* a);
     static void addGraphAction(ADVSequenceObjectContext*, GraphAction*);
 
 private:

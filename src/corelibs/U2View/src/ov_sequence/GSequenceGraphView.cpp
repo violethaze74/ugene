@@ -49,7 +49,6 @@ GSequenceGraphView::GSequenceGraphView(QWidget* p, ADVSequenceObjectContext* ctx
     GCOUNTER(cvar, tvar, "GSequenceGraphView");
     assert(baseView);
 
-
     visualPropertiesAction = new QAction(tr("Graph settings..."), this);
     visualPropertiesAction->setObjectName("visual_properties_action");
 
@@ -224,6 +223,7 @@ void GSequenceGraphView::buildPopupMenu(QMenu& menu)
     graphMenu->menuAction()->setObjectName("Graph");
 
     addActionsToGraphMenu(graphMenu);
+    
 
     // Inserting the Graphs menu at the top
     QAction *menuBeginning = *(menu.actions().begin());
