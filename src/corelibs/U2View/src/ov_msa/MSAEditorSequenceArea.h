@@ -132,23 +132,12 @@ public:
     void processCharacterInEditMode(QKeyEvent *e);
     void replaceSelectedCharacter(char newCharacter);
 
-    void addRowToSelection(int rowNumber);
-    void deleteRowFromSelection(int rowNumber);
-    void clearSelection();
-
     QStringList getAvailableHighlightingSchemes() const;
 
     bool hasAminoAlphabet();
 
 private:
     // emulating cursor mode with
-
-    void setCursorPos(const QPoint& p);
-
-    void setCursorPos(int x, int y);
-
-    void setCursorPos(int pos);
-
     void moveCursor(int dx, int dy);
 
     void highlightCurrentSelection();
@@ -157,9 +146,6 @@ public:
     QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 protected:
-    void resizeEvent(QResizeEvent *);
-    void paintEvent(QPaintEvent *);
-    void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
     void keyPressEvent(QKeyEvent *);
@@ -225,10 +211,6 @@ private:
 
     void updateActions();
 
-    void drawAll();
-    void drawFocus(QPainter& p);
-    void drawSelection(QPainter &p);
-
     /**
      * Inserts a region consisting of gaps only before the selection. The inserted region width
      * is specified by @countOfGaps parameter if 0 < @countOfGaps, its height is equal to the
@@ -252,8 +234,6 @@ private:
      * the selection width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
      */
     void removeGapsPrecedingSelection( int countOfGaps = -1 );
-
-    void validateRanges();          //called on resize/refont like events
 
     void reverseComplementModification(ModificationType& type);
 

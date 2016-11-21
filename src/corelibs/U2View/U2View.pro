@@ -93,6 +93,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/SequenceSelectorWidgetController.h \
            src/ov_msa/TreeOptions/TreeOptionsWidget.h \
            src/ov_msa/TreeOptions/TreeOptionsWidgetFactory.h \
+           src/ov_msa/view_rendering/MaEditorSelection.h \
            src/ov_msa/view_rendering/MaEditorSequenceArea.h \
            src/ov_msa/view_rendering/MaEditorUtils.h \
            src/ov_msa/view_rendering/MaEditorWgt.h \
@@ -322,6 +323,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidget.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \
+           src/ov_msa/view_rendering/MaEditorSelection.cpp \
            src/ov_msa/view_rendering/MaEditorSequenceArea.cpp \
            src/ov_msa/view_rendering/MaEditorUtils.cpp \
            src/ov_msa/view_rendering/MaEditorWgt.cpp \

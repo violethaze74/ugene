@@ -96,36 +96,36 @@ void MaEditorWgt::initWidgets() {
     seqArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
     // SANGER_TODO: everything in under comment until the 'out-of-memory' problem is resolved
-//    nameList = new MSAEditorNameList(this, nhBar);
-//    nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    nameList = new MSAEditorNameList(this, nhBar);
+    nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
 //    coreLog.info("NameList success");
 
-    // SANGER_TODO: for example, try to fix in consensus
     consArea = new MSAEditorConsensusArea(this);
-//    overviewArea = new MSAEditorOverviewArea(this);
-//    statusWidget = new MSAEditorStatusWidget(editor->getMaObject(), seqArea);
+    overviewArea = new MSAEditorOverviewArea(this);
+    statusWidget = new MSAEditorStatusWidget(editor->getMaObject(), seqArea);
 
+     // SANGER_TODO: the problem with the row
 //    offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
 //    offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 //    offsetsView->getRightWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
-//    QWidget *label;
-//    label = createLabelWidget(tr("Consensus"));
-//    label->setMinimumHeight(consArea->height());
+    QWidget *label;
+    label = createLabelWidget(tr("Consensus"));
+    label->setMinimumHeight(consArea->height());
 
-//    QWidget* label1 = createLabelWidget();
-//    QWidget* label2 = createLabelWidget();
-//    label1->setMinimumHeight(consArea->height());
-//    label2->setMinimumHeight(consArea->height());
+    QWidget* label1 = createLabelWidget();
+    QWidget* label2 = createLabelWidget();
+    label1->setMinimumHeight(consArea->height());
+    label2->setMinimumHeight(consArea->height());
 
     QGridLayout* seqAreaLayout = new QGridLayout();
     seqAreaLayout->setMargin(0);
     seqAreaLayout->setSpacing(0);
 
-//    seqAreaLayout->addWidget(label1, 0, 0);
+    seqAreaLayout->addWidget(label1, 0, 0);
     seqAreaLayout->addWidget(consArea, 0, 1);
-//    seqAreaLayout->addWidget(label2, 0, 2, 1, 2);
+    seqAreaLayout->addWidget(label2, 0, 2, 1, 2);
 
 //    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
     seqAreaLayout->addWidget(seqArea, 1, 1);
@@ -143,8 +143,8 @@ void MaEditorWgt::initWidgets() {
     QVBoxLayout* nameAreaLayout = new QVBoxLayout();
     nameAreaLayout->setMargin(0);
     nameAreaLayout->setSpacing(0);
-//    nameAreaLayout->addWidget(label);
-//    nameAreaLayout->addWidget(nameList);
+    nameAreaLayout->addWidget(label);
+    nameAreaLayout->addWidget(nameList);
     nameAreaLayout->addWidget(nhBar);
 
     nameAreaContainer = new QWidget();
@@ -159,17 +159,17 @@ void MaEditorWgt::initWidgets() {
 
     mainLayout->addWidget(maSplitter.getSplitter());
     mainLayout->setStretch(0, 1);
-//    mainLayout->addWidget(statusWidget);
-//    mainLayout->addWidget(overviewArea);
+    mainLayout->addWidget(statusWidget);
+    mainLayout->addWidget(overviewArea);
 
     setLayout(mainLayout);
 
-//    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
-//    connect(collapseModel, SIGNAL(toggled()), seqArea,     SLOT(sl_modelChanged()));
+    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
+    connect(collapseModel, SIGNAL(toggled()), seqArea,     SLOT(sl_modelChanged()));
 
-//    connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
+    connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
 
-//    nameList->addAction(delSelectionAction);
+    nameList->addAction(delSelectionAction);
 }
 
 void MaEditorWgt::initActions() {

@@ -39,7 +39,7 @@ public:
     bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
 
 protected:
-    virtual bool drawRow(QPainter &p, const MultipleSequenceAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
+    virtual bool drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
 
     MaEditorSequenceArea*  seqAreaWgt;
 };

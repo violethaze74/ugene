@@ -30,6 +30,7 @@
 
 #include <U2Gui/GScrollBar.h>
 
+#include "MaEditorSelection.h"
 #include "../MaEditor.h"
 
 class QRubberBand;
@@ -54,45 +55,6 @@ class MsaColorScheme;
 class MsaColorSchemeFactory;
 class MsaHighlightingScheme;
 class MsaHighlightingSchemeFactory;
-
-//SANGER_TODO: no need to export
-class MaEditorSelection {
-public:
-    MaEditorSelection() { }
-    MaEditorSelection(int left, int top, int width, int height) : selArea(left,top,width,height) { }
-    MaEditorSelection(const QPoint& topLeft, const QPoint& bottomRight) : selArea(topLeft, bottomRight) { }
-    MaEditorSelection(const QPoint& topLeft, int width, int height) : selArea(topLeft, QSize(width,height)) { }
-
-    // consider that selection may consist of several unconnected areas
-    bool isContiniuous() const { return true; }
-
-    bool isNull() const {return selArea.isNull(); }
-
-    QPoint topLeft() const { return selArea.topLeft(); }
-
-    const QRect& getRect() const {return selArea; }
-
-    int x() const { return selArea.x(); }
-
-    int y() const { return selArea.y(); }
-
-    int width() const { return selArea.width(); }
-
-    int height() const { return selArea.height(); }
-
-    bool operator==(const MaEditorSelection& other) const {
-        return selArea == other.selArea;
-    }
-
-    MaEditorSelection intersected(const MaEditorSelection& selection) const {
-        QRect r = selArea.intersected(selection.selArea);
-        return MaEditorSelection(r);
-    }
-
-private:
-    explicit MaEditorSelection(QRect& rect) : selArea(rect) { }
-    QRect selArea;
-};
 
 class MaEditorSequenceArea : public QWidget {
     Q_OBJECT
@@ -148,8 +110,7 @@ public:
 
     QPair<QString, int> getGappedColumnInfo() const;
 
-    // SANGER_TODO: move to cpp
-    bool isAlignmentEmpty() const { return editor->isAlignmentEmpty(); }
+    bool isAlignmentEmpty() const;
 
     bool isPosInRange(int p) const;
 
@@ -232,6 +193,7 @@ public slots:
     void sl_delCurrentSelection();
 
 protected slots:
+    void sl_triggerUseDots();
     void sl_useDots();
 
     void sl_registerCustomColorSchemes();
@@ -251,8 +213,24 @@ signals:
     void si_copyFormattedChanging(bool enabled);
 
 protected:
+    void setCursorPos(const QPoint& p);
+    void setCursorPos(int x, int y);
+    void setCursorPos(int pos);
+
+protected:
+    void resizeEvent(QResizeEvent *);
+    void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *);
+
+protected:
     virtual void initRenderer() = 0;
     virtual void updateActions() = 0;
+
+    void drawAll();
+    void drawFocus(QPainter& p);
+    void drawSelection(QPainter &p);
+
+    void validateRanges();          //called on resize/refont like events
 
     virtual void buildMenu(QMenu* m);
     void updateColorAndHighlightSchemes();
@@ -308,8 +286,7 @@ protected:
     QPoint              cursorPos; // mouse cursor position in alignment coordinates
     MaEditorSelection   selection; // selection with rows indexes in collapsible model coordinates
     MaEditorSelection   baseSelection; // selection with rows indexes in absolute coordinates
-    QList<int>          selectedRows;
-    QStringList         selectedRowNames;
+
     int                 msaVersionBeforeShifting;
 
     QAction*        useDotsAction;

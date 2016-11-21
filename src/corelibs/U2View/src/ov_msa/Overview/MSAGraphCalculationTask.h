@@ -34,7 +34,7 @@
 namespace U2 {
 
 class MaEditor;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class MSAConsensusAlgorithm;
 class MsaColorScheme;
 class MsaHighlightingScheme;
@@ -52,7 +52,7 @@ protected:
     void constructPolygon(QPolygonF &polygon);
     virtual int getGraphValue(int) const { return height; }
 
-    MultipleSequenceAlignment ma;
+    MultipleAlignment ma;
     MemoryLocker memLocker;
     int msaLength;
     int seqNumber;

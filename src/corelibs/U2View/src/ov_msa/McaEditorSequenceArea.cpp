@@ -30,7 +30,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     initRenderer();
 
     // SANGER_TODO: everything in under comment until the 'out-of-memory' problem is resolved
-//    updateColorAndHighlightSchemes();
+    updateColorAndHighlightSchemes();
     updateActions();
 }
 
