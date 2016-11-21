@@ -72,11 +72,11 @@ BlastAllSupportRunDialog::BlastAllSupportRunDialog(U2SequenceObject *dnaso, QStr
     //lowerCaseCheckBox->hide();
     QWidget *wdgt = ca_c->getWidget();
     wdgt->setMinimumHeight(150);
-    verticalLayout_4->addWidget(wdgt);
+    annotationWidget->addWidget(wdgt);
 
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
-
+    
     programName->removeItem(2);//gpu-blastp
     if(dnaso->getAlphabet()->getType() == DNAAlphabet_AMINO){
         programName->removeItem(0);//blastn
@@ -136,11 +136,11 @@ void BlastAllSupportRunDialog::sl_runQuery(){
 BlastAllWithExtFileSpecifySupportRunDialog::BlastAllWithExtFileSpecifySupportRunDialog(QString &lastDBPath, QString &lastDBName, QWidget *parent)
 : BlastRunCommonDialog(parent, BlastAll, false, QStringList()), lastDBPath(lastDBPath), lastDBName(lastDBName), hasValidInput(false)
 {
-    ca_c=NULL;
-    wasNoOpenProject=false;
+    ca_c = NULL;
+    wasNoOpenProject = false;
     //create input file widget
     QWidget *widget = new QWidget(parent);
-    inputFileLineEdit= new FileLineEdit("","", false, widget);
+    inputFileLineEdit = new FileLineEdit("","", false, widget);
     inputFileLineEdit->setReadOnly(true);
     inputFileLineEdit->setText("");
     QToolButton * selectToolPathButton = new QToolButton(widget);
@@ -158,7 +158,7 @@ BlastAllWithExtFileSpecifySupportRunDialog::BlastAllWithExtFileSpecifySupportRun
     layout->addWidget(inputFileLineEdit);
     layout->addWidget(selectToolPathButton);
 
-    QGroupBox* inputFileGroupBox=new QGroupBox(tr("Select input file"),widget);
+    QGroupBox* inputFileGroupBox = new QGroupBox(tr("Select input file"),widget);
     inputFileGroupBox->setLayout(layout);
     QBoxLayout* parentLayout = qobject_cast<QBoxLayout*>(this->layout());
     assert(parentLayout);
@@ -287,7 +287,7 @@ void BlastAllWithExtFileSpecifySupportRunDialog::tryApplyDoc(Document *doc) {
         ca_c = new CreateAnnotationWidgetController(ca_m, this);
         QWidget *wdgt = ca_c->getWidget();
         wdgt->setMinimumHeight(150);
-        verticalLayout_4->addWidget(wdgt);
+        annotationWidget->addWidget(wdgt);
     } else {
         ca_c->updateWidgetForAnnotationModel(ca_m);
     }

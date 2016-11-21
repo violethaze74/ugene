@@ -80,7 +80,7 @@ BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(U2SequenceObject *dnaso, QS
     //lowerCaseCheckBox->hide();
     QWidget *wdgt = ca_c->getWidget();
     wdgt->setMinimumHeight(150);
-    verticalLayout_4->addWidget(wdgt);
+    annotationWidget->addWidget(wdgt);
 
     //programName->removeItem(3);//cuda-blastp
     if(dnaso->getAlphabet()->getType() == DNAAlphabet_AMINO){
@@ -363,7 +363,7 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::tryApplyDoc(Document *doc) {
         ca_c = new CreateAnnotationWidgetController(ca_m, this);
         QWidget *wdgt = ca_c->getWidget();
         wdgt->setMinimumHeight(150);
-        verticalLayout_4->addWidget(wdgt);
+        annotationWidget->addWidget(wdgt);
     } else {
         ca_c->updateWidgetForAnnotationModel(ca_m);
     }
