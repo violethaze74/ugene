@@ -14,10 +14,6 @@
         <translation>Создание молекулы</translation>
     </message>
     <message>
-        <source>Available fragments:</source>
-        <translation type="vanished">Доступные фрагменты:</translation>
-    </message>
-    <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="57"/>
         <source>Fragments available from active project</source>
         <translation>Фрагменты доступные из активного проекта</translation>
@@ -140,7 +136,7 @@
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="42"/>
         <source>Available fragments (core length - length without sticky ends):</source>
-        <translation type="unfinished"></translation>
+        <translation>Доступные фрагменты:</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
@@ -151,10 +147,6 @@
         <location filename="../src/ConstructMoleculeDialog.ui" line="255"/>
         <source>Circulirize result molecule</source>
         <translation>Сделать создаваемую молекулу круговой</translation>
-    </message>
-    <message>
-        <source>Make circlurar</source>
-        <translation type="vanished">Круговая молекула</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="266"/>
@@ -569,14 +561,6 @@ p, li { white-space: pre-wrap; }
         <translation>Искать в:</translation>
     </message>
     <message>
-        <source>Enzymes must not cut in the following region</source>
-        <translation type="vanished">Ферменты не должны &quot;разрезать&quot; данный регион</translation>
-    </message>
-    <message>
-        <source>Exclude region:</source>
-        <translation type="vanished">Исключить регион:</translation>
-    </message>
-    <message>
         <location filename="../src/FindEnzymesDialog.ui" line="128"/>
         <source>&lt;status label&gt;</source>
         <translation>&lt;статус&gt;</translation>
@@ -609,13 +593,9 @@ p, li { white-space: pre-wrap; }
         <translation>Задайте имя файла</translation>
     </message>
     <message>
-        <source>Genbank (*.gb )</source>
-        <translation type="vanished">Genbank (*.gb )</translation>
-    </message>
-    <message>
         <location filename="../src/ConstructMoleculeDialog.cpp" line="53"/>
         <source>core length</source>
-        <translation type="unfinished"></translation>
+        <translation>длина ядра</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.cpp" line="208"/>
@@ -1058,18 +1038,14 @@ To start ligation create a project or open an existing.</source>
         <translation>Число ферментов в базе: %1, выбрано %2</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected!                Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;body align=&quot;center&quot;&gt;Ферменты не выбраны!                Отключить &lt;br&gt;подсветку аннотаций ферментов?&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="557"/>
         <source>Invalid &apos;Search&apos; region!</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid &apos;Search&apos; region!</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="566"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="587"/>
@@ -1092,7 +1068,7 @@ To start ligation create a project or open an existing.</source>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="117"/>
         <source>Alphabet is not nucleic.</source>
-        <translation type="unfinished"></translation>
+        <translation>Алфавит не является нуклеотидным.</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="138"/>
@@ -1139,7 +1115,7 @@ To start ligation create a project or open an existing.</source>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="243"/>
         <source>Alphabet is not nucleic.</source>
-        <translation type="unfinished"></translation>
+        <translation>Алфавит не является нуклеотидным.</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="260"/>

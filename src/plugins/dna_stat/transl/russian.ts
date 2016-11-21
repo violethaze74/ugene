@@ -335,13 +335,6 @@
     </message>
 </context>
 <context>
-    <name>U2::DNAViewStatsContext</name>
-    <message>
-        <source>Statistics</source>
-        <translation type="vanished">Статистика</translation>
-    </message>
-</context>
-<context>
     <name>U2::DistanceMatrixMSAEditorContext</name>
     <message>
         <location filename="../src/DNAStatPlugin.cpp" line="108"/>

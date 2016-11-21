@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="153"/>
         <source>Extract annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Extract annotations</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="174"/>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="46"/>
         <source>The sequence has an unsupported alphabet: only nucleotide alphabet is supported</source>
-        <translation type="unfinished"></translation>
+        <translation>The sequence has an unsupported alphabet: only nucleotide alphabet is supported</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="47"/>

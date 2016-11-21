@@ -14,10 +14,6 @@
         <translation>Construction</translation>
     </message>
     <message>
-        <source>Available fragments:</source>
-        <translation type="vanished">Available fragments:</translation>
-    </message>
-    <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="57"/>
         <source>Fragments available from active project</source>
         <translation>Fragments available from active project</translation>
@@ -140,7 +136,7 @@
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="42"/>
         <source>Available fragments (core length - length without sticky ends):</source>
-        <translation type="unfinished">Available fragments (core length - length without sticky ends):</translation>
+        <translation>Available fragments (core length - length without sticky ends):</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
@@ -151,10 +147,6 @@
         <location filename="../src/ConstructMoleculeDialog.ui" line="255"/>
         <source>Circulirize result molecule</source>
         <translation>Circulirize result molecule</translation>
-    </message>
-    <message>
-        <source>Make circlurar</source>
-        <translation type="vanished">Make circlurar</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.ui" line="266"/>
@@ -570,14 +562,6 @@ p, li { white-space: pre-wrap; }
         <translation>Search  in:</translation>
     </message>
     <message>
-        <source>Enzymes must not cut in the following region</source>
-        <translation type="vanished">Enzymes must not cut in the following region</translation>
-    </message>
-    <message>
-        <source>Exclude region:</source>
-        <translation type="vanished">Exclude region:</translation>
-    </message>
-    <message>
         <location filename="../src/FindEnzymesDialog.ui" line="128"/>
         <source>&lt;status label&gt;</source>
         <translation>&lt;status label&gt;</translation>
@@ -611,13 +595,9 @@ p, li { white-space: pre-wrap; }
         <translation>Set new molecule file name</translation>
     </message>
     <message>
-        <source>Genbank (*.gb )</source>
-        <translation type="vanished">Genbank (*.gb )</translation>
-    </message>
-    <message>
         <location filename="../src/ConstructMoleculeDialog.cpp" line="53"/>
         <source>core length</source>
-        <translation type="unfinished"></translation>
+        <translation>core length</translation>
     </message>
     <message>
         <location filename="../src/ConstructMoleculeDialog.cpp" line="208"/>
@@ -1064,18 +1044,14 @@ To start ligation create a project or open an existing.</translation>
         <translation>Total number of enzymes: %1, selected %2</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected!                Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected!                Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="557"/>
         <source>Invalid &apos;Search&apos; region!</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid &apos;Search&apos; region!</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="566"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="587"/>
@@ -1098,7 +1074,7 @@ To start ligation create a project or open an existing.</translation>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="117"/>
         <source>Alphabet is not nucleic.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alphabet is not nucleic.</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="138"/>
@@ -1145,7 +1121,7 @@ To start ligation create a project or open an existing.</translation>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="243"/>
         <source>Alphabet is not nucleic.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alphabet is not nucleic.</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesTask.cpp" line="260"/>

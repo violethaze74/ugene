@@ -344,17 +344,17 @@ a database file</translation>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="59"/>
         <source>Query ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Query ID</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="75"/>
         <source>Select database</source>
-        <translation type="unfinished"></translation>
+        <translation>Select database</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="99"/>
         <source>Output path</source>
-        <translation type="unfinished"></translation>
+        <translation>Output path</translation>
     </message>
     <message>
         <source>Entery query ID:</source>
@@ -396,22 +396,22 @@ a database file</translation>
     <message>
         <location filename="../src/utils/BlastDBSelectorWidget.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished">Form</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/utils/BlastDBSelectorWidget.ui" line="40"/>
         <source>Database path</source>
-        <translation type="unfinished"></translation>
+        <translation>Database path</translation>
     </message>
     <message>
         <location filename="../src/utils/BlastDBSelectorWidget.ui" line="64"/>
         <source>Database file</source>
-        <translation type="unfinished"></translation>
+        <translation>Database file</translation>
     </message>
     <message>
         <location filename="../src/utils/BlastDBSelectorWidget.ui" line="73"/>
         <source>Base name for BLAST DB files</source>
-        <translation type="unfinished"></translation>
+        <translation>Base name for BLAST DB files</translation>
     </message>
     <message>
         <source>Database path:</source>
@@ -885,7 +885,7 @@ bowtie is somewhat slower when --best is specified.
     <message>
         <location filename="../src/bwa/BwaBuildSettings.ui" line="77"/>
         <source>autodetect</source>
-        <translation type="unfinished">autodetect</translation>
+        <translation>autodetect</translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaBuildSettings.ui" line="82"/>
@@ -1082,7 +1082,7 @@ bowtie is somewhat slower when --best is specified.
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="402"/>
         <source>Matching score (-A)</source>
-        <translation type="unfinished"></translation>
+        <translation>Matching score (-A)</translation>
     </message>
     <message>
         <location filename="../src/bwa/BwaMemSettings.ui" line="608"/>
@@ -1555,7 +1555,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="34"/>
         <source>Input and output</source>
-        <translation type="unfinished"></translation>
+        <translation>Input and output</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="42"/>
@@ -1619,7 +1619,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="34"/>
         <source>Input and output</source>
-        <translation type="unfinished"></translation>
+        <translation>Input and output</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWSupportRunDialog.ui" line="42"/>
@@ -1757,7 +1757,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/ETSSettingsWidget.ui" line="50"/>
         <source>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&quot;http://ugene.unipro.ru/external.html&quot;&gt;external tools package&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/ETSSettingsWidget.ui" line="70"/>
@@ -2247,7 +2247,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="28"/>
         <source>Input and output</source>
-        <translation type="unfinished"></translation>
+        <translation>Input and output</translation>
     </message>
     <message>
         <location filename="../src/mafft/MAFFTSupportRunDialog.ui" line="36"/>
@@ -2752,7 +2752,8 @@ Uncheck to get the maximum likelihood estimate.</translation>
         <location filename="../src/bwa/BwaSettingsWidget.cpp" line="44"/>
         <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB.
 In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB.
+In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</translation>
     </message>
     <message>
         <source>NOTE: &quot;bwtsw&quot; index algorithm is not supposed to work with reference sequences having size smaller than 10 MB. In order to achieve stable BWA performance it is strongly recommend to set the index algorithm to &quot;is&quot;</source>
@@ -2843,7 +2844,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="28"/>
         <source>Input and output</source>
-        <translation type="unfinished"></translation>
+        <translation>Input and output</translation>
     </message>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportRunDialog.ui" line="36"/>
@@ -3035,7 +3036,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="61"/>
         <source>A problem occurred during doing BLAST. The sequence is no more available.</source>
-        <translation type="unfinished"></translation>
+        <translation>A problem occurred during doing BLAST. The sequence is no more available.</translation>
     </message>
     <message>
         <location filename="../src/blast/BlastAllSupportTask.cpp" line="81"/>
@@ -3212,22 +3213,22 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/utils/BlastDBSelectorWidgetController.cpp" line="44"/>
         <source>Database path contains space characters.</source>
-        <translation type="unfinished">Database path contains space characters.</translation>
+        <translation>Database path contains space characters.</translation>
     </message>
     <message>
         <location filename="../src/utils/BlastDBSelectorWidgetController.cpp" line="49"/>
         <source>Database name contains space characters.</source>
-        <translation type="unfinished">Database name contains space characters.</translation>
+        <translation>Database name contains space characters.</translation>
     </message>
     <message>
         <location filename="../src/utils/BlastDBSelectorWidgetController.cpp" line="76"/>
         <source>Select a database file</source>
-        <translation type="unfinished">Select a database file</translation>
+        <translation>Select a database file</translation>
     </message>
     <message>
         <location filename="../src/utils/BlastDBSelectorWidgetController.cpp" line="108"/>
         <source>No alias or index file found for selected database.</source>
-        <translation type="unfinished"></translation>
+        <translation>No alias or index file found for selected database.</translation>
     </message>
 </context>
 <context>
@@ -3266,7 +3267,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="69"/>
         <source>A problem occurred during doing BLAST+. The sequence is no more available.</source>
-        <translation type="unfinished"></translation>
+        <translation>A problem occurred during doing BLAST+. The sequence is no more available.</translation>
     </message>
     <message>
         <location filename="../src/blast_plus/BlastPlusSupportCommonTask.cpp" line="93"/>
@@ -4548,7 +4549,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="487"/>
         <source>Contig assembly with %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Contig assembly with %1...</translation>
     </message>
     <message>
         <location filename="../src/ExternalToolSupportPlugin.cpp" line="462"/>
@@ -4860,7 +4861,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/blast/FormatDBSupportTask.cpp" line="95"/>
         <source>Can not remove directory for temporary files.</source>
-        <translation type="unfinished">Can not remove directory for temporary files.</translation>
+        <translation>Can not remove directory for temporary files.</translation>
     </message>
     <message>
         <location filename="../src/blast/FormatDBSupportTask.cpp" line="112"/>

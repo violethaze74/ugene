@@ -467,20 +467,6 @@ ugene --genome-aligner --reference=/path/to/ref --short-reads=/path/to/reads --r
     </message>
 </context>
 <context>
-    <name>U2::GenomeAlignerSettingsPageController</name>
-    <message>
-        <source>Genome Aligner</source>
-        <translation type="vanished">Genome Aligner</translation>
-    </message>
-</context>
-<context>
-    <name>U2::GenomeAlignerSettingsPageWidget</name>
-    <message>
-        <source>Choose Directory</source>
-        <translation type="vanished">Choose Directory</translation>
-    </message>
-</context>
-<context>
     <name>U2::GenomeAlignerSettingsWidget</name>
     <message>
         <location filename="../src/GenomeAlignerSettingsWidget.cpp" line="112"/>

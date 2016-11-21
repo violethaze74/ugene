@@ -356,25 +356,6 @@ Select valid file to build dotplot</translation>
     </message>
 </context>
 <context>
-    <name>U2::DotPlotImageExportTaskFactory</name>
-    <message>
-        <source>Dotplot widget is NULL</source>
-        <translation type="obsolete">Dotplot widget is NULL</translation>
-    </message>
-    <message>
-        <source>DotPlot</source>
-        <translation type="obsolete">DotPlot</translation>
-    </message>
-    <message>
-        <source>Include area selection</source>
-        <translation type="obsolete">Include area selection</translation>
-    </message>
-    <message>
-        <source>Include repeat selection</source>
-        <translation type="obsolete">Include repeat selection</translation>
-    </message>
-</context>
-<context>
     <name>U2::DotPlotImageExportToBitmapTask</name>
     <message>
         <location filename="../src/DotPlotImageExportTask.cpp" line="48"/>
