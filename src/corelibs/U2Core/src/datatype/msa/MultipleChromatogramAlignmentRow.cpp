@@ -354,6 +354,11 @@ qint64 MultipleChromatogramAlignmentRowData::getRowLengthWithoutTrailing() const
     return MsaRowUtils::getRowLengthWithoutTrailing(qMax(gappedPredictedDataLength, gappedEditedDataLength), commonGapModel);
 }
 
+qint64 MultipleChromatogramAlignmentRowData::getBaseCount(qint64 before) const {
+    const qint64 rowLength = MsaRowUtils::getRowLength(editedSequence.seq, editedSequenceCachedGapModel);
+    return MsaRowUtils::getUngappedPosition(editedSequenceCachedGapModel, editedSequence.length(), qMin(rowLength, before), true);
+}
+
 U2Region MultipleChromatogramAlignmentRowData::getCoreRegion() const {
     return U2Region(getCoreStart(), getCoreLength());
 }
@@ -362,14 +367,13 @@ U2Region MultipleChromatogramAlignmentRowData::getWorkingAreaRegion() const {
     return workingArea;
 }
 
-QByteArray MultipleChromatogramAlignmentRowData::toByteArray(int length, U2OpStatus &os) const {
+QByteArray MultipleChromatogramAlignmentRowData::toByteArray(qint64 length, U2OpStatus &os) const {
     // SANGER_TODO: limit to the provider length!
     return getEditedSequenceData();
 }
 
-char MultipleChromatogramAlignmentRowData::charAt(int pos) const {
-    // SANGER_TODO: check gaps!
-    return MsaRowUtils::charAt(editedSequence.seq, editedSequenceCachedGapModel, pos);
+char MultipleChromatogramAlignmentRowData::charAt(qint64 position) const {
+    return getEditedSequenceChar(position);
 }
 
 char MultipleChromatogramAlignmentRowData::getPredictedSequenceWorkingAreaChar(qint64 position) const {

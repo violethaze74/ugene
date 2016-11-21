@@ -183,12 +183,13 @@ public:
     qint64 getWorkingAreaLength() const;    // from the first nonhided symbol to the last nonhided symbol, included gaps whithin
     qint64 getRowLength() const;    // returns an MCA length
     qint64 getRowLengthWithoutTrailing() const; // leading gaps + core length - a real length of the row without trailing gaps
+    qint64 getBaseCount(qint64 before) const;
 
     U2Region getCoreRegion() const;
     U2Region getWorkingAreaRegion() const;
 
-    QByteArray toByteArray(int length, U2OpStatus &os) const;
-    char charAt(int pos) const;
+    QByteArray toByteArray(qint64 length, U2OpStatus &os) const;
+    char charAt(qint64 position) const;
 
     char getPredictedSequenceWorkingAreaChar(qint64 position) const;
     char getPredictedSequenceChar(qint64 position) const;

@@ -40,6 +40,8 @@ GObjectType U2ObjectTypeUtils::toGObjectType( const U2DataType &dbType ) {
         result = GObjectTypes::BIOSTRUCTURE_3D;
     } else if ( U2Type::Assembly == dbType ) {
         result = GObjectTypes::ASSEMBLY;
+    } else if ( U2Type::Mca == dbType ) {
+        result = GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
     } else if ( U2Type::Msa == dbType ) {
         result = GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     } else if ( U2Type::VariantTrack == dbType ) {
@@ -67,6 +69,8 @@ U2DataType U2ObjectTypeUtils::toDataType( const GObjectType &gType ) {
         result = U2Type::BioStruct3D;
     } else if ( GObjectTypes::ASSEMBLY == gType ) {
         result = U2Type::Assembly;
+    } else if ( GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT == gType ) {
+        result = U2Type::Mca;
     } else if ( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT == gType ) {
         result = U2Type::Msa;
     } else if ( GObjectTypes::VARIANT_TRACK == gType ) {

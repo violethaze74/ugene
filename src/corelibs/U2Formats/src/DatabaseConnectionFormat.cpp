@@ -59,7 +59,7 @@ DatabaseConnectionFormat::DatabaseConnectionFormat(QObject *p) :
                          << GObjectTypes::ANNOTATION_TABLE
                          << GObjectTypes::VARIANT_TRACK
                          << GObjectTypes::CHROMATOGRAM
-                         << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT
+                         << GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT
                          << GObjectTypes::PHYLOGENETIC_TREE
                          << GObjectTypes::BIOSTRUCTURE_3D
                          << GObjectTypes::ASSEMBLY;
