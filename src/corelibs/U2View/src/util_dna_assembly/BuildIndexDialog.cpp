@@ -173,12 +173,23 @@ void BuildIndexDialog::buildIndexUrl(const GUrl& refUrl ) {
 void BuildIndexDialog::accept()
 {
 
-    if ((getAlgorithmName() == "Bowtie") || (getAlgorithmName() == "Bowtie2")) {
+    if ((getAlgorithmName() == "Bowtie") || (getAlgorithmName() == "Bowtie2") || (getAlgorithmName() == "BWA") || (getAlgorithmName() == "BWA-MEM") || (getAlgorithmName() == "BWA-SW")) {
         QString externalToolName;
+        
         if (getAlgorithmName() == "Bowtie2") {
             externalToolName = "Bowtie 2 build indexer";
-        } else {
+        } 
+        if (getAlgorithmName() == "Bowtie"){
             externalToolName = "Bowtie build indexer";
+        }
+        if (getAlgorithmName() == "BWA"){
+            externalToolName = "BWA";
+        }
+        if (getAlgorithmName() == "BWA-MEM"){
+            externalToolName = "BWA";
+        }
+        if (getAlgorithmName() == "BWA-SW"){
+            externalToolName = "BWA";
         }
         if(AppContext::getExternalToolRegistry()->getByName(externalToolName)->getPath().isEmpty()) {
             QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
