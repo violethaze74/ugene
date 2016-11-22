@@ -94,11 +94,17 @@ DNAChromatogram ExportMsa2McaTask::generateChromatogram(const QString &name, con
     DNAChromatogram chromatogram;
     chromatogram.name = name;
     chromatogram.traceLength = length;
+    chromatogram.seqLength = length;
     for (int i = 0; i < length; i++) {
-        chromatogram.A += rand() % 10000;
-        chromatogram.C += rand() % 10000;
-        chromatogram.G += rand() % 10000;
-        chromatogram.T += rand() % 10000;
+        chromatogram.A += rand() % 2000;
+        chromatogram.C += rand() % 2000;
+        chromatogram.G += rand() % 2000;
+        chromatogram.T += rand() % 2000;
+        chromatogram.prob_A += rand() % 73;
+        chromatogram.prob_C += rand() % 73;
+        chromatogram.prob_G += rand() % 73;
+        chromatogram.prob_T += rand() % 73;
+        chromatogram.baseCalls += rand() % 10000;
     }
     return chromatogram;
 }
