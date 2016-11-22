@@ -200,7 +200,6 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
     connect(ui->getCollapseModel(), SIGNAL(toggled()), SLOT(sl_modelChanged()));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
-    connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
 
     QAction* undoAction = ui->getUndoAction();
     QAction* redoAction = ui->getRedoAction();
@@ -981,14 +980,6 @@ void MSAEditorSequenceArea::sl_modelChanged() {
     completeRedraw = true;
     updateVScrollBar();
     update();
-}
-
-void MSAEditorSequenceArea::sl_completeUpdate(){
-    completeRedraw = true;
-    validateRanges();
-    updateActions();
-    update();
-    onVisibleRangeChanged();
 }
 
 void MSAEditorSequenceArea::sl_createSubaligniment(){

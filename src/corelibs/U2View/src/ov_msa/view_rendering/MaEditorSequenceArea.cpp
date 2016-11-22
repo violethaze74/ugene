@@ -77,6 +77,8 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
 
     cachedView = new QPixmap();
     completeRedraw = true;
+
+    connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
 }
 
 MaEditorSequenceArea::~MaEditorSequenceArea() {
@@ -865,6 +867,14 @@ void MaEditorSequenceArea::sl_onVScrollMoved(int seq) {
         SAFE_POINT(0 <= seq && seq <= editor->getNumSequences() - getNumVisibleSequences(false), tr("Sequence is out of range: %1").arg(QString::number(seq)), );
         setFirstVisibleSequence(seq);
     }
+}
+
+void MaEditorSequenceArea::sl_completeUpdate(){
+    completeRedraw = true;
+    validateRanges();
+    updateActions();
+    update();
+    onVisibleRangeChanged();
 }
 
 void MaEditorSequenceArea::sl_triggerUseDots() {

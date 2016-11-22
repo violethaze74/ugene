@@ -196,6 +196,8 @@ protected slots:
     void sl_onHScrollMoved(int pos);
     void sl_onVScrollMoved(int pos);
 
+    void sl_completeUpdate();
+
     void sl_triggerUseDots();
     void sl_useDots();
 

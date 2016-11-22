@@ -188,7 +188,6 @@ private slots:
     void sl_modelChanged();
 
     void sl_showCustomSettings();
-    void sl_completeUpdate();
 
     void sl_resetCollapsibleModel();
     void sl_setCollapsingRegions(const QList<QStringList>&);
