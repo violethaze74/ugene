@@ -154,8 +154,6 @@ protected:
     void focusInEvent(QFocusEvent* fe);
 
 private slots:
-    void sl_onHScrollMoved(int pos);
-    void sl_onVScrollMoved(int pos);
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
 
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
@@ -199,10 +197,6 @@ private slots:
     void sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
 
     void sl_changeSelectionColor();
-
-
-protected:
-    virtual void wheelEvent (QWheelEvent * event);
 
 private:
     void initRenderer();

@@ -849,6 +849,24 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
     emit si_stopMsaChanging(true);
 }
 
+void MaEditorSequenceArea::sl_onHScrollMoved(int pos) {
+    if (isAlignmentEmpty()) {
+        setFirstVisibleBase(-1);
+    } else {
+        SAFE_POINT(0 <= pos && pos <= editor->getAlignmentLen() - getNumVisibleBases(false), tr("Position is out of range: %1").arg(QString::number(pos)), );
+        setFirstVisibleBase(pos);
+    }
+}
+
+void MaEditorSequenceArea::sl_onVScrollMoved(int seq) {
+    if (isAlignmentEmpty()) {
+        setFirstVisibleSequence(-1);
+    } else {
+        SAFE_POINT(0 <= seq && seq <= editor->getNumSequences() - getNumVisibleSequences(false), tr("Sequence is out of range: %1").arg(QString::number(seq)), );
+        setFirstVisibleSequence(seq);
+    }
+}
+
 void MaEditorSequenceArea::sl_triggerUseDots() {
     useDotsAction->trigger();
 }
@@ -973,6 +991,16 @@ void MaEditorSequenceArea::resizeEvent(QResizeEvent *e) {
 void MaEditorSequenceArea::paintEvent(QPaintEvent *e) {
     drawAll();
     QWidget::paintEvent(e);
+}
+
+void MaEditorSequenceArea::wheelEvent (QWheelEvent * we) {
+    bool toMin = we->delta() > 0;
+    if (we->modifiers() == 0) {
+        shBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
+    }  else if (we->modifiers() & Qt::SHIFT) {
+        svBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
+    }
+    QWidget::wheelEvent(we);
 }
 
 void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {

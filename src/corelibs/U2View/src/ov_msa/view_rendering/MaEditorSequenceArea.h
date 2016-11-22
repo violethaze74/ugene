@@ -193,6 +193,9 @@ public slots:
     void sl_delCurrentSelection();
 
 protected slots:
+    void sl_onHScrollMoved(int pos);
+    void sl_onVScrollMoved(int pos);
+
     void sl_triggerUseDots();
     void sl_useDots();
 
@@ -220,6 +223,7 @@ protected:
 protected:
     void resizeEvent(QResizeEvent *);
     void paintEvent(QPaintEvent *);
+    void wheelEvent (QWheelEvent * event);
     void mousePressEvent(QMouseEvent *);
 
 protected:
