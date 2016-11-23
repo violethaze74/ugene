@@ -34,7 +34,7 @@
 namespace U2 {
 
 class MaEditor;
-class MultipleSequenceAlignmentObject;
+class MultipleAlignmentObject;
 class MSAConsensusAlgorithm;
 class MsaColorScheme;
 class MsaHighlightingScheme;

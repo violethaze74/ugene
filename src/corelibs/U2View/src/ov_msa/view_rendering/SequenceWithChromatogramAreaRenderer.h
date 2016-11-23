@@ -24,19 +24,12 @@
 
 #include "SequenceAreaRenderer.h"
 
+#include <U2Core/MultipleChromatogramAlignmentRow.h>
+
 namespace U2 {
 
+class ChromatogramViewSettings;
 class McaEditorSequenceArea;
-
-struct ChromatogramViewSettings {
-    bool drawTraceA, drawTraceC, drawTraceG, drawTraceT;
-    ChromatogramViewSettings()  {
-        drawTraceA = true;
-        drawTraceC = true;
-        drawTraceG = true;
-        drawTraceT = true;
-    }
-};
 
 class SequenceWithChromatogramAreaRenderer : public SequenceAreaRenderer {
     Q_OBJECT
@@ -44,9 +37,9 @@ public:
     SequenceWithChromatogramAreaRenderer(McaEditorSequenceArea* seqAreaWgt);
 
 private:
-    bool drawRow(QPainter &p, const MultipleSequenceAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
+    bool drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
 
-    void drawChromatogram(QPainter &p, DNAChromatogram &chroma, U2Region& visibleRange);
+    void drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRange);
 
     QColor getBaseColor(char base);
 
@@ -62,12 +55,11 @@ private:
     void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma,
                                         qreal x, qreal y, qreal w, qreal h,
                                         QPainter& p, const U2Region& visible, const QByteArray& ba/*, const ChromatogramViewSettings& settings*/);
+private:
+    McaEditorSequenceArea* getSeqArea() const;
+    const ChromatogramViewSettings& getSettings() const;
 
 private:
-    // SANGER_TODO: move to area-wgt - it should be controlled from there
-    ChromatogramViewSettings    settings;
-
-
     qreal   charWidth;
     qreal   charHeight;
     qreal   addUpIfQVL;

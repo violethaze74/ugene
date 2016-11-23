@@ -39,7 +39,7 @@ namespace U2 {
 
 MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleAlignmentObject* maObject, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
-      ma(maObject->getMultipleAlignmentCopy()),
+      ma(maObject->getMultipleAlignmentCopy()), // SANGER_TODO: getiing before any check
       memLocker(stateInfo),
       msaLength(0),
       seqNumber(0),
@@ -53,6 +53,7 @@ MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleAlignmentObject* maObje
         setError(memLocker.getError());
         return;
     }
+//    ma = msa->getMultipleAlignmentCopy();
     connect(maObject, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
     connect(maObject, SIGNAL(si_startMaUpdating()), this, SLOT(cancel()));
     connect(maObject, SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)), this, SLOT(cancel()));

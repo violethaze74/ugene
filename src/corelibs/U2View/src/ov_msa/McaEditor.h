@@ -43,6 +43,8 @@ public:
 
     virtual int getRowHeight() const;
 
+    bool getShowChromatogram() const { return showChromatograms; }
+
 protected slots:
     void sl_showHideChromatograms(bool show);
 
@@ -50,7 +52,6 @@ protected:
     QWidget* createWidget();
 
     bool              showChromatograms;
-
     QAction*          showChromatogramsAction;
 };
 

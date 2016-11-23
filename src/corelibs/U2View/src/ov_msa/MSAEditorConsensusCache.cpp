@@ -67,6 +67,7 @@ void MSAEditorConsensusCache::sl_alignmentChanged() {
 void MSAEditorConsensusCache::updateCacheItem(int pos) {
     if(!updateMap.at(pos) && aliObj != NULL) {
         const MultipleAlignment ma = aliObj->getMultipleAlignment();
+
         QString errorMessage = tr("Can not update consensus chache item");
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage,);
         SAFE_POINT(curCacheSize == ma->getLength(), errorMessage,);

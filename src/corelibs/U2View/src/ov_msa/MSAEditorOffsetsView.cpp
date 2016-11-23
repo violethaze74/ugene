@@ -58,7 +58,7 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MaEdi
     MultipleAlignmentObject *mobj = editor->getMaObject();
     SAFE_POINT(NULL != mobj, L10N::nullPointerError("multiple alignment object"), );
     connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
-        SLOT(sl_alignmentChanged()));
+        SLOT(sl_updateOffsets()));
 
     seqArea->installEventFilter(this);
 

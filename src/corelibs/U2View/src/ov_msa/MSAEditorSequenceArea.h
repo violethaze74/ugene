@@ -118,23 +118,10 @@ public:
 
     MSAEditor* getEditor() const { return qobject_cast<MSAEditor*>(editor); }
 
-    /**
-     * Shifts currently selected region to @shift.
-     * If @shift > 0, the region is moved to the right and "true" is returned.
-     * If @shift <= 0, the region is moved to the left only for the available number
-     * of columns (i.e. the columns with gaps). The returned value specifies
-     * whether the region was actually moved in this case.
-     */
-    bool shiftSelectedRegion(int shift);
-
     void deleteCurrentSelection();
 
     void processCharacterInEditMode(QKeyEvent *e);
     void replaceSelectedCharacter(char newCharacter);
-
-    void addRowToSelection(int rowNumber);
-    void deleteRowFromSelection(int rowNumber);
-    void clearSelection();
 
     QStringList getAvailableHighlightingSchemes() const;
 
@@ -142,13 +129,6 @@ public:
 
 private:
     // emulating cursor mode with
-
-    void setCursorPos(const QPoint& p);
-
-    void setCursorPos(int x, int y);
-
-    void setCursorPos(int pos);
-
     void moveCursor(int dx, int dy);
 
     void highlightCurrentSelection();
@@ -157,19 +137,12 @@ public:
     QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 protected:
-    void resizeEvent(QResizeEvent *);
-    void paintEvent(QPaintEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
     void keyPressEvent(QKeyEvent *);
     void keyReleaseEvent(QKeyEvent *);
     void focusOutEvent(QFocusEvent* fe);
     void focusInEvent(QFocusEvent* fe);
 
 private slots:
-    void sl_onHScrollMoved(int pos);
-    void sl_onVScrollMoved(int pos);
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
 
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
@@ -204,7 +177,6 @@ private slots:
     void sl_modelChanged();
 
     void sl_showCustomSettings();
-    void sl_completeUpdate();
 
     void sl_resetCollapsibleModel();
     void sl_setCollapsingRegions(const QList<QStringList>&);
@@ -214,20 +186,12 @@ private slots:
 
     void sl_changeSelectionColor();
 
-
-protected:
-    virtual void wheelEvent (QWheelEvent * event);
-
 private:
     void initRenderer();
 
     void buildMenu(QMenu* m);
 
     void updateActions();
-
-    void drawAll();
-    void drawFocus(QPainter& p);
-    void drawSelection(QPainter &p);
 
     /**
      * Inserts a region consisting of gaps only before the selection. The inserted region width
@@ -252,8 +216,6 @@ private:
      * the selection width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
      */
     void removeGapsPrecedingSelection( int countOfGaps = -1 );
-
-    void validateRanges();          //called on resize/refont like events
 
     void reverseComplementModification(ModificationType& type);
 

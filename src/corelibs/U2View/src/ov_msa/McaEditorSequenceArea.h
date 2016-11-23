@@ -29,6 +29,19 @@ namespace U2 {
 
 class McaEditor;
 
+struct ChromatogramViewSettings {
+    ChromatogramViewSettings()  {
+        drawTraceA = true;
+        drawTraceC = true;
+        drawTraceG = true;
+        drawTraceT = true;
+    }
+    bool drawTraceA;
+    bool drawTraceC;
+    bool drawTraceG;
+    bool drawTraceT;
+};
+
 class McaEditorSequenceArea : public MaEditorSequenceArea {
     Q_OBJECT
 public:
@@ -36,11 +49,30 @@ public:
 
     McaEditor* getEditor() const { return qobject_cast<McaEditor*>(editor); }
 
+    const ChromatogramViewSettings&  getSettings() const { return settings; }
+
     void deleteCurrentSelection() {}
+
+private slots:
+    void sl_showHideTrace();
+    void sl_showAllTraces();
+
+    void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 
 private:
     void initRenderer();
     void updateActions() {}
+
+    void buildMenu(QMenu* m);
+
+    QAction* createToggleTraceAction(const QString& actionName);
+
+private:
+    ChromatogramViewSettings    settings;
+
+    QAction*    showQVAction;
+    QAction*    showAllTraces;
+    QMenu*      traceActionMenu;
 };
 
 
