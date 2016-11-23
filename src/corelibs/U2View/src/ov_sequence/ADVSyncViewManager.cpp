@@ -28,6 +28,7 @@
 
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/AnnotationTableObject.h>
+#include <U2Core/Counter.h>
 
 namespace U2 {
 
@@ -263,7 +264,7 @@ void ADVSyncViewManager::sl_rangeChanged() {
 }
 
 void ADVSyncViewManager::sl_lock() {
-
+    GCOUNTER(tvar, cvar, "SequenceView::SyncViewManager::Lock scales");
     QObject* s = sender();
     bool buttonClicked = (s == lockButton);
 
@@ -297,6 +298,7 @@ void ADVSyncViewManager::sl_lock() {
 }
 
 void ADVSyncViewManager::sl_sync() {
+    GCOUNTER(tvar, cvar, "SequenceView::SyncViewManager::Adjust scales");
     QObject* s = sender();
     SyncMode m = SyncMode_Start;
     if (s == syncBySeqSelAction) {
