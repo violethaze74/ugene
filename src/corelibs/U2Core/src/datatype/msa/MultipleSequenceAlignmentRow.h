@@ -122,7 +122,7 @@ public:
      * When the specified length is greater, an appropriate number of
      * trailing gaps are appended to the end of the byte array.
      */
-    QByteArray toByteArray(int length, U2OpStatus &os) const;
+    QByteArray toByteArray(qint64 length, U2OpStatus &os) const;
 
     /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
     int getRowLength() const;
@@ -140,10 +140,10 @@ public:
     inline int getCoreEnd() const;
 
     /** Obsolete. Always returns zero. */
-    inline int getCoreStart() const;
+    qint64 getCoreStart() const;
 
     /** Obsolete. The length of the row core */
-    int getCoreLength() const;
+    qint64 getCoreLength() const;
 
     /** Removes all gaps. Returns true if changed. */
     virtual inline bool simplify();
@@ -176,7 +176,7 @@ public:
      * Returns a character in row at the specified position.
      * If the specified position is outside the row bounds, returns a gap.
      */
-    char charAt(int pos) const;
+    char charAt(qint64 position) const;
     bool isGap(int pos) const;
 
     /** Length of the sequence without gaps */
@@ -191,7 +191,7 @@ public:
     /**
      * Returns base count located leftward to the 'before' position in the alignment.
      */
-    int getBaseCount(int before) const;
+    qint64 getBaseCount(qint64 before) const;
 
     /**
      * Exactly compares the rows. Sequences and gap models must match.
@@ -299,10 +299,6 @@ inline qint64 MultipleSequenceAlignmentRowData::getRowLengthWithoutTrailing() co
 
 inline int MultipleSequenceAlignmentRowData::getCoreEnd() const {
     return getRowLengthWithoutTrailing();
-}
-
-inline int MultipleSequenceAlignmentRowData::getCoreStart() const {
-    return MsaRowUtils::getCoreStart(gaps);
 }
 
 inline bool MultipleSequenceAlignmentRowData::simplify() {

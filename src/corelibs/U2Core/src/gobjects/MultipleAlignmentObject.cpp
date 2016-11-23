@@ -219,7 +219,7 @@ void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModification
     ensureDataLoaded();
     emit si_startMaUpdating();
 
-    MultipleSequenceAlignment maBefore = cachedMa->getCopy();
+    MultipleAlignment maBefore = cachedMa->getCopy();
     QString oldName = maBefore->getName();
 
     U2OpStatus2Log os;

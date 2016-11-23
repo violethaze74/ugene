@@ -1032,6 +1032,9 @@ void MysqlObjectDbi::removeObjectSpecificData(const U2DataId &objectId, U2OpStat
     case U2Type::VariantTrack:
         // nothing has to be done for objects of these types
         break;
+    case U2Type::Mca:
+        dbi->getMysqlMcaDbi()->deleteRowsData(objectId, os);
+        break;
     case U2Type::Msa:
         dbi->getMysqlMsaDbi()->deleteRowsData(objectId, os);
         break;

@@ -189,7 +189,7 @@ void MultipleSequenceAlignmentRowData::setRowDbInfo(const U2MsaRow &dbRow) {
     initialRowInDb = dbRow;
 }
 
-QByteArray MultipleSequenceAlignmentRowData::toByteArray(int length, U2OpStatus &os) const {
+QByteArray MultipleSequenceAlignmentRowData::toByteArray(qint64 length, U2OpStatus &os) const {
     if (length < getCoreEnd()) {
         coreLog.trace("Incorrect length was passed to MultipleSequenceAlignmentRowData::toByteArray");
         os.setError("Failed to get row data");
@@ -229,7 +229,7 @@ QByteArray MultipleSequenceAlignmentRowData::getData() const {
     return joinCharsAndGaps(true, true);
 }
 
-int MultipleSequenceAlignmentRowData::getCoreLength() const {
+qint64 MultipleSequenceAlignmentRowData::getCoreLength() const {
     int coreStart = getCoreStart();
     int coreEnd = getCoreEnd();
     int length = coreEnd - coreStart;
@@ -317,8 +317,8 @@ void MultipleSequenceAlignmentRowData::removeChars(int pos, int count, U2OpStatu
     mergeConsecutiveGaps();
 }
 
-char MultipleSequenceAlignmentRowData::charAt(int pos) const {
-    return MsaRowUtils::charAt(sequence.seq, gaps, pos);
+char MultipleSequenceAlignmentRowData::charAt(qint64 position) const {
+    return MsaRowUtils::charAt(sequence.seq, gaps, position);
 }
 
 bool MultipleSequenceAlignmentRowData::isGap(int pos) const {
@@ -329,7 +329,7 @@ int MultipleSequenceAlignmentRowData::getUngappedPosition(int pos) const {
     return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), pos);
 }
 
-int MultipleSequenceAlignmentRowData::getBaseCount(int before) const {
+qint64 MultipleSequenceAlignmentRowData::getBaseCount(qint64 before) const {
     const int rowLength = MsaRowUtils::getRowLength(sequence.seq, gaps);
     const int trimmedRowPos = before < rowLength ? before : rowLength;
     return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), trimmedRowPos, true);
@@ -614,6 +614,10 @@ void MultipleSequenceAlignmentRowData::setParentAlignment(const MultipleSequence
 
 void MultipleSequenceAlignmentRowData::setParentAlignment(MultipleSequenceAlignmentData *msaData) {
     alignment = msaData;
+}
+
+qint64 MultipleSequenceAlignmentRowData::getCoreStart() const {
+    return MsaRowUtils::getCoreStart(gaps);
 }
 
 }   // namespace U2

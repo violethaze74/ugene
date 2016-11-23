@@ -37,26 +37,26 @@
 
 namespace U2 {
 
-MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleAlignmentObject* msa, int width, int height)
+MSAGraphCalculationTask::MSAGraphCalculationTask(MultipleAlignmentObject* maObject, int width, int height)
     : BackgroundTask<QPolygonF>(tr("Render overview"), TaskFlag_None),
-      ma(msa->getMultipleAlignmentCopy()), // SANGER_TODO: getiing before any check
+      ma(maObject->getMultipleAlignmentCopy()), // SANGER_TODO: getiing before any check
       memLocker(stateInfo),
       msaLength(0),
       seqNumber(0),
       width(width),
       height(height)
 {
-    SAFE_POINT_EXT(msa != NULL, setError(tr("MSA is NULL")), );
-    msaLength = msa->getLength();
-    seqNumber = msa->getNumRows();
-    if(!memLocker.tryAcquire(msa->getMultipleAlignment()->getLength() * msa->getMultipleAlignment()->getNumRows())) {
+    SAFE_POINT_EXT(maObject != NULL, setError(tr("MSA is NULL")), );
+    msaLength = maObject->getLength();
+    seqNumber = maObject->getNumRows();
+    if(!memLocker.tryAcquire(maObject->getMultipleAlignment()->getLength() * maObject->getMultipleAlignment()->getNumRows())) {
         setError(memLocker.getError());
         return;
     }
 //    ma = msa->getMultipleAlignmentCopy();
-    connect(msa, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
-    connect(msa, SIGNAL(si_startMaUpdating()), this, SLOT(cancel()));
-    connect(msa, SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)), this, SLOT(cancel()));
+    connect(maObject, SIGNAL(si_invalidateAlignmentObject()), this, SLOT(cancel()));
+    connect(maObject, SIGNAL(si_startMaUpdating()), this, SLOT(cancel()));
+    connect(maObject, SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)), this, SLOT(cancel()));
 }
 
 void MSAGraphCalculationTask::run() {

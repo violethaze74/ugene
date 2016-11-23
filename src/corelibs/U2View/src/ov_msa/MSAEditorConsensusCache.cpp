@@ -66,17 +66,18 @@ void MSAEditorConsensusCache::sl_alignmentChanged() {
 
 void MSAEditorConsensusCache::updateCacheItem(int pos) {
     if(!updateMap.at(pos) && aliObj != NULL) {
-        const MultipleAlignment msa = aliObj->getMultipleAlignment();
+        const MultipleAlignment ma = aliObj->getMultipleAlignment();
+
         QString errorMessage = tr("Can not update consensus chache item");
         SAFE_POINT(pos >= 0 && pos < curCacheSize, errorMessage,);
-        SAFE_POINT(curCacheSize == msa->getLength(), errorMessage,);
+        SAFE_POINT(curCacheSize == ma->getLength(), errorMessage,);
 
         CacheItem& ci = cache[pos];
         int count = 0;
-        int nSeq = msa->getNumRows();
+        int nSeq = ma->getNumRows();
         SAFE_POINT(0 != nSeq, errorMessage,);
 
-        ci.topChar = algorithm->getConsensusCharAndScore(msa, pos, count);
+        ci.topChar = algorithm->getConsensusCharAndScore(ma, pos, count);
         ci.topPercent = (char)qRound(count * 100. / nSeq);
         assert(ci.topPercent >=0 && ci.topPercent<=100);
         updateMap.setBit(pos, true);
