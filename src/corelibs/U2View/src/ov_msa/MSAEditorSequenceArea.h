@@ -118,15 +118,6 @@ public:
 
     MSAEditor* getEditor() const { return qobject_cast<MSAEditor*>(editor); }
 
-    /**
-     * Shifts currently selected region to @shift.
-     * If @shift > 0, the region is moved to the right and "true" is returned.
-     * If @shift <= 0, the region is moved to the left only for the available number
-     * of columns (i.e. the columns with gaps). The returned value specifies
-     * whether the region was actually moved in this case.
-     */
-    bool shiftSelectedRegion(int shift);
-
     void deleteCurrentSelection();
 
     void processCharacterInEditMode(QKeyEvent *e);
@@ -146,8 +137,6 @@ public:
     QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 protected:
-    void mouseReleaseEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
     void keyPressEvent(QKeyEvent *);
     void keyReleaseEvent(QKeyEvent *);
     void focusOutEvent(QFocusEvent* fe);

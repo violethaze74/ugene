@@ -98,6 +98,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     initRenderer();
 
     selectionColor = Qt::black;
+    editingEnabled = false;
 
     connect(&editModeAnimationTimer, SIGNAL(timeout()), SLOT(sl_changeSelectionColor()));
 
@@ -194,6 +195,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
             ui,     SIGNAL(si_stopMsaChanging(bool)));
 
     connect(ui->getCollapseModel(), SIGNAL(toggled()), SLOT(sl_modelChanged()));
+    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
 
     QAction* undoAction = ui->getUndoAction();
@@ -253,58 +255,6 @@ void MSAEditorSequenceArea::updateActions() {
     removeAllGapsAction->setEnabled(canEditAlignment);
 
     assert(checkState());
-}
-
-#define SCROLL_STEP 1
-
-void MSAEditorSequenceArea::mouseMoveEvent(QMouseEvent* e) {
-    if (e->buttons() & Qt::LeftButton) {
-        QPoint newCurPos = coordToAbsolutePosOutOfRange(e->pos());
-        if (isInRange(newCurPos)) {
-            updateHBarPosition(newCurPos.x());
-            updateVBarPosition(newCurPos.y());
-        }
-
-        if (shifting) {
-            shiftSelectedRegion(newCurPos.x() - cursorPos.x());
-        } else if (selecting) {
-            rubberBand->setGeometry(QRect(origin, e->pos()).normalized());
-        }
-    }
-
-    QWidget::mouseMoveEvent(e);
-}
-
-void MSAEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
-    rubberBand->hide();
-    if (shifting) {
-        changeTracker.finishTracking();
-        editor->getMaObject()->releaseState();
-    }
-
-    QPoint newCurPos = coordToAbsolutePos(e->pos());
-
-    int firstVisibleSeq = getFirstVisibleSequence();
-    int visibleRowsNums = getNumDisplayedSequences() - 1;
-
-    int yPosWithValidations = qMax(firstVisibleSeq, newCurPos.y());
-    yPosWithValidations = qMin(yPosWithValidations, visibleRowsNums + firstVisibleSeq);
-
-    newCurPos.setY(yPosWithValidations);
-
-    if (shifting) {
-        emit si_stopMsaChanging(msaVersionBeforeShifting != editor->getMaObject()->getModificationVersion());
-    } else if (Qt::LeftButton == e->button() && Qt::LeftButton == prevPressedButton) {
-        updateSelection(newCurPos);
-    }
-    shifting = false;
-    selecting = false;
-    msaVersionBeforeShifting = -1;
-
-    shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-    svBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-
-    QWidget::mouseReleaseEvent(e);
 }
 
 void MSAEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
@@ -1138,46 +1088,6 @@ void MSAEditorSequenceArea::sl_pasteFinished(Task* _pasteTask){
 
     AddSequencesFromDocumentsToAlignmentTask *task = new AddSequencesFromDocumentsToAlignmentTask(msaObject, docs);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
-}
-
-bool MSAEditorSequenceArea::shiftSelectedRegion(int shift) {
-    CHECK(getEditor() != NULL, false);
-    if (0 == shift) {
-        return true;
-    }
-
-    MultipleSequenceAlignmentObject *maObj = getEditor()->getMaObject();
-    if (!maObj->isStateLocked()) {
-        const U2Region rows = getSelectedRows();
-        const int x = selection.x();
-        const int y = rows.startPos;
-        const int width = selection.width();
-        const int height = rows.length;
-        if (maObj->isRegionEmpty(x, y, width, height)) {
-            return true;
-        }
-        // backup current selection for the case when selection might disappear
-        const MaEditorSelection selectionBackup = selection;
-
-        const int resultShift = maObj->shiftRegion(x, y, width, height, shift);
-        if (0 != resultShift) {
-            int newCursorPosX = (cursorPos.x() + resultShift >= 0) ? cursorPos.x() + resultShift : 0;
-            setCursorPos(newCursorPosX);
-
-            const MaEditorSelection newSelection(selectionBackup.x() + resultShift, selectionBackup.y(),
-                selectionBackup.width(), selectionBackup.height());
-            setSelection(newSelection);
-            if ((selectionBackup.getRect().right() == getLastVisibleBase(false) && resultShift > 0)
-                || (selectionBackup.x() == getFirstVisibleBase() && 0 > resultShift))
-            {
-                setFirstVisibleBase(startPos + resultShift);
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-    return false;
 }
 
 void MSAEditorSequenceArea::deleteCurrentSelection() {

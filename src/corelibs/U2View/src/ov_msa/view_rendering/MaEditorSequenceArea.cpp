@@ -62,7 +62,8 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
       editModeAnimationTimer(this),
       prevPressedButton(Qt::NoButton),
       msaVersionBeforeShifting(-1),
-      useDotsAction(NULL)
+      useDotsAction(NULL),
+      changeTracker(editor->getMaObject()->getEntityRef())
 {
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
     msaMode = ViewMode;
@@ -74,6 +75,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     highlightSelection = false;
     selecting = false;
     shifting = false;
+    editingEnabled = false;
 
     cachedView = new QPixmap();
     completeRedraw = true;
@@ -83,7 +85,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
-    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
+//    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
 }
 
 MaEditorSequenceArea::~MaEditorSequenceArea() {
@@ -592,6 +594,45 @@ void MaEditorSequenceArea::setCopyFormatedAlgorithmId(const QString& algoId){
     AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, algoId);
 }
 
+bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
+    CHECK(shift != 0, true);
+
+    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(getEditor());
+    CHECK(msaEditor != NULL, false); // SANGER_TODO: this implementation is wrong
+    MultipleSequenceAlignmentObject *maObj = msaEditor->getMaObject();
+    if (!maObj->isStateLocked()) {
+        const U2Region rows = getSelectedRows();
+        const int x = selection.x();
+        const int y = rows.startPos;
+        const int width = selection.width();
+        const int height = rows.length;
+        if (maObj->isRegionEmpty(x, y, width, height)) {
+            return true;
+        }
+        // backup current selection for the case when selection might disappear
+        const MaEditorSelection selectionBackup = selection;
+
+        const int resultShift = maObj->shiftRegion(x, y, width, height, shift);
+        if (0 != resultShift) {
+            int newCursorPosX = (cursorPos.x() + resultShift >= 0) ? cursorPos.x() + resultShift : 0;
+            setCursorPos(newCursorPosX);
+
+            const MaEditorSelection newSelection(selectionBackup.x() + resultShift, selectionBackup.y(),
+                selectionBackup.width(), selectionBackup.height());
+            setSelection(newSelection);
+            if ((selectionBackup.getRect().right() == getLastVisibleBase(false) && resultShift > 0)
+                || (selectionBackup.x() == getFirstVisibleBase() && 0 > resultShift))
+            {
+                setFirstVisibleBase(startPos + resultShift);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return false;
+}
+
 void MaEditorSequenceArea::centerPos(const QPoint& pos) {
     assert(isInRange(pos));
     int newStartPos = qMax(0, pos.x() - getNumVisibleBases(false)/2);
@@ -1041,20 +1082,20 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
 
         origin = e->pos();
         QPoint p = coordToPos(e->pos());
-//        if(isInRange(p)) {
-//            setCursorPos(p);
+        if(isInRange(p)) {
+            setCursorPos(p);
 
-//            const MaEditorSelection &s = getSelection();
-//            if (s.getRect().contains(cursorPos) && !isAlignmentLocked()) {
-//                shifting = true;
-//                msaVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
-//                U2OpStatus2Log os;
-//                changeTracker.startTracking(os);
-//                CHECK_OP(os, );
-//                editor->getMaObject()->saveState();
-//                emit si_startMsaChanging();
-//            }
-//        }
+            const MaEditorSelection &s = getSelection();
+            if (s.getRect().contains(cursorPos) && !isAlignmentLocked() && editingEnabled) {
+                shifting = true;
+                msaVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
+                U2OpStatus2Log os;
+                changeTracker.startTracking(os);
+                CHECK_OP(os, );
+                editor->getMaObject()->saveState();
+                emit si_startMsaChanging();
+            }
+        }
 
         if (!shifting) {
             selecting = true;
@@ -1070,6 +1111,56 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
     }
 
     QWidget::mousePressEvent(e);
+}
+
+void MaEditorSequenceArea::mouseReleaseEvent(QMouseEvent *e) {
+    rubberBand->hide();
+    if (shifting) {
+        changeTracker.finishTracking();
+        editor->getMaObject()->releaseState();
+    }
+
+    QPoint newCurPos = coordToAbsolutePos(e->pos());
+
+    int firstVisibleSeq = getFirstVisibleSequence();
+    int visibleRowsNums = getNumDisplayedSequences() - 1;
+
+    int yPosWithValidations = qMax(firstVisibleSeq, newCurPos.y());
+    yPosWithValidations = qMin(yPosWithValidations, visibleRowsNums + firstVisibleSeq);
+
+    newCurPos.setY(yPosWithValidations);
+
+    if (shifting) {
+        emit si_stopMsaChanging(msaVersionBeforeShifting != editor->getMaObject()->getModificationVersion());
+    } else if (Qt::LeftButton == e->button() && Qt::LeftButton == prevPressedButton) {
+        updateSelection(newCurPos);
+    }
+    shifting = false;
+    selecting = false;
+    msaVersionBeforeShifting = -1;
+
+    shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+    svBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
+
+    QWidget::mouseReleaseEvent(e);
+}
+
+void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* e) {
+    if (e->buttons() & Qt::LeftButton) {
+        QPoint newCurPos = coordToAbsolutePosOutOfRange(e->pos());
+        if (isInRange(newCurPos)) {
+            updateHBarPosition(newCurPos.x());
+            updateVBarPosition(newCurPos.y());
+        }
+
+        if (shifting && editingEnabled) {
+            shiftSelectedRegion(newCurPos.x() - cursorPos.x());
+        } else if (selecting) {
+            rubberBand->setGeometry(QRect(origin, e->pos()).normalized());
+        }
+    }
+
+    QWidget::mouseMoveEvent(e);
 }
 
 void MaEditorSequenceArea::drawAll() {

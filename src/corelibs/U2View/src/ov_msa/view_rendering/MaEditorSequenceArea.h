@@ -32,6 +32,7 @@
 
 #include "MaEditorSelection.h"
 #include "../MaEditor.h"
+#include "../MsaEditorUserModStepController.h"
 
 class QRubberBand;
 
@@ -155,6 +156,15 @@ public:
 
     virtual void deleteCurrentSelection() = 0;
 
+    /**
+     * Shifts currently selected region to @shift.
+     * If @shift > 0, the region is moved to the right and "true" is returned.
+     * If @shift <= 0, the region is moved to the left only for the available number
+     * of columns (i.e. the columns with gaps). The returned value specifies
+     * whether the region was actually moved in this case.
+     */
+    bool shiftSelectedRegion(int shift);
+
 public:
     void centerPos(const QPoint& pos);
     void centerPos(int pos);
@@ -231,6 +241,8 @@ protected:
     void paintEvent(QPaintEvent *);
     void wheelEvent (QWheelEvent * event);
     void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
 
 protected:
     virtual void initRenderer() = 0;
@@ -289,6 +301,7 @@ protected:
     QTimer          editModeAnimationTimer;
     QColor          selectionColor;
 
+    bool                editingEnabled;
     bool                shifting;
     bool                selecting;
     Qt::MouseButton     prevPressedButton;
@@ -304,6 +317,12 @@ protected:
     QList<QAction*>     colorSchemeMenuActions;
     QList<QAction* >    customColorSchemeMenuActions;
     QList<QAction* >    highlightingSchemeMenuActions;
+
+    // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
+    // that does not fit into one method, e.g. shifting MSA region with mouse.
+    // If the changing action fits within one method it's recommended using
+    // the U2UseCommonUserModStep object explicitly.
+    MsaEditorUserModStepController changeTracker;
 };
 
 } // namespace
