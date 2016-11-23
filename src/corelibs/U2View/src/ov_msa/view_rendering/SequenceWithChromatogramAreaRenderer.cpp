@@ -244,8 +244,8 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     p.drawLine(w,0,w,-h);
 
 
-    int a1 = 10; //chroma.baseCalls[visible.startPos];
-    int a2 = 20; //chroma.baseCalls[visible.endPos()-1];
+    int a1 = chroma.baseCalls[visible.startPos];
+    int a2 = chroma.baseCalls[visible.endPos() - 1];
     qreal leftMargin, rightMargin;
     leftMargin = rightMargin = charWidth;
     qreal k1 = w - leftMargin  - rightMargin;
@@ -255,10 +255,12 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     int mk1 = qMin(static_cast<int>(leftMargin / kLinearTransformTrace), a1);
     int mk2 = qMin(static_cast<int>(rightMargin / kLinearTransformTrace), chroma.traceLength - a2 - 1);
     int polylineSize = a2-a1+mk1+mk2+1;
-    QPolygonF polylineA(polylineSize), polylineC(polylineSize),
-        polylineG(polylineSize), polylineT(polylineSize);
+    QPolygonF polylineA(polylineSize);
+    QPolygonF polylineC(polylineSize);
+    QPolygonF polylineG(polylineSize);
+    QPolygonF polylineT(polylineSize);
     int areaHeight = (heightPD - heightAreaBC + addUpIfQVL) * this->areaHeight / 100;
-    for (int j = a1-mk1; j <= a2+mk2; ++j) {
+    for (int j = a1 - mk1; j <= a2 + mk2; ++j) {
         double x = kLinearTransformTrace*j+bLinearTransformTrace;
         qreal yA = -qMin(static_cast<qreal>(chroma.A[j]) * areaHeight / chromaMax, h);
         qreal yC = -qMin(static_cast<qreal>(chroma.C[j]) * areaHeight / chromaMax, h);
