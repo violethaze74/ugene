@@ -1760,20 +1760,40 @@ GUI_TEST_CLASS_DEFINITION( test_2314 ){
 //    1. Open 'COI.aln'
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
 //    2. Scroll sequence area to the last columns
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 604));
     GTKeyboardDriver::keyClick( 'g', Qt::ControlModifier);
     GTGlobals::sleep(500);
+
 //    3. Move to the right last column with mouse
     QWidget* consArea = GTWidget::findWidget(os, "consArea");
     QWidget* offset = GTWidget::findWidget(os, "msa_editor_offsets_view_widget_right");
     int w = offset->geometry().width();
     GTWidget::click(os, consArea, Qt::LeftButton, QPoint(consArea->geometry().right() - w - 10, consArea->geometry().height()/2));
     GTGlobals::sleep(500);
-//    Unexpected state: the column remains in the same place
+
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(603, 0));
+    QPoint p = GTMouseDriver::getMousePosition();
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(QPoint(p.x() + w, p.y()));
+    GTMouseDriver::release();
+
+//    Expected state: the column was moved
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) > 604, "The length of the alignement has not changed");
+
+    GTUtilsMsaEditor::undo(os);
+    GTGlobals::sleep();
+
 //    4. Move to the right any other region, that is close to the end of alignment
-//    Unexpected state: the region stands on the same place if mouse
-//    go beyond the right border of the alignment
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(603, 5));
+    p = GTMouseDriver::getMousePosition();
+    GTMouseDriver::press();
+    GTMouseDriver::moveTo(QPoint(GTWidget::getWidgetCenter(os, offset).x(), p.y()));
+    GTMouseDriver::release();
+
+//    Expected state: the region is moved if mouse goes beyond the right border of the alignment
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) > 604, "The length of the alignement has not changed");
 }
 
 GUI_TEST_CLASS_DEFINITION( test_2316 ) {
