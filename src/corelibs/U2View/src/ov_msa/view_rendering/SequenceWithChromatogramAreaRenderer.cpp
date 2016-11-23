@@ -269,19 +269,19 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
         polylineG[j-a1+mk1] = QPointF(x, yG);
         polylineT[j-a1+mk1] = QPointF(x, yT);
     }
-    if (settings.drawTraceA) {
+    if (getSettings().drawTraceA) {
         p.setPen(colorForIds[0]);
         p.drawPolyline(polylineA);
     }
-    if (settings.drawTraceC) {
+    if (getSettings().drawTraceC) {
         p.setPen(colorForIds[1]);
         p.drawPolyline(polylineC);
     }
-    if (settings.drawTraceG) {
+    if (getSettings().drawTraceG) {
         p.setPen(colorForIds[2]);
         p.drawPolyline(polylineG);
     }
-    if (settings.drawTraceT) {
+    if (getSettings().drawTraceT) {
         p.setPen(colorForIds[3]);
         p.drawPolyline(polylineT);
     }
@@ -442,22 +442,22 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
             case 'A':
                 yRes = -qMin(static_cast<qreal>(chroma.A[temp])*areaHeight/chromaMax, h);
                 p.setPen(colorForIds[0]);
-                drawBase = settings.drawTraceA;
+                drawBase = getSettings().drawTraceA;
                 break;
             case 'C':
                 yRes = -qMin(static_cast<qreal>(chroma.C[temp]) * areaHeight / chromaMax, h);
                 p.setPen(colorForIds[1]);
-                drawBase = settings.drawTraceC;
+                drawBase = getSettings().drawTraceC;
                 break;
             case 'G':
                 yRes = -qMin(static_cast<qreal>(chroma.G[temp]) * areaHeight / chromaMax, h);
                 p.setPen(colorForIds[2]);
-                drawBase = settings.drawTraceG;
+                drawBase = getSettings().drawTraceG;
                 break;
             case 'T':
                 yRes = -qMin(static_cast<qreal>(chroma.T[temp]) * areaHeight / chromaMax, h);
                 p.setPen(colorForIds[3]);
-                drawBase = settings.drawTraceT;
+                drawBase = getSettings().drawTraceT;
                 break;
             case 'N':
                 continue;
@@ -471,6 +471,10 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
 
 McaEditorSequenceArea* SequenceWithChromatogramAreaRenderer::getSeqArea() const {
     return qobject_cast<McaEditorSequenceArea*>(seqAreaWgt);
+}
+
+const ChromatogramViewSettings& SequenceWithChromatogramAreaRenderer::getSettings() const {
+    return getSeqArea()->getSettings();
 }
 
 } // namespace

@@ -193,6 +193,10 @@ public slots:
     void sl_delCurrentSelection();
 
 protected slots:
+    virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
+    virtual void sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {}
+    virtual void sl_buildContextMenu(GObjectView* v, QMenu* m);
+
     void sl_onHScrollMoved(int pos);
     void sl_onVScrollMoved(int pos);
 
@@ -238,7 +242,7 @@ protected:
 
     void validateRanges();          //called on resize/refont like events
 
-    virtual void buildMenu(QMenu* m);
+    virtual void buildMenu(QMenu* m) {}
     void updateColorAndHighlightSchemes();
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);

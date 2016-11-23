@@ -79,6 +79,11 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     completeRedraw = true;
 
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
+    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView*, QMenu*)), SLOT(sl_buildStaticMenu(GObjectView*, QMenu*)));
+    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
+    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
+    connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
+    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
 }
 
 MaEditorSequenceArea::~MaEditorSequenceArea() {
@@ -851,6 +856,14 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
     emit si_stopMsaChanging(true);
 }
 
+void MaEditorSequenceArea::sl_buildStaticMenu(GObjectView*, QMenu* m) {
+    buildMenu(m);
+}
+
+void MaEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
+    buildMenu(m);
+}
+
 void MaEditorSequenceArea::sl_onHScrollMoved(int pos) {
     if (isAlignmentEmpty()) {
         setFirstVisibleBase(-1);
@@ -1148,10 +1161,6 @@ void MaEditorSequenceArea::validateRanges() {
     SAFE_POINT(startSeq + visibleSequenceCount <= nSeqs || nSeqs < visibleSequenceCount, tr("startSeq is too big"), );
 
     updateVScrollBar();
-}
-
-void MaEditorSequenceArea::buildMenu(QMenu* m) {
-
 }
 
 void MaEditorSequenceArea::updateColorAndHighlightSchemes() {

@@ -28,17 +28,8 @@
 
 namespace U2 {
 
+class ChromatogramViewSettings;
 class McaEditorSequenceArea;
-
-struct ChromatogramViewSettings {
-    bool drawTraceA, drawTraceC, drawTraceG, drawTraceT;
-    ChromatogramViewSettings()  {
-        drawTraceA = true;
-        drawTraceC = true;
-        drawTraceG = true;
-        drawTraceT = true;
-    }
-};
 
 class SequenceWithChromatogramAreaRenderer : public SequenceAreaRenderer {
     Q_OBJECT
@@ -66,12 +57,9 @@ private:
                                         QPainter& p, const U2Region& visible, const QByteArray& ba/*, const ChromatogramViewSettings& settings*/);
 private:
     McaEditorSequenceArea* getSeqArea() const;
+    const ChromatogramViewSettings& getSettings() const;
 
 private:
-    // SANGER_TODO: move to area-wgt - it should be controlled from there
-    ChromatogramViewSettings    settings;
-
-
     qreal   charWidth;
     qreal   charHeight;
     qreal   addUpIfQVL;

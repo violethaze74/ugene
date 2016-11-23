@@ -193,11 +193,6 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(this,   SIGNAL(si_stopMsaChanging(bool)),
             ui,     SIGNAL(si_stopMsaChanging(bool)));
 
-    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView*, QMenu*)), SLOT(sl_buildStaticMenu(GObjectView*, QMenu*)));
-    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
-    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
-    connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
-    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
     connect(ui->getCollapseModel(), SIGNAL(toggled()), SLOT(sl_modelChanged()));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
 
@@ -711,8 +706,7 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     t->addAction(gotoAction);
     t->addAction(removeAllGapsAction);
     t->addSeparator();
-    // SANGER_TODO: depending on the type of editor - the action should be unavailable
-    CHECK(qobject_cast<MSAEditor*>(v) != NULL, );
+
     t->addAction(collapseModeSwitchAction);
     t->addAction(collapseModeUpdateAction);
     t->addSeparator();
