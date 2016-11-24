@@ -262,7 +262,8 @@ U2Region MaEditorSequenceArea::getSequenceYRange(int seqNum, bool useVirtualCoor
 
 // SANGER_TODO: check the method is used correctly
 U2Region MaEditorSequenceArea::getSequenceYRange(int seq, int firstVisibleRow, bool useVirtualCoords) const {
-    U2Region res(editor->getRowHeight()* (seq - firstVisibleRow), editor->getSequenceRowHeight());
+    // SANGER_TODO: check
+    U2Region res(editor->getRowHeight()* (seq - firstVisibleRow), editor->getRowHeight());
     if (!useVirtualCoords) {
         int h = height();
         res = res.intersect(U2Region(0, h));

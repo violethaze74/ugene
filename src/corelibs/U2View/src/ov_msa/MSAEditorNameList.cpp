@@ -705,7 +705,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
         drawRefSequence(p, textRect);
     }
 
-    p.drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, text);
+    p.drawText(textRect, Qt::AlignTop | Qt::AlignLeft, text);
 
 }
 

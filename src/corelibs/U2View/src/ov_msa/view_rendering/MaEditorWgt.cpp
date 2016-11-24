@@ -95,20 +95,16 @@ void MaEditorWgt::initWidgets() {
     initSeqArea(shBar, cvBar);
     seqArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
-    // SANGER_TODO: everything in under comment until the 'out-of-memory' problem is resolved
     nameList = new MSAEditorNameList(this, nhBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-
-//    coreLog.info("NameList success");
 
     consArea = new MSAEditorConsensusArea(this);
     overviewArea = new MSAEditorOverviewArea(this);
     statusWidget = new MSAEditorStatusWidget(editor->getMaObject(), seqArea);
 
-     // SANGER_TODO: the problem with the row
-//    offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
-//    offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-//    offsetsView->getRightWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
+    offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    offsetsView->getRightWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     QWidget *label;
     label = createLabelWidget(tr("Consensus"));
@@ -127,9 +123,9 @@ void MaEditorWgt::initWidgets() {
     seqAreaLayout->addWidget(consArea, 0, 1);
     seqAreaLayout->addWidget(label2, 0, 2, 1, 2);
 
-//    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
+    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
     seqAreaLayout->addWidget(seqArea, 1, 1);
-//    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 1, 2);
+    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 1, 2);
     seqAreaLayout->addWidget(cvBar, 1, 3);
 
     seqAreaLayout->addWidget(shBar, 2, 0, 1, 3);
@@ -164,7 +160,7 @@ void MaEditorWgt::initWidgets() {
 
     setLayout(mainLayout);
 
-//    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
+    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
     connect(collapseModel, SIGNAL(toggled()), seqArea,     SLOT(sl_modelChanged()));
 
     connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));
