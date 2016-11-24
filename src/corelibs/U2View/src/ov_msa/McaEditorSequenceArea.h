@@ -51,6 +51,7 @@ public:
     McaEditor* getEditor() const { return qobject_cast<McaEditor*>(editor); }
 
     const ChromatogramViewSettings&  getSettings() const { return settings; }
+    bool getShowQA() const {return showQVAction->isChecked(); }
 
     void deleteCurrentSelection() {}
 

@@ -37,7 +37,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     // SANGER_TODO: check quality
 //    showQVAction->setChecked(chroma.hasQV);
 //    showQVAction->setEnabled(chroma.hasQV);
-    connect(showQVAction, SIGNAL(toggled(bool)), SLOT(completeUpdate()));
+    connect(showQVAction, SIGNAL(toggled(bool)), SLOT(sl_completeUpdate()));
 
     showAllTraces = new QAction(tr("Show all"), this);
     connect(showAllTraces, SIGNAL(triggered()), SLOT(sl_showAllTraces()));
