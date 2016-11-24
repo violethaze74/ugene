@@ -24,6 +24,7 @@
 
 #include "view_rendering/MaEditorSequenceArea.h"
 #include "McaEditor.h"
+#include <U2Gui/ScaleBar.h>
 
 namespace U2 {
 
@@ -56,6 +57,7 @@ public:
 private slots:
     void sl_showHideTrace();
     void sl_showAllTraces();
+    void sl_setRenderAreaHeight(int k);
 
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 
@@ -73,6 +75,7 @@ private:
     QAction*    showQVAction;
     QAction*    showAllTraces;
     QMenu*      traceActionMenu;
+    ScaleBar*   scaleBar;
 };
 
 

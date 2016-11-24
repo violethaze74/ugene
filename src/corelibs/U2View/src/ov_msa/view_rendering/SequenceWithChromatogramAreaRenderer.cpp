@@ -60,6 +60,15 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(McaEd
 //    }
 }
 
+void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
+    areaHeight = h;
+}
+
+int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
+    // SANGER_TODO: the sequence should mnot be matched!
+    return seqAreaWgt->getEditor()->getRowHeight() - heightAreaBC + addUpIfQVL;
+}
+
 bool SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) {
     bool ok = SequenceAreaRenderer::drawRow(p, msa, seq, region, yStart);
     CHECK(ok, false);

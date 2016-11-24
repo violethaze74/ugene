@@ -36,6 +36,9 @@ class SequenceWithChromatogramAreaRenderer : public SequenceAreaRenderer {
 public:
     SequenceWithChromatogramAreaRenderer(McaEditorSequenceArea* seqAreaWgt);
 
+    void setAreaHeight(int h);
+    int getScaleBarValue() const; // SANGER_TODO: rename?
+
 private:
     bool drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
 
@@ -45,7 +48,7 @@ private:
 
     void drawChromatogramTrace(const DNAChromatogram& chroma,
                                qreal x, qreal y, qreal w, qreal h, QPainter& p,
-                               const U2Region& visible /*, const ChromatogramViewSettings& settings*/);
+                               const U2Region& visible);
     void drawOriginalBaseCalls(const DNAChromatogram& chroma,
                                qreal x, qreal y, qreal w, qreal h,
                                QPainter& p, const U2Region& visible, const QByteArray& ba, bool is = true);
@@ -54,7 +57,7 @@ private:
                            QPainter& p, const U2Region& visible, const QByteArray& ba);
     void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma,
                                         qreal x, qreal y, qreal w, qreal h,
-                                        QPainter& p, const U2Region& visible, const QByteArray& ba/*, const ChromatogramViewSettings& settings*/);
+                                        QPainter& p, const U2Region& visible, const QByteArray& ba);
 private:
     McaEditorSequenceArea* getSeqArea() const;
     const ChromatogramViewSettings& getSettings() const;

@@ -34,6 +34,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     showQVAction = new QAction(tr("Show quality bars"), this);
     showQVAction->setIcon(QIcon(":chroma_view/images/bars.png"));
     showQVAction->setCheckable(true);
+    // SANGER_TODO: check quality
 //    showQVAction->setChecked(chroma.hasQV);
 //    showQVAction->setEnabled(chroma.hasQV);
     connect(showQVAction, SIGNAL(toggled(bool)), SLOT(completeUpdate()));
@@ -49,8 +50,13 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     traceActionMenu->addSeparator();
     traceActionMenu->addAction(showAllTraces);
 
+    scaleBar = new ScaleBar(Qt::Horizontal);
+    scaleBar->slider()->setRange(100, 1000);
+    scaleBar->slider()->setTickInterval(100);
+    SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
+    scaleBar->setValue(r->getScaleBarValue());
+    connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
 
-    // SANGER_TODO: everything in under comment until the 'out-of-memory' problem is resolved
     updateColorAndHighlightSchemes();
     updateActions();
 }
@@ -89,6 +95,13 @@ void McaEditorSequenceArea::sl_showAllTraces() {
     sl_completeUpdate();
 }
 
+void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
+    //k = chromaMax
+    SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
+    r->setAreaHeight(k);
+    sl_completeUpdate();
+}
+
 void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     t->addAction(showQVAction);
 
@@ -97,6 +110,9 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     button->setIcon(QIcon(":chroma_view/images/traces.png"));
     button->setPopupMode(QToolButton::InstantPopup);
     t->addWidget(button);
+    t->addSeparator();
+
+    t->addWidget(scaleBar); // SANGER_TODO: the slider dissapers after window reopening!
     t->addSeparator();
 }
 
