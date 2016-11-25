@@ -176,7 +176,6 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(alignAction);
     tb->addAction(alignSequencesToAlignmentAction);
 
-    // SANGER_TODO: double signal!
     GObjectView::buildStaticToolbar(tb);
 }
 
@@ -549,12 +548,6 @@ MSAEditorUI::MSAEditorUI(MaEditor* editor)
 
 MSAEditorSequenceArea* MSAEditorUI::getSequenceArea() const {
     return qobject_cast<MSAEditorSequenceArea* >(seqArea);
-}
-void MSAEditorUI::sl_saveScreenshot(){
-    MSAImageExportController controller(this);
-    QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, ExportImageDialog::NoScaling, p);
-    dlg->exec();
 }
 
 void MSAEditorUI::sl_onTabsCountChanged(int curTabsNumber) {

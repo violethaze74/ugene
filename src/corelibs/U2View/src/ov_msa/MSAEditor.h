@@ -215,8 +215,6 @@ public:
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer(){return multiTreeViewer;}
 
-public slots:
-    void sl_saveScreenshot();
 private slots:
     void sl_onTabsCountChanged(int tabsCount);
 signals:

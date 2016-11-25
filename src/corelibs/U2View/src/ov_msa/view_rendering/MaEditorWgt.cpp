@@ -23,18 +23,22 @@
 
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
+#include "../Export/MSAImageExportTask.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/QObjectScopedPointer.h>
+
+#include <U2Gui/ExportImageDialog.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/UndoRedoFramework.h>
-
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorStatusBar.h>
+#include <U2View/UndoRedoFramework.h>
 
 #include <QGridLayout>
 
@@ -76,6 +80,13 @@ QAction* MaEditorWgt::getRedoAction() const {
     QAction *a = undoFWK->getRedoAction();
     a->setObjectName("msa_action_redo");
     return a;
+}
+
+void MaEditorWgt::sl_saveScreenshot(){
+    MSAImageExportController controller(this);
+    QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
+    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, ExportImageDialog::NoScaling, p);
+    dlg->exec();
 }
 
 void MaEditorWgt::initWidgets() {

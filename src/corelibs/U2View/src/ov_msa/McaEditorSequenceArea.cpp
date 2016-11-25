@@ -23,6 +23,8 @@
 
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
+#include <U2Gui/GUIUtils.h>
+
 #include <QToolButton>
 
 namespace U2 {
@@ -121,9 +123,10 @@ void McaEditorSequenceArea::initRenderer() {
 }
 
 void McaEditorSequenceArea::buildMenu(QMenu *m) {
-    m->addAction(showQVAction);
-    m->addAction(showAllTraces);
-    m->addMenu(traceActionMenu);
+    QMenu* viewMenu = GUIUtils::findSubMenu(m, MSAE_MENU_VIEW);
+    SAFE_POINT(viewMenu != NULL, "viewMenu", );
+    viewMenu->addAction(showQVAction);
+    viewMenu->addMenu(traceActionMenu);
 }
 
 QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionName) {

@@ -76,6 +76,9 @@ signals:
     void si_startMsaChanging();
     void si_stopMsaChanging(bool modifyed = false);
 
+public slots:
+    void sl_saveScreenshot();
+
 protected:
     virtual void initWidgets();
     virtual void initActions();

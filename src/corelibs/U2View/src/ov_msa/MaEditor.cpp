@@ -40,6 +40,7 @@
 
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
+#include <U2View/MSAEditorOverviewArea.h>
 
 #include <QFontDialog>
 
@@ -122,6 +123,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
 }
 
 void MaEditor::buildStaticToolbar(QToolBar* tb) {
+    // SANGER_TODO: the first three actions are not yet valid for MCA!!
     tb->addAction(ui->getCopyFormattedSelectionAction());
 
     tb->addAction(saveAlignmentAction);
@@ -135,9 +137,6 @@ void MaEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(showOverviewAction);
     tb->addAction(changeFontAction);
     tb->addAction(saveScreenshotAction);
-
-    // SANGER_TODO: double signal!
-    GObjectView::buildStaticToolbar(tb);
 }
 
 void MaEditor::buildStaticMenu(QMenu* m) {
@@ -379,8 +378,7 @@ void MaEditor::initActions() {
     showOverviewAction->setObjectName("Show overview");
     showOverviewAction->setCheckable(true);
     showOverviewAction->setChecked(true);
-    // SANGER_TODO: why is not compiled???
-//    connect(showOverviewAction, SIGNAL(triggered()), ui->getOverviewArea(), SLOT(sl_show()));
+    connect(showOverviewAction, SIGNAL(triggered()), ui->getOverviewArea(), SLOT(sl_show()));
 }
 
 void MaEditor::addCopyMenu(QMenu* m) {

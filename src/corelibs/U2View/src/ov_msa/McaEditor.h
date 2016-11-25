@@ -46,6 +46,7 @@ public:
     bool getShowChromatogram() const { return showChromatograms; }
 
 protected slots:
+    void sl_onContextMenuRequested(const QPoint & pos);
     void sl_showHideChromatograms(bool show);
 
 protected:

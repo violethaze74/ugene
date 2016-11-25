@@ -101,6 +101,8 @@ signals:
     void si_completeUpdate();
 
 protected slots:
+    virtual void sl_onContextMenuRequested(const QPoint & pos) = 0;
+
     void sl_zoomIn();
     void sl_zoomOut();
     void sl_zoomToSelection();

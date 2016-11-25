@@ -21,11 +21,19 @@
 
 #include "McaEditor.h"
 #include "MaEditorFactory.h"
+#include "McaEditorSequenceArea.h"
+#include "MSAEditorOverviewArea.h"
+#include "MSAEditorNameList.h"
 
 #include "view_rendering/MaEditorWgt.h"
 
 #include <QToolBar>
-#include "McaEditorSequenceArea.h"
+
+#include <U2Core/AppContext.h>
+
+#include <U2Gui/GUIUtils.h>
+#include <U2Gui/OptionsPanel.h>
+#include <U2Gui/OPWidgetFactoryRegistry.h>
 
 namespace U2 {
 
@@ -46,8 +54,15 @@ McaEditor::McaEditor(const QString &viewName, GObject *obj)
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
-//    MaEditor::buildStaticToolbar(tb);
+    tb->addAction(zoomInAction);
+    tb->addAction(zoomOutAction);
+    tb->addAction(zoomToSelectionAction);
+    tb->addAction(resetFontAction);
+
+    tb->addAction(showOverviewAction);
     tb->addAction(showChromatogramsAction);
+    tb->addAction(changeFontAction);
+    tb->addAction(saveScreenshotAction);
 
     GObjectView::buildStaticToolbar(tb);
 }
@@ -63,6 +78,31 @@ int McaEditor::getRowHeight() const {
     return (fm.height() + chromHeigth * showChromatograms)* zoomMult;
 }
 
+void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
+    Q_UNUSED(pos);
+
+    if (ui->childAt(pos) != NULL) {
+        // ignore context menu request if overview area was clicked on
+        if (ui->getOverviewArea()->isOverviewWidget(ui->childAt(pos))) {
+            return;
+        }
+    }
+
+    QMenu m;
+
+    addCopyMenu(&m);
+    addViewMenu(&m);
+    addExportMenu(&m);
+
+    m.addSeparator();
+
+    emit si_buildPopupMenu(this, &m);
+
+    GUIUtils::disableEmptySubmenus(&m);
+
+    m.exec(QCursor::pos());
+}
+
 void McaEditor::sl_showHideChromatograms(bool show) {
     showChromatograms = show;
     emit si_completeUpdate();
@@ -71,6 +111,11 @@ void McaEditor::sl_showHideChromatograms(bool show) {
 QWidget* McaEditor::createWidget() {
     Q_ASSERT(ui == NULL);
     ui = new McaEditorWgt(this);
+
+    QString objName = "mca_editor_" + maObject->getGObjectName();
+    ui->setObjectName(objName);
+
+    connect(ui , SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(sl_onContextMenuRequested(const QPoint &)));
 
     initActions();
 

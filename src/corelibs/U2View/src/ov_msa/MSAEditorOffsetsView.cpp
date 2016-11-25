@@ -221,14 +221,14 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
                 if (i == refSeq){
                     drawRefSequence(p, lbr);
                 }
-                p.drawText(lbr, Qt::AlignCenter, "[");
+                p.drawText(lbr, Qt::AlignTop, "[");
             } else if (!showStartPos && offs == seqSize) {
                 p.setPen(Qt::black);
                 QRect rbr(w - OFFS_WIDGET_BORDER - rbw, yRange.startPos, rbw, yRange.length);
                 if (row == refSeq){
                     drawRefSequence(p, rbr);
                 }
-                p.drawText(rbr, Qt::AlignCenter, "]");
+                p.drawText(rbr, Qt::AlignTop, "]");
                 offset = QString::number(offs);
             } else {
                 p.setPen(dg);
@@ -237,7 +237,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
             if (row == refSeq){
                 drawRefSequence(p, tr);
             }
-            p.drawText(tr, Qt::AlignRight | Qt::AlignVCenter, offset);
+            p.drawText(tr, Qt::AlignRight | Qt::AlignTop, offset);
             i++;
         }
     }
