@@ -491,7 +491,7 @@ QList<SharedAnnotationData> FindRepeatsToAnnotationsTask::importAnnotations() {
         }
         ad->qualifiers.append(U2Qualifier("repeat_len", QString::number(r.l)));
         ad->qualifiers.append(U2Qualifier("repeat_dist", QString::number(dist)));
-        ad->qualifiers.append(U2Qualifier("repeat_homology(%)", QString::number(settings.getIdentity(r.l - r.c, r.l))));
+        ad->qualifiers.append(U2Qualifier("repeat_homology", QString::number(settings.getIdentity(r.l - r.c, r.l))));
         U1AnnotationUtils::addDescriptionQualifier(ad, annDescription);
 
         res.append(ad);
