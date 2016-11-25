@@ -37,7 +37,8 @@ public:
     SequenceWithChromatogramAreaRenderer(McaEditorSequenceArea* seqAreaWgt);
 
     void setAreaHeight(int h);
-    int getScaleBarValue() const; // SANGER_TODO: rename?
+
+    int getScaleBarValue() const;
 
 private:
     bool drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);

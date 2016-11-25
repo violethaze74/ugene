@@ -37,11 +37,7 @@
 
 namespace U2 {
 
-// SANGER_TODO: temporary const, should go with factory
-// until there is no factory - do not create separate ID
-const GObjectViewFactoryId ID = "MCAEditor";
-
-McaEditor::McaEditor(const QString &viewName, GObject *obj)
+McaEditor::McaEditor(const QString &viewName, MultipleChromatogramAlignmentObject *obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj) {
     showChromatograms = true; // SANGER_TODO: check if there are chromatograms
 
@@ -122,7 +118,7 @@ QWidget* McaEditor::createWidget() {
     return ui;
 }
 
-McaEditorWgt::McaEditorWgt(MaEditor *editor)
+McaEditorWgt::McaEditorWgt(McaEditor *editor)
     : MaEditorWgt(editor) {
     initActions();
     initWidgets();

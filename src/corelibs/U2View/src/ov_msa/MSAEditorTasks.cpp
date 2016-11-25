@@ -150,10 +150,8 @@ OpenMsaEditorTask::OpenMsaEditorTask(Document* doc)
 }
 
 MaEditor* OpenMsaEditorTask::getEditor(const QString& viewName, GObject* obj) {
-    SAFE_POINT(qobject_cast<MultipleSequenceAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
-    return new MSAEditor(viewName, obj);
+    return MsaEditorFactory::getEditor(viewName, obj);
 }
-
 
 OpenMcaEditorTask::OpenMcaEditorTask(MultipleAlignmentObject* obj)
     : OpenMaEditorTask(obj, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT)
@@ -171,8 +169,7 @@ OpenMcaEditorTask::OpenMcaEditorTask(Document* doc)
 }
 
 MaEditor* OpenMcaEditorTask::getEditor(const QString& viewName, GObject* obj) {
-    SAFE_POINT(qobject_cast<MultipleChromatogramAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
-    return new McaEditor(viewName, obj);
+    return McaEditorFactory::getEditor(viewName, obj);
 }
 
 //////////////////////////////////////////////////////////////////////////

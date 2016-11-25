@@ -67,7 +67,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
 }
 
 QWidget* MaEditorWgt::createLabelWidget(const QString& text, Qt::Alignment ali){
-    return new MSALabelWidget(this, text, ali);
+    return new MaLabelWidget(this, text, ali);
 }
 
 QAction* MaEditorWgt::getUndoAction() const {

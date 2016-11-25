@@ -35,7 +35,7 @@ MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(QString _title, MSAEditor* _e
 : editor(_editor) {
     treeTabs = new MsaEditorTreeTabArea(editor, this);
     titleWidget = _editor->getUI()->createLabelWidget(_title);
-    MSAWidget* title = dynamic_cast<MSAWidget*>(titleWidget);
+    MaUtilsWidget* title = dynamic_cast<MaUtilsWidget*>(titleWidget);
     title->setHeightMargin(-55);
     QVBoxLayout* treeAreaLayout = new QVBoxLayout(this);
     treeAreaLayout->setMargin(0);

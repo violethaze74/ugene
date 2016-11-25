@@ -63,7 +63,8 @@ GObject * MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, 
 }
 
 char MultipleChromatogramAlignmentObject::charAt(int seqNum, int pos) const {
-    // SANGER_TODO: check boundaries
+    SAFE_POINT(seqNum >= 0 && seqNum < getNumRows(), QString("Invalid sequence num: %1").arg(seqNum), '\n');
+    SAFE_POINT(pos >= 0 && pos < getLength(), QString("Invalid position: %1").arg(pos), '\n');
     return getMcaRow(seqNum)->charAt(pos);
 }
 

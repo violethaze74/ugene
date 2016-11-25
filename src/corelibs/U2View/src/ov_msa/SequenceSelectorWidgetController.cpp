@@ -62,10 +62,13 @@ QString SequenceSelectorWidgetController::text() const {
 
 void SequenceSelectorWidgetController::setSequenceId(qint64 newId) {
     U2OpStatusImpl os;
-    seqId = newId;
-    // SANGER_TODO: the same thing with the "empty" row
+    if (newId == U2MsaRow::INVALID_ROW_ID) {
+        seqId = newId;
+        return;
+    }
     const MultipleSequenceAlignmentRow &selectedRow = msa->getMaObject()->getMsa()->getMsaRowByRowId(newId, os);
     CHECK_OP(os, );
+    seqId = newId;
     const QString selectedName = selectedRow->getName();
     if (seqLineEdit->text() != selectedName) {
         seqLineEdit->setText(selectedName);

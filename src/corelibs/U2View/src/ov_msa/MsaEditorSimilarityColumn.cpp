@@ -236,7 +236,7 @@ void MsaEditorAlignmentDependentWidget::createHeaderWidget() {
     headerLayout->addWidget(&nameWidget);
 
     state = DataIsValid;
-    headerWidget = new MSAWidget(settings->ui);
+    headerWidget = new MaUtilsWidget(settings->ui);
     headerWidget->setLayout(headerLayout);
 }
 

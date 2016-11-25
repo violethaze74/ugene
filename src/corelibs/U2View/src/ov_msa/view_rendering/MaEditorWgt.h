@@ -48,7 +48,6 @@ class MaEditorWgt : public QWidget {
 public:
     MaEditorWgt(MaEditor* editor);
 
-    // SANGER_TODO: it is for multi tree case - decide if it is neccessary
     QWidget* createLabelWidget(const QString& text = QString(), Qt::Alignment ali = Qt::AlignCenter);
 
     MaEditor*                       getEditor() const { return editor; }
@@ -94,7 +93,7 @@ protected:
     MSAEditorOffsetsViewController* offsetsView;
     MSAEditorStatusWidget*          statusWidget;
 
-    QWidget*                        nameAreaContainer; // SANGER_TODO: there is no need to store the variable
+    QWidget*                        nameAreaContainer;
     MaSplitterController            maSplitter;
 
     MsaUndoRedoFramework*           undoFWK;

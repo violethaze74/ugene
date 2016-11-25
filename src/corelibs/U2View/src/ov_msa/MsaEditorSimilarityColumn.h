@@ -36,7 +36,7 @@ namespace U2 {
 
 class CreateDistanceMatrixTask;
 class MSADistanceMatrix;
-class MSAWidget;
+class MaUtilsWidget;
 class Task;
 
 class SimilarityStatisticsSettings : public UpdatedWidgetSettings {
@@ -126,7 +126,7 @@ private:
     void createWidgetUI();
     void createHeaderWidget();
 
-    MSAWidget*                   headerWidget;
+    MaUtilsWidget*               headerWidget;
     QLabel                       statusBar;
     QLabel                       nameWidget;
     QPushButton                  updateButton;

@@ -57,15 +57,14 @@ private:
     QList<int>             widgetSizes;
 };
 
-// SANGER_TODO: rename the class to meaningfull name
 /************************************************************************/
-/* MSAWidget */
+/* MaUtilsWidget */
 /************************************************************************/
-class MSAWidget : public QWidget {
+class MaUtilsWidget : public QWidget {
     Q_OBJECT
 public:
-    MSAWidget(MaEditorWgt* _ui);
-    virtual ~MSAWidget() {}
+    MaUtilsWidget(MaEditorWgt* _ui);
+    virtual ~MaUtilsWidget() {}
     const QFont& getMsaEditorFont();
     void setHeightMargin(int _heightMargin);
 
@@ -81,12 +80,12 @@ protected:
 };
 
 /************************************************************************/
-/* MSALabelWidget */
+/* MaLabelWidget */
 /************************************************************************/
-class MSALabelWidget : public MSAWidget {
+class MaLabelWidget : public MaUtilsWidget {
     Q_OBJECT
 public:
-    MSALabelWidget(MaEditorWgt* _ui, const QString & _t, Qt::Alignment _a);
+    MaLabelWidget(MaEditorWgt* _ui, const QString & _t, Qt::Alignment _a);
 
     QString             text;
     Qt::Alignment       ali;
@@ -97,7 +96,6 @@ protected:
     void mouseReleaseEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
 };
-
 
 } // namespace
 

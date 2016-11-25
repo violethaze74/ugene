@@ -40,7 +40,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, cons
     CHECK(!seqIdx.isEmpty(), false);
 
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
-    MaEditor* editor = seqAreaWgt->getEditor(); // SANGER_TODO: renderer should know what editor is in use... or not?
+    MaEditor* editor = seqAreaWgt->getEditor();
 
     p.fillRect(QRect(0, 0,
                      editor->getColumnWidth() * region.length,
