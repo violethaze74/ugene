@@ -40,6 +40,7 @@ public:
 
 protected:
     virtual bool drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
+    char getRefChar(const MultipleAlignment& msa, int pos);
 
     MaEditorSequenceArea*  seqAreaWgt;
 };

@@ -86,12 +86,6 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
     U2OpStatusImpl os;
     const int refSeq = msa->getRowIndexByRowId(editor->getReferenceRowId(), os);
     QString refSeqName = editor->getReferenceRowName();
-    // SANGER_TODO: currently there is no "empty" row - so the reference should be proccessing differently
-//    MultipleAlignmentRow row;
-//    // SANGER_TODO: drawing with the reference should be different
-//    if (U2MsaRow::INVALID_ROW_ID != editor->getReferenceRowId()/*refSeq*/) {
-//        row = msa->getRow(refSeq);
-//    }
 
     qint64 regionEnd = region.endPos() - (int)(region.endPos() == editor->getAlignmentLen());
     for (int pos = region.startPos; pos <= regionEnd; pos++) {
@@ -106,11 +100,10 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
             highlightingScheme->process(refChar, c, color, highlight, pos, seq);
         } else if (seq == refSeq || refSeqName.isEmpty()) {
             highlight = true;
-        }/* else {
-//            SAFE_POINT(row != NULL, "MSA row is NULL", false);
-            const char refChar = row->charAt(pos);
+        } else {
+            const char refChar = getRefChar(msa, pos);
             highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-        }*/
+        }
 
         if (color.isValid() && highlight) {
             p.fillRect(cr, color);
@@ -120,6 +113,14 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
         }
     }
     return true;
+}
+
+char SequenceAreaRenderer::getRefChar(const MultipleAlignment &msa, int pos) {
+    qint64 refId = seqAreaWgt->getEditor()->getReferenceRowId();
+    SAFE_POINT(refId != U2MsaRow::INVALID_ROW_ID,
+               "Attempt to get ref-char when the reference is not set", '\n');
+
+    return msa->charAt(refId, pos);
 }
 
 } // namespace
