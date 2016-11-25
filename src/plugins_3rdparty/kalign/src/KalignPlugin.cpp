@@ -139,7 +139,7 @@ void KalignAction::sl_updateState() {
     setEnabled(!item->isStateLocked() && !msaEditor->isAlignmentEmpty());
 }
 
-KalignMSAEditorContext::KalignMSAEditorContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+KalignMSAEditorContext::KalignMSAEditorContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
 void KalignMSAEditorContext::initViewContext(GObjectView* view) {

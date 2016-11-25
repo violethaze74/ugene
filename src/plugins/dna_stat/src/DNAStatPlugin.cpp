@@ -61,7 +61,7 @@ DNAStatPlugin::DNAStatPlugin() : Plugin(tr("DNA Statistics"), tr("Provides stati
 //////////////////////////////////////////////////////////////////////////
 
 DNAStatMSAEditorContext::DNAStatMSAEditorContext(QObject* p) :
-GObjectViewWindowContext(p, MSAEditorFactory::ID) {}
+GObjectViewWindowContext(p, MsaEditorFactory::ID) {}
 
 void DNAStatMSAEditorContext::initViewContext(GObjectView* v) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
@@ -98,7 +98,7 @@ void DNAStatMSAEditorContext::sl_showMSAProfileDialog() {
 //////////////////////////////////////////////////////////////////////////
 
 DistanceMatrixMSAEditorContext::DistanceMatrixMSAEditorContext(QObject* p) :
-GObjectViewWindowContext(p, MSAEditorFactory::ID) {}
+GObjectViewWindowContext(p, MsaEditorFactory::ID) {}
 
 void DistanceMatrixMSAEditorContext::initViewContext(GObjectView* v) {
     MSAEditor* msaed = qobject_cast<MSAEditor*>(v);

@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_EDITOR_FACTORY_H_
-#define _U2_MCA_EDITOR_FACTORY_H_
+#ifndef _U2_MA_EDITOR_FACTORY_H_
+#define _U2_MA_EDITOR_FACTORY_H_
 
 #include <U2Core/GObjectTypes.h>
 #include <U2Gui/ObjectViewModel.h>
@@ -32,6 +32,9 @@ class MultipleAlignmentObject;
 class OpenMaEditorTask;
 class UnloadedObject;
 
+/************************************************************************/
+/* MaEditorFactory */
+/************************************************************************/
 class U2VIEW_EXPORT MaEditorFactory : public GObjectViewFactory {
     Q_OBJECT
 public:
@@ -45,10 +48,9 @@ public:
 
     virtual Task* createViewTask(const QString& viewName, const QVariantMap& stateData);
 
-    virtual bool supportsSavedStates() const {return true;}
+    virtual bool supportsSavedStates() const;
 
-    // SANGER_TODO: change to FAIL
-    static MaEditor* getEditor(const QString &viewName, GObject *obj) { return NULL; }
+    static MaEditor* getEditor(const QString &viewName, GObject *obj);
 
 protected:
     virtual OpenMaEditorTask* getOpenMaEditorTask(MultipleAlignmentObject* obj) = 0;
@@ -58,10 +60,13 @@ protected:
     GObjectType type;
 };
 
-class U2VIEW_EXPORT MSAEditorFactory : public MaEditorFactory {
+/************************************************************************/
+/* MsaEditorFactory */
+/************************************************************************/
+class U2VIEW_EXPORT MsaEditorFactory : public MaEditorFactory {
     Q_OBJECT
 public:
-    MSAEditorFactory() : MaEditorFactory(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, ID) {}
+    MsaEditorFactory();
 
     static MaEditor* getEditor(const QString &viewName, GObject *obj);
 
@@ -73,12 +78,14 @@ private:
 
 };
 
+/************************************************************************/
+/* McaEditorFactory */
+/************************************************************************/
 class U2VIEW_EXPORT McaEditorFactory : public MaEditorFactory {
     Q_OBJECT
 public:
-    McaEditorFactory() : MaEditorFactory(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, ID) {}
+    McaEditorFactory();
 
-    // SANGER_TODO: order the methods
     static MaEditor* getEditor(const QString &viewName, GObject *obj);
 
     static const GObjectViewFactoryId ID;
@@ -91,5 +98,5 @@ private:
 
 } // namespace
 
-#endif // _U2_MCA_EDITOR_FACTORY_H_
+#endif // _U2_MA_EDITOR_FACTORY_H_
 

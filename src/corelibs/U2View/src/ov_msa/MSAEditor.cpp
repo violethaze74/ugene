@@ -106,7 +106,7 @@ namespace U2 {
 /* TRANSLATOR U2::MSAEditor */
 
 MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
-    : MaEditor(MSAEditorFactory::ID, viewName, obj),
+    : MaEditor(MsaEditorFactory::ID, viewName, obj),
       alignSequencesToAlignmentAction(NULL),
       treeManager(this)
 {

@@ -1622,7 +1622,7 @@ GUI_TEST_CLASS_DEFINITION(test_1115) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    6. Check that annotations are correctly exported.
-    GTUtilsDocument::checkDocument(os, "test_1115.aln", MSAEditorFactory::ID);
+    GTUtilsDocument::checkDocument(os, "test_1115.aln", MsaEditorFactory::ID);
 
     const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(expectedNames == names, QString("Unexpected msa rows names: expect '%1', got '%2'")

@@ -135,17 +135,17 @@ void OpenMaEditorTask::updateTitle(MSAEditor* msaEd) {
 }
 
 OpenMsaEditorTask::OpenMsaEditorTask(MultipleAlignmentObject* obj)
-    : OpenMaEditorTask(obj, MSAEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
+    : OpenMaEditorTask(obj, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
 {
 }
 
 OpenMsaEditorTask::OpenMsaEditorTask(UnloadedObject* obj)
-    : OpenMaEditorTask(obj, MSAEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
+    : OpenMaEditorTask(obj, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
 {
 }
 
 OpenMsaEditorTask::OpenMsaEditorTask(Document* doc)
-    : OpenMaEditorTask(doc, MSAEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
+    : OpenMaEditorTask(doc, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
 {
 }
 
@@ -256,7 +256,7 @@ UpdateMSAEditorTask::UpdateMSAEditorTask(GObjectView* v, const QString& stateNam
 
 void UpdateMSAEditorTask::update() {
     // SANGER_TODO: if this valid?
-    if (view.isNull() || (view->getFactoryId() != MSAEditorFactory::ID && view->getFactoryId() != McaEditorFactory::ID)) {
+    if (view.isNull() || (view->getFactoryId() != MsaEditorFactory::ID && view->getFactoryId() != McaEditorFactory::ID)) {
         return; //view was closed;
     }
 

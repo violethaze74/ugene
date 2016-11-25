@@ -202,7 +202,7 @@ void uHMMPlugin::sl_search() {
 //////////////////////////////////////////////////////////////////////////
 // contexts
 
-HMMMSAEditorContext::HMMMSAEditorContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+HMMMSAEditorContext::HMMMSAEditorContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
 

@@ -125,7 +125,7 @@ void MuscleAction::sl_updateState() {
     setEnabled(!item->isStateLocked() && !msaEditor->isAlignmentEmpty());
 }
 
-MuscleMSAEditorContext::MuscleMSAEditorContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+MuscleMSAEditorContext::MuscleMSAEditorContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
 
