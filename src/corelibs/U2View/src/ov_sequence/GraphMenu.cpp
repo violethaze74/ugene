@@ -120,7 +120,7 @@ GraphMenuAction::GraphMenuAction(const DNAAlphabet* a) : ADVSequenceWidgetAction
     this->setMenu(menu);
     addToBar = true;
     
-    menu->setEnabled(a->isNucleic());
+    setVisible(a->isNucleic());
 }
 
 /**

@@ -110,7 +110,6 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v) : QObject(v), adv(v)
 
     toggleAutoAnnotationsAction = NULL;
 
-
     // visual mode ops
     toggleAllAction = new QAction("Toggle All sequence views", this);
     toggleAllAction->setObjectName("toggleAllSequenceViews");
@@ -293,7 +292,6 @@ void ADVSyncViewManager::sl_lock() {
     } else {
         lockButton->setChecked(lockActionGroup->checkedAction() != NULL);
     }
-
 
 }
 
@@ -537,7 +535,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
                         active = true;
                     }
                 }
-                aaAction->setEnabled(active);
+                aaAction->setVisible(active);
             }
         }
     }

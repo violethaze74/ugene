@@ -996,8 +996,6 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
 
     viewsToolBar = new OrderedToolbar(this);
     viewsToolBar->setObjectName("views_tool_bar_" + ctx->getSequenceObject()->getGObjectName());
-    // visual separator between standard toolbar and visibility toolbar
-    viewsToolBar->addSeparator();
     viewsToolBar->setStyleSheet(QString("QToolBar {spacing: %1px; margin: 0px; }").arg(ADV_HEADER_TOOLBAR_SPACING));
     viewsToolBar->setFixedHeight(ADV_HEADER_HEIGHT);
 
