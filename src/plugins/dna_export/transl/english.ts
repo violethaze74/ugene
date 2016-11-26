@@ -1064,7 +1064,7 @@
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="374"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="554"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="553"/>
         <source>No sequence objects selected!</source>
         <translation>No sequence objects selected!</translation>
     </message>
@@ -1090,7 +1090,7 @@
         <translation>Select one annotation object to export</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="559"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="558"/>
         <source>Set output quality file</source>
         <translation>Set output quality file</translation>
     </message>

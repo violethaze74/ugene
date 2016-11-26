@@ -295,14 +295,24 @@
         <location filename="../src/DotPlotFilesDialog.cpp" line="151"/>
         <source>Unable to detect file format %1.
 Select valid file to build dotplot</source>
-        <translation>Unable to detect file format %1.
-Select valid file to build dotplot</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DotPlotFilesDialog.cpp" line="159"/>
         <source>Unable to detect format of given file %1.
 Select valid file to build dotplot</source>
-        <translation>Unable to detect format of given file %1.
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to detect file format %1.
+Select valid file to build dotplot</source>
+        <translation type="obsolete">Unable to detect file format %1.
+Select valid file to build dotplot</translation>
+    </message>
+    <message>
+        <source>Unable to detect format of given file %1.
+Select valid file to build dotplot</source>
+        <translation type="obsolete">Unable to detect format of given file %1.
 Select valid file to build dotplot</translation>
     </message>
     <message>

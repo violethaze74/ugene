@@ -79,11 +79,6 @@
         <translation type="vanished">Path to downloaded data:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="28"/>
-        <source>Path to downloaded data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="48"/>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="86"/>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="130"/>
@@ -91,9 +86,18 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="60"/>
         <source>Path for temporary files</source>
-        <translation>Path for temporary files</translation>
+        <translation type="vanished">Path for temporary files</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="28"/>
+        <source>Downloaded data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="60"/>
+        <source>Temporary files</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="104"/>
@@ -107,7 +111,12 @@
     </message>
     <message>
         <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="172"/>
-        <source>Directory for build indexes</source>
+        <source>Build indexes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="195"/>
+        <source>Documents</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -825,8 +834,8 @@ p, li { white-space: pre-wrap; }
         <translation>Directories</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="86"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="92"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="88"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="94"/>
         <source>You do not have permission to write to &quot;%1&quot; directory&quot;</source>
         <translation>You do not have permission to write to &quot;%1&quot; directory&quot;</translation>
     </message>
@@ -834,10 +843,11 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DirectoriesSettingsPageWidget</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="137"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="147"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="157"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="171"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="142"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="152"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="162"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="172"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="186"/>
         <source>Choose Directory</source>
         <translation>Choose Directory</translation>
     </message>

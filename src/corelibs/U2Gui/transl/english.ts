@@ -1043,36 +1043,36 @@ p, li { white-space: pre-wrap; }
         <translation>Connect to the </translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="48"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="51"/>
         <source>Export annotations...</source>
         <translation>Export annotations...</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="49"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="52"/>
         <source>Selected object doesn&apos;t have annotations</source>
         <translation>Selected object doesn&apos;t have annotations</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="110"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="133"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="111"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="134"/>
         <source>Document with the same URL is added to the project.
 Remove it from the project first.</source>
         <translation>Document with the same URL is added to the project.
 Remove it from the project first.</translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="121"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="152"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="144"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="175"/>
         <source>Unable to create I/O factory for </source>
         <translation>Unable to create I/O factory for </translation>
     </message>
     <message>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="126"/>
-        <location filename="../src/util/ExportObjectUtils.cpp" line="155"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="149"/>
+        <location filename="../src/util/ExportObjectUtils.cpp" line="178"/>
         <source>Unknown document format I/O factory: </source>
         <translation>Unknown document format I/O factory: </translation>
     </message>
@@ -2123,11 +2123,13 @@ complement(5..15)</translation>
     <name>U2::ExportDocumentDialogController</name>
     <message>
         <location filename="../src/util/ExportDocumentDialogController.cpp" line="48"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="66"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
         <location filename="../src/util/ExportDocumentDialogController.cpp" line="49"/>
+        <location filename="../src/util/ExportDocumentDialogController.cpp" line="67"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>

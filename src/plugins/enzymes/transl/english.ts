@@ -295,22 +295,22 @@
         <translation>Remove All</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="211"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="198"/>
         <source>Output</source>
         <translation>Output</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="244"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="218"/>
         <source>Use this option to treat the molecule as circular</source>
         <translation>Use this option to treat the molecule as circular</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="247"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="221"/>
         <source>Circular molecule</source>
         <translation>Circular molecule</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.ui" line="254"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="228"/>
         <source>&lt;hint label&gt;</source>
         <translation>&lt;hint label&gt;</translation>
     </message>
@@ -697,17 +697,17 @@ Choose another region.</translation>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="243"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="244"/>
         <source> : %1 cut(s)</source>
         <translation> : %1 cut(s)</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="327"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="328"/>
         <source>Auto-annotations update task is NULL.</source>
         <translation>Auto-annotations update task is NULL.</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="349"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="350"/>
         <source>Select annotations</source>
         <translation>Select annotations</translation>
     </message>

@@ -753,7 +753,7 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="99"/>
         <source>Extract annotations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Извлечь аннотации</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="99"/>

@@ -494,11 +494,13 @@ You may try to upgrade your system by updating the video card driver.</translati
     <name>U2::StructuralAlignmentDialog</name>
     <message>
         <location filename="../src/StructuralAlignmentDialog.cpp" line="61"/>
+        <location filename="../src/deprecated/StructuralAlignmentDialog.cpp" line="60"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/StructuralAlignmentDialog.cpp" line="62"/>
+        <location filename="../src/deprecated/StructuralAlignmentDialog.cpp" line="61"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>

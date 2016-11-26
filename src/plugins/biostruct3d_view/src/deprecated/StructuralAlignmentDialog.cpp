@@ -32,6 +32,7 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <QtWidgets/QPushButton>
 
 #include <U2Gui/HelpButton.h>
 
@@ -57,7 +58,9 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fi
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "18223027");
-
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    
     StructuralAlignmentAlgorithmRegistry *reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
     foreach (const QString &id, reg->getFactoriesIds()) {
         algorithmCombo->addItem(id, qVariantFromValue(id));

@@ -1064,7 +1064,7 @@
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="374"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="554"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="553"/>
         <source>No sequence objects selected!</source>
         <translation>Выделите один или более объектов!</translation>
     </message>
@@ -1090,7 +1090,7 @@
         <translation>Выберите один объект аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="559"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="558"/>
         <source>Set output quality file</source>
         <translation>Укажите качество выходного файла</translation>
     </message>

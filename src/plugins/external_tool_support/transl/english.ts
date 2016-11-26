@@ -9,73 +9,73 @@
         <translation>Request to Local BLAST Database</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="42"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="48"/>
         <source>General options</source>
         <translation>General options</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="53"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="59"/>
         <source>Select search:</source>
         <translation>Select search:</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="61"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="67"/>
         <source>blastn</source>
         <extracomment>qwe</extracomment>
         <translation>blastn</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="66"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="72"/>
         <source>blastp</source>
         <translation>blastp</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="76"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="82"/>
         <source>blastx</source>
         <translation>blastx</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="81"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="87"/>
         <source>tblastn</source>
         <translation>tblastn</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="86"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="92"/>
         <source>tblastx</source>
         <translation>tblastx</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="94"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="100"/>
         <source>Search for short, nearly exact matches</source>
         <translation>Search for short, nearly exact matches</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="101"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="107"/>
         <source>Expectation value </source>
         <translation>Expectation value </translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="108"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="114"/>
         <source>Megablast</source>
         <translation>Megablast</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="125"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="131"/>
         <source>Off</source>
         <translation>Off</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="159"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="165"/>
         <source>Both strands</source>
         <translation>Both strands</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="169"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="175"/>
         <source>Direct</source>
         <translation>Direct</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="176"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="182"/>
         <source>Complement</source>
         <translation>Complement</translation>
     </message>
@@ -84,82 +84,82 @@
         <translation type="vanished">Base name for BLAST DB files:</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="230"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="236"/>
         <source>Number of CPUs being used</source>
         <translation>Number of CPUs being used</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="268"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="274"/>
         <source>Advanced options</source>
         <translation>Advanced options</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="391"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="397"/>
         <source>Word size</source>
         <translation>Word size</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="528"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="534"/>
         <source>Gap costs</source>
         <translation>Gap costs</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="307"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="313"/>
         <source>Match scores</source>
         <translation>Match scores</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="337"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="343"/>
         <source>1 -3</source>
         <translation>1 -3</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="342"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="348"/>
         <source>1 -4</source>
         <translation>1 -4</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="347"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="353"/>
         <source>1 -2</source>
         <translation>1 -2</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="352"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="358"/>
         <source>1 -1</source>
         <translation>1 -1</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="357"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="363"/>
         <source>2 -7</source>
         <translation>2 -7</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="362"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="368"/>
         <source>2 -5</source>
         <translation>2 -5</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="367"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="373"/>
         <source>2 -3</source>
         <translation>2 -3</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="372"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="378"/>
         <source>4 -5</source>
         <translation>4 -5</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="377"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="383"/>
         <source>5 -4</source>
         <translation>5 -4</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="404"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="410"/>
         <source>Matrix</source>
         <translation>Matrix</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="71"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="77"/>
         <source>gpu-blastp</source>
         <translation>gpu-blastp</translation>
     </message>
@@ -174,162 +174,162 @@ a database file</source>
 a database file</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="412"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="418"/>
         <source>BLOSUM62</source>
         <translation>BLOSUM62</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="417"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="423"/>
         <source>BLOSUM45</source>
         <translation>BLOSUM45</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="422"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="428"/>
         <source>BLOSUM80</source>
         <translation>BLOSUM80</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="427"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="433"/>
         <source>PAM30</source>
         <translation>PAM30</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="432"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="438"/>
         <source>PAM70</source>
         <translation>PAM70</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="320"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="326"/>
         <source>Service</source>
         <translation>Service</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="115"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="121"/>
         <source>Max hits:</source>
         <translation>Max hits:</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="283"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="289"/>
         <source>plain</source>
         <translation>plain</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="288"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="294"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="293"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="299"/>
         <source>phi</source>
         <translation>phi</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="443"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="449"/>
         <source>PHI pattern</source>
         <translation>PHI pattern</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="483"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="489"/>
         <source>Threshold for extending hits</source>
         <translation>Threshold for extending hits</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="486"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="492"/>
         <source>Threshold</source>
         <translation>Threshold</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="535"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="541"/>
         <source>Composition-based statistics</source>
         <translation>Composition-based statistics</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="543"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="549"/>
         <source>D or d: default (equivalent to 2 )</source>
         <translation>D or d: default (equivalent to 2 )</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="548"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="554"/>
         <source>0 or F or f: No composition-based statistics</source>
         <translation>0 or F or f: No composition-based statistics</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="553"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="559"/>
         <source>1: Composition-based statistics as in NAR 29:2994-3005, 2001</source>
         <translation>1: Composition-based statistics as in NAR 29:2994-3005, 2001</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="558"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="564"/>
         <source>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</source>
         <translation>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="563"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="569"/>
         <source>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</source>
         <translation>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="575"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="581"/>
         <source>Filters</source>
         <translation>Filters</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="581"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="587"/>
         <source>Low complexity filter</source>
         <translation>Low complexity filter</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="588"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="594"/>
         <source>Human repeats filter</source>
         <translation>Human repeats filter</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="598"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="604"/>
         <source>Masks</source>
         <translation>Masks</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="604"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="610"/>
         <source>Mask for lookup table only</source>
         <translation>Mask for lookup table only</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="614"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="620"/>
         <source>Mask lower case letters</source>
         <translation>Mask lower case letters</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="640"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="646"/>
         <source>Extension options</source>
         <translation>Extension options</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="648"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="654"/>
         <source>X dropoff value (in bits)</source>
         <translation>X dropoff value (in bits)</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="654"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="660"/>
         <source>For gapped alignment</source>
         <translation>For gapped alignment</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="668"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="674"/>
         <source>For ungapped extensions</source>
         <translation>For ungapped extensions</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="675"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="681"/>
         <source>For final gapped alignment</source>
         <translation>For final gapped alignment</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="699"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="705"/>
         <source>Multiple Hits window size</source>
         <translation>Multiple Hits Window Size</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="711"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="717"/>
         <source>Perform gapped alignment</source>
         <translation>Perform gapped alignment</translation>
     </message>
@@ -342,17 +342,17 @@ a database file</translation>
         <translation>Fetch Sequences from BLAST Database</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="59"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="41"/>
         <source>Query ID</source>
         <translation>Query ID</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="75"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="134"/>
         <source>Select database</source>
         <translation>Select database</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="99"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="67"/>
         <source>Output path</source>
         <translation>Output path</translation>
     </message>
@@ -365,7 +365,7 @@ a database file</translation>
         <translation type="vanished">Select database :</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="115"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="92"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -386,7 +386,7 @@ a database file</translation>
         <translation type="vanished">Output path:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="127"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="112"/>
         <source>Add to project</source>
         <translation>Add to project</translation>
     </message>
@@ -1908,7 +1908,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/hmmer/HmmerBuildDialog.ui" line="42"/>
         <source>Input and output</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Input and output</translation>
     </message>
     <message>
         <location filename="../src/hmmer/HmmerBuildDialog.ui" line="52"/>
@@ -2102,7 +2102,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/hmmer/HmmerSearchDialog.ui" line="54"/>
         <source>Input and output</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Input and output</translation>
     </message>
     <message>
         <location filename="../src/hmmer/HmmerSearchDialog.ui" line="65"/>
@@ -2363,7 +2363,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="36"/>
         <source>Input and output</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Input and output</translation>
     </message>
     <message>
         <location filename="../src/hmmer/PhmmerSearchDialog.ui" line="50"/>
