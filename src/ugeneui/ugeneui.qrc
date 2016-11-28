@@ -62,5 +62,7 @@
         <file>html/welcome_page.html</file>
         <file>html/welcome_page_webengine.html</file>
         <file>html/version_news.html</file>
+        <file>javascript/Common.js</file>
+        <file>javascript/WellcomePage.js</file>
     </qresource>
 </RCC>
