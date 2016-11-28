@@ -182,13 +182,7 @@ void BuildIndexDialog::accept()
         if (getAlgorithmName() == "Bowtie"){
             externalToolName = "Bowtie build indexer";
         }
-        if (getAlgorithmName() == "BWA"){
-            externalToolName = "BWA";
-        }
-        if (getAlgorithmName() == "BWA-MEM"){
-            externalToolName = "BWA";
-        }
-        if (getAlgorithmName() == "BWA-SW"){
+        if ((getAlgorithmName() == "BWA") || (getAlgorithmName() == "BWA-MEM") || (getAlgorithmName() == "BWA-SW")){
             externalToolName = "BWA";
         }
         if(AppContext::getExternalToolRegistry()->getByName(externalToolName)->getPath().isEmpty()) {
