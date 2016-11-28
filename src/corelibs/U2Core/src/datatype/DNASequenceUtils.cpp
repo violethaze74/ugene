@@ -117,7 +117,37 @@ QByteArray DNASequenceUtils::reverseComplement(const QByteArray &sequence) {
 }
 
 void DNASequenceUtils::crop(DNASequence &sequence, int startPos, int length) {
+    sequence.quality.qualCodes = sequence.quality.qualCodes.mid(startPos, length);
     sequence.seq = sequence.seq.mid(startPos, length);
+}
+
+U2Region DNASequenceUtils::trimByQuality(DNASequence &sequence, int qualityThreshold, int minSequenceLength, bool trimBothEnds) {
+    const int sequenceLength = sequence.length();
+    CHECK(sequenceLength <= sequence.quality.qualCodes.length(), U2Region(0, sequenceLength));
+
+    int endPosition = sequenceLength - 1;
+    for (; endPosition >= 0; endPosition--) {
+        if (sequence.quality.getValue(endPosition) >= qualityThreshold) {
+            break;
+        }
+    }
+
+    int beginPosition = 0;
+    if (trimBothEnds) {
+        for (; beginPosition <= endPosition; beginPosition++) {
+            if (sequence.quality.getValue(beginPosition) >= qualityThreshold) {
+                break;
+            }
+        }
+    }
+
+    if (endPosition >= beginPosition && endPosition - beginPosition + 1 >= minSequenceLength) {
+        crop(sequence, beginPosition, endPosition - beginPosition + 1);
+    } else {
+        return U2Region(0, sequenceLength);
+    }
+
+    return U2Region(beginPosition, endPosition - beginPosition + 1);
 }
 
 } // namespace

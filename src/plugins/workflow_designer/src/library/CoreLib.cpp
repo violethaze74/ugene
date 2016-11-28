@@ -85,6 +85,7 @@
 #include "ReverseComplementWorker.h"
 #include "RmdupBamWorker.h"
 #include "ScriptWorker.h"
+#include "SequenceQualityTrimWorker.h"
 #include "SequenceSplitWorker.h"
 #include "SequencesToMSAWorker.h"
 #include "SortBamWorker.h"
@@ -295,6 +296,7 @@ void CoreLib::init() {
     ExtractConsensusWorkerFactory::init();
     ExtractMSAConsensusSequenceWorkerFactory::init();
     ExtractMSAConsensusStringWorkerFactory::init();
+    FastqQualityTrimWorkerFactory::init();
     FetchSequenceByIdFromAnnotationFactory::init();
     FilterAnnotationsByQualifierWorkerFactory::init();
     FilterAnnotationsWorkerFactory::init();
@@ -308,14 +310,14 @@ void CoreLib::init() {
     MergeFastqWorkerFactory::init();
     MultiplexerWorkerFactory::init();
     PassFilterWorkerFactory::init();
-    QualityTrimWorkerFactory::init();
     RCWorkerFactory::init();
     ReadAnnotationsWorkerFactory::init();
     ReadAssemblyWorkerFactory::init();
     ReadVariationWorkerFactory::init();
-    RenameChomosomeInVariationWorkerFactory::init();
     RemoteDBFetcherFactory::init();
+    RenameChomosomeInVariationWorkerFactory::init();
     RmdupBamWorkerFactory::init();
+    SequenceQualityTrimWorkerFactory::init();
     SequenceSplitWorkerFactory::init();
     SequencesToMSAWorkerFactory::init();
     SortBamWorkerFactory::init();

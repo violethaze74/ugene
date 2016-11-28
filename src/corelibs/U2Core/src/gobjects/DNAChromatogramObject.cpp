@@ -74,6 +74,12 @@ const DNAChromatogram & DNAChromatogramObject::getChromatogram() const {
     return cache;
 }
 
+void DNAChromatogramObject::setChromatogram(U2OpStatus &os, const DNAChromatogram &chromatogram) {
+    ChromatogramUtils::updateChromtogramData(os, getEntityRef(), chromatogram);
+    CHECK_OP(os, );
+    cache = chromatogram;
+}
+
 void DNAChromatogramObject::loadDataCore(U2OpStatus &os) {
     const QString serializer = RawDataUdrSchema::getObject(entityRef, os).serializer;
     CHECK_OP(os, );

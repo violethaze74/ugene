@@ -49,6 +49,7 @@ public:
     /* NOTE: deallocate memory! */
     virtual U2Object *getObject(const SharedDbiDataHandler &handler, const U2DataType &type);
     virtual SharedDbiDataHandler putSequence(const DNASequence &sequence);
+    virtual SharedDbiDataHandler putSequence(const U2SequenceObject *sequenceObject);
     virtual SharedDbiDataHandler putAlignment(const MultipleSequenceAlignment &al);
     virtual SharedDbiDataHandler putAnnotationTable(const QList<SharedAnnotationData> &anns, const QString annTableName = "Annotations");
     virtual SharedDbiDataHandler putAnnotationTable(AnnotationTableObject *annTable);

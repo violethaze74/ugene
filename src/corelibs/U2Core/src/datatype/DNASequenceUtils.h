@@ -24,12 +24,14 @@
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/U2OpStatus.h>
-
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
-enum DnaSequencesMatchStatus {MatchExactly, DoNotMatch};
-
+enum DnaSequencesMatchStatus {
+    MatchExactly,
+    DoNotMatch
+};
 
 /** Utilities for DNASequences */
 class U2CORE_EXPORT DNASequenceUtils {
@@ -66,6 +68,8 @@ public:
     static QByteArray reverseComplement(const QByteArray &sequence);
 
     static void crop(DNASequence &sequence, int startPos, int length);
+
+    static U2Region trimByQuality(DNASequence &sequence, int qualityThreshold, int minSequenceLength, bool trimBothEnds);
 };
 
 } // namespace

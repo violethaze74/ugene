@@ -152,6 +152,25 @@ SharedDbiDataHandler DbiDataStorage::putSequence(const DNASequence &dnaSeq) {
     return handler;
 }
 
+SharedDbiDataHandler DbiDataStorage::putSequence(const U2SequenceObject *sequenceObject) {
+    SAFE_POINT(NULL != dbiHandle, "Invalid DBI handle", SharedDbiDataHandler());
+    SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence object"), SharedDbiDataHandler());
+
+    U2OpStatusImpl os;
+
+    U2EntityRef entityRef = sequenceObject->getEntityRef();
+    if (sequenceObject->getEntityRef().dbiRef != dbiHandle->getDbiRef()) {
+        QScopedPointer<U2SequenceObject> clonedSequenceObject(qobject_cast<U2SequenceObject *>(sequenceObject->clone(dbiHandle->getDbiRef(), os)));
+        SAFE_POINT_OP(os, SharedDbiDataHandler());
+        entityRef = clonedSequenceObject->getEntityRef();
+    }
+
+    DbiConnection *connection = getConnection(dbiHandle->getDbiRef(), os);
+    SAFE_POINT_OP(os, SharedDbiDataHandler());
+
+    return SharedDbiDataHandler(new DbiDataHandler(entityRef, connection->dbi->getObjectDbi(), true));
+}
+
 SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleSequenceAlignment &al) {
     assert(NULL != dbiHandle);
 

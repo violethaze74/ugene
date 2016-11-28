@@ -20,11 +20,15 @@
  */
 
 #include <U2Core/DatatypeSerializeUtils.h>
+#include <U2Core/DbiConnection.h>
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/Log.h>
 #include <U2Core/L10n.h>
 #include <U2Core/RawDataUdrSchema.h>
+#include <U2Core/U2DbiUtils.h>
+#include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
+#include <U2Core/U2ObjectRelationsDbi.h>
 
 #include "ChromatogramUtils.h"
 
@@ -105,8 +109,7 @@ U2EntityRef ChromatogramUtils::import(U2OpStatus &os, const U2DbiRef &dbiRef, co
     CHECK_OP(os, U2EntityRef());
 
     const U2EntityRef entityRef(dbiRef, dbChromatogram.id);
-    const QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
-    RawDataUdrSchema::writeContent(data, entityRef, os);
+    updateChromtogramData(os, entityRef, chromatogram);
     CHECK_OP(os, U2EntityRef());
 
     return entityRef;
@@ -127,6 +130,42 @@ U2Chromatogram ChromatogramUtils::getChromatogramDbInfo(U2OpStatus &os, const U2
 
 qint64 ChromatogramUtils::getChromatogramLength(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
     return exportChromatogram(os, chromatogramRef).traceLength;
+}
+
+void ChromatogramUtils::updateChromtogramData(U2OpStatus &os, const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram) {
+    const QByteArray data = DNAChromatogramSerializer::serialize(chromatogram);
+    RawDataUdrSchema::writeContent(data, chromatogramRef, os);
+    CHECK_OP(os, );
+}
+
+U2EntityRef ChromatogramUtils::getChromatogramIdByRelatedSequenceId(U2OpStatus &os, const U2EntityRef &sequenceRef) {
+    DbiConnection connection(sequenceRef.dbiRef, os);
+    CHECK_OP(os, U2EntityRef());
+
+    const QList<U2DataId> relatedObjects = connection.dbi->getObjectRelationsDbi()->getReferenceRelatedObjects(sequenceRef.entityId, ObjectRole_Sequence, os);
+    CHECK_OP(os, U2EntityRef());
+
+    QList<U2DataId> chromatogramsIds;
+    foreach (const U2DataId &dataId, relatedObjects) {
+        if (U2Type::Chromatogram != U2DbiUtils::toType(dataId)) {
+            continue;
+        }
+        chromatogramsIds << dataId;
+    }
+    assert(chromatogramsIds.size() <= 1);
+
+    CHECK(chromatogramsIds.size() == 1, U2EntityRef());
+    return U2EntityRef(sequenceRef.dbiRef, chromatogramsIds.first());
+}
+
+QString ChromatogramUtils::getChromatogramName(U2OpStatus &os, const U2EntityRef &chromatogramRef) {
+    DbiConnection connection(chromatogramRef.dbiRef, os);
+    CHECK_OP(os, QString());
+
+    U2Object object;
+    connection.dbi->getObjectDbi()->getObject(object, chromatogramRef.entityId, os);
+    CHECK_OP(os, QString());
+    return object.visualName;
 }
 
 }   // namespace U2
