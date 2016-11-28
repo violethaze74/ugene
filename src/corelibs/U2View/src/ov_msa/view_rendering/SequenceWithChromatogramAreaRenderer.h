@@ -50,14 +50,11 @@ private:
     void drawChromatogramTrace(const DNAChromatogram& chroma,
                                qreal x, qreal y, qreal w, qreal h, QPainter& p,
                                const U2Region& visible);
-    void drawOriginalBaseCalls(const DNAChromatogram& chroma,
-                               qreal x, qreal y, qreal w, qreal h,
+    void drawOriginalBaseCalls(const DNAChromatogram& chroma, qreal w, qreal h,
                                QPainter& p, const U2Region& visible, const QByteArray& ba, bool is = true);
-    void drawQualityValues(const DNAChromatogram& chroma,
-                           qreal x, qreal y, qreal w, qreal h,
+    void drawQualityValues(const DNAChromatogram& chroma, qreal w, qreal h,
                            QPainter& p, const U2Region& visible, const QByteArray& ba);
-    void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma,
-                                        qreal x, qreal y, qreal w, qreal h,
+    void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal w, qreal h,
                                         QPainter& p, const U2Region& visible, const QByteArray& ba);
 private:
     McaEditorSequenceArea* getSeqArea() const;
@@ -66,23 +63,18 @@ private:
 private:
     qreal   charWidth;
     qreal   charHeight;
-    qreal   addUpIfQVL;
 
     int             chromaMax;
     QPen            linePen;
     QFont           font;
     QFont           fontBold;
     int             heightPD;
-    int             heightAreaBC;
-    int             areaHeight;
+    int             heightBC;
+    int             heightQuality;
+    int             maxTraceHeight;
+
     qreal           kLinearTransformTrace;
     qreal           bLinearTransformTrace;
-    qreal           kLinearTransformBaseCallsOfEdited;
-    qreal           bLinearTransformBaseCallsOfEdited;
-    qreal           xBaseCallsOfEdited;
-    qreal           yBaseCallsOfEdited;
-    qreal           wBaseCallsOfEdited;
-    qreal           hBaseCallsOfEdited;
 };
 
 } // namespace
