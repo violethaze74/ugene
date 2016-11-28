@@ -117,7 +117,6 @@ CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateA
     occc.typeFilter = GObjectTypes::ANNOTATION_TABLE;
     occc.onlyWritable = true;
     occc.uof = model.useUnloadedObjects ? UOF_LoadedAndUnloaded : UOF_LoadedOnly;
-
     occ = w->createGObjectComboBoxController(occc);
 
     commonWidgetUpdate(model);
@@ -363,6 +362,18 @@ void CreateAnnotationWidgetController::initSaveController() {
 bool CreateAnnotationWidgetController::prepareAnnotationObject() {
     updateModel(false);
     QString v = validate();
+    if((w->isExistingTableOptionSelected()) && (qHash(occ->getSelectedObjectReference()) == qHash(model.sequenceObjectRef))){
+        Document* d = AppContext::getProject()->findDocumentByURL(model.sequenceObjectRef.docUrl);
+        U2OpStatusImpl os;
+        const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
+        SAFE_POINT_OP(os, false);
+        AnnotationTableObject* ann = new AnnotationTableObject(d->getName(),localDbiRef);
+        ann->addObjectRelation(GObjectRelation(model.sequenceObjectRef, ObjectRole_Sequence));
+        ann->setGObjectName(model.sequenceObjectRef.objName + FEATURES_TAG);
+        d->addObject(ann);
+        occ->setSelectedObject(ann);
+        model.annotationObjectRef = ann;
+    }
     SAFE_POINT(v.isEmpty(), "Annotation model is not valid", false);
     if (!model.annotationObjectRef.isValid() && w->isNewTableOptionSelected()) {
         SAFE_POINT(!model.newDocUrl.isEmpty(), "newDocUrl is empty", false);
@@ -388,7 +399,7 @@ void CreateAnnotationWidgetController::sl_groupName() {
     GObject* obj = occ->getSelectedObject();
     QStringList groupNames;
     groupNames << GROUP_NAME_AUTO;
-    if (NULL != obj && !obj->isUnloaded()) {
+    if (NULL != obj && !obj->isUnloaded() && qHash(occ->getSelectedObjectReference()) != qHash(model.sequenceObjectRef)) {
         AnnotationTableObject* ao = qobject_cast<AnnotationTableObject *>(obj);
         ao->getRootGroup()->getSubgroupPaths(groupNames);
     }

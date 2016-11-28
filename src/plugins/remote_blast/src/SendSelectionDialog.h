@@ -26,6 +26,7 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2View/ADVSequenceObjectContext.h>
 
 #if (QT_VERSION < 0x050000) //Qt 5
 #include <QtGui/QMessageBox>
@@ -45,7 +46,7 @@ class AnnotationTableObject;
 class SendSelectionDialog: public QDialog, Ui_RemoteBLASTDialog {
     Q_OBJECT
 public:
-    SendSelectionDialog( const U2SequenceObject* dnaso, bool _isAminoSeq, QWidget *p = NULL );
+    SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool _isAminoSeq, QWidget *p = NULL );
     QString getGroupName() const;
     const QString &getAnnotationDescription() const;
     AnnotationTableObject * getAnnotationObject() const;
@@ -78,6 +79,7 @@ private:
     bool isAminoSeq;
     CreateAnnotationWidgetController * ca_c;
     bool extImported;
+    ADVSequenceObjectContext* seqCtx;
 };
 
 }

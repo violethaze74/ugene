@@ -21,13 +21,17 @@
 
 #include "GObjectComboBoxController.h"
 
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/GObject.h>
 
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/UnloadedObject.h>
+#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2OpStatusUtils.h>
 
 namespace U2 {
 
@@ -81,6 +85,33 @@ void GObjectComboBoxController::connectDocument(Document *document) {
 void GObjectComboBoxController::addDocumentObjects(Document* d) {
     if (d->isDatabaseConnection()) {
         return;
+    }
+    //checks whether you need to add a new annotations table
+    QString docUrl = settings.relationFilter.ref.docUrl;
+    if(d->getURLString() == docUrl){
+        bool hasAnnotationTable = false;
+        foreach (GObject* obj, d->getObjects()) {
+            if(obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE){
+                hasAnnotationTable = true;
+                break;
+            }
+        }
+        if ((!hasAnnotationTable) && (d->getDocumentFormat()->getFlags().testFlag(DocumentFormatFlag_SupportWriting))){
+            if(d->getDocumentFormat()->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE)){
+                QString virtualItemText = d->getName()+" [";
+                GObjectReference ref;
+                foreach (GObject* obj, d->getObjects()) {
+                    if(obj->getEntityRef() == settings.relationFilter.ref.entityRef){
+                        virtualItemText.append(obj->getGObjectName() + FEATURES_TAG + "] *");
+                        ref = GObjectReference(obj);
+                    }
+                }
+                combo->addItem(objectIcon, virtualItemText, QVariant::fromValue<GObjectReference>(ref));
+
+                emit si_comboBoxChanged();
+                return;
+            }
+        }
     }
     foreach(GObject* obj, d->getObjects()) {
         addObject(obj);
@@ -151,6 +182,9 @@ void GObjectComboBoxController::removeObject(const GObjectReference& ref) {
     int n = findItem(combo, ref);
     if (n >= 0) {
         combo->removeItem(n);
+        if(ref.docUrl == settings.relationFilter.getDocURL()){
+            updateCombo();
+        }
         emit si_comboBoxChanged();
     }
 }

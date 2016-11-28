@@ -33,6 +33,7 @@
 
 #include <U2Gui/HelpButton.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2View/AnnotatedDNAView.h>
 
 #include "SendSelectionDialog.h"
 
@@ -126,9 +127,10 @@ void SendSelectionDialog::alignComboBoxes() {
     }
 }
 
-SendSelectionDialog::SendSelectionDialog(const U2SequenceObject* dnaso, bool _isAminoSeq, QWidget *p)
-    : QDialog(p), translateToAmino(false), isAminoSeq(_isAminoSeq), extImported(false)
+SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool _isAminoSeq, QWidget *p)
+    : QDialog(p), translateToAmino(false), isAminoSeq(_isAminoSeq), extImported(false),seqCtx(seqCtx)
 {
+    U2SequenceObject* dnaso = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
     ca_m.hideAnnotationType = true;
     ca_m.hideAnnotationName = true;
@@ -423,6 +425,12 @@ void SendSelectionDialog::sl_OK() {
     cfg.dbChoosen = db;
 
     saveSettings();
+    bool objectPrepared = ca_c->prepareAnnotationObject();
+    if (!objectPrepared){
+        QMessageBox::warning(this, tr("Error"), tr("Cannot create an annotation object. Please check settings"));
+        return;
+    }
+    seqCtx->getAnnotatedDNAView()->tryAddObject(ca_c->getModel().getAnnotationObject());
     accept();
 }
 

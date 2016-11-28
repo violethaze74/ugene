@@ -44,6 +44,7 @@ struct plan7_s;
 
 namespace U2 {
 
+class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class CreateAnnotationModel;
 class AnnotationTableObject;
@@ -58,7 +59,8 @@ class HMMReadTask;
 class HMMSearchDialogController : public QDialog, public Ui_HMMSearchDialog {
     Q_OBJECT
 public:
-    HMMSearchDialogController(const DNASequence& sequence, const U2SequenceObject* obj, QWidget* p = NULL);
+    HMMSearchDialogController(const U2SequenceObject* obj, QWidget* p = NULL);
+    HMMSearchDialogController(ADVSequenceObjectContext* seqCtx, QWidget* p = NULL);
     ~HMMSearchDialogController();
 
 public slots:
@@ -74,11 +76,13 @@ private slots:
     void sl_onProgressChanged();
 
 private:
+    void init(const U2SequenceObject* seqObj);
     DNASequence                         dnaSequence;
     Task*                               searchTask;
     CreateAnnotationWidgetController*   createController;
     QPushButton*                        okButton;
     QPushButton*                        cancelButton;
+    ADVSequenceObjectContext*           seqCtx;
 };
 
 

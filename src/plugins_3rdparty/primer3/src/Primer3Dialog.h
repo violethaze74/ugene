@@ -75,6 +75,7 @@ private:
     Primer3TaskSettings defaultSettings;
     Primer3TaskSettings settings;
     RegionSelector* rs;
+    ADVSequenceObjectContext *context;
 private slots:
     void sl_pbReset_clicked();
     void sl_pbPick_clicked();

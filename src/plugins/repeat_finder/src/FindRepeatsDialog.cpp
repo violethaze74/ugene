@@ -298,6 +298,7 @@ void FindRepeatsDialog::accept() {
                 return QDialog::reject();
         }
     }
+    sc->getAnnotatedDNAView()->tryAddObject(cam.getAnnotationObject());
 
     FindRepeatsToAnnotationsTask* t = new FindRepeatsToAnnotationsTask(settings, seqPart,
         cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);

@@ -259,6 +259,7 @@ void SiteconSearchDialogController::sl_onSaveAnnotations() {
     if (rc != QDialog::Accepted) {
         return;
     }
+    ctx->getAnnotatedDNAView()->tryAddObject(m.getAnnotationObject());
     const QString& name = m.data->name;
     QList<SharedAnnotationData> list;
     for (int i=0, n = resultsTree->topLevelItemCount(); i<n; ++i) {

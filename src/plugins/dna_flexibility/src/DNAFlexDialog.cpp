@@ -112,6 +112,9 @@ void DNAFlexDialog::accept()
     QString annotName = annotModel.data->name;
     QString annotGroup = annotModel.groupName;
 
+    if(ctx != NULL){
+        ctx->getAnnotatedDNAView()->tryAddObject(annotModel.getAnnotationObject());
+    }
 
     // Creating the task
     U2OpStatusImpl os;
