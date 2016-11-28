@@ -40,9 +40,9 @@ public:
     virtual QStringList header() = 0;
     /** The first item of data is the id, which has not the column */
     virtual QList<QStringList> data() = 0;
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
     static QString wrapLongText(const QString &text);
-
+#endif
 protected slots:
     void createTable();
     void fillTable();
@@ -51,17 +51,24 @@ protected:
     bool useEmptyRows;
 #if (QT_VERSION < 0x050400) //Qt 5.7
     QMap<QString, QWebElement> rows;
-#else
+//#else
     QMap<QString, QString> rows;
 #endif
 
 protected:
     void addRow(const QString &dataId, const QStringList &d);
+#if (QT_VERSION < 0x050400) //Qt 5.7
     void updateRow(const QString &dataId, const QStringList &d);
     virtual QString createRow(const QStringList &d);
-
+#endif
 private:
     void addEmptyRows();
+};
+
+class Jsutils {
+public:
+    static QString toJSArray(const QStringList& list);
+    static QString toJSArray(const QList<int>& list);
 };
 
 } // U2

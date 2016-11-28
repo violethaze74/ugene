@@ -36,6 +36,7 @@ TableWidget::TableWidget(const QString &container, Dashboard *parent)
 }
 
 void TableWidget::createTable() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QString table = "<table class=\"table table-bordered table-fixed\">";
     foreach (int w, widths()) {
         table += "<col width=\"" + QString("%1").arg(w) + "%\" />";
@@ -47,20 +48,21 @@ void TableWidget::createTable() {
     table += "</tr></thead>";
     table += "<tbody scroll=\"yes\"/>";
     table += "</table>";
-#if (QT_VERSION < 0x050400) //Qt 5.7
     container.setInnerXml(table);
-#else
-    assert(false);
-#endif
-
     rows.clear();
+#else
+    dashboard->page()->runJavaScript("createTable(\"" + container + "\", " + Jsutils::toJSArray(widths()) + "," + Jsutils::toJSArray(header()) + ");");
+#endif
     if (useEmptyRows) {
         addEmptyRows();
     }
 }
 
+
 void TableWidget::fillTable() {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     rows.clear();
+#endif
     foreach (const QStringList &row, data()) {
         addRow(row.first(), row.mid(1));
     }
@@ -68,8 +70,8 @@ void TableWidget::fillTable() {
 
 void TableWidget::addEmptyRows() {
 #if (QT_VERSION < 0x050400) //Qt 5.7
-    QWebElement body = container.findFirst("tbody");
     int rowIdx = rows.size();
+    QWebElement body = container.findFirst("tbody");
     while (rowIdx < MIN_ROW_COUNT) {
         QString row = "<tr class=\"empty-row\">";
         foreach(const QString &h, header()) {
@@ -81,16 +83,18 @@ void TableWidget::addEmptyRows() {
         rowIdx++;
     }
 #else
-    assert(false);
+    for (int rowIdx = 0; rowIdx <= MIN_ROW_COUNT; rowIdx++) {
+        dashboard->page()->runJavaScript("addEmptyRows(\"" + container + "\", " + QString::number(rowIdx) + ", " + QString::number(MIN_ROW_COUNT) + ");");
+    }
 #endif
 }
 
 void TableWidget::addRow(const QString &dataId, const QStringList &ds) {
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QString row;
     row += "<tr class=\"filled-row\">";
     row += createRow(ds);
     row += "</tr>";
-#if (QT_VERSION < 0x050400) //Qt 5.7
     QWebElement body = container.findFirst("tbody");
     QWebElement emptyRow = body.findFirst(".empty-row");
     if (emptyRow.isNull()) {
@@ -101,17 +105,15 @@ void TableWidget::addRow(const QString &dataId, const QStringList &ds) {
         rows[dataId] = body.findAll(".filled-row").last();
     }
 #else
-    assert(false);
+    //dashboard->page()->runJavaScript("addRow(\"" + container + "\", \"" + QString::number(rowIdx) + "\", \"" + QString::number(MIN_ROW_COUNT) + "\");");
+    assert(0);
 #endif
 }
 
+#if (QT_VERSION < 0x050400) //Qt 5.7
 void TableWidget::updateRow(const QString &dataId, const QStringList &d) {
     if (rows.contains(dataId)) {
-#if (QT_VERSION < 0x050400) //Qt 5.7
         rows[dataId].setInnerXml(createRow(d));
-#else
-        assert(false);
-#endif
     } else {
         addRow(dataId, d);
     }
@@ -127,6 +129,27 @@ QString TableWidget::createRow(const QStringList &ds) {
 
 QString TableWidget::wrapLongText(const QString &text) {
     return "<div class=\"long-text\" title=\"" + text + "\">" + text + "</div>";
+}
+#endif
+
+QString Jsutils::toJSArray(const QStringList& list) {
+    QString result;
+    foreach(const QString& i, list) {
+        result += "'" + i + "', ";
+    }
+    result.remove(result.length() - 2, 2);
+    result = "[" + result + "]";
+    return result;
+}
+
+QString Jsutils::toJSArray(const QList<int>& list) {
+    QString result;
+    foreach(int i, list) {
+        result += "'" + QString::number(i) + "', ";
+    }
+    result.remove(result.length() - 2, 2);
+    result = "[" + result + "]";
+    return result;
 }
 
 } // U2

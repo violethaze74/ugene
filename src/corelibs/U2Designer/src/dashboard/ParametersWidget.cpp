@@ -51,6 +51,7 @@ void ParametersWidget::createWidget(const QList<WorkerParamsInfo> &workersParams
         // Create the tab
         QString tabId = "params_tab_id_" + QString::number(i);
         QString createTabFunc;
+#if (QT_VERSION < 0x050400) //Qt 5.7
         if (0 == i) {
             createTabFunc = "pwInitAndActiveTab";
         }
@@ -58,10 +59,16 @@ void ParametersWidget::createWidget(const QList<WorkerParamsInfo> &workersParams
             createTabFunc = "pwAddTab";
         }
         createTabFunc += "(this, '" + info.workerName + "', '" + tabId + "')";
-#if (QT_VERSION < 0x050400) //Qt 5.7
+
         container.evaluateJavaScript(createTabFunc);
 #else
-        assert(false);
+        if (0 == i) {
+            createTabFunc = "pwInitAndActiveTab_webengine";
+        } else {
+            createTabFunc = "pwAddTab_webengine";
+        }
+        createTabFunc += "('" + container + "', '" + info.workerName + "', '" + tabId + "')";
+        dashboard->page()->runJavaScript(createTabFunc);
 #endif
         // Add the parameters
         foreach (Attribute* param, info.parameters) {
@@ -89,7 +96,7 @@ void ParametersWidget::createWidget(const QList<WorkerParamsInfo> &workersParams
 #if (QT_VERSION < 0x050400) //Qt 5.7
                     container.evaluateJavaScript(createParamFunc);
 #else
-                    assert(false);
+                    dashboard->page()->runJavaScript(createParamFunc);
 #endif
                 }
             }
@@ -123,7 +130,7 @@ void ParametersWidget::createWidget(const QList<WorkerParamsInfo> &workersParams
 #if (QT_VERSION < 0x050400) //Qt 5.7
                 container.evaluateJavaScript(createParamFunc);
 #else
-                assert(false);
+                dashboard->page()->runJavaScript(createParamFunc);
 #endif
             }
         }

@@ -79,6 +79,14 @@ const QString Dashboard::OVERVIEW_TAB_ID = "#overview_tab";
 const QString Dashboard::INPUT_TAB_ID = "#input_tab";
 //const QString Dashboard::OUTPUT_TAB_ID = "#output_tab";
 
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+const QString Dashboard::RESOURCE_WIDGET_ID = "resourceWidget";
+const QString Dashboard::OUTPUT_WIDGET_ID = "outputWidget";
+const QString Dashboard::STATISTICS_WIDGET_ID = "statisticsWidget";
+const QString Dashboard::PROBLEMS_WIDGET_ID = "problemsWidget";
+const QString Dashboard::PARAMETERS_WIDGET_ID = "parametersWidget";
+#endif
+
 Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &_name, QWidget *parent)
 #if (QT_VERSION < 0x050400) //Qt 5.7
     : QWebView(parent)
@@ -87,7 +95,7 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &_name, QWidg
 #endif
 , loaded(false), name(_name), opened(true), _monitor(monitor), initialized(false), workflowInProgress(true)
 {
-    etWidgetController = new ExternalToolsWidgetController;
+    etWidgetController = new ExternalToolsWidgetController();
 
     connect(this, SIGNAL(loadFinished(bool)), SLOT(sl_loaded(bool)));
     connect(_monitor, SIGNAL(si_report()), SLOT(sl_serialize()));
@@ -100,24 +108,12 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &_name, QWidg
 #if (QT_VERSION < 0x050400) //Qt 5.7
     loadUrl = ":U2Designer/html/Dashboard.html";
 #else
-    loadUrl = ":U2Designer/html/Dashboard_webengine.html";
+    loadUrl = "qrc:///U2Designer/html/Dashboard_webengine.html";
 #endif
     loadDocument();
     setObjectName("Dashboard");
 #if (QT_VERSION >= 0x050400) //Qt 5.7
-    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode);
-    if (!server->listen(QHostAddress::LocalHost, 12346)) {
-        return;
-    }
-
-    clientWrapper = new WebSocketClientWrapper(server);
-
-    channel = new QWebChannel();
-
-    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
-        channel, &QWebChannel::connectTo);
-
-    channel->registerObject(QString("agent"), this);
+    channel->registerObject(QString("agent"), new DashboardPageController(this));
 #endif
 }
 
@@ -140,11 +136,6 @@ Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
 
 Dashboard::~Dashboard() {
     delete etWidgetController;
-#if (QT_VERSION >= 0x050400) //Qt 5.7
-    delete server;
-    delete clientWrapper;
-    delete channel;
-#endif
 }
 
 void Dashboard::onShow() {
@@ -186,8 +177,8 @@ void Dashboard::setName(const QString &value) {
 
 void Dashboard::loadDocument() {
     loaded = true;
-#if (QT_VERSION < 0x050400) //Qt 5.7
     QFile file(loadUrl);
+#if (QT_VERSION < 0x050400) //Qt 5.7
     bool opened = file.open(QIODevice::ReadOnly);
     if (!opened) {
         coreLog.error("Can not load " + loadUrl);
@@ -200,9 +191,13 @@ void Dashboard::loadDocument() {
     file.close();
     page()->mainFrame()->setHtml(html);
 #else
-    QUrl url(loadUrl);
-    url.setQuery(QStringLiteral("webChannelBaseUrl=") + "ws://127.0.0.1:12346");
-    page()->load(url);
+    QWebEnginePage *pg = new QWebEnginePage(parentWidget());
+    QString abs = loadUrl;
+    pg->load(QUrl(abs));
+    setPage(pg);
+
+    channel = new QWebChannel(page());
+    page()->setWebChannel(channel);
 #endif
 }
 
@@ -239,30 +234,32 @@ void Dashboard::sl_loaded(bool ok) {
     }
 #else
     if (NULL != monitor()) {
-        new OutputFilesWidget(addWidget(tr("Output Files"), OverviewDashTab, 0), this);
-        /*
-        new ResourcesWidget(addWidget(tr("Workflow Task"), OverviewDashTab, 1), this);
-        new StatisticsWidget(addWidget(tr("Common Statistics"), OverviewDashTab, 1), this);
-
+        addWidget(tr("Output Files"), OverviewDashTab, 0, OUTPUT_WIDGET_ID);
+        new OutputFilesWidget(OUTPUT_WIDGET_ID, this);
+        addWidget(tr("Workflow Task"), OverviewDashTab, 1, RESOURCE_WIDGET_ID);
+        new ResourcesWidget(RESOURCE_WIDGET_ID, this);
+        addWidget(tr("Common Statistics"), OverviewDashTab, 1);
+        new StatisticsWidget(STATISTICS_WIDGET_ID, this);
+        
         sl_runStateChanged(false);
         if (!monitor()->getProblems().isEmpty()) {
             sl_addProblemsWidget();
         }
+        addWidget(tr("Parameters"), InputDashTab, 0);
+        new ParametersWidget(PARAMETERS_WIDGET_ID, this);
 
-        new ParametersWidget(addWidget(tr("Parameters"), InputDashTab, 0), this);
-
-        createExternalToolTab();
+        if (monitor()->isExternalToolScheme()) {
+            createExternalToolTab();
+        }
 
         connect(monitor(), SIGNAL(si_runStateChanged(bool)), SLOT(sl_runStateChanged(bool)));
         connect(monitor(), SIGNAL(si_firstProblem()), SLOT(sl_addProblemsWidget()));
-        */
     }
-    /*
     if (!WorkflowSettings::isShowLoadButtonHint()) {
-        page()->mainFrame()->documentElement().evaluateJavaScript("hideLoadBtnHint()");
+        //page()->mainFrame()->documentElement().evaluateJavaScript("hideLoadBtnHint()");
+        page()->runJavaScript("document.getElementById('wrapper').hideLoadBtnHint()");
     }
-    */
-    assert(false);
+    //assert(false);
 #endif
 }
 
@@ -271,6 +268,8 @@ void Dashboard::sl_addProblemsWidget() {
     // Will be removed by parent
     new ProblemsWidget(addWidget(tr("Problems"), OverviewDashTab), this);
 #else
+    addWidget(tr("Problems"), OverviewDashTab);
+    //new ProblemsWidget(PROBLEMS_WIDGET_ID, this);
     assert(false);
 #endif
 }
@@ -425,7 +424,7 @@ QWebElement Dashboard::addWidget(const QString &title, DashboardTab dashTab, int
     return widget.findFirst(".widget-content");
 }
 #else
-QString Dashboard::addWidget(const QString &title, DashboardTab dashTab, int cntNum) {
+void Dashboard::addWidget(const QString &title, DashboardTab dashTab, int cntNum, const QString &widgetId) {
     // Find the tab
     QString dashTabId;
     if (OverviewDashTab == dashTab) {
@@ -435,50 +434,10 @@ QString Dashboard::addWidget(const QString &title, DashboardTab dashTab, int cnt
     } else if (ExternalToolsTab == dashTab) {
         dashTabId = EXT_TOOLS_TAB_ID;
     } else {
-        FAIL("Unexpected dashboard tab ID!", "");
+        FAIL("Unexpected dashboard tab ID!", );
     }
-    //                              (dashTabId, dashTab, ExternalToolsTab, cntNum)
-    page()->runJavaScript(QString("addWidget(\"1%\", \"2%\", \"3%\", \"4%\")").arg(dashTabId).arg(QString::number(dashTab)).arg(QString::number(ExternalToolsTab)).arg(QString::number(cntNum)));
-    return "";
-    /*
-    QWebElement tabContainer = doc.findFirst(dashTabId);
-    SAFE_POINT(!tabContainer.isNull(), "Can't find the tab container!", QWebElement());
-
-    // Specify if the tab has left/right inner containers
-    bool hasInnerContainers = true;
-    if (InputDashTab == dashTab || ExternalToolsTab == dashTab) {
-        hasInnerContainers = false;
-    }
-
-    // Get the left or right inner container (if the tab allows),
-    // otherwise use the whole tab as a container
-    QWebElement mainContainer = tabContainer;
-
-    if (hasInnerContainers) {
-        bool left = true;
-        if (0 == cntNum) {
-            left = true;
-        } else if (1 == cntNum) {
-            left = false;
-        } else if (containerSize(tabContainer, ".left-container") <= containerSize(tabContainer, ".right-container")) {
-            left = true;
-        } else {
-            left = false;
-        }
-
-        mainContainer = tabContainer.findFirst(left ? ".left-container" : ".right-container");
-        SAFE_POINT(!mainContainer.isNull(), "Can't find a container inside a tab!", QWebElement());
-    }
-
-    mainContainer.appendInside(
-        "<div class=\"widget\">"
-        "<div class=\"title\"><div class=\"title-content\">" + title + "</div></div>"
-        "<div class=\"widget-content\"></div>"
-        "</div>");
-
-    QWebElement widget = mainContainer.lastChild();
-    return widget.findFirst(".widget-content");
-    */
+    dashTabId.remove("#");
+    page()->runJavaScript(QString("addWidget(\"%1\", \"%2\", \"%3\", \"%4\")").arg(title).arg(dashTabId).arg(QString::number(cntNum)).arg(widgetId));
 }
 #endif
 
@@ -535,7 +494,9 @@ void Dashboard::sl_serializeContent(const QString& content) {
     file.close();
 }
 
-void Dashboard::sl_onJsError(const QString& errorMessage) {
+DashboardPageController::DashboardPageController(QObject* parent) : QObject(parent) {}
+
+void DashboardPageController::sl_onJsError(const QString& errorMessage) {
     coreLog.error(errorMessage);
 }
 #endif

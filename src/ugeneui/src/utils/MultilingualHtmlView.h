@@ -35,6 +35,13 @@ namespace U2 {
 class MultilingualHtmlView : public QWebView {
 #else
 
+class MultilingualWebEnginePage : public QWebEnginePage {
+public:
+    MultilingualWebEnginePage(QObject* parent = 0);
+protected:
+    virtual bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
+};
+
 class MultilingualHtmlView : public QWebEngineView {
 #endif
     Q_OBJECT
@@ -42,13 +49,18 @@ public:
     MultilingualHtmlView(const QString& htmlPath, QWidget* parent = NULL);
     bool isLoaded() const;
 
+public slots:
+    void performAction(const QString&) {}
 protected slots:
     virtual void sl_loaded(bool ok);
     virtual void sl_linkActivated(const QUrl& url);
 
 signals:
     void si_loaded(bool ok);
-
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+protected:
+    QWebChannel *channel;
+#endif
 private:
     void loadPage(const QString& htmlPath);
     bool loaded;

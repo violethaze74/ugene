@@ -30,13 +30,13 @@ ResourcesWidget::ResourcesWidget(const QWebElement &container, Dashboard *parent
 #else
 ResourcesWidget::ResourcesWidget(const QString &container, Dashboard *parent)
 #endif
-: DashboardWidget(container, parent)
+    : DashboardWidget(container, parent)
 {
     connect(parent->monitor(), SIGNAL(si_progressChanged(int)), SLOT(sl_progressChanged(int)));
     connect(parent->monitor(), SIGNAL(si_taskStateChanged(Monitor::TaskState)),
         SLOT(sl_taskStateChanged(Monitor::TaskState)));
 #if (QT_VERSION < 0x050400) //Qt 5.7
-    this->container.setInnerXml(QString(
+    QString content = QString(
         "<div class=\"well well-small vlayout-item\">"
         "%1: <span id=\"timer\"></span>"
         "</div>"
@@ -50,9 +50,10 @@ ResourcesWidget::ResourcesWidget(const QString &container, Dashboard *parent)
         "<div id=\"status-bar\" class=\"vlayout-item alert\">"
         "<p id=\"status-message\"/>"
         "</div>"
-        ).arg(tr("Time")));
+        ).arg(tr("Time"));
+    this->container.setInnerXml(content);
 #else
-
+    dashboard->page()->runJavaScript("addResWidgetContent(\"" + tr("Time") + "\");");
 #endif
     sl_progressChanged(0);
     running();
@@ -63,7 +64,7 @@ void ResourcesWidget::sl_progressChanged(int progress) {
     QWebElement bar = container.findFirst(".bar");
     bar.setStyleProperty("width", QString::number(progress) + "%");
 #else
-    assert(false);
+    dashboard->page()->runJavaScript("changeProgress(\"" + QString::number(progress) + "\")");
 #endif
 }
 
@@ -105,7 +106,7 @@ void ResourcesWidget::sl_taskStateChanged(TaskState state) {
 #if (QT_VERSION < 0x050400) //Qt 5.7
         dashboard->getDocument().evaluateJavaScript("showLoadButton(" + QString::number(showHint) + ")");
 #else
-        assert(false);
+        dashboard->page()->runJavaScript("showLoadButton(" + QString::number(showHint) + ")");
 #endif
     }
 }
@@ -115,7 +116,8 @@ void ResourcesWidget::running() {
     statusBar().addClass("alert-info");
     statusMessage().setPlainText(tr("The workflow task is in progress..."));
 #else
-    assert(false);
+    dashboard->page()->runJavaScript("addClass(\"status-bar\", \"alert-info\")");
+    dashboard->page()->runJavaScript("addContent(\"status-message\", \"" + tr("The workflow task is in progress...")  + "\")");
 #endif
 }
 
@@ -124,7 +126,8 @@ void ResourcesWidget::runningWithProblems() {
     statusBar().removeClass("alert-info");
     statusMessage().setPlainText(tr("The workflow task is in progress. There are problems..."));
 #else
-    assert(false);
+    dashboard->page()->runJavaScript("removeClass(\"status-bar\", \"alert-info\")");
+    dashboard->page()->runJavaScript("addContent(\"status-message\", \"" + tr("The workflow task is in progress. There are problems...") + "\")");
 #endif
 }
 
@@ -134,7 +137,8 @@ void ResourcesWidget::finishedWithProblems() {
     statusBar().addClass("alert-warning");
     statusMessage().setPlainText(tr("The workflow task has been finished with warnings!"));
 #else
-    assert(false);
+    dashboard->page()->runJavaScript("removeClass(\"status-bar\", \"alert-info\")");
+    dashboard->page()->runJavaScript("addContent(\"status-message\", \"" + tr("The workflow task has been finished with warnings!") + "\")");
 #endif
 }
 
@@ -144,7 +148,9 @@ void ResourcesWidget::failed() {
     statusBar().addClass("alert-error");
     statusMessage().setPlainText(tr("The workflow task has been finished with errors!"));
 #else
-    assert(false);
+    dashboard->page()->runJavaScript("removeClass(\"status-bar\", \"alert-info\")");
+    dashboard->page()->runJavaScript("addClass(\"status-bar\", \"alert-error\")");
+    dashboard->page()->runJavaScript("addContent(\"status-message\", \"" + tr("The workflow task has been finished with errors!") + "\")");
 #endif
 }
 
@@ -154,7 +160,9 @@ void ResourcesWidget::success() {
     statusBar().addClass("alert-success");
     statusMessage().setPlainText(tr("The workflow task has been finished successfully!"));
 #else
-    assert(false);
+    dashboard->page()->runJavaScript("removeClass(\"status-bar\", \"alert-info\")");
+    dashboard->page()->runJavaScript("addClass(\"status-bar\", \"alert-success\")");
+    dashboard->page()->runJavaScript("addContent(\"status-message\", \"" + tr("The workflow task has been finished successfully!") + "\")");
 #endif
 }
 
@@ -163,7 +171,8 @@ void ResourcesWidget::canceled() {
     statusBar().removeClass("alert-info");
     statusMessage().setPlainText(tr("The workflow task has been canceled!"));
 #else
-    assert(false);
+    dashboard->page()->runJavaScript("removeClass(\"status-bar\", \"alert-info\")");
+    dashboard->page()->runJavaScript("addContent(\"status-message\", \"" + tr("The workflow task has been canceled!") + "\")");
 #endif
 }
 

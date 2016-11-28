@@ -52,11 +52,15 @@ void OutputFilesWidget::sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &
         collapse();
         return;
     }
+#if (QT_VERSION < 0x050400) //Qt 5.7
     if (collapsed && rows.contains(id(info))) {
         addFileMenu(info);
     } else {
         addRow(id(info), createRowByFile(info));
     }
+#else
+    assert(0);
+#endif
 }
 
 QList<int> OutputFilesWidget::widths() {
@@ -69,6 +73,7 @@ QStringList OutputFilesWidget::header() {
 
 QList<QStringList> OutputFilesWidget::data() {
     QList<QStringList> result;
+#if (QT_VERSION < 0x050400) //Qt 5.7
     const WorkflowMonitor *m = dashboard->monitor();
     CHECK(NULL != m, result);
     foreach (const Monitor::FileInfo &file, m->getOutputFiles()) {
@@ -77,23 +82,10 @@ QList<QStringList> OutputFilesWidget::data() {
         row << createRowByFile(file);
         result << row;
     }
+#else
+    assert(0);
+#endif
     return result;
-}
-
-QString OutputFilesWidget::createActionsSubMenu(const Monitor::FileInfo& info, bool fullWidth) const {
-    QString openFileByOsAction = QString("<li><a href=\"#\" onclick=\"agent.openByOS('%1')\">%2</a></li>")
-        .arg(relative(info.url))
-        .arg(tr("Open by operating system"));
-    return QString(
-        "<ul class=\"dropdown-menu %1\">"
-            "<li><a href=\"#\" onclick=\"agent.openByOS('%2')\">%3</a></li>"
-            "%4"
-        "</ul>"
-        )
-        .arg(fullWidth ? "full-width" : "")
-        .arg(relative(QFileInfo(info.url).dir().absolutePath() + "/"))
-        .arg(tr("Open containing directory"))
-        .arg(info.openBySystem ? "" : openFileByOsAction);
 }
 
 static const int MAX_LEN = 25;
@@ -106,37 +98,7 @@ static QString fileName(const QString &url) {
     return name;
 }
 
-QString OutputFilesWidget::createFileButton(const Monitor::FileInfo& info) const {
-    return QString(
-        "<div class=\"file-button-ctn\">"
-        "<div class=\"btn-group full-width file-btn-group\">"
-        "<button class=\"btn full-width long-text\" onclick=%1 onmouseover=\"this.title=agent.absolute('%2')\">%3</button>"
-            "<button class=\"btn dropdown-toggle\" data-toggle=\"dropdown\">"
-                "<span class=\"caret\"></span>"
-            "</button>"
-            "%4"
-        "</div>"
-        "</div>"
-    )
-    .arg(onClickAction(info))
-    .arg(relative(info.url))
-    .arg(fileName(info.url))
-    .arg(createActionsSubMenu(info, true));
-}
-
-QString OutputFilesWidget::createFileSubMenu(const Monitor::FileInfo& info) const {
-    return QString(
-        "<li class=\"file-sub-menu dropdown-submenu left-align\">"
-        "<a tabindex=\"-1\" href=\"#\" onclick=%1 title=\"%2\">%3</a>"
-            "%4"
-        "</li>"
-    )
-    .arg(onClickAction(info))
-    .arg(relative(info.url))
-    .arg(fileName(info.url))
-    .arg(createActionsSubMenu(info, false));
-}
-
+#if (QT_VERSION < 0x050400) //Qt 5.7
 QStringList OutputFilesWidget::createRowByFile(const Monitor::FileInfo &info) const {
     QStringList result;
     const WorkflowMonitor *m = dashboard->monitor();
@@ -147,13 +109,64 @@ QStringList OutputFilesWidget::createRowByFile(const Monitor::FileInfo &info) co
     return result;
 }
 
+QString OutputFilesWidget::createFileButton(const Monitor::FileInfo& info) const {
+    return QString(
+        "<div class=\"file-button-ctn\">"
+        "<div class=\"btn-group full-width file-btn-group\">"
+        "<button class=\"btn full-width long-text\" onclick=%1 onmouseover=\"this.title=agent.absolute('%2')\">%3</button>"
+        "<button class=\"btn dropdown-toggle\" data-toggle=\"dropdown\">"
+        "<span class=\"caret\"></span>"
+        "</button>"
+        "%4"
+        "</div>"
+        "</div>"
+        )
+        .arg(onClickAction(info))
+        .arg(relative(info.url))
+        .arg(fileName(info.url))
+        .arg(createActionsSubMenu(info, true));
+}
+
+QString OutputFilesWidget::onClickAction(const Monitor::FileInfo& info) const {
+    return QString(info.openBySystem ? "\"agent.openByOS('%1')\"" : "\"agent.openUrl('%1')\"").arg(relative(info.url));
+}
+
+QString OutputFilesWidget::createActionsSubMenu(const Monitor::FileInfo& info, bool fullWidth) const {
+    QString openFileByOsAction = QString("<li><a href=\"#\" onclick=\"agent.openByOS('%1')\">%2</a></li>")
+        .arg(relative(info.url))
+        .arg(tr("Open by operating system"));
+    return QString(
+        "<ul class=\"dropdown-menu %1\">"
+        "<li><a href=\"#\" onclick=\"agent.openByOS('%2')\">%3</a></li>"
+        "%4"
+        "</ul>"
+        )
+        .arg(fullWidth ? "full-width" : "")
+        .arg(relative(QFileInfo(info.url).dir().absolutePath() + "/"))
+        .arg(tr("Open containing directory"))
+        .arg(info.openBySystem ? "" : openFileByOsAction);
+}
+
+QString OutputFilesWidget::createFileSubMenu(const Monitor::FileInfo& info) const {
+    return QString(
+        "<li class=\"file-sub-menu dropdown-submenu left-align\">"
+        "<a tabindex=\"-1\" href=\"#\" onclick=%1 title=\"%2\">%3</a>"
+        "%4"
+        "</li>"
+        )
+        .arg(onClickAction(info))
+        .arg(relative(info.url))
+        .arg(fileName(info.url))
+        .arg(createActionsSubMenu(info, false));
+}
+
 void OutputFilesWidget::createFileListButton(const QString &actorId) {
     QString filesButton = QString(
         "<div class=\"btn-group full-width\">"
-            "<button class=\"files-btn btn dropdown-toggle full-width\" data-toggle=\"dropdown\" href=\"#\">"
-                "%1"
-            "</button>"
-            "<ul class=\"files-menu dropdown-menu full-width\"/>"
+        "<button class=\"files-btn btn dropdown-toggle full-width\" data-toggle=\"dropdown\" href=\"#\">"
+        "%1"
+        "</button>"
+        "<ul class=\"files-menu dropdown-menu full-width\"/>"
         "</div>")
         .arg(buttonLabel(0));
 
@@ -162,10 +175,11 @@ void OutputFilesWidget::createFileListButton(const QString &actorId) {
 
 void OutputFilesWidget::createFilesButton(const QString &actorId, const QList<Monitor::FileInfo> &files) {
     createFileListButton(actorId);
-    foreach (const Monitor::FileInfo &info, files) {
+    foreach(const Monitor::FileInfo &info, files) {
         addFileMenu(info);
     }
 }
+#endif
 
 void OutputFilesWidget::collapse() {
     collapsed = true;
@@ -175,12 +189,16 @@ void OutputFilesWidget::collapse() {
     QMap< QString, QList<Monitor::FileInfo> > filesMap =
         MonitorUtils::filesByActor(dashboard->monitor());
     foreach (const QString &actorId, actors) {
+#if (QT_VERSION < 0x050400) //Qt 5.7
         QList<Monitor::FileInfo> files = filesMap[actorId];
         if (1 == files.size()) {
             addRow(id(files.first()), createRowByFile(files.first()));
         } else {
             createFilesButton(actorId, files);
         }
+#else
+        assert(0);
+#endif
     }
 }
 
@@ -196,8 +214,8 @@ static int filesCount(const QWebElement &menu) {
 
 void OutputFilesWidget::addFileMenu(const Monitor::FileInfo &info) {
     SAFE_POINT(collapsed, "Not collapsed mode", );
-    SAFE_POINT(rows.contains(id(info)), "The menu is not created", );
 #if (QT_VERSION < 0x050400) //Qt 5.7
+    SAFE_POINT(rows.contains(id(info)), "The menu is not created", );
     QWebElement row = rows[id(info)];
     if (isFileButton(row)) {
         QList<Monitor::FileInfo> files = MonitorUtils::filesByActor(dashboard->monitor())[info.actor];
@@ -223,10 +241,6 @@ QString OutputFilesWidget::relative(const QString &absolute) const {
         return absolute.mid(dashboard->directory().size());
     }
     return absolute;
-}
-
-QString OutputFilesWidget::onClickAction(const Monitor::FileInfo& info) const {
-    return QString(info.openBySystem ? "\"agent.openByOS('%1')\"" : "\"agent.openUrl('%1')\"").arg(relative(info.url));
 }
 
 QString OutputFilesWidget::id(const QString &actorId) const {

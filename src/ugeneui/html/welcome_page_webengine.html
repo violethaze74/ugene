@@ -183,18 +183,11 @@
         </tr>
     </table>
     <script type="text/javascript">
-        window.onload = function() {
-            var baseUrl = "ws://localhost:12345";
-            var socket = new WebSocket(baseUrl);
-            socket.onerror = function(error) {
-                console.error("web channel error: " + error);
-            };
-            socket.onopen = function() {
-                new QWebChannel(socket, function(channel) {
-                    window.ugene = channel.objects.ugene;
-                });
-            }
-        }
+		document.addEventListener("DOMContentLoaded", function () {
+			new QWebChannel(qt.webChannelTransport, function (channel) {
+				window.ugene = channel.objects.ugene;
+			});
+		});
         $(window).resize(function() {
             updateLinksVisibility()
         });

@@ -23,16 +23,18 @@
 <head>
     <meta charset="utf-8">
     <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="qrc:javascript/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="qrc:U2Designer/html/Dashboard.css"/>
-    <script type="text/javascript" src="qrc:javascript/jquery/jquery.js"></script>
-    <script type="text/javascript" src="qrc:javascript/bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="qrc:U2Designer/javascript/Common.js"></script>
-    <script type="text/javascript" src="qrc:U2Designer/javascript/ContextMenu.js"></script>
-    <script type="text/javascript" src="qrc:U2Designer/javascript/ParametersWidget.js"></script>
-    <script type="text/javascript" src="qrc:U2Designer/javascript/ExternalToolsWidget.js"></script>
+    <link rel="stylesheet" type="text/css" href="qrc:///javascript/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="qrc:///U2Designer/html/Dashboard.css"/>
+    <script type="text/javascript" src="qrc:///javascript/jquery/jquery.js"></script>
+    <script type="text/javascript" src="qrc:///javascript/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="qrc:///U2Designer/javascript/Common.js"></script>
+    <script type="text/javascript" src="qrc:///U2Designer/javascript/ContextMenu.js"></script>
+    <script type="text/javascript" src="qrc:///U2Designer/javascript/ParametersWidget.js"></script>
+    <script type="text/javascript" src="qrc:///U2Designer/javascript/ExternalToolsWidget.js"></script>
+	<script type="text/javascript" src="qrc:///U2Designer/javascript/ExtractedFunctions.js"></script>
     <script type="text/javascript" src="qrc:///javascript/qwebchannel/qwebchannel.js"></script>
     <script type="text/javascript" language="javascript">
+	"use strict";
         var sec = 0;
         var min = 0;
         var hour = 0;
@@ -71,59 +73,18 @@
             document.getElementById("timer").innerHTML = timeToString(hour, min, sec);
             sec++;
         }
-        window.onload = function() {
-            var baseUrl = "ws://localhost:12346";
-            var socket = new WebSocket(baseUrl);
-            socket.onerror = function(error) {
-                console.error("web channel error: " + error);
-            };
-            socket.onopen = function() {
-                new QWebChannel(socket, function(channel) {
-                    window.agent = channel.objects.agent;
-                });
-            }
-        }
+		document.addEventListener("DOMContentLoaded", function () {
+			new QWebChannel(qt.webChannelTransport, function (channel) {
+				window.agent = channel.objects.agent;
+			});
+		});
         function containerSize(insideElt, name) {
-            var cont = insideElt.getElementById(name);
-            if (tabContainer == null) {
+            var cont = document.getElementById(name);
+            if (cont == null) {
                 agent.sl_onJsError("NULL container");
                 return;
             }
             return cont.getElementsByName(".widget").length;
-        }
-        function addWidget(dashTabId, dashTab, ExternalToolsTab, cntNum) {
-            var tabContainer = document.getElementById(dashTabId);
-            if (tabContainer == null) {
-                agent.sl_onJsError("Can't find the tab container!");
-                return;
-            }
-            var hasInnerContainers = true;
-            if (InputDashTab == dashTab || ExternalToolsTab == dashTab) {
-                hasInnerContainers = false;
-            }
-            var mainContainer = tabContainer;
-            if (hasInnerContainers) {
-                var left = true;
-                if (0 == cntNum) {
-                    left = true;
-                } else if (1 == cntNum) {
-                    left = false;
-                } else if (containerSize(tabContainer, ".left-container") <= containerSize(tabContainer, ".right-container")) {
-                    left = true;
-                } else {
-                    left = false;
-                }
-
-                mainContainer = tabContainer.getElementById(left ? ".left-container" : ".right-container");
-                if (mainContainer == null) {
-                    agent.sl_onJsError("Can't find a container inside a tab!");
-                    return;
-                }
-                mainContainer.innerHTML = "<div class=\"widget\">"
-                    "<div class=\"title\"><div class=\"title-content\">" + title + "</div></div>"
-                    "<div class=\"widget-content\"></div>"
-                "</div>"
-            }
         }
         addEventListeners();
     </script>

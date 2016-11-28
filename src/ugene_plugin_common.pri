@@ -5,6 +5,10 @@ include (ugene_lib_common.pri)
 
 UGENE_RELATIVE_DESTDIR = 'plugins'
 QT += network xml webkit svg
+minQtVersion(5, 4, 0){
+    QT -= webkit
+    QT += webengine
+}
 LIBS += -L../../_release -lU2Core -lU2Algorithm -lU2Formats -lU2Gui -lU2View -lU2Test -lU2Lang -lU2Designer
 
 !debug_and_release|build_pass {

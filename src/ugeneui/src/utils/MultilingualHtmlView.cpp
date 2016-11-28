@@ -29,6 +29,8 @@
 #if (QT_VERSION < 0x050400) //Qt 5.7
 #include <QWebElementCollection>
 #include <QWebFrame>
+#else
+#include <QWebChannel>
 #endif
 
 namespace U2 {
@@ -86,12 +88,25 @@ void MultilingualHtmlView::loadPage(const QString& htmlPath) {
     connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(sl_linkActivated(QUrl)));
     load(QUrl(htmlPath));
 #else
-    QWebEnginePage *page = new QWebEnginePage(parentWidget());
-    QUrl url(htmlPath);
-    url.setQuery(QStringLiteral("webChannelBaseUrl=") + "ws://127.0.0.1:12345");
-    page->load(url);
-    setPage(page);
+    QWebEnginePage *pg = new MultilingualWebEnginePage(parentWidget());
+    pg->load(QUrl(htmlPath));
+    setPage(pg);
+
+    channel = new QWebChannel(page());
+    page()->setWebChannel(channel);
 #endif
 }
+
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+MultilingualWebEnginePage::MultilingualWebEnginePage(QObject *parent) : QWebEnginePage(parent) {}
+
+bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, NavigationType type, bool) {
+    if (type == NavigationTypeLinkClicked) {
+        QDesktopServices::openUrl(url);
+        return false;
+    }
+    return true;
+}
+#endif
 
 } // namespace

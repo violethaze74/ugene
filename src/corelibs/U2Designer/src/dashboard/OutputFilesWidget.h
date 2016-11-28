@@ -45,18 +45,20 @@ private slots:
 
 private:
     QString createFileButton(const Monitor::FileInfo& info) const;
-    void createFileListButton(const QString &actorId);
+#if (QT_VERSION < 0x050400) //Qt 5.7
     void createFilesButton(const QString &actorId, const QList<Monitor::FileInfo> &files);
+    void createFileListButton(const QString &actorId);
     QString createFileSubMenu(const Monitor::FileInfo& info) const;
-    QString createActionsSubMenu(const Monitor::FileInfo& info, bool fullWidth) const;
     QStringList createRowByFile(const Monitor::FileInfo &info) const;
+    QString onClickAction(const Monitor::FileInfo& info) const;
+    QString createActionsSubMenu(const Monitor::FileInfo& info, bool fullWidth) const;
+#endif
     void collapse();
     QString id(const QString &actorId) const;
     QString id(const Monitor::FileInfo &info) const;
     void addFileMenu(const Monitor::FileInfo &info);
     QString buttonLabel(int filesCount) const;
     QString relative(const QString &absolute) const;
-    QString onClickAction(const Monitor::FileInfo& info) const;
 
 private:
     bool collapsed;

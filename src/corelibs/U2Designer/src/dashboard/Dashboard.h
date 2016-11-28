@@ -86,9 +86,6 @@ signals:
 public slots:
     /** Hides the hint on the current dashboard instance */
     void sl_hideLoadBtnHint();
-#if (QT_VERSION >= 0x050400) //Qt 5.7
-    void sl_onJsError(const QString& errorMessage);
-#endif
 
 private slots:
     void sl_runStateChanged(bool paused);
@@ -120,8 +117,14 @@ private:
     static const QString EXT_TOOLS_TAB_ID;
     static const QString OVERVIEW_TAB_ID;
     static const QString INPUT_TAB_ID;
-//    static const QString OUTPUT_TAB_ID;
-
+    //static const QString OUTPUT_TAB_ID;
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+    static const QString RESOURCE_WIDGET_ID;
+    static const QString OUTPUT_WIDGET_ID;
+    static const QString STATISTICS_WIDGET_ID;
+    static const QString PROBLEMS_WIDGET_ID;
+    static const QString PARAMETERS_WIDGET_ID;
+#endif
 private:
     void loadDocument();
     /** Returns the content area of the widget */
@@ -131,17 +134,14 @@ private:
     /** Returns size of the QWebElement "name", it is searched inside "insideElt" only*/
     int containerSize(const QWebElement &insideElt, const QString &name);
 #else
-    QString addWidget(const QString &title, DashboardTab dashTab, int cntNum = -1);
+    void addWidget(const QString &title, DashboardTab dashTab, int cntNum = -1, const QString &widgetId = "");
 #endif
     void serialize(U2OpStatus &os);
     void saveSettings();
     void loadSettings();
 
     void createExternalToolTab();
-
 #if (QT_VERSION >= 0x050400) //Qt 5.7
-    QWebSocketServer *server;
-    WebSocketClientWrapper *clientWrapper;
     QWebChannel *channel;
 #endif
 };
@@ -219,6 +219,16 @@ public:
 private:
     QList<DashboardInfo> dashboards;
 };
+
+#if (QT_VERSION >= 0x050400) //Qt 5.7
+class DashboardPageController : public QObject {
+    Q_OBJECT
+public:
+    DashboardPageController(QObject* parent);
+public slots:
+    void sl_onJsError(const QString& errorMessage);
+};
+#endif
 
 } // U2
 

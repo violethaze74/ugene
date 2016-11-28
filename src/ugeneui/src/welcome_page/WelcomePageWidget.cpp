@@ -65,19 +65,6 @@ WelcomePageWidget::WelcomePageWidget(QWidget *parent, WelcomePageController *con
     installEventFilter(this);
     setObjectName("webView");
 #if (QT_VERSION >= 0x050400) //Qt 5.7
-    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode);
-    if (!server->listen(QHostAddress::LocalHost, 12345)) {
-        coreLog.error("Failed to open web socket server.");
-        return;
-    }
-
-    clientWrapper = new WebSocketClientWrapper(server);
-
-    channel = new QWebChannel();
-
-    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
-        channel, &QWebChannel::connectTo);
-
     channel->registerObject(QString("ugene"), controller);
 #endif
 }
@@ -196,13 +183,5 @@ bool WelcomePageWidget::eventFilter(QObject *watched, QEvent *event) {
             return false;
     }
 }
-
-#if (QT_VERSION >= 0x050400) //Qt 5.7
-WelcomePageWidget::~WelcomePageWidget() {
-    delete server;
-    delete clientWrapper;
-    delete channel;
-}
-#endif
 
 } // U2

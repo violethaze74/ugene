@@ -43,11 +43,15 @@ ProblemsWidget::ProblemsWidget(const QString &content, Dashboard *parent)
 void ProblemsWidget::sl_newProblem(const Problem &info) {
     const WorkflowMonitor *m = dashboard->monitor();
     CHECK(NULL != m, );
+#if (QT_VERSION < 0x050400) //Qt 5.7
     if (rows.contains(id(info))) {
         updateRow(id(info), createMultiRow(info));
     } else {
         addRow(id(info), createRow(info));
     }
+#else
+
+#endif
 }
 
 QString ProblemsWidget::problemImage(const Problem &info) {
@@ -95,8 +99,9 @@ QStringList ProblemsWidget::createRow(const Problem &info, bool multi) const {
     }
 
     result << problemImage(info);
-    result << wrapLongText(m->actorName(info.actor));
+    //result << wrapLongText(m->actorName(info.actor));
     result << getTextWithWordBreaks(prefix + info.message);
+    assert(0);
     return result;
 }
 

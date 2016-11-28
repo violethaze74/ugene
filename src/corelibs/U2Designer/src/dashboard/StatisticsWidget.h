@@ -46,7 +46,9 @@ private slots:
     void sl_update();
 
 private:
+#if (QT_VERSION < 0x050400) //Qt 5.7
     QStringList createRowByWorker(const QString &actor, const Monitor::WorkerInfo &info);
+#endif
 };
 
 } // U2

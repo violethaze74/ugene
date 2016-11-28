@@ -113,6 +113,7 @@ public:
     void start();
     void pause();
     void resume();
+    bool isExternalToolScheme() const;
 
     void registerTask(Task *task, const QString &actor);
 
@@ -159,6 +160,7 @@ private:
     QString _outputDir;
     bool saveSchema;
     bool started;
+    bool externalTools;
 
 protected:
     void setWorkerInfo(const QString &actorId, const Monitor::WorkerInfo &info);
