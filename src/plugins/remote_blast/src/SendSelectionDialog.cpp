@@ -33,6 +33,8 @@
 
 #include <U2Gui/HelpButton.h>
 #include <U2Core/QObjectScopedPointer.h>
+
+#include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 
 #include "SendSelectionDialog.h"

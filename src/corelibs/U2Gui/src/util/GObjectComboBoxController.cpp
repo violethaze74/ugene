@@ -90,27 +90,18 @@ void GObjectComboBoxController::addDocumentObjects(Document* d) {
     QString docUrl = settings.relationFilter.ref.docUrl;
     if(d->getURLString() == docUrl){
         bool hasAnnotationTable = false;
-        foreach (GObject* obj, d->getObjects()) {
-            if(obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE){
-                hasAnnotationTable = true;
-                break;
-            }
+        if(d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE).size() != 0){
+            hasAnnotationTable = true;
         }
-        if ((!hasAnnotationTable) && (d->getDocumentFormat()->getFlags().testFlag(DocumentFormatFlag_SupportWriting))){
-            if(d->getDocumentFormat()->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE)){
-                QString virtualItemText = d->getName()+" [";
-                GObjectReference ref;
-                foreach (GObject* obj, d->getObjects()) {
-                    if(obj->getEntityRef() == settings.relationFilter.ref.entityRef){
-                        virtualItemText.append(obj->getGObjectName() + FEATURES_TAG + "] *");
-                        ref = GObjectReference(obj);
-                    }
-                }
-                combo->addItem(objectIcon, virtualItemText, QVariant::fromValue<GObjectReference>(ref));
+        if ((!hasAnnotationTable) && (d->getDocumentFormat()->checkFlags(DocumentFormatFlag_SupportWriting))
+                && (d->getDocumentFormat()->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE))){
+            QString virtualItemText = d->getName()+" [";
+            GObject* seqObj = d->getObjectById(settings.relationFilter.ref.entityRef.entityId);
+            virtualItemText.append(seqObj->getGObjectName() + FEATURES_TAG + "] *");
+            combo->addItem(objectIcon, virtualItemText, QVariant::fromValue<GObjectReference>(GObjectReference(seqObj)));
 
-                emit si_comboBoxChanged();
-                return;
-            }
+            emit si_comboBoxChanged();
+            return;
         }
     }
     foreach(GObject* obj, d->getObjects()) {

@@ -359,17 +359,21 @@ void CreateAnnotationWidgetController::initSaveController() {
     saveController = new SaveDocumentController(conf, formats, this);
 }
 
+bool CreateAnnotationWidgetController::isAnnotationsTableVirtual(){
+    return qHash(occ->getSelectedObjectReference()) == qHash(model.sequenceObjectRef);
+}
+
 bool CreateAnnotationWidgetController::prepareAnnotationObject() {
     updateModel(false);
     QString v = validate();
-    if((w->isExistingTableOptionSelected()) && (qHash(occ->getSelectedObjectReference()) == qHash(model.sequenceObjectRef))){
+    if((w->isExistingTableOptionSelected()) && isAnnotationsTableVirtual()){
         Document* d = AppContext::getProject()->findDocumentByURL(model.sequenceObjectRef.docUrl);
+        SAFE_POINT(d != NULL, "cannot create a annotation table in same document", false);
         U2OpStatusImpl os;
         const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
         SAFE_POINT_OP(os, false);
-        AnnotationTableObject* ann = new AnnotationTableObject(d->getName(),localDbiRef);
+        AnnotationTableObject* ann = new AnnotationTableObject(model.sequenceObjectRef.objName + FEATURES_TAG,localDbiRef);
         ann->addObjectRelation(GObjectRelation(model.sequenceObjectRef, ObjectRole_Sequence));
-        ann->setGObjectName(model.sequenceObjectRef.objName + FEATURES_TAG);
         d->addObject(ann);
         occ->setSelectedObject(ann);
         model.annotationObjectRef = ann;
@@ -399,7 +403,7 @@ void CreateAnnotationWidgetController::sl_groupName() {
     GObject* obj = occ->getSelectedObject();
     QStringList groupNames;
     groupNames << GROUP_NAME_AUTO;
-    if (NULL != obj && !obj->isUnloaded() && qHash(occ->getSelectedObjectReference()) != qHash(model.sequenceObjectRef)) {
+    if (NULL != obj && !obj->isUnloaded() && !isAnnotationsTableVirtual()) {
         AnnotationTableObject* ao = qobject_cast<AnnotationTableObject *>(obj);
         ao->getRootGroup()->getSubgroupPaths(groupNames);
     }

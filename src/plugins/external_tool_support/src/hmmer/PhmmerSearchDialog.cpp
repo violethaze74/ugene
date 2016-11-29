@@ -99,6 +99,7 @@ void PhmmerSearchDialog::init(U2SequenceObject *seqObj){
 
     adjustSize();
 }
+
 void PhmmerSearchDialog::setModelValues() {
     domESpinBox->setValue(1);
     assert(10.0 == model.phmmerSettings.domE);

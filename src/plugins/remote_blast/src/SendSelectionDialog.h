@@ -26,7 +26,6 @@
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Gui/CreateAnnotationWidgetController.h>
-#include <U2View/ADVSequenceObjectContext.h>
 
 #if (QT_VERSION < 0x050000) //Qt 5
 #include <QtGui/QMessageBox>
@@ -40,8 +39,9 @@
 
 namespace U2 {
 
-class CreateAnnotationWidgetController;
+class ADVSequenceObjectContext;
 class AnnotationTableObject;
+class CreateAnnotationWidgetController;
 
 class SendSelectionDialog: public QDialog, Ui_RemoteBLASTDialog {
     Q_OBJECT
