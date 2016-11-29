@@ -101,7 +101,7 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
         } else if (seq == refSeq || refSeqName.isEmpty()) {
             highlight = true;
         } else {
-            const char refChar = getRefChar(msa, pos);
+            const char refChar = msa->charAt(refSeq, pos);
             highlightingScheme->process(refChar, c, color, highlight, pos, seq);
         }
 
@@ -113,14 +113,6 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
         }
     }
     return true;
-}
-
-char SequenceAreaRenderer::getRefChar(const MultipleAlignment &msa, int pos) {
-    qint64 refId = seqAreaWgt->getEditor()->getReferenceRowId();
-    SAFE_POINT(refId != U2MsaRow::INVALID_ROW_ID,
-               "Attempt to get ref-char when the reference is not set", '\n');
-
-    return msa->charAt(refId, pos);
 }
 
 } // namespace
