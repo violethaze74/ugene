@@ -214,6 +214,7 @@ void FindTandemsDialog::accept() {
 
     FindTandemsTaskSettings settings;
     const CreateAnnotationModel& cam = ac->getModel();
+    sc->getAnnotatedDNAView()->tryAddObject(ac->getModel().getAnnotationObject());
     settings.minPeriod = minPeriod;
     settings.maxPeriod = maxPeriod;
     settings.algo = (TSConstants::TSAlgo)algoComboBox->currentIndex();

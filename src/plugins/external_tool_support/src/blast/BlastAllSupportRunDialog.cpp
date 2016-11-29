@@ -45,6 +45,9 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OpenViewTask.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #if (QT_VERSION < 0x050000) //Qt 5
 #include <QtGui/QToolButton>
 #include <QtGui/QMessageBox>
@@ -59,9 +62,10 @@ namespace U2 {
 
 ////////////////////////////////////////
 //BlastAllSupportRunDialog
-BlastAllSupportRunDialog::BlastAllSupportRunDialog(U2SequenceObject *dnaso, QString &lastDBPath, QString &lastDBName, QWidget *parent)
-: BlastRunCommonDialog(parent, BlastAll, false, QStringList()), dnaso(dnaso), lastDBPath(lastDBPath), lastDBName(lastDBName)
+BlastAllSupportRunDialog::BlastAllSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent)
+: BlastRunCommonDialog(parent, BlastAll, false, QStringList()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx)
 {
+    dnaso = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
     ca_m.hideAnnotationType = true;
     ca_m.hideAnnotationName = true;
@@ -129,6 +133,9 @@ void BlastAllSupportRunDialog::sl_runQuery(){
     lastDBPath = dbSelector->databasePathLineEdit->text();
     lastDBName = dbSelector->baseNameLineEdit->text();
     settings.outputType = 7;//By default set output file format to xml
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(ca_c->getModel().getAnnotationObject());
+    }
     accept();
 }
 ////////////////////////////////////////

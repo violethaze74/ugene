@@ -40,6 +40,9 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #include "HMMIO.h"
 #include "HMMSearchDialogController.h"
 #include "HMMSearchTask.h"
@@ -48,12 +51,22 @@
 
 namespace U2 {
 
-HMMSearchDialogController::HMMSearchDialogController(const DNASequence& sequence, const U2SequenceObject* seqObj, QWidget* p)
-: QDialog(p)
+HMMSearchDialogController::HMMSearchDialogController(const U2SequenceObject* seqObj, QWidget* p)
+: QDialog(p), seqCtx(NULL)
 {
-    qDebug() << "HMMSearchDialogController was created";
+    init(seqObj);
+}
+HMMSearchDialogController::HMMSearchDialogController(ADVSequenceObjectContext* seqCtx, QWidget* p)
+: QDialog(p), seqCtx(seqCtx)
+{
 
-    dnaSequence = sequence;
+    init(seqCtx->getSequenceObject());
+}
+void HMMSearchDialogController::init(const U2SequenceObject *seqObj){
+    qDebug() << "HMMSearchDialogController was created";
+    U2OpStatusImpl os;
+    dnaSequence = seqObj->getWholeSequence(os);
+    CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
 
     searchTask = NULL;
     setupUi(this);
@@ -156,6 +169,9 @@ void HMMSearchDialogController::sl_okClicked(){
     }
 
     const CreateAnnotationModel& cm = createController->getModel();
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(cm.getAnnotationObject());
+    }
     QString annotationName = cm.data->name;
     searchTask = new HMMSearchToAnnotationsTask(hmmFile, dnaSequence, cm.getAnnotationObject(), cm.groupName, cm.description, cm.data->type, annotationName, s);
     searchTask->setReportingEnabled(true);

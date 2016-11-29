@@ -71,7 +71,7 @@ void CreateAnnotationNormalWidget::setAnnotationNameVisible(bool visible) {
 }
 
 void CreateAnnotationNormalWidget::setAutoTableOptionVisible(bool visible) {
-    rbUseAutoTable->setEnabled(visible);
+    rbUseAutoTable->setVisible(visible);
 }
 
 void CreateAnnotationNormalWidget::setDescriptionVisible(bool visible) {

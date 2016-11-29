@@ -45,6 +45,7 @@
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
 
 #include "SmithWatermanDialogImpl.h"
 #include "SubstMatrixDialog.h"
@@ -483,11 +484,13 @@ void SmithWatermanDialog::sl_bttnRun()
                 QMessageBox::critical(this, L10N::errorTitle(), tr("Cannot create an annotation object. Please check settings."));
                 return;
             }
+
             const CreateAnnotationModel& m = annotationController->getModel();
             AnnotationTableObject *obj = m.getAnnotationObject();
             U2FeatureType annotationType = m.data->type;
             QString annotationName = m.data->name;
             QString annotationGroup = m.groupName;
+            ctxSeq->getAnnotatedDNAView()->tryAddObject(obj);
 
             config.resultCallback = new SmithWatermanReportCallbackAnnotImpl(obj, annotationType, annotationName,
                 annotationGroup, m.description, addPatternContentQualifier->isChecked());

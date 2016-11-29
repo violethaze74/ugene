@@ -348,7 +348,7 @@ void BlastPlusSupportContext::sl_showDialog() {
     assert(av);
 
     ADVSequenceObjectContext* seqCtx = av->getSequenceInFocus();
-    QObjectScopedPointer<BlastPlusSupportRunDialog> dlg = new BlastPlusSupportRunDialog(seqCtx->getSequenceObject(), lastDBPath, lastDBName, av->getWidget());
+    QObjectScopedPointer<BlastPlusSupportRunDialog> dlg = new BlastPlusSupportRunDialog(seqCtx, lastDBPath, lastDBName, av->getWidget());
     dlg->exec();
     CHECK(!dlg.isNull(), );
 

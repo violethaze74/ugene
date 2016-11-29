@@ -41,6 +41,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
 
 #include "CloningUtilTasks.h"
 #include "DigestSequenceDialog.h"
@@ -168,6 +169,9 @@ void DigestSequenceDialog::accept()
         foreach (const U2Region& region, l->regions) {
             cfg.conservedRegions.insertMulti(aName, region);
         }
+    }
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(aObj);
     }
 
     DigestSequenceTask* task = new DigestSequenceTask(dnaObj, sourceObj, aObj, cfg);

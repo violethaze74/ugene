@@ -143,6 +143,7 @@ private:
     void createWidget(AnnotationWidgetMode layoutMode);
     static QString defaultDir();
     void initSaveController();
+    bool isAnnotationsTableVirtual();
 
     CreateAnnotationModel       model;
     GObjectComboBoxController * occ;

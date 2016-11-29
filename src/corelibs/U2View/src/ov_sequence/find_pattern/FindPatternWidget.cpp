@@ -1440,7 +1440,7 @@ void FindPatternWidget::sl_getAnnotationsButtonClicked() {
 
     AnnotationTableObject *aTableObj = annotModel.getAnnotationObject();
     SAFE_POINT(aTableObj != NULL, "Invalid annotation table detected!", );
-
+    annotatedDnaView->tryAddObject(aTableObj);
     QList<SharedAnnotationData> annotationsToCreate = findPatternResults;
 
     for(int i = 0; i < findPatternResults.size(); i++){

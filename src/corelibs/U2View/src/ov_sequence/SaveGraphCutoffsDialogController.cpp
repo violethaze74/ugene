@@ -31,6 +31,7 @@
 #include <U2Gui/HelpButton.h>
 
 #include <U2View/ADVAnnotationCreation.h>
+#include <U2View/AnnotatedDNAView.h>
 
 #include "SaveGraphCutoffsDialogController.h"
 
@@ -134,6 +135,7 @@ void SaveGraphCutoffsDialogController::accept(){
         data.append(d);
     }
     AnnotationTableObject *aobj = mm.getAnnotationObject();
+    ctx->getAnnotatedDNAView()->tryAddObject(aobj);
     Task *t  = new CreateAnnotationsTask(aobj, data, mm.groupName);
     AppContext::getTaskScheduler()->registerTopLevelTask(t) ;
     QDialog::accept();

@@ -43,6 +43,7 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2View/AnnotatedDNAView.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/LicenseDialog.h>
 
@@ -223,6 +224,7 @@ void SecStructDialog::sl_onSaveAnnotations() {
     if (rc != QDialog::Accepted) {
         return;
     }
+    ctx->getAnnotatedDNAView()->tryAddObject(m.getAnnotationObject());
 
     U1AnnotationUtils::addDescriptionQualifier(results, m.description);
 

@@ -374,6 +374,7 @@ void ORFDialog::accept()
 
         const CreateAnnotationModel &m = ac->getModel();
         AnnotationTableObject *aObj = m.getAnnotationObject();
+        ctx->getAnnotatedDNAView()->tryAddObject(aObj);
         FindORFsToAnnotationsTask *orfTask = new FindORFsToAnnotationsTask(aObj, ctx->getSequenceObject()->getEntityRef(), s, m.groupName, m.description);
         AppContext::getTaskScheduler()->registerTopLevelTask(orfTask);
     }

@@ -36,6 +36,9 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #include "PhmmerSearchTask.h"
 #include "PhmmerSearchDialog.h"
 
@@ -47,8 +50,18 @@ const QString PhmmerSearchDialog::DOM_E_MINUS_PREFIX         = "1E";
 const QString PhmmerSearchDialog::ANNOTATIONS_DEFAULT_NAME   = "signal";
 
 PhmmerSearchDialog::PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent), seqCtx(NULL)
 {
+    init(seqObj);
+}
+
+PhmmerSearchDialog::PhmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent)
+    : QDialog(parent), seqCtx(seqCtx)
+{
+    init(seqCtx->getSequenceObject());
+}
+
+void PhmmerSearchDialog::init(U2SequenceObject *seqObj){
     assert(NULL != seqObj);
     setupUi(this);
 
@@ -183,6 +196,9 @@ void PhmmerSearchDialog::accept() {
     if (!err.isEmpty()) {
         QMessageBox::critical(this, tr("Error: bad arguments!"), err);
         return;
+    }
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(annotationsWidgetController->getModel().getAnnotationObject());
     }
 
     AppContext::getTaskScheduler()->registerTopLevelTask(new PhmmerSearchTask(model.phmmerSettings));
