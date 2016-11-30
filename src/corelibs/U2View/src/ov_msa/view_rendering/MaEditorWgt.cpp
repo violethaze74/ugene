@@ -23,18 +23,22 @@
 
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
+#include "../Export/MSAImageExportTask.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/QObjectScopedPointer.h>
+
+#include <U2Gui/ExportImageDialog.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/UndoRedoFramework.h>
-
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MSAEditorStatusBar.h>
+#include <U2View/UndoRedoFramework.h>
 
 #include <QGridLayout>
 
@@ -63,7 +67,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
 }
 
 QWidget* MaEditorWgt::createLabelWidget(const QString& text, Qt::Alignment ali){
-    return new MSALabelWidget(this, text, ali);
+    return new MaLabelWidget(this, text, ali);
 }
 
 QAction* MaEditorWgt::getUndoAction() const {
@@ -76,6 +80,13 @@ QAction* MaEditorWgt::getRedoAction() const {
     QAction *a = undoFWK->getRedoAction();
     a->setObjectName("msa_action_redo");
     return a;
+}
+
+void MaEditorWgt::sl_saveScreenshot(){
+    MSAImageExportController controller(this);
+    QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
+    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, ExportImageDialog::NoScaling, p);
+    dlg->exec();
 }
 
 void MaEditorWgt::initWidgets() {
@@ -95,20 +106,16 @@ void MaEditorWgt::initWidgets() {
     initSeqArea(shBar, cvBar);
     seqArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
-    // SANGER_TODO: everything in under comment until the 'out-of-memory' problem is resolved
     nameList = new MSAEditorNameList(this, nhBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-
-//    coreLog.info("NameList success");
 
     consArea = new MSAEditorConsensusArea(this);
     overviewArea = new MSAEditorOverviewArea(this);
     statusWidget = new MSAEditorStatusWidget(editor->getMaObject(), seqArea);
 
-     // SANGER_TODO: the problem with the row
-//    offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
-//    offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-//    offsetsView->getRightWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);
+    offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    offsetsView->getRightWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     QWidget *label;
     label = createLabelWidget(tr("Consensus"));
@@ -127,9 +134,9 @@ void MaEditorWgt::initWidgets() {
     seqAreaLayout->addWidget(consArea, 0, 1);
     seqAreaLayout->addWidget(label2, 0, 2, 1, 2);
 
-//    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
+    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
     seqAreaLayout->addWidget(seqArea, 1, 1);
-//    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 1, 2);
+    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 1, 2);
     seqAreaLayout->addWidget(cvBar, 1, 3);
 
     seqAreaLayout->addWidget(shBar, 2, 0, 1, 3);
@@ -164,7 +171,7 @@ void MaEditorWgt::initWidgets() {
 
     setLayout(mainLayout);
 
-//    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
+    connect(collapseModel, SIGNAL(toggled()), offsetsView, SLOT(sl_updateOffsets()));
     connect(collapseModel, SIGNAL(toggled()), seqArea,     SLOT(sl_modelChanged()));
 
     connect(delSelectionAction, SIGNAL(triggered()), seqArea, SLOT(sl_delCurrentSelection()));

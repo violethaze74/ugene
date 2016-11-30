@@ -135,25 +135,23 @@ void OpenMaEditorTask::updateTitle(MSAEditor* msaEd) {
 }
 
 OpenMsaEditorTask::OpenMsaEditorTask(MultipleAlignmentObject* obj)
-    : OpenMaEditorTask(obj, MSAEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
+    : OpenMaEditorTask(obj, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
 {
 }
 
 OpenMsaEditorTask::OpenMsaEditorTask(UnloadedObject* obj)
-    : OpenMaEditorTask(obj, MSAEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
+    : OpenMaEditorTask(obj, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
 {
 }
 
 OpenMsaEditorTask::OpenMsaEditorTask(Document* doc)
-    : OpenMaEditorTask(doc, MSAEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
+    : OpenMaEditorTask(doc, MsaEditorFactory::ID, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)
 {
 }
 
 MaEditor* OpenMsaEditorTask::getEditor(const QString& viewName, GObject* obj) {
-    SAFE_POINT(qobject_cast<MultipleSequenceAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
-    return new MSAEditor(viewName, obj);
+    return MsaEditorFactory::getEditor(viewName, obj);
 }
-
 
 OpenMcaEditorTask::OpenMcaEditorTask(MultipleAlignmentObject* obj)
     : OpenMaEditorTask(obj, McaEditorFactory::ID, GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT)
@@ -171,8 +169,7 @@ OpenMcaEditorTask::OpenMcaEditorTask(Document* doc)
 }
 
 MaEditor* OpenMcaEditorTask::getEditor(const QString& viewName, GObject* obj) {
-    SAFE_POINT(qobject_cast<MultipleChromatogramAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
-    return new McaEditor(viewName, obj);
+    return McaEditorFactory::getEditor(viewName, obj);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -256,7 +253,7 @@ UpdateMSAEditorTask::UpdateMSAEditorTask(GObjectView* v, const QString& stateNam
 
 void UpdateMSAEditorTask::update() {
     // SANGER_TODO: if this valid?
-    if (view.isNull() || (view->getFactoryId() != MSAEditorFactory::ID && view->getFactoryId() != McaEditorFactory::ID)) {
+    if (view.isNull() || (view->getFactoryId() != MsaEditorFactory::ID && view->getFactoryId() != McaEditorFactory::ID)) {
         return; //view was closed;
     }
 

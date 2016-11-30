@@ -98,8 +98,8 @@ int MSAEditorConsensusCache::getConsensusCharPercent(int pos) {
 
 QByteArray MSAEditorConsensusCache::getConsensusLine(bool withGaps) {
     QByteArray res;
-    const MultipleSequenceAlignment ma = aliObj->getMultipleAlignment();
-    for (int i=0, n = ma->getLength(); i<n; i++) {
+    const MultipleAlignment ma = aliObj->getMultipleAlignment();
+    for (int i = 0, n = ma->getLength(); i < n; i++) {
         char c = getConsensusChar(i);
         if (c!=U2Msa::GAP_CHAR || withGaps) {
             res.append(c);

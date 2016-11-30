@@ -47,7 +47,6 @@ public:
 
     static void updateTitle(MSAEditor* msaEd);
 
-    // SANGER_TODO: there is the same method in factory - do smt with it!
     virtual MaEditor* getEditor(const QString& viewName, GObject* obj) = 0;
 
 protected:

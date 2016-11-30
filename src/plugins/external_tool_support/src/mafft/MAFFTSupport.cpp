@@ -114,7 +114,7 @@ void MAFFTSupport::sl_runWithExtFileSpecify(){
 
 ////////////////////////////////////////
 //ExternalToolSupportMSAContext
-MAFFTSupportContext::MAFFTSupportContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+MAFFTSupportContext::MAFFTSupportContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 
 }
 

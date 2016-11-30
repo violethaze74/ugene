@@ -119,7 +119,7 @@ QString DocumentProviderSelectorController::getViewName(const GObjectType &objec
     if (GObjectTypes::ASSEMBLY == objectType) {
         id = AssemblyBrowserFactory::ID;
     } else if (GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT == objectType) {
-        id = MSAEditorFactory::ID;
+        id = MsaEditorFactory::ID;
     }
 
     GObjectViewFactory *factory = objectViewFactoriesRegistry->getFactoryById(id);

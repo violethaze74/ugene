@@ -117,7 +117,7 @@ void ClustalWSupport::sl_runWithExtFileSpecify(){
 
 ////////////////////////////////////////
 //ExternalToolSupportMSAContext
-ClustalWSupportContext::ClustalWSupportContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+ClustalWSupportContext::ClustalWSupportContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 
 }
 

@@ -79,7 +79,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 class MsaClipboardDataTaskFactory {
 public:
-    static PrepareMsaClipboardDataTask * getInstance(MaEditor *context, const QRect &selection, const DocumentFormatId &formatId);
+    static PrepareMsaClipboardDataTask * getInstance(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId);
 
 private:
     static U2Region getWindowBySelection(const QRect &selection);
@@ -91,7 +91,7 @@ private:
 class SubalignmentToClipboardTask : public Task {
     Q_OBJECT
 public:
-    SubalignmentToClipboardTask(MaEditor *context, const QRect &selection, const DocumentFormatId &formatId);
+    SubalignmentToClipboardTask(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId);
 
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);

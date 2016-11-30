@@ -249,7 +249,7 @@ bool HmmerSupport::isToolSet(const QString &name) const {
 }
 
 HmmerMsaEditorContext::HmmerMsaEditorContext(QObject *parent)
-    : GObjectViewWindowContext(parent, MSAEditorFactory::ID)
+    : GObjectViewWindowContext(parent, MsaEditorFactory::ID)
 {
 
 }

@@ -193,7 +193,7 @@ MSAImageExportController::~MSAImageExportController() {
 }
 
 void MSAImageExportController::sl_showSelectRegionDialog() {
-    QObjectScopedPointer<SelectSubalignmentDialog> dialog = new SelectSubalignmentDialog(ui, msaSettings.region, msaSettings.seqIdx);
+    QObjectScopedPointer<SelectSubalignmentDialog> dialog = new SelectSubalignmentDialog(ui->getEditor(), msaSettings.region, msaSettings.seqIdx);
     dialog->exec();
     CHECK(!dialog.isNull(), );
 

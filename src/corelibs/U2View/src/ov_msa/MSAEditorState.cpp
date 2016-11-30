@@ -36,7 +36,7 @@ namespace U2 {
 #define ZOOM_FACTOR QString("zoom_factor")
 
 bool MSAEditorState::isValid() const {
-    return stateData.value(VIEW_ID) == MSAEditorFactory::ID;
+    return stateData.value(VIEW_ID) == MsaEditorFactory::ID;
 }
 
 GObjectReference MSAEditorState::getMSAObjectRef() const {
@@ -88,7 +88,7 @@ void MSAEditorState::setZoomFactor(float zoomFactor) {
 QVariantMap MSAEditorState::saveState(MSAEditor* v) {
     MSAEditorState ss;
 
-    ss.stateData[VIEW_ID]=MSAEditorFactory::ID;
+    ss.stateData[VIEW_ID]=MsaEditorFactory::ID;
 
     MultipleSequenceAlignmentObject* msaObj = v->getMaObject();
     if (msaObj) {

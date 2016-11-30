@@ -260,9 +260,8 @@ U2Region MaEditorSequenceArea::getSequenceYRange(int seqNum, bool useVirtualCoor
     return getSequenceYRange(seqNum, startSeq, useVirtualCoords);
 }
 
-// SANGER_TODO: check the method is used correctly
 U2Region MaEditorSequenceArea::getSequenceYRange(int seq, int firstVisibleRow, bool useVirtualCoords) const {
-    U2Region res(editor->getRowHeight()* (seq - firstVisibleRow), editor->getSequenceRowHeight());
+    U2Region res(editor->getRowHeight()* (seq - firstVisibleRow), editor->getRowHeight());
     if (!useVirtualCoords) {
         int h = height();
         res = res.intersect(U2Region(0, h));
@@ -333,7 +332,7 @@ U2Region MaEditorSequenceArea::getRowsAt(int pos) const {
 }
 
 QPair<QString, int> MaEditorSequenceArea::getGappedColumnInfo() const{
-    QPair<QString, int> p; // SANGER_TODO: ',' is embarrases CHECK method(?)
+    QPair<QString, int> p;
     CHECK(getEditor() != NULL, p);
     CHECK(qobject_cast<MSAEditor*>(editor) != NULL, p); // SANGER_TODO: no ungappedLen and ungappedPosition for MCA
     if (isAlignmentEmpty()) {
@@ -598,7 +597,7 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
     CHECK(shift != 0, true);
 
     MSAEditor* msaEditor = qobject_cast<MSAEditor*>(getEditor());
-    CHECK(msaEditor != NULL, false); // SANGER_TODO: this implementation is wrong
+    CHECK(msaEditor != NULL, false);
     MultipleSequenceAlignmentObject *maObj = msaEditor->getMaObject();
     if (!maObj->isStateLocked()) {
         const U2Region rows = getSelectedRows();
@@ -780,6 +779,7 @@ bool MaEditorSequenceArea::drawContent(QPixmap &pixmap,
 QString MaEditorSequenceArea::exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
     CHECK(getEditor() != NULL, QString());
     CHECK(qobject_cast<MSAEditor*>(editor) != NULL, QString());
+    SAFE_POINT(editor->getReferenceRowId() != U2MsaRow::INVALID_ROW_ID, "Export highlighting is not supported wihout a reference", QString());
     QStringList result;
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
@@ -789,11 +789,8 @@ QString MaEditorSequenceArea::exportHighligtning(int startPos, int endPos, int s
 
     U2OpStatusImpl os;
     const int refSeq = getEditor()->getMaObject()->getMultipleAlignment()->getRowIndexByRowId(editor->getReferenceRowId(), os);
-    // SANGER_TODO: the method should not be launched if not reference is set
-    MultipleSequenceAlignmentRow row;
-    if (U2MsaRow::INVALID_ROW_ID != refSeq) {
-        row = msa->getRow(refSeq);
-    }
+    SAFE_POINT_OP(os, QString());
+    MultipleAlignmentRow row = msa->getRow(refSeq);
 
     QString header;
     header.append("Position\t");
@@ -820,7 +817,6 @@ QString MaEditorSequenceArea::exportHighligtning(int startPos, int endPos, int s
             if (seq == refSeq) continue;
             char c = msa->charAt(seq, pos);
 
-            SAFE_POINT(NULL != row, "MSA row is NULL", "");
             const char refChar = row->charAt(pos);
             if (refChar == '-' && !keepGaps) {
                 continue;

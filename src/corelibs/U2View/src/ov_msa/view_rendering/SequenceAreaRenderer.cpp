@@ -40,7 +40,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, cons
     CHECK(!seqIdx.isEmpty(), false);
 
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
-    MaEditor* editor = seqAreaWgt->getEditor(); // SANGER_TODO: renderer should know what editor is in use... or not?
+    MaEditor* editor = seqAreaWgt->getEditor();
 
     p.fillRect(QRect(0, 0,
                      editor->getColumnWidth() * region.length,
@@ -86,12 +86,6 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
     U2OpStatusImpl os;
     const int refSeq = msa->getRowIndexByRowId(editor->getReferenceRowId(), os);
     QString refSeqName = editor->getReferenceRowName();
-    // SANGER_TODO: currently there is no "empty" row - so the reference should be proccessing differently
-//    MultipleAlignmentRow row;
-//    // SANGER_TODO: drawing with the reference should be different
-//    if (U2MsaRow::INVALID_ROW_ID != editor->getReferenceRowId()/*refSeq*/) {
-//        row = msa->getRow(refSeq);
-//    }
 
     qint64 regionEnd = region.endPos() - (int)(region.endPos() == editor->getAlignmentLen());
     for (int pos = region.startPos; pos <= regionEnd; pos++) {
@@ -106,11 +100,10 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
             highlightingScheme->process(refChar, c, color, highlight, pos, seq);
         } else if (seq == refSeq || refSeqName.isEmpty()) {
             highlight = true;
-        }/* else {
-//            SAFE_POINT(row != NULL, "MSA row is NULL", false);
-            const char refChar = row->charAt(pos);
+        } else {
+            const char refChar = msa->charAt(refSeq, pos);
             highlightingScheme->process(refChar, c, color, highlight, pos, seq);
-        }*/
+        }
 
         if (color.isValid() && highlight) {
             p.fillRect(cr, color);

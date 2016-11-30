@@ -53,7 +53,7 @@ namespace U2 {
 // ExportAlignmentViewItemsController
 
 ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject* p)
-    : GObjectViewWindowContext(p, MSAEditorFactory::ID)
+    : GObjectViewWindowContext(p, MsaEditorFactory::ID)
 {
 }
 

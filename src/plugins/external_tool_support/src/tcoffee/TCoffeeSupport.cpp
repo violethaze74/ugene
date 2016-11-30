@@ -117,7 +117,7 @@ void TCoffeeSupport::sl_runWithExtFileSpecify(){
 
 ////////////////////////////////////////
 //TCoffeeSupportContext
-TCoffeeSupportContext::TCoffeeSupportContext(QObject* p) : GObjectViewWindowContext(p, MSAEditorFactory::ID) {
+TCoffeeSupportContext::TCoffeeSupportContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 
 }
 

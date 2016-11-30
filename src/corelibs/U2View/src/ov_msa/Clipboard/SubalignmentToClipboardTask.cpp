@@ -63,14 +63,13 @@ QString PrepareMsaClipboardDataTask::getResult() const {
     return result;
 }
 
-PrepareMsaClipboardDataTask * MsaClipboardDataTaskFactory::getInstance(MaEditor *context, const QRect &selection, const DocumentFormatId &formatId) {
+PrepareMsaClipboardDataTask * MsaClipboardDataTaskFactory::getInstance(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId) {
     U2Region window = getWindowBySelection(selection);
     QStringList names = getNamesBySelection(context, selection);
     if ("RTF" == formatId) {
         return new RichTextMsaClipboardTask(context, window, names);
     } else {
-        // SANGER_TODO: use MA!!
-        return new FormatsMsaClipboardTask((MultipleSequenceAlignmentObject*)context->getMaObject(), window, names, formatId);
+        return new FormatsMsaClipboardTask(context->getMaObject(), window, names, formatId);
     }
 }
 
@@ -236,7 +235,7 @@ void RichTextMsaClipboardTask::run(){
     delete colorScheme;
 }
 
-SubalignmentToClipboardTask::SubalignmentToClipboardTask(MaEditor *context, const QRect &selection, const DocumentFormatId &formatId)
+SubalignmentToClipboardTask::SubalignmentToClipboardTask(MSAEditor *context, const QRect &selection, const DocumentFormatId &formatId)
 : Task(tr("Copy formatted alignment to the clipboard"), TaskFlags_NR_FOSE_COSC), formatId(formatId)
 {
     prepareDataTask = MsaClipboardDataTaskFactory::getInstance(context, selection, formatId);

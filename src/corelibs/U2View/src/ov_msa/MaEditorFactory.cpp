@@ -35,13 +35,16 @@
 
 namespace U2 {
 
-const GObjectViewFactoryId MSAEditorFactory::ID("MSAEditor");
+const GObjectViewFactoryId MsaEditorFactory::ID("MSAEditor");
 const GObjectViewFactoryId McaEditorFactory::ID("MCAEditor");
 
 
+/************************************************************************/
+/* MaEditorFactory */
+/************************************************************************/
 MaEditorFactory::MaEditorFactory(GObjectType type, GObjectViewFactoryId id)
-: GObjectViewFactory(id, tr("Alignment Editor")),
-  type(type)
+    : GObjectViewFactory(id, tr("Alignment Editor")),
+      type(type)
 {
 }
 
@@ -133,23 +136,53 @@ Task* MaEditorFactory::createViewTask(const QString& viewName, const QVariantMap
     return new OpenSavedMSAEditorTask(type, this, viewName, stateData);
 }
 
-OpenMaEditorTask* MSAEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
+bool MaEditorFactory::supportsSavedStates() const {
+    return true;
+}
+
+MaEditor* MaEditorFactory::getEditor(const QString &, GObject *) {
+    FAIL("Static parent method to overload. Should not be called.", NULL);
+}
+
+/************************************************************************/
+/* MsaEditorFactory */
+/************************************************************************/
+MsaEditorFactory::MsaEditorFactory()
+    : MaEditorFactory(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, ID)
+{
+}
+
+MaEditor* MsaEditorFactory::getEditor(const QString& viewName, GObject* obj) {
+    MultipleSequenceAlignmentObject* msaObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    SAFE_POINT(msaObj != NULL, "Invalid GObject", NULL);
+    return new MSAEditor(viewName, msaObj);
+}
+
+OpenMaEditorTask* MsaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
     return new OpenMsaEditorTask(obj);
 }
 
-OpenMaEditorTask* MSAEditorFactory::getOpenMaEditorTask(UnloadedObject* obj) {
+OpenMaEditorTask* MsaEditorFactory::getOpenMaEditorTask(UnloadedObject* obj) {
     return new OpenMsaEditorTask(obj);
 }
 
-OpenMaEditorTask* MSAEditorFactory::getOpenMaEditorTask(Document* doc) {
+OpenMaEditorTask* MsaEditorFactory::getOpenMaEditorTask(Document* doc) {
     return new OpenMsaEditorTask(doc);
 }
 
-MaEditor* MSAEditorFactory::getEditor(const QString& viewName, GObject* obj) {
-    SAFE_POINT(qobject_cast<MultipleSequenceAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
-    return new MSAEditor(viewName, obj);
+/************************************************************************/
+/* McaEditorFactory */
+/************************************************************************/
+McaEditorFactory::McaEditorFactory()
+    : MaEditorFactory(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, ID)
+{
 }
 
+MaEditor* McaEditorFactory::getEditor(const QString& viewName, GObject* obj) {
+    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
+    SAFE_POINT(mcaObj != NULL, "Invalid GObject", NULL);
+    return new McaEditor(viewName, mcaObj);
+}
 
 OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(MultipleAlignmentObject* obj) {
     return new OpenMcaEditorTask(obj);
@@ -161,11 +194,6 @@ OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(UnloadedObject* obj) {
 
 OpenMaEditorTask* McaEditorFactory::getOpenMaEditorTask(Document* doc) {
     return new OpenMcaEditorTask(doc);
-}
-
-MaEditor* McaEditorFactory::getEditor(const QString& viewName, GObject* obj) {
-    SAFE_POINT(qobject_cast<MultipleChromatogramAlignmentObject*>(obj) != NULL, "Invalid GObject", NULL);
-    return new McaEditor(viewName, obj);
 }
 
 } // namespace

@@ -24,6 +24,7 @@
 
 #include "view_rendering/MaEditorSequenceArea.h"
 #include "McaEditor.h"
+#include <U2Gui/ScaleBar.h>
 
 namespace U2 {
 
@@ -50,12 +51,14 @@ public:
     McaEditor* getEditor() const { return qobject_cast<McaEditor*>(editor); }
 
     const ChromatogramViewSettings&  getSettings() const { return settings; }
+    bool getShowQA() const {return showQVAction->isChecked(); }
 
     void deleteCurrentSelection() {}
 
 private slots:
     void sl_showHideTrace();
     void sl_showAllTraces();
+    void sl_setRenderAreaHeight(int k);
 
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 
@@ -73,6 +76,7 @@ private:
     QAction*    showQVAction;
     QAction*    showAllTraces;
     QMenu*      traceActionMenu;
+    ScaleBar*   scaleBar;
 };
 
 

@@ -106,7 +106,7 @@ void MaSplitterController::removeWidget( QWidget *wgt )
 /************************************************************************/
 /* MSAWidget */
 /************************************************************************/
-MSAWidget::MSAWidget(MaEditorWgt* ui)
+MaUtilsWidget::MaUtilsWidget(MaEditorWgt* ui)
     : ui(ui),
       heightMargin(0)
 {
@@ -114,39 +114,39 @@ MSAWidget::MSAWidget(MaEditorWgt* ui)
     setMinimumHeight(ui->getConsensusArea()->height() + heightMargin);
 }
 
-void MSAWidget::sl_fontChanged() {
+void MaUtilsWidget::sl_fontChanged() {
     update();
     setMinimumHeight(ui->getConsensusArea()->height() + heightMargin);
 }
 
-const QFont& MSAWidget::getMsaEditorFont() {
+const QFont& MaUtilsWidget::getMsaEditorFont() {
     return ui->getEditor()->getFont();
 }
 
-void MSAWidget::setHeightMargin(int _heightMargin) {
+void MaUtilsWidget::setHeightMargin(int _heightMargin) {
     heightMargin = _heightMargin;
     setMinimumHeight(ui->getConsensusArea()->height() + heightMargin);
 }
 
-void MSAWidget::mousePressEvent( QMouseEvent * ) {
+void MaUtilsWidget::mousePressEvent( QMouseEvent * ) {
     ui->getSequenceArea()->cancelSelection();
 }
-void MSAWidget::paintEvent(QPaintEvent *) {
+void MaUtilsWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);
     p.fillRect(rect(), Qt::white);
 }
 
 /************************************************************************/
-/* MSALabelWidget */
+/* MaLabelWidget */
 /************************************************************************/
-MSALabelWidget::MSALabelWidget(MaEditorWgt* ui, const QString & t, Qt::Alignment a)
-    : MSAWidget(ui),
+MaLabelWidget::MaLabelWidget(MaEditorWgt* ui, const QString & t, Qt::Alignment a)
+    : MaUtilsWidget(ui),
       text(t),
       ali(a) {
 }
 
-void MSALabelWidget::paintEvent(QPaintEvent * e) {
-    MSAWidget::paintEvent(e);
+void MaLabelWidget::paintEvent(QPaintEvent * e) {
+    MaUtilsWidget::paintEvent(e);
     QPainter p(this);
     if (!text.isEmpty()) {
         p.setFont(getMsaEditorFont());
@@ -154,18 +154,18 @@ void MSALabelWidget::paintEvent(QPaintEvent * e) {
     }
 }
 
-void MSALabelWidget::mousePressEvent( QMouseEvent * e ) {
+void MaLabelWidget::mousePressEvent( QMouseEvent * e ) {
     ui->getSequenceArea()->cancelSelection();
     QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), 0), e->globalPos(), e->button(), e->buttons(), e->modifiers());
     QApplication::instance()->notify((QObject*)ui->getEditorNameList(), &eventForNameListArea);
 }
 
-void MSALabelWidget::mouseReleaseEvent( QMouseEvent * e ) {
+void MaLabelWidget::mouseReleaseEvent( QMouseEvent * e ) {
     QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), qMax(e->y() - height(), 0)), e->globalPos(), e->button(), e->buttons(), e->modifiers());
     QApplication::instance()->notify((QObject*)ui->getEditorNameList(), &eventForNameListArea);
 }
 
-void MSALabelWidget::mouseMoveEvent( QMouseEvent * e ) {
+void MaLabelWidget::mouseMoveEvent( QMouseEvent * e ) {
     QMouseEvent eventForSequenceArea(e->type(), QPoint(e->x(), e->y() - height()), e->globalPos(), e->button(), e->buttons(), e->modifiers());
     QApplication::instance()->notify((QObject*)ui->getEditorNameList(), &eventForSequenceArea);
 }

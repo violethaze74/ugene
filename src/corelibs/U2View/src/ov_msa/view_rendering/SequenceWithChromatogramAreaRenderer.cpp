@@ -45,10 +45,11 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(McaEd
     charWidth = fm.width('W');
     charHeight = fm.ascent();
 
-    heightPD = 100;// seqAheight(); SANGER_TODO: get from const in seq area
-    heightAreaBC = seqAreaWgt->getEditor()->getSequenceRowHeight()/*50*/; // also there should not be such hard-codes consts
-    addUpIfQVL = 0;
-    areaHeight = heightPD - heightAreaBC;
+    heightBC = seqAreaWgt->getEditor()->getSequenceRowHeight();
+    heightPD = seqAreaWgt->getEditor()->getRowHeight() - seqAreaWgt->getEditor()->getSequenceRowHeight() - 15; // 15 - indent between lines
+    heightQuality = charHeight;
+
+    maxTraceHeight = heightPD - heightBC;
 
 //    if (chroma.hasQV && p->showQV()) {
 //        addUpIfQVL = 0;
@@ -60,11 +61,18 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(McaEd
 //    }
 }
 
+void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
+    maxTraceHeight = h;
+}
+
+int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
+    return maxTraceHeight;
+}
+
 bool SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) {
     bool ok = SequenceAreaRenderer::drawRow(p, msa, seq, region, yStart);
     CHECK(ok, false);
 
-    // SANGER_TODO: under comment until mCaEditor with showShomatogramm options is unavailable
     SAFE_POINT(getSeqArea() != NULL, "seqAreaWgt is NULL", false);
     McaEditor* editor = getSeqArea()->getEditor();
     if (editor->getShowChromatogram()) {
@@ -79,10 +87,8 @@ bool SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAl
     return true;
 }
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& visible) {
+void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& _visible) {
     // SANGER_TODO: move from the method
-    static const QColor colorForIds[4] = { Qt::darkGreen, Qt::blue, Qt::black, Qt::red};
-    static const QString baseForIds[4] = { "A", "C", "G", "T" };
     static const qreal dividerTraceOrBaseCallsLines = 2;
     static const qreal dividerBoolShowBaseCallsChars = 1.5;
 
@@ -98,60 +104,43 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const M
         if (chromaMax < chroma.T[i]) chromaMax = chroma.T[i];
     }
 
-//    ChromatogramView* chromaView = qobject_cast<ChromatogramView*>(view);
+    // SANGER_TODO: not Zero region -- there should be the chrom position on the alignment!
+    U2Region visible = U2Region(_visible.startPos, _visible.length + 1).intersect(U2Region(0, chroma.seqLength));
+    CHECK(!visible.isEmpty(), );
+    int w = visible.length * seqAreaWgt->getEditor()->getColumnWidth();
 
-    assert(!visible.isEmpty());
-
-
-//    ADVSequenceObjectContext* seqCtx = view->getSequenceContext();
-//    U2OpStatusImpl os;
-//    QByteArray seq = seqCtx->getSequenceObject()->getWholeSequenceData(os);
-//    SAFE_POINT_OP(os, );
     QByteArray seq = row->getPredictedSequenceData(); // SANGER_TODO: tmp, get only required region
 
     // SANGER_TODO:
 //    GSLV_UpdateFlags uf = view->getUpdateFlags();
     bool completeRedraw = true; //uf.testFlag(GSLV_UF_NeedCompleteRedraw) || uf.testFlag(GSLV_UF_ViewResized) || uf.testFlag(GSLV_UF_VisibleRangeChanged);
-
-    heightPD = 100; // SANGER_TODO: const for chrom height
+    bool drawQuality = chroma.hasQV && getSeqArea()->getShowQA();
 
     if (completeRedraw) {
         p.setRenderHint(QPainter::Antialiasing, true);
         p.setFont(font);
         p.setPen(Qt::black);
-        p.fillRect(0, 0, seqAreaWgt->width(), heightPD, Qt::lightGray/*Qt::white*/); // SANGER_TODO: test
-        if (seqAreaWgt->width() / charWidth > visible.length / dividerBoolShowBaseCallsChars) {
-            //draw basecalls
-            p.translate(0, heightAreaBC - addUpIfQVL);
-
-//            drawOriginalBaseCalls(chroma,
-//                                  0, heightAreaBC - charHeight - addUpIfQVL, seqAreaWgt->width(), charHeight,
-//                                  p, visible, seq);
-
-//            if (chroma.hasQV /*&& chromaView->showQV()*/) { // SANGER_TODO: deal with settings in are wgt
-//                drawQualityValues(chroma,
-//                                  0, charHeight, seqAreaWgt->width(), heightAreaBC - 2*charHeight, p, visible, seq);
-//            }
-        } else {
-            QRectF rect(charWidth, 0, seqAreaWgt->width() - 2*charWidth, 2*charHeight);
-            p.drawText(rect, Qt::AlignCenter, QString(tr("Chromatogram view (zoom in to see base calls)")));
-            int curCP = seqAreaWgt->width() - charWidth;
-            for (int i = 0; i < 4; ++i) {
-                curCP -= 2 * charWidth;
-                p.setPen(colorForIds[i]);
-                p.drawRect(curCP + charWidth / 6, heightAreaBC - charHeight, charWidth / 2, - charHeight / 2);
-                p.setPen(Qt::black);
-                p.drawText(curCP + charWidth, heightAreaBC - charHeight, baseForIds[i]);
+        if (w / charWidth > visible.length / dividerBoolShowBaseCallsChars) {
+            // quality and base calls can be visible
+            if (drawQuality) {
+                drawQualityValues(chroma, w, heightQuality,
+                                  p, visible, seq);
+                p.translate(0, heightQuality);
             }
-        }
-        if (seqAreaWgt->width() / charWidth > visible.length / dividerTraceOrBaseCallsLines) {
-            drawChromatogramTrace(chroma,
-                                  0, heightAreaBC - addUpIfQVL, seqAreaWgt->width(), heightPD - heightAreaBC + addUpIfQVL,
-                                  p, visible/*, chromaView->getSettings()*/);
+            drawOriginalBaseCalls(chroma, w, charHeight,
+                                  p, visible, seq);
         } else {
-            drawChromatogramBaseCallsLines(chroma,
-                                           0, heightAreaBC, seqAreaWgt->width(), heightPD - heightAreaBC,
-                p, visible, seq/*, chromaView->getSettings()*/);
+            drawQuality = false; // to avoid shifting in case the base calls and quality was not visible
+        }
+        if (w / charWidth > visible.length / dividerTraceOrBaseCallsLines) {
+            // draw continious trace
+            drawChromatogramTrace(chroma,
+                                  0, heightBC, w, heightPD - heightBC - drawQuality * heightQuality,
+                                  p, visible);
+        } else {
+            // draw only "columns" of peaks
+            drawChromatogramBaseCallsLines(chroma, w, heightPD,
+                                           p, visible, seq);
         }
     }
 
@@ -199,9 +188,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const M
 
 }
 
-QColor SequenceWithChromatogramAreaRenderer::getBaseColor( char base )
-{
-
+QColor SequenceWithChromatogramAreaRenderer::getBaseColor( char base ) {
     switch(base) {
         case 'A':
             return Qt::darkGreen;
@@ -214,14 +201,11 @@ QColor SequenceWithChromatogramAreaRenderer::getBaseColor( char base )
         default:
             return Qt::black;
     }
-
 }
 
-//draw functions
-
 void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChromatogram& chroma,
-                                                 qreal x, qreal y, qreal w, qreal h, QPainter& p,
-                                                 const U2Region& visible/*, const ChromatogramViewSettings& settings*/)
+                                                                 qreal x, qreal y, qreal w, qreal h, QPainter& p,
+                                                                 const U2Region& visible)
 {
     if (chromaMax == 0) {
         //nothing to draw
@@ -235,14 +219,8 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
         Qt::darkGreen, Qt::blue, Qt::black, Qt::red
     };
     p.setRenderHint(QPainter::Antialiasing, true);
-    p.translate(x, h);
 
-    //drawBoundingRect SANGER_TODO: was commented originally
-    p.drawLine(0,0,w,0);
-    p.drawLine(0,-h,w,-h);
-    p.drawLine(0,0,0,-h);
-    p.drawLine(w,0,w,-h);
-
+    p.translate(x, h + y);
 
     int a1 = chroma.baseCalls[visible.startPos];
     int a2 = chroma.baseCalls[visible.endPos() - 1];
@@ -259,7 +237,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     QPolygonF polylineC(polylineSize);
     QPolygonF polylineG(polylineSize);
     QPolygonF polylineT(polylineSize);
-    int areaHeight = (heightPD - heightAreaBC + addUpIfQVL) * this->areaHeight / 100;
+    int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
     for (int j = a1 - mk1; j <= a2 + mk2; ++j) {
         double x = kLinearTransformTrace*j+bLinearTransformTrace;
         qreal yA = -qMin(static_cast<qreal>(chroma.A[j]) * areaHeight / chromaMax, h);
@@ -287,19 +265,19 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
         p.setPen(colorForIds[3]);
         p.drawPolyline(polylineT);
     }
-    p.translate(- x, - h);
+    p.translate(- x, - h - y);
 }
 
-void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(const DNAChromatogram& chroma, qreal x, qreal y, qreal w, qreal h,
-                                                 QPainter& p, const U2Region& visible, const QByteArray& ba, bool is)
+void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(const DNAChromatogram& chroma, qreal w, qreal h,
+                                                                 QPainter& p, const U2Region& visible, const QByteArray& ba, bool is)
 {
     QRectF rect;
 
     p.setPen(Qt::black);
-    p.translate( x, h);
+    p.translate( 0, h);
 
-    int a1 = 10; //chroma.baseCalls[visible.startPos];
-    int a2 = 20; //chroma.baseCalls[visible.endPos()-1];
+    int a1 = chroma.baseCalls[visible.startPos];
+    int a2 = chroma.baseCalls[visible.endPos() - 1];
     qreal leftMargin, rightMargin;
     leftMargin = rightMargin = charWidth;
     qreal k1 = w - leftMargin  - rightMargin;
@@ -307,14 +285,6 @@ void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(const DNAChroma
     qreal kLinearTransformBaseCalls = qreal (k1) / k2;
     qreal bLinearTransformBaseCalls = leftMargin - kLinearTransformBaseCalls*a1;
 
-    if (!is)    {
-        kLinearTransformBaseCallsOfEdited = kLinearTransformBaseCalls;
-        bLinearTransformBaseCallsOfEdited = bLinearTransformBaseCalls;
-        xBaseCallsOfEdited = x;
-        yBaseCallsOfEdited = y;
-        wBaseCallsOfEdited = w;
-        hBaseCallsOfEdited = h;
-    }
 //    ChromatogramView* cview = qobject_cast<ChromatogramView*>(view);
     for (int i=visible.startPos;i<visible.endPos();i++) {
         QColor color = getBaseColor(ba[i]);
@@ -326,14 +296,14 @@ void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(const DNAChroma
         } else {
             p.setFont(font);
         }
-        int xP = kLinearTransformBaseCalls* visible.endPos()/*chroma.baseCalls[i] */+ bLinearTransformBaseCalls;
+        int xP = kLinearTransformBaseCalls * chroma.baseCalls[i] + bLinearTransformBaseCalls;
         rect.setRect(xP - charWidth/2 + linePen.width(), -h, charWidth, h);
         p.drawText(rect, Qt::AlignCenter, QString(ba[i]));
 
         if (is) {
             p.setPen(linePen);
             p.setRenderHint(QPainter::Antialiasing, false);
-            p.drawLine(xP, 0, xP, heightPD - y);
+            p.drawLine(xP, 0, xP, heightPD - h);
         }
     }
 
@@ -342,21 +312,22 @@ void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(const DNAChroma
         p.setFont(QFont(QString("Courier New"), 8));
         p.drawText(charWidth*1.3, charHeight/2, QString(tr("original sequence")));
     }
-    p.translate( - x, - h);
+    p.translate( 0, - h);
 }
 
-void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogram& chroma,
-                                             qreal x, qreal y, qreal w, qreal h,
-                                             QPainter& p, const U2Region& visible, const QByteArray& ba)
+void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogram& chroma, qreal w, qreal h,
+                                                             QPainter& p, const U2Region& visible, const QByteArray& ba)
 {
     QRectF rectangle;
 
-    p.translate(x, h);
+    p.translate(0, h);
 
     //draw grid
     p.setPen(linePen);
     p.setRenderHint(QPainter::Antialiasing, false);
-    for (int i = 0; i < 5; ++i) p.drawLine(0,-h*i/4, w, -h*i/4);
+    for (int i = 0; i < 5; ++i) {
+        p.drawLine(0, -h * i/4, w, -h * i/4);
+    }
 
      QLinearGradient gradient(10, 0, 10, -h);
      gradient.setColorAt(0, Qt::green);
@@ -369,8 +340,8 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogr
      p.setRenderHint(QPainter::Antialiasing, true);
 
 
-     int a1 = 10; //chroma.baseCalls[visible.startPos];
-     int a2 = 20; //chroma.baseCalls[visible.endPos()-1];
+     int a1 = chroma.baseCalls[visible.startPos];
+     int a2 = chroma.baseCalls[visible.endPos() - 1];
      qreal leftMargin, rightMargin;
      leftMargin = rightMargin = charWidth;
      qreal k1 = w - leftMargin  - rightMargin;
@@ -378,52 +349,44 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogr
      qreal kLinearTransformQV = qreal (k1) / k2;
      qreal bLinearTransformQV = leftMargin - kLinearTransformQV*a1;
 
-     for (int i=visible.startPos;i<visible.endPos();i++) {
-         int xP = kLinearTransformQV* visible.endPos() /*chroma.baseCalls[i] */+ bLinearTransformQV - charWidth/2 + linePen.width();
+     for (int i = visible.startPos; i < visible.endPos(); i++) {
+         int xP = kLinearTransformQV * chroma.baseCalls[i] + bLinearTransformQV - charWidth / 2 + linePen.width();
          switch (ba[i])  {
              case 'A':
-                 rectangle.setCoords(xP, 0, xP+charWidth, -h/100*chroma.prob_A[i]);
+                 rectangle.setCoords(xP, 0, xP + charWidth, - h / 100 * chroma.prob_A[i]);
                  break;
              case 'C':
-                 rectangle.setCoords(xP, 0, xP+charWidth, -h/100*chroma.prob_C[i]);
+                 rectangle.setCoords(xP, 0, xP + charWidth, - h / 100 * chroma.prob_C[i]);
                  break;
              case 'G':
-                 rectangle.setCoords(xP, 0, xP+charWidth, -h/100*chroma.prob_G[i]);
+                 rectangle.setCoords(xP, 0, xP + charWidth, - h / 100 * chroma.prob_G[i]);
                  break;
              case 'T':
-                 rectangle.setCoords(xP, 0, xP+charWidth, -h/100*chroma.prob_T[i]);
+                 rectangle.setCoords(xP, 0, xP + charWidth, - h / 100 * chroma.prob_T[i]);
                  break;
          }
-         if (qAbs( rectangle.height() ) > h/100) {
+         if (qAbs( rectangle.height() ) > h / 100) {
             p.drawRoundedRect(rectangle, 1.0, 1.0);
          }
 
      }
 
-     p.translate( - x, - h);
+     p.translate( 0, - h);
 }
 
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const DNAChromatogram& chroma,
-                                                          qreal x, qreal y, qreal w, qreal h, QPainter& p,
-                                                                const U2Region& visible, const QByteArray& ba//,
-                                                          /*const ChromatogramViewSettings& settings*/)
+void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal w, qreal h, QPainter& p,
+                                                                          const U2Region& visible, const QByteArray& ba)
 {
     static const QColor colorForIds[4] = {
         Qt::darkGreen, Qt::blue, Qt::black, Qt::red
     };
     p.setRenderHint(QPainter::Antialiasing, false);
-    p.translate(x, h);
 
-    /*  //drawBoundingRect
-    p.drawLine(0,0,w,0);
-    p.drawLine(0,-h,w,-h);
-    p.drawLine(0,0,0,-h);
-    p.drawLine(w,0,w,-h);*/
+    p.translate(0, h);
 
-
-    int a1 = 10; //chroma.baseCalls[visible.startPos];
-    int a2 = 20; //chroma.baseCalls[visible.endPos()-1];
+    int a1 = chroma.baseCalls[visible.startPos];
+    int a2 = chroma.baseCalls[visible.endPos()-1];
     qreal leftMargin, rightMargin;
     leftMargin = rightMargin = linePen.width();
     qreal k1 = w - leftMargin  - rightMargin;
@@ -431,9 +394,9 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
     kLinearTransformTrace = qreal (k1) / k2;
     bLinearTransformTrace = leftMargin - kLinearTransformTrace*a1;
     double yRes = 0;
-    int areaHeight = (heightPD - heightAreaBC + addUpIfQVL) * this->areaHeight / 100;
-    for (int j = visible.startPos; j < visible.startPos+visible.length; j++) {
-        int temp = visible.endPos()/*chroma.baseCalls[j]*/;
+    int areaHeight = (heightPD - heightBC) * this->maxTraceHeight / 100;
+    for (int j = visible.startPos; j < visible.startPos + visible.length; j++) {
+        int temp = chroma.baseCalls[j];
         if (temp >= chroma.traceLength) {
             // damaged data - FIXME improve?
             break;
@@ -468,7 +431,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
             p.drawLine(x, 0, x, yRes);
         }
     }
-    p.translate( - x, - h);
+    p.translate( 0, - h);
 }
 
 McaEditorSequenceArea* SequenceWithChromatogramAreaRenderer::getSeqArea() const {

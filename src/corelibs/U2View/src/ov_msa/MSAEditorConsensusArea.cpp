@@ -548,7 +548,9 @@ void MSAEditorConsensusArea::buildMenu(QMenu* m) {
     copyMenu->addAction(copyConsensusAction);
     copyMenu->addAction(copyConsensusWithGapsAction);
 
-    m->addAction(configureConsensusAction);
+    if (qobject_cast<MSAEditor*>(editor) != NULL) {
+        m->addAction(configureConsensusAction);
+    }
 }
 
 void MSAEditorConsensusArea::sl_copyConsensusSequence() {

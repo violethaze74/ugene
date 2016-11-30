@@ -74,17 +74,16 @@
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 
-#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
-#include "Clipboard/SubalignmentToClipboardTask.h"
 #include "ColorSchemaSettingsController.h"
 #include "CreateSubalignmentDialogController.h"
-#include "Highlighting/MSAHighlightingTabFactory.h"
-#include "view_rendering/SequenceAreaRenderer.h"
-#include "view_rendering/SequenceWithChromatogramAreaRenderer.h" // SANGER_TODO: monitor unneccessary headers!
 #include "MSAEditor.h"
 #include "MSAEditorNameList.h"
 #include "MSAEditorSequenceArea.h"
 
+#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
+#include "Clipboard/SubalignmentToClipboardTask.h"
+#include "Highlighting/MSAHighlightingTabFactory.h"
+#include "view_rendering/SequenceAreaRenderer.h"
 
 namespace U2 {
 
@@ -98,7 +97,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     initRenderer();
 
     selectionColor = Qt::black;
-    editingEnabled = false;
+    editingEnabled = true;
 
     connect(&editModeAnimationTimer, SIGNAL(timeout()), SLOT(sl_changeSelectionColor()));
 
@@ -553,7 +552,6 @@ void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
         topLeftCornerOfRemovedRegion.setX(0);
     }
 
-    // SANGER_TODO: dealing with gaps is not determined for MCA -- let i tb only in MSA for now
     MultipleSequenceAlignmentObject *maObj = getEditor()->getMaObject();
     if (NULL == maObj || maObj->isStateLocked()) {
         return;
@@ -1053,7 +1051,7 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
 
 void MSAEditorSequenceArea::sl_copyFormattedSelection(){
     const DocumentFormatId& formatId = getCopyFormatedAlgorithmId();
-    Task* clipboardTask = new SubalignmentToClipboardTask(editor, selection.getRect(), formatId);
+    Task* clipboardTask = new SubalignmentToClipboardTask(getEditor(), selection.getRect(), formatId);
     AppContext::getTaskScheduler()->registerTopLevelTask(clipboardTask);
 }
 

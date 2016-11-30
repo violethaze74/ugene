@@ -33,7 +33,7 @@ namespace U2 {
 class McaEditor : public MaEditor {
     Q_OBJECT
 public:
-    McaEditor(const QString& viewName, GObject* obj);
+    McaEditor(const QString& viewName, MultipleChromatogramAlignmentObject* obj);
 
     MultipleChromatogramAlignmentObject* getMaObject() const { return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject); }
 
@@ -46,6 +46,7 @@ public:
     bool getShowChromatogram() const { return showChromatograms; }
 
 protected slots:
+    void sl_onContextMenuRequested(const QPoint & pos);
     void sl_showHideChromatograms(bool show);
 
 protected:
@@ -58,7 +59,7 @@ protected:
 class McaEditorWgt : public MaEditorWgt {
     Q_OBJECT
 public:
-    McaEditorWgt(MaEditor* editor);
+    McaEditorWgt(McaEditor* editor);
 
     McaEditor* getEditor() const { return qobject_cast<McaEditor* >(editor); }
 

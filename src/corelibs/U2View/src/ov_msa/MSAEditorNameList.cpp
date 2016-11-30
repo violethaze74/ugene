@@ -25,8 +25,6 @@
 #include <QMouseEvent>
 #include <QPainter>
 
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -128,7 +126,7 @@ void MSAEditorNameList::drawNames(QPainter &p, const QList<qint64> &seqIdx, bool
 
     MultipleAlignmentObject* msaObj = editor->getMaObject();
     SAFE_POINT(NULL != msaObj, tr("MSA Object is NULL"), );
-    const MultipleSequenceAlignment al = msaObj->getMultipleAlignment();
+    const MultipleAlignment al = msaObj->getMultipleAlignment();
 
     QStringList seqNames = al->getRowNames();
     for (qint64 i = 0; i < seqIdx.size(); i++) {
@@ -201,6 +199,9 @@ void MSAEditorNameList::sl_buildContextMenu(GObjectView* v, QMenu* m) {
 }
 
 void MSAEditorNameList::buildMenu(QMenu* m) {
+    if (qobject_cast<MSAEditor*>(editor) == NULL) {
+        return;
+    }
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != NULL, "editMenu not found", );
 
@@ -705,7 +706,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
         drawRefSequence(p, textRect);
     }
 
-    p.drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, text);
+    p.drawText(textRect, Qt::AlignTop | Qt::AlignLeft, text);
 
 }
 

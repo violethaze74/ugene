@@ -113,7 +113,7 @@ class U2VIEW_EXPORT MSAEditor : public MaEditor {
     friend class SequenceWithChromatogramAreaRenderer;
 
 public:
-    MSAEditor(const QString& viewName, GObject* obj);
+    MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj);
     ~MSAEditor();
 
     MultipleSequenceAlignmentObject* getMaObject() const { return qobject_cast<MultipleSequenceAlignmentObject*>(maObject); }
@@ -191,8 +191,7 @@ class U2VIEW_EXPORT MSAEditorUI : public MaEditorWgt {
     friend class MsaEditorSimilarityColumn;
 
 public:
-    // SANGER_TODO: return MsaEditor in constructor!
-    MSAEditorUI(MaEditor* editor);
+    MSAEditorUI(MSAEditor* editor);
 
     MSAEditor* getEditor() const { return qobject_cast<MSAEditor* >(editor); }
 
@@ -215,8 +214,6 @@ public:
 
     MSAEditorMultiTreeViewer* getMultiTreeViewer(){return multiTreeViewer;}
 
-public slots:
-    void sl_saveScreenshot();
 private slots:
     void sl_onTabsCountChanged(int tabsCount);
 signals:

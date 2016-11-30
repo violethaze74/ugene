@@ -42,7 +42,7 @@ void ProjectViewImpl::registerBuiltInObjectViews() {
     f =  new AnnotatedDNAViewFactory();
     reg->registerGObjectViewFactory(f);
 
-    f = new MSAEditorFactory();
+    f = new MsaEditorFactory();
     reg->registerGObjectViewFactory(f);
 
     f = new McaEditorFactory();
@@ -68,7 +68,7 @@ void ProjectViewImpl::unregisterBuiltInObjectViews() {
     reg->unregisterGObjectViewFactory(f);
     delete f;
 
-    f = reg->getFactoryById(MSAEditorFactory::ID);
+    f = reg->getFactoryById(MsaEditorFactory::ID);
     assert(f!=NULL);
     reg->unregisterGObjectViewFactory(f);
     delete f;

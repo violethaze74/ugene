@@ -23,6 +23,8 @@
 
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
+#include <U2Gui/GUIUtils.h>
+
 #include <QToolButton>
 
 namespace U2 {
@@ -34,9 +36,10 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     showQVAction = new QAction(tr("Show quality bars"), this);
     showQVAction->setIcon(QIcon(":chroma_view/images/bars.png"));
     showQVAction->setCheckable(true);
+    // SANGER_TODO: check quality
 //    showQVAction->setChecked(chroma.hasQV);
 //    showQVAction->setEnabled(chroma.hasQV);
-    connect(showQVAction, SIGNAL(toggled(bool)), SLOT(completeUpdate()));
+    connect(showQVAction, SIGNAL(toggled(bool)), SLOT(sl_completeUpdate()));
 
     showAllTraces = new QAction(tr("Show all"), this);
     connect(showAllTraces, SIGNAL(triggered()), SLOT(sl_showAllTraces()));
@@ -49,8 +52,13 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     traceActionMenu->addSeparator();
     traceActionMenu->addAction(showAllTraces);
 
+    scaleBar = new ScaleBar(Qt::Horizontal);
+    scaleBar->slider()->setRange(100, 1000);
+    scaleBar->slider()->setTickInterval(100);
+    SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
+    scaleBar->setValue(r->getScaleBarValue());
+    connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
 
-    // SANGER_TODO: everything in under comment until the 'out-of-memory' problem is resolved
     updateColorAndHighlightSchemes();
     updateActions();
 }
@@ -89,6 +97,13 @@ void McaEditorSequenceArea::sl_showAllTraces() {
     sl_completeUpdate();
 }
 
+void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
+    //k = chromaMax
+    SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
+    r->setAreaHeight(k);
+    sl_completeUpdate();
+}
+
 void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     t->addAction(showQVAction);
 
@@ -98,6 +113,9 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     button->setPopupMode(QToolButton::InstantPopup);
     t->addWidget(button);
     t->addSeparator();
+
+    t->addWidget(scaleBar); // SANGER_TODO: the slider dissapers after window reopening!
+    t->addSeparator();
 }
 
 void McaEditorSequenceArea::initRenderer() {
@@ -105,9 +123,10 @@ void McaEditorSequenceArea::initRenderer() {
 }
 
 void McaEditorSequenceArea::buildMenu(QMenu *m) {
-    m->addAction(showQVAction);
-    m->addAction(showAllTraces);
-    m->addMenu(traceActionMenu);
+    QMenu* viewMenu = GUIUtils::findSubMenu(m, MSAE_MENU_VIEW);
+    SAFE_POINT(viewMenu != NULL, "viewMenu", );
+    viewMenu->addAction(showQVAction);
+    viewMenu->addMenu(traceActionMenu);
 }
 
 QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionName) {

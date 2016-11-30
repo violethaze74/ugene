@@ -105,14 +105,11 @@ namespace U2 {
 
 /* TRANSLATOR U2::MSAEditor */
 
-MSAEditor::MSAEditor(const QString& viewName, GObject* obj)
-    : MaEditor(MSAEditorFactory::ID, viewName, obj),
+MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj)
+    : MaEditor(MsaEditorFactory::ID, viewName, obj),
       alignSequencesToAlignmentAction(NULL),
       treeManager(this)
 {
-    // SANGER_TODO: add object check!
-    SAFE_POINT(qobject_cast<MultipleSequenceAlignmentObject*>(obj) != NULL, "", );
-
     buildTreeAction = new QAction(QIcon(":/core/images/phylip.png"), tr("Build Tree"), this);
     buildTreeAction->setObjectName("Build Tree");
     buildTreeAction->setEnabled(!isAlignmentEmpty());
@@ -176,7 +173,6 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(alignAction);
     tb->addAction(alignSequencesToAlignmentAction);
 
-    // SANGER_TODO: double signal!
     GObjectView::buildStaticToolbar(tb);
 }
 
@@ -538,23 +534,16 @@ void MSAEditor::buildTree() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-MSAEditorUI::MSAEditorUI(MaEditor* editor)
+MSAEditorUI::MSAEditorUI(MSAEditor* editor)
     : MaEditorWgt(editor),
       multiTreeViewer(NULL),
       similarityStatistics(NULL) {
-    // SANGER_TODO: check the editor is MSAEditor? private constructor??
     initActions();
     initWidgets();
 }
 
 MSAEditorSequenceArea* MSAEditorUI::getSequenceArea() const {
     return qobject_cast<MSAEditorSequenceArea* >(seqArea);
-}
-void MSAEditorUI::sl_saveScreenshot(){
-    MSAImageExportController controller(this);
-    QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, ExportImageDialog::NoScaling, p);
-    dlg->exec();
 }
 
 void MSAEditorUI::sl_onTabsCountChanged(int curTabsNumber) {
@@ -577,9 +566,8 @@ void MSAEditorUI::createDistanceColumn(MSADistanceMatrix* matrix)
 }
 
 void MSAEditorUI::addTreeView(GObjectViewWindow* treeView) {
-    if(NULL == multiTreeViewer) {
-        // SANGER_TODO: avoid qobject_cast???
-        multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), qobject_cast<MSAEditor*>(editor));
+    if (NULL == multiTreeViewer) {
+        multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
         maSplitter.addWidget(nameAreaContainer, multiTreeViewer, 0.35);
         multiTreeViewer->addTreeView(treeView);
         emit si_showTreeOP();
