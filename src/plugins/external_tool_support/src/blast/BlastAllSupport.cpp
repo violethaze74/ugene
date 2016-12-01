@@ -45,12 +45,45 @@
 #include "BlastAllSupportTask.h"
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
+#include "FormatDBSupport.h"
 #include "utils/BlastTaskSettings.h"
 #include "utils/ExternalToolSupportAction.h"
 
 #include "AlignToReferenceBlastDialog.h"
 
 namespace U2 {
+
+void checkExtToolsPath(QStringList names) {
+    QStringList missingTools;
+    foreach (QString name, names) {
+        if (AppContext::getExternalToolRegistry()->getByName(name)->getPath().isEmpty()) {
+            missingTools << name;
+        }
+    }
+    if (!missingTools.isEmpty()){
+        QString mergedNames = missingTools.join(", ");
+
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
+        msgBox->setWindowTitle("BLAST: "+ QString(mergedNames));
+        msgBox->setText(BlastAllSupport::tr("Paths for the following tools are not selected: %1.").arg(mergedNames));
+        msgBox->setInformativeText(BlastAllSupport::tr("Do you want to select it now?"));
+        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox->setDefaultButton(QMessageBox::Yes);
+        const int ret = msgBox->exec();
+        CHECK(!msgBox.isNull(), );
+
+        switch (ret) {
+           case QMessageBox::Yes:
+               AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+               break;
+           case QMessageBox::No:
+               return;
+           default:
+               assert(false);
+               break;
+         }
+    }
+}
 
 BlastAllSupport::BlastAllSupport(const QString& name, const QString& path) : ExternalTool(name, path)
 {
@@ -81,28 +114,8 @@ BlastAllSupport::BlastAllSupport(const QString& name, const QString& path) : Ext
 
 void BlastAllSupport::sl_runWithExtFileSpecify(){
     //Check that blastall and tempory directory path defined
-    if (path.isEmpty()){
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST "+name);
-        msgBox->setText(tr("Path for BLAST %1 tool not selected.").arg(name));
-        msgBox->setInformativeText(tr("Do you want to select it now?"));
-        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox->setDefaultButton(QMessageBox::Yes);
-        const int ret = msgBox->exec();
-        CHECK(!msgBox.isNull(), );
+    checkExtToolsPath(QStringList() << ET_BLASTALL);
 
-        switch (ret) {
-           case QMessageBox::Yes:
-               AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-               break;
-           case QMessageBox::No:
-               return;
-               break;
-           default:
-               assert(false);
-               break;
-         }
-    }
     if (path.isEmpty()){
         return;
     }
@@ -124,6 +137,13 @@ void BlastAllSupport::sl_runWithExtFileSpecify(){
 }
 
 void BlastAllSupport::sl_runAlign() {
+    checkExtToolsPath(QStringList() << ET_BLASTALL << ET_FORMATDB);
+
+    if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->getPath().isEmpty()
+            || AppContext::getExternalToolRegistry()->getByName(ET_FORMATDB)->getPath().isEmpty()){
+        return;
+    }
+
     QObjectScopedPointer<AlignToReferenceBlastDialog> dlg = new AlignToReferenceBlastDialog(AppContext::getMainWindow()->getQMainWindow());
     dlg->exec();
     CHECK(!dlg.isNull(), );
@@ -163,27 +183,8 @@ void BlastAllSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 
 void BlastAllSupportContext::sl_showDialog() {
     //Checking the BlastAll path and temporary directory path are defined
-    if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->getPath().isEmpty()){
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST "+QString(ET_BLASTALL));
-        msgBox->setText(tr("Path for BLAST %1 tool not selected.").arg(ET_BLASTALL));
-        msgBox->setInformativeText(tr("Do you want to select it now?"));
-        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox->setDefaultButton(QMessageBox::Yes);
-        const int ret = msgBox->exec();
-        CHECK(!msgBox.isNull(), );
+    checkExtToolsPath(QStringList() << ET_BLASTALL);
 
-        switch (ret) {
-           case QMessageBox::Yes:
-               AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-               break;
-           case QMessageBox::No:
-               return;
-           default:
-               assert(false);
-               break;
-         }
-    }
     if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTALL)->getPath().isEmpty()){
         return;
     }
