@@ -706,7 +706,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
     CHECK(maObj != NULL, );
 
     p.fillRect(textRect, Qt::white);
-    if(groupColors.contains(text) && QColor(Qt::black) != groupColors[text]) {
+    if(groupColors.contains(text)) {
         p.fillRect(textRect, groupColors[text]);
     }
 
@@ -768,10 +768,8 @@ void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, const QString& , bo
     QString seqName = getTextForRow(s);
 
     p.fillRect(textRect, Qt::white);
-    if(groupColors.contains(seqName)) {
-        if(QColor(Qt::black) != groupColors[seqName]) {
-            p.fillRect(textRect, groupColors[seqName]);
-        }
+    if (groupColors.contains(seqName)) {
+        p.fillRect(textRect, groupColors[seqName]);
     }
 
     const MSAEditor *editor = ui->getEditor();

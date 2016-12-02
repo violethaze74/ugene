@@ -657,7 +657,7 @@ void MSAEditorTreeViewerUI::highlightBranches() {
         }
     } while(!graphicsItems.isEmpty());
 
-    if(groupRoots.isEmpty()) {
+    if (groupRoots.isEmpty() || groupRoots.size() == 1) {
         emit si_groupColorsChanged(GroupColorSchema());
         return;
     }
