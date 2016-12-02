@@ -1179,6 +1179,34 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5469) {
+    // 1. Open two different GenBank sequences in one Sequence view.
+    // 2. Select two different annotations (one from the first sequence, and one from the second sequence) using the "Ctrl" keyboard button.
+    // Extected state: there is no crash
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::click(os, "NC_004718");
+    QWidget* seqView = GTUtilsSequenceView::getSeqWidgetByNumber(os);
+    CHECK_SET_ERR(seqView != NULL, "Fail to get sequence view");
+    QPoint p = GTWidget::getWidgetCenter(os, seqView);
+    p.setX(p.x() + 1);
+    p.setY(p.y() + 1);
+    GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), p);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::clickAnnotationDet(os, "5'UTR", 1, 1);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, "Wrong number of selected annotations");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2

@@ -1418,10 +1418,10 @@ void AnnotatedDNAView::sl_complementSequence() {
 
 void AnnotatedDNAView::sl_selectionChanged() {
     ADVSequenceObjectContext* seqCtx = getSequenceInFocus();
+    CHECK(seqCtx != NULL, );
     DNASequenceSelection* selection = qobject_cast<DNASequenceSelection*>(sender());
-    if (selection != NULL) {
-        assert(seqCtx->getSequenceGObject() == selection->getSequenceObject());
-    }
+    CHECK(selection != NULL && seqCtx->getSequenceGObject() == selection->getSequenceObject(), );
+
     if (!seqCtx->getSequenceSelection()->isEmpty()) {
         replaceSequencePart->setEnabled(true);
     } else {
