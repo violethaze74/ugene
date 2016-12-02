@@ -51,6 +51,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/orf_marker/OrfDialogFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -3407,6 +3408,103 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     CHECK_SET_ERR("test_0043_2 description" == description,
                   QString("An unexpected annotation description: expect '%1', got '%2'")
                   .arg("test_0043_2 description").arg(description));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0044) {
+/* 1. Open "_common_data/genbank/1seq.gen".
+ * 2. Try to add annotation to opened file
+ * Expected state: option is avaliable and no errors showed
+*/
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            setAnnotationName(os, "test_0044", dialog);
+            setGenbankLocation(os, "10..20", dialog);
+            QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable");
+            CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
+            CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
+
+            QComboBox *cbExistingTable = GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable");
+            CHECK_SET_ERR(NULL != cbExistingTable, "cbExistingTable is NULL");
+            CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disnabled");
+
+            QToolButton *tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseExistingTable");
+            CHECK_SET_ERR(NULL != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+            CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disnabled");
+
+            CHECK_SET_ERR(rbExistingTable->isChecked(), "rbExistingTable is unexpectedly unchecked");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario));
+    openFileAndCallCreateAnnotationDialog(os, testDir + "_common_data/genbank/1seq.gen");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: there is an annotation with type "Misc. Feature".
+    const QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0044");
+    CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'")
+                  .arg("Misc. Feature").arg(type));
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0045) {
+/* 1. Open "_common_data/genbank/70Bp2.gen".
+ * 2. Try to add annotation to both sequences
+ * Expected state: option is avaliable and no errors showed
+*/
+    class Scenario : public CustomScenario {
+        QString annotationName;
+    public:
+        Scenario(QString annotationName) : annotationName(annotationName) {}
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            setAnnotationName(os, annotationName, dialog);
+            setGenbankLocation(os, "10..20", dialog);
+            QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable");
+            CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
+            CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
+
+            QComboBox *cbExistingTable = GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable");
+            CHECK_SET_ERR(NULL != cbExistingTable, "cbExistingTable is NULL");
+            CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disnabled");
+
+            QToolButton *tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseExistingTable");
+            CHECK_SET_ERR(NULL != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+            CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disnabled");
+
+            CHECK_SET_ERR(rbExistingTable->isChecked(), "rbExistingTable is unexpectedly unchecked");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/70Bp2.gen");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario("test_0045_1")));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_1"));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario("test_0045_2")));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there is an annotation with type "Misc. Feature".
+    QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0045_1");
+    CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'")
+                  .arg("Misc. Feature").arg(type));
+
+    //Expected state: there is an annotation with type "Misc. Feature".
+    type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0045_2");
+        CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'")
+                      .arg("Misc. Feature").arg(type));
+
 }
 
 }   // namespace GUITest_common_scenarios_create_annotation_widget
