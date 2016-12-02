@@ -89,11 +89,19 @@ void GObjectComboBoxController::addDocumentObjects(Document* d) {
     //checks whether you need to add a new annotations table
     QString docUrl = settings.relationFilter.ref.docUrl;
     if(d->getURLString() == docUrl){
+        connect(d->getObjectById(settings.relationFilter.ref.entityRef.entityId), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
         bool hasAnnotationTable = false;
-        if(d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE).size() != 0){
-            hasAnnotationTable = true;
+        QList<GObject*> listAnnotations = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        if(listAnnotations.size() != 0){
+            foreach (GObject* obj, listAnnotations) {
+                if(obj->hasObjectRelation(settings.relationFilter)){
+                    hasAnnotationTable = true;
+                    break;
+                }
+            }
         }
-        if ((!hasAnnotationTable) && (d->getDocumentFormat()->checkFlags(DocumentFormatFlag_SupportWriting))
+        if ((!hasAnnotationTable) && (!d->isStateLocked())
+                && (d->getDocumentFormat()->checkFlags(DocumentFormatFlag_SupportWriting))
                 && (d->getDocumentFormat()->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE))){
             QString virtualItemText = d->getName()+" [";
             GObject* seqObj = d->getObjectById(settings.relationFilter.ref.entityRef.entityId);
@@ -225,7 +233,8 @@ void GObjectComboBoxController::sl_onDocumentRemoved(Document* d) {
 }
 
 void GObjectComboBoxController::sl_onObjectAdded(GObject* obj) {
-    addObject(obj);
+    Q_UNUSED(obj);
+    updateCombo();
 }
 
 void GObjectComboBoxController::sl_onObjectRemoved(GObject* obj) {
@@ -248,7 +257,7 @@ void GObjectComboBoxController::sl_lockedStateChanged() {
         removeObject(obj);
     } else {
         if (findItem(combo, obj) == -1) {
-            addObject(obj);
+            updateCombo();
         }
     }
 }
