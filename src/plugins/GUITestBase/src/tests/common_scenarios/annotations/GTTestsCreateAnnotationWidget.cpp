@@ -2182,7 +2182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     QStringList expectedGroups = QStringList() << "group  (0, 1)"
                                                << "just an annotation  (0, 1)"
                                                << "test_0032  (0, 1)";
-    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
+    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "2annot_1seq.gb [NC_001363 annotations 2] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'")
                   .arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
@@ -2288,7 +2288,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     expectedGroups = QStringList() << "group  (0, 1)"
                                                << "just an annotation  (0, 1)"
                                                << "test_0033  (0, 1)";
-    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
+    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "2annot_1seq.gb [NC_001363 annotations 2] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'")
                   .arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
@@ -2777,7 +2777,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //        New table radio button - enabled
 //        New table lineedit - enabled
 //        New table browse button - enabled
-//        Auto table radio button - disabled
+//        Auto table radio button - not visible
             QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable", dialog);
             CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
             CHECK_SET_ERR(!rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly enabled");
@@ -2804,7 +2804,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    21. Cancel the dialog.
             // Dialog is applied to check boundaries.
@@ -2833,7 +2833,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //        New table radio button - enabled
 //        New table lineedit - disabled
 //        New table browse button - disabled
-//        Auto table radio button - disabled
+//        Auto table radio button - not visible
             QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable", dialog);
             CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
@@ -2860,7 +2860,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    24. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, rbCreateNewTable);
@@ -2872,14 +2872,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //        New table radio button - enabled
 //        New table lineedit - enabled
 //        New table browse button - enabled
-//        Auto table radio button - disabled
+//        Auto table radio button - not visible
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
             CHECK_SET_ERR(!cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly enabled");
             CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly enabled");
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
             CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled");
             CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    25. Select "Existing table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, rbExistingTable);
@@ -2891,14 +2891,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //        New table radio button - enabled
 //        New table lineedit - disabled
 //        New table browse button - disabled
-//        Auto table radio button - disabled
+//        Auto table radio button - not visible
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
             CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled");
             CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled");
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
             CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled");
             CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    26. Select "GenBank/EMBL format" location style. Set location "join(1..100,200..199950)".
             setGenbankLocation(os, "join(1..100,200..199950)", dialog);
@@ -2997,7 +2997,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -3052,7 +3052,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    7. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable", dialog));
@@ -3071,7 +3071,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
             CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled");
             CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    8. Select "Existing table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, GTWidget::findWidget(os, "rbExistingTable", dialog));
@@ -3090,7 +3090,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
             CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled");
             CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    9. Check "Use pattern name" checkbox state.
 //    Expected state: it is invisible.
