@@ -2180,37 +2180,37 @@ Double-click to collapse the branch</translation>
         <translation>File:&amp;nbsp;&lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1060"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1058"/>
         <source>raw</source>
         <translation>raw</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1064"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1062"/>
         <source>amino ext</source>
         <translation>amino ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1066"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1064"/>
         <source>amino</source>
         <translation>amino</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1071"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1069"/>
         <source>dna</source>
         <translation>dna</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1073"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1071"/>
         <source>dna ext</source>
         <translation>dna ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1077"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1075"/>
         <source>rna ext</source>
         <translation>rna ext</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1075"/>
+        <location filename="../src/ov_sequence/ADVSingleSequenceWidget.cpp" line="1073"/>
         <source>rna</source>
         <translation>rna</translation>
     </message>
@@ -2332,42 +2332,42 @@ Double-click to collapse the branch</translation>
 <context>
     <name>U2::ADVSyncViewManager</name>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="41"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="42"/>
         <source>Lock scales: visible range start</source>
         <translation>Lock scales: visible range start</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="46"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="47"/>
         <source>Lock scales: selected sequence</source>
         <translation>Lock scales: selected sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="51"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="52"/>
         <source>Lock scales: selected annotation</source>
         <translation>Lock scales: selected annotation</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="62"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="63"/>
         <source>Adjust scales: visible range start</source>
         <translation>Adjust scales: visible range start</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="66"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="67"/>
         <source>Adjust scales: selected sequence</source>
         <translation>Adjust scales: selected sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="70"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="71"/>
         <source>Adjust scales: selected annotation</source>
         <translation>Adjust scales: selected annotation</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="74"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="75"/>
         <source>Lock scales</source>
         <translation>Lock scales</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="78"/>
+        <location filename="../src/ov_sequence/ADVSyncViewManager.cpp" line="79"/>
         <source>Adjust scales</source>
         <translation>Adjust scales</translation>
     </message>
@@ -3485,28 +3485,28 @@ You don&apos;t have enough rights to change file</translation>
         <translation>Set index file name</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="196"/>
+        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="190"/>
         <source>DNA Assembly</source>
         <translation>DNA assembly</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="197"/>
+        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="191"/>
         <source>Do you want to select it now?</source>
         <translation>Do you want to select it now?</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="221"/>
-        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="223"/>
+        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="215"/>
+        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="217"/>
         <source>Build Index</source>
         <translation>Build Index</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="221"/>
+        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="215"/>
         <source>Reference sequence url is not set!</source>
         <translation>Reference sequence url is not set!</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="223"/>
+        <location filename="../src/util_dna_assembly/BuildIndexDialog.cpp" line="217"/>
         <source>Index file name is not set!</source>
         <translation>Index file name is not set!</translation>
     </message>
@@ -6530,18 +6530,18 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::SaveGraphCutoffsDialogController</name>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="44"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="45"/>
         <source>Save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="45"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="46"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="100"/>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="156"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="101"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="158"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
@@ -6660,27 +6660,27 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::SecStructDialog</name>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="65"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
         <source>Predict</source>
         <translation>Predict</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="68"/>
         <source>Save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="86"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="87"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="87"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="88"/>
         <source>Structure Type</source>
         <translation>Structure Type</translation>
     </message>
@@ -6857,113 +6857,113 @@ Please, load the corresponding plugins.</translation>
 <context>
     <name>U2::SmithWatermanDialog</name>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="76"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="77"/>
         <source>Remote run</source>
         <translation>Remote run</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="77"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="78"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="78"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="79"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="92"/>
         <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="93"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="94"/>
         <source>No substitution matrices found.</source>
         <translation>No substitution matrices found.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="100"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="101"/>
         <source>No filter registry found.</source>
         <translation>No filter registry found.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="107"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="108"/>
         <source>No result names tag registry found.</source>
         <translation>No result names tag registry found.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="114"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="115"/>
         <source>No algorithm registry found.</source>
         <translation>No algorithm registry found.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="284"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="285"/>
         <source>Enter pattern here</source>
         <translation>Enter pattern here</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="286"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="287"/>
         <source>Pattern length: %1</source>
         <translation>Pattern length: %1</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="325"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="326"/>
         <source>Add qualifier with corresponding pattern subsequences to result annotations</source>
         <translation>Add qualifier with corresponding pattern subsequences to result annotations</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="420"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="421"/>
         <source>Choose folder</source>
         <translation>Choose folder</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="432"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="433"/>
         <source>Matrix not found.</source>
         <translation>Matrix not found.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="483"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="484"/>
         <source>Cannot create an annotation object. Please check settings.</source>
         <translation>Cannot create an annotation object. Please check settings.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="508"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="511"/>
         <source>SmithWatermanTask</source>
         <translation>SmithWatermanTask</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="551"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="554"/>
         <source>Names of result alignment files or names of result subsequences cannot be empty.</source>
         <translation>Names of result alignment files or names of result subsequences cannot be empty.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="569"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="572"/>
         <source>Complement translation is not found.</source>
         <translation>Complement translation is not found.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="581"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="584"/>
         <source>Algorithm is not found.</source>
         <translation>Algorithm is not found.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="594"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="597"/>
         <source>Matrix %1 is not found.</source>
         <translation>Matrix %1 is not found.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="627"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="630"/>
         <source>Filter is not found.</source>
         <translation>Filter is not found.</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="644"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="647"/>
         <source>Internal error</source>
         <translation>Internal error</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="652"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="655"/>
         <source>Pattern is empty</source>
         <translation>Pattern is empty</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="664"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="667"/>
         <source>Pattern contains unknown symbol</source>
         <translation>Pattern contains unknown symbol</translation>
     </message>

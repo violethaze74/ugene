@@ -570,12 +570,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="53"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="54"/>
         <source>The restrictions sites are being updated. Please wait</source>
         <translation>The restrictions sites are being updated. Please wait</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="54"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="55"/>
         <source>Hint: there are no available enzymes. Use &quot;Analyze-&gt;Find Restrictions Sites&quot; feature to find them.</source>
         <translation>Hint: there are no available enzymes. Use &quot;Analyze-&gt;Find Restrictions Sites&quot; feature to find them.</translation>
     </message>
@@ -646,30 +646,30 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CreateFragmentDialog</name>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="100"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="101"/>
         <source>Left end contains unsupported symbols!</source>
         <translation>Left end contains unsupported symbols!</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="110"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="111"/>
         <source>Right end contains unsupported symbols!</source>
         <translation>Right end contains unsupported symbols!</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="121"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="122"/>
         <source>Invalid fragment region!
 Choose another region.</source>
         <translation>Invalid fragment region!
 Choose another region.</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="126"/>
-        <location filename="../src/CreateFragmentDialog.cpp" line="131"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="127"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="132"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="131"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="132"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
@@ -677,37 +677,37 @@ Choose another region.</translation>
 <context>
     <name>U2::DigestSequenceDialog</name>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="123"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="124"/>
         <source>No enzymes are selected! Please select enzymes.</source>
         <translation>No enzymes are selected! Please select enzymes.</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="129"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="130"/>
         <source>Cannot load enzymes library</source>
         <translation>Cannot load enzymes library</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="147"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="148"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="147"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="148"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="244"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="248"/>
         <source> : %1 cut(s)</source>
         <translation> : %1 cut(s)</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="328"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="332"/>
         <source>Auto-annotations update task is NULL.</source>
         <translation>Auto-annotations update task is NULL.</translation>
     </message>
     <message>
-        <location filename="../src/DigestSequenceDialog.cpp" line="350"/>
+        <location filename="../src/DigestSequenceDialog.cpp" line="354"/>
         <source>Select annotations</source>
         <translation>Select annotations</translation>
     </message>

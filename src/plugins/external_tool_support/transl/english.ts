@@ -3016,17 +3016,17 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Database name contains space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="103"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="107"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Wrong parameters for creating annotations</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="117"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="121"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="117"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="121"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
@@ -3152,7 +3152,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastAllWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="161"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="168"/>
         <source>Select input file</source>
         <translation>Select input file</translation>
     </message>
@@ -3165,23 +3165,23 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Database name contains space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="207"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="214"/>
         <source>This file has the incompatible format for the BLAST+ search.</source>
         <translation>This file has the incompatible format for the BLAST+ search.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="252"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="259"/>
         <source>This file does not contain any sequence.</source>
         <translation>This file does not contain any sequence.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="207"/>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="252"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="214"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="259"/>
         <source>Wrong input file</source>
         <translation>Wrong input file</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="300"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="307"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Wrong parameters for creating annotations</translation>
     </message>
@@ -3437,27 +3437,27 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Database name contains space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="111"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="115"/>
         <source>Do you want to select it now?</source>
         <translation>Do you want to select it now?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="146"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="150"/>
         <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
         <translation>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="180"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="184"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Wrong parameters for creating annotations</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="194"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="198"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="194"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="198"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
@@ -3465,13 +3465,13 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastPlusWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="235"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="242"/>
         <source>Select input file</source>
         <translation>Select input file</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="281"/>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="327"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="288"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="334"/>
         <source>Wrong input file</source>
         <translation>Wrong input file</translation>
     </message>
@@ -3484,27 +3484,27 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Database name contains space characters.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="281"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="288"/>
         <source>This file has the incompatible format for the BLAST+ search.</source>
         <translation>This file has the incompatible format for the BLAST+ search.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="327"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="334"/>
         <source>This file does not contain sequences.</source>
         <translation>This file does not contain sequences.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="380"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="387"/>
         <source>Do you want to select it now?</source>
         <translation>Do you want to select it now?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="415"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="422"/>
         <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
         <translation>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="449"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="456"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Wrong parameters for creating annotations</translation>
     </message>
@@ -4934,17 +4934,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerAdvContext</name>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="304"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="327"/>
         <source>Find HMM signals with HMMER3...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="314"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="341"/>
         <source>error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="314"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="341"/>
         <source>No sequence in focus found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5119,7 +5119,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerMsaEditorContext</name>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="261"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="284"/>
         <source>Build HMMER3 profile</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5135,47 +5135,47 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerSearchDialog</name>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="57"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="70"/>
         <source>Run</source>
         <translation type="unfinished">Run</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="58"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="71"/>
         <source>Cancel</source>
         <translation type="unfinished">Cancel</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="161"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="174"/>
         <source>HMM profile is not set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="167"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="180"/>
         <source>Settings are invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="178"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="191"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="178"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="191"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation type="unfinished">Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="186"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="199"/>
         <source>Error: bad arguments!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="234"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="250"/>
         <source>HMM profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="236"/>
+        <location filename="../src/hmmer/HmmerSearchDialog.cpp" line="252"/>
         <source>Select query HMM profile</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5232,53 +5232,53 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <name>U2::HmmerSupport</name>
     <message>
         <location filename="../src/hmmer/HmmerSupport.cpp" line="135"/>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="151"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="162"/>
         <source>Error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/hmmer/HmmerSupport.cpp" line="135"/>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="151"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="162"/>
         <source>Target sequence not selected: no opened annotated dna view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="168"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="191"/>
         <source>&lt;i&gt;HMMER build&lt;/i&gt; constructs HMM profiles from multiple sequence alignments.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="172"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="195"/>
         <source>Build HMM3 profile...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="188"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="211"/>
         <source>&lt;i&gt;HMMER search&lt;/i&gt; searches profile(s) against a sequence database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="192"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="215"/>
         <source>Search with HMMER3...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="208"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="231"/>
         <source>&lt;i&gt;PHMMER search&lt;/i&gt; searches a protein sequence against a protein database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="212"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="235"/>
         <source>Search with phmmer...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="223"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="246"/>
         <source>Path for %1 tool not selected.</source>
         <translation type="unfinished">Path for %1 tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="224"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="247"/>
         <source>Do you want to select it now?</source>
         <translation type="unfinished">Do you want to select it now?</translation>
     </message>
@@ -10963,37 +10963,37 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::PhmmerSearchDialog</name>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="56"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="69"/>
         <source>Search</source>
         <translation type="unfinished">Search</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="57"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="70"/>
         <source>Cancel</source>
         <translation type="unfinished">Cancel</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="111"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="124"/>
         <source>Select query sequence file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="159"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="172"/>
         <source>Query sequence file path is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="177"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="190"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="177"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="190"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation type="unfinished">Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="184"/>
+        <location filename="../src/hmmer/PhmmerSearchDialog.cpp" line="197"/>
         <source>Error: bad arguments!</source>
         <translation type="unfinished"></translation>
     </message>

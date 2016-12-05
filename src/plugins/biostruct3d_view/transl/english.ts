@@ -293,45 +293,63 @@
     <name>U2::BioStruct3DSettingsDialog</name>
     <message>
         <location filename="../src/SettingsDialog.cpp" line="50"/>
-        <location filename="../src/deprecated/SettingsDialog.cpp" line="50"/>
+        <location filename="../src/deprecated/SettingsDialog.cpp" line="52"/>
         <source>Custom</source>
         <translation>Custom</translation>
     </message>
     <message>
         <location filename="../src/SettingsDialog.cpp" line="52"/>
-        <location filename="../src/deprecated/SettingsDialog.cpp" line="52"/>
+        <location filename="../src/deprecated/SettingsDialog.cpp" line="54"/>
         <source>Red - Blue</source>
         <translation>Red - Blue</translation>
     </message>
     <message>
         <location filename="../src/SettingsDialog.cpp" line="53"/>
-        <location filename="../src/deprecated/SettingsDialog.cpp" line="53"/>
+        <location filename="../src/deprecated/SettingsDialog.cpp" line="55"/>
         <source>Cyan - Red</source>
         <translation>Cyan - Red</translation>
     </message>
     <message>
         <location filename="../src/SettingsDialog.cpp" line="54"/>
-        <location filename="../src/deprecated/SettingsDialog.cpp" line="54"/>
+        <location filename="../src/deprecated/SettingsDialog.cpp" line="56"/>
         <source>Red - Dark Cyan</source>
         <translation>Red - Dark Cyan</translation>
     </message>
     <message>
         <location filename="../src/SettingsDialog.cpp" line="55"/>
-        <location filename="../src/deprecated/SettingsDialog.cpp" line="55"/>
+        <location filename="../src/deprecated/SettingsDialog.cpp" line="57"/>
         <source>Red - Green</source>
         <translation>Red - Green</translation>
     </message>
     <message>
         <location filename="../src/SettingsDialog.cpp" line="56"/>
-        <location filename="../src/deprecated/SettingsDialog.cpp" line="56"/>
+        <location filename="../src/deprecated/SettingsDialog.cpp" line="58"/>
         <source>Magenta - Green</source>
         <translation>Magenta - Green</translation>
     </message>
     <message>
         <location filename="../src/SettingsDialog.cpp" line="242"/>
-        <location filename="../src/deprecated/SettingsDialog.cpp" line="242"/>
+        <location filename="../src/deprecated/SettingsDialog.cpp" line="244"/>
         <source>(not supported by your videocard)</source>
         <translation>(not supported by your videocard)</translation>
+    </message>
+    <message>
+        <location filename="../src/deprecated/SettingsDialog.cpp" line="36"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/deprecated/SettingsDialog.cpp" line="37"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+</context>
+<context>
+    <name>U2::BioStruct3DSubsetEditor</name>
+    <message>
+        <location filename="../src/BioStruct3DSubsetEditor.cpp" line="62"/>
+        <source>All chains</source>
+        <translation>All chains</translation>
     </message>
 </context>
 <context>
@@ -494,13 +512,13 @@ You may try to upgrade your system by updating the video card driver.</translati
     <name>U2::StructuralAlignmentDialog</name>
     <message>
         <location filename="../src/StructuralAlignmentDialog.cpp" line="61"/>
-        <location filename="../src/deprecated/StructuralAlignmentDialog.cpp" line="60"/>
+        <location filename="../src/deprecated/StructuralAlignmentDialog.cpp" line="61"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/StructuralAlignmentDialog.cpp" line="62"/>
-        <location filename="../src/deprecated/StructuralAlignmentDialog.cpp" line="61"/>
+        <location filename="../src/deprecated/StructuralAlignmentDialog.cpp" line="62"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>

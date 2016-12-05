@@ -881,28 +881,30 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::SendSelectionDialog</name>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="141"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="145"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="142"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="146"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="215"/>
-        <location filename="../src/SendSelectionDialog.cpp" line="315"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="219"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="319"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="432"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="215"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="219"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="432"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="402"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="406"/>
         <source>You chose to search nucleotide sequence in protein database. This sequence will be converted into 6 sequences(3 translations for both strands).Therefore this search may take some time. Continue?</source>
         <translation>You chose to search nucleotide sequence in protein database. This sequence will be converted into 6 sequences(3 translations for both strands).Therefore this search may take some time. Continue?</translation>
     </message>

@@ -951,57 +951,57 @@ Do you want to write over this file?</translation>
         <translation>Select file with frequency or weight matrix</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="291"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="292"/>
         <source>Same model with same parameters already in the search queue</source>
         <translation>Same model with same parameters already in the search queue</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="332"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="564"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="333"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="565"/>
         <source>Zero length or corrupted model
 Maybe model data is not enough for selected algorithm</source>
         <translation>Zero length or corrupted model
 Maybe model data is not enough for selected algorithm</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="360"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="471"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="361"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="472"/>
         <source>Model not selected</source>
         <translation>Model not selected</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="366"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="367"/>
         <source>Load file with list of matrices</source>
         <translation>Load file with list of matrices</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="366"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="406"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="367"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="407"/>
         <source>CSV files (*.csv)</source>
         <translation>CSV files (*.csv)</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="406"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="407"/>
         <source>Save file with list of matrices</source>
         <translation>Save file with list of matrices</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="433"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="434"/>
         <source>Select directory with frequency or weight matrices</source>
         <translation>Select directory with frequency or weight matrices</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="585"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="586"/>
         <source>Reverse complement strand</source>
         <translation>Reverse complement strand</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="585"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="586"/>
         <source>Direct strand</source>
         <translation>Direct strand</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="276"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="277"/>
         <source>Zero length or corrupted model</source>
         <translation>Zero length or corrupted model</translation>
     </message>
@@ -1016,7 +1016,7 @@ Maybe model data is not enough for selected algorithm</translation>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="481"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="482"/>
         <source>Range is too small</source>
         <translation>Range is too small</translation>
     </message>

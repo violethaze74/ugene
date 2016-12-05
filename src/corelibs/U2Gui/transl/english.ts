@@ -200,8 +200,8 @@
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="130"/>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="309"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="388"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="426"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="393"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="421"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -256,24 +256,37 @@
         <translation>Add/remove complement flag</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="353"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="347"/>
+        <source>Save annotation(s) to</source>
+        <translation type="unfinished">Save annotation(s) to</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="359"/>
         <source>Choose a file to store the annotations</source>
         <translation>Choose a file to store the annotations</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="374"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="380"/>
+        <source>Existing document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="407"/>
+        <source>New document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="414"/>
         <source>Use auto-annotations table</source>
         <translation>Use auto-annotations table</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="406"/>
         <source>Existing table</source>
-        <translation>Existing table</translation>
+        <translation type="vanished">Existing table</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="416"/>
         <source>Create new table</source>
-        <translation>Create new table</translation>
+        <translation type="vanished">Create new table</translation>
     </message>
 </context>
 <context>
@@ -289,9 +302,8 @@
         <translation>Choose a file to store the annotations</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="68"/>
         <source>Existing table</source>
-        <translation>Existing table</translation>
+        <translation type="vanished">Existing table</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="85"/>
@@ -302,9 +314,18 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="96"/>
         <source>Create new table</source>
-        <translation>Create new table</translation>
+        <translation type="vanished">Create new table</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="68"/>
+        <source>Existing document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="96"/>
+        <source>New document</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="120"/>
@@ -385,9 +406,8 @@
         <translation>Choose a file to store the annotations</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="62"/>
         <source>Existing table:</source>
-        <translation>Existing table:</translation>
+        <translation type="vanished">Existing table:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="81"/>
@@ -398,9 +418,18 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="94"/>
         <source>Create new table:</source>
-        <translation>Create new table:</translation>
+        <translation type="vanished">Create new table:</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="62"/>
+        <source>Existing document:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="94"/>
+        <source>New document:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="122"/>
@@ -1728,33 +1757,33 @@ To append data to existing file press &apos;Append&apos;.</translation>
 <context>
     <name>U2::CreateAnnotationWidgetController</name>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="239"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="238"/>
         <source>Select annotation saving parameters</source>
         <translation>Select annotation saving parameters</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="242"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="241"/>
         <source>Document is already added to the project: &apos;%1&apos;</source>
         <translation>Document is already added to the project: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="247"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="246"/>
         <source>Illegal folder: %1</source>
         <translation>Illegal folder: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="252"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="251"/>
         <source>Illegal annotation name! </source>
         <translation>Illegal annotation name! </translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="257"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="256"/>
         <source>Illegal group name</source>
         <translation>Illegal group name</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="262"/>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="267"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="261"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="266"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1767,7 +1796,7 @@ join(1..10,15..45)
 complement(5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="352"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="351"/>
         <source>Save File</source>
         <translation>Save File</translation>
     </message>

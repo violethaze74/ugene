@@ -24,6 +24,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/Annotation.h>
 #include <U2Gui/HelpButton.h>
+#include <QPushButton>
 
 #if (QT_VERSION < 0x050000) //Qt 5
 #include <QtGui/QMessageBox>
@@ -38,6 +39,8 @@ CSVColumnConfigurationDialog::CSVColumnConfigurationDialog(QWidget* w, const Col
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "18223005");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connect(complMarkRB, SIGNAL(toggled(bool)), SLOT(sl_complMarkToggle(bool)));
     connect(startRB, SIGNAL(toggled(bool)), SLOT(sl_startToggle(bool)));

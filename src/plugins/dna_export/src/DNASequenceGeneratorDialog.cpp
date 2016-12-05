@@ -169,6 +169,7 @@ BaseContentDialog::BaseContentDialog(QMap<char, qreal>& percentMap_, QWidget* p)
     setupUi(this);
     new HelpButton(this, buttonBox, "18223233");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     percentASpin->setValue(percentMap.value('A')*100.0);
     percentCSpin->setValue(percentMap.value('C')*100.0);

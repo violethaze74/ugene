@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/ExportBlastResultDialog.ui" line="49"/>
         <source>File format to use</source>
-        <translation>Используемый формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/ExportBlastResultDialog.ui" line="25"/>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../src/ExportChromatogramDialog.ui" line="42"/>
         <source>File format to use</source>
-        <translation>Используемый формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/ExportChromatogramDialog.ui" line="56"/>
@@ -853,7 +853,7 @@
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="45"/>
         <source>File format to use</source>
-        <translation>Используемый формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="55"/>
@@ -939,7 +939,7 @@
     <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="42"/>
         <source>File format to use</source>
-        <translation>Используемый формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="54"/>
@@ -1161,7 +1161,7 @@
     <message>
         <location filename="../src/ExportSequences2MSADialog.ui" line="42"/>
         <source>File format to use</source>
-        <translation>Используемый формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/ExportSequences2MSADialog.ui" line="54"/>
@@ -1209,7 +1209,7 @@
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="65"/>
         <source>File format to use</source>
-        <translation>Используемый формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="31"/>

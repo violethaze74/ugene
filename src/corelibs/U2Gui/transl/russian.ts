@@ -200,8 +200,8 @@
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="130"/>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="309"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="388"/>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="426"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="393"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="421"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -256,24 +256,37 @@
         <translation>Добавить/снять флаг комплементарности</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="353"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="347"/>
+        <source>Save annotation(s) to</source>
+        <translation type="unfinished">Сохранить результат(ы) в</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="359"/>
         <source>Choose a file to store the annotations</source>
         <translation>Выбрать файл для сохранения аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="374"/>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="380"/>
+        <source>Existing document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="407"/>
+        <source>New document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="414"/>
         <source>Use auto-annotations table</source>
         <translation>Использовать таблицу автоаннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="406"/>
         <source>Existing table</source>
-        <translation>Существующая таблица</translation>
+        <translation type="vanished">Существующая таблица</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationFullWidget.ui" line="416"/>
         <source>Create new table</source>
-        <translation>Новая таблица</translation>
+        <translation type="vanished">Новая таблица</translation>
     </message>
 </context>
 <context>
@@ -289,9 +302,8 @@
         <translation>Выбрать файл для сохранения аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="68"/>
         <source>Existing table</source>
-        <translation>Существующая таблица</translation>
+        <translation type="vanished">Существующая таблица</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="85"/>
@@ -302,9 +314,18 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="96"/>
         <source>Create new table</source>
-        <translation>Новая таблица</translation>
+        <translation type="vanished">Новая таблица</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="68"/>
+        <source>Existing document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="96"/>
+        <source>New document</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="120"/>
@@ -385,9 +406,8 @@
         <translation>Выбрать файл для сохранения аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="62"/>
         <source>Existing table:</source>
-        <translation>Существующая таблица:</translation>
+        <translation type="vanished">Существующая таблица:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="81"/>
@@ -398,9 +418,18 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="94"/>
         <source>Create new table:</source>
-        <translation>Новая таблица:</translation>
+        <translation type="vanished">Новая таблица:</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="62"/>
+        <source>Existing document:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="94"/>
+        <source>New document:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="122"/>
@@ -1728,33 +1757,33 @@ To append data to existing file press &apos;Append&apos;.</source>
 <context>
     <name>U2::CreateAnnotationWidgetController</name>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="239"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="238"/>
         <source>Select annotation saving parameters</source>
         <translation>Выберите параметры сохранения аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="242"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="241"/>
         <source>Document is already added to the project: &apos;%1&apos;</source>
         <translation>Документ уже существует: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="247"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="246"/>
         <source>Illegal folder: %1</source>
         <translation>Не найден путь: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="252"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="251"/>
         <source>Illegal annotation name! </source>
         <translation>Нелегальные символы в имени аннотации. Допустимы только цифры, буквы и подчёркивания! </translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="257"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="256"/>
         <source>Illegal group name</source>
         <translation>Нелегальные символы в имени группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="262"/>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="267"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="261"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="266"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1767,7 +1796,7 @@ join(1..10,15..45)
 complement(5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="352"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="351"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>

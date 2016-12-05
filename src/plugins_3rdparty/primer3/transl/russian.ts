@@ -2124,127 +2124,132 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::Primer3Dialog</name>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="82"/>
+        <location filename="../src/Primer3Dialog.cpp" line="83"/>
         <source>NONE</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="83"/>
+        <location filename="../src/Primer3Dialog.cpp" line="84"/>
         <source>HUMAN</source>
         <translation>HUMAN</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="84"/>
+        <location filename="../src/Primer3Dialog.cpp" line="85"/>
         <source>RODENT_AND_SIMPLE</source>
         <translation>RODENT_AND_SIMPLE</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="85"/>
+        <location filename="../src/Primer3Dialog.cpp" line="86"/>
         <source>RODENT</source>
         <translation>RODENT</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="86"/>
+        <location filename="../src/Primer3Dialog.cpp" line="87"/>
         <source>DROSOPHILA</source>
         <translation>DROSOPHILA</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="438"/>
+        <location filename="../src/Primer3Dialog.cpp" line="439"/>
         <source>Start Codon Position</source>
         <translation>Позиция стартового кодона</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="452"/>
+        <location filename="../src/Primer3Dialog.cpp" line="453"/>
         <source>Product Min Tm</source>
         <translation>Минимальная Tm продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="466"/>
+        <location filename="../src/Primer3Dialog.cpp" line="467"/>
         <source>Product Opt Tm</source>
         <translation>Оптимальная Tm продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="480"/>
+        <location filename="../src/Primer3Dialog.cpp" line="481"/>
         <source>Product Max Tm</source>
         <translation>Максимальная Tm продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="494"/>
+        <location filename="../src/Primer3Dialog.cpp" line="495"/>
         <source>Opt GC%</source>
         <translation>Оптимальный GC%</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="508"/>
+        <location filename="../src/Primer3Dialog.cpp" line="509"/>
         <source>Inside Penalty</source>
         <translation>Внутренний штраф</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="522"/>
+        <location filename="../src/Primer3Dialog.cpp" line="523"/>
         <source>Internal Oligo Opt Tm</source>
         <translation>Оптимальная внутренняя Oligo Tm</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="534"/>
+        <location filename="../src/Primer3Dialog.cpp" line="535"/>
         <source>Excluded Regions</source>
         <translation>Исключаемые регионы</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="546"/>
+        <location filename="../src/Primer3Dialog.cpp" line="547"/>
         <source>Internal Oligo Excluded Regions</source>
         <translation>Внутренние исключенные Oligo регионы</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="558"/>
+        <location filename="../src/Primer3Dialog.cpp" line="559"/>
         <source>Targets</source>
         <translation>Целевые регионы</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="664"/>
+        <location filename="../src/Primer3Dialog.cpp" line="665"/>
         <source>Included region is too small for current product size ranges</source>
         <translation>Включенный регион слишком малений для текущих диапазонов размера продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="671"/>
+        <location filename="../src/Primer3Dialog.cpp" line="672"/>
         <source>Product Size Ranges</source>
         <translation>Диапазоны размеров продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="595"/>
+        <location filename="../src/Primer3Dialog.cpp" line="596"/>
         <source>Sequence Quality</source>
         <translation>Качество последовательности</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="602"/>
+        <location filename="../src/Primer3Dialog.cpp" line="603"/>
         <source>Sequence quality list length must be equal to the sequence length</source>
         <translation>Длина списка качества последовательности должна быть равна длине последовательности</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="624"/>
+        <location filename="../src/Primer3Dialog.cpp" line="625"/>
         <source>Can&apos;t pick hyb oligo and only one primer</source>
         <translation>Can&apos;t pick hyb oligo and only one primer</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="644"/>
+        <location filename="../src/Primer3Dialog.cpp" line="645"/>
         <source>Nothing to pick</source>
         <translation>Nothing to pick</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="682"/>
+        <location filename="../src/Primer3Dialog.cpp" line="683"/>
         <source>The field &apos;%1&apos; has invalid value</source>
         <translation>The field &apos;%1&apos; has invalid value</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="703"/>
+        <location filename="../src/Primer3Dialog.cpp" line="698"/>
+        <source>Cannot create an annotation object. Please check settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.cpp" line="712"/>
         <source>Save primer settings</source>
         <translation>Сохранить настройки праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="785"/>
+        <location filename="../src/Primer3Dialog.cpp" line="794"/>
         <source>Load settings</source>
         <translation>Загрузить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="795"/>
+        <location filename="../src/Primer3Dialog.cpp" line="804"/>
         <source>Can not load settings file: invalid format.</source>
         <translation>Невозможно загрузить настройки: неверный формат.</translation>
     </message>

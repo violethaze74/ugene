@@ -440,17 +440,17 @@ You can use this option to generate reproducible results for different hmmcalibr
         <translation type="vanished">Search with HMM model...</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="257"/>
+        <location filename="../src/uHMMPlugin.cpp" line="259"/>
         <source>Find HMM signals with HMMER2...</source>
         <translation>Find HMM signals with HMMER2...</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="274"/>
+        <location filename="../src/uHMMPlugin.cpp" line="276"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="274"/>
+        <location filename="../src/uHMMPlugin.cpp" line="276"/>
         <source>No sequences found</source>
         <translation>No sequences found</translation>
     </message>
@@ -871,7 +871,7 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMMMSAEditorContext</name>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="215"/>
+        <location filename="../src/uHMMPlugin.cpp" line="217"/>
         <source>Build HMMER2 profile</source>
         <translation>Build HMMER2 profile</translation>
     </message>
@@ -887,80 +887,80 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMMSearchDialogController</name>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="114"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="127"/>
         <source>Select file with HMM model</source>
         <translation>Select file with HMM model</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="131"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="144"/>
         <source>HMM file not set!</source>
         <translation>HMM file not set!</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="148"/>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="154"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="161"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="167"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="154"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="167"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="165"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="181"/>
         <source>Starting search process</source>
         <translation>Starting search process</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="168"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="184"/>
         <source>Hide</source>
         <translation>Hide</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="169"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="185"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="184"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="200"/>
         <source>HMM search finished with error: %1</source>
         <translation>HMM search finished with error: %1</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="186"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="202"/>
         <source>HMM search finished successfuly!</source>
         <translation>HMM search finished successfuly!</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="196"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="212"/>
         <source>Progress: %1%</source>
         <translation>Progress: %1%</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="77"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="90"/>
         <source>Cell BE optimized</source>
         <translation>Cell BE optimized</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="61"/>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="188"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="74"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="204"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="62"/>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="189"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="75"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="205"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="80"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="93"/>
         <source>SSE optimized</source>
         <translation>SSE optimized</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="82"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="95"/>
         <source>Conservative</source>
         <translation>Conservative</translation>
     </message>
@@ -1001,47 +1001,47 @@ You can use this option to generate reproducible results for different hmmcalibr
 <context>
     <name>U2::HMMSearchToAnnotationsTask</name>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="215"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="231"/>
         <source>HMM search, file &apos;%1&apos;</source>
         <translation>HMM search, file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="221"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="237"/>
         <source>RAW alphabet is not supported!</source>
         <translation>RAW alphabet is not supported!</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="237"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="253"/>
         <source>Annotation object was removed</source>
         <translation>Annotation object was removed</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="264"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="280"/>
         <source>HMM profile used</source>
         <translation>HMM profile used</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="267"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="283"/>
         <source>Task was not finished</source>
         <translation>Task was not finished</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="272"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="288"/>
         <source>Result annotation table</source>
         <translation>Result annotation table</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="273"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="289"/>
         <source>Result annotation group</source>
         <translation>Result annotation group</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="274"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="290"/>
         <source>Result annotation name</source>
         <translation>Result annotation name</translation>
     </message>
     <message>
-        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="277"/>
+        <location filename="../src/u_search/HMMSearchDialogController.cpp" line="293"/>
         <source>Results count</source>
         <translation>Results count</translation>
     </message>
@@ -1477,12 +1477,12 @@ You can use this option to generate reproducible results for different hmmcalibr
         <translation>Search with HMMER2...</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="190"/>
+        <location filename="../src/uHMMPlugin.cpp" line="191"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/uHMMPlugin.cpp" line="190"/>
+        <location filename="../src/uHMMPlugin.cpp" line="191"/>
         <source>Error! Select sequence in Project view or open sequence view.</source>
         <translation>Error! Select sequence in Project view or open sequence view.</translation>
     </message>
