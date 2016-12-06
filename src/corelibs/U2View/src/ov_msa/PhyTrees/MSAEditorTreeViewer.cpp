@@ -643,7 +643,7 @@ void MSAEditorTreeViewerUI::highlightBranches() {
         }
         qreal node1Pos = node->sceneBoundingRect().left();
         qreal node2Pos = node->sceneBoundingRect().right();
-        if(node2Pos > subgroupSelectorPos && node1Pos < subgroupSelectorPos) {
+        if(node2Pos > subgroupSelectorPos && node1Pos < subgroupSelectorPos && node->getNameText() == NULL) {
             groupRoots.append(node);
             continue;
         }
