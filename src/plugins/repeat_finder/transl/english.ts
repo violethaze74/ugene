@@ -301,7 +301,7 @@
     <message>
         <location filename="../src/FindRepeatsDialog.cpp" line="305"/>
         <source>A problem occurred during finding repeats. The sequence is no more available.</source>
-        <translation type="unfinished"></translation>
+        <translation>A problem occurred during finding repeats. The sequence is no more available.</translation>
     </message>
     <message>
         <location filename="../src/FindRepeatsDialog.cpp" line="384"/>
@@ -970,7 +970,7 @@
     <message>
         <location filename="../src/FindRepeatsTask.cpp" line="42"/>
         <source>Reverse complement sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Reverse complement sequence</translation>
     </message>
     <message>
         <location filename="../src/FindRepeatsTask.cpp" line="49"/>

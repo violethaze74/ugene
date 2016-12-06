@@ -1171,7 +1171,7 @@
     <message>
         <location filename="../src/ExportSequences2MSADialog.ui" line="64"/>
         <source>Use Genbank &quot;SOURCE&quot; tags as a name of sequences (for Genbank sequences only)</source>
-        <translation>Использовать &quot;SOURCE&quot; часть в качестве имени последовательностей (только для последовательностей формата Genbank)</translation>
+        <translation>Использовать &quot;SOURCE&quot; в качестве имени последовательностей (только для Genbank)</translation>
     </message>
     <message>
         <location filename="../src/ExportSequences2MSADialog.cpp" line="43"/>
@@ -1224,7 +1224,7 @@
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="75"/>
         <source>Use custom sequence name</source>
-        <translation>Использовать собственное имя последовательности</translation>
+        <translation>Имя последовательности</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="91"/>
@@ -1234,17 +1234,17 @@
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="97"/>
         <source>Save direct strand</source>
-        <translation>Сохранять прямую</translation>
+        <translation>Прямая</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="107"/>
         <source>Save complement strand</source>
-        <translation>Сохранять комплементарную</translation>
+        <translation>Комплементарная</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="114"/>
         <source>Save both strands</source>
-        <translation>Сохранять обе</translation>
+        <translation>Обе</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="121"/>
@@ -1254,7 +1254,7 @@
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="131"/>
         <source>Save all amino frames</source>
-        <translation>Сохранять все рамки трансляции</translation>
+        <translation>Сохранить все рамки трансляции</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="161"/>
@@ -1279,7 +1279,7 @@
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="241"/>
         <source>Save as separate sequences</source>
-        <translation>Сохр. послед. раздельно</translation>
+        <translation>Отдельные последовательности</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="192"/>
@@ -1289,22 +1289,22 @@
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="151"/>
         <source>Use custom translation table</source>
-        <translation>Использовать собственную таблицу трансляций</translation>
+        <translation>Таблица трансляций</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="228"/>
         <source>Merge options</source>
-        <translation>Настройки группировки последовательностей</translation>
+        <translation>Настройки соединения последовательностей</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="253"/>
         <source>Add gap symbols between sequences</source>
-        <translation>Добавлять пробелы между последовательностями</translation>
+        <translation>Добавить пробелы между последовательностями</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.ui" line="234"/>
         <source>Merge sequences</source>
-        <translation>Объединять последовательности</translation>
+        <translation>Объединить последовательности</translation>
     </message>
     <message>
         <location filename="../src/ExportSequencesDialog.cpp" line="54"/>

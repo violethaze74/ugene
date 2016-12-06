@@ -358,12 +358,12 @@
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="197"/>
         <source>Mononucleic</source>
-        <translation type="unfinished">Мононуклеотидная</translation>
+        <translation>Мононуклеотидная</translation>
     </message>
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="198"/>
         <source>Dinucleic</source>
-        <translation type="unfinished">Динуклеотидная</translation>
+        <translation>Динуклеотидная</translation>
     </message>
 </context>
 <context>
@@ -409,12 +409,12 @@
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="301"/>
         <source>Mononucleic</source>
-        <translation type="unfinished">Мононуклеотидная</translation>
+        <translation>Мононуклеотидная</translation>
     </message>
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="302"/>
         <source>Dinucleic</source>
-        <translation type="unfinished">Динуклеотидная</translation>
+        <translation>Динуклеотидная</translation>
     </message>
 </context>
 <context>
@@ -517,12 +517,12 @@
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="107"/>
         <source>Mononucleic</source>
-        <translation type="unfinished">Мононуклеотидная</translation>
+        <translation>Мононуклеотидная</translation>
     </message>
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="108"/>
         <source>Dinucleic</source>
-        <translation type="unfinished">Динуклеотидная</translation>
+        <translation>Динуклеотидная</translation>
     </message>
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="276"/>
@@ -818,13 +818,13 @@ Maybe model data are not enough for selected algorithm</translation>
         <location filename="../src/PWMBuildDialogController.cpp" line="292"/>
         <location filename="../src/PWMBuildDialogController.cpp" line="310"/>
         <source>Frequency matrices</source>
-        <translation type="unfinished">Частотные матрицы</translation>
+        <translation>Частотные матрицы</translation>
     </message>
     <message>
         <location filename="../src/PWMBuildDialogController.cpp" line="293"/>
         <location filename="../src/PWMBuildDialogController.cpp" line="311"/>
         <source>Weight matrices</source>
-        <translation type="unfinished">Весовые матрицы</translation>
+        <translation>Весовые матрицы</translation>
     </message>
     <message>
         <location filename="../src/PWMBuildDialogController.cpp" line="307"/>

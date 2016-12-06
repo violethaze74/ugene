@@ -319,7 +319,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="77"/>
         <source>Custom browser</source>
-        <translation>Обычный браузер</translation>
+        <translation>Другой браузер</translation>
     </message>
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="100"/>
@@ -394,7 +394,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="130"/>
         <source>Remote request timeout</source>
-        <translation>Тайм-фут удаленного запроса</translation>
+        <translation>Тайм-аут удаленного запроса</translation>
     </message>
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="143"/>
@@ -2485,12 +2485,12 @@ Would you like to download and install it?</source>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="144"/>
         <source>Updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновления</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="150"/>
         <source>Check for updates when UGENE starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверять обновления при запуске UGENE</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="160"/>
