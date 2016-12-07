@@ -630,6 +630,7 @@ void MSAEditorTreeViewerUI::highlightBranches() {
 
     QStack<GraphicsRectangularBranchItem*> graphicsItems;
     QList<GraphicsRectangularBranchItem*> groupRoots;
+    QList<GraphicsRectangularBranchItem*> collaspedRoots;
     graphicsItems.push(getRectRoot());
 
     int countOfListNodes = getListNodesOfTree().size();
@@ -643,6 +644,10 @@ void MSAEditorTreeViewerUI::highlightBranches() {
         }
         qreal node1Pos = node->sceneBoundingRect().left();
         qreal node2Pos = node->sceneBoundingRect().right();
+        if (node->isCollapsed() && node2Pos < subgroupSelectorPos && node1Pos < subgroupSelectorPos) {
+            collaspedRoots.append(node);
+            continue;
+        }
         if(node2Pos > subgroupSelectorPos && node1Pos < subgroupSelectorPos && node->getNameText() == NULL) {
             groupRoots.append(node);
             continue;
@@ -661,6 +666,7 @@ void MSAEditorTreeViewerUI::highlightBranches() {
         emit si_groupColorsChanged(GroupColorSchema());
         return;
     }
+    groupRoots << collaspedRoots;
 
     int colorIndex = 0;
     QMap<PhyNode*, QColor> colorSchema;
