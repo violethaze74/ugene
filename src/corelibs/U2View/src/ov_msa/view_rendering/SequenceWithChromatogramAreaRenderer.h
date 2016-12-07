@@ -40,6 +40,8 @@ public:
 
     int getScaleBarValue() const;
 
+    static const int INDENT_BETWEEN_ROWS;
+
 private:
     bool drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
 
@@ -69,8 +71,7 @@ private:
     int             heightQuality;
     int             maxTraceHeight;
 
-    static const int    INDENT_BETWEEN_ROWS;
-    static const qreal  TRACE_OR_BC_LINES_DIVIDER;
+    static const qreal TRACE_OR_BC_LINES_DIVIDER;
 };
 
 } // namespace

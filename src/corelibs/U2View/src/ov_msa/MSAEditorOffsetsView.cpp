@@ -30,10 +30,13 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "McaEditor.h"
 #include "MSAEditor.h"
 #include "MSAEditorNameList.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorSequenceArea.h"
+
+#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
 
@@ -208,10 +211,16 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
     const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);
 
     const qint64 numRows = editor->getMaObject()->getNumRows();
+    int indent = 0;
+    McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
+    if (mcaEditor != NULL && mcaEditor->getShowChromatogram()) {
+        indent  = SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2;
+    }
     foreach(const U2Region& r, visibleRows) {
         int end = static_cast<int>(qMin(r.endPos(), numRows));
         for (int row = r.startPos; row < end; row++) {
             U2Region yRange = seqArea->getSequenceYRange(startSeq + i, true);
+            yRange.startPos += indent;
             int offs = getBaseCounts(row, pos, !showStartPos);
             int seqSize = getBaseCounts(row, aliLen - 1, true);
             QString  offset = QString::number(offs + 1);

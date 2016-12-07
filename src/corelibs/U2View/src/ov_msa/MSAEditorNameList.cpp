@@ -30,9 +30,14 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include "MSAEditor.h"
 #include "MSAEditorNameList.h"
-#include "MSAEditorSequenceArea.h"
+
+#include "MSAEditor.h"
+#include "McaEditor.h"
+
+#include "view_rendering/MaEditorWgt.h"
+#include "view_rendering/MaEditorSequenceArea.h"
+#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
 
@@ -690,6 +695,11 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
     p.setPen(Qt::black);
     p.setFont(getFont(selected));
 
+    McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
+    if (mcaEditor != NULL && mcaEditor->getShowChromatogram()) {
+        p.translate(0, SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2);
+    }
+
     U2Region yRange = ui->getSequenceArea()->getSequenceYRange(row, firstVisibleRow, true);
     QRect textRect = calculateTextRect(yRange, selected);
 
@@ -708,6 +718,9 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
 
     p.drawText(textRect, Qt::AlignTop | Qt::AlignLeft, text);
 
+    if (mcaEditor != NULL && mcaEditor->getShowChromatogram()) {
+        p.translate(0, - SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2);
+    }
 }
 
 void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, bool selected) {

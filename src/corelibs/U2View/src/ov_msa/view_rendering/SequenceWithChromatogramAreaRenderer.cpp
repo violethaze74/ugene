@@ -58,21 +58,28 @@ int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
 }
 
 bool SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) {
+    McaEditor* editor = getSeqArea()->getEditor();
+    if (editor->getShowChromatogram()) {
+        p.translate(0, INDENT_BETWEEN_ROWS / 2);
+    }
     bool ok = SequenceAreaRenderer::drawRow(p, msa, seq, region, yStart);
     CHECK(ok, false);
 
     SAFE_POINT(getSeqArea() != NULL, "seqAreaWgt is NULL", false);
-    McaEditor* editor = getSeqArea()->getEditor();
     int w = getSeqArea()->width();
+    int seqRowH = editor->getSequenceRowHeight();
     if (editor->getShowChromatogram()) {
         p.save();
-        p.translate(0, yStart + editor->getSequenceRowHeight());
+        p.translate(0, yStart + seqRowH);
+        p.setPen(QPen(Qt::gray, 1, Qt::DashLine));
+        p.drawLine(0, - INDENT_BETWEEN_ROWS / 2 - seqRowH, w, - INDENT_BETWEEN_ROWS / 2 - seqRowH);
+
         const MultipleChromatogramAlignmentRow& row = editor->getMaObject()->getMcaRow(seq);
         drawChromatogram(p, row, region);
         p.setPen(QPen(Qt::gray, 1, Qt::DashLine));
-        p.fillRect(0, heightPD, w, INDENT_BETWEEN_ROWS, Qt::white);
-        p.drawLine(0, heightPD + INDENT_BETWEEN_ROWS / 2, w, heightPD + INDENT_BETWEEN_ROWS / 2);
+        p.fillRect(0, heightPD, w, INDENT_BETWEEN_ROWS / 2, Qt::white);
         p.restore();
+        p.translate(0, - INDENT_BETWEEN_ROWS / 2);
     }
     return true;
 }
