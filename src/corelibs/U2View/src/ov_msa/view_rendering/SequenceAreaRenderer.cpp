@@ -72,6 +72,43 @@ bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, cons
     return true;
 }
 
+void SequenceAreaRenderer::drawSelection(QPainter &p) {
+    MaEditorSelection selection = seqAreaWgt->getSelection();;
+
+    int x = selection.x();
+    int y = selection.y();
+
+    U2Region xRange = seqAreaWgt->getBaseXRange(x, true);
+    U2Region yRange = seqAreaWgt->getSequenceYRange(y, true);
+
+    QPen pen(seqAreaWgt->highlightSelection || seqAreaWgt->hasFocus()
+             ? seqAreaWgt->selectionColor
+             : Qt::gray);
+    if (seqAreaWgt->msaMode != MaEditorSequenceArea::EditCharacterMode) {
+        pen.setStyle(Qt::DashLine);
+    }
+    pen.setWidth(seqAreaWgt->highlightSelection ? 2 : 1);
+    p.setPen(pen);
+    if (yRange.startPos > 0) {
+        p.drawRect(xRange.startPos, yRange.startPos, xRange.length*selection.width(), yRange.length*selection.height());
+    }
+    else {
+        qint64 regionHeight = yRange.length*selection.height() + yRange.startPos + 1;
+        if(regionHeight <= 0) {
+            return;
+        }
+        p.drawRect(xRange.startPos, -1, xRange.length*selection.width(), regionHeight);
+    }
+
+}
+
+void SequenceAreaRenderer::drawFocus(QPainter &p) {
+    if (seqAreaWgt->hasFocus()) {
+        p.setPen(QPen(Qt::black, 1, Qt::DotLine));
+        p.drawRect(0, 0, seqAreaWgt->width() - 1, seqAreaWgt->height() - 1);
+    }
+}
+
 bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) {
     // SANGER_TODO: deal with frequent handlign of editor or h/color schemes through the editor etc.
     // move to class parameter

@@ -59,6 +59,7 @@ class MsaHighlightingSchemeFactory;
 
 class MaEditorSequenceArea : public QWidget {
     Q_OBJECT
+    friend class SequenceAreaRenderer;
 public:
     MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScrollBar* vb);
     virtual ~MaEditorSequenceArea();
@@ -204,7 +205,7 @@ public slots:
 
 protected slots:
     virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
-    virtual void sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {}
+    virtual void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     virtual void sl_buildContextMenu(GObjectView* v, QMenu* m);
 
     void sl_onHScrollMoved(int pos);
@@ -249,12 +250,9 @@ protected:
     virtual void updateActions() = 0;
 
     void drawAll();
-    void drawFocus(QPainter& p);
-    void drawSelection(QPainter &p);
-
     void validateRanges();          //called on resize/refont like events
 
-    virtual void buildMenu(QMenu* m) {}
+    virtual void buildMenu(QMenu* m);
     void updateColorAndHighlightSchemes();
 
     void initColorSchemes(MsaColorSchemeFactory* defaultColorSchemeFactory);

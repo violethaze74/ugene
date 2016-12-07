@@ -38,6 +38,9 @@ public:
     // SANGER_TODO: all draw methods are const???
     bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
 
+    void drawSelection(QPainter &p);
+    void drawFocus(QPainter& p);
+
 protected:
     virtual bool drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
 

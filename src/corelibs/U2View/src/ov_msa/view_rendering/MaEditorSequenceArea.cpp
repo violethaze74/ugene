@@ -897,8 +897,16 @@ void MaEditorSequenceArea::sl_buildStaticMenu(GObjectView*, QMenu* m) {
     buildMenu(m);
 }
 
+void MaEditorSequenceArea::sl_buildStaticToolbar(GObjectView* , QToolBar* ) {
+
+}
+
 void MaEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
     buildMenu(m);
+}
+
+void MaEditorSequenceArea::buildMenu(QMenu* ) {
+
 }
 
 void MaEditorSequenceArea::sl_onHScrollMoved(int pos) {
@@ -1173,40 +1181,8 @@ void MaEditorSequenceArea::drawAll() {
     }
     QPainter p(this);
     p.drawPixmap(0, 0, *cachedView);
-    drawSelection(p);
-    drawFocus(p);
-}
-
-void MaEditorSequenceArea::drawFocus(QPainter& p) {
-    if (hasFocus()) {
-        p.setPen(QPen(Qt::black, 1, Qt::DotLine));
-        p.drawRect(0, 0, width()-1, height()-1);
-    }
-}
-
-void MaEditorSequenceArea::drawSelection(QPainter &p) {
-    int x = selection.x();
-    int y = selection.y();
-
-    U2Region xRange = getBaseXRange(x, true);
-    U2Region yRange = getSequenceYRange(y, true);
-
-    QPen pen(highlightSelection || hasFocus()? selectionColor : Qt::gray);
-    if (msaMode != EditCharacterMode) {
-        pen.setStyle(Qt::DashLine);
-    }
-    pen.setWidth(highlightSelection ? 2 : 1);
-    p.setPen(pen);
-    if(yRange.startPos > 0) {
-        p.drawRect(xRange.startPos, yRange.startPos, xRange.length*selection.width(), yRange.length*selection.height());
-    }
-    else {
-        qint64 regionHeight = yRange.length*selection.height() + yRange.startPos + 1;
-        if(regionHeight <= 0) {
-            return;
-        }
-        p.drawRect(xRange.startPos, -1, xRange.length*selection.width(), regionHeight);
-    }
+    renderer->drawSelection(p);
+    renderer->drawFocus(p);
 }
 
 void MaEditorSequenceArea::validateRanges() {
