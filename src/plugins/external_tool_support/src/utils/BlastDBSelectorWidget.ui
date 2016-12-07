@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>311</width>
+    <width>444</width>
     <height>68</height>
    </rect>
   </property>
@@ -20,6 +20,9 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinAndMaxSize</enum>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -53,12 +56,6 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>90</width>
-       <height>0</height>
-      </size>
      </property>
      <property name="text">
       <string>Database file</string>
