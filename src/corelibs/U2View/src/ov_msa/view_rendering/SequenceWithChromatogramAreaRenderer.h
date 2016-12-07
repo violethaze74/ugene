@@ -47,14 +47,12 @@ private:
 
     QColor getBaseColor(char base);
 
-    void drawChromatogramTrace(const DNAChromatogram& chroma,
-                               qreal x, qreal y, qreal w, qreal h, QPainter& p,
+    void drawChromatogramTrace(const DNAChromatogram& chroma, qreal x, qreal y, qreal h, QPainter& p,
                                const U2Region& visible);
-    void drawOriginalBaseCalls(const DNAChromatogram& chroma, qreal w, qreal h,
-                               QPainter& p, const U2Region& visible, const QByteArray& ba, bool is = true);
+    void drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba);
     void drawQualityValues(const DNAChromatogram& chroma, qreal w, qreal h,
                            QPainter& p, const U2Region& visible, const QByteArray& ba);
-    void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal w, qreal h,
+    void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal h,
                                         QPainter& p, const U2Region& visible, const QByteArray& ba);
 private:
     McaEditorSequenceArea* getSeqArea() const;
@@ -66,15 +64,13 @@ private:
 
     int             chromaMax;
     QPen            linePen;
-    QFont           font;
-    QFont           fontBold;
     int             heightPD;
     int             heightBC;
     int             heightQuality;
     int             maxTraceHeight;
 
-    qreal           kLinearTransformTrace;
-    qreal           bLinearTransformTrace;
+    static const int    INDENT_BETWEEN_ROWS;
+    static const qreal  TRACE_OR_BC_LINES_DIVIDER;
 };
 
 } // namespace
