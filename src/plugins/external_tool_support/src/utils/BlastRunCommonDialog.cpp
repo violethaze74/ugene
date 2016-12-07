@@ -189,8 +189,8 @@ void BlastRunCommonDialog::sl_onMatchScoresChanged(int index){
     }else{
         assert(0);
     }
-
 }
+
 void BlastRunCommonDialog::sl_onMatrixChanged(int index){
     Q_UNUSED(index);
     if(programName->currentText() == "blastn"){
@@ -251,6 +251,7 @@ void BlastRunCommonDialog::sl_onMatrixChanged(int index){
         assert(0);
     }
 }
+
 void BlastRunCommonDialog::sl_restoreDefault(){
     needRestoreDefault=true;
 //    sl_onProgNameChange(0);

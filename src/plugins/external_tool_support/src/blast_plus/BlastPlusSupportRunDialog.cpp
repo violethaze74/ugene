@@ -81,10 +81,7 @@ BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(ADVSequenceObjectContext* s
     ca_m.sequenceObjectRef = GObjectReference(dnaso);
     ca_m.sequenceLen = dnaso->getSequenceLength();
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
-    //lowerCaseCheckBox->hide();
-    QWidget *wdgt = ca_c->getWidget();
-    wdgt->setMinimumHeight(150);
-    annotationWidget->addWidget(wdgt);
+    annotationWidgetLayout->addWidget(ca_c->getWidget());
 
     //programName->removeItem(3);//cuda-blastp
     if(dnaso->getAlphabet()->getType() == DNAAlphabet_AMINO){
@@ -236,6 +233,7 @@ BlastPlusWithExtFileSpecifySupportRunDialog::BlastPlusWithExtFileSpecifySupportR
     connect(inputFileLineEdit,SIGNAL(textChanged(QString)),this, SLOT(sl_inputFileLineEditChanged(QString)));
 
     QHBoxLayout* layout = new QHBoxLayout(widget);
+    layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     layout->addWidget(inputFileLineEdit);
     layout->addWidget(selectToolPathButton);
 
@@ -368,9 +366,7 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::tryApplyDoc(Document *doc) {
     ca_m.defaultIsNewDoc = true;
     if (NULL == ca_c) {
         ca_c = new CreateAnnotationWidgetController(ca_m, this);
-        QWidget *wdgt = ca_c->getWidget();
-        wdgt->setMinimumHeight(150);
-        annotationWidget->addWidget(wdgt);
+        annotationWidgetLayout->addWidget(ca_c->getWidget());
     } else {
         ca_c->updateWidgetForAnnotationModel(ca_m);
     }

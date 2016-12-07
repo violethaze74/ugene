@@ -73,10 +73,7 @@ BlastAllSupportRunDialog::BlastAllSupportRunDialog(ADVSequenceObjectContext* seq
     ca_m.sequenceObjectRef = GObjectReference(dnaso);
     ca_m.sequenceLen = dnaso->getSequenceLength();
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
-    //lowerCaseCheckBox->hide();
-    QWidget *wdgt = ca_c->getWidget();
-    wdgt->setMinimumHeight(150);
-    annotationWidget->addWidget(wdgt);
+    annotationWidgetLayout->addWidget(ca_c->getWidget());
 
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
@@ -292,9 +289,7 @@ void BlastAllWithExtFileSpecifySupportRunDialog::tryApplyDoc(Document *doc) {
     ca_m.defaultIsNewDoc = true;
     if (NULL == ca_c) {
         ca_c = new CreateAnnotationWidgetController(ca_m, this);
-        QWidget *wdgt = ca_c->getWidget();
-        wdgt->setMinimumHeight(150);
-        annotationWidget->addWidget(wdgt);
+        annotationWidgetLayout->addWidget(ca_c->getWidget());
     } else {
         ca_c->updateWidgetForAnnotationModel(ca_m);
     }
