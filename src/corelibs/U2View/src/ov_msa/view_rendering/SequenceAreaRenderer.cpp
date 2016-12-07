@@ -32,7 +32,8 @@ namespace U2 {
 
 SequenceAreaRenderer::SequenceAreaRenderer(MaEditorSequenceArea *seqAreaWgt)
     : QObject(seqAreaWgt),
-      seqAreaWgt(seqAreaWgt) {
+      seqAreaWgt(seqAreaWgt),
+      drawLeadingAndTrailingGaps(true) {
 }
 
 bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, const QList<qint64> &seqIdx) {
@@ -88,7 +89,13 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
     QString refSeqName = editor->getReferenceRowName();
 
     qint64 regionEnd = region.endPos() - (int)(region.endPos() == editor->getAlignmentLen());
+    MultipleAlignmentRow row = msa->getRow(seq);
     for (int pos = region.startPos; pos <= regionEnd; pos++) {
+        if (!drawLeadingAndTrailingGaps
+                && (pos < row->getCoreStart() || pos > row->getCoreStart() + row->getCoreLength() - 1)) {
+            continue;
+        }
+
         U2Region baseXRange = U2Region(columnWidth * (pos - region.startPos), columnWidth);
         QRect cr(baseXRange.startPos, yStart, baseXRange.length + 1, editor->getSequenceRowHeight());
         char c = msa->charAt(seq, pos);

@@ -36,6 +36,7 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(McaEd
     : SequenceAreaRenderer(seqAreaWgt),
       linePen(Qt::gray, 1, Qt::DotLine)
 {
+    drawLeadingAndTrailingGaps = false;
 
     QFontMetricsF fm(seqAreaWgt->getEditor()->getFont());
     charWidth = fm.width('W');
@@ -46,15 +47,6 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(McaEd
     heightQuality = charHeight;
 
     maxTraceHeight = heightPD - heightBC;
-
-//    if (chroma.hasQV && p->showQV()) {
-//        addUpIfQVL = 0;
-//    }
-//    else    {
-//        addUpIfQVL = heightAreaBC - 2*charHeight;
-//        setMinimumHeight(height()-addUpIfQVL);
-//        areaHeight = height()-heightAreaBC + addUpIfQVL;
-//    }
 }
 
 void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
