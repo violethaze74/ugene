@@ -135,8 +135,8 @@ void AssemblyRuler::drawCursor(QPainter & p) {
     assert(cachedLabelsRects.size() == cachedLabels.size());
     for(int i = 0; i < cachedLabels.size(); i++) {
         const QRect & labelRect = cachedLabelsRects.at(i);
-        if(!labelRect.intersects(offsetRect) && rect().contains(labelRect)) {
-            p.drawImage(cachedLabelsRects.at(i), cachedLabels.at(i));
+        if(!labelRect.intersects(offsetRect)) {
+            p.drawImage(labelRect, cachedLabels.at(i));
         }
     }
 }
