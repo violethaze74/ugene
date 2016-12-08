@@ -115,6 +115,19 @@ QWidget* McaEditor::createWidget() {
 
     initActions();
 
+    optionsPanel = new OptionsPanel(this);
+    OPWidgetFactoryRegistry *opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
+
+    QList<OPFactoryFilterVisitorInterface*> filters;
+    filters.append(new OPFactoryFilterVisitor(ObjViewType_ChromAlignmentEditor));
+
+    QList<OPWidgetFactory*> opWidgetFactories = opWidgetFactoryRegistry->getRegisteredFactories(filters);
+    foreach (OPWidgetFactory *factory, opWidgetFactories) {
+        optionsPanel->addGroup(factory);
+    }
+
+    qDeleteAll(filters);
+
     return ui;
 }
 
