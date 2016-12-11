@@ -2165,6 +2165,27 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)"), "Unexpected reference sequence");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_3319) {
+    // 1. Open "data/samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Reverse complement sequence
+    GTKeyboardDriver::keyClick('r', Qt::ControlModifier | Qt::ShiftModifier);
+    GTGlobals::sleep(500);
+
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 51, 102));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
+    GTGlobals::sleep(400);
+    const QString clipboardText = GTClipboard::text( os );
+    
+    CHECK_SET_ERR(clipboardText == "TTTAAACCACAGGTCATGACCCAGTAGATGAGGAAATTGGTTTAGTGGTTTA", "unexpected text in clipboard: " + clipboardText);
+    GTGlobals::sleep(500);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_3321){
 //    Open sequence
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
