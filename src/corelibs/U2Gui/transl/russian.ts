@@ -268,12 +268,12 @@
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="380"/>
         <source>Existing document</source>
-        <translation type="unfinished"></translation>
+        <translation>Существующий документ</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="407"/>
         <source>New document</source>
-        <translation type="unfinished"></translation>
+        <translation>Новый документ</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="414"/>
@@ -320,12 +320,12 @@
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="68"/>
         <source>Existing document</source>
-        <translation type="unfinished"></translation>
+        <translation>Существующий документ</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="96"/>
         <source>New document</source>
-        <translation type="unfinished"></translation>
+        <translation>Новый документ</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="120"/>
@@ -424,12 +424,12 @@
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="62"/>
         <source>Existing document:</source>
-        <translation type="unfinished"></translation>
+        <translation>Существующий документ:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="94"/>
         <source>New document:</source>
-        <translation type="unfinished"></translation>
+        <translation>Новый документ:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="122"/>

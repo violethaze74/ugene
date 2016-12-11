@@ -347,9 +347,8 @@
 <context>
     <name>U2::BioStruct3DSubsetEditor</name>
     <message>
-        <location filename="../src/BioStruct3DSubsetEditor.cpp" line="62"/>
         <source>All chains</source>
-        <translation>Все цепи</translation>
+        <translation type="vanished">Все цепи</translation>
     </message>
 </context>
 <context>

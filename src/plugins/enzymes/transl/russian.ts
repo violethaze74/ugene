@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/CreateFragmentDialog.ui" line="81"/>
         <source>Include Right Overhang</source>
-        <translation>Доавить правый выступ</translation>
+        <translation>Добавить правый выступ</translation>
     </message>
     <message>
         <location filename="../src/CreateFragmentDialog.ui" line="143"/>
@@ -558,7 +558,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="118"/>
         <source>Search  in:</source>
-        <translation>Искать в:</translation>
+        <translation>Поиск в:</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="128"/>

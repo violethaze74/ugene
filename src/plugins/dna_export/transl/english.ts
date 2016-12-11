@@ -595,18 +595,23 @@
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="254"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="277"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="172"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="255"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="278"/>
         <source>Base content</source>
         <translation>Base content</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="254"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="255"/>
         <source>Incorrect GC Skew value</source>
         <translation>Incorrect GC Skew value</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="277"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="278"/>
         <source>Total percentage has to be 100 %</source>
         <translation>Total percentage has to be 100 %</translation>
     </message>
@@ -614,7 +619,17 @@
 <context>
     <name>U2::CSVColumnConfigurationDialog</name>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="97"/>
+        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="42"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="43"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="100"/>
         <source>Invalid qualifier name!</source>
         <translation>Invalid qualifier name!</translation>
     </message>
@@ -1192,117 +1207,117 @@
 <context>
     <name>U2::ExportSequencesDialog</name>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="20"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="32"/>
         <source>Export Selected Sequences</source>
         <translation>Export Selected Sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="48"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="50"/>
         <source>Export to file</source>
         <translation>Export to file</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="58"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="60"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="65"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="67"/>
         <source>File format to use</source>
         <translation>File format to use</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="31"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="43"/>
         <source>Export with annotations</source>
         <translation>Export with annotations</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="38"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="91"/>
         <source>Add document to the project</source>
         <translation>Add document to the project</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="75"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="77"/>
         <source>Use custom sequence name</source>
         <translation>Use custom sequence name</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="91"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="103"/>
         <source>Convertion options</source>
         <translation>Convertion options</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="97"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="109"/>
         <source>Save direct strand</source>
         <translation>Save direct strand</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="107"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="119"/>
         <source>Save complement strand</source>
         <translation>Save complement strand</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="114"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="126"/>
         <source>Save both strands</source>
         <translation>Save both strands</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="121"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="133"/>
         <source>Translate to amino alphabet</source>
         <translation>Save both strands</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="131"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="143"/>
         <source>Save all amino frames</source>
         <translation>Save all amino frames</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="161"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="186"/>
         <source>Back translation options</source>
         <translation>Back translation options</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="167"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="192"/>
         <source>Translate back to nucleic alphabet</source>
         <translation>Translate back to nucleic alphabet</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="179"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="204"/>
         <source>Most frequently used codons</source>
         <translation>Most frequently used codons</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="206"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="231"/>
         <source>Organism:</source>
         <translation>Organism:</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="241"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="279"/>
         <source>Save as separate sequences</source>
         <translation>Save as separate sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="192"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="217"/>
         <source>Frequency distribution</source>
         <translation>Frequency distribution</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="151"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="163"/>
         <source>Use custom translation table</source>
         <translation>Use custom translation table</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="228"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="266"/>
         <source>Merge options</source>
         <translation>Merge options</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="253"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="291"/>
         <source>Add gap symbols between sequences</source>
         <translation>Add gap symbols between sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="234"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="272"/>
         <source>Merge sequences</source>
         <translation>Merge sequences</translation>
     </message>

@@ -230,12 +230,12 @@
     <message>
         <location filename="../src/FindRepeatsDialog.cpp" line="83"/>
         <source>Start</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/FindRepeatsDialog.cpp" line="84"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/FindRepeatsDialog.cpp" line="103"/>

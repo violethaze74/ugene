@@ -936,7 +936,7 @@ The default is instead to generate sequences with a variety of different lengths
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="74"/>
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="204"/>
         <source>Search</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="75"/>

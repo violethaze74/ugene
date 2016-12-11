@@ -1013,7 +1013,7 @@ Maybe model data is not enough for selected algorithm</translation>
     <message>
         <location filename="../src/PWMSearchDialogController.cpp" line="113"/>
         <source>Search</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialogController.cpp" line="482"/>

@@ -1030,13 +1030,13 @@
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="90"/>
         <source>Search</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="91"/>
         <location filename="../src/SiteconSearchDialogController.cpp" line="153"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="153"/>

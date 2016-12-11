@@ -14,53 +14,53 @@
         <translation>Основные параметры</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="59"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="62"/>
         <source>Select search:</source>
         <translation>Тип поиска:</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="67"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="70"/>
         <source>blastn</source>
         <extracomment>qwe</extracomment>
         <translation>blastn</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="72"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="75"/>
         <source>blastp</source>
         <translation>blastp</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="82"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="85"/>
         <source>blastx</source>
         <translation>blastx</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="87"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="90"/>
         <source>tblastn</source>
         <translation>tblastn</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="92"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="95"/>
         <source>tblastx</source>
         <translation>tblastx</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="100"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="103"/>
         <source>Search for short, nearly exact matches</source>
         <translation>Поиск коротких последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="107"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="110"/>
         <source>Expectation value </source>
         <translation>Математическое ожидание</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="114"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="117"/>
         <source>Megablast</source>
         <translation>Megablast</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="131"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="134"/>
         <source>Off</source>
         <translation>Выключить</translation>
     </message>
@@ -69,97 +69,97 @@
         <translation type="vanished">Базовое имя для файлов БД:</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="236"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="274"/>
         <source>Number of CPUs being used</source>
         <translation>Использовать процессоров</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="274"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="318"/>
         <source>Advanced options</source>
         <translation>Дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="397"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="544"/>
         <source>Word size</source>
         <translation>Размер слова</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="534"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="616"/>
         <source>Gap costs</source>
         <translation>Вес пробела</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="313"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="421"/>
         <source>Match scores</source>
         <translation>Веса совпадений</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="343"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="480"/>
         <source>1 -3</source>
         <translation>1 -3</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="165"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="171"/>
         <source>Both strands</source>
         <translation>Обе цепи</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="175"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="181"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="182"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="188"/>
         <source>Complement</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="348"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="485"/>
         <source>1 -4</source>
         <translation>1 -4</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="353"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="490"/>
         <source>1 -2</source>
         <translation>1 -2</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="358"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="495"/>
         <source>1 -1</source>
         <translation>1 -1</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="363"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="500"/>
         <source>2 -7</source>
         <translation>2 -7</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="368"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="505"/>
         <source>2 -5</source>
         <translation>2 -5</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="373"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="510"/>
         <source>2 -3</source>
         <translation>2 -3</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="378"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="515"/>
         <source>4 -5</source>
         <translation>4 -5</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="383"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="520"/>
         <source>5 -4</source>
         <translation>5 -4</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="410"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="463"/>
         <source>Matrix</source>
         <translation>Матрица</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="77"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="80"/>
         <source>gpu-blastp</source>
         <translation>gpu-blastp</translation>
     </message>
@@ -173,162 +173,162 @@ a database file</source>
         <translation type="vanished">Выберите файл базы данных</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="418"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="429"/>
         <source>BLOSUM62</source>
         <translation>BLOSUM62</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="423"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="434"/>
         <source>BLOSUM45</source>
         <translation>BLOSUM45</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="428"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="439"/>
         <source>BLOSUM80</source>
         <translation>BLOSUM80</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="433"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="444"/>
         <source>PAM30</source>
         <translation>PAM30</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="438"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="449"/>
         <source>PAM70</source>
         <translation>PAM70</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="326"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="408"/>
         <source>Service</source>
         <translation>Сервис</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="121"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="124"/>
         <source>Max hits:</source>
         <translation>Макс. число совпадений:</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="289"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="371"/>
         <source>plain</source>
         <translation>простой</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="294"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="376"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="299"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="381"/>
         <source>phi</source>
         <translation>phi</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="449"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="531"/>
         <source>PHI pattern</source>
         <translation>Шаблон PHI</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="489"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="600"/>
         <source>Threshold for extending hits</source>
         <translation>Порог для расширенных совпадений</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="492"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="603"/>
         <source>Threshold</source>
         <translation>Порог</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="541"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="623"/>
         <source>Composition-based statistics</source>
         <translation>Статистика состава</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="549"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="336"/>
         <source>D or d: default (equivalent to 2 )</source>
         <translation>D или d: по умолчанию (равно 2)</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="554"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="341"/>
         <source>0 or F or f: No composition-based statistics</source>
         <translation>0 или F или f: Нет статистики состава</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="559"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="346"/>
         <source>1: Composition-based statistics as in NAR 29:2994-3005, 2001</source>
         <translation>1: Статистика состава как в NAR 29:2994-3005, 2001</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="564"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="351"/>
         <source>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</source>
         <translation>2 или T или t : Статистика как в in Bioinformatics 21:902-911, 2005, основанная на свойствах последовательности</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="569"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="356"/>
         <source>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</source>
         <translation>3: Статистика как в Bioinformatics 21:902-911, 2005, безусловная</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="581"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="637"/>
         <source>Filters</source>
         <translation>Фильтры</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="587"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="646"/>
         <source>Low complexity filter</source>
         <translation>Фильтр низкой сложности</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="594"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="653"/>
         <source>Human repeats filter</source>
         <translation>Фильтр человеческих повторов</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="604"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="663"/>
         <source>Masks</source>
         <translation>Маски</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="610"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="672"/>
         <source>Mask for lookup table only</source>
         <translation>Только маска таблицы поиска</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="620"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="682"/>
         <source>Mask lower case letters</source>
         <translation>Маска символов нижн. регистра</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="646"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="717"/>
         <source>Extension options</source>
         <translation>Возможности расширения</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="654"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="731"/>
         <source>X dropoff value (in bits)</source>
         <translation>X dropoff значение (в битах)</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="660"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="740"/>
         <source>For gapped alignment</source>
         <translation>Для выравниваний с пробелами</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="674"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="754"/>
         <source>For ungapped extensions</source>
         <translation>Для расширений без пробелов</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="681"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="761"/>
         <source>For final gapped alignment</source>
         <translation>Для финального выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="705"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="788"/>
         <source>Multiple Hits window size</source>
         <translation>Множественные пересечения окна</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastAllSupportDialog.ui" line="717"/>
+        <location filename="../src/utils/BlastAllSupportDialog.ui" line="800"/>
         <source>Perform gapped alignment</source>
         <translation>Выполнить выравнивание</translation>
     </message>
@@ -341,17 +341,17 @@ a database file</source>
         <translation>Извлечь последовательность из базы данных BLAST</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="41"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="44"/>
         <source>Query ID</source>
         <translation>Идентификатор запроса</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="134"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="121"/>
         <source>Select database</source>
         <translation>Выберите базу данных</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="67"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="71"/>
         <source>Output path</source>
         <translation>Выходной путь</translation>
     </message>
@@ -364,7 +364,7 @@ a database file</source>
         <translation type="vanished">Выберите базу данных:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="92"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="99"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -385,7 +385,7 @@ a database file</source>
         <translation type="vanished">Выходной путь:</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="112"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.ui" line="158"/>
         <source>Add to project</source>
         <translation>Добавить в проект</translation>
     </message>
@@ -398,17 +398,17 @@ a database file</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="40"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="43"/>
         <source>Database path</source>
         <translation>Путь до базы данных</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="64"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="61"/>
         <source>Database file</source>
         <translation>Файл базы данных</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="73"/>
+        <location filename="../src/utils/BlastDBSelectorWidget.ui" line="70"/>
         <source>Base name for BLAST DB files</source>
         <translation>Базовое имя для файлов базы данных BLAST</translation>
     </message>
@@ -908,17 +908,16 @@ bowtie медленнее, когда указан режим --best.</translati
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="45"/>
         <source>Base Options</source>
-        <translation>Основные параметры</translation>
+        <translation type="vanished">Основные параметры</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="450"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="561"/>
         <source>Penalty for a mismatch</source>
         <translation>Штраф за несовпадение</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="418"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="443"/>
         <source>Score for a sequence match</source>
         <translation>Вес совпадения</translation>
     </message>
@@ -927,192 +926,207 @@ bowtie медленнее, когда указан режим --best.</translati
         <translation type="vanished">Веса совпадений (-A)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="434"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="545"/>
         <source>Mismatch penalty (-B)</source>
         <translation>Штраф за несовпадение (-B)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="463"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="478"/>
         <source>Gap open penalty (-O)</source>
         <translation>Штраф за открытие пробела (-O)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="566"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="619"/>
         <source>Penalty for an unpaired read pair</source>
         <translation>Штраф за непарные риды</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="595"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="740"/>
         <source>Minimum score to output</source>
         <translation>Минимальная оценка для вывода</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="550"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="603"/>
         <source>Penalty unpaired (-U)</source>
         <translation>Штраф за непарные риды (-U)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="537"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="523"/>
         <source>Penalty for clipping </source>
         <translation>Штраф за отсечение</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="479"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="494"/>
         <source>Gap open penalty</source>
         <translation>Штраф за открывающий пропуск</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="508"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="590"/>
         <source>Gap extension penalty; a gap of size k cost {-O} + {-E}*k</source>
         <translation>Штраф за расширение пробела; пробел размера k стоит {-O} + {-E}*k</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="521"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="507"/>
         <source>Penalty for clipping (-L)</source>
         <translation>Штраф за отсечение (-L)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="492"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="574"/>
         <source>Gap extention penalty (-E)</source>
         <translation>Штраф за расширение пробела (-E)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="579"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="724"/>
         <source>Score threshold (-T)</source>
         <translation>Порог оценки (-T)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="218"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="290"/>
         <source>Internall seeds length (-r)</source>
         <translation>Внутренняя длина затравки (-r)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="116"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="132"/>
         <source>Min seed length (-k)</source>
         <translation>Минимальная длина затравки (-k)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="78"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="319"/>
         <source>Look for internal seeds inside a seed longer than {-k} * FLOAT</source>
         <translation>Поиск внутренние затравки внутри затравки длиннее чем {-k} * FLOAT</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="65"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="386"/>
         <source>Number of threads</source>
         <translation>Число потоков</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="202"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="148"/>
         <source>Off-diagonal X-dropoff</source>
         <translation>Снижение</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="170"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="354"/>
         <source>Band width for banded alignment</source>
         <translation>Ширина полосы для выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="154"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="271"/>
         <source>Band width (-w)</source>
         <translation>Ширина полосы (-w)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="132"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="202"/>
         <source>Minimum seed length</source>
         <translation>Минимальная длина затравки</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="97"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="370"/>
         <source>Number of threads (-t)</source>
         <translation>Число потоков (-t)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="186"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="68"/>
         <source>Dropoff (-d)</source>
         <translation>Снижение (-d)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="237"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="186"/>
         <source>Skip seeds threshold (-c)</source>
         <translation>Порог затравки (-c)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="253"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="84"/>
         <source>Skip seeds with more than INT occurrences </source>
         <translation>Пропускает затравки с более чем с указанным количеством вхождений</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="275"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="338"/>
         <source>Drop chain threshold (-D)</source>
         <translation>Порог снижения цепи (-D)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="291"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="306"/>
         <source>Drop chains shorter than FLOAT fraction of the longest overlapping chain</source>
         <translation>Снижение цепи короче FLOAT фракции самого длинного перекрытия цепи</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="317"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="45"/>
+        <source>Algorithm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="429"/>
+        <source>Scoring Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="648"/>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="662"/>
         <source>Index algorithm (-a)</source>
         <translation>Алгоритм (-a)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="334"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="689"/>
         <source>autodetect</source>
         <translation>autodetect</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="339"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="694"/>
         <source>bwtsw</source>
         <translation>bwtsw</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="344"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="699"/>
         <source>div</source>
         <translation>div</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="349"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="704"/>
         <source>is</source>
         <translation>is</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="402"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="459"/>
         <source>Matching score (-A)</source>
         <translation>Веса совпадений (-A)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="608"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="164"/>
         <source>Rounds of mate rescues (-m)</source>
         <translation>Округление за освобождение участника (-m)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="624"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="116"/>
         <source>Perform at most INT rounds of mate rescues for each read</source>
         <translation>Выполняет для большинства INT округлений освобождений участников для каждого рида</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="357"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="675"/>
         <source>Skip mate rescue</source>
         <translation>Пропустить освобождение участника</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="360"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="678"/>
         <source>Skip mate rescue (-S)</source>
         <translation>Пропустить освобождение участника (-S)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="367"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="233"/>
         <source>Skip pairing; mate rescue performed unless -S also in use</source>
         <translation>Пропустить спаривание; участник освобождается кроме случая когда -S также используется</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="370"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="236"/>
         <source>Skip pairing (-P)</source>
         <translation>Пропустить спаривание (-P)</translation>
     </message>
     <message>
-        <location filename="../src/bwa/BwaMemSettings.ui" line="642"/>
+        <location filename="../src/bwa/BwaMemSettings.ui" line="404"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1818,79 +1832,79 @@ p, li { white-space: pre-wrap; }
         <translation>Входные данные</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="35"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="38"/>
         <source>Select input file(s) for formatting database:</source>
         <translation>Выберите входной файл(ы) для форматирования базы данных:</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="53"/>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="84"/>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="190"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="59"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="93"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="220"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="62"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="68"/>
         <source>Or select directory with input files:</source>
         <translation>Или выберите директорию со входными файлами:</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="96"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="105"/>
         <source>File filter</source>
         <translation>Фильтр</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="104"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="119"/>
         <source>Include files filter</source>
         <translation>Включающий фильтр</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="114"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="129"/>
         <source>*.fa;*.fasta</source>
         <translation>*.fa;*.fasta</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="121"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="136"/>
         <source>Exclude files filter</source>
         <translation>Исключающий фильтр</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="131"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="146"/>
         <source>*.pal</source>
         <translation>*.pal</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="143"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="158"/>
         <source>Type of file(s)</source>
         <translation>Тип файла(ов)</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="149"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="167"/>
         <source>protein</source>
         <translation>белки</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="159"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="177"/>
         <source>nucleotide</source>
         <translation>нуклеотиды</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="172"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="190"/>
         <source>Output settings</source>
         <translation>Выходные настройки</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="178"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="205"/>
         <source>Select the path to save the database into:</source>
         <translation>Выберите путь для сохранения базы данных:</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="201"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="234"/>
         <source>Base name for BLAST files:</source>
         <translation>Базовое имя для файлов BLAST:</translation>
     </message>
     <message>
-        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="211"/>
+        <location filename="../src/blast/FormatDBSupportRunDialog.ui" line="244"/>
         <source>Title for database file:</source>
         <translation>Название для файла базы данных:</translation>
     </message>
@@ -3012,17 +3026,17 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Имя базы данных содержит пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="107"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="104"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="121"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="118"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="121"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="118"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -3148,7 +3162,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastAllWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="168"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="165"/>
         <source>Select input file</source>
         <translation>Выберите входной файл</translation>
     </message>
@@ -3161,23 +3175,23 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Имя базы данных содержит пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="214"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="211"/>
         <source>This file has the incompatible format for the BLAST+ search.</source>
         <translation>Этот файл имеет несовместимый формат для поиска BLAST+.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="259"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="256"/>
         <source>This file does not contain any sequence.</source>
         <translation>Этот файл не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="214"/>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="259"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="211"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="256"/>
         <source>Wrong input file</source>
         <translation>Неверный входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="307"/>
+        <location filename="../src/blast/BlastAllSupportRunDialog.cpp" line="302"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
@@ -3185,12 +3199,12 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastDBCmdDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="48"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="43"/>
         <source>Fetch</source>
         <translation>Получить</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="49"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="44"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -3199,7 +3213,7 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Выберите файл базы данных</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="97"/>
+        <location filename="../src/blast_plus/BlastDBCmdDialog.cpp" line="92"/>
         <source>Set a result FASTA file name</source>
         <translation>Выберите имя результирующего FASTA файла</translation>
     </message>
@@ -3433,27 +3447,27 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Имя базы данных содержит пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="115"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="112"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="150"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="147"/>
         <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
         <translation>Путь до &lt;i&gt;BLAST+ %1&lt;/i&gt; не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="184"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="181"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="198"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="195"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="198"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="195"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -3461,13 +3475,13 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastPlusWithExtFileSpecifySupportRunDialog</name>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="242"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="240"/>
         <source>Select input file</source>
         <translation>Выберите входной файл</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="288"/>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="334"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="286"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="332"/>
         <source>Wrong input file</source>
         <translation>Неверный входной файл</translation>
     </message>
@@ -3480,27 +3494,27 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Имя базы данных содержит пробелы.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="288"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="286"/>
         <source>This file has the incompatible format for the BLAST+ search.</source>
         <translation>Этот файл имеет несовместимый формат для поиска BLAST+.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="334"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="332"/>
         <source>This file does not contain sequences.</source>
         <translation>Этот файл не содержит последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="387"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="383"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="422"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="418"/>
         <source>Path for &lt;i&gt;BLAST+ %1&lt;/i&gt; tool not selected.</source>
         <translation>Путь до &lt;i&gt;BLAST+ %1&lt;/i&gt; не установлен.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="456"/>
+        <location filename="../src/blast_plus/BlastPlusSupportRunDialog.cpp" line="452"/>
         <source>Wrong parameters for creating annotations</source>
         <translation>Неверные параметры для создания аннотаций</translation>
     </message>
@@ -3527,32 +3541,32 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation type="vanished">Выберите файл базы данных</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="290"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="291"/>
         <source>Direct nucleotide alignment</source>
         <translation>Прямое нуклеотидное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="293"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="294"/>
         <source>Direct protein alignment</source>
         <translation>Прямое белковое выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="297"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="298"/>
         <source>Direct protein alignment (on GPU)</source>
         <translation>Прямое белковое выравнивание (на GPU)</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="301"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="302"/>
         <source>Protein alignment, input nucleotide is translated input protein before the search</source>
         <translation>Белковое выравнивание, входные нуклеотиды транслируются в белки до поиска</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="305"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="306"/>
         <source>Protein alignment, nucleotide database is translated input protein before the search</source>
         <translation>Белковое выравнивание, нуклеотидная база данных транслируется в белковую до поиска</translation>
     </message>
     <message>
-        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="309"/>
+        <location filename="../src/utils/BlastRunCommonDialog.cpp" line="310"/>
         <source>Protein alignment, both input query and database are translated before the search</source>
         <translation>Белковое выравнивание, оба запроса и база данных транслируются до поиска</translation>
     </message>
