@@ -4218,7 +4218,7 @@ GUI_TEST_CLASS_DEFINITION(test_3645) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<< "Copy sequence",GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os,"ADV_single_sequence_widget_0"));
     QString clipStr = GTClipboard::text(os);
-    CHECK_SET_ERR(clipStr == "GGGGG", "Found sequence don't match");
+    CHECK_SET_ERR(clipStr == "AAAAA", "Found sequence don't match");
     GTGlobals::sleep();
 }
 
