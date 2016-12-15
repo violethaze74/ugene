@@ -27,6 +27,8 @@
 
 #include <U2Core/U2OpStatusUtils.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
@@ -98,8 +100,9 @@ void MSASimpleOverview::sl_highlightingChanged() {
 
 void MSASimpleOverview::paintEvent(QPaintEvent *e) {
     if (!isValid()) {
-        QPainter p(this);
-        showMessage(p, e, tr("Multiple sequence alignment is too big for current window size.\nSimple overview is unavailable."));
+        QPainter messagePainter(this);
+        GUIUtils::showMessage(this, messagePainter, tr("Multiple sequence alignment is too big for current window size.\nSimple overview is unavailable."));
+        QWidget::paintEvent(e);
         return;
     }
 

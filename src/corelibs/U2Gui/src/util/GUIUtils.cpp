@@ -227,4 +227,15 @@ void GUIUtils::setWidgetWarning(QWidget *widget, bool value) {
     widget->setPalette(p);
 }
 
+void GUIUtils::showMessage(QWidget *widgetToPaintOn, QPainter& painter, const QString& message) {
+    painter.fillRect(widgetToPaintOn->rect(), Qt::gray);
+
+    QFontMetrics metrics(painter.font(), widgetToPaintOn);
+    painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(
+        message,
+        Qt::ElideRight,
+        widgetToPaintOn->rect().width()));
+    return;
+}
+
 } //endif

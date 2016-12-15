@@ -43,6 +43,7 @@
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/GraphUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -999,38 +1000,40 @@ void DotPlotWidget::drawAll(QPainter &p, QSize &size, qreal fontScale, DotPlotIm
 // draw everything
 void DotPlotWidget::drawAll(QPainter& p, qreal rulerFontScale, bool _drawFocus,
                             bool drawAreaSelection, bool drawRepeatSelection) {
-
     if (sequenceX == NULL || sequenceY == NULL || w <= 0 || h <= 0) {
         return;
     }
 
-    p.save();
-    p.setRenderHint(QPainter::Antialiasing);
+    if (dotPlotTask != NULL && dotPlotTask->isRunning()) {
+        GUIUtils::showMessage(this, p, tr("Dotplot is calculating..."));
+    } else {
+        p.save();
+        p.setRenderHint(QPainter::Antialiasing);
 
-    p.setBrush(QBrush(palette().window().color()));
+        p.setBrush(QBrush(palette().window().color()));
 
-    drawNames(p);
-    p.translate(textSpace, textSpace);
+        drawNames(p);
+        p.translate(textSpace, textSpace);
 
-    drawAxises(p);
-    drawDots(p);
-    if (drawAreaSelection) {
-        drawSelection(p);
+        drawAxises(p);
+        drawDots(p);
+        if (drawAreaSelection) {
+            drawSelection(p);
+        }
+        drawMiniMap(p);
+        if (drawRepeatSelection) {
+            drawNearestRepeat(p);
+        }
+
+        p.translate(-textSpace, -textSpace);
+        drawRulers(p, rulerFontScale);
+
+        p.restore();
+
+        if (hasFocus() && _drawFocus) {
+            drawFocus(p);
+        }
     }
-    drawMiniMap(p);
-    if (drawRepeatSelection) {
-        drawNearestRepeat(p);
-    }
-
-    p.translate(-textSpace, -textSpace);
-    drawRulers(p, rulerFontScale);
-
-    p.restore();
-
-    if(hasFocus() && _drawFocus){
-        drawFocus(p);
-    }
-
 #define DP_MARGIN 2
 #define DP_EXIT_BUTTON_SIZE 20
     exitButton->setGeometry(width()- DP_MARGIN - DP_EXIT_BUTTON_SIZE, DP_MARGIN, DP_EXIT_BUTTON_SIZE, DP_EXIT_BUTTON_SIZE);
@@ -1647,11 +1650,9 @@ QPoint DotPlotWidget::toInnerCoords(const QPoint &p) const {
 }
 
 void DotPlotWidget::paintEvent(QPaintEvent *e) {
-
-    QWidget::paintEvent(e);
-
     QPainter p(this);
     drawAll(p);
+    QWidget::paintEvent(e);
 }
 
 void DotPlotWidget::resizeEvent(QResizeEvent *e) {
@@ -2065,4 +2066,5 @@ void DotPlotWidget::clearRepeatSelection(){
     clearedByRepitSel = true;
     update();
 }
+
 } // namespace

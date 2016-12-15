@@ -27,6 +27,8 @@
 
 #include <U2Core/Settings.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorConsensusCache.h>
@@ -101,16 +103,19 @@ void MSAGraphOverview::paintEvent(QPaintEvent *e) {
 
     QPainter p(this);
     if (!isValid()) {
-        showMessage(p, e, tr("Multiple sequence alignment is too big. Overview is unavailable."));
+        GUIUtils::showMessage(this, p, tr("Multiple sequence alignment is too big. Overview is unavailable."));
+        QWidget::paintEvent(e);
         return;
     }
     if (isBlocked) {
-        showMessage(p, e, tr("Waiting..."));
+        GUIUtils::showMessage(this, p, tr("Waiting..."));
+        QWidget::paintEvent(e);
         return;
     }
 
     if (!graphCalculationTaskRunner.isIdle()) {
-        showMessage(p, e, tr("Overview is rendering..."));
+        GUIUtils::showMessage(this, p, tr("Overview is rendering..."));
+        QWidget::paintEvent(e);
         return;
     } else {
         if (redrawGraph) {
