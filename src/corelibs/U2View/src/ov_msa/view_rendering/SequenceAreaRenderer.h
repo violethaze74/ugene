@@ -35,14 +35,14 @@ class SequenceAreaRenderer : public QObject {
 public:
     SequenceAreaRenderer(MaEditorSequenceArea* seqAreaWgt);
 
-    // SANGER_TODO: all draw methods are const???
-    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx);
+    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx) const;
 
-    void drawSelection(QPainter &p);
-    void drawFocus(QPainter& p);
+    void drawSelection(QPainter &p) const;
+    void drawFocus(QPainter& p) const;
 
 protected:
-    virtual bool drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
+    // returns the height of the drawn row
+    virtual int drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const;
 
     MaEditorSequenceArea*  seqAreaWgt;
 

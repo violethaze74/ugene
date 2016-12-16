@@ -696,7 +696,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
     p.setFont(getFont(selected));
 
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
-    if (mcaEditor != NULL && mcaEditor->getShowChromatogram()) {
+    if (mcaEditor != NULL && mcaEditor->isChromVisible(row)) {
         p.translate(0, SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2);
     }
 
@@ -718,7 +718,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
 
     p.drawText(textRect, Qt::AlignTop | Qt::AlignLeft, text);
 
-    if (mcaEditor != NULL && mcaEditor->getShowChromatogram()) {
+    if (mcaEditor != NULL && mcaEditor->isChromVisible(row)) {
         p.translate(0, - SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2);
     }
 }

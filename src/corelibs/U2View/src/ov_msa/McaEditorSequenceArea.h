@@ -55,6 +55,13 @@ public:
 
     void deleteCurrentSelection() {}
 
+    U2Region getSequenceYRange(int seqNum, int firstVisibleRow, bool useVirtualCoords) const;
+
+    int         getSequenceNumByY(int y) const;
+    U2Region    getSequenceYRange(int startSeq, int count) const;
+
+    int         countHeightForSequences(bool countClipped) const;
+
 private slots:
     void sl_showHideTrace();
     void sl_showAllTraces();

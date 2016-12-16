@@ -36,7 +36,7 @@ SequenceAreaRenderer::SequenceAreaRenderer(MaEditorSequenceArea *seqAreaWgt)
       drawLeadingAndTrailingGaps(true) {
 }
 
-bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, const QList<qint64> &seqIdx) {
+bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, const QList<qint64> &seqIdx)  const {
     CHECK(!region.isEmpty(), false);
     CHECK(!seqIdx.isEmpty(), false);
 
@@ -59,27 +59,27 @@ bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, cons
 
     U2Region baseYRange = U2Region(0, editor->getSequenceRowHeight());
 
-    bool ok = true;
+    int rowHeight = 0;
     for (qint64 iSeq = 0; iSeq < seqIdx.size(); iSeq++) {
         qint64 seq = seqIdx[iSeq];
 
-        ok = drawRow(p, msa, seq, region, baseYRange.startPos);
-        CHECK(ok, false);
+        rowHeight = drawRow(p, msa, seq, region, baseYRange.startPos);
+        CHECK(rowHeight, false);
 
-        baseYRange.startPos += editor->getRowHeight();
+        baseYRange.startPos += rowHeight;
     }
 
     return true;
 }
 
-void SequenceAreaRenderer::drawSelection(QPainter &p) {
+void SequenceAreaRenderer::drawSelection(QPainter &p) const {
     MaEditorSelection selection = seqAreaWgt->getSelection();;
 
     int x = selection.x();
     int y = selection.y();
 
     U2Region xRange = seqAreaWgt->getBaseXRange(x, true);
-    U2Region yRange = seqAreaWgt->getSequenceYRange(y, true);
+    U2Region yRange = seqAreaWgt->getSequenceYRange(y, selection.height());
 
     QPen pen(seqAreaWgt->highlightSelection || seqAreaWgt->hasFocus()
              ? seqAreaWgt->selectionColor
@@ -90,10 +90,10 @@ void SequenceAreaRenderer::drawSelection(QPainter &p) {
     pen.setWidth(seqAreaWgt->highlightSelection ? 2 : 1);
     p.setPen(pen);
     if (yRange.startPos > 0) {
-        p.drawRect(xRange.startPos, yRange.startPos, xRange.length*selection.width(), yRange.length*selection.height());
+        p.drawRect(xRange.startPos, yRange.startPos, xRange.length*selection.width(), yRange.length);
     }
     else {
-        qint64 regionHeight = yRange.length*selection.height() + yRange.startPos + 1;
+        qint64 regionHeight = yRange.length + yRange.startPos + 1;
         if(regionHeight <= 0) {
             return;
         }
@@ -102,14 +102,14 @@ void SequenceAreaRenderer::drawSelection(QPainter &p) {
 
 }
 
-void SequenceAreaRenderer::drawFocus(QPainter &p) {
+void SequenceAreaRenderer::drawFocus(QPainter &p) const {
     if (seqAreaWgt->hasFocus()) {
         p.setPen(QPen(Qt::black, 1, Qt::DotLine));
         p.drawRect(0, 0, seqAreaWgt->width() - 1, seqAreaWgt->height() - 1);
     }
 }
 
-bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) {
+int SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const {
     // SANGER_TODO: deal with frequent handlign of editor or h/color schemes through the editor etc.
     // move to class parameter
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
@@ -127,6 +127,7 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
 
     qint64 regionEnd = region.endPos() - (int)(region.endPos() == editor->getAlignmentLen());
     MultipleAlignmentRow row = msa->getRow(seq);
+    int rowHeight = editor->getSequenceRowHeight();
     for (int pos = region.startPos; pos <= regionEnd; pos++) {
         if (!drawLeadingAndTrailingGaps
                 && (pos < row->getCoreStart() || pos > row->getCoreStart() + row->getCoreLength() - 1)) {
@@ -134,7 +135,7 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
         }
 
         U2Region baseXRange = U2Region(columnWidth * (pos - region.startPos), columnWidth);
-        QRect cr(baseXRange.startPos, yStart, baseXRange.length + 1, editor->getSequenceRowHeight());
+        QRect cr(baseXRange.startPos, yStart, baseXRange.length + 1, rowHeight);
         char c = msa->charAt(seq, pos);
 
         bool highlight = false;
@@ -156,7 +157,7 @@ bool SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qi
             p.drawText(cr, Qt::AlignCenter, QString(c));
         }
     }
-    return true;
+    return rowHeight;
 }
 
 } // namespace

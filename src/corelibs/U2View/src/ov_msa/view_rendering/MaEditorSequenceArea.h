@@ -84,7 +84,9 @@ public:
 
 public:
     // y dimension -> sequences
-    int countHeightForSequences(bool countClipped) const;
+
+    // SANGER_TODO: start point matters!
+    virtual int countHeightForSequences(bool countClipped) const;
 
     int getFirstVisibleSequence() const;
     int getLastVisibleSequence(bool countClipped) const;
@@ -100,10 +102,11 @@ public:
     int getNumDisplayedSequences() const;
 
     U2Region getSequenceYRange(int seqNum, bool useVirtualCoords) const;
-    U2Region getSequenceYRange(int seqNum, int firstVisibleRow, bool useVirtualCoords) const;
+    virtual U2Region getSequenceYRange(int seqNum, int firstVisibleRow, bool useVirtualCoords) const;
+    virtual U2Region getSequenceYRange(int startSeq, int count) const;
 
-    int getSequenceNumByY(int y) const;
-    int getYBySequenceNum(int sequenceNum) const;
+    virtual int getSequenceNumByY(int y) const;
+    int getYBySequenceNum(int sequenceNum) const; // SANGER_TODO: works wrong for MCA!
 
     void setFirstVisibleSequence(int seq);
 

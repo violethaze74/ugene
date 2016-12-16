@@ -30,6 +30,7 @@
 #include <QToolBar>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OptionsPanel.h>
@@ -47,6 +48,12 @@ McaEditor::McaEditor(const QString &viewName, MultipleChromatogramAlignmentObjec
     showChromatogramsAction->setCheckable(true);
     showChromatogramsAction->setChecked(showChromatograms);
     connect(showChromatogramsAction, SIGNAL(triggered(bool)), SLOT(sl_showHideChromatograms(bool)));
+
+    U2OpStatusImpl os;
+    foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
+        // SANGER_TODO: tmp
+        chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), row->getRowId() % 2 == 0 ? true : false);
+    }
 }
 
 void McaEditor::buildStaticToolbar(QToolBar* tb) {
@@ -72,6 +79,18 @@ int McaEditor::getRowHeight() const {
     QFontMetrics fm(font, ui);
     int chromHeigth = 100; // SANGER_TODO: set const chrom height
     return (fm.height() + chromHeigth * showChromatograms)* zoomMult;
+}
+
+bool McaEditor::getShowChromatogram() const {
+    return showChromatograms;
+}
+
+bool McaEditor::isChromVisible(qint64 rowId) const {
+    return chromVisibility[rowId];
+}
+
+void McaEditor::toggleChromVisibility(qint64 rowId) {
+    chromVisibility[rowId] = !chromVisibility[rowId];
 }
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
@@ -101,6 +120,10 @@ void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
 
 void McaEditor::sl_showHideChromatograms(bool show) {
     showChromatograms = show;
+    foreach (qint64 key, chromVisibility.keys()) {
+        chromVisibility[key] = show;
+    }
+
     emit si_completeUpdate();
 }
 
