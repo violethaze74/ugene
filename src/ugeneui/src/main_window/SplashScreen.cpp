@@ -89,12 +89,16 @@ bool SplashScreen::eventFilter(QObject * /*obj*/, QEvent *ev){
 SplashScreenWidget::SplashScreenWidget(){
     setObjectName("splash_screen_widget");
 
-    QImage image(":ugene/images/ugene_splash.png");
     Version v = Version::appVersion();
     version = v.text;
 
+    QImage image(":ugene/images/ugene_splash.png");
+    QSize widgetSize = image.size();
+    setFixedSize(widgetSize);
+
+    image = image.scaled(widgetSize * devicePixelRatio());
+    image.setDevicePixelRatio(devicePixelRatio());
     image1 = image2 = image;
-    setFixedSize(image1.size());
 
     dots_number = 0;
     task = "";
