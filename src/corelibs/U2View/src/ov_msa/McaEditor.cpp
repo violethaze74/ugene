@@ -91,6 +91,7 @@ bool McaEditor::isChromVisible(qint64 rowId) const {
 
 void McaEditor::toggleChromVisibility(qint64 rowId) {
     chromVisibility[rowId] = !chromVisibility[rowId];
+    emit si_completeUpdate();
 }
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {

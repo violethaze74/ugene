@@ -417,6 +417,21 @@ void MSAEditorNameList::mousePressEvent(QMouseEvent *e) {
                 }
             }
         }
+
+        // SANGER_TODO: there should not be such stuff
+        McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
+        if (mcaEditor != NULL) {
+            const U2Region& yRange = seqArea->getSequenceYRange(curSeq, true);
+            bool selected = isRowInSelection(curSeq);
+            QRect textRect = calculateTextRect(yRange, selected);
+            QRect buttonRect = calculateButtonRect(textRect);
+            if (buttonRect.contains(origin)) {
+                mcaEditor->toggleChromVisibility(curSeq);
+                QWidget::mousePressEvent(e);
+                return;
+            }
+        }
+
         startSelectingSeq = curSeq;
         MaEditorSelection s = seqArea->getSelection();
         if (s.getRect().contains(0,curSeq)) {
@@ -698,6 +713,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
     U2Region yRange = ui->getSequenceArea()->getSequenceYRange(row, firstVisibleRow, true);
     QRect textRect = calculateTextRect(yRange, selected);
 
+    // SANGER_TODO: there should not be such stuff
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
     if (mcaEditor != NULL) {
         drawCollapsibileSequenceItem(p, text, textRect, selected, !mcaEditor->isChromVisible(row), false);

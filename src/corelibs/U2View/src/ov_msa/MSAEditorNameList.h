@@ -116,6 +116,7 @@ private:
     void drawCollapsibileSequenceItem(QPainter &p, const QString &name, const QRect& rect,
                                       bool selected, bool collapsed, bool isReference);
 
+    // SANGER_TODO: drawSequenceItem should use these methods
     void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReferece);
     void drawText(QPainter& p, const QString& name, const QRect& rect, bool selected);
     void drawCollapsePrimitive(QPainter& p, bool collapsed, const QRect& rect);
