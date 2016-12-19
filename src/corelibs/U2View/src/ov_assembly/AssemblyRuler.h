@@ -53,7 +53,6 @@ public:
 
 protected:
     void paintEvent(QPaintEvent * e);
-    void resizeEvent(QResizeEvent * e);
     void mouseMoveEvent(QMouseEvent * e);
 
 public slots:
