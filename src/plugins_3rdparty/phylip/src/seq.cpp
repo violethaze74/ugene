@@ -2,10 +2,34 @@
 #include "phylip.h"
 #include "seq.h"
 
-/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
-   Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
-   Permission is granted to copy and use this program provided no fee is
-   charged for it and provided that this copyright notice is not removed. */
+/* version 3.696.
+Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
+
+Copyright (c) 1993-2014, Joseph Felsenstein
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+*/
 
 long nonodes, endsite, outgrno, nextree, which;
 boolean interleaved, printdata, outgropt, treeprint, dotdiff, transvp;
@@ -562,7 +586,7 @@ void sitesort2(long sites, steptr aliasweight)
   /* Shell sort keeping sites, weights in same order */
   /* used in dnaml & dnamnlk */
   long gap, i, j, jj, jg, k, itemp;
-  boolean flip, tied, samewt;
+  boolean flip, tied;
 
   gap = sites / 2;
   while (gap > 0) {
@@ -572,11 +596,8 @@ void sitesort2(long sites, steptr aliasweight)
       while (j > 0 && flip) {
         jj = alias[j - 1];
         jg = alias[j + gap - 1];
-        samewt = ((weight[jj - 1] != 0) && (weight[jg - 1] != 0))
-                 || ((weight[jj - 1] == 0) && (weight[jg - 1] == 0));
-        tied = samewt && (category[jj - 1] == category[jg - 1]);
-        flip = ((!samewt) && (weight[jj - 1] == 0))
-               || (samewt && (category[jj - 1] > category[jg - 1]));
+        tied = (category[jj - 1] == category[jg - 1]);
+        flip = (category[jj - 1] > category[jg - 1]);
         k = 1;
         while (k <= spp && tied) {
           flip = (y[k - 1][jj - 1] > y[k - 1][jg - 1]);
@@ -604,17 +625,14 @@ void sitecombine2(long sites, steptr aliasweight)
   /* combine sites that have identical patterns */
   /* used in dnaml & dnamlk */
   long i, j, k;
-  boolean tied, samewt;
+  boolean tied;
 
   i = 1;
   while (i < sites) {
     j = i + 1;
     tied = true;
     while (j <= sites && tied) {
-      samewt = ((aliasweight[i - 1] != 0) && (aliasweight[j - 1] != 0))
-               || ((aliasweight[i - 1] == 0) && (aliasweight[j - 1] == 0));
-      tied = samewt
-             && (category[alias[i - 1] - 1] == category[alias[j - 1] - 1]);
+      tied = (category[alias[i - 1] - 1] == category[alias[j - 1] - 1]);
       k = 1;
       while (k <= spp && tied) {
         tied = (tied &&
