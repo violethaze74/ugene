@@ -798,8 +798,8 @@ void SQLiteMcaDbi::createMcaRow(const U2DataId &mcaId, qint64 posInMca, U2McaRow
     CHECK_OP(os, );
 
     const qint64 predictedSequenceGappedLength = calculateRowLength(predictedSequenceLength, mcaRow.predictedSequenceGaps);
-    SAFE_POINT_EXT(chromatogramLength == predictedSequenceLength,
-                   os.setError("The chromatogram length differs from the predicted sequence length"), );
+//    SAFE_POINT_EXT(chromatogramLength == predictedSequenceLength,
+//                   os.setError("The chromatogram length differs from the predicted sequence length"), );
     SAFE_POINT_EXT(predictedSequenceGappedLength == calculateRowLength(editedSequenceLength, mcaRow.gaps),
                    os.setError("The row sequences have different lengths"), );
 
