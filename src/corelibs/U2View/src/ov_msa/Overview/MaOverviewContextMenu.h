@@ -29,25 +29,25 @@
 #include <QtWidgets/QMenu>
 #endif
 
-#include "MSAGraphOverview.h"
+#include "MaGraphOverview.h"
 
 
 namespace U2 {
 
-class MSASimpleOverview;
+class MaSimpleOverview;
 class MSAEditorOverviewArea;
 
-class MSAOverviewContextMenu : public QMenu {
+class MaOverviewContextMenu : public QMenu {
     Q_OBJECT
 public:
-    MSAOverviewContextMenu(MSASimpleOverview *so, MSAGraphOverview *go);
+    MaOverviewContextMenu(MaSimpleOverview *so, MaGraphOverview *go);
 private:
     void connectSlots();
 signals:
-    void si_graphTypeSelected(MSAGraphOverviewDisplaySettings::GraphType type);
-    void si_graphOrientationSelected(MSAGraphOverviewDisplaySettings::OrientationMode orientation);
+    void si_graphTypeSelected(MaGraphOverviewDisplaySettings::GraphType type);
+    void si_graphOrientationSelected(MaGraphOverviewDisplaySettings::OrientationMode orientation);
     void si_colorSelected(QColor color);
-    void si_calculationMethodSelected(MSAGraphCalculationMethod method);
+    void si_calculationMethodSelected(MaGraphCalculationMethod method);
 
 public slots:
     void sl_exportAsImageTriggered();
@@ -67,8 +67,8 @@ private:
 
     QAction*    createCheckableAction(const QString& text, QActionGroup* group = NULL);
 
-    MSASimpleOverview*  simpleOverview;
-    MSAGraphOverview*   graphOverview;
+    MaSimpleOverview*  simpleOverview;
+    MaGraphOverview*   graphOverview;
 
     QAction*            showSimpleOverviewAction;
     QAction*            exportAsImage;

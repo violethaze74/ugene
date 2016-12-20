@@ -64,7 +64,7 @@
 #include <U2View/DetView.h>
 #include <U2View/MSAEditorNameList.h>
 #include <U2View/MSAEditorTreeViewer.h>
-#include <U2View/MSAGraphOverview.h>
+#include <U2View/MaGraphOverview.h>
 
 #include "GTTestsRegressionScenarios_4001_5000.h"
 #include "GTUtilsAnnotationsTreeView.h"

@@ -33,13 +33,13 @@
 #include <U2View/MSAEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include "MSAGraphCalculationTask.h"
-#include "MSAGraphOverview.h"
+#include "MaGraphCalculationTask.h"
+#include "MaGraphOverview.h"
 
 namespace U2 {
 
-MSAGraphOverview::MSAGraphOverview(MaEditorWgt *ui)
-    : MSAOverview(ui),
+MaGraphOverview::MaGraphOverview(MaEditorWgt *ui)
+    : MaOverview(ui),
       redrawGraph(true),
       isBlocked(false),
       lastDrawnVersion(-1),
@@ -48,7 +48,7 @@ MSAGraphOverview::MSAGraphOverview(MaEditorWgt *ui)
 {
     setFixedHeight(FIXED_HEIGHT);
 
-    displaySettings = new MSAGraphOverviewDisplaySettings();
+    displaySettings = new MaGraphOverviewDisplaySettings();
 
     Settings *s = AppContext::getSettings();
     CHECK(s != NULL, );
@@ -57,11 +57,11 @@ MSAGraphOverview::MSAGraphOverview(MaEditorWgt *ui)
     }
 
     if (s->contains(MSA_GRAPH_OVERVIEW_TYPE_KEY)) {
-        displaySettings->type = (MSAGraphOverviewDisplaySettings::GraphType)s->getValue(MSA_GRAPH_OVERVIEW_TYPE_KEY).toInt();
+        displaySettings->type = (MaGraphOverviewDisplaySettings::GraphType)s->getValue(MSA_GRAPH_OVERVIEW_TYPE_KEY).toInt();
     }
 
     if (s->contains(MSA_GRAPH_OVERVIEW_ORIENTAION_KEY)) {
-        displaySettings->orientation = (MSAGraphOverviewDisplaySettings::OrientationMode)s->getValue(MSA_GRAPH_OVERVIEW_ORIENTAION_KEY).toInt();
+        displaySettings->orientation = (MaGraphOverviewDisplaySettings::OrientationMode)s->getValue(MSA_GRAPH_OVERVIEW_ORIENTAION_KEY).toInt();
     }
 
     connect(&graphCalculationTaskRunner,    SIGNAL(si_finished()),
@@ -78,26 +78,26 @@ MSAGraphOverview::MSAGraphOverview(MaEditorWgt *ui)
     sl_drawGraph();
 }
 
-void MSAGraphOverview::cancelRendering() {
+void MaGraphOverview::cancelRendering() {
     if (isRendering) {
         graphCalculationTaskRunner.cancel();
         lastDrawnVersion = -1;
     }
 }
 
-void MSAGraphOverview::sl_visibleRangeChanged() {
+void MaGraphOverview::sl_visibleRangeChanged() {
     if (!isValid()) {
         return;
     }
     update();
 }
 
-void MSAGraphOverview::sl_redraw() {
+void MaGraphOverview::sl_redraw() {
     redrawGraph = true;
     update();
 }
 
-void MSAGraphOverview::paintEvent(QPaintEvent *e) {
+void MaGraphOverview::paintEvent(QPaintEvent *e) {
 
     QPainter p(this);
     if (!isValid()) {
@@ -135,7 +135,7 @@ void MSAGraphOverview::paintEvent(QPaintEvent *e) {
     QWidget::paintEvent(e);
 }
 
-void MSAGraphOverview::resizeEvent(QResizeEvent *e) {
+void MaGraphOverview::resizeEvent(QResizeEvent *e) {
     if (!isBlocked) {
         redrawGraph = true;
         sl_drawGraph();
@@ -143,7 +143,7 @@ void MSAGraphOverview::resizeEvent(QResizeEvent *e) {
     QWidget::resizeEvent(e);
 }
 
-void MSAGraphOverview::drawVisibleRange(QPainter &p) {
+void MaGraphOverview::drawVisibleRange(QPainter &p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
@@ -170,7 +170,7 @@ void MSAGraphOverview::drawVisibleRange(QPainter &p) {
     p.drawRect(cachedVisibleRange.adjusted(0, 0, -1, -1));
 }
 
-void MSAGraphOverview::sl_drawGraph() {
+void MaGraphOverview::sl_drawGraph() {
     if (!isVisible() || isBlocked) {
         return;
     }
@@ -178,15 +178,15 @@ void MSAGraphOverview::sl_drawGraph() {
 
     switch (method) {
     case Strict:
-        graphCalculationTask = new MSAConsensusOverviewCalculationTask(editor->getMaObject(),
+        graphCalculationTask = new MaConsensusOverviewCalculationTask(editor->getMaObject(),
                                                                        width(), FIXED_HEIGHT);
         break;
     case Gaps:
-        graphCalculationTask = new MSAGapOverviewCalculationTask(editor->getMaObject(),
+        graphCalculationTask = new MaGapOverviewCalculationTask(editor->getMaObject(),
                                                                  width(), FIXED_HEIGHT);
         break;
     case Clustal:
-        graphCalculationTask = new MSAClustalOverviewCalculationTask(editor->getMaObject(),
+        graphCalculationTask = new MaClustalOverviewCalculationTask(editor->getMaObject(),
                                                                      width(), FIXED_HEIGHT);
         break;
     case Highlighting:
@@ -196,7 +196,7 @@ void MSAGraphOverview::sl_drawGraph() {
         MsaColorScheme* cScheme = sequenceArea->getCurrentColorScheme();
         QString cSchemeId = cScheme->getFactory()->getId();
 
-        graphCalculationTask = new MSAHighlightingOverviewCalculationTask(editor,
+        graphCalculationTask = new MaHighlightingOverviewCalculationTask(editor,
                                                                           cSchemeId,
                                                                           hSchemeId,
                                                                           width(), FIXED_HEIGHT);
@@ -210,13 +210,13 @@ void MSAGraphOverview::sl_drawGraph() {
     sl_redraw();
 }
 
-void MSAGraphOverview::sl_highlightingChanged() {
+void MaGraphOverview::sl_highlightingChanged() {
     if (method == Highlighting) {
         sl_drawGraph();
     }
 }
 
-void MSAGraphOverview::sl_graphOrientationChanged(MSAGraphOverviewDisplaySettings::OrientationMode orientation) {
+void MaGraphOverview::sl_graphOrientationChanged(MaGraphOverviewDisplaySettings::OrientationMode orientation) {
     if (orientation != displaySettings->orientation) {
         displaySettings->orientation = orientation;
 
@@ -227,7 +227,7 @@ void MSAGraphOverview::sl_graphOrientationChanged(MSAGraphOverviewDisplaySetting
     }
 }
 
-void MSAGraphOverview::sl_graphTypeChanged(MSAGraphOverviewDisplaySettings::GraphType type) {
+void MaGraphOverview::sl_graphTypeChanged(MaGraphOverviewDisplaySettings::GraphType type) {
     if (type != displaySettings->type) {
         displaySettings->type = type;
 
@@ -238,7 +238,7 @@ void MSAGraphOverview::sl_graphTypeChanged(MSAGraphOverviewDisplaySettings::Grap
     }
 }
 
-void MSAGraphOverview::sl_graphColorChanged(QColor color) {
+void MaGraphOverview::sl_graphColorChanged(QColor color) {
     if (color != displaySettings->color) {
         displaySettings->color = color;
 
@@ -249,29 +249,29 @@ void MSAGraphOverview::sl_graphColorChanged(QColor color) {
     }
 }
 
-void MSAGraphOverview::sl_calculationMethodChanged(MSAGraphCalculationMethod _method) {
+void MaGraphOverview::sl_calculationMethodChanged(MaGraphCalculationMethod _method) {
     if (method != _method) {
         method = _method;
         sl_drawGraph();
     }
 }
 
-void MSAGraphOverview::sl_startRendering() {
+void MaGraphOverview::sl_startRendering() {
     isRendering = true;
     emit si_renderingStateChanged(isRendering);
 }
 
-void MSAGraphOverview::sl_stopRendering() {
+void MaGraphOverview::sl_stopRendering() {
     isRendering = false;
     emit si_renderingStateChanged(isRendering);
 }
 
-void MSAGraphOverview::sl_blockRendering() {
+void MaGraphOverview::sl_blockRendering() {
     disconnect(editor->getMaObject(), 0, this, 0);
     isBlocked = true;
 }
 
-void MSAGraphOverview::sl_unblockRendering(bool update) {
+void MaGraphOverview::sl_unblockRendering(bool update) {
     isBlocked = false;
 
     if (update && lastDrawnVersion != editor->getMaObject()->getModificationVersion()) {
@@ -284,8 +284,8 @@ void MSAGraphOverview::sl_unblockRendering(bool update) {
             SLOT(sl_drawGraph()));
 }
 
-void MSAGraphOverview::drawOverview(QPainter &p) {
-    if (displaySettings->orientation == MSAGraphOverviewDisplaySettings::FromTopToBottom) {
+void MaGraphOverview::drawOverview(QPainter &p) {
+    if (displaySettings->orientation == MaGraphOverviewDisplaySettings::FromTopToBottom) {
         // transform coordinate system
         p.translate( 0, height());
         p.scale(1, -1);
@@ -312,17 +312,17 @@ void MSAGraphOverview::drawOverview(QPainter &p) {
     }
 
     // area graph
-    if (displaySettings->type == MSAGraphOverviewDisplaySettings::Area) {
+    if (displaySettings->type == MaGraphOverviewDisplaySettings::Area) {
         p.drawPolygon( resultPolygon );
     }
 
     // line graph
-    if (displaySettings->type == MSAGraphOverviewDisplaySettings::Line) {
+    if (displaySettings->type == MaGraphOverviewDisplaySettings::Line) {
         p.drawPolyline( resultPolygon );
     }
 
     // hystogram
-    if (displaySettings->type == MSAGraphOverviewDisplaySettings::Hystogram) {
+    if (displaySettings->type == MaGraphOverviewDisplaySettings::Hystogram) {
         int size = graphCalculationTaskRunner.getResult().size();
         for (int i = 0; i < size; i++) {
             const QPointF point = resultPolygon.at(i);
@@ -342,12 +342,12 @@ void MSAGraphOverview::drawOverview(QPainter &p) {
     // gray frame
     p.setPen(Qt::gray);
     p.setBrush(Qt::transparent);
-    p.drawRect( rect().adjusted( 0, (displaySettings->orientation == MSAGraphOverviewDisplaySettings::FromTopToBottom),
-                                 -1, -1 * (displaySettings->orientation == MSAGraphOverviewDisplaySettings::FromBottomToTop)));
+    p.drawRect( rect().adjusted( 0, (displaySettings->orientation == MaGraphOverviewDisplaySettings::FromTopToBottom),
+                                 -1, -1 * (displaySettings->orientation == MaGraphOverviewDisplaySettings::FromBottomToTop)));
 
 }
 
-void MSAGraphOverview::moveVisibleRange(QPoint _pos) {
+void MaGraphOverview::moveVisibleRange(QPoint _pos) {
     const QRect& overviewRect = rect();
     QRect newVisibleRange(cachedVisibleRange);
     newVisibleRange.moveLeft(_pos.x() - static_cast<double>(cachedVisibleRange.width()) / 2 );

@@ -27,14 +27,14 @@
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/MainWindow.h>
 
-#include "MSAOverviewContextMenu.h"
-#include "MSAOverviewImageExportTask.h"
-#include "MSASimpleOverview.h"
+#include "MaOverviewContextMenu.h"
+#include "MaOverviewImageExportTask.h"
+#include "MaSimpleOverview.h"
 #include "../MSAEditorOverviewArea.h"
 
 namespace U2 {
 
-MSAOverviewContextMenu::MSAOverviewContextMenu(MSASimpleOverview *sOverview, MSAGraphOverview *gOverview)
+MaOverviewContextMenu::MaOverviewContextMenu(MaSimpleOverview *sOverview, MaGraphOverview *gOverview)
     : simpleOverview(sOverview),
       graphOverview(gOverview)
 {
@@ -56,7 +56,7 @@ MSAOverviewContextMenu::MSAOverviewContextMenu(MSASimpleOverview *sOverview, MSA
     connectSlots();
 }
 
-void MSAOverviewContextMenu::connectSlots() {
+void MaOverviewContextMenu::connectSlots() {
 
     connect(showSimpleOverviewAction, SIGNAL(toggled(bool)), simpleOverview, SLOT(setVisible(bool)));
 
@@ -73,34 +73,34 @@ void MSAOverviewContextMenu::connectSlots() {
 
 }
 
-void MSAOverviewContextMenu::sl_exportAsImageTriggered() {
-    MSAOverviewImageExportController factory(simpleOverview, graphOverview);
+void MaOverviewContextMenu::sl_exportAsImageTriggered() {
+    MaOverviewImageExportController factory(simpleOverview, graphOverview);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MSA, ExportImageDialog::NoScaling, p);
     dialog->exec();
 }
 
-void MSAOverviewContextMenu::sl_graphTypeActionTriggered(QAction *action) {
+void MaOverviewContextMenu::sl_graphTypeActionTriggered(QAction *action) {
     if (action == lineGraphAction) {
-        emit si_graphTypeSelected(MSAGraphOverviewDisplaySettings::Line);
+        emit si_graphTypeSelected(MaGraphOverviewDisplaySettings::Line);
     }
     if (action == areaGraphAction) {
-        emit si_graphTypeSelected(MSAGraphOverviewDisplaySettings::Area);
+        emit si_graphTypeSelected(MaGraphOverviewDisplaySettings::Area);
     }
     if (action == histogramGraphAction) {
-        emit si_graphTypeSelected(MSAGraphOverviewDisplaySettings::Hystogram);
+        emit si_graphTypeSelected(MaGraphOverviewDisplaySettings::Hystogram);
     }
 }
 
-void MSAOverviewContextMenu::sl_graphOrientationActionTriggered(QAction *action) {
+void MaOverviewContextMenu::sl_graphOrientationActionTriggered(QAction *action) {
     if (action == topToBottomOrientationAction) {
-        emit si_graphOrientationSelected(MSAGraphOverviewDisplaySettings::FromTopToBottom);
+        emit si_graphOrientationSelected(MaGraphOverviewDisplaySettings::FromTopToBottom);
     } else {
-        emit si_graphOrientationSelected(MSAGraphOverviewDisplaySettings::FromBottomToTop);
+        emit si_graphOrientationSelected(MaGraphOverviewDisplaySettings::FromBottomToTop);
     }
 }
 
-void MSAOverviewContextMenu::sl_colorActionTriggered() {
+void MaOverviewContextMenu::sl_colorActionTriggered() {
     QObjectScopedPointer<QColorDialog> colorDialog = new QColorDialog(graphOverview->getCurrentColor(), this);
 #ifdef Q_OS_MAC
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
@@ -116,7 +116,7 @@ void MSAOverviewContextMenu::sl_colorActionTriggered() {
     }
 }
 
-void MSAOverviewContextMenu::sl_caclulationMethodActionTriggered(QAction *action) {
+void MaOverviewContextMenu::sl_caclulationMethodActionTriggered(QAction *action) {
     if (action == strictMethodAction) {
         emit si_calculationMethodSelected(Strict);
     }
@@ -131,27 +131,27 @@ void MSAOverviewContextMenu::sl_caclulationMethodActionTriggered(QAction *action
     }
 }
 
-void MSAOverviewContextMenu::initSimpleOverviewAction() {
+void MaOverviewContextMenu::initSimpleOverviewAction() {
     showSimpleOverviewAction = createCheckableAction(tr("Show simple overview"));
     showSimpleOverviewAction->setObjectName("Show simple overview");
     showSimpleOverviewAction->setChecked( simpleOverview->isVisible() );
     addAction(showSimpleOverviewAction);
 }
 
-void MSAOverviewContextMenu::initExportAsImageAction() {
+void MaOverviewContextMenu::initExportAsImageAction() {
     exportAsImage = new QAction(tr("Export as image"), this);
     exportAsImage->setObjectName("Export as image");
     addAction(exportAsImage);
 }
 
-void MSAOverviewContextMenu::initDisplaySettingsMenu() {
+void MaOverviewContextMenu::initDisplaySettingsMenu() {
     displaySettingsMenu = addMenu(tr("Display settings..."));
     displaySettingsMenu->menuAction()->setObjectName("Display settings");
     initGraphTypeSubmenu();
     initOrientationSubmenu();
 }
 
-void MSAOverviewContextMenu::initCalculationMethodMenu() {
+void MaOverviewContextMenu::initCalculationMethodMenu() {
     calculationMethodMenu = addMenu(tr("Calculation method..."));
 
     calculationMethodActionGroup = new QActionGroup(calculationMethodMenu);
@@ -185,7 +185,7 @@ void MSAOverviewContextMenu::initCalculationMethodMenu() {
     calculationMethodMenu->addActions(calculationMethodActionGroup->actions());
 }
 
-void MSAOverviewContextMenu::initGraphTypeSubmenu() {
+void MaOverviewContextMenu::initGraphTypeSubmenu() {
     graphTypeMenu = displaySettingsMenu->addMenu(tr("Graph type"));
     graphTypeMenu->menuAction()->setObjectName("Graph type");
 
@@ -199,10 +199,10 @@ void MSAOverviewContextMenu::initGraphTypeSubmenu() {
     areaGraphAction->setObjectName("Area graph");
 
     switch (graphOverview->getCurrentGraphType()) {
-    case MSAGraphOverviewDisplaySettings::Hystogram:
+    case MaGraphOverviewDisplaySettings::Hystogram:
         histogramGraphAction->setChecked(true);
         break;
-    case MSAGraphOverviewDisplaySettings::Line:
+    case MaGraphOverviewDisplaySettings::Line:
         lineGraphAction->setChecked(true);
         break;
     default:
@@ -212,7 +212,7 @@ void MSAOverviewContextMenu::initGraphTypeSubmenu() {
     graphTypeMenu->addActions(graphTypeActionGroup->actions());
 }
 
-void MSAOverviewContextMenu::initOrientationSubmenu() {
+void MaOverviewContextMenu::initOrientationSubmenu() {
     orientationMenu = displaySettingsMenu->addMenu(tr("Orientation"));
     orientationMenu->menuAction()->setObjectName("Orientation");
 
@@ -224,14 +224,14 @@ void MSAOverviewContextMenu::initOrientationSubmenu() {
     topToBottomOrientationAction->setObjectName("Top to bottom");
     bottomToTopOrientationAction->setObjectName("Bottom to top");
 
-    if (graphOverview->getCurrentOrientationMode() == MSAGraphOverviewDisplaySettings::FromBottomToTop) {
+    if (graphOverview->getCurrentOrientationMode() == MaGraphOverviewDisplaySettings::FromBottomToTop) {
         bottomToTopOrientationAction->setChecked(true);
     } else {
         topToBottomOrientationAction->setChecked(true);
     }
 }
 
-QAction* MSAOverviewContextMenu::createCheckableAction(const QString &text, QActionGroup* group) {
+QAction* MaOverviewContextMenu::createCheckableAction(const QString &text, QActionGroup* group) {
     QAction* a = new QAction(text, this);
     a->setCheckable(true);
 

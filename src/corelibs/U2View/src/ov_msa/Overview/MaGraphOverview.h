@@ -25,14 +25,14 @@
 #include <U2Core/global.h>
 #include <U2Core/BackgroundTaskRunner.h>
 
-#include "MSAOverview.h"
+#include "MaOverview.h"
 
 namespace U2 {
 
 class MSAEditorConsensusCache;
-class MSAGraphCalculationTask;
+class MaGraphCalculationTask;
 
-class MSAGraphOverviewDisplaySettings {
+class MaGraphOverviewDisplaySettings {
 public:
     enum GraphType {
         Hystogram = 0,
@@ -45,7 +45,7 @@ public:
         FromBottomToTop = 1
     };
 
-    MSAGraphOverviewDisplaySettings()
+    MaGraphOverviewDisplaySettings()
         : color( Qt::gray ),
           type(Area),
           orientation(FromBottomToTop) {}
@@ -55,7 +55,7 @@ public:
     OrientationMode orientation;
 };
 
-enum MSAGraphCalculationMethod {
+enum MaGraphCalculationMethod {
     Strict,         // the most frequent nucleotide
     Gaps,           // percent of gaps
     Clustal,        // 0-30-60-100 groups
@@ -66,10 +66,10 @@ enum MSAGraphCalculationMethod {
 #define MSA_GRAPH_OVERVIEW_TYPE_KEY "msa_graph_overview_type"
 #define MSA_GRAPH_OVERVIEW_ORIENTAION_KEY "msa_graph_overview_orientation_key"
 
-class U2VIEW_EXPORT MSAGraphOverview : public MSAOverview {
+class U2VIEW_EXPORT MaGraphOverview : public MaOverview {
     Q_OBJECT
 public:
-    MSAGraphOverview(MaEditorWgt* ui);
+    MaGraphOverview(MaEditorWgt* ui);
     bool isValid() const { return graphCalculationTaskRunner.getError().isEmpty(); }
     QPixmap getView() { return cachedConsensus; }
 
@@ -78,10 +78,10 @@ public:
     void cancelRendering();
 
     QColor getCurrentColor() const { return displaySettings->color; }
-    MSAGraphOverviewDisplaySettings::GraphType getCurrentGraphType() const { return displaySettings->type; }
-    MSAGraphOverviewDisplaySettings::OrientationMode getCurrentOrientationMode() const
+    MaGraphOverviewDisplaySettings::GraphType getCurrentGraphType() const { return displaySettings->type; }
+    MaGraphOverviewDisplaySettings::OrientationMode getCurrentOrientationMode() const
     { return displaySettings->orientation; }
-    MSAGraphCalculationMethod getCurrentCalculationMethod() const { return method; }
+    MaGraphCalculationMethod getCurrentCalculationMethod() const { return method; }
 
 signals:
     void si_renderingStateChanged(bool isRendering);
@@ -92,10 +92,10 @@ public slots:
     void sl_drawGraph();
     void sl_highlightingChanged();
 
-    void sl_graphOrientationChanged(MSAGraphOverviewDisplaySettings::OrientationMode orientation);
-    void sl_graphTypeChanged(MSAGraphOverviewDisplaySettings::GraphType type);
+    void sl_graphOrientationChanged(MaGraphOverviewDisplaySettings::OrientationMode orientation);
+    void sl_graphTypeChanged(MaGraphOverviewDisplaySettings::GraphType type);
     void sl_graphColorChanged(QColor color);
-    void sl_calculationMethodChanged(MSAGraphCalculationMethod method);
+    void sl_calculationMethodChanged(MaGraphCalculationMethod method);
 
     void sl_startRendering();
     void sl_stopRendering();
@@ -119,12 +119,12 @@ private:
     bool isBlocked;
     int lastDrawnVersion;
 
-    BackgroundTaskRunner<QPolygonF>     graphCalculationTaskRunner;
+    BackgroundTaskRunner<QPolygonF>    graphCalculationTaskRunner;
 
-    MSAGraphOverviewDisplaySettings*    displaySettings;
-    MSAGraphCalculationMethod           method;
+    MaGraphOverviewDisplaySettings*    displaySettings;
+    MaGraphCalculationMethod           method;
 
-    MSAGraphCalculationTask*            graphCalculationTask;
+    MaGraphCalculationTask*            graphCalculationTask;
 };
 
 } // namespace

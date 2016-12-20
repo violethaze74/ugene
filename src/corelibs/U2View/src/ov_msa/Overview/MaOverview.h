@@ -38,10 +38,10 @@ class MaEditorSequenceArea;
 #define VISIBLE_RANGE_CRITICAL_SIZE 5
 
 
-class U2VIEW_EXPORT MSAOverview : public QWidget {
+class U2VIEW_EXPORT MaOverview : public QWidget {
     Q_OBJECT
 public:
-    MSAOverview(MaEditorWgt *_ui);
+    MaOverview(MaEditorWgt *_ui);
     virtual bool isValid() const { return false; }
     virtual QPixmap getView() { return QPixmap(); }
 

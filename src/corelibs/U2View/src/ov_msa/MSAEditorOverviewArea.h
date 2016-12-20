@@ -30,9 +30,9 @@
 namespace U2 {
 
 class MaEditorWgt;
-class MSASimpleOverview;
-class MSAGraphOverview;
-class MSAOverviewContextMenu;
+class MaSimpleOverview;
+class MaGraphOverview;
+class MaOverviewContextMenu;
 
 class U2VIEW_EXPORT MSAEditorOverviewArea : public QWidget {
     Q_OBJECT
@@ -41,17 +41,17 @@ public:
     void cancelRendering();
     bool isOverviewWidget(QWidget* wgt) const;
 
-    MSASimpleOverview* getSimpleOverview() const { return simpleOverview; }
-    MSAGraphOverview* getGraphOverview() const { return graphOverview; }
+    MaSimpleOverview* getSimpleOverview() const { return simpleOverview; }
+    MaGraphOverview* getGraphOverview() const { return graphOverview; }
 
     static const QString OVERVIEW_AREA_OBJECT_NAME;
 public slots:
     void sl_onContextMenuRequested(const QPoint& p);
     void sl_show();
 private:
-    MSASimpleOverview*  simpleOverview;
-    MSAGraphOverview*   graphOverview;
-    MSAOverviewContextMenu* contextMenu;
+    MaSimpleOverview*  simpleOverview;
+    MaGraphOverview*   graphOverview;
+    MaOverviewContextMenu* contextMenu;
 };
 
 }

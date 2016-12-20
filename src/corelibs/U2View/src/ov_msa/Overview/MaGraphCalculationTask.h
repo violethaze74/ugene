@@ -39,10 +39,10 @@ class MSAConsensusAlgorithm;
 class MsaColorScheme;
 class MsaHighlightingScheme;
 
-class MSAGraphCalculationTask : public BackgroundTask<QPolygonF> {
+class MaGraphCalculationTask : public BackgroundTask<QPolygonF> {
     Q_OBJECT
 public:
-    MSAGraphCalculationTask(MultipleAlignmentObject* msa, int width, int height);
+    MaGraphCalculationTask(MultipleAlignmentObject* msa, int width, int height);
 
     void run();
 signals:
@@ -60,10 +60,10 @@ protected:
     int height;
 };
 
-class MSAConsensusOverviewCalculationTask : public MSAGraphCalculationTask {
+class MaConsensusOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAConsensusOverviewCalculationTask(MultipleAlignmentObject* msa,
+    MaConsensusOverviewCalculationTask(MultipleAlignmentObject* msa,
                                         int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -71,19 +71,19 @@ private:
     MSAConsensusAlgorithm*  algorithm;
 };
 
-class MSAGapOverviewCalculationTask : public MSAGraphCalculationTask {
+class MaGapOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAGapOverviewCalculationTask(MultipleAlignmentObject* msa,
+    MaGapOverviewCalculationTask(MultipleAlignmentObject* msa,
                                   int width, int height);
 private:
     int getGraphValue(int pos) const;
 };
 
-class MSAClustalOverviewCalculationTask : public MSAGraphCalculationTask {
+class MaClustalOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAClustalOverviewCalculationTask(MultipleAlignmentObject* msa,
+    MaClustalOverviewCalculationTask(MultipleAlignmentObject* msa,
                                       int width, int height);
 private:
     int getGraphValue(int pos) const;
@@ -91,10 +91,10 @@ private:
     MSAConsensusAlgorithm*  algorithm;
 };
 
-class MSAHighlightingOverviewCalculationTask : public MSAGraphCalculationTask {
+class MaHighlightingOverviewCalculationTask : public MaGraphCalculationTask {
     Q_OBJECT
 public:
-    MSAHighlightingOverviewCalculationTask(MaEditor* _editor,
+    MaHighlightingOverviewCalculationTask(MaEditor* _editor,
                                            const QString &colorSchemeId,
                                            const QString &highlightingSchemeId,
                                            int width, int height);

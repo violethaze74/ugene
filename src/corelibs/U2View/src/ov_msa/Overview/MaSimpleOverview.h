@@ -25,7 +25,7 @@
 #include <U2Core/global.h>
 
 #include <QWidget>
-#include "MSAOverview.h"
+#include "MaOverview.h"
 
 
 namespace U2 {
@@ -37,10 +37,10 @@ class MsaColorScheme;
 class MsaHighlightingScheme;
 
 
-class U2VIEW_EXPORT MSASimpleOverview : public MSAOverview {
+class U2VIEW_EXPORT MaSimpleOverview : public MaOverview {
     Q_OBJECT
 public:
-    MSASimpleOverview(MaEditorWgt *ui);
+    MaSimpleOverview(MaEditorWgt *ui);
     const static int FIXED_HEIGTH = 70;
     bool isValid() const;
     QPixmap getView();

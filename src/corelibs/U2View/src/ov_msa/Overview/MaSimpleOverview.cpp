@@ -30,13 +30,13 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
-#include "MSASimpleOverview.h"
-#include "MSAGraphCalculationTask.h"
+#include "MaSimpleOverview.h"
+#include "MaGraphCalculationTask.h"
 
 namespace U2 {
 
-MSASimpleOverview::MSASimpleOverview(MaEditorWgt *_ui)
-    : MSAOverview(_ui),
+MaSimpleOverview::MaSimpleOverview(MaEditorWgt *_ui)
+    : MaOverview(_ui),
       redrawMSAOverview(true),
       redrawSelection(true)
 {
@@ -46,7 +46,7 @@ MSASimpleOverview::MSASimpleOverview(MaEditorWgt *_ui)
     setVisible(false);
 }
 
-bool MSASimpleOverview::isValid() const {
+bool MaSimpleOverview::isValid() const {
     if (width() < editor->getAlignmentLen() || height() < editor->getNumSequences()) {
         return false;
     }
@@ -54,7 +54,7 @@ bool MSASimpleOverview::isValid() const {
 }
 
 
-QPixmap MSASimpleOverview::getView() {
+QPixmap MaSimpleOverview::getView() {
     resize(ui->width(), FIXED_HEIGTH);
     if (cachedMSAOverview.isNull()) {
         cachedMSAOverview = QPixmap(size());
@@ -65,14 +65,14 @@ QPixmap MSASimpleOverview::getView() {
     return cachedMSAOverview;
 }
 
-void MSASimpleOverview::sl_visibleRangeChanged() {
+void MaSimpleOverview::sl_visibleRangeChanged() {
     if (!isValid()) {
         return;
     }
     update();
 }
 
-void MSASimpleOverview::sl_selectionChanged() {
+void MaSimpleOverview::sl_selectionChanged() {
     if (!isValid()) {
         return;
     }
@@ -81,14 +81,14 @@ void MSASimpleOverview::sl_selectionChanged() {
     update();
 }
 
-void MSASimpleOverview::sl_redraw() {
+void MaSimpleOverview::sl_redraw() {
     redrawMSAOverview = true;
     redrawSelection = true;
 
     update();
 }
 
-void MSASimpleOverview::sl_highlightingChanged() {
+void MaSimpleOverview::sl_highlightingChanged() {
     if (!isValid()) {
         return;
     }
@@ -96,7 +96,7 @@ void MSASimpleOverview::sl_highlightingChanged() {
     update();
 }
 
-void MSASimpleOverview::paintEvent(QPaintEvent *e) {
+void MaSimpleOverview::paintEvent(QPaintEvent *e) {
     if (!isValid()) {
         QPainter p(this);
         showWarning(p, e, tr("Multiple sequence alignment is too big for current window size.\nSimple overview is unavailable."));
@@ -129,13 +129,13 @@ void MSASimpleOverview::paintEvent(QPaintEvent *e) {
     QWidget::paintEvent(e);
 }
 
-void MSASimpleOverview::resizeEvent(QResizeEvent *e) {
+void MaSimpleOverview::resizeEvent(QResizeEvent *e) {
     redrawMSAOverview = true;
     redrawSelection = true;
     QWidget::resizeEvent(e);
 }
 
-void MSASimpleOverview::drawOverview(QPainter &p) {
+void MaSimpleOverview::drawOverview(QPainter &p) {
     p.fillRect(cachedMSAOverview.rect(), Qt::white);
 
     if (editor->isAlignmentEmpty()) {
@@ -166,7 +166,7 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
             rect.setWidth( next - prev );
 
             QColor color = sequenceArea->getCurrentColorScheme()->getColor(seq, pos, mAlignmentObj->charAt(seq, pos));
-            if (MSAHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
+            if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
                 color = Qt::gray;
             }
 
@@ -177,7 +177,7 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
                 refPos = ma->getRowIndexByRowId(refId, os);
                 SAFE_POINT_OP(os, );
             }
-            drawColor = MSAHighlightingOverviewCalculationTask::isCellHighlighted(
+            drawColor = MaHighlightingOverviewCalculationTask::isCellHighlighted(
                         ma,
                         sequenceArea->getCurrentHighlightingScheme(),
                         sequenceArea->getCurrentColorScheme(),
@@ -193,7 +193,7 @@ void MSASimpleOverview::drawOverview(QPainter &p) {
     p.drawRect( rect().adjusted(0, 0, -1, -1) );
 }
 
-void MSASimpleOverview::drawVisibleRange(QPainter &p) {
+void MaSimpleOverview::drawVisibleRange(QPainter &p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
@@ -213,11 +213,11 @@ void MSASimpleOverview::drawVisibleRange(QPainter &p) {
     p.drawRect(cachedVisibleRange.adjusted(0, 0, -1, -1));
 }
 
-void MSASimpleOverview::drawSelection(QPainter &p) {
+void MaSimpleOverview::drawSelection(QPainter &p) {
         p.fillRect(cachedSelection, SELECTION_COLOR);
 }
 
-void MSASimpleOverview::moveVisibleRange(QPoint _pos) {
+void MaSimpleOverview::moveVisibleRange(QPoint _pos) {
     const QRect& overviewRect = rect();
     QRect newVisibleRange(cachedVisibleRange);
     newVisibleRange.moveLeft(_pos.x() - (double)cachedVisibleRange.width() / 2 );
@@ -246,7 +246,7 @@ void MSASimpleOverview::moveVisibleRange(QPoint _pos) {
     sequenceArea->setFirstVisibleSequence(pos);
 }
 
-void MSASimpleOverview::recalculateSelection() {
+void MaSimpleOverview::recalculateSelection() {
     recalculateScale();
 
     const MaEditorSelection& selection = sequenceArea->getSelection();
@@ -259,7 +259,7 @@ void MSASimpleOverview::recalculateSelection() {
     cachedSelection.setHeight( qRound(stepY * (selection.y() + selection.height())) - qRound(stepY * selection.y()));
 }
 
-void MSASimpleOverview::recalculateScale() {
+void MaSimpleOverview::recalculateScale() {
     stepX = width() / (double)editor->getAlignmentLen();
     stepY = height() / (double)editor->getNumSequences();
 }

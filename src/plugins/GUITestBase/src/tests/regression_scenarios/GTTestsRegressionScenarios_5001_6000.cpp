@@ -36,7 +36,7 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
 #include <U2View/MSAEditorTreeViewer.h>
-#include <U2View/MSAGraphOverview.h>
+#include <U2View/MaGraphOverview.h>
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
