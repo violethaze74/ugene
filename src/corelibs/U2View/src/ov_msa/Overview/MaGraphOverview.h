@@ -87,7 +87,6 @@ signals:
     void si_renderingStateChanged(bool isRendering);
 
 public slots:
-    void sl_visibleRangeChanged();
     void sl_redraw();
     void sl_drawGraph();
     void sl_highlightingChanged();

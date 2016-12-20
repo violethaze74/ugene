@@ -30,6 +30,7 @@
 namespace U2 {
 
 class MaEditorWgt;
+class MaSangerOverview;
 class MaSimpleOverview;
 class MaGraphOverview;
 class MaOverviewContextMenu;
@@ -49,6 +50,7 @@ public slots:
     void sl_onContextMenuRequested(const QPoint& p);
     void sl_show();
 private:
+    MaSangerOverview*  sangerOverview;
     MaSimpleOverview*  simpleOverview;
     MaGraphOverview*   graphOverview;
     MaOverviewContextMenu* contextMenu;

@@ -85,13 +85,6 @@ void MaGraphOverview::cancelRendering() {
     }
 }
 
-void MaGraphOverview::sl_visibleRangeChanged() {
-    if (!isValid()) {
-        return;
-    }
-    update();
-}
-
 void MaGraphOverview::sl_redraw() {
     redrawGraph = true;
     update();

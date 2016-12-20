@@ -65,13 +65,6 @@ QPixmap MaSimpleOverview::getView() {
     return cachedMSAOverview;
 }
 
-void MaSimpleOverview::sl_visibleRangeChanged() {
-    if (!isValid()) {
-        return;
-    }
-    update();
-}
-
 void MaSimpleOverview::sl_selectionChanged() {
     if (!isValid()) {
         return;
@@ -214,7 +207,7 @@ void MaSimpleOverview::drawVisibleRange(QPainter &p) {
 }
 
 void MaSimpleOverview::drawSelection(QPainter &p) {
-        p.fillRect(cachedSelection, SELECTION_COLOR);
+    p.fillRect(cachedSelection, SELECTION_COLOR);
 }
 
 void MaSimpleOverview::moveVisibleRange(QPoint _pos) {

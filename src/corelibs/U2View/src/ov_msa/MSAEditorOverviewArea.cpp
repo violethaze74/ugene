@@ -23,6 +23,7 @@
 
 #include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
+#include "Overview/MaSangerOverview.h"
 #include "Overview/MaSimpleOverview.h"
 #include "Overview/MaGraphOverview.h"
 #include "Overview/MaOverviewContextMenu.h"
@@ -41,6 +42,9 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui) {
     simpleOverview = new MaSimpleOverview(ui);
     graphOverview = new MaGraphOverview(ui);
 
+    // SANGER_TODO: this is wrong
+    sangerOverview = new MaSangerOverview(ui);
+
     simpleOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_simple"));
     graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_graph"));
 
@@ -49,6 +53,7 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui) {
     layout->setSpacing(0);
     layout->addWidget(simpleOverview);
     layout->addWidget(graphOverview);
+    layout->addWidget(sangerOverview);
     setLayout(layout);
 
     connect(ui, SIGNAL(customContextMenuRequested(QPoint)), SLOT(sl_onContextMenuRequested(QPoint)));

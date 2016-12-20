@@ -41,6 +41,13 @@ MaOverview::MaOverview(MaEditorWgt *_ui)
             SLOT(sl_redraw()));
 }
 
+void MaOverview::sl_visibleRangeChanged() {
+    if (!isValid()) {
+        return;
+    }
+    update();
+}
+
 void MaOverview::mousePressEvent(QMouseEvent *me) {
     if (!isValid()) {
         return;

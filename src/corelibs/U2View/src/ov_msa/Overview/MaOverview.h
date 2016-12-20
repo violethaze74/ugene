@@ -46,7 +46,7 @@ public:
     virtual QPixmap getView() { return QPixmap(); }
 
 public slots:
-    virtual void sl_visibleRangeChanged(){}
+    void sl_visibleRangeChanged();
     virtual void sl_selectionChanged() {}
     virtual void sl_redraw(){}
 

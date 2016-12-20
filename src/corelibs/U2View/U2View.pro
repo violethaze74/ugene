@@ -82,6 +82,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/Overview/MaOverview.h \
            src/ov_msa/Overview/MaOverviewContextMenu.h \
            src/ov_msa/Overview/MaOverviewImageExportTask.h \
+           src/ov_msa/Overview/MaSangerOverview.h \
            src/ov_msa/Overview/MaSimpleOverview.h \
            src/ov_msa/PairAlign/PairAlign.h \
            src/ov_msa/PairAlign/PairAlignFactory.h \
@@ -315,6 +316,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/Overview/MaOverview.cpp \
            src/ov_msa/Overview/MaOverviewContextMenu.cpp \
            src/ov_msa/Overview/MaOverviewImageExportTask.cpp \
+           src/ov_msa/Overview/MaSangerOverview.cpp \
            src/ov_msa/Overview/MaSimpleOverview.cpp \
            src/ov_msa/PairAlign/PairAlign.cpp \
            src/ov_msa/PairAlign/PairAlignFactory.cpp \

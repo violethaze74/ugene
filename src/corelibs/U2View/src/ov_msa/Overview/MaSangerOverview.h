@@ -19,58 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_SIMPLE_OVERVIEW_H_
-#define _U2_MSA_SIMPLE_OVERVIEW_H_
+#ifndef _U2_MA_SANGER_OVERVIEW_H_
+#define _U2_MA_SANGER_OVERVIEW_H_
 
-#include <U2Core/global.h>
-
-#include <QWidget>
 #include "MaOverview.h"
-
 
 namespace U2 {
 
-class MSAEditor;
-class MaEditorWgt;
-class MSAEditorSequenceArea;
-class MsaColorScheme;
-class MsaHighlightingScheme;
+class McaEditor;
 
-
-class U2VIEW_EXPORT MaSimpleOverview : public MaOverview {
+class MaSangerOverview : public MaOverview {
     Q_OBJECT
 public:
-    MaSimpleOverview(MaEditorWgt *ui);
-    const static int FIXED_HEIGTH = 70;
+    MaSangerOverview(MaEditorWgt* ui);
+
     bool isValid() const;
     QPixmap getView();
 
-public slots:
-    void sl_selectionChanged();
-    void sl_redraw();
-    void sl_highlightingChanged();
-
 protected:
     void paintEvent(QPaintEvent *e);
-    void resizeEvent(QResizeEvent *e);
 
 private:
     void drawOverview(QPainter &p);
     void drawVisibleRange(QPainter &p);
     void drawSelection(QPainter &p);
 
-    void moveVisibleRange(QPoint pos);
-
-    void recalculateSelection();
-    void recalculateScale();
+    void drawRead(QPainter &p, const QRect& rect, bool forward);
 
 private:
-    mutable QPixmap cachedMSAOverview;
-
-    mutable bool    redrawMSAOverview;
-    mutable bool    redrawSelection;
+    McaEditor* getEditor() const;
 };
 
 } // namespace
 
-#endif // _U2_MSA_SIMPLE_OVERVIEW_H_
+#endif // _U2_MA_SANGER_OVERVIEW_H_
