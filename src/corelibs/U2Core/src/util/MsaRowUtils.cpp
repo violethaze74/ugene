@@ -463,11 +463,15 @@ QPair<U2MsaGap, U2MsaGap> subGap(const U2MsaGap &subFrom, const U2MsaGap &subWha
 
 void removeCommonPart(QMutableListIterator<U2MsaGap> &iterator, const U2MsaGap &commonPart){
     const QPair<U2MsaGap, U2MsaGap> gapDifference = subGap(iterator.peekNext(), commonPart);
+    if (gapDifference.second.isValid()) {
+        iterator.peekNext() = gapDifference.second;
+    }
     if (gapDifference.first.isValid()) {
         iterator.insert(gapDifference.first);
     }
-    if (gapDifference.second.isValid()) {
-        iterator.peekNext() = gapDifference.second;
+    if (!gapDifference.first.isValid() && !gapDifference.second.isValid()) {
+        iterator.next();
+        iterator.remove();
     }
 }
 
@@ -488,6 +492,7 @@ U2MsaGap extractCommonPart(QMutableListIterator<U2MsaGap> &firstIterator, QMutab
 }
 
 void MsaRowUtils::getGapModelsDifference(const U2MsaRowGapModel &firstGapModel, const U2MsaRowGapModel &secondGapModel, U2MsaRowGapModel &commonPart, U2MsaRowGapModel &firstDifference, U2MsaRowGapModel &secondDifference) {
+    commonPart.clear();
     firstDifference = firstGapModel;
     QMutableListIterator<U2MsaGap> firstIterator(firstDifference);
     secondDifference = secondGapModel;
