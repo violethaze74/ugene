@@ -80,7 +80,8 @@ const char *MESSAGE_BOX_INFO_TITLE = "Information";
 namespace U2 {
 
 ExportProjectViewItemsContoller::ExportProjectViewItemsContoller(QObject* p)
-    : QObject(p)
+    : QObject(p),
+      exportMsaToMcaAction(NULL)
 {
     exportSequencesToSequenceFormatAction = new QAction(tr("Export sequences..."), this);
     exportSequencesToSequenceFormatAction->setObjectName(ACTION_EXPORT_SEQUENCE);
@@ -171,7 +172,9 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
             const MultipleSequenceAlignment &ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj)->getMsa();
             if (ma->getAlphabet()->isNucleic()) {
                 sub->addAction(exportNucleicAlignmentToAminoAction);
-                sub->addAction(exportMsaToMcaAction);
+                if (NULL != exportMsaToMcaAction) {
+                    sub->addAction(exportMsaToMcaAction);
+                }
             }
         }
     }
