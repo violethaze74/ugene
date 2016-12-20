@@ -2181,7 +2181,7 @@ GUI_TEST_CLASS_DEFINITION(test_3319) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
     GTGlobals::sleep(400);
     const QString clipboardText = GTClipboard::text( os );
-    
+
     CHECK_SET_ERR(clipboardText == "TTTAAACCACAGGTCATGACCCAGTAGATGAGGAAATTGGTTTAGTGGTTTA", "unexpected text in clipboard: " + clipboardText);
     GTGlobals::sleep(500);
 }
@@ -4213,12 +4213,12 @@ GUI_TEST_CLASS_DEFINITION(test_3645) {
     GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
     GTUtilsOptionPanelSequenceView::enterPatternFromFile(os, testDir + "_common_data/FindAlgorithm/", "find_pattern_op_2.fa");
 
-    GTUtilsOptionPanelSequenceView::clickPrev(os);
-    GTUtilsOptionPanelSequenceView::clickPrev(os);
+    GTUtilsOptionPanelSequenceView::clickNext(os);
+    GTUtilsOptionPanelSequenceView::clickNext(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<< "Copy sequence",GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os,"ADV_single_sequence_widget_0"));
     QString clipStr = GTClipboard::text(os);
-    CHECK_SET_ERR(clipStr == "AAAAA", "Found sequence don't match");
+    CHECK_SET_ERR(clipStr == "GGGGG", "Found sequence don't match");
     GTGlobals::sleep();
 }
 
