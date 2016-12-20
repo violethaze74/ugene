@@ -191,7 +191,7 @@ public:
     bool drawContent(QPixmap& pixmap);
     bool drawContent(QPixmap& pixmap, const U2Region& region, const QList<qint64>& seqIdx);
 
-    QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
+    QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
     MsaColorScheme * getCurrentColorScheme() const;
     MsaHighlightingScheme * getCurrentHighlightingScheme() const;

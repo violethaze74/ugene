@@ -776,10 +776,10 @@ bool MaEditorSequenceArea::drawContent(QPixmap &pixmap,
     return drawContent(p, region, seqIdx);
 }
 
-QString MaEditorSequenceArea::exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
+QString MaEditorSequenceArea::exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
     CHECK(getEditor() != NULL, QString());
     CHECK(qobject_cast<MSAEditor*>(editor) != NULL, QString());
-    SAFE_POINT(editor->getReferenceRowId() != U2MsaRow::INVALID_ROW_ID, "Export highlighting is not supported wihout a reference", QString());
+    SAFE_POINT(editor->getReferenceRowId() != U2MsaRow::INVALID_ROW_ID, "Export highlighting is not supported without a reference", QString());
     QStringList result;
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
@@ -1410,7 +1410,6 @@ void MaEditorSequenceArea::applyColorScheme(const QString &id) {
     update();
     emit si_highlightingChanged();
 }
-
 
 void MaEditorSequenceArea::updateHScrollBar() {
     shBar->disconnect(this);

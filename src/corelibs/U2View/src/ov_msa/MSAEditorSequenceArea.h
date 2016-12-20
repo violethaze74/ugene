@@ -134,7 +134,7 @@ private:
     void highlightCurrentSelection();
 
 public:
-    QString exportHighligtning(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
+    QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 protected:
     void keyPressEvent(QKeyEvent *);

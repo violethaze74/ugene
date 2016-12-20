@@ -1537,7 +1537,7 @@ ExportHighligtningTask::ExportHighligtningTask(ExportHighligtingDialogController
 }
 
 void ExportHighligtningTask::run(){
-    QString exportedData = msaese->exportHighligtning(startPos, endPos, startingIndex, keepGaps, dots, transpose);
+    QString exportedData = msaese->exportHighlighting(startPos, endPos, startingIndex, keepGaps, dots, transpose);
 
     QFile resultFile(url.getURLString());
     CHECK_EXT(resultFile.open(QFile::WriteOnly | QFile::Truncate), url.getURLString(),);
