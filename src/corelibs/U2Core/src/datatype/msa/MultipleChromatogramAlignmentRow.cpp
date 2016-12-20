@@ -367,7 +367,7 @@ U2Region MultipleChromatogramAlignmentRowData::getWorkingAreaRegion() const {
     return workingArea;
 }
 
-QByteArray MultipleChromatogramAlignmentRowData::toByteArray(qint64 length, U2OpStatus &os) const {
+QByteArray MultipleChromatogramAlignmentRowData::toByteArray(U2OpStatus &os, qint64 length) const {
     // SANGER_TODO: limit to the provider length!
     return getEditedSequenceData();
 }
@@ -379,7 +379,6 @@ char MultipleChromatogramAlignmentRowData::charAt(qint64 position) const {
 char MultipleChromatogramAlignmentRowData::getPredictedSequenceWorkingAreaChar(qint64 position) const {
     CHECK(workingArea.contains(position), U2Msa::GAP_CHAR);
     return getPredictedSequenceChar(position);
-
 }
 
 char MultipleChromatogramAlignmentRowData::getPredictedSequenceChar(qint64 position) const {

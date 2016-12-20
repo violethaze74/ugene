@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#include <typeinfo>
 
 #include <typeinfo>
 
@@ -189,7 +188,7 @@ void MultipleSequenceAlignmentRowData::setRowDbInfo(const U2MsaRow &dbRow) {
     initialRowInDb = dbRow;
 }
 
-QByteArray MultipleSequenceAlignmentRowData::toByteArray(qint64 length, U2OpStatus &os) const {
+QByteArray MultipleSequenceAlignmentRowData::toByteArray(U2OpStatus &os, qint64 length) const {
     if (length < getCoreEnd()) {
         coreLog.trace("Incorrect length was passed to MultipleSequenceAlignmentRowData::toByteArray");
         os.setError("Failed to get row data");

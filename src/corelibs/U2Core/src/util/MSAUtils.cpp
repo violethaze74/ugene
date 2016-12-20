@@ -202,7 +202,7 @@ QList<DNASequence> MSAUtils::ma2seq(const MultipleSequenceAlignment& ma, bool tr
     const DNAAlphabet* al = ma->getAlphabet();
     U2OpStatus2Log os;
     foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) {
-        DNASequence s(row->getName(), row->toByteArray(len, os), al);
+        DNASequence s(row->getName(), row->toByteArray(os, len), al);
         if (trimGaps) {
             int newLen = TextUtils::remove(s.seq.data(), s.length(), gapCharMap);
             s.seq.resize(newLen);

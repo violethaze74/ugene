@@ -62,10 +62,10 @@ GObject * MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, 
     return clonedObject;
 }
 
-char MultipleChromatogramAlignmentObject::charAt(int seqNum, int pos) const {
-    SAFE_POINT(seqNum >= 0 && seqNum < getNumRows(), QString("Invalid sequence num: %1").arg(seqNum), '\n');
-    SAFE_POINT(pos >= 0 && pos < getLength(), QString("Invalid position: %1").arg(pos), '\n');
-    return getMcaRow(seqNum)->charAt(pos);
+char MultipleChromatogramAlignmentObject::charAt(int seqNum, qint64 position) const {
+    SAFE_POINT(seqNum >= 0 && seqNum < getNumRows(), QString("Invalid sequence num: %1").arg(seqNum), U2Msa::GAP_CHAR);
+    SAFE_POINT(position >= 0 && position < getLength(), QString("Invalid position: %1").arg(position), U2Msa::GAP_CHAR);
+    return getMcaRow(seqNum)->charAt(position);
 }
 
 const MultipleChromatogramAlignment MultipleChromatogramAlignmentObject::getMca() const {

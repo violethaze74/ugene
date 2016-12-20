@@ -402,7 +402,7 @@ Task::ReportResult GTest_uMuscleAddUnalignedSequenceToProfile::report() {
     U2OpStatus2Log os;
     for (int i = origAliSeqs, j = 0; i < msa->getNumRows(); i++, j++) {
         const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
-        QByteArray seq = row->toByteArray(msa->getLength(), os);
+        QByteArray seq = row->toByteArray(os, msa->getLength());
         QList<int> seqGaps = gapPositionsForSeqs[j];
         for (int pos = 0; pos < seq.size(); pos++) {
             char c = seq[pos];

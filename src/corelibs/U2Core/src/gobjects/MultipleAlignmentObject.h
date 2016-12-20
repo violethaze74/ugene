@@ -87,7 +87,7 @@ public:
     qint64 getNumRows() const;
     const MultipleAlignmentRow getRow(int row) const;
     int getRowPosById(qint64 rowId) const;
-    virtual char charAt(int seqNum, int pos) const = 0;
+    virtual char charAt(int seqNum, qint64 position) const = 0;
 
     /** Methods to work with rows */
     void removeRow(int rowIdx);

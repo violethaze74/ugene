@@ -84,8 +84,8 @@ bool MultipleSequenceAlignmentObject::isRegionEmpty(int startPos, int startRow, 
     return isBlockEmpty;
 }
 
-char MultipleSequenceAlignmentObject::charAt(int seqNum, int pos) const {
-    return getMultipleAlignment()->charAt(seqNum, pos);
+char MultipleSequenceAlignmentObject::charAt(int seqNum, qint64 position) const {
+    return getMultipleAlignment()->charAt(seqNum, position);
 }
 
 const MultipleSequenceAlignmentRow MultipleSequenceAlignmentObject::getMsaRow(int row) const {

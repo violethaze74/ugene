@@ -162,7 +162,7 @@ QVector<float> SiteconAlgorithm::calculateFirstTypeError(const MultipleSequenceA
         QVector<PositionStats> matrix = calculateDispersionAndAverage(subMA, s, ts);
         QVector<PositionStats> normalizedMatrix = normalize(matrix, s);
         calculateWeights(subMA, normalizedMatrix, s, true, ts);
-        float p = calculatePSum(row->toByteArray(maLen, os), maLen, normalizedMatrix, s, devThresh);
+        float p = calculatePSum(row->toByteArray(os, maLen), maLen, normalizedMatrix, s, devThresh);
         scores.append(p);
     }
     QVector<float> res(100, 0);

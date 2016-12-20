@@ -517,7 +517,7 @@ QScriptValue WorkflowScriptLibrary::getSequenceFromAlignment(QScriptContext *ctx
     MultipleSequenceAlignmentRow aRow = align->getMsaRow(row)->getExplicitCopy();
     aRow->simplify();
     U2OpStatus2Log os;
-    QByteArray arr = aRow->toByteArray(aRow->getCoreLength(), os);
+    QByteArray arr = aRow->toByteArray(os, aRow->getCoreLength());
     if(ctx->argumentCount() == 4) {
         var = ctx->argument(2).toVariant();
         int beg = var.toInt(&ok);

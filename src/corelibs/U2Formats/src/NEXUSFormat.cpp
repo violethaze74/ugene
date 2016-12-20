@@ -793,7 +793,7 @@ void writeMAligment(const MultipleSequenceAlignment &ma, bool simpleName, IOAdap
         name = name.leftJustified(nameMaxLen);
 
         U2OpStatus2Log os;
-        QTextStream(&line) << tabs << name << " " << row->toByteArray(nchar, os) << "\n";
+        QTextStream(&line) << tabs << name << " " << row->toByteArray(os, nchar) << "\n";
         io->writeBlock(line);
         line.clear();
     }

@@ -243,7 +243,7 @@ void MSAEditorNameList::sl_copyCurrentSequence() {
         const MultipleAlignmentRow row = maObj->getRow(n);
         //TODO: trim large sequence?
         U2OpStatus2Log os;
-        QApplication::clipboard()->setText(row->toByteArray(maObj->getLength(), os));
+        QApplication::clipboard()->setText(row->toByteArray(os, maObj->getLength()));
     }
 }
 

@@ -151,7 +151,7 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
             line = line.left(MAX_NAME_LEN);
         }
         io->writeBlock(line);
-        QByteArray sequence = msa->getMsaRow(i)->toByteArray(numberOfCharacters, os);
+        QByteArray sequence = msa->getMsaRow(i)->toByteArray(os, numberOfCharacters);
         int blockCounter = 0;
         while ((blockCounter*SEQ_BLOCK_SIZE) <= numberOfCharacters) {
             line.clear();
@@ -270,7 +270,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
             line = line.left(MAX_NAME_LEN);
         }
 
-        QByteArray sequence = msa->getMsaRow(i)->toByteArray(numberOfCharacters, os);
+        QByteArray sequence = msa->getMsaRow(i)->toByteArray(os, numberOfCharacters);
         line.append(sequence.left(INT_BLOCK_SIZE));
         line.append('\n');
 
@@ -283,7 +283,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     while (blockCounter*INT_BLOCK_SIZE <= numberOfCharacters) {
         io->writeBlock("\n", 1);
         for (int i = 0; i < numberOfSpecies; i++) {
-            QByteArray sequence = msa->getMsaRow(i)->toByteArray(numberOfCharacters, os);
+            QByteArray sequence = msa->getMsaRow(i)->toByteArray(os, numberOfCharacters);
             QByteArray line;
             line.append(spacer);
             line.append(sequence.mid(blockCounter*INT_BLOCK_SIZE, INT_BLOCK_SIZE));

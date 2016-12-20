@@ -43,7 +43,7 @@ public:
 
     /** Const getters */
     bool isRegionEmpty(int x, int y, int width, int height) const;
-    char charAt(int seqNum, int pos) const;
+    char charAt(int seqNum, qint64 position) const;
     const MultipleSequenceAlignmentRow getMsaRow(int row) const;
 
     /** Methods that modify the gap model only */

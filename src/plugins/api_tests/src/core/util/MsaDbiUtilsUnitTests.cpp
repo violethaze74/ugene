@@ -981,9 +981,9 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_noGaps) {
     CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(2)->toByteArray(al->getLength(), os);
+    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1008,9 +1008,9 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGaps) {
     CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(2)->toByteArray(al->getLength(), os);
+    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1035,9 +1035,9 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGaps) {
     CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(2)->toByteArray(al->getLength(), os);
+    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1062,9 +1062,9 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingGapsCutOff) {
     CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(2)->toByteArray(al->getLength(), os);
+    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1089,9 +1089,9 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_trailingGapsCutOff) {
     CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(2)->toByteArray(al->getLength(), os);
+    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1116,9 +1116,9 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_leadingAndTrailingGaps) {
     CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(2)->toByteArray(al->getLength(), os);
+    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1143,9 +1143,9 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, trim_gapsOnly) {
     CHECK_EQUAL(expected.length(), al->getNumRows(), "Wrong rows count.");
 
     QStringList actual;
-    actual << al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    actual << al->getMsaRow(2)->toByteArray(al->getLength(), os);
+    actual << al->getMsaRow(0)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(1)->toByteArray(os, al->getLength());
+    actual << al->getMsaRow(2)->toByteArray(os, al->getLength());
     for (int i = 0; i < expected.length(); ++i) {
         CHECK_EQUAL(expected[i], actual[i], "Wrong msa data.");
     }
@@ -1170,9 +1170,9 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_oneRow) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    QByteArray row1 = al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    QByteArray row2 = al->getMsaRow(2)->toByteArray(al->getLength(), os);
+    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
+    QByteArray row1 = al->getMsaRow(1)->toByteArray(os, al->getLength());
+    QByteArray row2 = al->getMsaRow(2)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("TAAGACTTCTAA--"), QString(row0), "Wrong msa row");
     CHECK_EQUAL(QString("TAAGCTTA------"), QString(row1), "Wrong msa row");
     CHECK_EQUAL(QString("TTAGTTTATTA---"), QString(row2), "Wrong msa row");
@@ -1197,9 +1197,9 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_threeRows) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row1 = al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    QByteArray row5 = al->getMsaRow(5)->toByteArray(al->getLength(), os);
-    QByteArray row8 = al->getMsaRow(8)->toByteArray(al->getLength(), os);
+    QByteArray row1 = al->getMsaRow(1)->toByteArray(os, al->getLength());
+    QByteArray row5 = al->getMsaRow(5)->toByteArray(os, al->getLength());
+    QByteArray row8 = al->getMsaRow(8)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("TAA-----------"), QString(row1), "Wrong msa row");
     CHECK_EQUAL(QString("T-ACTA--------"), QString(row5), "Wrong msa row");
     CHECK_EQUAL(QString("TTA-----------"), QString(row8), "Wrong msa row");
@@ -1224,10 +1224,10 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_lengthChange) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row3 = al->getMsaRow(3)->toByteArray(al->getLength(), os);
-    QByteArray row4 = al->getMsaRow(4)->toByteArray(al->getLength(), os);
-    QByteArray row5 = al->getMsaRow(5)->toByteArray(al->getLength(), os);
-    QByteArray row6 = al->getMsaRow(6)->toByteArray(al->getLength(), os);
+    QByteArray row3 = al->getMsaRow(3)->toByteArray(os, al->getLength());
+    QByteArray row4 = al->getMsaRow(4)->toByteArray(os, al->getLength());
+    QByteArray row5 = al->getMsaRow(5)->toByteArray(os, al->getLength());
+    QByteArray row6 = al->getMsaRow(6)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("T--CAGTCTATTA-"), QString(row3), "Wrong msa row");
     CHECK_EQUAL(QString("T--CAGTTTATTA-"), QString(row4), "Wrong msa row");
     CHECK_EQUAL(QString("T--TAGTCTACTA-"), QString(row5), "Wrong msa row");
@@ -1253,19 +1253,19 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_allRows) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(11, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    QByteArray row1 = al->getMsaRow(1)->toByteArray(al->getLength(), os);
-    QByteArray row2 = al->getMsaRow(2)->toByteArray(al->getLength(), os);
-    QByteArray row3 = al->getMsaRow(3)->toByteArray(al->getLength(), os);
-    QByteArray row4 = al->getMsaRow(4)->toByteArray(al->getLength(), os);
-    QByteArray row5 = al->getMsaRow(5)->toByteArray(al->getLength(), os);
-    QByteArray row6 = al->getMsaRow(6)->toByteArray(al->getLength(), os);
-    QByteArray row7 = al->getMsaRow(7)->toByteArray(al->getLength(), os);
-    QByteArray row8 = al->getMsaRow(8)->toByteArray(al->getLength(), os);
-    QByteArray row9 = al->getMsaRow(9)->toByteArray(al->getLength(), os);
-    QByteArray row10 = al->getMsaRow(10)->toByteArray(al->getLength(), os);
-    QByteArray row11 = al->getMsaRow(11)->toByteArray(al->getLength(), os);
-    QByteArray row12 = al->getMsaRow(12)->toByteArray(al->getLength(), os);
+    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
+    QByteArray row1 = al->getMsaRow(1)->toByteArray(os, al->getLength());
+    QByteArray row2 = al->getMsaRow(2)->toByteArray(os, al->getLength());
+    QByteArray row3 = al->getMsaRow(3)->toByteArray(os, al->getLength());
+    QByteArray row4 = al->getMsaRow(4)->toByteArray(os, al->getLength());
+    QByteArray row5 = al->getMsaRow(5)->toByteArray(os, al->getLength());
+    QByteArray row6 = al->getMsaRow(6)->toByteArray(os, al->getLength());
+    QByteArray row7 = al->getMsaRow(7)->toByteArray(os, al->getLength());
+    QByteArray row8 = al->getMsaRow(8)->toByteArray(os, al->getLength());
+    QByteArray row9 = al->getMsaRow(9)->toByteArray(os, al->getLength());
+    QByteArray row10 = al->getMsaRow(10)->toByteArray(os, al->getLength());
+    QByteArray row11 = al->getMsaRow(11)->toByteArray(os, al->getLength());
+    QByteArray row12 = al->getMsaRow(12)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("GACTTCTAA--"), QString(row0), "Wrong msa row");
     CHECK_EQUAL(QString("GCTTACTA---"), QString(row1), "Wrong msa row");
     CHECK_EQUAL(QString("GTTTATTA---"), QString(row2), "Wrong msa row");
@@ -1300,8 +1300,8 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_all) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(0, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(al->getLength(), os);
-    QByteArray row12 = al->getMsaRow(12)->toByteArray(al->getLength(), os);
+    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
+    QByteArray row12 = al->getMsaRow(12)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString(""), QString(row0), "Wrong msa row");
     CHECK_EQUAL(QString(""), QString(row12), "Wrong msa row");
 }
@@ -1326,7 +1326,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_negativePos) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(al->getLength(), os);
+    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("TAAGACTTCTAA--"), QString(row0), "Wrong msa row");
 }
 
@@ -1370,7 +1370,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, removeRegion_wrongCount) {
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(14, al->getLength(), "Wrong msa length");
 
-    QByteArray row0 = al->getMsaRow(0)->toByteArray(al->getLength(), os);
+    QByteArray row0 = al->getMsaRow(0)->toByteArray(os, al->getLength());
     CHECK_EQUAL(QString("TAAGACTTCTAA--"), QString(row0), "Wrong msa row");
 }
 

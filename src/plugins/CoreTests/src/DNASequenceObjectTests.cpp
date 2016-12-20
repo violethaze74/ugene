@@ -624,7 +624,7 @@ Task::ReportResult GTest_DNAMulSequencePart::report() {
     foreach(const MultipleSequenceAlignmentRow& myItem , ma->getMsaRows()){
         if (myItem->getName() == seqName){
             ok_flag=true;
-            QByteArray objSubSeq = myItem->mid(startPos, subseq.length(), os)->toByteArray(subseq.length(), os);
+            QByteArray objSubSeq = myItem->mid(startPos, subseq.length(), os)->toByteArray(os, subseq.length());
             if (objSubSeq != subseq){
                 stateInfo.setError(QString("region not matched: %1, expected %2").arg(objSubSeq.constData()).arg(subseq.constData()));
                 return ReportResult_Finished;

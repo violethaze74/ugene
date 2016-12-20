@@ -206,7 +206,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     for (int i=0; i<al->getNumRows(); i++) {
         const MultipleSequenceAlignmentRow row = al->getMsaRow(i);
         int expectedCheckSum = seqs[row->getName()];
-        int sequenceCheckSum = getCheckSum(row->toByteArray(al->getLength(), seqCheckOs));
+        int sequenceCheckSum = getCheckSum(row->toByteArray(seqCheckOs, al->getLength()));
         if ( expectedCheckSum < CHECK_SUM_MOD &&  sequenceCheckSum != expectedCheckSum) {
             ti.setError(MSFFormat::tr("Check sum test failed"));
             return;
@@ -271,7 +271,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
     static int maxCheckSumLen = 4;
     QMap <QString, int> checkSums;
     foreach(const MultipleSequenceAlignmentRow& row , msa->getMsaRows()) {
-        QByteArray sequence = row->toByteArray(maLen, os).replace(U2Msa::GAP_CHAR, '.');
+        QByteArray sequence = row->toByteArray(os, maLen).replace(U2Msa::GAP_CHAR, '.');
         int seqCheckSum = getCheckSum(sequence);
         checkSums.insert(row->getName(), seqCheckSum);
         checkSum = (checkSum + seqCheckSum) % CHECK_SUM_MOD;

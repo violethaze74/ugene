@@ -72,7 +72,7 @@ MultipleSequenceAlignmentRow MsaRowTestUtils::initTestRowForModification(Multipl
 
 QString MsaRowTestUtils::getRowData(const MultipleSequenceAlignmentRow &row) {
     U2OpStatusImpl os;
-    QString result = row->toByteArray(row->getRowLength(), os).data();
+    QString result = row->toByteArray(os, row->getRowLength()).data();
     SAFE_POINT_OP(os, QString());
     return result;
 }
@@ -287,7 +287,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, toByteArray_noGaps) {
     MultipleSequenceAlignment almnt;
     MultipleSequenceAlignmentRow row = MsaRowTestUtils::initTestRowWithoutGaps(almnt);
     U2OpStatusImpl os;
-    QByteArray bytes = row->toByteArray(MsaRowTestUtils::rowWithoutGapsLength, os);
+    QByteArray bytes = row->toByteArray(os, MsaRowTestUtils::rowWithoutGapsLength);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL("ACGTA", QString(bytes), "row data");
 }
@@ -296,7 +296,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, toByteArray_gapsInBeginningAndMiddle) {
     MultipleSequenceAlignment almnt;
     MultipleSequenceAlignmentRow row = MsaRowTestUtils::initTestRowWithGaps(almnt);
     U2OpStatusImpl os;
-    QByteArray bytes = row->toByteArray(MsaRowTestUtils::rowWithGapsLength, os);
+    QByteArray bytes = row->toByteArray(os, MsaRowTestUtils::rowWithGapsLength);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL("---AG-T", QString(bytes), "row data");
 }
@@ -305,7 +305,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, toByteArray_incorrectLength) {
     MultipleSequenceAlignment almnt;
     MultipleSequenceAlignmentRow row = MsaRowTestUtils::initTestRowWithGaps(almnt);
     U2OpStatusImpl os;
-    QByteArray bytes = row->toByteArray(MsaRowTestUtils::rowWithGapsLength - 1, os);
+    QByteArray bytes = row->toByteArray(os, MsaRowTestUtils::rowWithGapsLength - 1);
     CHECK_EQUAL("Failed to get row data", os.getError(), "opStatus");
     CHECK_EQUAL("", QString(bytes), "row data");
 }
@@ -314,7 +314,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, toByteArray_greaterLength) {
     MultipleSequenceAlignment almnt;
     MultipleSequenceAlignmentRow row = MsaRowTestUtils::initTestRowWithGaps(almnt);
     U2OpStatusImpl os;
-    QByteArray bytes = row->toByteArray(MsaRowTestUtils::rowWithGapsLength + 1, os);
+    QByteArray bytes = row->toByteArray(os, MsaRowTestUtils::rowWithGapsLength + 1);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL("---AG-T-", QString(bytes), "row data");
 }
@@ -324,7 +324,7 @@ IMPLEMENT_TEST(MsaRowUnitTests, toByteArray_trailing) {
     MultipleSequenceAlignment almnt("Test alignment");
     almnt->addRow("Test row", "--GG-A---T--");
     MultipleSequenceAlignmentRow row = almnt->getMsaRow(0);
-    QByteArray bytes = row->toByteArray(12, os);
+    QByteArray bytes = row->toByteArray(os, 12);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL("--GG-A---T--", QString(bytes), "row data");
 }

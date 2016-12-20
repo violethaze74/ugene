@@ -188,7 +188,7 @@ public:
     U2Region getCoreRegion() const;
     U2Region getWorkingAreaRegion() const;
 
-    QByteArray toByteArray(qint64 length, U2OpStatus &os) const;
+    QByteArray toByteArray(U2OpStatus &os, qint64 length) const;
     char charAt(qint64 position) const;
 
     char getPredictedSequenceWorkingAreaChar(qint64 position) const;

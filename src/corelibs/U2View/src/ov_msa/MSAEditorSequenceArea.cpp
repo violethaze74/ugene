@@ -1040,7 +1040,7 @@ void MSAEditorSequenceArea::sl_copyCurrentSelection()
             continue;
         }
         int len = selection.width();
-        QByteArray seqPart = maObj->getMsaRow(i)->mid(selection.x(), len, os)->toByteArray(len, os);
+        QByteArray seqPart = maObj->getMsaRow(i)->mid(selection.x(), len, os)->toByteArray(os, len);
         selText.append(seqPart);
         if (i + 1 != sel.endPos()) { // do not add line break into the last line
             selText.append("\n");
@@ -1391,7 +1391,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
         modifiedRowIds.reserve(sel.length);
         for (int i = sel.startPos; i < sel.endPos(); i++) {
             const MultipleSequenceAlignmentRow currentRow = ma->getMsaRow(i);
-            QByteArray currentRowContent = currentRow->toByteArray(ma->getLength(), os);
+            QByteArray currentRowContent = currentRow->toByteArray(os, ma->getLength());
             switch (type.getType())
             {
             case ModificationType::Reverse:

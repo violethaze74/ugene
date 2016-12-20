@@ -212,7 +212,7 @@ void MuscleTask::doAlign(bool refine) {
                 for(int i=0; i < nSeq; i++)  {
                     int regionLen = config.regionToAlign.startPos;
                     const MultipleSequenceAlignmentRow inputRow = inputMA->getMsaRow(ids[i])->mid(0, regionLen, os);
-                    resultMA->appendChars(i, 0, inputRow->toByteArray(regionLen, os).constData(), regionLen);
+                    resultMA->appendChars(i, 0, inputRow->toByteArray(os, regionLen).constData(), regionLen);
                 }
             }
             *resultMA += *resultSubMA;
@@ -222,7 +222,7 @@ void MuscleTask::doAlign(bool refine) {
                 int subLen = inputMA->getLength() - config.regionToAlign.endPos();
                 for(int i = 0; i < nSeq; i++) {
                     const MultipleSequenceAlignmentRow inputRow = inputMA->getMsaRow(ids[i])->mid(subStart, subLen, os);
-                    resultMA->appendChars(i, resultLen, inputRow->toByteArray(subLen, os).constData(), subLen);
+                    resultMA->appendChars(i, resultLen, inputRow->toByteArray(os, subLen).constData(), subLen);
                 }
             }
             //TODO: check if there are GAP columns on borders and remove them

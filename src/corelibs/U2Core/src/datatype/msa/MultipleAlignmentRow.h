@@ -94,7 +94,7 @@ public:
 
     virtual char charAt(qint64 position) const = 0;
 
-    virtual QByteArray toByteArray(qint64 length, U2OpStatus &os) const = 0;
+    virtual QByteArray toByteArray(U2OpStatus &os, qint64 length) const = 0;
 
     virtual qint64 getRowLengthWithoutTrailing() const = 0;
     virtual qint64 getCoreStart() const = 0;

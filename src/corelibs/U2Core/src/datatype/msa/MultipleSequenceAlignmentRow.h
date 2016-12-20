@@ -122,7 +122,7 @@ public:
      * When the specified length is greater, an appropriate number of
      * trailing gaps are appended to the end of the byte array.
      */
-    QByteArray toByteArray(qint64 length, U2OpStatus &os) const;
+    QByteArray toByteArray(U2OpStatus &os, qint64 length) const;
 
     /** Returns length of the sequence + number of gaps including trailing gaps (if any) */
     int getRowLength() const;
