@@ -21,7 +21,7 @@
 
 #include <QColor>
 
-#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "MsaHighlightingSchemeConservation.h"
@@ -78,9 +78,9 @@ void MsaHighlightingSchemeConservation::sl_resetMap() {
 void MsaHighlightingSchemeConservation::calculateStatisticForColumn(int refCharColumn) const {
     CHECK(!msaCharCountMap.contains(refCharColumn), );
     CharCountMap columnStatistic;
-    const MultipleSequenceAlignment msa = maObj->getMultipleAlignment();
-    for (int row = msa->getNumRows() - 1; row >= 0; row--) {
-        char seqChar = msa->charAt(row, refCharColumn);
+    const MultipleAlignment ma = maObj->getMultipleAlignment();
+    for (int row = ma->getNumRows() - 1; row >= 0; row--) {
+        char seqChar = ma->charAt(row, refCharColumn);
         if (columnStatistic.contains(seqChar)) {
             columnStatistic[seqChar] += 1;
         } else {
