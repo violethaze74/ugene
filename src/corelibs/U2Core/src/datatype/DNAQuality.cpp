@@ -30,8 +30,16 @@ static const QString SOLEXA("Solexa/Illumina 1.0");
 
 const QString DNAQuality::QUAL_FORMAT("PHRED");
 const QString DNAQuality::ENCODED("Encoded");
+const int DNAQuality::MAX_PHRED33_VALUE = 74;
 
-DNAQuality::DNAQuality( const QByteArray& qualScore, DNAQualityType t /* = DNAQualityType_Sanger*/ )
+DNAQuality::DNAQuality(const QByteArray &qualScore)
+    : qualCodes(qualScore),
+      type(detectTypeByCodes(qualCodes))
+{
+
+}
+
+DNAQuality::DNAQuality( const QByteArray& qualScore, DNAQualityType t)
 : qualCodes(qualScore), type(t)
 {
 
@@ -88,6 +96,18 @@ QStringList DNAQuality::getDNAQualityTypeNames()
     QStringList res;
     res << SANGER << ILLUMINA << SOLEXA;
     return res;
+}
+
+DNAQualityType DNAQuality::detectTypeByCodes(const QByteArray &qualCodes) {
+    int maxQualityValue = 33;
+    for (int i = 0; i < qualCodes.size(); i++){
+        maxQualityValue = qMax(static_cast<int>(qualCodes.at(i)), maxQualityValue);
+    }
+    return detectTypeByMaxQualityValue(maxQualityValue);
+}
+
+DNAQualityType DNAQuality::detectTypeByMaxQualityValue(int maxQualityValue) {
+    return (maxQualityValue >= MAX_PHRED33_VALUE) ? DNAQualityType_Illumina : DNAQualityType_Sanger;
 }
 
 } // U2

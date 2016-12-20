@@ -52,6 +52,9 @@ public:
 private:
     void run();
     void cloneObjects();
+    void cloneSequence();
+    void cloneChromatogram();
+    void restoreRelation();
     U2Region trimSequnce();
     void trimChromatogram(const U2Region &regionToCrop);
 

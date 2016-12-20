@@ -67,6 +67,7 @@ void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement& el) {
     proc = new QProcess(this);
     if (el.hasAttribute(WORKINK_DIR_ATTR)) {
         QString workingDir = el.attribute(WORKINK_DIR_ATTR);
+        QDir().mkpath(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + workingDir);
         proc->setWorkingDirectory(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/" + workingDir);
     }
     QString protosPath = env->getVar(COMMON_DATA_DIR_ENV_ID) + "/" +  env->getVar(CONFIG_PROTOTYPE);
@@ -79,7 +80,6 @@ void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement& el) {
     for (int i = 0; i < list.size(); ++i) {
         QFileInfo fIdest = list.at(i);
         QFileInfo fItarget(userScriptsDir.path() + "/" + fIdest.fileName());
-        QString destPath = fIdest.absoluteFilePath(), targetPath = fItarget.absoluteFilePath();
         if(!fItarget.exists()){
             QFile::copy(fIdest.absoluteFilePath(), fItarget.absoluteFilePath());
         }else if(fIdest.size() != fItarget.size()){

@@ -23,6 +23,7 @@
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/U2ObjectRelationsDbi.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "SequenceQualityTrimTask.h"
@@ -40,7 +41,8 @@ SequenceQualityTrimTaskSettings::SequenceQualityTrimTaskSettings()
 SequenceQualityTrimTask::SequenceQualityTrimTask(const SequenceQualityTrimTaskSettings &settings)
     : Task(tr("Trim sequence by quality"), TaskFlag_None),
       settings(settings),
-      trimmedSequenceObject(NULL)
+      trimmedSequenceObject(NULL),
+      trimmedChromatogramObject(NULL)
 {
     SAFE_POINT_EXT(NULL != settings.sequenceObject, setError("Sequence object is NULL"), );
 }
@@ -67,10 +69,21 @@ void SequenceQualityTrimTask::run() {
 }
 
 void SequenceQualityTrimTask::cloneObjects() {
+    cloneSequence();
+    CHECK_OP(stateInfo, );
+    cloneChromatogram();
+    CHECK_OP(stateInfo, );
+    restoreRelation();
+    CHECK_OP(stateInfo, );
+}
+
+void SequenceQualityTrimTask::cloneSequence() {
     const U2DbiRef dbiRef = settings.sequenceObject->getEntityRef().dbiRef;
     trimmedSequenceObject = qobject_cast<U2SequenceObject *>(settings.sequenceObject->clone(dbiRef, stateInfo));
-    CHECK_OP(stateInfo, );
+}
 
+void SequenceQualityTrimTask::cloneChromatogram() {
+    const U2DbiRef dbiRef = settings.sequenceObject->getEntityRef().dbiRef;
     const U2EntityRef chromatogramRef = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(stateInfo, settings.sequenceObject->getEntityRef());
     CHECK_OP(stateInfo, );
     CHECK(chromatogramRef.isValid(), );
@@ -80,6 +93,24 @@ void SequenceQualityTrimTask::cloneObjects() {
 
     QScopedPointer<DNAChromatogramObject> chromatogramObject(new DNAChromatogramObject(chromatogramName, chromatogramRef));
     trimmedChromatogramObject = qobject_cast<DNAChromatogramObject *>(chromatogramObject->clone(dbiRef, stateInfo));
+    CHECK_OP(stateInfo, );
+}
+
+void SequenceQualityTrimTask::restoreRelation() {
+    CHECK(NULL != trimmedChromatogramObject, );
+    SAFE_POINT_EXT(NULL != trimmedSequenceObject, setError("Cloned sequence object is NULL"), );
+
+    U2ObjectRelation dbRelation;
+    dbRelation.id = trimmedChromatogramObject->getEntityRef().entityId;
+    dbRelation.referencedName = trimmedSequenceObject->getGObjectName();
+    dbRelation.referencedObject = trimmedSequenceObject->getEntityRef().entityId;
+    dbRelation.referencedType = trimmedSequenceObject->getGObjectType();
+    dbRelation.relationRole = ObjectRole_Sequence;
+
+    DbiConnection connection(settings.sequenceObject->getEntityRef().dbiRef, stateInfo);
+    CHECK_OP(stateInfo, );
+
+    connection.dbi->getObjectRelationsDbi()->createObjectRelation(dbRelation, stateInfo);
     CHECK_OP(stateInfo, );
 }
 

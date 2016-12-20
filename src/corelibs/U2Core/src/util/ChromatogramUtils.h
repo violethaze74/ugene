@@ -23,6 +23,7 @@
 #define _U2_CHROMATOGRAM_UTILS_H_
 
 #include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/U2Region.h>
 #include <U2Core/U2Type.h>
 
 namespace U2 {
@@ -40,6 +41,10 @@ public:
     static void updateChromtogramData(U2OpStatus &os, const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram);
     static U2EntityRef getChromatogramIdByRelatedSequenceId(U2OpStatus &os, const U2EntityRef &sequenceRef);
     static QString getChromatogramName(U2OpStatus &os, const U2EntityRef &chromatogramRef);
+    static DNAChromatogram reverse(const DNAChromatogram &chromatogram);
+    static DNAChromatogram complement(const DNAChromatogram &chromatogram);
+    static DNAChromatogram reverseComplement(const DNAChromatogram &chromatogram);
+    static U2Region sequenceRegion2TraceRegion(const DNAChromatogram &chromatogram, const U2Region &sequenceRegion);
 };
 
 }   // namespace U2
