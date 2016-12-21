@@ -43,17 +43,19 @@ class AlignToReferenceBlastTask : public Task {
     Q_OBJECT
 public:
     AlignToReferenceBlastTask(const QString& refUrl,
+                              const QString &resultUrl,
                               const SharedDbiDataHandler &reference,
                               const QList<SharedDbiDataHandler> &reads,
                               int minIdentityPercent,
                               DbiDataStorage *storage);
     void prepare();
     QList<Task*> onSubTaskFinished(Task *subTask);
-    SharedDbiDataHandler getAlignment() const;
+    QString getResultUrl() const;
     SharedDbiDataHandler getAnnotations() const;
 
 private:
     const QString referenceUrl;
+    const QString resultUrl;
     const SharedDbiDataHandler reference;
     const QList<SharedDbiDataHandler> reads;
     const int minIdentityPercent;
@@ -61,6 +63,7 @@ private:
     FormatDBSubTask* formatDbSubTask;
     BlastReadsSubTask* blastTask;
     ComposeResultSubTask *composeSubTask;
+    SaveDocumentTask *saveTask;
 
     DbiDataStorage *storage;
 };

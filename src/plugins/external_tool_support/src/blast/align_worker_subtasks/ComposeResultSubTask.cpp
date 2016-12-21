@@ -19,16 +19,21 @@
 * MA 02110-1301, USA.
 */
 
-#include "ComposeResultSubTask.h"
-#include "BlastReadsSubTask.h"
+#include <QThread>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppResources.h>
+#include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/GObjectUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
+#include <U2Core/MultipleChromatogramAlignment.h>
+#include <U2Core/MultipleChromatogramAlignmentImporter.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
 
+#include "BlastReadsSubTask.h"
+#include "ComposeResultSubTask.h"
 
 namespace U2 {
 namespace Workflow {
@@ -53,9 +58,18 @@ ComposeResultSubTask::ComposeResultSubTask(const SharedDbiDataHandler &reference
                                            const QList<SharedDbiDataHandler> &reads,
                                            const QList<BlastAndSwReadTask*> subTasks,
                                            DbiDataStorage *storage)
-: Task(tr("Compose alignment"), TaskFlags_FOSE_COSC), reference(reference), reads(reads), subTasks(subTasks), storage(storage)
+    : Task(tr("Compose alignment"), TaskFlags_FOSE_COSC),
+      reference(reference),
+      reads(reads),
+      subTasks(subTasks),
+      storage(storage),
+      mcaObject(NULL)
 {
     tpm = Task::Progress_Manual;
+}
+
+ComposeResultSubTask::~ComposeResultSubTask() {
+    delete mcaObject;
 }
 
 void ComposeResultSubTask::prepare() {
@@ -76,36 +90,42 @@ void ComposeResultSubTask::run() {
     CHECK_OP(stateInfo, );
 }
 
-const SharedDbiDataHandler& ComposeResultSubTask::getAlignment() const {
-    return msa;
-}
-
 const SharedDbiDataHandler& ComposeResultSubTask::getAnnotations() const {
     return annotations;
 }
 
+MultipleChromatogramAlignmentObject *ComposeResultSubTask::takeAlignment() {
+    MultipleChromatogramAlignmentObject *result = mcaObject;
+    mcaObject = NULL;
+    if (result->thread() != QThread::currentThread()) {
+        result->moveToThread(QThread::currentThread());
+    }
+    return result;
+}
+
 void ComposeResultSubTask::createAlignmentAndAnnotations() {
-    MultipleSequenceAlignment result("Aligned reads");
+    MultipleChromatogramAlignment result("Aligned reads");
 
     DNASequence referenceSeq = getReferenceSequence();
     CHECK_OP(stateInfo, );
     result->setAlphabet(referenceSeq.alphabet);
 
     // add the reference row
-    result->addRow(referenceSeq.getName(), referenceSeq.seq, 0);
-    CHECK_OP(stateInfo, );
+    // TODO: store the reference as a separate sequence with gap model
+//    result->addRow(referenceSeq.getName(), referenceSeq.seq, 0);
+//    CHECK_OP(stateInfo, );
 
     U2MsaRowGapModel referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, );
 
-    insertShiftedGapsIntoReference(result, referenceGaps);
-    CHECK_OP(stateInfo, );
+//    insertShiftedGapsIntoReference(result, referenceGaps);
+//    CHECK_OP(stateInfo, );
 
     // initialize annotations table on reference
     QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceSeq.getName() + " features", storage->getDbiRef()));
     QList<SharedAnnotationData> anns;
 
-    int rowsCounter = 1;
+    int rowsCounter = 0;
     for (int i = 0; i < reads.size(); i++) {
         BlastAndSwReadTask *subTask = getBlastSwTask(i);
         CHECK_OP(stateInfo, );
@@ -117,7 +137,10 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         DNASequence readSeq = getReadSequence(i);
         CHECK_OP(stateInfo, );
 
-        result->addRow(subTask->getReadName(), readSeq.seq, rowsCounter);
+        DNAChromatogram readChromatogram = getReadChromatogram(i);
+        CHECK_OP(stateInfo, );
+
+        result->addRow(subTask->getReadName(), readChromatogram, readSeq.seq);
         CHECK_OP(stateInfo, );
 
         foreach (const U2MsaGap &gap, subTask->getReadGaps()) {
@@ -130,7 +153,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         CHECK_OP(stateInfo, );
 
         // add read annotation to the reference
-        const MultipleSequenceAlignmentRow readRow = result->getMsaRow(rowsCounter);
+        const MultipleChromatogramAlignmentRow readRow = result->getMcaRow(rowsCounter);
         U2Region region = getReadRegion(readRow, referenceGaps);
         SharedAnnotationData ann(new AnnotationData);
         ann->location = getLocation(region, subTask->isComplement());
@@ -140,28 +163,28 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
 
         ++rowsCounter;
     }
-    if (rowsCounter == 1) {
+    if (rowsCounter == 0) {
         stateInfo.setError(tr("No read satisfy minimum identity criteria."));
         return;
     }
     result->trim(false); // just recalculates alignment len
 
-    QScopedPointer<MultipleSequenceAlignmentObject> msaObject(MultipleSequenceAlignmentImporter::createAlignment(storage->getDbiRef(), result, stateInfo));
+    mcaObject = MultipleChromatogramAlignmentImporter::createAlignment(stateInfo, storage->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, result);
     CHECK_OP(stateInfo, );
     // remove gap columns
-    msaObject->deleteColumnWithGaps(stateInfo, GAP_COLUMN_ONLY);
-    msa = storage->getDataHandler(msaObject->getEntityRef());
+    // TODO: implement the method and restoer code
+//    mcaObject->deleteColumnWithGaps(stateInfo, GAP_COLUMN_ONLY);
 
     annsObject->addAnnotations(anns);
     annotations = storage->getDataHandler(annsObject->getEntityRef());
 }
 
-U2Region ComposeResultSubTask::getReadRegion(const MultipleSequenceAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const {
+U2Region ComposeResultSubTask::getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const {
     U2Region region(0, readRow->getRowLengthWithoutTrailing());
 
     // calculate read start
-    if (!readRow->getGapModel().isEmpty()) {
-        U2MsaGap firstGap = readRow->getGapModel().first();
+    if (!readRow->getCommonGapModel().isEmpty()) {
+        U2MsaGap firstGap = readRow->getCommonGapModel().first();
         if (0 == firstGap.offset) {
             region.startPos += firstGap.gap;
             region.length -= firstGap.gap;
@@ -220,6 +243,27 @@ DNASequence ComposeResultSubTask::getReadSequence(int readNum) {
     return seq;
 }
 
+DNAChromatogram ComposeResultSubTask::getReadChromatogram(int readNum) {
+    BlastAndSwReadTask *subTask = getBlastSwTask(readNum);
+    CHECK_OP(stateInfo, DNAChromatogram());
+
+    QScopedPointer<U2SequenceObject> readObject(StorageUtils::getSequenceObject(storage, subTask->getRead()));
+    CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), DNAChromatogram());
+
+    const U2EntityRef chromatogramRef = ChromatogramUtils::getChromatogramIdByRelatedSequenceId(stateInfo, readObject->getEntityRef());
+    CHECK_OP(stateInfo, DNAChromatogram());
+    CHECK_EXT(chromatogramRef.isValid(), setError(tr("The related chromatogram not found")), DNAChromatogram());
+
+    DNAChromatogram chromatogram = ChromatogramUtils::exportChromatogram(stateInfo, chromatogramRef);
+    CHECK_OP(stateInfo, DNAChromatogram());
+
+    if (subTask->isComplement()) {
+        chromatogram = ChromatogramUtils::reverseComplement(chromatogram);
+    }
+    return chromatogram;
+
+}
+
 DNASequence ComposeResultSubTask::getReferenceSequence() {
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
     CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), DNASequence());
@@ -259,7 +303,7 @@ U2MsaRowGapModel ComposeResultSubTask::getShiftedGaps(int rowNum) {
     return result;
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoReference(MultipleSequenceAlignment &alignment, const U2MsaRowGapModel &gaps) {
+void ComposeResultSubTask::insertShiftedGapsIntoReference(MultipleChromatogramAlignment &alignment, const U2MsaRowGapModel &gaps) {
     for (int i = gaps.size() - 1; i >= 0; i--) {
         U2MsaGap gap = gaps[i];
         alignment->insertGaps(0, gap.offset, gap.gap, stateInfo);
@@ -267,7 +311,7 @@ void ComposeResultSubTask::insertShiftedGapsIntoReference(MultipleSequenceAlignm
     }
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps) {
+void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps) {
     U2MsaRowGapModel ownGaps = getShiftedGaps(readNum);
     CHECK_OP(stateInfo, );
 

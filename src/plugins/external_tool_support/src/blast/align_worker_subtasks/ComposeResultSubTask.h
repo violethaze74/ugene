@@ -22,12 +22,18 @@
 #ifndef _U2_COMPOSE_RESULT_SUBTASK_H_
 #define _U2_COMPOSE_RESULT_SUBTASK_H_
 
+#include <U2Core/DNAChromatogram.h>
 #include <U2Core/Task.h>
 
 #include <U2Lang/DbiDataHandler.h>
 #include <U2Lang/DbiDataStorage.h>
 
 namespace U2 {
+
+class MultipleChromatogramAlignment;
+class MultipleChromatogramAlignmentObject;
+class MultipleChromatogramAlignmentRow;
+
 namespace Workflow {
 
 class BlastAndSwReadTask;
@@ -38,21 +44,24 @@ public:
     ComposeResultSubTask(const SharedDbiDataHandler &reference,
                          const QList<SharedDbiDataHandler> &reads,
                          const QList<BlastAndSwReadTask*> subTasks, DbiDataStorage *storage);
+    ~ComposeResultSubTask();
+
     void prepare();
     void run();
-    const SharedDbiDataHandler& getAlignment() const;
     const SharedDbiDataHandler& getAnnotations() const;
+    MultipleChromatogramAlignmentObject *takeAlignment();
 
 private:
     BlastAndSwReadTask * getBlastSwTask(int readNum);
     DNASequence getReadSequence(int readNum);
+    DNAChromatogram getReadChromatogram(int readNum);
     DNASequence getReferenceSequence();
     U2MsaRowGapModel getReferenceGaps();
     U2MsaRowGapModel getShiftedGaps(int rowNum);
-     void insertShiftedGapsIntoReference(MultipleSequenceAlignment &alignment, const U2MsaRowGapModel &gaps);
-    void insertShiftedGapsIntoRead(MultipleSequenceAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps);
+    void insertShiftedGapsIntoReference(MultipleChromatogramAlignment &alignment, const U2MsaRowGapModel &gaps);
+    void insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps);
     void createAlignmentAndAnnotations();
-    U2Region getReadRegion(const MultipleSequenceAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const;
+    U2Region getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const;
     U2Location getLocation(const U2Region &region, bool isComplement);
 
 private:
@@ -60,7 +69,7 @@ private:
     const QList<SharedDbiDataHandler> reads;
     const QList<BlastAndSwReadTask*> subTasks;
     DbiDataStorage *storage;
-    SharedDbiDataHandler msa;
+    MultipleChromatogramAlignmentObject *mcaObject;
     SharedDbiDataHandler annotations;
 };
 

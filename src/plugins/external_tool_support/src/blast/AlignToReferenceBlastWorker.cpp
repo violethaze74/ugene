@@ -19,8 +19,14 @@
 * MA 02110-1301, USA.
 */
 
+#include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/IOAdapterUtils.h>
+#include <U2Core/FormatUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
+#include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -32,6 +38,7 @@
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/WorkflowMonitor.h>
 
 #include "AlignToReferenceBlastWorker.h"
 
@@ -50,6 +57,7 @@ const QString AlignToReferenceBlastWorkerFactory::ACTOR_ID("align-to-reference")
 namespace {
     const QString OUT_PORT_ID = "out";
     const QString REF_ATTR_ID = "reference";
+    const QString RESULT_URL_ATTR_ID = "result-url";
     const QString IDENTITY_ID = "identity";
 
     const QString ALGORITHM = "algorithm";
@@ -80,7 +88,6 @@ void AlignToReferenceBlastWorkerFactory::init() {
         QMap<Descriptor, DataTypePtr> outType;
         outType[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
         outType[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
-        outType[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
 
         ports << new PortDescriptor(inDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
         ports << new PortDescriptor(outDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
@@ -91,6 +98,10 @@ void AlignToReferenceBlastWorkerFactory::init() {
                            AlignToReferenceBlastPrompter::tr("A URL to the file with a reference sequence."));
         attributes << new Attribute(refDesc, BaseTypes::STRING_TYPE(), true);
 
+        Descriptor outputUrlDesc(RESULT_URL_ATTR_ID, AlignToReferenceBlastPrompter::tr("Result alignment URL"),
+                           AlignToReferenceBlastPrompter::tr("An URL to write the result alignment."));
+        attributes << new Attribute(outputUrlDesc, BaseTypes::STRING_TYPE(), true);
+
         Descriptor identityDesc(IDENTITY_ID, AlignToReferenceBlastPrompter::tr("Minimum read identity"),
                                 AlignToReferenceBlastPrompter::tr("Reads, whose identity with the reference is less than the stated value, will be ignored."));
         attributes << new Attribute(identityDesc, BaseTypes::NUM_TYPE(), false, 80);
@@ -99,6 +110,7 @@ void AlignToReferenceBlastWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     {
         delegates[REF_ATTR_ID] = new URLDelegate("", "", false, false, false);
+        delegates[RESULT_URL_ATTR_ID] = new URLDelegate(FormatUtils::prepareDocumentsFileFilter(BaseDocumentFormats::UGENEDB, false, QStringList()), "", false, false, true, NULL, BaseDocumentFormats::UGENEDB);
         QVariantMap m;
         m["minimum"] = 0;
         m["maximum"] = 100;
@@ -188,14 +200,21 @@ Task * AlignToReferenceBlastWorker::createTask(const QList<Message> &messages) c
         }
     }
     int readIdentity = getValue<int>(IDENTITY_ID);
-    return new AlignToReferenceBlastTask(getValue<QString>(REF_ATTR_ID), reference, reads, readIdentity, context->getDataStorage());
+    return new AlignToReferenceBlastTask(getValue<QString>(REF_ATTR_ID), getValue<QString>(RESULT_URL_ATTR_ID), reference, reads, readIdentity, context->getDataStorage());
 }
 
 QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) const {
     AlignToReferenceBlastTask *alignTask = qobject_cast<AlignToReferenceBlastTask*>(task);
     CHECK_EXT(NULL != alignTask, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
+
+    const QString resultUrl = alignTask->getResultUrl();
+    if (QFileInfo(resultUrl).exists()) {
+        monitor()->addOutputFile(resultUrl, actor->getId());
+    } else {
+        os.setError(tr("The result file was not produced"));
+    }
+
     QVariantMap result;
-    result[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(alignTask->getAlignment());
     result[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(reference);
     result[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(alignTask->getAnnotations());
     return result;
@@ -209,19 +228,21 @@ MessageMetadata AlignToReferenceBlastWorker::generateMetadata(const QString &dat
 /************************************************************************/
 /* AlignToReferenceBlastTask */
 /************************************************************************/
-AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl,
+AlignToReferenceBlastTask::AlignToReferenceBlastTask(const QString& refUrl, const QString &resultUrl,
                                                      const SharedDbiDataHandler &reference,
                                                      const QList<SharedDbiDataHandler> &reads,
                                                      int minIdentityPercent,
                                                      DbiDataStorage *storage)
     : Task(tr("Align to reference"), TaskFlags_NR_FOSE_COSC),
       referenceUrl(refUrl),
+      resultUrl(resultUrl),
       reference(reference),
       reads(reads),
       minIdentityPercent(minIdentityPercent),
       formatDbSubTask(NULL),
       blastTask(NULL),
       composeSubTask(NULL),
+      saveTask(NULL),
       storage(storage)
 {
 }
@@ -244,13 +265,23 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
         composeSubTask = new ComposeResultSubTask(reference, reads, blastTask->getBlastSubtasks(), storage);
         composeSubTask->setSubtaskProgressWeight(0.5f);
         result << composeSubTask;
+    } else if (subTask == composeSubTask) {
+        QScopedPointer<MultipleChromatogramAlignmentObject> mcaObject(composeSubTask->takeAlignment());
+        CHECK_EXT(NULL != mcaObject, setError(tr("MCA object is NULL")), result);
+        DocumentFormat *ugenedbFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::UGENEDB);
+        QScopedPointer<Document> document(ugenedbFormat->createNewLoadedDocument(IOAdapterUtils::get(IOAdapterUtils::url2io(resultUrl)), resultUrl, stateInfo));
+        CHECK_OP(stateInfo, result);
+        document->setDocumentOwnsDbiResources(false);
+        document->addObject(mcaObject.take());
+        saveTask = new SaveDocumentTask(document.take(), SaveDocFlags(SaveDoc_DestroyAfter) | SaveDoc_Roll);
+        result << saveTask;
     }
     return result;
 }
 
-SharedDbiDataHandler AlignToReferenceBlastTask::getAlignment() const {
-    CHECK(NULL != composeSubTask, SharedDbiDataHandler());
-    return composeSubTask->getAlignment();
+QString AlignToReferenceBlastTask::getResultUrl() const {
+    CHECK(NULL != saveTask, "");
+    return saveTask->getURL().getURLString();
 }
 
 SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
