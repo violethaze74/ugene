@@ -84,6 +84,7 @@ private:
     QAction*    showAllTraces;
     QMenu*      traceActionMenu;
     ScaleBar*   scaleBar;
+    QAction*    scaleAction;
 };
 
 

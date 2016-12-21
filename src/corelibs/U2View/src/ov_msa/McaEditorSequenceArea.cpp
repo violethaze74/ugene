@@ -55,6 +55,8 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     scaleBar = new ScaleBar(Qt::Horizontal);
     scaleBar->slider()->setRange(100, 1000);
     scaleBar->slider()->setTickInterval(100);
+    scaleAction = NULL;
+
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     scaleBar->setValue(r->getScaleBarValue());
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
@@ -158,7 +160,7 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     sl_completeUpdate();
 }
 
-void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
+void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
     t->addAction(showQVAction);
 
     QToolButton* button = new QToolButton();
@@ -168,7 +170,11 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     t->addWidget(button);
     t->addSeparator();
 
-    t->addWidget(scaleBar); // SANGER_TODO: the slider dissapers after window reopening!
+    if (scaleAction != NULL) {
+        t->addAction(scaleAction);
+    } else {
+        scaleAction = t->addWidget(scaleBar);
+    }
     t->addSeparator();
 }
 
