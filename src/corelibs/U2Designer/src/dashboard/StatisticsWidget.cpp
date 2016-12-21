@@ -54,7 +54,7 @@ void StatisticsWidget::sl_workerInfoChanged(const QString &actor,
 #if (QT_VERSION < 0x050400) //Qt 5.7
     updateRow(actor, createRowByWorker(actor, info));
 #else
-    assert(0);
+    //assert(0);
 #endif
 }
 

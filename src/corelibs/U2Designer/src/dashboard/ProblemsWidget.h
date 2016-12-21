@@ -44,7 +44,7 @@ public:
     static QString problemImage(const Problem &info);
 
 private slots:
-    void sl_newProblem(const Problem &info);
+    void sl_newProblem(const Problem &info);//void sl_newProblem(const Problem &info, int count)
 
 protected:
     QString createRow(const QStringList &d);

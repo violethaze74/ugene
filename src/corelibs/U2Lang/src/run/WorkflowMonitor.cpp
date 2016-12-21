@@ -241,7 +241,13 @@ void WorkflowMonitor::addProblem(const Problem &problem) {
         emit si_firstProblem();
         emit si_taskStateChanged(RUNNING_WITH_PROBLEMS);
     }
-    emit si_newProblem(problem);
+    int count = 0;
+    foreach (const Problem &info, problems) {
+        if (problem == info) {
+            count++;
+        }
+    }
+    emit si_newProblem(problem, count);
 }
 
 bool WorkflowMonitor::hasErrors() const {

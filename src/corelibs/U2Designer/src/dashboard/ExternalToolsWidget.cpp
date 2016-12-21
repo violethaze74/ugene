@@ -87,9 +87,10 @@ ExternalToolsWidget::ExternalToolsWidget(const QString &_container,
     const WorkflowMonitor *workflowMonitor = dashboard->monitor();
     SAFE_POINT(NULL != workflowMonitor, "NULL workflow monitor!", );
 #if (QT_VERSION < 0x050400) //Qt 5.7
-    container.evaluateJavaScript("lwInitConteiner(this, 'params_tab_id_0')");
+    container.evaluateJavaScript("lwInitContainer(this, 'params_tab_id_0')");
 #else
-    assert(false);
+    dashboard->page()->runJavaScript("lwInitContainer('ext_tools_tab', 'params_tab_id_0')");
+    //assert(false);
 #endif
     foreach (LogEntry entry, ctrl->getLog()) {
         addInfoToWidget(entry);
@@ -145,7 +146,8 @@ void ExternalToolsWidget::addInfoToWidget(const LogEntry &entry) {
 #if (QT_VERSION < 0x050400) //Qt 5.7
         container.evaluateJavaScript(addLogFunc);
 #else
-        assert(false);
+        dashboard->page()->runJavaScript(addLogFunc);
+        //assert(false);
 #endif
         break;
     case OUTPUT_LOG:
@@ -154,7 +156,8 @@ void ExternalToolsWidget::addInfoToWidget(const LogEntry &entry) {
 #if (QT_VERSION < 0x050400) //Qt 5.7
         container.evaluateJavaScript(addLogFunc);
 #else
-        assert(false);
+        dashboard->page()->runJavaScript(addLogFunc);
+        //assert(false);
 #endif
         break;
     case PROGRAM_PATH:
@@ -163,7 +166,8 @@ void ExternalToolsWidget::addInfoToWidget(const LogEntry &entry) {
 #if (QT_VERSION < 0x050400) //Qt 5.7
         container.evaluateJavaScript(addLogFunc);
 #else
-        assert(false);
+        dashboard->page()->runJavaScript(addLogFunc);
+        //assert(false);
 #endif
         break;
     case ARGUMENTS:
@@ -172,7 +176,8 @@ void ExternalToolsWidget::addInfoToWidget(const LogEntry &entry) {
 #if (QT_VERSION < 0x050400) //Qt 5.7
         container.evaluateJavaScript(addLogFunc);
 #else
-        assert(false);
+        dashboard->page()->runJavaScript(addLogFunc);
+        //assert(false);
 #endif
         break;
     }

@@ -29,6 +29,7 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWebKitWidgets/QWebFrame>
 #include <QtWidgets/QApplication>
+#include <QWebEngineScript>
 #else
 #include <QtWebSockets/QWebSocketServer>
 #include <QtWebChannel/QWebChannel>
@@ -44,6 +45,8 @@
 #include <QClipboard>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
@@ -53,6 +56,9 @@
 #include <U2Gui/MainWindow.h>
 
 #include <U2Lang/WorkflowSettings.h>
+#include <U2Lang/URLAttribute.h>
+#include <U2Lang/URLContainer.h>
+#include <U2Lang/WorkflowUtils.h>
 
 #include "OutputFilesWidget.h"
 #include "ParametersWidget.h"
@@ -101,8 +107,9 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &_name, QWidg
     connect(_monitor, SIGNAL(si_report()), SLOT(sl_serialize()));
     connect(_monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_setDirectory(const QString &)));
     connect(_monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_workflowStateChanged(Monitor::TaskState)));
-    connect(_monitor, SIGNAL(si_logChanged(U2::Workflow::Monitor::LogEntry)),
-            etWidgetController, SLOT(sl_onLogChanged(U2::Workflow::Monitor::LogEntry)));
+//    connect(_monitor, SIGNAL(si_logChanged(U2::Workflow::Monitor::LogEntry)),
+//            etWidgetController, SLOT(sl_onLogChanged(U2::Workflow::Monitor::LogEntry)));
+
 
     setContextMenuPolicy(Qt::NoContextMenu);
 #if (QT_VERSION < 0x050400) //Qt 5.7
@@ -113,8 +120,18 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &_name, QWidg
     loadDocument();
     setObjectName("Dashboard");
 #if (QT_VERSION >= 0x050400) //Qt 5.7
-    channel->registerObject(QString("agent"), new DashboardPageController(this));
+    dashboardPageController = new DashboardPageController(this);
+    channel->registerObject(QString("agent"), dashboardPageController);
 #endif
+    connect(_monitor, SIGNAL(si_progressChanged(int)), dashboardPageController, SIGNAL(si_progressChanged(int)));
+    connect(_monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_taskStateChanged(Monitor::TaskState)));
+    connect(_monitor, SIGNAL(si_newProblem(Problem,int)), SLOT(sl_newProblem(Problem,int)));
+    connect(_monitor, SIGNAL(si_workerInfoChanged(const QString &, const U2::Workflow::Monitor::WorkerInfo &)),
+        SLOT(sl_workerInfoChanged(const QString &, const U2::Workflow::Monitor::WorkerInfo &)));
+    connect(_monitor, SIGNAL(si_updateProducers()), SLOT(sl_workerStatsUpdate()));
+    connect(_monitor, SIGNAL(si_newOutputFile(const U2::Workflow::Monitor::FileInfo &)),
+        SLOT(sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &)));
+    connect(_monitor, SIGNAL(si_logChanged(U2::Workflow::Monitor::LogEntry)), SLOT(sl_onLogChanged(U2::Workflow::Monitor::LogEntry)));
 }
 
 Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
@@ -190,6 +207,20 @@ void Dashboard::loadDocument() {
     QString html = stream.readAll();
     file.close();
     page()->mainFrame()->setHtml(html);
+#elif (QT_VERSION < 0x050500) //Qt 5.7
+    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
+    if (!server->listen(QHostAddress::LocalHost, 12346)) {
+        return;
+    }
+
+    clientWrapper = new WebSocketClientWrapper(server, this);
+
+    channel = new QWebChannel(this);
+
+    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
+        channel, &QWebChannel::connectTo);
+
+    //channel->registerObject(QString("agent"), this);
 #else
     QWebEnginePage *pg = new QWebEnginePage(parentWidget());
     QString abs = loadUrl;
@@ -234,23 +265,18 @@ void Dashboard::sl_loaded(bool ok) {
     }
 #else
     if (NULL != monitor()) {
-        addWidget(tr("Output Files"), OverviewDashTab, 0, OUTPUT_WIDGET_ID);
-        new OutputFilesWidget(OUTPUT_WIDGET_ID, this);
-        addWidget(tr("Workflow Task"), OverviewDashTab, 1, RESOURCE_WIDGET_ID);
-        new ResourcesWidget(RESOURCE_WIDGET_ID, this);
-        addWidget(tr("Common Statistics"), OverviewDashTab, 1);
-        new StatisticsWidget(STATISTICS_WIDGET_ID, this);
-        
+        page()->runJavaScript("parametersWidget = new ParametersWidget(\"parametersWidget\")");
+        page()->runJavaScript("outputWidget = new OutputFilesWidget(\"outputWidget\");");
+        page()->runJavaScript("statusWidget = new StatusWidget(\"statusWidget\");");
+        page()->runJavaScript("statisticsWidget = new StatisticsWidget(\"statisticsWidget\");");
+        sl_workerStatsUpdate();
+
         sl_runStateChanged(false);
-        if (!monitor()->getProblems().isEmpty()) {
+        if (!monitor()->getProblems().isEmpty()) {//TODO fix adding problems widget on starting execution
             sl_addProblemsWidget();
         }
-        addWidget(tr("Parameters"), InputDashTab, 0);
-        new ParametersWidget(PARAMETERS_WIDGET_ID, this);
 
-        if (monitor()->isExternalToolScheme()) {
-            createExternalToolTab();
-        }
+        createExternalToolTab();
 
         connect(monitor(), SIGNAL(si_runStateChanged(bool)), SLOT(sl_runStateChanged(bool)));
         connect(monitor(), SIGNAL(si_firstProblem()), SLOT(sl_addProblemsWidget()));
@@ -268,9 +294,10 @@ void Dashboard::sl_addProblemsWidget() {
     // Will be removed by parent
     new ProblemsWidget(addWidget(tr("Problems"), OverviewDashTab), this);
 #else
-    addWidget(tr("Problems"), OverviewDashTab);
+    //addWidget(tr("Problems"), OverviewDashTab);
     //new ProblemsWidget(PROBLEMS_WIDGET_ID, this);
-    assert(false);
+    //assert(false);
+    page()->runJavaScript("problemsWidget = new ProblemsWidget(\"problemsWidget\");");
 #endif
 }
 
@@ -291,6 +318,70 @@ void Dashboard::sl_serialize() {
     saveSettings();
 }
 
+void Dashboard::sl_taskStateChanged(TaskState state){
+    QString stateStr;
+    if (Monitor::RUNNING == state) {
+        stateStr = "RUNNING";
+    } else if (Monitor::RUNNING_WITH_PROBLEMS == state) {
+        stateStr = "RUNNING_WITH_PROBLEMS";
+    } else if (Monitor::FINISHED_WITH_PROBLEMS == state) {
+        stateStr = "FINISHED_WITH_PROBLEMS";
+    } else if (Monitor::FAILED == state) {
+        stateStr = "FAILED";
+    } else if (Monitor::SUCCESS == state) {
+        stateStr = "SUCCESS";
+    } else {
+        stateStr = "CANCELED";
+    }
+    emit dashboardPageController->si_taskStateChanged(stateStr);
+}
+
+void Dashboard::sl_newProblem(const Problem &info, int count){
+    QJsonObject infoJS;
+    infoJS["actor"] = monitor()->actorName(info.actor);
+    infoJS["type"] = info.type;
+    infoJS["message"] = info.message;
+    emit dashboardPageController->si_newProblem(infoJS, count);
+}
+
+void Dashboard::sl_workerInfoChanged(const QString &actorId, const WorkerInfo &info){
+    QJsonObject infoJS;
+    infoJS["actor"] = monitor()->actorName(actorId);
+    infoJS["timeMks"] = info.timeMks;
+    infoJS["countOfProducedData"] = monitor()->getDataProduced(actorId);
+    emit dashboardPageController->si_workerStatsInfoChanged(infoJS);
+}
+
+void Dashboard::sl_workerStatsUpdate(){
+    QJsonArray workersStatisticsInfo;
+    QMap<QString, WorkerInfo> infos = monitor()->getWorkersInfo();
+    foreach (const QString &actorId, infos.keys()) {
+        WorkerInfo &info = infos[actorId];
+        QJsonObject infoJS;
+        infoJS["actor"] = monitor()->actorName(actorId);
+        infoJS["timeMks"] = info.timeMks;
+        infoJS["countOfProducedData"] = monitor()->getDataProduced(actorId);
+        workersStatisticsInfo.append(infoJS);
+    }
+    emit dashboardPageController->si_workerStatsUpdate(workersStatisticsInfo);
+}
+
+void Dashboard::sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &info){
+    QJsonObject infoJS;
+    infoJS["actor"] = monitor()->actorName(info.actor);
+    infoJS["url"] = info.url;
+    infoJS["openBySystem"] = info.openBySystem;
+    emit dashboardPageController->si_newOutputFile(infoJS);
+}
+void Dashboard::sl_onLogChanged(U2::Workflow::Monitor::LogEntry entry){
+    QJsonObject entryJS;
+    entryJS["toolName"] = entry.toolName;
+    entryJS["actorName"] = entry.actorName;
+    entryJS["runNumber"] = entry.runNumber;
+    entryJS["logType"] = entry.logType;
+    entryJS["lastLine"] = entry.lastLine;
+    emit dashboardPageController->si_onLogChanged(entryJS);
+}
 void Dashboard::serialize(U2OpStatus &os) {
 #if (QT_VERSION < 0x050400) //Qt 5.7
     QString fileName = dir + REPORT_SUB_DIR + DB_FILE_NAME;
@@ -328,7 +419,6 @@ void Dashboard::loadSettings() {
 }
 
 void Dashboard::createExternalToolTab() {
-    SAFE_POINT(etWidgetController, "External tools widget controller is NULL", );
     const WorkflowMonitor* mon = monitor();
     SAFE_POINT(mon, "Monitor is NULL", );
 
@@ -339,17 +429,7 @@ void Dashboard::createExternalToolTab() {
 
         if (!proto->getExternalTools().isEmpty()) {
             QString addTabJs = "addTab('" + EXT_TOOLS_TAB_ID + "','" + tr("External Tools") + "')";
-#if (QT_VERSION < 0x050400) //Qt 5.7
-            QWebPage* mainPage = page();
-            SAFE_POINT(mainPage, "Page is NULL", );
-            QWebFrame* mainFrame = mainPage->mainFrame();
-            SAFE_POINT(mainFrame, "Main frame is NULL", );
-
-            mainFrame->documentElement().evaluateJavaScript(addTabJs);
-            etWidgetController->getWidget(addWidget(tr("External Tools"), ExternalToolsTab, 0), this);
-#else
-            assert(false);
-#endif
+            page()->runJavaScript("externalToolsWidget = externalToolsWidget || new ExternalToolsWidget(\"externalToolsWidget\");");
             break;
         }
     }
@@ -493,13 +573,84 @@ void Dashboard::sl_serializeContent(const QString& content) {
     stream.flush();
     file.close();
 }
+#endif
 
-DashboardPageController::DashboardPageController(QObject* parent) : QObject(parent) {}
+DashboardPageController::DashboardPageController(Dashboard* parent) : QObject(parent) {
+    monitor = parent->monitor();
+    //set language
+    lang = AppContext::getAppSettings()->getUserAppsSettings()->getTranslationFile();
+    if(lang.isEmpty()){
+        lang = "en";
+    }else {
+        lang = lang.split("_")[1];
+    }
+    //Worker parametes initialisation
+    //TODO move to separate method?
+    QList<WorkerParamsInfo> workersParamsList = monitor->getWorkersParameters();
+    foreach (WorkerParamsInfo workerInfo, workersParamsList) {
+        QJsonObject workerInfoJS;
+        workerInfoJS["workerName"] = workerInfo.workerName;
+        workerInfoJS["actor"] = workerInfo.actor->getLabel();
+        QJsonArray parameters;
+        foreach (Attribute* parameter, workerInfo.parameters) {
+            QJsonObject parameterJS;
+            parameterJS["name"] = parameter->getDisplayName();
+            QVariant paramValueVariant = parameter->getAttributePureValue();
+            if (paramValueVariant.canConvert< QList<Dataset> >()) {
+                QList<Dataset> sets = paramValueVariant.value< QList<Dataset > >();
+                foreach (const Dataset &set, sets) {
+                    QString paramName = parameter->getDisplayName();
+                    if (sets.size() > 1) {
+                        paramName += ": <i>" + set.getName() + "</i>";
+                    }
+                    parameterJS["name"] = paramName;
+                    QStringList urls;
+                    foreach (URLContainer *c, set.getUrls()) {
+                        urls << c->getUrl();
+                    }
+                    parameterJS["value"] = urls.join(";");
+                    parameterJS["isDataset"] = true;
+                    parameters.append(parameterJS);
+                }
+            }else{
+                parameterJS["value"] = WorkflowUtils::getStringForParameterDisplayRole(paramValueVariant);
+                UrlAttributeType type = WorkflowUtils::isUrlAttribute(parameter, workerInfo.actor);
+                if (type == NotAnUrl || QString::compare(paramValueVariant.toString(), "default", Qt::CaseInsensitive) == 0) {
+                    parameterJS["isUrl"] = false;
+                }else{
+                    parameterJS["isUrl"] = true;
+                }
+                parameters.append(parameterJS);
+            }
+        }
+        workerInfoJS["parameters"] = parameters;
+        workersParamsInfo.append(workerInfoJS);
+    }
+    //----
+
+    //temporary, to removing
+    QJsonObject firstObject;
+    firstObject["name"] = "First";
+    test.append(firstObject);
+    firstObject["name"] = "Second";
+    test.append(firstObject);
+}
 
 void DashboardPageController::sl_onJsError(const QString& errorMessage) {
     coreLog.error(errorMessage);
 }
-#endif
+void DashboardPageController::sl_checkETsLog(){
+
+}
+QString DashboardPageController::getLang(){
+    return lang;
+}
+QJsonArray DashboardPageController::getWorkersParamsInfo(){
+    return workersParamsInfo;
+}
+QJsonArray DashboardPageController::getTest(){
+    return test;
+}
 
 /************************************************************************/
 /* DashboardWidget */

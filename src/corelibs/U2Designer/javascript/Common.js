@@ -29,7 +29,7 @@ function wrapLongText(text) {
  */
 function hideLoadBtnHint() {
     var hint = document.getElementById("load-btn-hint-container");
-    if (null != hint) {
+    if (null !== hint) {
         hint.parentNode.removeChild(hint);
     }
 }
@@ -43,15 +43,16 @@ function showLoadButton(showHint) {
     var btnDef = "<button class='btn load-btn' onclick='agent.loadSchema()' title='Load dashboard workflow'><div /></button>";
     menuLine.insertAdjacentHTML('beforeend', btnDef);
 
-    if (showHint == true) {
+    if (showHint === true) {
         var hintDef =
         "<div id='load-btn-hint-container'>" +
             "<div id='load-btn-hint' class='popover fade bottom in' style='display: block'>" +
                 "<div class='arrow' style='left: 91%'></div>" +
                 "<div class='popover-content'>" +
-                    "You can always open the original workflow for your results by clicking on this button." +
+                    "<span lang=\"en\" class=\"translatable\">You can always open the original workflow for your results by clicking on this button.</span>" +
+                    "<span lang=\"ru\" class=\"translatable\">Вы всегда можете открыть исходную вычислительную схему для ваших результатов, нажав на эту кнопку.</span>" +
                     "<div style='text-align: center;'>" +
-                            "<button class='btn' onclick='agent.hideLoadButtonHint()' style='margin-bottom: 4px; margin-top: 6px;'>OK, got it!</button>" +
+                            "<button class='btn' onclick='agent.hideLoadButtonHint()' style='margin-bottom: 4px; margin-top: 6px;'><span lang=\"en\" class=\"translatable\">OK, got it!</span><span lang=\"ru\" class=\"translatable\">Хорошо!</span></button>" +
                     "</div>" +
                 "</div>" +
             "</div>" +
@@ -61,13 +62,13 @@ function showLoadButton(showHint) {
 }
 
 function showFileButton(url, disabled) {
-    if (disabled == true) {
+    if (disabled === true) {
         disabled = 'disabled';
     } else {
         disabled = '';
     }
 
-    if (url.length == 0)
+    if (url.length === 0)
         return "";
     var fileName = url.slice(url.lastIndexOf('/') + 1, url.length);
     var path = url.slice(0, url.lastIndexOf('/') + 1);
@@ -81,16 +82,69 @@ function showFileButton(url, disabled) {
                         '<span class="caret"></span>' +
                     '</button>' +
                 '<ul class="dropdown-menu full-width">' +
-                        '<li><a href="#" onclick="agent.openByOS(\'' + path + '\')">Open containing folder</a></li>' +
-                        '<li><a href="#" onclick="agent.openByOS(\'' + path + fileName + '\')">Open by operating system</a></li>' + 
+                        '<li><a style="white-space: normal;" onclick="agent.openByOS(\'' + path + '\')"><span lang=\"en\" class=\"translatable\">Open containing folder</span><span lang=\"ru\" class=\"translatable\">Открыть директорию, содержащую файл</span></a></li>' +
+                        '<li><a style="white-space: normal;" onclick="agent.openByOS(\'' + path + fileName + '\')"><span lang=\"en\" class=\"translatable\">Open by operating system</span><span lang=\"ru\" class=\"translatable\">Открыть при помощи операционной системы</span></a></li>' + 
                     '</ul>' +
             '</div>' +
         '</div>';
     return button;
 }
 
+function showFileMenu(url) {
+    if (url.length === 0)
+        return "";
+    var fileName = url.slice(url.lastIndexOf('/') + 1, url.length);
+    var path = url.slice(0, url.lastIndexOf('/') + 1);
+    var li = 
+    '<li class="file-sub-menu dropdown-submenu left-align">' +
+      '<a tabindex="-1" href="#" onclick="agent.openUrl(\'' + url + '\')" title="' + url + '">' + fileName + '</a>' +
+      '<ul class="dropdown-menu ">' +
+        '<li><a href="#" onclick="agent.openByOS(\'' + path + '\')"><span lang=\"en\" class=\"translatable\">Open containing folder</span><span lang=\"ru\" class=\"translatable\">Открыть директорию, содержащую файл</span></a></li>' +
+        '<li><a href="#" onclick="agent.openByOS(\'' + path + fileName + '\')"><span lang=\"en\" class=\"translatable\">Open by operating system</span><span lang=\"ru\" class=\"translatable\">Открыть при помощи операционной системы</span></a></li>' +
+      '</ul></li>';
+    return li;
+}
+
 function addTab(tabId, tabName) {
     var tabsList = document.getElementsByClassName("nav nav-pills dash-nav")[0];
     var newTab = "<li class=''><a href='" + tabId + "' data-toggle='tab' class='dash-tab-name'>" + tabName + "</a></li>";
     tabsList.insertAdjacentHTML('beforeend', newTab);
+}
+
+function addWidget(title, dashTab, cntNum, id) {
+    var tabContainer = document.getElementById(dashTab);
+    if (tabContainer === null) {
+        agent.sl_onJsError("Can't find the tab container!");
+        return;
+    }
+    var hasInnerContainers = true;
+    var InputDashTab = "input_tab";
+    var ExternalToolsTab = "ext_tools_tab";
+    if (InputDashTab == dashTab || ExternalToolsTab == dashTab) {
+        hasInnerContainers = false;
+    }
+    var mainContainer = tabContainer;
+    if (hasInnerContainers) {
+        var left = true;
+        if (0 === cntNum) {
+            left = true;
+        } else if (1 == cntNum) {
+            left = false;
+        } else if (containerSize(tabContainer, ".left-container") <= containerSize(tabContainer, ".right-container")) {
+            left = true;
+        } else {
+            left = false;
+        }
+
+        var elements = tabContainer.getElementsByClassName(left ? "left-container" : "right-container");
+        if (elements[0] === null) {
+            agent.sl_onJsError("Can't find a container inside a tab!");
+            return;
+        }
+        mainContainer = elements[0];
+        mainContainer.innerHTML = mainContainer.innerHTML +"<div class=\"widget\">" +
+            "<div class=\"title\"><div class=\"title-content\">" + title + "</div></div>" +
+            "<div class=\"widget-content\" id=\"" + id + "\"></div>" +
+            "</div>";
+    }
 }

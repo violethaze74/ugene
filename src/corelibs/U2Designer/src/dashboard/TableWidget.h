@@ -51,7 +51,7 @@ protected:
     bool useEmptyRows;
 #if (QT_VERSION < 0x050400) //Qt 5.7
     QMap<QString, QWebElement> rows;
-//#else
+#else
     QMap<QString, QString> rows;
 #endif
 

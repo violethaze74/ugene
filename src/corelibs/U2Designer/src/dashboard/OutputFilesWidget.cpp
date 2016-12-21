@@ -52,15 +52,11 @@ void OutputFilesWidget::sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &
         collapse();
         return;
     }
-#if (QT_VERSION < 0x050400) //Qt 5.7
     if (collapsed && rows.contains(id(info))) {
         addFileMenu(info);
     } else {
-        addRow(id(info), createRowByFile(info));
+//        addRow(id(info), createRowByFile(info));
     }
-#else
-    assert(0);
-#endif
 }
 
 QList<int> OutputFilesWidget::widths() {

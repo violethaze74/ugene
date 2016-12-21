@@ -9,7 +9,7 @@ DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 DEFINES+=UGENE_VER_PATCH=$${UGENE_VER_PATCH}
 
 unix : !macx : INCLUDEPATH-=/usr/include
-unix : !macx : INCLUDEPATH+=/usr/include/qt5 /usr/include
+#unix : !macx : INCLUDEPATH+=/usr/include/qt5 /usr/include
 #unix : !macx : INCLUDEPATH =/usr/include/qt5 $$INCLUDEPATH
 
 # NGS package

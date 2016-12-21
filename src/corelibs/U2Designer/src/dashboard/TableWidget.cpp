@@ -105,8 +105,8 @@ void TableWidget::addRow(const QString &dataId, const QStringList &ds) {
         rows[dataId] = body.findAll(".filled-row").last();
     }
 #else
-    //dashboard->page()->runJavaScript("addRow(\"" + container + "\", \"" + QString::number(rowIdx) + "\", \"" + QString::number(MIN_ROW_COUNT) + "\");");
-    assert(0);
+    dashboard->page()->runJavaScript("addRow(\"" + container + "\", \"" + Jsutils::toJSArray(ds) + "\", \"" + dataId + "\");");
+    //assert(0);
 #endif
 }
 

@@ -23,7 +23,7 @@
 #include <QDesktopWidget>
 #include <QFile>
 #include <QScrollBar>
-#if (QT_VERSION < 0x050700) //Qt 5.7
+#if (QT_VERSION < 0x050400) //Qt 5.7
 #include <QWebFrame>
 #endif
 
@@ -55,7 +55,7 @@ bool StatisticalReportController::isInfoSharingAccepted() const {
 
 void StatisticalReportController::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
-#if (QT_VERSION < 0x050700) //Qt 5.7
+#if (QT_VERSION < 0x050400) //Qt 5.7
     CHECK(!htmlView->page()->mainFrame()->scrollBarGeometry(Qt::Vertical).isEmpty(), );
 
     // adjust size to avoid scroll bars

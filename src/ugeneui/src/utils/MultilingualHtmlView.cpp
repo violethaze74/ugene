@@ -31,6 +31,11 @@
 #include <QWebFrame>
 #else
 #include <QWebChannel>
+#include <QWebSocketServer>
+
+#include <U2Gui/WebSocketClientWrapper.h>
+#include <U2Gui/WebSocketTransport.h>
+
 #endif
 
 namespace U2 {
@@ -87,6 +92,18 @@ void MultilingualHtmlView::loadPage(const QString& htmlPath) {
 #if (QT_VERSION < 0x050400) //Qt 5.7
     connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(sl_linkActivated(QUrl)));
     load(QUrl(htmlPath));
+#elif (QT_VERSION < 0x050500) //Qt 5.7
+    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
+    if (!server->listen(QHostAddress::LocalHost, 12346)) {
+        return;
+    }
+
+    clientWrapper = new WebSocketClientWrapper(server);//TODO delete in dtor
+
+    channel = new QWebChannel(this);
+
+    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
+        channel, &QWebChannel::connectTo);
 #else
     QWebEnginePage *pg = new MultilingualWebEnginePage(parentWidget());
     pg->load(QUrl(htmlPath));
@@ -99,7 +116,7 @@ void MultilingualHtmlView::loadPage(const QString& htmlPath) {
 
 #if (QT_VERSION >= 0x050400) //Qt 5.7
 MultilingualWebEnginePage::MultilingualWebEnginePage(QObject *parent) : QWebEnginePage(parent) {}
-
+#if (QT_VERSION >= 0x050500)
 bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, NavigationType type, bool) {
     if (type == NavigationTypeLinkClicked) {
         QDesktopServices::openUrl(url);
@@ -107,6 +124,7 @@ bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, Navigat
     }
     return true;
 }
+#endif
 #endif
 
 } // namespace

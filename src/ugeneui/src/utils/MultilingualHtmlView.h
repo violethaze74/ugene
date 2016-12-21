@@ -26,7 +26,10 @@
 #if (QT_VERSION < 0x050400) //Qt 5.7
 #include <QtWebKitWidgets/QWebView>
 #else
-#include <QtWebEngineWidgets/QWebEngineView>
+#include <QWebEngineView>
+#include <QWebChannel>
+#include <QWebSocketServer>
+#include <U2Gui/WebSocketClientWrapper.h>
 #endif
 
 namespace U2 {
@@ -39,7 +42,9 @@ class MultilingualWebEnginePage : public QWebEnginePage {
 public:
     MultilingualWebEnginePage(QObject* parent = 0);
 protected:
+#if (QT_VERSION >= 0x050500)
     virtual bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
+#endif
 };
 
 class MultilingualHtmlView : public QWebEngineView {
@@ -59,6 +64,10 @@ signals:
     void si_loaded(bool ok);
 #if (QT_VERSION >= 0x050400) //Qt 5.7
 protected:
+    QWebSocketServer *server;
+    WebSocketClientWrapper *clientWrapper;
+    QWebChannel *channel;
+#else
     QWebChannel *channel;
 #endif
 private:
