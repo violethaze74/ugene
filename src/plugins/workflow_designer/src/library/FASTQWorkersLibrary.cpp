@@ -391,14 +391,6 @@ int FastqQualityTrimTask::getMaxQualityValue(){
     return maxValue;
 }
 
-namespace {
-
-DNAQualityType getQualityType(int maxQualityValue) {
-    return (maxQualityValue >= DNAQuality::MAX_PHRED33_VALUE) ? DNAQualityType_Illumina : DNAQualityType_Sanger; //also see description in getMaxQualityValue()
-}
-
-}
-
 void FastqQualityTrimTask::runStep(){
     int ncount = 0;
     int ycount = 0;
