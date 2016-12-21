@@ -55,6 +55,7 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignmen
                     mcaRowsMemoryData[i].editedSequence,
                     mcaRowsMemoryData[i].editedSequenceGapModel,
                     mcaRowsMemoryData[i].workingArea);
+        mca->getMcaRow(i)->setAdditionalInfo(mcaRowsMemoryData[i].additionalInfo);
     }
 
     // Info
@@ -128,6 +129,8 @@ QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(
         mcaRowMemoryData.editedSequence = exportSequence(os, row.sequenceId);
         CHECK_OP(os, QList<McaRowMemoryData>());
 
+        mcaRowMemoryData.additionalInfo = exportRowAdditionalInfo(os, row.chromatogramId);
+
         mcaRowMemoryData.predictedSequenceGapModel = row.predictedSequenceGaps;
         mcaRowMemoryData.editedSequenceGapModel = row.gaps;
         mcaRowMemoryData.workingArea = U2Region(row.gstart, row.gend - row.gstart);
@@ -150,6 +153,28 @@ DNASequence MultipleChromatogramAlignmentExporter::exportSequence(U2OpStatus &os
     CHECK_OP(os, DNASequence());
 
     return DNASequence(dbSequence.visualName, sequenceData);
+}
+
+QVariantMap MultipleChromatogramAlignmentExporter::exportRowAdditionalInfo(U2OpStatus &os, const U2DataId &chromatogramId) const {
+    U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
+    SAFE_POINT_EXT(NULL != attributeDbi, os.setError("NULL Attribute Dbi during exporting an alignment info"), QVariantMap());
+
+    QVariantMap additionalInfo;
+    QList<U2DataId> reversedAttributeIds = attributeDbi->getObjectAttributes(chromatogramId, MultipleAlignmentRowInfo::REVERSED, os);
+    CHECK_OP(os, QVariantMap());
+
+    if (!reversedAttributeIds.isEmpty()) {
+        MultipleAlignmentRowInfo::setReversed(additionalInfo, attributeDbi->getIntegerAttribute(reversedAttributeIds.last(), os).value == 1);
+    }
+
+    QList<U2DataId> complementedAttributeIds = attributeDbi->getObjectAttributes(chromatogramId, MultipleAlignmentRowInfo::COMPLEMENTED, os);
+    CHECK_OP(os, QVariantMap());
+
+    if (!reversedAttributeIds.isEmpty()) {
+        MultipleAlignmentRowInfo::setComplemented(additionalInfo, attributeDbi->getIntegerAttribute(complementedAttributeIds.last(), os).value == 1);
+    }
+
+    return additionalInfo;
 }
 
 QVariantMap MultipleChromatogramAlignmentExporter::exportAlignmentInfo(U2OpStatus &os, const U2DataId &mcaId) const {

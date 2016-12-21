@@ -425,6 +425,30 @@ void MultipleChromatogramAlignmentRowData::removeGaps(U2OpStatus &os, qint64 pos
     MsaRowUtils::removeGaps(os, commonGapModel, getRowLengthWithoutTrailing(), position, count);
 }
 
+void MultipleChromatogramAlignmentRowData::setAdditionalInfo(const QVariantMap &newAdditionalInfo) {
+    additionalInfo = newAdditionalInfo;
+}
+
+QVariantMap MultipleChromatogramAlignmentRowData::getAdditionalInfo() const {
+    return additionalInfo;
+}
+
+void MultipleChromatogramAlignmentRowData::setReversed(bool reversed) {
+    MultipleAlignmentRowInfo::setReversed(additionalInfo, reversed);
+}
+
+bool MultipleChromatogramAlignmentRowData::getReversed() const {
+    return MultipleAlignmentRowInfo::getReversed(additionalInfo);
+}
+
+void MultipleChromatogramAlignmentRowData::setComplemented(bool complemented) {
+    MultipleAlignmentRowInfo::setComplemented(additionalInfo, complemented);
+}
+
+bool MultipleChromatogramAlignmentRowData::getComplemented() const {
+    return MultipleAlignmentRowInfo::getComplemented(additionalInfo);
+}
+
 void MultipleChromatogramAlignmentRowData::replaceCharInEditedSequence(U2OpStatus &os, qint64 position, char newChar) {
     SAFE_POINT(getCoreRegion().contains(position), "An attempt to change the sequence in the position that is out of boundaries", );
     const char currentChar = getEditedSequenceChar(position);

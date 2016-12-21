@@ -24,8 +24,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/DNATranslationImpl.h \
            src/datatype/FeatureColors.h \
            src/datatype/Matrix44.h \
-           src/datatype/msa/MultipleSequenceAlignment.h \
-           src/datatype/msa/MultipleSequenceAlignmentRow.h \
            src/datatype/PFMatrix.h \
            src/datatype/PhyTree.h \
            src/datatype/PWMatrix.h \
@@ -53,6 +51,17 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/UdrSchemaRegistry.h \
            src/datatype/Vector3D.h \
            src/datatype/udr/RawDataUdrSchema.h \
+           src/datatype/U2Msa.h \
+           src/datatype/U2Mca.h \
+           src/datatype/msa/MaStateCheck.h \
+           src/datatype/msa/MultipleAlignment.h \
+           src/datatype/msa/MultipleAlignmentInfo.h \
+           src/datatype/msa/MultipleAlignmentRow.h \
+           src/datatype/msa/MultipleAlignmentRowInfo.h \
+           src/datatype/msa/MultipleChromatogramAlignment.h \
+           src/datatype/msa/MultipleChromatogramAlignmentRow.h \
+           src/datatype/msa/MultipleSequenceAlignment.h \
+           src/datatype/msa/MultipleSequenceAlignmentRow.h \
            src/dbi/DbiConnection.h \
            src/dbi/DbiDocumentFormat.h \
            src/dbi/U2AbstractDbi.h \
@@ -65,6 +74,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/dbi/U2DbiUtils.h \
            src/dbi/U2FeatureDbi.h \
            src/dbi/U2FormatCheckResult.h \
+           src/dbi/U2McaDbi.h \
            src/dbi/U2ModDbi.h \
            src/dbi/U2MsaDbi.h \
            src/dbi/U2ObjectDbi.h \
@@ -123,6 +133,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/gobjects/GObjectTypes.h \
            src/gobjects/GObjectUtils.h \
            src/gobjects/MultipleAlignmentObject.h \
+           src/gobjects/MultipleChromatogramAlignmentObject.h \
            src/gobjects/MultipleSequenceAlignmentObject.h \
            src/gobjects/PFMatrixObject.h \
            src/gobjects/PhyTreeObject.h \
@@ -215,9 +226,14 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/GUrlUtils.h \
            src/util/ImportToDatabaseOptions.h \
            src/util/IOAdapterUtils.h \
+           src/util/MaModificationInfo.h \
+           src/util/McaDbiUtils.h \
            src/util/MsaDbiUtils.h \
+           src/util/McaRowInnerData.h \
            src/util/MsaRowUtils.h \
            src/util/MSAUtils.h \
+           src/util/MultipleChromatogramAlignmentExporter.h \
+           src/util/MultipleChromatogramAlignmentImporter.h \
            src/util/MultipleSequenceAlignmentExporter.h \
            src/util/MultipleSequenceAlignmentImporter.h \
            src/util/MultipleSequenceAlignmentWalker.h \
@@ -241,22 +257,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/util/U2OpStatusUtils.h \
            src/util/U2SequenceUtils.h \
            src/util/U2VariationUtils.h \
-           src/util/VariationPropertiesUtils.h \
-    src/datatype/U2Msa.h \
-    src/datatype/U2Mca.h \
-    src/datatype/msa/MultipleChromatogramAlignmentRow.h \
-    src/datatype/msa/MultipleChromatogramAlignment.h \
-    src/datatype/msa/MultipleAlignment.h \
-    src/datatype/msa/MultipleAlignmentRow.h \
-    src/gobjects/MultipleChromatogramAlignmentObject.h \
-    src/dbi/U2McaDbi.h \
-    src/util/MaModificationInfo.h \
-    src/util/MultipleChromatogramAlignmentImporter.h \
-    src/util/MultipleChromatogramAlignmentExporter.h \
-    src/util/McaRowInnerData.h \
-    src/datatype/msa/MultipleAlignmentInfo.h \
-    src/datatype/msa/MaStateCheck.h \
-    src/util/McaDbiUtils.h
+           src/util/VariationPropertiesUtils.h
 
 SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/cmdline/CMDLineRegistry.cpp \
@@ -280,8 +281,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/DNATranslationImpl.cpp \
            src/datatype/FeatureColors.cpp \
            src/datatype/Matrix44.cpp \
-           src/datatype/msa/MultipleSequenceAlignment.cpp \
-           src/datatype/msa/MultipleSequenceAlignmentRow.cpp \
            src/datatype/PFMatrix.cpp \
            src/datatype/PhyTree.cpp \
            src/datatype/PWMatrix.cpp \
@@ -297,6 +296,18 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/UdrSchema.cpp \
            src/datatype/UdrSchemaRegistry.cpp \
            src/datatype/Vector3D.cpp \
+           src/datatype/U2Mca.cpp \
+           src/datatype/U2Msa.cpp \
+           src/datatype/DNAChromatogram.cpp \
+           src/datatype/msa/MaStateCheck.cpp \
+           src/datatype/msa/MultipleAlignment.cpp \
+           src/datatype/msa/MultipleAlignmentInfo.cpp \
+           src/datatype/msa/MultipleAlignmentRow.cpp \
+           src/datatype/msa/MultipleAlignmentRowInfo.cpp \
+           src/datatype/msa/MultipleChromatogramAlignmentRow.cpp \
+           src/datatype/msa/MultipleChromatogramAlignment.cpp \
+           src/datatype/msa/MultipleSequenceAlignment.cpp \
+           src/datatype/msa/MultipleSequenceAlignmentRow.cpp \
            src/datatype/udr/RawDataUdrSchema.cpp \
            src/dbi/DbiConnection.cpp \
            src/dbi/DbiDocumentFormat.cpp \
@@ -304,6 +315,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/dbi/U2DbiPackUtils.cpp \
            src/dbi/U2DbiRegistry.cpp \
            src/dbi/U2DbiUtils.cpp \
+           src/dbi/U2McaDbi.cpp \
            src/dbi/U2ObjectDbi.cpp \
            src/dbi/U2ObjectRelationsDbi.cpp \
            src/dbi/U2SqlHelpers.cpp \
@@ -349,6 +361,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/gobjects/GObjectTypes.cpp \
            src/gobjects/GObjectUtils.cpp \
            src/gobjects/MultipleAlignmentObject.cpp \
+           src/gobjects/MultipleChromatogramAlignmentObject.cpp \
            src/gobjects/MultipleSequenceAlignmentObject.cpp \
            src/gobjects/PFMatrixObject.cpp \
            src/gobjects/PhyTreeObject.cpp \
@@ -435,9 +448,14 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/GUrlUtils.cpp \
            src/util/ImportToDatabaseOptions.cpp \
            src/util/IOAdapterUtils.cpp \
+           src/util/MaModificationInfo.cpp \
+           src/util/McaDbiUtils.cpp \
+           src/util/McaRowInnerData.cpp \
            src/util/MsaDbiUtils.cpp \
            src/util/MsaRowUtils.cpp \
            src/util/MSAUtils.cpp \
+           src/util/MultipleChromatogramAlignmentExporter.cpp \
+           src/util/MultipleChromatogramAlignmentImporter.cpp \
            src/util/MultipleSequenceAlignmentExporter.cpp \
            src/util/MultipleSequenceAlignmentImporter.cpp \
            src/util/MultipleSequenceAlignmentWalker.cpp \
@@ -457,23 +475,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/util/U2FeatureUtils.cpp \
            src/util/U2ObjectTypeUtils.cpp \
            src/util/U2SequenceUtils.cpp \
-           src/util/U2VariationUtils.cpp \
-    src/datatype/U2Msa.cpp \
-    src/datatype/DNAChromatogram.cpp \
-    src/datatype/msa/MultipleChromatogramAlignmentRow.cpp \
-    src/datatype/msa/MultipleChromatogramAlignment.cpp \
-    src/datatype/msa/MultipleAlignment.cpp \
-    src/datatype/msa/MultipleAlignmentRow.cpp \
-    src/gobjects/MultipleChromatogramAlignmentObject.cpp \
-    src/dbi/U2McaDbi.cpp \
-    src/util/MaModificationInfo.cpp \
-    src/util/MultipleChromatogramAlignmentImporter.cpp \
-    src/util/MultipleChromatogramAlignmentExporter.cpp \
-    src/datatype/U2Mca.cpp \
-    src/util/McaRowInnerData.cpp \
-    src/datatype/msa/MultipleAlignmentInfo.cpp \
-    src/datatype/msa/MaStateCheck.cpp \
-    src/util/McaDbiUtils.cpp
+           src/util/U2VariationUtils.cpp
 
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

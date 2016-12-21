@@ -29,6 +29,7 @@
 #include <U2Core/U2Region.h>
 
 #include "MultipleAlignmentRow.h"
+#include "MultipleAlignmentRowInfo.h"
 
 namespace U2 {
 
@@ -206,6 +207,15 @@ public:
     void removeGap(U2OpStatus &os, qint64 position);
     void removeGaps(U2OpStatus &os, qint64 position, qint64 count);
 
+    void setAdditionalInfo(const QVariantMap &additionalInfo);
+    QVariantMap getAdditionalInfo() const;
+
+    void setReversed(bool reversed);
+    bool getReversed() const;
+
+    void setComplemented(bool complemented);
+    bool getComplemented() const;
+
     void replaceCharInEditedSequence(U2OpStatus &os, qint64 position, char newChar);
 
     MultipleChromatogramAlignmentRow getExplicitCopy(const MultipleChromatogramAlignmentData *mcaData = NULL) const;
@@ -257,6 +267,7 @@ private:
     U2Region workingArea;
     U2McaRow initialRowInDb;
     const MultipleChromatogramAlignmentData *mcaData;
+    QVariantMap additionalInfo;
 };
 
 inline bool	operator!=(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRow &ptr2) { return *ptr1 != *ptr2; }

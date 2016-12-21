@@ -42,6 +42,7 @@ private:
     static QList<U2McaRow> importRows(U2OpStatus &os, const DbiConnection &connection, U2Mca &dbMca, const QList<McaRowDatabaseData> &mcaRowDatabaseData);
     static U2Chromatogram importChromatogram(U2OpStatus &os, const DbiConnection &connection, const QString &folder, const DNAChromatogram &chromatogram);
     static U2Sequence importSequence(U2OpStatus &os, const DbiConnection &connection, const QString &folder, const DNASequence &sequence, const U2AlphabetId &alphabetId);
+    static void importRowAdditionalInfo(U2OpStatus &os, const DbiConnection &connection, const U2Chromatogram &chromatogram, const QVariantMap &additionalInfo);
 };
 
 }   // namespace U2

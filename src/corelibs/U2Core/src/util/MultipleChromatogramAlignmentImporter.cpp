@@ -65,7 +65,6 @@ MultipleChromatogramAlignmentObject * MultipleChromatogramAlignmentImporter::cre
     SAFE_POINT_EXT(rows.size() == mca->getNumRows(), os.setError(QObject::tr("Unexpected error on MCA rows import")), NULL);
 
     for (int i = 0, n = mca->getNumRows(); i < n; ++i) {
-        // TODO: add this method
         mca->getMcaRow(i)->setRowDbInfo(rows.at(i));
     }
 
@@ -138,6 +137,10 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
         mcaRowDatabaseData.editedSequence = importSequence(os, connection, folder, row->getEditedSequence(), alphabetId);
         CHECK_OP(os, mcaRowsDatabaseData);
 
+        mcaRowDatabaseData.additionalInfo = row->getAdditionalInfo();
+        importRowAdditionalInfo(os, connection, mcaRowDatabaseData.chromatogram, mcaRowDatabaseData.additionalInfo);
+        CHECK_OP(os, mcaRowsDatabaseData);
+
         mcaRowDatabaseData.predictedSequenceGapModel = row->getPredictedSequenceGapModel();
         mcaRowDatabaseData.editedSequenceGapModel = row->getEditedSequenceGapModel();
         mcaRowDatabaseData.workingAreaLength = row->getWorkingAreaLength();
@@ -198,6 +201,26 @@ U2Sequence MultipleChromatogramAlignmentImporter::importSequence(U2OpStatus &os,
     connection.dbi->getObjectDbi()->setObjectRank(sequenceRef.entityId, U2DbiObjectRank_Child, os);
     CHECK_OP(os, U2Sequence());
     return connection.dbi->getSequenceDbi()->getSequenceObject(sequenceRef.entityId, os);
+}
+
+void MultipleChromatogramAlignmentImporter::importRowAdditionalInfo(U2OpStatus &os, const DbiConnection &connection, const U2Chromatogram &chromatogram, const QVariantMap &additionalInfo) {
+    U2IntegerAttribute reversedAttribute;
+    reversedAttribute.objectId = chromatogram.id;
+    reversedAttribute.name = MultipleAlignmentRowInfo::REVERSED;
+    reversedAttribute.version = chromatogram.version;
+    reversedAttribute.value = MultipleAlignmentRowInfo::getReversed(additionalInfo) ? 1 : 0;
+
+    connection.dbi->getAttributeDbi()->createIntegerAttribute(reversedAttribute, os);
+    CHECK_OP(os, );
+
+    U2IntegerAttribute complementedAttribute;
+    complementedAttribute.objectId = chromatogram.id;
+    complementedAttribute.name = MultipleAlignmentRowInfo::COMPLEMENTED;
+    complementedAttribute.version = chromatogram.version;
+    complementedAttribute.value = MultipleAlignmentRowInfo::getComplemented(additionalInfo) ? 1 : 0;
+
+    connection.dbi->getAttributeDbi()->createIntegerAttribute(complementedAttribute, os);
+    CHECK_OP(os, );
 }
 
 }   // namespace U2

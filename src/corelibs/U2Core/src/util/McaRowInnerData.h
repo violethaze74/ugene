@@ -40,6 +40,7 @@ public:
     U2MsaRowGapModel editedSequenceGapModel;
     U2Region workingArea;
     qint64 rowLength;
+    QVariantMap additionalInfo;
 };
 
 class McaRowDatabaseData {
@@ -54,6 +55,7 @@ public:
     U2Region workingArea;
     qint64 workingAreaLength;   // TODO: replace with a region
     qint64 rowLength;
+    QVariantMap additionalInfo;
 };
 
 }   // namespace U2
