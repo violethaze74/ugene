@@ -209,9 +209,10 @@ void SnpEffFactory::init() {
             genomeMap["Drosophila Melanogaster (dm5.48)"] = "dm5.48";
             genomeMap["Homo sapiens (hg19)"] = "hg19";
             genomeMap["Homo sapiens (hg38)"] = "hg38";
+            genomeMap["Ebola Zaire Virus (NC_002549)"] = "NC_002549";
             genomeMap["Ecoli K12 MG1655 (NC_000913)"] = "NC_000913";
             genomeMap["C. elegans (WS241)"] = "WS241";
-            genomeMap["Ebola Zaire Virus (NC_002549)"] = "NC_002549";
+            genomeMap["Mycobacterium smegmatis"] = "Mycobacterium_smegmatis";
             delegates[SnpEffWorker::GENOME] = new ComboBoxEditableDelegate(genomeMap);
         }
 
