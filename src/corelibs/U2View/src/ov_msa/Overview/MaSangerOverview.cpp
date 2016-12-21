@@ -22,6 +22,7 @@
 #include "MaSangerOverview.h"
 
 #include "ov_msa/McaEditor.h"
+#include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 
 #include <U2Core/U2SafePoints.h>
 
@@ -29,12 +30,18 @@
 
 namespace U2 {
 
+const int MaSangerOverview::READ_HEIGHT = 8;
+
 MaSangerOverview::MaSangerOverview(MaEditorWgt *ui)
     : MaOverview(ui) {
     if (!isValid()) {
         setVisible(false);
     }
-    setFixedHeight(100); // SANGER_TODO: set proper height depending on the sequences
+    MultipleChromatogramAlignmentObject* mAlignmentObj = getEditor()->getMaObject();
+    setFixedHeight(mAlignmentObj->getNumRows() * READ_HEIGHT);
+    stepX = READ_HEIGHT;
+
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 }
 
 bool MaSangerOverview::isValid() const {
@@ -43,7 +50,7 @@ bool MaSangerOverview::isValid() const {
 
 QPixmap MaSangerOverview::getView() {
     // SANGER_TODO: change
-    resize(ui->width(), 100);
+    resize(ui->width(), height());
     if (cachedView.isNull()) {
         cachedView = QPixmap(size());
         QPainter p(&cachedView);
@@ -59,7 +66,14 @@ McaEditor* MaSangerOverview::getEditor() const {
 void MaSangerOverview::paintEvent(QPaintEvent *e) {
     QPainter p(this);
     p.drawPixmap(0, 0, getView());
+    drawVisibleRange(p);
     QWidget::paintEvent(e);
+}
+
+void MaSangerOverview::resizeEvent(QResizeEvent *e) {
+    cachedView = QPixmap();
+    QWidget::resizeEvent(e);
+    update();
 }
 
 void MaSangerOverview::drawOverview(QPainter &p) {
@@ -103,7 +117,15 @@ void MaSangerOverview::drawVisibleRange(QPainter &p) {
     if (editor->isAlignmentEmpty()) {
         setVisibleRangeForEmptyAlignment();
     } else {
-        stepX = width() / (double)editor->getAlignmentLen();
+        double stepX = width() / (double)editor->getAlignmentLen();
+        double stepY = height() / (double)editor->getNumSequences();
+
+        cachedVisibleRange.setX(qRound(stepX * sequenceArea->getFirstVisibleBase()));
+        cachedVisibleRange.setWidth(qRound(stepX * (sequenceArea->getLastVisibleBase(true) - sequenceArea->getFirstVisibleBase() + 1)));
+
+        cachedVisibleRange.setY(qRound(stepY * sequenceArea->getFirstVisibleSequence()));
+        cachedVisibleRange.setHeight(qRound(stepY * (sequenceArea->getLastVisibleSequence(true) - sequenceArea->getFirstVisibleSequence() + 1)));
+
         if (cachedVisibleRange.width() < VISIBLE_RANGE_CRITICAL_SIZE || cachedVisibleRange.height() < VISIBLE_RANGE_CRITICAL_SIZE) {
             p.setPen(Qt::red);
         }
@@ -117,11 +139,62 @@ void MaSangerOverview::drawSelection(QPainter &p) {
     p.fillRect(cachedSelection, SELECTION_COLOR);
 }
 
+void MaSangerOverview::moveVisibleRange(QPoint _pos) {
+    // SANGER_TODO: this is located in the separate method in simpleoverview
+    double stepX = width() / (double)editor->getAlignmentLen();
+    double stepY = height() / (double)editor->getNumSequences();
+
+    const QRect& overviewRect = rect();
+    QRect newVisibleRange(cachedVisibleRange);
+    newVisibleRange.moveLeft(_pos.x() - (double)cachedVisibleRange.width() / 2 );
+
+    newVisibleRange.moveTop(_pos.y() - (double)cachedVisibleRange.height() / 2 );
+
+    if (!overviewRect.contains(newVisibleRange)) {
+        // fit in overview horizontally
+        if (newVisibleRange.x() < 0) {
+            newVisibleRange.moveLeft(0);
+        } else if (newVisibleRange.topRight().x() > overviewRect.width()) {
+            newVisibleRange.moveRight(overviewRect.width());
+        }
+
+        // fit in overview vertically
+        if (newVisibleRange.y() < 0) {
+            newVisibleRange.moveTop(0);
+        } else if (newVisibleRange.bottomRight().y() > overviewRect.height()) {
+            newVisibleRange.moveBottom(overviewRect.height());
+        }
+    }
+
+    int pos = qRound( newVisibleRange.x() / stepX );
+    sequenceArea->setFirstVisibleBase(pos);
+    pos = qRound( newVisibleRange.y() / stepY );
+    sequenceArea->setFirstVisibleSequence(pos);
+}
+
 void MaSangerOverview::drawRead(QPainter &p, const QRect &rect, bool forward) {
     if (forward) {
+        p.setPen(Qt::SolidLine);
         p.drawLine(rect.topLeft(), rect.bottomLeft());
+
+        // arrow
+        p.drawLine(rect.right(), rect.center().y(),
+                   rect.right() - READ_HEIGHT / 2,
+                   rect.center().y() - READ_HEIGHT / 2);
+        p.drawLine(rect.right(), rect.center().y(),
+                   rect.right() - READ_HEIGHT / 2,
+                   rect.center().y() + READ_HEIGHT / 2);
     } else {
+        p.setPen(Qt::DashLine);
         p.drawLine(rect.topRight(), rect.bottomRight());
+
+        // arrow
+        p.drawLine(rect.left(), rect.center().y(),
+                   rect.left() + READ_HEIGHT / 2,
+                   rect.center().y() - READ_HEIGHT / 2);
+        p.drawLine(rect.left(), rect.center().y(),
+                   rect.left() + READ_HEIGHT / 2,
+                   rect.center().y() + READ_HEIGHT / 2);
     }
     p.drawLine(rect.left(), rect.center().y(), rect.right(), rect.center().y());
 }

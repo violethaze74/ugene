@@ -38,16 +38,20 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *e);
+    void resizeEvent(QResizeEvent *e);
 
 private:
     void drawOverview(QPainter &p);
     void drawVisibleRange(QPainter &p);
     void drawSelection(QPainter &p);
 
+    void moveVisibleRange(QPoint pos);
+
     void drawRead(QPainter &p, const QRect& rect, bool forward);
 
 private:
     McaEditor* getEditor() const;
+    static const int READ_HEIGHT;
 };
 
 } // namespace

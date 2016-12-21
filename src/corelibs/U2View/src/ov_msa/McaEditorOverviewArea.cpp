@@ -34,7 +34,8 @@ McaEditorOverviewArea::McaEditorOverviewArea(MaEditorWgt *ui)
     sangerOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_sanger"));
 
     addOverview(sangerOverview);
-    addOverview(graphOverview);
+    // SANGER_TODO: temporary hidden
+//    addOverview(graphOverview);
 }
 
 bool McaEditorOverviewArea::isOverviewWidget(QWidget *wgt) const {
