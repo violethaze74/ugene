@@ -20,7 +20,9 @@
  */
 
 #include <QColorDialog>
+#include <QProxyStyle>
 #include <QHBoxLayout>
+#include <QStyleFactory>
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
@@ -39,43 +41,50 @@
 
 namespace U2 {
 
+namespace {
+
+void setButtonColor(QPushButton *button, const QColor &color) {
+    QPalette palette = button->palette();
+    palette.setColor(button->backgroundRole(), color);
+    button->setPalette(palette);
+}
+
+}
+
 GraphSettingsDialog::GraphSettingsDialog( GSequenceGraphDrawer* d, const U2Region& range, QWidget* parent )
 :QDialog(parent), colorMap(d->getColors())
 {
-
     const GSequenceGraphWindowData& windowData = d->getWindowData();
     const GSequenceGraphMinMaxCutOffData& cutOffData = d->getCutOffData();
     wss = new WindowStepSelectorWidget(this, range, windowData.window, windowData.step);
     mms = new MinMaxSelectorWidget(this, cutOffData.minEdge, cutOffData.maxEdge, cutOffData.enableCuttoff);
-    QVBoxLayout* l = new QVBoxLayout();
-    QHBoxLayout* buttonsLayout = new QHBoxLayout();
-    buttonsLayout->addStretch(10);
-
-    QList<QHBoxLayout*> cLayouts;
+    
+    QFormLayout* form = wss->getFormLayout();
     foreach(const QString& key, colorMap.keys()) {
-        QLabel* defaultColorName = new QLabel(QString("%1:").arg(key));
         QPushButton* colorChangeButton = new QPushButton();
         colorChangeButton->setObjectName(key);
-        colorChangeButton->setFixedSize(QSize(25,25));
         connect(colorChangeButton, SIGNAL(clicked()), SLOT(sl_onPickColorButtonClicked()));
         QColor color = colorMap.value(key);
-        colorChangeButton->setStyleSheet(QString(BACKGROUND_COLOR).arg(color.name()));
-        QHBoxLayout* cl = new QHBoxLayout();
-        cl->addSpacerItem(new QSpacerItem(50,25, QSizePolicy::Expanding));
-        cl->addWidget(defaultColorName);
-        cl->addWidget(colorChangeButton);
-        cl->addSpacerItem(new QSpacerItem(50,25, QSizePolicy::Expanding));
-        cLayouts.append(cl);
+
+        QStyle *buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
+        buttonStyle->setParent(this);
+        colorChangeButton->setStyle(buttonStyle);
+
+        setButtonColor(colorChangeButton, color);
+
+        form->addRow(QString("%1:").arg(key), colorChangeButton);
     }
+    
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     buttonBox->setObjectName("buttonBox");
 
+    QHBoxLayout* buttonsLayout = new QHBoxLayout();
+    buttonsLayout->addStretch(10);
     buttonsLayout->addWidget(buttonBox);
 
+    QVBoxLayout* l = new QVBoxLayout();
+    l->setSizeConstraint(QLayout::SetFixedSize);
     l->addWidget(wss);
-    foreach(QLayout* cl, cLayouts) {
-        l->addLayout(cl);
-    }
     l->addWidget(mms);
     l->addLayout(buttonsLayout);
 
@@ -83,12 +92,9 @@ GraphSettingsDialog::GraphSettingsDialog( GSequenceGraphDrawer* d, const U2Regio
     setWindowTitle(tr("Graph Settings"));
     setWindowIcon(QIcon(":core/images/graphs.png"));
 
-    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    setMinimumWidth(200);
-
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton* cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
-    new HelpButton(this, buttonBox, "18220393");
+    new HelpButton(this, buttonBox, "18223033");
 
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_onCancelClicked()));
     connect(okButton, SIGNAL(clicked()), SLOT(sl_onOkClicked()));
@@ -113,7 +119,7 @@ void GraphSettingsDialog::sl_onPickColorButtonClicked()
     if (CD->result() == QDialog::Accepted){
         QColor newColor = CD->selectedColor();
         colorMap[colorName] = newColor;
-        colorButton->setStyleSheet(QString(BACKGROUND_COLOR).arg(newColor.name()));
+        setButtonColor(colorButton, newColor);
     }
 }
 

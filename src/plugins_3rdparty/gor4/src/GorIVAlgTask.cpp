@@ -22,7 +22,9 @@
 #include <QtCore/QFile>
 
 #include <U2Core/Counter.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2View/SecStructPredictUtils.h>
+
 #include "GorIVAlgTask.h"
 #include "gor.h"
 
@@ -64,8 +66,8 @@ void GorIVAlgTask::run()
 
     //TODO: BUG-0000808
     QMutexLocker runLocker( &runLock );
-    runGORIV(seqDb, strucDb, sequence.data(), sequence.size() - 1, output.data());
-
+    runGORIV(seqDb, strucDb, sequence.data(), sequence.size() - 1, output.data(), stateInfo);
+    CHECK_OP(stateInfo, );
     results = SecStructPredictUtils::saveAlgorithmResultsAsAnnotations(output, GORIV_ANNOTATION_NAME);
 }
 

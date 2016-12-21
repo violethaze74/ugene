@@ -1057,9 +1057,9 @@
     </message>
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="195"/>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="299"/>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="309"/>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="321"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="300"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="310"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="322"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -1069,27 +1069,27 @@
         <translation>%1%,  first type error %2,  second type error %3</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="299"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="300"/>
         <source>No model selected</source>
         <translation>No model selected</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="309"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="310"/>
         <source>Range is too small</source>
         <translation>Range is too small</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="321"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="322"/>
         <source>Error parsing minumum score</source>
         <translation>Error parsing minumum score</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="385"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="386"/>
         <source>Complement strand</source>
         <translation>Complement strand</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="385"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="386"/>
         <source>Direct strand</source>
         <translation>Direct strand</translation>
     </message>

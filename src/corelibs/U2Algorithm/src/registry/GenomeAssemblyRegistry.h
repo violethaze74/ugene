@@ -28,6 +28,7 @@
 #include <QtCore/QMutex>
 #include <QtCore/QObject>
 
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/global.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/Task.h>
@@ -109,6 +110,7 @@ public:
     GUrl outDir;
     QString algName;
     bool openView;
+    QList<ExternalToolListener*> listeners;
 
 private:
     QMap<QString, QVariant> customSettings;

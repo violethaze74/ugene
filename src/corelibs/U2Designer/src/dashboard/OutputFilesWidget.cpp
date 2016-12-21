@@ -84,6 +84,17 @@ QList<QStringList> OutputFilesWidget::data() {
     return result;
 }
 
+QString OutputFilesWidget::createActionsSubMenu(const Monitor::FileInfo& info, bool fullWidth) const {
+  return QString(
+        "<ul class=\"dropdown-menu %1\">"
+            "<li><a href=\"#\" onclick=\"agent.openByOS('%2')\">%3</a></li>"
+        "</ul>"
+        )
+        .arg(fullWidth ? "full-width" : "")
+        .arg(relative(QFileInfo(info.url).dir().absolutePath() + "/"))
+        .arg(tr("Open containing directory"));
+}
+
 static const int MAX_LEN = 25;
 static QString fileName(const QString &url) {
     QFileInfo info(url);

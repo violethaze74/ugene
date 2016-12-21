@@ -36,6 +36,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
@@ -837,8 +838,9 @@ void ADVSingleSequenceWidget::sl_saveScreenshot() {
 
     SingleSequenceImageExportController controller(this);
 
+    QString fileName = GUrlUtils::fixFileName(getSequenceObject()->getGObjectName());
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&controller, ExportImageDialog::SequenceView, ExportImageDialog::NoScaling, p);
+    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&controller, ExportImageDialog::SequenceView, fileName, ExportImageDialog::NoScaling, p);
 
     dialog->exec();
 }
@@ -994,8 +996,6 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
 
     viewsToolBar = new OrderedToolbar(this);
     viewsToolBar->setObjectName("views_tool_bar_" + ctx->getSequenceObject()->getGObjectName());
-    // visual separator between standard toolbar and visibility toolbar
-    viewsToolBar->addSeparator();
     viewsToolBar->setStyleSheet(QString("QToolBar {spacing: %1px; margin: 0px; }").arg(ADV_HEADER_TOOLBAR_SPACING));
     viewsToolBar->setFixedHeight(ADV_HEADER_HEIGHT);
 

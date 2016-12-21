@@ -41,6 +41,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
 
 #include "CloningUtilTasks.h"
 #include "DigestSequenceDialog.h"
@@ -58,7 +59,7 @@ DigestSequenceDialog::DigestSequenceDialog(ADVSequenceObjectContext* ctx, QWidge
     : QDialog(p),seqCtx(ctx), timer(NULL), animationCounter(0)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220534");
+    new HelpButton(this, buttonBox, "18223174");
 
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     tabWidget->setCurrentIndex(0);
@@ -169,6 +170,9 @@ void DigestSequenceDialog::accept()
             cfg.conservedRegions.insertMulti(aName, region);
         }
     }
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(aObj);
+    }
 
     DigestSequenceTask* task = new DigestSequenceTask(dnaObj, sourceObj, aObj, cfg);
 
@@ -193,6 +197,7 @@ void DigestSequenceDialog::addAnnotationWidget()
     QVBoxLayout* l = new QVBoxLayout(this);
     l->setMargin(0);
     l->addWidget(caw);
+    l->addStretch(1);
     annotationsArea->setLayout(l);
     annotationsArea->setMinimumSize(caw->layout()->minimumSize());
 }

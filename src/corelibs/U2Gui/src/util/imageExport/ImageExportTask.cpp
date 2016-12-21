@@ -32,9 +32,9 @@
 
 namespace U2 {
 
-const QString ImageExportTaskSettings::SVG_FORMAT = "svg";
-const QString ImageExportTaskSettings::PS_FORMAT = "ps";
-const QString ImageExportTaskSettings::PDF_FORMAT = "pdf";
+const QString ImageExportTaskSettings::SVG_FORMAT = "SVG";
+const QString ImageExportTaskSettings::PS_FORMAT = "PS";
+const QString ImageExportTaskSettings::PDF_FORMAT = "PDF";
 
 ImageExportTaskSettings::ImageExportTaskSettings(const QString &fileName,
                                                  const QString &format,

@@ -521,7 +521,8 @@ this merge sequence slot:</translation>
         <translation>Approximate estimation time of the workflow run is </translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="40"/>
+        <location filename="../src/OutputFileDialog.cpp" line="170"/>
+        <location filename="../src/OutputFileDialog.cpp" line="217"/>
         <source>Workflow-run output</source>
         <translation>Workflow-run output</translation>
     </message>
@@ -724,12 +725,12 @@ bowtie index file</translation>
 <context>
     <name>U2::CreateDirectoryDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="214"/>
+        <location filename="../src/OutputFileDialog.cpp" line="213"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="215"/>
+        <location filename="../src/OutputFileDialog.cpp" line="214"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -1125,22 +1126,22 @@ bowtie index file</translation>
 <context>
     <name>U2::OutputFileDialog</name>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="52"/>
+        <location filename="../src/OutputFileDialog.cpp" line="51"/>
         <source>Save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="53"/>
+        <location filename="../src/OutputFileDialog.cpp" line="52"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="57"/>
+        <location filename="../src/OutputFileDialog.cpp" line="56"/>
         <source>Save a directory</source>
         <translation>Save a directory</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="59"/>
+        <location filename="../src/OutputFileDialog.cpp" line="58"/>
         <source>Save a file</source>
         <translation>Save a file</translation>
     </message>
@@ -1158,17 +1159,16 @@ bowtie index file</translation>
         <translation>Producer</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="91"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="87"/>
         <source>Open containing directory</source>
         <translation>Open containing directory</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="82"/>
         <source>Open by operating system</source>
-        <translation>Open by operating system</translation>
+        <translation type="vanished">Open by operating system</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="209"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="204"/>
         <source>files</source>
         <translation>files</translation>
     </message>

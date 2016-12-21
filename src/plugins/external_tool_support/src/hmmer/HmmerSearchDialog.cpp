@@ -37,6 +37,9 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #include "HmmerSearchDialog.h"
 #include "HmmerSearchTask.h"
 
@@ -48,12 +51,22 @@ const QString HmmerSearchDialog::HMM_FILES_DIR_ID           = "uhmmer3_search_dl
 const QString HmmerSearchDialog::ANNOTATIONS_DEFAULT_NAME   = "hmm_signal";
 
 HmmerSearchDialog::HmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent), seqCtx(NULL)
 {
+    init(seqObj);
+}
+
+HmmerSearchDialog::HmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent)
+    : QDialog(parent), seqCtx(seqCtx)
+{
+    init(seqCtx->getSequenceObject());
+}
+
+void HmmerSearchDialog::init(U2SequenceObject *seqObj){
     setupUi(this);
     SAFE_POINT(NULL != seqObj, L10N::nullPointerError("sequence object"), );
 
-    new HelpButton(this, buttonBox, "18220560");
+    new HelpButton(this, buttonBox, "18223200");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -185,6 +198,9 @@ void HmmerSearchDialog::sl_okButtonClicked() {
     if (!err.isEmpty()) {
         QMessageBox::critical(this, tr("Error: bad arguments!"), err);
         return;
+    }
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(annotationsWidgetController->getModel().getAnnotationObject());
     }
 
     HmmerSearchTask *searchTask = new HmmerSearchTask(model.searchSettings);

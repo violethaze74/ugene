@@ -39,6 +39,7 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
@@ -517,9 +518,14 @@ void DotPlotWidget::sl_onSequenceSelectionChanged(LRegionsSelection* s, const QV
 void DotPlotWidget::sl_showSaveImageDialog() {
     exitButton->hide();
 
+    QString s1 = GUrlUtils::fixFileName(sequenceX->getSequenceGObject()->getGObjectName());
+    QString s2 = GUrlUtils::fixFileName(sequenceY->getSequenceGObject()->getGObjectName());
+    QString fileName = s1 == s2 ? s1 : s1 + "_" + s2;
+
     DotPlotImageExportController factory(this);
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory,
                                                                            ExportImageDialog::DotPlot,
+                                                                           fileName,
                                                                            ExportImageDialog::SupportScaling,
                                                                            this);
     dialog->exec();
@@ -532,7 +538,7 @@ void DotPlotWidget::sl_showSaveImageDialog() {
 bool DotPlotWidget::sl_showSaveFileDialog() {
     LastUsedDirHelper lod("Dotplot");
     if (dpDirectResultListener->dotPlotList->isEmpty() || dpRevComplResultsListener->dotPlotList->isEmpty()) {
-        QMessageBox::critical(this, tr("File saving error"), tr("Nothing to save: dotplot is empty.").arg(lod.url));
+        QMessageBox::critical(this, tr("Error Saving Dotplot"), tr("The dotplot can't be saved as it is empty."));
         return true;
     }
 
@@ -661,7 +667,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
 
     SAFE_POINT(dnaView, "dnaView is NULL", false);
 
-    QObjectScopedPointer<DotPlotDialog> d = new DotPlotDialog(this, dnaView, minLen, identity, sequenceX, sequenceY, direct, inverted, dotPlotDirectColor, dotPlotInvertedColor, disableLoad);
+    QObjectScopedPointer<DotPlotDialog> d = new DotPlotDialog(QApplication::activeWindow(), dnaView, minLen, identity, sequenceX, sequenceY, direct, inverted, dotPlotDirectColor, dotPlotInvertedColor, disableLoad);
     d->exec();
     CHECK(!d.isNull(), false);
 

@@ -207,12 +207,12 @@
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="238"/>
         <source>There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser.</source>
-        <translation type="unfinished"></translation>
+        <translation>There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser.</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="240"/>
         <source>There is not enough memory to generate this grid profile in UGENE.</source>
-        <translation type="unfinished"></translation>
+        <translation>There is not enough memory to generate this grid profile in UGENE.</translation>
     </message>
     <message>
         <location filename="../src/DNAStatMSAProfileDialog.cpp" line="283"/>
@@ -335,13 +335,6 @@
     </message>
 </context>
 <context>
-    <name>U2::DNAViewStatsContext</name>
-    <message>
-        <source>Statistics</source>
-        <translation type="vanished">Statistics</translation>
-    </message>
-</context>
-<context>
     <name>U2::DistanceMatrixMSAEditorContext</name>
     <message>
         <location filename="../src/DNAStatPlugin.cpp" line="108"/>
@@ -416,7 +409,7 @@
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="202"/>
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="234"/>
         <source>There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser.</source>
-        <translation type="unfinished"></translation>
+        <translation>There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser.</translation>
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="209"/>

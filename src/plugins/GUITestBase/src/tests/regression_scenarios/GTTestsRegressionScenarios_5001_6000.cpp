@@ -100,6 +100,7 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
@@ -874,7 +875,7 @@ GUI_TEST_CLASS_DEFINITION(test_5360) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsWorkflowDesigner::click(os, "Read FASTQ Files with Reads");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + QString::fromLocal8Bit("_common_data/scenarios/_regression/5360/папка/риды.fastq"), true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + QString::fromUtf8("_common_data/scenarios/_regression/5360/папка/риды.fastq"), true);
 
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -992,6 +993,129 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "/test_5367_coverage.txt", testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"), "Exported coverage is wrong!");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5377) {
+//    1. Open file "_common_data/genbank/70Bp_new.gb".
+//    2. Search for restriction site HinFI.
+//    3. Digest into fragments, then reconstruct the original molecule.
+//    Expected state: the result sequence is equal to the original sequence. Fragments annotations have the same positions and lengths.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/70Bp_new.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "HinfI"));
+    GTWidget::click(os, GTToolbar::getWidgetForActionName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Digest into fragments...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "Fragment 1", U2Region(36, 35)), "Fragment 1 is incorrect or not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "Fragment 2", U2Region(1, 24)), "Fragment 2 is incorrect or not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "Fragment 3", U2Region(28, 5)), "Fragment 3 is incorrect or not found");
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+
+            GTWidget::click(os, GTWidget::findWidget(os, "takeAllButton"));
+
+            QTreeWidget *tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "molConstructWidget"));
+            GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "Blunt"));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "downButton"));
+            GTWidget::click(os, GTWidget::findWidget(os, "downButton"));
+
+            QTabWidget* tabWidget = GTWidget::findExactWidget<QTabWidget*>(os, "tabWidget", dialog);
+            CHECK_SET_ERR(tabWidget != NULL, "tabWidget not found");
+            GTTabWidget::clickTab(os, tabWidget, "Output");
+
+            QLineEdit* linEdit = GTWidget::findExactWidget<QLineEdit*>(os, "filePathEdit");
+            CHECK_SET_ERR(linEdit != NULL, "filePathEdit not found");
+            GTLineEdit::setText(os, linEdit, QFileInfo(sandBoxDir + "test_5377").absoluteFilePath());
+
+            GTUtilsDialog::clickButtonBox(os, QApplication::activeModalWidget(), QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "Cloning" << "Construct molecule...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsSequenceView::getSeqWidgetByNumber(os)->getSequenceLength() == 70, "The result length of the constructed molecule is wrong");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "A sequence Fragment 1", U2Region(36, 35)), "Constructed molecule: Fragment 1 is incorrect or not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "A sequence Fragment 2", U2Region(1, 24)), "Constructed molecule: Fragment 2 is incorrect or not found");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findRegion(os, "A sequence Fragment 3", U2Region(28, 5)), "Constructed molecule: Fragment 3 is incorrect or not found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5371) {
+    //1. Open bam assembly with index with path containing non ASCII symbols
+    //Expected state: assembly opened successfully
+
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "5371.bam.ugenedb"));
+
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open,
+        GTGlobals::UseKey , GTFileDialogUtils::CopyPaste);
+    GTUtilsDialog::waitForDialog(os, ob);
+
+    ob->openFileDialog();
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(100);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5412) {
+//    1. Open "/_common_data/reads/wrong_order/align_bwa_mem.uwl"
+//    2. Set input data: e_coli_mess_1.fastq nd e_coli_mess_2.fastq (the directory from step 1)
+//    3. Reference: "/_common_data/e_coli/NC_008253.fa"
+//    4. Set requiered output parameters
+//    5. Set "Filter unpaired reads" to false
+//    6. Run workflow
+//    Expected state: error - BWA MEM tool exits with code 1
+//    7. Go back to the workflow and set the filter parameter back to true
+//    8. Run the workflow
+//    Expected state: there is a warning about filtered reads
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "/_common_data/reads/wrong_order/align_bwa_mem.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List 1", testDir + "/_common_data/reads/wrong_order/e_coli_mess_1.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "File List 2", testDir + "/_common_data/reads/wrong_order/e_coli_mess_2.fastq");
+
+    GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
+    GTUtilsWorkflowDesigner::setParameter(os, "Output directory", QDir(sandBoxDir).absolutePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file name", "test_5412", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Reference genome", testDir + "/_common_data/e_coli/NC_008253.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Filter unpaired reads", false, GTUtilsWorkflowDesigner::comboValue);
+
+    GTLogTracer l;
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    CHECK_SET_ERR(l.checkMessage("exited with code 1"), "No message about failed start of BWA MEM");
+
+    GTToolbar::clickButtonByTooltipOnToolbar(os, "mwtoolbar_activemdi", "Show workflow");
+
+    GTUtilsWorkflowDesigner::click(os, "Align Reads with BWA MEM");
+    GTUtilsWorkflowDesigner::setParameter(os, "Filter unpaired reads", true, GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file name", "test_5412_1", GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(l.checkMessage("5 pairs are complete, 6 reads without a pair were found in files"), "No message about filtered reads");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5417) {
     //      1. Open "data/samples/Genbank/murine.gb".
     //      2. Open "data/samples/Genbank/srs.gb".
@@ -1053,6 +1177,34 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     GTUtilsDialog::waitForDialog(os, new SpadesDialogSettingsChecker(os, "Paired-end (Interlaced)", "Single Cell", "Error correction only", "aaaaa", 1, 228));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools" << "NGS data analysis" << "Genome de novo assembly...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5469) {
+    // 1. Open two different GenBank sequences in one Sequence view.
+    // 2. Select two different annotations (one from the first sequence, and one from the second sequence) using the "Ctrl" keyboard button.
+    // Extected state: there is no crash
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::click(os, "NC_004718");
+    QWidget* seqView = GTUtilsSequenceView::getSeqWidgetByNumber(os);
+    CHECK_SET_ERR(seqView != NULL, "Fail to get sequence view");
+    QPoint p = GTWidget::getWidgetCenter(os, seqView);
+    p.setX(p.x() + 1);
+    p.setY(p.y() + 1);
+    GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), p);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::clickAnnotationDet(os, "5'UTR", 1, 1);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, "Wrong number of selected annotations");
 }
 
 } // namespace GUITest_regression_scenarios

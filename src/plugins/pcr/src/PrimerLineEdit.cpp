@@ -66,7 +66,7 @@ void PrimerLineEdit::paintEvent(QPaintEvent *event) {
 }
 
 QRect PrimerLineEdit::placeHolderRect() const {
-    QStyleOptionFrameV2 panel;
+    QStyleOptionFrame panel;
     initStyleOption(&panel);
     QRect r = style()->subElementRect(QStyle::SE_LineEditContents, &panel, this);
     r.setX(r.x() + textMargins().left());
@@ -95,7 +95,9 @@ PrimerValidator::PrimerValidator(QObject *parent, bool allowExtended)
 }
 
 QValidator::State PrimerValidator::validate(QString &input, int &pos) const {
+    input = input.simplified();
     input = input.toUpper();
+    input.remove(" ");
     return QRegExpValidator::validate(input, pos);
 }
 

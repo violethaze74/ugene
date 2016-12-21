@@ -33,6 +33,7 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
+#include <QPalette>
 
 #include <U2Formats/GenbankLocationParser.h>
 
@@ -48,14 +49,21 @@ namespace U2{
 CreateSubalignmentDialogController::CreateSubalignmentDialogController(MAlignmentObject *_mobj, const QRect& selection, QWidget *p)
 : QDialog(p), mobj(_mobj), saveController(NULL){
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220443");
+    new HelpButton(this, buttonBox, "18223083");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Extract"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
+    startPosBox->setValidator(new QIntValidator(1, mobj->getLength(), startPosBox));
+    endPosBox->setValidator(new QIntValidator(1, mobj->getLength(), endPosBox));
+    
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
+    connect(startPosBox, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+    connect(endPosBox, SIGNAL(textEdited(const QString&)), SLOT(sl_regionChanged()));
+    
+    
     int rowNumber = mobj->getNumRows();
     int alignLength = mobj->getLength();
 
@@ -84,12 +92,8 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MAlignmen
         startPos = selection.x() + 1;
         endPos = selection.x() + selection.width();
     }
-
-    startPosBox->setMaximum(alignLength);
-    endPosBox->setMaximum(alignLength);
-
-    startPosBox->setValue(startPos);
-    endPosBox->setValue(endPos);
+    startPosBox->setText(QString::number(startPos));
+    endPosBox->setText(QString::number(endPos));
 
     for (int i=0; i<rowNumber; i++) {
         QCheckBox *cb = new QCheckBox(mobj->getMAlignment().getRow(i).getName(), this);
@@ -145,6 +149,26 @@ void CreateSubalignmentDialogController::sl_noneButtonClicked(){
     }
 }
 
+void CreateSubalignmentDialogController::sl_regionChanged() {
+    int start = startPosBox->text().toInt();
+    int end = endPosBox->text().toInt();
+
+    QPalette happyP = filepathEdit->palette();
+    startPosBox->setPalette(happyP);
+    endPosBox->setPalette(happyP);
+    
+    if (start <= 0) {
+        QPalette p = startPosBox->palette();
+        p.setColor(QPalette::Base, QColor(255,200,200));
+        startPosBox->setPalette(p);
+    }
+    if (end <= start || end > mobj->getLength()) {
+        QPalette p = endPosBox->palette();
+        p.setColor(QPalette::Base, QColor(255,200,200));
+        endPosBox->setPalette(p);
+    }
+}
+
 void CreateSubalignmentDialogController::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultFileName = GUrlUtils::getNewLocalUrlByFormat(mobj->getDocument()->getURLString(), mobj->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_subalign");
@@ -187,18 +211,18 @@ void CreateSubalignmentDialogController::accept(){
     }
 
     // '-1' because in memory positions start from 0 not 1
-    int start = startPosBox->value() - 1;
-    int end = endPosBox->value() - 1;
+    int start = startPosBox->text().toInt() - 1;
+    int end = endPosBox->text().toInt() - 1;
     int seqLen = mobj->getLength();
 
     if( start > end ) {
-        QMessageBox::critical(this, windowTitle(), tr("Start position must be less than end position!"));
+        QMessageBox::critical(this, windowTitle(), tr("Illegal region!"));
         return;
     }
 
     U2Region region(start, end - start + 1), sequence(0, seqLen);
     if(!sequence.contains(region)){
-        QMessageBox::critical(this, this->windowTitle(), tr("Entered region not contained in current sequence"));
+        QMessageBox::critical(this, this->windowTitle(), tr("Illegal region!"));
         return;
     }
 

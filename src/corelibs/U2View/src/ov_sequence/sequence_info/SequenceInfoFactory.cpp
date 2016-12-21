@@ -33,8 +33,7 @@ namespace U2 {
 
 const QString SequenceInfoFactory::GROUP_ID = "OP_SEQ_INFO";
 const QString SequenceInfoFactory::GROUP_ICON_STR = ":core/images/chart_bar.png";
-const QString SequenceInfoFactory::GROUP_TITLE = QObject::tr("Statistics");
-const QString SequenceInfoFactory::GROUP_DOC_PAGE = "18220327";
+const QString SequenceInfoFactory::GROUP_DOC_PAGE = "18222967";
 
 SequenceInfoFactory::SequenceInfoFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
@@ -56,7 +55,7 @@ QWidget * SequenceInfoFactory::createWidget(GObjectView* objView) {
 }
 
 OPGroupParameters SequenceInfoFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), GROUP_TITLE, GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Statistics"), GROUP_DOC_PAGE);
 }
 
 } // namespace U2

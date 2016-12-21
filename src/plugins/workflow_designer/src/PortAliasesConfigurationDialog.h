@@ -58,7 +58,6 @@ private slots:
 private:
     PortAliasesCfgDlgModel      model;
     QMap<int, Port*>            portListMap; // pairs (row, port)
-    int                         portNameMaxSz;
     int                         currentRow;
 
     void accept();

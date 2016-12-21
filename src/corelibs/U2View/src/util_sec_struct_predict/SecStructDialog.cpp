@@ -43,6 +43,7 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2View/AnnotatedDNAView.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/LicenseDialog.h>
 
@@ -53,7 +54,7 @@ namespace U2 {
 SecStructDialog::SecStructDialog( ADVSequenceObjectContext* _ctx, QWidget *p ) : QDialog(p), rangeStart(0), rangeEnd(0), ctx(_ctx), task(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220546");
+    new HelpButton(this, buttonBox, "18223186");
 
     sspr = AppContext::getSecStructPredictAlgRegistry();
     algorithmComboBox->addItems(sspr->getAlgNameList());
@@ -223,6 +224,7 @@ void SecStructDialog::sl_onSaveAnnotations() {
     if (rc != QDialog::Accepted) {
         return;
     }
+    ctx->getAnnotatedDNAView()->tryAddObject(m.getAnnotationObject());
 
     U1AnnotationUtils::addDescriptionQualifier(results, m.description);
 

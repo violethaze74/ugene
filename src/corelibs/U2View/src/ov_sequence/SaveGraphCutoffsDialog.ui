@@ -164,6 +164,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>maxCutoffBox</tabstop>
+  <tabstop>minCutoffBox</tabstop>
+  <tabstop>outsideRadioButton</tabstop>
+  <tabstop>betweenRadioButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

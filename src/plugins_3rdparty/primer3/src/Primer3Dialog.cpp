@@ -43,10 +43,11 @@ namespace U2 {
 
 Primer3Dialog::Primer3Dialog(const Primer3TaskSettings &defaultSettings, ADVSequenceObjectContext *context):
         QDialog(context->getAnnotatedDNAView()->getWidget()),
-        defaultSettings(defaultSettings)
+        defaultSettings(defaultSettings),
+        context(context)
 {
     ui.setupUi(this);
-    new HelpButton(this, ui.helpButton, "18220580");
+    new HelpButton(this, ui.helpButton, "18223220");
 
     QPushButton* pbPick = ui.pickPrimersButton;
     QPushButton* pbReset = ui.resetButton;
@@ -692,6 +693,14 @@ void Primer3Dialog::sl_pbPick_clicked()
     }
     if(doDataExchange())
     {
+        bool objectPrepared = createAnnotationWidgetController->prepareAnnotationObject();
+        if (!objectPrepared){
+            QMessageBox::critical(this, L10N::errorTitle(), tr("Cannot create an annotation object. Please check settings."));
+            return;
+        }
+        const CreateAnnotationModel& m = createAnnotationWidgetController->getModel();
+        AnnotationTableObject *obj = m.getAnnotationObject();
+        context->getAnnotatedDNAView()->tryAddObject(obj);
         accept();
     }
 }

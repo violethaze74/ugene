@@ -1275,18 +1275,24 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5268);
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
     REGISTER_TEST(GUITest_regression_scenarios::test_5295);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
     REGISTER_TEST(GUITest_regression_scenarios::test_5346);
     REGISTER_TEST(GUITest_regression_scenarios::test_5352);
     REGISTER_TEST(GUITest_regression_scenarios::test_5356);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
     REGISTER_TEST(GUITest_regression_scenarios::test_5360);
     REGISTER_TEST(GUITest_regression_scenarios::test_5363_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5363_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5367);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5371);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5377);
 
-    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5412);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5417);
     REGISTER_TEST(GUITest_regression_scenarios::test_5425);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5469);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2176,6 +2182,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0041);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0042);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0043);
+    REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0044);
+    REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0045);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/annotations/edit
@@ -2732,7 +2740,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0016);
-
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0017);
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/pcr/primer_library
     /////////////////////////////////////////////////////////////////////////

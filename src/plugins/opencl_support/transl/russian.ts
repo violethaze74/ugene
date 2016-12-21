@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/OpenCLSupportPlugin.cpp" line="52"/>
         <source>Problem occurred loading the OpenCL driver. Please try to update drivers if                                                you&apos;re going to make calculations on your video card. For details see this page:                                                &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Problem occurred loading the OpenCL driver. Please try to update drivers if                                                you&apos;re going to make calculations on your video card. For details see this page:                                                &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/OpenCLSupportPlugin.cpp" line="59"/>

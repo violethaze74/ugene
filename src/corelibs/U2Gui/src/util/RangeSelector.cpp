@@ -81,7 +81,7 @@ void RangeSelector::init() {
     connect(startEdit, SIGNAL(returnPressed()), SLOT(sl_onReturnPressed()));
 
     endEdit = new QLineEdit(this);
-    endEdit->setValidator(new QIntValidator(1, len, startEdit));
+    endEdit->setValidator(new QIntValidator(1, len, endEdit));
     if (dialog == NULL) {
         endEdit->setFixedWidth(w);
     } else {
@@ -240,7 +240,7 @@ MultipleRangeSelector::MultipleRangeSelector(QWidget* _parent, const QVector<U2R
 
     ui = new Ui_RangeSelectionDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18220336");
+    new HelpButton(this, ui->buttonBox, "18222976");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Go"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

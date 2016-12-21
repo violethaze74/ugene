@@ -19,19 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include "WindowStepSelectorWidget.h"
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QPushButton>
-#include <QtGui/QFormLayout>
-#include <QtGui/QMessageBox>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QMessageBox>
-#endif
-
 #include <limits.h>
+
+#include <QPushButton>
+#include <QMessageBox>
+
+#include "WindowStepSelectorWidget.h"
 
 namespace U2 {
 
@@ -45,20 +38,20 @@ WindowStepSelectorWidget::WindowStepSelectorWidget(QWidget* p, const U2Region& w
     windowEdit = new QSpinBox(this);
     windowEdit->setRange(winRange.startPos, winRange.endPos());
     windowEdit->setValue(win);
-    windowEdit->setAlignment(Qt::AlignRight);
+    windowEdit->setAlignment(Qt::AlignLeft);
     windowEdit->setObjectName("windowEdit");
 
     stepsPerWindowEdit = new QSpinBox(this);
     stepsPerWindowEdit->setRange(1, winRange.endPos());
     stepsPerWindowEdit->setValue(win/step);
-    stepsPerWindowEdit->setAlignment(Qt::AlignRight);
+    stepsPerWindowEdit->setAlignment(Qt::AlignLeft);
     stepsPerWindowEdit->setObjectName("stepsPerWindowEdit");
 
-    QFormLayout* l = new QFormLayout(this);
-    l->addRow(tr("Window:"), windowEdit);
-    l->addRow(tr("Steps per window:"), stepsPerWindowEdit);
-    setLayout(l);
-
+    formLayout = new QFormLayout(this);
+    formLayout->setMargin(0);
+    formLayout->addRow(tr("Window"), windowEdit);
+    formLayout->addRow(tr("Steps per window"), stepsPerWindowEdit);
+    setLayout(formLayout);
 }
 
 int WindowStepSelectorWidget::getWindow() const {
@@ -101,22 +94,25 @@ MinMaxSelectorWidget::MinMaxSelectorWidget(QWidget* p, double min, double max, b
     minBox->setRange(INT_MIN,INT_MAX );
     minBox->setValue(min);
     minBox->setDecimals(2);
-    minBox->setAlignment(Qt::AlignRight);
+    minBox->setAlignment(Qt::AlignLeft);
     minBox->setObjectName("minBox");
 
     maxBox = new QDoubleSpinBox;
     maxBox->setRange(INT_MIN,INT_MAX);
     maxBox->setValue(max);
     maxBox->setDecimals(2);
-    maxBox->setAlignment(Qt::AlignRight);
+    maxBox->setAlignment(Qt::AlignLeft);
     maxBox->setObjectName("maxBox");
 
     QFormLayout* l = new QFormLayout;
-    l->addRow(tr("Minimum:"), minBox);
-    l->addRow(tr("Maximum:"), maxBox);
+    l->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    l->addRow(tr("Minimum"), minBox);
+    l->addRow(tr("Maximum"), maxBox);
     minmaxGroup->setLayout(l);
 
     QVBoxLayout* mainLayout = new QVBoxLayout;
+    mainLayout->setSizeConstraint(QLayout::SetFixedSize);
+    mainLayout->setMargin(0);
     mainLayout->addWidget(minmaxGroup);
     setLayout(mainLayout);
 }
@@ -171,8 +167,8 @@ WindowStepSelectorDialog::WindowStepSelectorDialog(QWidget* p, const U2Region& w
     setWindowTitle(tr("Graph Settings"));
     setWindowIcon(QIcon(":core/images/graphs.png"));
 
-    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    setMinimumWidth(200);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    setMinimumWidth(400);
 
     connect(cancelButton, SIGNAL(clicked(bool)), SLOT(sl_onCancelClicked(bool)));
     connect(okButton, SIGNAL(clicked(bool)), SLOT(sl_onOkClicked(bool)));

@@ -30,6 +30,7 @@
 namespace U2 {
 
 class HmmerParseSearchResultsTask : public Task {
+    Q_OBJECT
 public:
     HmmerParseSearchResultsTask(const QString &resultUrl, const AnnotationCreationPattern &pattern);
 

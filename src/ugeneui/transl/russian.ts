@@ -75,31 +75,49 @@
 <context>
     <name>DirectoriesSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="26"/>
         <source>Path to downloaded data:</source>
-        <translation>Папка для загрузок:</translation>
+        <translation type="vanished">Папка для загрузок:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="46"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="84"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="128"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="48"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="86"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="130"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="58"/>
         <source>Path for temporary files</source>
-        <translation>Папка для временных файлов</translation>
+        <translation type="vanished">Папка для временных файлов</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="102"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="28"/>
+        <source>Downloaded data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="60"/>
+        <source>Temporary files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="104"/>
         <source>File storage</source>
         <translation>Хранение файла</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="158"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="160"/>
         <source>Cleanup storage</source>
         <translation>Очистить</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="172"/>
+        <source>Build indexes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="195"/>
+        <source>Documents</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -301,7 +319,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="77"/>
         <source>Custom browser</source>
-        <translation>Обычный браузер</translation>
+        <translation>Другой браузер</translation>
     </message>
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="100"/>
@@ -376,7 +394,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="130"/>
         <source>Remote request timeout</source>
-        <translation>Тайм-фут удаленного запроса</translation>
+        <translation>Тайм-аут удаленного запроса</translation>
     </message>
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="143"/>
@@ -811,13 +829,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DirectoriesSettingsPageController</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="47"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="49"/>
         <source>Directories</source>
         <translation>Директории</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="67"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="73"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="88"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="94"/>
         <source>You do not have permission to write to &quot;%1&quot; directory&quot;</source>
         <translation>У вас недостаточно прав для записи в директорию &quot;%1&quot;</translation>
     </message>
@@ -825,9 +843,11 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DirectoriesSettingsPageWidget</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="115"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="125"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="135"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="142"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="152"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="162"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="172"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="186"/>
         <source>Choose Directory</source>
         <translation>Выбор директории</translation>
     </message>
@@ -871,42 +891,42 @@ p, li { white-space: pre-wrap; }
         <translation>Выбрать формат</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="177"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="179"/>
         <source>Not matched</source>
         <translation>Не соответствует</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="180"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="182"/>
         <source>Very low similarity</source>
         <translation>Очень низкая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="183"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="185"/>
         <source>Low similarity</source>
         <translation>Низкая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="186"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="188"/>
         <source>Average similarity</source>
         <translation>Средняя схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="189"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="191"/>
         <source>High similarity</source>
         <translation>Высокая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="192"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
         <source>Very high similarity</source>
         <translation>Очень высокая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="196"/>
         <source>Perfect match</source>
         <translation>Идеальное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="202"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="204"/>
         <source>Format details for &apos;%1&apos; format</source>
         <translation>Детали для формата &apos;%1&apos;</translation>
     </message>
@@ -2465,12 +2485,12 @@ Would you like to download and install it?</source>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="144"/>
         <source>Updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновления</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="150"/>
         <source>Check for updates when UGENE starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверять обновления при запуске UGENE</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="160"/>

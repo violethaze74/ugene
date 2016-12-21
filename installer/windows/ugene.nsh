@@ -34,7 +34,7 @@
 
 # Pages
     !insertmacro MUI_PAGE_WELCOME
-    !insertmacro MUI_PAGE_LICENSE ../source/LICENSE
+    !insertmacro MUI_PAGE_LICENSE ../_common_data/LICENSE
     !define MUI_PAGE_CUSTOMFUNCTION_LEAVE checkInstDir
     !insertmacro MUI_PAGE_DIRECTORY
     !insertmacro MUI_PAGE_INSTFILES
@@ -80,7 +80,7 @@ FunctionEnd
     !endif
 
 
-    Name    ${FullProductName}
+    Name    "${FullProductName}"
     InstallDir "$PROGRAMFILES\${FullProductName}"
     InstallDirRegKey HKCU "Software\${CompanyName}\${ProductName}" ""
     DirText "Please select the folder below"

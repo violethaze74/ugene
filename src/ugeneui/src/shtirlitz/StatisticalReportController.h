@@ -33,6 +33,8 @@ class StatisticalReportController : public QDialog, public Ui_StatisticalReport 
 public:
     StatisticalReportController(const QString &newHtmlFilepath, QWidget *parent);
     bool isInfoSharingAccepted() const;
+public slots:
+    void accept();
 
 protected:
     void paintEvent(QPaintEvent *event);

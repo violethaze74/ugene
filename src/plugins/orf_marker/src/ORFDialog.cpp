@@ -79,7 +79,7 @@ ORFDialog::ORFDialog(ADVSequenceObjectContext* _ctx)
 : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220518");
+    new HelpButton(this, buttonBox, "18223158");
 
     tabWidget->setCurrentIndex(0);
 
@@ -374,6 +374,7 @@ void ORFDialog::accept()
 
         const CreateAnnotationModel &m = ac->getModel();
         AnnotationTableObject *aObj = m.getAnnotationObject();
+        ctx->getAnnotatedDNAView()->tryAddObject(aObj);
         FindORFsToAnnotationsTask *orfTask = new FindORFsToAnnotationsTask(aObj, ctx->getSequenceObject()->getEntityRef(), s, m.groupName, m.description);
         AppContext::getTaskScheduler()->registerTopLevelTask(orfTask);
     }

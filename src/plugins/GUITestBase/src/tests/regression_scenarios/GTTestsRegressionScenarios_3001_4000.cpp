@@ -2411,7 +2411,7 @@ GUI_TEST_CLASS_DEFINITION(test_3348) {
 
     AVAnnotationItem *annotation = dynamic_cast<AVAnnotationItem *>(generalItem);
     CHECK_SET_ERR(NULL != annotation, "Annotation tree item not found");
-    CHECK_SET_ERR("76" == annotation->annotation->findFirstQualifierValue("repeat_homology(%)"), "Annotation qualifier not found");
+    CHECK_SET_ERR("76" == annotation->annotation->findFirstQualifierValue("repeat_identity"), "Annotation qualifier not found");
 
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTMouseDriver::click();

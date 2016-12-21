@@ -40,7 +40,7 @@ class MSAEditorOverviewArea;
 class MSAOverviewContextMenu : public QMenu {
     Q_OBJECT
 public:
-    MSAOverviewContextMenu(MSASimpleOverview *so, MSAGraphOverview *go);
+    MSAOverviewContextMenu(MSAEditor* editor, MSASimpleOverview *so, MSAGraphOverview *go);
 private:
     void connectSlots();
 signals:
@@ -67,6 +67,7 @@ private:
 
     QAction*    createCheckableAction(const QString& text, QActionGroup* group = NULL);
 
+    MSAEditor* editor;
     MSASimpleOverview*  simpleOverview;
     MSAGraphOverview*   graphOverview;
 

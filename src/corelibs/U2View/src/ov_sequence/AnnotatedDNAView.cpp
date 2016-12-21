@@ -162,6 +162,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
     connect(removeSequenceObjectAction, SIGNAL(triggered()), SLOT(sl_removeSelectedSequenceObject()));
 
     reverseComplementSequenceAction = new QAction(tr("Reverse-complement sequence"), this);
+    reverseComplementSequenceAction ->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R, Qt::CTRL | Qt::Key_C));
     reverseComplementSequenceAction->setObjectName(ACTION_EDIT_RESERVE_COMPLEMENT_SEQUENCE);
     connect(reverseComplementSequenceAction, SIGNAL(triggered()), SLOT(sl_reverseComplementSequence()));
 
@@ -1027,9 +1028,8 @@ void AnnotatedDNAView::addGraphs(ADVSequenceObjectContext* seqCtx)
 {
     foreach (ADVSequenceWidget* seqWidget, seqCtx->getSequenceWidgets())
     {
-        GraphMenuAction* graphMenuAction = new GraphMenuAction();
-
         ADVSingleSequenceWidget* singleSeqWidget = qobject_cast<ADVSingleSequenceWidget*>(seqWidget);
+        GraphMenuAction* graphMenuAction = new GraphMenuAction(singleSeqWidget->getSequenceObject()->getAlphabet());
         if (singleSeqWidget != NULL) {
             singleSeqWidget->addADVSequenceWidgetActionToViewsToolbar(graphMenuAction);
         } else {
@@ -1418,10 +1418,10 @@ void AnnotatedDNAView::sl_complementSequence() {
 
 void AnnotatedDNAView::sl_selectionChanged() {
     ADVSequenceObjectContext* seqCtx = getSequenceInFocus();
+    CHECK(seqCtx != NULL, );
     DNASequenceSelection* selection = qobject_cast<DNASequenceSelection*>(sender());
-    if (selection != NULL) {
-        assert(seqCtx->getSequenceGObject() == selection->getSequenceObject());
-    }
+    CHECK(selection != NULL && seqCtx->getSequenceGObject() == selection->getSequenceObject(), );
+
     if (!seqCtx->getSequenceSelection()->isEmpty()) {
         replaceSequencePart->setEnabled(true);
     } else {

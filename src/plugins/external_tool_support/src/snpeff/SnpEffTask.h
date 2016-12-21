@@ -68,6 +68,7 @@ protected:
 
 
 class SnpEffParser : public ExternalToolLogParser {
+    Q_OBJECT
 public:
     SnpEffParser();
 

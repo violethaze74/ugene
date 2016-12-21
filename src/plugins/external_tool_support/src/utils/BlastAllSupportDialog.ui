@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>812</width>
-    <height>315</height>
+    <width>1110</width>
+    <height>363</height>
    </rect>
   </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>16777215</height>
-   </size>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Request to Local BLAST Database</string>
@@ -30,7 +30,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="sizeConstraint">
-    <enum>QLayout::SetMinAndMaxSize</enum>
+    <enum>QLayout::SetFixedSize</enum>
    </property>
    <item>
     <widget class="QTabWidget" name="optionsTab">
@@ -38,15 +38,24 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <attribute name="title">
        <string>General options</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="sizeConstraint">
-        <enum>QLayout::SetMinAndMaxSize</enum>
+        <enum>QLayout::SetFixedSize</enum>
        </property>
        <item>
         <layout class="QGridLayout" name="gridLayout_2">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetFixedSize</enum>
+         </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
@@ -153,6 +162,9 @@
          </item>
          <item row="2" column="2">
           <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMaximumSize</enum>
+           </property>
            <item>
             <widget class="QRadioButton" name="bothStrandsButton">
              <property name="text">
@@ -183,9 +195,18 @@
        </item>
        <item>
         <widget class="QWidget" name="dbSelectorWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <property name="spacing">
            <number>0</number>
+          </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
           </property>
           <property name="leftMargin">
            <number>0</number>
@@ -203,14 +224,37 @@
         </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMinAndMaxSize</enum>
+        <widget class="QWidget" name="annotationWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-        </layout>
+         <layout class="QVBoxLayout" name="annotationWidgetLayout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+         </layout>
+        </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinAndMaxSize</enum>
+         </property>
          <item>
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
@@ -264,12 +308,56 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <attribute name="title">
        <string>Advanced options</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_8">
+      <layout class="QVBoxLayout" name="verticalLayout_8" stretch="0,0,1">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinAndMaxSize</enum>
+       </property>
        <item>
         <layout class="QGridLayout" name="gridLayout">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinAndMaxSize</enum>
+         </property>
+         <item row="4" column="1" colspan="4">
+          <widget class="QComboBox" name="compStatsComboBox">
+           <property name="sizeAdjustPolicy">
+            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+           </property>
+           <item>
+            <property name="text">
+             <string>D or d: default (equivalent to 2 )</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>0 or F or f: No composition-based statistics</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1: Composition-based statistics as in NAR 29:2994-3005, 2001</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</string>
+            </property>
+           </item>
+          </widget>
+         </item>
          <item row="2" column="4">
           <widget class="QComboBox" name="serviceComboBox">
            <property name="sizePolicy">
@@ -295,6 +383,32 @@
            </item>
           </widget>
          </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="3">
+          <widget class="QLabel" name="serviceLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Service</string>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="3">
           <widget class="QLabel" name="matchScoreLabel">
            <property name="sizePolicy">
@@ -308,8 +422,37 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
-          <widget class="QLabel" name="serviceLabel">
+         <item row="2" column="1">
+          <widget class="QComboBox" name="matrixComboBox">
+           <item>
+            <property name="text">
+             <string>BLOSUM62</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>BLOSUM45</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>BLOSUM80</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>PAM30</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>PAM70</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="matrixLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -317,7 +460,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Service</string>
+            <string>Matrix</string>
            </property>
           </widget>
          </item>
@@ -379,6 +522,16 @@
            </item>
           </widget>
          </item>
+         <item row="3" column="1" colspan="4">
+          <widget class="QLineEdit" name="phiPatternEdit"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="phiPatternLabel">
+           <property name="text">
+            <string>PHI pattern</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_4">
            <property name="sizePolicy">
@@ -389,101 +542,6 @@
            </property>
            <property name="text">
             <string>Word size</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="matrixLabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Matrix</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QComboBox" name="matrixComboBox">
-           <item>
-            <property name="text">
-             <string>BLOSUM62</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>BLOSUM45</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>BLOSUM80</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>PAM30</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>PAM70</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="4" column="1" colspan="4">
-          <widget class="QLineEdit" name="phiPatternEdit"/>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="phiPatternLabel">
-           <property name="text">
-            <string>PHI pattern</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="2">
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="1">
-          <widget class="QSpinBox" name="wordSizeSpinBox">
-           <property name="value">
-            <number>3</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="thresholdLabel">
-           <property name="toolTip">
-            <string>Threshold for extending hits</string>
-           </property>
-           <property name="text">
-            <string>Threshold</string>
            </property>
           </widget>
          </item>
@@ -503,6 +561,26 @@
          <item row="1" column="1">
           <widget class="QDoubleSpinBox" name="thresholdSpinBox"/>
          </item>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="wordSizeSpinBox">
+           <property name="value">
+            <number>3</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="0" column="4">
           <widget class="QComboBox" name="costsComboBox">
            <property name="sizePolicy">
@@ -513,6 +591,16 @@
            </property>
            <property name="currentIndex">
             <number>-1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="thresholdLabel">
+           <property name="toolTip">
+            <string>Threshold for extending hits</string>
+           </property>
+           <property name="text">
+            <string>Threshold</string>
            </property>
           </widget>
          </item>
@@ -529,52 +617,29 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="4" column="0">
           <widget class="QLabel" name="compStatsLabel">
            <property name="text">
             <string>Composition-based statistics</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="1" colspan="4">
-          <widget class="QComboBox" name="compStatsComboBox">
-           <item>
-            <property name="text">
-             <string>D or d: default (equivalent to 2 )</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>0 or F or f: No composition-based statistics</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>1: Composition-based statistics as in NAR 29:2994-3005, 2001</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>2 or T or t : Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, conditioned on sequence properties</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>3: Composition-based score adjustment as in Bioinformatics 21:902-911, 2005, unconditionally</string>
-            </property>
-           </item>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinAndMaxSize</enum>
+         </property>
          <item>
           <widget class="QGroupBox" name="groupBox">
            <property name="title">
             <string>Filters</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_7">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMinAndMaxSize</enum>
+            </property>
             <item>
              <widget class="QCheckBox" name="lowComplexityFilterCheckBox">
               <property name="text">
@@ -598,6 +663,9 @@
             <string>Masks</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMinAndMaxSize</enum>
+            </property>
             <item>
              <widget class="QCheckBox" name="lookupMaskCheckBox">
               <property name="text">
@@ -621,14 +689,17 @@
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer_2">
+        <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>0</height>
           </size>
          </property>
         </spacer>
@@ -636,18 +707,33 @@
       </layout>
      </widget>
      <widget class="QWidget" name="extOptionsTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <attribute name="title">
        <string>Extension options</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinAndMaxSize</enum>
+       </property>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinAndMaxSize</enum>
+         </property>
          <item>
           <widget class="QGroupBox" name="xDropoffGroupBox">
            <property name="title">
             <string>X dropoff value (in bits)</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_4">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMinAndMaxSize</enum>
+            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_11">
               <property name="text">
@@ -693,6 +779,9 @@
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinAndMaxSize</enum>
+         </property>
          <item>
           <widget class="QLabel" name="label_7">
            <property name="text">
@@ -715,35 +804,9 @@
          </property>
         </widget>
        </item>
-       <item>
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
       </layout>
      </widget>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>0</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

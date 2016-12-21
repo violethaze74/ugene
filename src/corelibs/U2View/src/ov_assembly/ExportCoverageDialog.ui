@@ -10,11 +10,17 @@
     <height>242</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Export the Assembly Coverage</string>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <property name="windowTitle">
+   <string>Export Assembly Coverage</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
     <widget class="QWidget" name="gbFileOptions" native="true">
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -75,8 +81,20 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="thresholdLayout">
+     <property name="leftMargin">
+      <number>9</number>
+     </property>
+     <property name="topMargin">
+      <number>9</number>
+     </property>
+     <property name="rightMargin">
+      <number>9</number>
+     </property>
+     <property name="bottomMargin">
+      <number>9</number>
+     </property>
      <item>
       <widget class="QLabel" name="lblThreshold">
        <property name="text">
@@ -115,7 +133,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="2" column="0">
     <widget class="QWidget" name="gbAdditionalOptions" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -138,7 +156,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="3" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

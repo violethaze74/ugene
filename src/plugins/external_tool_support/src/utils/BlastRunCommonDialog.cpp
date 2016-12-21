@@ -60,7 +60,7 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, BlastType blastType,
 : QDialog(parent), ca_c(NULL), useCompValues(useCompValues), compValues(compValues)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220587");
+    new HelpButton(this, buttonBox, "18223227");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Restore to default"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -189,8 +189,8 @@ void BlastRunCommonDialog::sl_onMatchScoresChanged(int index){
     }else{
         assert(0);
     }
-
 }
+
 void BlastRunCommonDialog::sl_onMatrixChanged(int index){
     Q_UNUSED(index);
     if(programName->currentText() == "blastn"){
@@ -251,6 +251,7 @@ void BlastRunCommonDialog::sl_onMatrixChanged(int index){
         assert(0);
     }
 }
+
 void BlastRunCommonDialog::sl_restoreDefault(){
     needRestoreDefault=true;
 //    sl_onProgNameChange(0);

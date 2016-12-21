@@ -86,7 +86,7 @@ public:
 
 SiteconSearchDialogController::SiteconSearchDialogController(ADVSequenceObjectContext* _ctx, QWidget *p):QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220548");
+    new HelpButton(this, buttonBox, "18223188");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -259,6 +259,7 @@ void SiteconSearchDialogController::sl_onSaveAnnotations() {
     if (rc != QDialog::Accepted) {
         return;
     }
+    ctx->getAnnotatedDNAView()->tryAddObject(m.getAnnotationObject());
     const QString& name = m.data->name;
     QList<SharedAnnotationData> list;
     for (int i=0, n = resultsTree->topLevelItemCount(); i<n; ++i) {

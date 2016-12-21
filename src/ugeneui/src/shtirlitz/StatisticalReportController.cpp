@@ -47,6 +47,7 @@ StatisticalReportController::StatisticalReportController(const QString &newHtmlF
     frameLayout->addWidget(htmlView);
     htmlView->setMinimumSize(400, 10);
     connect(htmlView,SIGNAL(loadFinished(bool)),this,SLOT(sl_changeHeght()));
+    connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
 }
 
 bool StatisticalReportController::isInfoSharingAccepted() const {
@@ -82,4 +83,9 @@ void StatisticalReportController::sl_changeHeght(){
         htmlView->setMinimumHeight(height);
     });
 }
+
+void StatisticalReportController::accept() {
+    QDialog::close();
+}
+
 }

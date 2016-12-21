@@ -232,32 +232,32 @@
 <context>
     <name>U2::DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="67"/>
+        <location filename="../src/DotPlotDialog.cpp" line="69"/>
         <source>Auto</source>
         <translation>Автовыбор</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="68"/>
+        <location filename="../src/DotPlotDialog.cpp" line="70"/>
         <source>Suffix index</source>
         <translation>Суффиксный индекс</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="69"/>
+        <location filename="../src/DotPlotDialog.cpp" line="71"/>
         <source>Diagonals</source>
         <translation>Диагональный</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="249"/>
+        <location filename="../src/DotPlotDialog.cpp" line="251"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="307"/>
+        <location filename="../src/DotPlotDialog.cpp" line="309"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="307"/>
+        <location filename="../src/DotPlotDialog.cpp" line="309"/>
         <source>Error opening files</source>
         <translation>Ошибка открытия файлов</translation>
     </message>
@@ -302,6 +302,18 @@ Select valid file to build dotplot</source>
         <source>Unable to detect format of given file %1.
 Select valid file to build dotplot</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to detect file format %1.
+Select valid file to build dotplot</source>
+        <translation type="obsolete">Unable to detect file format %1.
+Select valid file to build dotplot</translation>
+    </message>
+    <message>
+        <source>Unable to detect format of given file %1.
+Select valid file to build dotplot</source>
+        <translation type="obsolete">Unable to detect format of given file %1.
+Select valid file to build dotplot</translation>
     </message>
     <message>
         <location filename="../src/DotPlotFilesDialog.cpp" line="169"/>
@@ -351,25 +363,6 @@ Select valid file to build dotplot</source>
         <location filename="../src/DotPlotImageExportTask.cpp" line="79"/>
         <source>Include repeat selection</source>
         <translation>Включить повторяющиеся выделения</translation>
-    </message>
-</context>
-<context>
-    <name>U2::DotPlotImageExportTaskFactory</name>
-    <message>
-        <source>Dotplot widget is NULL</source>
-        <translation type="obsolete">Dotplot widget is NULL</translation>
-    </message>
-    <message>
-        <source>DotPlot</source>
-        <translation type="obsolete">DotPlot</translation>
-    </message>
-    <message>
-        <source>Include area selection</source>
-        <translation type="obsolete">Включить область выделения</translation>
-    </message>
-    <message>
-        <source>Include repeat selection</source>
-        <translation type="obsolete">Включить повторяющиеся выделения</translation>
     </message>
 </context>
 <context>
@@ -450,7 +443,7 @@ Select valid file to build dotplot</source>
     <message>
         <location filename="../src/DotPlotSplitter.cpp" line="293"/>
         <source>One of the sequences in dotplot is NULL</source>
-        <translation type="unfinished"></translation>
+        <translation>One of the sequences in dotplot is NULL</translation>
     </message>
 </context>
 <context>
@@ -483,150 +476,160 @@ Select valid file to build dotplot</source>
 <context>
     <name>U2::DotPlotWidget</name>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="127"/>
+        <location filename="../src/DotPlotWidget.cpp" line="128"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="130"/>
+        <location filename="../src/DotPlotWidget.cpp" line="131"/>
         <source>Save as image</source>
         <translation>Сохранить как изображение</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="134"/>
+        <location filename="../src/DotPlotWidget.cpp" line="135"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="137"/>
+        <location filename="../src/DotPlotWidget.cpp" line="139"/>
         <source>Load</source>
         <translation>Загрузить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="140"/>
+        <location filename="../src/DotPlotWidget.cpp" line="142"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="144"/>
+        <location filename="../src/DotPlotWidget.cpp" line="146"/>
         <source>Filter Results</source>
         <translation>Фильтрация результатов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="218"/>
+        <location filename="../src/DotPlotWidget.cpp" line="220"/>
         <source>Save/Load</source>
         <translation>Сохранить/Загрузить</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="400"/>
+        <location filename="../src/DotPlotWidget.cpp" line="402"/>
         <source>Too many results</source>
         <translation>Слишком много результатов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="400"/>
+        <location filename="../src/DotPlotWidget.cpp" line="402"/>
         <source>Too many results. Try to increase minimum repeat length</source>
         <translation>Слишком много результатов. Попробуйте уменьшить минимальную длину повтора</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="545"/>
-        <location filename="../src/DotPlotWidget.cpp" line="605"/>
+        <location filename="../src/DotPlotWidget.cpp" line="556"/>
+        <location filename="../src/DotPlotWidget.cpp" line="616"/>
         <source>File opening error</source>
         <translation>Ошибка открытия файла</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="545"/>
-        <location filename="../src/DotPlotWidget.cpp" line="605"/>
+        <location filename="../src/DotPlotWidget.cpp" line="556"/>
+        <location filename="../src/DotPlotWidget.cpp" line="616"/>
         <source>Error opening file %1</source>
         <translation>Ошибка открытия файла %1</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="553"/>
-        <location filename="../src/DotPlotWidget.cpp" line="586"/>
-        <location filename="../src/DotPlotWidget.cpp" line="653"/>
+        <location filename="../src/DotPlotWidget.cpp" line="564"/>
+        <location filename="../src/DotPlotWidget.cpp" line="597"/>
+        <location filename="../src/DotPlotWidget.cpp" line="664"/>
         <source>Task is already running</source>
         <translation>Задача уже запущена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="553"/>
-        <location filename="../src/DotPlotWidget.cpp" line="586"/>
-        <location filename="../src/DotPlotWidget.cpp" line="653"/>
+        <location filename="../src/DotPlotWidget.cpp" line="564"/>
+        <location filename="../src/DotPlotWidget.cpp" line="597"/>
+        <location filename="../src/DotPlotWidget.cpp" line="664"/>
         <source>Build or Load DotPlot task is already running</source>
         <translation>Задача построения или загрузки dotplot уже запущена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="609"/>
+        <location filename="../src/DotPlotWidget.cpp" line="620"/>
         <source>Sequences are different</source>
         <translation>Последовательности отличаются</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="609"/>
+        <location filename="../src/DotPlotWidget.cpp" line="620"/>
         <source>Current and loading sequences are different. Continue loading dot-plot anyway?</source>
         <translation>Текущая и загружаемая последовательность различаются. Продолжить загрузку?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="708"/>
-        <location filename="../src/DotPlotWidget.cpp" line="713"/>
+        <location filename="../src/DotPlotWidget.cpp" line="719"/>
+        <location filename="../src/DotPlotWidget.cpp" line="724"/>
         <source>Invalid sequence</source>
         <translation>Некорректная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="708"/>
+        <location filename="../src/DotPlotWidget.cpp" line="719"/>
         <source>First selected sequence is invalid</source>
         <translation>Первая выделенная последовательность некорректна</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="713"/>
+        <location filename="../src/DotPlotWidget.cpp" line="724"/>
         <source>Second selected sequence is invalid</source>
         <translation>Вторая выделенная последовательность некорректна</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="723"/>
+        <location filename="../src/DotPlotWidget.cpp" line="734"/>
         <source>Wrong alphabet types</source>
         <translation>Неправильные типы алфавитов</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="723"/>
+        <location filename="../src/DotPlotWidget.cpp" line="734"/>
         <source>Both sequence must have the same alphabet</source>
         <translation>Обе последовательности должны иметь одинаковый алфавит</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="802"/>
+        <location filename="../src/DotPlotWidget.cpp" line="813"/>
         <source>Save dot-plot</source>
         <translation>Сохранить dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="802"/>
+        <location filename="../src/DotPlotWidget.cpp" line="813"/>
         <source>Save dot-plot data before closing?</source>
         <translation>Сохранить данные dotplot перед закрытием?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="948"/>
+        <location filename="../src/DotPlotWidget.cpp" line="959"/>
         <source>Invalid weight and height parameters!</source>
         <translation>Некорректные параметры!</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="1042"/>
+        <location filename="../src/DotPlotWidget.cpp" line="1053"/>
         <source> (min length %1, identity %2%)</source>
         <translation>(мин. длина %1, идентичность %2%)</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="216"/>
+        <location filename="../src/DotPlotWidget.cpp" line="218"/>
         <source>Dotplot</source>
         <translation>Dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="534"/>
+        <location filename="../src/DotPlotWidget.cpp" line="541"/>
+        <source>Error Saving Dotplot</source>
+        <translation>Ошибка сохранения</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotWidget.cpp" line="541"/>
+        <source>The dotplot can&apos;t be saved as it is empty.</source>
+        <translation>Дотплот не может быть сохранён, т.к. он пуст.</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotWidget.cpp" line="545"/>
         <source>Save Dotplot</source>
         <translation>Сохранить dotplot</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="534"/>
-        <location filename="../src/DotPlotWidget.cpp" line="579"/>
+        <location filename="../src/DotPlotWidget.cpp" line="545"/>
+        <location filename="../src/DotPlotWidget.cpp" line="590"/>
         <source>Dotplot files (*.dpt)</source>
         <translation>Файлы dotplot (*.dpt)</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="579"/>
+        <location filename="../src/DotPlotWidget.cpp" line="590"/>
         <source>Load Dotplot</source>
         <translation>Загрузить dotplot</translation>
     </message>

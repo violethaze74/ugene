@@ -4,12 +4,16 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <ctype.h>
+
 #include <QtGlobal>
 #include <QtCore/QTextStream>
+
+#include <U2Core/U2SafePoints.h>
 
 #include "nrutil.h"
 #include "gor.h"
 
+#include "GorIVAlgTask.h"
 
 //disable "unsafe functions" deprecation warnings on MS VS
 #ifdef Q_OS_WIN
@@ -50,7 +54,7 @@ double infodir[3][WINSIZ+1][23];
 float nS[4], pS[4];
 
 
-int runGORIV( QFile& seqDb, QFile& strucDb , char* inputSeq, int numResidues, char* outputSeq )
+int runGORIV( QFile& seqDb, QFile& strucDb , char* inputSeq, int numResidues, char* outputSeq, U2::U2OpStatus &os )
 {
  
 /***************************************************************************/
@@ -120,8 +124,10 @@ int runGORIV( QFile& seqDb, QFile& strucDb , char* inputSeq, int numResidues, ch
  * Input the sequences and observed secondary structures for the data base
  */
 
-  readFile(seqDb,nprot_dbase,seq,title_seq,temp);
-  readFile(strucDb,nprot_dbase,obs,title_obs,sequence);
+  readFile(seqDb,nprot_dbase,seq,title_seq,temp,os);
+  CHECK_OP(os, 1);
+  readFile(strucDb,nprot_dbase,obs,title_obs,sequence,os);
+  CHECK_OP(os, 1);
 
 /*
  * Check that the data are consistent in the two files
@@ -143,14 +149,16 @@ int runGORIV( QFile& seqDb, QFile& strucDb , char* inputSeq, int numResidues, ch
 
   if(nerr > 0) {
     printf("%d errors\n",nerr);
-    exit(1);
+    os.setError(U2::GorIVAlgTask::tr("%1 errors").arg(QString::number(nerr)));
+    return 1;
   }
 
   /*
   * Calculate the parameters
   */
 
-  Parameters(nprot_dbase,sequence,obs,seq);
+  Parameters(nprot_dbase,sequence,obs,seq, os);
+  CHECK_OP(os, 1);
 
   /*
   * Predict the secondary structure of protein pro.
@@ -190,7 +198,7 @@ int runGORIV( QFile& seqDb, QFile& strucDb , char* inputSeq, int numResidues, ch
 /* the proteins in the data base.                                            */
 /*                                                                           */
 /*****************************************************************************/
-void readFile(QFile& file, int nprot, char **obs, char **title, int *pnter)
+void readFile(QFile& file, int nprot, char **obs, char **title, int *pnter, U2::U2OpStatus &os)
 {
   
     Q_ASSERT(file.isOpen());
@@ -217,7 +225,8 @@ void readFile(QFile& file, int nprot, char **obs, char **title, int *pnter)
             nres++;
             if(nres > MAXRES) {
                 printf("The value of MAXRES should be increased: %d",MAXRES);
-                exit(1);
+                os.setError(U2::GorIVAlgTask::tr("The value of MAXRES should be increased: %1").arg(QString::number(MAXRES)));
+                return;
             }
             if((c >= 'A' && c < 'Z') && c != 'B' && c != 'J' && c != 'O' && c != 'U') {
                 keep[nres] = c;
@@ -225,7 +234,9 @@ void readFile(QFile& file, int nprot, char **obs, char **title, int *pnter)
             else {
                 printf("protein: %d residue: %d\n",ip,nres);
                 printf("Invalid amino acid type or secondary structure state: ==>%c<==\n",c);
-                exit(1);
+                os.setError(U2::GorIVAlgTask::tr("protein: %1 residue: %2\nInvalid amino acid type or secondary structure state : ==>%3<==")
+                    .arg(QString::number(ip)).arg(QString::number(nres).arg(c)));
+                return;
             }
         }
         
@@ -379,9 +390,9 @@ void predic(int nres, char *seq, char *pred, float **proba)
 /***************************************************************************/
 int seq_indx(int c);
 int obs_indx(int c);
-void Indices(int np, int *dis1, int *dis2);
+void Indices(int np, int *dis1, int *dis2, U2::U2OpStatus &os);
 
-void Parameters(int nprot_dbase, int *nres, char **obs, char **seq)
+void Parameters(int nprot_dbase, int *nres, char **obs, char **seq, U2::U2OpStatus &os)
 {
 /*
  * Compute the frequencies from proteins in the data base.
@@ -484,13 +495,15 @@ void Parameters(int nprot_dbase, int *nres, char **obs, char **seq)
 	  f1 = Doublet[konf][np][aa1][aa2];
 	  f2 = Doublet[3][np][aa1][aa2];
 	  if(f1 < MINFREQ) {
-	    Indices(np,&dis1,&dis2);
+	    Indices(np,&dis1,&dis2, os);
+        CHECK_OP(os, );
 	    f3 = Singlet[konf][dis1][aa1] * Singlet[konf][dis2][aa1] / (float) nS[konf];
 	    f1 = (f3 - f1) * (float) interpol_coeff + f1;
 	    if(f1 < 1.e-6) f1 = 1.0;
 	  }
 	  if(f2 < MINFREQ) {
-	    Indices(np,&dis1,&dis2);
+	    Indices(np,&dis1,&dis2, os);
+        CHECK_OP(os, );
 	    f3 = Singlet[3][dis1][aa1] * Singlet[3][dis2][aa1] / (float) nS[3];
 	    f2 = (f3 - f2) * (float) interpol_coeff + f2;
 	    if(f2 < 1.e-6) f2 = 1.0;
@@ -520,7 +533,7 @@ void Parameters(int nprot_dbase, int *nres, char **obs, char **seq)
 /* Determine indices dis1 dis2 as a function of np                           */
 /*                                                                           */
 /*****************************************************************************/
-void Indices(int np, int *dis1, int *dis2)
+void Indices(int np, int *dis1, int *dis2, U2::U2OpStatus &os)
 {
   int i, j, k;
 
@@ -536,7 +549,8 @@ void Indices(int np, int *dis1, int *dis2)
     }
   }
   printf("Error invalid value of np= %d\n",np);
-  exit(1);
+  os.setError(U2::GorIVAlgTask::tr("Error invalid value of np= %1").arg(QString::number(np)));
+  return;
 }
 /*********************************************************************************/
 /*                                                                               */

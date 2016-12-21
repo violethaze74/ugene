@@ -38,12 +38,7 @@ BlastDBCmdDialog::BlastDBCmdDialog(BlastDBCmdSupportTaskSettings &_settings, QWi
     settings(_settings)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220588");
-
-#ifdef Q_OS_MAC
-    // Add a spacer between 'Query ID' input field and 'BLAST DB' groupbox
-    verticalLayout_2->insertSpacerItem(verticalLayout_2->indexOf(dbSelectorWidget), new QSpacerItem(1, 12));
-#endif
+    new HelpButton(this, buttonBox, "18223228");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Fetch"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

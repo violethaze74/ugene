@@ -31,6 +31,7 @@ namespace U2 {
 class SaveAlignmentTask;
 
 class HmmerBuildTask : public ExternalToolRunTask {
+    Q_OBJECT
 public:
     HmmerBuildTask(const HmmerBuildSettings &settings, const QString &stockholmMsaUrl);
 

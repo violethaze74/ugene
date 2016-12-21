@@ -44,7 +44,7 @@ ExportDocumentDialogController::ExportDocumentDialogController(Document* d, QWid
 {
     ui = new Ui_ExportDocumentDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18220290");
+    new HelpButton(this, ui->buttonBox, "18222930");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -62,7 +62,9 @@ ExportDocumentDialogController::ExportDocumentDialogController(GObject *object, 
     QList<GObject *> objectList = QList<GObject *>() << sourceObject;
     initSaveController(objectList, initUrl);
 
-    new HelpButton(this, ui->buttonBox, "18220290");
+    new HelpButton(this, ui->buttonBox, "18222930");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 }
 
 void ExportDocumentDialogController::initSaveController(const QList<GObject *> &objects, const QString &fileUrl) {

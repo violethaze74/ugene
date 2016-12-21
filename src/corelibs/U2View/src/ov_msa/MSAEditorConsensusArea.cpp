@@ -236,8 +236,8 @@ void MSAEditorConsensusArea::resizeEvent(QResizeEvent *e) {
 }
 
 void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
-    QSize s = size();
-    QSize sas = ui->seqArea->size();
+    QSize s = size() * devicePixelRatio();
+    QSize sas = ui->seqArea->size() * devicePixelRatio();
 
     if (sas.width() != s.width()) { //this can happen due to the manual layouting performed by MSAEditor -> just wait for the next resize+paint
         return;
@@ -246,9 +246,10 @@ void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
     assert(s.width() == sas.width());
 
     if (cachedView->size() != s) {
-        assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
+        cachedView->setDevicePixelRatio(devicePixelRatio());
+        completeRedraw = true;
     }
 
     if (completeRedraw) {

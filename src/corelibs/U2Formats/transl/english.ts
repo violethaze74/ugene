@@ -6,22 +6,22 @@
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="56"/>
         <source>The file contains features of another remote GenBank file. These features have been skipped.</source>
-        <translation type="unfinished"></translation>
+        <translation>The file contains features of another remote GenBank file. These features have been skipped.</translation>
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="57"/>
         <source>The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.</source>
-        <translation type="unfinished"></translation>
+        <translation>The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.</translation>
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="58"/>
         <source>Location parsing error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Location parsing error.</translation>
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="59"/>
         <source>The number of valid sequence characters does not coincide with the declared size in the sequence header.</source>
-        <translation type="unfinished"></translation>
+        <translation>The number of valid sequence characters does not coincide with the declared size in the sequence header.</translation>
     </message>
 </context>
 <context>
@@ -29,12 +29,12 @@
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="635"/>
         <source>Ignoring remote entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoring remote entry</translation>
     </message>
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="636"/>
         <source>Ignoring different strands in JOIN</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoring different strands in JOIN</translation>
     </message>
 </context>
 <context>
@@ -67,7 +67,7 @@
     <message>
         <location filename="../src/BAMUtils.cpp" line="775"/>
         <source>Can&apos;t open file with given url: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Can&apos;t open file with given url: %1.</translation>
     </message>
     <message>
         <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="476"/>
@@ -108,9 +108,8 @@
 <context>
     <name>U2</name>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="219"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
-        <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
+        <translation type="vanished">File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
 </context>
 <context>
@@ -343,7 +342,7 @@
     <message>
         <location filename="../src/ace/AceImporter.cpp" line="66"/>
         <source>Dbi ref is invalid</source>
-        <translation type="unfinished"></translation>
+        <translation>Dbi ref is invalid</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImporter.cpp" line="82"/>
@@ -735,7 +734,7 @@
     <message>
         <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="49"/>
         <source>Convert SnpEff variations to annotations task</source>
-        <translation type="unfinished"></translation>
+        <translation>Convert SnpEff variations to annotations task</translation>
     </message>
 </context>
 <context>
@@ -1052,14 +1051,6 @@
         <translation>Error parsing sequence: unexpected empty line</translation>
     </message>
     <message>
-        <source>Error reading sequence: invalid sequence format</source>
-        <translation type="vanished">Error reading sequence: invalid sequence format</translation>
-    </message>
-    <message>
-        <source>Error reading sequence: memory allocation failed</source>
-        <translation type="vanished">Error reading sequence: memory allocation failed</translation>
-    </message>
-    <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="704"/>
         <source>Sequence is truncated</source>
         <translation>Sequence is truncated</translation>
@@ -1175,13 +1166,6 @@
 %1</translation>
     </message>
     <message>
-        <source>Skipped sequences: %1.
-The following sequences are empty:
-</source>
-        <translation type="obsolete">Skipped sequences: %1.
-The following sequences are empty:</translation>
-    </message>
-    <message>
         <location filename="../src/FastaFormat.cpp" line="477"/>
         <source>Unreferenced sequence in the beginning of patterns: %1</source>
         <translation>Unreferenced sequence in the beginning of patterns: %1</translation>
@@ -1213,16 +1197,12 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/FastqFormat.cpp" line="324"/>
         <source>Sequence name differs from quality scores name: %1 and %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Sequence name differs from quality scores name: %1 and %2</translation>
     </message>
     <message>
         <location filename="../src/FastqFormat.cpp" line="344"/>
         <source>Bad quality scores: inconsistent size.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Not a valid FASTQ file: %1, sequence name differs from quality scores name: %2 and %3</source>
-        <translation type="vanished">Not a valid FASTQ file: %1, sequence name differs from quality scores name: %2 and %3</translation>
+        <translation>Bad quality scores: inconsistent size.</translation>
     </message>
     <message>
         <location filename="../src/FastqFormat.cpp" line="363"/>
@@ -1238,10 +1218,6 @@ The following sequences are empty:</translation>
         <location filename="../src/FastqFormat.cpp" line="568"/>
         <source>Not a valid FASTQ file. Bad quality scores: inconsistent size.</source>
         <translation>Not a valid FASTQ file. Bad quality scores: inconsistent size.</translation>
-    </message>
-    <message>
-        <source>Not a valid FASTQ file: %1. Bad quality scores: inconsistent size.</source>
-        <translation type="vanished">Not a valid FASTQ file: %1. Bad quality scores: inconsistent size.</translation>
     </message>
 </context>
 <context>
@@ -1350,6 +1326,11 @@ The following sequences are empty:</translation>
         <translation>Parsing error: GFF version %1 is not supported</translation>
     </message>
     <message>
+        <location filename="../src/GFFFormat.cpp" line="219"/>
+        <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
+        <translation type="unfinished">File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
+    </message>
+    <message>
         <location filename="../src/GFFFormat.cpp" line="265"/>
         <source>Parsing error: file contains empty line %1, line skipped</source>
         <translation>Parsing error: file contains empty line %1, line skipped</translation>
@@ -1402,7 +1383,7 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/GFFFormat.cpp" line="494"/>
         <source>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</translation>
     </message>
     <message>
         <location filename="../src/GFFFormat.cpp" line="613"/>
@@ -1494,10 +1475,6 @@ The following sequences are empty:</translation>
 <context>
     <name>U2::Genbank::LocationParser</name>
     <message>
-        <source>Ignoring remote entry: %1.%2</source>
-        <translation type="vanished">Ignoring remote entry: %1.%2</translation>
-    </message>
-    <message>
         <location filename="../src/GenbankLocationParser.cpp" line="359"/>
         <location filename="../src/GenbankLocationParser.cpp" line="431"/>
         <source>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</source>
@@ -1544,7 +1521,7 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="529"/>
         <source>Wrong token after ORDER - join %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Wrong token after ORDER - join %1</translation>
     </message>
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="538"/>
@@ -1708,12 +1685,12 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/util/SnpeffInfoParser.cpp" line="114"/>
         <source>Too few values in the entry: &apos;%1&apos;. Expected at least %2 values.</source>
-        <translation type="unfinished"></translation>
+        <translation>Too few values in the entry: &apos;%1&apos;. Expected at least %2 values.</translation>
     </message>
     <message>
         <location filename="../src/util/SnpeffInfoParser.cpp" line="134"/>
         <source>Too many values in the entry &apos;%1&apos;, extra entries are ignored</source>
-        <translation type="unfinished"></translation>
+        <translation>Too many values in the entry &apos;%1&apos;, extra entries are ignored</translation>
     </message>
 </context>
 <context>
@@ -1721,17 +1698,17 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="117"/>
         <source>Load file and convert SnpEff variations to annotations task</source>
-        <translation type="unfinished"></translation>
+        <translation>Load file and convert SnpEff variations to annotations task</translation>
     </message>
     <message>
         <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="157"/>
         <source>&apos;%1&apos; load failed, the result document is NULL</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; load failed, the result document is NULL</translation>
     </message>
     <message>
         <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="161"/>
         <source>File &apos;%1&apos; doesn&apos;t contain variation tracks</source>
-        <translation type="unfinished"></translation>
+        <translation>File &apos;%1&apos; doesn&apos;t contain variation tracks</translation>
     </message>
 </context>
 <context>
@@ -1967,6 +1944,24 @@ The following sequences are empty:</translation>
     </message>
 </context>
 <context>
+    <name>U2::PairedFastqComparator</name>
+    <message>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="77"/>
+        <source>Too much reads without a pair (&gt;%1). Check the input data is set correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="125"/>
+        <source>The list doesn&apos;t contains the item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="173"/>
+        <source>Invalid sequence info</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::PhylipFormat</name>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="48"/>
@@ -2129,7 +2124,7 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/util/SnpeffInfoParser.cpp" line="48"/>
         <source>Can&apos;t parse the next INFO part: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Can&apos;t parse the next INFO part: &apos;%1&apos;</translation>
     </message>
 </context>
 <context>

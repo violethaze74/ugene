@@ -358,12 +358,12 @@
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="197"/>
         <source>Mononucleic</source>
-        <translation type="unfinished">Мононуклеотидная</translation>
+        <translation>Мононуклеотидная</translation>
     </message>
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="198"/>
         <source>Dinucleic</source>
-        <translation type="unfinished">Динуклеотидная</translation>
+        <translation>Динуклеотидная</translation>
     </message>
 </context>
 <context>
@@ -409,12 +409,12 @@
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="301"/>
         <source>Mononucleic</source>
-        <translation type="unfinished">Мононуклеотидная</translation>
+        <translation>Мононуклеотидная</translation>
     </message>
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="302"/>
         <source>Dinucleic</source>
-        <translation type="unfinished">Динуклеотидная</translation>
+        <translation>Динуклеотидная</translation>
     </message>
 </context>
 <context>
@@ -517,12 +517,12 @@
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="107"/>
         <source>Mononucleic</source>
-        <translation type="unfinished">Мононуклеотидная</translation>
+        <translation>Мононуклеотидная</translation>
     </message>
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="108"/>
         <source>Dinucleic</source>
-        <translation type="unfinished">Динуклеотидная</translation>
+        <translation>Динуклеотидная</translation>
     </message>
     <message>
         <location filename="../src/WeightMatrixBuildWorker.cpp" line="276"/>
@@ -818,13 +818,13 @@ Maybe model data are not enough for selected algorithm</translation>
         <location filename="../src/PWMBuildDialogController.cpp" line="292"/>
         <location filename="../src/PWMBuildDialogController.cpp" line="310"/>
         <source>Frequency matrices</source>
-        <translation type="unfinished">Частотные матрицы</translation>
+        <translation>Частотные матрицы</translation>
     </message>
     <message>
         <location filename="../src/PWMBuildDialogController.cpp" line="293"/>
         <location filename="../src/PWMBuildDialogController.cpp" line="311"/>
         <source>Weight matrices</source>
-        <translation type="unfinished">Весовые матрицы</translation>
+        <translation>Весовые матрицы</translation>
     </message>
     <message>
         <location filename="../src/PWMBuildDialogController.cpp" line="307"/>
@@ -951,57 +951,57 @@ Do you want to write over this file?</source>
         <translation>Выберите файл с весовой или частотной матрицей</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="291"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="292"/>
         <source>Same model with same parameters already in the search queue</source>
         <translation>Модель с такими же параметрами уже находится в очереди</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="332"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="564"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="333"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="565"/>
         <source>Zero length or corrupted model
 Maybe model data is not enough for selected algorithm</source>
         <translation>Zero length or corrupted model
 Maybe model data is not enough for selected algorithm</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="360"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="471"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="361"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="472"/>
         <source>Model not selected</source>
         <translation>Не выбрана матрица</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="366"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="367"/>
         <source>Load file with list of matrices</source>
         <translation>Загрузить файл со списком матриц</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="366"/>
-        <location filename="../src/PWMSearchDialogController.cpp" line="406"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="367"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="407"/>
         <source>CSV files (*.csv)</source>
         <translation>Файлы CSV (*.csv)</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="406"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="407"/>
         <source>Save file with list of matrices</source>
         <translation>Сохранить файл со списком матриц</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="433"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="434"/>
         <source>Select directory with frequency or weight matrices</source>
         <translation>Выберите папку с частотными или весовыми матрицами</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="585"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="586"/>
         <source>Reverse complement strand</source>
         <translation>Только комплементарные</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="585"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="586"/>
         <source>Direct strand</source>
         <translation>Только прямые</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="276"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="277"/>
         <source>Zero length or corrupted model</source>
         <translation>Повреждённая матрица либо матрица нулевой длины</translation>
     </message>
@@ -1016,7 +1016,7 @@ Maybe model data is not enough for selected algorithm</translation>
         <translation>Искать</translation>
     </message>
     <message>
-        <location filename="../src/PWMSearchDialogController.cpp" line="481"/>
+        <location filename="../src/PWMSearchDialogController.cpp" line="482"/>
         <source>Range is too small</source>
         <translation>Регион слишком мал</translation>
     </message>

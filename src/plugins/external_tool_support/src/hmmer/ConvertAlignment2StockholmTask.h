@@ -30,6 +30,7 @@ class LoadDocumentTask;
 class SaveAlignmentTask;
 
 class ConvertAlignment2Stockholm : public Task {
+    Q_OBJECT
 public:
     ConvertAlignment2Stockholm(const QString &msaUrl, const QString &workingDir);
 

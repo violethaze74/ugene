@@ -23,19 +23,22 @@
 
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/MainWindow.h>
 
 #include "MSAOverviewContextMenu.h"
 #include "MSAOverviewImageExportTask.h"
+#include <U2View/MSAEditor.h>
 #include "MSASimpleOverview.h"
 #include "../MSAEditorOverviewArea.h"
 
 namespace U2 {
 
-MSAOverviewContextMenu::MSAOverviewContextMenu(MSASimpleOverview *sOverview, MSAGraphOverview *gOverview)
-    : simpleOverview(sOverview),
+MSAOverviewContextMenu::MSAOverviewContextMenu(MSAEditor* editor, MSASimpleOverview *sOverview, MSAGraphOverview *gOverview)
+    : editor(editor),
+      simpleOverview(sOverview),
       graphOverview(gOverview)
 {
     SAFE_POINT(simpleOverview != NULL, tr("Overview is NULL"), );
@@ -76,7 +79,8 @@ void MSAOverviewContextMenu::connectSlots() {
 void MSAOverviewContextMenu::sl_exportAsImageTriggered() {
     MSAOverviewImageExportController factory(simpleOverview, graphOverview);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MSA, ExportImageDialog::NoScaling, p);
+    QString fileName = GUrlUtils::fixFileName(editor->getMSAObject()->getGObjectName());
+    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
     dialog->exec();
 }
 

@@ -626,11 +626,12 @@ void MSAEditorSequenceArea::paintEvent(QPaintEvent *e) {
 }
 
 void MSAEditorSequenceArea::drawAll() {
-    QSize s = size();
+    QSize s = size() * devicePixelRatio();
     if (cachedView->size() != s) {
-        assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
+        cachedView->setDevicePixelRatio(devicePixelRatio());
+        completeRedraw = true;
     }
     if (completeRedraw) {
         QPainter pCached(cachedView);
@@ -1908,8 +1909,8 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != NULL, "editMenu", );
     QList<QAction*> actions;
-    actions << replaceCharacterAction << reverseComplementAction <<  reverseAction << complementAction << removeAllGapsAction;
-    editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
+    actions << insSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;    editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
+    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
 
     QMenu * exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != NULL, "exportMenu", );

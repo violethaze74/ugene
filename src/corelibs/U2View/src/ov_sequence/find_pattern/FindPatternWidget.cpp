@@ -215,10 +215,6 @@ const static QString SHOW_OPTIONS_LINK("show_options_link");
 const int FindPatternWidget::DEFAULT_RESULTS_NUM_LIMIT = 100000;
 const int FindPatternWidget::DEFAULT_REGEXP_RESULT_LENGTH_LIMIT = 10000;
 
-const QString FindPatternWidget::ALGORITHM_SETTINGS = QObject::tr("Search algorithm");
-const QString FindPatternWidget::SEARCH_IN_SETTINGS = QObject::tr("Search in");
-const QString FindPatternWidget::OTHER_SETTINGS = QObject::tr("Other settings");
-
 FindPatternWidget::FindPatternWidget(AnnotatedDNAView* _annotatedDnaView) :
     annotatedDnaView(_annotatedDnaView),
     iterPos(1),
@@ -307,9 +303,9 @@ void FindPatternWidget::initLayout() {
     initResultsLimit();
 
     subgroupsLayout->setSpacing(0);
-    subgroupsLayout->addWidget(new ShowHideSubgroupWidget(ALGORITHM_SETTINGS, ALGORITHM_SETTINGS, widgetAlgorithm, false));
-    subgroupsLayout->addWidget(new ShowHideSubgroupWidget(SEARCH_IN_SETTINGS, SEARCH_IN_SETTINGS, widgetSearchIn, false));
-    subgroupsLayout->addWidget(new ShowHideSubgroupWidget(OTHER_SETTINGS, OTHER_SETTINGS, widgetOther, false));
+    subgroupsLayout->addWidget(new ShowHideSubgroupWidget(QObject::tr("Search algorithm"), QObject::tr("Search algorithm"), widgetAlgorithm, false));
+    subgroupsLayout->addWidget(new ShowHideSubgroupWidget(QObject::tr("Search in"), QObject::tr("Search in"), widgetSearchIn, false));
+    subgroupsLayout->addWidget(new ShowHideSubgroupWidget(QObject::tr("Other settings"), QObject::tr("Other settings"), widgetOther, false));
     subgroupsLayout->addWidget(annotsWidget);
 
     updateLayout();
@@ -1225,6 +1221,10 @@ void FindPatternWidget::sl_loadPatternTaskStateChanged() {
     updateAnnotationsWidget();
 }
 
+bool compareByRegionStartPos(const SharedAnnotationData &r1, const SharedAnnotationData &r2) {
+    return r1->getRegions().first().startPos < r2->getRegions().first().startPos;
+}
+
 void FindPatternWidget::sl_findPatrernTaskStateChanged() {
     FindPatternListTask *findTask = qobject_cast<FindPatternListTask *>(sender());
     CHECK(NULL != findTask, );
@@ -1240,6 +1240,7 @@ void FindPatternWidget::sl_findPatrernTaskStateChanged() {
             getAnnotationsPushButton->setDisabled(true);
         } else {
             iterPos = 1;
+            qSort(findPatternResults.begin(), findPatternResults.end(), compareByRegionStartPos);
             showCurrentResultAndStopProgress(iterPos, findPatternResults.size());
             nextPushButton->setEnabled(true);
             prevPushButton->setEnabled(true);
@@ -1439,7 +1440,7 @@ void FindPatternWidget::sl_getAnnotationsButtonClicked() {
 
     AnnotationTableObject *aTableObj = annotModel.getAnnotationObject();
     SAFE_POINT(aTableObj != NULL, "Invalid annotation table detected!", );
-
+    annotatedDnaView->tryAddObject(aTableObj);
     QList<SharedAnnotationData> annotationsToCreate = findPatternResults;
 
     for(int i = 0; i < findPatternResults.size(); i++){

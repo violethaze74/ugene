@@ -32,6 +32,8 @@
 
 namespace U2 {
 
+class ADVSequenceObjectContext;
+
 class PhmmerSearchDialogModel {
 public:
     PhmmerSearchSettings phmmerSettings;
@@ -42,6 +44,7 @@ class PhmmerSearchDialog : public QDialog, public Ui_PhmmerSearchDialog {
     Q_OBJECT
 public:
     PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = NULL);
+    PhmmerSearchDialog(ADVSequenceObjectContext* seqCtx, QWidget *parent = NULL);
 
 private slots:
     void accept();
@@ -55,10 +58,12 @@ private slots:
 private:
     void setModelValues();
     void getModelValues();
+    void init(U2SequenceObject *seqObj);
     QString checkModel();
 
     PhmmerSearchDialogModel model;
     CreateAnnotationWidgetController *annotationsWidgetController;
+    ADVSequenceObjectContext* seqCtx;
 
     static const QString    QUERY_FILES_DIR;
     static const QString    DOM_E_PLUS_PREFIX;

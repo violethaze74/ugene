@@ -46,13 +46,15 @@ public:
 
     ExportImageDialog(QWidget* screenShotWidget,
                       InvokedFrom invoSource,
+                      const QString& file,
                       ImageScalingPolicy scalingPolicy = NoScaling,
-                      QWidget* parent = NULL, const QString& file = QString("untitled"));
+                      QWidget* parent = NULL);
 
     ExportImageDialog(ImageExportController *factory,
                       InvokedFrom invoSource,
+                      const QString& file,
                       ImageScalingPolicy scalingPolicy = NoScaling,
-                      QWidget* parent = NULL, const QString& file = QString("untitled"));
+                      QWidget* parent = NULL);
 
     ~ExportImageDialog();
 

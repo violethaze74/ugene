@@ -66,20 +66,20 @@
     <message>
         <location filename="../src/PluginSupportImpl.cpp" line="451"/>
         <source>Settings is NULL</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings is NULL</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="481"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="490"/>
         <source>Plugin loading error: %1. Verification failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin loading error: %1. Verification failed.</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="504"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="513"/>
         <source>Plugin initialization routine was not found: %1</source>
         <translation>Не найдена входная функция библиотеки модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="510"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="519"/>
         <source>Plugin initialization failed: %1</source>
         <translation>Ошибка инициализации модуля: %1</translation>
     </message>
@@ -358,7 +358,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="118"/>
         <source>There is not enough memory to finish the task.</source>
-        <translation type="unfinished"></translation>
+        <translation>There is not enough memory to finish the task.</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="140"/>
@@ -462,7 +462,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::VerifyPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="539"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="548"/>
         <source>Verify plugin task: %1</source>
         <translation>Задача верификации модуля: %1</translation>
     </message>
