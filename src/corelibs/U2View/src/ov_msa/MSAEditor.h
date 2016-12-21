@@ -222,6 +222,7 @@ signals:
 
 protected:
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
+    void initOverviewArea();
 
 private:
     MsaEditorSimilarityColumn*         dataList;

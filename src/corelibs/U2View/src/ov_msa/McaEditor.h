@@ -43,7 +43,9 @@ public:
 
     virtual int getRowHeight() const;
 
-    bool getShowChromatogram() const { return showChromatograms; }
+    bool getShowChromatogram() const;
+    bool isChromVisible(qint64 rowId) const;
+    void toggleChromVisibility(qint64 rowId);
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);
@@ -52,8 +54,11 @@ protected slots:
 protected:
     QWidget* createWidget();
 
+    // SANGER_TODO: remove the varialbe
     bool              showChromatograms;
     QAction*          showChromatogramsAction;
+
+    QMap<qint64, bool>  chromVisibility;
 };
 
 class McaEditorWgt : public MaEditorWgt {
@@ -65,6 +70,7 @@ public:
 
 protected:
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
+    void initOverviewArea();
 };
 
 } // namespace

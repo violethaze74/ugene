@@ -28,12 +28,12 @@ class QCheckBox;
 
 namespace U2 {
 
-class MSASimpleOverview;
-class MSAGraphOverview;
+class MaSimpleOverview;
+class MaGraphOverview;
 
-class MSAOverviewImageExportSettings {
+class MaOverviewImageExportSettings {
 public:
-    MSAOverviewImageExportSettings(bool exportSimpleOverview = false,
+    MaOverviewImageExportSettings(bool exportSimpleOverview = false,
                                    bool exportGraphOverview = true)
         : exportSimpleOverview(exportSimpleOverview),
           exportGraphOverview(exportGraphOverview) {}
@@ -43,24 +43,24 @@ public:
 };
 
 
-class MSAOverviewImageExportToBitmapTask : public ImageExportTask {
+class MaOverviewImageExportToBitmapTask : public ImageExportTask {
     Q_OBJECT
 public:
-    MSAOverviewImageExportToBitmapTask(MSASimpleOverview *simpleOverview, MSAGraphOverview *graphOverview,
-                                       const MSAOverviewImageExportSettings &overviewSettings,
+    MaOverviewImageExportToBitmapTask(MaSimpleOverview *simpleOverview, MaGraphOverview *graphOverview,
+                                       const MaOverviewImageExportSettings &overviewSettings,
                                        const ImageExportTaskSettings& settings);
     void run();
 private:
-    MSASimpleOverview*  simpleOverview;
-    MSAGraphOverview*   graphOverview;
-    MSAOverviewImageExportSettings  overviewSettings;
+    MaSimpleOverview*  simpleOverview;
+    MaGraphOverview*   graphOverview;
+    MaOverviewImageExportSettings  overviewSettings;
 };
 
 
-class MSAOverviewImageExportController : public ImageExportController {
+class MaOverviewImageExportController : public ImageExportController {
     Q_OBJECT
 public:
-    MSAOverviewImageExportController(MSASimpleOverview *simpleOverview, MSAGraphOverview *graphOverview);
+    MaOverviewImageExportController(MaSimpleOverview *simpleOverview, MaGraphOverview *graphOverview);
 
     int getImageWidth() const;
     int getImageHeight() const;
@@ -71,8 +71,8 @@ protected:
     Task* getExportToBitmapTask(const ImageExportTaskSettings &settings) const;
 
 private:
-    MSASimpleOverview*  simpleOverview;
-    MSAGraphOverview*   graphOverview;
+    MaSimpleOverview*  simpleOverview;
+    MaGraphOverview*   graphOverview;
 
     QCheckBox*   exportSimpleOverview;
     QCheckBox*   exportGraphOverview;

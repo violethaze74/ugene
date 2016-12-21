@@ -105,12 +105,12 @@ void MaEditorWgt::initWidgets() {
 
     initSeqArea(shBar, cvBar);
     seqArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    initOverviewArea();
 
     nameList = new MSAEditorNameList(this, nhBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     consArea = new MSAEditorConsensusArea(this);
-    overviewArea = new MSAEditorOverviewArea(this);
     statusWidget = new MSAEditorStatusWidget(editor->getMaObject(), seqArea);
 
     offsetsView = new MSAEditorOffsetsViewController(this, editor, seqArea);

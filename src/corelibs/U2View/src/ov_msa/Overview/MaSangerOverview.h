@@ -19,41 +19,41 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_OVERVIEW_H_
-#define _U2_MSA_EDITOR_OVERVIEW_H_
+#ifndef _U2_MA_SANGER_OVERVIEW_H_
+#define _U2_MA_SANGER_OVERVIEW_H_
 
-#include "Overview/MaEditorOverviewArea.h"
-
-#include <U2Core/global.h>
-
-#include <QAction>
-#include <QWidget>
+#include "MaOverview.h"
 
 namespace U2 {
 
-class MaEditorWgt;
-class MaSangerOverview;
-class MaSimpleOverview;
-class MaGraphOverview;
-class MaOverviewContextMenu;
+class McaEditor;
 
-class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
+class MaSangerOverview : public MaOverview {
     Q_OBJECT
 public:
-    MSAEditorOverviewArea(MaEditorWgt* ui);
+    MaSangerOverview(MaEditorWgt* ui);
 
-    bool isOverviewWidget(QWidget* wgt) const;
+    bool isValid() const;
+    QPixmap getView();
 
-    static const QString OVERVIEW_AREA_OBJECT_NAME;
-
-public slots:
-    void sl_onContextMenuRequested(const QPoint& p);
+protected:
+    void paintEvent(QPaintEvent *e);
+    void resizeEvent(QResizeEvent *e);
 
 private:
-    MaSimpleOverview*  simpleOverview;
-    MaOverviewContextMenu* contextMenu;
+    void drawOverview(QPainter &p);
+    void drawVisibleRange(QPainter &p);
+    void drawSelection(QPainter &p);
+
+    void moveVisibleRange(QPoint pos);
+
+    void drawRead(QPainter &p, const QRect& rect, bool forward);
+
+private:
+    McaEditor* getEditor() const;
+    static const int READ_HEIGHT;
 };
 
-}
+} // namespace
 
-#endif // _U2_MSA_EDITOR_OVERVIEW_H_
+#endif // _U2_MA_SANGER_OVERVIEW_H_

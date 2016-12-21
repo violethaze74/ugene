@@ -417,6 +417,21 @@ void MSAEditorNameList::mousePressEvent(QMouseEvent *e) {
                 }
             }
         }
+
+        // SANGER_TODO: there should not be such stuff
+        McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
+        if (mcaEditor != NULL) {
+            const U2Region& yRange = seqArea->getSequenceYRange(curSeq, true);
+            bool selected = isRowInSelection(curSeq);
+            QRect textRect = calculateTextRect(yRange, selected);
+            QRect buttonRect = calculateButtonRect(textRect);
+            if (buttonRect.contains(origin)) {
+                mcaEditor->toggleChromVisibility(curSeq);
+                QWidget::mousePressEvent(e);
+                return;
+            }
+        }
+
         startSelectingSeq = curSeq;
         MaEditorSelection s = seqArea->getSelection();
         if (s.getRect().contains(0,curSeq)) {
@@ -622,7 +637,7 @@ QRect MSAEditorNameList::calculateTextRect(const U2Region& yRange, bool selected
 }
 
 QRect MSAEditorNameList::calculateButtonRect(const QRect& itemRect) const {
-    return QRect(itemRect.left() + CROSS_SIZE/2, itemRect.top() + (itemRect.height() - CROSS_SIZE)/2, CROSS_SIZE, CROSS_SIZE);
+    return QRect(itemRect.left() + CROSS_SIZE/2, itemRect.top() + MARGIN_TEXT_TOP, CROSS_SIZE, CROSS_SIZE);
 }
 
 void MSAEditorNameList::drawAll() {
@@ -678,7 +693,7 @@ void MSAEditorNameList::drawContent(QPainter& p) {
             int end = qMin(numRows, static_cast<int>(r.endPos()));
             for (int s = r.startPos; s < end; s++) {
                 bool isSelected = isRowInSelection(pos);
-                drawSequenceItem(p, s, getTextForRow(s), isSelected, yRange, pos);
+                drawCollapsibileSequenceItem(p, s, getTextForRow(s), isSelected, yRange, pos);
                 yRange.startPos += ui->getEditor()->getRowHeight();
                 pos++;
             }
@@ -695,13 +710,15 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
     p.setPen(Qt::black);
     p.setFont(getFont(selected));
 
-    McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
-    if (mcaEditor != NULL && mcaEditor->getShowChromatogram()) {
-        p.translate(0, SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2);
-    }
-
     U2Region yRange = ui->getSequenceArea()->getSequenceYRange(row, firstVisibleRow, true);
     QRect textRect = calculateTextRect(yRange, selected);
+
+    // SANGER_TODO: there should not be such stuff
+    McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
+    if (mcaEditor != NULL) {
+        drawCollapsibileSequenceItem(p, text, textRect, selected, !mcaEditor->isChromVisible(row), false);
+        return;
+    }
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
     CHECK(maObj != NULL, );
@@ -718,7 +735,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
 
     p.drawText(textRect, Qt::AlignTop | Qt::AlignLeft, text);
 
-    if (mcaEditor != NULL && mcaEditor->getShowChromatogram()) {
+    if (mcaEditor != NULL && mcaEditor->isChromVisible(row)) {
         p.translate(0, - SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2);
     }
 }
@@ -732,7 +749,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, bool selected) {
     }
 }
 
-void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, const QString& , bool selected, const U2Region& yRange, int pos) {
+void MSAEditorNameList::drawCollapsibileSequenceItem(QPainter& p, int s, const QString& , bool selected, const U2Region& yRange, int pos) {
     p.setPen(Qt::black);
     p.setFont(getFont(selected));
 
@@ -788,6 +805,45 @@ void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, const QString& , bo
     if (labels) {
         labels->setObjectName(labels->objectName() + "|" + seqName);
     }
+}
+
+void MSAEditorNameList::drawCollapsibileSequenceItem(QPainter &p, const QString &name, const QRect& rect,
+                                                     bool selected, bool collapsed, bool isReference) {
+    drawBackground(p, name, rect, isReference);
+    drawCollapsePrimitive(p, collapsed, rect);
+    p.translate(CROSS_SIZE * 2, 0);
+    drawText(p, name, rect, selected);
+    p.translate( - CROSS_SIZE * 2, 0);
+}
+
+void MSAEditorNameList::drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReference) {
+    if (isReference) {
+        p.fillRect(rect, QColor("#9999CC")); // SANGER_TODO: create the const, reference  color
+        return;
+    }
+
+    p.fillRect(rect, Qt::white);
+    if (groupColors.contains(name)) {
+        if (QColor(Qt::black) != groupColors[name]) {
+            p.fillRect(rect, groupColors[name]);
+        }
+    }
+}
+
+void MSAEditorNameList::drawText(QPainter& p, const QString& name, const QRect& rect, bool selected) {
+    p.setFont(getFont(selected));
+    p.drawText(rect, Qt::AlignTop | Qt::AlignLeft, name); // SANGER_TODO: check the alignment
+}
+
+void MSAEditorNameList::drawCollapsePrimitive(QPainter& p, bool collapsed, const QRect& rect) {
+    QStyleOptionViewItemV2 branchOption;
+    branchOption.rect = calculateButtonRect(rect);
+    if (collapsed) {
+        branchOption.state = QStyle::State_Children;
+    } else {
+        branchOption.state = QStyle::State_Open | QStyle::State_Children;
+    }
+    style()->drawPrimitive(QStyle::PE_IndicatorBranch, &branchOption, &p, this);
 }
 
 void MSAEditorNameList::drawRefSequence(QPainter &p, QRect r){

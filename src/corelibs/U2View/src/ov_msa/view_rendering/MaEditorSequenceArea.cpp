@@ -269,6 +269,10 @@ U2Region MaEditorSequenceArea::getSequenceYRange(int seq, int firstVisibleRow, b
     return res;
 }
 
+U2Region MaEditorSequenceArea::getSequenceYRange(int startSeq, int count) const {
+    return U2Region(getSequenceYRange(startSeq, true).startPos, count * editor->getRowHeight());
+}
+
 int MaEditorSequenceArea::getSequenceNumByY(int y) const {
     int seqOffs = y / editor->getRowHeight();
     int seq = startSeq + seqOffs;
@@ -396,7 +400,7 @@ QPoint MaEditorSequenceArea::coordToPos(const QPoint& coord) const {
     if (ui->isCollapsibleMode()) {
         lastSeq = getNumDisplayedSequences();
     }
-    for (int i=getFirstVisibleSequence(); i<=lastSeq; i++) {
+    for (int i = getFirstVisibleSequence(); i <= lastSeq; i++) {
         U2Region r = getSequenceYRange(i, false);
         if (r.contains(coord.y())) {
             res.setY(i);

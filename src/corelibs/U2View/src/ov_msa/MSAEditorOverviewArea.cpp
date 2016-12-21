@@ -23,9 +23,10 @@
 
 #include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
-#include "Overview/MSASimpleOverview.h"
-#include "Overview/MSAGraphOverview.h"
-#include "Overview/MSAOverviewContextMenu.h"
+#include "Overview/MaSangerOverview.h"
+#include "Overview/MaSimpleOverview.h"
+#include "Overview/MaGraphOverview.h"
+#include "Overview/MaOverviewContextMenu.h"
 
 #include <QVBoxLayout>
 #include <QActionGroup>
@@ -35,53 +36,42 @@ namespace U2 {
 
 const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME  = "msa_overview_area";
 
-MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui) {
-    setObjectName(OVERVIEW_AREA_OBJECT_NAME);
-
-    simpleOverview = new MSASimpleOverview(ui);
-    graphOverview = new MSAGraphOverview(ui);
+MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
+    : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME)
+{
+    simpleOverview = new MaSimpleOverview(ui);
 
     simpleOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_simple"));
-    graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_graph"));
 
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->setMargin(0);
-    layout->setSpacing(0);
-    layout->addWidget(simpleOverview);
-    layout->addWidget(graphOverview);
-    setLayout(layout);
+    addOverview(simpleOverview);
+    addOverview(graphOverview);
 
     connect(ui, SIGNAL(customContextMenuRequested(QPoint)), SLOT(sl_onContextMenuRequested(QPoint)));
     connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()),
             simpleOverview, SLOT(sl_highlightingChanged()));
-    connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()),
+    connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged(addOverview)),
             graphOverview, SLOT(sl_highlightingChanged()));
     connect(ui->getEditor(), SIGNAL(si_referenceSeqChanged(qint64)),
             graphOverview, SLOT(sl_highlightingChanged()));
     connect(ui->getEditor(), SIGNAL(si_referenceSeqChanged(qint64)),
             simpleOverview, SLOT(sl_highlightingChanged()));
 
-    contextMenu =  new MSAOverviewContextMenu(simpleOverview, graphOverview);
+    contextMenu =  new MaOverviewContextMenu(simpleOverview, graphOverview);
 
-    connect(contextMenu, SIGNAL(si_graphTypeSelected(MSAGraphOverviewDisplaySettings::GraphType)),
-            graphOverview, SLOT(sl_graphTypeChanged(MSAGraphOverviewDisplaySettings::GraphType)));
+    connect(contextMenu, SIGNAL(si_graphTypeSelected(MaGraphOverviewDisplaySettings::GraphType)),
+            graphOverview, SLOT(sl_graphTypeChanged(MaGraphOverviewDisplaySettings::GraphType)));
     connect(contextMenu, SIGNAL(si_colorSelected(QColor)),
             graphOverview, SLOT(sl_graphColorChanged(QColor)));
-    connect(contextMenu, SIGNAL(si_graphOrientationSelected(MSAGraphOverviewDisplaySettings::OrientationMode)),
-            graphOverview, SLOT(sl_graphOrientationChanged(MSAGraphOverviewDisplaySettings::OrientationMode)));
-    connect(contextMenu, SIGNAL(si_calculationMethodSelected(MSAGraphCalculationMethod)),
-            graphOverview, SLOT(sl_calculationMethodChanged(MSAGraphCalculationMethod)));
+    connect(contextMenu, SIGNAL(si_graphOrientationSelected(MaGraphOverviewDisplaySettings::OrientationMode)),
+            graphOverview, SLOT(sl_graphOrientationChanged(MaGraphOverviewDisplaySettings::OrientationMode)));
+    connect(contextMenu, SIGNAL(si_calculationMethodSelected(MaGraphCalculationMethod)),
+            graphOverview, SLOT(sl_calculationMethodChanged(MaGraphCalculationMethod)));
 
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setMaximumHeight( graphOverview->FIXED_HEIGHT + simpleOverview->FIXED_HEIGTH + 5 );
 }
 
-void MSAEditorOverviewArea::cancelRendering() {
-    graphOverview->cancelRendering();
-}
-
 bool MSAEditorOverviewArea::isOverviewWidget(QWidget *wgt) const {
-    if (wgt == simpleOverview || wgt == graphOverview || wgt == this) {
+    if (MaEditorOverviewArea::isOverviewWidget(wgt) || wgt == simpleOverview) {
         return true;
     }
     return false;
@@ -90,16 +80,6 @@ bool MSAEditorOverviewArea::isOverviewWidget(QWidget *wgt) const {
 void MSAEditorOverviewArea::sl_onContextMenuRequested(const QPoint &p) {
     if (geometry().contains(p)) {
         contextMenu->exec(QCursor::pos());
-    }
-}
-
-void MSAEditorOverviewArea::sl_show() {
-    setVisible( !isVisible() );
-    if (graphOverview->isVisible()) {
-        graphOverview->sl_unblockRendering(true);
-    } else {
-        graphOverview->sl_blockRendering();
-        cancelRendering();
     }
 }
 

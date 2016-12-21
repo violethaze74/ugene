@@ -35,7 +35,7 @@ class MaEditor;
 class MSAEditorConsensusArea;
 class MSAEditorNameList;
 class MSAEditorOffsetsViewController;
-class MSAEditorOverviewArea;
+class MaEditorOverviewArea;
 class MSAEditorStatusWidget;
 class MsaUndoRedoFramework;
 class SequenceAreaRenderer;
@@ -54,7 +54,7 @@ public:
     MaEditorSequenceArea*           getSequenceArea() const { return seqArea; }
     MSAEditorNameList*              getEditorNameList() { return nameList; }
     MSAEditorConsensusArea*         getConsensusArea() { return consArea; }
-    MSAEditorOverviewArea*          getOverviewArea() { return overviewArea; }
+    MaEditorOverviewArea*           getOverviewArea() { return overviewArea; }
     MSAEditorOffsetsViewController* getOffsetsViewController() { return offsetsView; }
 
     QAction* getUndoAction() const;
@@ -83,13 +83,14 @@ protected:
     virtual void initActions();
 
     virtual void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) = 0;
+    virtual void initOverviewArea() = 0;
 
 protected:
     MaEditor*                       editor;
     MaEditorSequenceArea*           seqArea;
     MSAEditorNameList*              nameList;
     MSAEditorConsensusArea*         consArea;
-    MSAEditorOverviewArea*          overviewArea;
+    MaEditorOverviewArea*          overviewArea;
     MSAEditorOffsetsViewController* offsetsView;
     MSAEditorStatusWidget*          statusWidget;
 

@@ -111,7 +111,16 @@ private:
     void drawSelection(QPainter& p);
     void drawSequenceItem(QPainter& p, int row, int firstVisibleRow, const QString& text, bool selected);
     void drawSequenceItem(QPainter& p, int s, bool selected);
-    void drawSequenceItem(QPainter& p, int s, const QString& name, bool selected, const U2Region& yRange, int pos);
+    void drawCollapsibileSequenceItem(QPainter& p, int s, const QString& name, bool selected, const U2Region& yRange, int pos);
+
+    void drawCollapsibileSequenceItem(QPainter &p, const QString &name, const QRect& rect,
+                                      bool selected, bool collapsed, bool isReference);
+
+    // SANGER_TODO: drawSequenceItem should use these methods
+    void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReferece);
+    void drawText(QPainter& p, const QString& name, const QRect& rect, bool selected);
+    void drawCollapsePrimitive(QPainter& p, bool collapsed, const QRect& rect);
+
     virtual void drawRefSequence(QPainter &p, QRect r);
     void drawFocus(QPainter& p);
     QFont getFont(bool selected) const;

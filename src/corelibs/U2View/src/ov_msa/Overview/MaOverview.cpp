@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "MSAOverview.h"
+#include "MaOverview.h"
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-MSAOverview::MSAOverview(MaEditorWgt *_ui)
+MaOverview::MaOverview(MaEditorWgt *_ui)
     : editor(_ui->getEditor()),
       ui(_ui),
       sequenceArea(_ui->getSequenceArea())
@@ -41,7 +41,14 @@ MSAOverview::MSAOverview(MaEditorWgt *_ui)
             SLOT(sl_redraw()));
 }
 
-void MSAOverview::mousePressEvent(QMouseEvent *me) {
+void MaOverview::sl_visibleRangeChanged() {
+    if (!isValid()) {
+        return;
+    }
+    update();
+}
+
+void MaOverview::mousePressEvent(QMouseEvent *me) {
     if (!isValid()) {
         return;
     }
@@ -54,7 +61,7 @@ void MSAOverview::mousePressEvent(QMouseEvent *me) {
     QWidget::mousePressEvent(me);
 }
 
-void MSAOverview::mouseMoveEvent(QMouseEvent *me) {
+void MaOverview::mouseMoveEvent(QMouseEvent *me) {
     if (!isValid()) {
         return;
     }
@@ -65,7 +72,7 @@ void MSAOverview::mouseMoveEvent(QMouseEvent *me) {
     QWidget::mouseMoveEvent(me);
 }
 
-void MSAOverview::mouseReleaseEvent(QMouseEvent *me) {
+void MaOverview::mouseReleaseEvent(QMouseEvent *me) {
     if (!isValid()) {
         return;
     }
@@ -77,11 +84,11 @@ void MSAOverview::mouseReleaseEvent(QMouseEvent *me) {
     QWidget::mouseReleaseEvent(me);
 }
 
-void MSAOverview::setVisibleRangeForEmptyAlignment() {
+void MaOverview::setVisibleRangeForEmptyAlignment() {
     cachedVisibleRange = rect();
 }
 
-void MSAOverview::showWarning(QPainter& painter, QPaintEvent *e, const QString& warningMessage) {
+void MaOverview::showWarning(QPainter& painter, QPaintEvent *e, const QString& warningMessage) {
     painter.fillRect(rect(), Qt::gray);
 
     QFontMetrics metrics(painter.font(), this);

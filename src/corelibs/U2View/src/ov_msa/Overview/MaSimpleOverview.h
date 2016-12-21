@@ -19,41 +19,58 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_OVERVIEW_H_
-#define _U2_MSA_EDITOR_OVERVIEW_H_
-
-#include "Overview/MaEditorOverviewArea.h"
+#ifndef _U2_MSA_SIMPLE_OVERVIEW_H_
+#define _U2_MSA_SIMPLE_OVERVIEW_H_
 
 #include <U2Core/global.h>
 
-#include <QAction>
 #include <QWidget>
+#include "MaOverview.h"
+
 
 namespace U2 {
 
+class MSAEditor;
 class MaEditorWgt;
-class MaSangerOverview;
-class MaSimpleOverview;
-class MaGraphOverview;
-class MaOverviewContextMenu;
+class MSAEditorSequenceArea;
+class MsaColorScheme;
+class MsaHighlightingScheme;
 
-class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
+
+class U2VIEW_EXPORT MaSimpleOverview : public MaOverview {
     Q_OBJECT
 public:
-    MSAEditorOverviewArea(MaEditorWgt* ui);
-
-    bool isOverviewWidget(QWidget* wgt) const;
-
-    static const QString OVERVIEW_AREA_OBJECT_NAME;
+    MaSimpleOverview(MaEditorWgt *ui);
+    const static int FIXED_HEIGTH = 70;
+    bool isValid() const;
+    QPixmap getView();
 
 public slots:
-    void sl_onContextMenuRequested(const QPoint& p);
+    void sl_selectionChanged();
+    void sl_redraw();
+    void sl_highlightingChanged();
+
+protected:
+    void paintEvent(QPaintEvent *e);
+    void resizeEvent(QResizeEvent *e);
 
 private:
-    MaSimpleOverview*  simpleOverview;
-    MaOverviewContextMenu* contextMenu;
+    void drawOverview(QPainter &p);
+    void drawVisibleRange(QPainter &p);
+    void drawSelection(QPainter &p);
+
+    void moveVisibleRange(QPoint pos);
+
+    void recalculateSelection();
+    void recalculateScale();
+
+private:
+    mutable QPixmap cachedMSAOverview;
+
+    mutable bool    redrawMSAOverview;
+    mutable bool    redrawSelection;
 };
 
-}
+} // namespace
 
-#endif // _U2_MSA_EDITOR_OVERVIEW_H_
+#endif // _U2_MSA_SIMPLE_OVERVIEW_H_

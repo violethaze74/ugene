@@ -43,19 +43,19 @@ public:
     static const int INDENT_BETWEEN_ROWS;
 
 private:
-    bool drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart);
+    int drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const;
 
-    void drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRange);
+    void drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRange) const;
 
-    QColor getBaseColor(char base);
+    QColor getBaseColor(char base) const;
 
     void drawChromatogramTrace(const DNAChromatogram& chroma, qreal x, qreal y, qreal h, QPainter& p,
-                               const U2Region& visible);
-    void drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba);
+                               const U2Region& visible) const;
+    void drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const;
     void drawQualityValues(const DNAChromatogram& chroma, qreal w, qreal h,
-                           QPainter& p, const U2Region& visible, const QByteArray& ba);
+                           QPainter& p, const U2Region& visible, const QByteArray& ba) const;
     void drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal h,
-                                        QPainter& p, const U2Region& visible, const QByteArray& ba);
+                                        QPainter& p, const U2Region& visible, const QByteArray& ba) const;
 private:
     McaEditorSequenceArea* getSeqArea() const;
     const ChromatogramViewSettings& getSettings() const;
@@ -64,7 +64,7 @@ private:
     qreal   charWidth;
     qreal   charHeight;
 
-    int             chromaMax;
+    mutable int     chromaMax;
     QPen            linePen;
     int             heightPD;
     int             heightBC;

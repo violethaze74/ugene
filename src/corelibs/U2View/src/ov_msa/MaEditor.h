@@ -40,7 +40,7 @@ public:
 
 class MaEditor : public GObjectView {
     Q_OBJECT
-    friend class OpenSavedMSAEditorTask; // SANGER_TODO: ??
+    friend class OpenSavedMSAEditorTask;
 public:
     enum ResizeMode {
         ResizeMode_FontAndContent, ResizeMode_OnlyContent

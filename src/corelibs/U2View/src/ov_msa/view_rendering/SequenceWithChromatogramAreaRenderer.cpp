@@ -57,18 +57,18 @@ int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
     return maxTraceHeight;
 }
 
-bool SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) {
+int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const {
     McaEditor* editor = getSeqArea()->getEditor();
-    if (editor->getShowChromatogram()) {
+    if (editor->isChromVisible(seq)) {
         p.translate(0, INDENT_BETWEEN_ROWS / 2);
     }
     bool ok = SequenceAreaRenderer::drawRow(p, msa, seq, region, yStart);
-    CHECK(ok, false);
+    CHECK(ok, -1);
 
-    SAFE_POINT(getSeqArea() != NULL, "seqAreaWgt is NULL", false);
+    SAFE_POINT(getSeqArea() != NULL, "seqAreaWgt is NULL", -1);
     int w = getSeqArea()->width();
     int seqRowH = editor->getSequenceRowHeight();
-    if (editor->getShowChromatogram()) {
+    if (editor->isChromVisible(seq)) {
         p.save();
         p.translate(0, yStart + seqRowH);
         p.setPen(QPen(Qt::gray, 1, Qt::DashLine));
@@ -80,11 +80,12 @@ bool SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAl
         p.fillRect(0, heightPD, w, INDENT_BETWEEN_ROWS / 2, Qt::white);
         p.restore();
         p.translate(0, - INDENT_BETWEEN_ROWS / 2);
+        seqRowH = editor->getRowHeight();
     }
-    return true;
+    return seqRowH;
 }
 
-void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& _visible) {
+void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& _visible) const {
     const DNAChromatogram chroma = row->getChromatogram();
 
     // SANGER_TODO: should not be here
@@ -135,7 +136,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const M
     }
 }
 
-QColor SequenceWithChromatogramAreaRenderer::getBaseColor( char base ) {
+QColor SequenceWithChromatogramAreaRenderer::getBaseColor( char base ) const {
     switch(base) {
         case 'A':
             return Qt::darkGreen;
@@ -152,7 +153,7 @@ QColor SequenceWithChromatogramAreaRenderer::getBaseColor( char base ) {
 
 void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChromatogram& chroma,
                                                                  qreal x, qreal y, qreal h, QPainter& p,
-                                                                 const U2Region& visible)
+                                                                 const U2Region& visible) const
 {
     if (chromaMax == 0) {
         //nothing to draw
@@ -215,7 +216,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramTrace(const DNAChroma
     p.translate(- x, - h - y);
 }
 
-void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) {
+void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPainter& p, const U2Region& visible, const QByteArray& ba) const {
     p.setPen(Qt::black);
     p.translate( 0, h);
 
@@ -234,7 +235,7 @@ void SequenceWithChromatogramAreaRenderer::drawOriginalBaseCalls(qreal h, QPaint
 }
 
 void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogram& chroma, qreal w, qreal h,
-                                                             QPainter& p, const U2Region& visible, const QByteArray& ba)
+                                                             QPainter& p, const U2Region& visible, const QByteArray& ba) const
 {
     p.translate(0, h);
 
@@ -283,7 +284,7 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogr
 
 
 void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const DNAChromatogram& chroma, qreal h, QPainter& p,
-                                                                          const U2Region& visible, const QByteArray& ba)
+                                                                          const U2Region& visible, const QByteArray& ba) const
 {
     p.setRenderHint(QPainter::Antialiasing, false);
     p.translate(0, h);

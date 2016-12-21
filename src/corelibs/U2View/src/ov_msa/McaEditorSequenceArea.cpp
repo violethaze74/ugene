@@ -55,12 +55,68 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     scaleBar = new ScaleBar(Qt::Horizontal);
     scaleBar->slider()->setRange(100, 1000);
     scaleBar->slider()->setTickInterval(100);
+    scaleAction = NULL;
+
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     scaleBar->setValue(r->getScaleBarValue());
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
 
     updateColorAndHighlightSchemes();
     updateActions();
+}
+
+U2Region McaEditorSequenceArea::getSequenceYRange(int seq, int firstVisibleRow, bool useVirtualCoords) const {
+    int start = 0;
+    for (int i = firstVisibleRow; i < seq; i++) {
+        if (getEditor()->isChromVisible(i)) {
+            start += editor->getRowHeight();
+        } else {
+            start += editor->getSequenceRowHeight();
+        }
+    }
+    U2Region res(start, getEditor()->isChromVisible(seq) ? editor->getRowHeight() : editor->getSequenceRowHeight());
+    if (!useVirtualCoords) {
+        int h = height();
+        res = res.intersect(U2Region(0, h));
+    }
+    return res;
+}
+
+int McaEditorSequenceArea::getSequenceNumByY(int y) const {
+    int seqNum = startSeq;
+    U2Region r;
+    do {
+        r = MaEditorSequenceArea::getSequenceYRange(seqNum, true);
+        seqNum++;
+    } while (!r.contains(y));
+
+    return seqNum - 1;
+}
+
+U2Region McaEditorSequenceArea::getSequenceYRange(int startSeq, int count) const {
+    int len = 0;
+    for (int i = startSeq; i < startSeq + count; i++) {
+        if (getEditor()->isChromVisible(i)) {
+            len += editor->getRowHeight();
+        } else {
+            len += editor->getSequenceRowHeight();
+        }
+    }
+    U2Region res(MaEditorSequenceArea::getSequenceYRange(startSeq, false).startPos, len);
+    return res;
+}
+
+int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
+    int seqAreaHeight = height();
+    int nVisible = 0;
+    int  i = startSeq;
+    while (seqAreaHeight > 0) {
+        seqAreaHeight -= getEditor()->isChromVisible(i) ? editor->getRowHeight()
+                                                        : editor->getSequenceRowHeight();
+        nVisible++;
+        i++;
+    }
+    return nVisible;
 }
 
 void McaEditorSequenceArea::sl_showHideTrace() {
@@ -104,7 +160,7 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     sl_completeUpdate();
 }
 
-void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
+void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
     t->addAction(showQVAction);
 
     QToolButton* button = new QToolButton();
@@ -114,7 +170,11 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     t->addWidget(button);
     t->addSeparator();
 
-    t->addWidget(scaleBar); // SANGER_TODO: the slider dissapers after window reopening!
+    if (scaleAction != NULL) {
+        t->addAction(scaleAction);
+    } else {
+        scaleAction = t->addWidget(scaleBar);
+    }
     t->addSeparator();
 }
 
