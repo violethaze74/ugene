@@ -21,7 +21,7 @@
 
 #include "MaSangerOverview.h"
 
-#include "../McaEditor.h"
+#include "ov_msa/McaEditor.h"
 
 #include <U2Core/U2SafePoints.h>
 
@@ -38,7 +38,7 @@ MaSangerOverview::MaSangerOverview(MaEditorWgt *ui)
 }
 
 bool MaSangerOverview::isValid() const {
-    return getEditor() != NULL;
+    return true;
 }
 
 QPixmap MaSangerOverview::getView() {

@@ -19,41 +19,40 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_OVERVIEW_H_
-#define _U2_MSA_EDITOR_OVERVIEW_H_
+#ifndef _U2_MA_EDITOR_OVERVIEW_AREA_H_
+#define _U2_MA_EDITOR_OVERVIEW_AREA_H_
 
-#include "Overview/MaEditorOverviewArea.h"
-
-#include <U2Core/global.h>
-
-#include <QAction>
 #include <QWidget>
+
+class QVBoxLayout;
 
 namespace U2 {
 
 class MaEditorWgt;
-class MaSangerOverview;
-class MaSimpleOverview;
 class MaGraphOverview;
 class MaOverviewContextMenu;
 
-class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
+class MaEditorOverviewArea : public QWidget {
     Q_OBJECT
 public:
-    MSAEditorOverviewArea(MaEditorWgt* ui);
+    MaEditorOverviewArea(MaEditorWgt* ui, const QString& objectName);
 
-    bool isOverviewWidget(QWidget* wgt) const;
-
-    static const QString OVERVIEW_AREA_OBJECT_NAME;
+    void cancelRendering();
+    virtual bool isOverviewWidget(QWidget* wgt) const;
 
 public slots:
-    void sl_onContextMenuRequested(const QPoint& p);
+    void sl_show();
+
+protected:
+    void addOverview(QWidget* overviewWgt);
+
+protected:
+    MaGraphOverview*   graphOverview;
 
 private:
-    MaSimpleOverview*  simpleOverview;
-    MaOverviewContextMenu* contextMenu;
+    QVBoxLayout* layout;
 };
 
-}
+} // namespace
 
-#endif // _U2_MSA_EDITOR_OVERVIEW_H_
+#endif // _U2_MA_EDITOR_OVERVIEW_AREA_H_

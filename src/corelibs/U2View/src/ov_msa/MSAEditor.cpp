@@ -615,6 +615,10 @@ void MSAEditorUI::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
     seqArea = new MSAEditorSequenceArea(this, shBar, cvBar);
 }
 
+void MSAEditorUI::initOverviewArea() {
+    overviewArea = new MSAEditorOverviewArea(this);
+}
+
 MSAEditorTreeViewer* MSAEditorUI::getCurrentTree() const
 {
     if(NULL == multiTreeViewer) {

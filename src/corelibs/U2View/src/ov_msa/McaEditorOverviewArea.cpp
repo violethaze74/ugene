@@ -19,41 +19,29 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_OVERVIEW_H_
-#define _U2_MSA_EDITOR_OVERVIEW_H_
+#include "McaEditorOverviewArea.h"
 
-#include "Overview/MaEditorOverviewArea.h"
-
-#include <U2Core/global.h>
-
-#include <QAction>
-#include <QWidget>
+#include "Overview/MaGraphOverview.h"
+#include "Overview/MaSangerOverview.h"
 
 namespace U2 {
 
-class MaEditorWgt;
-class MaSangerOverview;
-class MaSimpleOverview;
-class MaGraphOverview;
-class MaOverviewContextMenu;
+const QString McaEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME  = "mca_overview_area";
 
-class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
-    Q_OBJECT
-public:
-    MSAEditorOverviewArea(MaEditorWgt* ui);
+McaEditorOverviewArea::McaEditorOverviewArea(MaEditorWgt *ui)
+    : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME) {
+    sangerOverview = new MaSangerOverview(ui);
+    sangerOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_sanger"));
 
-    bool isOverviewWidget(QWidget* wgt) const;
-
-    static const QString OVERVIEW_AREA_OBJECT_NAME;
-
-public slots:
-    void sl_onContextMenuRequested(const QPoint& p);
-
-private:
-    MaSimpleOverview*  simpleOverview;
-    MaOverviewContextMenu* contextMenu;
-};
-
+    addOverview(sangerOverview);
+    addOverview(graphOverview);
 }
 
-#endif // _U2_MSA_EDITOR_OVERVIEW_H_
+bool McaEditorOverviewArea::isOverviewWidget(QWidget *wgt) const {
+    if (MaEditorOverviewArea::isOverviewWidget(wgt) || wgt == sangerOverview) {
+        return true;
+    }
+    return false;
+}
+
+} // namespace

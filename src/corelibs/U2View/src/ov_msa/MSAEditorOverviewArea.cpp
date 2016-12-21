@@ -36,30 +36,20 @@ namespace U2 {
 
 const QString MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME  = "msa_overview_area";
 
-MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui) {
-    setObjectName(OVERVIEW_AREA_OBJECT_NAME);
-
+MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui)
+    : MaEditorOverviewArea(ui, OVERVIEW_AREA_OBJECT_NAME)
+{
     simpleOverview = new MaSimpleOverview(ui);
-    graphOverview = new MaGraphOverview(ui);
-
-    // SANGER_TODO: this is wrong
-    sangerOverview = new MaSangerOverview(ui);
 
     simpleOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_simple"));
-    graphOverview->setObjectName(OVERVIEW_AREA_OBJECT_NAME + QString("_graph"));
 
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->setMargin(0);
-    layout->setSpacing(0);
-    layout->addWidget(simpleOverview);
-    layout->addWidget(graphOverview);
-    layout->addWidget(sangerOverview);
-    setLayout(layout);
+    addOverview(simpleOverview);
+    addOverview(graphOverview);
 
     connect(ui, SIGNAL(customContextMenuRequested(QPoint)), SLOT(sl_onContextMenuRequested(QPoint)));
     connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()),
             simpleOverview, SLOT(sl_highlightingChanged()));
-    connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged()),
+    connect(ui->getSequenceArea(), SIGNAL(si_highlightingChanged(addOverview)),
             graphOverview, SLOT(sl_highlightingChanged()));
     connect(ui->getEditor(), SIGNAL(si_referenceSeqChanged(qint64)),
             graphOverview, SLOT(sl_highlightingChanged()));
@@ -77,16 +67,11 @@ MSAEditorOverviewArea::MSAEditorOverviewArea(MaEditorWgt *ui) {
     connect(contextMenu, SIGNAL(si_calculationMethodSelected(MaGraphCalculationMethod)),
             graphOverview, SLOT(sl_calculationMethodChanged(MaGraphCalculationMethod)));
 
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     setMaximumHeight( graphOverview->FIXED_HEIGHT + simpleOverview->FIXED_HEIGTH + 5 );
 }
 
-void MSAEditorOverviewArea::cancelRendering() {
-    graphOverview->cancelRendering();
-}
-
 bool MSAEditorOverviewArea::isOverviewWidget(QWidget *wgt) const {
-    if (wgt == simpleOverview || wgt == graphOverview || wgt == this) {
+    if (MaEditorOverviewArea::isOverviewWidget(wgt) || wgt == simpleOverview) {
         return true;
     }
     return false;
@@ -95,16 +80,6 @@ bool MSAEditorOverviewArea::isOverviewWidget(QWidget *wgt) const {
 void MSAEditorOverviewArea::sl_onContextMenuRequested(const QPoint &p) {
     if (geometry().contains(p)) {
         contextMenu->exec(QCursor::pos());
-    }
-}
-
-void MSAEditorOverviewArea::sl_show() {
-    setVisible( !isVisible() );
-    if (graphOverview->isVisible()) {
-        graphOverview->sl_unblockRendering(true);
-    } else {
-        graphOverview->sl_blockRendering();
-        cancelRendering();
     }
 }
 

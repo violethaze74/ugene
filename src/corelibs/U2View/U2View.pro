@@ -59,6 +59,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaEditor.h \
            src/ov_msa/MaEditorFactory.h \
            src/ov_msa/McaEditor.h \
+           src/ov_msa/McaEditorOverviewArea.h \
            src/ov_msa/McaEditorSequenceArea.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
@@ -77,6 +78,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MSASelectSubalignmentDialog.h \
            src/ov_msa/MsaEditorUserModStepController.h \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h \
+           src/ov_msa/Overview/MaEditorOverviewArea.h \
            src/ov_msa/Overview/MaGraphCalculationTask.h \
            src/ov_msa/Overview/MaGraphOverview.h \
            src/ov_msa/Overview/MaOverview.h \
@@ -292,6 +294,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MaEditor.cpp \
            src/ov_msa/MaEditorFactory.cpp \
            src/ov_msa/McaEditor.cpp \
+           src/ov_msa/McaEditorOverviewArea.cpp \
            src/ov_msa/McaEditorSequenceArea.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \
@@ -311,6 +314,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/ExportConsensus/MSAExportConsensusTab.cpp \
            src/ov_msa/ExportConsensus/MSAExportConsensusTabFactory.cpp \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.cpp \
+           src/ov_msa/Overview/MaEditorOverviewArea.cpp \
            src/ov_msa/Overview/MaGraphOverview.cpp \
            src/ov_msa/Overview/MaGraphCalculationTask.cpp \
            src/ov_msa/Overview/MaOverview.cpp \
