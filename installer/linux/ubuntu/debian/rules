@@ -102,6 +102,8 @@ install-arch:
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/orf_marker.plugin
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/pcr.license
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/pcr.plugin
+	rm debian/ugene-non-free/usr/lib/ugene/plugins/phylip.plugin
+	rm debian/ugene-non-free/usr/lib/ugene/plugins/phylip.license
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/primer3.license
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/primer3.plugin
 	rm debian/ugene-non-free/usr/lib/ugene/plugins/ptools.license
