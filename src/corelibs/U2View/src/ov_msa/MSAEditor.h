@@ -51,7 +51,7 @@ class PhyTreeObject;
 class MSAEditorUI;
 class MSAEditorSequenceArea;
 class MSAEditorConsensusArea;
-class MSAEditorNameList;
+class MaEditorNameList;
 class MSAEditorOffsetsViewController;
 class MSAEditorOverviewArea;
 class MSAEditorStatusWidget;
@@ -223,6 +223,7 @@ signals:
 protected:
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);
     void initOverviewArea();
+    void initNameList(QScrollBar *nhBar);
 
 private:
     MsaEditorSimilarityColumn*         dataList;

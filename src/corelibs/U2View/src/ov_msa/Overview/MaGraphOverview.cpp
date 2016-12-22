@@ -30,7 +30,7 @@
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MSAEditorConsensusCache.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
 #include "MaGraphCalculationTask.h"

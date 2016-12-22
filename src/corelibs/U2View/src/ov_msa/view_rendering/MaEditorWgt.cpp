@@ -33,7 +33,7 @@
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
 #include <U2View/MSAEditorOverviewArea.h>
@@ -107,7 +107,7 @@ void MaEditorWgt::initWidgets() {
     seqArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     initOverviewArea();
 
-    nameList = new MSAEditorNameList(this, nhBar);
+    initNameList(nhBar);
     nameList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     consArea = new MSAEditorConsensusArea(this);

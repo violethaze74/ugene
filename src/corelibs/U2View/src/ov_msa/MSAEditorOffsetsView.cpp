@@ -32,7 +32,7 @@
 
 #include "McaEditor.h"
 #include "MSAEditor.h"
-#include "MSAEditorNameList.h"
+#include "MaEditorNameList.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorSequenceArea.h"
 

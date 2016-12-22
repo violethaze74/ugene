@@ -79,7 +79,7 @@
 #include <U2View/AssemblyNavigationWidget.h>
 #include <U2View/DetView.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTDatabaseConfig.h"
@@ -3574,7 +3574,7 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
     MSAEditor* editor = mw->findChild<MSAEditor*>();
     CHECK_SET_ERR(editor != NULL, "MsaEditor not found");
 
-    MSAEditorNameList* nameList = editor->getUI()->getEditorNameList();
+    MaEditorNameList* nameList = editor->getUI()->getEditorNameList();
     CHECK_SET_ERR(nameList != NULL, "MSANameList is empty");
     GTWidget::click(os, nameList, Qt::LeftButton, QPoint(10, nameList->height() - 1));
 

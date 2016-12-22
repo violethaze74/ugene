@@ -23,7 +23,7 @@
 #include "MaEditorFactory.h"
 #include "McaEditorSequenceArea.h"
 #include "McaEditorOverviewArea.h"
-#include "MSAEditorNameList.h"
+#include "MaEditorNameList.h"
 
 #include "view_rendering/MaEditorWgt.h"
 
@@ -167,6 +167,10 @@ void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
 
 void McaEditorWgt::initOverviewArea() {
     overviewArea = new McaEditorOverviewArea(this);
+}
+
+void McaEditorWgt::initNameList(QScrollBar* nhBar) {
+    nameList = new McaEditorNameList(this, nhBar);
 }
 
 } // namespace

@@ -30,7 +30,7 @@
 #include <U2Gui/ImageExportTask.h>
 
 #include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 
 class Ui_MSAExportSettings;
@@ -84,7 +84,7 @@ protected:
     template<class P>
     void paintSeqNames(P& p) {
         if (msaSettings.includeSeqNames) {
-            MSAEditorNameList* namesArea = ui->getEditorNameList();
+            MaEditorNameList* namesArea = ui->getEditorNameList();
             SAFE_POINT_EXT( ui->getEditor() != NULL, setError(tr("MSA Editor is NULL")), );
             namesArea->drawNames(p, msaSettings.seqIdx);
         }

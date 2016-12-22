@@ -26,6 +26,8 @@
 
 #include "MaEditorUtils.h"
 
+class QScrollBar;
+
 namespace U2 {
 
 class GScrollBar;
@@ -33,7 +35,7 @@ class MaEditorSequenceArea;
 class MSACollapsibleItemModel;
 class MaEditor;
 class MSAEditorConsensusArea;
-class MSAEditorNameList;
+class MaEditorNameList;
 class MSAEditorOffsetsViewController;
 class MaEditorOverviewArea;
 class MSAEditorStatusWidget;
@@ -52,7 +54,7 @@ public:
 
     MaEditor*                       getEditor() const { return editor; }
     MaEditorSequenceArea*           getSequenceArea() const { return seqArea; }
-    MSAEditorNameList*              getEditorNameList() { return nameList; }
+    MaEditorNameList*               getEditorNameList() { return nameList; }
     MSAEditorConsensusArea*         getConsensusArea() { return consArea; }
     MaEditorOverviewArea*           getOverviewArea() { return overviewArea; }
     MSAEditorOffsetsViewController* getOffsetsViewController() { return offsetsView; }
@@ -84,11 +86,12 @@ protected:
 
     virtual void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) = 0;
     virtual void initOverviewArea() = 0;
+    virtual void initNameList(QScrollBar* nhBar) = 0;
 
 protected:
     MaEditor*                       editor;
     MaEditorSequenceArea*           seqArea;
-    MSAEditorNameList*              nameList;
+    MaEditorNameList*               nameList;
     MSAEditorConsensusArea*         consArea;
     MaEditorOverviewArea*          overviewArea;
     MSAEditorOffsetsViewController* offsetsView;

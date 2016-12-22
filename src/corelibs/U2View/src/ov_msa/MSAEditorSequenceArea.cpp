@@ -77,7 +77,7 @@
 #include "ColorSchemaSettingsController.h"
 #include "CreateSubalignmentDialogController.h"
 #include "MSAEditor.h"
-#include "MSAEditorNameList.h"
+#include "MaEditorNameList.h"
 #include "MSAEditorSequenceArea.h"
 
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"

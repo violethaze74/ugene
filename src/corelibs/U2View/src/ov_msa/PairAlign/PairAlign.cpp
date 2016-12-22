@@ -55,7 +55,7 @@
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/AlignmentAlgorithmGUIExtension.h>
 
