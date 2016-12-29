@@ -29,32 +29,32 @@
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="51"/>
         <source>Distance Matrix</source>
-        <translation type="unfinished">Distance Matrix</translation>
+        <translation>Distance Matrix</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="68"/>
         <source>Distance matrix model</source>
-        <translation type="unfinished">Distance matrix model</translation>
+        <translation>Distance matrix model</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="88"/>
         <source>Coefficient of variation of substitution rate among sites</source>
-        <translation type="unfinished">Coefficient of variation of substitution rate among sites</translation>
+        <translation>Coefficient of variation of substitution rate among sites</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="117"/>
         <source>Gamma distributed rates across sites</source>
-        <translation type="unfinished">Gamma distributed rates across sites</translation>
+        <translation>Gamma distributed rates across sites</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="131"/>
         <source>Transition/transversion ratio</source>
-        <translation type="unfinished">Transition/transversion ratio</translation>
+        <translation>Transition/transversion ratio</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="176"/>
         <source>Bootstrapping and Consensus Tree</source>
-        <translation type="unfinished">Bootstrapping and Consensus Tree</translation>
+        <translation>Bootstrapping and Consensus Tree</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="185"/>
@@ -64,22 +64,22 @@
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="218"/>
         <source>Number of replicates</source>
-        <translation type="unfinished">Number of replicates</translation>
+        <translation>Number of replicates</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="245"/>
         <source>Seed (must be odd)</source>
-        <translation type="unfinished">Seed (must be odd)</translation>
+        <translation>Seed (must be odd)</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="272"/>
         <source>Consensus type</source>
-        <translation type="unfinished">Consensus type</translation>
+        <translation>Consensus type</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="289"/>
         <source>Fraction</source>
-        <translation type="unfinished">Fraction</translation>
+        <translation>Fraction</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="331"/>
@@ -125,13 +125,13 @@ It could cause an error. Do you want to continue?</translation>
         <location filename="../src/NeighborJoinWidget.cpp" line="147"/>
         <source>Probably, for that alignment there is no enough memory to run PHYLIP dnadist module.The module will require more than %1 MB in the estimation.
 It could cause an error. Do you want to continue?</source>
-        <translation type="unfinished">Probably, for that alignment there is no enough memory to run PHYLIP dnadist module.The module will require more than %1 MB in the estimation.
+        <translation>Probably, for that alignment there is no enough memory to run PHYLIP dnadist module.The module will require more than %1 MB in the estimation.
 It could cause an error. Do you want to continue?</translation>
     </message>
     <message>
         <location filename="../src/NeighborJoinWidget.cpp" line="158"/>
         <source>Seed must be odd</source>
-        <translation type="unfinished">Seed must be odd</translation>
+        <translation>Seed must be odd</translation>
     </message>
 </context>
 <context>
@@ -139,12 +139,12 @@ It could cause an error. Do you want to continue?</translation>
     <message>
         <location filename="../src/PhylipCmdlineTask.cpp" line="52"/>
         <source>PHYLIP command line wrapper task</source>
-        <translation type="unfinished"></translation>
+        <translation>PHYLIP command line wrapper task</translation>
     </message>
     <message>
         <location filename="../src/PhylipCmdlineTask.cpp" line="74"/>
         <source>No tree objects found.</source>
-        <translation type="unfinished"></translation>
+        <translation>No tree objects found.</translation>
     </message>
 </context>
 <context>
@@ -165,7 +165,7 @@ It could cause an error. Do you want to continue?</translation>
     <message>
         <location filename="../src/PhylipTask.cpp" line="33"/>
         <source>PHYLIP task</source>
-        <translation type="unfinished"></translation>
+        <translation>PHYLIP task</translation>
     </message>
 </context>
 <context>

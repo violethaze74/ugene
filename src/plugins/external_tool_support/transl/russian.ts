@@ -1403,7 +1403,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/cap3/CAP3SupportDialog.ui" line="27"/>
         <source>Base</source>
-        <translation>Основа</translation>
+        <translation>Основные</translation>
     </message>
     <message>
         <location filename="../src/cap3/CAP3SupportDialog.ui" line="33"/>
@@ -1553,7 +1553,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/cap3/CAP3SupportDialog.ui" line="119"/>
         <source>Advanced</source>
-        <translation>Дополнительно</translation>
+        <translation>Дополнительные</translation>
     </message>
 </context>
 <context>
@@ -1587,7 +1587,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="81"/>
         <source>Iteration</source>
-        <translation>Итерация</translation>
+        <translation>Итерации</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="91"/>
@@ -1607,7 +1607,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="217"/>
         <source>Miscellaneous</source>
-        <translation>Смешанные</translation>
+        <translation>Другое</translation>
     </message>
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.ui" line="227"/>
