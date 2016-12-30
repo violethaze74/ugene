@@ -23,20 +23,14 @@
 #define _U2_MULTILINGUAL_HTML_VIEW_H_
 
 #include <qglobal.h>
-#if (QT_VERSION < 0x050400) //Qt 5.7
-#include <QtWebKitWidgets/QWebView>
-#else
 #include <QWebEngineView>
 #include <QWebChannel>
+#if (QT_VERSION < 0x050500) //Qt 5.7
 #include <QWebSocketServer>
 #include <U2Gui/WebSocketClientWrapper.h>
 #endif
 
 namespace U2 {
-
-#if (QT_VERSION < 0x050400) //Qt 5.7
-class MultilingualHtmlView : public QWebView {
-#else
 
 class MultilingualWebEnginePage : public QWebEnginePage {
 public:
@@ -48,7 +42,6 @@ protected:
 };
 
 class MultilingualHtmlView : public QWebEngineView {
-#endif
     Q_OBJECT
 public:
     MultilingualHtmlView(const QString& htmlPath, QWidget* parent = NULL);
@@ -62,8 +55,8 @@ protected slots:
 
 signals:
     void si_loaded(bool ok);
-#if (QT_VERSION >= 0x050400) //Qt 5.7
 protected:
+#if (QT_VERSION < 0x050500) //Qt 5.7
     QWebSocketServer *server;
     WebSocketClientWrapper *clientWrapper;
     QWebChannel *channel;

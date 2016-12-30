@@ -26,34 +26,21 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <QDesktopServices>
-#if (QT_VERSION < 0x050400) //Qt 5.7
-#include <QWebElementCollection>
-#include <QWebFrame>
-#else
-#include <QWebChannel>
-#include <QWebSocketServer>
 
+#include <QWebChannel>
+#if (QT_VERSION < 0x050500) //Qt 5.7
+#include <QWebSocketServer>
 #include <U2Gui/WebSocketClientWrapper.h>
 #include <U2Gui/WebSocketTransport.h>
-
 #endif
 
 namespace U2 {
-#if (QT_VERSION < 0x050400) //Qt 5.7
-MultilingualHtmlView::MultilingualHtmlView(const QString& htmlPath, QWidget* parent)
-    : QWebView(parent),loaded(false)
-#else
+
 MultilingualHtmlView::MultilingualHtmlView(const QString& htmlPath, QWidget* parent)
     : QWebEngineView(parent),loaded(false)
-#endif
 {
     setContextMenuPolicy(Qt::NoContextMenu);
     loadPage(htmlPath);
-#if (QT_VERSION < 0x050400) //Qt 5.7
-    page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
-#else
-
-#endif
 }
 
 bool MultilingualHtmlView::isLoaded() const {
@@ -69,17 +56,7 @@ void MultilingualHtmlView::sl_loaded(bool ok) {
     SAFE_POINT(s != NULL, "AppContext settings is NULL", );
     QString lang = s->getValue("UGENE_CURR_TRANSL", "en").toString();
 
-#if (QT_VERSION < 0x050400) //Qt 5.7
-    QWebFrame* frame = page()->mainFrame();
-    SAFE_POINT(frame != NULL, "MainFrame of webView page is NULL", );
-
-    QWebElementCollection otherLangsCollection = frame->findAllElements(QString(":not(:lang(%1))[lang]").arg(lang));
-    for (int i = 0; i < otherLangsCollection.count(); i++) {
-        otherLangsCollection[i].setStyleProperty("display", "none");
-    }
-#else
     page()->runJavaScript(QString("showOnlyLang(\"%1\");").arg(lang));
-#endif
     emit si_loaded(ok);
 }
 
@@ -89,10 +66,7 @@ void MultilingualHtmlView::sl_linkActivated(const QUrl &url) {
 
 void MultilingualHtmlView::loadPage(const QString& htmlPath) {
     connect(this, SIGNAL(loadFinished(bool)), this, SLOT(sl_loaded(bool)));
-#if (QT_VERSION < 0x050400) //Qt 5.7
-    connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(sl_linkActivated(QUrl)));
-    load(QUrl(htmlPath));
-#elif (QT_VERSION < 0x050500) //Qt 5.7
+#if (QT_VERSION < 0x050500) //Qt 5.7
 //    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
 //    if (!server->listen(QHostAddress::LocalHost, 12345)) {
 //        return;
@@ -120,7 +94,6 @@ void MultilingualHtmlView::loadPage(const QString& htmlPath) {
 #endif
 }
 
-#if (QT_VERSION >= 0x050400) //Qt 5.7
 MultilingualWebEnginePage::MultilingualWebEnginePage(QObject *parent) : QWebEnginePage(parent) {}
 #if (QT_VERSION >= 0x050500)
 bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, NavigationType type, bool) {
@@ -130,7 +103,6 @@ bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, Navigat
     }
     return true;
 }
-#endif
 #endif
 
 } // namespace

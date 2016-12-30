@@ -24,14 +24,11 @@
 
 #include <qglobal.h>
 
-#if (QT_VERSION < 0x050400) //Qt 5.7
-#include <QWebElement>
-#include <QWebView>
-#elif (QT_VERSION < 0x050500) //Qt 5.7
+#if (QT_VERSION < 0x050500) //Qt 5.7
+#include <QtWebChannel/QWebChannel>
+#include <QWebEngineView>
 #include <QWebSocketServer>
 #include <U2Gui/WebSocketClientWrapper.h>
-#include <QWebEngineView>
-#include <QtWebChannel/QWebChannel>
 #else
 #include <QWebEngineView>
 #include <QWebChannel>
@@ -41,21 +38,13 @@
 
 #include <U2Lang/WorkflowMonitor.h>
 
-//class QWebSocketServer;
-//class WebSocketClientWrapper;
-
-
 namespace U2 {
 using namespace Workflow;
 
 class ExternalToolsWidgetController;
 class DashboardPageController;
 
-#if (QT_VERSION < 0x050400) //Qt 5.7
-class U2DESIGNER_EXPORT Dashboard : public QWebView {
-#else
 class U2DESIGNER_EXPORT Dashboard : public QWebEngineView {
-#endif
     Q_OBJECT
     Q_DISABLE_COPY(Dashboard)
 public:
@@ -66,10 +55,7 @@ public:
     void onShow();
 
     const WorkflowMonitor * monitor();
-#if (QT_VERSION < 0x050400) //Qt 5.7
-    QWebElement getDocument();
-#endif
-    
+
     void setClosed();
     QString directory() const;
 
@@ -120,9 +106,6 @@ private:
     QString dir;
     bool opened;
     const WorkflowMonitor *_monitor;
-#if (QT_VERSION < 0x050400) //Qt 5.7
-    QWebElement doc;
-#endif
     bool initialized;
     bool workflowInProgress;
     ExternalToolsWidgetController* etWidgetController;
@@ -144,14 +127,7 @@ private:
 private:
     void loadDocument();
     /** Returns the content area of the widget */
-#if (QT_VERSION < 0x050400) //Qt 5.7
-    QWebElement addWidget(const QString &title, DashboardTab dashTab, int cntNum = -1);
-
-    /** Returns size of the QWebElement "name", it is searched inside "insideElt" only*/
-    int containerSize(const QWebElement &insideElt, const QString &name);
-#else
     void addWidget(const QString &title, DashboardTab dashTab, int cntNum = -1, const QString &widgetId = "");
-#endif
     void serialize(U2OpStatus &os);
     void saveSettings();
     void loadSettings();

@@ -22,11 +22,7 @@
 #include "WebWindow.h"
 #include <QtWidgets/QVBoxLayout>
 
-#if (QT_VERSION < 0x050400) //Qt 5.7
-#include <QtWebKitWidgets/QWebView>
-#else
 #include <QtWebEngineWidgets/QWebEngineView>
-#endif
 
 namespace U2 {
 
@@ -37,11 +33,7 @@ WebWindow::WebWindow(const QString& title, const QString& content)
     l->setMargin(0);
     setLayout(l);
 
-#if (QT_VERSION < 0x050400) //Qt 5.7
-    QWebView* textEdit = new QWebView(this);
-#else
     QWebEngineView* textEdit = new QWebEngineView(this);
-#endif
     textEdit->setContextMenuPolicy(Qt::NoContextMenu);
     textEdit->setHtml(content);
 

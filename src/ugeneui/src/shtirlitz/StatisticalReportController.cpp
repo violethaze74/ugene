@@ -23,9 +23,6 @@
 #include <QDesktopWidget>
 #include <QFile>
 #include <QScrollBar>
-#if (QT_VERSION < 0x050400) //Qt 5.7
-#include <QWebFrame>
-#endif
 
 #include <U2Core/Version.h>
 #include <U2Core/U2SafePoints.h>
@@ -56,18 +53,7 @@ bool StatisticalReportController::isInfoSharingAccepted() const {
 
 void StatisticalReportController::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
-#if (QT_VERSION < 0x050400) //Qt 5.7
-    CHECK(!htmlView->page()->mainFrame()->scrollBarGeometry(Qt::Vertical).isEmpty(), );
-
-    // adjust size to avoid scroll bars
-    while (!htmlView->page()->mainFrame()->scrollBarGeometry(Qt::Vertical).isEmpty()) {
-        htmlView->setMinimumHeight(htmlView->size().height() + 1);
-    }
-    htmlView->setMinimumHeight(htmlView->size().height() + 10);
-#else
     htmlView->setMinimumHeight(height);
-
-#endif
 #ifndef Q_OS_MAC
     // UGENE crashes on the update event processing on mac
     // It has some connection with htmlView loading method
