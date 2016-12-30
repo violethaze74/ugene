@@ -93,17 +93,23 @@ void MultilingualHtmlView::loadPage(const QString& htmlPath) {
     connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(sl_linkActivated(QUrl)));
     load(QUrl(htmlPath));
 #elif (QT_VERSION < 0x050500) //Qt 5.7
-    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
-    if (!server->listen(QHostAddress::LocalHost, 12346)) {
-        return;
-    }
+//    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
+//    if (!server->listen(QHostAddress::LocalHost, 12345)) {
+//        return;
+//    }
 
-    clientWrapper = new WebSocketClientWrapper(server);//TODO delete in dtor
+//    clientWrapper = new WebSocketClientWrapper(server);//TODO delete in dtor
 
-    channel = new QWebChannel(this);
+//    channel = new QWebChannel(this);
 
-    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
-        channel, &QWebChannel::connectTo);
+//    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
+//        channel, &QWebChannel::connectTo);
+
+    QWebEnginePage *page = new MultilingualWebEnginePage(parentWidget());
+    QUrl url(htmlPath);
+//    url.setQuery(QStringLiteral("webChannelBaseUrl=") + "ws://127.0.0.1:12345");
+    page->load(url);
+    setPage(page);
 #else
     QWebEnginePage *pg = new MultilingualWebEnginePage(parentWidget());
     pg->load(QUrl(htmlPath));

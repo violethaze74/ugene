@@ -189,9 +189,6 @@ public:
     JavascriptAgent(Dashboard *dashboard);
 
 public slots:
-    void openUrl(const QString &url);
-    void openByOS(const QString &url);
-    QString absolute(const QString &url);
     void loadSchema();
     void hideLoadButtonHint();
     void setClipboardText(const QString &text);
@@ -248,11 +245,13 @@ public:
 
     Q_PROPERTY(QString lang READ getLang)
     Q_PROPERTY(QJsonArray workersParamsInfo READ getWorkersParamsInfo)
-    Q_PROPERTY(QJsonArray test READ getTest)
 
 public slots:
     void sl_onJsError(const QString& errorMessage);
     void sl_checkETsLog();
+    void openUrl(const QString &url);
+    void openByOS(const QString &url);
+    QString absolute(const QString &url);
 signals:
     void si_progressChanged(int progress);
     void si_taskStateChanged(QString state);
@@ -265,11 +264,10 @@ signals:
 private:
     Q_INVOKABLE QString getLang();
     Q_INVOKABLE QJsonArray getWorkersParamsInfo();
-    Q_INVOKABLE QJsonArray getTest();
+    void fillWorkerParamsInfo();
 
     QString lang;
     QJsonArray workersParamsInfo;
-    QJsonArray test;
     const WorkflowMonitor* monitor;
 };
 

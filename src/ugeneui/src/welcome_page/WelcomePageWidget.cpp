@@ -57,6 +57,8 @@ namespace {
 WelcomePageWidget::WelcomePageWidget(QWidget *parent, WelcomePageController *controller)
 #if (QT_VERSION < 0x050400) //Qt 5.7
     : MultilingualHtmlView("qrc:///ugene/html/welcome_page.html", parent),
+#elif (QT_VERSION < 0x50500)
+    : MultilingualHtmlView("qrc:///ugene/html/welcome_page_webengine_qt542.html", parent),
 #else
     : MultilingualHtmlView("qrc:///ugene/html/welcome_page_webengine.html", parent),
 #endif
@@ -64,7 +66,19 @@ WelcomePageWidget::WelcomePageWidget(QWidget *parent, WelcomePageController *con
 {
     installEventFilter(this);
     setObjectName("webView");
-#if (QT_VERSION >= 0x050400) //Qt 5.7
+#if (QT_VERSION >= 0x050400) && (QT_VERSION < 0x050500) //Qt 5.7
+    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
+    if (!server->listen(QHostAddress::LocalHost, 12345)) {
+        return;
+    }
+
+    clientWrapper = new WebSocketClientWrapper(server);//TODO delete in dtor
+
+    channel = new QWebChannel(this);
+
+    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
+        channel, &QWebChannel::connectTo);
+#elif (QT_VERSION >= 0x050500) //Qt 5.7
     channel->registerObject(QString("ugene"), controller);
 #endif
 }

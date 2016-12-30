@@ -28,7 +28,7 @@
 
     <script src="qrc:///javascript/jquery/jquery.js"></script>
     <script src="qrc:///javascript/bootstrap/js/bootstrap.js"></script>
-    <script src="qrc:///javascript/qwebchannel/qwebchannel-qt570.js"></script>
+    <script src="qrc:///javascript/qwebchannel/qwebchannel-qt542.js"></script>
     <script src="qrc:///ugene/javascript/Common.js"></script>
     <script src="qrc:///ugene/javascript/WellcomePage.js"></script>
 </head>
@@ -183,15 +183,30 @@
         </tr>
     </table>
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            new QWebChannel(qt.webChannelTransport, function (channel) {
+    $(window).resize(function() {
+        updateLinksVisibility()
+    });
+    $(window).resize();
+    window.onload = function() {
+        var baseUrl = "ws://127.0.0.1:12345";
+        var socket = new WebSocket(baseUrl);
+        socket.onclose = function()
+        {
+            console.error("web channel closed");
+        };
+        socket.onerror = function(error)
+        {
+            console.error("web channel error: " + error);
+        };
+        socket.onopen = function()
+        {
+            new QWebChannel(socket, function(channel) {
+                // make dialog object accessible globally
                 window.ugene = channel.objects.ugene;
             });
-        });
-        $(window).resize(function() {
-            updateLinksVisibility()
-        });
-        $(window).resize();
+        }
+      }
+
     </script>
 </body>
 </html>
