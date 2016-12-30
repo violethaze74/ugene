@@ -65,16 +65,12 @@ static const QString NAME_SETTING("name");
 /************************************************************************/
 /* Dashboard */
 /************************************************************************/
-const QString Dashboard::EXT_TOOLS_TAB_ID = "#ext_tools_tab";
-const QString Dashboard::OVERVIEW_TAB_ID = "#overview_tab";
-const QString Dashboard::INPUT_TAB_ID = "#input_tab";
-//const QString Dashboard::OUTPUT_TAB_ID = "#output_tab";
-
-const QString Dashboard::RESOURCE_WIDGET_ID = "resourceWidget";
+const QString Dashboard::STATUS_WIDGET_ID = "statusWidget";
 const QString Dashboard::OUTPUT_WIDGET_ID = "outputWidget";
 const QString Dashboard::STATISTICS_WIDGET_ID = "statisticsWidget";
 const QString Dashboard::PROBLEMS_WIDGET_ID = "problemsWidget";
 const QString Dashboard::PARAMETERS_WIDGET_ID = "parametersWidget";
+const QString Dashboard::ETOOLS_WIDGET_ID = "externalToolsWidget";
 
 Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &_name, QWidget *parent)
     : QWebEngineView(parent), loaded(false), name(_name), opened(true), _monitor(monitor), initialized(false), workflowInProgress(true)
@@ -196,10 +192,10 @@ void Dashboard::sl_loaded(bool ok) {
     SAFE_POINT(ok, "Loaded with errors", );
     initialized = true;
     if (NULL != monitor()) {
-        page()->runJavaScript("parametersWidget = new ParametersWidget(\"parametersWidget\")");
-        page()->runJavaScript("outputWidget = new OutputFilesWidget(\"outputWidget\");");
-        page()->runJavaScript("statusWidget = new StatusWidget(\"statusWidget\");");
-        page()->runJavaScript("statisticsWidget = new StatisticsWidget(\"statisticsWidget\");");
+        page()->runJavaScript("parametersWidget = new ParametersWidget(\""+PARAMETERS_WIDGET_ID+"\")");
+        page()->runJavaScript("outputWidget = new OutputFilesWidget(\""+OUTPUT_WIDGET_ID+"\");");
+        page()->runJavaScript("statusWidget = new StatusWidget(\""+STATUS_WIDGET_ID+"\");");
+        page()->runJavaScript("statisticsWidget = new StatisticsWidget(\""+STATISTICS_WIDGET_ID+"\");");
         sl_workerStatsUpdate();
 
         sl_runStateChanged(false);
@@ -218,7 +214,7 @@ void Dashboard::sl_loaded(bool ok) {
 }
 
 void Dashboard::sl_addProblemsWidget() {
-    page()->runJavaScript("problemsWidget = new ProblemsWidget(\"problemsWidget\");");
+    page()->runJavaScript("problemsWidget = new ProblemsWidget(\""+PROBLEMS_WIDGET_ID+"\");");
 }
 
 void Dashboard::sl_serialize() {
@@ -232,9 +228,7 @@ void Dashboard::sl_serialize() {
             return;
         }
     }
-    U2OpStatus2Log os;
-    serialize(os);
-    CHECK_OP(os, );
+    serialize();
     saveSettings();
 }
 
@@ -302,7 +296,7 @@ void Dashboard::sl_onLogChanged(U2::Workflow::Monitor::LogEntry entry){
     entryJS["lastLine"] = entry.lastLine;
     emit dashboardPageController->si_onLogChanged(entryJS);
 }
-void Dashboard::serialize(U2OpStatus &) {
+void Dashboard::serialize() {
     page()->toHtml([this](const QString &result) { return result; });
     connect(this, SIGNAL(si_serializeContent(const QString&)), this, SLOT(sl_serializeContent(const QString&)));
     page()->toHtml([this](const QString& result) mutable {emit si_serializeContent(result);});
@@ -331,27 +325,10 @@ void Dashboard::createExternalToolTab() {
         SAFE_POINT(proto, "Actor prototype is NULL", );
 
         if (!proto->getExternalTools().isEmpty()) {
-            QString addTabJs = "addTab('" + EXT_TOOLS_TAB_ID + "','" + tr("External Tools") + "')";
-            page()->runJavaScript("externalToolsWidget = externalToolsWidget || new ExternalToolsWidget(\"externalToolsWidget\");");
+            page()->runJavaScript("externalToolsWidget = externalToolsWidget || new ExternalToolsWidget(\""+ETOOLS_WIDGET_ID+"\");");
             break;
         }
     }
-}
-
-void Dashboard::addWidget(const QString &title, DashboardTab dashTab, int cntNum, const QString &widgetId) {//TODO: Is this methon used somewhere?
-    // Find the tab
-    QString dashTabId;
-    if (OverviewDashTab == dashTab) {
-        dashTabId = OVERVIEW_TAB_ID;
-    } else if (InputDashTab == dashTab) {
-        dashTabId = INPUT_TAB_ID;
-    } else if (ExternalToolsTab == dashTab) {
-        dashTabId = EXT_TOOLS_TAB_ID;
-    } else {
-        FAIL("Unexpected dashboard tab ID!", );
-    }
-    dashTabId.remove("#");
-    page()->runJavaScript(QString("addWidget(\"%1\", \"%2\", \"%3\", \"%4\")").arg(title).arg(dashTabId).arg(QString::number(cntNum)).arg(widgetId));
 }
 
 const WorkflowMonitor * Dashboard::monitor() {
@@ -363,15 +340,10 @@ void Dashboard::sl_runStateChanged(bool paused) {
     page()->runJavaScript(script);
 }
 
-void Dashboard::loadSchema() {
-    QString url = dir + REPORT_SUB_DIR + WorkflowMonitor::WORKFLOW_FILE_NAME;
-    emit si_loadSchema(url);
-}
-
-void Dashboard::initiateHideLoadButtonHint() {
-    WorkflowSettings::setShowLoadButtonHint(false);
-    emit si_hideLoadBtnHint();
-}
+//void Dashboard::initiateHideLoadButtonHint() {
+//    WorkflowSettings::setShowLoadButtonHint(false);
+//    emit si_hideLoadBtnHint();
+//}
 
 bool Dashboard::isWorkflowInProgress() {
     return workflowInProgress;
@@ -500,27 +472,6 @@ DashboardWidget::DashboardWidget(const QString &_container, Dashboard *parent)
 : QObject(parent), dashboard(parent), container(_container)
 {
 
-}
-
-/************************************************************************/
-/* JavascriptAgent */
-/************************************************************************/
-JavascriptAgent::JavascriptAgent(Dashboard *_dashboard)
-: QObject(_dashboard), dashboard(_dashboard)
-{
-
-}
-
-void JavascriptAgent::loadSchema() {
-    dashboard->loadSchema();
-}
-
-void JavascriptAgent::hideLoadButtonHint() {
-    SAFE_POINT(NULL != dashboard, "NULL dashboard!", );
-    dashboard->initiateHideLoadButtonHint();
-}
-void JavascriptAgent::setClipboardText(const QString &text) {
-    QApplication::clipboard()->setText(text);
 }
 
 /************************************************************************/

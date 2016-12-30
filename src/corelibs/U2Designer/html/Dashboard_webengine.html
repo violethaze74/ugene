@@ -75,7 +75,6 @@
         }
         function containerSize(insideElt, name) {
             var cont = document.getElementById(name);
-            //var cont = insideElt.getElementById(name);
             if (tabContainer == null) {
                 agent.sl_onJsError("NULL container");
                 return;
@@ -83,48 +82,6 @@
             return cont.getElementsByName(".widget").length;
         }
         addEventListeners();
-      /*var agent = {
-        lang: "en",
-        sl_onJsError:function(msg) {
-          console.log(msg);
-        },
-
-        absolute:function(msg) {
-          console.log("Tooltip with " + msg + " has invoked!");
-        },
-        
-        openByOS:function(msg) {
-          console.log("Open by OS " + msg + " has invoked!");
-        },
-        openUrl:function(msg) {
-          console.log("Open by UGENE " + msg + " has invoked!");
-        },
-        setClipboardText:function(resultString){
-          console.log("Send to clipboard: " + resultString);
-        },
-        hideLoadButtonHint:function(){
-          console.log("Hint button clicked");
-          this.showHint = false;
-          hideLoadBtnHint();
-        },
-        outputFiles: ["test1", "test2"],
-        workersInfo: [{actor: "actor1", ticks: 10, timeMks: 0, countOfProducedData: 0},
-                      {actor: "actor2", ticks: 10, timeMks: 0, countOfProducedData: 0},
-                      {actor: "actor3", ticks: 10, timeMks: 0, countOfProducedData: 0}],
-        workersParamsInfo: [{workerName:"worker1", actor: "actor1", parameters:[{name: "Mode", value: 10}, 
-                                                                               {name: "Parameter name", value: "Some value"}]},
-                           {workerName:"worker2", actor: "actor2", parameters:[{name: "Parameter name2", value: "Some value2"},
-                                                                               {name: "Input", isDataset:true, value: "/home/dkandrov/ugene/in1.txt;/home/dkandrov/ugene/in2.txt"}]},
-                           {workerName:"worker3", actor: "actor3", parameters:[{name: "Parameter name3", value: true},
-                                                                               {name: "Input", isUrl:true, value: "/home/dkandrov/ugene/in.fa"},
-                                                                               {name: "Input Dir", isUrl:true, type: "Dir", value: "/home/dkandrov/ugene"}]}],
-        extToolsLog: [ {toolName:"toolName", actorName: "Actor1", runNumber: 0, logType:"program", lastLine: "/home/dkandrov/myTool"},
-                      {toolName:"toolName", actorName: "Actor1", runNumber: 0, logType:"arguments", lastLine: "-p -g -out=/tmp/some_file.aln"},
-                      {toolName:"toolName", actorName: "Actor1", runNumber: 0, logType:"output", lastLine: "myTool is staring work"},
-                      {toolName:"toolName", actorName: "Actor1", runNumber: 0, logType:"error", lastLine: "myTool has some error"}
-                     ],
-        showHint: true
-      }*/
     </script>
     <div id="wrapper">
       <div class="tabbable">
@@ -139,7 +96,6 @@
             <li id="ext_tools_tab_menu" class="" style="display: none;">
               <a href="#ext_tools_tab" data-toggle="tab" class="dash-tab-name"><span lang="en" class="translatable">External Tools</span><span lang="ru" class="translatable">Внешние инструменты</span></a>
             </li>
-            <!--<li class=""><a href="#output_tab" data-toggle="tab" class="dash-tab-name">Output</a></li>-->
           </ul>
         </div>
         <div class="dash-outer-tab-content">
@@ -169,36 +125,9 @@
         </div>
       </div>
     </div>
-    <!--test controls-->
-    <div id="log_messages" style="position: fixed; top: 10%; left: 2%;"></div>
-    <div style="position: fixed; top: 95%; left: 2%;" class="dropup">
-      <div>
-        <button class="btn" onclick="addOutput();">Add output file</button>
-        <button class="btn" onclick="addProblem();">Add problem</button>
-        <div class="btn-group">
-          <button class="btn" onclick="changeProgress();">Change progress</button>
-          <button class="btn" onclick="changeState();">Change state</button>
-          <button id="timerBtn" class="btn" onclick="startStop();">Start</button>
-        </div>
-        <div class="btn-group">
-          <button class="btn" onclick="changeAllActors();">Change all actors</button>
-          <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li><a onclick="changeActor1();">actor1</a></li>
-            <li><a onclick="changeActor2();">actor2</a></li>
-            <li><a onclick="changeActor3();">actor3</a></li>
-          </ul>
-        </div>
-      <!--</div>-->
-      <!--<br/>-->
-      <!--<div>-->
-        <button class="btn" onclick="addMoreLog();">Add more log</button>
-        <button id="lang" class="btn" onclick="changeLang();">en</button>
-        <button id="lang" class="btn" onclick="alert('agent: '+agent+' workersParamsInfo: '+agent.test[0].name +','+ agent.test[1].name);">alert</button>
-      </div>
     </div>
+    <!--For debug purposes-->
+    <div id="log_messages" style="position: fixed; top: 10%; left: 2%;"></div>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
                     new QWebChannel(qt.webChannelTransport, function (channel) {
@@ -214,8 +143,6 @@
                                     problemWidget = new ProblemsWidget("problemsWidget");
                                 }
                                 problemWidget.sl_newProblem(problem, count);
-                                document.getElementById("log_messages").innerHTML += "problem: "+ problem +" <br/>";
-                                document.getElementById("log_messages").innerHTML += "problem: "+ problem.message +" <br/>";
                             });
                             window.agent.si_workerStatsInfoChanged.connect(function(info){
                                 statisticsWidget.sl_workerStatsInfoChanged(info);
@@ -224,205 +151,24 @@
                                 statisticsWidget.sl_workerStatsUpdate(workersStatisticsInfo);
                             });
                             window.agent.si_newOutputFile.connect(function(fileInfo){
-                                document.getElementById("log_messages").innerHTML += "si_newOutputFile called!!! <br/>";
                                 outputWidget.sl_newOutputFile(fileInfo);
                             });
                             window.agent.si_onLogChanged.connect(function(logEntry){
-                                //document.getElementById("log_messages").innerHTML += "si_onLogChanged "+logEntry.toolName+" | "+logEntry.actorName+" | " +" <br/>";
                                 if(externalToolsWidget === null){
                                     externalToolsWidget = new ExternalToolsWidget("externalToolsWidget");
                                 }
                                 externalToolsWidget.sl_onLogChanged(logEntry);
                             });
                             showOnlyLang(agent.lang);
-                            //document.getElementById("log_messages").innerHTML += "Status widget created!!! <br/>";
+                            //document.getElementById("log_messages").innerHTML += "Agent created! <br/>"; //sample of debug message
                     });
     });
-      //addWidget("<span lang=\"en\" class=\"translatable\">Output files</span>" + "<span lang=\"ru\" class=\"translatable\">Выходные файлы</span>", "overview_tab", 0,"outputWidget");
-      //addWidget("<span lang=\"en\" class=\"translatable\">Workflow task</span>" + "<span lang=\"ru\" class=\"translatable\">Задача схемы</span>", "overview_tab", 1, "resourceWidget");
-      //addWidget("<span lang=\"en\" class=\"translatable\">Common Statistics</span>" + "<span lang=\"ru\" class=\"translatable\">Общая статистика</span>", "overview_tab", 1, "statisticsWidget");
-      
-      //addWidget("Parameters", "input_tab", 0, "parametersWidget");
-      //addWidget("External Tools", "ext_tools_tab", 0, "externalToolsWidget");
-      //addResWidgetContent();
-//------------
-      var statusWidget;// = new StatusWidget("statusWidget");
-      var stateCounter = 1;
-      function changeState(){
-        if(stateCounter == 0){
-          statusWidget._container.innerHTML = "";
-          statusWidget = new StatusWidget("statusWidget");
-          showOnlyLang(currentLang);
-          statusWidget.sl_taskStateChanged("RUNNING");
-        }else if(stateCounter == 1){
-          statusWidget.sl_taskStateChanged("RUNNING_WITH_PROBLEMS");
-        }else if(stateCounter == 2){
-          statusWidget.sl_taskStateChanged("FINISHED_WITH_PROBLEMS");
-        }else if(stateCounter == 3){
-          statusWidget._container.innerHTML = "";
-          statusWidget = new StatusWidget("statusWidget");
-          statusWidget.sl_progressChanged(progressCounter);
-          showOnlyLang(currentLang);
-          statusWidget.sl_taskStateChanged("FAILED");
-        }else if(stateCounter == 4){
-          statusWidget._container.innerHTML = "";
-          statusWidget = new StatusWidget("statusWidget");
-          statusWidget.sl_progressChanged(progressCounter);
-          showOnlyLang(currentLang);
-          statusWidget.sl_taskStateChanged("SUCCESS");
-        }else{
-          statusWidget._container.innerHTML = "";
-          statusWidget = new StatusWidget("statusWidget");
-          statusWidget.sl_progressChanged(progressCounter);
-          statusWidget.sl_taskStateChanged("");
-          showOnlyLang(currentLang);
-          stateCounter = 0;
-          progressCounter = 0;
-          agent.showHint = true;
-          return;
-        }
-        showOnlyLang(currentLang);
-        stateCounter++;
-      }
-      var progressCounter = 0;
-      function changeProgress(){
-        progressCounter = (progressCounter < 100) ? (progressCounter+3) : 0;
-        statusWidget.sl_progressChanged(progressCounter);
-      }
-      function startStop(){
-        var timerButton = document.getElementById("timerBtn");
-        if (paused){
-          startTimer();
-          timerButton.innerHTML = "Pause";
-        }else{
-          pauseTimer();
-          timerButton.innerHTML = "Contunue";
-        }
-      }
-      
-//------------
-      var parametersWidget;// = new ParametersWidget("parametersWidget");
-//------------
-      var externalToolsWidget = null;// = new ExternalToolsWidget("ext_tools_tab");
-      var logCounter = 0;
-      function addMoreLog(){
-        if(logCounter === 0){
-          externalToolsWidget = new ExternalToolsWidget("ext_tools_tab");
-        }
-        if(logCounter <3){
-          var someLog = {toolName:"toolName", actorName: "Actor1", runNumber: 0, logType:"output", lastLine: "log '" + logCounter +"\n qwe"};
-        }else if (logCounter === 3){
-          var someLog = [{toolName:"toolName2", actorName: "Actor2", runNumber: 0, logType:"program", lastLine: "/home/dkandrov/myTool2"},
-                         {toolName:"toolName2", actorName: "Actor2", runNumber: 0, logType:"arguments", lastLine: "-p -g -out=/tmp/some_file.gb"},
-                         {toolName:"toolName2", actorName: "Actor2", runNumber: 0, logType:"output", lastLine: "log asd" + logCounter +"\n"}];
-          someLog.forEach(function(log){
-            agent.extToolsLog.push(log);
-          });
-          externalToolsWidget.sl_onLogUpdate();
-          logCounter++;
-          return;
-        }else if(logCounter<6){
-          var someLog = {toolName:"toolName2", actorName: "Actor2", runNumber: 0, logType:"output", lastLine: "log asd" + logCounter +"\n"};
-        }else if(logCounter === 6){
-          var someLog = [{toolName:"toolName", actorName: "Actor1", runNumber: 1, logType:"program", lastLine: "/home/dkandrov/myTool"},
-                         {toolName:"toolName", actorName: "Actor1", runNumber: 1, logType:"arguments", lastLine: "-p -g -out=/tmp/other_file.aln"},
-                         {toolName:"toolName", actorName: "Actor1", runNumber: 1, logType:"output", lastLine: "log zxc" + logCounter +"\n"}];
-          someLog.forEach(function(log){
-            agent.extToolsLog.push(log);
-          });
-          externalToolsWidget.sl_onLogUpdate();
-          logCounter++;
-          return;
-        }else{
-          var someLog = {toolName:"toolName", actorName: "Actor1", runNumber: 1, logType:"output", lastLine: "log '" + logCounter +"\n qwe"};
-        }
-        agent.extToolsLog.push(someLog);
-        externalToolsWidget.sl_onLogUpdate();
-        logCounter++;
-      }
-//------------
-      var outputWidget;// = new OutputFilesWidget("outputWidget");
-      var fileCounter = 0;
-      function addOutput(){
-        var fileInfo = {
-          url: "/home/dkandrov/ugene/out"+fileCounter+".txt",
-          actor: (fileCounter < 3) ? "actor1" : ((fileCounter < 5) ? "actor2" : ((fileCounter < 15) ? "actor3" : "actor4" )),
-          openBySystem: false
-        };
-        outputWidget.sl_newOutputFile(fileInfo);
-        //outputWidget._addRow("nig"+fileCounter, ["niguz"+fileCounter, "gays"+fileCounter]);
-        fileCounter++;
-      };
-
-      //updateRow("outputWidget", createRowByFile("D:\\zzz.txt", "D:\\", true, "zzz.txt", "Open by OS", 
-      //   "Open containing folder", "Actor"), "ukr1");
-      //clearTable("outputWidget");
-//------------
-      var statisticsWidget;// = new StatisticsWidget("statisticsWidget");
-      function changeActor1(){
-        agent.workersInfo[0].timeMks +=12345000;
-        statisticsWidget.sl_workerInfoChanged(agent.workersInfo[0].actor, agent.workersInfo[0]);
-      }
-      function changeActor2(){
-        agent.workersInfo[1].countOfProducedData += 1;
-        statisticsWidget.sl_workerInfoChanged(agent.workersInfo[1].actor, agent.workersInfo[1]);
-      }
-      function changeActor3(){
-        agent.workersInfo[2].timeMks +=54321000;
-        agent.workersInfo[2].countOfProducedData += 1;
-        statisticsWidget.sl_workerInfoChanged(agent.workersInfo[2].actor, agent.workersInfo[2]);
-      }
-      function changeAllActors(){
-        agent.workersInfo[0].timeMks +=22800000;
-        agent.workersInfo[1].timeMks +=228000;
-        agent.workersInfo[1].countOfProducedData += 2;
-        agent.workersInfo[2].timeMks +=14880000;
-        agent.workersInfo[2].countOfProducedData += 3;
-        statisticsWidget.sl_update();
-      }
-//------------
+    var statusWidget;
+    var parametersWidget;
+    var externalToolsWidget = null;
+    var outputWidget;
+    var statisticsWidget;
     var problemWidget;
-    var problemsCounter=0;
-    function addProblem(){
-      if (document.getElementById("problemsWidget") === null){
-        addWidget("<span lang=\"en\" class=\"translatable\">Problems</span>" + "<span lang=\"ru\" class=\"translatable\">Проблемы</span>", "overview_tab", 0,"problemsWidget");
-        problemWidget = new ProblemsWidget("problemsWidget");
-        var testProblem1 = {
-          message: "test very very very long long long message sdjfhgp4 htgjkras hjklghasd uiohgfi utrqwuh",
-          actor: "some actor skdfasdf asdf asdf sdf asdf asdf asdf d",
-          type: "info"
-        };
-        problemWidget.sl_newProblem(testProblem1,1);
-        showOnlyLang(currentLang);
-        return;
-      }
-      var testProblem2 = {
-        message: "test message",
-        actor: "some actor",
-        type: "warning"
-      };
-      problemsCounter++;
-      if (problemsCounter<4){
-        problemWidget.sl_newProblem(testProblem2,problemsCounter);
-        return;
-      }
-      var testProblem3 = {
-        message: "test message "+problemsCounter,
-        actor: "some actor "+problemsCounter,
-        type: "error"
-      };
-      problemWidget.sl_newProblem(testProblem3,problemsCounter);
-    }
-//------------
-    var currentLang = agent.lang;
-    showOnlyLang(currentLang);
-    function changeLang(){
-      var langButton = document.getElementById("lang");
-      currentLang = (currentLang === "en") ? currentLang = "ru" : currentLang = "en";
-      langButton.innerHTML = currentLang;
-      showOnlyLang(currentLang);
-    }
-
     </script>
   </body>
 
