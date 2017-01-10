@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="qrc:///U2Designer/html/Dashboard.css"/>
     <script type="text/javascript" src="qrc:///javascript/jquery/jquery.js"></script>
     <script type="text/javascript" src="qrc:///javascript/bootstrap/js/bootstrap.js"></script>
+<!--    <script type="text/javascript" src="qrc:///javascript/qwebchannel/qwebchannel-qt570.js"></script>-->
     <script type="text/javascript" src="qrc:///U2Designer/javascript/Common.js"></script>
     <script type="text/javascript" src="qrc:///U2Designer/javascript/ContextMenu.js"></script>
     <script type="text/javascript" src="qrc:///U2Designer/javascript/TableWidget.js"></script>
@@ -15,7 +16,6 @@
     <script type="text/javascript" src="qrc:///U2Designer/javascript/ProblemsWidget.js"></script>
     <script type="text/javascript" src="qrc:///U2Designer/javascript/StatisticsWidget.js"></script>
     <script type="text/javascript" src="qrc:///U2Designer/javascript/StatusWidget.js"></script>
-    <script type="text/javascript" src="qrc:///javascript/qwebchannel/qwebchannel-qt570.js"></script>
   </head>
 
   <body>
@@ -61,17 +61,6 @@
             if(externalToolsWidget !== null){
                 agent.sl_checkETsLog();
             }
-        }
-        function showOnlyLang(lang) {
-          var elements = document.getElementsByClassName("translatable");
-          for(var i=0; i<elements.length; i++){
-              var attr = elements[i].getAttribute("lang");
-              if(attr != lang){
-                elements[i].style.display = "none";
-              }else{
-                elements[i].style.display = "";
-              }
-          }
         }
         function containerSize(insideElt, name) {
             var cont = document.getElementById(name);
@@ -129,7 +118,7 @@
     <!--For debug purposes-->
     <div id="log_messages" style="position: fixed; top: 10%; left: 2%;"></div>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    /*document.addEventListener("DOMContentLoaded", function () {
                     new QWebChannel(qt.webChannelTransport, function (channel) {
                             window.agent = channel.objects.agent;
                             window.agent.si_progressChanged.connect(function(progress){
@@ -162,7 +151,7 @@
                             showOnlyLang(agent.lang);
                             //document.getElementById("log_messages").innerHTML += "Agent created! <br/>"; //sample of debug message
                     });
-    });
+    });*/
     var statusWidget;
     var parametersWidget;
     var externalToolsWidget = null;

@@ -62,8 +62,10 @@ public:
     QString getName() const;
     void setName(const QString &value);
 
+    void loadSchema();
+
     /** Modifies the application settings and emits signal for all dashboards */
-//    void initiateHideLoadButtonHint();
+    void initiateHideLoadButtonHint();
 
     bool isWorkflowInProgress();
 
@@ -183,8 +185,9 @@ class DashboardPageController : public QObject {
 public:
     DashboardPageController(Dashboard* parent);
 
-    Q_PROPERTY(QString lang READ getLang)
-    Q_PROPERTY(QJsonArray workersParamsInfo READ getWorkersParamsInfo)
+    Q_PROPERTY(QString lang READ getLang CONSTANT)
+    Q_PROPERTY(QJsonArray workersParamsInfo READ getWorkersParamsInfo CONSTANT)
+    Q_PROPERTY(bool showHint READ getShowHint CONSTANT)
 
 public slots:
     void sl_onJsError(const QString& errorMessage);
@@ -192,6 +195,9 @@ public slots:
     void openUrl(const QString &url);
     void openByOS(const QString &url);
     QString absolute(const QString &url);
+    void loadSchema();
+    void setClipboardText(const QString &text);
+    void hideLoadButtonHint();
 signals:
     void si_progressChanged(int progress);
     void si_taskStateChanged(QString state);
@@ -204,6 +210,7 @@ signals:
 private:
     Q_INVOKABLE QString getLang();
     Q_INVOKABLE QJsonArray getWorkersParamsInfo();
+    Q_INVOKABLE bool getShowHint();
     void fillWorkerParamsInfo();
 
     QString lang;

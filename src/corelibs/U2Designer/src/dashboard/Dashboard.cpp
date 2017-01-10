@@ -209,7 +209,7 @@ void Dashboard::sl_loaded(bool ok) {
         connect(monitor(), SIGNAL(si_firstProblem()), SLOT(sl_addProblemsWidget()));
     }
     if (!WorkflowSettings::isShowLoadButtonHint()) {
-        page()->runJavaScript("document.getElementById('wrapper').hideLoadBtnHint()");
+        page()->runJavaScript("hideLoadBtnHint()");
     }
 }
 
@@ -340,10 +340,15 @@ void Dashboard::sl_runStateChanged(bool paused) {
     page()->runJavaScript(script);
 }
 
-//void Dashboard::initiateHideLoadButtonHint() {
-//    WorkflowSettings::setShowLoadButtonHint(false);
-//    emit si_hideLoadBtnHint();
-//}
+void Dashboard::loadSchema() {
+    QString url = dir + REPORT_SUB_DIR + WorkflowMonitor::WORKFLOW_FILE_NAME;
+    emit si_loadSchema(url);
+}
+
+void Dashboard::initiateHideLoadButtonHint() {
+    WorkflowSettings::setShowLoadButtonHint(false);
+    emit si_hideLoadBtnHint();
+}
 
 bool Dashboard::isWorkflowInProgress() {
     return workflowInProgress;
@@ -414,13 +419,32 @@ QString DashboardPageController::absolute(const QString &url) {
     return qobject_cast<Dashboard*>(parent())->directory() + url;
 }
 
+void DashboardPageController::loadSchema(){
+    qobject_cast<Dashboard*>(parent())->loadSchema();
+}
+
+void DashboardPageController::setClipboardText(const QString &text){
+    QApplication::clipboard()->setText(text);
+}
+
+void DashboardPageController::hideLoadButtonHint() {
+    Dashboard* dashboard = qobject_cast<Dashboard*>(parent());
+    SAFE_POINT(NULL != dashboard, "NULL dashboard!", );
+    dashboard->initiateHideLoadButtonHint();
+}
 
 QString DashboardPageController::getLang(){
     return lang;
 }
+
 QJsonArray DashboardPageController::getWorkersParamsInfo(){
     return workersParamsInfo;
 }
+
+bool DashboardPageController::getShowHint(){
+    return WorkflowSettings::isShowLoadButtonHint();
+}
+
 //Worker parametes initialization
 void DashboardPageController::fillWorkerParamsInfo(){
     CHECK(monitor,)

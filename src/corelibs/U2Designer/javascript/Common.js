@@ -148,3 +148,70 @@ function addWidget(title, dashTab, cntNum, id) {
             "</div>";
     }
 }
+function showOnlyLang(lang) {
+    var elements = document.getElementsByClassName("translatable");
+    for(var i=0; i<elements.length; i++){
+      var attr = elements[i].getAttribute("lang");
+      if(attr !== lang){
+        elements[i].style.display = "none";
+      }else{
+        elements[i].style.display = "";
+      }
+    }
+}
+
+function loadScript(url, callback)
+{
+    // Adding the script tag to the head as suggested before
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
+    script.onreadystatechange = callback;
+    script.onload = callback;
+
+    // Fire the loading
+    head.appendChild(script);
+}
+
+document.addEventListener("DOMContentLoaded",
+        loadScript("qrc:///javascript/qwebchannel/qwebchannel-qt570.js",
+            function(){
+                new QWebChannel(qt.webChannelTransport,
+                    function (channel) {
+                        window.agent = channel.objects.agent;
+                        window.agent.si_progressChanged.connect(function(progress){
+                            statusWidget.sl_progressChanged(progress);
+                        });
+                        window.agent.si_taskStateChanged.connect(function(state){
+                            statusWidget.sl_taskStateChanged(state);
+                        });
+                        window.agent.si_newProblem.connect(function(problem, count){
+                            if(document.getElementById("problemsWidget") === null){
+                                problemWidget = new ProblemsWidget("problemsWidget");
+                            }
+                            problemWidget.sl_newProblem(problem, count);
+                        });
+                        window.agent.si_workerStatsInfoChanged.connect(function(info){
+                            statisticsWidget.sl_workerStatsInfoChanged(info);
+                        });
+                        window.agent.si_workerStatsUpdate.connect(function(workersStatisticsInfo){
+                            statisticsWidget.sl_workerStatsUpdate(workersStatisticsInfo);
+                        });
+                        window.agent.si_newOutputFile.connect(function(fileInfo){
+                            outputWidget.sl_newOutputFile(fileInfo);
+                        });
+                        window.agent.si_onLogChanged.connect(function(logEntry){
+                            if(externalToolsWidget === null){
+                                externalToolsWidget = new ExternalToolsWidget("externalToolsWidget");
+                            }
+                            externalToolsWidget.sl_onLogChanged(logEntry);
+                        });
+                        showOnlyLang(agent.lang);
+                        //document.getElementById("log_messages").innerHTML += "Agent created! <br/>"; //sample of debug message
+                });
+    })
+);
