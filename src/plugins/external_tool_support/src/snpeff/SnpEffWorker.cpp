@@ -49,6 +49,7 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "SnpEffDatabaseDelegate.h"
 #include "SnpEffSupport.h"
 #include "SnpEffTask.h"
 #include "SnpEffWorker.h"
@@ -67,6 +68,7 @@ const QString SnpEffWorker::CUSTOM_DIR_ID = "custom-dir";
 const QString SnpEffWorker::INPUT_FORMAT = "inp-format";
 const QString SnpEffWorker::OUTPUT_FORMAT = "out-format";
 const QString SnpEffWorker::GENOME = "genome";
+const QString SnpEffWorker::TEST_DB = "test";
 const QString SnpEffWorker::UPDOWN_LENGTH = "updown-length";
 
 const QString SnpEffWorker::CANON = "canon";
@@ -131,6 +133,9 @@ void SnpEffFactory::init() {
         Descriptor genome(SnpEffWorker::GENOME, SnpEffWorker::tr("Genome"),
             SnpEffWorker::tr("Select the target genome. Genome data will be downloaded if it is not found."));
 
+        Descriptor testDescr(SnpEffWorker::TEST_DB, SnpEffWorker::tr("TEST"),
+            SnpEffWorker::tr("some description."));
+
         Descriptor updownLength(SnpEffWorker::UPDOWN_LENGTH, SnpEffWorker::tr("Upstream/downstream length"),
             SnpEffWorker::tr("Upstream and downstream interval size. Eliminate any upstream and downstream effect by using 0 length"));
 
@@ -160,6 +165,8 @@ void SnpEffFactory::init() {
         a << new Attribute( hgvs, BaseTypes::BOOL_TYPE(), false, false);
         a << new Attribute( lof, BaseTypes::BOOL_TYPE(), false, false);
         a << new Attribute( motif, BaseTypes::BOOL_TYPE(), false, false);
+
+        a << new Attribute( testDescr, BaseTypes::STRING_TYPE());
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -214,6 +221,8 @@ void SnpEffFactory::init() {
             genomeMap["C. elegans (WS241)"] = "WS241";
             genomeMap["Mycobacterium smegmatis"] = "Mycobacterium_smegmatis";
             delegates[SnpEffWorker::GENOME] = new ComboBoxEditableDelegate(genomeMap);
+
+            delegates[SnpEffWorker::TEST_DB] = new SnpEffDatabaseDelegate();
         }
 
     }

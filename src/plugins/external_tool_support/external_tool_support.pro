@@ -142,6 +142,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/seqpos/SeqPosSupport.h \
            src/seqpos/SeqPosTask.h \
            src/seqpos/SeqPosWorker.h \
+           src/snpeff/SnpEffDatabaseDelegate.h \
            src/snpeff/SnpEffSupport.h \
            src/snpeff/SnpEffTask.h \
            src/snpeff/SnpEffWorker.h \
@@ -195,6 +196,7 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
          src/tcoffee/TCoffeeSupportRunDialog.ui \
+         src/snpeff/SnpEffDatabaseDialog.ui \
          src/spades/SpadesSettings.ui \
          src/utils/BlastAllSupportDialog.ui \
          src/utils/BlastDBSelectorWidget.ui
@@ -339,6 +341,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/seqpos/SeqPosSupport.cpp \
            src/seqpos/SeqPosTask.cpp \
            src/seqpos/SeqPosWorker.cpp \
+           src/snpeff/SnpEffDatabaseDelegate.cpp \
            src/snpeff/SnpEffSupport.cpp \
            src/snpeff/SnpEffTask.cpp \
            src/snpeff/SnpEffWorker.cpp \
