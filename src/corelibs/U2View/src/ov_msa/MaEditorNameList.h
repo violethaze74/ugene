@@ -113,12 +113,13 @@ protected:
     void drawAll();
 
     void drawSelection(QPainter& p);
+    void drawSequenceItem(QPainter& p, const QString& text, const U2Region& yRange, bool selected, bool isReference);
     virtual void drawSequenceItem(QPainter& p, int row, int firstVisibleRow, const QString& text, bool selected);
-
-    void drawCollapsibileSequenceItem(QPainter& p, int s, const QString& name, bool selected, const U2Region& yRange, int pos);
 
     void drawCollapsibileSequenceItem(QPainter &p, const QString &name, const QRect& rect,
                                       bool selected, bool collapsed, bool isReference);
+    void drawChildSequenceItem(QPainter &p, const QString &name, const QRect& rect,
+                                        bool selected, bool isReference);
 
     // SANGER_TODO: drawSequenceItem should use these methods
     void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReferece);

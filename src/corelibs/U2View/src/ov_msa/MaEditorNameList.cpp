@@ -680,6 +680,12 @@ void MaEditorNameList::drawContent(QPainter& p) {
 
     const MultipleAlignment al = msaObj->getMultipleAlignment();
 
+
+    U2OpStatusImpl os;
+    int referenceId = editor->getReferenceRowId() == U2MsaRow::INVALID_ROW_ID ? U2MsaRow::INVALID_ROW_ID
+                                                                              : msaObj->getMultipleAlignment()->getRowIndexByRowId(editor->getReferenceRowId(), os);
+    SAFE_POINT_OP(os, );
+
     if (ui->isCollapsibleMode()) {
         MSACollapsibleItemModel* m = ui->getCollapseModel();
         QVector<U2Region> range;
@@ -692,7 +698,20 @@ void MaEditorNameList::drawContent(QPainter& p) {
             int end = qMin(numRows, static_cast<int>(r.endPos()));
             for (int s = r.startPos; s < end; s++) {
                 bool isSelected = isRowInSelection(pos);
-                drawCollapsibileSequenceItem(p, s, getTextForRow(s), isSelected, yRange, pos);
+                if (m->itemAt(pos) < 0) {
+                    p.translate(CROSS_SIZE * 2, 0);
+                    drawSequenceItem(p, getTextForRow(s), yRange, isSelected, s == referenceId);
+                    p.translate(- CROSS_SIZE * 2, 0);
+                } else {
+                    const MSACollapsableItem& item = m->getItem(m->itemAt(pos));
+                    QRect rect = calculateTextRect(yRange, isSelected);
+                    // SANGER_TODO: check reference
+                    if (pos == m->getItemPos(m->itemAt(pos))) {
+                        drawCollapsibileSequenceItem(p, getTextForRow(s), rect, isSelected, item.isCollapsed, s == referenceId);
+                    } else {
+                        drawChildSequenceItem(p, getTextForRow(s), rect, isSelected, s == referenceId);
+                    }
+                }
                 yRange.startPos += ui->getEditor()->getRowHeight();
                 pos++;
             }
@@ -705,113 +724,40 @@ void MaEditorNameList::drawContent(QPainter& p) {
     }
 }
 
-void MaEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleRow, const QString &text, bool selected) {
-    //    p.setPen(Qt::black);
-    //    p.setFont(getFont(selected));
-
-    U2Region yRange = ui->getSequenceArea()->getSequenceYRange(row, firstVisibleRow, true);
+void MaEditorNameList::drawSequenceItem(QPainter& p, const QString& text, const U2Region& yRange, bool selected, bool isReference) {
     QRect rect = calculateTextRect(yRange, selected);
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
     CHECK(maObj != NULL, );
-    U2OpStatusImpl os;
-    // SANGER_TODO: simplify getting the reference status - no reference here!
-    bool isReference = row == maObj->getMultipleAlignment()->getRowIndexByRowId(editor->getReferenceRowId(), os);
     drawBackground(p, text, rect, isReference);
-    //    p.fillRect(textRect, Qt::white);
-    //    if(groupColors.contains(text) && QColor(Qt::black) != groupColors[text]) {
-    //        p.fillRect(textRect, groupColors[text]);
-    //    }
-
-//    drawCollapsePrimitive(p, collapsed, rect);
-//    p.translate(CROSS_SIZE * 2, 0);
     drawText(p, text, rect, selected);
-//    p.translate( - CROSS_SIZE * 2, 0);
-
-
-
-//    MultipleAlignmentObject* maObj = editor->getMaObject();
-//    CHECK(maObj != NULL, );
-//    U2OpStatusImpl os;
-//    if (row == maObj->getMultipleAlignment()->getRowIndexByRowId(editor->getReferenceRowId(), os)) {
-//        drawRefSequence(p, textRect);
-//    }
-
-//    p.drawText(textRect, Qt::AlignTop | Qt::AlignLeft, text);
 }
 
-void MaEditorNameList::drawCollapsibileSequenceItem(QPainter& p, int s, const QString& , bool selected, const U2Region& yRange, int pos) {
-    p.setPen(Qt::black);
-    p.setFont(getFont(selected));
-
-//    QRect textRect = calculateTextRect(yRange, selected);
-
-    MSACollapsibleItemModel const* model = ui->getCollapseModel();
-    int index = model->itemAt(pos);
-
-    QStyleOptionViewItemV2 branchOption;
-
-    int delta = 0;
-
-    QString seqName = getTextForRow(s);
-    QRect textRect = QRect(textRect.left() + CROSS_SIZE*2 + delta, textRect.top(), textRect.width() - ((5*CROSS_SIZE)/2), textRect.height());
-
-
-    if (index >= 0) {
-        branchOption.rect = calculateButtonRect(textRect);
-
-        const MSACollapsableItem& item = model->getItem(index);
-
-        if (item.isCollapsed) {
-            branchOption.state = QStyle::State_Children;
-        } else {
-            // check
-            drawCollapsibileSequenceItem(p, seqName, textRect, selected, pos != model->getItemPos(index), false);
-
-
-//            if (pos == model->getItemPos(index)) {
-//                branchOption.state = QStyle::State_Open | QStyle::State_Children;
-//            } else {
-//                branchOption.rect.setTop(yRange.startPos);
-//                branchOption.rect.setHeight(yRange.length);
-//                int itemLastPos = model->getItemPos(index) + item.numRows - 1;
-//                branchOption.state = QStyle::State_Item;
-//                if (itemLastPos != pos) {
-//                    branchOption.state |= QStyle::State_Sibling;
-//                }
-//                delta = CHILDREN_OFFSET;
-//            }
-        }
-        style()->drawPrimitive(QStyle::PE_IndicatorBranch, &branchOption, &p, this);
-    }
-
-
-    p.fillRect(textRect, Qt::white);
-    if(groupColors.contains(seqName)) {
-        if(QColor(Qt::black) != groupColors[seqName]) {
-            p.fillRect(textRect, groupColors[seqName]);
-        }
-    }
-
-    const MultipleAlignment alignment = editor->getMaObject()->getMultipleAlignment();
+void MaEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleRow, const QString &text, bool selected) {
+    U2Region yRange = ui->getSequenceArea()->getSequenceYRange(row, firstVisibleRow, true);
+    // SANGER_TODO: simplify getting the reference status - no reference here!
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    CHECK(maObj != NULL, );
     U2OpStatusImpl os;
-    if (s == alignment->getRowIndexByRowId(editor->getReferenceRowId(), os)) {
-        drawRefSequence(p, textRect);
-    }
-
-    p.drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, seqName);
-    if (labels) {
-        labels->setObjectName(labels->objectName() + "|" + seqName);
-    }
+    bool isReference = row == maObj->getMultipleAlignment()->getRowIndexByRowId(editor->getReferenceRowId(), os);
+    drawSequenceItem(p, text, yRange, selected, isReference);
 }
 
 void MaEditorNameList::drawCollapsibileSequenceItem(QPainter &p, const QString &name, const QRect& rect,
-                                                     bool selected, bool collapsed, bool isReference) {
+                                                    bool selected, bool collapsed, bool isReference) {
     drawBackground(p, name, rect, isReference);
     drawCollapsePrimitive(p, collapsed, rect);
     p.translate(CROSS_SIZE * 2, 0);
     drawText(p, name, rect, selected);
     p.translate( - CROSS_SIZE * 2, 0);
+}
+
+void MaEditorNameList::drawChildSequenceItem(QPainter &p, const QString &name, const QRect& rect,
+                                             bool selected, bool isReference) {
+    drawBackground(p, name, rect, isReference);
+    p.translate(CROSS_SIZE * 2 + CHILDREN_OFFSET, 0);
+    drawText(p, name, rect, selected);
+    p.translate( - CROSS_SIZE * 2 - CHILDREN_OFFSET, 0);
 }
 
 void MaEditorNameList::drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReference) {
@@ -837,7 +783,7 @@ void MaEditorNameList::drawCollapsePrimitive(QPainter& p, bool collapsed, const 
     QStyleOptionViewItemV2 branchOption;
     branchOption.rect = calculateButtonRect(rect);
     if (collapsed) {
-        branchOption.state = QStyle::State_Children;
+        branchOption.state = QStyle::State_Children | QStyle::State_Sibling; // test
     } else {
         branchOption.state = QStyle::State_Open | QStyle::State_Children;
     }
@@ -977,9 +923,6 @@ McaEditorNameList::McaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar)
 }
 
 void McaEditorNameList::drawSequenceItem(QPainter& p, int row, int firstVisibleRow, const QString& text, bool selected) {
-    p.setPen(Qt::black);
-    p.setFont(getFont(selected));
-
     U2Region yRange = ui->getSequenceArea()->getSequenceYRange(row, firstVisibleRow, true);
     QRect textRect = calculateTextRect(yRange, selected);
 
