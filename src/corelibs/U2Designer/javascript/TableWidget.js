@@ -180,7 +180,7 @@ function OutputFilesWidget(containerId){ //TODO
     // CHECK(NULL != m, result);
 
     //result.push(createFileButton(fileInfo));
-    result.push(showFileButton(fileInfo.url));
+    result.push(showFileButton(fileInfo.url, false, fileInfo.openBySystem));
     result.push(self.wrapLongText(fileInfo.actor));// result << wrapLongText(m->actorName(info.actor));
     return result;
   }

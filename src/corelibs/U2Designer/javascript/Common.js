@@ -61,7 +61,7 @@ function showLoadButton(showHint) {
     }
 }
 
-function showFileButton(url, disabled) {
+function showFileButton(url, disabled, notOpenedByUgene) {
     if (disabled === true) {
         disabled = 'disabled';
     } else {
@@ -72,21 +72,39 @@ function showFileButton(url, disabled) {
         return "";
     var fileName = url.slice(url.lastIndexOf('/') + 1, url.length);
     var path = url.slice(0, url.lastIndexOf('/') + 1);
-    var button = 
-        '<div class="file-button-ctn">' +
-            '<div class="btn-group full-width file-btn-group">' + 
-                '<button class="btn full-width long-text" onclick="agent.openUrl(\'' + url + '\')"' +
-                                disabled + '>' + fileName +
-                '</button>' +
-                    '<button class="btn dropdown-toggle" data-toggle="dropdown">' + 
-                        '<span class="caret"></span>' +
+    var button;
+    if(notOpenedByUgene){
+        button =
+            '<div class="file-button-ctn">' +
+                '<div class="btn-group full-width file-btn-group">' +
+                    '<button class="btn full-width long-text" onclick="agent.openByOS(\'' + path + fileName + '\')"' +
+                                    disabled + '>' + fileName +
                     '</button>' +
-                '<ul class="dropdown-menu full-width">' +
-                        '<li><a style="white-space: normal;" onclick="agent.openByOS(\'' + path + '\')"><span lang=\"en\" class=\"translatable\">Open containing folder</span><span lang=\"ru\" class=\"translatable\">Открыть директорию, содержащую файл</span></a></li>' +
-                        '<li><a style="white-space: normal;" onclick="agent.openByOS(\'' + path + fileName + '\')"><span lang=\"en\" class=\"translatable\">Open by operating system</span><span lang=\"ru\" class=\"translatable\">Открыть при помощи операционной системы</span></a></li>' + 
-                    '</ul>' +
-            '</div>' +
-        '</div>';
+                        '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
+                            '<span class="caret"></span>' +
+                        '</button>' +
+                    '<ul class="dropdown-menu full-width">' +
+                            '<li><a style="white-space: normal;" onclick="agent.openByOS(\'' + path + '\')"><span lang=\"en\" class=\"translatable\">Open containing folder</span><span lang=\"ru\" class=\"translatable\">Открыть директорию, содержащую файл</span></a></li>' +
+                        '</ul>' +
+                '</div>' +
+            '</div>';
+    }else{
+        button =
+            '<div class="file-button-ctn">' +
+                '<div class="btn-group full-width file-btn-group">' +
+                    '<button class="btn full-width long-text" onclick="agent.openUrl(\'' + url + '\')"' +
+                                    disabled + '>' + fileName +
+                    '</button>' +
+                        '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
+                            '<span class="caret"></span>' +
+                        '</button>' +
+                    '<ul class="dropdown-menu full-width">' +
+                            '<li><a style="white-space: normal;" onclick="agent.openByOS(\'' + path + '\')"><span lang=\"en\" class=\"translatable\">Open containing folder</span><span lang=\"ru\" class=\"translatable\">Открыть директорию, содержащую файл</span></a></li>' +
+                            '<li><a style="white-space: normal;" onclick="agent.openByOS(\'' + path + fileName + '\')"><span lang=\"en\" class=\"translatable\">Open by operating system</span><span lang=\"ru\" class=\"translatable\">Открыть при помощи операционной системы</span></a></li>' +
+                        '</ul>' +
+                '</div>' +
+            '</div>';
+    }
     return button;
 }
 
@@ -190,6 +208,7 @@ document.addEventListener("DOMContentLoaded",
                             statusWidget.sl_taskStateChanged(state);
                         });
                         window.agent.si_newProblem.connect(function(problem, count){
+                            //document.getElementById("log_messages").innerHTML += "new problem! <br/> mess: "+problem.message+"<br/>"; //sample of debug message
                             if(document.getElementById("problemsWidget") === null){
                                 problemWidget = new ProblemsWidget("problemsWidget");
                             }
@@ -211,6 +230,8 @@ document.addEventListener("DOMContentLoaded",
                             externalToolsWidget.sl_onLogChanged(logEntry);
                         });
                         showOnlyLang(agent.lang);
+                        window.agent.sl_webChannelInitialized();
+
                         //document.getElementById("log_messages").innerHTML += "Agent created! <br/>"; //sample of debug message
                 });
     })

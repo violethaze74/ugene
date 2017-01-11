@@ -69,6 +69,8 @@ public:
 
     bool isWorkflowInProgress();
 
+    DashboardPageController* getController();
+
 signals:
     void si_loadSchema(const QString &url);
     void si_hideLoadBtnHint();
@@ -82,18 +84,10 @@ public slots:
 private slots:
     void sl_runStateChanged(bool paused);
     void sl_loaded(bool ok);
-    void sl_addProblemsWidget();
     void sl_serialize();
     void sl_setDirectory(const QString &dir);
-    void sl_workflowStateChanged(Monitor::TaskState state);
+    void sl_workflowStateChanged(U2::Workflow::Monitor::TaskState state);
     void sl_serializeContent(const QString& content);
-    void sl_taskStateChanged(Monitor::TaskState);
-    void sl_newProblem(const Problem &info, int count);
-    void sl_workerInfoChanged(const QString &actorId, const U2::Workflow::Monitor::WorkerInfo &info);
-    void sl_workerStatsUpdate();
-    void sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &info);
-    void sl_onLogUpdate();
-    void sl_onLogChanged(U2::Workflow::Monitor::LogEntry entry);
 
 private:
     bool loaded;
@@ -179,11 +173,51 @@ private:
     QList<DashboardInfo> dashboards;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////
-using namespace Workflow::Monitor;
+class DashboardJsAgent;
 class DashboardPageController : public QObject {
     Q_OBJECT
 public:
     DashboardPageController(Dashboard* parent);
+
+
+    DashboardJsAgent* getAgent();
+    void setWebChannelInitialized();
+    void setDataReady();
+
+public slots:
+    void sl_pageLoaded();
+    void sl_progressChanged(int progress);
+    void sl_taskStateChanged(U2::Workflow::Monitor::TaskState state);
+    void sl_newProblem(const Problem &info, int count);
+    void sl_workerInfoChanged(const QString &actorId, const U2::Workflow::Monitor::WorkerInfo &info);
+    void sl_workerStatsUpdate();
+    void sl_onLogUpdate(QJsonArray extToolsLog);
+    void sl_onLogChanged(U2::Workflow::Monitor::LogEntry entry);
+    void sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &info);
+private:
+    void initData();
+
+    int progress;
+    QString state;
+    QList<QJsonObject/*, int*/> problems;
+    QList<QJsonObject> infos;
+    QList<QJsonArray> workersStatisticsInfos;
+    QList<QJsonArray> extToolsLogs;
+    QList<QJsonObject> logEntries;
+    QList<QJsonObject> fileInfos;
+
+    bool isPageLoaded;
+    bool isWebChannelInitialized;
+    bool isDataReady;
+    DashboardJsAgent* agent;
+    const WorkflowMonitor* monitor;
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////
+class DashboardJsAgent : public QObject {
+    Q_OBJECT
+public:
+    DashboardJsAgent(Dashboard* parent);
 
     Q_PROPERTY(QString lang READ getLang CONSTANT)
     Q_PROPERTY(QJsonArray workersParamsInfo READ getWorkersParamsInfo CONSTANT)
@@ -192,6 +226,8 @@ public:
 public slots:
     void sl_onJsError(const QString& errorMessage);
     void sl_checkETsLog();
+    void sl_webChannelInitialized();
+
     void openUrl(const QString &url);
     void openByOS(const QString &url);
     QString absolute(const QString &url);

@@ -334,9 +334,6 @@ void BaseDocWriter::storeData(const QStringList &urls, const QVariantMap &data, 
 
 Task * BaseDocWriter::tick() {
     U2OpStatusImpl os;
-    QEventLoop loop;
-    QTimer::singleShot(5000, &loop, SLOT(quit()));
-    loop.exec();
     while(ch->hasMessage()) {
         const Message inputMessage = getMessageAndSetupScriptValues(ch);
         takeParameters(os);

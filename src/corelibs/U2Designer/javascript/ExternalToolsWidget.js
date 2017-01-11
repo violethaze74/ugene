@@ -173,14 +173,12 @@ function ExternalToolsWidget(containerId){
               addContent(launchNode, 'Output log', idBase + '_out', 'badge badge-info', content);
               break;
           case 2://"program"
-              document.getElementById("log_messages").innerHTML += "si_onLogChanged: program - "+content+" <br/>";
               if(null === infoNode) {
                   infoNode = addInfoNode(launchNode);
               }
               addContent(infoNode, 'Executable file', idBase + '_program', 'badge program-path', content);
               break;
           case 3://"arguments"
-              document.getElementById("log_messages").innerHTML += "si_onLogChanged: arguments - "+content+" <br/>";
               if(null === infoNode) {
                   infoNode = addInfoNode(launchNode);
               }
