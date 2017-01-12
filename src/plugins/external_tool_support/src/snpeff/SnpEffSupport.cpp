@@ -20,6 +20,7 @@
  */
 
 #include "SnpEffSupport.h"
+#include "SnpEffDatabaseListTask.h"
 #include "java/JavaSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -29,6 +30,7 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/ScriptingToolRegistry.h>
+#include <U2Core/Settings.h>
 
 #include <U2Formats/ConvertFileTask.h>
 
@@ -54,6 +56,8 @@ SnpEffSupport::SnpEffSupport(const QString& name, const QString& path) : Externa
 
     toolRunnerProgramm = ET_JAVA;
     dependencies << ET_JAVA;
+
+    connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
 }
 
 const QStringList SnpEffSupport::getToolRunnerAdditionalOptions() {
@@ -72,6 +76,13 @@ const QStringList SnpEffSupport::getToolRunnerAdditionalOptions() {
 #endif // windows or linux
     result << "-Xmx" + QString::number(memSize > 150 ? memSize - 150 : memSize) + "M";
     return result;
+}
+
+void SnpEffSupport::sl_validationStatusChanged(bool isValid) {
+    if (isValid) {
+        SnpEffDatabaseListTask* task = new SnpEffDatabaseListTask();
+        AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    }
 }
 
 }//namespace

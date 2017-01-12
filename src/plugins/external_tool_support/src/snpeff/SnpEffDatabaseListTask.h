@@ -19,25 +19,26 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SNPEFF_SUPPORT_H_
-#define _U2_SNPEFF_SUPPORT_H_
+#ifndef _U2_SNPEFF_DATABASE_LIST_TASK_H_
+#define _U2_SNPEFF_DATABASE_LIST_TASK_H_
 
-#include <U2Core/ExternalToolRegistry.h>
-
-#define ET_SNPEFF "SnpEff"
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
-class SnpEffSupport : public ExternalTool {
+class SnpEffDatabaseListTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    SnpEffSupport(const QString& name, const QString& path = "");
+    SnpEffDatabaseListTask();
 
-    const QStringList getToolRunnerAdditionalOptions();
+    void prepare();
+    void run();
 
-private slots:
-    void sl_validationStatusChanged(bool isValid);
+    QString getDbListFilePath() { return dbListFilePath; }
+private:
+    QString dbListFilePath;
 };
 
-}//namespace
-#endif // _U2_SNPEFF_SUPPORT_H_
+} // nemaspace U2
+
+#endif // _U2_SNPEFF_DATABASE_LIST_TASK_H_
