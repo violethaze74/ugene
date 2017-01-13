@@ -820,7 +820,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="20"/>
         <source>Assemble Genomes</source>
-        <translation>Геномы сборки</translation>
+        <translation>Сборка генома de novo</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="28"/>
