@@ -63,6 +63,11 @@ void SnpEffDatabaseListModel::getData(const QString &databaseListFilePath) {
     databaseCount = counter;
 }
 
+QString SnpEffDatabaseListModel::getGenome(int index) const {
+    SAFE_POINT(databaseList.contains(index), "Invalid index", QString());
+    return databaseList.value(index).getGenome();
+}
+
 int SnpEffDatabaseListModel::rowCount(const QModelIndex &) const {
     return databaseCount;
 }

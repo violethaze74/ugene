@@ -44,6 +44,8 @@ public:
     SnpEffDatabaseListModel(QObject* parent = 0);
     void getData(const QString& databaseListFilePath);
 
+    QString getGenome(int index) const;
+
 private:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;

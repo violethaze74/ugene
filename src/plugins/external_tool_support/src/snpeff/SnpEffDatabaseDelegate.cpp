@@ -41,7 +41,12 @@ SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget* parent)
 }
 
 QString SnpEffDatabaseDialog::getDatabase() const {
-    return lineEdit->text();
+    QItemSelectionModel* model = tableView->selectionModel();
+    SAFE_POINT(model != NULL, "Selection model is NULL", QString());
+    QModelIndexList selection = model->selectedRows();
+    SAFE_POINT(selection.size() == 1, "Invalid selection state", QString());
+    QModelIndex index = selection.first();
+    return SnpEffSupport::databaseModel->getGenome(index.row());
 }
 
 /************************************************************************/
