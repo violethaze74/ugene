@@ -23,6 +23,7 @@
 #include "SnpEffDatabaseListModel.h"
 #include "SnpEffSupport.h"
 
+#include <QPushButton>
 #include <QLayout>
 
 namespace U2 {
@@ -35,9 +36,19 @@ SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
 
-    tableView->setModel(SnpEffSupport::databaseModel);
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
+
+    proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    connect(lineEdit, SIGNAL(textChanged(QString)), proxyModel, SLOT(setFilterFixedString(QString)));
+    proxyModel->setSourceModel(SnpEffSupport::databaseModel);
+
+    tableView->setModel(proxyModel);
     tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    tableView->verticalHeader()->hide();
+
+    connect(tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
 }
 
 QString SnpEffDatabaseDialog::getDatabase() const {
@@ -45,7 +56,7 @@ QString SnpEffDatabaseDialog::getDatabase() const {
     SAFE_POINT(model != NULL, "Selection model is NULL", QString());
     QModelIndexList selection = model->selectedRows();
     SAFE_POINT(selection.size() == 1, "Invalid selection state", QString());
-    QModelIndex index = selection.first();
+    QModelIndex index = proxyModel->mapToSource(selection.first());
     return SnpEffSupport::databaseModel->getGenome(index.row());
 }
 

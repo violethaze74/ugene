@@ -19,8 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_VIEW_SEARCH_BOX_
-#define _U2_PROJECT_VIEW_SEARCH_BOX_
+#ifndef _U2_SEARCH_BOX_H_
+#define _U2_SEARCH_BOX_H_
+
+#include <U2Core/global.h>
 
 #include <QLineEdit>
 
@@ -30,10 +32,10 @@ class QToolButton;
 
 namespace U2 {
 
-class ProjectViewSearchBox : public QLineEdit {
+class U2GUI_EXPORT SearchBox : public QLineEdit {
     Q_OBJECT
 public:
-    ProjectViewSearchBox(QWidget *p);
+    SearchBox(QWidget *p);
 
 public slots:
     void sl_filteringStarted();
@@ -58,6 +60,5 @@ private:
     QToolButton *clearButton;
 };
 
-}
-
-#endif // _U2_PROJECT_VIEW_SEARCH_BOX_
+} // namespace U2
+#endif // _U2_SEARCH_BOX_H_

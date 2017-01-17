@@ -11,14 +11,18 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SnpEff Database</string>
+   <string>Select SnpEff Database</string>
   </property>
   <property name="modal">
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QLineEdit" name="lineEdit"/>
+    <widget class="U2::SearchBox" name="lineEdit">
+     <property name="placeholderText">
+      <string>Search...</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QTableView" name="tableView">
@@ -45,6 +49,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>U2::SearchBox</class>
+   <extends>QLineEdit</extends>
+   <header location="global">U2Gui/SearchBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

@@ -92,17 +92,11 @@ QVariant SnpEffDatabaseListModel::data(const QModelIndex &index, int role) const
 }
 
 QVariant SnpEffDatabaseListModel::headerData(int section, Qt::Orientation orientation, int role) const {
-    if (role == Qt::DisplayRole) {
-        switch (orientation) {
-        case Qt::Horizontal: {
-            if (section == 0) {
-                return tr("Genome");
-            } else {
-                return tr("Organism");
-            }
-        }
-        case Qt::Vertical:
-            return section + 1;
+    if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
+        if (section == 0) {
+            return tr("Genome");
+        } else {
+            return tr("Organism");
         }
     }
     return QVariant();

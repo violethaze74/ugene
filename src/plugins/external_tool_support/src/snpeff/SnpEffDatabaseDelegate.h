@@ -30,6 +30,8 @@
 
 #include "ui_SnpEffDatabaseDialog.h"
 
+class QSortFilterProxyModel;
+
 namespace U2 {
 namespace LocalWorkflow {
 
@@ -38,10 +40,11 @@ namespace LocalWorkflow {
 /************************************************************************/
 class SnpEffDatabaseDialog : public QDialog, public Ui_SnpEffDatabaseDialog {
     Q_OBJECT
-    // TODO
 public:
     SnpEffDatabaseDialog(QWidget* parent = 0);
     QString getDatabase() const;
+private:
+    QSortFilterProxyModel* proxyModel;
 };
 
 /************************************************************************/
