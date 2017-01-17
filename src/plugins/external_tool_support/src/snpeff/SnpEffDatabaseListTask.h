@@ -37,6 +37,7 @@ public:
     QString getDbListFilePath() { return dbListFilePath; }
 private:
     QString dbListFilePath;
+    QString snpEffVersion;
 };
 
 } // nemaspace U2

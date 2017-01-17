@@ -45,6 +45,7 @@ public:
     void getData(const QString& databaseListFilePath);
 
     QString getGenome(int index) const;
+    bool isEmpty() { return databaseCount == 0; }
 
 private:
     int rowCount(const QModelIndex &parent) const;

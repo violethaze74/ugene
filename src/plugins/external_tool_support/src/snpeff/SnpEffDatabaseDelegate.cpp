@@ -23,7 +23,15 @@
 #include "SnpEffDatabaseListModel.h"
 #include "SnpEffSupport.h"
 
+#include "ExternalToolSupportSettingsController.h"
+
+#include <U2Core/AppContext.h>
+#include <U2Core/QObjectScopedPointer.h>
+
+#include <U2Gui/AppSettingsGUI.h>
+
 #include <QPushButton>
+#include <QMessageBox>
 #include <QLayout>
 
 namespace U2 {
@@ -49,6 +57,8 @@ SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget* parent)
     tableView->verticalHeader()->hide();
 
     connect(tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+
+    setMinimumSize(600, 400);
 }
 
 QString SnpEffDatabaseDialog::getDatabase() const {
@@ -66,8 +76,7 @@ QString SnpEffDatabaseDialog::getDatabase() const {
 SnpEffDatabasePropertyWidget::SnpEffDatabasePropertyWidget(QWidget *parent, DelegateTags *tags)
     : PropertyWidget(parent, tags) {
     lineEdit = new QLineEdit(this);
-    // TODO: change the translator
-    lineEdit->setPlaceholderText(tr("Select the database -->"));
+    lineEdit->setPlaceholderText(tr("Select genome"));
     lineEdit->setReadOnly(true);
     lineEdit->setObjectName("lineEdit");
     lineEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -93,6 +102,30 @@ void SnpEffDatabasePropertyWidget::setValue(const QVariant &value) {
 }
 
 void SnpEffDatabasePropertyWidget::sl_showDialog() {
+    // snpEff database list is available only if there is a valid tool!
+    if (!AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF)->isValid()) {
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
+        msgBox->setWindowTitle(QString(ET_SNPEFF));
+        msgBox->setText(tr("The list of %1 genomes is not available.\r\nPath for %1 tool is not selected.").arg(ET_SNPEFF));
+        msgBox->setInformativeText(tr("Do you want to select it now?"));
+        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox->setDefaultButton(QMessageBox::Yes);
+        const int ret = msgBox->exec();
+        CHECK(!msgBox.isNull(), );
+
+        switch (ret) {
+           case QMessageBox::Yes:
+               AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+               break;
+           case QMessageBox::No:
+               return;
+           default:
+               assert(false);
+               break;
+         }
+        return;
+    }
+
     SnpEffDatabaseDialog* dlg = new SnpEffDatabaseDialog(this);
     if (dlg->exec() == QDialog::Accepted) {
         lineEdit->setText(dlg->getDatabase());

@@ -31,11 +31,12 @@
 
 namespace U2 {
 
-#define SNPEFF_DATABASE_LIST_SETTINGS + "snpEffDatabaseList"
+#define SNPEFF_DATABASE_LIST_SETTINGS + "snpEffDatabaseList_"
 
 SnpEffDatabaseListTask::SnpEffDatabaseListTask()
     : ExternalToolSupportTask(tr("SnpEff Database List task"), TaskFlags_FOSE_COSC) {
-    dbListFilePath = AppContext::getSettings()->getValue(SNPEFF_DATABASE_LIST_SETTINGS, QVariant(""), true).toString();
+    snpEffVersion = AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF)->getVersion();
+    dbListFilePath = AppContext::getSettings()->getValue(SNPEFF_DATABASE_LIST_SETTINGS + snpEffVersion, QVariant(""), true).toString();
 }
 
 void SnpEffDatabaseListTask::prepare() {
@@ -45,7 +46,7 @@ void SnpEffDatabaseListTask::prepare() {
 
     QString iniFile = AppContext::getSettings()->fileName();
     dbListFilePath = QFileInfo(iniFile).absoluteDir().absolutePath();
-    dbListFilePath += QString(QDir::separator()) + "SnpEff_DB.list";
+    dbListFilePath += QString(QDir::separator()) + "SnpEff_DB_" + snpEffVersion + ".list";
 
     const QStringList args = {"databases"};
     ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_SNPEFF, args, new SnpEffParser(),
@@ -59,8 +60,7 @@ void SnpEffDatabaseListTask::run() {
     if (stateInfo.isCoR()) {
         return;
     }
-    coreLog.info(dbListFilePath);
-    AppContext::getSettings()->setValue(SNPEFF_DATABASE_LIST_SETTINGS, dbListFilePath, true);
+    AppContext::getSettings()->setValue(SNPEFF_DATABASE_LIST_SETTINGS + snpEffVersion, dbListFilePath, true);
 }
 
 } // namespace U2

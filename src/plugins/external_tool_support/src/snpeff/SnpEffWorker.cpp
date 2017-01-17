@@ -68,7 +68,6 @@ const QString SnpEffWorker::CUSTOM_DIR_ID = "custom-dir";
 const QString SnpEffWorker::INPUT_FORMAT = "inp-format";
 const QString SnpEffWorker::OUTPUT_FORMAT = "out-format";
 const QString SnpEffWorker::GENOME = "genome";
-const QString SnpEffWorker::TEST_DB = "test";
 const QString SnpEffWorker::UPDOWN_LENGTH = "updown-length";
 
 const QString SnpEffWorker::CANON = "canon";
@@ -133,9 +132,6 @@ void SnpEffFactory::init() {
         Descriptor genome(SnpEffWorker::GENOME, SnpEffWorker::tr("Genome"),
             SnpEffWorker::tr("Select the target genome. Genome data will be downloaded if it is not found."));
 
-        Descriptor testDescr(SnpEffWorker::TEST_DB, SnpEffWorker::tr("TEST"),
-            SnpEffWorker::tr("some description."));
-
         Descriptor updownLength(SnpEffWorker::UPDOWN_LENGTH, SnpEffWorker::tr("Upstream/downstream length"),
             SnpEffWorker::tr("Upstream and downstream interval size. Eliminate any upstream and downstream effect by using 0 length"));
 
@@ -159,14 +155,12 @@ void SnpEffFactory::init() {
 
         a << new Attribute( inpFormat, BaseTypes::STRING_TYPE(), false, "vcf");
         a << new Attribute( outFormat, BaseTypes::STRING_TYPE(), false, "vcf");
-        a << new Attribute( genome, BaseTypes::STRING_TYPE(), false, "hg19");
+        a << new Attribute( genome, BaseTypes::STRING_TYPE(), true);
         a << new Attribute( updownLength, BaseTypes::STRING_TYPE(), false, "0");
         a << new Attribute( canon, BaseTypes::BOOL_TYPE(), false, false);
         a << new Attribute( hgvs, BaseTypes::BOOL_TYPE(), false, false);
         a << new Attribute( lof, BaseTypes::BOOL_TYPE(), false, false);
         a << new Attribute( motif, BaseTypes::BOOL_TYPE(), false, false);
-
-        a << new Attribute( testDescr, BaseTypes::STRING_TYPE());
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -182,6 +176,7 @@ void SnpEffFactory::init() {
         delegates[SnpEffWorker::OUT_MODE_ID] = new ComboBoxDelegate(directoryMap);
 
         delegates[SnpEffWorker::CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
+        delegates[SnpEffWorker::GENOME] = new SnpEffDatabaseDelegate();
 
         {
             QVariantMap inFMap;
@@ -210,21 +205,6 @@ void SnpEffFactory::init() {
             dataMap["20000 bases"] = "20000";
             delegates[SnpEffWorker::UPDOWN_LENGTH] = new ComboBoxDelegate(dataMap);
         }
-        {
-            QVariantMap genomeMap;
-            genomeMap["Arabidopsis Thaliana (athaliana130)"] = "athaliana130";
-            genomeMap["Drosophila Melanogaster (dm5.48)"] = "dm5.48";
-            genomeMap["Homo sapiens (hg19)"] = "hg19";
-            genomeMap["Homo sapiens (hg38)"] = "hg38";
-            genomeMap["Ebola Zaire Virus (NC_002549)"] = "NC_002549";
-            genomeMap["Ecoli K12 MG1655 (NC_000913)"] = "NC_000913";
-            genomeMap["C. elegans (WS241)"] = "WS241";
-            genomeMap["Mycobacterium smegmatis"] = "Mycobacterium_smegmatis";
-            delegates[SnpEffWorker::GENOME] = new ComboBoxEditableDelegate(genomeMap);
-
-            delegates[SnpEffWorker::TEST_DB] = new SnpEffDatabaseDelegate();
-        }
-
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);

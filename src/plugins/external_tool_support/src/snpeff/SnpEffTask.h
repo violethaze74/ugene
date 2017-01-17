@@ -70,7 +70,7 @@ protected:
 class SnpEffParser : public ExternalToolLogParser {
     Q_OBJECT
 public:
-    SnpEffParser();
+    SnpEffParser(const QString &genome = QString());
 
     void parseOutput(const QString& partOfLog);
     void parseErrOutput(const QString& partOfLog);
@@ -79,6 +79,7 @@ private:
     static QStringList initStringsToIgnore();
 
     QString lastErrLine;
+    QString genome;
 
     static const QStringList stringsToIgnore;
 };
