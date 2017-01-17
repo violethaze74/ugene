@@ -19,45 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_VIEW_SEARCH_BOX_
-#define _U2_PROJECT_VIEW_SEARCH_BOX_
+#ifndef _U2_SNPEFF_DATABASE_LIST_TASK_H_
+#define _U2_SNPEFF_DATABASE_LIST_TASK_H_
 
-#include <QLineEdit>
-
-class QLabel;
-class QMovie;
-class QToolButton;
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
-class ProjectViewSearchBox : public QLineEdit {
+class SnpEffDatabaseListTask : public ExternalToolSupportTask {
     Q_OBJECT
 public:
-    ProjectViewSearchBox(QWidget *p);
+    SnpEffDatabaseListTask();
 
-public slots:
-    void sl_filteringStarted();
-    void sl_filteringFinished();
+    void prepare();
+    void run();
 
-protected:
-    void resizeEvent(QResizeEvent *event);
-    void paintEvent(QPaintEvent *event);
-
-private slots:
-    void sl_filterCleared();
-    void sl_textChanged(const QString &text);
-
+    QString getDbListFilePath() { return dbListFilePath; }
 private:
-    void initStyle();
-    void updateInternalControlsPosition();
-
-    bool firstShow;
-    QLabel *progressLabel;
-    QMovie *progressMovie;
-    QLabel *searchIconLabel;
-    QToolButton *clearButton;
+    QString dbListFilePath;
+    QString snpEffVersion;
 };
 
-}
+} // nemaspace U2
 
-#endif // _U2_PROJECT_VIEW_SEARCH_BOX_
+#endif // _U2_SNPEFF_DATABASE_LIST_TASK_H_

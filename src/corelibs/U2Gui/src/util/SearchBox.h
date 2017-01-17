@@ -19,30 +19,46 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SNPEFF_SUPPORT_H_
-#define _U2_SNPEFF_SUPPORT_H_
+#ifndef _U2_SEARCH_BOX_H_
+#define _U2_SEARCH_BOX_H_
 
-#include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/global.h>
 
-#define ET_SNPEFF "SnpEff"
+#include <QLineEdit>
+
+class QLabel;
+class QMovie;
+class QToolButton;
 
 namespace U2 {
 
-class SnpEffDatabaseListModel;
-
-class SnpEffSupport : public ExternalTool {
+class U2GUI_EXPORT SearchBox : public QLineEdit {
     Q_OBJECT
 public:
-    SnpEffSupport(const QString& name, const QString& path = "");
+    SearchBox(QWidget *p);
 
-    const QStringList getToolRunnerAdditionalOptions();
+public slots:
+    void sl_filteringStarted();
+    void sl_filteringFinished();
 
-    static SnpEffDatabaseListModel* databaseModel;
+protected:
+    void resizeEvent(QResizeEvent *event);
+    void paintEvent(QPaintEvent *event);
 
 private slots:
-    void sl_validationStatusChanged(bool isValid);
-    void sl_databaseListIsReady();
+    void sl_filterCleared();
+    void sl_textChanged(const QString &text);
+
+private:
+    void initStyle();
+    void updateInternalControlsPosition();
+
+    bool firstShow;
+    QLabel *progressLabel;
+    QMovie *progressMovie;
+    QLabel *searchIconLabel;
+    QToolButton *clearButton;
 };
 
-}//namespace
-#endif // _U2_SNPEFF_SUPPORT_H_
+} // namespace U2
+#endif // _U2_SEARCH_BOX_H_

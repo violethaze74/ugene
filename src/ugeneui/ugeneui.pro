@@ -33,7 +33,6 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/project_support/ProjectServiceImpl.h \
            src/project_support/ProjectTasksGui.h \
            src/project_view/ProjectViewImpl.h \
-           src/project_view/ProjectViewSearchBox.h \
            src/shtirlitz/Shtirlitz.h \
            src/shtirlitz/StatisticalReportController.h \
            src/task_view/TaskStatusBar.h \
@@ -95,7 +94,6 @@ SOURCES += src/Main.cpp \
            src/project_support/ProjectTasksGui.cpp \
            src/project_view/BuiltInObjectViews.cpp \
            src/project_view/ProjectViewImpl.cpp \
-           src/project_view/ProjectViewSearchBox.cpp \
            src/shtirlitz/Shtirlitz.cpp \
            src/shtirlitz/StatisticalReportController.cpp \
            src/task_view/TaskStatusBar.cpp \
