@@ -20,6 +20,8 @@
  */
 
 #include "SnpEffDatabaseDelegate.h"
+#include "SnpEffDatabaseListModel.h"
+#include "SnpEffSupport.h"
 
 #include <QLayout>
 
@@ -32,6 +34,10 @@ namespace LocalWorkflow {
 SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
+
+    tableView->setModel(SnpEffSupport::databaseModel);
+    tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    tableView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 }
 
 QString SnpEffDatabaseDialog::getDatabase() const {

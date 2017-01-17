@@ -143,6 +143,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/seqpos/SeqPosTask.h \
            src/seqpos/SeqPosWorker.h \
            src/snpeff/SnpEffDatabaseDelegate.h \
+           src/snpeff/SnpEffDatabaseListModel.h \
            src/snpeff/SnpEffDatabaseListTask.h \
            src/snpeff/SnpEffSupport.h \
            src/snpeff/SnpEffTask.h \
@@ -343,6 +344,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/seqpos/SeqPosTask.cpp \
            src/seqpos/SeqPosWorker.cpp \
            src/snpeff/SnpEffDatabaseDelegate.cpp \
+           src/snpeff/SnpEffDatabaseListModel.cpp \
            src/snpeff/SnpEffDatabaseListTask.cpp \
            src/snpeff/SnpEffSupport.cpp \
            src/snpeff/SnpEffTask.cpp \

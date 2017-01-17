@@ -20,6 +20,7 @@
  */
 
 #include "SnpEffSupport.h"
+#include "SnpEffDatabaseListModel.h"
 #include "SnpEffDatabaseListTask.h"
 #include "java/JavaSupport.h"
 
@@ -36,6 +37,7 @@
 
 namespace U2 {
 
+SnpEffDatabaseListModel* SnpEffSupport::databaseModel = new SnpEffDatabaseListModel();
 
 SnpEffSupport::SnpEffSupport(const QString& name, const QString& path) : ExternalTool(name, path)
 {
@@ -81,8 +83,21 @@ const QStringList SnpEffSupport::getToolRunnerAdditionalOptions() {
 void SnpEffSupport::sl_validationStatusChanged(bool isValid) {
     if (isValid) {
         SnpEffDatabaseListTask* task = new SnpEffDatabaseListTask();
+        connect(task, SIGNAL(si_stateChanged()), SLOT(sl_databaseListIsReady()));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
+}
+
+void SnpEffSupport::sl_databaseListIsReady() {
+    SnpEffDatabaseListTask* task = dynamic_cast<SnpEffDatabaseListTask*>(sender());
+    SAFE_POINT(task != NULL, "SnpEffDatabaseListTask is NULL: wrong sender",);
+    if (task->isCanceled() || task->hasError() || !task->isFinished()) {
+        return;
+    }
+    QString dbListFilePath = task->getDbListFilePath();
+    SAFE_POINT(!dbListFilePath.isEmpty(), tr("Failed to get SnpEff database list"), );
+
+    SnpEffSupport::databaseModel->getData(dbListFilePath);
 }
 
 }//namespace

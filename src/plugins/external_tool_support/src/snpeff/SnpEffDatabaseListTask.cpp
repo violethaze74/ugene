@@ -56,6 +56,9 @@ void SnpEffDatabaseListTask::prepare() {
 }
 
 void SnpEffDatabaseListTask::run() {
+    if (stateInfo.isCoR()) {
+        return;
+    }
     coreLog.info(dbListFilePath);
     AppContext::getSettings()->setValue(SNPEFF_DATABASE_LIST_SETTINGS, dbListFilePath, true);
 }

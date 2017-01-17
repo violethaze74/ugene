@@ -21,6 +21,13 @@
     <widget class="QLineEdit" name="lineEdit"/>
    </item>
    <item>
+    <widget class="QTableView" name="tableView">
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+   </item>
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
