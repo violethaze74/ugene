@@ -195,44 +195,82 @@ function loadScript(url, callback)
     head.appendChild(script);
 }
 
-document.addEventListener("DOMContentLoaded",
-        loadScript("qrc:///javascript/qwebchannel/qwebchannel-qt570.js",
-            function(){
-                new QWebChannel(qt.webChannelTransport,
-                    function (channel) {
-                        window.agent = channel.objects.agent;
-                        window.agent.si_progressChanged.connect(function(progress){
-                            statusWidget.sl_progressChanged(progress);
-                        });
-                        window.agent.si_taskStateChanged.connect(function(state){
-                            statusWidget.sl_taskStateChanged(state);
-                        });
-                        window.agent.si_newProblem.connect(function(problem, count){
-                            //document.getElementById("log_messages").innerHTML += "new problem! <br/> mess: "+problem.message+"<br/>"; //sample of debug message
-                            if(document.getElementById("problemsWidget") === null){
-                                problemWidget = new ProblemsWidget("problemsWidget");
-                            }
-                            problemWidget.sl_newProblem(problem, count);
-                        });
-                        window.agent.si_workerStatsInfoChanged.connect(function(info){
-                            statisticsWidget.sl_workerStatsInfoChanged(info);
-                        });
-                        window.agent.si_workerStatsUpdate.connect(function(workersStatisticsInfo){
-                            statisticsWidget.sl_workerStatsUpdate(workersStatisticsInfo);
-                        });
-                        window.agent.si_newOutputFile.connect(function(fileInfo){
-                            outputWidget.sl_newOutputFile(fileInfo);
-                        });
-                        window.agent.si_onLogChanged.connect(function(logEntry){
-                            if(externalToolsWidget === null){
-                                externalToolsWidget = new ExternalToolsWidget("externalToolsWidget");
-                            }
-                            externalToolsWidget.sl_onLogChanged(logEntry);
-                        });
-                        showOnlyLang(agent.lang);
-                        window.agent.sl_webChannelInitialized();
+var createAgent = function (channel) {
+    window.agent = channel.objects.agent;
+    if(needCreateWidgets){
+        parametersWidget = new ParametersWidget("parametersWidget");
+        window.outputWidget = new OutputFilesWidget("outputWidget");
+        window.statusWidget = new StatusWidget("statusWidget");
+        window.statisticsWidget = new StatisticsWidget("statisticsWidget");
+        startTimer();
+    }
 
-                        //document.getElementById("log_messages").innerHTML += "Agent created! <br/>"; //sample of debug message
-                });
-    })
-);
+    agent.si_progressChanged.connect(function(progress){
+        statusWidget.sl_progressChanged(progress);
+    });
+    window.agent.si_taskStateChanged.connect(function(state){
+        statusWidget.sl_taskStateChanged(state);
+    });
+    window.agent.si_newProblem.connect(function(problem){
+        problem = JSON.parse(problem);
+        if(document.getElementById("problemsWidget") === null){
+            problemWidget = new ProblemsWidget("problemsWidget");
+        }
+        problemWidget.sl_newProblem(problem, problem.count);
+    });
+    window.agent.si_workerStatsInfoChanged.connect(function(info){
+        info = JSON.parse(info);
+        statisticsWidget.sl_workerStatsInfoChanged(info);
+    });
+    window.agent.si_workerStatsUpdate.connect(function(workersStatisticsInfo){
+        workersStatisticsInfo = JSON.parse(workersStatisticsInfo);
+        statisticsWidget.sl_workerStatsUpdate(workersStatisticsInfo);
+    });
+    window.agent.si_newOutputFile.connect(function(fileInfo){
+        fileInfo = JSON.parse(fileInfo);
+        window.outputWidget.sl_newOutputFile(fileInfo);
+    });
+    window.agent.si_onLogChanged.connect(function(logEntry){
+        logEntry = JSON.parse(logEntry);
+        if(externalToolsWidget === null){
+            externalToolsWidget = new ExternalToolsWidget("externalToolsWidget");
+        }
+        externalToolsWidget.sl_onLogChanged(logEntry);
+    });
+    showOnlyLang(agent.lang);
+    //document.getElementById("log_messages").innerHTML += "Agent created! <br/>"; //sample of debug message
+    window.agent.sl_webChannelInitialized();
+}
+var needCreateWidgets = false;
+function installWebChannel(onSockets, _needCreateWidgets, port){
+    needCreateWidgets = _needCreateWidgets;
+    if(onSockets){
+        //window.onload = function() {
+            var baseUrl = "ws://127.0.0.1:"+port;
+            var socket = new WebSocket(baseUrl);
+            socket.onclose = function()
+            {
+                console.error("web channel closed");
+            };
+            socket.onerror = function(error)
+            {
+                console.error("web channel error: " + error);
+            };
+            socket.onopen = function()
+            {
+                loadScript("qrc:///javascript/qwebchannel/qwebchannel-qt542.js",
+                    function(){
+                        new QWebChannel(socket, createAgent);
+                })
+
+            }
+          //}
+    }else{
+//        document.addEventListener("DOMContentLoaded",
+                loadScript("qrc:///javascript/qwebchannel/qwebchannel-qt570.js",
+                    function(){
+                        new QWebChannel(qt.webChannelTransport, createAgent);
+            })
+//        );
+    }
+}

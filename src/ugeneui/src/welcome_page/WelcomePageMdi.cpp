@@ -34,15 +34,19 @@ WelcomePageMdi::WelcomePageMdi(const QString &title, WelcomePageController *cont
 
     widget = new WelcomePageWidget(this, controller);
     l->addWidget(widget);
-	installEventFilter(this);
+    installEventFilter(this);
 }
 bool WelcomePageMdi::eventFilter(QObject *obj, QEvent *event) {
-	QEvent::Type t = event->type();
+    QEvent::Type t = event->type();
+    qDebug() << "Event Type: " << t;
+#if (QT_VERSION < 0x50500)
 
-	if (t == QEvent::Show) {
-		widget->adjustSize();
-	}
-	return QWidget::eventFilter(obj, event);
+#else
+    if (t == QEvent::Show) {
+        widget->adjustSize();
+    }
+#endif
+    return QWidget::eventFilter(obj, event);
 }
 
 void WelcomePageMdi::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {

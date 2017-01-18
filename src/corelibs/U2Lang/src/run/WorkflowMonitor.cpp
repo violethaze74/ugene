@@ -280,7 +280,6 @@ void WorkflowMonitor::onLogChanged(const WDListener* listener, int messageType, 
     entry.runNumber = listener->getRunNumber();
     entry.logType = messageType;
     entry.lastLine = message;
-    coreLog.error("Log entry (from monitor): "+ entry.lastLine);
     emit si_logChanged(entry);
 }
 

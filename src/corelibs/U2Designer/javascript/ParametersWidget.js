@@ -151,7 +151,8 @@ function ParametersWidget(containerId){
       tabsContent.insertAdjacentHTML('beforeend', newTabsContentEntry);
   }
   //constructor code
-  self.createWidget(agent.workersParamsInfo);
+  var infos = JSON.parse(agent.workersParamsInfo);
+  self.createWidget(infos);
   showOnlyLang(agent.lang); //translate labels
 }
 

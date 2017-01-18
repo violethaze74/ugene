@@ -27,11 +27,11 @@
 #if (QT_VERSION < 0x050500) //Qt 5.7
 #include <QtWebChannel/QWebChannel>
 #include <QWebEngineView>
-#include <QWebSocketServer>
+#include <QtWebSockets/QWebSocketServer>
 #include <U2Gui/WebSocketClientWrapper.h>
 #else
 #include <QWebEngineView>
-#include <QWebChannel>
+#include <QtWebChannel/QWebChannel>
 #endif
 
 #include <U2Core/U2SafePoints.h>
@@ -102,23 +102,17 @@ private:
 
     enum DashboardTab {OverviewDashTab, InputDashTab, OutputDashTab, ExternalToolsTab};
 
-    static const QString STATUS_WIDGET_ID;
-    static const QString OUTPUT_WIDGET_ID;
-    static const QString STATISTICS_WIDGET_ID;
-    static const QString PROBLEMS_WIDGET_ID;
-    static const QString PARAMETERS_WIDGET_ID;
-    static const QString ETOOLS_WIDGET_ID;
 private:
     void loadDocument();
     void serialize();
     void saveSettings();
     void loadSettings();
 
-    void createExternalToolTab();
 #if (QT_VERSION < 0x050500) //Qt 5.7
     QWebSocketServer *server;
     WebSocketClientWrapper *clientWrapper;
     QWebChannel *channel;
+    int port;
 #else
     QWebChannel *channel;
 #endif
@@ -199,12 +193,12 @@ private:
 
     int progress;
     QString state;
-    QList<QJsonObject/*, int*/> problems;
-    QList<QJsonObject> infos;
-    QList<QJsonArray> workersStatisticsInfos;
+    QStringList problems;
+    QStringList infos;
+    QStringList workersStatisticsInfos;
     QList<QJsonArray> extToolsLogs;
-    QList<QJsonObject> logEntries;
-    QList<QJsonObject> fileInfos;
+    QStringList logEntries;
+    QStringList fileInfos;
 
     bool isPageLoaded;
     bool isWebChannelInitialized;
@@ -220,7 +214,7 @@ public:
     DashboardJsAgent(Dashboard* parent);
 
     Q_PROPERTY(QString lang READ getLang CONSTANT)
-    Q_PROPERTY(QJsonArray workersParamsInfo READ getWorkersParamsInfo CONSTANT)
+    Q_PROPERTY(QString workersParamsInfo READ getWorkersParamsInfo CONSTANT)
     Q_PROPERTY(bool showHint READ getShowHint CONSTANT)
 
 public slots:
@@ -237,20 +231,21 @@ public slots:
 signals:
     void si_progressChanged(int progress);
     void si_taskStateChanged(QString state);
-    void si_newProblem(QJsonObject problem, int count);
-    void si_workerStatsInfoChanged(QJsonObject info);
-    void si_workerStatsUpdate(QJsonArray workersStatisticsInfo);
-    void si_onLogUpdate(QJsonArray extToolsLog);
-    void si_onLogChanged(QJsonObject logEntry);
-    void si_newOutputFile(QJsonObject fileInfo);
+    void si_newProblem(QString problem); //workaround for Qt5.4 and Qt5.5, sould be simple QJsonObject. More info see https://bugreports.qt.io/browse/QTBUG-48198
+    void si_workerStatsInfoChanged(QString info); //workaround for Qt5.4 and Qt5.5, sould be simple QJsonObject. More info see https://bugreports.qt.io/browse/QTBUG-48198
+    void si_workerStatsUpdate(QString workersStatisticsInfo);//workaround for Qt5.4, sould be simple QJsonArray.
+    void si_onLogChanged(QString logEntry); //workaround for Qt5.4 and Qt5.5, sould be simple QJsonObject. More info see https://bugreports.qt.io/browse/QTBUG-48198
+    void si_newOutputFile(QString fileInfo); //workaround for Qt5.4 and Qt5.5, sould be simple QJsonObject. More info see https://bugreports.qt.io/browse/QTBUG-48198
+
+    void si_createOutputWidget();
 private:
     Q_INVOKABLE QString getLang();
-    Q_INVOKABLE QJsonArray getWorkersParamsInfo();
+    Q_INVOKABLE QString getWorkersParamsInfo();
     Q_INVOKABLE bool getShowHint();
     void fillWorkerParamsInfo();
 
     QString lang;
-    QJsonArray workersParamsInfo;
+    QString workersParamsInfo;
     const WorkflowMonitor* monitor;
 };
 

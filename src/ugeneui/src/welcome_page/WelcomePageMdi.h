@@ -38,7 +38,7 @@ public:
     bool isLoaded() const;
 
 protected:
-	bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private:
     WelcomePageController *controller;

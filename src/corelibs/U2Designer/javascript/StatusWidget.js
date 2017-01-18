@@ -52,7 +52,10 @@ function StatusWidget(containerId){
       isFinished = true;
       canceled();
     }
-    
+    if(isFinished){
+        pauseTimer();
+    }
+
     var hint = document.getElementById("load-btn-hint-container");//only for debug
     if(isFinished && hint === null){
       showLoadButton(agent.showHint);

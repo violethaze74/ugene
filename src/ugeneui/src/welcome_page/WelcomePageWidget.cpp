@@ -73,6 +73,7 @@ WelcomePageWidget::WelcomePageWidget(QWidget *parent, WelcomePageController *con
 
     QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
         channel, &QWebChannel::connectTo);
+    channel->registerObject(QString("ugene"), controller);
 #else
     channel->registerObject(QString("ugene"), controller);
 #endif

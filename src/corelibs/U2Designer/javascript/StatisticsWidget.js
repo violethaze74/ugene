@@ -1,8 +1,9 @@
 /*WorkerInfo {
+    QString actorId;
     QString actor;
     int ticks;
     qint64 timeMks;
-    int countOfProducedData; //TODO add to cpp code
+    int countOfProducedData;
   };
 */
 function StatisticsWidget(containerId){
@@ -25,7 +26,7 @@ function StatisticsWidget(containerId){
       agent.sl_onJsError("Can't find container by id = " + self._containerId + "!");
       return;
     }
-    self._updateRow(id(info.actor), createRowByWorker(info));
+    self._updateRow(id(info.actorId), createRowByWorker(info));
   };
   this.sl_workerStatsUpdate = function(workersStatisticsInfo){
     if (!self._isContainerExists()) {
@@ -33,7 +34,7 @@ function StatisticsWidget(containerId){
       return;
     }
     workersStatisticsInfo.forEach(function(workerInfo){
-      self._updateRow(id(workerInfo.actor), createRowByWorker(workerInfo));
+      self._updateRow(id(workerInfo.actorId), createRowByWorker(workerInfo));
     });
   };
   //private
