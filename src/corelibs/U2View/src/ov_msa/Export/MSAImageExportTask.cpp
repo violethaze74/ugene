@@ -138,7 +138,7 @@ void MSAImageExportToSvgTask::run() {
     QSvgGenerator generator;
     generator.setFileName(settings.fileName);
 
-    MSAEditorNameList* nameListArea = ui->getEditorNameList();
+    MaEditorNameList* nameListArea = ui->getEditorNameList();
     SAFE_POINT_EXT(nameListArea != NULL, setError(L10N::nullPointerError("MSAEditorNameList")), );
     MSAEditorConsensusArea* consArea = ui->getConsensusArea();
     SAFE_POINT_EXT(consArea != NULL, setError(L10N::nullPointerError("MSAEditorConsensusArea")), );

@@ -29,7 +29,7 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
 
-#include "MSAEditorNameList.h"
+#include "MaEditorNameList.h"
 #include "MsaUpdatedWidgetInterface.h"
 
 namespace U2 {
@@ -47,7 +47,7 @@ public:
     bool                            excludeGaps;
 };
 
-class MsaEditorSimilarityColumn : public MSAEditorNameList, public UpdatedWidgetInterface {
+class MsaEditorSimilarityColumn : public MaEditorNameList, public UpdatedWidgetInterface {
     friend class GTUtilsMSAEditorSequenceArea;
     Q_OBJECT
 public:

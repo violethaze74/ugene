@@ -84,7 +84,7 @@
 #include "MaEditorFactory.h"
 #include "MSAEditor.h"
 #include "MSAEditorConsensusArea.h"
-#include "MSAEditorNameList.h"
+#include "MaEditorNameList.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorOverviewArea.h"
 #include "MSAEditorSequenceArea.h"
@@ -617,6 +617,10 @@ void MSAEditorUI::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
 
 void MSAEditorUI::initOverviewArea() {
     overviewArea = new MSAEditorOverviewArea(this);
+}
+
+void MSAEditorUI::initNameList(QScrollBar *nhBar) {
+    nameList = new MsaEditorNameList(this, nhBar);
 }
 
 MSAEditorTreeViewer* MSAEditorUI::getCurrentTree() const

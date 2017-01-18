@@ -40,12 +40,14 @@ class MaEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
 
-class U2VIEW_EXPORT MSAEditorNameList: public QWidget {
+class McaEditor;
+
+class U2VIEW_EXPORT MaEditorNameList: public QWidget {
     Q_OBJECT
-    Q_DISABLE_COPY(MSAEditorNameList)
+    Q_DISABLE_COPY(MaEditorNameList)
 public:
-    MSAEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
-    virtual ~MSAEditorNameList();
+    MaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
+    virtual ~MaEditorNameList();
 
     void drawNames( QPixmap &p, const QList<qint64>& seqIdx, bool drawSelection = false);
     void drawNames(QPainter& p, const QList<qint64>& seqIdx, bool drawSelection = false);
@@ -91,8 +93,9 @@ protected:
 
     bool                completeRedraw;
 
-public:
+protected:
     void drawContent(QPainter& p);
+public:
     qint64 sequenceIdAtPos(const QPoint &p);
     void clearGroupsSelections();
 
@@ -101,20 +104,22 @@ signals:
     void si_startMsaChanging();
     void si_stopMsaChanging(bool modified);
 
-private:
+protected:
     bool isRowInSelection(int row);
     void updateActions();
     void buildMenu(QMenu* m);
     void updateSelection(int newSeqNum);
     void moveSelectedRegion( int shift );
     void drawAll();
+
     void drawSelection(QPainter& p);
-    void drawSequenceItem(QPainter& p, int row, int firstVisibleRow, const QString& text, bool selected);
-    void drawSequenceItem(QPainter& p, int s, bool selected);
-    void drawCollapsibileSequenceItem(QPainter& p, int s, const QString& name, bool selected, const U2Region& yRange, int pos);
+    void drawSequenceItem(QPainter& p, const QString& text, const U2Region& yRange, bool selected, bool isReference);
+    virtual void drawSequenceItem(QPainter& p, int row, int firstVisibleRow, const QString& text, bool selected);
 
     void drawCollapsibileSequenceItem(QPainter &p, const QString &name, const QRect& rect,
                                       bool selected, bool collapsed, bool isReference);
+    void drawChildSequenceItem(QPainter &p, const QString &name, const QRect& rect,
+                                        bool selected, bool isReference);
 
     // SANGER_TODO: drawSequenceItem should use these methods
     void drawBackground(QPainter& p, const QString& name, const QRect& rect, bool isReferece);
@@ -122,7 +127,7 @@ private:
     void drawCollapsePrimitive(QPainter& p, bool collapsed, const QRect& rect);
 
     virtual void drawRefSequence(QPainter &p, QRect r);
-    void drawFocus(QPainter& p);
+
     QFont getFont(bool selected) const;
     QRect calculateTextRect(const U2Region& yRange, bool selected) const;
     QRect calculateButtonRect(const QRect& itemRect) const;
@@ -149,6 +154,25 @@ private:
 protected:
     MaEditor*          editor;
 
+};
+
+class McaEditorNameList : public MaEditorNameList {
+public:
+    McaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
+
+protected:
+    void drawSequenceItem(QPainter& p, int row, int firstVisibleRow, const QString& text, bool selected);
+
+private:
+    McaEditor* getEditor() const;
+};
+
+class MsaEditorNameList : public MaEditorNameList {
+public:
+    MsaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar);
+
+private:
+    MSAEditor* getEditor() const;
 };
 
 }//namespace

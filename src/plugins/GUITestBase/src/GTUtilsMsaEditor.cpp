@@ -24,7 +24,7 @@
 #include <U2Gui/MainWindow.h>
 
 #include <U2View/MSAEditorConsensusArea.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/MaSimpleOverview.h>
@@ -104,11 +104,11 @@ MSAEditorTreeViewerUI * GTUtilsMsaEditor::getTreeView(HI::GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNameListArea"
-MSAEditorNameList * GTUtilsMsaEditor::getNameListArea(HI::GUITestOpStatus &os) {
+MaEditorNameList * GTUtilsMsaEditor::getNameListArea(HI::GUITestOpStatus &os) {
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
     CHECK_OP(os, NULL);
 
-    MSAEditorNameList *result = GTWidget::findExactWidget<MSAEditorNameList *>(os, "msa_editor_name_list", activeWindow);
+    MaEditorNameList *result = GTWidget::findExactWidget<MaEditorNameList *>(os, "msa_editor_name_list", activeWindow);
     GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
     return result;
 }
@@ -131,7 +131,7 @@ MSAEditorSequenceArea * GTUtilsMsaEditor::getSequenceArea(HI::GUITestOpStatus &o
 #define GT_METHOD_NAME "getSequenceNameRect"
 QRect GTUtilsMsaEditor::getSequenceNameRect(HI::GUITestOpStatus &os, const QString &sequenceName) {
     Q_UNUSED(os);
-    MSAEditorNameList *nameList = getNameListArea(os);
+    MaEditorNameList *nameList = getNameListArea(os);
     GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
 
     const int rowHeight = GTUtilsMSAEditorSequenceArea::getRowHeight(os);

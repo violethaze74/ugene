@@ -32,7 +32,7 @@
 #include <U2View/GraphicsButtonItem.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 
 #include <QCursor>
 #include <QDateTime>
