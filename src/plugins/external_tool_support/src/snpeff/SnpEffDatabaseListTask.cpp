@@ -48,7 +48,7 @@ void SnpEffDatabaseListTask::prepare() {
     dbListFilePath = QFileInfo(iniFile).absoluteDir().absolutePath();
     dbListFilePath += QString(QDir::separator()) + "SnpEff_DB_" + snpEffVersion + ".list";
 
-    const QStringList args = {"databases"};
+    const QStringList args("databases");
     ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_SNPEFF, args, new SnpEffParser(),
                                                           "", QStringList(), QString(), true);
     setListenerForTask(etTask);
