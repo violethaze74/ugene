@@ -96,7 +96,6 @@
 #include "ChooseItemDialog.h"
 #include "CreateScriptWorker.h"
 #include "DashboardsManagerDialog.h"
-#include "EstimationDialog.h"
 #include "GalaxyConfigConfigurationDialogImpl.h"
 #include "ImportSchemaDialog.h"
 #include "ItemViewStyle.h"

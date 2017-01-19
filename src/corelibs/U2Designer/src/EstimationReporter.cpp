@@ -21,65 +21,9 @@
 
 
 #include <QtWidgets/QApplication>
-
-#if (QT_VERSION < 0x050400) //Qt 5.7
-#include <QtWebKitWidgets/QWebFrame>
-#else
-
-#endif
-
 #include "EstimationReporter.h"
 
 namespace U2 {
-#if (QT_VERSION < 0x050400) //Qt 5.7
-static QWebFrame * frame(QWebView *view) {
-    return view->page()->mainFrame();
-}
-
-static void eval(QWebView *view, const QString &code) {
-    frame(view)->evaluateJavaScript(code);
-}
-#endif
-
-
-static QString getHtml(const QString &loadUrl) {
-    QFile file(loadUrl);
-    bool opened = file.open(QIODevice::ReadOnly);
-    if (!opened) {
-        coreLog.error("Can not load " + loadUrl);
-        return "";
-    }
-
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    QString html = stream.readAll();
-    file.close();
-
-    return html;
-}
-
-#if (QT_VERSION < 0x050400) //Qt 5.7
-QWebView * EstimationReporter::generateReport(const Workflow::EstimationResult &er) {
-    QWebView *result = new QWebView();
-    ReportGenerationHelper helper(result);
-    result->setHtml(getHtml(":U2Designer/html/EstimationReport.html"));
-    helper.waitLoading();
-    SAFE_POINT(helper.loadedOk, "Can not load html", result);
-
-    eval(result, "setTime('" + QString::number(er.timeSec) + "')");
-    eval(result, "setRAM('" + QString::number(er.ramMb) + "')");
-    //eval(result, "setHDD('" + QString::number(er.hddMb) + "')");
-    //eval(result, "setCPU('" + QString::number(er.cpuCount) + "')");
-
-    result->setContextMenuPolicy(Qt::NoContextMenu);
-    return result;
-}
-#else
-QWebEngineView* EstimationReporter::generateReport(const Workflow::EstimationResult &er) {
-    assert(false);
-    return new QWebEngineView();
-}
-#endif
 
 static QString toTimeString(qint64 timeSec) {
     qint64 hours = timeSec / 3600;
@@ -107,27 +51,6 @@ QMessageBox * EstimationReporter::createTimeMessage(const Workflow::EstimationRe
         QObject::tr("Approximate estimation time of the workflow run is ") + toTimeString(er.timeSec) + ".",
         QMessageBox::Close);
     return result;
-}
-#if (QT_VERSION < 0x050400) //Qt 5.7
-ReportGenerationHelper::ReportGenerationHelper(QWebView *view) {
-#else
-ReportGenerationHelper::ReportGenerationHelper(QWebEngineView *view) {
-#endif
-    loaded = false;
-    loadedOk = false;
-    connect(view, SIGNAL(loadFinished(bool)), SLOT(sl_loadFinished(bool)));
-}
-
-
-void ReportGenerationHelper::sl_loadFinished(bool ok) {
-    loaded = true;
-    loadedOk = ok;
-}
-
-void ReportGenerationHelper::waitLoading() {
-    while (!loaded) {
-        QApplication::processEvents();
-    }
 }
 
 } // U2
