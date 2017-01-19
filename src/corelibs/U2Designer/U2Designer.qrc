@@ -3,8 +3,6 @@
         <file>html/Dashboard.css</file>
         <file>html/Dashboard.html</file>
         <file>html/Dashboard_webengine.html</file>
-        <file>html/EstimationReport.css</file>
-        <file>html/EstimationReport.html</file>
         <file>javascript/Common.js</file>
         <file>javascript/ParametersWidget.js</file>
         <file>javascript/ExternalToolsWidget.js</file>
