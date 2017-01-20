@@ -45,6 +45,7 @@ SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget* parent)
     setupUi(this);
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
+    buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
 
     proxyModel = new QSortFilterProxyModel(this);
     proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -57,6 +58,7 @@ SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget* parent)
     tableView->verticalHeader()->hide();
 
     connect(tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+    connect(tableView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(sl_selectionChanged()));
 
     setMinimumSize(600, 400);
 }
@@ -68,6 +70,10 @@ QString SnpEffDatabaseDialog::getDatabase() const {
     SAFE_POINT(selection.size() == 1, "Invalid selection state", QString());
     QModelIndex index = proxyModel->mapToSource(selection.first());
     return SnpEffSupport::databaseModel->getGenome(index.row());
+}
+
+void SnpEffDatabaseDialog::sl_selectionChanged() {
+    buttonBox->button(QDialogButtonBox::Ok)->setDisabled(tableView->selectionModel()->selectedRows().size() == 0);
 }
 
 /************************************************************************/

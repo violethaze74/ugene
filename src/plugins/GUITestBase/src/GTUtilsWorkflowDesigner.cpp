@@ -938,6 +938,10 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget* par
 #endif
         break;
     }
+    case customDialogSelector: {
+        GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
+        break;
+    }
     }
     GTGlobals::sleep(200);
 }

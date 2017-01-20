@@ -120,6 +120,7 @@
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/orf_marker/OrfDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ExportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
@@ -1697,6 +1698,10 @@ GUI_TEST_CLASS_DEFINITION(test_4164){
 //3. Set input file which contains spaces in path
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/sandbox/space dir/valid.vcf");
+
+    GTUtilsWorkflowDesigner::click(os, "Annotate and Predict Effects with SnpEff");
+    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
+    GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
 //4. Run workflow
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(5000);
@@ -3850,6 +3855,11 @@ GUI_TEST_CLASS_DEFINITION(test_4710){
     GTThread::waitForMainThread();
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/vcf/valid.vcf");
+
+    GTUtilsWorkflowDesigner::click(os, "Annotate and Predict Effects with SnpEff");
+    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
+    GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep();
 

@@ -43,6 +43,8 @@ class SnpEffDatabaseDialog : public QDialog, public Ui_SnpEffDatabaseDialog {
 public:
     SnpEffDatabaseDialog(QWidget* parent = 0);
     QString getDatabase() const;
+private slots:
+    void sl_selectionChanged();
 private:
     QSortFilterProxyModel* proxyModel;
 };
