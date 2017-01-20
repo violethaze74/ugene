@@ -40,7 +40,15 @@ bool WelcomePageMdi::eventFilter(QObject *obj, QEvent *event) {
     QEvent::Type t = event->type();
     qDebug() << "Event Type: " << t;
 #if (QT_VERSION < 0x50500)
-
+    if (t == QEvent::Show) {
+        widget->adjustSize();
+        widget->updateGeometry();
+    }
+#elif (QT_VERSION < 0x50600)
+    if (t == QEvent::Show) {
+        widget->adjustSize();
+        widget->updateGeometry();
+    }
 #else
     if (t == QEvent::Show) {
         widget->adjustSize();

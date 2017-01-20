@@ -33,12 +33,16 @@
 namespace U2 {
 
 class MultilingualWebEnginePage : public QWebEnginePage {
+    Q_OBJECT
 public:
     MultilingualWebEnginePage(QObject* parent = 0);
 protected:
 #if (QT_VERSION >= 0x050500)
     virtual bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
+#else
+    virtual bool javaScriptConfirm(const QUrl & securityOrigin, const QString & msg); // hack for Qt5.4 only
 #endif
+
 };
 
 class MultilingualHtmlView : public QWebEngineView {

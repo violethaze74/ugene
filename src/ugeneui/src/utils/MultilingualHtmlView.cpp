@@ -57,6 +57,9 @@ void MultilingualHtmlView::sl_loaded(bool ok) {
     QString lang = s->getValue("UGENE_CURR_TRANSL", "en").toString();
 
     page()->runJavaScript(QString("showOnlyLang(\"%1\");").arg(lang));
+#if (QT_VERSION < 0x050500)
+    page()->runJavaScript("bindLinks();");
+#endif
     emit si_loaded(ok);
 }
 
@@ -67,21 +70,8 @@ void MultilingualHtmlView::sl_linkActivated(const QUrl &url) {
 void MultilingualHtmlView::loadPage(const QString& htmlPath) {
     connect(this, SIGNAL(loadFinished(bool)), this, SLOT(sl_loaded(bool)));
 #if (QT_VERSION < 0x050500) //Qt 5.7
-//    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
-//    if (!server->listen(QHostAddress::LocalHost, 12345)) {
-//        return;
-//    }
-
-//    clientWrapper = new WebSocketClientWrapper(server);//TODO delete in dtor
-
-//    channel = new QWebChannel(this);
-
-//    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
-//        channel, &QWebChannel::connectTo);
-
     QWebEnginePage *page = new MultilingualWebEnginePage(parentWidget());
     QUrl url(htmlPath);
-//    url.setQuery(QStringLiteral("webChannelBaseUrl=") + "ws://127.0.0.1:12345");
     page->load(url);
     setPage(page);
 #else
@@ -94,7 +84,10 @@ void MultilingualHtmlView::loadPage(const QString& htmlPath) {
 #endif
 }
 
-MultilingualWebEnginePage::MultilingualWebEnginePage(QObject *parent) : QWebEnginePage(parent) {}
+MultilingualWebEnginePage::MultilingualWebEnginePage(QObject *parent) : QWebEnginePage(parent) {
+
+}
+
 #if (QT_VERSION >= 0x050500)
 bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, NavigationType type, bool) {
     if (type == NavigationTypeLinkClicked) {
@@ -103,6 +96,12 @@ bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, Navigat
     }
     return true;
 }
+#else
+bool MultilingualWebEnginePage::javaScriptConfirm(const QUrl &, const QString &msg){
+    QDesktopServices::openUrl(msg);
+    return false;
+}
 #endif
+
 
 } // namespace

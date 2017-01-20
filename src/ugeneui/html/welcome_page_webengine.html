@@ -184,6 +184,7 @@
     </table>
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function () {
+            document.activeElement.blur();//clear focus from Open File button
             new QWebChannel(qt.webChannelTransport, function (channel) {
                 window.ugene = channel.objects.ugene;
             });

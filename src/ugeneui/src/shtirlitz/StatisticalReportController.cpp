@@ -43,30 +43,28 @@ StatisticalReportController::StatisticalReportController(const QString &newHtmlF
     htmlView = new MultilingualHtmlView(newHtmlFilepath, this);
     frameLayout->addWidget(htmlView);
     htmlView->setMinimumSize(400, 10);
-    connect(htmlView,SIGNAL(loadFinished(bool)),this,SLOT(sl_changeHeght()));
+    connect(htmlView, SIGNAL(loadFinished(bool)), this, SLOT(sl_changeHeight()));
     connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
+
 }
 
 bool StatisticalReportController::isInfoSharingAccepted() const {
     return chkStat->isChecked();
 }
 
-void StatisticalReportController::paintEvent(QPaintEvent *event) {
-    QWidget::paintEvent(event);
-    htmlView->setMinimumHeight(height);
-#ifndef Q_OS_MAC
-    // UGENE crashes on the update event processing on mac
-    // It has some connection with htmlView loading method
-    // There was no crash before f3a45ef1cd53fe28faf90a763d195e964bc6c752 commit
-    // Find a solution and fix it, if you have some free time
-    move(x(), (qApp->desktop()->screenGeometry().height() / 2) - htmlView->minimumHeight());
-#endif
-}
-
-void StatisticalReportController::sl_changeHeght(){
+void StatisticalReportController::sl_changeHeight(){
     htmlView->page()->runJavaScript("getBodyHeight();", [&](const QVariant &var){
-        height = var.toInt();
-        htmlView->setMinimumHeight(height);
+        int pageHeight = var.toInt();
+        htmlView->setMinimumHeight(pageHeight);
+        disconnect(htmlView, SIGNAL(loadFinished(bool)), this, SLOT(sl_changeHeight()));
+#ifndef Q_OS_MAC //TODO recheck this code on OS X
+        // UGENE crashes on the update event processing on mac
+        // It has some connection with htmlView loading method
+        // There was no crash before f3a45ef1cd53fe28faf90a763d195e964bc6c752 commit
+        // Find a solution and fix it, if you have some free time
+        move((qApp->activeWindow()->x() + qApp->activeWindow()->width() / 2) - width() / 2,
+             (qApp->activeWindow()->y() + qApp->activeWindow()->height() / 2) - pageHeight / 2);
+#endif
     });
 }
 

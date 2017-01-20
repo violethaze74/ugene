@@ -200,6 +200,7 @@
         };
         socket.onopen = function()
         {
+            document.activeElement.blur();//clear focus from Open File button
             new QWebChannel(socket, function(channel) {
                 // make dialog object accessible globally
                 window.ugene = channel.objects.ugene;
