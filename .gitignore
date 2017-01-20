@@ -30,7 +30,7 @@ Makefile.Debug
 *.xcodeproj/
 
 # Generated ugene shell launcher
-ugene
+/ugene
 
 # Jetbrains tools (CLion, etc..)
 .idea
