@@ -67,7 +67,7 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     selectionX(NULL),selectionY(NULL),sequenceX(NULL),sequenceY(NULL), direct(true), inverted(false), nearestInverted(false), ignorePanView(false), keepAspectRatio(false),
     zoom(1.0f, 1.0f), shiftX(0), shiftY(0),
     minLen(100), identity(100),
-    pixMapUpdateNeeded(true), deleteDotPlotFlag(false), filtration(false), createDotPlot(false), dotPlotTask(NULL), pixMap(NULL), miniMap(NULL),
+    pixMapUpdateNeeded(true), deleteDotPlotFlag(false), filtration(false), dotPlotIsCalculating(false), dotPlotTask(NULL), pixMap(NULL), miniMap(NULL),
     nearestRepeat(NULL),
     clearedByRepitSel(false)
 {
@@ -420,6 +420,7 @@ void DotPlotWidget::sl_buildDotplotTaskStateChanged() {
     seqXCache.clear();
     seqYCache.clear();
 
+    dotPlotIsCalculating = false;
     // build dotplot task finished
     pixMapUpdateNeeded = true;
     update();
@@ -538,7 +539,7 @@ void DotPlotWidget::sl_showSaveImageDialog() {
 // save dotplot into a dotplot file, return true if not canceled
 bool DotPlotWidget::sl_showSaveFileDialog() {
     LastUsedDirHelper lod("Dotplot");
-    if (dpDirectResultListener->dotPlotList->isEmpty() || dpRevComplResultsListener->dotPlotList->isEmpty()) {
+    if (dpDirectResultListener->dotPlotList->isEmpty() && dpRevComplResultsListener->dotPlotList->isEmpty()) {
         QMessageBox::critical(this, tr("Error Saving Dotplot"), tr("The dotplot can't be saved as it is empty."));
         return true;
     }
@@ -646,7 +647,7 @@ bool DotPlotWidget::sl_showLoadFileDialog() {
             &direct,
             &inverted
     );
-    createDotPlot = true;
+    dotPlotIsCalculating = true;
 
     TaskScheduler* ts = AppContext::getTaskScheduler();
     ts->registerTopLevelTask(dotPlotTask);
@@ -799,7 +800,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
     }
 
     dotPlotTask = new MultiTask("Searching repeats", tasks, true);
-    createDotPlot = true;
+    dotPlotIsCalculating = true;
 
     TaskScheduler* ts = AppContext::getTaskScheduler();
     ts->registerTopLevelTask(dotPlotTask);
@@ -1004,7 +1005,7 @@ void DotPlotWidget::drawAll(QPainter& p, qreal rulerFontScale, bool _drawFocus,
         return;
     }
 
-    if (dotPlotTask != NULL && dotPlotTask->isRunning()) {
+    if (dotPlotIsCalculating) {
         GUIUtils::showMessage(this, p, tr("Dotplot is calculating..."));
     } else {
         p.save();
