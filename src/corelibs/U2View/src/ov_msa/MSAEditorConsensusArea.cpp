@@ -664,7 +664,7 @@ void MSAEditorConsensusArea::mouseMoveEvent(QMouseEvent *e) {
     if ((e->buttons() & Qt::LeftButton) && scribbling) {
         int newPos = ui->seqArea->getColumnNumByX(e->x(), selecting);
         if ( ui->seqArea->isPosInRange(newPos)) {
-            ui->seqArea->updateHBarPosition(newPos);
+            ui->seqArea->updateHBarPosition(newPos, true);
         }
         updateSelection(newPos);
     }

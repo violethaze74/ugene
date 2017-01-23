@@ -1218,8 +1218,8 @@ void MSAEditorSequenceArea::mouseMoveEvent(QMouseEvent* e) {
     if (e->buttons() & Qt::LeftButton) {
         QPoint newCurPos = coordToAbsolutePosOutOfRange(e->pos());
         if (isInRange(newCurPos)) {
-            updateHBarPosition(newCurPos.x());
-            updateVBarPosition(newCurPos.y());
+            updateHBarPosition(newCurPos.x(), true);
+            updateVBarPosition(newCurPos.y(), true);
         }
 
         if (shifting) {
@@ -1366,6 +1366,7 @@ void MSAEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     }
                     MSAEditorSelection _selection(firstColumn, startSeq, width, height);
                     setSelection(_selection);
+                    updateHBarPosition(endX);
                 }
             }
             break;
@@ -1377,6 +1378,7 @@ void MSAEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
             if (selectionEnd.x() >= (editor->getAlignmentLen() - 1)) {
                 break;
             }
+
             selectionEnd.setX(selectionEnd.x() +  1);
             endX = selectionEnd.x();
             if (isPosInRange(endX)) {
@@ -1391,6 +1393,7 @@ void MSAEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     }
                     MSAEditorSelection _selection(firstColumn, startSeq, width, height);
                     setSelection(_selection);
+                    updateHBarPosition(endX);
                 }
             }
             break;
@@ -1416,6 +1419,7 @@ void MSAEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     }
                     MSAEditorSelection _selection(firstColumn, startSeq, width, height);
                     setSelection(_selection);
+                    updateVBarPosition(endY);
                 }
             }
             break;
@@ -1441,6 +1445,7 @@ void MSAEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                     }
                     MSAEditorSelection _selection(firstColumn, startSeq, width, height);
                     setSelection(_selection);
+                    updateVBarPosition(endY);
                 }
             }
             break;
@@ -2303,31 +2308,36 @@ void MSAEditorSequenceArea::cancelSelection()
     setSelection(emptySelection);
 }
 
-void MSAEditorSequenceArea::updateHBarPosition(int base) {
+void MSAEditorSequenceArea::updateHBarPosition(int base, bool repeatAction) {
     if (isAlignmentEmpty()) {
         shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
         return;
     }
 
     if (base <= getFirstVisibleBase()) {
-        shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10);
+        ( repeatAction ? shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10)
+                       : shBar->triggerAction(QAbstractSlider::SliderSingleStepSub) );
     } else  if (base >= getLastVisibleBase(true)) {
-        shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10);
+        ( repeatAction ? shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10)
+                       : shBar->triggerAction(QAbstractSlider::SliderSingleStepAdd) );
+
     } else {
         shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
     }
 }
 
-void MSAEditorSequenceArea::updateVBarPosition(int seq) {
+void MSAEditorSequenceArea::updateVBarPosition(int seq, bool repeatAction) {
     if (isAlignmentEmpty()) {
         svBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
         return;
     }
 
     if (seq <= getFirstVisibleSequence()) {
-        svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10);
+        ( repeatAction ? svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10)
+                       : svBar->triggerAction(QAbstractSlider::SliderSingleStepSub) );
     } else if (seq >= getLastVisibleSequence(true)) {
-        svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10);
+        ( repeatAction ? svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10)
+                       : svBar->triggerAction(QAbstractSlider::SliderSingleStepAdd) );
     } else {
         svBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
     }
