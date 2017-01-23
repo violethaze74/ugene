@@ -36,6 +36,7 @@
 #include "primitives/PopupChooser.h"
 #include <base_dialogs/MessageBoxFiller.h>
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
@@ -683,6 +684,22 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
 
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "/test_ugene_5162.vcf"), "No resut file 1");
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "/test_ugene_5162_1.vcf"), "No resut file 2");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0062) {
+    // Test for SnpEff genome parameter
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    WorkflowProcessItem* snpEffItem = GTUtilsWorkflowDesigner::addElement(os, "SnpEff Annotation and Filtration");
+    CHECK_SET_ERR(snpEffItem != NULL, "Failed to add SnpEff Annotation and Filtration element");
+
+    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
+    GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "fake_snpeff_genome123", false));
+    GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+    GTGlobals::sleep();
 }
 
 } // namespace GUITest_common_scenarios_workflow_designer

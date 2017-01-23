@@ -49,6 +49,7 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "SnpEffDatabaseDelegate.h"
 #include "SnpEffSupport.h"
 #include "SnpEffTask.h"
 #include "SnpEffWorker.h"
@@ -154,7 +155,7 @@ void SnpEffFactory::init() {
 
         a << new Attribute( inpFormat, BaseTypes::STRING_TYPE(), false, "vcf");
         a << new Attribute( outFormat, BaseTypes::STRING_TYPE(), false, "vcf");
-        a << new Attribute( genome, BaseTypes::STRING_TYPE(), false, "hg19");
+        a << new Attribute( genome, BaseTypes::STRING_TYPE(), true);
         a << new Attribute( updownLength, BaseTypes::STRING_TYPE(), false, "0");
         a << new Attribute( canon, BaseTypes::BOOL_TYPE(), false, false);
         a << new Attribute( hgvs, BaseTypes::BOOL_TYPE(), false, false);
@@ -175,6 +176,7 @@ void SnpEffFactory::init() {
         delegates[SnpEffWorker::OUT_MODE_ID] = new ComboBoxDelegate(directoryMap);
 
         delegates[SnpEffWorker::CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
+        delegates[SnpEffWorker::GENOME] = new SnpEffDatabaseDelegate();
 
         {
             QVariantMap inFMap;
@@ -203,18 +205,6 @@ void SnpEffFactory::init() {
             dataMap["20000 bases"] = "20000";
             delegates[SnpEffWorker::UPDOWN_LENGTH] = new ComboBoxDelegate(dataMap);
         }
-        {
-            QVariantMap genomeMap;
-            genomeMap["Arabidopsis Thaliana (athaliana130)"] = "athaliana130";
-            genomeMap["Drosophila Melanogaster (dm5.48)"] = "dm5.48";
-            genomeMap["Homo sapiens (hg19)"] = "hg19";
-            genomeMap["Homo sapiens (hg38)"] = "hg38";
-            genomeMap["Ecoli K12 MG1655 (NC_000913)"] = "NC_000913";
-            genomeMap["C. elegans (WS241)"] = "WS241";
-            genomeMap["Ebola Zaire Virus (NC_002549)"] = "NC_002549";
-            delegates[SnpEffWorker::GENOME] = new ComboBoxEditableDelegate(genomeMap);
-        }
-
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);

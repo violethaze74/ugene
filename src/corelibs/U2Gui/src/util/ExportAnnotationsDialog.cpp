@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-const QString ExportAnnotationsDialog::CSV_FORMAT_ID( "csv" );
+const QString ExportAnnotationsDialog::CSV_FORMAT_ID( "CSV" );
 
 ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidget *parent )
     : QDialog( parent ), ui( new Ui_ExportAnnotationsDialog( ) )

@@ -36,8 +36,12 @@ static QString makeFilePathCanonical(const QString& originalUrl) {
         result = result.mid(fileUrlPrefix.length());
 #ifdef Q_OS_WIN
         // on Windows, all slashes after "file:" can be trimmed, on Unix/Mac one must be kept to specify that it's an absolute path
-        while(result.startsWith("/")) {
-            result = result.mid(1);
+        if (result.startsWith("/")) {
+            while (result.startsWith("/")) {
+                result = result.mid(1);
+            }
+        } else {
+            result.prepend("//");
         }
 #endif
     }

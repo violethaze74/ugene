@@ -81,17 +81,4 @@ void MSAOverview::setVisibleRangeForEmptyAlignment() {
     cachedVisibleRange = rect();
 }
 
-void MSAOverview::showMessage(QPainter& painter, QPaintEvent *e, const QString& message) {
-    painter.fillRect(rect(), Qt::gray);
-
-    QFontMetrics metrics(painter.font(), this);
-    painter.drawText(rect(), Qt::AlignCenter, metrics.elidedText(
-        message,
-        Qt::ElideRight,
-        rect().width()));
-
-    QWidget::paintEvent(e);
-    return;
-}
-
 } // namespace

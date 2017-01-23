@@ -82,6 +82,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/ScriptEditorDialog.h \
            src/util/ScriptEditorWidget.h \
            src/util/ScriptHighlighter.h \
+           src/util/SearchBox.h \
            src/util/SearchGenbankSequenceDialogController.h \
            src/util/SeqPasterWidgetController.h \
            src/util/SequenceTextEdit.h \
@@ -230,6 +231,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/ScriptEditorDialog.cpp \
            src/util/ScriptEditorWidget.cpp \
            src/util/ScriptHighlighter.cpp \
+           src/util/SearchBox.cpp \
            src/util/SearchGenbankSequenceDialogController.cpp \
            src/util/SeqPasterWidgetController.cpp \
            src/util/SequenceTextEdit.cpp \

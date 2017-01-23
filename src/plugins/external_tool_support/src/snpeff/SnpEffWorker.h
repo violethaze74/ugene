@@ -59,6 +59,7 @@ public:
     static const QString INPUT_FORMAT;
     static const QString OUTPUT_FORMAT;
     static const QString GENOME;
+    static const QString TEST_DB;
     static const QString UPDOWN_LENGTH;
 
     static const QString CANON;

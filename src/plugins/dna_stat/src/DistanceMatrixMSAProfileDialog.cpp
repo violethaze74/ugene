@@ -44,8 +44,8 @@
 
 namespace U2 {
 
-const QString DistanceMatrixMSAProfileDialog::HTML = "html";
-const QString DistanceMatrixMSAProfileDialog::CSV = "csv";
+const QString DistanceMatrixMSAProfileDialog::HTML = "HTML";
+const QString DistanceMatrixMSAProfileDialog::CSV = "CSV";
 
 DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEditor* _c)
     : QDialog(p),

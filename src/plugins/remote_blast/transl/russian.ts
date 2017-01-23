@@ -887,7 +887,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/SendSelectionDialog.cpp" line="145"/>
         <source>Search</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/SendSelectionDialog.cpp" line="146"/>

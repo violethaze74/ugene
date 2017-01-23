@@ -62,7 +62,7 @@ namespace LocalWorkflow {
 const QString WriteAnnotationsWorkerFactory::ACTOR_ID("write-annotations");
 
 static const QString WRITE_ANNOTATIONS_IN_TYPE_ID("write-annotations-in-type");
-static const QString CSV_FORMAT_ID("csv");
+static const QString CSV_FORMAT_ID("CSV");
 static const QString ANN_TABLE_NAME_4_LOCAL_ST("annotations-name");
 static const QString ANN_TABLE_NAME_4_SHARED_ST("ann-obj-name");
 static const QString ANNOTATIONS_NAME_DEF_VAL("Unknown features");
@@ -85,7 +85,7 @@ void WriteAnnotationsWorker::init() {
 
 namespace {
     QString getExtension(const QString &formatId) {
-        CHECK(formatId != CSV_FORMAT_ID, "csv");
+        CHECK(formatId != CSV_FORMAT_ID, "CSV");
         DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         CHECK(NULL != format, "");
         QStringList exts = format->getSupportedDocumentFileExtensions();

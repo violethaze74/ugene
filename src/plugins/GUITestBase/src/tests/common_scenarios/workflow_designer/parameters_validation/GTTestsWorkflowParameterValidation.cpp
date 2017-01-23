@@ -30,7 +30,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "GTTestsWorkflowParemeterValidation.h"
+#include "GTTestsWorkflowParameterValidation.h"
 #include <base_dialogs/MessageBoxFiller.h>
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 

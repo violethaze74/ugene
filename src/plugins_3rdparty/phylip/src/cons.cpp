@@ -23,7 +23,7 @@ node *grbg;
 long tipy;
 
 double **timesseen, **tmseen2, **times2 ;
-double *timesseen_changes, *tchange2;
+double *tchange2;
 double trweight, ntrees, mlfrac;
 
 /* prototypes */
@@ -1058,9 +1058,6 @@ void rehash()
 
         lengths2[new_index] = lengths[old_index];
 
-        tchange2[new_index] = timesseen_changes[old_index];
-
-
         free(grouping[old_index]);
         free(timesseen[old_index]);
         free(order[i]);
@@ -1082,15 +1079,13 @@ void rehash()
   free(timesseen);
   free(grouping);
   free(order);
-  free(timesseen_changes);
 
   free(s);
 
   timesseen = tmseen2;
   grouping = grping2;
   lengths = lengths2;
-  order = order2;
-  timesseen_changes = tchange2;
+  order = order2; 
 
   maxgrp = new_maxgrp;
 
@@ -1134,6 +1129,11 @@ void enternodeset(node* r)
           if (s[j] != grouping[i - 1][j])
             same = false;
         }
+      }
+      else {                       /* if group is present but timessen = 0 */
+          for (j = 0; j < setsz; j++)   /* replace by correct group */
+              grouping[i - 1][j] = s[j];
+          *timesseen[i - 1] = 1;
       }
     }
     if (grouping[i - 1] && same) {  /* if it is there, increment timesseen */
@@ -1433,7 +1433,7 @@ void store_pattern (pattern_elm ***pattern_array, int trees_in_file)
   /* First, find out how many groups exist in the given tree. */
   for (i = 0 ; i < maxgrp ; i++)
     if ((grouping[i] != NULL) &&
-       (*timesseen[i] > timesseen_changes[i]))
+       (*timesseen[i] > 0))
       /* If this is group exists and is present in the current tree, */
       total_groups++ ;
 
@@ -1455,13 +1455,12 @@ void store_pattern (pattern_elm ***pattern_array, int trees_in_file)
      appropriately. */
   for (i = 0 ; i < maxgrp ; i++)
     if (grouping[i] != NULL) {
-      if (*timesseen[i] > timesseen_changes[i]) {
+      if (*timesseen[i] > 0) {
         for (k = 0 ; k < setsz ; k++)
           pattern_array[k][trees_in_file]->apattern[j] = grouping[i][k] ;  
         pattern_array[0][trees_in_file]->length[j] = lengths[i];
         j++ ;
 
-        timesseen_changes[i] = *timesseen[i] ;
           /* 
              EWFIX.BUG.756
 
@@ -1478,6 +1477,7 @@ void store_pattern (pattern_elm ***pattern_array, int trees_in_file)
              consense.
              
           */
+        *timesseen[i] = 0;
       }
     }
   *pattern_array[0][trees_in_file]->patternsize = total_groups;
@@ -1531,10 +1531,6 @@ void read_groups (pattern_elm ****pattern_array,
   /* do allocation first *****************************************/
   grouping  = (group_type **)  Malloc(maxgrp*sizeof(group_type *));
   lengths  = (double *)  Malloc(maxgrp*sizeof(double));
-
-  timesseen_changes = (double*)Malloc(maxgrp*sizeof(double));
-  for (i = 0; i < maxgrp; i++)
-    timesseen_changes[i] = 0.0;
 
   for (i = 0; i < maxgrp; i++)
     grouping[i] = NULL;
@@ -1623,6 +1619,10 @@ void read_groups (pattern_elm ****pattern_array,
            current pattern as an element of it's trees array. */
       store_pattern ((*pattern_array), trees_read) ;
       trees_read++ ;
+      for (i = 0; i < maxgrp; i++)
+          if (grouping[i] != NULL) {
+              *timesseen[i] = 0;
+          }
     }
   }
 } /* read_groups */
@@ -1646,7 +1646,6 @@ void clean_up_final()
     free(nayme);
     free(order);
     free(timesseen);
-    free(timesseen_changes);
     free(fullset);
     free(lengths);
 

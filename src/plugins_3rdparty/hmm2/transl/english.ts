@@ -532,7 +532,7 @@ You can use this option to generate reproducible results for different hmmcalibr
     <message>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="186"/>
         <source>HMM models</source>
-        <translation type="unfinished">HMM models</translation>
+        <translation>HMM models</translation>
     </message>
 </context>
 <context>
@@ -699,7 +699,7 @@ You can use this option to generate reproducible results for different hmmcalibr
     <message>
         <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="166"/>
         <source>HMM models</source>
-        <translation type="unfinished">HMM models</translation>
+        <translation>HMM models</translation>
     </message>
 </context>
 <context>
@@ -1166,7 +1166,7 @@ You can use this option to generate reproducible results for different hmmcalibr
     <message>
         <location filename="../src/u_build/HMMBuildWorker.cpp" line="156"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Default</translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildWorker.cpp" line="218"/>

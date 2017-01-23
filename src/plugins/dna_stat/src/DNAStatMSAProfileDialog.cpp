@@ -27,6 +27,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/MAlignmentObject.h>
+#include <QPushButton>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -38,8 +39,8 @@
 
 namespace U2 {
 
-const QString DNAStatMSAProfileDialog::HTML = "html";
-const QString DNAStatMSAProfileDialog::CSV = "csv";
+const QString DNAStatMSAProfileDialog::HTML = "HTML";
+const QString DNAStatMSAProfileDialog::CSV = "CSV";
 
 DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MSAEditor* _c)
     : QDialog(p),
@@ -47,7 +48,8 @@ DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MSAEditor* _c)
       saveController(NULL) {
     setupUi(this);
     new HelpButton(this, buttonBox, "18223097");
-
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     initSaveController();
 }
 

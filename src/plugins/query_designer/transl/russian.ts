@@ -319,7 +319,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/QDRunDialog.cpp" line="297"/>
         <source>Search</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/QDRunDialog.cpp" line="298"/>
@@ -422,7 +422,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/library/QDFindActor.cpp" line="67"/>
         <source>Find</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/library/QDFindActor.cpp" line="93"/>

@@ -68,7 +68,8 @@ void AssemblySequenceArea::initCellRenderer(QString id) {
 void AssemblySequenceArea::drawAll() {
     if(canDrawSequence()) {
         if (redraw) {
-            cachedView = QPixmap(size());
+            cachedView = QPixmap(size() * devicePixelRatio());
+            cachedView.setDevicePixelRatio(devicePixelRatio());
             cachedView.fill(Qt::transparent);
             QPainter p(&cachedView);
             redraw = false;
@@ -113,7 +114,7 @@ void AssemblySequenceArea::drawSequence(QPainter & p) {
                 text = false;
             }
         }
-        cellRenderer->render(QSize(letterWidth, letterHeight), text, f);
+        cellRenderer->render(QSize(letterWidth, letterHeight), devicePixelRatio(), text, f);
         QByteArray referenceFragment;
         if(needsReference) {
             referenceFragment = model->getReferenceRegionOrEmpty(getVisibleRegion());

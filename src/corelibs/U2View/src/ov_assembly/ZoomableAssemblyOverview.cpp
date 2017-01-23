@@ -114,21 +114,24 @@ void ZoomableAssemblyOverview::connectSlots() {
 
 void ZoomableAssemblyOverview::initSelectionRedraw() {
     redrawSelection = true;
-    cachedView = QPixmap(size());
+    cachedView = QPixmap(size() * devicePixelRatio());
+    cachedView.setDevicePixelRatio(devicePixelRatio());
 }
 
 void ZoomableAssemblyOverview::drawAll() {
     if(!model->isEmpty()) {
         //no coverage -> draw nothing
         if(!coverageTaskRunner.isIdle()) {
-            cachedBackground = QPixmap(size());
+            cachedBackground = QPixmap(size() * devicePixelRatio());
+            cachedBackground.setDevicePixelRatio(devicePixelRatio());
             QPainter p(&cachedBackground);
-            p.fillRect(cachedBackground.rect(), Qt::gray);
-            p.drawText(cachedBackground.rect(), Qt::AlignCenter, tr("Background is rendering..."));
+            p.fillRect(rect(), Qt::gray);
+            p.drawText(rect(), Qt::AlignCenter, tr("Background is rendering..."));
         }
         //coverage is ready -> redraw background if needed
         else if(redrawBackground) {
-            cachedBackground = QPixmap(size());
+            cachedBackground = QPixmap(size() * devicePixelRatio());
+            cachedBackground.setDevicePixelRatio(devicePixelRatio());
             QPainter p(&cachedBackground);
             drawBackground(p);
             redrawBackground = false;

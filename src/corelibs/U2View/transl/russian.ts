@@ -14,18 +14,18 @@ Probably the data is too big.</source>
 <context>
     <name>AssemblyToRefDialog</name>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="88"/>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="112"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="72"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="96"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="210"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="194"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="217"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="201"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
@@ -50,67 +50,67 @@ Probably the data is too big.</source>
         <translation>Выберите требуемый метод выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="71"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="55"/>
         <source>Select a DNA sequence to align short reads to. This parameter is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Выберите референсную последовательность.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="74"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="58"/>
         <source>Reference sequence</source>
         <translation>Референсная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="95"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="79"/>
         <source>File in UGENE database format or SAM format (if the box SAM output check), to write the result of the alignment into. This parameter is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Результат сборки контигов в формате SAM.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="98"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="82"/>
         <source>Result file name</source>
         <translation>Имя выходного файла</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="123"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="107"/>
         <source>Library</source>
         <translation>Библиотека</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="131"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="115"/>
         <source>Single-end</source>
         <translation>Single-end</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="136"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="120"/>
         <source>Paired-end</source>
         <translation>Paired-end</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="157"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="141"/>
         <source>SAM output</source>
         <translation>Сохранить в формате SAM</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="166"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="150"/>
         <source>Add short reads here. &lt;b&gt;At least one read&lt;/b&gt; should be presented.</source>
         <translation>Здесь показаны риды, которые будут выравнены на референтную последовательность.</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="169"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="153"/>
         <source>Short reads</source>
         <translation>Короткие риды</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="177"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="161"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="182"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="166"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="187"/>
+        <location filename="../src/util_dna_assembly/AssemblyToRefDialog.ui" line="171"/>
         <source>Order</source>
         <translation>Порядок</translation>
     </message>
@@ -684,12 +684,12 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="41"/>
         <source>Search for:</source>
-        <translation>Искать:</translation>
+        <translation>Поиск:</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="433"/>
         <source>Search in</source>
-        <translation>Искать в</translation>
+        <translation>Поиск в</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="526"/>
@@ -820,7 +820,7 @@ Probably the data is too big.</source>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="20"/>
         <source>Assemble Genomes</source>
-        <translation>Геномы сборки</translation>
+        <translation>Сборка генома de novo</translation>
     </message>
     <message>
         <location filename="../src/util_dna_assembly/GenomeAssemblyDialog.ui" line="28"/>
@@ -1453,7 +1453,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="307"/>
         <source>Search in</source>
-        <translation>Искать в</translation>
+        <translation>Поиск в</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="308"/>
@@ -1575,7 +1575,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/SearchQualifierDialog.ui" line="122"/>
         <source>Search in:</source>
-        <translation>Искать в:</translation>
+        <translation>Поиск в:</translation>
     </message>
 </context>
 <context>
@@ -1718,7 +1718,7 @@ Double-click to collapse the branch</source>
         <translation>Поиск Смита-Ватермана</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="478"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="452"/>
         <source>Input and output</source>
         <translation>Ввод и вывод</translation>
     </message>
@@ -1743,104 +1743,104 @@ Double-click to collapse the branch</source>
         <translation>Версия алгоритма</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="273"/>
-        <source>Advanced..</source>
-        <translation>Дополнительно..</translation>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="260"/>
+        <source>Advanced</source>
+        <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="289"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="276"/>
         <source>Scoring matrix</source>
         <translation>Матрица весов</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="339"/>
-        <source>View..</source>
-        <translation>Смотреть..</translation>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="313"/>
+        <source>View</source>
+        <translation>Просмотр</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="352"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="326"/>
         <source>Gap scores</source>
         <translation>Веса пробелов</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="358"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="332"/>
         <source>Gap open</source>
         <translation>Открытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="365"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="339"/>
         <source>Gap  extension </source>
         <translation>Продление пробела</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="398"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="372"/>
         <source>Results filtering strategy</source>
         <translation>Фильтрация результатов</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="406"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="380"/>
         <source>Minimal score</source>
         <translation>Минимальная оценка</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="432"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="406"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="452"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="426"/>
         <source>Report results</source>
         <translation>Фильтровать</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="510"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="484"/>
         <source>Save results as</source>
         <translation>Сохранить результаты как</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="559"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="533"/>
         <source>Aligner options</source>
         <translation>Параметры выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="576"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="550"/>
         <source>Alignment files directory path</source>
         <translation>Путь до файлов выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="611"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="585"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="621"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="595"/>
         <source>Set advanced options</source>
         <translation>Установить дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="639"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="613"/>
         <source>Template for alignment files names</source>
         <translation>Пример для имен файлов выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="652"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="626"/>
         <source>Template for reference subsequences names</source>
         <translation>Пример для имен референсных последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="691"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="665"/>
         <source>Template for pattern subsequences names</source>
         <translation>Пример для имен подпоследовательностей</translation>
     </message>
     <message>
-        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="730"/>
+        <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="704"/>
         <source>Pattern sequence name</source>
         <translation>Имя подстроки</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="100"/>
         <source>Search in</source>
-        <translation>Искать в</translation>
+        <translation>Поиск в</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialogBase.ui" line="115"/>
@@ -5323,12 +5323,12 @@ Directory Path: %1</source>
         <translation>Invalid sequence index</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="860"/>
+        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="858"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="861"/>
+        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="859"/>
         <source>New sequence name:</source>
         <translation>Новое имя:</translation>
     </message>
@@ -6866,7 +6866,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="78"/>
         <source>Search</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="79"/>
@@ -6901,7 +6901,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="326"/>
         <source>Add qualifier with corresponding pattern subsequences to result annotations</source>
-        <translation>Добавьте квалификатор с соответствующими подпоследовательностями для результирующих аннотаций</translation>
+        <translation>Добавить квалификатор с соответствующими подпоследовательностями</translation>
     </message>
     <message>
         <location filename="../src/util_smith_waterman/SmithWatermanDialog.cpp" line="421"/>

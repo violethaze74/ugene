@@ -522,7 +522,7 @@ The default is instead to generate sequences with a variety of different lengths
     <message>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="186"/>
         <source>HMM models</source>
-        <translation type="unfinished">Профайлы HMM</translation>
+        <translation>Профайлы HMM</translation>
     </message>
 </context>
 <context>
@@ -689,7 +689,7 @@ The default is instead to generate sequences with a variety of different lengths
     <message>
         <location filename="../src/u_calibrate/HMMCalibrateDialogController.cpp" line="166"/>
         <source>HMM models</source>
-        <translation type="unfinished">Профайлы HMM</translation>
+        <translation>Профайлы HMM</translation>
     </message>
 </context>
 <context>
@@ -936,7 +936,7 @@ The default is instead to generate sequences with a variety of different lengths
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="74"/>
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="204"/>
         <source>Search</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/u_search/HMMSearchDialogController.cpp" line="75"/>
@@ -1156,7 +1156,7 @@ The default is instead to generate sequences with a variety of different lengths
     <message>
         <location filename="../src/u_build/HMMBuildWorker.cpp" line="156"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>По умолчанию</translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildWorker.cpp" line="218"/>

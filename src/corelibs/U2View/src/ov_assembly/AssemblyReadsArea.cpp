@@ -207,7 +207,8 @@ QMenu* AssemblyReadsArea::createShadowingMenu() {
 
 void AssemblyReadsArea::initRedraw() {
     redraw = true;
-    cachedView = QPixmap(size());
+    cachedView = QPixmap(size() * devicePixelRatio());
+    cachedView.setDevicePixelRatio(devicePixelRatio());
 }
 
 void AssemblyReadsArea::connectSlots() {
@@ -425,7 +426,7 @@ void AssemblyReadsArea::drawReads(QPainter & p) {
         if(text) {
             f.setPointSize(calcFontPointSize());
         }
-        cellRenderer->render(QSize(cachedReads.letterWidth, cachedReads.letterWidth), text, f);
+        cellRenderer->render(QSize(cachedReads.letterWidth, cachedReads.letterWidth), devicePixelRatio(), text, f);
     }
 
     int totalBasesPainted = 0;

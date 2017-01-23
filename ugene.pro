@@ -112,7 +112,6 @@ if(exists( ./src/libs_3rdparty/QSpec/QSpec.pro ):!exclude_list_enabled()) {
 
 without_non_free() {
     SUBDIRS -= src/plugins_3rdparty/psipred
-    SUBDIRS -= src/plugins_3rdparty/phylip
 }
 
 # create target build & plugin directories (to copy licenses/descriptors to)
