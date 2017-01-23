@@ -6,5 +6,3 @@ PLUGIN_VENDOR=Unipro
 PLUGIN_MODE=ui
 
 include( ../../ugene_plugin_common.pri )
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
