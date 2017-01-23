@@ -37,6 +37,9 @@ public:
     void updateRecent(const QStringList &recentProjects, const QStringList &recentFiles);
     bool isLoaded() const;
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
 private:
     WelcomePageController *controller;
     WelcomePageWidget *widget;

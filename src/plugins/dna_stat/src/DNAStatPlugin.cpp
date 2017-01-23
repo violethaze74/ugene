@@ -36,7 +36,6 @@
 
 #include "DNAStatMSAProfileDialog.h"
 #include "DNAStatPlugin.h"
-#include "DNAStatsWindow.h"
 #include "DistanceMatrixMSAProfileDialog.h"
 
 namespace U2 {

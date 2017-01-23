@@ -24,6 +24,9 @@
 
 #include "utils/MultilingualHtmlView.h"
 
+class QWebSocketServer;
+class WebSocketClientWrapper;
+
 namespace U2 {
 
 class WelcomePageController;

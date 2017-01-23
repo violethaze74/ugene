@@ -22,23 +22,51 @@
 #ifndef _U2_MULTILINGUAL_HTML_VIEW_H_
 #define _U2_MULTILINGUAL_HTML_VIEW_H_
 
-#include <QWebView>
+#include <qglobal.h>
+#include <QWebEngineView>
+#include <QWebChannel>
+#if (QT_VERSION < 0x050500) //Qt 5.7
+#include <QWebSocketServer>
+#include <U2Gui/WebSocketClientWrapper.h>
+#endif
 
 namespace U2 {
 
-class MultilingualHtmlView : public QWebView {
+class MultilingualWebEnginePage : public QWebEnginePage {
+    Q_OBJECT
+public:
+    MultilingualWebEnginePage(QObject* parent = 0);
+protected:
+#if (QT_VERSION >= 0x050500)
+    virtual bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
+#else
+    virtual bool javaScriptConfirm(const QUrl & securityOrigin, const QString & msg); // hack for Qt5.4 only
+#endif
+
+};
+
+class MultilingualHtmlView : public QWebEngineView {
     Q_OBJECT
 public:
     MultilingualHtmlView(const QString& htmlPath, QWidget* parent = NULL);
     bool isLoaded() const;
 
+public slots:
+    void performAction(const QString&) {}
 protected slots:
     virtual void sl_loaded(bool ok);
     virtual void sl_linkActivated(const QUrl& url);
 
 signals:
     void si_loaded(bool ok);
-
+protected:
+#if (QT_VERSION < 0x050500) //Qt 5.7
+    QWebSocketServer *server;
+    WebSocketClientWrapper *clientWrapper;
+    QWebChannel *channel;
+#else
+    QWebChannel *channel;
+#endif
 private:
     void loadPage(const QString& htmlPath);
     bool loaded;

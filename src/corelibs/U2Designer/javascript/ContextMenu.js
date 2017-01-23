@@ -45,10 +45,8 @@ function addEventListeners() {
 }
 
 function copySelected(e, element) {
-    var menuObj = document.getElementById(element.getAttribute("menuId"));
-    agent.setClipboardText(document.getSelection());
+    agent.setClipboardText(document.getSelection()+""); //
     e.stopPropagation();
-    menuObj.hide();
 }
 
 function copyElementContent(e, element) {
@@ -56,12 +54,11 @@ function copyElementContent(e, element) {
     var targetObj = document.getElementById(menuObj.getAttribute("target"));
     agent.setClipboardText(targetObj.innerText);
     e.stopPropagation();
-    menuObj.hide();
 }
 
 function contextmenu(e, element) {
     //Check that right button is pressed
-    if(e.which == 3 || e.button == 2) {
+    if(e.which === 3 || e.button === 2) {
         return onContextMenuTriggered(e, "ext_menu", element.id);
     }
     else {
