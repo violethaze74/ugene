@@ -25,7 +25,6 @@
 #include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QTableView>
-#include <QWebElement>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>

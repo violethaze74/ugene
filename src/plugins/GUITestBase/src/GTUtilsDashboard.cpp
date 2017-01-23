@@ -20,9 +20,7 @@
 */
 
 #include <QTabWidget>
-#include <QWebElement>
-#include <QWebFrame>
-#include <QWebView>
+#include <QWebEngineView>
 
 #include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
@@ -42,8 +40,8 @@ QMap<QString, GTUtilsDashboard::Tabs> GTUtilsDashboard::initTabMap(){
 
 const QMap<QString, GTUtilsDashboard::Tabs> GTUtilsDashboard::tabMap = initTabMap();
 
-QWebView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os){
-    return GTWidget::findExactWidget<QWebView*>(os, "Dashboard");
+QWebEngineView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os){
+    return GTWidget::findExactWidget<QWebEngineView*>(os, "Dashboard");
 }
 
 QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os){
