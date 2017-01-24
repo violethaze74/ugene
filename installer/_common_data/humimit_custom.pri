@@ -7,9 +7,7 @@ TARGET = humimit
 TEMPLATE = lib
 CONFIG += thread debug_and_release warn_off qt dll
 INCLUDEPATH += src _tmp
-QT += testlib
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
+QT += testlib webenginewidgets
 
 DEFINES += BUILDING_HUMIMIT_DLL
 DEFINES += QT_DLL
