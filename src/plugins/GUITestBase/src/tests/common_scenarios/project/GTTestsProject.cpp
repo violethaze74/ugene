@@ -20,6 +20,7 @@
  */
 
 #include <QMdiSubWindow>
+#include <QWebElement>
 #include <QApplication>
 #include <QTreeWidget>
 

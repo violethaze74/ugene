@@ -37,7 +37,7 @@ class GTUtilsDashboard
 {
 public:
     enum Tabs{Overview, Input, ExternalTools};
-    static QWebEngineView* getDashboard(HI::GUITestOpStatus &os);
+    static QWebView* getDashboard(HI::GUITestOpStatus &os);
     static QTabWidget* getTabWidget(HI::GUITestOpStatus &os);
 
     static HIWebElement findElement(HI::GUITestOpStatus &os, QString text, QString tag = "*", bool exactMatch = false);

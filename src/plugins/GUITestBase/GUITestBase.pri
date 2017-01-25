@@ -5,7 +5,8 @@ PLUGIN_NAME=GUI Test Base
 PLUGIN_VENDOR=Unipro
 include( ../../ugene_plugin_common.pri )
 
-QT += testlib webenginewidgets
+QT += testlib
+greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
 
 INCLUDEPATH += ../../corelibs/U2View/_tmp/ ../../libs_3rdparty/QSpec/src
 LIBS +=-L../../_release -lhumimit

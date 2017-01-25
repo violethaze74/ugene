@@ -19,7 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#include <QWebEngineView>
+#include <QWebView>
+#include <QWebElement>
 
 #include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
@@ -35,9 +36,9 @@ void GTUtilsStartPage::openStartPage(HI::GUITestOpStatus &os){
     GTUtilsMdi::activateWindow(os, "Start Page");
 }
 
-QWebEngineView* GTUtilsStartPage::getStartPage(HI::GUITestOpStatus &os){
+QWebView* GTUtilsStartPage::getStartPage(HI::GUITestOpStatus &os){
     QWidget* startPageWidget = GTWidget::findWidget(os, "Start Page");
-    QWebEngineView* result = GTWidget::findExactWidget<QWebEngineView*>(os, "webView", startPageWidget);
+    QWebView* result = GTWidget::findExactWidget<QWebView*>(os, "webView", startPageWidget);
     return result;
 }
 
@@ -52,16 +53,16 @@ HIWebElement GTUtilsStartPage::getButton(HI::GUITestOpStatus &os, Buttons button
         return GTWebView::findElement(os, getStartPage(os), "Create Workflow", "DIV");
     case QuickStartGuide:
          // You do not need this button
-        GT_CHECK_RESULT(false, "Not implemented", HIWebElement());
+        GT_CHECK_RESULT(false, "Not implemented", QWebElement());
     default:
-        GT_CHECK_RESULT(false, "Not implemented", HIWebElement());
+        GT_CHECK_RESULT(false, "Not implemented", QWebElement());
     }
 }
 #undef GT_METHOD_NAME
 
 void GTUtilsStartPage::clickButton(HI::GUITestOpStatus &os, Buttons b) {
     HIWebElement but = getButton(os, b);
-    QWebEngineView* start = getStartPage(os);
+    QWebView* start = getStartPage(os);
     GTWebView::click(os, start, but);
 }
 

@@ -26,6 +26,9 @@
 #include "GTGlobals.h"
 #include <primitives/GTWebView.h>
 
+class QWebView;
+class QWebElement;
+
 namespace U2 {
 using namespace HI;
 
@@ -34,7 +37,7 @@ class GTUtilsStartPage
 public:
     enum Buttons{OpenFile, CreateSequence, CreateWorkflow, QuickStartGuide};
     static void openStartPage(HI::GUITestOpStatus &os);
-    static QWebEngineView* getStartPage(HI::GUITestOpStatus &os);
+    static QWebView* getStartPage(HI::GUITestOpStatus &os);
     static HIWebElement getButton(HI::GUITestOpStatus &os, Buttons button);
     static void clickButton(HI::GUITestOpStatus &os, Buttons button);
     static void clickResentDocument(HI::GUITestOpStatus &os, QString text);

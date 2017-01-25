@@ -20,8 +20,13 @@
  */
 
 #include <QtCore/qglobal.h>
+#if (QT_VERSION < 0x050000) //Qt 5
+#include <QtGui/QMenu>
+#include <QtGui/QToolBar>
+#else
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QToolBar>
+#endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/IOAdapter.h>
