@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,13 +18,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
- 
-function showOnlyLang(lang) {
-    var elements = document.getElementsByClassName("translatable");
-    for(i=0; i<elements.length; i++){
-        attr = elements[i].getAttribute("lang");
-        if(attr != lang){
-            elements[i].style.display = "none";
-        }
-    }
-}
+
+#ifndef _U2_PARAMETERS_WIDGET_H_
+#define _U2_PARAMETERS_WIDGET_H_
+
+#include "Dashboard.h"
+
+
+namespace U2 {
+
+using namespace Workflow::Monitor;
+
+struct ParametersWidgetTab {
+    QString tabName;
+    QMap<QString, QString> paramsWithValues;
+};
+
+class ParametersWidget : public DashboardWidget {
+    Q_OBJECT
+public:
+    ParametersWidget(const QWebElement &container, Dashboard *parent);
+
+    void createWidget(const QList<WorkerParamsInfo> &workersParamsInfo);
+};
+
+} // namespace U2
+
+#endif

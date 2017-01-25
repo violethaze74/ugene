@@ -25,18 +25,10 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
-
-#include <QtWebChannel/QWebChannel>
-
-#include <QDesktopServices>
-#if (QT_VERSION < 0x050500) //Qt 5.7
-#include <QtWebSockets/QWebSocketServer>
-#include <U2Gui/WebSocketClientWrapper.h>
-#include <U2Gui/WebSocketTransport.h>
-#endif
+#include <QWebElement>
+#include <QWebFrame>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -52,31 +44,12 @@ namespace {
 }
 
 WelcomePageWidget::WelcomePageWidget(QWidget *parent, WelcomePageController *controller)
-#if (QT_VERSION < 0x50500)
-    : MultilingualHtmlView("qrc:///ugene/html/welcome_page_webengine_qt542.html", parent),
-#else
-    : MultilingualHtmlView("qrc:///ugene/html/welcome_page_webengine.html", parent),
-#endif
+    : MultilingualHtmlView("qrc:///ugene/html/welcome_page.html", parent),
       controller(controller)
 {
     installEventFilter(this);
     setObjectName("webView");
-#if (QT_VERSION < 0x050500) //Qt 5.7
-    server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
-    if (!server->listen(QHostAddress::LocalHost, 12345)) {
-        return;
-    }
-
-    clientWrapper = new WebSocketClientWrapper(server);//TODO delete in dtor
-
-    channel = new QWebChannel(this);
-
-    QObject::connect(clientWrapper, &WebSocketClientWrapper::clientConnected,
-        channel, &QWebChannel::connectTo);
-    channel->registerObject(QString("ugene"), controller);
-#else
-    channel->registerObject(QString("ugene"), controller);
-#endif
+    addController();
 }
 
 void WelcomePageWidget::sl_loaded(bool ok) {
@@ -87,46 +60,34 @@ void WelcomePageWidget::sl_loaded(bool ok) {
 void WelcomePageWidget::updateRecent(const QStringList &recentProjects, const QStringList &recentFiles) {
     updateRecentFilesContainer("recent_projects", recentProjects, tr("No opened projects yet"));
     updateRecentFilesContainer("recent_files", recentFiles, tr("No opened files yet"));
-    page()->runJavaScript("updateLinksVisibility()");
-}
-
-void addRecentItem(const QString &id, const QString & file, QWebEnginePage *page) {
-    if (id.contains("recent_files")) {
-            page->runJavaScript(QString("addRecentItem(\"recent_files\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
-    } else if (id.contains("recent_projects")) {
-            page->runJavaScript(QString("addRecentItem(\"recent_projects\", \"%1\", \"%2\")").arg(file).arg(QFileInfo(file).fileName()));
-    } else {
-        SAFE_POINT(false, "Unknown containerId", );
-    }
-}
-
-void addNoItems(const QString &id, const QString & message, QWebEnginePage *page) {
-    if (id.contains("recent_files")) {
-        page->runJavaScript(QString("addRecentItem(\"recent_files\", \"%1\", \"\")").arg(message));
-    } else if (id.contains("recent_projects")) {
-        page->runJavaScript(QString("addRecentItem(\"recent_projects\", \"%1\", \"\")").arg(message));
-    } else {
-        SAFE_POINT(false, "Unknown containerId", );
-    }
+    page()->mainFrame()->evaluateJavaScript("updateLinksVisibility()");
 }
 
 void WelcomePageWidget::updateRecentFilesContainer(const QString &id, const QStringList &files, const QString &message) {
-    page()->runJavaScript(QString("clearRecent(\"%1\")").arg(id));
-    bool emptyList = true;
-    foreach(const QString &file, files.mid(0, MAX_RECENT)) {
+    static const QString divTemplate = "<div id=\"%1\" class=\"recent_items_content\">%2</div>";
+    static const QString linkTemplate = "<a class=\"recentLink\" href=\"#\" onclick=\"ugene.openFile('%1')\" title=\"%1\">- %2</a>";
+
+    QWebElement doc = page()->mainFrame()->documentElement();
+    QWebElement recentFilesDiv = doc.findFirst("#" + id);
+    SAFE_POINT(!recentFilesDiv.isNull(), "No recent files container", );
+    recentFilesDiv.removeAllChildren();
+
+    QStringList links;
+    foreach (const QString &file, files.mid(0, MAX_RECENT)) {
         if (file.isEmpty()) {
             continue;
         }
-        emptyList = false;
-        addRecentItem(id, file, page());
+        links << linkTemplate.arg(file).arg(QFileInfo(file).fileName());
     }
-
-    if (emptyList) {
-        addNoItems(id, message, page());
+    QString result = message;
+    if (!links.isEmpty()) {
+        result = links.join("\n");
     }
+    recentFilesDiv.setOuterXml(divTemplate.arg(id).arg(result));
 }
 
 void WelcomePageWidget::addController() {
+    page()->mainFrame()->addToJavaScriptWindowObject("ugene", controller);
     controller->onPageLoaded();
 }
 

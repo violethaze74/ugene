@@ -121,9 +121,7 @@ HEADERS += src/AppSettingsGUI.h \
            src/util/shared_db/ImportOptionsWidget.h \
            src/util/shared_db/ImportToDatabaseDialog.h \
            src/util/shared_db/ItemToImportEditDialog.h \
-           src/util/shared_db/SharedConnectionsDialog.h \
-           src/util/webchannel/WebSocketClientWrapper.h \
-           src/util/webchannel/WebSocketTransport.h
+           src/util/shared_db/SharedConnectionsDialog.h
 FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/AuthenticationDialog.ui \
          src/util/AuthenticationWidget.ui \
@@ -269,9 +267,7 @@ SOURCES += src/MainWindow.cpp \
            src/util/shared_db/ImportOptionsWidget.cpp \
            src/util/shared_db/ImportToDatabaseDialog.cpp \
            src/util/shared_db/ItemToImportEditDialog.cpp \
-           src/util/shared_db/SharedConnectionsDialog.cpp \
-           src/util/webchannel/WebSocketClientWrapper.cpp \
-           src/util/webchannel/WebSocketTransport.cpp
+           src/util/shared_db/SharedConnectionsDialog.cpp
 RESOURCES += U2Gui.qrc
 TRANSLATIONS += transl/english.ts \
                 transl/russian.ts

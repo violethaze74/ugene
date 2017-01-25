@@ -7,6 +7,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/ChooseItemDialog.h \
            src/CreateScriptWorker.h \
            src/DashboardsManagerDialog.h \
+           src/EstimationDialog.h \
            src/GalaxyConfigConfigurationDialogImpl.h \
            src/ImportSchemaDialog.h \
            src/InvestigationDataModel.h \
@@ -118,6 +119,7 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/ChooseItemDialog.cpp \
            src/CreateScriptWorker.cpp \
            src/DashboardsManagerDialog.cpp \
+           src/EstimationDialog.cpp \
            src/GalaxyConfigConfigurationDialogImpl.cpp \
            src/ImportSchemaDialog.cpp \
            src/InvestigationDataModel.cpp \
