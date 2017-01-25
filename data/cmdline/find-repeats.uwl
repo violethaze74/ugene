@@ -28,7 +28,7 @@ workflow find-repeats{
     write-sequence {
         type:write-sequence;
         name:"Write Sequence";
-        document-format:genbank;
+        document-format:Genbank;
     }
 
 

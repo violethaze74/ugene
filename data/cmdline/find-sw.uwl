@@ -22,7 +22,7 @@ workflow find-sw{
     write-sequence {
         type:write-sequence;
         name:"Write Genbank";
-        document-format:genbank;
+        document-format:Genbank;
     }
     ssearch {
         type:ssearch;
