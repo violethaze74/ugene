@@ -113,7 +113,6 @@ public:
     void start();
     void pause();
     void resume();
-    bool isExternalToolScheme() const;
 
     void registerTask(Task *task, const QString &actor);
 
@@ -135,7 +134,7 @@ public slots:
 signals:
     void si_firstProblem();
     void si_newOutputFile(const U2::Workflow::Monitor::FileInfo &info);
-    void si_newProblem(const Problem &info, int count);
+    void si_newProblem(const Problem &info);
     void si_workerInfoChanged(const QString &actor, const U2::Workflow::Monitor::WorkerInfo &info);
     void si_progressChanged(int progress);
     void si_runStateChanged(bool paused);
@@ -146,21 +145,20 @@ signals:
     void si_logChanged(U2::Workflow::Monitor::LogEntry entry);
 
 private:
-    Schema                                      *schema;
-    QScopedPointer<Metadata>                    meta;
-    QPointer<WorkflowAbstractIterationRunner>   task;
-    QMap<QString, Actor*>                       procMap;
-    QMap<Task*, Actor*>                         taskMap;
-    QList<Task*>                                errorTasks;
-    QList<Monitor::FileInfo>                    outputFiles;
-    ProblemList                                 problems;
-    QMap<QString, Monitor::WorkerInfo>          workers;
-    QList<Monitor::WorkerParamsInfo>            workersParamsInfo;
-    QMap<QString, Monitor::WorkerLogInfo>       workersLog;
-    QString                                     _outputDir;
+    Schema *schema;
+    QScopedPointer<Metadata> meta;
+    QPointer<WorkflowAbstractIterationRunner> task;
+    QMap<QString, Actor*> procMap;
+    QMap<Task*, Actor*> taskMap;
+    QList<Task*> errorTasks;
+    QList<Monitor::FileInfo> outputFiles;
+    ProblemList problems;
+    QMap<QString, Monitor::WorkerInfo> workers;
+    QList<Monitor::WorkerParamsInfo> workersParamsInfo;
+    QMap<QString, Monitor::WorkerLogInfo> workersLog;
+    QString _outputDir;
     bool saveSchema;
     bool started;
-    bool externalTools;
 
 protected:
     void setWorkerInfo(const QString &actorId, const Monitor::WorkerInfo &info);
@@ -203,6 +201,5 @@ Q_DECLARE_METATYPE( U2::Workflow::Monitor::TaskState )
 Q_DECLARE_METATYPE( U2::Workflow::Monitor::FileInfo )
 Q_DECLARE_METATYPE( U2::Workflow::Monitor::WorkerInfo )
 Q_DECLARE_METATYPE( U2::Workflow::Monitor::LogEntry )
-Q_DECLARE_METATYPE( U2::Workflow::Monitor::WorkerParamsInfo )
 
 #endif // _U2_WORKFLOWMONITOR_H_

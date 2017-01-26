@@ -6,12 +6,7 @@ include( ../../ugene_lib_common.pri )
 UGENE_RELATIVE_DESTDIR = ''
 
 QT += svg webkit
-equals(QT_MAJOR_VERSION, 5): QT += widgets webkitwidgets
-
-#minQtVersion(5, 4, 0){
-    QT -= webkit webkitwidgets
-    QT += webengine webenginewidgets websockets
-#}
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
 
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2DESIGNER_DLL
 

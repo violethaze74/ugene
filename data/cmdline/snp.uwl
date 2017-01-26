@@ -32,12 +32,12 @@ workflow "Call variants with SAMtools"{
     files-conversion-1 {
         type:files-conversion;
         name:"To FASTA";
-        document-format:fasta;
+        document-format:FASTA;
     }
     files-conversion-2 {
         type:files-conversion;
         name:"To BAM";
-        document-format:bam;
+        document-format:BAM;
     }
 
 

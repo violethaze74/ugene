@@ -43,7 +43,7 @@ WorkerLogInfo::~WorkerLogInfo() {
 const QString WorkflowMonitor::WORKFLOW_FILE_NAME("workflow.uwl");
 
 WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema *_schema)
-    : QObject(), schema(_schema), task(_task), saveSchema(false), started(false), externalTools(false)
+: QObject(), schema(_schema), task(_task), saveSchema(false), started(false)
 {
     foreach (Actor *p, schema->getProcesses()) {
         procMap[p->getId()] = p;
@@ -64,9 +64,6 @@ WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema 
             info.parameters << attr;
         }
         workersParamsInfo << info;
-        if (p->getProto()->isExternalTool()) {
-            externalTools = true;
-        }
     }
 
     connect(task.data(), SIGNAL(si_updateProducers()), SIGNAL(si_updateProducers()));
@@ -161,10 +158,6 @@ void WorkflowMonitor::resume() {
     setRunState(false);
 }
 
-bool WorkflowMonitor::isExternalToolScheme() const {
-    return externalTools;
-}
-
 void WorkflowMonitor::registerTask(Task *task, const QString &actor) {
     SAFE_POINT(procMap.contains(actor), "Unknown actor id", );
     taskMap[task] = procMap[actor];
@@ -241,13 +234,7 @@ void WorkflowMonitor::addProblem(const Problem &problem) {
         emit si_firstProblem();
         emit si_taskStateChanged(RUNNING_WITH_PROBLEMS);
     }
-    int count = 0;
-    foreach (const Problem &info, problems) {
-        if (problem == info) {
-            count++;
-        }
-    }
-    emit si_newProblem(problem, count);
+    emit si_newProblem(problem);
 }
 
 bool WorkflowMonitor::hasErrors() const {

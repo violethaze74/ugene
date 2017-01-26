@@ -10,12 +10,6 @@ UGENE_RELATIVE_DESTDIR = ''
 
 QT += xml network script webkit
 equals(QT_MAJOR_VERSION, 5): QT += widgets webkitwidgets
-
-minQtVersion(5, 4, 0){
-    QT -= webkit webkitwidgets
-    QT += webengine webenginewidgets webchannel websockets
-}
-
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release
 DEFINES+= QT_DLL QT_FATAL_ASSERT

@@ -143,7 +143,7 @@ private:
     int minLen, identity;
 
     bool pixMapUpdateNeeded, deleteDotPlotFlag, filtration;
-    bool createDotPlot;
+    bool dotPlotIsCalculating;
 
     Task *dotPlotTask;
     QPixmap *pixMap;

@@ -37,7 +37,7 @@ class ExternalToolListener;
 
 //using namespace Workflow;
 
-enum LogType {ERROR_LOG = 0, OUTPUT_LOG = 1, PROGRAM_PATH = 2, ARGUMENTS = 3};
+enum LogType {ERROR_LOG, OUTPUT_LOG, PROGRAM_PATH, ARGUMENTS};
 
 class U2CORE_EXPORT ProcessRun {
 public:

@@ -24,7 +24,7 @@ workflow "Search weight matrix"{
     write-genbank {
         type:write-sequence;
         name:"Write Genbank";
-        document-format:genbank;
+        document-format:Genbank;
     }
 
 

@@ -299,9 +299,9 @@ public:
 
     GScrollBar* getHBar() const {return shBar;}
 
-    void updateHBarPosition(int base);
+    void updateHBarPosition(int base, bool repeatAction = false);
 
-    void updateVBarPosition(int seq);
+    void updateVBarPosition(int seq, bool repeatAction = false);
 
     void drawVisibleContent(QPainter& p);
     bool drawContent(QPainter &p, const QRect &area);

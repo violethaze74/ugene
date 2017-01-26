@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
  UGENE - Integrated Bioinformatics Tools.
  Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
@@ -18,12 +19,10 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  MA 02110-1301, USA.
 -->
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="qrc:///javascript/bootstrap/css/bootstrap.min.css"/>
-    <script src="qrc:///ugene/javascript/Common.js"></script>
     <style>
         * {
             text-indent: 20px;
@@ -54,48 +53,30 @@
             margin-right: 1px;
         }
     </style>
-
 </head>
 <body>
 <div>
-    <a href="http://ugene.net">link</a>
-    <h3 lang="en" class="translatable">Major changes in UGENE 1.24</h3>
-    <ul class="features_list translatable" lang="en">
-        <li><span class="research_field">Workflow Designer:</span>
-            <ul class="sub_features_list">
-                <li>New element: "Convert SnpEff Variations to Annotations". Element converts variations with SnpEff information into standard annotations, so you can observe them in the Sequence View.</li>
-                <li>NGS workflows improvements.</li>
+    <h3 lang="en">Changes in UGENE 1.25</h3>
+        <h3 lang="ru">Изменения в UGENE 1.25</h3>
+    <ul class="features_list" lang="en">
+                <li><span class="research_field">NGS:</span>
+                    <ul class="sub_features_list">
+                <li>New parameter for reads mappers (BWA, Bowtie2, etc.) to remove "unpaired" reads from quality-filtered paired-end FASTQ files before the mapping</li>
+                <li>Support of different options for CutAdapt parameters in the "Raw NGS data processing" wizards (5' adapters, 3' adapters, 5' and 3' adapters)</li>
+                                <li>Optimization of the coverage calculation in the Assembly Browser</li>
             </ul>
                 </li>
                 <li><span class="research_field">Bug fixes and minor improvements</span></li>
     </ul>
-
-    <h3 lang="ru" class="translatable">Изменения в UGENE 1.24</h3>
-    <ul class="features_list translatable" lang="ru">
-        <li><span class="research_field">Дизайнер вычислительных схем:</span>
-            <ul class="sub_features_list">
-                <li>Новый элемент: "Преобразование вариаций SnpEff в аннотации". Элемент преобразует вариации с информацией от SnpEff в стандартные аннотации, которые вы можете открыть в редакторе последовательностей.</li>
-                <li>Улучшения схем NGS.</li>
-            </ul>
-        </li>
-        <li>Исправление ошибок.</li>
+        <ul class="features_list" lang="ru">
+                <li><span class="research_field">NGS:</span>
+                        <ul class="sub_features_list">
+                                        <li>Возможность фильтрации прочтений, не имеющих пары, при картировании парных прочтений на референсную последовательность (с помощью BWA, Bowtie2 и т. п.)</li>
+                                        <li>Расширеный набор параметров для обрезания адаптерных последовательностей (5'-адаптеры, 3'-адаптеры, 5'- и 3'-адаптеры) в диалогах настройки схем анализа сырых данных NGS</li>
+                                        <li>Оптимизация вычисления покрытия в Assembly Browser</li>
+                        </ul>
+                </li>
+                <li><span class="research_field">Исправление ошибок, мелкие улучшения</span></li>
     </ul>
 </div>
-<script>
-    function getBodyHeight(){
-        return document.documentElement.scrollHeight;
-    }
-    function bindLinks(){
-        var elements = document.getElementsByTagName('A');
-        for(var i = 0; i< elements.length; i++){
-            elements[i].onclick = openUrl;
-        }
-    }
-
-    function openUrl() {
-      confirm(this.href);
-      return false;
-    }
-</script>
 </body>
-</html>
