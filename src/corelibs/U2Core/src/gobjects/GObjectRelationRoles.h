@@ -29,7 +29,8 @@ namespace U2 {
 enum GObjectRelationRole {
     ObjectRole_Sequence = 1,
     ObjectRole_AnnotationTable,
-    ObjectRole_PhylogeneticTree
+    ObjectRole_PhylogeneticTree,
+    ObjectRole_ReferenceSequence
 };
 
 /**

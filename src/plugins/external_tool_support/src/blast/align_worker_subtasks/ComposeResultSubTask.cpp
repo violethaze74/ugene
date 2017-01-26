@@ -94,12 +94,24 @@ const SharedDbiDataHandler& ComposeResultSubTask::getAnnotations() const {
     return annotations;
 }
 
-MultipleChromatogramAlignmentObject *ComposeResultSubTask::takeAlignment() {
-    MultipleChromatogramAlignmentObject *result = mcaObject;
+QList<GObject*> ComposeResultSubTask::getResult() {
+    QList<GObject*> result;
+
+    MultipleChromatogramAlignmentObject *alignment = mcaObject;
     mcaObject = NULL;
-    if (result->thread() != QThread::currentThread()) {
-        result->moveToThread(QThread::currentThread());
+    if (alignment->thread() != QThread::currentThread()) {
+        alignment->moveToThread(QThread::currentThread());
     }
+
+    U2SequenceObject* reference = StorageUtils::getSequenceObject(storage, this->reference);
+    CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), result);
+
+    // SANGER_TODO: add proper relations
+    alignment->addObjectRelation(reference, GObjectRelationRole::ObjectRole_ReferenceSequence);
+
+    result << alignment;
+    result << reference ;
+
     return result;
 }
 

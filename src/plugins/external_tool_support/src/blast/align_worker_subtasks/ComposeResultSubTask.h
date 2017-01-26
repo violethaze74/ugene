@@ -49,7 +49,8 @@ public:
     void prepare();
     void run();
     const SharedDbiDataHandler& getAnnotations() const;
-    MultipleChromatogramAlignmentObject *takeAlignment();
+
+    QList<GObject*> getResult();
 
 private:
     BlastAndSwReadTask * getBlastSwTask(int readNum);

@@ -46,6 +46,8 @@ DbiDocumentFormat::DbiDocumentFormat(const U2DbiFactoryId& _id, const DocumentFo
     formatDescription = tr("ugenedb is a internal UGENE database file format");
     supportedObjectTypes += GObjectTypes::ASSEMBLY;
     supportedObjectTypes += GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT;
+    supportedObjectTypes += GObjectTypes::SEQUENCE;
+    supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
     formatFlags|=DocumentFormatFlag_NoPack;
     formatFlags|=DocumentFormatFlag_NoFullMemoryLoad;
     formatFlags|=DocumentFormatFlag_DirectWriteOperations;

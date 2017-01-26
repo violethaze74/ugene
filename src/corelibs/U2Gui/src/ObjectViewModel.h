@@ -47,7 +47,7 @@ class GObjectViewObjectHandler;
 
 class U2GUI_EXPORT GObjectViewFactoryRegistry: public QObject {
 public:
-    GObjectViewFactoryRegistry(QObject* p = NULL) : QObject(p){};
+    GObjectViewFactoryRegistry(QObject* p = NULL) : QObject(p){}
 
     void registerGObjectViewFactory(GObjectViewFactory* f);
 
