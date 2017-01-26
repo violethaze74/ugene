@@ -26,18 +26,21 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <QDesktopServices>
-#include <QWebElementCollection>
-#include <QWebFrame>
 
+#include <QWebChannel>
+#if (QT_VERSION < 0x050500) //Qt 5.7
+#include <QWebSocketServer>
+#include <U2Gui/WebSocketClientWrapper.h>
+#include <U2Gui/WebSocketTransport.h>
+#endif
 
 namespace U2 {
 
 MultilingualHtmlView::MultilingualHtmlView(const QString& htmlPath, QWidget* parent)
-    : QWebView(parent),
-      loaded(false) {
+    : QWebEngineView(parent),loaded(false)
+{
     setContextMenuPolicy(Qt::NoContextMenu);
     loadPage(htmlPath);
-    page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 }
 
 bool MultilingualHtmlView::isLoaded() const {
@@ -53,13 +56,10 @@ void MultilingualHtmlView::sl_loaded(bool ok) {
     SAFE_POINT(s != NULL, "AppContext settings is NULL", );
     QString lang = s->getValue("UGENE_CURR_TRANSL", "en").toString();
 
-    QWebFrame* frame = page()->mainFrame();
-    SAFE_POINT(frame != NULL, "MainFrame of webView page is NULL", );
-
-    QWebElementCollection otherLangsCollection = frame->findAllElements(QString(":not(:lang(%1))[lang]").arg(lang));
-    for (int i = 0; i < otherLangsCollection.count(); i++) {
-        otherLangsCollection[i].setStyleProperty("display", "none");
-    }
+    page()->runJavaScript(QString("showOnlyLang(\"%1\");").arg(lang));
+#if (QT_VERSION < 0x050500)
+    page()->runJavaScript("bindLinks();");
+#endif
     emit si_loaded(ok);
 }
 
@@ -69,8 +69,39 @@ void MultilingualHtmlView::sl_linkActivated(const QUrl &url) {
 
 void MultilingualHtmlView::loadPage(const QString& htmlPath) {
     connect(this, SIGNAL(loadFinished(bool)), this, SLOT(sl_loaded(bool)));
-    connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(sl_linkActivated(QUrl)));
-    load(QUrl(htmlPath));
+#if (QT_VERSION < 0x050500) //Qt 5.7
+    QWebEnginePage *page = new MultilingualWebEnginePage(parentWidget());
+    QUrl url(htmlPath);
+    page->load(url);
+    setPage(page);
+#else
+    QWebEnginePage *pg = new MultilingualWebEnginePage(parentWidget());
+    pg->load(QUrl(htmlPath));
+    setPage(pg);
+
+    channel = new QWebChannel(page());
+    page()->setWebChannel(channel);
+#endif
 }
+
+MultilingualWebEnginePage::MultilingualWebEnginePage(QObject *parent) : QWebEnginePage(parent) {
+
+}
+
+#if (QT_VERSION >= 0x050500)
+bool MultilingualWebEnginePage::acceptNavigationRequest(const QUrl &url, NavigationType type, bool) {
+    if (type == NavigationTypeLinkClicked) {
+        QDesktopServices::openUrl(url);
+        return false;
+    }
+    return true;
+}
+#else
+bool MultilingualWebEnginePage::javaScriptConfirm(const QUrl &, const QString &msg){
+    QDesktopServices::openUrl(msg);
+    return false;
+}
+#endif
+
 
 } // namespace

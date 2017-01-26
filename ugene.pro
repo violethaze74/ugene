@@ -5,9 +5,9 @@ isEmpty(QT_VERSION) {
     error("QT_VERSION not defined. Unipro UGENE does not work with Qt 3.")
 }
 
-!minQtVersion(5, 2, 1) {
+!minQtVersion(5, 4, 2) {
     message("Cannot build Unipro UGENE with Qt version $${QT_VERSION}")
-    error("Use at least Qt 5.2.1.")
+    error("Use at least Qt 5.4.2.")
 }
 
 
