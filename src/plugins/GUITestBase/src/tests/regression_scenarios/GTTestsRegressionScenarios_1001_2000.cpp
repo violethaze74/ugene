@@ -47,9 +47,7 @@
 #include <QProgressBar>
 #include <QPushButton>
 #include <QTableWidget>
-#include <QWebElement>
-#include <QWebFrame>
-#include <QWebView>
+#include <QWebEngineView>
 #include <QWizard>
 
 #include <GTGlobals.h>
@@ -961,8 +959,9 @@ GUI_TEST_CLASS_DEFINITION(test_1049){
 
     GTGlobals::sleep();
 //    Expeceted state: Statistics View opened, it contains two tables: full statistics and additional group statistics.
-    QWebView* v = GTUtilsMdi::activeWindow(os)->findChild<QWebView*>();
-    QString text = v->page()->currentFrame()->toHtml();
+    QWebEngineView* v = GTUtilsMdi::activeWindow(os)->findChild<QWebEngineView*>();
+//    QString text = v->page()->currentFrame()->toHtml(); //TODO Fix GUI test with WebView
+    QString text = "TODO Fix GUI test with WebView";
     CHECK_SET_ERR(text.contains("Group statistics of multiple alignment"), text);
 }
 

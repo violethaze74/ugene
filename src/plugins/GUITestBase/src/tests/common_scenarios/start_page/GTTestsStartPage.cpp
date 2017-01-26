@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <QWebElement>
-
 #include "GTUtilsMdi.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
