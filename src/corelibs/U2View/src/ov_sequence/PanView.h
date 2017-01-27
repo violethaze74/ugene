@@ -98,7 +98,7 @@ public:
         PanView *panView;
     };
 
-    PanView(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx);
+    PanView(ADVSingleSequenceWidget* p, SequenceObjectContext* ctx);
     ~PanView();
 
     const U2Region& getFrameRange() const {return frameView->getVisibleRange();}

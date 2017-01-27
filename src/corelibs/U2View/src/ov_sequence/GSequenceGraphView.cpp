@@ -43,8 +43,12 @@
 
 namespace U2 {
 
-GSequenceGraphView::GSequenceGraphView(QWidget* p, ADVSequenceObjectContext* ctx, GSequenceLineView* _baseView, const QString& _vName)
-: GSequenceLineView(p, ctx), baseView(_baseView), vName(_vName), graphDrawer(NULL)
+GSequenceGraphView::GSequenceGraphView(QWidget* p, SequenceObjectContext* ctx,
+                                       GSequenceLineView* _baseView, const QString& _vName)
+    : GSequenceLineView(p, ctx),
+      baseView(_baseView),
+      vName(_vName),
+      graphDrawer(NULL)
 {
     GCOUNTER(cvar, tvar, "GSequenceGraphView");
     assert(baseView);

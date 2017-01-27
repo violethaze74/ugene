@@ -26,14 +26,9 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/U2Type.h>
 
-#include <QtCore/QSet>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QMenu>
-#endif
+#include <QMenu>
+#include <QSet>
+#include <QWidget>
 
 namespace U2 {
 
@@ -48,12 +43,11 @@ class GObject;
 class Annotation;
 class U2Region;
 
-class U2VIEW_EXPORT ADVSequenceObjectContext : public QObject {
+class U2VIEW_EXPORT SequenceObjectContext : public QObject {
     Q_OBJECT
 public:
-    ADVSequenceObjectContext(AnnotatedDNAView* v, U2SequenceObject* obj);
+    SequenceObjectContext(U2SequenceObject* obj, QObject* parent);
 
-    AnnotatedDNAView*   getAnnotatedDNAView() const {return view;}
     DNATranslation*     getComplementTT() const {return complTT;}
     DNATranslation*     getAminoTT() const {return aminoTT;}
     U2SequenceObject*   getSequenceObject() const {return seqObj;}
@@ -79,7 +73,8 @@ public:
     void addAutoAnnotationObject(AnnotationTableObject *obj);
     void removeAnnotationObject(AnnotationTableObject *obj);
 
-    AnnotationSelection * getAnnotationsSelection() const;
+    // temporary virtual
+    virtual AnnotationSelection * getAnnotationsSelection() const;
 
     const QList<ADVSequenceWidget*>& getSequenceWidgets() const {return seqWidgets;}
     void addSequenceWidget(ADVSequenceWidget* w);
@@ -102,11 +97,9 @@ signals:
     void si_annotationObjectRemoved(AnnotationTableObject *obj);
     void si_translationRowsChanged();
 
-private:
+protected:
     void guessAminoTT(const AnnotationTableObject *ao);
 
-
-    AnnotatedDNAView*               view;
     U2SequenceObject*               seqObj;
     DNATranslation*                 aminoTT;
     DNATranslation*                 complTT;
@@ -119,6 +112,18 @@ private:
     QSet<AnnotationTableObject *>     autoAnnotations;
     bool                            clarifyAminoTT;
     bool                            rowChoosed;
+};
+
+class U2VIEW_EXPORT ADVSequenceObjectContext : public SequenceObjectContext {
+public:
+    ADVSequenceObjectContext(AnnotatedDNAView* v, U2SequenceObject* obj);
+
+    AnnotatedDNAView*   getAnnotatedDNAView() const {return view;}
+
+    AnnotationSelection* getAnnotationsSelection() const;
+
+private:
+    AnnotatedDNAView*               view;
 };
 
 } //namespace

@@ -25,16 +25,19 @@
 #include <ui_SaveGraphCutoffsDialog.h>
 
 #include <U2View/ADVGraphModel.h>
-#include <U2View/ADVSequenceObjectContext.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
 
 namespace U2 {
 
+class SequenceObjectContext;
 class SaveGraphCutoffsDialogController : public QDialog, Ui_SaveGraphCutoffsDialog {
     Q_OBJECT
 public:
-    SaveGraphCutoffsDialogController(GSequenceGraphDrawer *_d, QSharedPointer<GSequenceGraphData>& _gd, QWidget *parent, ADVSequenceObjectContext* _ctx);
+    SaveGraphCutoffsDialogController(GSequenceGraphDrawer *d,
+                                     QSharedPointer<GSequenceGraphData>& gd,
+                                     QWidget *parent,
+                                     SequenceObjectContext* ctx);
 
     virtual void accept();
 private:
@@ -42,7 +45,6 @@ private:
     bool validate();
 
     CreateAnnotationWidgetController*   ac;
-    ADVSequenceObjectContext*           ctx;
     GSequenceGraphDrawer*               d;
     QSharedPointer<GSequenceGraphData> gd;
     QList<U2Region>                     resultRegions;

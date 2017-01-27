@@ -79,7 +79,7 @@ const int SequenceViewAnnotatedRenderer::CUT_SITE_HALF_HEIGHT = 2;
 
 const int SequenceViewAnnotatedRenderer::MAX_VIRTUAL_RANGE = 10000;
 
-SequenceViewAnnotatedRenderer::SequenceViewAnnotatedRenderer(ADVSequenceObjectContext* ctx)
+SequenceViewAnnotatedRenderer::SequenceViewAnnotatedRenderer(SequenceObjectContext* ctx)
     : SequenceViewRenderer(ctx) {
 
 }

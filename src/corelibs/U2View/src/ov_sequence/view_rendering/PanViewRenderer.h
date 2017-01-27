@@ -36,7 +36,7 @@ class ADVSequenceObjectContext;
 /************************************************************************/
 class PanViewRenderer : public SequenceViewAnnotatedRenderer {
 public:
-    PanViewRenderer(PanView* panView, ADVSequenceObjectContext* ctx);
+    PanViewRenderer(PanView* panView, SequenceObjectContext* ctx);
     virtual ~PanViewRenderer() {}
 
     qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;

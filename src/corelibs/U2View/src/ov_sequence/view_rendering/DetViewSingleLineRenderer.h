@@ -55,7 +55,7 @@ private:
         QFont fontIS;
     };
 public:
-    DetViewSingleLineRenderer(DetView* detView, ADVSequenceObjectContext* ctx);
+    DetViewSingleLineRenderer(DetView* detView, SequenceObjectContext* ctx);
 
     virtual qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
 

@@ -45,7 +45,7 @@ const int PanViewRenderer::MAX_VISIBLE_ROWS  = 20;
 const int PanViewRenderer::MAX_VISIBLE_ROWS_ON_START = 10;
 const int PanViewRenderer::LINE_TEXT_OFFSET = 10;
 
-PanViewRenderer::PanViewRenderer(PanView *panView, ADVSequenceObjectContext *ctx)
+PanViewRenderer::PanViewRenderer(PanView *panView, SequenceObjectContext *ctx)
     : SequenceViewAnnotatedRenderer(ctx),
       panView(panView) {
     s = panView->getLinesSettings();

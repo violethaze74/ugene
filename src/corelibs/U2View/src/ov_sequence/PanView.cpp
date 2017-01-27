@@ -141,7 +141,7 @@ void PanView::ZoomUseObject::releaseZoom() {
 }
 
 #define MAX_VISIBLE_ROWS_ON_START 10
-PanView::PanView(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
+PanView::PanView(ADVSingleSequenceWidget* p, SequenceObjectContext* ctx)
     : GSequenceLineViewAnnotated(p, ctx),
     seqWidget(p)
 {
