@@ -142,6 +142,10 @@ if [ ! -z "$PATH_TO_LIBPROC" ]; then
    cp -v "$PATH_TO_LIBPROC" "${TARGET_APP_DIR}"
    strip -v "${TARGET_APP_DIR}"
 fi
+if [ ! -z "$PATH_TO_INCLUDE_LIBS" ]; then
+   cp -v "$PATH_TO_INCLUDE_LIBS/*" "${TARGET_APP_DIR}"
+   strip -v "${TARGET_APP_DIR}"
+fi
 
 mkdir "${TARGET_APP_DIR}/sqldrivers"
 cp -v "$PATH_TO_QT_LIBS/../plugins/sqldrivers/libqsqlmysql.so" "${TARGET_APP_DIR}/sqldrivers"
