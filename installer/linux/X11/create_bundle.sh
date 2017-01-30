@@ -54,9 +54,9 @@ echo copying README file
 cp -v ../../_common_data/README "$TARGET_APP_DIR"
 
 echo copying LICENSE file
-cp -v ../../source/LICENSE "$TARGET_APP_DIR"
+cp -v ../../_common_data/LICENSE "$TARGET_APP_DIR"
 echo copying LICENSE.3rd_party file
-cp -v ../../source/LICENSE.3rd_party "$TARGET_APP_DIR"
+cp -v ../../_common_data/LICENSE.3rd_party "$TARGET_APP_DIR"
 
 echo copying file association script files
 cp -v ../../_common_data/Associate_files_to_UGENE.sh "$TARGET_APP_DIR"
@@ -70,9 +70,6 @@ mkdir "${TARGET_APP_DIR}/plugins"
 echo copying translations
 cp -v $RELEASE_DIR/transl_en.qm "$TARGET_APP_DIR"
 cp -v $RELEASE_DIR/transl_ru.qm "$TARGET_APP_DIR"
-cp -v $RELEASE_DIR/transl_cs.qm "$TARGET_APP_DIR"
-cp -v $RELEASE_DIR/transl_zh.qm "$TARGET_APP_DIR"
-
 
 echo copying data dir
 cp -R "$RELEASE_DIR/../../data"  "${TARGET_APP_DIR}"
@@ -108,7 +105,6 @@ add-core-library U2Test
 add-core-library U2View
 add-core-library ugenedb
 add-core-library breakpad
-add-core-library humimit
 
 echo
 echo copying qt libraries
@@ -143,8 +139,7 @@ if [ ! -z "$PATH_TO_LIBPROC" ]; then
    strip -v "${TARGET_APP_DIR}"
 fi
 if [ ! -z "$PATH_TO_INCLUDE_LIBS" ]; then
-   cp -v "$PATH_TO_INCLUDE_LIBS/*" "${TARGET_APP_DIR}"
-   strip -v "${TARGET_APP_DIR}"
+   cp -v "$PATH_TO_INCLUDE_LIBS"/* "${TARGET_APP_DIR}"
 fi
 
 mkdir "${TARGET_APP_DIR}/sqldrivers"
@@ -152,7 +147,7 @@ cp -v "$PATH_TO_QT_LIBS/../plugins/sqldrivers/libqsqlmysql.so" "${TARGET_APP_DIR
 strip -v "${TARGET_APP_DIR}/sqldrivers/libqsqlmysql.so"
 
 cp -r -v "$PATH_TO_QT_LIBS/../plugins/platforms" "${TARGET_APP_DIR}"
-strip -v "${TARGET_APP_DIR}/platforms/*.so"
+strip -v "${TARGET_APP_DIR}/platforms"/*.so
 
 cp -r -v "$PATH_TO_QT_LIBS/../plugins/imageformats" "${TARGET_APP_DIR}"
 strip -v ${TARGET_APP_DIR}/imageformats/*.so
