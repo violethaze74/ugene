@@ -44,7 +44,7 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MSAEditorUI
       ui(new Ui_ExportHighlightedDialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18223058");
+    new HelpButton(this, ui->buttonBox, "19759550");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

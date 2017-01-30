@@ -122,7 +122,7 @@ AssemblyInfoWidget::AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p)
 ////////////////////////////////////
 const QString AssemblyInfoWidgetFactory::GROUP_ID = "OP_ASS_INFO";
 const QString AssemblyInfoWidgetFactory::GROUP_ICON_STR = ":core/images/chart_bar.png";
-const QString AssemblyInfoWidgetFactory::GROUP_DOC_PAGE = "18223127";
+const QString AssemblyInfoWidgetFactory::GROUP_DOC_PAGE = "19759619";
 
 
 AssemblyInfoWidgetFactory::AssemblyInfoWidgetFactory()
