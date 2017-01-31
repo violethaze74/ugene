@@ -26,6 +26,8 @@
 #include "MaEditorNameList.h"
 
 #include "view_rendering/MaEditorWgt.h"
+#include <U2View/ADVSequenceObjectContext.h>// SANGER_TODO: do not forget to rename the header
+#include <U2View/PanView.h>
 
 #include <QToolBar>
 
@@ -43,7 +45,9 @@ McaEditor::McaEditor(const QString &viewName,
                      MultipleChromatogramAlignmentObject *obj,
                      U2SequenceObject* ref)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
-      referenceObj(ref) {
+      referenceObj(ref),
+      referenceCtx(NULL)
+{
     showChromatograms = true; // SANGER_TODO: check if there are chromatograms
 
     // SANGER_TODO: set new proper icon
@@ -60,8 +64,10 @@ McaEditor::McaEditor(const QString &viewName,
     }
 
     if (ref) {
-        objects.append(maObject);
-        onObjectAdded(maObject);
+        objects.append(referenceObj);
+        onObjectAdded(referenceObj);
+
+        referenceCtx = new SequenceObjectContext(referenceObj, this);
     }
 }
 
@@ -168,6 +174,9 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     : MaEditorWgt(editor) {
     initActions();
     initWidgets();
+
+    PanView* panView = new PanView(this, getEditor()->referenceCtx);
+    layout()->addWidget(panView);
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {

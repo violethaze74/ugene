@@ -30,6 +30,7 @@
 
 namespace U2 {
 
+class SequenceObjectContext;
 class U2SequenceObject;
 
 class McaEditor : public MaEditor {
@@ -64,7 +65,9 @@ protected:
 
     QMap<qint64, bool>  chromVisibility;
 
-    U2SequenceObject* referenceObj;
+    U2SequenceObject*       referenceObj;
+public: // temprorary
+    SequenceObjectContext*  referenceCtx;
 };
 
 class McaEditorWgt : public MaEditorWgt {

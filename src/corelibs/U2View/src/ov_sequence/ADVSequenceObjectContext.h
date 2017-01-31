@@ -112,6 +112,9 @@ protected:
     QSet<AnnotationTableObject *>     autoAnnotations;
     bool                            clarifyAminoTT;
     bool                            rowChoosed;
+
+    // SANGER_TODO:
+    AnnotationSelection* annSelection;
 };
 
 class U2VIEW_EXPORT ADVSequenceObjectContext : public SequenceObjectContext {

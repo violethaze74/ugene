@@ -92,6 +92,7 @@ SequenceObjectContext::SequenceObjectContext (U2SequenceObject* obj, QObject* pa
             }
         }
     }
+    annSelection = new AnnotationSelection(this);
 }
 
 void SequenceObjectContext::guessAminoTT(const AnnotationTableObject *ao) {
@@ -280,7 +281,7 @@ void SequenceObjectContext::sl_setAminoTranslation() {
 }
 
 AnnotationSelection* SequenceObjectContext::getAnnotationsSelection() const {
-    return NULL;
+    return annSelection;
 }
 
 void SequenceObjectContext::removeSequenceWidget(ADVSequenceWidget* w) {
