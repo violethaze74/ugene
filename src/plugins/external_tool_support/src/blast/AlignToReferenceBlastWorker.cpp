@@ -275,6 +275,12 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
         foreach (GObject* object, resObjects) {
             document->addObject(object);
         }
+        // alignment should have the relation about reference
+        // SANGER_TODO: leave only one relation
+        resObjects.first()->addObjectRelation(GObjectRelation(GObjectReference(resObjects.last()),
+                                                              GObjectRelationRole::ObjectRole_ReferenceSequence));
+        resObjects.last()->addObjectRelation(GObjectRelation(GObjectReference(resObjects.first()),
+                                                              GObjectRelationRole::ObjectRole_ReferenceSequence));
 
         saveTask = new SaveDocumentTask(document.take(), SaveDocFlags(SaveDoc_DestroyAfter) | SaveDoc_Roll);
         result << saveTask;

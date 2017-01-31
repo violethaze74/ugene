@@ -28,6 +28,7 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2ObjectRelationsDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
@@ -107,6 +108,8 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
     U2EntityRef ref;
     ref.dbiRef = handle.dbi->getDbiRef();
 
+    QMap<U2DataId, GObject*> match;
+
     foreach(const U2DataId &id, objectIds) {
         U2OpStatus2Log status;
         ref.entityId = id;
@@ -121,12 +124,29 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
 
         GObject *gobject = GObjectUtils::createObject(ref.dbiRef, id, object.visualName);
         CHECK_OPERATION(NULL != gobject, continue);
+
+        match[id] = gobject;
         objects << gobject;
+    }
+
+    foreach(const U2DataId &id, objectIds) {
+        U2OpStatus2Log status;
+        GObject* srcObj = match[id];
+        QList<GObjectRelation> gRelations;
+
+        QList<U2ObjectRelation> relations = handle.dbi->getObjectRelationsDbi()->getObjectRelations(id, status);
+        foreach (const U2ObjectRelation& r, relations) {
+            GObject* relatedObject = match[r.referencedObject];
+            // SANGER_TODO: dbiId - url, should not be left like this
+            GObjectReference relatedRef(handle.dbi->getDbiId(), relatedObject->getGObjectName(), relatedObject->getGObjectType(), relatedObject->getEntityRef());
+            GObjectRelation gRelation(relatedRef, r.relationRole);
+            gRelations << gRelation;
+        }
+        srcObj->setObjectRelations(gRelations);
     }
 
     return objects;
 }
-
 QList<GObject *> DbiDocumentFormat::cloneObjects(const QList<GObject *> &srcObjects, const U2DbiRef &dstDbiRef, const QVariantMap &hints, U2OpStatus &os) {
     QList<GObject *> clonedObjects;
     CHECK_EXT(dstDbiRef.isValid(), os.setError(tr("Invalid destination database reference")), clonedObjects);
@@ -153,6 +173,10 @@ void DbiDocumentFormat::storeDocument(Document* d, IOAdapter* ioAdapter, U2OpSta
     CHECK_OP(os, );
     Q_UNUSED(dstCon);
 
+    // The relations should be saved
+    QMap<GObject*, GObject*> clonedObjects;
+    QMap<GObjectReference, GObjectReference> match;
+
     foreach (GObject *object, d->getObjects()) {
         if (!supportedObjectTypes.contains(object->getGObjectType())) {
             continue;
@@ -167,8 +191,22 @@ void DbiDocumentFormat::storeDocument(Document* d, IOAdapter* ioAdapter, U2OpSta
         GObject *resultObject = object->clone(dstDbiRef, os);
         CHECK_OP(os, );
 
-        delete resultObject;
+        clonedObjects[object] = resultObject;
+        match[GObjectReference(object, false)] = GObjectReference(url, resultObject->getGObjectName(),
+                                                                  resultObject->getGObjectType(), resultObject->getEntityRef());
     }
+
+    foreach (GObject* initialObj, clonedObjects.keys()) {
+       GObject* cloned = clonedObjects[initialObj];
+       QList<GObjectRelation> relations;
+       foreach (const GObjectRelation& r, initialObj->getObjectRelations()) {
+           relations << GObjectRelation(match[r.ref], r.role);
+       }
+       cloned->setObjectRelations(relations);
+    }
+
+    qDeleteAll(clonedObjects);
+    clonedObjects.clear();
 }
 
 FormatCheckResult DbiDocumentFormat::checkRawData(const QByteArray& rawData, const GUrl& url) const {

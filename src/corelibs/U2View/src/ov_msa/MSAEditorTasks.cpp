@@ -44,6 +44,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/GObjectUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/TextObject.h>
@@ -169,6 +170,15 @@ OpenMcaEditorTask::OpenMcaEditorTask(Document* doc)
 }
 
 MaEditor* OpenMcaEditorTask::getEditor(const QString& viewName, GObject* obj) {
+    QList<GObjectRelation> relations = obj->findRelatedObjectsByRole(GObjectRelationRole::ObjectRole_ReferenceSequence);
+    SAFE_POINT(relations.size() <= 1, "Wrong amount of reference sequences", NULL);
+    if (!relations.isEmpty()) {
+        GObjectRelation r = relations.first();
+        GObject* ref = GObjectUtils::selectObjectByReference(r.ref, UOF_LoadedAndUnloaded);
+        if (ref != NULL) {
+            return McaEditorFactory::getEditor(viewName, obj, ref);
+        }
+    }
     return McaEditorFactory::getEditor(viewName, obj);
 }
 

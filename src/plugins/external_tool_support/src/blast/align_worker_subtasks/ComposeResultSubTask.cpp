@@ -106,9 +106,6 @@ QList<GObject*> ComposeResultSubTask::getResult() {
     U2SequenceObject* reference = StorageUtils::getSequenceObject(storage, this->reference);
     CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), result);
 
-    // SANGER_TODO: add proper relations
-    alignment->addObjectRelation(reference, GObjectRelationRole::ObjectRole_ReferenceSequence);
-
     result << alignment;
     result << reference ;
 

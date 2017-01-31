@@ -30,10 +30,14 @@
 
 namespace U2 {
 
+class U2SequenceObject;
+
 class McaEditor : public MaEditor {
     Q_OBJECT
 public:
-    McaEditor(const QString& viewName, MultipleChromatogramAlignmentObject* obj);
+    McaEditor(const QString& viewName,
+              MultipleChromatogramAlignmentObject* obj,
+              U2SequenceObject* ref = NULL);
 
     MultipleChromatogramAlignmentObject* getMaObject() const { return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject); }
 
@@ -59,6 +63,8 @@ protected:
     QAction*          showChromatogramsAction;
 
     QMap<qint64, bool>  chromVisibility;
+
+    U2SequenceObject* referenceObj;
 };
 
 class McaEditorWgt : public MaEditorWgt {

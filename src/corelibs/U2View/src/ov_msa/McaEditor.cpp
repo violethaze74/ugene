@@ -31,6 +31,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/DNASequenceObject.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OptionsPanel.h>
@@ -38,8 +39,11 @@
 
 namespace U2 {
 
-McaEditor::McaEditor(const QString &viewName, MultipleChromatogramAlignmentObject *obj)
-    : MaEditor(McaEditorFactory::ID, viewName, obj) {
+McaEditor::McaEditor(const QString &viewName,
+                     MultipleChromatogramAlignmentObject *obj,
+                     U2SequenceObject* ref)
+    : MaEditor(McaEditorFactory::ID, viewName, obj),
+      referenceObj(ref) {
     showChromatograms = true; // SANGER_TODO: check if there are chromatograms
 
     // SANGER_TODO: set new proper icon
@@ -53,6 +57,11 @@ McaEditor::McaEditor(const QString &viewName, MultipleChromatogramAlignmentObjec
     foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
         // SANGER_TODO: tmp
         chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), row->getRowId() % 2 == 0 ? true : false);
+    }
+
+    if (ref) {
+        objects.append(maObject);
+        onObjectAdded(maObject);
     }
 }
 
