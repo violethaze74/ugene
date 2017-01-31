@@ -185,7 +185,6 @@ public slots:
     void sl_newProblem(const Problem &info, int count);
     void sl_workerInfoChanged(const QString &actorId, const U2::Workflow::Monitor::WorkerInfo &info);
     void sl_workerStatsUpdate();
-    void sl_onLogUpdate(QJsonArray extToolsLog);
     void sl_onLogChanged(U2::Workflow::Monitor::LogEntry entry);
     void sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &info);
 private:
