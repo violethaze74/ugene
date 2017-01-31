@@ -67,6 +67,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *ann
     annsComboBox->addItem(tr("Inner"), ExtractProductSettings::Inner);
     annsComboBox->addItem(tr("All intersected"), ExtractProductSettings::All);
     annsComboBox->addItem(tr("None"), ExtractProductSettings::None);
+    annsComboBox->model()->sort(0);
 
     forwardPrimerBox->setAnnotatedDnaView(annotatedDnaView);
     reversePrimerBox->setAnnotatedDnaView(annotatedDnaView);
