@@ -33,7 +33,7 @@ namespace U2 {
 
 const QString MSAExportConsensusFactoryTab::GROUP_ID = "OP_EXPORT_CONSENSUS";
 const QString MSAExportConsensusFactoryTab::GROUP_ICON_STR = ":core/images/consensus.png";
-const QString MSAExportConsensusFactoryTab::GROUP_DOC_PAGE = "18223057";
+const QString MSAExportConsensusFactoryTab::GROUP_DOC_PAGE = "19759549";
 
 MSAExportConsensusFactoryTab::MSAExportConsensusFactoryTab() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;

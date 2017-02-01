@@ -45,7 +45,7 @@ DashboardsManagerDialog::DashboardsManagerDialog(ScanDashboardsDirTask *_task, Q
 : QDialog(parent), task(_task)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18223339");
+    new HelpButton(this, buttonBox, "19759831");
 
     setupList();
 

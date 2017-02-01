@@ -44,7 +44,7 @@ SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWi
 {
     ui = new Ui_SearchGenbankSequenceDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18222956");
+    new HelpButton(this, ui->buttonBox, "19759448");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Download"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Close"));

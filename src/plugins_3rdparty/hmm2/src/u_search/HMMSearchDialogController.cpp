@@ -70,7 +70,7 @@ void HMMSearchDialogController::init(const U2SequenceObject *seqObj){
 
     searchTask = NULL;
     setupUi(this);
-    new HelpButton(this, buttonBox, "18223197");
+    new HelpButton(this, buttonBox, "19759689");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Close"));
 
