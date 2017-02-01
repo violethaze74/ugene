@@ -53,33 +53,40 @@
             font-weight: bold;
             margin-right: 1px;
         }
+        .textWithIndent {
+            margin-left: 10px;
+        }
+
     </style>
 
 </head>
 <body>
 <div>
-    <a href="http://ugene.net">link</a>
-    <h3 lang="en" class="translatable">Major changes in UGENE 1.24</h3>
+    <h3 lang="en" class="translatable">Major changes in UGENE 1.26</h3>
     <ul class="features_list translatable" lang="en">
-        <li><span class="research_field">Workflow Designer:</span>
+        <li><span class="research_field">General:</span>
             <ul class="sub_features_list">
-                <li>New element: "Convert SnpEff Variations to Annotations". Element converts variations with SnpEff information into standard annotations, so you can observe them in the Sequence View.</li>
-                <li>NGS workflows improvements.</li>
-            </ul>
-                </li>
-                <li><span class="research_field">Bug fixes and minor improvements</span></li>
-    </ul>
-
-    <h3 lang="ru" class="translatable">Изменения в UGENE 1.24</h3>
-    <ul class="features_list translatable" lang="ru">
-        <li><span class="research_field">Дизайнер вычислительных схем:</span>
-            <ul class="sub_features_list">
-                <li>Новый элемент: "Преобразование вариаций SnpEff в аннотации". Элемент преобразует вариации с информацией от SnpEff в стандартные аннотации, которые вы можете открыть в редакторе последовательностей.</li>
-                <li>Улучшения схем NGS.</li>
+                <li>Support of high-resolution Retina displays</li>
+                <li>By default, all documents are opened in tabs instead of windows. To change this parameter go to the Application Settings</li>
             </ul>
         </li>
-        <li>Исправление ошибок.</li>
+        <li><span class="research_field">NGS:</span> All databases, supported by SnpEff, are now available for prediction of variant effects</li>
+        <li><span class="research_field">Bug fixes and minor improvements</span></li>
     </ul>
+    <p class="textWithIndent translatable" lang="en">A new view for working with Sanger reads - the Chromatogram Alignment Editor - is planned for 1.27 version. Stay tuned!</p>
+
+    <h3 lang="ru" class="translatable">Изменения в UGENE 1.26</h3>
+    <ul class="features_list translatable" lang="ru">
+        <li><span class="research_field">Общие:</span>
+            <ul class="sub_features_list">
+                <li>Поддержка мониторов с высоким разрешением Retina</li>                                                                                                       
+                <li>По умолчанию все документы открыты в отдельных вкладках, а не в окнах. Изменить способ отображения можно в настройках приложения</li>
+            </ul>
+        </li>
+        <li><span class="research_field">NGS:</span> Поддержка всех доступных баз данных SnpEff для предсказания эффектов вариаций</li>
+        <li><span class="research_field">Исправление ошибок, мелкие улучшения</span></li>
+    </ul>
+    <p class="textWithIndent translatable" lang="ru">Выпуск нового редактора выравнивания хроматограмм, предназначенного для визуализации и анализа данных секвенирования по Сэнгеру, запланирован на версию 1.27. Следите за новосяти UGENE!</p>
 </div>
 <script>
     function getBodyHeight(){
