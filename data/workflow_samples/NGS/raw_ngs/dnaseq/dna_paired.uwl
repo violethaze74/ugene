@@ -51,7 +51,7 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
     files-conversion {
         type:files-conversion;
         name:"Convert to BAM";
-        document-format:bam;
+        document-format:BAM;
         out-mode:0;
     }
     merge-bam {
