@@ -23,6 +23,7 @@
 #ifdef Q_OS_MACX
 #include <Security/Authorization.h>
 #include <errno.h>
+#include <unistd.h>
 #endif
 #include <algorithm>
 
