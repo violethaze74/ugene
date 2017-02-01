@@ -15,7 +15,7 @@ workflow "Quality filter"{
     write-fastq {
         type:write-sequence;
         name:"Write FASTQ";
-        document-format:fastq;
+        document-format:FASTQ;
         url-out:filtered.fastq;
     }
     Script-Quality-filter-example {

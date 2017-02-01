@@ -33,7 +33,7 @@ workflow "Trim and align Sanger reads"{
     files-conversion {
         type:files-conversion;
         name:"To FASTQ";
-        document-format:fastq;
+        document-format:FASTQ;
         out-mode:1;
     }
     Script-Read-sequence {
@@ -64,7 +64,7 @@ try {
         type:write-sequence;
         name:"Write Sequence";
         accumulate:false;
-        document-format:genbank;
+        document-format:Genbank;
         url-out:"sequence.gb";
     }
 

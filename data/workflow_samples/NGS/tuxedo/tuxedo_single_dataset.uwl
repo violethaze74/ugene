@@ -24,7 +24,7 @@ workflow "Single dataset Tuxedo: single-end reads"{
     files-conversion {
         type:files-conversion;
         name:"Convert File";
-        document-format:fastq;
+        document-format:FASTQ;
         excluded-formats:fasta;
     }
 
