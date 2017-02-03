@@ -22,6 +22,13 @@
 function wrapLongText(text) {
     return '<div class="long-text" title="' + text + '">' + text + '</div>';
 }
+function wrapLongText25Symbols(text) { //workaround for dropdown submenu
+    if(text.length > 28){
+        return text.substr(0,25) + '&#133;';
+    }else{
+        return text;
+    }
+}
 
 /**
  * Hides the hint of the load scheme button and
@@ -115,7 +122,7 @@ function showFileMenu(url) {
     var path = url.slice(0, url.lastIndexOf('/') + 1);
     var li = 
     '<li class="file-sub-menu dropdown-submenu left-align">' +
-      '<a tabindex="-1" href="#" onclick="agent.openUrl(\'' + url + '\')" title="' + url + '">' + fileName + '</a>' +
+      '<a tabindex="-1" href="#" onclick="agent.openUrl(\'' + url + '\')" title="' + url + '">' + wrapLongText25Symbols(fileName) + '</a>' +
       '<ul class="dropdown-menu ">' +
         '<li><a href="#" onclick="agent.openByOS(\'' + path + '\')"><span lang=\"en\" class=\"translatable\">Open containing folder</span><span lang=\"ru\" class=\"translatable\">Открыть директорию, содержащую файл</span></a></li>' +
         '<li><a href="#" onclick="agent.openByOS(\'' + path + fileName + '\')"><span lang=\"en\" class=\"translatable\">Open by operating system</span><span lang=\"ru\" class=\"translatable\">Открыть при помощи операционной системы</span></a></li>' +
