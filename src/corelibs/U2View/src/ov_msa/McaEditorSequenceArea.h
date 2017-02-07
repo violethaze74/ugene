@@ -62,6 +62,9 @@ public:
 
     int         countHeightForSequences(bool countClipped) const;
 
+public slots:
+    void sl_referenceSelectionChanged(const U2Region& refSelection);
+
 private slots:
     void sl_showHideTrace();
     void sl_showAllTraces();

@@ -22,12 +22,12 @@
 #include "McaEditor.h"
 #include "MaEditorFactory.h"
 #include "McaEditorSequenceArea.h"
+#include "McaEditorReferenceArea.h"
 #include "McaEditorOverviewArea.h"
 #include "MaEditorNameList.h"
 
 #include "view_rendering/MaEditorWgt.h"
 #include <U2View/ADVSequenceObjectContext.h>// SANGER_TODO: do not forget to rename the header
-#include <U2View/PanView.h>
 
 #include <QToolBar>
 
@@ -182,12 +182,15 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     nameAreaLayout->insertWidget(0, label);
     // SANGER_TODO: connect the lavel height with the panview height
 
-    PanView* panView = new PanView(this, getEditor()->referenceCtx);
+    McaEditorReferenceArea* refArea = new McaEditorReferenceArea(this, getEditor()->referenceCtx);
 
     seqAreaLayout->addWidget(placeHolder1, 0, 0);
-    seqAreaLayout->addWidget(panView, 0, 1);
+    seqAreaLayout->addWidget(refArea, 0, 1);
     seqAreaLayout->addWidget(placeHolder2, 0, 2);
+}
 
+McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
+    return qobject_cast<McaEditorSequenceArea*>(seqArea);
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {

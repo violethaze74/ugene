@@ -30,6 +30,7 @@
 
 namespace U2 {
 
+class McaEditorSequenceArea;
 class SequenceObjectContext;
 class U2SequenceObject;
 
@@ -76,6 +77,7 @@ public:
     McaEditorWgt(McaEditor* editor);
 
     McaEditor* getEditor() const { return qobject_cast<McaEditor* >(editor); }
+    McaEditorSequenceArea* getSequenceArea() const;
 
 protected:
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);

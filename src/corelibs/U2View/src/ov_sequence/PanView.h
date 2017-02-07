@@ -190,7 +190,7 @@ public:
 
     PanViewRenderArea* getRenderArea() const;
 
-    U2Region             frameRange;
+    U2Region            frameRange;
     int                 minNuclsPerScreen;
 
     QAction*            zoomInAction;
