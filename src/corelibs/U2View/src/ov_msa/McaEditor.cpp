@@ -175,8 +175,19 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     initActions();
     initWidgets();
 
+    QWidget* placeHolder1 = createLabelWidget();
+    QWidget* placeHolder2 = createLabelWidget();
+
+    QWidget *label = createLabelWidget(tr("Reference")); // SANGER_TODO: write sequence name
+    nameAreaLayout->insertWidget(0, label);
+    // SANGER_TODO: connect the lavel height with the panview height
+
     PanView* panView = new PanView(this, getEditor()->referenceCtx);
-    layout()->addWidget(panView);
+
+    seqAreaLayout->addWidget(placeHolder1, 0, 0);
+    seqAreaLayout->addWidget(panView, 0, 1);
+    seqAreaLayout->addWidget(placeHolder2, 0, 2);
+
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {

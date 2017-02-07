@@ -26,7 +26,9 @@
 
 #include "MaEditorUtils.h"
 
+class QGridLayout;
 class QScrollBar;
+class QVBoxLayout;
 
 namespace U2 {
 
@@ -98,6 +100,8 @@ protected:
     MSAEditorStatusWidget*          statusWidget;
 
     QWidget*                        nameAreaContainer;
+    QGridLayout*                    seqAreaLayout;
+    QVBoxLayout*                    nameAreaLayout;
     MaSplitterController            maSplitter;
 
     MsaUndoRedoFramework*           undoFWK;

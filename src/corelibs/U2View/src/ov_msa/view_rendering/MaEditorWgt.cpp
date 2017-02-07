@@ -56,6 +56,8 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       offsetsView(NULL),
       statusWidget(NULL),
       nameAreaContainer(NULL),
+      seqAreaLayout(NULL),
+      nameAreaLayout(NULL),
       collapsibleMode(false),
       delSelectionAction(NULL),
       copySelectionAction(NULL),
@@ -126,20 +128,20 @@ void MaEditorWgt::initWidgets() {
     label1->setMinimumHeight(consArea->height());
     label2->setMinimumHeight(consArea->height());
 
-    QGridLayout* seqAreaLayout = new QGridLayout();
+    seqAreaLayout = new QGridLayout();
     seqAreaLayout->setMargin(0);
     seqAreaLayout->setSpacing(0);
 
-    seqAreaLayout->addWidget(label1, 0, 0);
-    seqAreaLayout->addWidget(consArea, 0, 1);
-    seqAreaLayout->addWidget(label2, 0, 2, 1, 2);
+    seqAreaLayout->addWidget(label1, 1, 0);
+    seqAreaLayout->addWidget(consArea, 1, 1);
+    seqAreaLayout->addWidget(label2, 1, 2, 1, 2);
 
-    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
-    seqAreaLayout->addWidget(seqArea, 1, 1);
-    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 1, 2);
-    seqAreaLayout->addWidget(cvBar, 1, 3);
+    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 2, 0);
+    seqAreaLayout->addWidget(seqArea, 2, 1);
+    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 2, 2);
+    seqAreaLayout->addWidget(cvBar, 2, 3);
 
-    seqAreaLayout->addWidget(shBar, 2, 0, 1, 3);
+    seqAreaLayout->addWidget(shBar, 3, 0, 1, 3);
 
     seqAreaLayout->setRowStretch(1, 1);
     seqAreaLayout->setColumnStretch(1, 1);
@@ -147,7 +149,7 @@ void MaEditorWgt::initWidgets() {
     QWidget* seqAreaContainer = new QWidget();
     seqAreaContainer->setLayout(seqAreaLayout);
 
-    QVBoxLayout* nameAreaLayout = new QVBoxLayout();
+    nameAreaLayout = new QVBoxLayout();
     nameAreaLayout->setMargin(0);
     nameAreaLayout->setSpacing(0);
     nameAreaLayout->addWidget(label);
