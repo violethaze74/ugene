@@ -3595,6 +3595,61 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4682) {
+    // Check find from status bar
+
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: Aligniment length 14, left offset 1, right offset 14
+    GTGlobals::sleep();
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLeftOffset(os) == 1, "Wrong left offset");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getRightOffset(os) == 14, "Wrong right offset");
+
+    QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+
+    QLineEdit *searchEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "searchEdit", msaEditorStatusBar));
+    QWidget *findForward = GTWidget::findWidget(os, "Find forward", msaEditorStatusBar);
+
+    // 2. Put '34c---t A' in text field at status bar. Click Find next button.
+    GTLineEdit::setText(os, searchEdit, "34c---t A", true);
+    CHECK_SET_ERR(searchEdit->text() == "CTA", "Wrong search pattern, validator does not work.");
+
+    GTWidget::click(os, findForward);
+    // Expected state: find result sequence Isophya_altaica_EF540820 region 8..10
+    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(7, 1, 3, 1));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4682_1) {
+    // Check find from status bar
+
+    // 1. Open document data/samples/Stockholm/CBS.sto
+    GTFileDialog::openFile(os, dataDir + "samples/Stockholm" , "CBS.sto");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected state: Aligniment length 14, left offset 1, right offset 14
+    GTGlobals::sleep();
+
+    QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+
+    QLineEdit *searchEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "searchEdit", msaEditorStatusBar));
+    QWidget *findForward = GTWidget::findWidget(os, "Find forward", msaEditorStatusBar);
+
+    // 2. Put ' Nn--G34..f' in text field at status bar. Click Find next button.
+    GTLineEdit::setText(os, searchEdit, " Nn--G34..f", true);
+    CHECK_SET_ERR(searchEdit->text() == "NNGF", "Wrong search pattern, validator does not work.");
+
+    GTWidget::click(os, findForward);
+    // Expected state: find result sequence O31698/88-139 region 25..30
+    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(24, 3, 6, 1));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4687) {
     //1. Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
