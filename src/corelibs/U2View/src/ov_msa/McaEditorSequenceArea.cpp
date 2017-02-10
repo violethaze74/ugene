@@ -119,9 +119,8 @@ int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
     return nVisible;
 }
 
-void McaEditorSequenceArea::sl_referenceSelectionChanged(const U2Region &refSelection) {
-    MaEditorSelection newSelection(refSelection.startPos, 0, refSelection.endPos(), editor->getNumSequences());
-    setSelection(newSelection);
+void McaEditorSequenceArea::sl_referenceSelectionChanged() {
+    update();
 }
 
 void McaEditorSequenceArea::sl_showHideTrace() {

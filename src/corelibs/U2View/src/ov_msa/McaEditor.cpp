@@ -184,6 +184,11 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     MaEditorConsensusAreaSettings consSettings;
     consSettings.visibility[MSAEditorConsElement_HISTOGRAM] = false;
     consArea->setDrawSettings(consSettings);
+
+    QString name = getEditor()->referenceCtx->getSequenceObject()->getSequenceName();
+    QWidget *refName = createHeaderLabelWidget(name, Qt::AlignCenter, refArea);
+
+    nameAreaLayout->insertWidget(0, refName);
 }
 
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {

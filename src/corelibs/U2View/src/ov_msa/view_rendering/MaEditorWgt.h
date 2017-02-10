@@ -52,7 +52,9 @@ class MaEditorWgt : public QWidget {
 public:
     MaEditorWgt(MaEditor* editor);
 
-    QWidget* createLabelWidget(const QString& text = QString(), Qt::Alignment ali = Qt::AlignCenter);
+    QWidget* createHeaderLabelWidget(const QString& text = QString(),
+                                     Qt::Alignment ali = Qt::AlignCenter,
+                                     QWidget* heightTarget = NULL);
 
     MaEditor*                       getEditor() const { return editor; }
     MaEditorSequenceArea*           getSequenceArea() const { return seqArea; }

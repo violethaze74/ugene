@@ -37,7 +37,7 @@ public:
     McaEditorReferenceArea(McaEditorWgt* p, SequenceObjectContext* ctx);
 
 signals:
-    void si_selectionChanged(const U2Region& selection);
+    void si_selectionChanged();
 
 public slots:
     void sl_visibleRangeChanged();

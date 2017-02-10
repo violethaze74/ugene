@@ -70,8 +70,10 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
 }
 
-QWidget* MaEditorWgt::createLabelWidget(const QString& text, Qt::Alignment ali){
-    return new MaLabelWidget(this, seqAreaHeader, text, ali);
+QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment ali, QWidget* heightTarget){
+    return new MaLabelWidget(this,
+                             heightTarget == NULL ? seqAreaHeader : heightTarget,
+                             text, ali);
 }
 
 QAction* MaEditorWgt::getUndoAction() const {
@@ -128,8 +130,8 @@ void MaEditorWgt::initWidgets() {
     seqAreaHeaderLayout->setSpacing(0);
     seqAreaHeaderLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
-    QWidget* label1 = createLabelWidget();
-    QWidget* label2 = createLabelWidget();
+    QWidget* label1 = createHeaderLabelWidget();
+    QWidget* label2 = createHeaderLabelWidget();
     label1->setMinimumHeight(consArea->height());
     label2->setMinimumHeight(consArea->height());
 
@@ -158,7 +160,7 @@ void MaEditorWgt::initWidgets() {
     seqAreaContainer->setLayout(seqAreaLayout);
 
     QWidget *label;
-    label = createLabelWidget(tr("Consensus"));
+    label = createHeaderLabelWidget(tr("Consensus"), Qt::AlignCenter, consArea);
     label->setMinimumHeight(consArea->height());
 
     nameAreaLayout = new QVBoxLayout();

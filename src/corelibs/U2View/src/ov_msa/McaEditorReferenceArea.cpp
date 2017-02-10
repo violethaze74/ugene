@@ -44,8 +44,8 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
         SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)),
         SLOT(sl_onSelectionChanged()));
 
-    connect(this, SIGNAL(si_selectionChanged(U2Region)),
-            p->getSequenceArea(), SLOT(sl_referenceSelectionChanged(U2Region)));
+    connect(this, SIGNAL(si_selectionChanged()),
+            p->getSequenceArea(), SLOT(sl_referenceSelectionChanged()));
 
     // SANGER_TODO: calculate  right size!
     setMinimumHeight(50);
@@ -60,22 +60,13 @@ void McaEditorReferenceArea::sl_visibleRangeChanged() {
     setVisibleRange(visRange);
 }
 
-void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &/*prev*/) {
+void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &) {
     U2Region selection(current.x(), current.width());
     setSelection(selection);
 }
 
 void McaEditorReferenceArea::sl_onSelectionChanged() {
-
-    DNASequenceSelection* seqSelection = ctx->getSequenceSelection();
-    CHECK(seqSelection != NULL, );
-
-    QVector<U2Region> selectedRegions = seqSelection->getSelectedRegions();
-    if (selectedRegions.size() == 1) {
-        // SANGER_TODO: infinite selection - the signal goes to the seq.area and returns here
-//        emit si_selectionChanged(selectedRegions.first());
-        coreLog.info("Selection in the reference area");
-    }
+    emit si_selectionChanged();
 }
 
 } // namespace
