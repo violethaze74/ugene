@@ -60,13 +60,13 @@ workflow "Main Tuxedo: paired-end reads"{
     files-conversion {
         type:files-conversion;
         name:"Convert File 1";
-        document-format:fastq;
+        document-format:FASTQ;
         excluded-formats:fasta;
     }
     files-conversion-1 {
         type:files-conversion;
         name:"Convert File 2";
-        document-format:fastq;
+        document-format:FASTQ;
         excluded-formats:fasta;
     }
 

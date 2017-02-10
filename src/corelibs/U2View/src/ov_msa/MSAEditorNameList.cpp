@@ -301,6 +301,7 @@ void MSAEditorNameList::keyPressEvent(QKeyEvent *e) {
         if (0 != (Qt::ShiftModifier & e->modifiers()) && ui->seqArea->isSeqInRange(newSeq - 1)) {
             newSeq--;
             updateSelection(newSeq);
+            ui->seqArea->updateVBarPosition(newSeq);
         } else if (0 == (Qt::ShiftModifier & e->modifiers())) {
             ui->seqArea->moveSelection(0, -1);
             if (0 <= curSeq - 1) {
@@ -315,6 +316,7 @@ void MSAEditorNameList::keyPressEvent(QKeyEvent *e) {
         if (0 != (Qt::ShiftModifier & e->modifiers()) && ui->seqArea->isSeqInRange(newSeq + 1)) {
             newSeq++;
             updateSelection(newSeq);
+            ui->seqArea->updateVBarPosition(newSeq);
         } else if (0 == (Qt::ShiftModifier & e->modifiers())) {
             ui->seqArea->moveSelection(0, 1);
             if (ui->seqArea->getNumDisplayedSequences() > curSeq + 1) {
@@ -629,11 +631,12 @@ QRect MSAEditorNameList::calculateButtonRect(const QRect& itemRect) const {
 }
 
 void MSAEditorNameList::drawAll() {
-    QSize s = size();
+    QSize s = size() * devicePixelRatio();
     if (cachedView->size() != s) {
-        assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
+        cachedView->setDevicePixelRatio(devicePixelRatio());
+        completeRedraw = true;
     }
     if (completeRedraw) {
         QPainter pCached(cachedView);
@@ -705,7 +708,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter &p, int row, int firstVisibleR
     CHECK(maObj != NULL, );
 
     p.fillRect(textRect, Qt::white);
-    if(groupColors.contains(text) && QColor(Qt::black) != groupColors[text]) {
+    if(groupColors.contains(text)) {
         p.fillRect(textRect, groupColors[text]);
     }
 
@@ -736,7 +739,7 @@ void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, const QString& , bo
     MSACollapsibleItemModel const* model = ui->getCollapseModel();
     int index = model->itemAt(pos);
 
-    QStyleOptionViewItemV2 branchOption;
+    QStyleOptionViewItem branchOption;
 
     int delta = 0;
 
@@ -767,10 +770,8 @@ void MSAEditorNameList::drawSequenceItem(QPainter& p, int s, const QString& , bo
     QString seqName = getTextForRow(s);
 
     p.fillRect(textRect, Qt::white);
-    if(groupColors.contains(seqName)) {
-        if(QColor(Qt::black) != groupColors[seqName]) {
-            p.fillRect(textRect, groupColors[seqName]);
-        }
+    if (groupColors.contains(seqName)) {
+        p.fillRect(textRect, groupColors[seqName]);
     }
 
     const MSAEditor *editor = ui->getEditor();

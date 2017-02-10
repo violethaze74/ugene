@@ -4,14 +4,16 @@
 #include "nrutil.h"
 #include <QtCore/QFile>
 
+#include <U2Core/U2OpStatus.h>
+
 #define GORIV_ANNOTATION_NAME "gorIV_results"
 
 
-int runGORIV(QFile& seqDBFile, QFile& strucDBFile, char* inputSeq, int numResidues, char* outputSeq);
+int runGORIV(QFile& seqDBFile, QFile& strucDBFile, char* inputSeq, int numResidues, char* outputSeq, U2::U2OpStatus &os);
 int seq_indx(int c);
 int obs_indx(int c);
-void readFile(QFile& file, int nprot, char **obs, char **title, int *pnter);
-void Parameters(int nprot_dbase, int *nres, char **obs, char **seq);
+void readFile(QFile& file, int nprot, char **obs, char **title, int *pnter, U2::U2OpStatus &os);
+void Parameters(int nprot_dbase, int *nres, char **obs, char **seq, U2::U2OpStatus &os);
 void predic(int nres, char *seq, char *pred, float **proba);
 void First_Pass(int nres, float **proba, char *pred);
 void Second_Pass(int nres, float **proba, char *pred);

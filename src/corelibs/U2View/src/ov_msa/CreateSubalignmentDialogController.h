@@ -27,7 +27,7 @@
 #include <U2Core/MAlignmentObject.h>
 #include <U2Core/Task.h>
 #include <U2Core/global.h>
-
+#include <QLineEdit>
 
 namespace U2{
 
@@ -45,11 +45,13 @@ public:
     DocumentFormatId getFormatId();
     U2Region getRegion();
     QStringList getSelectedSeqNames();
+    
 
 private slots:
     void sl_allButtonClicked();
     void sl_invertButtonClicked();
     void sl_noneButtonClicked();
+    void sl_regionChanged();
 
 private:
     void initSaveController();

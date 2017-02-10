@@ -35,13 +35,13 @@ workflow "Single dataset Tuxedo: paired-end reads"{
     files-conversion-1 {
         type:files-conversion;
         name:"Convert File 1";
-        document-format:fastq;
+        document-format:FASTQ;
         excluded-formats:fasta;
     }
     files-conversion-2 {
         type:files-conversion;
         name:"Convert File 2";
-        document-format:fastq;
+        document-format:FASTQ;
         excluded-formats:fasta;
     }
 

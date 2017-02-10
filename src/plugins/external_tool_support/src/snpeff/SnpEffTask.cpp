@@ -43,8 +43,9 @@ namespace U2 {
 
 const QStringList SnpEffParser::stringsToIgnore = SnpEffParser::initStringsToIgnore();
 
-SnpEffParser::SnpEffParser()
-    :ExternalToolLogParser() {
+SnpEffParser::SnpEffParser(const QString &genome)
+    : ExternalToolLogParser(),
+      genome(genome) {
 
 }
 
@@ -84,6 +85,11 @@ void SnpEffParser::parseErrOutput( const QString& partOfLog ) {
 
         if (buf.contains("ERROR while connecting to http://downloads.sourceforge.net/project/snpeff/", Qt::CaseInsensitive)) {
             setLastError(tr("Failed to download SnpEff database. Check your internet connection."));
+            continue;
+        }
+
+        if (!genome.isEmpty() && buf.contains("Property: '" + genome + ".genome' not found")) {
+            setLastError(tr("Genome database '%1' is not found.").arg(genome));
             continue;
         }
 
@@ -143,7 +149,7 @@ void SnpEffTask::prepare(){
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
 
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_SNPEFF, args, new SnpEffParser(), settings.outDir, QStringList(), QString(), true);
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_SNPEFF, args, new SnpEffParser(settings.genome), settings.outDir, QStringList(), QString(), true);
     setListenerForTask(etTask);
     etTask->setStandartOutputFile( getResFileUrl() );
     addSubTask(etTask);

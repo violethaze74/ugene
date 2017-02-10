@@ -85,7 +85,7 @@ public:
         if (value.isValid())
             return qvariant_cast<QSize>(value);
 
-        QStyleOptionViewItemV4 opt = option;
+        QStyleOptionViewItem opt = option;
         initStyleOption(&opt, index);
         const QWidget *widget = qobject_cast<QWidget*>(parent());//QStyledItemDelegatePrivate::widget(option);
         QStyle *style = widget ? widget->style() : QApplication::style();
@@ -247,7 +247,10 @@ void SamplePane::mouseDoubleClickEvent( QMouseEvent *e) {
     }
 
     QSize ts = doc->size().toSize();
-    QRect textRect;
+    QRect textRect(width() / 2- pageWidth / 2,
+        height() / 2 - pageHeight / 2,
+        pageWidth,
+        pageHeight);
     textRect.setSize(ts);
 
     QPoint position = e->pos();

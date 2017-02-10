@@ -135,10 +135,21 @@ void HmmerSupport::sl_search() {
         QMessageBox::critical(NULL, tr("Error!"), tr("Target sequence not selected: no opened annotated dna view"));
         return;
     }
+    ADVSequenceObjectContext *seqCtx = NULL;
+    GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
+    if (NULL != activeWindow) {
+        AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView *>(activeWindow->getObjectView());
+        seqCtx = (dnaView != NULL) ? dnaView->getSequenceInFocus() : NULL;
+    }
 
     QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqObj, parent);
-    searchDlg->exec();
+    if(seqCtx != NULL){
+        QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqCtx, parent);
+        searchDlg->exec();
+    }else{
+        QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqObj, parent);
+        searchDlg->exec();
+    }
 }
 
 void HmmerSupport::sl_phmmerSearch() {
@@ -151,9 +162,21 @@ void HmmerSupport::sl_phmmerSearch() {
         QMessageBox::critical(NULL, tr("Error!"), tr("Target sequence not selected: no opened annotated dna view"));
         return;
     }
+    ADVSequenceObjectContext *seqCtx = NULL;
+    GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
+    if (NULL != activeWindow) {
+        AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView *>(activeWindow->getObjectView());
+        seqCtx = (dnaView != NULL) ? dnaView->getSequenceInFocus() : NULL;
+    }
+
     QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<PhmmerSearchDialog> phmmerDialog = new PhmmerSearchDialog(seqObj, parent);
-    phmmerDialog->exec();
+    if(seqCtx != NULL){
+        QObjectScopedPointer<PhmmerSearchDialog> phmmerDialog = new PhmmerSearchDialog(seqCtx, parent);
+        phmmerDialog->exec();
+    }else{
+        QObjectScopedPointer<PhmmerSearchDialog> phmmerDialog = new PhmmerSearchDialog(seqObj, parent);
+        phmmerDialog->exec();
+    }
 }
 
 void HmmerSupport::initBuild() {
@@ -309,13 +332,17 @@ void HmmerAdvContext::initViewContext(GObjectView *view) {
 void HmmerAdvContext::sl_search() {
     QWidget *parent = getParentWidget(sender());
     assert(NULL != parent);
-    U2SequenceObject *seqObj = getSequenceInFocus(sender());
-    if (NULL == seqObj) {
+    GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
+    SAFE_POINT(NULL != action, "action is NULL", );
+    AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
+    SAFE_POINT(NULL != adv, "AnnotatedDNAView is NULL", );
+    ADVSequenceObjectContext *seqCtx = adv->getSequenceInFocus();
+    if (NULL == seqCtx) {
         QMessageBox::critical(parent, tr("error"), tr("No sequence in focus found"));
         return;
     }
 
-    QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqObj, parent);
+    QObjectScopedPointer<HmmerSearchDialog> searchDlg = new HmmerSearchDialog(seqCtx, parent);
     searchDlg->exec();
 }
 

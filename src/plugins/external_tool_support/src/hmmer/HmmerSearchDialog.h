@@ -29,6 +29,7 @@
 
 namespace U2 {
 
+class ADVSequenceObjectContext;
 class U2SequenceObject;
 
 class HmmerSearchDialogModel {
@@ -41,6 +42,7 @@ class HmmerSearchDialog : public QDialog, public Ui_HmmerSearchDialog {
     Q_OBJECT
 public:
     HmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = NULL);
+    HmmerSearchDialog(ADVSequenceObjectContext* seqCtx, QWidget *parent = NULL);
 
     static const QString DOM_E_PLUS_PREFIX;
     static const QString DOM_E_MINUS_PREFIX;
@@ -60,11 +62,13 @@ private slots:
 private:
     void setModelValues();
     void getModelValues();
+    void init(U2SequenceObject *seqObj);
     QString checkModel();
 
     QButtonGroup                        useScoreTresholdGroup;
     CreateAnnotationWidgetController *  annotationsWidgetController;
     HmmerSearchDialogModel              model;
+    ADVSequenceObjectContext*           seqCtx;
 };
 
 }   // namespace U2

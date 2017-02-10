@@ -24,6 +24,8 @@
 
 #include <ui_DotPlotFilterDialog.h>
 
+#include <QDialog>
+
 namespace U2 {
 
 class ADVSequenceObjectContext;
@@ -39,7 +41,7 @@ enum FilterIntersectionParameter{
     Both
 };
 
-class DotPlotFilterDialog : public QDialog, public Ui_DotPlotFilterDialog{
+class DotPlotFilterDialog : public QDialog, public Ui_DotPlotFilterDialog {
     Q_OBJECT
 public:
     DotPlotFilterDialog(QWidget *parent, ADVSequenceObjectContext *sequenceX, ADVSequenceObjectContext *sequenceY);

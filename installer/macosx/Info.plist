@@ -23,6 +23,9 @@
 
     <key>CFBundleExecutable</key>
     <string>ugeneui</string>
+
+    <key>NSHighResolutionCapable</key>
+    <string>True</string>
     
     <key>CFBundleDocumentTypes</key>
     <array>

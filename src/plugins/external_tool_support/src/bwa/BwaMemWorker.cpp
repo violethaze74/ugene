@@ -174,7 +174,7 @@ void BwaMemWorkerFactory::init() {
             BwaMemWorker::tr("Skip pairing; mate rescue performed unless -S also in use (-P)."));
 
         Descriptor matchScore(MATCH_SCORE,
-            BwaMemWorker::tr("Mismatch penalty"),
+            BwaMemWorker::tr("Matching score"),
             BwaMemWorker::tr("Score for a sequence match (-A)."));
 
         Descriptor mismatchPenalty(MISMATCH_PENALTY,

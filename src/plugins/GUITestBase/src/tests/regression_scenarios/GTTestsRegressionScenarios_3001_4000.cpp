@@ -164,6 +164,7 @@
 #include "runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
@@ -2165,6 +2166,27 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHightighted(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)"), "Unexpected reference sequence");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_3319) {
+    // 1. Open "data/samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Reverse complement sequence
+    GTKeyboardDriver::keyClick('r', Qt::ControlModifier | Qt::ShiftModifier);
+    GTGlobals::sleep(500);
+
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 51, 102));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select" << "Sequence region"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTGlobals::sleep(500);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier );
+    GTGlobals::sleep(400);
+    const QString clipboardText = GTClipboard::text( os );
+
+    CHECK_SET_ERR(clipboardText == "TTTAAACCACAGGTCATGACCCAGTAGATGAGGAAATTGGTTTAGTGGTTTA", "unexpected text in clipboard: " + clipboardText);
+    GTGlobals::sleep(500);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_3321){
 //    Open sequence
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
@@ -2411,7 +2433,7 @@ GUI_TEST_CLASS_DEFINITION(test_3348) {
 
     AVAnnotationItem *annotation = dynamic_cast<AVAnnotationItem *>(generalItem);
     CHECK_SET_ERR(NULL != annotation, "Annotation tree item not found");
-    CHECK_SET_ERR("76" == annotation->annotation->findFirstQualifierValue("repeat_homology(%)"), "Annotation qualifier not found");
+    CHECK_SET_ERR("76" == annotation->annotation->findFirstQualifierValue("repeat_identity"), "Annotation qualifier not found");
 
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTMouseDriver::click();
@@ -4192,8 +4214,8 @@ GUI_TEST_CLASS_DEFINITION(test_3645) {
     GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
     GTUtilsOptionPanelSequenceView::enterPatternFromFile(os, testDir + "_common_data/FindAlgorithm/", "find_pattern_op_2.fa");
 
-    GTUtilsOptionPanelSequenceView::clickPrev(os);
-    GTUtilsOptionPanelSequenceView::clickPrev(os);
+    GTUtilsOptionPanelSequenceView::clickNext(os);
+    GTUtilsOptionPanelSequenceView::clickNext(os);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<< "Copy sequence",GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os,"ADV_single_sequence_widget_0"));
     QString clipStr = GTClipboard::text(os);
@@ -5856,6 +5878,10 @@ GUI_TEST_CLASS_DEFINITION(test_3938) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Variation annotation with SnpEff");
     GTUtilsWorkflowDesigner::addInputFile(os, "Input Variations File", testDir + "_common_data/vcf/valid.vcf");
+
+    GTUtilsWorkflowDesigner::click(os, "Annotate and Predict Effects with SnpEff");
+    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
+    GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QString error = lt.getError();

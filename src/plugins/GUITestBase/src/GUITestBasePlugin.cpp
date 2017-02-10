@@ -79,7 +79,7 @@
 #include "tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.h"
 #include "tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.h"
 #include "tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.h"
-#include "tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParemeterValidation.h"
+#include "tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h"
 #include "tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h"
 #include "tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.h"
 #include "tests/crazy_user/GUICrazyUserTest.h"
@@ -886,6 +886,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3312);
     REGISTER_TEST(GUITest_regression_scenarios::test_3313);
     REGISTER_TEST(GUITest_regression_scenarios::test_3318);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3319);
     REGISTER_TEST(GUITest_regression_scenarios::test_3321);
     REGISTER_TEST(GUITest_regression_scenarios::test_3328);
     REGISTER_TEST(GUITest_regression_scenarios::test_3332);
@@ -957,7 +958,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3634);
     REGISTER_TEST(GUITest_regression_scenarios::test_3639);
     REGISTER_TEST(GUITest_regression_scenarios::test_3640);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3645, "UGENE-3645");
+    REGISTER_TEST(GUITest_regression_scenarios::test_3645);
     REGISTER_TEST(GUITest_regression_scenarios::test_3649);
     REGISTER_TEST(GUITest_regression_scenarios::test_3656);
     REGISTER_TEST(GUITest_regression_scenarios::test_3658);
@@ -1280,15 +1281,19 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5346);
     REGISTER_TEST(GUITest_regression_scenarios::test_5352);
     REGISTER_TEST(GUITest_regression_scenarios::test_5356);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
     REGISTER_TEST(GUITest_regression_scenarios::test_5360);
     REGISTER_TEST(GUITest_regression_scenarios::test_5363_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5363_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5367);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5371);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5377);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5412);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5417);
     REGISTER_TEST(GUITest_regression_scenarios::test_5425);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5469);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2178,6 +2183,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0041);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0042);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0043);
+    REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0044);
+    REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0045);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/annotations/edit
@@ -2483,6 +2490,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0059);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0060);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0061);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0062);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Workflow designer/Workflow parameters validation
@@ -2734,7 +2742,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0016);
-
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0017);
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/pcr/primer_library
     /////////////////////////////////////////////////////////////////////////

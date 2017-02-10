@@ -79,386 +79,398 @@
 <context>
     <name>RemoteBLASTDialog</name>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="20"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="26"/>
         <source>Search Through a Remote Database</source>
         <translation>Search Through a Remote Database</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="54"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="66"/>
         <source>General options</source>
         <translation>General options</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="74"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="86"/>
         <source>Select the search type:</source>
         <translation>Select the search type:</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="82"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="94"/>
         <source>blastn</source>
         <translation>blastn</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="87"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="99"/>
         <source>blastp</source>
         <translation>blastp</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="92"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="104"/>
         <source>cdd</source>
         <translation>cdd</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="100"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="112"/>
         <source>Search for short, nearly exact matches</source>
         <translation>Search for short, nearly exact matches</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="107"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="119"/>
         <source>Expectation value:</source>
         <translation>Expectation value:</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="114"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="126"/>
         <source>Megablast</source>
         <translation>Megablast</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="182"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="194"/>
         <source>The database:</source>
         <translation>The database:</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="193"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="205"/>
         <source>Human genomic plus transcript - est_human</source>
         <translation>Human genomic plus transcript - est_human</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="198"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="210"/>
         <source>Mouse genomic plus transcript - est_mouse</source>
         <translation>Mouse genomic plus transcript - est_mouse</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="203"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="215"/>
         <source>Nucleotide collection - nr</source>
         <translation>Nucleotide collection - nr</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="208"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="220"/>
         <source>Reference nRNA sequences - refseq_rna</source>
         <translation>Reference nRNA sequences - refseq_rna</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="213"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="225"/>
         <source>Reference genomic seqence - refseq_genomic</source>
         <translation>Reference genomic seqence - refseq_genomic</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="218"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="230"/>
         <source>NCBI genomes - chromosome</source>
         <translation>NCBI genomes - chromosome</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="223"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="235"/>
         <source>Express sequence tags - est</source>
         <translation>Express sequence tags - est</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="228"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="240"/>
         <source>Non-human, non-mouse ESTs - est_other</source>
         <translation>Non-human, non-mouse ESTs - est_other</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="233"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="245"/>
         <source>Genomic survey sequences - gss</source>
         <translation>Genomic survey sequences - gss</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="238"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="250"/>
         <source>High throughput genomic sequences - HTGS</source>
         <translation>High throughput genomic sequences - HTGS</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="243"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="255"/>
         <source>Patent sequences - pat</source>
         <translation>Patent sequences - pat</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="248"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="260"/>
         <source>Protein data bank - pdb</source>
         <translation>Protein data bank - pdb</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="253"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="265"/>
         <source>Human ALU repeat elements - alu_repeats</source>
         <translation>Human ALU repeat elements - alu_repeats</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="258"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="270"/>
         <source>Sequence tagged sites - dbsts</source>
         <translation>Sequence tagged sites - dbsts</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="263"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="275"/>
         <source>Whole-genome shotgun reads - wgs</source>
         <translation>Whole-genome shotgun reads - wgs</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="268"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="280"/>
         <source>Environmental samples - env_nt</source>
         <translation>Environmental samples - env_nt</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="298"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="310"/>
         <source>The database description:</source>
         <translation>The database description:</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="326"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="364"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="376"/>
         <source>Search timeout</source>
         <translation>Search timeout</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="380"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="392"/>
         <source> min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="402"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="414"/>
         <source>Advanced options</source>
         <translation>Advanced options</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="423"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="435"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="428"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="440"/>
         <source>7</source>
         <translation>7</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="433"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="445"/>
         <source>11</source>
         <translation>11</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="438"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="450"/>
         <source>15</source>
         <translation>15</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="452"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="464"/>
         <source>Word size</source>
         <translation>Word size</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="459"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="471"/>
         <source>Gap costs</source>
         <translation>Gap costs</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="476"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="488"/>
         <source>11 1</source>
         <translation>11 1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="481"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="493"/>
         <source>5 2</source>
         <translation>5 2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="486"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="498"/>
         <source>4 2</source>
         <translation>4 2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="491"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="503"/>
         <source>1 2</source>
         <translation>1 2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="496"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="508"/>
         <source>0 2</source>
         <translation>0 2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="501"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="513"/>
         <source>3 1</source>
         <translation>3 1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="506"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="518"/>
         <source>2 1</source>
         <translation>2 1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="511"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="523"/>
         <source>1 1</source>
         <translation>1 1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="525"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="537"/>
         <source>Match scores</source>
         <translation>Match scores</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="536"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="548"/>
         <source>1 -2</source>
         <translation>1 -2</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="541"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="553"/>
         <source>1 -3</source>
         <translation>1 -3</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="546"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="558"/>
         <source>1 -4</source>
         <translation>1 -4</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="551"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="563"/>
         <source>2 -3</source>
         <translation>2 -3</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="556"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="568"/>
         <source>4 -5</source>
         <translation>4 -5</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="561"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="573"/>
         <source>1 -1</source>
         <translation>1 -1</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="575"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="587"/>
         <source>Matrix</source>
         <translation>Matrix</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="588"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="600"/>
         <source>PHI pattern</source>
         <translation>PHI pattern</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="608"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="620"/>
         <source>Entrez query</source>
         <translation>Entrez query</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="618"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="630"/>
         <source>Service</source>
         <translation>Service</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="639"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="651"/>
         <source>plain</source>
         <translation>plain</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="644"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="656"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="649"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="661"/>
         <source>phi</source>
         <translation>phi</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="661"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="673"/>
         <source>Filters</source>
         <translation>Filters</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="667"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="679"/>
         <source>Low complexity filter</source>
         <translation>Low complexity filter</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="674"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="686"/>
         <source>Human repeats filter</source>
         <translation>Human repeats filter</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="684"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="696"/>
         <source>Masks</source>
         <translation>Masks</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="690"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="702"/>
         <source>Mask for lookup table only</source>
         <translation>Mask for lookup table only</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="697"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="709"/>
         <source>Mask lower case letters</source>
         <translation>Mask lower case letters</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="709"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="721"/>
         <source>Filter results</source>
         <translation>Filter results</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="717"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="729"/>
         <source>Filter by</source>
         <translation>Filter by</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="762"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="774"/>
         <source>Select result by</source>
         <translation>Select result by</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="738"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="750"/>
         <source>accession</source>
         <translation>accession</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="121"/>
-        <location filename="../src/RemoteBLASTDialog.ui" line="131"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="133"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="143"/>
         <source>The maximum number of results</source>
         <translation>The maximum number of results</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="124"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="136"/>
         <source>Results limit:</source>
         <translation>Results limit:</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="752"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="338"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTDialog.ui" line="764"/>
         <source>EValue</source>
         <translation>EValue</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="724"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="736"/>
         <source>def (filter by definition of annotations)</source>
         <translation>def (filter by definition of annotations)</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="745"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="757"/>
         <source>id</source>
         <translation>id</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTDialog.ui" line="731"/>
+        <location filename="../src/RemoteBLASTDialog.ui" line="743"/>
         <source>Score</source>
         <translation>Score</translation>
     </message>
@@ -873,28 +885,30 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::SendSelectionDialog</name>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="141"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="145"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="142"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="146"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="215"/>
-        <location filename="../src/SendSelectionDialog.cpp" line="315"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="219"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="319"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="432"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="215"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="219"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="432"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>
     <message>
-        <location filename="../src/SendSelectionDialog.cpp" line="402"/>
+        <location filename="../src/SendSelectionDialog.cpp" line="406"/>
         <source>You chose to search nucleotide sequence in protein database. This sequence will be converted into 6 sequences(3 translations for both strands).Therefore this search may take some time. Continue?</source>
         <translation>You chose to search nucleotide sequence in protein database. This sequence will be converted into 6 sequences(3 translations for both strands).Therefore this search may take some time. Continue?</translation>
     </message>

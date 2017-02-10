@@ -230,12 +230,12 @@
     <message>
         <location filename="../src/FindRepeatsDialog.cpp" line="83"/>
         <source>Start</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/FindRepeatsDialog.cpp" line="84"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/FindRepeatsDialog.cpp" line="103"/>
@@ -299,17 +299,17 @@
         <translation>Поиск с указанной схожестью %1% и длиной более 80m bps может занять длительное время. Примерное время поиска для 80m bp с 95% схожестью занимает 40 минут на Intel Core 2 Quad Q9500. Хотите продолжить?</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="304"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="305"/>
         <source>A problem occurred during finding repeats. The sequence is no more available.</source>
-        <translation type="unfinished"></translation>
+        <translation>A problem occurred during finding repeats. The sequence is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="383"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="384"/>
         <source>Estimated repeats count: %1</source>
         <translation>Оценка возможного кол-ва результатов: %1</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="384"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="385"/>
         <source>Estimated repeats count hint is based on the active settings and random sequence model</source>
         <translation>Оценка основана на текущих параметрах поиска и модели случайной последовательности</translation>
     </message>
@@ -970,7 +970,7 @@
     <message>
         <location filename="../src/FindRepeatsTask.cpp" line="42"/>
         <source>Reverse complement sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Reverse complement sequence</translation>
     </message>
     <message>
         <location filename="../src/FindRepeatsTask.cpp" line="49"/>

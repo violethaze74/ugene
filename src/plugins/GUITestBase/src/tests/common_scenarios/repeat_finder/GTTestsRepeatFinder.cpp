@@ -77,7 +77,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 325)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick();
-    GTUtilsAnnotationsTreeView::findItem(os, "repeat_homology(%)");
+    GTUtilsAnnotationsTreeView::findItem(os, "repeat_identity");
 
 // 5. Close sequence view (it's needed to refresh screen since Ugene cannot close correctly on Win7 32bit)
     GTUtilsMdi::click(os, GTGlobals::Close);

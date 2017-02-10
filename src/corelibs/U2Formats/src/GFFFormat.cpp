@@ -216,7 +216,7 @@ static QStringList splitGffAttributes(const QString& line, char sep) {
 
 #define CHECK_OBJECT_COUNT() \
     if (objectsCountLimit > 0 && objects.size() >= objectsCountLimit) { \
-        os.setError(tr("File \"%1\" contains too many sequences to be displayed. " \
+        os.setError(GFFFormat::tr("File \"%1\" contains too many sequences to be displayed. " \
             "However, you can process these data using instruments from the menu <i>Tools -> NGS data analysis</i> " \
             "or pipelines built with Workflow Designer.").arg(io->getURL().getURLString())); \
         break; \

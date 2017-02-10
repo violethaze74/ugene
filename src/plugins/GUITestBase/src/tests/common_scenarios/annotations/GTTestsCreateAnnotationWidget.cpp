@@ -51,6 +51,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/orf_marker/OrfDialogFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -2182,7 +2183,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
     QStringList expectedGroups = QStringList() << "group  (0, 1)"
                                                << "just an annotation  (0, 1)"
                                                << "test_0032  (0, 1)";
-    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
+    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "2annot_1seq.gb [NC_001363 annotations 2] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'")
                   .arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
@@ -2288,7 +2289,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     expectedGroups = QStringList() << "group  (0, 1)"
                                                << "just an annotation  (0, 1)"
                                                << "test_0033  (0, 1)";
-    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 annotations 2 [2annot_1seq.gb] *");
+    QStringList groups = GTUtilsAnnotationsTreeView::getGroupNames(os, "2annot_1seq.gb [NC_001363 annotations 2] *");
     CHECK_SET_ERR(expectedGroups.toSet() == groups.toSet(), QString("Unexpected group names: expect '%1', got '%2'")
                   .arg(expectedGroups.join(", ")).arg(groups.join(", ")));
 
@@ -2777,7 +2778,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //        New table radio button - enabled
 //        New table lineedit - enabled
 //        New table browse button - enabled
-//        Auto table radio button - disabled
+//        Auto table radio button - not visible
             QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable", dialog);
             CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
             CHECK_SET_ERR(!rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly enabled");
@@ -2804,7 +2805,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    21. Cancel the dialog.
             // Dialog is applied to check boundaries.
@@ -2833,7 +2834,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //        New table radio button - enabled
 //        New table lineedit - disabled
 //        New table browse button - disabled
-//        Auto table radio button - disabled
+//        Auto table radio button - not visible
             QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable", dialog);
             CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
@@ -2860,7 +2861,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    24. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, rbCreateNewTable);
@@ -2872,14 +2873,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //        New table radio button - enabled
 //        New table lineedit - enabled
 //        New table browse button - enabled
-//        Auto table radio button - disabled
+//        Auto table radio button - not visible
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
             CHECK_SET_ERR(!cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly enabled");
             CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly enabled");
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
             CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled");
             CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    25. Select "Existing table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, rbExistingTable);
@@ -2891,14 +2892,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 //        New table radio button - enabled
 //        New table lineedit - disabled
 //        New table browse button - disabled
-//        Auto table radio button - disabled
+//        Auto table radio button - not visible
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
             CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled");
             CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled");
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
             CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled");
             CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    26. Select "GenBank/EMBL format" location style. Set location "join(1..100,200..199950)".
             setGenbankLocation(os, "join(1..100,200..199950)", dialog);
@@ -2997,7 +2998,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -3052,7 +3053,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(NULL != rbUseAutoTable, "rbUseAutoTable is NULL");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    7. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable", dialog));
@@ -3071,7 +3072,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
             CHECK_SET_ERR(leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly disabled");
             CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    8. Select "Existing table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, GTWidget::findWidget(os, "rbExistingTable", dialog));
@@ -3090,7 +3091,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
             CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled");
             CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled");
             CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
-            CHECK_SET_ERR(!rbUseAutoTable->isEnabled(), "rbUseAutoTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
 //    9. Check "Use pattern name" checkbox state.
 //    Expected state: it is invisible.
@@ -3407,6 +3408,103 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     CHECK_SET_ERR("test_0043_2 description" == description,
                   QString("An unexpected annotation description: expect '%1', got '%2'")
                   .arg("test_0043_2 description").arg(description));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0044) {
+/* 1. Open "_common_data/genbank/1seq.gen".
+ * 2. Try to add annotation to opened file
+ * Expected state: option is avaliable and no errors showed
+*/
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            setAnnotationName(os, "test_0044", dialog);
+            setGenbankLocation(os, "10..20", dialog);
+            QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable");
+            CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
+            CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
+
+            QComboBox *cbExistingTable = GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable");
+            CHECK_SET_ERR(NULL != cbExistingTable, "cbExistingTable is NULL");
+            CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disnabled");
+
+            QToolButton *tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseExistingTable");
+            CHECK_SET_ERR(NULL != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+            CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disnabled");
+
+            CHECK_SET_ERR(rbExistingTable->isChecked(), "rbExistingTable is unexpectedly unchecked");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario));
+    openFileAndCallCreateAnnotationDialog(os, testDir + "_common_data/genbank/1seq.gen");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: there is an annotation with type "Misc. Feature".
+    const QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0044");
+    CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'")
+                  .arg("Misc. Feature").arg(type));
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0045) {
+/* 1. Open "_common_data/genbank/70Bp2.gen".
+ * 2. Try to add annotation to both sequences
+ * Expected state: option is avaliable and no errors showed
+*/
+    class Scenario : public CustomScenario {
+        QString annotationName;
+    public:
+        Scenario(QString annotationName) : annotationName(annotationName) {}
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            setAnnotationName(os, annotationName, dialog);
+            setGenbankLocation(os, "10..20", dialog);
+            QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable");
+            CHECK_SET_ERR(NULL != rbExistingTable, "rbExistingTable is NULL");
+            CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
+
+            QComboBox *cbExistingTable = GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable");
+            CHECK_SET_ERR(NULL != cbExistingTable, "cbExistingTable is NULL");
+            CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disnabled");
+
+            QToolButton *tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseExistingTable");
+            CHECK_SET_ERR(NULL != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+            CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disnabled");
+
+            CHECK_SET_ERR(rbExistingTable->isChecked(), "rbExistingTable is unexpectedly unchecked");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/70Bp2.gen");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario("test_0045_1")));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_1"));
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario("test_0045_2")));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Expected state: there is an annotation with type "Misc. Feature".
+    QString type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0045_1");
+    CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'")
+                  .arg("Misc. Feature").arg(type));
+
+    //Expected state: there is an annotation with type "Misc. Feature".
+    type = GTUtilsAnnotationsTreeView::getAnnotationType(os, "test_0045_2");
+        CHECK_SET_ERR("Misc. Feature" == type, QString("An unexpected annotation type: expect '%1', got '%2'")
+                      .arg("Misc. Feature").arg(type));
+
 }
 
 }   // namespace GUITest_common_scenarios_create_annotation_widget

@@ -34,6 +34,9 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #include "SendSelectionDialog.h"
 
 namespace U2 {
@@ -126,9 +129,10 @@ void SendSelectionDialog::alignComboBoxes() {
     }
 }
 
-SendSelectionDialog::SendSelectionDialog(const U2SequenceObject* dnaso, bool _isAminoSeq, QWidget *p)
-    : QDialog(p), translateToAmino(false), isAminoSeq(_isAminoSeq), extImported(false)
+SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool _isAminoSeq, QWidget *p)
+    : QDialog(p), translateToAmino(false), isAminoSeq(_isAminoSeq), extImported(false),seqCtx(seqCtx)
 {
+    U2SequenceObject* dnaso = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
     ca_m.hideAnnotationType = true;
     ca_m.hideAnnotationName = true;
@@ -137,7 +141,7 @@ SendSelectionDialog::SendSelectionDialog(const U2SequenceObject* dnaso, bool _is
     ca_m.sequenceLen = dnaso->getSequenceLength();
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
     setupUi(this);
-    new HelpButton(this, buttonBox, "18223159");
+    new HelpButton(this, buttonBox, "19759651");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -423,6 +427,12 @@ void SendSelectionDialog::sl_OK() {
     cfg.dbChoosen = db;
 
     saveSettings();
+    bool objectPrepared = ca_c->prepareAnnotationObject();
+    if (!objectPrepared){
+        QMessageBox::warning(this, tr("Error"), tr("Cannot create an annotation object. Please check settings"));
+        return;
+    }
+    seqCtx->getAnnotatedDNAView()->tryAddObject(ca_c->getModel().getAnnotationObject());
     accept();
 }
 

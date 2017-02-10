@@ -111,7 +111,7 @@ void RemoteBLASTViewContext::sl_showDialog() {
     ADVSequenceObjectContext* seqCtx = av->getSequenceInFocus();
 
     bool isAminoSeq = seqCtx->getAlphabet()->isAmino();
-    QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx->getSequenceObject(), isAminoSeq, av->getWidget());
+    QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx, isAminoSeq, av->getWidget());
     dlg->exec();
     CHECK(!dlg.isNull(), );
 

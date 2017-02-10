@@ -220,10 +220,6 @@ private:
     static const int DEFAULT_RESULTS_NUM_LIMIT;
     static const int DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
 
-    static const QString ALGORITHM_SETTINGS;
-    static const QString SEARCH_IN_SETTINGS;
-    static const QString OTHER_SETTINGS;
-
     QList<SharedAnnotationData> findPatternResults;
     int iterPos;
     Task *searchTask;

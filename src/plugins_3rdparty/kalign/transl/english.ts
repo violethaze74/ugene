@@ -11,7 +11,7 @@
     <message>
         <location filename="../src/KalignDialog.ui" line="46"/>
         <source>Input and output</source>
-        <translation type="unfinished"></translation>
+        <translation>Input and output</translation>
     </message>
     <message>
         <location filename="../src/KalignDialog.ui" line="54"/>

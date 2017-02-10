@@ -34,6 +34,7 @@ class HmmerParseSearchResultsTask;
 class SaveSequenceTask;
 
 class PhmmerSearchTask : public ExternalToolSupportTask {
+    Q_OBJECT
 public:
     PhmmerSearchTask(const PhmmerSearchSettings &settings);
 

@@ -656,7 +656,7 @@ void BwaTask::prepare() {
 
 Task::ReportResult BwaTask::report() {
     if(!justBuildIndex) {
-        haveResults = true;
+        hasResults = true;
     }
     return ReportResult_Finished;
 }

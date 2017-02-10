@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>765</width>
-    <height>426</height>
+    <height>448</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -707,7 +707,16 @@
                  </item>
                  <item row="5" column="0" colspan="3">
                   <layout class="QGridLayout" name="tmplButtonsLayout">
-                   <property name="margin">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
                     <number>0</number>
                    </property>
                    <property name="spacing">

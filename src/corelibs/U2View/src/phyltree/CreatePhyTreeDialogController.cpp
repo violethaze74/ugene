@@ -62,9 +62,9 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, co
     ui->setupUi(this);
 
     QMap<QString, QString> helpPagesMap;
-    helpPagesMap.insert("PHYLIP Neighbor Joining","18223093");
-    helpPagesMap.insert("MrBayes","18223094");
-    helpPagesMap.insert("PhyML Maximum Likelihood","18223092");
+    helpPagesMap.insert("PHYLIP Neighbor Joining","19759585");
+    helpPagesMap.insert("MrBayes","19759586");
+    helpPagesMap.insert("PhyML Maximum Likelihood","19759584");
     new ComboboxDependentHelpButton(this, ui->buttonBox, ui->algorithmBox, helpPagesMap);
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
@@ -91,7 +91,6 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget* parent, co
 void CreatePhyTreeDialogController::accept() {
     settings.algorithmId = ui->algorithmBox->currentText();
 
-    CHECK(checkLicense(), );
     CHECK(checkFileName(), );
     SAFE_POINT(NULL != settingsWidget, "Settings widget is NULL", );
     settingsWidget->fillSettings(settings);
@@ -121,24 +120,6 @@ void CreatePhyTreeDialogController::sl_onStoreSettings() {
 }
 void CreatePhyTreeDialogController::sl_onRestoreDefault(){
     settingsWidget->restoreDefault();
-}
-
-bool CreatePhyTreeDialogController::checkLicense() {
-    if (settings.algorithmId == "PHYLIP Neighbor Joining") { // This is a bad hack :(
-        QList<Plugin *> plugins = AppContext::getPluginSupport()->getPlugins();
-        foreach (Plugin *plugin, plugins) {
-            if (plugin->getName() == "PHYLIP") {
-                if (!plugin->isLicenseAccepted()) {
-                    QObjectScopedPointer<LicenseDialog> licenseDialog = new LicenseDialog(plugin);
-                    const int ret = licenseDialog->exec();
-                    CHECK(!licenseDialog.isNull(), false);
-                    return (ret == QDialog::Accepted);
-                }
-            }
-        }
-    }
-
-    return true;
 }
 
 bool CreatePhyTreeDialogController::checkFileName() {

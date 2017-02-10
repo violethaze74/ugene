@@ -87,7 +87,7 @@ FunctionEnd
     !endif
 
 
-    Name    ${FullProductName}
+    Name    "${FullProductName}"
     InstallDir "$PROGRAMFILES64\${FullProductName}"
     InstallDirRegKey HKCU "Software\${CompanyName}\${ProductName}" ""
     DirText "Please select the folder below"
@@ -136,7 +136,6 @@ SetRegView 64
     RMDir /r "$INSTDIR\plugins"
     Delete "$INSTDIR\ugene.exe"
 
-    SetOverwrite IfNewer
     !insertmacro AddExecutable ugeneui
     !insertmacro AddExecutable ugenecl
     !insertmacro AddExecutable ugenem

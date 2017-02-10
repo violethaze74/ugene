@@ -36,7 +36,7 @@ workflow "Convert UQL schema results to alignment" {
     write-msa {
         type:write-msa;
         name:"Write alignment";
-        document-format:clustal;
+        document-format:CLUSTAL;
         write-mode:2;
         url-out:output.aln;
     }

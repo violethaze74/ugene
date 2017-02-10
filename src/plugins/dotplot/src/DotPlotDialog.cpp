@@ -22,6 +22,7 @@
 #include <math.h>
 
 #include <QColorDialog>
+#include <QDesktopWidget>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -53,7 +54,8 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
 ,openSequenceTask(NULL), curURL("")
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18223036");
+
+    new HelpButton(this, buttonBox, "19759528");
     startButton = buttonBox->button(QDialogButtonBox::Ok);
 
     SAFE_POINT(adv != NULL, "DotPlotDialog called without view context!", );

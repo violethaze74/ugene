@@ -111,7 +111,8 @@ Task *SpadesWorker::tick() {
         }
         settings.reads = QList<AssemblyReads>()<<read;
 
-        Task* t = new GenomeAssemblyMultiTask(settings);
+        settings.listeners = createLogListeners();
+        GenomeAssemblyMultiTask* t = new GenomeAssemblyMultiTask(settings);
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     }else if (inChannel->isEnded()) {

@@ -67,7 +67,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MSAEditorState.h \
            src/ov_msa/MSAEditorStatusBar.h \
            src/ov_msa/MSAEditorTasks.h \
-           src/ov_msa/MSAEditorUndoFramework.h \
            src/ov_msa/MsaUpdatedWidgetInterface.h \
            src/ov_msa/MsaOpSavableTab.h \
            src/ov_msa/MSASelectSubalignmentDialog.h \
@@ -288,7 +287,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MSAEditorState.cpp \
            src/ov_msa/MSAEditorStatusBar.cpp \
            src/ov_msa/MSAEditorTasks.cpp \
-           src/ov_msa/MSAEditorUndoFramework.cpp \
            src/ov_msa/MsaOpSavableTab.cpp \
            src/ov_msa/MSASelectSubalignmentDialog.cpp \
            src/ov_msa/MsaEditorUserModStepController.cpp \

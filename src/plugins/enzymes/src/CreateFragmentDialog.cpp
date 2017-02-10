@@ -39,17 +39,18 @@
 #include <U2Gui/HelpButton.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
 
 #include "CreateFragmentDialog.h"
 
 namespace U2 {
 
 CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext* ctx,  QWidget* p)
-: QDialog(p)
+: QDialog(p), seqCtx(ctx)
 {
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "18223175");
+    new HelpButton(this, buttonBox, "19759667");
 
     tabWidget->setCurrentIndex(0);
 
@@ -66,10 +67,10 @@ CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext* ctx,  QWidg
 }
 
 CreateFragmentDialog::CreateFragmentDialog(U2SequenceObject* obj, const U2Region& region, QWidget* p)
-    : QDialog(p)
+    : QDialog(p), seqCtx(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18223175");
+    new HelpButton(this, buttonBox, "19759667");
     seqObj = obj;
 
     QList<GObject*> aObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly,GObjectTypes::ANNOTATION_TABLE);
@@ -166,6 +167,10 @@ void CreateFragmentDialog::accept()
     obj->addAnnotations(QList<SharedAnnotationData>() << ad, groupName);
     dnaFragment = DNAFragment(ad, seqObj, relatedAnnotations);
 
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(obj);
+    }
+
     QDialog::accept();
 }
 
@@ -182,6 +187,7 @@ void CreateFragmentDialog::setupAnnotationsWidget() {
     QVBoxLayout* l = new QVBoxLayout();
     l->setMargin(0);
     l->addWidget(caw);
+    l->addStretch();
     annotationsWidget->setLayout(l);
     annotationsWidget->setMinimumSize(caw->layout()->minimumSize());
 }

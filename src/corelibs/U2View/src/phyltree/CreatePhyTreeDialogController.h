@@ -50,7 +50,6 @@ private slots:
     void sl_onRestoreDefault();
 
 private:
-    bool checkLicense();
     bool checkFileName();
     bool checkSettings();
     bool checkMemory();

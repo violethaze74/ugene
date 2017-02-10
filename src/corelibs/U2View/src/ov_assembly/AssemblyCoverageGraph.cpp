@@ -46,7 +46,8 @@ void AssemblyCoverageGraph::connectSlots() {
 void AssemblyCoverageGraph::drawAll() {
     if(!model->isEmpty()) {
         if(cachedView.size() != size()) {
-            cachedView = QPixmap(size());
+            cachedView = QPixmap(size() * devicePixelRatio());
+            cachedView.setDevicePixelRatio(devicePixelRatio());
             redraw = true;
         }
         if (redraw) {
@@ -61,7 +62,7 @@ void AssemblyCoverageGraph::drawAll() {
                         drawGraph(p, ci, 128);
                     }
                     QString message = coverageTaskRunner.isIdle() ? tr("Coverage calculation canceled") : tr("Calculating coverage...");
-                    p.drawText(cachedView.rect(), Qt::AlignCenter, message);
+                    p.drawText(rect(), Qt::AlignCenter, message);
                 } else if(lastResult.region == visibleRegion) {
                     drawGraph(p, lastResult);
                 } else if(browser->isInLocalCoverageCache(visibleRegion)) {

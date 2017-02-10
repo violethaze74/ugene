@@ -317,7 +317,7 @@ QList<Task*> GTest_Bwa::onSubTaskFinished(Task* subTask) {
             subTaskFailed = true;
             return res;
         }
-        if (!bwaTask->isHaveResult()) {
+        if (!bwaTask->hasResult()) {
             subTaskFailed = true;
             bwaTask->setError("Reference assembly failed - no possible alignment found");
             return res;

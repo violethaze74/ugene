@@ -1030,13 +1030,13 @@
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="90"/>
         <source>Search</source>
-        <translation>Искать</translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="91"/>
         <location filename="../src/SiteconSearchDialogController.cpp" line="153"/>
         <source>Cancel</source>
-        <translation>Отменить</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="153"/>
@@ -1060,9 +1060,9 @@
     </message>
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="195"/>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="299"/>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="309"/>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="321"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="300"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="310"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="322"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -1072,27 +1072,27 @@
         <translation>%1% err1=%2	err2=%3</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="299"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="300"/>
         <source>No model selected</source>
         <translation>Укажите файл модели</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="309"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="310"/>
         <source>Range is too small</source>
         <translation>Слишком маленький регион для поиска</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="321"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="322"/>
         <source>Error parsing minumum score</source>
         <translation>Неразборчивая строка минимальной ошибки</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="385"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="386"/>
         <source>Complement strand</source>
         <translation>Только комплeментарные</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchDialogController.cpp" line="385"/>
+        <location filename="../src/SiteconSearchDialogController.cpp" line="386"/>
         <source>Direct strand</source>
         <translation>Только прямые</translation>
     </message>

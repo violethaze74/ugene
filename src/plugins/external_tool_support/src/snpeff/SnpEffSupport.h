@@ -28,12 +28,20 @@
 
 namespace U2 {
 
+class SnpEffDatabaseListModel;
+
 class SnpEffSupport : public ExternalTool {
     Q_OBJECT
 public:
     SnpEffSupport(const QString& name, const QString& path = "");
 
     const QStringList getToolRunnerAdditionalOptions();
+
+    static SnpEffDatabaseListModel* databaseModel;
+
+private slots:
+    void sl_validationStatusChanged(bool isValid);
+    void sl_databaseListIsReady();
 };
 
 }//namespace

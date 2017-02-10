@@ -28,6 +28,7 @@
 
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/AnnotationTableObject.h>
+#include <U2Core/Counter.h>
 
 namespace U2 {
 
@@ -108,7 +109,6 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v) : QObject(v), adv(v)
     toggleAutoAnnotationsButton->setPopupMode(QToolButton::InstantPopup);
 
     toggleAutoAnnotationsAction = NULL;
-
 
     // visual mode ops
     toggleAllAction = new QAction("Toggle All sequence views", this);
@@ -263,7 +263,7 @@ void ADVSyncViewManager::sl_rangeChanged() {
 }
 
 void ADVSyncViewManager::sl_lock() {
-
+    GCOUNTER(tvar, cvar, "SequenceView::SyncViewManager::Lock scales");
     QObject* s = sender();
     bool buttonClicked = (s == lockButton);
 
@@ -293,10 +293,10 @@ void ADVSyncViewManager::sl_lock() {
         lockButton->setChecked(lockActionGroup->checkedAction() != NULL);
     }
 
-
 }
 
 void ADVSyncViewManager::sl_sync() {
+    GCOUNTER(tvar, cvar, "SequenceView::SyncViewManager::Adjust scales");
     QObject* s = sender();
     SyncMode m = SyncMode_Start;
     if (s == syncBySeqSelAction) {
@@ -524,6 +524,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
 
     foreach (ADVSequenceWidget* w, adv->getSequenceWidgets()) {
         QList<ADVSequenceWidgetAction*> actions = w->getADVSequenceWidgetActions();
+        bool active = false;
         foreach (ADVSequenceWidgetAction* action, actions) {
             AutoAnnotationsADVAction* aaAction = qobject_cast<AutoAnnotationsADVAction*>(action);
             if (aaAction != NULL) {
@@ -531,8 +532,10 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
                 foreach( QAction* toggleAction, aaToggleActions) {
                     if (toggleAction->isEnabled()) {
                         aaActionMap.insertMulti(toggleAction->text(), toggleAction);
+                        active = true;
                     }
                 }
+                aaAction->setVisible(active);
             }
         }
     }

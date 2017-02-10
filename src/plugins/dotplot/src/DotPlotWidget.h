@@ -143,7 +143,7 @@ private:
     int minLen, identity;
 
     bool pixMapUpdateNeeded, deleteDotPlotFlag, filtration;
-    bool createDotPlot;
+    bool dotPlotIsCalculating;
 
     Task *dotPlotTask;
     QPixmap *pixMap;
@@ -156,10 +156,10 @@ private:
 
     QPointF clickedFirst, clickedSecond;
 
-    DotPlotResultsListener*         dpDirectResultListener;
-    DotPlotRevComplResultsListener* dpRevComplResultsListener;
-    QList<DotPlotResults>*          dpFilteredResults;
-    QList<DotPlotResults>*          dpFilteredResultsRevCompl;
+    DotPlotResultsListener*                 dpDirectResultListener;
+    DotPlotRevComplResultsListener*         dpRevComplResultsListener;
+    QSharedPointer< QList<DotPlotResults> > dpFilteredResults;
+    QSharedPointer< QList<DotPlotResults> > dpFilteredResultsRevCompl;
 
     QAction *showSettingsDialogAction;
     QAction *saveImageAction;

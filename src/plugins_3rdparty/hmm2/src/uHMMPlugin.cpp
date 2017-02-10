@@ -163,6 +163,7 @@ void uHMMPlugin::sl_search() {
     //2. if not -> check that DNASequence object is selected in project view
 
     U2SequenceObject* obj = NULL;
+    ADVSequenceObjectContext* seqCtx = NULL;
 
     MWMDIWindow* w = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (w!=NULL) {
@@ -171,7 +172,7 @@ void uHMMPlugin::sl_search() {
             GObjectView* ov = ow->getObjectView();
             AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(ov);
             if (av!=NULL) {
-                ADVSequenceObjectContext* seqCtx = av->getSequenceInFocus();
+                seqCtx = av->getSequenceInFocus();
                 obj = seqCtx->getSequenceObject();
             }
         }
@@ -190,12 +191,13 @@ void uHMMPlugin::sl_search() {
         QMessageBox::critical(p, tr("Error"), tr("Error! Select sequence in Project view or open sequence view."));
         return;
     }
-
-    U2OpStatusImpl os;
-    DNASequence sequence = obj->getWholeSequence(os);
-    CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
-    QObjectScopedPointer<HMMSearchDialogController> d = new HMMSearchDialogController(sequence, obj, p);
-    d->exec();
+    if(seqCtx != NULL){
+        QObjectScopedPointer<HMMSearchDialogController> d = new HMMSearchDialogController(seqCtx, p);
+        d->exec();
+    }else{
+        QObjectScopedPointer<HMMSearchDialogController> d = new HMMSearchDialogController(obj, p);
+        d->exec();
+    }
 }
 
 
@@ -274,10 +276,7 @@ void HMMADVContext::sl_search() {
         QMessageBox::critical(p, tr("Error"), tr("No sequences found"));
         return;
     }
-    U2OpStatusImpl os;
-    DNASequence sequence = seqCtx->getSequenceObject()->getWholeSequence(os);
-    CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
-    QObjectScopedPointer<HMMSearchDialogController> d = new HMMSearchDialogController(sequence, seqCtx->getSequenceObject(), p);
+    QObjectScopedPointer<HMMSearchDialogController> d = new HMMSearchDialogController(seqCtx, p);
     d->exec();
 }
 

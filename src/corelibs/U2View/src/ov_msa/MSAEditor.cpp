@@ -25,6 +25,7 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QPainter>
 #include <QResizeEvent>
@@ -94,7 +95,6 @@
 #include "MSAEditorState.h"
 #include "MSAEditorStatusBar.h"
 #include "MSAEditorTasks.h"
-#include "MSAEditorUndoFramework.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "PhyTrees/MSAEditorTreeViewer.h"
@@ -911,7 +911,6 @@ void MSAEditor::saveHighlightingSettings( const QString &highlightingFactoryId, 
 //////////////////////////////////////////////////////////////////////////
 MSAEditorUI::MSAEditorUI(MSAEditor* _editor)
 : editor(_editor), seqArea(NULL), offsetsView(NULL), statusWidget(NULL), collapsibleMode(false), multiTreeViewer(NULL), similarityStatistics(NULL) {
-    //undoFWK = new MSAEditorUndoFramework(this, editor->getMSAObject());
     undoFWK = new MsaUndoRedoFramework(this, editor->getMSAObject());
 
     collapseModel = new MSACollapsibleItemModel(this);
@@ -1052,7 +1051,8 @@ QAction* MSAEditorUI::getRedoAction() const {
 void MSAEditorUI::sl_saveScreenshot(){
     MSAImageExportController controller(this);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, ExportImageDialog::NoScaling, p);
+    QString fileName = GUrlUtils::fixFileName(editor->getMSAObject()->getGObjectName());
+    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
     dlg->exec();
 }
 

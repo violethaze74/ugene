@@ -23,6 +23,7 @@
 #define _U2_TABULATED_FORMAT_READER_H_
 
 #include <QObject>
+#include <QStringList>
 
 namespace U2 {
 
@@ -30,6 +31,7 @@ class IOAdapter;
 class U2OpStatus;
 
 class TabulatedFormatReader : public QObject {
+    Q_OBJECT
 public:
     TabulatedFormatReader(U2OpStatus &os, IOAdapter *ioAdapter);
 

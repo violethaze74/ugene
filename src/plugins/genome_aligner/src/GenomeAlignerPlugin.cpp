@@ -70,9 +70,6 @@ public:
 };
 
 GenomeAlignerPlugin::GenomeAlignerPlugin() : Plugin( tr("UGENE Genome Aligner"), tr("Assembly DNA to reference sequence") ) {
-    if (AppContext::getMainWindow()) {
-        AppContext::getAppSettingsGUI()->registerPage(new GenomeAlignerSettingsPageController());
-    }
 
     // Register GenomeAligner algorithm
     DnaAssemblyAlgRegistry* registry = AppContext::getDnaAssemblyAlgRegistry();

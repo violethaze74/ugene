@@ -108,7 +108,7 @@ public:
 
 PWMSearchDialogController::PWMSearchDialogController(ADVSequenceObjectContext* _ctx, QWidget *p):QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18223217");
+    new HelpButton(this, buttonBox, "19759709");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Add to queue"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -245,6 +245,7 @@ void PWMSearchDialogController::sl_onSaveAnnotations() {
     if (rc != QDialog::Accepted) {
         return;
     }
+    ctx->getAnnotatedDNAView()->tryAddObject(m.getAnnotationObject());
     const QString& name = m.data->name;
     QList<SharedAnnotationData> list;
     for (int i = 0, n = resultsTree->topLevelItemCount(); i<n; ++i) {

@@ -48,6 +48,7 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -987,8 +988,10 @@ void BioStruct3DGLWidget::sl_settings()
 void BioStruct3DGLWidget::sl_exportImage()
 {
     BioStruct3DImageExportController factory(this);
+    
+    QString fileName = GUrlUtils::fixFileName(getBioStruct3DObjectName());
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MolView,
-                             ExportImageDialog::SupportScaling, this);
+                             fileName, ExportImageDialog::SupportScaling, this);
     dialog->exec();
 }
 
