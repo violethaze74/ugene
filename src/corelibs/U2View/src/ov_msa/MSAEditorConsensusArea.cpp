@@ -51,8 +51,29 @@ namespace U2 {
 
 #define SETTINGS_ROOT QString("msaeditor/")
 
+MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings() {
+    // SANGER_TODO: currently the ruler cannot be drawn above the text - draw methods should be refactored
+    order << MSAEditorConsElement_HISTOGRAM
+          << MSAEditorConsElement_CONSENSUS_TEXT
+          << MSAEditorConsElement_RULER;
+    visibility.insert(MSAEditorConsElement_HISTOGRAM, true);
+    visibility.insert(MSAEditorConsElement_CONSENSUS_TEXT, true);
+    visibility.insert(MSAEditorConsElement_RULER, true);
+}
+
+MaEditorConsensusAreaSettings::MaEditorConsensusAreaSettings(const QList<MaEditorConsElement> &order,
+                                                             const QMap<MaEditorConsElement, bool> &visibility)
+    : order(order),
+      visibility(visibility) {
+}
+
+bool MaEditorConsensusAreaSettings::isVisible(const MaEditorConsElement element) const {
+    return visibility.value(element, false);
+}
+
 MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
-    : editor(_ui->getEditor()), ui(_ui)
+    : editor(_ui->getEditor()),
+      ui(_ui)
 {
     assert(editor->getMaObject());
     completeRedraw = true;
@@ -268,9 +289,15 @@ void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
 }
 
 void MSAEditorConsensusArea::drawContent(QPainter& p ) {
-    drawConsensus(p);
-    drawRuler(p);
-    drawHistogram(p);
+    if (drawSettings.isVisible(MSAEditorConsElement_CONSENSUS_TEXT)) {
+        drawConsensus(p);
+    }
+    if (drawSettings.isVisible(MSAEditorConsElement_RULER)) {
+        drawRuler(p);
+    }
+    if (drawSettings.isVisible(MSAEditorConsElement_HISTOGRAM)) {
+        drawHistogram(p);
+    }
 }
 
 void MSAEditorConsensusArea::drawSelection(QPainter& p) {
@@ -443,22 +470,31 @@ void MSAEditorConsensusArea::drawHistogram(QPainter &p, int firstBase, int lastB
 #endif
 }
 
-U2Region MSAEditorConsensusArea::getYRange(MSAEditorConsElement e) const {
+U2Region MSAEditorConsensusArea::getYRange(MaEditorConsElement e) const {
     U2Region res;
-    switch(e) {
-        case MSAEditorConsElement_HISTOGRAM:
-            res = U2Region(0, 50);
+
+    for (QList<MaEditorConsElement>::iterator it = drawSettings.order.begin(); it != drawSettings.order.end(); it++) {
+        if (*it == e) {
+            res.length = getYRangeLength(e);
             break;
-        case MSAEditorConsElement_CONSENSUS_TEXT:
-            res = U2Region(0, editor->getSequenceRowHeight());
-            res.startPos += getYRange(MSAEditorConsElement(e-1)).endPos();
-            break;
-        case MSAEditorConsElement_RULER:
-            res = U2Region(0, rulerFontHeight + 2 * RULER_NOTCH_SIZE + 4);
-            res.startPos += getYRange(MSAEditorConsElement(e - 1)).endPos();
-            break;
+        } else {
+            res.startPos += getYRangeLength(*it) * drawSettings.isVisible(*it);
+        }
     }
     return res;
+}
+
+int MSAEditorConsensusArea::getYRangeLength(MaEditorConsElement e) const {
+    switch(e) {
+        case MSAEditorConsElement_HISTOGRAM:
+            return 50;
+        case MSAEditorConsElement_CONSENSUS_TEXT:
+            return editor->getSequenceRowHeight();
+        case MSAEditorConsElement_RULER:
+            return  rulerFontHeight + 2 * RULER_NOTCH_SIZE + 4;
+    }
+    // SANGER_TODO: remove or add FAIL?
+    return -1;
 }
 
 MSAConsensusAlgorithmFactory* MSAEditorConsensusArea::getConsensusAlgorithmFactory() {
@@ -622,6 +658,20 @@ void MSAEditorConsensusArea::setConsensusAlgorithmConsensusThreshold(int val) {
     //store threshold as the last value
     AppContext::getSettings()->setValue(getThresholdSettingsKey(algo->getId()), val);
     algo->setThreshold(val);
+}
+
+void MSAEditorConsensusArea::setDrawSettings(const MaEditorConsensusAreaSettings& settings) {
+    drawSettings = settings;
+
+    // update height
+    int minHeight = 0;
+    foreach (const MaEditorConsElement& element, drawSettings.order) {
+        if (drawSettings.isVisible(element)) {
+            minHeight += getYRangeLength(element);
+        }
+    }
+    setMaximumHeight(minHeight);
+    setMinimumHeight(minHeight);
 }
 
 void MSAEditorConsensusArea::sl_onConsensusThresholdChanged(int newValue) {

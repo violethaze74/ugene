@@ -75,6 +75,8 @@ public:
     void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
     MSACollapsibleItemModel* getCollapseModel() const { return collapseModel; }
 
+    QWidget* getHeaderWidget() const { return seqAreaHeader; }
+
 signals:
     void si_startMsaChanging();
     void si_stopMsaChanging(bool modifyed = false);
@@ -100,6 +102,9 @@ protected:
     MSAEditorStatusWidget*          statusWidget;
 
     QWidget*                        nameAreaContainer;
+    QWidget*                        seqAreaHeader;
+    QVBoxLayout*                    seqAreaHeaderLayout;
+
     QGridLayout*                    seqAreaLayout;
     QVBoxLayout*                    nameAreaLayout;
     MaSplitterController            maSplitter;

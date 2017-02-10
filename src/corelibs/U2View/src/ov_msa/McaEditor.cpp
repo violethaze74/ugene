@@ -20,11 +20,13 @@
  */
 
 #include "McaEditor.h"
+
 #include "MaEditorFactory.h"
+#include "MaEditorNameList.h"
 #include "McaEditorSequenceArea.h"
 #include "McaEditorReferenceArea.h"
 #include "McaEditorOverviewArea.h"
-#include "MaEditorNameList.h"
+#include "MSAEditorConsensusArea.h"
 
 #include "view_rendering/MaEditorWgt.h"
 #include <U2View/ADVSequenceObjectContext.h>// SANGER_TODO: do not forget to rename the header
@@ -175,18 +177,13 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     initActions();
     initWidgets();
 
-    QWidget* placeHolder1 = createLabelWidget();
-    QWidget* placeHolder2 = createLabelWidget();
-
-    QWidget *label = createLabelWidget(tr("Reference")); // SANGER_TODO: write sequence name
-    nameAreaLayout->insertWidget(0, label);
-    // SANGER_TODO: connect the lavel height with the panview height
-
+    // SANGER_TODO: write sequence name
     McaEditorReferenceArea* refArea = new McaEditorReferenceArea(this, getEditor()->referenceCtx);
+    seqAreaHeaderLayout->insertWidget(0, refArea);
 
-    seqAreaLayout->addWidget(placeHolder1, 0, 0);
-    seqAreaLayout->addWidget(refArea, 0, 1);
-    seqAreaLayout->addWidget(placeHolder2, 0, 2);
+    MaEditorConsensusAreaSettings consSettings;
+    consSettings.visibility[MSAEditorConsElement_HISTOGRAM] = false;
+    consArea->setDrawSettings(consSettings);
 }
 
 McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {

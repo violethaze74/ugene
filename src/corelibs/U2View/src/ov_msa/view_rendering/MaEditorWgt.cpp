@@ -56,6 +56,8 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       offsetsView(NULL),
       statusWidget(NULL),
       nameAreaContainer(NULL),
+      seqAreaHeader(NULL),
+      seqAreaHeaderLayout(NULL),
       seqAreaLayout(NULL),
       nameAreaLayout(NULL),
       collapsibleMode(false),
@@ -69,7 +71,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
 }
 
 QWidget* MaEditorWgt::createLabelWidget(const QString& text, Qt::Alignment ali){
-    return new MaLabelWidget(this, text, ali);
+    return new MaLabelWidget(this, seqAreaHeader, text, ali);
 }
 
 QAction* MaEditorWgt::getUndoAction() const {
@@ -119,21 +121,27 @@ void MaEditorWgt::initWidgets() {
     offsetsView->getLeftWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     offsetsView->getRightWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
-    QWidget *label;
-    label = createLabelWidget(tr("Consensus"));
-    label->setMinimumHeight(consArea->height());
+    seqAreaHeader = new QWidget(this);
+    seqAreaHeader->setObjectName("alignment_header_widget");
+    seqAreaHeaderLayout = new QVBoxLayout();
+    seqAreaHeaderLayout->setMargin(0);
+    seqAreaHeaderLayout->setSpacing(0);
+    seqAreaHeaderLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     QWidget* label1 = createLabelWidget();
     QWidget* label2 = createLabelWidget();
     label1->setMinimumHeight(consArea->height());
     label2->setMinimumHeight(consArea->height());
 
+    seqAreaHeaderLayout->addWidget(consArea);
+    seqAreaHeader->setLayout(seqAreaHeaderLayout);
+
     seqAreaLayout = new QGridLayout();
     seqAreaLayout->setMargin(0);
     seqAreaLayout->setSpacing(0);
 
     seqAreaLayout->addWidget(label1, 1, 0);
-    seqAreaLayout->addWidget(consArea, 1, 1);
+    seqAreaLayout->addWidget(seqAreaHeader, 1, 1);
     seqAreaLayout->addWidget(label2, 1, 2, 1, 2);
 
     seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 2, 0);
@@ -148,6 +156,10 @@ void MaEditorWgt::initWidgets() {
 
     QWidget* seqAreaContainer = new QWidget();
     seqAreaContainer->setLayout(seqAreaLayout);
+
+    QWidget *label;
+    label = createLabelWidget(tr("Consensus"));
+    label->setMinimumHeight(consArea->height());
 
     nameAreaLayout = new QVBoxLayout();
     nameAreaLayout->setMargin(0);

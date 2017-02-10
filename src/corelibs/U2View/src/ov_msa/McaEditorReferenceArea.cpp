@@ -46,6 +46,10 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
 
     connect(this, SIGNAL(si_selectionChanged(U2Region)),
             p->getSequenceArea(), SLOT(sl_referenceSelectionChanged(U2Region)));
+
+    // SANGER_TODO: calculate  right size!
+    setMinimumHeight(50);
+    setMaximumHeight(100);
 }
 
 void McaEditorReferenceArea::sl_visibleRangeChanged() {
