@@ -32,9 +32,9 @@
 
 static const QString WORKING_DIR = U2::AppContext::getWorkingDirectoryPath( );
 #ifndef Q_OS_MAC
-static const QString PROPER_WD_SCHEMES_PATH = WORKING_DIR + "/../../test/_common_data/cmdline/wd-sas-schemes/";
+static const QString PROPER_WD_SCHEMES_PATH = WORKING_DIR + "/../../test/general/_common_data/cmdline/wd-sas-schemes/";
 #else
-static const QString PROPER_WD_SCHEMES_PATH = WORKING_DIR + "/../../../../../../test/_common_data/cmdline/wd-sas-schemes/";
+static const QString PROPER_WD_SCHEMES_PATH = WORKING_DIR + "/../../../../../../test/general/_common_data/cmdline/wd-sas-schemes/";
 #endif
 
 static U2ErrorType getActorDisplayName( const QString &actorId, QString &actorName ) {
@@ -201,8 +201,7 @@ IMPLEMENT_TEST( CInterfaceSasTests, basic_align_sas ) {
     error = getActorDisplayName( "write-msa", writerName );
     CHECK_U2_ERROR( error );
     gauto_array<wchar_t> wWriterName( toDisposableWString( writerName ) );
-    error = setSchemeElementAttribute( scheme, wWriterName.get( ), L"document-format",
-        L"stockholm" );
+    error = setSchemeElementAttribute( scheme, wWriterName.get( ), L"document-format", L"Stockholm" );
     CHECK_U2_ERROR( error );
 
     U2OpStatusImpl stateInfo;
@@ -279,7 +278,7 @@ IMPLEMENT_TEST( CInterfaceSasTests, faqual2fastq_sas ) {
     error = getActorDisplayName( "write-sequence", readerName );
     CHECK_U2_ERROR( error );
     gauto_array<wchar_t> wReaderName( toDisposableWString( readerName ) );
-    error = setSchemeElementAttribute( scheme, wReaderName.get( ), L"document-format", L"fastq" );
+    error = setSchemeElementAttribute( scheme, wReaderName.get( ), L"document-format", L"FASTQ" );
     CHECK_U2_ERROR( error );
 
     U2OpStatusImpl stateInfo;
