@@ -156,10 +156,10 @@ private:
 
     QPointF clickedFirst, clickedSecond;
 
-    DotPlotResultsListener*         dpDirectResultListener;
-    DotPlotRevComplResultsListener* dpRevComplResultsListener;
-    QList<DotPlotResults>*          dpFilteredResults;
-    QList<DotPlotResults>*          dpFilteredResultsRevCompl;
+    DotPlotResultsListener*                 dpDirectResultListener;
+    DotPlotRevComplResultsListener*         dpRevComplResultsListener;
+    QSharedPointer< QList<DotPlotResults> > dpFilteredResults;
+    QSharedPointer< QList<DotPlotResults> > dpFilteredResultsRevCompl;
 
     QAction *showSettingsDialogAction;
     QAction *saveImageAction;

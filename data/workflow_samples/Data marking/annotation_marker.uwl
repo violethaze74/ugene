@@ -33,7 +33,7 @@ workflow "Marking by annotation number"{
     write-sequence {
         type:write-sequence;
         name:"Write 'Good' Sequences";
-        document-format:genbank;
+        document-format:Genbank;
     }
     write-sequence2 {
         type:write-sequence;

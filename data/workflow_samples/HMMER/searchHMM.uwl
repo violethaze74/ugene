@@ -22,7 +22,7 @@ workflow "Search sequences with profile HMM"{
     }
     write-genbank {
         type:write-sequence;
-		document-format:genbank;
+		document-format:Genbank;
         name:"Write Genbank";
         accumulate:true;
         write-mode:2;

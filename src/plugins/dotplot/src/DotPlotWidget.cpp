@@ -73,8 +73,8 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
 {
     dpDirectResultListener = new DotPlotResultsListener();
     dpRevComplResultsListener = new DotPlotRevComplResultsListener();
-    dpFilteredResults = new QList<DotPlotResults>();
-    dpFilteredResultsRevCompl = new QList<DotPlotResults>();
+    dpFilteredResults = QSharedPointer<QList<DotPlotResults> >( new QList<DotPlotResults>() );
+    dpFilteredResultsRevCompl = QSharedPointer<QList<DotPlotResults> >( new QList<DotPlotResults>() );
     foreach(DotPlotResults dpR, *dpDirectResultListener->dotPlotList){
         dpFilteredResults->append(dpR);
     }
@@ -194,8 +194,8 @@ DotPlotWidget::~DotPlotWidget() {
 
     delete dpDirectResultListener;
     delete dpRevComplResultsListener;
-    delete dpFilteredResults;
-    delete dpFilteredResultsRevCompl;
+    dpFilteredResults.clear();
+    dpFilteredResultsRevCompl.clear();
 }
 
 bool DotPlotWidget::onCloseEvent() {

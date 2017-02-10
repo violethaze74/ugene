@@ -59,7 +59,7 @@ DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatD
 : QDialog(p), formatDetectionResults(results)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18222924");
+    new HelpButton(this, buttonBox, "19759416");
 
     setObjectName("DocumentFormatSelectorDialog");
 }
@@ -133,20 +133,23 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, QByteArray& 
         label->installEventFilter(new LabelClickProvider(label, rb));
 
         d->userSelectedFormat = new QComboBox();
-        d->userSelectedFormat->setObjectName("userSelectedFormat"); 
+        d->userSelectedFormat->setObjectName("userSelectedFormat");
         const DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
         SAFE_POINT(formatRegistry != NULL, "FormatRegistry is NULL!", -1);
         DocumentFormatConstraints constraints;
         constraints.addFlagToExclude(DocumentFormatFlag_Hidden);
-        QStringList formatsList;
+        QMap<DocumentFormatId, QString> formats;
         foreach (const DocumentFormatId &id, formatRegistry->selectFormats(constraints)) {
             if (!detectedIds.contains(id)) {
                 const QString formatName = formatRegistry->getFormatById(id)->getFormatName();
-                formatsList.append(formatName);
+                formats[id] = formatName;
             }
         }
-        formatsList.sort(Qt::CaseInsensitive);
-        d->userSelectedFormat->insertItems(0, formatsList);
+        QStringList formatNamesSorted = formats.values();
+        formatNamesSorted.sort(Qt::CaseInsensitive);
+        foreach (const QString& name, formatNamesSorted) {
+            d->userSelectedFormat->addItem(name, formats.key(name));
+        }
 
         hbox->addWidget(rb);
         hbox->addWidget(label);
