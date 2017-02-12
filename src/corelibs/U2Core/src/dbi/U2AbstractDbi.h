@@ -32,7 +32,6 @@
 #include <U2Core/U2DbiUpgrader.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2FeatureDbi.h>
-#include <U2Core/U2McaDbi.h>
 #include <U2Core/U2ModDbi.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>

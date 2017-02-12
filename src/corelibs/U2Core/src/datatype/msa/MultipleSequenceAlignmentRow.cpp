@@ -156,11 +156,6 @@ void MultipleSequenceAlignmentRowData::setGapModel(const QList<U2MsaGap> &newGap
     removeTrailingGaps();
 }
 
-void MultipleSequenceAlignmentRowData::setSequence(const DNASequence &newSequence) {
-    SAFE_POINT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), "The sequence must be without gaps", );
-    sequence = newSequence;
-}
-
 qint64 MultipleSequenceAlignmentRowData::getRowId() const {
     return initialRowInDb.rowId;
 }
@@ -265,6 +260,12 @@ void MultipleSequenceAlignmentRowData::append(const MultipleSequenceAlignmentRow
 
     // Merge sequences
     DNASequenceUtils::append(sequence, anotherRow.sequence);
+}
+
+void MultipleSequenceAlignmentRowData::setRowContent(const DNASequence &newSequence, const U2MsaRowGapModel &newGapModel, U2OpStatus &os) {
+    SAFE_POINT_EXT(!newSequence.constSequence().contains(U2Msa::GAP_CHAR), os.setError("The sequence must be without gaps"), );
+    sequence = newSequence;
+    setGapModel(newGapModel);
 }
 
 void MultipleSequenceAlignmentRowData::setRowContent(const QByteArray &bytes, int offset, U2OpStatus &) {

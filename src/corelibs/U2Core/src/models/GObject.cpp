@@ -340,7 +340,7 @@ void GObject::updateDocInRelations(const QString& oldDocUrl, const QString& newD
 }
 
 void GObject::ensureDataLoaded() const {
-    U2OpStatusImpl os;
+    U2OpStatus2Log os;
     ensureDataLoaded(os);
 }
 

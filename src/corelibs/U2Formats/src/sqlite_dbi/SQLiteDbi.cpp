@@ -23,7 +23,6 @@
 #include "SQLiteObjectDbi.h"
 #include "SQLiteObjectRelationsDbi.h"
 #include "SQLiteSequenceDbi.h"
-#include "SQLiteMcaDbi.h"
 #include "SQLiteMsaDbi.h"
 #include "SQLiteAssemblyDbi.h"
 #include "SQLiteAttributeDbi.h"
@@ -55,7 +54,6 @@ SQLiteDbi::SQLiteDbi()
     objectRelationsDbi = new SQLiteObjectRelationsDbi(this);
     sequenceDbi = new SQLiteSequenceDbi(this);
     modDbi = new SQLiteModDbi(this);
-    mcaDbi = new SQLiteMcaDbi(this);
     msaDbi = new SQLiteMsaDbi(this);
     assemblyDbi = new SQLiteAssemblyDbi(this);
     crossDbi = new SQLiteCrossDatabaseReferenceDbi(this);
@@ -74,7 +72,6 @@ SQLiteDbi::~SQLiteDbi() {
     delete objectDbi;
     delete objectRelationsDbi;
     delete sequenceDbi;
-    delete mcaDbi;
     delete msaDbi;
     delete variantDbi;
     delete assemblyDbi;
@@ -95,10 +92,6 @@ U2ObjectRelationsDbi* SQLiteDbi::getObjectRelationsDbi() {
 
 U2SequenceDbi* SQLiteDbi::getSequenceDbi()  {
     return sequenceDbi;
-}
-
-U2McaDbi * SQLiteDbi::getMcaDbi() {
-    return mcaDbi;
 }
 
 U2MsaDbi* SQLiteDbi::getMsaDbi() {
@@ -139,10 +132,6 @@ SQLiteObjectDbi* SQLiteDbi::getSQLiteObjectDbi() const {
 
 SQLiteObjectRelationsDbi *SQLiteDbi::getSQLiteObjectRelationsDbi() const {
     return objectRelationsDbi;
-}
-
-SQLiteMcaDbi * SQLiteDbi::getSQLiteMcaDbi() const {
-    return mcaDbi;
 }
 
 SQLiteMsaDbi* SQLiteDbi::getSQLiteMsaDbi() const {
@@ -256,7 +245,6 @@ void SQLiteDbi::populateDefaultSchema(U2OpStatus& os) {
     objectDbi->initSqlSchema(os);
     objectRelationsDbi->initSqlSchema(os);
     sequenceDbi->initSqlSchema(os);
-    mcaDbi->initSqlSchema(os);
     msaDbi->initSqlSchema(os);
     assemblyDbi->initSqlSchema(os);
     crossDbi->initSqlSchema(os);
@@ -426,7 +414,6 @@ QVariantMap SQLiteDbi::shutdown(U2OpStatus& os) {
     udrDbi->shutdown(os);
     objectDbi->shutdown(os);
     sequenceDbi->shutdown(os);
-    mcaDbi->shutdown(os);
     msaDbi->shutdown(os);
     assemblyDbi->shutdown(os);
     crossDbi->shutdown(os);

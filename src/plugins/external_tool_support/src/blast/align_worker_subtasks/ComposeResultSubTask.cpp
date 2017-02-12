@@ -183,8 +183,8 @@ U2Region ComposeResultSubTask::getReadRegion(const MultipleChromatogramAlignment
     U2Region region(0, readRow->getRowLengthWithoutTrailing());
 
     // calculate read start
-    if (!readRow->getCommonGapModel().isEmpty()) {
-        U2MsaGap firstGap = readRow->getCommonGapModel().first();
+    if (!readRow->getGapModel().isEmpty()) {
+        U2MsaGap firstGap = readRow->getGapModel().first();
         if (0 == firstGap.offset) {
             region.startPos += firstGap.gap;
             region.length -= firstGap.gap;

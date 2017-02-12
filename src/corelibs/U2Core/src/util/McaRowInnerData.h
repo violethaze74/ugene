@@ -34,10 +34,8 @@ public:
     McaRowMemoryData();
 
     DNAChromatogram chromatogram;
-    DNASequence predictedSequence;
-    U2MsaRowGapModel predictedSequenceGapModel;
-    DNASequence editedSequence;
-    U2MsaRowGapModel editedSequenceGapModel;
+    U2MsaRowGapModel gapModel;
+    DNASequence sequence;
     U2Region workingArea;
     qint64 rowLength;
     QVariantMap additionalInfo;
@@ -48,12 +46,9 @@ public:
     McaRowDatabaseData();
 
     U2Chromatogram chromatogram;
-    U2Sequence predictedSequence;
-    U2MsaRowGapModel predictedSequenceGapModel;
-    U2Sequence editedSequence;
-    U2MsaRowGapModel editedSequenceGapModel;
+    U2Sequence sequence;
+    U2MsaRowGapModel gapModel;
     U2Region workingArea;
-    qint64 workingAreaLength;   // TODO: replace with a region
     qint64 rowLength;
     QVariantMap additionalInfo;
 };

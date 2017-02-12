@@ -30,8 +30,7 @@ McaRowMemoryData::McaRowMemoryData()
 }
 
 McaRowDatabaseData::McaRowDatabaseData()
-    : workingAreaLength(0),
-      rowLength(0)
+    : rowLength(0)
 {
 
 }

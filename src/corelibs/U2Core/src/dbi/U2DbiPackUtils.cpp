@@ -285,15 +285,11 @@ QByteArray PackUtils::packRow(qint64 posInMca, const U2McaRow &row) {
     result += SEP;
     result += row.chromatogramId.toHex();
     result += SEP;
-    result += row.predictedSequenceId.toHex();
-    result += SEP;
     result += row.sequenceId.toHex();
     result += SEP;
     result += QByteArray::number(row.gstart);
     result += SEP;
     result += QByteArray::number(row.gend);
-    result += SEP;
-    result += packGaps(row.predictedSequenceGaps);
     result += SEP;
     result += packGaps(row.gaps);
     return result;
@@ -301,7 +297,7 @@ QByteArray PackUtils::packRow(qint64 posInMca, const U2McaRow &row) {
 
 bool PackUtils::unpackRow(const QByteArray &modDetails, qint64 &posInMca, U2McaRow &row) {
     QList<QByteArray> tokens = modDetails.split(SEP);
-    SAFE_POINT(10 == tokens.size(), QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
+    SAFE_POINT(8 == tokens.size(), QString("Invalid added row modDetails string '%1'").arg(QString(modDetails)), false);
     { // version
         SAFE_POINT(VERSION == tokens[0], QString("Invalid modDetails version '%1'").arg(tokens[0].data()), false);
     }
@@ -318,29 +314,22 @@ bool PackUtils::unpackRow(const QByteArray &modDetails, qint64 &posInMca, U2McaR
     { // chromatogramId
         row.chromatogramId = QByteArray::fromHex(tokens[3]);
     }
-    { // predictedSequenceId
-        row.predictedSequenceId = QByteArray::fromHex(tokens[4]);
-    }
-    { // editedSequenceId
-        row.sequenceId = QByteArray::fromHex(tokens[5]);
+    { // sequenceId
+        row.sequenceId = QByteArray::fromHex(tokens[4]);
     }
     { // gstart
         bool ok = false;
-        row.gstart = tokens[6].toLongLong(&ok);
-        SAFE_POINT(ok, QString("Invalid added row modDetails gstart '%1'").arg(tokens[6].data()), false);
+        row.gstart = tokens[5].toLongLong(&ok);
+        SAFE_POINT(ok, QString("Invalid added row modDetails gstart '%1'").arg(tokens[5].data()), false);
     }
     { // gend
         bool ok = false;
-        row.gend = tokens[7].toLongLong(&ok);
-        SAFE_POINT(ok, QString("Invalid added row modDetails gend '%1'").arg(tokens[7].data()), false);
+        row.gend = tokens[6].toLongLong(&ok);
+        SAFE_POINT(ok, QString("Invalid added row modDetails gend '%1'").arg(tokens[6].data()), false);
     }
-    { // predicted sequence gaps
-        bool ok = unpackGaps(tokens[8], row.predictedSequenceGaps);
-        SAFE_POINT(ok, QString("Invalid added row modDetails gaps '%1'").arg(tokens[8].data()), false);
-    }
-    { // edited sequence gaps
-        bool ok = unpackGaps(tokens[9], row.gaps);
-        SAFE_POINT(ok, QString("Invalid added row modDetails gaps '%1'").arg(tokens[9].data()), false);
+    { // sequence gaps
+        bool ok = unpackGaps(tokens[7], row.gaps);
+        SAFE_POINT(ok, QString("Invalid added row modDetails gaps '%1'").arg(tokens[7].data()), false);
     }
     return true;
 }
@@ -384,8 +373,6 @@ QByteArray PackUtils::packRowInfo(const U2McaRow &row) {
     result += SECOND_SEP;
     result += row.chromatogramId.toHex();
     result += SECOND_SEP;
-    result += row.predictedSequenceId.toHex();
-    result += SECOND_SEP;
     result += row.sequenceId.toHex();
     result += SECOND_SEP;
     result += QByteArray::number(row.gstart);
@@ -398,20 +385,19 @@ QByteArray PackUtils::packRowInfo(const U2McaRow &row) {
 
 bool PackUtils::unpackRowInfo(const QByteArray &str, U2McaRow &row) {
     QList<QByteArray> tokens = str.split(SECOND_SEP);
-    CHECK(7 == tokens.count(), false);
+    CHECK(5 == tokens.count(), false);
 
     bool ok = false;
 
     row.rowId = tokens[0].toLongLong(&ok);
     CHECK(ok, false);
     row.chromatogramId = QByteArray::fromHex(tokens[1]);
-    row.predictedSequenceId = QByteArray::fromHex(tokens[2]);
-    row.sequenceId = QByteArray::fromHex(tokens[3]);
-    row.gstart = tokens[4].toLongLong(&ok);
+    row.sequenceId = QByteArray::fromHex(tokens[2]);
+    row.gstart = tokens[3].toLongLong(&ok);
     CHECK(ok, false);
-    row.gend = tokens[5].toLongLong(&ok);
+    row.gend = tokens[4].toLongLong(&ok);
     CHECK(ok, false);
-    row.length = tokens[6].toLongLong(&ok);
+    row.length = tokens[5].toLongLong(&ok);
     CHECK(ok, false);
 
     return true;

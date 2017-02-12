@@ -27,27 +27,17 @@
 namespace U2 {
 
 class MultipleChromatogramAlignment;
-class U2McaRow;
 class U2EntityRef;
+class U2McaRow;
 class U2OpStatus;
 
 class U2CORE_EXPORT McaDbiUtils : public QObject {
 public:
-    static void renameMca(U2OpStatus &os, const U2EntityRef &mcaRef, const QString &newName);
-
-    static qint64 getMcaLength(U2OpStatus &os, const U2EntityRef &mcaRef);
-    static void updateMcaLength(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 newLength);
-
-    static U2AlphabetId getMcaAlphabet(U2OpStatus &os, const U2EntityRef &mcaRef);
-    static void updateMcaAlphabet(U2OpStatus &os, const U2EntityRef &mcaRef, const U2AlphabetId &alphabetId);
-
     static void updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const MultipleChromatogramAlignment &mca);
-
-    static void addRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 posInMca, U2McaRow& row);
-    static void removeRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
-    static void renameRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId, const QString &newName);
-    static void moveRows(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsToMove, int delta);
-    static void updateRowsOrder(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsOrder);
+    static void addRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 posInMca, U2McaRow &row);
+    static void addRows(U2OpStatus &os, const U2EntityRef &mcaRef, QList<U2McaRow> &rows);
+    static QList<U2McaRow> getMcaRows(U2OpStatus &os, const U2EntityRef &mcaRef);
+    static U2McaRow getMcaRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
 };
 
 }   // namespace U2

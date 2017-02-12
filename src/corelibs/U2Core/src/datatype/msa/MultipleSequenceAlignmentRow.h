@@ -98,12 +98,6 @@ public:
     /** Returns the row sequence (without gaps) */
     inline const DNASequence & getSequence() const;
 
-    /**
-     * Sets a new sequence. Be careful, gap model validity is not verified.
-     * The sequence must not contain gaps.
-     */
-    void setSequence(const DNASequence &newSequence);
-
     /** Returns ID of the row in the database. */
     qint64 getRowId() const;
 
@@ -156,6 +150,7 @@ public:
      * Sets new sequence and gap model.
      * If the sequence is empty, the offset is ignored (if any).
      */
+    void setRowContent(const DNASequence &sequence, const U2MsaRowGapModel &gapModel, U2OpStatus &os);
     void setRowContent(const QByteArray &bytes, int offset, U2OpStatus &os);
 
     /**

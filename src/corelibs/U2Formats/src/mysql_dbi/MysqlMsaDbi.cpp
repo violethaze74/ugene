@@ -656,6 +656,35 @@ qint64 MysqlMsaDbi::getMsaLength(const U2DataId& msaId, U2OpStatus& os) {
     return res;
 }
 
+U2DataId MysqlMsaDbi::createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, U2OpStatus &os) {
+    return createMcaObject(folder, name, alphabet, 0, os);
+}
+
+U2DataId MysqlMsaDbi::createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os) {
+    MysqlTransaction t(db, os);
+    Q_UNUSED(t);
+
+    U2Mca mca;
+    mca.visualName = name;
+    mca.alphabet = alphabet;
+    mca.length = length;
+
+    // Create the object
+    dbi->getMysqlObjectDbi()->createObject(mca, folder, U2DbiObjectRank_TopLevel, os);
+    CHECK_OP(os, U2DataId());
+
+    // Create a record in the Msa table
+    static const QString queryString = "INSERT INTO Msa(object, length, alphabet, numOfRows) VALUES(:object, :length, :alphabet, :numOfRows)";
+    U2SqlQuery q(queryString, db, os);
+    q.bindDataId(":object", mca.id);
+    q.bindInt64(":length", mca.length);
+    q.bindString(":alphabet", mca.alphabet.id);
+    q.bindInt64(":numOfRows", 0); // no rows
+    q.insert();
+
+    return mca.id;
+}
+
 void MysqlMsaDbi::addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);

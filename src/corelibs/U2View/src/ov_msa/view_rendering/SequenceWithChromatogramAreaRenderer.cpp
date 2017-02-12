@@ -86,7 +86,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAli
 }
 
 void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& _visible) const {
-    const DNAChromatogram chroma = row->getChromatogram();
+    const DNAChromatogram chroma = row->getGappedChromatogram();
 
     // SANGER_TODO: should not be here
     chromaMax = 0;
@@ -103,7 +103,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const M
     CHECK(!visible.isEmpty(), );
     int w = visible.length * seqAreaWgt->getEditor()->getColumnWidth();
 
-    QByteArray seq = row->getPredictedSequenceData(); // SANGER_TODO: tmp, get only required region
+    QByteArray seq = row->getCore(); // SANGER_TODO: tmp, get only required region
 
     // SANGER_TODO:
 //    GSLV_UpdateFlags uf = view->getUpdateFlags();

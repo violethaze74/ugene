@@ -190,7 +190,6 @@ public:
 
 protected:
     virtual MultipleAlignmentRow getEmptyRow() const = 0;
-    virtual void copy(const MultipleAlignmentData &maData) = 0;
 
     /** Helper-method for adding a row to the alignment */
     void addRowPrivate(const MultipleAlignmentRow &row, qint64 rowLenWithTrailingGaps, int rowIndex);

@@ -35,13 +35,13 @@ public:
     QMap<qint64, McaRowMemoryData> getMcaRowMemoryData(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const;
 
 private:
-    QList<U2McaRow> exportRows(U2OpStatus &os, const U2DataId &mcaId) const;
-    QList<U2McaRow> exportRows(U2OpStatus &os, const U2DataId &mcaId, const QList<qint64> rowIds) const;
+    QList<U2McaRow> exportRows(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId) const;
+    QList<U2McaRow> exportRows(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const;
     QList<McaRowMemoryData> exportDataOfRows(U2OpStatus &os, const QList<U2McaRow> &rows) const;
     DNASequence exportSequence(U2OpStatus &os, const U2DataId &sequenceId) const;
     QVariantMap exportRowAdditionalInfo(U2OpStatus &os, const U2DataId &chromatogramId) const;
     QVariantMap exportAlignmentInfo(U2OpStatus &os, const U2DataId &mcaId) const;
-    U2Msa exportAlignmentObject(U2OpStatus &os, const U2DataId &mcaId) const;
+    U2Mca exportAlignmentObject(U2OpStatus &os, const U2DataId &mcaId) const;
 
     mutable DbiConnection connection;
 };

@@ -22,25 +22,32 @@
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DbiConnection.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
+#include <U2Core/McaDbiUtils.h>
+#include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/MultipleChromatogramAlignment.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/MultipleChromatogramAlignmentRow.h>
-#include <U2Core/MultipleAlignmentInfo.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2DbiUtils.h>
-#include <U2Core/U2McaDbi.h>
+#include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>
+#include <U2Core/U2ObjectRelationsDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2SequenceUtils.h>
 
 #include "MultipleChromatogramAlignmentImporter.h"
+#include "datatype/msa/MultipleAlignmentRowInfo.h"
 
 namespace U2 {
 
-MultipleChromatogramAlignmentObject * MultipleChromatogramAlignmentImporter::createAlignment(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, MultipleChromatogramAlignment &mca) {
+MultipleChromatogramAlignmentObject * MultipleChromatogramAlignmentImporter::createAlignment(U2OpStatus &os,
+                                                                                             const U2DbiRef &dbiRef,
+                                                                                             const QString &folder,
+                                                                                             MultipleChromatogramAlignment &mca) {
     DbiConnection connection(dbiRef, true, os);
     CHECK(!os.isCanceled(), NULL);
     SAFE_POINT_OP(os, NULL);
@@ -86,10 +93,10 @@ U2Mca MultipleChromatogramAlignmentImporter::importMcaObject(U2OpStatus &os, con
         dbMca.visualName = generatedName;
     }
 
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL MCA Dbi during importing an alignment"), U2Mca());
+    U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
+    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL MSA Dbi during importing an alignment"), U2Mca());
 
-    dbMca.id = mcaDbi->createMcaObject(folder, dbMca.visualName, dbMca.alphabet, dbMca.length, os);
+    dbMca.id = msaDbi->createMcaObject(folder, dbMca.visualName, dbMca.alphabet, dbMca.length, os);
     CHECK_OP(os, U2Mca());
 
     return dbMca;
@@ -131,19 +138,17 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
         mcaRowDatabaseData.chromatogram = importChromatogram(os, connection, folder, row->getChromatogram());
         CHECK_OP(os, mcaRowsDatabaseData);
 
-        mcaRowDatabaseData.predictedSequence = importSequence(os, connection, folder, row->getPredictedSequence(), alphabetId);
+        mcaRowDatabaseData.sequence = importSequence(os, connection, folder, row->getSequence(), alphabetId);
         CHECK_OP(os, mcaRowsDatabaseData);
 
-        mcaRowDatabaseData.editedSequence = importSequence(os, connection, folder, row->getEditedSequence(), alphabetId);
-        CHECK_OP(os, mcaRowsDatabaseData);
+        createRelation(os, connection, mcaRowDatabaseData.sequence, mcaRowDatabaseData.chromatogram.id);
 
         mcaRowDatabaseData.additionalInfo = row->getAdditionalInfo();
         importRowAdditionalInfo(os, connection, mcaRowDatabaseData.chromatogram, mcaRowDatabaseData.additionalInfo);
         CHECK_OP(os, mcaRowsDatabaseData);
 
-        mcaRowDatabaseData.predictedSequenceGapModel = row->getPredictedSequenceGapModel();
-        mcaRowDatabaseData.editedSequenceGapModel = row->getEditedSequenceGapModel();
-        mcaRowDatabaseData.workingAreaLength = row->getWorkingAreaLength();
+        mcaRowDatabaseData.gapModel = row->getGapModel();
+        mcaRowDatabaseData.workingArea = row->getCoreRegion();
         mcaRowDatabaseData.rowLength = row->getRowLengthWithoutTrailing();
 
         mcaRowsDatabaseData << mcaRowDatabaseData;
@@ -161,21 +166,16 @@ QList<U2McaRow> MultipleChromatogramAlignmentImporter::importRows(U2OpStatus &os
     foreach (const McaRowDatabaseData &mcaRowDatabaseData, mcaRowsDatabaseData) {
         U2McaRow row;
         row.chromatogramId = mcaRowDatabaseData.chromatogram.id;
-        row.predictedSequenceId = mcaRowDatabaseData.predictedSequence.id;
-        row.sequenceId = mcaRowDatabaseData.editedSequence.id;
-        row.predictedSequenceGaps = mcaRowDatabaseData.predictedSequenceGapModel;
-        row.gaps = mcaRowDatabaseData.editedSequenceGapModel;
-        row.gstart = 0;
-        row.gend = mcaRowDatabaseData.workingAreaLength;
+        row.sequenceId = mcaRowDatabaseData.sequence.id;
+        row.gaps = mcaRowDatabaseData.gapModel;
+        row.gstart = mcaRowDatabaseData.workingArea.startPos;
+        row.gend = mcaRowDatabaseData.workingArea.endPos();
         row.length = mcaRowDatabaseData.rowLength;
 
         rows << row;
     }
 
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL MCA Dbi during importing an alignment"), QList<U2McaRow>());
-
-    mcaDbi->addRows(dbMca.id, rows, os);
+    McaDbiUtils::addRows(os, U2EntityRef(connection.dbi->getDbiRef(), dbMca.id), rows);
     CHECK_OP(os, QList<U2McaRow>());
     return rows;
 }
@@ -220,6 +220,18 @@ void MultipleChromatogramAlignmentImporter::importRowAdditionalInfo(U2OpStatus &
     complementedAttribute.value = MultipleAlignmentRowInfo::getComplemented(additionalInfo) ? 1 : 0;
 
     connection.dbi->getAttributeDbi()->createIntegerAttribute(complementedAttribute, os);
+    CHECK_OP(os, );
+}
+
+void MultipleChromatogramAlignmentImporter::createRelation(U2OpStatus &os, const DbiConnection &connection, const U2Sequence &sequence, const U2DataId &chromatogramId) {
+    U2ObjectRelation dbRelation;
+    dbRelation.id = chromatogramId;
+    dbRelation.referencedName = sequence.visualName;
+    dbRelation.referencedObject = sequence.id;
+    dbRelation.referencedType = GObjectTypes::SEQUENCE;
+    dbRelation.relationRole = ObjectRole_Sequence;
+
+    connection.dbi->getObjectRelationsDbi()->createObjectRelation(dbRelation, os);
     CHECK_OP(os, );
 }
 

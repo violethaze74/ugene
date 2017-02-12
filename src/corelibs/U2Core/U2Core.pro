@@ -74,7 +74,6 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/dbi/U2DbiUtils.h \
            src/dbi/U2FeatureDbi.h \
            src/dbi/U2FormatCheckResult.h \
-           src/dbi/U2McaDbi.h \
            src/dbi/U2ModDbi.h \
            src/dbi/U2MsaDbi.h \
            src/dbi/U2ObjectDbi.h \
@@ -315,7 +314,6 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/dbi/U2DbiPackUtils.cpp \
            src/dbi/U2DbiRegistry.cpp \
            src/dbi/U2DbiUtils.cpp \
-           src/dbi/U2McaDbi.cpp \
            src/dbi/U2ObjectDbi.cpp \
            src/dbi/U2ObjectRelationsDbi.cpp \
            src/dbi/U2SqlHelpers.cpp \

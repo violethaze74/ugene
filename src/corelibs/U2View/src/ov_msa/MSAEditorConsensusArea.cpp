@@ -581,6 +581,7 @@ void MSAEditorConsensusArea::sl_changeConsensusAlgorithm(const QString& algoId) 
 
 QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     const DNAAlphabet* al = editor->getMaObject()->getAlphabet();
+    SAFE_POINT(NULL != al, "Alphabet is NULL", "");
     const char* suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" : "_raw";
     return SETTINGS_ROOT + "_consensus_algorithm_"+ suffix;
 }
