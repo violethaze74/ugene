@@ -50,10 +50,10 @@ public:
     bool eventFilter(QObject* obj, QEvent* ev);
 
 private slots:
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&);
+    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&){updateCoords();}
     void sl_lockStateChanged() {updateLock();}
     void sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& ){updateCoords();}
-    void sl_alphabetChanged(const MAlignmentModInfo&, const DNAAlphabet *);
+    void sl_alphabetChanged();
     void sl_findNext();
     void sl_findPrev();
     void sl_findFocus();

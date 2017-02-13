@@ -96,7 +96,7 @@ lockedIcon(":core/images/lock.png"), unlockedIcon(":core/images/lock_open.png")
     connect(mobj, SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
         SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
     connect(mobj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
-    connect(mobj, SIGNAL(si_alphabetChanged(const MAlignmentModInfo&, const DNAAlphabet *)), SLOT(sl_alphabetChanged(const MAlignmentModInfo&, const DNAAlphabet *)));
+    connect(mobj, SIGNAL(si_alphabetChanged(const MAlignmentModInfo&, const DNAAlphabet *)), SLOT(sl_alphabetChanged()));
 
     connect(prevButton, SIGNAL(clicked()), SLOT(sl_findPrev()));
     connect(nextButton, SIGNAL(clicked()), SLOT(sl_findNext()));
@@ -247,24 +247,17 @@ void MSAEditorStatusWidget::sl_findFocus() {
     searchEdit->setFocus();
 }
 
-void MSAEditorStatusWidget::sl_alignmentChanged(const MAlignment & ma, const MAlignmentModInfo & modInfo){
-     updateCoords();
-}
-
-void MSAEditorStatusWidget::sl_alphabetChanged(const MAlignmentModInfo & modInfo, const DNAAlphabet * alphabet){
+void MSAEditorStatusWidget::sl_alphabetChanged(){
     searchEdit->setValidator(NULL);
     if(validator != NULL){
         delete validator;
         validator = NULL;
     }
 
-    const DNAAlphabet* alph = aliObj->getAlphabet();
-    if(alph->isRaw()){
-        return;
-    }
-    validator = new MSASearchValidator(alph, this);
+    validator = new MSASearchValidator(aliObj->getAlphabet(), this);
     searchEdit->setValidator(validator);
 
+    //check is pattern clean required
     QString currentPattern = QString(searchEdit->text());
     int pos = 0;
     if(validator->validate(currentPattern, pos) != QValidator::Acceptable){
@@ -275,16 +268,20 @@ void MSAEditorStatusWidget::sl_alphabetChanged(const MAlignmentModInfo & modInfo
 MSASearchValidator::MSASearchValidator(const DNAAlphabet* alphabet, QObject *parent)
 : QRegExpValidator(parent)
 {
-    QByteArray alphabetChars = alphabet->getAlphabetChars(true);
-    // Gaps are not used in search model
-    alphabetChars.remove(alphabetChars.indexOf('-'), 1);
-    setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
+    if (!alphabet->isRaw()){
+        QByteArray alphabetChars = alphabet->getAlphabetChars(true);
+        //remove special characters
+        alphabetChars.remove(alphabetChars.indexOf('*'), 1);
+        alphabetChars.remove(alphabetChars.indexOf('-'), 1);
+        setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
+    }
 }
 
 QValidator::State MSASearchValidator::validate(QString &input, int &pos) const {
     input = input.simplified();
     input = input.toUpper();
     input.remove(" ");
+    input.remove("-"); // Gaps are not used in search model
     return QRegExpValidator::validate(input, pos);
 }
 

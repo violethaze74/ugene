@@ -3602,12 +3602,6 @@ GUI_TEST_CLASS_DEFINITION(test_4682) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Aligniment length 14, left offset 1, right offset 14
-    GTGlobals::sleep();
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong length");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLeftOffset(os) == 1, "Wrong left offset");
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getRightOffset(os) == 14, "Wrong right offset");
-
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
     CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
 
@@ -3631,9 +3625,6 @@ GUI_TEST_CLASS_DEFINITION(test_4682_1) {
     GTFileDialog::openFile(os, dataDir + "samples/Stockholm" , "CBS.sto");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Aligniment length 14, left offset 1, right offset 14
-    GTGlobals::sleep();
-
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
     CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
 
@@ -3648,6 +3639,48 @@ GUI_TEST_CLASS_DEFINITION(test_4682_1) {
     // Expected state: find result sequence O31698/88-139 region 25..30
     GTGlobals::sleep();
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(24, 3, 6, 1));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4682_2) {
+    // Check find from status bar
+
+    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Add AMINO.fa to ma2_gapped.aln
+    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/fasta/" , "AMINO.fa");
+    GTUtilsDialog::waitForDialog(os, ob);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<MSAE_MENU_LOAD<<"Sequence from file"));
+    GTMenu::showContextMenu(os,GTWidget::findWidget(os, "msa_editor_sequence_area"));
+
+    QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
+    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+
+    QLineEdit *searchEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "searchEdit", msaEditorStatusBar));
+    QWidget *findForward = GTWidget::findWidget(os, "Find forward", msaEditorStatusBar);
+
+    // 3. Put ' eE--F f' in text field at status bar. Click Find next button.
+    GTLineEdit::setText(os, searchEdit, " eE--F f", true);
+    CHECK_SET_ERR(searchEdit->text() == "EEFF", "Wrong search pattern, validator does not work.(EEFF)");
+
+    GTWidget::click(os, findForward);
+    // Expected state: find result sequence AMINO263 region 39..42
+    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(38, 10, 4, 1));
+
+    // 4. Undo changes
+    GTKeyboardDriver::keyClick( 'z', Qt::ControlModifier);
+    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(searchEdit->text() == "", "Search field should be cleared.");
+
+    // 5. Put '34c---t A' in text field at status bar. Click Find next button.
+    GTLineEdit::setText(os, searchEdit, "34c---t A", true);
+    CHECK_SET_ERR(searchEdit->text() == "CTA", "Wrong search pattern, validator does not work.(CTA)");
+
+    GTWidget::click(os, findForward);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4687) {
