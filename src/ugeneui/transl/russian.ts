@@ -1920,9 +1920,8 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::ProjectViewSearchBox</name>
     <message>
-        <location filename="../src/project_view/ProjectViewSearchBox.cpp" line="57"/>
         <source>Search...</source>
-        <translation>Поиск...</translation>
+        <translation type="vanished">Поиск...</translation>
     </message>
 </context>
 <context>
@@ -2067,12 +2066,12 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::SplashScreenWidget</name>
     <message>
-        <location filename="../src/main_window/SplashScreen.cpp" line="164"/>
+        <location filename="../src/main_window/SplashScreen.cpp" line="168"/>
         <source>Version </source>
         <translation>Версия </translation>
     </message>
     <message>
-        <location filename="../src/main_window/SplashScreen.cpp" line="164"/>
+        <location filename="../src/main_window/SplashScreen.cpp" line="168"/>
         <source> is loading</source>
         <translation> загружается</translation>
     </message>

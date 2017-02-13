@@ -2771,6 +2771,19 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
 </context>
 <context>
+    <name>SnpEffDatabaseDialog</name>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseDialog.ui" line="14"/>
+        <source>Select SnpEff Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseDialog.ui" line="23"/>
+        <source>Search...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SpadesSettings</name>
     <message>
         <location filename="../src/spades/SpadesSettings.ui" line="20"/>
@@ -2813,9 +2826,8 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
         <translation>Тип набора данных</translation>
     </message>
     <message>
-        <location filename="../src/spades/SpadesSettings.ui" line="112"/>
         <source>auto</source>
-        <translation>авто</translation>
+        <translation type="vanished">авто</translation>
     </message>
     <message>
         <location filename="../src/spades/SpadesSettings.ui" line="120"/>
@@ -9762,19 +9774,46 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
 </context>
 <context>
+    <name>U2::LocalWorkflow::SnpEffDatabaseDialog</name>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="47"/>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::SnpEffDatabasePropertyWidget</name>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="85"/>
+        <source>Select genome</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="115"/>
+        <source>The list of %1 genomes is not available.
+Path for %1 tool is not selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="116"/>
+        <source>Do you want to select it now?</source>
+        <translation type="unfinished">Выбрать сейчас?</translation>
+    </message>
+</context>
+<context>
     <name>U2::LocalWorkflow::SnpEffPrompter</name>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="85"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="86"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="86"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="87"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> из &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="88"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="89"/>
         <source>Annotates and filters variations %1 with SnpEff.</source>
         <translation>Аннотирует и фильтрует вариации %1 при помощи SnpEff.</translation>
     </message>
@@ -9782,143 +9821,143 @@ bowtie медленнее, когда указан режим --best.</translati
 <context>
     <name>U2::LocalWorkflow::SnpEffWorker</name>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="95"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="96"/>
         <source>SnpEff Annotation and Filtration</source>
         <translation>Аннотация и фильтрация с помощью SnpEff</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="96"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="97"/>
         <source>Annotates and filters variations with SnpEff.</source>
         <translation>этот элемент аннотирует и фильтрует вариации при помощи SnpEff.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="100"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="101"/>
         <source>Variations</source>
         <translation>Вариации</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="101"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="102"/>
         <source>Set of variations</source>
         <translation>Набор вариаций</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="102"/>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="103"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="104"/>
         <source>Annotated variations</source>
         <translation>Аннотированные вариации</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="117"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="118"/>
         <source>Output directory</source>
         <translation>Выходная директория</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="118"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="119"/>
         <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
         <translation>выберите выходную директорию. &lt;b&gt;Частная&lt;/b&gt; - укажите директорию в параметре &apos;Частная директория&apos;. &lt;b&gt;Заданная&lt;/b&gt; - внутренняя директория дизайнера. &lt;b&gt;Входной файл&lt;/b&gt; - директория входного файла.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="122"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="123"/>
         <source>Custom directory</source>
         <translation>Частная директория</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="123"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="124"/>
         <source>Select the custom output directory.</source>
         <translation>Укажите частную выходную директорию.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="125"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="126"/>
         <source>Input format</source>
         <translation>Входной формат</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="126"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="127"/>
         <source>Select the input format of variations.</source>
         <translation>выберите входной формат вариаций.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="128"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="129"/>
         <source>Output format</source>
         <translation>Выходной формат</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="129"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="130"/>
         <source>Select the format of annotated output files.</source>
         <translation>выберите формат выходных аннотированных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="131"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="132"/>
         <source>Genome</source>
         <translation>Геном</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="132"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="133"/>
         <source>Select the target genome. Genome data will be downloaded if it is not found.</source>
         <translation>выберите референсный геном. Если он не найден, данные генома будут загружены из сети Интернет.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="134"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="135"/>
         <source>Upstream/downstream length</source>
         <translation>Верхняя/нижняя длина</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="135"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="136"/>
         <source>Upstream and downstream interval size. Eliminate any upstream and downstream effect by using 0 length</source>
         <translation>верхний и нижний размеры интервала.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="137"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="138"/>
         <source>Canonical transcripts</source>
         <translation>Канонические транскрипты</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="138"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="139"/>
         <source>Use only canonical transcripts</source>
         <translation>использовать только канонические транскрипты.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="140"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="141"/>
         <source>HGVS nomenclature</source>
         <translation>Номенклатура HGVS</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="141"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="142"/>
         <source>Annotate using HGVS nomenclature</source>
         <translation>аннотировать при помощи номенклатуры HGVS.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="143"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="144"/>
         <source>Annotate Loss of function variations</source>
         <translation>Аннотировать варианты loss of function</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="144"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="145"/>
         <source>Annotate Loss of function variations (LOF) and Nonsense mediated decay (NMD)</source>
         <translation>аннотирует варианты, связанные с потерей функции (loss of function) и изменением деградации, связанной с преждевременным стоп-кодоном (NMD).</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="146"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="147"/>
         <source>Annotate TFBSs motifs</source>
         <translation>Аннотировать мотивы TFBS</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="147"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="148"/>
         <source>Annotate transcription factor binding site motifs (only available for latest GRCh37)</source>
         <translation>аннотирует сайты связывания транскрипционных факторов (опция доступна только для последней версии сборки GRCh37).</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="169"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="170"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="170"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="171"/>
         <source>Workflow</source>
         <translation>Схема</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="171"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="172"/>
         <source>Custom</source>
         <translation>Частный</translation>
     </message>
@@ -11385,36 +11424,67 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
 </context>
 <context>
+    <name>U2::SnpEffDatabaseListModel</name>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseListModel.cpp" line="97"/>
+        <source>Genome</source>
+        <translation type="unfinished">Геном</translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseListModel.cpp" line="99"/>
+        <source>Organism</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::SnpEffDatabaseListTask</name>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseListTask.cpp" line="37"/>
+        <source>SnpEff Database List task</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::SnpEffParser</name>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="59"/>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="81"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="60"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="82"/>
         <source>A problem occurred during allocating memory for running SnpEff. Check the &quot;Tasks memory limit&quot; parameter in the UGENE Application Settings.It is recommended to set this value to the available RAM on the computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="75"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="76"/>
         <source>There is not enough memory to complete the SnpEff execution.It is recommended to run SnpEff on a computer with RAM 4Gb or more.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="86"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="87"/>
         <source>Failed to download SnpEff database. Check your internet connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="92"/>
+        <source>Genome database &apos;%1&apos; is not found.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::SnpEffSupport</name>
     <message>
-        <location filename="../src/snpeff/SnpEffSupport.cpp" line="49"/>
+        <location filename="../src/snpeff/SnpEffSupport.cpp" line="53"/>
         <source>&lt;i&gt;SnpEff&lt;/i&gt;: Genetic variant annotation and effect prediction toolbox.</source>
         <translation>&lt;i&gt;SnpEff&lt;/i&gt;: инструмент генетического варианта аннотации и прогнозирования эффекта.</translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffSupport.cpp" line="98"/>
+        <source>Failed to get SnpEff database list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::SnpEffTask</name>
     <message>
-        <location filename="../src/snpeff/SnpEffTask.cpp" line="205"/>
+        <location filename="../src/snpeff/SnpEffTask.cpp" line="211"/>
         <source>SNPEff dataDir is not initialized.</source>
         <translation>SNPEff dataDir is not initialized.</translation>
     </message>

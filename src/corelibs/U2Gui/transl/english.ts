@@ -3084,6 +3084,14 @@ complement(5..15)</translation>
     </message>
 </context>
 <context>
+    <name>U2::SearchBox</name>
+    <message>
+        <location filename="../src/util/SearchBox.cpp" line="56"/>
+        <source>Search...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::SearchGenbankSequenceDialogController</name>
     <message>
         <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="49"/>

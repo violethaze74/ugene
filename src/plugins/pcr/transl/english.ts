@@ -492,27 +492,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="85"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="86"/>
         <source>Show primers details</source>
         <translation>Show primers details</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="132"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="133"/>
         <source>Find product(s)</source>
         <translation>Find product(s)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="135"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="136"/>
         <source>Warning: </source>
         <translation>Warning: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="136"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="137"/>
         <source>Find product(s) anyway</source>
         <translation>Find product(s) anyway</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="213"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="214"/>
         <source>Extract In Silico PCR products</source>
         <translation>Extract In Silico PCR products</translation>
     </message>
