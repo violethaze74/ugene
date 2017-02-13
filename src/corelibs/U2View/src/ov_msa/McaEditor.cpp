@@ -41,6 +41,10 @@
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 
+#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
+#include <U2Algorithm/MSAConsensusAlgorithm.h>
+#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+
 namespace U2 {
 
 McaEditor::McaEditor(const QString &viewName,
@@ -184,6 +188,9 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     MaEditorConsensusAreaSettings consSettings;
     consSettings.visibility[MSAEditorConsElement_HISTOGRAM] = false;
     consArea->setDrawSettings(consSettings);
+
+    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
+    consArea->setConsensusAlgorithm(algoFactory);
 
     QString name = getEditor()->referenceCtx->getSequenceObject()->getSequenceName();
     QWidget *refName = createHeaderLabelWidget(name, Qt::AlignCenter, refArea);
