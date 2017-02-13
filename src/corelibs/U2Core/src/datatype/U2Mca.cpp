@@ -36,11 +36,16 @@ U2McaRow::U2McaRow(const U2MsaRow &msaRow)
 }
 
 bool U2McaRow::hasValidChildObjectIds() const {
-    return !(chromatogramId.isEmpty() || predictedSequenceId.isEmpty() || sequenceId.isEmpty());
+    return !chromatogramId.isEmpty();
 }
 
 U2Mca::U2Mca()
-    : U2Msa()
+{
+
+}
+
+U2Mca::U2Mca(const U2Msa &dbMsa)
+    : U2Msa(dbMsa)
 {
 
 }

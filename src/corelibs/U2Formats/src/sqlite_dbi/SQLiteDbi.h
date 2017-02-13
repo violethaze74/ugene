@@ -37,7 +37,6 @@ class SQLiteAssemblyDbi;
 class SQLiteAttributeDbi;
 class SQLiteCrossDatabaseReferenceDbi;
 class SQLiteFeatureDbi;
-class SQLiteMcaDbi;
 class SQLiteModDbi;
 class SQLiteMsaDbi;
 class SQLiteObjectDbi;
@@ -107,8 +106,6 @@ public:
 
     virtual U2SequenceDbi* getSequenceDbi();
 
-    virtual U2McaDbi* getMcaDbi();
-
     virtual U2MsaDbi* getMsaDbi();
 
     virtual U2AssemblyDbi* getAssemblyDbi();
@@ -130,8 +127,6 @@ public:
     SQLiteObjectDbi* getSQLiteObjectDbi() const;
 
     SQLiteObjectRelationsDbi *getSQLiteObjectRelationsDbi() const;
-
-    SQLiteMcaDbi * getSQLiteMcaDbi() const;
 
     SQLiteMsaDbi* getSQLiteMsaDbi() const;
 
@@ -175,7 +170,6 @@ private:
     SQLiteObjectDbi*                    objectDbi;
     SQLiteObjectRelationsDbi *          objectRelationsDbi;
     SQLiteSequenceDbi*                  sequenceDbi;
-    SQLiteMcaDbi*                       mcaDbi;
     SQLiteMsaDbi*                       msaDbi;
     SQLiteAssemblyDbi*                  assemblyDbi;
     SQLiteCrossDatabaseReferenceDbi*    crossDbi;

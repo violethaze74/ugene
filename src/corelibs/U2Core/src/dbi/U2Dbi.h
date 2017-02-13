@@ -294,12 +294,6 @@ public:
     virtual U2FeatureDbi* getFeatureDbi() = 0;
 
     /**
-        U2Mca related DBI routines
-        Not NULL only if U2DbiFeature_ReadMca supported
-    */
-    virtual U2McaDbi* getMcaDbi() = 0;
-
-    /**
         U2Annotation related DBI routines
         Not NULL only if U2DbiFeature_ReadMsa supported
     */

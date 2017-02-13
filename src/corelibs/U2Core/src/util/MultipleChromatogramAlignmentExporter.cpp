@@ -21,15 +21,17 @@
 
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DatatypeSerializeUtils.h>
+#include <U2Core/McaDbiUtils.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
-#include <U2Core/U2McaDbi.h>
+#include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
 
 #include "MultipleChromatogramAlignmentExporter.h"
+#include "datatype/msa/MultipleAlignmentRowInfo.h"
 
 namespace U2 {
 
@@ -39,7 +41,7 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignmen
     CHECK_OP(os, MultipleChromatogramAlignment());
 
     // Rows and their child objects
-    QList<U2McaRow> rows = exportRows(os, mcaId);
+    QList<U2McaRow> rows = exportRows(os, dbiRef, mcaId);
     CHECK_OP(os, MultipleChromatogramAlignment());
 
     QList<McaRowMemoryData> mcaRowsMemoryData = exportDataOfRows(os, rows);
@@ -48,13 +50,7 @@ MultipleChromatogramAlignment MultipleChromatogramAlignmentExporter::getAlignmen
 
     MultipleChromatogramAlignment mca;
     for (int i = 0; i < rows.count(); ++i) {
-        mca->addRow(rows[i],
-                    mcaRowsMemoryData[i].chromatogram,
-                    mcaRowsMemoryData[i].predictedSequence,
-                    mcaRowsMemoryData[i].predictedSequenceGapModel,
-                    mcaRowsMemoryData[i].editedSequence,
-                    mcaRowsMemoryData[i].editedSequenceGapModel,
-                    mcaRowsMemoryData[i].workingArea);
+        mca->addRow(rows[i], mcaRowsMemoryData[i], os);
         mca->getMcaRow(i)->setAdditionalInfo(mcaRowsMemoryData[i].additionalInfo);
     }
 
@@ -83,7 +79,7 @@ QMap<qint64, McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowM
     connection.open(dbiRef, false, os);
     CHECK_OP(os, result);
 
-    QList<U2McaRow> rows = exportRows(os, mcaId, rowIds);
+    QList<U2McaRow> rows = exportRows(os, dbiRef, mcaId, rowIds);
     CHECK_OP(os, result);
 
     QList<McaRowMemoryData> rowsData = exportDataOfRows(os, rows);
@@ -97,19 +93,15 @@ QMap<qint64, McaRowMemoryData> MultipleChromatogramAlignmentExporter::getMcaRowM
     return result;
 }
 
-QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os, const U2DataId &mcaId) const {
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL MCA Dbi during exporting rows of an alignment"), QList<U2McaRow>());
-    return mcaDbi->getRows(mcaId, os);
+QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId) const {
+    return McaDbiUtils::getMcaRows(os, U2EntityRef(dbiRef, mcaId));
 }
 
-QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os, const U2DataId &mcaId, const QList<qint64> rowIds) const {
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi( );
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL MCA Dbi during exporting rows of an alignment"), QList<U2McaRow>());
+QList<U2McaRow> MultipleChromatogramAlignmentExporter::exportRows(U2OpStatus &os, const U2DbiRef &dbiRef, const U2DataId &mcaId, const QList<qint64> rowIds) const {
     QList<U2McaRow> result;
     foreach (qint64 rowId, rowIds) {
-        result << mcaDbi->getRow(mcaId, rowId, os);
-        SAFE_POINT_OP(os, QList<U2McaRow>());
+        result << McaDbiUtils::getMcaRow(os, U2EntityRef(dbiRef, mcaId), rowId);
+        CHECK_OP(os, QList<U2McaRow>());
     }
     return result;
 }
@@ -123,16 +115,12 @@ QList<McaRowMemoryData> MultipleChromatogramAlignmentExporter::exportDataOfRows(
         mcaRowMemoryData.chromatogram = ChromatogramUtils::exportChromatogram(os, U2EntityRef(connection.dbi->getDbiRef(), row.chromatogramId));
         CHECK_OP(os, QList<McaRowMemoryData>());
 
-        mcaRowMemoryData.predictedSequence = exportSequence(os, row.predictedSequenceId);
-        CHECK_OP(os, QList<McaRowMemoryData>());
-
-        mcaRowMemoryData.editedSequence = exportSequence(os, row.sequenceId);
+        mcaRowMemoryData.sequence = exportSequence(os, row.sequenceId);
         CHECK_OP(os, QList<McaRowMemoryData>());
 
         mcaRowMemoryData.additionalInfo = exportRowAdditionalInfo(os, row.chromatogramId);
 
-        mcaRowMemoryData.predictedSequenceGapModel = row.predictedSequenceGaps;
-        mcaRowMemoryData.editedSequenceGapModel = row.gaps;
+        mcaRowMemoryData.gapModel = row.gaps;
         mcaRowMemoryData.workingArea = U2Region(row.gstart, row.gend - row.gstart);
         mcaRowMemoryData.rowLength = row.length;
 
@@ -194,10 +182,11 @@ QVariantMap MultipleChromatogramAlignmentExporter::exportAlignmentInfo(U2OpStatu
     return info;
 }
 
-U2Msa MultipleChromatogramAlignmentExporter::exportAlignmentObject(U2OpStatus &os, const U2DataId &mcaId) const {
-    U2McaDbi *mcaDbi = connection.dbi->getMcaDbi();
-    SAFE_POINT_EXT(NULL != mcaDbi, os.setError("NULL MCA Dbi during exporting an alignment object"), U2Msa());
-    return mcaDbi->getMcaObject(mcaId, os);
+U2Mca MultipleChromatogramAlignmentExporter::exportAlignmentObject(U2OpStatus &os, const U2DataId &mcaId) const {
+    U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
+    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL MSA Dbi during exporting an alignment object"), U2Msa());
+    U2Msa dbMsa = msaDbi->getMsaObject(mcaId, os);
+    return U2Mca(dbMsa);
 }
 
 }   // namespace U2

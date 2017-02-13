@@ -37,7 +37,7 @@ namespace U2 {
 void ChromatogramUtils::append(DNAChromatogram chromatogram, const DNAChromatogram &appendedChromatogram) {
     chromatogram.traceLength += appendedChromatogram.traceLength;
     chromatogram.seqLength += appendedChromatogram.seqLength;
-    chromatogram.baseCalls += appendedChromatogram.baseCalls;
+    chromatogram.baseCalls += appendedChromatogram.baseCalls;   // TODO: recalculte appended positions
     chromatogram.A += appendedChromatogram.A;
     chromatogram.C += appendedChromatogram.C;
     chromatogram.G += appendedChromatogram.G;
@@ -100,7 +100,7 @@ void zeroEndingCrop(QVector<T> &data, int startPos, int length) {
 
 void ChromatogramUtils::crop(DNAChromatogram &chromatogram, int startPos, int length) {
     const U2Region traceRegion = sequenceRegion2TraceRegion(chromatogram, U2Region(startPos, length));
-    zeroEndingCrop(chromatogram.baseCalls, traceRegion.startPos, traceRegion.length);
+    zeroEndingCrop(chromatogram.baseCalls, startPos, length);
     if (traceRegion.startPos > 0) {
         for (int i = startPos, n = qMin(startPos + length, chromatogram.baseCalls.size()); i < n; i++) {
             chromatogram.baseCalls[i] -= chromatogram.baseCalls[startPos - 1];
@@ -109,10 +109,10 @@ void ChromatogramUtils::crop(DNAChromatogram &chromatogram, int startPos, int le
     chromatogram.traceLength = qMin(chromatogram.traceLength - traceRegion.startPos, traceRegion.length);
     chromatogram.seqLength = qMin(chromatogram.seqLength - startPos, length);
 
-    zeroEndingCrop(chromatogram.A, startPos, length);
-    zeroEndingCrop(chromatogram.C, startPos, length);
-    zeroEndingCrop(chromatogram.G, startPos, length);
-    zeroEndingCrop(chromatogram.T, startPos, length);
+    zeroEndingCrop(chromatogram.A, traceRegion.startPos, traceRegion.length);
+    zeroEndingCrop(chromatogram.C, traceRegion.startPos, traceRegion.length);
+    zeroEndingCrop(chromatogram.G, traceRegion.startPos, traceRegion.length);
+    zeroEndingCrop(chromatogram.T, traceRegion.startPos, traceRegion.length);
     zeroEndingCrop(chromatogram.prob_A, startPos, length);
     zeroEndingCrop(chromatogram.prob_C, startPos, length);
     zeroEndingCrop(chromatogram.prob_G, startPos, length);

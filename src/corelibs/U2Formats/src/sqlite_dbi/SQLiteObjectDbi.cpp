@@ -20,7 +20,6 @@
  */
 
 #include "SQLiteFeatureDbi.h"
-#include "SQLiteMcaDbi.h"
 #include "SQLiteMsaDbi.h"
 #include "SQLiteObjectDbi.h"
 #include "SQLiteUdrDbi.h"
@@ -274,8 +273,6 @@ void SQLiteObjectDbi::removeObjectSpecificData(const U2DataId &objectId, U2OpSta
             // nothing has to be done for object of these types
             break;
         case U2Type::Mca:
-            dbi->getSQLiteMcaDbi()->deleteRowsData(objectId, os);
-            break;
         case U2Type::Msa:
             dbi->getSQLiteMsaDbi()->deleteRowsData(objectId, os);
             break;
@@ -642,8 +639,9 @@ void SQLiteObjectDbi::undo(const U2DataId& objId, U2OpStatus& os) {
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
             // Call an appropriate "undo" depending on the object type
+            // TODO: remove McaModType and add ChromatogramModType
             if (U2ModType::isMcaModType(modStep.modType)) {
-                dbi->getSQLiteMcaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
+                dbi->getSQLiteMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
             } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->undo(modStep.objectId, modStep.modType, modStep.details, os);
             } else if (U2ModType::isSequenceModType(modStep.modType)) {
@@ -716,8 +714,9 @@ void SQLiteObjectDbi::redo(const U2DataId& objId, U2OpStatus& os) {
         QSet<U2DataId> objectIds;
 
         foreach (U2SingleModStep modStep, multiStepSingleSteps) {
+            // TODO: remove McaModType and add ChromatogramModType
             if (U2ModType::isMcaModType(modStep.modType)) {
-                dbi->getSQLiteMcaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
+                dbi->getSQLiteMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
             } else if (U2ModType::isMsaModType(modStep.modType)) {
                 dbi->getSQLiteMsaDbi()->redo(modStep.objectId, modStep.modType, modStep.details, os);
             } else if (U2ModType::isSequenceModType(modStep.modType)) {

@@ -30,7 +30,6 @@
 #include "MysqlCrossDatabaseReferenceDbi.h"
 #include "MysqlDbi.h"
 #include "MysqlFeatureDbi.h"
-#include "MysqlMcaDbi.h"
 #include "MysqlModDbi.h"
 #include "MysqlMsaDbi.h"
 #include "MysqlObjectDbi.h"
@@ -45,7 +44,6 @@
 #include "util/upgraders/MysqlUpgraderFrom_1_16_To_1_17.h"
 #include "util/upgraders/MysqlUpgraderFrom_1_16_To_1_24.h"
 #include "util/upgraders/MysqlUpgraderFrom_1_24_To_1_25.h"
-#include "util/upgraders/MysqlUpgraderFrom_1_24_To_1_26.h"
 
 namespace U2 {
 
@@ -60,7 +58,6 @@ MysqlDbi::MysqlDbi()
     attributeDbi =          new MysqlAttributeDbi(this);
     crossDbi =              new MysqlCrossDatabaseReferenceDbi(this);
     featureDbi =            new MysqlFeatureDbi(this);
-    mcaDbi =                new MysqlMcaDbi(this);
     modDbi =                new MysqlModDbi(this);
     msaDbi =                new MysqlMsaDbi(this);
     objectDbi =             new MysqlObjectDbi(this);
@@ -74,7 +71,6 @@ MysqlDbi::MysqlDbi()
     upgraders << new MysqlUpgraderFrom_1_16_To_1_17(this);
     upgraders << new MysqlUpgraderFrom_1_16_To_1_24(this);
     upgraders << new MysqlUpgraderFrom_1_24_To_1_25(this);
-    upgraders << new MysqlUpgraderFrom_1_24_To_1_26(this);
 }
 
 MysqlDbi::~MysqlDbi() {
@@ -84,7 +80,6 @@ MysqlDbi::~MysqlDbi() {
     delete objectDbi;
     delete msaDbi;
     delete modDbi;
-    delete mcaDbi;
     delete featureDbi;
     delete crossDbi;
     delete attributeDbi;
@@ -109,10 +104,6 @@ U2CrossDatabaseReferenceDbi* MysqlDbi::getCrossDatabaseReferenceDbi() {
 
 U2FeatureDbi* MysqlDbi::getFeatureDbi() {
     return featureDbi;
-}
-
-U2McaDbi *MysqlDbi::getMcaDbi() {
-    return mcaDbi;
 }
 
 U2ModDbi* MysqlDbi::getModDbi() {
@@ -157,10 +148,6 @@ MysqlCrossDatabaseReferenceDbi* MysqlDbi::getMysqlCrossDatabaseReferenceDbi() {
 
 MysqlFeatureDbi* MysqlDbi::getMysqlFeatureDbi() {
     return featureDbi;
-}
-
-MysqlMcaDbi *MysqlDbi::getMysqlMcaDbi() {
-    return mcaDbi;
 }
 
 MysqlModDbi* MysqlDbi::getMysqlModDbi() {
@@ -348,8 +335,6 @@ void MysqlDbi::populateDefaultSchema(U2OpStatus& os) {
     crossDbi->initSqlSchema(os);
     CHECK_DB_INIT(os);
     featureDbi->initSqlSchema(os);
-    CHECK_DB_INIT(os);
-    mcaDbi->initSqlSchema(os);
     CHECK_DB_INIT(os);
     modDbi->initSqlSchema(os);
     CHECK_DB_INIT(os);
@@ -545,7 +530,6 @@ QVariantMap MysqlDbi::shutdown(U2OpStatus& os) {
     attributeDbi->shutdown(os);
     crossDbi->shutdown(os);
     featureDbi->shutdown(os);
-    mcaDbi->shutdown(os);
     modDbi->shutdown(os);
     msaDbi->shutdown(os);
     objectDbi->shutdown(os);

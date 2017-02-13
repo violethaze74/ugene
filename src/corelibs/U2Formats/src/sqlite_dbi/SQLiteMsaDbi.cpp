@@ -194,6 +194,7 @@ void SQLiteMsaDbi::addRow(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row,
     row.rowId = getMaximumRowId(msaId, os) + 1;
     CHECK_OP(os, );
 
+    // TODO: allow core mothod to change posInMsa value to store the correct value on tracking
     addRowCore(msaId, posInMsa, row, os);
     CHECK_OP(os, );
 
@@ -733,6 +734,36 @@ qint64 SQLiteMsaDbi::getMsaLength(const U2DataId& msaId, U2OpStatus& os) {
     }
 
     return res;
+}
+
+U2DataId SQLiteMsaDbi::createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, U2OpStatus &os) {
+    return createMcaObject(folder, name, alphabet, 0, os);
+}
+
+U2DataId SQLiteMsaDbi::createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os) {
+    SQLiteTransaction t(db, os);
+    Q_UNUSED(t);
+
+    U2Mca mca;
+    mca.visualName = name;
+    mca.alphabet = alphabet;
+    mca.length = length;
+
+    // Create the object
+    dbi->getSQLiteObjectDbi()->createObject(mca, folder, U2DbiObjectRank_TopLevel, os);
+    CHECK_OP(os, U2DataId());
+
+    // Create a record in the Msa table
+    SQLiteQuery q("INSERT INTO Msa(object, length, alphabet, numOfRows) VALUES(?1, ?2, ?3, ?4)", db, os);
+    CHECK_OP(os, U2DataId());
+
+    q.bindDataId(1, mca.id);
+    q.bindInt64(2, mca.length);
+    q.bindString(3, mca.alphabet.id);
+    q.bindInt64(4, 0); // no rows
+    q.insert();
+
+    return mca.id;
 }
 
 qint64 SQLiteMsaDbi::calculateRowLength(qint64 seqLength, const QList<U2MsaGap>& gaps) {

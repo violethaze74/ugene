@@ -27,7 +27,6 @@
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
 #include <U2Core/U2DbiUtils.h>
-#include <U2Core/U2McaDbi.h>
 #include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -494,7 +493,6 @@ void MsaDbiUtils::cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 p
             }
         }
     }
-    alRow->setSequence(modifiedSeq);
 
     // Change the gap model
     QList<U2MsaGap> gapModel = alRow->getGapModel();
@@ -505,7 +503,9 @@ void MsaDbiUtils::cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 p
     if (pos > 0) {
         calculateGapModelAfterRemove(gapModel, 0, pos);
     }
-    alRow->setGapModel(gapModel);
+    U2OpStatusImpl os;
+    alRow->setRowContent(modifiedSeq, gapModel, os);
+    CHECK_OP(os, );
 }
 
 /** Returns "true" if there is a gap on position "pos" */
