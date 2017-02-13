@@ -109,9 +109,9 @@
 #include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-
 
 namespace U2 {
 
@@ -1216,6 +1216,24 @@ GUI_TEST_CLASS_DEFINITION(test_5469) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getAllSelectedItems(os).size() == 2, "Wrong number of selected annotations");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5499) {
+//    1. Open txt file (_common_data/text/text.txt).
+//    Expected state: "Select correct document format" dialog appears
+//    2. Select "Choose format manually" with the default ABIF format.
+//    3. Click Ok.
+    GTLogTracer logTracer;
+
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/text/text.txt"));
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "ABIF"));
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Open as...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the message about "not ABIF format" appears, UGENE doesn't crash.
+    GTUtilsLog::checkContainsError(os, logTracer, "Not a valid ABIF file");
+    GTGlobals::sleep();
 }
 
 } // namespace GUITest_regression_scenarios
