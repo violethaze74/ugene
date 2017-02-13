@@ -15,7 +15,7 @@ workflow "Align sequences with MUSCLE"{
     write-msa {
         type:write-msa;
         name:"Write alignment";
-        document-format:clustal;
+        document-format:CLUSTAL;
         url-out:muscle_alignment.aln;
     }
 

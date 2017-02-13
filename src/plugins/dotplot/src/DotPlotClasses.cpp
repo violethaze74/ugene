@@ -95,14 +95,13 @@ void DotPlotMiniMap::draw(QPainter &p, int shiftX, int shiftY, const QPointF &zo
 
 DotPlotResultsListener::DotPlotResultsListener() {
 
-    dotPlotList = new QList<DotPlotResults>();
+    dotPlotList = QSharedPointer< QList<DotPlotResults> >(new QList<DotPlotResults>());
     stateOk = true;
     rfTask = NULL;
 }
 
 DotPlotResultsListener::~DotPlotResultsListener() {
-
-    delete dotPlotList;
+    dotPlotList.clear();
 }
 
 void DotPlotResultsListener::setTask(Task *t) {

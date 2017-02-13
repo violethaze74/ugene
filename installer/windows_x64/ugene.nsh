@@ -136,7 +136,6 @@ SetRegView 64
     RMDir /r "$INSTDIR\plugins"
     Delete "$INSTDIR\ugene.exe"
 
-    SetOverwrite IfNewer
     !insertmacro AddExecutable ugeneui
     !insertmacro AddExecutable ugenecl
     !insertmacro AddExecutable ugenem

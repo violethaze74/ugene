@@ -50,7 +50,7 @@ AceImportDialog::AceImportDialog(const QVariantMap& _settings) :
     saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18223132");
+    new HelpButton(this, buttonBox, "19759624");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
