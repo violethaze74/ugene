@@ -49,6 +49,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/ExportConsensus/MSAExportConsensusTab.h \
            src/ov_msa/ExportConsensus/MSAExportConsensusTabFactory.h \
            src/ov_msa/ExportHighlightedDialogController.h \
+           src/ov_msa/General/MaConsensusModeWidget.h \
            src/ov_msa/General/McaGeneralTab.h \
            src/ov_msa/General/McaGeneralTabFactory.h \
            src/ov_msa/General/MSAGeneralTab.h \
@@ -212,6 +213,7 @@ FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/ov_msa/ExportConsensus/ExportConsensusWidget.ui \
          src/ov_msa/ExportHighlightedDialog.ui \
          src/ov_msa/General/GeneralTabOptionsPanelWidget.ui \
+         src/ov_msa/General/MaConsensusModeWidget.ui \
          src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui \
          src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui \
          src/ov_msa/Export/MSAExportSettings.ui \
@@ -285,6 +287,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/DeleteGapsDialog.cpp \
            src/ov_msa/Export/MSAImageExportTask.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
+           src/ov_msa/General/MaConsensusModeWidget.cpp \
            src/ov_msa/General/McaGeneralTab.cpp \
            src/ov_msa/General/McaGeneralTabFactory.cpp \
            src/ov_msa/General/MSAGeneralTab.cpp \
