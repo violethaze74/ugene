@@ -53,6 +53,10 @@ public:
     bool isChromVisible(qint64 rowId) const;
     void toggleChromVisibility(qint64 rowId);
 
+    QString getReferenceRowName() const;
+
+    char getReferenceCharAt(int pos) const;
+
 protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);
     void sl_showHideChromatograms(bool show);
@@ -67,7 +71,7 @@ protected:
     QMap<qint64, bool>  chromVisibility;
 
     U2SequenceObject*       referenceObj;
-public: // temprorary
+public: // SANGER_TODO: temprorary
     SequenceObjectContext*  referenceCtx;
 };
 

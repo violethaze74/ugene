@@ -146,7 +146,7 @@ int SequenceAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qin
         } else if (seq == refSeq || refSeqName.isEmpty()) {
             highlight = true;
         } else {
-            const char refChar = msa->charAt(refSeq, pos);
+            const char refChar = editor->getReferenceCharAt(pos);
             highlightingScheme->process(refChar, c, color, highlight, pos, seq);
         }
 

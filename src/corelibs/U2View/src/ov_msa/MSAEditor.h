@@ -141,6 +141,10 @@ public:
 
     void buildTree();
 
+    QString getReferenceRowName() const;
+
+    char getReferenceCharAt(int pos) const;
+
 protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);
 

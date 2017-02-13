@@ -44,6 +44,7 @@
 #include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 #include <U2Algorithm/MSAConsensusAlgorithm.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
 
 namespace U2 {
 
@@ -74,6 +75,9 @@ McaEditor::McaEditor(const QString &viewName,
         onObjectAdded(referenceObj);
 
         referenceCtx = new SequenceObjectContext(referenceObj, this);
+
+        // SANGER_TODO: basically sanger cannot be not nucleotide
+        saveHighlightingSettings(MsaHighlightingScheme::DISAGREEMENTS_NUCL);
     }
 }
 
@@ -113,6 +117,18 @@ bool McaEditor::isChromVisible(qint64 rowId) const {
 void McaEditor::toggleChromVisibility(qint64 rowId) {
     chromVisibility[rowId] = !chromVisibility[rowId];
     emit si_completeUpdate();
+}
+
+QString McaEditor::getReferenceRowName() const {
+    return referenceObj->getSequenceName();
+}
+
+char McaEditor::getReferenceCharAt(int pos) const {
+    U2OpStatusImpl os;
+    // SANGER_TODO: probably can be slow
+    DNASequence seq = referenceObj->getSequence(U2Region(pos, 1), os);
+    SAFE_POINT_OP(os, '\n');
+    return seq.seq[0];
 }
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
