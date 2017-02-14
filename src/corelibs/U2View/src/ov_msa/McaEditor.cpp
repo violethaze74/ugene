@@ -72,8 +72,11 @@ McaEditor::McaEditor(const QString &viewName,
     if (ref) {
         objects.append(referenceObj);
         onObjectAdded(referenceObj);
-
+        // SANGER_TODO: probably can be big
+        referenceCache = referenceObj->getWholeSequenceData(os);
         referenceCtx = new SequenceObjectContext(referenceObj, this);
+    } else {
+        FAIL("Trying to open McaEditor without a reference", );
     }
 }
 
@@ -120,11 +123,8 @@ QString McaEditor::getReferenceRowName() const {
 }
 
 char McaEditor::getReferenceCharAt(int pos) const {
-    U2OpStatusImpl os;
-    // SANGER_TODO: probably can be slow
-    DNASequence seq = referenceObj->getSequence(U2Region(pos, 1), os);
-    SAFE_POINT_OP(os, '\n');
-    return seq.seq[0];
+    SAFE_POINT(referenceCache.size() > pos, "Invalid position", '\n');
+    return referenceCache[pos];
 }
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
