@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@ Document* GFFFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const Q
     load(io, dbiRef, objects, fs, os);
 
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
-    
+
     DocumentFormatUtils::updateFormatHints(objects, fs);
     fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings();
 
@@ -216,7 +216,7 @@ static QStringList splitGffAttributes(const QString& line, char sep) {
 
 #define CHECK_OBJECT_COUNT() \
     if (objectsCountLimit > 0 && objects.size() >= objectsCountLimit) { \
-        os.setError(tr("File \"%1\" contains too many sequences to be displayed. " \
+        os.setError(GFFFormat::tr("File \"%1\" contains too many sequences to be displayed. " \
             "However, you can process these data using instruments from the menu <i>Tools -> NGS data analysis</i> " \
             "or pipelines built with Workflow Designer.").arg(io->getURL().getURLString())); \
         break; \

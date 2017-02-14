@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -459,7 +459,7 @@ void BAMUtils::createBamIndex(const GUrl &bamUrl, U2OpStatus &os) {
 GUrl BAMUtils::getBamIndexUrl(const GUrl &bamUrl) {
     CHECK(hasValidBamIndex(bamUrl), GUrl());
 
-    const QByteArray bamFileName = bamUrl.getURLString().toLocal8Bit();
+    const QByteArray bamFileName = bamUrl.getURLString().toUtf8();
     QFileInfo fileInfo(bamFileName + ".bai");
     if (!fileInfo.exists()) {
         QString shortIndexUrl = bamFileName;
@@ -770,7 +770,7 @@ KSEQ_INIT(gzFile, gzread)
 FASTQIterator::FASTQIterator(const QString &fileUrl, U2OpStatus &os)
     : seq(NULL)
 {
-    fp = gzopen(fileUrl.toLocal8Bit().constData(), "r");
+    fp = gzopen(fileUrl.toUtf8().constData(), "r");
     if (fp == NULL) {
         os.setError(QObject::tr("Can't open file with given url: %1.").arg(fileUrl));
         return;
@@ -804,7 +804,7 @@ DNASequence FASTQIterator::next(){
     return DNASequence();
 }
 
-bool FASTQIterator::hasNext(){
+bool FASTQIterator::hasNext() const{
     return seq != NULL;
 }
 

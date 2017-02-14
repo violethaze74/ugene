@@ -25,17 +25,17 @@ workflow "Variant calling and effects prediction"{
         name:"Call Variants";
         max-dep:100;
         reference-source:port;
-        variants-url:variations.vcf;
+        variants-url:variants.vcf;
     }
     files-conversion-1 {
         type:files-conversion;
         name:"To FASTA";
-        document-format:fasta;
+        document-format:FASTA;
     }
     files-conversion-2 {
         type:files-conversion;
         name:"To BAM";
-        document-format:bam;
+        document-format:BAM;
     }
     rename-chromosome-in-variation {
         type:rename-chromosome-in-variation;
@@ -393,12 +393,16 @@ workflow "Variant calling and effects prediction"{
             }
             page {
                 id:7;
-                title:"Output variations";
+                title:"Output files";
                 parameters-area {
                     group {
-                        title:"Output file";
-                        label-size:100;
+                        title:"Output variants";
+                        label-size:110;
                         call_variants.variants-url {
+                            label:"Output VCF file"
+                        }
+                        convert-snpeff-variations-to-annotations.url-out {
+                            label:"Output GenBank file"
                         }
                     }
                 }

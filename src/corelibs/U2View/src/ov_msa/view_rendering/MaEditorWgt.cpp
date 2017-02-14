@@ -85,7 +85,8 @@ QAction* MaEditorWgt::getRedoAction() const {
 void MaEditorWgt::sl_saveScreenshot(){
     MSAImageExportController controller(this);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, ExportImageDialog::NoScaling, p);
+    QString fileName = GUrlUtils::fixFileName(editor->getMSAObject()->getGObjectName());
+    QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
     dlg->exec();
 }
 

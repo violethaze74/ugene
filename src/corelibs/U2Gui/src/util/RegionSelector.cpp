@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -117,7 +117,7 @@ void RegionSelector::initLayout() {
     startEdit->setAlignment(Qt::AlignRight);
 
     endEdit = new RegionLineEdit(this, tr("Set maximum"), maxLen);
-    endEdit->setValidator(new QIntValidator(1, maxLen, startEdit));
+    endEdit->setValidator(new QIntValidator(1, maxLen, endEdit));
     endEdit->setMinimumWidth(w);
     endEdit->setAlignment(Qt::AlignRight);
 
@@ -133,6 +133,7 @@ void RegionSelector::initLayout() {
         l->addWidget(startEdit, 1, 0);
         l->addWidget(new QLabel(tr("-"), gb), 1, 1);
         l->addWidget(endEdit, 1, 2);
+        l->addWidget(new QLabel(" ", gb), 2, 0);
 
         QVBoxLayout* rootLayout = new QVBoxLayout(this);
         rootLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -165,8 +166,7 @@ void RegionSelector::initLayout() {
 //! only for empty field highlight
 void RegionLineEdit::focusOutEvent ( QFocusEvent * event) {
     bool ok = false;
-    int value = text().toInt(&ok);
-    Q_UNUSED(value);
+    text().toInt(&ok);
     if (!ok) {
         QPalette p = palette();
         p.setColor(QPalette::Base, QColor(255,200,200));//pink color

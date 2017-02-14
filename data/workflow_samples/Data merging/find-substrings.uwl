@@ -52,7 +52,7 @@ workflow "Find substrings in sequences"{
     write-sequence {
         type:write-sequence;
         name:"Write Sequence";
-        document-format:genbank;
+        document-format:Genbank;
         url-out:substrings.gb;
     }
 

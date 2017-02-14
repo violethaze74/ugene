@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -1148,7 +1148,7 @@ AddConstraintDialog::AddConstraintDialog(QueryScene* _scene, QDDistanceType _kin
                                          QDElement* defSrc, QDElement* defDst)
 : scene(_scene), kind(_kind) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220210");
+    new HelpButton(this, buttonBox, "19759342");
 
     QString title = "Add %1 Constraint";
     switch (kind)

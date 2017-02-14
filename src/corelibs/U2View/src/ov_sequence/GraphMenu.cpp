@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/DNAAlphabet.h>
 
 #include <U2Gui/GUIUtils.h>
 
@@ -113,13 +114,14 @@ const QString GraphMenuAction::ACTION_NAME("GraphMenuAction");
 /**
  * Creates a new graphs menu and adds it to toolbar
  */
-GraphMenuAction::GraphMenuAction() : ADVSequenceWidgetAction(ACTION_NAME, tr("Graphs")) {
+GraphMenuAction::GraphMenuAction(const DNAAlphabet* a) : ADVSequenceWidgetAction(ACTION_NAME, tr("Graphs")) {
     menu = new QMenu();
     this->setIcon(QIcon(":core/images/graphs.png"));
     this->setMenu(menu);
     addToBar = true;
+    
+    setVisible(a->isNucleic());
 }
-
 
 /**
  * Searches for the graphs menu for the sequence

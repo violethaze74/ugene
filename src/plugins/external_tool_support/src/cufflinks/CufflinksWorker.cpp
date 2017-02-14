@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -166,7 +166,7 @@ void CufflinksWorkerFactory::init()
         CufflinksWorker::tr("Mask file"),
         CufflinksWorker::tr("Ignore all reads that could have come from transcripts"
         " in this file. It is recommended to include any annotated rRNA, mitochondrial"
-        " transcripts other abundant transcripts you wish to ignore in your analysis"
+        " transcripts or other abundant transcripts you wish to ignore in your analysis"
         " in this file. Due to variable efficiency of mRNA enrichment methods and rRNA"
         " depletion kits, masking these transcripts often improves the overall robustness"
         " of transcript abundance estimates."));

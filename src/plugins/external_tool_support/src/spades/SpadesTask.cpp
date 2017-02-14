@@ -2,7 +2,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -101,6 +101,9 @@ void SpadesTask::prepare() {
     arguments.append("--disable-gzip-output");
 
     assemblyTask = new ExternalToolRunTask(ET_SPADES, arguments, new SpadesLogParser(), settings.outDir.getURLString());
+    if (!settings.listeners.isEmpty()) {
+        assemblyTask->addOutputListener(settings.listeners.first());
+    }
     addSubTask(assemblyTask);
 }
 
@@ -108,11 +111,11 @@ Task::ReportResult SpadesTask::report() {
     CHECK(!hasError(), ReportResult_Finished);
     CHECK(!isCanceled(), ReportResult_Finished);
 
-    QString res = settings.outDir.getURLString() + QDir::separator() + SpadesTask::CONTIGS_NAME;
+    QString res = settings.outDir.getURLString() + QDir::separator() + SpadesTask::SCAFFOLDS_NAME;
     if(!FileAndDirectoryUtils::isFileEmpty(res)){
         resultUrl = res;
     }else{
-        stateInfo.setError(QString("File %1 has not been found in output directory %2").arg(SpadesTask::CONTIGS_NAME).arg(settings.outDir.getURLString()));
+        stateInfo.setError(QString("File %1 has not been found in output directory %2").arg(SpadesTask::SCAFFOLDS_NAME).arg(settings.outDir.getURLString()));
     }
 
 

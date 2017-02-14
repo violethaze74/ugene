@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,13 +21,17 @@
 
 #include "GObjectComboBoxController.h"
 
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/GObject.h>
 
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/UnloadedObject.h>
+#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2OpStatusUtils.h>
 
 namespace U2 {
 
@@ -82,6 +86,32 @@ void GObjectComboBoxController::addDocumentObjects(Document* d) {
     if (d->isDatabaseConnection()) {
         return;
     }
+    //checks whether you need to add a new annotations table
+    QString docUrl = settings.relationFilter.ref.docUrl;
+    if(d->getURLString() == docUrl){
+        connect(d->getObjectById(settings.relationFilter.ref.entityRef.entityId), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+        bool hasAnnotationTable = false;
+        QList<GObject*> listAnnotations = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        if(listAnnotations.size() != 0){
+            foreach (GObject* obj, listAnnotations) {
+                if(obj->hasObjectRelation(settings.relationFilter)){
+                    hasAnnotationTable = true;
+                    break;
+                }
+            }
+        }
+        if ((!hasAnnotationTable) && (!d->isStateLocked())
+                && (d->getDocumentFormat()->checkFlags(DocumentFormatFlag_SupportWriting))
+                && (d->getDocumentFormat()->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE))){
+            QString virtualItemText = d->getName()+" [";
+            GObject* seqObj = d->getObjectById(settings.relationFilter.ref.entityRef.entityId);
+            virtualItemText.append(seqObj->getGObjectName() + FEATURES_TAG + "] *");
+            combo->addItem(objectIcon, virtualItemText, QVariant::fromValue<GObjectReference>(GObjectReference(seqObj)));
+
+            emit si_comboBoxChanged();
+            return;
+        }
+    }
     foreach(GObject* obj, d->getObjects()) {
         addObject(obj);
     }
@@ -97,7 +127,7 @@ void GObjectComboBoxController::removeDocumentObjects(Document* d) {
 }
 
 QString GObjectComboBoxController::itemText(GObject* o) {
-    QString res = o->getGObjectName() + " [" + o->getDocument()->getName() + "]";
+    QString res = o->getDocument()->getName() + " [" + o->getGObjectName() + "]";
     return res;
 }
 
@@ -151,6 +181,9 @@ void GObjectComboBoxController::removeObject(const GObjectReference& ref) {
     int n = findItem(combo, ref);
     if (n >= 0) {
         combo->removeItem(n);
+        if(ref.docUrl == settings.relationFilter.getDocURL()){
+            updateCombo();
+        }
         emit si_comboBoxChanged();
     }
 }
@@ -200,7 +233,8 @@ void GObjectComboBoxController::sl_onDocumentRemoved(Document* d) {
 }
 
 void GObjectComboBoxController::sl_onObjectAdded(GObject* obj) {
-    addObject(obj);
+    Q_UNUSED(obj);
+    updateCombo();
 }
 
 void GObjectComboBoxController::sl_onObjectRemoved(GObject* obj) {
@@ -223,7 +257,7 @@ void GObjectComboBoxController::sl_lockedStateChanged() {
         removeObject(obj);
     } else {
         if (findItem(combo, obj) == -1) {
-            addObject(obj);
+            updateCombo();
         }
     }
 }

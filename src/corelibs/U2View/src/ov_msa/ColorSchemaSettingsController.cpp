@@ -1,7 +1,7 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
 * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
-* http://ugene.unipro.ru
+* http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -93,7 +93,7 @@ static void setSchemaColors(const ColorSchemeData& customSchema){
 }
 
 
-const QString ColorSchemaSettingsPageController::helpPageId = QString("18220314");
+const QString ColorSchemaSettingsPageController::helpPageId = QString("19759446");
 
 ColorSchemaSettingsPageController::ColorSchemaSettingsPageController(MsaColorSchemeRegistry* mcsr, QObject* p)
 : AppSettingsGUIPageController(tr("Alignment Color Scheme"), ColorSchemaSettingsPageId, p) {

@@ -6,22 +6,22 @@
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="56"/>
         <source>The file contains features of another remote GenBank file. These features have been skipped.</source>
-        <translation type="unfinished"></translation>
+        <translation>The file contains features of another remote GenBank file. These features have been skipped.</translation>
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="57"/>
         <source>The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.</source>
-        <translation type="unfinished"></translation>
+        <translation>The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.</translation>
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="58"/>
         <source>Location parsing error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Location parsing error.</translation>
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="59"/>
         <source>The number of valid sequence characters does not coincide with the declared size in the sequence header.</source>
-        <translation type="unfinished"></translation>
+        <translation>The number of valid sequence characters does not coincide with the declared size in the sequence header.</translation>
     </message>
 </context>
 <context>
@@ -29,12 +29,12 @@
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="635"/>
         <source>Ignoring remote entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoring remote entry</translation>
     </message>
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="636"/>
         <source>Ignoring different strands in JOIN</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoring different strands in JOIN</translation>
     </message>
 </context>
 <context>
@@ -65,7 +65,12 @@
         <translation>Truncated file: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="475"/>
+        <location filename="../src/BAMUtils.cpp" line="775"/>
+        <source>Can&apos;t open file with given url: %1.</source>
+        <translation>Can&apos;t open file with given url: %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="476"/>
         <source>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</source>
         <translation>Invalid database user permissions set, so UGENE unable to use this database. Connect to your system administrator to fix the issue.</translation>
     </message>
@@ -95,7 +100,7 @@
         <translation>GTF</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="766"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="767"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Unexpected number of modified objects. Expected: 1, actual: %1</translation>
     </message>
@@ -103,9 +108,8 @@
 <context>
     <name>U2</name>
     <message>
-        <location filename="../src/GFFFormat.cpp" line="219"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
-        <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
+        <translation type="vanished">File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
 </context>
 <context>
@@ -305,13 +309,12 @@
 <context>
     <name>U2::AbstractVariationFormat</name>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="61"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="65"/>
         <source>SNP formats are used to store single-nucleotide polymorphism data</source>
         <translation>SNP formats are used to store single-nucleotide polymorphism data</translation>
     </message>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="119"/>
-        <location filename="../src/AbstractVariationFormat.cpp" line="132"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="140"/>
         <source>Line %1: There are too few columns in this line. The line was skipped.</source>
         <translation>Line %1: There are too few columns in this line. The line was skipped.</translation>
     </message>
@@ -319,12 +322,12 @@
 <context>
     <name>U2::AceImporter</name>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="161"/>
+        <location filename="../src/ace/AceImporter.cpp" line="153"/>
         <source>ACE file importer</source>
         <translation>ACE file importer</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="165"/>
+        <location filename="../src/ace/AceImporter.cpp" line="157"/>
         <source>ACE files importer is used to convert conventional ACE files into UGENE database format.Having ACE file converted into UGENE DB format you get an fast and efficient interface to your data with an option to change the content</source>
         <translation>ACE files importer is used to convert conventional ACE files into UGENE database format.Having ACE file converted into UGENE DB format you get an fast and efficient interface to your data with an option to change the content</translation>
     </message>
@@ -337,12 +340,17 @@
         <translation>ACE file import: %1</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="86"/>
+        <location filename="../src/ace/AceImporter.cpp" line="66"/>
+        <source>Dbi ref is invalid</source>
+        <translation>Dbi ref is invalid</translation>
+    </message>
+    <message>
+        <location filename="../src/ace/AceImporter.cpp" line="82"/>
         <source>Can&apos;t create a temporary database</source>
         <translation>Can&apos;t create a temporary database</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="146"/>
+        <location filename="../src/ace/AceImporter.cpp" line="139"/>
         <source>Failed to get load task for : %1</source>
         <translation>Failed to get load task for : %1</translation>
     </message>
@@ -722,6 +730,14 @@
     </message>
 </context>
 <context>
+    <name>U2::ConvertSnpeffVariationsToAnnotationsTask</name>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="49"/>
+        <source>Convert SnpEff variations to annotations task</source>
+        <translation>Convert SnpEff variations to annotations task</translation>
+    </message>
+</context>
+<context>
     <name>U2::DNAQualityIOUtils</name>
     <message>
         <location filename="../src/DNAQualityIOUtils.cpp" line="67"/>
@@ -1035,14 +1051,6 @@
         <translation>Error parsing sequence: unexpected empty line</translation>
     </message>
     <message>
-        <source>Error reading sequence: invalid sequence format</source>
-        <translation type="vanished">Error reading sequence: invalid sequence format</translation>
-    </message>
-    <message>
-        <source>Error reading sequence: memory allocation failed</source>
-        <translation type="vanished">Error reading sequence: memory allocation failed</translation>
-    </message>
-    <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="704"/>
         <source>Sequence is truncated</source>
         <translation>Sequence is truncated</translation>
@@ -1158,13 +1166,6 @@
 %1</translation>
     </message>
     <message>
-        <source>Skipped sequences: %1.
-The following sequences are empty:
-</source>
-        <translation type="obsolete">Skipped sequences: %1.
-The following sequences are empty:</translation>
-    </message>
-    <message>
         <location filename="../src/FastaFormat.cpp" line="477"/>
         <source>Unreferenced sequence in the beginning of patterns: %1</source>
         <translation>Unreferenced sequence in the beginning of patterns: %1</translation>
@@ -1196,16 +1197,12 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/FastqFormat.cpp" line="324"/>
         <source>Sequence name differs from quality scores name: %1 and %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Sequence name differs from quality scores name: %1 and %2</translation>
     </message>
     <message>
         <location filename="../src/FastqFormat.cpp" line="344"/>
         <source>Bad quality scores: inconsistent size.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Not a valid FASTQ file: %1, sequence name differs from quality scores name: %2 and %3</source>
-        <translation type="vanished">Not a valid FASTQ file: %1, sequence name differs from quality scores name: %2 and %3</translation>
+        <translation>Bad quality scores: inconsistent size.</translation>
     </message>
     <message>
         <location filename="../src/FastqFormat.cpp" line="363"/>
@@ -1221,10 +1218,6 @@ The following sequences are empty:</translation>
         <location filename="../src/FastqFormat.cpp" line="568"/>
         <source>Not a valid FASTQ file. Bad quality scores: inconsistent size.</source>
         <translation>Not a valid FASTQ file. Bad quality scores: inconsistent size.</translation>
-    </message>
-    <message>
-        <source>Not a valid FASTQ file: %1. Bad quality scores: inconsistent size.</source>
-        <translation type="vanished">Not a valid FASTQ file: %1. Bad quality scores: inconsistent size.</translation>
     </message>
 </context>
 <context>
@@ -1333,6 +1326,11 @@ The following sequences are empty:</translation>
         <translation>Parsing error: GFF version %1 is not supported</translation>
     </message>
     <message>
+        <location filename="../src/GFFFormat.cpp" line="219"/>
+        <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
+        <translation type="unfinished">File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
+    </message>
+    <message>
         <location filename="../src/GFFFormat.cpp" line="265"/>
         <source>Parsing error: file contains empty line %1, line skipped</source>
         <translation>Parsing error: file contains empty line %1, line skipped</translation>
@@ -1385,7 +1383,7 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/GFFFormat.cpp" line="494"/>
         <source>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>One or more sequences in this file don&apos;t have names. Their names are generated automatically.</translation>
     </message>
     <message>
         <location filename="../src/GFFFormat.cpp" line="613"/>
@@ -1477,10 +1475,6 @@ The following sequences are empty:</translation>
 <context>
     <name>U2::Genbank::LocationParser</name>
     <message>
-        <source>Ignoring remote entry: %1.%2</source>
-        <translation type="vanished">Ignoring remote entry: %1.%2</translation>
-    </message>
-    <message>
         <location filename="../src/GenbankLocationParser.cpp" line="359"/>
         <location filename="../src/GenbankLocationParser.cpp" line="431"/>
         <source>&apos;a single base from a range&apos; in combination with &apos;sequence span&apos; is not supported</source>
@@ -1527,7 +1521,7 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="529"/>
         <source>Wrong token after ORDER - join %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Wrong token after ORDER - join %1</translation>
     </message>
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="538"/>
@@ -1684,6 +1678,37 @@ The following sequences are empty:</translation>
         <location filename="../src/tasks/BgzipTask.cpp" line="194"/>
         <source>Decompression task was finished. A new decompressed file is: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Decompression task was finished. A new decompressed file is: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>U2::InfoPartParser</name>
+    <message>
+        <location filename="../src/util/SnpeffInfoParser.cpp" line="114"/>
+        <source>Too few values in the entry: &apos;%1&apos;. Expected at least %2 values.</source>
+        <translation>Too few values in the entry: &apos;%1&apos;. Expected at least %2 values.</translation>
+    </message>
+    <message>
+        <location filename="../src/util/SnpeffInfoParser.cpp" line="134"/>
+        <source>Too many values in the entry &apos;%1&apos;, extra entries are ignored</source>
+        <translation>Too many values in the entry &apos;%1&apos;, extra entries are ignored</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LoadConvertAndSaveSnpeffVariationsToAnnotationsTask</name>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="117"/>
+        <source>Load file and convert SnpEff variations to annotations task</source>
+        <translation>Load file and convert SnpEff variations to annotations task</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="157"/>
+        <source>&apos;%1&apos; load failed, the result document is NULL</source>
+        <translation>&apos;%1&apos; load failed, the result document is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConvertSnpeffVariationsToAnnotationsTask.cpp" line="161"/>
+        <source>File &apos;%1&apos; doesn&apos;t contain variation tracks</source>
+        <translation>File &apos;%1&apos; doesn&apos;t contain variation tracks</translation>
     </message>
 </context>
 <context>
@@ -1919,6 +1944,24 @@ The following sequences are empty:</translation>
     </message>
 </context>
 <context>
+    <name>U2::PairedFastqComparator</name>
+    <message>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="77"/>
+        <source>Too much reads without a pair (&gt;%1). Check the input data is set correctly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="125"/>
+        <source>The list doesn&apos;t contains the item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util/PairedFastqComparator.cpp" line="173"/>
+        <source>Invalid sequence info</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::PhylipFormat</name>
     <message>
         <location filename="../src/PhylipFormat.cpp" line="48"/>
@@ -2077,6 +2120,14 @@ The following sequences are empty:</translation>
     </message>
 </context>
 <context>
+    <name>U2::SnpeffInfoParser</name>
+    <message>
+        <location filename="../src/util/SnpeffInfoParser.cpp" line="48"/>
+        <source>Can&apos;t parse the next INFO part: &apos;%1&apos;</source>
+        <translation>Can&apos;t parse the next INFO part: &apos;%1&apos;</translation>
+    </message>
+</context>
+<context>
     <name>U2::StockholmFormat</name>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="451"/>
@@ -2209,50 +2260,50 @@ The following sequences are empty:</translation>
         <translation>Required attribute is not found</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="264"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="268"/>
         <source>Database url is incorrect</source>
         <translation>Database url is incorrect</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="270"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="274"/>
         <source>User login is not specified</source>
         <translation>User login is not specified</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="276"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="280"/>
         <source>Host is not specified</source>
         <translation>Host is not specified</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="282"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="286"/>
         <source>Database name is not specified</source>
         <translation>Database name is not specified</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="298"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="302"/>
         <source>Error opening MySQL database: %1</source>
         <translation>Error opening MySQL database: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="382"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="383"/>
         <source>Not a %1 MySQL database: %2, %3</source>
         <translation>Not a %1 MySQL database: %2, %3</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="388"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="273"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="389"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="275"/>
         <source>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</source>
         <translation>Warning! The database was created with a newer %1 version: %2. Not all database features may be supported! Current %1 version: %3.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="523"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="328"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="492"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="330"/>
         <source>Illegal database state: %1</source>
         <translation>Illegal database state: %1</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="554"/>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="410"/>
+        <location filename="../src/mysql_dbi/MysqlDbi.cpp" line="523"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="412"/>
         <source>Can&apos;t synchronize database state</source>
         <translation>Can&apos;t synchronize database state</translation>
     </message>
@@ -2320,8 +2371,8 @@ The following sequences are empty:</translation>
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="600"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="633"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1113"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1122"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1114"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1123"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Unexpected modification type &apos;%1&apos;</translation>
     </message>
@@ -2391,54 +2442,54 @@ The following sequences are empty:</translation>
         <translation>An error occurred during addition of a row</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="586"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="587"/>
         <source>Can&apos;t undo an operation for the object</source>
         <translation>Can&apos;t undo an operation for the object</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="649"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="650"/>
         <source>Can&apos;t redo an operation for the object</source>
         <translation>Can&apos;t redo an operation for the object</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="791"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="896"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="792"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="897"/>
         <source>Object not found</source>
         <translation>Object not found</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="845"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="846"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Folder not found: %1 (canonical: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1026"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1027"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Not an object, id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1049"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1050"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="289"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1091"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1092"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1104"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1105"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1135"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1136"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1153"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1154"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
@@ -2576,47 +2627,47 @@ The following sequences are empty:</translation>
         <translation>Packed data is empty!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="222"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="224"/>
         <source>Error checking SQLite database: %1!</source>
         <translation>Error checking SQLite database: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="235"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="237"/>
         <source>Error creating table: %1, error: %2</source>
         <translation>Error creating table: %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="267"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="269"/>
         <source>Not a %1 SQLite database: %2</source>
         <translation>Not a %1 SQLite database: %2</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="324"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="326"/>
         <source>Database is already opened!</source>
         <translation>Database is already opened!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="334"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="336"/>
         <source>URL is not specified</source>
         <translation>URL is not specified</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="348"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="350"/>
         <source>Error opening SQLite database: %1!</source>
         <translation>Error opening SQLite database: %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="400"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="402"/>
         <source>Database is already closed!</source>
         <translation>Database is already closed!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="404"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="406"/>
         <source>Illegal database state %1!</source>
         <translation>Illegal database state %1!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="429"/>
+        <location filename="../src/sqlite_dbi/SQLiteDbi.cpp" line="431"/>
         <source>Failed to close database: %1, err: %2</source>
         <translation>Failed to close database: %1, err: %2</translation>
     </message>
@@ -2665,7 +2716,7 @@ The following sequences are empty:</translation>
         <translation>Object not found!</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="803"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="804"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="918"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
         <source>Object not found.</source>

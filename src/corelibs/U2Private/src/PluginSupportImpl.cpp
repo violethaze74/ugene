@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -451,10 +451,19 @@ void AddPluginTask::prepare() {
     SAFE_POINT(settings != NULL, tr("Settings is NULL"), );
     QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
 
-    PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
-    if (verify_func && !verificationMode && (checkVersion != Version::appVersion().text || forceVerification)) {
-        verifyTask = new VerifyPluginTask(ps, desc);
-        addSubTask(verifyTask);
+    bool verificationIsEnabled = true;
+#ifdef Q_OS_MAC
+    if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
+        verificationIsEnabled = false;
+    }
+#endif
+
+    if (verificationIsEnabled) {
+        PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
+        if (verify_func && !verificationMode && (checkVersion != Version::appVersion().text || forceVerification)) {
+            verifyTask = new VerifyPluginTask(ps, desc);
+            addSubTask(verifyTask);
+        }
     }
 }
 

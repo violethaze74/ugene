@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,13 +46,15 @@ public:
 
     ExportImageDialog(QWidget* screenShotWidget,
                       InvokedFrom invoSource,
+                      const QString& file,
                       ImageScalingPolicy scalingPolicy = NoScaling,
-                      QWidget* parent = NULL, const QString& file = QString("untitled"));
+                      QWidget* parent = NULL);
 
     ExportImageDialog(ImageExportController *factory,
                       InvokedFrom invoSource,
+                      const QString& file,
                       ImageScalingPolicy scalingPolicy = NoScaling,
-                      QWidget* parent = NULL, const QString& file = QString("untitled"));
+                      QWidget* parent = NULL);
 
     ~ExportImageDialog();
 

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ FindTandemsDialog::FindTandemsDialog(ADVSequenceObjectContext* _sc)
 {
     sc = _sc;
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220524");
+    new HelpButton(this, buttonBox, "19759656");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -214,6 +214,7 @@ void FindTandemsDialog::accept() {
 
     FindTandemsTaskSettings settings;
     const CreateAnnotationModel& cam = ac->getModel();
+    sc->getAnnotatedDNAView()->tryAddObject(ac->getModel().getAnnotationObject());
     settings.minPeriod = minPeriod;
     settings.maxPeriod = maxPeriod;
     settings.algo = (TSConstants::TSAlgo)algoComboBox->currentIndex();

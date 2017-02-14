@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,6 +37,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
@@ -219,11 +220,10 @@ void CircularViewSplitter::sl_export() {
 
     CircularViewImageExportController factory(circularViewList, cvInFocus);
 
+    QString fileName = GUrlUtils::fixFileName(seqObj->getSequenceName());
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::CircularView,
-                                                                      ExportImageDialog::SupportScaling,
-                                                                      p,
-                                                                      "circular_" + seqObj->getSequenceName());
+                                                                      fileName, ExportImageDialog::SupportScaling, p);
     dialog->exec();
     CHECK(!dialog.isNull(), );
 }

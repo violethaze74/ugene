@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -110,6 +110,7 @@ GUI_TEST_CLASS_DECLARATION(test_3308)
 GUI_TEST_CLASS_DECLARATION(test_3312)
 GUI_TEST_CLASS_DECLARATION(test_3313)
 GUI_TEST_CLASS_DECLARATION(test_3318)
+GUI_TEST_CLASS_DECLARATION(test_3319)
 GUI_TEST_CLASS_DECLARATION(test_3321)
 GUI_TEST_CLASS_DECLARATION(test_3328)//should be launched in other thread but crashes
 GUI_TEST_CLASS_DECLARATION(test_3332)

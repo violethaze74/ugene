@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #define _U2_TABULATED_FORMAT_READER_H_
 
 #include <QObject>
+#include <QStringList>
 
 namespace U2 {
 
@@ -30,6 +31,7 @@ class IOAdapter;
 class U2OpStatus;
 
 class TabulatedFormatReader : public QObject {
+    Q_OBJECT
 public:
     TabulatedFormatReader(U2OpStatus &os, IOAdapter *ioAdapter);
 

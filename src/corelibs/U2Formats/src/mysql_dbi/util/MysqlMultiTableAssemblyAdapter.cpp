@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -335,10 +335,10 @@ void MysqlMultiTableAssemblyAdapter::pack(U2AssemblyPackStat& stat, U2OpStatus& 
     flushTables(os);
 }
 
-void MysqlMultiTableAssemblyAdapter::calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& c, U2OpStatus& os) {
+void MysqlMultiTableAssemblyAdapter::calculateCoverage(const U2Region& region, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     for (int i = 0; i < adapters.size(); ++i) {
         MysqlMtaSingleTableAdapter * a = adapters.at(i);
-        a->singleTableAdapter->calculateCoverage(region, c, os);
+        a->singleTableAdapter->calculateCoverage(region, coverage, os);
         CHECK_OP(os, );
 
         os.setProgress((double(i + 1) / adapters.size()) * 100);

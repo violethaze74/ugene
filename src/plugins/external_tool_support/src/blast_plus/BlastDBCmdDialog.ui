@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>537</width>
-    <height>279</height>
+    <width>463</width>
+    <height>214</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>537</width>
-    <height>279</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -23,114 +29,145 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Fetch Sequence from BLAST Database</string>
+   <string>Fetch Sequences from BLAST Database</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QGridLayout" name="gridLayout">
    <property name="sizeConstraint">
     <enum>QLayout::SetMinAndMaxSize</enum>
    </property>
-   <item>
-    <widget class="QGroupBox" name="inputData">
+   <property name="spacing">
+    <number>9</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string/>
+      <string>Query ID</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="sizeConstraint">
        <enum>QLayout::SetMinAndMaxSize</enum>
       </property>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Entery query ID:</string>
-        </property>
-       </widget>
-      </item>
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
       <item>
        <widget class="QLineEdit" name="queryIdEdit"/>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Output path</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinAndMaxSize</enum>
+      </property>
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
       <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Select database :</string>
+       <widget class="QLineEdit" name="outputPathLineEdit">
+        <property name="readOnly">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="dbSelectorWidget" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_10">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QToolButton" name="browseOutputButton">
         <property name="text">
-         <string>Output path:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLineEdit" name="outputPathLineEdit">
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="browseOutputButton">
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="addToProjectBox">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Add to project</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>...</string>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="dbSelectorWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>538</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Select database</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_10">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinAndMaxSize</enum>
+      </property>
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
+   <item row="3" column="0">
+    <widget class="QCheckBox" name="addToProjectBox">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Add to project</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
+  <zorder>buttonBox</zorder>
+  <zorder>dbSelectorWidget</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>addToProjectBox</zorder>
+  <zorder>groupBox</zorder>
  </widget>
  <resources/>
  <connections>

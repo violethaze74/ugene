@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,8 +39,14 @@ namespace U2 {
 const int AddSequenceObjectsToAlignmentTask::maxErrorListSize = 5;
 
 AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QList<DNASequence>& seqList)
-    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC)), seqList(seqList), maObj(obj), 
-    stateLock(NULL), msaAlphabet(maObj->getAlphabet()), dbi(NULL), modStep(NULL) {
+    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC)),
+      seqList(seqList),
+      maObj(obj),
+      stateLock(NULL),
+      msaAlphabet(maObj->getAlphabet()),
+      dbi(NULL),
+      modStep(NULL)
+{
     entityRef = maObj->getEntityRef();
 }
 

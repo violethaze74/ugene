@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -579,10 +579,9 @@ void ExportProjectViewItemsContoller::sl_exportAnnotations() {
     GObject* obj = set.first();
     AnnotationTableObject *aObj = qobject_cast<AnnotationTableObject *>(obj);
     SAFE_POINT(NULL != aObj, "Invalid annotation table detected!", );
-    QList<Annotation *> annotations = aObj->getAnnotations();
-    if (!annotations.isEmpty()) {
+    if (!aObj->getAnnotations().isEmpty()) {
         SAFE_POINT(NULL != aObj->getDocument(), "Invalid document detected!", );
-        ExportObjectUtils::exportAnnotations(annotations, aObj->getDocument()->getURL());
+        ExportObjectUtils::exportAnnotations(aObj, aObj->getDocument()->getURL());
         return;
     }
     QMessageBox::warning(QApplication::activeWindow(), exportAnnotations2CSV->text(), tr(NO_ANNOTATIONS_MESSAGE));

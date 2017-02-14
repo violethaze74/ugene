@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,8 +31,7 @@ namespace U2 {
 
 const QString MSAHighlightingFactory::GROUP_ID = "OP_MSA_HIGHLIGHTING";
 const QString MSAHighlightingFactory::GROUP_ICON_STR = ":core/images/highlight.png";
-const QString MSAHighlightingFactory::GROUP_TITLE = QString(QObject::tr("Highlighting"));
-const QString MSAHighlightingFactory::GROUP_DOC_PAGE = "18220418";
+const QString MSAHighlightingFactory::GROUP_DOC_PAGE = "19759550";
 
 MSAHighlightingFactory::MSAHighlightingFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
@@ -53,7 +52,7 @@ QWidget * MSAHighlightingFactory::createWidget(GObjectView* objView) {
 }
 
 OPGroupParameters MSAHighlightingFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), GROUP_TITLE, GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Highlighting"), GROUP_DOC_PAGE);
 }
 
 } // namespace

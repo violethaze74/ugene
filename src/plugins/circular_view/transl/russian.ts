@@ -118,7 +118,7 @@
         <translation>Включить выделение</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="33"/>
+        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="57"/>
         <source>Circular View Settings</source>
         <translation>Настройки кругового вида</translation>
     </message>
@@ -264,36 +264,40 @@
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="65"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="113"/>
         <source>Inside</source>
         <translation>Внутри</translation>
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="68"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="115"/>
         <source>Outside</source>
         <translation>Снаружи</translation>
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="71"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="120"/>
         <source>Inside/Outside</source>
         <translation>Внутри/Снаружи</translation>
     </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="74"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="117"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="111"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="130"/>
         <source>Title</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="114"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="133"/>
         <source>Ruler</source>
         <translation>Шкала</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="117"/>
+        <location filename="../src/CircularViewSettingsWidget.cpp" line="136"/>
         <source>Annotations</source>
         <translation>Аннотации</translation>
     </message>
@@ -301,12 +305,12 @@
 <context>
     <name>U2::CircularViewSettingsWidgetFactory</name>
     <message>
-        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="38"/>
+        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="37"/>
         <source>Circular view context is NULL</source>
         <translation>Circular view context is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="43"/>
+        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="42"/>
         <source>Object view is NULL</source>
         <translation>Object view is NULL</translation>
     </message>
@@ -314,57 +318,57 @@
 <context>
     <name>U2::CircularViewSplitter</name>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="56"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="58"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="57"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="59"/>
         <source>Zoom In</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="61"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="63"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="62"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="64"/>
         <source>Zoom Out</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="65"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="67"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="66"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="68"/>
         <source>Fit To Full View</source>
         <translation>Полный размер</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="69"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="71"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="70"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="72"/>
         <source>Save circular view as image</source>
         <translation>Сохранить круговой вид как изображение</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="73"/>
-        <location filename="../src/CircularViewSplitter.cpp" line="75"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="74"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="76"/>
         <source>Show/hide restriction sites map</source>
         <translation>Показать/скрыть карту сайтов рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="165"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="166"/>
         <source>Circular View is NULL</source>
         <translation>Circular View is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="167"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="168"/>
         <source>Circular View viewport is NULL</source>
         <translation>Circular View viewport is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="169"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="170"/>
         <source>Scroll area is NULL</source>
         <translation>Scroll area is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="216"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="217"/>
         <source>Sequence context is NULL</source>
         <translation>Sequence context is NULL</translation>
     </message>
     <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="218"/>
+        <location filename="../src/CircularViewSplitter.cpp" line="219"/>
         <source>Sequence obejct is NULL</source>
         <translation>Sequence obejct is NULL</translation>
     </message>

@@ -39,39 +39,39 @@
 <context>
     <name>U2::AddPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="419"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="408"/>
         <source>Add plugin task: %1</source>
         <translation>Загрузка внешнего модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="434"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="423"/>
         <source>Plugin is already loaded: %1</source>
         <translation>Модуль уже загружен: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="442"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="431"/>
         <source>Plugin %1 depends on %2 which is not loaded</source>
         <translation>Модуль %1 зависит от модуля %2, который не был загружен</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="446"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="435"/>
         <source>Plugin %1 depends on %2 which is available, but the version is too old</source>
         <translation>Модуль %1 зависит от модуля %2, который доступен, но версия которого устарела</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="457"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="446"/>
         <source>Plugin loading error: %1, Error string %2</source>
         <translation>Ошибка загрузки модуля: %1, строка %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="462"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="451"/>
         <source>Settings is NULL</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings is NULL</translation>
     </message>
     <message>
         <location filename="../src/PluginSupportImpl.cpp" line="490"/>
         <source>Plugin loading error: %1. Verification failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin loading error: %1. Verification failed.</translation>
     </message>
     <message>
         <location filename="../src/PluginSupportImpl.cpp" line="513"/>
@@ -211,7 +211,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::LoadAllPluginsTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="83"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="82"/>
         <source>Loading start up plugins</source>
         <translation>Загрузка подключаемых модулей</translation>
     </message>
@@ -220,12 +220,12 @@ By default, loglevel=&quot;ERROR&quot;.</source>
         <translation type="vanished">Problem occurred loading the OpenCL driver. Please try to update drivers if                                    you&apos;re going to make calculations on your video card. For details see this page:                                    &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="115"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="114"/>
         <source>File not found: %1</source>
         <translation>Не найден внешний модуль: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="120"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="119"/>
         <source>Invalid file format: %1</source>
         <translation>Некорректный файл библиотеки: %1</translation>
     </message>
@@ -256,47 +256,47 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::PluginDescriptorHelper</name>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="109"/>
-        <location filename="../src/PluginDescriptor.cpp" line="115"/>
-        <location filename="../src/PluginDescriptor.cpp" line="121"/>
-        <location filename="../src/PluginDescriptor.cpp" line="127"/>
+        <location filename="../src/PluginDescriptor.cpp" line="110"/>
+        <location filename="../src/PluginDescriptor.cpp" line="116"/>
+        <location filename="../src/PluginDescriptor.cpp" line="122"/>
+        <location filename="../src/PluginDescriptor.cpp" line="128"/>
         <source>Required attribute not found %1</source>
         <translation>Required attribute not found %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="138"/>
-        <location filename="../src/PluginDescriptor.cpp" line="149"/>
-        <location filename="../src/PluginDescriptor.cpp" line="155"/>
+        <location filename="../src/PluginDescriptor.cpp" line="139"/>
+        <location filename="../src/PluginDescriptor.cpp" line="150"/>
+        <location filename="../src/PluginDescriptor.cpp" line="156"/>
         <source>Required element not found %1</source>
         <translation>Required element not found %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="162"/>
+        <location filename="../src/PluginDescriptor.cpp" line="163"/>
         <source>Not valid value: &apos;%1&apos;, plugin: %2</source>
         <translation>Not valid value: &apos;%1&apos;, plugin: %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="170"/>
+        <location filename="../src/PluginDescriptor.cpp" line="171"/>
         <source>Platform arch is unknown: %1</source>
         <translation>Platform arch is unknown: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="177"/>
+        <location filename="../src/PluginDescriptor.cpp" line="178"/>
         <source>Platform bits is unknown: %1</source>
         <translation>Platform bits is unknown: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="196"/>
+        <location filename="../src/PluginDescriptor.cpp" line="197"/>
         <source>Invalid depends token: %1</source>
         <translation>Invalid depends token: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="256"/>
+        <location filename="../src/PluginDescriptor.cpp" line="257"/>
         <source>Plugin circular dependency detected: %1 &lt;-&gt; %2</source>
         <translation>Обнаружен модуль циркулярной зависимости: %1 &lt;-&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="340"/>
+        <location filename="../src/PluginDescriptor.cpp" line="341"/>
         <source>Can&apos;t satisfy dependencies for %1 !</source>
         <translation>Can&apos;t satisfy dependencies for %1 !</translation>
     </message>
@@ -358,7 +358,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="118"/>
         <source>There is not enough memory to finish the task.</source>
-        <translation type="unfinished"></translation>
+        <translation>There is not enough memory to finish the task.</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="140"/>

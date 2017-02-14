@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 #define _U2_SPADES_SETTINGS_WIDGET_H_
 
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
-
+#include <U2Gui/U2SavableWidget.h>
 #include <U2View/DnaAssemblyGUIExtension.h>
 
 #include "ui_SpadesSettings.h"
@@ -31,7 +31,7 @@
 namespace U2 {
 
 
-class SpadesSettingsWidget : public GenomeAssemblyAlgorithmMainWidget, Ui_SpadesSettings {
+class SpadesSettingsWidget : public GenomeAssemblyAlgorithmMainWidget, Ui_SpadesSettings, U2SavableWidget {
     Q_OBJECT
 public:
     SpadesSettingsWidget(QWidget *parent);

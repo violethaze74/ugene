@@ -20,5 +20,5 @@ add_library(U2View SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2View
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Svg Qt5::WebKit Qt5::WebKitWidgets Qt5::PrintSupport
-        U2Core U2Algorithm U2Formats U2Remote U2Lang U2Gui)
+        U2Core U2Algorithm U2Formats U2Lang U2Gui)
 

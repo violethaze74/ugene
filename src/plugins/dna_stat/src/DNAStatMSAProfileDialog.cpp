@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,16 +38,17 @@
 
 namespace U2 {
 
-const QString DNAStatMSAProfileDialog::HTML = "html";
-const QString DNAStatMSAProfileDialog::CSV = "csv";
+const QString DNAStatMSAProfileDialog::HTML = "HTML";
+const QString DNAStatMSAProfileDialog::CSV = "CSV";
 
 DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MSAEditor* _c)
     : QDialog(p),
       ctx(_c),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220457");
-
+    new HelpButton(this, buttonBox, "19759589");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     initSaveController();
 }
 

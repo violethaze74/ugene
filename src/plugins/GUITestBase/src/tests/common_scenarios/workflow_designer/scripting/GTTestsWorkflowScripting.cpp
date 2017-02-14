@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -147,8 +147,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Read Sequence"));
     GTMouseDriver::click();
 
-    QString dirPath = dataDir + "samples/FASTA/";
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dirPath, "human_T1.fa" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dataDir + "samples/FASTA/human_T1.fa" );
     GTWidget::click( os,GTAction::button( os,"Run workflow" ) );
     GTGlobals::sleep( 200 );
 

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -101,8 +101,6 @@ void QDGroupsEditor::mousePressEvent( QMouseEvent *event ) {
     QTreeWidget::mousePressEvent(event);
 }
 
-static const QString MSGBOX_TITLE = QObject::tr("Query Designer");
-
 void QDGroupsEditor::sl_addGroup() {
     QDScheme* scheme = view->getScheme();
     bool ok;
@@ -111,11 +109,11 @@ void QDGroupsEditor::sl_addGroup() {
         return;
     }
     if (scheme->getActorGroups().contains(text)) {
-        QMessageBox::critical(NULL, MSGBOX_TITLE, tr("Group '%1' already exists!").arg(text));
+        QMessageBox::critical(NULL, QObject::tr("Query Designer"), tr("Group '%1' already exists!").arg(text));
         return;
     }
     if (!scheme->validateGroupName(text)) {
-        QMessageBox::critical(NULL, MSGBOX_TITLE, tr("Invalid group name!"));
+        QMessageBox::critical(NULL, QObject::tr("Query Designer"), tr("Invalid group name!"));
         return;
     }
     scheme->createActorGroup(text);
@@ -154,7 +152,7 @@ void QDGroupsEditor::sl_addActor() {
     assert(sel);
 
     if (!scheme->getActorGroup(sel).isEmpty()) {
-        QMessageBox::critical(this, MSGBOX_TITLE, tr("Actor is already in group!"));
+        QMessageBox::critical(this, QObject::tr("Query Designer"), tr("Actor is already in group!"));
         return;
     }
     scheme->addActorToGroup(sel, group);

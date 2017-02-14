@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,6 +31,7 @@ namespace U2 {
 class SaveAlignmentTask;
 
 class HmmerBuildTask : public ExternalToolRunTask {
+    Q_OBJECT
 public:
     HmmerBuildTask(const HmmerBuildSettings &settings, const QString &stockholmMsaUrl);
 

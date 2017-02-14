@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,6 +28,7 @@
 #include <QtGui/QPushButton>
 #else
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QHeaderView>
 #endif
 
 
@@ -35,9 +36,9 @@ namespace U2 {
 namespace Workflow {
 
 SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( const Schema & schema, QWidget * p )
-: QDialog(p), procNameMaxSz(0) {
+: QDialog(p) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220713");
+    new HelpButton(this, buttonBox, "19759845");
 
     QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
     QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -62,7 +63,6 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( cons
         procsListWidget->insertItem( pos, item );
         procListMap.insert( pos, actor->getId() );
         int pointSz = item->font().pointSize();
-        procNameMaxSz = qMax(pointSz * actor->getLabel().size(), procNameMaxSz);
     }
 
     connect( procsListWidget, SIGNAL(currentRowChanged( int )), SLOT(sl_procSelected( int )) );
@@ -155,16 +155,10 @@ void SchemaAliasesConfigurationDialogImpl::sl_procSelected( int row ) {
 
         QTableWidgetItem * helpItem = new QTableWidgetItem(model.help.value(currentActor).value(it.key()));
         paramAliasesTableWidget->setItem(rowInd, 2, helpItem);
+        paramAliasesTableWidget->horizontalHeader()->setStretchLastSection(true);        
 
         rowInd++;
         ++it;
-    }
-    paramAliasesTableWidget->resizeColumnToContents(0);
-    if(procNameMaxSz > 0 && procNameMaxSz < splitter->width()) {
-        QList<int> szs;
-        szs << procNameMaxSz;
-        szs << splitter->width() - procNameMaxSz;
-        splitter->setSizes(szs);
     }
 }
 

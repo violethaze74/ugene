@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +24,8 @@
 
 #include <ui_DotPlotFilterDialog.h>
 
+#include <QDialog>
+
 namespace U2 {
 
 class ADVSequenceObjectContext;
@@ -39,7 +41,7 @@ enum FilterIntersectionParameter{
     Both
 };
 
-class DotPlotFilterDialog : public QDialog, public Ui_DotPlotFilterDialog{
+class DotPlotFilterDialog : public QDialog, public Ui_DotPlotFilterDialog {
     Q_OBJECT
 public:
     DotPlotFilterDialog(QWidget *parent, ADVSequenceObjectContext *sequenceX, ADVSequenceObjectContext *sequenceY);

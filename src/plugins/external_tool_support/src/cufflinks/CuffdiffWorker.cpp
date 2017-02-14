@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -91,7 +91,7 @@ void CuffdiffWorkerFactory::init()
     // Description of the element
     Descriptor cuffdiffDescriptor(ACTOR_ID,
         CuffdiffWorker::tr("Test for Diff. Expression with Cuffdiff"),
-        "Cuffdiff takes a transcript file as input, along with two or"
+        CuffdiffWorker::tr("Cuffdiff takes a transcript file as input, along with two or"
         " more fragment alignments (e.g. in SAM format) for two or more samples."
         " It produces a number of output files that contain"
         " test results for changes in expression at the level of transcripts,"
@@ -100,7 +100,7 @@ void CuffdiffWorkerFactory::init()
         " start site, and in the relative abundances of the primary transcripts"
         " of each gene. Tracking the former allows one to see changes in splicing,"
         " and the latter lets one see changes in relative promoter use within"
-        " a gene.");
+        " a gene."));
 
     { // Define parameters of the element
         Descriptor outDir(OUT_DIR,
@@ -150,7 +150,7 @@ void CuffdiffWorkerFactory::init()
             CuffdiffWorker::tr("Mask file"),
             CuffdiffWorker::tr("Ignore all reads that could have come from transcripts"
             " in this file. It is recommended to include any annotated rRNA, mitochondrial"
-            " transcripts other abundant transcripts you wish to ignore in your analysis"
+            " transcripts or other abundant transcripts you wish to ignore in your analysis"
             " in this file. Due to variable efficiency of mRNA enrichment methods and"
             " rRNA depletion kits, masking these transcripts often improves the overall"
             " robustness of transcript abundance estimates."));

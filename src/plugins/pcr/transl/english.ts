@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="153"/>
         <source>Extract annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Extract annotations</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="174"/>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="46"/>
         <source>The sequence has an unsupported alphabet: only nucleotide alphabet is supported</source>
-        <translation type="unfinished"></translation>
+        <translation>The sequence has an unsupported alphabet: only nucleotide alphabet is supported</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="47"/>
@@ -492,27 +492,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="85"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="86"/>
         <source>Show primers details</source>
         <translation>Show primers details</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="132"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="133"/>
         <source>Find product(s)</source>
         <translation>Find product(s)</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="135"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="136"/>
         <source>Warning: </source>
         <translation>Warning: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="136"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="137"/>
         <source>Find product(s) anyway</source>
         <translation>Find product(s) anyway</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="213"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="214"/>
         <source>Extract In Silico PCR products</source>
         <translation>Extract In Silico PCR products</translation>
     </message>
@@ -753,7 +753,7 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="99"/>
         <source>Extract annotations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Extract annotations</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="99"/>

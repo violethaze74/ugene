@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -84,10 +84,6 @@ private:
     virtual void addTopLevelItems(const QList<QTreeWidgetItem*>& items) { QTreeWidget::addTopLevelItems(items); }
     virtual void insertTopLevelItem(int index, QTreeWidgetItem* item) { QTreeWidget::insertTopLevelItem(index, item); }
     virtual void insertTopLevelItems(int index,  const QList<QTreeWidgetItem *>& items) { QTreeWidget::insertTopLevelItems(index, items); }
-
-    /** Columns names */
-    static const QString HEADER_ANNOT_NAMES;
-    static const QString HEADER_COLORS;
 
     /** Size of the tree elements */
     static const int ANNOT_COLUMN_WIDTH;

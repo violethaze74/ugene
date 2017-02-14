@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -66,6 +66,8 @@ public:
     static bool runWebBrowser(const QString& url);
 
     static void setWidgetWarning(QWidget *widget, bool value);
+
+    static void showMessage(QWidget *widgetToPaintOn, QPainter& painter, const QString& message);
 };
 
 } //namespace

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -358,7 +358,7 @@ private:
 
 CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype* proto): QDialog(p), editing(false) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220701");
+    new HelpButton(this, buttonBox, "19759833");
 
     inputList->setModel(new CfgListModel());
     inputList->setItemDelegate(new ProxyDelegate());

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -648,6 +648,24 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     QLineEdit *primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
     CHECK_SET_ERR(primerEdit != NULL, "Cannot find primer line edit");
     CHECK_SET_ERR(primerEdit->text().isEmpty(), "There are unexpected characters in PrimerLineEdit");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0017) {
+    // Reverse-complement for the extended DNA alphabet
+    // 1. Open the PCT OP
+    // 2. Enter primer with whitespaces 
+    // Expected state: whitespaces removed successfuly
+    GTUtilsPcr::clearPcrDir(os);
+
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    QLineEdit *primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTWidget::findWidget(os, "forwardPrimerBox")));
+    GTLineEdit::setText(os, primerEdit, "AC\r\nCCTG   GAGAG\nCATCG\tAT", true, true);
+
+    CHECK_SET_ERR(primerEdit->text() == "ACCCTGGAGAGCATCGAT", "Incorrect whitespaces removing");
 }
 
 } // GUITest_common_scenarios_in_silico_pcr

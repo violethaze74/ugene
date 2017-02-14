@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +26,8 @@
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/Settings.h>
+
+#include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
@@ -94,21 +96,20 @@ void MaGraphOverview::paintEvent(QPaintEvent *e) {
 
     QPainter p(this);
     if (!isValid()) {
-        showWarning(p, e, tr("Multiple sequence alignment is too big. Overview is unavailable."));
+        GUIUtils::showMessage(this, p, tr("Multiple sequence alignment is too big. Overview is unavailable."));
+        QWidget::paintEvent(e);
         return;
     }
     if (isBlocked) {
-        p.fillRect(cachedView.rect(), Qt::gray);
-        p.drawText(cachedView.rect(), Qt::AlignCenter, tr("Waiting..."));
+        GUIUtils::showMessage(this, p, tr("Waiting..."));
         QWidget::paintEvent(e);
         return;
     }
 
     if (!graphCalculationTaskRunner.isIdle()) {
-        cachedConsensus = QPixmap(size());
-        QPainter pConsensus(&cachedConsensus);
-        pConsensus.fillRect(cachedConsensus.rect(), Qt::gray);
-        pConsensus.drawText(cachedConsensus.rect(), Qt::AlignCenter, tr("Overview is rendering..."));
+        GUIUtils::showMessage(this, p, tr("Overview is rendering..."));
+        QWidget::paintEvent(e);
+        return;
     } else {
         if (redrawGraph) {
             cachedConsensus = QPixmap(size());

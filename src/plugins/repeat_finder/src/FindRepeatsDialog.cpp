@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -78,7 +78,7 @@ FindRepeatsDialog::FindRepeatsDialog(ADVSequenceObjectContext* _sc)
 {
     sc = _sc;
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220523");
+    new HelpButton(this, buttonBox, "19759655");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -298,6 +298,7 @@ void FindRepeatsDialog::accept() {
                 return QDialog::reject();
         }
     }
+    sc->getAnnotatedDNAView()->tryAddObject(cam.getAnnotationObject());
 
     FindRepeatsToAnnotationsTask* t = new FindRepeatsToAnnotationsTask(settings, seqPart,
         cam.data->name, cam.groupName, cam.description, cam.annotationObjectRef);

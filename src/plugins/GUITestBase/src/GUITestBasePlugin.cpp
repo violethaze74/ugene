@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@
 #include "tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.h"
 #include "tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.h"
 #include "tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.h"
-#include "tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParemeterValidation.h"
+#include "tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h"
 #include "tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h"
 #include "tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.h"
 #include "tests/crazy_user/GUICrazyUserTest.h"
@@ -97,20 +97,20 @@
         HI::GUITest *test = new X(); \
         test->setLabel(LABEL); \
         guiTestBase->registerTest(test); \
-    }
+        }
 #define REGISTER_TEST_WITH_TIMEOUT(X, TIMEOUT) \
     if (guiTestBase) { \
         HI::GUITest *test = new X(); \
         test->setTimeout(TIMEOUT); \
         guiTestBase->registerTest(test); \
-    }
+        }
 #define REGISTER_TEST_IGNORED_BY(X, BY, MESSAGE, reason) \
     if (guiTestBase) { \
         HI::GUITest *test = new X(); \
         test->setIgnored(BY, MESSAGE); \
         test->setReason(reason); \
         guiTestBase->registerTest(test); \
-    }
+        }
 
 #define REGISTER_TEST_IGNORED(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::Ignored, MESSAGE, HI::GUITest::Bug)
 #define REGISTER_TEST_IGNORED_LINUX(X, MESSAGE) REGISTER_TEST_IGNORED_BY(X, HI::GUITest::IgnoredLinux, MESSAGE, HI::GUITest::Bug)
@@ -164,9 +164,9 @@ void GUITestBasePlugin::sl_showWindow() {
 
 void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
-//////////////////////////////////////////////////////////////////////////
-// Regression scenarios/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Regression scenarios/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_regression_scenarios::test_0057_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_0057_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_0057_3);
@@ -341,7 +341,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1113_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_1115);
     REGISTER_TEST(GUITest_regression_scenarios::test_1121);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1122, "UGENE-1122");
+    REGISTER_TEST(GUITest_regression_scenarios::test_1122);
     REGISTER_TEST(GUITest_regression_scenarios::test_1123);
     REGISTER_TEST(GUITest_regression_scenarios::test_1123_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_1124);
@@ -635,7 +635,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2152);
     REGISTER_TEST(GUITest_regression_scenarios::test_2156);
     REGISTER_TEST(GUITest_regression_scenarios::test_2157);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_2160, "UGENE-4528");
+    REGISTER_TEST(GUITest_regression_scenarios::test_2160);
     REGISTER_TEST(GUITest_regression_scenarios::test_2165);
     REGISTER_TEST(GUITest_regression_scenarios::test_2187);
     REGISTER_TEST(GUITest_regression_scenarios::test_2188);
@@ -887,6 +887,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3312);
     REGISTER_TEST(GUITest_regression_scenarios::test_3313);
     REGISTER_TEST(GUITest_regression_scenarios::test_3318);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3319);
     REGISTER_TEST(GUITest_regression_scenarios::test_3321);
     REGISTER_TEST(GUITest_regression_scenarios::test_3328);
     REGISTER_TEST(GUITest_regression_scenarios::test_3332);
@@ -958,7 +959,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3634);
     REGISTER_TEST(GUITest_regression_scenarios::test_3639);
     REGISTER_TEST(GUITest_regression_scenarios::test_3640);
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3645, "UGENE-3645");
+    REGISTER_TEST(GUITest_regression_scenarios::test_3645);
     REGISTER_TEST(GUITest_regression_scenarios::test_3649);
     REGISTER_TEST(GUITest_regression_scenarios::test_3656);
     REGISTER_TEST(GUITest_regression_scenarios::test_3658);
@@ -1017,7 +1018,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3886);
     REGISTER_TEST(GUITest_regression_scenarios::test_3895);
 
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3901, "https://ugene.unipro.ru/tracker/browse/UGENE-3955");
+    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3901, "https://ugene.net/tracker/browse/UGENE-3955");
     REGISTER_TEST(GUITest_regression_scenarios::test_3902);
     REGISTER_TEST(GUITest_regression_scenarios::test_3903);
     REGISTER_TEST(GUITest_regression_scenarios::test_3904);
@@ -1149,7 +1150,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4524);
     REGISTER_TEST(GUITest_regression_scenarios::test_4537);
     REGISTER_TEST(GUITest_regression_scenarios::test_4557);
-    if(QSysInfo::WordSize == 32){
+    if (QSysInfo::WordSize == 32) {
         REGISTER_TEST(GUITest_regression_scenarios::test_4563);
     }
     REGISTER_TEST(GUITest_regression_scenarios::test_4587);
@@ -1192,6 +1193,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4764_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4764_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4764_3);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4782);
     REGISTER_TEST(GUITest_regression_scenarios::test_4784_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4784_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4784_3);
@@ -1248,9 +1250,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5012_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5012_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5018);
-if(QSysInfo::WordSize == 64){
-    REGISTER_TEST(GUITest_regression_scenarios::test_5027_1);
-}
+    if (QSysInfo::WordSize == 64) {
+        REGISTER_TEST(GUITest_regression_scenarios::test_5027_1);
+    }
     REGISTER_TEST(GUITest_regression_scenarios::test_5027_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5029);
     REGISTER_TEST(GUITest_regression_scenarios::test_5039);
@@ -1261,10 +1263,10 @@ if(QSysInfo::WordSize == 64){
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5128);
     REGISTER_TEST(GUITest_regression_scenarios::test_5137);
-if (QSysInfo::WordSize == 32) {
-    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
-    REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
-}
+    if (QSysInfo::WordSize == 32) {
+        REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
+        REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
+    }
     REGISTER_TEST(GUITest_regression_scenarios::test_5199);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_5208);
@@ -1275,18 +1277,28 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5268);
     REGISTER_TEST(GUITest_regression_scenarios::test_5278);
     REGISTER_TEST(GUITest_regression_scenarios::test_5295);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5346);
     REGISTER_TEST(GUITest_regression_scenarios::test_5352);
     REGISTER_TEST(GUITest_regression_scenarios::test_5356);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
     REGISTER_TEST(GUITest_regression_scenarios::test_5360);
     REGISTER_TEST(GUITest_regression_scenarios::test_5363_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5363_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5367);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5371);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5377);
 
-    REGISTER_TEST(GUITest_regression_scenarios::test_5314);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5412);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5417);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5425);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5469);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5499);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0006);
@@ -1318,25 +1330,25 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_project::test_0038);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0038_1);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0039);
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0040, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0041, "UGENE-4900");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0040, "UGENE-5042");
+    REGISTER_TEST(GUITest_common_scenarios_project::test_0041);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0042);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0043);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0044);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0045);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0046);
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0047, "UGENE-4900");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0047, "UGENE-5042");
     REGISTER_TEST(GUITest_common_scenarios_project::test_0048);
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0049, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0050, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0051, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0052, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0053, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0054, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0055, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0056, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0057, "UGENE-4900");
-    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0058, "UGENE-4900");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0049, "UGENE-5042");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0050, "UGENE-5042");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0051, "UGENE-5042");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0052, "UGENE-5042");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0053, "UGENE-5042");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0054, "UGENE-5042");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0055, "UGENE-5042");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0056, "UGENE-5042");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0057, "UGENE-5042");
+    REGISTER_TEST_IGNORED(GUITest_common_scenarios_project::test_0058, "UGENE-5042");
 
     REGISTER_TEST(GUITest_common_scenarios_project::test_0059);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0060);
@@ -1358,47 +1370,47 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_project::test_0073);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0074);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/bookmarks/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/bookmarks/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_bookmarks::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_project_bookmarks::test_0002_1);
     REGISTER_TEST(GUITest_common_scenarios_project_bookmarks::test_0002_2);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/multiple docs/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/multiple docs/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_multiple_docs::test_0001);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/anonymous project/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/anonymous project/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_anonymous_project::test_0003);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/relations/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/relations/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_relations::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_project_relations::test_0002);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/user locking/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/user locking/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_user_locking::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_project_user_locking::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_project_user_locking::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_project_user_locking::test_0005);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/document modifying/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/document modifying/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_document_modifying::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_project_document_modifying::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_project_document_modifying::test_0002);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/project_filtering/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/project_filtering/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0003);
@@ -1414,17 +1426,17 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_project_filtering::test_0014);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/sanger/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/sanger/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_sanger::test_0004);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/Sequence view/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Sequence view/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0002_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0002_2);
@@ -1503,9 +1515,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0077);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0078);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/sequence edit/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/sequence edit/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0003);
@@ -1533,9 +1545,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_2);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/remote request/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/remote request/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0003);
@@ -1547,9 +1559,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0010);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/toggle view/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/toggle view/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_toggle_view::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_toggle_view::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_toggle_view::test_0001_2);
@@ -1600,9 +1612,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_toggle_view::test_0016);
 
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/sequence exporting/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/sequence exporting/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting::test_0003);
@@ -1616,9 +1628,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting::test_0012);
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting::test_0013);
 
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/project/sequence exporting/from project view/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/project/sequence exporting/from project view/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting_from_project_view::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting_from_project_view::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting_from_project_view::test_0003);
@@ -1638,9 +1650,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting_from_project_view::test_0008_1);
     REGISTER_TEST(GUITest_common_scenarios_project_sequence_exporting_from_project_view::test_0008_2);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/msa_editor
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0001_2);
@@ -1855,9 +1867,9 @@ if (QSysInfo::WordSize == 32) {
 
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_fake);
-/////////////////////////////////////////////////////////////////////////
-// Common align sequences to an alignment
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common align sequences to an alignment
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0003);
@@ -1868,18 +1880,18 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0010);
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/msa_editor/colors
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/colors
+    /////////////////////////////////////////////////////////////////////////
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0004);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/msa_editor/consensus
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/consensus
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0001);
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0002);
@@ -1897,9 +1909,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_consensus::test_0006);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/msa_editor/edit
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/edit
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0001_2);
@@ -1946,9 +1958,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_edit::test_0015);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/msa_editor/replace_character
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/replace_character
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0003);
@@ -1970,9 +1982,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0017);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_replace_character::test_0018);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/msa_editor/overview
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/msa_editor/overview
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0003);
@@ -1993,9 +2005,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0020);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0021);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_overview::test_0022);
-//////////////////////////////////////////////////////////////////////////
-// Common scenarios/document_from_text/
-//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/document_from_text/
+    //////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_document_from_text::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_document_from_text::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_document_from_text::test_0001_2);
@@ -2061,9 +2073,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_document_from_text::test_0018);
     REGISTER_TEST(GUITest_common_scenarios_document_from_text::test_0019);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Annotations import
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Annotations import
+    /////////////////////////////////////////////////////////////////////////
 
     REGISTER_TEST(GUITest_common_scenarios_annotations_import::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_annotations_import::test_0001_1);
@@ -2102,9 +2114,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_annotations_import::test_0009_2);
 
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/annotations
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/annotations
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_annotations::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_annotations::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_annotations::test_0001_2);
@@ -2134,9 +2146,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_annotations::test_0012_3);
     REGISTER_TEST(GUITest_common_scenarios_annotations::test_0013);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/annotations/CreateAnnotationWidget
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/annotations/CreateAnnotationWidget
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0003);
@@ -2180,10 +2192,12 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0041);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0042);
     REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0043);
+    REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0044);
+    REGISTER_TEST(GUITest_common_scenarios_create_annotation_widget::test_0045);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/annotations/edit
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/annotations/edit
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_annotations_edit::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_annotations_edit::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_annotations_edit::test_0001_2);
@@ -2203,9 +2217,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_annotations_edit::test_0006_1);
     REGISTER_TEST(GUITest_common_scenarios_annotations_edit::test_0006_2);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/annotations/qualifiers
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/annotations/qualifiers
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_annotations_qualifiers::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_annotations_qualifiers::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_annotations_qualifiers::test_0001_2);
@@ -2235,15 +2249,15 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_annotations_qualifiers::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_annotations_qualifiers::test_0009);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/smith_waterman_dialog
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/smith_waterman_dialog
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_sw_dialog::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_sw_dialog::test_0002);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/option_panel
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/option_panel
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_options_panel::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_options_panel::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_options_panel::test_0002);
@@ -2269,9 +2283,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel::test_0019);
     REGISTER_TEST(GUITest_common_scenarios_options_panel::test_0020);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/option_panel
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/option_panel
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::general_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::general_test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::general_test_0002);
@@ -2355,9 +2369,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::save_parameters_test_0005);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::save_parameters_test_0006);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/dp_view
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/dp_view
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0011);
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0011_1);
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0011_2);
@@ -2372,9 +2386,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0020);
     REGISTER_TEST(GUITest_Common_scenarios_dp_view::test_0025);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Assembling/Assembly browser
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Assembling/Assembly browser
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_Assembly_browser::test_0001);
     REGISTER_TEST(GUITest_Assembly_browser::test_0002);
     REGISTER_TEST(GUITest_Assembly_browser::test_0010);
@@ -2408,9 +2422,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_Assembly_browser::test_0036);
     REGISTER_TEST(GUITest_Assembly_browser::test_0037);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Assembling/bowtie2
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Assembling/bowtie2
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0001);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0002);//"Restore when this tool becomes available");
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0003);
@@ -2418,9 +2432,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0005);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_Bowtie2::test_0006);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Assembling/dna_assembly
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Assembling/dna_assembly
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_dna_assembly::test_0001);
     REGISTER_TEST(GUITest_dna_assembly::test_0002);
     REGISTER_TEST(GUITest_dna_assembly::test_0003);
@@ -2429,9 +2443,9 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_dna_assembly::test_0006);
 
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Assembling/index_reuse
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Assembling/index_reuse
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_index_reuse::test_0001);
     REGISTER_TEST(GUITest_index_reuse::test_0002);
     REGISTER_TEST(GUITest_index_reuse::test_0003);
@@ -2443,41 +2457,41 @@ if (QSysInfo::WordSize == 32) {
     REGISTER_TEST(GUITest_index_reuse::test_0009);
     REGISTER_TEST(GUITest_index_reuse::test_0010);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Assembling/dna_assembly/conversions
-/////////////////////////////////////////////////////////////////////////
-REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_dna_assembly_conversions::test_0001);
-REGISTER_TEST(GUITest_dna_assembly_conversions::test_0002);
-REGISTER_TEST(GUITest_dna_assembly_conversions::test_0003);
-REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Assembling/dna_assembly/conversions
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_dna_assembly_conversions::test_0001);
+    REGISTER_TEST(GUITest_dna_assembly_conversions::test_0002);
+    REGISTER_TEST(GUITest_dna_assembly_conversions::test_0003);
+    REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Assembling/sam
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Assembling/sam
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_SAM::test_0002);
     REGISTER_TEST(GUITest_SAM::test_0003);
     REGISTER_TEST(GUITest_SAM::test_0004);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Query designer
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Query designer
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_querry_designer::test_0001, "breaks testing on mac");
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_querry_designer::test_0001_1, "breaks testing on mac");
     REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_querry_designer::test_0001_2, "breaks testing on mac");
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Workflow designer
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Workflow designer
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002)//,"no such scheme on windows");
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002_1)//,"no such scheme on windows");
-    REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0003);
+        REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0002_1)//,"no such scheme on windows");
+        REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0003);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0005)//,"no such scheme on windows");
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);//"no such scheme on windows, https://ugene.unipro.ru/tracker/browse/UGENE-2738 on mac");
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006_1);//"no such scheme on windows, https://ugene.unipro.ru/tracker/browse/UGENE-2738 on mac");
-    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0007);//"no such scheme on windows, https://ugene.unipro.ru/tracker/browse/UGENE-2738 on mac");
+        REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006);//"no such scheme on windows, https://ugene.net/tracker/browse/UGENE-2738 on mac");
+    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0006_1);//"no such scheme on windows, https://ugene.net/tracker/browse/UGENE-2738 on mac");
+    REGISTER_TEST_ONLY_LINUX(GUITest_common_scenarios_workflow_designer::test_0007);//"no such scheme on windows, https://ugene.net/tracker/browse/UGENE-2738 on mac");
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0009)//*,"no such scheme on windows");
-    REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0010)//,"no such scheme on windows");
-    REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0013);
+        REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_designer::test_0010)//,"no such scheme on windows");
+        REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0017);
     //REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0018);
@@ -2485,43 +2499,44 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0059);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0060);
     REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0061);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_designer::test_0062);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Workflow designer/Workflow parameters validation
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Workflow designer/Workflow parameters validation
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_workflow_parameters_validation::test_0001);
     REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_workflow_parameters_validation::test_0002);//, "qt dialog can't be shown");
     REGISTER_TEST(GUITest_common_scenarios_workflow_parameters_validation::test_0003);
     REGISTER_TEST_NOT_FOR_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0005);//, "Test should run not under admin user on WIN");
     REGISTER_TEST(GUITest_common_scenarios_workflow_parameters_validation::test_0006);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Workflow designer/Estimating
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Workflow designer/Estimating
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_workflow_estimating::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_workflow_estimating::test_0002);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Workflow designer/Name filter
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Workflow designer/Name filter
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_workflow_name_filter::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_workflow_name_filter::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_name_filter::test_0003);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Workflow designer/Scripting
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Workflow designer/Scripting
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_workflow_scripting::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_workflow_scripting::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_scripting::test_0004);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/NIAID_pipelines
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/NIAID_pipelines
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0002);
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Tree viewer
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Tree viewer
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_tree_viewer::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_tree_viewer::test_0001_1);
     REGISTER_TEST(GUITest_common_scenarios_tree_viewer::test_0001_2);
@@ -2548,14 +2563,14 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_tree_viewer::test_0028);
     REGISTER_TEST(GUITest_common_scenarios_tree_viewer::test_0029);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Repeat Finder
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Repeat Finder
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_repeat_finder::test_0001);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/Undo_Redo
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/Undo_Redo
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_undo_redo::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_undo_redo::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_undo_redo::test_0003);
@@ -2579,9 +2594,9 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
 
     REGISTER_TEST(GUITest_common_scenarios_undo_redo::test_0012);
 
-/////////////////////////////////////////////////////////////////////////
-// Common scenarios/shared_database
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // Common scenarios/shared_database
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_shared_database::cm_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::cm_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::cm_test_0003);
@@ -2646,9 +2661,9 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::export_test_0008);
     REGISTER_TEST(GUITest_common_scenarios_shared_database::export_test_0009);
 
-/////////////////////////////////////////////////////////////////////////
-// common_scenarios/circular_view
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/circular_view
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_circular_view::general_avail_1);
     REGISTER_TEST(GUITest_common_scenarios_circular_view::general_avail_2);
     REGISTER_TEST(GUITest_common_scenarios_circular_view::general_avail_3);
@@ -2658,14 +2673,14 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_circular_view::general_avail_7);
     REGISTER_TEST(GUITest_common_scenarios_circular_view::general_avail_8);
 
-/////////////////////////////////////////////////////////////////////////
-// common_scenarios/cloning
-/////////////////////////////////////////////////////////////////////////
-        REGISTER_TEST(GUITest_common_scenarios_cloning::test_0011);
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/cloning
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_cloning::test_0011);
 
-/////////////////////////////////////////////////////////////////////////
-// common_scenarios/options_panel/sequence_view
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/options_panel/sequence_view
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0003);
@@ -2677,9 +2692,9 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0010);
 
-/////////////////////////////////////////////////////////////////////////
-// common_scenarios/workflow_designer/shared_db
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/workflow_designer/shared_db
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::read_gui_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::read_gui_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::read_gui_test_0003);
@@ -2716,9 +2731,9 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
 
     REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::test_3726);
 
-/////////////////////////////////////////////////////////////////////////
-// common_scenarios/pcr/in_silico_pcr
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/pcr/in_silico_pcr
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0003);
@@ -2736,10 +2751,10 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0016);
-
-/////////////////////////////////////////////////////////////////////////
-// common_scenarios/pcr/primer_library
-/////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0017);
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/pcr/primer_library
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0003);
@@ -2757,9 +2772,9 @@ REGISTER_TEST(GUITest_dna_assembly_conversions::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
 
-/////////////////////////////////////////////////////////////////////////
-// common_scenarios/start_page
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/start_page
+    /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0003);

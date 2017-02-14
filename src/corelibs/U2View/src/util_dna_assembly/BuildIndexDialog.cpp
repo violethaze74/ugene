@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -48,12 +48,12 @@ BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry* registry, QWidg
 {
     setupUi(this);
     QMap<QString,QString> helpPagesMap;
-    helpPagesMap.insert("BWA","18220571");
-    helpPagesMap.insert("BWA-MEM","18220605");
-    helpPagesMap.insert("BWA-SW","18220599");
-    helpPagesMap.insert("Bowtie","18220568");
-    helpPagesMap.insert("Bowtie2","18220596");
-    helpPagesMap.insert("UGENE Genome Aligner","18220574");
+    helpPagesMap.insert("BWA","19759703");
+    helpPagesMap.insert("BWA-MEM","19759737");
+    helpPagesMap.insert("BWA-SW","19759731");
+    helpPagesMap.insert("Bowtie","19759700");
+    helpPagesMap.insert("Bowtie2","19759728");
+    helpPagesMap.insert("UGENE Genome Aligner","19759706");
     new ComboboxDependentHelpButton(this, buttonBox, methodNamesBox, helpPagesMap);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -173,12 +173,17 @@ void BuildIndexDialog::buildIndexUrl(const GUrl& refUrl ) {
 void BuildIndexDialog::accept()
 {
 
-    if ((getAlgorithmName() == "Bowtie") || (getAlgorithmName() == "Bowtie2")) {
+    if ((getAlgorithmName() == "Bowtie") || (getAlgorithmName() == "Bowtie2") || (getAlgorithmName() == "BWA") || (getAlgorithmName() == "BWA-MEM") || (getAlgorithmName() == "BWA-SW")) {
         QString externalToolName;
+        
         if (getAlgorithmName() == "Bowtie2") {
             externalToolName = "Bowtie 2 build indexer";
-        } else {
+        } 
+        if (getAlgorithmName() == "Bowtie"){
             externalToolName = "Bowtie build indexer";
+        }
+        if ((getAlgorithmName() == "BWA") || (getAlgorithmName() == "BWA-MEM") || (getAlgorithmName() == "BWA-SW")){
+            externalToolName = "BWA";
         }
         if(AppContext::getExternalToolRegistry()->getByName(externalToolName)->getPath().isEmpty()) {
             QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);

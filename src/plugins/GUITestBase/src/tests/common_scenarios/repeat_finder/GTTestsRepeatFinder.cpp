@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -77,7 +77,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 325)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick();
-    GTUtilsAnnotationsTreeView::findItem(os, "repeat_homology(%)");
+    GTUtilsAnnotationsTreeView::findItem(os, "repeat_identity");
 
 // 5. Close sequence view (it's needed to refresh screen since Ugene cannot close correctly on Win7 32bit)
     GTUtilsMdi::click(os, GTGlobals::Close);

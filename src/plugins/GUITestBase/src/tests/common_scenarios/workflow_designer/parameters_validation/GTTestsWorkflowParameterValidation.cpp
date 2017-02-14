@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "GTTestsWorkflowParemeterValidation.h"
+#include "GTTestsWorkflowParameterValidation.h"
 #include <base_dialogs/MessageBoxFiller.h>
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 
@@ -65,7 +65,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
     // 3. Add the file "test/_common_data/clustal/align.aln" as input
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Read alignment"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/", "align.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/align.aln");
 
     // 4. Move this file somewhere from its directory
     class RenameHelper {
@@ -182,8 +182,7 @@ GUI_TEST_CLASS_DEFINITION( test_0003 ) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Read Sequence" ) );
     GTMouseDriver::click();
-    QString dirPath = testDir + "_common_data/fasta/";
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dirPath, "fa1.fa" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/fasta/fa1.fa" );
 
     //4. Set some nonexistent path to a file as the "Pattern file" parameter of the "Find Substrings" worker
 
@@ -226,7 +225,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
     // 3. Add the file "test/_common_data/clustal/align.aln" as input
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"Read alignment"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/", "align.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/align.aln");
     GTGlobals::sleep(2000);
 
     QFile dir(testDir + "_common_data/scenarios/sandbox/permDir");
@@ -288,8 +287,7 @@ GUI_TEST_CLASS_DEFINITION( test_0006 ) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, "Read Sequence" ) );
     GTMouseDriver::click();
-    QString dirPath = testDir + "_common_data/fasta/";
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, dirPath, "fa1.fa" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/fasta/fa1.fa" );
 
     //4. Create an empty directory somewhere (e.g. in the "test/_tmp" directory)
     QDir newDir(testDir);

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -605,10 +605,10 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::click(os, "Read Annotations A");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/", "introns.bed");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/introns.bed");
 
     GTUtilsWorkflowDesigner::click(os, "Read Annotations B");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/", "mutation.gff");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "/_common_data/bedtools/mutation.gff");
 
     GTUtilsWorkflowDesigner::click(os, "Write Annotations");
     GTGlobals::sleep();
@@ -665,15 +665,31 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QDir().absoluteFilePath(sandBoxDir + "/test_ugene_5162.vcf"), GTUtilsWorkflowDesigner::lineEditWithFileSelector);
 
     GTUtilsWorkflowDesigner::click(os, "Read Assembly (BAM/SAM)");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly", "chrM.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly/chrM.sam");
 
     GTUtilsWorkflowDesigner::createDataset(os);
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly", "chrM.sam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "/samples/Assembly/chrM.sam");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "/test_ugene_5162.vcf"), "No resut file 1");
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + "/test_ugene_5162_1.vcf"), "No resut file 2");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0062) {
+    // Test for SnpEff genome parameter
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    WorkflowProcessItem* snpEffItem = GTUtilsWorkflowDesigner::addElement(os, "SnpEff Annotation and Filtration");
+    CHECK_SET_ERR(snpEffItem != NULL, "Failed to add SnpEff Annotation and Filtration element");
+
+    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
+    GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "fake_snpeff_genome123", false));
+    GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+    GTGlobals::sleep();
 }
 
 } // namespace GUITest_common_scenarios_workflow_designer

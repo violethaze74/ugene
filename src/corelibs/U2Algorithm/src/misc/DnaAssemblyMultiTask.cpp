@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -75,7 +75,7 @@ QList<Task*> DnaAssemblyMultiTask::onSubTaskFinished( Task* subTask ) {
     }
 
     if ( subTask == assemblyToRefTask && settings.openView ) {
-        if (assemblyToRefTask->isHaveResult()) {
+        if (assemblyToRefTask->hasResult()) {
             Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultFileName);
             if (openTask != NULL) {
                 subTasks << openTask;
@@ -102,7 +102,7 @@ QString DnaAssemblyMultiTask::generateReport() const {
     if (justBuildIndex) {
         res = settings.algName + QString(" index-file for %1 was built successfully")
         .arg(settings.refSeqUrl.fileName());
-    } else if (assemblyToRefTask->isHaveResult()) {
+    } else if (assemblyToRefTask->hasResult()) {
         res = QString("Alignment to reference %1 was finished successfully")
         .arg(settings.refSeqUrl.fileName());
     } else {

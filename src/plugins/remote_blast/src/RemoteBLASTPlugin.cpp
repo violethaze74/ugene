@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -112,7 +112,7 @@ void RemoteBLASTViewContext::sl_showDialog() {
     ADVSequenceObjectContext* seqCtx = av->getSequenceInFocus();
 
     bool isAminoSeq = seqCtx->getAlphabet()->isAmino();
-    QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx->getSequenceObject(), isAminoSeq, av->getWidget());
+    QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx, isAminoSeq, av->getWidget());
     dlg->exec();
     CHECK(!dlg.isNull(), );
 

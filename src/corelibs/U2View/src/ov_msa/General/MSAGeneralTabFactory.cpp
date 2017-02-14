@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,8 +33,7 @@ namespace U2 {
 
 const QString MSAGeneralTabFactory::GROUP_ID = "OP_MSA_GENERAL";
 const QString MSAGeneralTabFactory::GROUP_ICON_STR = ":core/images/settings2.png";
-const QString MSAGeneralTabFactory::GROUP_TITLE = QString(QObject::tr("General"));
-const QString MSAGeneralTabFactory::GROUP_DOC_PAGE = "18220416";
+const QString MSAGeneralTabFactory::GROUP_DOC_PAGE = "19759548";
 
 MSAGeneralTabFactory::MSAGeneralTabFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
@@ -60,7 +59,7 @@ const QString & MSAGeneralTabFactory::getGroupId() {
 }
 
 OPGroupParameters MSAGeneralTabFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), GROUP_TITLE, GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("General"), GROUP_DOC_PAGE);
 }
 
 } // namespace U2

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -84,7 +84,7 @@ SharedConnectionsDialog::SharedConnectionsDialog(QWidget *parent) :
     ui(new Ui_SharedConnectionsDialog)
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18220658");
+    new HelpButton(this, ui->buttonBox, "19759790");
 
     init();
     connectSignals();
@@ -506,7 +506,7 @@ bool SharedConnectionsDialog::checkDbShouldBeUpgraded(const U2DbiRef &ref) {
     if (upgradeDatabase) {
         QObjectScopedPointer<QMessageBox> question = new QMessageBox(QMessageBox::Question, tr(DATABASE_UPGRADE_TITLE), tr(DATABASE_UPGRADE_TEXT), QMessageBox::Ok | QMessageBox::Cancel| QMessageBox::Help, this);
         question->button(QMessageBox::Ok)->setText(tr("Upgrade"));
-        HelpButton(question.data(), question->button(QMessageBox::Help), "18220658");
+        HelpButton(question.data(), question->button(QMessageBox::Help), "19759790");
         question->setDefaultButton(QMessageBox::Cancel);
         const int dialogResult = question->exec();
         CHECK(!question.isNull(), true);

@@ -13,6 +13,12 @@
     <height>404</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>878</width>
+    <height>404</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Configure Port and Slot Aliases</string>
   </property>
@@ -21,7 +27,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
    <property name="sizeConstraint">
-    <enum>QLayout::SetMinAndMaxSize</enum>
+    <enum>QLayout::SetDefaultConstraint</enum>
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -67,14 +73,20 @@
       </property>
      </widget>
      <widget class="QTableWidget" name="portAliasesTableWidget">
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>200</number>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>200</number>
+      </attribute>
       <column>
        <property name="text">
-        <string>Available slot</string>
+        <string>Slot</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Slot alias</string>
+        <string>Alias</string>
        </property>
       </column>
      </widget>

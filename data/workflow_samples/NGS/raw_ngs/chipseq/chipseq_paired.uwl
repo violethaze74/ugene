@@ -52,7 +52,7 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
     files-conversion {
         type:files-conversion;
         name:"Convert to BAM";
-        document-format:bam;
+        document-format:BAM;
         out-mode:0;
     }
     merge-bam {
@@ -485,9 +485,9 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
                 title:Pre-processing;
                 parameters-area {
                     group {
-                        title:Filtration;
+                        title:"Reads filtration";
                         label-size:120;
-                        QualityTrim.qual-id {
+                            QualityTrim.qual-id {
                             label:"Base quality";
                         }
                         QualityTrim.len-id {
@@ -496,20 +496,36 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
                         QualityTrim.both-ends {
                             label:"Trim both ends";
                         }
+                        CutAdaptFastq.adapters-url {
+                            label:"3' adapters";
+                        }
+                        CutAdaptFastq.front-url {
+                            label:"5' adapters";
+                        }
+                        CutAdaptFastq.anywhere-url {
+                            label:"5' and 3' adapters";
+                        }
+                    }
+                    group {
+                    title:"Read pairs filtration";
+                    label-size:120;
                         QualityTrim-1.qual-id {
-                            label:"Base quality for pairs";
+                            label:"Base quality";
                         }
                         QualityTrim-1.len-id {
-                            label:"Reads length for pairs";
+                            label:"Reads length";
                         }
                         QualityTrim-1.both-ends {
-                            label:"Trim both ends for pairs";
-                        }
-                        CutAdaptFastq.adapters-url {
-                            label:Adapters;
+                            label:"Trim both ends";
                         }
                         CutAdaptFastq-1.adapters-url {
-                            label:"Adapters for pairs";
+                            label:"3' adapters";
+                        }
+                        CutAdaptFastq-1.front-url {
+                            label:"5' adapters";
+                        }
+                        CutAdaptFastq-1.anywhere-url {
+                            label:"5' and 3' adapters";
                         }
                     }
                 }

@@ -521,7 +521,8 @@ this merge sequence slot:</translation>
         <translation>Approximate estimation time of the workflow run is </translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="40"/>
+        <location filename="../src/OutputFileDialog.cpp" line="170"/>
+        <location filename="../src/OutputFileDialog.cpp" line="217"/>
         <source>Workflow-run output</source>
         <translation>Workflow-run output</translation>
     </message>
@@ -670,6 +671,24 @@ bowtie index file</translation>
     </message>
 </context>
 <context>
+    <name>U2::BreakpointHitCountDialog</name>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="74"/>
+        <source>Reset</source>
+        <translation>Reset</translation>
+    </message>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="75"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/BreakpointHitCountDialog.cpp" line="76"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+</context>
+<context>
     <name>U2::ComboBoxWidget</name>
     <message>
         <location filename="../src/PropertyWidget.cpp" line="178"/>
@@ -701,6 +720,19 @@ bowtie index file</translation>
         <location filename="../src/PropertyWidget.cpp" line="319"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
+    </message>
+</context>
+<context>
+    <name>U2::CreateDirectoryDialog</name>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="213"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="214"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -1094,12 +1126,22 @@ bowtie index file</translation>
 <context>
     <name>U2::OutputFileDialog</name>
     <message>
+        <location filename="../src/OutputFileDialog.cpp" line="51"/>
+        <source>Save</source>
+        <translation>Save</translation>
+    </message>
+    <message>
         <location filename="../src/OutputFileDialog.cpp" line="52"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/OutputFileDialog.cpp" line="56"/>
         <source>Save a directory</source>
         <translation>Save a directory</translation>
     </message>
     <message>
-        <location filename="../src/OutputFileDialog.cpp" line="54"/>
+        <location filename="../src/OutputFileDialog.cpp" line="58"/>
         <source>Save a file</source>
         <translation>Save a file</translation>
     </message>
@@ -1117,17 +1159,16 @@ bowtie index file</translation>
         <translation>Producer</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="91"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="87"/>
         <source>Open containing directory</source>
         <translation>Open containing directory</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="82"/>
         <source>Open by operating system</source>
-        <translation>Open by operating system</translation>
+        <translation type="vanished">Open by operating system</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="209"/>
+        <location filename="../src/dashboard/OutputFilesWidget.cpp" line="204"/>
         <source>files</source>
         <translation>files</translation>
     </message>
@@ -1292,12 +1333,12 @@ bowtie index file</translation>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="551"/>
+        <location filename="../src/DelegateEditors.cpp" line="555"/>
         <source>This computer</source>
         <translation>This computer</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="552"/>
+        <location filename="../src/DelegateEditors.cpp" line="556"/>
         <source>Remote computer</source>
         <translation>Remote computer</translation>
     </message>
@@ -1349,17 +1390,17 @@ bowtie index file</translation>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="682"/>
+        <location filename="../src/DelegateEditors.cpp" line="686"/>
         <source>Enter items</source>
         <translation>Enter items</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="684"/>
+        <location filename="../src/DelegateEditors.cpp" line="688"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="686"/>
+        <location filename="../src/DelegateEditors.cpp" line="690"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -1398,19 +1439,19 @@ bowtie index file</translation>
 <context>
     <name>U2::URLLineEdit</name>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="183"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="190"/>
         <source>Select a directory</source>
         <translation>Select a directory</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="186"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="193"/>
         <source>Select file(s)</source>
         <translation>Select file(s)</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="201"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="206"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="209"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="208"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="213"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="216"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
@@ -1497,17 +1538,17 @@ bowtie index file</translation>
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="541"/>
+        <location filename="../src/DelegateEditors.cpp" line="545"/>
         <source>Overwrite</source>
         <translation>Overwrite</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="542"/>
+        <location filename="../src/DelegateEditors.cpp" line="546"/>
         <source>Rename</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="544"/>
+        <location filename="../src/DelegateEditors.cpp" line="548"/>
         <source>Append</source>
         <translation>Append</translation>
     </message>

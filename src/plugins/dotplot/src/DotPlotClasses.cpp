@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -95,14 +95,13 @@ void DotPlotMiniMap::draw(QPainter &p, int shiftX, int shiftY, const QPointF &zo
 
 DotPlotResultsListener::DotPlotResultsListener() {
 
-    dotPlotList = new QList<DotPlotResults>();
+    dotPlotList = QSharedPointer< QList<DotPlotResults> >(new QList<DotPlotResults>());
     stateOk = true;
     rfTask = NULL;
 }
 
 DotPlotResultsListener::~DotPlotResultsListener() {
-
-    delete dotPlotList;
+    dotPlotList.clear();
 }
 
 void DotPlotResultsListener::setTask(Task *t) {

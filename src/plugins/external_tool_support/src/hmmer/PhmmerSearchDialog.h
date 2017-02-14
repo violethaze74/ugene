@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,6 +32,8 @@
 
 namespace U2 {
 
+class ADVSequenceObjectContext;
+
 class PhmmerSearchDialogModel {
 public:
     PhmmerSearchSettings phmmerSettings;
@@ -42,7 +44,8 @@ class PhmmerSearchDialog : public QDialog, public Ui_PhmmerSearchDialog {
     Q_OBJECT
 public:
     PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent = NULL);
-    
+    PhmmerSearchDialog(ADVSequenceObjectContext* seqCtx, QWidget *parent = NULL);
+
 private slots:
     void accept();
     void sl_queryToolButtonClicked();
@@ -51,14 +54,16 @@ private slots:
     void sl_domZCheckBoxChanged(int state);
     void sl_maxCheckBoxChanged(int state);
     void sl_domESpinBoxChanged(int newVal);
-    
+
 private:
     void setModelValues();
     void getModelValues();
+    void init(U2SequenceObject *seqObj);
     QString checkModel();
 
     PhmmerSearchDialogModel model;
     CreateAnnotationWidgetController *annotationsWidgetController;
+    ADVSequenceObjectContext* seqCtx;
 
     static const QString    QUERY_FILES_DIR;
     static const QString    DOM_E_PLUS_PREFIX;

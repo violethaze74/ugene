@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +26,8 @@
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
 #include <U2Core/U2OpStatusUtils.h>
+
+#include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorSequenceArea.h>
@@ -91,8 +93,9 @@ void MaSimpleOverview::sl_highlightingChanged() {
 
 void MaSimpleOverview::paintEvent(QPaintEvent *e) {
     if (!isValid()) {
-        QPainter p(this);
-        showWarning(p, e, tr("Multiple sequence alignment is too big for current window size.\nSimple overview is unavailable."));
+        QPainter messagePainter(this);
+        GUIUtils::showMessage(this, messagePainter, tr("Multiple sequence alignment is too big for current window size.\nSimple overview is unavailable."));
+        QWidget::paintEvent(e);
         return;
     }
 

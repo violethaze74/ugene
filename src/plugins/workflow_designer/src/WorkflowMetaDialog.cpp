@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ WorkflowMetaDialog::WorkflowMetaDialog(QWidget * p, const Metadata& meta)
       meta(meta),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220692");
+    new HelpButton(this, buttonBox, "19759824");
 
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     okButton = buttonBox->button(QDialogButtonBox::Ok);

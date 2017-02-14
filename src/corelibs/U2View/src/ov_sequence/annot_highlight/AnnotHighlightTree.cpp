@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,9 +31,6 @@ namespace U2 {
 const int AnnotHighlightTree::COL_NUM_ANNOT_NAME = 0;
 const int AnnotHighlightTree::COL_NUM_COLOR = 1;
 
-const QString AnnotHighlightTree::HEADER_ANNOT_NAMES = QObject::tr("Annotation");
-const QString AnnotHighlightTree::HEADER_COLORS = QObject::tr("Color");
-
 const int AnnotHighlightTree::ANNOT_COLUMN_WIDTH = 140;
 const int AnnotHighlightTree::COLOR_COLUMN_WIDTH = 10;
 const int AnnotHighlightTree::INITIAL_TREE_HEIGHT = 25;
@@ -51,7 +48,7 @@ AnnotHighlightTree::AnnotHighlightTree()
     annotTreeHeight = INITIAL_TREE_HEIGHT;
 
     QStringList headerLabels;
-    headerLabels << HEADER_ANNOT_NAMES << HEADER_COLORS;
+    headerLabels << QObject::tr("Annotation") << QObject::tr("Color");
     setHeaderLabels(headerLabels);
 
     header()->resizeSection(COL_NUM_ANNOT_NAME, ANNOT_COLUMN_WIDTH);

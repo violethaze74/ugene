@@ -650,7 +650,7 @@ void MaEditorSequenceArea::centerPos(int pos) {
 }
 
 
-void MaEditorSequenceArea::updateHBarPosition(int base) {
+void MaEditorSequenceArea::updateHBarPosition(int base, bool repeatAction = false) {
     if (isAlignmentEmpty()) {
         shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
         return;
@@ -665,7 +665,7 @@ void MaEditorSequenceArea::updateHBarPosition(int base) {
     }
 }
 
-void MaEditorSequenceArea::updateVBarPosition(int seq) {
+void MaEditorSequenceArea::updateVBarPosition(int seq, bool repeatAction) {
     if (isAlignmentEmpty()) {
         svBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
         return;
@@ -1157,8 +1157,8 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* e) {
     if (e->buttons() & Qt::LeftButton) {
         QPoint newCurPos = coordToAbsolutePosOutOfRange(e->pos());
         if (isInRange(newCurPos)) {
-            updateHBarPosition(newCurPos.x());
-            updateVBarPosition(newCurPos.y());
+            updateHBarPosition(newCurPos.x(), true);
+            updateVBarPosition(newCurPos.y(), true);
         }
 
         if (shifting && editingEnabled) {
@@ -1172,11 +1172,12 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* e) {
 }
 
 void MaEditorSequenceArea::drawAll() {
-    QSize s = size();
+    QSize s = size() * devicePixelRatio();
     if (cachedView->size() != s) {
-//        assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
+        cachedView->setDevicePixelRatio(devicePixelRatio());
+        completeRedraw = true;
     }
     if (completeRedraw) {
         QPainter pCached(cachedView);

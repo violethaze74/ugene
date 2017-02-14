@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -145,9 +145,10 @@ void MSAEditorOffsetsViewWidget::updateView() {
 
 void MSAEditorOffsetsViewWidget::paintEvent(QPaintEvent*) {
     SAFE_POINT(isVisible(), "Attempting to paint an invisible widget", );
-    const QSize s = size();
+    const QSize s = size() * devicePixelRatio();
     if (s != cachedView.size()) {
         cachedView = QPixmap(s);
+        cachedView.setDevicePixelRatio(devicePixelRatio());
         completeRedraw = true;
     }
     if (completeRedraw) {

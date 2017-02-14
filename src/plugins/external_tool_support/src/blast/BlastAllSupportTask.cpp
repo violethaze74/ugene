@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -87,7 +87,7 @@ void BlastAllSupportTask::prepare(){
         return;
     }
     //Create ncbi.ini for windows or .ncbirc for unix like systems
-    //See issue UGENE-791 (https://ugene.unipro.ru/tracker/browse/UGENE-791)
+    //See issue UGENE-791 (https://ugene.net/tracker/browse/UGENE-791)
 #ifdef Q_OS_UNIX
     QString iniNCBIFile=tmpDir.absolutePath()+QString("/.ncbirc");
 #else

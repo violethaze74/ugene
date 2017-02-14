@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>366</width>
-    <height>352</height>
+    <height>358</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,20 +24,23 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="startPosBox">
+      <widget class="QLineEdit" name="startPosBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="inputMethodHints">
+        <set>Qt::ImhDigitsOnly</set>
+       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <number>1</number>
        </property>
-       <property name="maximum">
+       <property name="maximum" stdset="0">
         <number>500000</number>
        </property>
       </widget>
@@ -50,7 +53,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="endPosBox">
+      <widget class="QLineEdit" name="endPosBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -60,7 +63,7 @@
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <number>1</number>
        </property>
       </widget>

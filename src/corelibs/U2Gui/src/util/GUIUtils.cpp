@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -225,6 +225,17 @@ void GUIUtils::setWidgetWarning(QWidget *widget, bool value) {
     QPalette p = widget->palette();
     p.setColor(QPalette::Active, QPalette::Base, color);
     widget->setPalette(p);
+}
+
+void GUIUtils::showMessage(QWidget *widgetToPaintOn, QPainter& painter, const QString& message) {
+    painter.fillRect(widgetToPaintOn->rect(), Qt::gray);
+
+    QFontMetrics metrics(painter.font(), widgetToPaintOn);
+    painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(
+        message,
+        Qt::ElideRight,
+        widgetToPaintOn->rect().width()));
+    return;
 }
 
 } //endif

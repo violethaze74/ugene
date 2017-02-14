@@ -9,6 +9,11 @@
         <translation>Align with MUSCLE</translation>
     </message>
     <message>
+        <location filename="../src/MuscleAlignDialog.ui" line="28"/>
+        <source>Input and output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/MuscleAlignDialog.ui" line="36"/>
         <source>Input file</source>
         <translation>Input file</translation>
@@ -93,7 +98,9 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="59"/>
+        <location filename="../src/MuscleWorker.cpp" line="185"/>
+        <location filename="../src/MuscleWorker.cpp" line="190"/>
+        <location filename="../src/MuscleWorker.cpp" line="196"/>
         <source>Region should be set as &apos;start..end&apos;, start should be less than end, e.g. &apos;1..100&apos;</source>
         <translation>Region should be set as &apos;start..end&apos;, start should be less than end, e.g. &apos;1..100&apos;</translation>
     </message>
@@ -101,12 +108,12 @@
 <context>
     <name>U2::LocalWorkflow::MusclePrompter</name>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="125"/>
+        <location filename="../src/MuscleWorker.cpp" line="124"/>
         <source> from %1</source>
         <translation> from %1</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="133"/>
+        <location filename="../src/MuscleWorker.cpp" line="132"/>
         <source>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with MUSCLE using &quot;&lt;u&gt;%2&lt;/u&gt;&quot; mode.</source>
         <translation>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with MUSCLE using &quot;&lt;u&gt;%2&lt;/u&gt;&quot; mode.</translation>
     </message>
@@ -114,87 +121,87 @@
 <context>
     <name>U2::LocalWorkflow::MuscleWorker</name>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="63"/>
+        <location filename="../src/MuscleWorker.cpp" line="62"/>
         <source>Input MSA</source>
         <translation>Input MSA</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="65"/>
+        <location filename="../src/MuscleWorker.cpp" line="64"/>
         <source>Multiple sequence alignment</source>
         <translation>Multiple sequence alignment</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="74"/>
+        <location filename="../src/MuscleWorker.cpp" line="73"/>
         <source>Mode</source>
         <translation>Mode</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="77"/>
+        <location filename="../src/MuscleWorker.cpp" line="76"/>
         <source>Stable order</source>
         <translation>Stable order</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="82"/>
+        <location filename="../src/MuscleWorker.cpp" line="81"/>
         <source>Maximum number of iterations.</source>
         <translation>Maximum number of iterations.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="176"/>
+        <location filename="../src/MuscleWorker.cpp" line="175"/>
         <source>An empty MSA &apos;%1&apos; has been supplied to MUSCLE.</source>
         <translation>An empty MSA &apos;%1&apos; has been supplied to MUSCLE.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="64"/>
+        <location filename="../src/MuscleWorker.cpp" line="63"/>
         <source>Multiple sequence alignment to be processed.</source>
         <translation>Multiple sequence alignment to be processed.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="65"/>
+        <location filename="../src/MuscleWorker.cpp" line="64"/>
         <source>Result of alignment.</source>
         <translation>Result of alignment.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="81"/>
+        <location filename="../src/MuscleWorker.cpp" line="80"/>
         <source>Max iterations</source>
         <translation>Max iterations</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="83"/>
+        <location filename="../src/MuscleWorker.cpp" line="82"/>
         <source>Region to align</source>
         <translation>Region to align</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="84"/>
+        <location filename="../src/MuscleWorker.cpp" line="83"/>
         <source>Whole alignment or column range e.g. &lt;b&gt;1..100&lt;/b&gt;.</source>
         <translation>Whole alignment or column range e.g. &lt;b&gt;1..100&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="91"/>
+        <location filename="../src/MuscleWorker.cpp" line="90"/>
         <source>Align with MUSCLE</source>
         <translation>Align with MUSCLE</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="92"/>
+        <location filename="../src/MuscleWorker.cpp" line="91"/>
         <source>MUSCLE is public domain multiple alignment software for protein and nucleotide sequences.&lt;p&gt;&lt;dfn&gt;MUSCLE stands for MUltiple Sequence Comparison by Log-Expectation.&lt;/dfn&gt;&lt;/p&gt;</source>
         <translation>MUSCLE is public domain multiple alignment software for protein and nucleotide sequences.&lt;p&gt;&lt;dfn&gt;MUSCLE stands for MUltiple Sequence Comparison by Log-Expectation.&lt;/dfn&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="200"/>
+        <location filename="../src/MuscleWorker.cpp" line="199"/>
         <source>Region end position should be greater than start position</source>
         <translation>Region end position should be greater than start position</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="234"/>
+        <location filename="../src/MuscleWorker.cpp" line="233"/>
         <source>Aligned %1 with MUSCLE</source>
         <translation>Aligned %1 with MUSCLE</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="75"/>
+        <location filename="../src/MuscleWorker.cpp" line="74"/>
         <source>Selector of preset configurations, that give you the choice of optimizing accuracy, speed, or some compromise between the two. The default favors accuracy.</source>
         <translation>Selector of preset configurations, that give you the choice of optimizing accuracy, speed, or some compromise between the two. The default favors accuracy.</translation>
     </message>
     <message>
-        <location filename="../src/MuscleWorker.cpp" line="78"/>
+        <location filename="../src/MuscleWorker.cpp" line="77"/>
         <source>Do not rearrange aligned sequences (-stable switch of MUSCLE). &lt;p&gt;Otherwise, MUSCLE re-arranges sequences so that similar sequences are adjacent in the output file. This makes the alignment easier to evaluate by eye. </source>
         <translation>Do not rearrange aligned sequences (-stable switch of MUSCLE). &lt;p&gt;Otherwise, MUSCLE re-arranges sequences so that similar sequences are adjacent in the output file. This makes the alignment easier to evaluate by eye.</translation>
     </message>

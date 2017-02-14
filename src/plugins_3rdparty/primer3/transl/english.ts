@@ -540,7 +540,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="568"/>
-        <location filename="../src/Primer3Dialog.ui" line="2443"/>
+        <location filename="../src/Primer3Dialog.ui" line="2447"/>
         <source>Product Tm</source>
         <translation>Product Tm</translation>
     </message>
@@ -978,19 +978,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1509"/>
-        <location filename="../src/Primer3Dialog.ui" line="2760"/>
+        <location filename="../src/Primer3Dialog.ui" line="2766"/>
         <source>Hyb oligo size</source>
         <translation>Hyb oligo size</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1516"/>
-        <location filename="../src/Primer3Dialog.ui" line="2753"/>
+        <location filename="../src/Primer3Dialog.ui" line="2759"/>
         <source>Hyb oligo Tm</source>
         <translation>Hyb oligo Tm</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1523"/>
-        <location filename="../src/Primer3Dialog.ui" line="2767"/>
+        <location filename="../src/Primer3Dialog.ui" line="2773"/>
         <source>Hyb oligo GC%</source>
         <translation>Hyb oligo GC%</translation>
     </message>
@@ -1065,7 +1065,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1730"/>
-        <location filename="../src/Primer3Dialog.ui" line="2923"/>
+        <location filename="../src/Primer3Dialog.ui" line="2929"/>
         <source>Hyb oligo self complementarity</source>
         <translation>Hyb oligo self complementarity</translation>
     </message>
@@ -1275,42 +1275,41 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;There are two classes of weights: for some parameters there is a &apos;Lt&apos; (less than) and a &apos;Gt&apos; (greater than) weight. These are the weights that Primer3 uses when the value is less or greater than (respectively) the specified optimum.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2007"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;For Primers&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;For Primers&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2020"/>
+        <location filename="../src/Primer3Dialog.ui" line="2022"/>
         <source>Tm</source>
         <translation>Tm</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2027"/>
+        <location filename="../src/Primer3Dialog.ui" line="2029"/>
         <source>Size  </source>
         <translation>Size  </translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2034"/>
+        <location filename="../src/Primer3Dialog.ui" line="2036"/>
         <source>GC%</source>
         <translation>GC%</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2041"/>
-        <location filename="../src/Primer3Dialog.ui" line="2048"/>
-        <location filename="../src/Primer3Dialog.ui" line="2055"/>
-        <location filename="../src/Primer3Dialog.ui" line="2482"/>
-        <location filename="../src/Primer3Dialog.ui" line="2489"/>
-        <location filename="../src/Primer3Dialog.ui" line="2774"/>
-        <location filename="../src/Primer3Dialog.ui" line="2781"/>
-        <location filename="../src/Primer3Dialog.ui" line="2788"/>
+        <location filename="../src/Primer3Dialog.ui" line="2043"/>
+        <location filename="../src/Primer3Dialog.ui" line="2050"/>
+        <location filename="../src/Primer3Dialog.ui" line="2057"/>
+        <location filename="../src/Primer3Dialog.ui" line="2486"/>
+        <location filename="../src/Primer3Dialog.ui" line="2493"/>
+        <location filename="../src/Primer3Dialog.ui" line="2780"/>
+        <location filename="../src/Primer3Dialog.ui" line="2787"/>
+        <location filename="../src/Primer3Dialog.ui" line="2794"/>
         <source>Lt:</source>
         <translation>Lt:</translation>
     </message>
@@ -1327,60 +1326,60 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2110"/>
-        <location filename="../src/Primer3Dialog.ui" line="2117"/>
-        <location filename="../src/Primer3Dialog.ui" line="2124"/>
-        <location filename="../src/Primer3Dialog.ui" line="2496"/>
-        <location filename="../src/Primer3Dialog.ui" line="2503"/>
-        <location filename="../src/Primer3Dialog.ui" line="2843"/>
-        <location filename="../src/Primer3Dialog.ui" line="2850"/>
-        <location filename="../src/Primer3Dialog.ui" line="2857"/>
+        <location filename="../src/Primer3Dialog.ui" line="2112"/>
+        <location filename="../src/Primer3Dialog.ui" line="2119"/>
+        <location filename="../src/Primer3Dialog.ui" line="2126"/>
+        <location filename="../src/Primer3Dialog.ui" line="2500"/>
+        <location filename="../src/Primer3Dialog.ui" line="2507"/>
+        <location filename="../src/Primer3Dialog.ui" line="2849"/>
+        <location filename="../src/Primer3Dialog.ui" line="2856"/>
+        <location filename="../src/Primer3Dialog.ui" line="2863"/>
         <source>Gt:</source>
         <translation>Gt:</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2190"/>
+        <location filename="../src/Primer3Dialog.ui" line="2192"/>
         <source>Self complementarity</source>
         <translation>Self complementarity</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2197"/>
+        <location filename="../src/Primer3Dialog.ui" line="2199"/>
         <source>3&apos; self complementarity</source>
         <translation>3&apos; self complementarity</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2204"/>
+        <location filename="../src/Primer3Dialog.ui" line="2206"/>
         <source>#N&apos;s</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2211"/>
+        <location filename="../src/Primer3Dialog.ui" line="2213"/>
         <source>Mispriming</source>
         <translation>Mispriming</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2218"/>
-        <location filename="../src/Primer3Dialog.ui" line="3282"/>
+        <location filename="../src/Primer3Dialog.ui" line="2220"/>
+        <location filename="../src/Primer3Dialog.ui" line="3288"/>
         <source>Sequence quality</source>
         <translation>Sequence quality</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2225"/>
+        <location filename="../src/Primer3Dialog.ui" line="2227"/>
         <source>End sequence quality</source>
         <translation>End sequence quality</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2232"/>
+        <location filename="../src/Primer3Dialog.ui" line="2234"/>
         <source>Position penalty</source>
         <translation>Position penalty</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2239"/>
+        <location filename="../src/Primer3Dialog.ui" line="2241"/>
         <source>End stability</source>
         <translation>End stability</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2246"/>
+        <location filename="../src/Primer3Dialog.ui" line="2248"/>
         <source>Template mispriming</source>
         <translation>Template mispriming</translation>
     </message>
@@ -1409,20 +1408,19 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Determines the overall weight of the position penalty in calculating the penalty for a primer.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2423"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;For Primer Pairs&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;For Primer Pairs&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2436"/>
+        <location filename="../src/Primer3Dialog.ui" line="2440"/>
         <source>Product size</source>
         <translation>Product size</translation>
     </message>
@@ -1439,37 +1437,37 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Penalty weight for corressponding parameter of a primer pair less than (Lt) or greater than (Gt) the optimal value. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2553"/>
+        <location filename="../src/Primer3Dialog.ui" line="2557"/>
         <source>Tm difference</source>
         <translation>Tm difference</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2560"/>
+        <location filename="../src/Primer3Dialog.ui" line="2564"/>
         <source>Any complementarity</source>
         <translation>Any complementarity</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2567"/>
+        <location filename="../src/Primer3Dialog.ui" line="2571"/>
         <source>3&apos; complementarity</source>
         <translation>3&apos; complementarity</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2574"/>
+        <location filename="../src/Primer3Dialog.ui" line="2578"/>
         <source>Pair mispriming</source>
         <translation>Pair mispriming</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2581"/>
+        <location filename="../src/Primer3Dialog.ui" line="2585"/>
         <source>Primer penalty weight</source>
         <translation>Primer penalty weight</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2588"/>
+        <location filename="../src/Primer3Dialog.ui" line="2592"/>
         <source>Hyb oligo penalty weight</source>
         <translation>Hyb oligo penalty weight</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2595"/>
+        <location filename="../src/Primer3Dialog.ui" line="2599"/>
         <source>Primer pair template mispriming weight</source>
         <translation>Primer pair template mispriming weight</translation>
     </message>
@@ -1486,13 +1484,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2740"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;For Hyb Oligos&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -1511,17 +1508,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2930"/>
+        <location filename="../src/Primer3Dialog.ui" line="2936"/>
         <source>Hyb oligo #N&apos;s</source>
         <translation>Hyb oligo #N&apos;s</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2937"/>
+        <location filename="../src/Primer3Dialog.ui" line="2943"/>
         <source>Hyb oligo mishybing</source>
         <translation>Hyb oligo mishybing</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2944"/>
+        <location filename="../src/Primer3Dialog.ui" line="2950"/>
         <source>Hyb oligo sequence quality</source>
         <translation>Hyb oligo sequence quality</translation>
     </message>
@@ -1538,7 +1535,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3033"/>
+        <location filename="../src/Primer3Dialog.ui" line="3039"/>
         <source>RT-PCR</source>
         <translation>RT-PCR</translation>
     </message>
@@ -1569,12 +1566,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Checking this option will result in ignoring &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-style:italic;&quot;&gt;Excluded&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; and &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-style:italic;&quot;&gt;Target Regions&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; from Main section.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3045"/>
+        <location filename="../src/Primer3Dialog.ui" line="3051"/>
         <source>Design primers for RT-PCR analysis</source>
         <translation>Design primers for RT-PCR analysis</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3065"/>
+        <location filename="../src/Primer3Dialog.ui" line="3071"/>
         <source>Exon annotation name:</source>
         <translation>Exon annotation name:</translation>
     </message>
@@ -1583,87 +1580,87 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;The name of the annotation which defines the exons in the mRNA sequence.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3075"/>
+        <location filename="../src/Primer3Dialog.ui" line="3081"/>
         <source>exon</source>
         <translation>exon</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3100"/>
+        <location filename="../src/Primer3Dialog.ui" line="3106"/>
         <source>Minimum exon junction overlap size</source>
         <translation>Minimum exon junction overlap size</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3177"/>
+        <location filename="../src/Primer3Dialog.ui" line="3183"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the range is set, primer search will be restricted to selected exons. For example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the range is larger than actual exon range or the starting exon number exceeds number of exons, error message is shown. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the range is set, primer search will be restricted to selected exons. For example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the range is larger than actual exon range or the starting exon number exceeds number of exons, error message is shown. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3218"/>
+        <location filename="../src/Primer3Dialog.ui" line="3224"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This number of found primer pairs wil bel queried to check if they fullfill the requirements for RTPCR.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This number of found primer pairs wil bel queried to check if they fullfill the requirements for RTPCR.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3276"/>
+        <location filename="../src/Primer3Dialog.ui" line="3282"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3289"/>
+        <location filename="../src/Primer3Dialog.ui" line="3295"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A list of space separated integers. There must be exactly one integer for each base in the Source Sequence if this argument is non-empty. High numbers indicate high confidence in the base call at that position and low numbers indicate low confidence in the base call at that position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A list of space separated integers. There must be exactly one integer for each base in the Source Sequence if this argument is non-empty. High numbers indicate high confidence in the base call at that position and low numbers indicate low confidence in the base call at that position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3311"/>
+        <location filename="../src/Primer3Dialog.ui" line="3317"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3334"/>
+        <location filename="../src/Primer3Dialog.ui" line="3340"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within the 3&apos; pentamer of a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum sequence quality allowed within the 3&apos; pentamer of a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3357"/>
+        <location filename="../src/Primer3Dialog.ui" line="3363"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3380"/>
+        <location filename="../src/Primer3Dialog.ui" line="3386"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum legal sequence quality.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3396"/>
+        <location filename="../src/Primer3Dialog.ui" line="3402"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section allows to set output annotations&apos; settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section allows to set output annotations&apos; settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3451"/>
+        <location filename="../src/Primer3Dialog.ui" line="3457"/>
         <source>Help</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3471"/>
+        <location filename="../src/Primer3Dialog.ui" line="3477"/>
         <source>Save settings</source>
         <translation>Save settings</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3478"/>
+        <location filename="../src/Primer3Dialog.ui" line="3484"/>
         <source>Load settings</source>
         <translation>Load settings</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3485"/>
+        <location filename="../src/Primer3Dialog.ui" line="3491"/>
         <source>Reset form</source>
         <translation>Reset form</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3492"/>
+        <location filename="../src/Primer3Dialog.ui" line="3498"/>
         <source>Pick primers</source>
         <translation>Pick primers</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3057"/>
+        <location filename="../src/Primer3Dialog.ui" line="3063"/>
         <source>mRNA sequence</source>
         <translation>mRNA sequence</translation>
     </message>
@@ -1828,96 +1825,111 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section describes &amp;quot;penalty weights&amp;quot;, which allow the user to modify the criteria that Primer3 uses to select the &amp;quot;best&amp;quot; primers.&lt;/p&gt;&lt;p&gt;There are two classes of weights: for some parameters there is a &apos;Lt&apos; (less than) and a &apos;Gt&apos; (greater than) weight. These are the weights that Primer3 uses when the value is less or greater than (respectively) the specified optimum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2068"/>
-        <location filename="../src/Primer3Dialog.ui" line="2084"/>
-        <location filename="../src/Primer3Dialog.ui" line="2100"/>
-        <location filename="../src/Primer3Dialog.ui" line="2137"/>
-        <location filename="../src/Primer3Dialog.ui" line="2153"/>
-        <location filename="../src/Primer3Dialog.ui" line="2169"/>
+        <location filename="../src/Primer3Dialog.ui" line="2013"/>
+        <source>Primers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="2070"/>
+        <location filename="../src/Primer3Dialog.ui" line="2086"/>
+        <location filename="../src/Primer3Dialog.ui" line="2102"/>
+        <location filename="../src/Primer3Dialog.ui" line="2139"/>
+        <location filename="../src/Primer3Dialog.ui" line="2155"/>
+        <location filename="../src/Primer3Dialog.ui" line="2171"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2259"/>
-        <location filename="../src/Primer3Dialog.ui" line="2275"/>
-        <location filename="../src/Primer3Dialog.ui" line="2291"/>
-        <location filename="../src/Primer3Dialog.ui" line="2307"/>
-        <location filename="../src/Primer3Dialog.ui" line="2323"/>
-        <location filename="../src/Primer3Dialog.ui" line="2339"/>
-        <location filename="../src/Primer3Dialog.ui" line="2371"/>
-        <location filename="../src/Primer3Dialog.ui" line="2387"/>
+        <location filename="../src/Primer3Dialog.ui" line="2261"/>
+        <location filename="../src/Primer3Dialog.ui" line="2277"/>
+        <location filename="../src/Primer3Dialog.ui" line="2293"/>
+        <location filename="../src/Primer3Dialog.ui" line="2309"/>
+        <location filename="../src/Primer3Dialog.ui" line="2325"/>
+        <location filename="../src/Primer3Dialog.ui" line="2341"/>
+        <location filename="../src/Primer3Dialog.ui" line="2373"/>
+        <location filename="../src/Primer3Dialog.ui" line="2389"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2355"/>
+        <location filename="../src/Primer3Dialog.ui" line="2357"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the overall weight of the position penalty in calculating the penalty for a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the overall weight of the position penalty in calculating the penalty for a primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2456"/>
-        <location filename="../src/Primer3Dialog.ui" line="2472"/>
-        <location filename="../src/Primer3Dialog.ui" line="2516"/>
-        <location filename="../src/Primer3Dialog.ui" line="2532"/>
+        <location filename="../src/Primer3Dialog.ui" line="2431"/>
+        <source>Primer Pairs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="2460"/>
+        <location filename="../src/Primer3Dialog.ui" line="2476"/>
+        <location filename="../src/Primer3Dialog.ui" line="2520"/>
+        <location filename="../src/Primer3Dialog.ui" line="2536"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer pair less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a primer pair less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2608"/>
-        <location filename="../src/Primer3Dialog.ui" line="2624"/>
-        <location filename="../src/Primer3Dialog.ui" line="2640"/>
-        <location filename="../src/Primer3Dialog.ui" line="2656"/>
-        <location filename="../src/Primer3Dialog.ui" line="2672"/>
-        <location filename="../src/Primer3Dialog.ui" line="2688"/>
-        <location filename="../src/Primer3Dialog.ui" line="2704"/>
+        <location filename="../src/Primer3Dialog.ui" line="2612"/>
+        <location filename="../src/Primer3Dialog.ui" line="2628"/>
+        <location filename="../src/Primer3Dialog.ui" line="2644"/>
+        <location filename="../src/Primer3Dialog.ui" line="2660"/>
+        <location filename="../src/Primer3Dialog.ui" line="2676"/>
+        <location filename="../src/Primer3Dialog.ui" line="2692"/>
+        <location filename="../src/Primer3Dialog.ui" line="2708"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for a primer pair parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2801"/>
-        <location filename="../src/Primer3Dialog.ui" line="2817"/>
-        <location filename="../src/Primer3Dialog.ui" line="2833"/>
-        <location filename="../src/Primer3Dialog.ui" line="2870"/>
-        <location filename="../src/Primer3Dialog.ui" line="2886"/>
-        <location filename="../src/Primer3Dialog.ui" line="2902"/>
+        <location filename="../src/Primer3Dialog.ui" line="2750"/>
+        <source>Hyb Oligos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="2807"/>
+        <location filename="../src/Primer3Dialog.ui" line="2823"/>
+        <location filename="../src/Primer3Dialog.ui" line="2839"/>
+        <location filename="../src/Primer3Dialog.ui" line="2876"/>
+        <location filename="../src/Primer3Dialog.ui" line="2892"/>
+        <location filename="../src/Primer3Dialog.ui" line="2908"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for corressponding parameter of a internal oligo less than (Lt) or greater than (Gt) the optimal value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="2957"/>
-        <location filename="../src/Primer3Dialog.ui" line="2973"/>
-        <location filename="../src/Primer3Dialog.ui" line="2989"/>
-        <location filename="../src/Primer3Dialog.ui" line="3005"/>
+        <location filename="../src/Primer3Dialog.ui" line="2963"/>
+        <location filename="../src/Primer3Dialog.ui" line="2979"/>
+        <location filename="../src/Primer3Dialog.ui" line="2995"/>
+        <location filename="../src/Primer3Dialog.ui" line="3011"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Penalty weight for an internal oligo parameter different from predefined optimum value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3036"/>
+        <location filename="../src/Primer3Dialog.ui" line="3042"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify if primer product must overlap exon-exon junction or span intron. This only applies when designing primers for a cDNA (mRNA) sequence with annotated exons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify if primer product must overlap exon-exon junction or span intron. This only applies when designing primers for a cDNA (mRNA) sequence with annotated exons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3042"/>
+        <location filename="../src/Primer3Dialog.ui" line="3048"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This feature allows to specify if primer product must span intron-exon boundaries.&lt;/p&gt;&lt;p&gt;Checking this option will result in ignoring &lt;span style=&quot; font-style:italic;&quot;&gt;Excluded&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;Target Regions&lt;/span&gt; from Main section.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This feature allows to specify if primer product must span intron-exon boundaries.&lt;/p&gt;&lt;p&gt;Checking this option will result in ignoring &lt;span style=&quot; font-style:italic;&quot;&gt;Excluded&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;Target Regions&lt;/span&gt; from Main section.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3072"/>
+        <location filename="../src/Primer3Dialog.ui" line="3078"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name of the annotation which defines the exons in the mRNA sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name of the annotation which defines the exons in the mRNA sequence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3112"/>
+        <location filename="../src/Primer3Dialog.ui" line="3118"/>
         <source>At 5&apos; side (bp):</source>
         <translation>At 5&apos; side (bp):</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3142"/>
+        <location filename="../src/Primer3Dialog.ui" line="3148"/>
         <source>At 3&apos;side (bp)</source>
         <translation>At 3&apos;side (bp)</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3164"/>
+        <location filename="../src/Primer3Dialog.ui" line="3170"/>
         <source>Exon range:</source>
         <translation>Exon range:</translation>
     </message>
@@ -1926,12 +1938,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If the range is set, primer search will be restricted to selected exons. For example:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If the range is larger than actual exon range or the starting exon number exceeds number of exons, error message is shown. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3199"/>
+        <location filename="../src/Primer3Dialog.ui" line="3205"/>
         <source>Primer product must span at least one intron on the corresponding genomic DNA</source>
         <translation>Primer product must span at least one intron on the corresponding genomic DNA</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3211"/>
+        <location filename="../src/Primer3Dialog.ui" line="3217"/>
         <source>Max number of pairs to query:</source>
         <translation>Max number of pairs to query:</translation>
     </message>
@@ -1940,7 +1952,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;This number of found primer pairs wil bel queried to check if they fullfill the requirements for RTPCR&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3273"/>
+        <location filename="../src/Primer3Dialog.ui" line="3279"/>
         <source>Sequence Quality</source>
         <translation>Sequence Quality</translation>
     </message>
@@ -1969,7 +1981,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;A list of space separated integers. There must be exactly one integer for each base in the Source Sequence if this argument is non-empty. High numbers indicate high confidence in the base call at that position and low numbers indicate low confidence in the base call at that position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3298"/>
+        <location filename="../src/Primer3Dialog.ui" line="3304"/>
         <source>Min sequence quality:</source>
         <translation>Min sequence quality:</translation>
     </message>
@@ -1978,7 +1990,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">The minimum sequence quality allowed within a primer.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3321"/>
+        <location filename="../src/Primer3Dialog.ui" line="3327"/>
         <source>Min 3&apos; sequence quality:</source>
         <translation>Min 3&apos; sequence quality:</translation>
     </message>
@@ -1999,7 +2011,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;This section allows to set output annotations&apos; settings.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3344"/>
+        <location filename="../src/Primer3Dialog.ui" line="3350"/>
         <source>Sequence quality range min:</source>
         <translation>Sequence quality range min:</translation>
     </message>
@@ -2008,7 +2020,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">The minimum legal sequence quality.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3367"/>
+        <location filename="../src/Primer3Dialog.ui" line="3373"/>
         <source>Sequence quality range max:</source>
         <translation>Sequence quality range max:</translation>
     </message>
@@ -2017,7 +2029,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">The maximum legal sequence quality.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="3393"/>
+        <location filename="../src/Primer3Dialog.ui" line="3399"/>
         <source>Result Settings</source>
         <translation>Result Settings</translation>
     </message>
@@ -2190,127 +2202,132 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::Primer3Dialog</name>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="82"/>
+        <location filename="../src/Primer3Dialog.cpp" line="83"/>
         <source>NONE</source>
         <translation>NONE</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="83"/>
+        <location filename="../src/Primer3Dialog.cpp" line="84"/>
         <source>HUMAN</source>
         <translation>HUMAN</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="84"/>
+        <location filename="../src/Primer3Dialog.cpp" line="85"/>
         <source>RODENT_AND_SIMPLE</source>
         <translation>RODENT_AND_SIMPLE</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="85"/>
+        <location filename="../src/Primer3Dialog.cpp" line="86"/>
         <source>RODENT</source>
         <translation>RODENT</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="86"/>
+        <location filename="../src/Primer3Dialog.cpp" line="87"/>
         <source>DROSOPHILA</source>
         <translation>DROSOPHILA</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="438"/>
+        <location filename="../src/Primer3Dialog.cpp" line="439"/>
         <source>Start Codon Position</source>
         <translation>Start Codon Position</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="452"/>
+        <location filename="../src/Primer3Dialog.cpp" line="453"/>
         <source>Product Min Tm</source>
         <translation>Product Min Tm</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="466"/>
+        <location filename="../src/Primer3Dialog.cpp" line="467"/>
         <source>Product Opt Tm</source>
         <translation>Product Opt Tm</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="480"/>
+        <location filename="../src/Primer3Dialog.cpp" line="481"/>
         <source>Product Max Tm</source>
         <translation>Product Max Tm</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="508"/>
+        <location filename="../src/Primer3Dialog.cpp" line="509"/>
         <source>Inside Penalty</source>
         <translation>Inside Penalty</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="522"/>
+        <location filename="../src/Primer3Dialog.cpp" line="523"/>
         <source>Internal Oligo Opt Tm</source>
         <translation>Internal Oligo Opt Tm</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="534"/>
+        <location filename="../src/Primer3Dialog.cpp" line="535"/>
         <source>Excluded Regions</source>
         <translation>Excluded Regions</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="546"/>
+        <location filename="../src/Primer3Dialog.cpp" line="547"/>
         <source>Internal Oligo Excluded Regions</source>
         <translation>Internal Oligo Excluded Regions</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="664"/>
+        <location filename="../src/Primer3Dialog.cpp" line="665"/>
         <source>Included region is too small for current product size ranges</source>
         <translation>Included region is too small for current product size ranges</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="671"/>
+        <location filename="../src/Primer3Dialog.cpp" line="672"/>
         <source>Product Size Ranges</source>
         <translation>Product Size Ranges</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="595"/>
+        <location filename="../src/Primer3Dialog.cpp" line="596"/>
         <source>Sequence Quality</source>
         <translation>Sequence Quality</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="703"/>
+        <location filename="../src/Primer3Dialog.cpp" line="698"/>
+        <source>Cannot create an annotation object. Please check settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.cpp" line="712"/>
         <source>Save primer settings</source>
         <translation>Save primer settings</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="785"/>
+        <location filename="../src/Primer3Dialog.cpp" line="794"/>
         <source>Load settings</source>
         <translation>Load settings</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="795"/>
+        <location filename="../src/Primer3Dialog.cpp" line="804"/>
         <source>Can not load settings file: invalid format.</source>
         <translation>Can not load settings file: invalid format.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="494"/>
+        <location filename="../src/Primer3Dialog.cpp" line="495"/>
         <source>Opt GC%</source>
         <translation>Opt GC%</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="558"/>
+        <location filename="../src/Primer3Dialog.cpp" line="559"/>
         <source>Targets</source>
         <translation>Targets</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="602"/>
+        <location filename="../src/Primer3Dialog.cpp" line="603"/>
         <source>Sequence quality list length must be equal to the sequence length</source>
         <translation>Sequence quality list length must be equal to the sequence length</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="624"/>
+        <location filename="../src/Primer3Dialog.cpp" line="625"/>
         <source>Can&apos;t pick hyb oligo and only one primer</source>
         <translation>Can&apos;t pick hyb oligo and only one primer</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="644"/>
+        <location filename="../src/Primer3Dialog.cpp" line="645"/>
         <source>Nothing to pick</source>
         <translation>Nothing to pick</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="682"/>
+        <location filename="../src/Primer3Dialog.cpp" line="683"/>
         <source>The field &apos;%1&apos; has invalid value</source>
         <translation>The field &apos;%1&apos; has invalid value</translation>
     </message>

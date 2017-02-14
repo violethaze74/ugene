@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,7 +37,6 @@
 
 namespace U2 {
 
-static const QString OUT_DIR = QObject::tr("Workflow-run output");
 static const QString BAD_CHARS = "\\*\\?\\|\\\"\\:";
 
 OutputFileDialog::OutputFileDialog(RunFileSystem *_rfs, bool _saveDir, CompletionFiller *filler, QWidget *parent)
@@ -47,6 +46,11 @@ OutputFileDialog::OutputFileDialog(RunFileSystem *_rfs, bool _saveDir, Completio
     addDirButton->setIcon(QIcon(":U2Designer/images/add_directory.png"));
     absolutePathButton->setIcon(QIcon(":U2Designer/images/outside.png"));
     settingsButton->setIcon(QIcon(":U2Designer/images/settings.png"));
+    QPushButton *saveButton = buttonBox->button(QDialogButtonBox::Save);
+    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    saveButton->setText(tr("Save"));
+    cancelButton->setText(tr("Cancel"));
+
     if (saveDir) {
         nameWidget->setVisible(false);
         setWindowTitle(tr("Save a directory"));
@@ -163,7 +167,7 @@ void OutputFileDialog::updateSaveButton() {
     nameEdit->setToolTip(path);
     QString dir = selectedPath();
     if (dir.isEmpty()) {
-        dir = OUT_DIR;
+        dir = QObject::tr("Workflow-run output");
     } else {
         dir += "/";
     }
@@ -203,9 +207,14 @@ CreateDirectoryDialog::CreateDirectoryDialog(RunFileSystem *_rfs, const QString 
 : QDialog(parent), rfs(_rfs), parentDir(_parentDir)
 {
     setupUi(this);
+    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+
+    okButton->setText(tr("OK"));
+    cancelButton->setText(tr("Cancel"));
 
     if (parentDir.isEmpty()) {
-        dirLabel->setText(OUT_DIR);
+        dirLabel->setText(QObject::tr("Workflow-run output"));
     } else {
         parentDir += "/";
         dirLabel->setText(parentDir);

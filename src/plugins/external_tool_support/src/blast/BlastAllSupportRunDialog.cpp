@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -45,6 +45,9 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OpenViewTask.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #if (QT_VERSION < 0x050000) //Qt 5
 #include <QtGui/QToolButton>
 #include <QtGui/QMessageBox>
@@ -59,9 +62,10 @@ namespace U2 {
 
 ////////////////////////////////////////
 //BlastAllSupportRunDialog
-BlastAllSupportRunDialog::BlastAllSupportRunDialog(U2SequenceObject *dnaso, QString &lastDBPath, QString &lastDBName, QWidget *parent)
-: BlastRunCommonDialog(parent, BlastAll, false, QStringList()), dnaso(dnaso), lastDBPath(lastDBPath), lastDBName(lastDBName)
+BlastAllSupportRunDialog::BlastAllSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent)
+: BlastRunCommonDialog(parent, BlastAll, false, QStringList()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx)
 {
+    dnaso = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
     ca_m.hideAnnotationType = true;
     ca_m.hideAnnotationName = true;
@@ -69,14 +73,11 @@ BlastAllSupportRunDialog::BlastAllSupportRunDialog(U2SequenceObject *dnaso, QStr
     ca_m.sequenceObjectRef = GObjectReference(dnaso);
     ca_m.sequenceLen = dnaso->getSequenceLength();
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
-    //lowerCaseCheckBox->hide();
-    QWidget *wdgt = ca_c->getWidget();
-    wdgt->setMinimumHeight(150);
-    verticalLayout_4->addWidget(wdgt);
+    annotationWidgetLayout->addWidget(ca_c->getWidget());
 
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
-
+    
     programName->removeItem(2);//gpu-blastp
     if(dnaso->getAlphabet()->getType() == DNAAlphabet_AMINO){
         programName->removeItem(0);//blastn
@@ -129,6 +130,9 @@ void BlastAllSupportRunDialog::sl_runQuery(){
     lastDBPath = dbSelector->databasePathLineEdit->text();
     lastDBName = dbSelector->baseNameLineEdit->text();
     settings.outputType = 7;//By default set output file format to xml
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(ca_c->getModel().getAnnotationObject());
+    }
     accept();
 }
 ////////////////////////////////////////
@@ -136,11 +140,11 @@ void BlastAllSupportRunDialog::sl_runQuery(){
 BlastAllWithExtFileSpecifySupportRunDialog::BlastAllWithExtFileSpecifySupportRunDialog(QString &lastDBPath, QString &lastDBName, QWidget *parent)
 : BlastRunCommonDialog(parent, BlastAll, false, QStringList()), lastDBPath(lastDBPath), lastDBName(lastDBName), hasValidInput(false)
 {
-    ca_c=NULL;
-    wasNoOpenProject=false;
+    ca_c = NULL;
+    wasNoOpenProject = false;
     //create input file widget
     QWidget *widget = new QWidget(parent);
-    inputFileLineEdit= new FileLineEdit("","", false, widget);
+    inputFileLineEdit = new FileLineEdit("","", false, widget);
     inputFileLineEdit->setReadOnly(true);
     inputFileLineEdit->setText("");
     QToolButton * selectToolPathButton = new QToolButton(widget);
@@ -158,7 +162,7 @@ BlastAllWithExtFileSpecifySupportRunDialog::BlastAllWithExtFileSpecifySupportRun
     layout->addWidget(inputFileLineEdit);
     layout->addWidget(selectToolPathButton);
 
-    QGroupBox* inputFileGroupBox=new QGroupBox(tr("Select input file"),widget);
+    QGroupBox* inputFileGroupBox = new QGroupBox(tr("Select input file"),widget);
     inputFileGroupBox->setLayout(layout);
     QBoxLayout* parentLayout = qobject_cast<QBoxLayout*>(this->layout());
     assert(parentLayout);
@@ -285,9 +289,7 @@ void BlastAllWithExtFileSpecifySupportRunDialog::tryApplyDoc(Document *doc) {
     ca_m.defaultIsNewDoc = true;
     if (NULL == ca_c) {
         ca_c = new CreateAnnotationWidgetController(ca_m, this);
-        QWidget *wdgt = ca_c->getWidget();
-        wdgt->setMinimumHeight(150);
-        verticalLayout_4->addWidget(wdgt);
+        annotationWidgetLayout->addWidget(ca_c->getWidget());
     } else {
         ca_c->updateWidgetForAnnotationModel(ca_m);
     }

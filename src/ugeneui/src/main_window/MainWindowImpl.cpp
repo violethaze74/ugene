@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -402,10 +402,10 @@ void MainWindowImpl::setShutDownInProcess(bool flag) {
 }
 
 void MainWindowImpl::sl_visitWeb() {
-    GUIUtils::runWebBrowser("http://ugene.unipro.ru");
+    GUIUtils::runWebBrowser("http://ugene.net");
 }
 void MainWindowImpl::sl_viewOnlineDocumentation(){
-    GUIUtils::runWebBrowser("http://ugene.unipro.ru/documentation.html");
+    GUIUtils::runWebBrowser("http://ugene.net/documentation.html");
 }
 
 void MainWindowImpl::sl_openManualAction()
@@ -486,7 +486,7 @@ void MainWindowImpl::sl_installToPathAction() {
 void MainWindowImpl::openManual(const QString& name){
     QFileInfo fileInfo( QString(PATH_PREFIX_DATA)+":"+"/manuals/" + name );
     if(!fileInfo.exists()){
-        GUIUtils::runWebBrowser(QString("http://ugene.unipro.ru/downloads/") + name);
+        GUIUtils::runWebBrowser(QString("http://ugene.net/downloads/") + name);
     }else{
         if(!QDesktopServices::openUrl(QUrl("file:///"+fileInfo.absoluteFilePath()))){
             QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
@@ -500,7 +500,7 @@ void MainWindowImpl::openManual(const QString& name){
 
             switch (ret) {
                case QMessageBox::Yes:
-                   GUIUtils::runWebBrowser("http://ugene.unipro.ru/documentation.html");
+                   GUIUtils::runWebBrowser("http://ugene.net/documentation.html");
                    break;
                case QMessageBox::No:
                    return;
@@ -588,7 +588,7 @@ QMdiSubWindow* FixedMdiArea::addSubWindow(QWidget* widget)
 }
 
 void FixedMdiArea::tileSubWindows() {
-    // A fix for https://local.ugene.unipro.ru/tracker/browse/UGENE-4361
+    // A fix for https://local.ugene.net/tracker/browse/UGENE-4361
     // An appropriate Qt bug: https://bugreports.qt.io/browse/QTBUG-29758
     // After Qt bug fixing just remove this method.
 

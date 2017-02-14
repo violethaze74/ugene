@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList &hitCountCo
 {
     ui = new Ui_BreakpointHitCountDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18220911");
+    new HelpButton(this, ui->buttonBox, "19760043");
 
     ui->hitConditionCombo->addItems(hitCountConditions);
     ui->hitConditionCombo->setCurrentIndex(hitCountConditions.indexOf(conditionOnLaunch));
@@ -69,6 +69,11 @@ BreakpointHitCountDialog::BreakpointHitCountDialog(const QStringList &hitCountCo
 
     QPushButton *resetButton = ui->buttonBox->button(QDialogButtonBox::Reset);
     QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton *cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
+
+    resetButton->setText(tr("Reset"));
+    okButton->setText(tr("OK"));
+    cancelButton->setText(tr("Cancel"));
 
     connect(resetButton, SIGNAL(clicked()), this, SLOT(sl_resetHitCount()));
     connect(okButton, SIGNAL(clicked()), this, SLOT(sl_dialogAccepted()));

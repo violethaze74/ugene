@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ const QString AutoAnnotationsADVAction::ACTION_NAME("AutoAnnotationUpdateAction"
 
 AutoAnnotationsADVAction::AutoAnnotationsADVAction(ADVSequenceWidget* v,
                                                    AutoAnnotationObject* obj)
-: ADVSequenceWidgetAction(ACTION_NAME, tr("Automatic Annotations Highlighting")), aaObj(obj), updatesCount(0)
+: ADVSequenceWidgetAction(ACTION_NAME, tr("Automatic annotations highlighting")), aaObj(obj), updatesCount(0)
 {
     seqWidget = v;
     addToBar = true;

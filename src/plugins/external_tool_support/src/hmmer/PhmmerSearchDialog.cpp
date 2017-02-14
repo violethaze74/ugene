@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,6 +36,9 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #include "PhmmerSearchTask.h"
 #include "PhmmerSearchDialog.h"
 
@@ -47,12 +50,22 @@ const QString PhmmerSearchDialog::DOM_E_MINUS_PREFIX         = "1E";
 const QString PhmmerSearchDialog::ANNOTATIONS_DEFAULT_NAME   = "signal";
 
 PhmmerSearchDialog::PhmmerSearchDialog(U2SequenceObject *seqObj, QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent), seqCtx(NULL)
 {
+    init(seqObj);
+}
+
+PhmmerSearchDialog::PhmmerSearchDialog(ADVSequenceObjectContext *seqCtx, QWidget *parent)
+    : QDialog(parent), seqCtx(seqCtx)
+{
+    init(seqCtx->getSequenceObject());
+}
+
+void PhmmerSearchDialog::init(U2SequenceObject *seqObj){
     assert(NULL != seqObj);
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "18220561");
+    new HelpButton(this, buttonBox, "19759693");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -183,6 +196,9 @@ void PhmmerSearchDialog::accept() {
     if (!err.isEmpty()) {
         QMessageBox::critical(this, tr("Error: bad arguments!"), err);
         return;
+    }
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(annotationsWidgetController->getModel().getAnnotationObject());
     }
 
     AppContext::getTaskScheduler()->registerTopLevelTask(new PhmmerSearchTask(model.phmmerSettings));

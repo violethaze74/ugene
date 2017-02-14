@@ -93,7 +93,8 @@ HEADERS += src/ABIFormat.h \
            src/sqlite_dbi/assembly/RTreeAssemblyAdapter.h \
            src/sqlite_dbi/assembly/SingleTableAssemblyAdapter.h \
            src/sqlite_dbi/util/SqliteUpgrader.h \
-           src/sqlite_dbi/util/SqliteUpgraderFrom_0_To_1_13.cpp \
+           src/sqlite_dbi/util/SqliteUpgraderFrom_0_To_1_13.h \
+           src/sqlite_dbi/util/SqliteUpgraderFrom_1_13_To_1_25.h \
            src/tasks/BgzipTask.h \
            src/tasks/ConvertAssemblyToSamTask.h \
            src/tasks/ConvertFileTask.h \
@@ -102,6 +103,7 @@ HEADERS += src/ABIFormat.h \
            src/tasks/MysqlUpgradeTask.h \
            src/util/AssemblyAdapter.h \
            src/util/AssemblyPackAlgorithm.h \
+           src/util/PairedFastqComparator.h \
            src/util/SnpeffInfoParser.h
 
 SOURCES += src/ABIFormat.cpp \
@@ -195,6 +197,7 @@ SOURCES += src/ABIFormat.cpp \
            src/sqlite_dbi/assembly/SingleTableAssemblyAdapter.cpp \
            src/sqlite_dbi/util/SqliteUpgrader.cpp \
            src/sqlite_dbi/util/SqliteUpgraderFrom_0_To_1_13.cpp \
+           src/sqlite_dbi/util/SqliteUpgraderFrom_1_13_To_1_25.cpp \
            src/tasks/BgzipTask.cpp \
            src/tasks/ConvertAssemblyToSamTask.cpp \
            src/tasks/ConvertFileTask.cpp \
@@ -202,6 +205,7 @@ SOURCES += src/ABIFormat.cpp \
            src/tasks/MergeBamTask.cpp \
            src/tasks/MysqlUpgradeTask.cpp \
            src/util/AssemblyPackAlgorithm.cpp \
+           src/util/PairedFastqComparator.cpp \
            src/util/SnpeffInfoParser.cpp
 
 RESOURCES += U2Formats.qrc

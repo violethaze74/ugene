@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -86,30 +86,32 @@ static const QMap<char, QColor> nucleotideColorScheme = initDefaultColorSheme();
 static const QList<char> assemblyAlphabet = nucleotideColorScheme.keys();
 static const QMap<char, TwoChars> extendedPairs = initExtendedPairs();
 
-static void drawBackground(QPixmap &img, const QColor & topColor, const QColor &bottomColor) {
+static void drawBackground(QPixmap &img, const QSize &size, const QColor & topColor, const QColor &bottomColor) {
     QPainter p(&img);
 
     //TODO invent something greater
-    QLinearGradient linearGrad( QPointF(0, 0), QPointF(img.width(), img.height()));
+    QLinearGradient linearGrad( QPointF(0, 0), QPointF(size.width(), size.height()));
     linearGrad.setColorAt(0, QColor::fromRgb(topColor.red()-70,topColor.green()-70,topColor.blue()-70));
     linearGrad.setColorAt(1, bottomColor);
     QBrush br(linearGrad);
 
-    p.fillRect(img.rect(), br);
+    QRect rect = QRect(QPoint(), size);
+    p.fillRect(rect, br);
 }
 
-static void drawText(QPixmap &img, char c, const QFont &font, const QColor &color) {
+static void drawText(QPixmap &img, const QSize &size, char c, const QFont &font, const QColor &color) {
     QPainter p(&img);
     p.setFont(font);
     p.setPen(color);
-    p.drawText(img.rect(), Qt::AlignCenter, QString(c));
+    QRect rect = QRect(QPoint(), size);
+    p.drawText(rect, Qt::AlignCenter, QString(c));
 }
 
-void AssemblyCellRenderer::drawCell(QPixmap &img, const QColor &topColor, const QColor &bottomColor, bool text, char c, const QFont &font, const QColor &textColor) {
-    drawBackground(img, topColor, bottomColor);
+void AssemblyCellRenderer::drawCell(QPixmap &img, const QSize &size, const QColor &topColor, const QColor &bottomColor, bool text, char c, const QFont &font, const QColor &textColor) {
+    drawBackground(img, size, topColor, bottomColor);
 
     if(text) {
-        drawText(img, c, font, textColor);
+        drawText(img, size, c, font, textColor);
     }
 }
 
@@ -117,10 +119,10 @@ class NucleotideColorsRenderer : public AssemblyCellRenderer {
 public:
     NucleotideColorsRenderer()
         : AssemblyCellRenderer(), colorScheme(nucleotideColorScheme),
-          images(), unknownChar(), size(), text(false), font() {}
+          images(), unknownChar(), size(), devicePixelRatio(0), text(false), font() {}
     virtual ~NucleotideColorsRenderer() {}
 
-    virtual void render(const QSize &size, bool text, const QFont &font);
+    virtual void render(const QSize &size, int devicePixelRatio, bool text, const QFont &font);
 
     virtual QPixmap cellImage(char c);
     virtual QPixmap cellImage(const U2AssemblyRead &read, char c);
@@ -138,16 +140,17 @@ private:
 
     // cached cells parameters
     QSize size;
+    int devicePixelRatio;
     bool text;
     QFont font;
 };
 
-void NucleotideColorsRenderer::render(const QSize &_size, bool _text, const QFont &_font) {
+void NucleotideColorsRenderer::render(const QSize &_size, int _devicePixelRatio, bool _text, const QFont &_font) {
     GTIMER(c1, t1, "NucleotideColorsRenderer::render");
 
-    if (_size != size || _text != text || (text && _font != font)) {
+    if (_size != size || _devicePixelRatio != devicePixelRatio || _text != text || (text && _font != font)) {
         // update cache
-        size = _size, text = _text, font = _font;
+        size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
         update();
     }
 }
@@ -156,21 +159,23 @@ void NucleotideColorsRenderer::update() {
     images.clear();
 
     foreach(char c, colorScheme.keys()) {
-        QPixmap img(size);
+        QPixmap img(size * devicePixelRatio);
+        img.setDevicePixelRatio(devicePixelRatio);
         QColor textColor = isGap(c) ? Qt::red : Qt::black;
         if(extendedPairs.contains(c)) {
             // char from extended alphabet, draw gradient
             TwoChars pair = extendedPairs.value(c);
-            drawCell(img, colorScheme.value(pair.first), colorScheme.value(pair.second), text, c, font, textColor);
+            drawCell(img, size, colorScheme.value(pair.first), colorScheme.value(pair.second), text, c, font, textColor);
         } else {
             // normal char
-            drawCell(img, colorScheme.value(c), text, c, font, textColor);
+            drawCell(img, size, colorScheme.value(c), text, c, font, textColor);
         }
         images.insert(c, img);
     }
 
-    unknownChar = QPixmap(size);
-    drawCell(unknownChar, QColor("#FBFBFB"), text, '?', font, Qt::red);
+    unknownChar = QPixmap(size * devicePixelRatio);
+    unknownChar.setDevicePixelRatio(devicePixelRatio);
+    drawCell(unknownChar, size, QColor("#FBFBFB"), text, '?', font, Qt::red);
 }
 
 QPixmap NucleotideColorsRenderer::cellImage(char c) {
@@ -191,11 +196,11 @@ public:
     ComplementColorsRenderer()
         : AssemblyCellRenderer(),
           directImages(), complementImages(), unknownChar(),
-          size(), text(false), font() {}
+          size(), devicePixelRatio(0), text(false), font() {}
 
     virtual ~ComplementColorsRenderer() {}
 
-    virtual void render(const QSize &size, bool text, const QFont &font);
+    virtual void render(const QSize &size, int devicePixelRatio, bool text, const QFont &font);
 
     virtual QPixmap cellImage(char c);
     virtual QPixmap cellImage(const U2AssemblyRead &read, char c);
@@ -211,6 +216,7 @@ private:
 
     // cached cells parameters
     QSize size;
+    int devicePixelRatio;
     bool text;
     QFont font;
 
@@ -221,12 +227,12 @@ private:
 const QColor ComplementColorsRenderer::directColor("#4EADE1");
 const QColor ComplementColorsRenderer::complementColor("#70F970");
 
-void ComplementColorsRenderer::render(const QSize &_size, bool _text, const QFont &_font) {
+void ComplementColorsRenderer::render(const QSize &_size, int _devicePixelRatio, bool _text, const QFont &_font) {
     GTIMER(c1, t1, "ComplementColorsRenderer::render");
 
-    if (_size != size || _text != text || (text && _font != font)) {
+    if (_size != size || _devicePixelRatio != devicePixelRatio || _text != text || (text && _font != font)) {
         // update cache
-        size = _size, text = _text, font = _font;
+        size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
         update();
     }
 }
@@ -236,7 +242,9 @@ void ComplementColorsRenderer::update() {
     complementImages.clear();
 
     foreach(char c, assemblyAlphabet) {
-        QPixmap dimg(size), cimg(size);
+        QPixmap dimg(size * devicePixelRatio), cimg(size * devicePixelRatio);
+        dimg.setDevicePixelRatio(devicePixelRatio);
+        cimg.setDevicePixelRatio(devicePixelRatio);
         QColor dcolor = directColor, ccolor = complementColor, textColor = Qt::black;
 
         if (isGap(c)) {
@@ -244,15 +252,16 @@ void ComplementColorsRenderer::update() {
             textColor = Qt::red;
         }
 
-        drawCell(dimg, dcolor, text, c, font, textColor);
-        drawCell(cimg, ccolor, text, c, font, textColor);
+        drawCell(dimg, size, dcolor, text, c, font, textColor);
+        drawCell(cimg, size, ccolor, text, c, font, textColor);
 
         directImages.insert(c, dimg);
         complementImages.insert(c, cimg);
     }
 
-    unknownChar = QPixmap(size);
-    drawCell(unknownChar, QColor("#FBFBFB"), text, '?', font, Qt::red);
+    unknownChar = QPixmap(size * devicePixelRatio);
+    unknownChar.setDevicePixelRatio(devicePixelRatio);
+    drawCell(unknownChar, size, QColor("#FBFBFB"), text, '?', font, Qt::red);
 }
 
 QPixmap ComplementColorsRenderer::cellImage(char c) {
@@ -280,7 +289,7 @@ public:
     DiffNucleotideColorsRenderer();
     virtual ~DiffNucleotideColorsRenderer() {}
 
-    virtual void render(const QSize &size, bool text, const QFont &font);
+    virtual void render(const QSize &size, int devicePixelRatio, bool text, const QFont &font);
 
     virtual QPixmap cellImage(char c);
     virtual QPixmap cellImage(const U2AssemblyRead &read, char c);
@@ -299,6 +308,7 @@ private:
 
     // cached cells parameters
     QSize size;
+    int devicePixelRatio;
     bool text;
     QFont font;
 };
@@ -308,11 +318,11 @@ public:
     PairedColorsRenderer()
         : AssemblyCellRenderer(),
           pairedImages(), unpairedImages(), unknownChar(),
-          size(), text(false), font() {}
+          size(), devicePixelRatio(0), text(false), font() {}
 
     virtual ~PairedColorsRenderer() {}
 
-    virtual void render(const QSize &size, bool text, const QFont &font);
+    virtual void render(const QSize &size, int devicePixelRatio, bool text, const QFont &font);
 
     virtual QPixmap cellImage(char c);
     virtual QPixmap cellImage(const U2AssemblyRead &read, char c);
@@ -328,6 +338,7 @@ private:
 
     // cached cells parameters
     QSize size;
+    int devicePixelRatio;
     bool text;
     QFont font;
 
@@ -338,12 +349,12 @@ private:
 const QColor PairedColorsRenderer::pairedColor("#4EE1AD");
 const QColor PairedColorsRenderer::unpairedColor("#BBBBBB");
 
-void PairedColorsRenderer::render(const QSize &_size, bool _text, const QFont &_font) {
+void PairedColorsRenderer::render(const QSize &_size, int _devicePixelRatio, bool _text, const QFont &_font) {
     GTIMER(c1, t1, "PairedReadsColorsRenderer::render");
 
-    if (_size != size || _text != text || (text && _font != font)) {
+    if (_size != size || _devicePixelRatio != devicePixelRatio || _text != text || (text && _font != font)) {
         // update cache
-        size = _size, text = _text, font = _font;
+        size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
         update();
     }
 }
@@ -353,7 +364,9 @@ void PairedColorsRenderer::update() {
     unpairedImages.clear();
 
     foreach(char c, assemblyAlphabet) {
-        QPixmap pimg(size), npimg(size);
+        QPixmap pimg(size * devicePixelRatio), npimg(size * devicePixelRatio);
+        pimg.setDevicePixelRatio(devicePixelRatio);
+        npimg.setDevicePixelRatio(devicePixelRatio);
         QColor pcolor = pairedColor, ucolor = unpairedColor, textColor = Qt::black;
 
         if (isGap(c)) {
@@ -361,15 +374,16 @@ void PairedColorsRenderer::update() {
             textColor = Qt::red;
         }
 
-        drawCell(pimg, pcolor, text, c, font, textColor);
-        drawCell(npimg, ucolor, text, c, font, textColor);
+        drawCell(pimg, size, pcolor, text, c, font, textColor);
+        drawCell(npimg, size, ucolor, text, c, font, textColor);
 
         pairedImages.insert(c, pimg);
         unpairedImages.insert(c, npimg);
     }
 
-    unknownChar = QPixmap(size);
-    drawCell(unknownChar, QColor("#FBFBFB"), text, '?', font, Qt::red);
+    unknownChar = QPixmap(size * devicePixelRatio);
+    unknownChar.setDevicePixelRatio(devicePixelRatio);
+    drawCell(unknownChar, size, QColor("#FBFBFB"), text, '?', font, Qt::red);
 }
 
 QPixmap PairedColorsRenderer::cellImage(char c) {
@@ -393,14 +407,14 @@ QPixmap PairedColorsRenderer::cellImage(const U2AssemblyRead &read, char c, char
 
 DiffNucleotideColorsRenderer::DiffNucleotideColorsRenderer()
     : AssemblyCellRenderer(), colorScheme(nucleotideColorScheme),
-  highlightedImages(), normalImages(), unknownChar(), size(), text(false), font() {}
+  highlightedImages(), normalImages(), unknownChar(), size(), devicePixelRatio(0), text(false), font() {}
 
-void DiffNucleotideColorsRenderer::render(const QSize &_size, bool _text, const QFont &_font) {
+void DiffNucleotideColorsRenderer::render(const QSize &_size, int _devicePixelRatio, bool _text, const QFont &_font) {
     GTIMER(c1, t1, "DiffNucleotideColorsRenderer::render");
 
-    if (_size != size || _text != text || (text && _font != font)) {
+    if (_size != size || _devicePixelRatio != devicePixelRatio || _text != text || (text && _font != font)) {
         // update cache
-        size = _size, text = _text, font = _font;
+        size = _size, devicePixelRatio = _devicePixelRatio, text = _text, font = _font;
         update();
     }
 }
@@ -412,7 +426,9 @@ void DiffNucleotideColorsRenderer::update() {
     QColor normalColor("#BBBBBB");
 
     foreach(char c, colorScheme.keys()) {
-        QPixmap himg(size), nimg(size);
+        QPixmap himg(size * devicePixelRatio), nimg(size * devicePixelRatio);
+        himg.setDevicePixelRatio(devicePixelRatio);
+        nimg.setDevicePixelRatio(devicePixelRatio);
         // make gaps more noticeable
         QColor textColor = isGap(c) ? Qt::white : Qt::black;
         QColor highlightColor = isGap(c) ? QColor("#CC4E4E") : colorScheme.value(c);
@@ -420,19 +436,20 @@ void DiffNucleotideColorsRenderer::update() {
         if(extendedPairs.contains(c)) {
             // char from extended alphabet, draw gradient
             TwoChars pair = extendedPairs.value(c);
-            drawCell(himg, colorScheme.value(pair.first), colorScheme.value(pair.second), text, c, font, textColor);
+            drawCell(himg, size, colorScheme.value(pair.first), colorScheme.value(pair.second), text, c, font, textColor);
         } else {
             // normal char
-            drawCell(himg, highlightColor, text, c, font, textColor);
+            drawCell(himg, size, highlightColor, text, c, font, textColor);
         }
-        drawCell(nimg, normalColor, text, c, font, textColor);
+        drawCell(nimg, size, normalColor, text, c, font, textColor);
 
         highlightedImages.insert(c, himg);
         normalImages.insert(c, nimg);
     }
 
-    unknownChar = QPixmap(size);
-    drawCell(unknownChar, QColor("#FBFBFB"), text, '?', font, Qt::red);
+    unknownChar = QPixmap(size * devicePixelRatio);
+    unknownChar.setDevicePixelRatio(devicePixelRatio);
+    drawCell(unknownChar, size, QColor("#FBFBFB"), text, '?', font, Qt::red);
 }
 
 QPixmap DiffNucleotideColorsRenderer::cellImage(char c) {

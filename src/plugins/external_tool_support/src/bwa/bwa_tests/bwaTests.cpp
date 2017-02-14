@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -317,7 +317,7 @@ QList<Task*> GTest_Bwa::onSubTaskFinished(Task* subTask) {
             subTaskFailed = true;
             return res;
         }
-        if (!bwaTask->isHaveResult()) {
+        if (!bwaTask->hasResult()) {
             subTaskFailed = true;
             bwaTask->setError("Reference assembly failed - no possible alignment found");
             return res;

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,7 +22,6 @@
 #ifndef _U2_EXPORT_COVERAGE_TASK_H_
 #define _U2_EXPORT_COVERAGE_TASK_H_
 
-#include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Task.h>
@@ -64,6 +63,20 @@ public:
     static const QString BEDGRAPH_EXTENSION;
     static const QString COMPRESSED_EXTENSION;
 };
+class GetAssemblyVisibleNameTask : public Task {
+    Q_OBJECT
+public:
+    GetAssemblyVisibleNameTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId):
+        Task(tr("Get visible name of Assembly"), TaskFlag_None), dbiRef(dbiRef), assemblyId(assemblyId) { }
+
+    void run();
+
+    const QString &getAssemblyVisibleName() const { return assemblyName; }
+private:
+    const U2DbiRef dbiRef;
+    const U2DataId assemblyId;
+    QString assemblyName;
+};
 
 class U2VIEW_EXPORT ExportCoverageTask : public Task {
     Q_OBJECT
@@ -71,6 +84,7 @@ public:
     ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings, TaskFlags flags = TaskFlags_NR_FOSE_COSC);
 
     void prepare();
+    QList<Task *> onSubTaskFinished(Task *subTask);
     ReportResult report();
 
     const QString &getUrl() const;
@@ -89,6 +103,7 @@ protected:
     const ExportCoverageSettings settings;
 
     QString assemblyName;
+    GetAssemblyVisibleNameTask *getAssemblyNameTask;
     CalculateCoveragePerBaseTask *calculateTask;
     QScopedPointer<IOAdapter> ioAdapter;
     qint64 alreadyProcessed;

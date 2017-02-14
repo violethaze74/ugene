@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,46 +34,6 @@ public:
     static void setIndexDir(const QString &indexDir);
 };
 
-/************************************************************************/
-/* Genome Aligner Settings Controller                                   */
-/************************************************************************/
-#define GenomeAlignerSettingsPageId     QString("gas")
-
-class GenomeAlignerSettingsPageController : public AppSettingsGUIPageController {
-    Q_OBJECT
-public:
-    GenomeAlignerSettingsPageController(QObject* p = NULL);
-
-    virtual AppSettingsGUIPageState* getSavedState();
-
-    virtual void saveState(AppSettingsGUIPageState* s);
-
-    virtual AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* data);
-
-    const QString& getHelpPageId() const {return helpPageId;};
-
-private:
-    static const QString helpPageId;
-};
-
-class GenomeAlignerSettingsPageState : public AppSettingsGUIPageState {
-    Q_OBJECT
-public:
-    QString indexDir;
-};
-
-class GenomeAlignerSettingsPageWidget: public AppSettingsGUIPageWidget, public Ui_GenomeAlignerSettingsWidget {
-    Q_OBJECT
-public:
-    GenomeAlignerSettingsPageWidget(GenomeAlignerSettingsPageController* ctrl);
-
-    virtual void setState(AppSettingsGUIPageState* state);
-
-    virtual AppSettingsGUIPageState* getState(QString& err) const;
-
-private slots:
-    void sl_onIndexDirButton();
-};
 
 } // U2
 

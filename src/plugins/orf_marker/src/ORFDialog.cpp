@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -79,7 +79,7 @@ ORFDialog::ORFDialog(ADVSequenceObjectContext* _ctx)
 : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), aaUpdateTask(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220518");
+    new HelpButton(this, buttonBox, "19759650");
 
     tabWidget->setCurrentIndex(0);
 
@@ -374,6 +374,7 @@ void ORFDialog::accept()
 
         const CreateAnnotationModel &m = ac->getModel();
         AnnotationTableObject *aObj = m.getAnnotationObject();
+        ctx->getAnnotatedDNAView()->tryAddObject(aObj);
         FindORFsToAnnotationsTask *orfTask = new FindORFsToAnnotationsTask(aObj, ctx->getSequenceObject()->getEntityRef(), s, m.groupName, m.description);
         AppContext::getTaskScheduler()->registerTopLevelTask(orfTask);
     }

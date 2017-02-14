@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,20 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include "SearchBox.h"
+
 #include <QLabel>
 #include <QMovie>
-#include <QPicture>
 #include <QStyle>
 #include <QToolButton>
-
-#include "ProjectViewSearchBox.h"
 
 static const QString LABEL_STYLE_SHEET = "border: 0px; padding: 0px;";
 static const QString CLEAR_BUTTON_STYLE_SHEET = "border: 0px; padding: 1px 0px 0px 0px;";
 
 namespace U2 {
 
-ProjectViewSearchBox::ProjectViewSearchBox(QWidget *p)
+SearchBox::SearchBox(QWidget *p)
     : QLineEdit(p), firstShow(true), progressLabel(new QLabel(this)), progressMovie(new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel)),
     searchIconLabel(new QLabel(this)), clearButton(new QToolButton(this))
 {
@@ -57,28 +56,28 @@ ProjectViewSearchBox::ProjectViewSearchBox(QWidget *p)
     setPlaceholderText(tr("Search..."));
 }
 
-void ProjectViewSearchBox::sl_filteringStarted() {
+void SearchBox::sl_filteringStarted() {
     progressLabel->setVisible(true);
     progressMovie->start();
     updateInternalControlsPosition();
 }
 
-void ProjectViewSearchBox::sl_filteringFinished() {
+void SearchBox::sl_filteringFinished() {
     progressMovie->stop();
     progressLabel->setVisible(false);
     updateInternalControlsPosition();
 }
 
-void ProjectViewSearchBox::sl_filterCleared() {
+void SearchBox::sl_filterCleared() {
     clearButton->setVisible(false);
     setText(QString());
 }
 
-void ProjectViewSearchBox::sl_textChanged(const QString &text) {
+void SearchBox::sl_textChanged(const QString &text) {
     clearButton->setVisible(!text.isEmpty());
 }
 
-void ProjectViewSearchBox::paintEvent(QPaintEvent *event) {
+void SearchBox::paintEvent(QPaintEvent *event) {
     if (firstShow) {
         firstShow = false;
         sl_filteringFinished();
@@ -86,7 +85,7 @@ void ProjectViewSearchBox::paintEvent(QPaintEvent *event) {
     QLineEdit::paintEvent(event);
 }
 
-void ProjectViewSearchBox::initStyle() {
+void SearchBox::initStyle() {
     const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     const QSize progressLabelSize = progressLabel->sizeHint();
     const QSize iconLabelSize = searchIconLabel->sizeHint();
@@ -102,7 +101,7 @@ void ProjectViewSearchBox::initStyle() {
     setMinimumSize(qMax(minimumWidgetSize.width(), minimumContentWidth), qMax(minimumWidgetSize.height(), minimumContentHeight));
 }
 
-void ProjectViewSearchBox::updateInternalControlsPosition() {
+void SearchBox::updateInternalControlsPosition() {
     const QSize progressLabelSize = progressLabel->sizeHint();
     const QSize iconLabelSize = searchIconLabel->sizeHint();
     const QSize clearButtonSize = clearButton->sizeHint();
@@ -116,7 +115,7 @@ void ProjectViewSearchBox::updateInternalControlsPosition() {
     searchIconLabel->move(widgetRect.left() + 2 * frameWidth, (widgetRect.bottom() - iconLabelSize.height() + 1) / 2);
 }
 
-void ProjectViewSearchBox::resizeEvent(QResizeEvent *event) {
+void SearchBox::resizeEvent(QResizeEvent *event) {
     updateInternalControlsPosition();
     QLineEdit::resizeEvent(event);
 }

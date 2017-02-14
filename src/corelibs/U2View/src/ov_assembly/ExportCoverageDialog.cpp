@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -97,8 +97,9 @@ void ExportCoverageDialog::sl_formatChanged(const QString &format) {
 
 void ExportCoverageDialog::initLayout() {
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
-    new HelpButton(this, buttonBox, "18220482");
+    new HelpButton(this, buttonBox, "19759614");
     gbAdditionalOptions->hide();
+    setMaximumHeight(layout()->minimumSize().height());
     adjustSize();
 }
 

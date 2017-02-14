@@ -38,7 +38,7 @@
     extern long tipy;
 
     extern double **timesseen, **tmseen2, **times2 ;
-    extern double *timesseen_changes, *tchange2;
+    extern double *tchange2;
     extern double trweight, ntrees, mlfrac;
 
 typedef struct pattern_elm {

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -257,12 +257,13 @@ void AssemblyVariantRow::prepareRenderers(int cellWidth, int cellHeight) {
             snpText = false;
         }
     }
-    nuclRenderer->render(QSize(cellWidth, cellHeight), text, f);
-    snpRenderer->render(QSize(cellWidth, halfHeight), snpText, snpF);
+    nuclRenderer->render(QSize(cellWidth, cellHeight), devicePixelRatio(), text, f);
+    snpRenderer->render(QSize(cellWidth, halfHeight), devicePixelRatio(), snpText, snpF);
 }
 
 void AssemblyVariantRow::sl_redraw() {
-    cachedView = QPixmap(size());
+    cachedView = QPixmap(size() * devicePixelRatio());
+    cachedView.setDevicePixelRatio(devicePixelRatio());
     redraw = true;
     update();
 }

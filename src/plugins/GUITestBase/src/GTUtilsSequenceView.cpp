@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -404,9 +404,6 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString na
     GT_CHECK(anns.size() == 1, QString("Several annotation with name %1 and startPos %2. Number is: %3").arg(name).arg(startpos).arg(anns.size()));
 
     Annotation* a = anns.first();
-    int center = a->getLocation().data()->regions.first().center();
-    goToPosition(os, center);
-    GTGlobals::sleep();
 
     const SharedAnnotationData &aData = a->getData();
     AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
@@ -415,6 +412,12 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString na
 
     const U2Region &vr = seq->getDetView()->getVisibleRange();
     const U2Region &r = a->getLocation().data()->regions.first();
+
+    if (!r.intersects(vr)) {
+        int center = r.center();
+        goToPosition(os, center);
+        GTGlobals::sleep();
+    }
 
     const U2Region visibleLocation = r.intersect(vr);
 

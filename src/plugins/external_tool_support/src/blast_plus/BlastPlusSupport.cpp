@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -92,7 +92,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
     description="The <i>blastp</i> tool searches a protein database \
                 using a protein query.";
     versionRegExp=QRegExp("Protein-Protein BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
-// https://ugene.unipro.ru/tracker/browse/UGENE-945
+// https://ugene.net/tracker/browse/UGENE-945
 //     }else if(name == GPU_BLASTP_TOOL_NAME){
 // #ifdef Q_OS_WIN
 //     executableFileName="blastp.exe";
@@ -348,7 +348,7 @@ void BlastPlusSupportContext::sl_showDialog() {
     assert(av);
 
     ADVSequenceObjectContext* seqCtx = av->getSequenceInFocus();
-    QObjectScopedPointer<BlastPlusSupportRunDialog> dlg = new BlastPlusSupportRunDialog(seqCtx->getSequenceObject(), lastDBPath, lastDBName, av->getWidget());
+    QObjectScopedPointer<BlastPlusSupportRunDialog> dlg = new BlastPlusSupportRunDialog(seqCtx, lastDBPath, lastDBName, av->getWidget());
     dlg->exec();
     CHECK(!dlg.isNull(), );
 

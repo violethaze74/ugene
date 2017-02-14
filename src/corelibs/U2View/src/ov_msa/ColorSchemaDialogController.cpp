@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor>& col
 
 int ColorSchemaDialogController::adjustAlphabetColors(){
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220413");
+    new HelpButton(this, buttonBox, "19759545");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     alphabetColorsView = new QPixmap(alphabetColorsFrame->size());
@@ -178,7 +178,7 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent * event){
 
 CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData* _newSchema, QStringList _usedNames) : usedNames(_usedNames), newSchema(_newSchema) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220413");
+    new HelpButton(this, buttonBox, "19759545");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -193,7 +193,7 @@ CreateColorSchemaDialog::CreateColorSchemaDialog(ColorSchemeData* _newSchema, QS
 
     connect(schemeName, SIGNAL(textEdited ( const QString&)), SLOT(sl_schemaNameEdited(const QString&)));
 
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ok"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     QPushButton *createButton = buttonBox->button(QDialogButtonBox::Ok);
     QPushButton *cancelButton = buttonBox->button(QDialogButtonBox::Cancel);

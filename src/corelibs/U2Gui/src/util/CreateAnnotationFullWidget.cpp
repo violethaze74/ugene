@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ void CreateAnnotationFullWidget::setLocationVisible(bool visible) {
     gbLocation->setVisible(visible);
 
     if (visible) {
-        mainLayout->addWidget(saveAnnotationsInnerWidget);
+        mainLayout->addWidget(gbSaveAnnotationsInnerWidget);
 
         saveAnnotationsLayout->removeWidget(rbExistingTable);
         saveAnnotationsLayout->removeWidget(cbExistingTable);
@@ -79,7 +79,7 @@ void CreateAnnotationFullWidget::setLocationVisible(bool visible) {
 
         saveAnnotationsLayout->addWidget(rbUseAutoTable, 2, 0);
     } else {
-        parametersLayout->addWidget(saveAnnotationsInnerWidget);
+        parametersLayout->addWidget(gbSaveAnnotationsInnerWidget);
 
         saveAnnotationsLayout->removeWidget(rbExistingTable);
         saveAnnotationsLayout->removeWidget(cbExistingTable);
@@ -100,6 +100,7 @@ void CreateAnnotationFullWidget::setLocationVisible(bool visible) {
         saveAnnotationsLayout->addWidget(tbBrowseNewTable, 3, 1);
 
         saveAnnotationsLayout->addWidget(rbUseAutoTable, 4, 0, 1, 2);
+        parametersLayout->addStretch();
     }
 }
 
@@ -118,7 +119,7 @@ void CreateAnnotationFullWidget::setAnnotationNameVisible(bool visible) {
 }
 
 void CreateAnnotationFullWidget::setAutoTableOptionVisible(bool visible) {
-    rbUseAutoTable->setEnabled(visible);
+    rbUseAutoTable->setVisible(visible);
 }
 
 void CreateAnnotationFullWidget::setDescriptionVisible(bool visible) {

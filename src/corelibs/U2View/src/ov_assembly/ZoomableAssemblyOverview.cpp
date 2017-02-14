@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -114,21 +114,24 @@ void ZoomableAssemblyOverview::connectSlots() {
 
 void ZoomableAssemblyOverview::initSelectionRedraw() {
     redrawSelection = true;
-    cachedView = QPixmap(size());
+    cachedView = QPixmap(size() * devicePixelRatio());
+    cachedView.setDevicePixelRatio(devicePixelRatio());
 }
 
 void ZoomableAssemblyOverview::drawAll() {
     if(!model->isEmpty()) {
         //no coverage -> draw nothing
         if(!coverageTaskRunner.isIdle()) {
-            cachedBackground = QPixmap(size());
+            cachedBackground = QPixmap(size() * devicePixelRatio());
+            cachedBackground.setDevicePixelRatio(devicePixelRatio());
             QPainter p(&cachedBackground);
-            p.fillRect(cachedBackground.rect(), Qt::gray);
-            p.drawText(cachedBackground.rect(), Qt::AlignCenter, tr("Background is rendering..."));
+            p.fillRect(rect(), Qt::gray);
+            p.drawText(rect(), Qt::AlignCenter, tr("Background is rendering..."));
         }
         //coverage is ready -> redraw background if needed
         else if(redrawBackground) {
-            cachedBackground = QPixmap(size());
+            cachedBackground = QPixmap(size() * devicePixelRatio());
+            cachedBackground.setDevicePixelRatio(devicePixelRatio());
             QPainter p(&cachedBackground);
             drawBackground(p);
             redrawBackground = false;
@@ -202,7 +205,9 @@ void ZoomableAssemblyOverview::drawBackground(QPainter & p) {
         if (!ci.coverageInfo.isEmpty()) {
             switch(scaleType) {
             case AssemblyBrowserSettings::Scale_Linear:
-                grayCoeffD = double(ci.coverageInfo[i]) / ci.maxCoverage;
+                if(ci.maxCoverage != 0){
+                    grayCoeffD = double(ci.coverageInfo[i]) / ci.maxCoverage;
+                }
                 columnPixels = qint64(double(ci.coverageInfo[i]) / readsPerYPixel + 0.5);
                 //grayCoeff = 255 - int(double(255) / ci.maxCoverage * ci.coverageInfo[i] + 0.5);
                 break;

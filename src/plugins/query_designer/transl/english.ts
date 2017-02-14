@@ -102,7 +102,9 @@ p, li { white-space: pre-wrap; }
         <translation>Start-Start</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="104"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="112"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="116"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="155"/>
         <source>Query Designer</source>
         <translation>Query Designer</translation>
     </message>
@@ -640,47 +642,47 @@ p, li { white-space: pre-wrap; }
         <translation>Set Required Number</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="109"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="107"/>
         <source>Create element group</source>
         <translation>Create element group</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="109"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="107"/>
         <source>Group name</source>
         <translation>Group name</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="114"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="112"/>
         <source>Group &apos;%1&apos; already exists!</source>
         <translation>Group &apos;%1&apos; already exists!</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="118"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="116"/>
         <source>Invalid group name!</source>
         <translation>Invalid group name!</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="148"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="146"/>
         <source>Add Element To Group &apos;%1&apos;</source>
         <translation>Add Element To Group &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="148"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="146"/>
         <source>Element:</source>
         <translation>Element:</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="157"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="155"/>
         <source>Actor is already in group!</source>
         <translation>Actor is already in group!</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="180"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="178"/>
         <source>Set required number for &apos;%1&apos;</source>
         <translation>Set required number for &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/QDGroupsEditor.cpp" line="181"/>
+        <location filename="../src/QDGroupsEditor.cpp" line="179"/>
         <source>Number:</source>
         <translation>Number:</translation>
     </message>

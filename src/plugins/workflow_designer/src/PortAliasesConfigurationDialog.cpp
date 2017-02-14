@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,9 +37,9 @@ namespace U2 {
 namespace Workflow {
 
 PortAliasesConfigurationDialog::PortAliasesConfigurationDialog( const Schema & schema, QWidget * p )
-: QDialog(p), portNameMaxSz(0), currentRow(-1) {
+: QDialog(p), currentRow(-1) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220713");
+    new HelpButton(this, buttonBox, "19759845");
 
     QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
     QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -75,7 +75,6 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog( const Schema & s
             portListWidget->insertItem(pos, item);
             portListMap.insert(pos, port);
             int pointSz = item->font().pointSize();
-            portNameMaxSz = qMax(pointSz * itemName.size(), portNameMaxSz)*4/5;
         }
     }
     if (portListMap.isEmpty()) {
@@ -132,13 +131,6 @@ void PortAliasesConfigurationDialog::sl_portSelected(int row) {
     portAliasEdit->setText(model.ports.value(currentPort).first);
     portDescriptionEdit->setText(model.ports.value(currentPort).second);
 
-    portAliasesTableWidget->resizeColumnToContents(0);
-    if(portNameMaxSz > 0 && portNameMaxSz < splitter->width()) {
-        QList<int> szs;
-        szs << portNameMaxSz;
-        szs << splitter->width() - portNameMaxSz;
-        splitter->setSizes(szs);
-    }
 }
 
 void PortAliasesConfigurationDialog::sl_onDataChange(int row, int col) {

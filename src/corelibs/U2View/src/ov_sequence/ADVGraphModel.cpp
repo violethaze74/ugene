@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -339,7 +339,7 @@ void GSequenceGraphDrawer::drawGraph(QPainter& p, const QSharedPointer<GSequence
             bool rp = false, lp = false;
             if(!points.useIntervals){
                 for (int i=0, n = points.firstPoints.size(); i < n; i++) {
-                    fy = calculatePointValue(nPoints, points, i);
+                    fy = calculatePointValue(points, i);
                     rp = false;
                     lp = false;
                     if (isUnknownValue(fy)) {
@@ -377,8 +377,8 @@ void GSequenceGraphDrawer::drawGraph(QPainter& p, const QSharedPointer<GSequence
             } else {
                 for (int i=0, n = points.firstPoints.size(); i < n; i++) {
                     assert(points.firstPoints.size() == points.secondPoints.size());
-                    fy = calculatePointValue(nPoints, points, i);
-                    float fy2 = calculatePointValue(nPoints, points, i);;
+                    fy = calculatePointValue(points, i);
+                    float fy2 = calculatePointValue(points, i);;
                     rp = false;
                     lp = false;
                     if (isUnknownValue(fy)) {
@@ -647,7 +647,7 @@ bool GSequenceGraphDrawer::calculateLabelData(const QRect &rect, const PairVecto
 }
 
 float GSequenceGraphDrawer::calculateLabelValue(int nPoints, const PairVector &points, GraphLabel *label, int xcoordInRect) {
-    float value = calculatePointValue(nPoints, points, xcoordInRect);
+    float value = calculatePointValue(points, xcoordInRect);
     if (value == UNKNOWN_VAL) {
         return 2 * globalMax;
     }
@@ -667,7 +667,7 @@ float GSequenceGraphDrawer::calculateLabelValue(int nPoints, const PairVector &p
     return value;
 }
 
-float GSequenceGraphDrawer::calculatePointValue(int nPoints, const PairVector &points, int xcoordInRect) {
+float GSequenceGraphDrawer::calculatePointValue(const PairVector &points, int xcoordInRect) {
     float value = UNKNOWN_VAL;
     if (points.useIntervals) {
         float maxValue = points.firstPoints.at(xcoordInRect);

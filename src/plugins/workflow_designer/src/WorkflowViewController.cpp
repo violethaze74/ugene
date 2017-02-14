@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,6 +55,7 @@
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Designer/Dashboard.h>
 #include <U2Designer/DelegateEditors.h>
@@ -2065,7 +2066,9 @@ void WorkflowView::sl_onSelectionChanged() {
 
 void WorkflowView::sl_exportScene() {
     propertyEditor->commit();
-    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(sceneView->viewport(), ExportImageDialog::WD, ExportImageDialog::SupportScaling, sceneView->viewport());
+    QString fileName = GUrlUtils::fixFileName(meta.name);
+    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(sceneView->viewport(), ExportImageDialog::WD, 
+                                                                           fileName, ExportImageDialog::SupportScaling,  sceneView->viewport());
     dialog->exec();
 }
 

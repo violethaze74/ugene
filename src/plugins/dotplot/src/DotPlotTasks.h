@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,13 +39,24 @@ class U2SequenceObject;
 class SaveDotPlotTask : public Task {
     Q_OBJECT
 public:
-    SaveDotPlotTask(const QString &file, QList<DotPlotResults> *dotPlotDirectList, QList<DotPlotResults> *dotPlotInverseList,
-        U2SequenceObject *seqX, U2SequenceObject *seqY, int mLen, int ident)
-        : Task(tr("DotPlot saving"), TaskFlags_FOSCOE), filename(file), directList(dotPlotDirectList), inverseList(dotPlotInverseList),
-        sequenceX(seqX), sequenceY(seqY), minLen(mLen), identity(ident)
+    SaveDotPlotTask(const QString &file,
+                    QSharedPointer< QList<DotPlotResults> > dotPlotDirectList,
+                    QSharedPointer< QList<DotPlotResults> > dotPlotInverseList,
+                    U2SequenceObject *seqX,
+                    U2SequenceObject *seqY,
+                    int mLen,
+                    int ident)
+        : Task(tr("DotPlot saving"), TaskFlags_FOSCOE),
+          filename(file),
+          directList(dotPlotDirectList),
+          inverseList(dotPlotInverseList),
+          sequenceX(seqX),
+          sequenceY(seqY),
+          minLen(mLen),
+          identity(ident)
     {
         tpm = Task::Progress_Manual;
-    };
+    }
 
     void run();
 
@@ -53,7 +64,8 @@ public:
 
 private:
     QString filename;
-    QList<DotPlotResults> *directList, *inverseList;
+    QSharedPointer< QList<DotPlotResults> > directList;
+    QSharedPointer< QList<DotPlotResults> > inverseList;
     U2SequenceObject *sequenceX, *sequenceY;
     int minLen, identity;
 
@@ -65,15 +77,28 @@ class LoadDotPlotTask : public Task {
     Q_OBJECT
 public:
 
-    LoadDotPlotTask(const QString &file, QList<DotPlotResults> *dotPlotDirectList,
-        QList<DotPlotResults> *dotPlotInverseList, U2SequenceObject *seqX,
-        U2SequenceObject *seqY, int *mLen, int *ident, bool *dir, bool *inv)
-        : Task(tr("DotPlot loading"), TaskFlags_FOSCOE), filename(file),
-        directList(dotPlotDirectList), inverseList(dotPlotInverseList),
-        sequenceX(seqX), sequenceY(seqY), minLen(mLen), identity(ident), direct(dir), inverted(inv)
+    LoadDotPlotTask(const QString &file,
+                    QSharedPointer< QList<DotPlotResults> > dotPlotDirectList,
+                    QSharedPointer< QList<DotPlotResults> > dotPlotInverseList,
+                    U2SequenceObject *seqX,
+                    U2SequenceObject *seqY,
+                    int *mLen,
+                    int *ident,
+                    bool *dir,
+                    bool *inv)
+        : Task(tr("DotPlot loading"), TaskFlags_FOSCOE),
+          filename(file),
+          directList(dotPlotDirectList),
+          inverseList(dotPlotInverseList),
+          sequenceX(seqX),
+          sequenceY(seqY),
+          minLen(mLen),
+          identity(ident),
+          direct(dir),
+          inverted(inv)
     {
         tpm = Task::Progress_Manual;
-    };
+    }
 
     void run();
 
@@ -81,7 +106,8 @@ public:
 
 private:
     QString filename;
-    QList<DotPlotResults> *directList, *inverseList;
+    QSharedPointer< QList<DotPlotResults> > directList;
+    QSharedPointer< QList<DotPlotResults> > inverseList;
     U2SequenceObject *sequenceX, *sequenceY;
     int *minLen, *identity;
     bool *direct, *inverted;
@@ -97,7 +123,7 @@ public:
     DotPlotLoadDocumentsTask(QString firstF, int firstG, QString secondF, int secondG, bool view = true);
     ~DotPlotLoadDocumentsTask();
 
-    void run(){};
+    void run(){}
     void prepare();
 
     QList<Document*> getDocuments() const {return docs;}
@@ -122,9 +148,13 @@ signals:
 class DotPlotFilterTask : public Task{
     Q_OBJECT
 public:
-    DotPlotFilterTask(ADVSequenceObjectContext* _sequenceX, ADVSequenceObjectContext* _sequenceY,
-        const QMultiMap<FilterIntersectionParameter, QString>& _annotationNames, QList<DotPlotResults>* _initialResults, QList<DotPlotResults>* _filteredResults
-        ,FilterType _type);
+    DotPlotFilterTask(ADVSequenceObjectContext* _sequenceX,
+                      ADVSequenceObjectContext* _sequenceY,
+                      const QMultiMap<FilterIntersectionParameter,
+                      QString>& _annotationNames,
+                      QSharedPointer< QList<DotPlotResults> > _initialResults,
+                      QSharedPointer< QList<DotPlotResults> > _filteredResults,
+                      FilterType _type);
 
     void run();
 
@@ -134,8 +164,8 @@ private:
     ADVSequenceObjectContext* sequenceX;
     ADVSequenceObjectContext* sequenceY;
     QMultiMap<FilterIntersectionParameter, QString> annotationNames;
-    QList<DotPlotResults>* initialResults;
-    QList<DotPlotResults>* filteredResults;
+    QSharedPointer< QList<DotPlotResults> > initialResults;
+    QSharedPointer< QList<DotPlotResults> > filteredResults;
     QList<DotPlotResults> tempResults;
     FilterType fType;
     float progressStep;

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ SaveSelectedSequenceFromMSADialogController::SaveSelectedSequenceFromMSADialogCo
       ui(new Ui_SaveSelectedSequenceFromMSADialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18220445");
+    new HelpButton(this, ui->buttonBox, "19759577");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

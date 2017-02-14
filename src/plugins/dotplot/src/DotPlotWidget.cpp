@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,9 +39,11 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/GraphUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -65,14 +67,14 @@ DotPlotWidget::DotPlotWidget(AnnotatedDNAView* dnaView)
     selectionX(NULL),selectionY(NULL),sequenceX(NULL),sequenceY(NULL), direct(true), inverted(false), nearestInverted(false), ignorePanView(false), keepAspectRatio(false),
     zoom(1.0f, 1.0f), shiftX(0), shiftY(0),
     minLen(100), identity(100),
-    pixMapUpdateNeeded(true), deleteDotPlotFlag(false), filtration(false), createDotPlot(false), dotPlotTask(NULL), pixMap(NULL), miniMap(NULL),
+    pixMapUpdateNeeded(true), deleteDotPlotFlag(false), filtration(false), dotPlotIsCalculating(false), dotPlotTask(NULL), pixMap(NULL), miniMap(NULL),
     nearestRepeat(NULL),
     clearedByRepitSel(false)
 {
     dpDirectResultListener = new DotPlotResultsListener();
     dpRevComplResultsListener = new DotPlotRevComplResultsListener();
-    dpFilteredResults = new QList<DotPlotResults>();
-    dpFilteredResultsRevCompl = new QList<DotPlotResults>();
+    dpFilteredResults = QSharedPointer<QList<DotPlotResults> >( new QList<DotPlotResults>() );
+    dpFilteredResultsRevCompl = QSharedPointer<QList<DotPlotResults> >( new QList<DotPlotResults>() );
     foreach(DotPlotResults dpR, *dpDirectResultListener->dotPlotList){
         dpFilteredResults->append(dpR);
     }
@@ -132,6 +134,7 @@ void DotPlotWidget::initActionsAndSignals() {
     connect(saveImageAction, SIGNAL(triggered()), SLOT(sl_showSaveImageDialog()));
 
     saveDotPlotAction = new QAction(tr("Save"), this);
+    saveDotPlotAction->setObjectName("Save");
     connect(saveDotPlotAction, SIGNAL(triggered()), SLOT(sl_showSaveFileDialog()));
 
     loadDotPlotAction = new QAction(tr("Load"), this);
@@ -191,8 +194,8 @@ DotPlotWidget::~DotPlotWidget() {
 
     delete dpDirectResultListener;
     delete dpRevComplResultsListener;
-    delete dpFilteredResults;
-    delete dpFilteredResultsRevCompl;
+    dpFilteredResults.clear();
+    dpFilteredResultsRevCompl.clear();
 }
 
 bool DotPlotWidget::onCloseEvent() {
@@ -417,6 +420,7 @@ void DotPlotWidget::sl_buildDotplotTaskStateChanged() {
     seqXCache.clear();
     seqYCache.clear();
 
+    dotPlotIsCalculating = false;
     // build dotplot task finished
     pixMapUpdateNeeded = true;
     update();
@@ -476,7 +480,7 @@ void DotPlotWidget::sl_sequenceWidgetRemoved(ADVSequenceWidget* w) {
         if (dotPlotTask) {
             cancelRepeatFinderTask();
         } else {
-            addCloseDotPlotTask();
+            emit si_removeDotPlot();
         }
     }
 }
@@ -516,9 +520,14 @@ void DotPlotWidget::sl_onSequenceSelectionChanged(LRegionsSelection* s, const QV
 void DotPlotWidget::sl_showSaveImageDialog() {
     exitButton->hide();
 
+    QString s1 = GUrlUtils::fixFileName(sequenceX->getSequenceGObject()->getGObjectName());
+    QString s2 = GUrlUtils::fixFileName(sequenceY->getSequenceGObject()->getGObjectName());
+    QString fileName = s1 == s2 ? s1 : s1 + "_" + s2;
+
     DotPlotImageExportController factory(this);
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory,
                                                                            ExportImageDialog::DotPlot,
+                                                                           fileName,
                                                                            ExportImageDialog::SupportScaling,
                                                                            this);
     dialog->exec();
@@ -527,10 +536,14 @@ void DotPlotWidget::sl_showSaveImageDialog() {
     exitButton->show();
 }
 
-// save dotplot into a dotplot file, return true if successful
+// save dotplot into a dotplot file, return true if not canceled
 bool DotPlotWidget::sl_showSaveFileDialog() {
-
     LastUsedDirHelper lod("Dotplot");
+    if (dpDirectResultListener->dotPlotList->isEmpty() && dpRevComplResultsListener->dotPlotList->isEmpty()) {
+        QMessageBox::critical(this, tr("Error Saving Dotplot"), tr("The dotplot can't be saved as it is empty."));
+        return true;
+    }
+
     lod.url = U2FileDialog::getSaveFileName(NULL, tr("Save Dotplot"), lod.dir, tr("Dotplot files (*.dpt)"));
 
     if (lod.url.length() <= 0) {
@@ -634,7 +647,7 @@ bool DotPlotWidget::sl_showLoadFileDialog() {
             &direct,
             &inverted
     );
-    createDotPlot = true;
+    dotPlotIsCalculating = true;
 
     TaskScheduler* ts = AppContext::getTaskScheduler();
     ts->registerTopLevelTask(dotPlotTask);
@@ -656,7 +669,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
 
     SAFE_POINT(dnaView, "dnaView is NULL", false);
 
-    QObjectScopedPointer<DotPlotDialog> d = new DotPlotDialog(this, dnaView, minLen, identity, sequenceX, sequenceY, direct, inverted, dotPlotDirectColor, dotPlotInvertedColor, disableLoad);
+    QObjectScopedPointer<DotPlotDialog> d = new DotPlotDialog(QApplication::activeWindow(), dnaView, minLen, identity, sequenceX, sequenceY, direct, inverted, dotPlotDirectColor, dotPlotInvertedColor, disableLoad);
     d->exec();
     CHECK(!d.isNull(), false);
 
@@ -787,7 +800,7 @@ bool DotPlotWidget::sl_showSettingsDialog(bool disableLoad) {
     }
 
     dotPlotTask = new MultiTask("Searching repeats", tasks, true);
-    createDotPlot = true;
+    dotPlotIsCalculating = true;
 
     TaskScheduler* ts = AppContext::getTaskScheduler();
     ts->registerTopLevelTask(dotPlotTask);
@@ -817,22 +830,7 @@ void DotPlotWidget::sl_showDeleteDialog() {
             break;
     }
 
-    if (!deleteDotPlotFlag) {
-        addCloseDotPlotTask();
-    }
-}
-
-void DotPlotWidget::addCloseDotPlotTask() {
-
-    deleteDotPlotFlag = true;
-
-    Task *t = new Task("Closing dotplot", TaskFlags_NR_FOSCOE);
-    if (!dotPlotTask) {
-        dotPlotTask = t;
-    }
-
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
-    connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskStateChanged()));
+    emit si_removeDotPlot();
 }
 
 // dotplot results updated, need to update picture
@@ -1003,38 +1001,40 @@ void DotPlotWidget::drawAll(QPainter &p, QSize &size, qreal fontScale, DotPlotIm
 // draw everything
 void DotPlotWidget::drawAll(QPainter& p, qreal rulerFontScale, bool _drawFocus,
                             bool drawAreaSelection, bool drawRepeatSelection) {
-
     if (sequenceX == NULL || sequenceY == NULL || w <= 0 || h <= 0) {
         return;
     }
 
-    p.save();
-    p.setRenderHint(QPainter::Antialiasing);
+    if (dotPlotIsCalculating) {
+        GUIUtils::showMessage(this, p, tr("Dotplot is calculating..."));
+    } else {
+        p.save();
+        p.setRenderHint(QPainter::Antialiasing);
 
-    p.setBrush(QBrush(palette().window().color()));
+        p.setBrush(QBrush(palette().window().color()));
 
-    drawNames(p);
-    p.translate(textSpace, textSpace);
+        drawNames(p);
+        p.translate(textSpace, textSpace);
 
-    drawAxises(p);
-    drawDots(p);
-    if (drawAreaSelection) {
-        drawSelection(p);
+        drawAxises(p);
+        drawDots(p);
+        if (drawAreaSelection) {
+            drawSelection(p);
+        }
+        drawMiniMap(p);
+        if (drawRepeatSelection) {
+            drawNearestRepeat(p);
+        }
+
+        p.translate(-textSpace, -textSpace);
+        drawRulers(p, rulerFontScale);
+
+        p.restore();
+
+        if (hasFocus() && _drawFocus) {
+            drawFocus(p);
+        }
     }
-    drawMiniMap(p);
-    if (drawRepeatSelection) {
-        drawNearestRepeat(p);
-    }
-
-    p.translate(-textSpace, -textSpace);
-    drawRulers(p, rulerFontScale);
-
-    p.restore();
-
-    if(hasFocus() && _drawFocus){
-        drawFocus(p);
-    }
-
 #define DP_MARGIN 2
 #define DP_EXIT_BUTTON_SIZE 20
     exitButton->setGeometry(width()- DP_MARGIN - DP_EXIT_BUTTON_SIZE, DP_MARGIN, DP_EXIT_BUTTON_SIZE, DP_EXIT_BUTTON_SIZE);
@@ -1651,11 +1651,9 @@ QPoint DotPlotWidget::toInnerCoords(const QPoint &p) const {
 }
 
 void DotPlotWidget::paintEvent(QPaintEvent *e) {
-
-    QWidget::paintEvent(e);
-
     QPainter p(this);
     drawAll(p);
+    QWidget::paintEvent(e);
 }
 
 void DotPlotWidget::resizeEvent(QResizeEvent *e) {
@@ -2069,4 +2067,5 @@ void DotPlotWidget::clearRepeatSelection(){
     clearedByRepitSel = true;
     update();
 }
+
 } // namespace

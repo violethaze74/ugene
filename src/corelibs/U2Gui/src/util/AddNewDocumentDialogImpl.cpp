@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -50,7 +50,7 @@ AddNewDocumentDialogImpl::AddNewDocumentDialogImpl(QWidget* p, AddNewDocumentDia
       model(m)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220388");
+    new HelpButton(this, buttonBox, "19759520");
     if (model.format.isEmpty()) {
         model.format = AppContext::getSettings()->getValue(SETTINGS_LASTFORMAT, QString("")).toString();
     }

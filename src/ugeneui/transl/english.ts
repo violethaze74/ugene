@@ -75,31 +75,49 @@
 <context>
     <name>DirectoriesSettingsWidget</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="26"/>
         <source>Path to downloaded data:</source>
-        <translation>Path to downloaded data:</translation>
+        <translation type="vanished">Path to downloaded data:</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="46"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="84"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="128"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="48"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="86"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="130"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="58"/>
         <source>Path for temporary files</source>
-        <translation>Path for temporary files</translation>
+        <translation type="vanished">Path for temporary files</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="102"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="28"/>
+        <source>Downloaded data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="60"/>
+        <source>Temporary files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="104"/>
         <source>File storage</source>
         <translation>File storage</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="158"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="160"/>
         <source>Cleanup storage</source>
         <translation>Cleanup storage</translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="172"/>
+        <source>Build indexes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsWidget.ui" line="195"/>
+        <source>Documents</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -468,7 +486,7 @@ p, li { white-space: pre-wrap; }
         <translation>UGENE distribution: %1</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ShutdownTask.cpp" line="92"/>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="192"/>
         <source>Close windows</source>
         <translation>Close windows</translation>
     </message>
@@ -722,6 +740,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>U2::CancelAllTask</name>
+    <message>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="240"/>
+        <source>Canceling: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::CheckUpdatesTask</name>
     <message>
         <location filename="../src/main_window/CheckUpdatesTask.cpp" line="43"/>
@@ -793,15 +819,23 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>U2::CloseWindowsTask</name>
+    <message>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="212"/>
+        <source>Closing views</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::DirectoriesSettingsPageController</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="47"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="49"/>
         <source>Directories</source>
         <translation>Directories</translation>
     </message>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="67"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="73"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="88"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="94"/>
         <source>You do not have permission to write to &quot;%1&quot; directory&quot;</source>
         <translation>You do not have permission to write to &quot;%1&quot; directory&quot;</translation>
     </message>
@@ -809,9 +843,11 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DirectoriesSettingsPageWidget</name>
     <message>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="115"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="125"/>
-        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="135"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="142"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="152"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="162"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="172"/>
+        <location filename="../src/app_settings/directories_settings/DirectoriesSettingsGUIController.cpp" line="186"/>
         <source>Choose Directory</source>
         <translation>Choose Directory</translation>
     </message>
@@ -835,62 +871,62 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DocumentFormatSelectorController</name>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="73"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="74"/>
         <source>Options for %1</source>
         <translation>Options for %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="90"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="91"/>
         <source>&lt;b&gt;%1&lt;/b&gt; format. Score: %2 &lt;i&gt;(%3)&lt;/i&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; format. Score: %2 &lt;i&gt;(%3)&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="94"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="95"/>
         <source>&lt;b&gt;&lt;font color=#A6392E&gt;Import: &lt;/font&gt;%1&lt;/b&gt;. Score: %2 (&lt;i&gt;%3&lt;/i&gt;)</source>
         <translation>&lt;b&gt;&lt;font color=#A6392E&gt;Import: &lt;/font&gt;%1&lt;/b&gt;. Score: %2 (&lt;i&gt;%3&lt;/i&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="124"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="125"/>
         <source>Choose format manually</source>
         <translation>Choose format manually</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="175"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="179"/>
         <source>Not matched</source>
         <translation>Not matched</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="178"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="182"/>
         <source>Very low similarity</source>
         <translation>Very low similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="181"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="185"/>
         <source>Low similarity</source>
         <translation>Low similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="184"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="188"/>
         <source>Average similarity</source>
         <translation>Average similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="187"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="191"/>
         <source>High similarity</source>
         <translation>High similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="190"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
         <source>Very high similarity</source>
         <translation>Very high similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="192"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="196"/>
         <source>Perfect match</source>
         <translation>Perfect match</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="200"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="204"/>
         <source>Format details for &apos;%1&apos; format</source>
         <translation>Format details for &apos;%1&apos; format</translation>
     </message>
@@ -999,22 +1035,22 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::ExportProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="343"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="337"/>
         <source>Export project task</source>
         <translation>Export project task</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="371"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="365"/>
         <source>One of the project documents has empty URL</source>
         <translation>One of the project documents has empty URL</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="390"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="384"/>
         <source>Error during coping documents: file already exist</source>
         <translation>Error during coping documents: file already exist</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="392"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="386"/>
         <source>Error during coping documents</source>
         <translation>Error during coping documents</translation>
     </message>
@@ -1048,17 +1084,17 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_ExportProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="494"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="488"/>
         <source>GTest_ExportProject::prepare unable to clean directory for exporting</source>
         <translation>GTest_ExportProject::prepare unable to clean directory for exporting</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="499"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="493"/>
         <source>GTest_ExportProject::prepare unable to create directory for exporting</source>
         <translation>GTest_ExportProject::prepare unable to create directory for exporting</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="519"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="513"/>
         <source>GTest_ExportProject::cleanup unable to delete exported files</source>
         <translation>GTest_ExportProject::cleanup unable to delete exported files</translation>
     </message>
@@ -1066,17 +1102,17 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_LoadDocumentFromProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="580"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="574"/>
         <source>No project loaded</source>
         <translation>No project loaded</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="584"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="578"/>
         <source>Document name to load is empty</source>
         <translation>Document name to load is empty</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="599"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="593"/>
         <source>File %1 not found in project</source>
         <translation>File %1 not found in project</translation>
     </message>
@@ -1084,7 +1120,7 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_LoadProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="441"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="435"/>
         <source>Unload previous project, then load new</source>
         <translation>Unload previous project, then load new</translation>
     </message>
@@ -1092,27 +1128,27 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::LoadProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="317"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="311"/>
         <source>Unable to detect parser for project</source>
         <translation>Unable to detect parser for project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="297"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="291"/>
         <source>Load project</source>
         <translation>Load project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="308"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="302"/>
         <source>Loading project from: %1</source>
         <translation>Loading project from: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="318"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="312"/>
         <source>failed to parse project file %1</source>
         <translation>failed to parse project file %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="323"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="317"/>
         <source>Project loaded: %1</source>
         <translation>Project loaded: %1</translation>
     </message>
@@ -1889,9 +1925,8 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::ProjectViewSearchBox</name>
     <message>
-        <location filename="../src/project_view/ProjectViewSearchBox.cpp" line="57"/>
         <source>Search...</source>
-        <translation>Search...</translation>
+        <translation type="vanished">Search...</translation>
     </message>
 </context>
 <context>
@@ -1921,7 +1956,7 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::RegisterProjectServiceTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="333"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="327"/>
         <source>Register project</source>
         <translation>Register project</translation>
     </message>
@@ -1937,12 +1972,12 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::SaveOnlyProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="220"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="214"/>
         <source>Save project</source>
         <translation>Save project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="280"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="274"/>
         <source>Saving project %1</source>
         <translation>Saving project %1</translation>
     </message>
@@ -1956,14 +1991,18 @@ Do you want view online documentation?</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectTasksGui.cpp" line="206"/>
+        <source>Save documents, remove phantom docs, save project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Save documents, remove phantom docs, save  project</source>
-        <translation>Save documents, remove phantom docs, save  project</translation>
+        <translation type="vanished">Save documents, remove phantom docs, save  project</translation>
     </message>
 </context>
 <context>
     <name>U2::ShtirlitzStartupTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="317"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="318"/>
         <source>Shtirlitz Startup Task</source>
         <translation>Shtirlitz Startup Task</translation>
     </message>
@@ -1971,32 +2010,32 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::ShtirlitzTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="121"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="122"/>
         <source>Shtirlitz is sending the first-time report</source>
         <translation>Shtirlitz is sending the first-time report</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="133"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="134"/>
         <source>%1 days passed passed since previous Shtirlitz&apos;s report. Shtirlitz is sending the new one.</source>
         <translation>%1 days passed passed since previous Shtirlitz&apos;s report. Shtirlitz is sending the new one.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="275"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="276"/>
         <source>Connecting to remote server</source>
         <translation>Connecting to remote server</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="294"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="295"/>
         <source>Cannot resolve destination path for statistical reports</source>
         <translation>Cannot resolve destination path for statistical reports</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="298"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="299"/>
         <source>Network error while resolving destination URL: </source>
         <translation>Network error while resolving destination URL: </translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="311"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="312"/>
         <source>Network error while sending report: </source>
         <translation>Network error while sending report: </translation>
     </message>
@@ -2009,22 +2048,22 @@ Do you want view online documentation?</translation>
         <translation>Shutdown</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ShutdownTask.cpp" line="128"/>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="230"/>
         <source>Cancel active tasks</source>
         <translation>Cancel active tasks</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ShutdownTask.cpp" line="159"/>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="100"/>
         <source>Starting shutdown process...</source>
         <translation>Starting shutdown process...</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ShutdownTask.cpp" line="179"/>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="120"/>
         <source>Shutdown confirmation</source>
         <translation>Shutdown confirmation</translation>
     </message>
     <message>
-        <location filename="../src/main_window/ShutdownTask.cpp" line="180"/>
+        <location filename="../src/main_window/ShutdownTask.cpp" line="121"/>
         <source>There are active tasks. Stop them now?</source>
         <translation>There are active tasks. Stop them now?</translation>
     </message>
@@ -2032,12 +2071,12 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::SplashScreenWidget</name>
     <message>
-        <location filename="../src/main_window/SplashScreen.cpp" line="164"/>
+        <location filename="../src/main_window/SplashScreen.cpp" line="168"/>
         <source>Version </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/SplashScreen.cpp" line="164"/>
+        <location filename="../src/main_window/SplashScreen.cpp" line="168"/>
         <source> is loading</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -43,8 +43,9 @@ namespace U2 {
 
 ExportImageDialog::ExportImageDialog(QWidget *screenShotWidget,
                                      InvokedFrom invoSource,
+                                     const QString &file,
                                      ImageScalingPolicy scalingPolicy,
-                                     QWidget *parent, const QString &file)
+                                     QWidget *parent)
     : QDialog(parent),
       scalingPolicy(scalingPolicy),
       filename(file),
@@ -57,8 +58,9 @@ ExportImageDialog::ExportImageDialog(QWidget *screenShotWidget,
 
 ExportImageDialog::ExportImageDialog(ImageExportController *factory,
                                      InvokedFrom invoSource,
+                                     const QString &file,
                                      ImageScalingPolicy scalingPolicy,
-                                     QWidget *parent, const QString &file)
+                                     QWidget *parent)
     : QDialog(parent),
       exportController(factory),
       scalingPolicy(scalingPolicy),
@@ -148,28 +150,28 @@ void ExportImageDialog::init() {
 
     switch (source) {
     case WD:
-        new HelpButton(this, ui->buttonBox, "18220693");
+        new HelpButton(this, ui->buttonBox, "19759825");
         break;
     case CircularView:
-        new HelpButton(this, ui->buttonBox, "18220371");
+        new HelpButton(this, ui->buttonBox, "19759503");
         break;
     case MSA:
-        new HelpButton(this, ui->buttonBox, "18220444");
+        new HelpButton(this, ui->buttonBox, "19759576");
         break;
     case SequenceView:
-        new HelpButton(this, ui->buttonBox, "18220331");
+        new HelpButton(this, ui->buttonBox, "19759463");
         break;
     case AssemblyView:
-        new HelpButton(this, ui->buttonBox, "18220480");
+        new HelpButton(this, ui->buttonBox, "19759612");
         break;
     case PHYTreeView:
-        new HelpButton(this, ui->buttonBox, "18220509");
+        new HelpButton(this, ui->buttonBox, "19759641");
         break;
     case DotPlot:
-        new HelpButton(this, ui->buttonBox, "18220402");
+        new HelpButton(this, ui->buttonBox, "19759534");
         break;
     case MolView:
-        new HelpButton(this, ui->buttonBox, "18220385");
+        new HelpButton(this, ui->buttonBox, "19759517");
         break;
     default:
         FAIL("Can't find help Id",);
@@ -219,7 +221,7 @@ void ExportImageDialog::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultDomain = IMAGE_DIR;
     config.defaultFileName = dirHelper.dir + "/" + GUrlUtils::fixFileName(origFilename);
-    config.defaultFormatId = "png";
+    config.defaultFormatId = "PNG";
     config.fileDialogButton = ui->browseFileButton;
     config.fileNameEdit = ui->fileNameEdit;
     config.formatCombo = ui->formatsBox;
@@ -230,7 +232,7 @@ void ExportImageDialog::initSaveController() {
     SaveDocumentController::SimpleFormatsInfo formatsInfo;
     QStringList formats = getFormats();
     foreach (const QString &format, formats) {
-        formatsInfo.addFormat(format, format, QStringList() << format);
+        formatsInfo.addFormat(format, QStringList() << format.toLower());
     }
 
     saveController = new SaveDocumentController(config, formatsInfo, this);
@@ -251,10 +253,22 @@ QStringList ExportImageDialog::getFormats() {
 QStringList ExportImageDialog::getRasterFormats() {
     QStringList result;
     CHECK(exportController->isRasterFormatsEnabled(), result);
-    QList<QByteArray> list = QImageWriter::supportedImageFormats();
-    list.removeAll("ico");
-    foreach (const QByteArray &format, list) {
-        result << format;
+    QList<QByteArray> qtList = QImageWriter::supportedImageFormats();
+
+    if (qtList.contains("png")) {
+        result.append("PNG");
+    }
+    if (qtList.contains("bmp")) {
+        result.append("BMP");
+    }
+    if (qtList.contains("gif")) {
+        result.append("GIF");
+    }
+    if (qtList.contains("jpg") || qtList.contains("jpeg")) {
+        result.append("JPG");
+    }
+    if (qtList.contains("tif") || qtList.contains("tiff")) {
+        result.append("TIFF");
     }
     return result;
 }
@@ -279,7 +293,8 @@ bool ExportImageDialog::isVectorGraphicFormat( const QString &formatName ) {
 }
 
 bool ExportImageDialog::isLossyFormat(const QString &formatName) {
-    return ( "jpeg" == formatName ) || ( "jpg" == formatName );
+    QString lcFormat = formatName.toLower();
+    return lcFormat == "jpeg" || lcFormat == "jpg";
 }
 
 } // namespace

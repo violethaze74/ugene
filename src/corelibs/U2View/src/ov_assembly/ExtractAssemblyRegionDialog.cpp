@@ -1,7 +1,7 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
 * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
-* http://ugene.unipro.ru
+* http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget * p, ExtractAss
 , settings(settings) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "18220483");
+    new HelpButton(this, buttonBox, "19759615");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -69,7 +69,7 @@ void ExtractAssemblyRegionDialog::sl_regionChanged(const U2Region& newRegion) {
         QString baseName = fi.baseName();
         QString newLocation = QString::number(newRegion.startPos + 1) + "_" + QString::number(newRegion.endPos());
         baseName.replace(stringToReplace, newLocation);
-        
+
         filePath = fi.dir().path() + "/" + baseName + "." + fi.completeSuffix();
         saveController->setPath(filePath);
     }
@@ -105,7 +105,7 @@ void ExtractAssemblyRegionDialog::accept() {
         regionSelector->setFocus(Qt::OtherFocusReason);
         return;
     }
-    
+
     if (settings->fileUrl.isEmpty()) {
         QMessageBox::critical(this, tr("Error!"), tr("Select destination file"));
         filepathLineEdit->setFocus(Qt::OtherFocusReason);

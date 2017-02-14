@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -93,7 +93,7 @@ void SaveDotPlotTask::saveDotPlot(QTextStream &stream){
     int listSizes = directList->size() + inverseList->size();
     SAFE_POINT (listSizes, "listSizes is NULL", );
 
-    int i=0;
+    int i = 0;
     foreach(const DotPlotResults &r, *directList) {
         if (stateInfo.cancelFlag) {
             return;
@@ -313,8 +313,12 @@ DotPlotLoadDocumentsTask::~DotPlotLoadDocumentsTask() {
    }
 }
 
-DotPlotFilterTask::DotPlotFilterTask(ADVSequenceObjectContext* _sequenceX, ADVSequenceObjectContext* _sequenceY,
-                                     const QMultiMap<FilterIntersectionParameter, QString>& _annotationNames, QList<DotPlotResults>* _initialResults, QList<DotPlotResults>* _filteredResults
+DotPlotFilterTask::DotPlotFilterTask(ADVSequenceObjectContext* _sequenceX,
+                                     ADVSequenceObjectContext* _sequenceY,
+                                     const QMultiMap<FilterIntersectionParameter,
+                                     QString>& _annotationNames,
+                                     QSharedPointer< QList<DotPlotResults> > _initialResults,
+                                     QSharedPointer< QList<DotPlotResults> > _filteredResults
                                      ,FilterType _type)
 :Task(tr("Applying filter to dotplot"), TaskFlag_None)
 ,sequenceX(_sequenceX)

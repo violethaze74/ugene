@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,7 +54,6 @@ static const QString STABLE_ATTR("stable");
 static const QString MAX_ITERATIONS_ATTR("max-iterations");
 static const QString RANGE_ATTR("range");
 static const QString RANGE_ATTR_DEFAULT_VALUE("Whole alignment");
-static const QString RANGE_ERR_MSG(QObject::tr("Region should be set as 'start..end', start should be less than end, e.g. '1..100'"));
 
 void MuscleWorkerFactory::init() {
     QList<PortDescriptor*> p; QList<Attribute*> a;
@@ -181,18 +180,18 @@ Task* MuscleWorker::tick() {
         } else {
             QStringList words = range.split(".", QString::SkipEmptyParts);
             if( words.size() != 2 ) {
-                return new FailTask(RANGE_ERR_MSG);
+                return new FailTask(QObject::tr("Region should be set as 'start..end', start should be less than end, e.g. '1..100'"));
             }
             bool ok = false;
             int start = words.at(0).toInt(&ok) - 1;
             if(!ok) {
-                return new FailTask(RANGE_ERR_MSG);
+                return new FailTask(QObject::tr("Region should be set as 'start..end', start should be less than end, e.g. '1..100'"));
             }
             start = qMax(1, start);
             ok = false;
             int end = words.at(1).toInt(&ok) - 1;
             if(!ok) {
-                return new FailTask(RANGE_ERR_MSG);
+                return new FailTask(QObject::tr("Region should be set as 'start..end', start should be less than end, e.g. '1..100'"));
             }
             if(end < start) {
                 return new FailTask(tr("Region end position should be greater than start position"));

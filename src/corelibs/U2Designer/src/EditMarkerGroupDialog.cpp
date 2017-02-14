@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,10 +41,10 @@ namespace U2 {
 /* EditMarkerGroupDialog */
 /************************************************************************/
 EditMarkerGroupDialog::EditMarkerGroupDialog(bool isNew, Marker *marker, Workflow::MarkerGroupListCfgModel *_allModel, QWidget *parent)
-: QDialog(parent), isNew(isNew), marker(NULL), allModel(_allModel)
+    : QDialog(parent), isNew(isNew), marker(NULL), allModel(_allModel), currentTypeIndex(-1)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220806");
+    new HelpButton(this, buttonBox, "19759938");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     {
@@ -399,7 +399,7 @@ EditMarkerDialog::EditMarkerDialog(bool isNew, const QString &type, const QStrin
 : QDialog(parent), isNew(isNew), type(type), name(name), values(values), editWidget(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220806");
+    new HelpButton(this, buttonBox, "19759938");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     if (!isNew) {

@@ -202,7 +202,7 @@
 <context>
     <name>U2::DnaAssemblyMultiTask</name>
     <message>
-        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="86"/>
+        <location filename="../src/misc/DnaAssemblyMultiTask.cpp" line="84"/>
         <source>The short reads can&apos;t be mapped to the reference sequence!</source>
         <translation>The short reads can&apos;t be mapped to the reference sequence!</translation>
     </message>
@@ -242,57 +242,6 @@
         <location filename="../src/misc/FindAlgorithmTask.cpp" line="128"/>
         <source>Detecting format error for file %1</source>
         <translation>Detecting format error for file %1</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MSAColorSchemeRegistry</name>
-    <message>
-        <source>No colors</source>
-        <translation type="vanished">No colors</translation>
-    </message>
-    <message>
-        <source>Jalview</source>
-        <translation type="vanished">Jalview</translation>
-    </message>
-    <message>
-        <source>Percentage Identity</source>
-        <translation type="vanished">Percentage Identity</translation>
-    </message>
-    <message>
-        <source>Percentage Identity (gray)</source>
-        <translation type="vanished">Percentage Identity (gray)</translation>
-    </message>
-    <message>
-        <source>Zappo</source>
-        <translation type="vanished">Zappo</translation>
-    </message>
-    <message>
-        <source>Tailor</source>
-        <translation type="vanished">Tailor</translation>
-    </message>
-    <message>
-        <source>Hydrophobicity</source>
-        <translation type="vanished">Hydrophobicity</translation>
-    </message>
-    <message>
-        <source>Helix propensity</source>
-        <translation type="vanished">Helix propensity</translation>
-    </message>
-    <message>
-        <source>Strand propensity</source>
-        <translation type="vanished">Strand propensity</translation>
-    </message>
-    <message>
-        <source>Turn propensity</source>
-        <translation type="vanished">Turn propensity</translation>
-    </message>
-    <message>
-        <source>Buried index</source>
-        <translation type="vanished">Buried index</translation>
-    </message>
-    <message>
-        <source>Clustal X</source>
-        <translation type="vanished">Clustal X</translation>
     </message>
 </context>
 <context>
@@ -405,37 +354,6 @@ For every column selects the most rare symbol in the whole alignment with percen
     </message>
 </context>
 <context>
-    <name>U2::MSAHighlightingSchemeRegistry</name>
-    <message>
-        <source>No highlighting</source>
-        <translation type="vanished">No highlighting</translation>
-    </message>
-    <message>
-        <source>Agreements</source>
-        <translation type="vanished">Agreements</translation>
-    </message>
-    <message>
-        <source>Disagreements</source>
-        <translation type="vanished">Disagreements</translation>
-    </message>
-    <message>
-        <source>Gaps</source>
-        <translation type="vanished">Gaps</translation>
-    </message>
-    <message>
-        <source>Conservation level</source>
-        <translation type="vanished">Conservation level</translation>
-    </message>
-    <message>
-        <source>Transitions</source>
-        <translation type="vanished">Transitions</translation>
-    </message>
-    <message>
-        <source>Transversions</source>
-        <translation type="vanished">Transversions</translation>
-    </message>
-</context>
-<context>
     <name>U2::MolecularSurfaceCalcTask</name>
     <message>
         <location filename="../src/molecular_geometry/MolecularSurface.cpp" line="126"/>
@@ -450,64 +368,64 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="511"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="552"/>
         <source>No colors</source>
-        <translation type="unfinished">No colors</translation>
+        <translation>No colors</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="504"/>
         <source>Jalview</source>
-        <translation type="unfinished">Jalview</translation>
+        <translation>Jalview</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="506"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="545"/>
         <source>Percentage Identity</source>
-        <translation type="unfinished">Percentage Identity</translation>
+        <translation>Percentage Identity</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="507"/>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="546"/>
         <source>Percentage Identity (gray)</source>
-        <translation type="unfinished">Percentage Identity (gray)</translation>
+        <translation>Percentage Identity (gray)</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="519"/>
         <source>Zappo</source>
-        <translation type="unfinished">Zappo</translation>
+        <translation>Zappo</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="523"/>
         <source>Tailor</source>
-        <translation type="unfinished">Tailor</translation>
+        <translation>Tailor</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="527"/>
         <source>Hydrophobicity</source>
-        <translation type="unfinished">Hydrophobicity</translation>
+        <translation>Hydrophobicity</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="531"/>
         <source>Helix propensity</source>
-        <translation type="unfinished">Helix propensity</translation>
+        <translation>Helix propensity</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="535"/>
         <source>Strand propensity</source>
-        <translation type="unfinished">Strand propensity</translation>
+        <translation>Strand propensity</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="539"/>
         <source>Turn propensity</source>
-        <translation type="unfinished">Turn propensity</translation>
+        <translation>Turn propensity</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="543"/>
         <source>Buried index</source>
-        <translation type="unfinished">Buried index</translation>
+        <translation>Buried index</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="548"/>
         <source>Clustal X</source>
-        <translation type="unfinished">Clustal X</translation>
+        <translation>Clustal X</translation>
     </message>
 </context>
 <context>
@@ -517,42 +435,42 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="121"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="122"/>
         <source>No highlighting</source>
-        <translation type="unfinished">No highlighting</translation>
+        <translation>No highlighting</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="124"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="125"/>
         <source>Agreements</source>
-        <translation type="unfinished">Agreements</translation>
+        <translation>Agreements</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="127"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="128"/>
         <source>Disagreements</source>
-        <translation type="unfinished">Disagreements</translation>
+        <translation>Disagreements</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="130"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="131"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="132"/>
         <source>Gaps</source>
-        <translation type="unfinished">Gaps</translation>
+        <translation>Gaps</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="134"/>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="135"/>
         <source>Conservation level</source>
-        <translation type="unfinished">Conservation level</translation>
+        <translation>Conservation level</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="137"/>
         <source>Transitions</source>
-        <translation type="unfinished">Transitions</translation>
+        <translation>Transitions</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="138"/>
         <source>Transversions</source>
-        <translation type="unfinished">Transversions</translation>
+        <translation>Transversions</translation>
     </message>
 </context>
 <context>

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,7 +37,9 @@ TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap& settin
 : BaseSettingsDialog(parent) {
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220500");
+    new HelpButton(this, buttonBox, "19759632");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     curColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
 

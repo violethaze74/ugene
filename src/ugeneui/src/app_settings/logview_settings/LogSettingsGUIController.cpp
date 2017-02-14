@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -62,7 +62,7 @@ AppSettingsGUIPageWidget* LogSettingsPageController::createWidget(AppSettingsGUI
     return w;
 }
 
-const QString LogSettingsPageController::helpPageId = QString("18220309");
+const QString LogSettingsPageController::helpPageId = QString("19759441");
 
 //////////////////////////////////////////////////////////////////////////
 // widget

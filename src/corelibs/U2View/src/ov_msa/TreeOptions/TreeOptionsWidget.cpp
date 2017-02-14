@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -141,9 +141,9 @@ void TreeOptionsWidget::updateAllWidgets()
     showPenSettings = viewSettings.showPenSettings;
     createGeneralSettingsWidgets();
 
-    QString fontLabel = showFontSettings ? "Hide font settings" : "Show font settings";
+    QString fontLabel = showFontSettings ? tr("Hide font settings") : tr("Show font settings");
     updateShowFontOpLabel(fontLabel);
-    QString penLabel = showPenSettings ? "Hide pen settings" : "Show pen settings";
+    QString penLabel = showPenSettings ? tr("Hide pen settings") : tr("Show pen settings");
     updateShowPenOpLabel(penLabel);
     fontSettingsWidget->setVisible(viewSettings.showFontSettings);
     penGroup->setVisible(viewSettings.showPenSettings);
@@ -319,14 +319,14 @@ void TreeOptionsWidget::sl_branchesColorButton() {
 void TreeOptionsWidget::sl_onLblLinkActivated(const QString& link) {
     if(SHOW_FONT_OPTIONS_LINK == link) {
         showFontSettings = !showFontSettings;
-        QString labelText = showFontSettings ? "Hide font settings" : "Show font settings";
+        QString labelText = showFontSettings ? tr("Hide font settings") : tr("Show font settings");
         updateShowFontOpLabel(labelText);
         fontSettingsWidget->setVisible(showFontSettings);
         return;
     }
     if(SHOW_PEN_OPTIONS_LINK == link) {
         showPenSettings = !showPenSettings;
-        QString labelText = showPenSettings ? "Hide pen settings" : "Show pen settings";
+        QString labelText = showPenSettings ? tr("Hide pen settings") : tr("Show pen settings");
         updateShowPenOpLabel(labelText);
         penGroup->setVisible(showPenSettings);
     }

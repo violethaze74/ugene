@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -126,7 +126,7 @@ void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString &c
             AnnotationTableObject *annsObj = new AnnotationTableObject("Annotations", context->getDataStorage()->getDbiRef());
             annsObj->addAnnotations(annList);
 
-            ExportObjectUtils::exportAnnotations(annsObj->getAnnotations(), baseFileUrl);
+            ExportObjectUtils::exportAnnotations(annsObj, baseFileUrl);
         } else {
             GObject *objectToWrite = fetchObjectFromMessage(messageType, mapData[convertedType]);
             if(Q_LIKELY(NULL != objectToWrite)) {

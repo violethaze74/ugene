@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -98,12 +98,12 @@ void MysqlObjectDbi::initSqlSchema(U2OpStatus& os) {
 #define TOP_LEVEL_FILTER ("rank = " + QString::number(U2DbiObjectRank_TopLevel))
 
 qint64 MysqlObjectDbi::countObjects(U2OpStatus& os) {
-    static const QString queryString = "COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER;
+    static const QString queryString = "SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER;
     return U2SqlQuery(queryString, db, os).selectInt64();
 }
 
 qint64 MysqlObjectDbi::countObjects(U2DataType type, U2OpStatus& os) {
-    static const QString queryString = "COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = :type";
+    static const QString queryString = "SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = :type";
     U2SqlQuery q(queryString, db, os);
     q.bindType(":type", type);
     return q.selectInt64();
@@ -311,6 +311,7 @@ QString createDeleteObjectQueryStr(int objectCount) {
 }
 
 bool MysqlObjectDbi::removeObjects(const QList<U2DataId>& dataIds, bool force, U2OpStatus& os) {
+    Q_UNUSED(force)
     CHECK(!dataIds.isEmpty(), true);
 
     MysqlTransaction t(db, os);

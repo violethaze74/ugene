@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,7 +44,7 @@ struct CoveredRegion {
 class CoveredRegionsManager {
 public:
     CoveredRegionsManager() {}
-    CoveredRegionsManager(const U2Region & visibleRegion_, const QVector<qint64> & coverageInfo_);
+    CoveredRegionsManager(const U2Region & visibleRegion_, const U2AssemblyCoverageStat & coverageInfo_);
 
     inline bool isEmpty() const {return allRegions.empty();}
 

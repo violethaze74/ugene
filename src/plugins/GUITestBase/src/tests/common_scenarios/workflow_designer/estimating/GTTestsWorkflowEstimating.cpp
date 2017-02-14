@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -56,11 +56,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 //    3. Set valid input data.
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Assembly (BAM/SAM)"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/c_elegans", "c_elegans_test.bam");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/c_elegans/c_elegans_test.bam");
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read Sequence"));
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/c_elegans", "c.elegans_chr2.fasta");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/NIAID_pipelines/Call_variants/input_data/c_elegans/c.elegans_chr2.fasta");
 //    4. Click an "Estimate scheme" button on the toolbar.
 //    Expected state: an info message box appears: there is a time estimation for the set input data and two buttons: close and run.
     GTUtilsDialog::waitForDialog( os, new MessageBoxDialogFiller( os, QMessageBox::Close,

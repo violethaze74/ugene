@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -226,7 +226,7 @@ static bool errorLoggingBreak(U2OpStatus& os, QMap<QString, QString>& skippedLin
 /**
  * FASTQ format specification: http://maq.sourceforge.net/fastq.shtml
  */
-static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, const GUrl& docUrl, QList<GObject*>& objects, U2OpStatus& os,
+static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, QList<GObject*>& objects, U2OpStatus& os,
                  int gapSize, int predictedSize, QString& writeLockReason, QMap<QString, QString>& skippedLines) {
     DbiOperationsBlock opBlock(dbiRef, os);
     CHECK_OP(os, );
@@ -284,7 +284,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
             seqImporter.startSequence(warningOs, dbiRef, folder, objName, false);
             if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
                 U2OpStatusImpl seqOs;
-                U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(seqOs);
+                seqImporter.finalizeSequenceAndValidate(seqOs);
                 continue;
             }
         }
@@ -296,7 +296,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
             sequenceStart+=gapSize;
             if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
                 U2OpStatusImpl seqOs;
-                U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(seqOs);
+                seqImporter.finalizeSequenceAndValidate(seqOs);
                 continue;
             }
         }
@@ -305,7 +305,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
         readSequence(warningOs, io, sequence);
         if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
             U2OpStatusImpl seqOs;
-            U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(seqOs);
+            seqImporter.finalizeSequenceAndValidate(seqOs);
             continue;
         }
         MemoryLocker lSequence(os, qCeil(sequence.size()/(1000*1000)));
@@ -315,7 +315,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
         seqImporter.addBlock(sequence.data(),sequence.length(), warningOs);
         if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
             U2OpStatusImpl seqOs;
-            U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(seqOs);
+            seqImporter.finalizeSequenceAndValidate(seqOs);
             continue;
         }
 
@@ -327,7 +327,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
             }
             if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
                 U2OpStatusImpl seqOs;
-                U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(seqOs);
+                seqImporter.finalizeSequenceAndValidate(seqOs);
                 continue;
             }
         }
@@ -337,7 +337,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
         readQuality(warningOs, io, qualityScores, sequence.size());
         if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
             U2OpStatusImpl seqOs;
-            U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(seqOs);
+            seqImporter.finalizeSequenceAndValidate(seqOs);
             continue;
         }
 
@@ -347,7 +347,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
         }
         if(errorLoggingBreak(warningOs, skippedLines, sequenceName)){
             U2OpStatusImpl seqOs;
-            U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(seqOs);
+            seqImporter.finalizeSequenceAndValidate(seqOs);
             continue;
         }
 
@@ -416,7 +416,7 @@ Document* FastqFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const
     int predictedSize = qMax(100*1000, DocumentFormatUtils::getMergedSize(hints, gapSize==-1 ? 0 : io->left()));
 
     QString lockReason;
-    load(io, dbiRef, _hints, io->getURL(), objects, os, gapSize, predictedSize, lockReason, skippedLines);
+    load(io, dbiRef, _hints, objects, os, gapSize, predictedSize, lockReason, skippedLines);
     if (skippedLines.size() > 0){
         QMapIterator<QString, QString> i(skippedLines);
         QStringList errors;

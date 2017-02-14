@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -49,6 +49,9 @@
 #include <U2Gui/OpenViewTask.h>
 #include <U2Core/QObjectScopedPointer.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #include "BlastPlusSupport.h"
 #include "BlastPlusSupportRunDialog.h"
 #include "ExternalToolSupportSettingsController.h"
@@ -67,9 +70,10 @@ namespace {
 
 ////////////////////////////////////////
 //BlastAllSupportRunDialog
-BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(U2SequenceObject *dnaso, QString &lastDBPath, QString &lastDBName, QWidget *parent)
-: BlastRunCommonDialog(parent, BlastPlus, true, getCompValues()), dnaso(dnaso), lastDBPath(lastDBPath), lastDBName(lastDBName)
+BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent)
+: BlastRunCommonDialog(parent, BlastPlus, true, getCompValues()), lastDBPath(lastDBPath), lastDBName(lastDBName), seqCtx(seqCtx)
 {
+    dnaso = seqCtx->getSequenceObject();
     CreateAnnotationModel ca_m;
     ca_m.hideAnnotationType = true;
     ca_m.hideAnnotationName = true;
@@ -77,10 +81,7 @@ BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(U2SequenceObject *dnaso, QS
     ca_m.sequenceObjectRef = GObjectReference(dnaso);
     ca_m.sequenceLen = dnaso->getSequenceLength();
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
-    //lowerCaseCheckBox->hide();
-    QWidget *wdgt = ca_c->getWidget();
-    wdgt->setMinimumHeight(150);
-    verticalLayout_4->addWidget(wdgt);
+    annotationWidgetLayout->addWidget(ca_c->getWidget());
 
     //programName->removeItem(3);//cuda-blastp
     if(dnaso->getAlphabet()->getType() == DNAAlphabet_AMINO){
@@ -121,7 +122,7 @@ bool BlastPlusSupportRunDialog::checkToolPath(){
         needSetToolPath=true;
         toolName=ET_BLASTP;
 
-// https://ugene.unipro.ru/tracker/browse/UGENE-945
+// https://ugene.net/tracker/browse/UGENE-945
 //     }else if((programName->currentText() == "gpu-blastp") &&
 //              (AppContext::getExternalToolRegistry()->getByName(GPU_BLASTP_TOOL_NAME)->getPath().isEmpty())){
 //         needSetToolPath=true;
@@ -207,6 +208,9 @@ void BlastPlusSupportRunDialog::sl_runQuery(){
     lastDBPath = dbSelector->databasePathLineEdit->text();
     lastDBName = dbSelector->baseNameLineEdit->text();
     settings.outputType = 5;//By default set output file format to xml
+    if(seqCtx != NULL){
+        seqCtx->getAnnotatedDNAView()->tryAddObject(ca_c->getModel().getAnnotationObject());
+    }
     accept();
 }
 ////////////////////////////////////////
@@ -229,6 +233,7 @@ BlastPlusWithExtFileSpecifySupportRunDialog::BlastPlusWithExtFileSpecifySupportR
     connect(inputFileLineEdit,SIGNAL(textChanged(QString)),this, SLOT(sl_inputFileLineEditChanged(QString)));
 
     QHBoxLayout* layout = new QHBoxLayout(widget);
+    layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
     layout->addWidget(inputFileLineEdit);
     layout->addWidget(selectToolPathButton);
 
@@ -361,9 +366,7 @@ void BlastPlusWithExtFileSpecifySupportRunDialog::tryApplyDoc(Document *doc) {
     ca_m.defaultIsNewDoc = true;
     if (NULL == ca_c) {
         ca_c = new CreateAnnotationWidgetController(ca_m, this);
-        QWidget *wdgt = ca_c->getWidget();
-        wdgt->setMinimumHeight(150);
-        verticalLayout_4->addWidget(wdgt);
+        annotationWidgetLayout->addWidget(ca_c->getWidget());
     } else {
         ca_c->updateWidgetForAnnotationModel(ca_m);
     }
@@ -390,7 +393,7 @@ bool BlastPlusWithExtFileSpecifySupportRunDialog::checkToolPath(){
         needSetToolPath=true;
         toolName=ET_BLASTP;
 
-// https://ugene.unipro.ru/tracker/browse/UGENE-945
+// https://ugene.net/tracker/browse/UGENE-945
 //     }else if((programName->currentText() == "gpu-blastp") &&
 //              (AppContext::getExternalToolRegistry()->getByName(GPU_BLASTP_TOOL_NAME)->getPath().isEmpty())){
 //         needSetToolPath=true;

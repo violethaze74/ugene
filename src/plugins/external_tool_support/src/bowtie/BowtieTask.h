@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -73,7 +73,7 @@ class BowtieAssembleTask : public ExternalToolSupportTask {
 public:
     BowtieAssembleTask(const DnaAssemblyToRefTaskSettings &settings);
 
-    bool isHaveResults()const;
+    bool hasResult()const;
 
     void prepare();
 private:
@@ -84,9 +84,9 @@ private:
         void parseOutput(const QString &partOfLog);
         void parseErrOutput(const QString &partOfLog);
 
-        bool isHaveResults()const;
+        bool hasResult()const;
     private:
-        bool haveResults;
+        bool hasResults;
     };
 
     LogParser *logParser;

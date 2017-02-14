@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ CheckUpdatesTask::CheckUpdatesTask(bool startUp)
     startError = false;
 }
 
-#define SITE_URL  QString("ugene.unipro.ru")
+#define SITE_URL  QString("ugene.net")
 #define PAGE_NAME QString("/current_version.html")
 
 void CheckUpdatesTask::run() {

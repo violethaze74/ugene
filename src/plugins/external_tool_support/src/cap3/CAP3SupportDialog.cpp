@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ CAP3SupportDialog::CAP3SupportDialog(CAP3SupportTaskSettings& s, QWidget* parent
       saveController(NULL)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220576");
+    new HelpButton(this, buttonBox, "19759708");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

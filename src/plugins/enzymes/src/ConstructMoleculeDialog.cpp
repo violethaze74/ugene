@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
     fragments(fragmentList),
     saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220536");
+    new HelpButton(this, buttonBox, "19759668");
 
     tabWidget->setCurrentIndex(0);
     const QString coreLengthStr = ConstructMoleculeDialog::tr("core length");
@@ -58,7 +58,7 @@ ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment>& fragm
             .arg(frag.getSequenceDocName())
             .arg(frag.getName())
             .arg(coreLengthStr)
-            .arg(frag.getLength(true));
+            .arg(frag.getLength());
         fragmentListWidget->addItem(fragItem);
     }
 
@@ -192,10 +192,6 @@ void ConstructMoleculeDialog::sl_onRemoveButtonClicked()
 
 void ConstructMoleculeDialog::update()
 {
-    static const QString BLUNT(tr("Blunt"));
-    static const QString FWD(tr("Fwd"));
-    static const QString REV(tr("Rev"));
-
     molConstructWidget->clear();
 
     foreach (int index, selected ) {
@@ -207,18 +203,18 @@ void ConstructMoleculeDialog::update()
             if (fragment.getLeftTerminus().type == OVERHANG_TYPE_STICKY ){
                 newItem->setText(0, QString("%1 (%2)")
                     .arg(QString(fragment.getLeftTerminus().overhang))
-                    .arg(fragment.getLeftTerminus().isDirect ? FWD : REV) );
+                    .arg(fragment.getLeftTerminus().isDirect ? tr("Fwd") : tr("Rev")) );
             } else {
-                newItem->setText(0, BLUNT);
+                newItem->setText(0, tr("Blunt"));
             }
             newItem->setToolTip(0, tr("Left end"));
             newItem->setText(1, item->text());
             if (fragment.getRightTerminus().type == OVERHANG_TYPE_STICKY ) {
                 newItem->setText(2, QString("%1 (%2)")
                     .arg( QString(fragment.getRightTerminus().overhang) )
-                    .arg( fragment.getRightTerminus().isDirect ? FWD : REV ) );
+                    .arg( fragment.getRightTerminus().isDirect ? tr("Fwd") : tr("Rev") ) );
             } else {
-                newItem->setText(2, BLUNT);
+                newItem->setText(2, tr("Blunt"));
             }
             newItem->setToolTip(2, tr("Right end"));
             newItem->setCheckState(3, fragment.isInverted() ? Qt::Checked : Qt::Unchecked);

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ public:
     virtual ~AssemblyCellRenderer() {}
 
     /** Render pixmaps into cache */
-    virtual void render(const QSize &size, bool text, const QFont &font) = 0;
+    virtual void render(const QSize &size, int devicePixelRatio, bool text, const QFont &font) = 0;
 
     /** @returns cached cell pixmap */
     virtual QPixmap cellImage(char c) = 0;
@@ -48,9 +48,9 @@ public:
     virtual QPixmap cellImage(const U2AssemblyRead &read, char c, char ref) = 0;
 
 protected:
-    static void drawCell(QPixmap &img, const QColor &topColor, const QColor&bottomColor, bool text, char c, const QFont &font, const QColor &textColor);
-    static void drawCell(QPixmap &img, const QColor &color, bool text, char c, const QFont &font, const QColor &textColor) {
-        drawCell(img, color, color, text, c, font, textColor);
+    static void drawCell(QPixmap &img, const QSize &size, const QColor &topColor, const QColor&bottomColor, bool text, char c, const QFont &font, const QColor &textColor);
+    static void drawCell(QPixmap &img, const QSize &size, const QColor &color, bool text, char c, const QFont &font, const QColor &textColor) {
+        drawCell(img, size, color, color, text, c, font, textColor);
     }
 };
 

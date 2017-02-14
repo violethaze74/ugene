@@ -1,10 +1,34 @@
 //#include "phylip.h"
 //#include "seq.h"
 #include "dnadist.h"
-/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
-   Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
-   Permission is granted to copy and use this program provided no fee is
-   charged for it and provided that this copyright notice is not removed. */
+/* version 3.696.
+Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
+
+Copyright (c) 1993-2014, Joseph Felsenstein
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 #include <U2Core/Task.h>
@@ -601,8 +625,7 @@ void dnadist_sitecombine()
     j = i + 1;
     tied = true;
     while (j <= sites && tied) {
-      tied = (oldweight[alias[i - 1] - 1] == oldweight[alias[j - 1] - 1] &&
-              category[alias[i - 1] - 1] == category[alias[j - 1] - 1]);
+      tied = (category[alias[i - 1] - 1] == category[alias[j - 1] - 1]);
       k = 1;
       while (k <= spp && tied) {
         tied = (tied &&
@@ -638,8 +661,6 @@ void dnadist_sitescrunch()
           found = (ally[alias[j - 1] - 1] == alias[j - 1]);
           j++;
           completed = (j > sites);
-          if (j <= sites)
-            completed = (oldweight[alias[j - 1] - 1] == 0);
         } while (!(found || completed));
         if (found) {
           j--;
@@ -665,6 +686,7 @@ void makeweights()
   for (i = 1; i <= sites; i++) {
     alias[i - 1] = i;
     ally[i - 1] = i;
+    location[i - 1] = 0;
     weight[i - 1] = 0;
   }
   dnadist_sitesort();
@@ -672,7 +694,7 @@ void makeweights()
   dnadist_sitescrunch();
   endsite = 0;
   for (i = 1; i <= sites; i++) {
-    if (ally[i - 1] == i && oldweight[i - 1] > 0)
+    if (ally[i - 1] == i)
       endsite++;
   }
   for (i = 1; i <= endsite; i++)
@@ -686,7 +708,8 @@ void makeweights()
   for (i = 0; i < categs; i++)
     rate[i] *= weightsum / sumrates;
   for (i = 0; i < sites; i++)
-    weight[location[ally[i] - 1] - 1] += oldweight[i];
+    if (location[ally[i] - 1] > 0)
+      weight[location[ally[i] - 1] - 1] += oldweight[i];
 }  /* makeweights */
 
 

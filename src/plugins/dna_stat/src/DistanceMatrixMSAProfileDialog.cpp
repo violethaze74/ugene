@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,15 +44,15 @@
 
 namespace U2 {
 
-const QString DistanceMatrixMSAProfileDialog::HTML = "html";
-const QString DistanceMatrixMSAProfileDialog::CSV = "csv";
+const QString DistanceMatrixMSAProfileDialog::HTML = "HTML";
+const QString DistanceMatrixMSAProfileDialog::CSV = "CSV";
 
 DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEditor* _c)
     : QDialog(p),
       ctx(_c),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220458");
+    new HelpButton(this, buttonBox, "19759590");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

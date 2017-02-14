@@ -1,7 +1,7 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
 * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
-* http://ugene.unipro.ru
+* http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@
 
 namespace U2 {
 
-ExtractAssemblyRegionAndOpenViewTask::ExtractAssemblyRegionAndOpenViewTask(const ExtractAssemblyRegionTaskSettings& settings) 
+ExtractAssemblyRegionAndOpenViewTask::ExtractAssemblyRegionAndOpenViewTask(const ExtractAssemblyRegionTaskSettings& settings)
     : Task(tr("Extract Assembly Region And Open View Task"), TaskFlags_NR_FOSE_COSC), settings(settings), extractTask(NULL) {}
 
 void ExtractAssemblyRegionAndOpenViewTask::prepare() {
@@ -50,7 +50,7 @@ void ExtractAssemblyRegionAndOpenViewTask::prepare() {
     } else {
         setSubtaskProgressWeight(100);
     }
-    
+
     extractTask = new ExtractAssemblyRegionTask(settings);
     addSubTask(extractTask);
 }
@@ -62,16 +62,16 @@ QList<Task*> ExtractAssemblyRegionAndOpenViewTask::onSubTaskFinished(Task *subTa
     if (subTask->hasError() || subTask->isCanceled()) {
         return result;
     }
-           
+
     if (extractTask == subTask && settings.addToProject) {
         Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.fileUrl);
         CHECK(openTask != NULL, result);
         result.append(openTask);
-    } 
+    }
     return result;
 }
 
-ExtractAssemblyRegionTask::ExtractAssemblyRegionTask(const ExtractAssemblyRegionTaskSettings& settings) 
+ExtractAssemblyRegionTask::ExtractAssemblyRegionTask(const ExtractAssemblyRegionTaskSettings& settings)
     : Task(tr("Extract Assembly Region Task"), TaskFlag_None), settings(settings) {
     tpm = Task::Progress_Manual;
 }

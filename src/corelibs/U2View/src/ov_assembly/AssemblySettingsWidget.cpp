@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -230,8 +230,7 @@ QWidget * AssemblySettingsWidget::createRulerSettings() {
 ////////////////////////////////////
 const QString AssemblySettingsWidgetFactory::GROUP_ID = "OP_ASS_SETTINGS";
 const QString AssemblySettingsWidgetFactory::GROUP_ICON_STR = ":core/images/settings2.png";
-const QString AssemblySettingsWidgetFactory::GROUP_TITLE = QString(QObject::tr("Assembly Browser Settings"));
-const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "18220486";
+const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "19759618";
 
 
 AssemblySettingsWidgetFactory::AssemblySettingsWidgetFactory()
@@ -258,7 +257,7 @@ QWidget* AssemblySettingsWidgetFactory::createWidget(GObjectView* objView)
 
 OPGroupParameters AssemblySettingsWidgetFactory::getOPGroupParameters()
 {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), GROUP_TITLE, GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Assembly Browser Settings"), GROUP_DOC_PAGE);
 }
 
 

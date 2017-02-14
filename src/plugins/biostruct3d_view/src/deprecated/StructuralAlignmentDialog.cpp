@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,6 +32,7 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <QtWidgets/QPushButton>
 
 #include <U2Gui/HelpButton.h>
 
@@ -56,8 +57,10 @@ StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fi
         : QDialog(parent), task(0)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220387");
-
+    new HelpButton(this, buttonBox, "19759519");
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    
     StructuralAlignmentAlgorithmRegistry *reg = AppContext::getStructuralAlignmentAlgorithmRegistry();
     foreach (const QString &id, reg->getFactoriesIds()) {
         algorithmCombo->addItem(id, qVariantFromValue(id));

@@ -9,6 +9,11 @@
         <translation>Align with Kalign</translation>
     </message>
     <message>
+        <location filename="../src/KalignDialog.ui" line="46"/>
+        <source>Input and output</source>
+        <translation>Input and output</translation>
+    </message>
+    <message>
         <location filename="../src/KalignDialog.ui" line="54"/>
         <source>Input file</source>
         <translation>Input file</translation>

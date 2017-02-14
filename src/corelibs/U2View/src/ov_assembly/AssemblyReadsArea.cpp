@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -84,12 +84,20 @@ AssemblyReadsArea::AssemblyReadsArea(AssemblyBrowserUi * ui_, QScrollBar * hBar_
     hintEnabled(AssemblyBrowserSettings::getReadHintEnabled()),
     scrolling(false),
     optimizeRenderOnScroll(AssemblyBrowserSettings::getOptimizeRenderOnScroll()),
-    readMenu(new QMenu(this))
+    readMenu(new QMenu(this)),
+    lockTimeout(500)
 {
     setObjectName("assembly_reads_area");
     setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Minimum);
+
+    bdBusyLabel.setParent(this);
+    bdBusyLabel.setText(tr("<center><b>Assembly database is busy</b><br>Some task occupied database.<br> When the database is free all functionality of Assembly Browser will be available again.</center>"));
+    bdBusyLabel.installEventFilter(this);
+    bdBusyLabel.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
     QVBoxLayout * coveredRegionsLayout = new QVBoxLayout();
     coveredRegionsLayout->addWidget(&coveredRegionsLabel);
+    coveredRegionsLayout->addWidget(&bdBusyLabel);
     setLayout(coveredRegionsLayout);
     initRedraw();
     connectSlots();
@@ -113,14 +121,14 @@ void AssemblyReadsArea::createMenu() {
     QMenu * exportMenu = readMenu->addMenu(tr("Export"));
     exportMenu->menuAction()->setObjectName("Export");
 
-	QAction *exportCoverage = exportMenu->addAction(tr("Coverage"));
-	exportCoverage->setObjectName("Export coverage");
-	connect(exportCoverage, SIGNAL(triggered()), browser, SLOT(sl_exportCoverage()));
+    QAction *exportCoverage = exportMenu->addAction(tr("Coverage"));
+    exportCoverage->setObjectName("Export coverage");
+    connect(exportCoverage, SIGNAL(triggered()), browser, SLOT(sl_exportCoverage()));
 
-	QAction * exportConsensus = exportMenu->addAction("Consensus");
-	connect(exportConsensus, SIGNAL(triggered()), ui->getConsensusArea(), SLOT(sl_exportConsensus()));
+    QAction * exportConsensus = exportMenu->addAction("Consensus");
+    connect(exportConsensus, SIGNAL(triggered()), ui->getConsensusArea(), SLOT(sl_exportConsensus()));
 
-	exportMenu->addSeparator();
+    exportMenu->addSeparator();
 
     exportReadAction = exportMenu->addAction("Current read");
     connect(exportReadAction, SIGNAL(triggered()), SLOT(sl_onExportRead()));
@@ -128,8 +136,8 @@ void AssemblyReadsArea::createMenu() {
     QAction * exportVisibleReads = exportMenu->addAction("Visible reads as sequences");
     connect(exportVisibleReads, SIGNAL(triggered()), SLOT(sl_onExportReadsOnScreen()));
 
-	QAction * exportAssemblyRegion = exportMenu->addAction("Assembly region");
-	connect(exportAssemblyRegion, SIGNAL(triggered()), browser, SLOT(sl_extractAssemblyRegion()));
+    QAction * exportAssemblyRegion = exportMenu->addAction("Assembly region");
+    connect(exportAssemblyRegion, SIGNAL(triggered()), browser, SLOT(sl_extractAssemblyRegion()));
 
     readMenu->addSeparator();
 
@@ -164,8 +172,6 @@ void AssemblyReadsArea::createMenu() {
     connect(optimizeRenderAction, SIGNAL(toggled(bool)), SLOT(sl_onOptimizeRendering(bool)));
 }
 
-static const QString BIND_HERE(QObject::tr("Lock here"));
-
 QMenu* AssemblyReadsArea::createShadowingMenu() {
     QMenu *shadowingMenu = new QMenu(tr("Reads shadowing"));
 
@@ -177,7 +183,7 @@ QMenu* AssemblyReadsArea::createShadowingMenu() {
     shadowingModeCentered->setCheckable(true);
 
     shadowingMenu->addSeparator();
-    shadowingBindHere = shadowingMenu->addAction(BIND_HERE);
+    shadowingBindHere = shadowingMenu->addAction(QObject::tr("Lock here"));
     shadowingBindHere->setDisabled(true);
     connect(shadowingBindHere, SIGNAL(triggered()), this, SLOT(sl_onBindShadowing()));
 
@@ -201,7 +207,8 @@ QMenu* AssemblyReadsArea::createShadowingMenu() {
 
 void AssemblyReadsArea::initRedraw() {
     redraw = true;
-    cachedView = QPixmap(size());
+    cachedView = QPixmap(size() * devicePixelRatio());
+    cachedView.setDevicePixelRatio(devicePixelRatio());
 }
 
 void AssemblyReadsArea::connectSlots() {
@@ -274,39 +281,51 @@ void AssemblyReadsArea::accumulateDelta(int delta) {
 void AssemblyReadsArea::drawAll() {
     GTIMER(c1, t1, "AssemblyReadsArea::drawAll");
     if(!model->isEmpty()) {
-        if (redraw) {
-            // update cached pixmap
-            redraw = false;
+        if(!model->isDbLocked(lockTimeout)){
+            lockTimeout = 500;
+            if(bdBusyLabel.isVisible()){
+                bdBusyLabel.hide();
+                redraw = true;
+            }
+            if (redraw) {
+                // update cached pixmap
+                redraw = false;
+
+                if(browser->areReadsVisible()) {
+                    cachedView.fill(Qt::transparent);
+                    QPainter p(&cachedView);
+                    drawReads(p);
+                }
+                else {
+                    QPainter p(this);
+                    p.fillRect(0, 0, width(), height(), Qt::transparent);
+                    showWelcomeScreen();
+                }
+
+                setupHScrollBar();
+                setupVScrollBar();
+            }
 
             if(browser->areReadsVisible()) {
-                cachedView.fill(Qt::transparent);
-                QPainter p(&cachedView);
-                drawReads(p);
-            }
-            else {
                 QPainter p(this);
-                p.fillRect(0, 0, width(), height(), Qt::transparent);
-                showWelcomeScreen();
+                p.drawPixmap(0, 0, cachedView);
+
+                // draw all light stuff which is faster
+                // to redraw than cache into pixmap
+
+                if(hintData.updateHint) {
+                    hintData.updateHint = false;
+                    updateHint();
+                }
+
+                drawReadsShadowing(p);
+                drawCurrentReadHighlight(p);
             }
-
-            setupHScrollBar();
-            setupVScrollBar();
-        }
-
-        if(browser->areReadsVisible()) {
+        }else{
+            lockTimeout = 0;
             QPainter p(this);
-            p.drawPixmap(0, 0, cachedView);
-
-            // draw all light stuff which is faster
-            // to redraw than cache into pixmap
-
-            if(hintData.updateHint) {
-                hintData.updateHint = false;
-                updateHint();
-            }
-
-            drawReadsShadowing(p);
-            drawCurrentReadHighlight(p);
+            p.fillRect(0, 0, width(), height(), Qt::transparent);
+            showDdBusyScreen();
         }
     }
 }
@@ -356,7 +375,12 @@ void AssemblyReadsArea::showWelcomeScreen() {
     coveredRegionsLabel.setAdditionalText(prefix, postfix);
     coveredRegionsLabel.show();
 
-    //p.drawText(rect(), Qt::AlignCenter, );
+}
+
+void AssemblyReadsArea::showDdBusyScreen() {
+    cachedReads.clear();
+    coveredRegionsLabel.hide();
+    bdBusyLabel.show();
 }
 
 void AssemblyReadsArea::drawReads(QPainter & p) {
@@ -364,6 +388,7 @@ void AssemblyReadsArea::drawReads(QPainter & p) {
     GCOUNTER(c2, t2, "AssemblyReadsArea::drawReads");
     qint64 t0 = GTimer::currentTimeMicros();
     coveredRegionsLabel.hide();
+    bdBusyLabel.hide();
 
     p.setFont(browser->getFont());
     p.fillRect(rect(), backgroundColor);
@@ -401,7 +426,7 @@ void AssemblyReadsArea::drawReads(QPainter & p) {
         if(text) {
             f.setPointSize(calcFontPointSize());
         }
-        cellRenderer->render(QSize(cachedReads.letterWidth, cachedReads.letterWidth), text, f);
+        cellRenderer->render(QSize(cachedReads.letterWidth, cachedReads.letterWidth), devicePixelRatio(), text, f);
     }
 
     int totalBasesPainted = 0;
@@ -798,7 +823,7 @@ void AssemblyReadsArea::keyPressEvent(QKeyEvent * e) {
 }
 
 bool AssemblyReadsArea::eventFilter(QObject *obj, QEvent *ev) {
-    if(obj == &coveredRegionsLabel) {
+    if(obj == &coveredRegionsLabel || obj == &bdBusyLabel) {
         if(ev->type() == QEvent::MouseMove) {
             QWidget::event(ev);
         }
@@ -937,7 +962,7 @@ void AssemblyReadsArea::shadowingMenuSetBind(bool enable) {
         shadowingJump->setEnabled(true);
     }
     else {
-        shadowingBindHere->setText(BIND_HERE);
+        shadowingBindHere->setText(QObject::tr("Lock here"));
         shadowingBindHere->setCheckable(false);
         shadowingBindHere->setChecked(false);
         shadowingJump->setEnabled(false);

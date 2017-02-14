@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -99,7 +99,6 @@ void CollocationWorkerFactory::init() {
         CollocationWorker::tr("Group annotations"), CollocationWorker::tr("Annotated regions containing found collocations.")),
         DataTypePtr(new MapDataType(Descriptor("collocation.annotations"), outM)), false /*input*/, true/*multi*/);
 
-    static const QString newAnnsStr = CollocationWorker::tr("Create new annotations");
     {
         Descriptor nd(NAME_ATTR, CollocationWorker::tr("Result annotation"),
             CollocationWorker::tr("Name of the result annotations to mark found collocations."));
@@ -138,7 +137,7 @@ void CollocationWorkerFactory::init() {
 
         QVariantMap typeMap;
         typeMap[CollocationWorker::tr("Copy original annotations")] = COPY_TYPE_ATTR;
-        typeMap[newAnnsStr] = NEW_TYPE_ATTR;
+        typeMap[CollocationWorker::tr("Create new annotations")] = NEW_TYPE_ATTR;
         delegates[TYPE_ATTR] = new ComboBoxDelegate(typeMap);
     }
 

@@ -7,12 +7,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/crazy_user/GUICrazyUserTest.h \
 #   Runnables
 #   Runnables / Qt
-#            src/runnables/qt/ColorDialogFiller.h \
-#            src/runnables/qt/DefaultDialogFiller.h \
             src/runnables/qt/EscapeClicker.h \
-#            src/runnables/qt/FontDialogFiller.h \
-#            src/runnables/qt/MessageBoxFiller.h \
-#            src/runnables/qt/PopupChooser.h \
 #   Runnables / UGENE
 #   Runnables / UGENE / ugeneui
             src/runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h \
@@ -119,6 +114,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h \
+            src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h \
 #   Runnables / UGENE / plugins / orf_marker
@@ -147,12 +143,10 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTDatabaseConfig.h \
             src/GTUtilsAnnotationsHighlightingTreeView.h \
             src/GTUtilsAnnotationsTreeView.h \
-#            src/GTUtilsApp.h \
             src/GTUtilsAssemblyBrowser.h \
             src/GTUtilsBookmarksTreeView.h \
             src/GTUtilsCircularView.h \
             src/GTUtilsDashboard.h \
-#            src/GTUtilsDialog.h \
             src/GTUtilsDocument.h \
             src/GTUtilsEscClicker.h \
             src/GTUtilsExternalTools.h \
@@ -174,7 +168,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsSharedDatabaseDocument.h \
             src/GTUtilsTask.h \
             src/GTUtilsTaskTreeView.h \
-#            src/GTUtilsToolTip.h \
             src/GTUtilsWizard.h \
             src/GTUtilsWorkflowDesigner.h \
             src/GTUtilsStartPage.h \
@@ -186,6 +179,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_2001_3000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_3001_4000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_4001_5000.h \
+            src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h \
 #   Tests/Common Scenarios
             src/tests/common_scenarios/Assembling/Assembly_browser/GTTestsAssemblyBrowser.h \
             src/tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.h \
@@ -240,52 +234,17 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.h \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.h \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.h \
-            src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParemeterValidation.h \
+            src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h \
             src/tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.h \
 #   UGENE primitives
             src/api/GTBaseCompleter.h \
+            src/api/GTGraphicsItem.h \
             src/api/GTMSAEditorStatusWidget.h \
             src/api/GTRegionSelector.h \
             src/api/GTSequenceReadingModeDialog.h \
             src/api/GTSequenceReadingModeDialogUtils.h \
-#   Qt primitives
-#            src/primitives/GTAction.h \
-#            src/api/GTCheckBox.h \
-#            src/system/GTClipboard.h \
-#            src/primitives/GTComboBox.h \
-#            src/api/GTDoubleSpinBox.h \
-#            src/system/GTFile.h \
-#            src/api/GTFileDialog.h \
-#            src/GTGlobals.h \
-            src/api/GTGraphicsItem.h \ #\
-    src/test_runner/GUITestRunner.h \
-    src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h
-#            src/api/GTGroupBox.h \
-#            src/drivers/GTKeyboardDriver.h \
-#            src/api/GTKeyboardUtils.h \
-#            src/primitives/GTLineEdit.h \
-#            src/api/GTListWidget.h \
-#            src/api/GTMesnu.h \
-#            src/api/GTMenuBar.h \
-#            src/api/GTMouse.h \
-#            src/drivers/GTMouseDriver.h \
-#            src/api/GTPlainTextEdit.h \
-#            src/api/GTRadioButton.h \
-#            src/api/GTScrollBar.h \
-#            src/api/GTSlider.h \
-#            src/primitives/GTSpinBox.h \
-#            src/api/GTTabBar.h \
-#            src/api/GTTabWidget.h \
-#            src/api/GTTableView.h  \
-#            src/api/GTTextEdit.h \
-#            src/api/GTThread.h \
-#            src/api/GTToolbar.h \
-#            src/api/GTTreeView.h \
-#            src/api/GTTreeWidget.h \
-#            src/api/GTWebView.h #\
-#            src/primitives/GTWidget.h \
-#            src/api/private/GTMenuPrivate.h
+            src/test_runner/GUITestRunner.h
 
 SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/crazy_user/GTAbstractGUIAction.cpp \
@@ -293,12 +252,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/crazy_user/GUICrazyUserTest.cpp \
 #   Runnables
 #   Runnables / Qt
-#            src/runnables/qt/ColorDialogFiller.cpp \
-#            src/runnables/qt/DefaultDialogFiller.cpp \
             src/runnables/qt/EscapeClicker.cpp \
-#            src/runnables/qt/FontDialogFiller.cpp \
-#            src/runnables/qt/MessageBoxFiller.cpp \
-#            src/runnables/qt/PopupChooser.cpp \
 #   Runnables / UGENE
 #   Runnables / UGENE / ugeneui
             src/runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.cpp \
@@ -405,6 +359,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/FormatDBDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.cpp \
+            src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.cpp \
 #   Runnables / UGENE / plugins / orf_marker
@@ -433,12 +388,10 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTDatabaseConfig.cpp \
             src/GTUtilsAnnotationsHighlightingTreeView.cpp \
             src/GTUtilsAnnotationsTreeView.cpp \
-#            src/GTUtilsApp.cpp \
             src/GTUtilsAssemblyBrowser.cpp \
             src/GTUtilsBookmarksTreeView.cpp \
             src/GTUtilsCircularView.cpp \
             src/GTUtilsDashboard.cpp \
-#            src/GTUtilsDialog.cpp \
             src/GTUtilsDocument.cpp \
             src/GTUtilsEscClicker.cpp \
             src/GTUtilsExternalTools.cpp \
@@ -460,7 +413,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsSharedDatabaseDocument.cpp \
             src/GTUtilsTask.cpp \
             src/GTUtilsTaskTreeView.cpp \
-#            src/GTUtilsToolTip.cpp \
             src/GTUtilsWizard.cpp \
             src/GTUtilsWorkflowDesigner.cpp \
             src/GTUtilsStartPage.cpp \
@@ -472,6 +424,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_2001_3000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_3001_4000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_4001_5000.cpp \
+            src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.cpp \
 #   Tests/Common Scenarios
             src/tests/common_scenarios/Assembling/Assembly_browser/GTTestsAssemblyBrowser.cpp \
             src/tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.cpp \
@@ -526,63 +479,17 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.cpp \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.cpp \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.cpp \
-            src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParemeterValidation.cpp \
+            src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.cpp \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.cpp \
             src/tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.cpp \
 #   UGENE primitives
             src/api/GTBaseCompleter.cpp \
+            src/api/GTGraphicsItem.cpp \
             src/api/GTMSAEditorStatusWidget.cpp \
             src/api/GTRegionSelector.cpp \
             src/api/GTSequenceReadingModeDialog.cpp \
             src/api/GTSequenceReadingModeDialogUtils.cpp \
-#   Qt primitives
-#            src/api/GTAction.cpp \
-#            src/api/GTCheckBox.cpp \
-#            src/api/GTClipboard.cpp \
-#            src/api/GTComboBox.cpp \
-#            src/api/GTDoubleSpinBox.cpp \
-#            src/api/GTFile.cpp \
-#            src/api/GTFileDialog.cpp \
-#            src/api/GTGlobals.cpp \
-            src/api/GTGraphicsItem.cpp \ #\
-    src/test_runner/GUITestRunner.cpp \
-    src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.cpp
-#            src/api/GTGroupBox.cpp \
-#            src/api/GTKeyboardDriver.cpp \
-#            src/api/GTKeyboardDriverLinux.cpp \
-#            src/api/GTKeyboardDriverMac.cpp \
-#            src/api/GTKeyboardDriverWindows.cpp \
-#            src/api/GTKeyboardUtils.cpp \
-#            src/api/GTLineEdit.cpp \
-#            src/api/GTListWidget.cpp \
-#            src/api/GTMenu.cpp \
-#            src/api/GTMenuBar.cpp \
-#            src/api/GTMouse.cpp \
-#            src/api/GTMouseDriver.cpp \
-#            src/api/GTMouseDriverLinux.cpp \
-#            src/api/GTMouseDriverMac.cpp \
-#            src/api/GTMouseDriverWindows.cpp \
-#            src/api/GTPlainTextEdit.cpp \
-#            src/api/GTRadioButton.cpp \
-#            src/api/GTScrollBar.cpp \
-#            src/api/GTSlider.cpp \
-#            src/api/GTSpinBox.cpp \
-#            src/api/GTTabBar.cpp \
-#            src/api/GTTabWidget.cpp \
-#            src/api/GTTableView.cpp \
-#            src/api/GTTextEdit.cpp \
-#            src/api/GTThread.cpp \
-#            src/api/GTToolbar.cpp \
-#            src/api/GTTreeView.cpp \
-#            src/api/GTTreeWidget.cpp \
-#            src/api/GTWebView.cpp #\
-#            src/api/GTWidget.cpp \
-#            src/api/private/GTMenuPrivate.cpp
-
-#macx {
-#OBJECTIVE_HEADERS += src/api/private/GTMenuPrivateMac.h
-#OBJECTIVE_SOURCES += src/api/private/GTMenuPrivateMac.mm
-#}
+            src/test_runner/GUITestRunner.cpp
 
 FORMS += \
     src/test_runner/GUITestRunner.ui

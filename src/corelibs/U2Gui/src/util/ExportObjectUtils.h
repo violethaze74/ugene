@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,10 +32,11 @@ class Annotation;
 class ExportDocumentDialogController;
 class GUrl;
 class Task;
+class AnnotationTableObject;
 
 class U2GUI_EXPORT ExportObjectUtils {
 public:
-    static void     exportAnnotations(const QList<Annotation *> &annotations, const GUrl &dstUrl);
+    static void     exportAnnotations(const AnnotationTableObject *aObj, const GUrl &dstUrl);
     static void     exportObject2Document(GObject *object, const QString &url = QString(), bool tracePath = true);
     static void     export2Document(const QObjectScopedPointer<ExportDocumentDialogController> &dialog, bool tracePath = true);
     static Task *   saveAnnotationsTask(const QString &filepath, const DocumentFormatId & format, const QList<Annotation *> &annList);

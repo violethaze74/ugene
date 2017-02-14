@@ -299,17 +299,17 @@
         <translation>Search with given identity %1% and length more then 80m bps can take very long time. Approximate repeat searching time for 80m bp with 95% identity is 40 minutes on Intel Core 2 Quad Q9500. Do you want to continue?</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="304"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="305"/>
         <source>A problem occurred during finding repeats. The sequence is no more available.</source>
-        <translation type="unfinished"></translation>
+        <translation>A problem occurred during finding repeats. The sequence is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="383"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="384"/>
         <source>Estimated repeats count: %1</source>
         <translation>Estimated repeats count: %1</translation>
     </message>
     <message>
-        <location filename="../src/FindRepeatsDialog.cpp" line="384"/>
+        <location filename="../src/FindRepeatsDialog.cpp" line="385"/>
         <source>Estimated repeats count hint is based on the active settings and random sequence model</source>
         <translation>Estimated repeats count hint is based on the active settings and random sequence model</translation>
     </message>
@@ -970,7 +970,7 @@
     <message>
         <location filename="../src/FindRepeatsTask.cpp" line="42"/>
         <source>Reverse complement sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Reverse complement sequence</translation>
     </message>
     <message>
         <location filename="../src/FindRepeatsTask.cpp" line="49"/>

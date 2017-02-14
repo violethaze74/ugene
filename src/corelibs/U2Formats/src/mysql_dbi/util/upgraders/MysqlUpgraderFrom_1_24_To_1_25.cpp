@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,8 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/U2AssemblyUtils.h>
+#include <U2Core/U2AttributeUtils.h>
+#include <U2Core/U2CoreAttributes.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+
 
 #include "MysqlUpgraderFrom_1_24_To_1_25.h"
 #include "mysql_dbi/MysqlDbi.h"
@@ -40,6 +44,11 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgrade(U2OpStatus &os) const {
 
     dropOldPrecedure(os, dbi->getDbRef());
     CHECK_OP(os, );
+
+    upgradeCoverageAttribute(os);
+    CHECK_OP(os, );
+
+    dbi->setProperty(U2DbiOptions::APP_MIN_COMPATIBLE_VERSION, versionTo.text, os);
 }
 
 void MysqlUpgraderFrom_1_24_To_1_25::dropOldPrecedure(U2OpStatus &os, MysqlDbRef *dbRef) const {
@@ -48,6 +57,54 @@ void MysqlUpgraderFrom_1_24_To_1_25::dropOldPrecedure(U2OpStatus &os, MysqlDbRef
 
     CHECK_OP(os, );
 }
+
+void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) const {
+    //get assembly ids
+    QList<U2DataId> assemblyIds = dbi->getObjectDbi()->getObjects(U2Type::Assembly, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
+    CHECK_OP(os, );
+    CHECK(!assemblyIds.isEmpty(),);
+
+    U2AttributeDbi * attributeDbi = dbi->getAttributeDbi();
+    CHECK_EXT(attributeDbi != NULL, os.setError("Attribute dbi is NULL"),);
+
+    foreach (const U2DataId &id, assemblyIds) {
+        //find and remove coverage attribute from ByteArrayAttribute table
+        U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, id, U2BaseAttributeName::coverage_statistics, os);
+
+        if (!attr.value.isEmpty()){//if empty, then nothing to remove
+            U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
+        }
+
+        //calculate new coverage
+        U2AssemblyDbi* assemblyDbi = dbi->getAssemblyDbi();
+        CHECK_EXT(attributeDbi != NULL, os.setError("Assembly dbi is NULL"),);
+        U2Assembly assembly = assemblyDbi->getAssemblyObject(id, os);
+        CHECK_OP(os, );
+
+        U2IntegerAttribute lengthAttr = U2AttributeUtils::findIntegerAttribute(attributeDbi, id, U2BaseAttributeName::reference_length, os);
+        CHECK_OP(os, );
+        if (lengthAttr.value == 0){//Nothing to calculate
+            continue;
+        }
+        static const qint64 MAX_COVERAGE_CACHE_SIZE = 1000*1000;
+        int coverageSize = (int)qMin(MAX_COVERAGE_CACHE_SIZE, lengthAttr.value);
+        U2AssemblyCoverageStat coverageStat;
+        coverageStat.resize(coverageSize);
+
+        assemblyDbi->calculateCoverage(id, U2Region(0, lengthAttr.value), coverageStat, os);
+        CHECK_OP(os, );
+
+        //write new coverage attribute to ByteArrayAttribute table
+        U2ByteArrayAttribute attribute;
+        attribute.objectId = id;
+        attribute.name = U2BaseAttributeName::coverage_statistics;
+        attribute.value = U2AssemblyUtils::serializeCoverageStat(coverageStat);
+        attribute.version = assembly.version;
+        attributeDbi->createByteArrayAttribute(attribute, os);
+        CHECK_OP(os, );
+    }
+}
+
 
 }   // namespace U2
 

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
  */
 
 #include "DockManagerImpl.h"
+#include "DockWidgetPainter.h"
 #include "MainWindowImpl.h"
 
 #include <task_view/TaskStatusBar.h>
@@ -123,116 +124,6 @@ QToolBar* MWDockManagerImpl::getDockBar(MWDockArea a) const {
     return NULL;
 }
 
-
-#define MAX_LABEL_BASE_WIDTH 90
-#define MAX_LABEL_EXTRA_WIDTH 20
-#define IDEAL_LABEL_HEIGHT 25
-#define MIN_LABEL_EXTRA_HEIGHT 6
-#define ICON_TEXT_DIST  6
-#define ICON_SIZE       16
-
-static void updateLabel(DockData* d, bool active) {
-    QFont font;//app default
-    QFontMetrics fm(font);
-    QString text = d->wrapWidget->windowTitle();
-
-    QKeySequence ks = d->action == NULL ? QKeySequence(): d->action->shortcut();
-    QString keyPrefix = "";
-    if (ks.count() == 1) {
-        for (int k = (int)Qt::Key_0; k <= (int)Qt::Key_9; k++) {
-            if (ks[0] == (k | (int)Qt::ALT)) {
-                keyPrefix = QString::number(k - (int)Qt::Key_0) + ": ";
-                break;
-            }
-        }
-    }
-
-    QIcon icon = d->wrapWidget->windowIcon();
-    bool hasIcon = !icon.isNull();
-    int iconSize =  hasIcon ? ICON_SIZE : 0;
-    int iconTextDist  = hasIcon ? ICON_TEXT_DIST : 0;
-    
-    int textWidth = fm.width(keyPrefix + text);
-    int textHeight = fm.height();
-    bool vertical = d->area  == MWDockArea_Bottom ? false : true; 
-    int d1 = qMax(textWidth+iconSize+iconTextDist, MAX_LABEL_BASE_WIDTH) + MAX_LABEL_EXTRA_WIDTH;
-    int d2 = qMax(IDEAL_LABEL_HEIGHT, textHeight + MIN_LABEL_EXTRA_HEIGHT);
-    QPixmap pix(vertical ? d2 : d1, vertical ? d1 : d2);
-#ifdef Q_OS_WIN
-    pix.fill(Qt::transparent);
-#else
-    QColor bgColor = QApplication::palette().brush(QPalette::Window).color();
-    pix.fill(bgColor);
-#endif
-    
-    QRect pixRect = pix.rect();
-    QPainter paint;
-    paint.begin(&pix);
-
-    //rounded rect
-    paint.setPen(Qt::black);
-    QRectF roundedRect(2, 2, pixRect.width()-4,pixRect.height()-4);
-#ifdef Q_OS_WIN
-    QColor fillColor = QColor(0, 0, 0, active ? 30 : 5);
-#else
-    QColor fillColor = bgColor;
-    if (active) {
-        fillColor = bgColor.darker(115);
-    }
-#endif
-
-    paint.fillRect(roundedRect, fillColor);
-    paint.drawLine((int) roundedRect.left() + 1, (int)roundedRect.top(), (int)roundedRect.right() - 1, (int)roundedRect.top());
-    paint.drawLine((int)roundedRect.left() + 1, (int)roundedRect.bottom(), (int)roundedRect.right() - 1, (int)roundedRect.bottom());
-    paint.drawLine((int)roundedRect.left(), (int)roundedRect.top() + 1, (int)roundedRect.left(), (int)roundedRect.bottom() - 1);
-    paint.drawLine((int)roundedRect.right(), (int)roundedRect.top() + 1, (int)roundedRect.right(), (int)roundedRect.bottom() - 1);
-
-    //text
-    int xText = 0; int yText = 0;
-    int aText = fm.ascent();
-    int fontYOffset = aText / 2;
-    int fontXOffset = (d1 - textWidth - iconSize - iconTextDist) / 2 + iconSize + iconTextDist;
-    if (d->area == MWDockArea_Left) {
-        paint.rotate(-90);
-        xText = fontXOffset-d1;
-        yText = pixRect.width()/2 + fontYOffset;
-    } else if (d->area == MWDockArea_Right) {
-        paint.rotate(90);
-        xText = fontXOffset;
-        yText = -pixRect.width()/2 + fontYOffset;
-    } else {
-        xText = fontXOffset;
-        yText = pixRect.height()/2 + fontYOffset;
-    }
-    if (hasIcon) {
-        int xIcon = xText - iconTextDist - iconSize;
-        QPixmap p = icon.pixmap(iconSize, iconSize);
-        if (d->area == MWDockArea_Left) {
-            paint.drawPixmap(xIcon, 1 + (pix.width() - iconSize) / 2, p);
-        } else if (d->area == MWDockArea_Right) {
-            paint.drawPixmap(xIcon, -(1 + (pix.width() - iconSize) / 2) - iconSize, p);
-        } else {
-            paint.drawPixmap(xIcon, 1 + (pix.height() - iconSize) / 2, p);
-            
-        }
-    }
-    int prefixDx = 0;
-    if (!keyPrefix.isEmpty()) {
-        font.setUnderline(true);
-        paint.setFont(font);
-        prefixDx = fm.width(keyPrefix.at(0));
-        paint.drawText(xText, yText, keyPrefix.left(1));
-
-        text = keyPrefix.mid(1) + text;
-        font.setUnderline(false);
-    }
-    paint.setFont(font);
-    paint.drawText(xText + prefixDx, yText, text);
-    paint.end();
-    d->label->resize(pix.size());
-    d->label->setPixmap(pix);
-}
-
 static bool ksInUse(const QKeySequence& ks, const QList<DockData*>& docks) {
     foreach(DockData* d, docks) {
         if (d->action!=NULL && d->action->shortcut() == ks) {
@@ -271,7 +162,7 @@ QAction* MWDockManagerImpl::registerDock(MWDockArea area, QWidget* w, const QKey
     }
     data->label->setToolTip(ttip);
 
-    updateLabel(data, false);
+    DockWidgetPainter::updateLabel(data, false);
 
     docks.append(data);
     
@@ -368,7 +259,7 @@ void MWDockManagerImpl::openDock(DockData* d) {
 
 	//open new dock
     assert(d->wrapWidget != NULL);
-    updateLabel(d, true);
+    DockWidgetPainter::updateLabel(d, true);
     restoreDockGeometry(d);
 	d->dock = new QDockWidget();
     d->dock->setObjectName("mw_docArea");
@@ -391,7 +282,7 @@ void MWDockManagerImpl::openDock(DockData* d) {
 void MWDockManagerImpl::closeDock(DockData* d) {
     activeDocks[d->area] = NULL;
     if (d->wrapWidget!=NULL) { //widget is closed manually by user ->detach it from its parent to avoid deletion on d->dock->close();
-        updateLabel(d, false);
+        DockWidgetPainter::updateLabel(d, false);
         saveDockGeometry(d);
         lastActiveDocksState[d->area].clear(); 
         d->wrapWidget->setParent(NULL);

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -761,10 +761,6 @@ QList<WorkflowProcessItem*> GTUtilsWorkflowDesigner::getWorkers(HI::GUITestOpSta
 }
 
 #define GT_METHOD_NAME "setDatasetInputFile"
-void GTUtilsWorkflowDesigner::setDatasetInputFile(HI::GUITestOpStatus &os, const QString &folderPath, const QString &fileName) {
-    setDatasetInputFile(os, folderPath + "/" + fileName);
-}
-
 void GTUtilsWorkflowDesigner::setDatasetInputFile(GUITestOpStatus &os, const QString &filePath, bool pastePath) {
     GTGlobals::sleep(200);
     QWidget* DatasetWidget = GTWidget::findWidget(os, "DatasetWidget");
@@ -788,7 +784,7 @@ void GTUtilsWorkflowDesigner::addInputFile(HI::GUITestOpStatus &os, const QStrin
     click(os, elementName);
     CHECK_OP(os, );
     QFileInfo info(url);
-    setDatasetInputFile(os, info.path(), info.fileName());
+    setDatasetInputFile(os, info.path() + "/" + info.fileName());
 }
 #undef GT_METHOD_NAME
 
@@ -941,6 +937,10 @@ void GTUtilsWorkflowDesigner::setCellValue(HI::GUITestOpStatus &os, QWidget* par
 #ifndef Q_OS_WIN
         GTKeyboardDriver::keyClick(Qt::Key_Escape);
 #endif
+        break;
+    }
+    case customDialogSelector: {
+        GTWidget::click(os, GTWidget::findButtonByText(os, "...", parent));
         break;
     }
     }

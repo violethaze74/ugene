@@ -178,8 +178,8 @@ public:
     GScrollBar* getVBar() const {return svBar;}
     GScrollBar* getHBar() const {return shBar;}
 
-    void updateHBarPosition(int base);
-    void updateVBarPosition(int seq);
+    void updateHBarPosition(int base, bool repeatAction = false);
+    void updateVBarPosition(int seq, bool repeatAction = false);
 
     void onVisibleRangeChanged();
 

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,34 +26,20 @@
 
 #include <U2Lang/ConfigurationEditor.h>
 
-#include <QtCore/QModelIndex>
-#include <QtCore/QPointer>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QToolButton>
-#include <QtGui/QDialog>
-#include <QtGui/QListWidget>
-#include <QtGui/QSpinBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QTextEdit>
-#else
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QDialog>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QTextEdit>
-#endif
-
-#include <QtCore/QCoreApplication>
-#include <QtGui/QKeyEvent>
+#include <QComboBox>
+#include <QCoreApplication>
+#include <QDialog>
+#include <QHBoxLayout>
+#include <QKeyEvent>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QModelIndex>
+#include <QPointer>
+#include <QPushButton>
+#include <QSpinBox>
+#include <QTextEdit>
+#include <QToolButton>
+#include <QVBoxLayout>
 
 #include "PropertyWidget.h"
 

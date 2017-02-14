@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/MainWindow.h>
@@ -76,7 +77,8 @@ void MaOverviewContextMenu::connectSlots() {
 void MaOverviewContextMenu::sl_exportAsImageTriggered() {
     MaOverviewImageExportController factory(simpleOverview, graphOverview);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MSA, ExportImageDialog::NoScaling, p);
+    QString fileName = GUrlUtils::fixFileName(editor->getMSAObject()->getGObjectName());
+    QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
     dialog->exec();
 }
 

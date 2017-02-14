@@ -16,7 +16,7 @@ workflow "Search for tfbs"{
     write-sequence {
         type:write-sequence;
         name:"Write Sequence";
-        document-format:genbank;
+        document-format:Genbank;
         url-out:tfbs.gb;
     }
     multiplexer {

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,10 +31,12 @@
 
 namespace U2 {
 
+class ADVSequenceObjectContext;
+
 class BlastPlusSupportRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
 public:
-    BlastPlusSupportRunDialog(U2SequenceObject *dnaso, QString &lastDBPath, QString &lastDBName, QWidget *parent);
+    BlastPlusSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent);
 protected slots:
     virtual void sl_runQuery();
     virtual void sl_lineEditChanged();
@@ -44,6 +46,7 @@ private:
     bool checkToolPath();
     QString &lastDBPath;
     QString &lastDBName;
+    ADVSequenceObjectContext* seqCtx;
 };
 
 class BlastPlusWithExtFileSpecifySupportRunDialog : public BlastRunCommonDialog {

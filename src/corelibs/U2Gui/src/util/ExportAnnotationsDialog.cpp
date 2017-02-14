@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -37,13 +37,13 @@
 
 namespace U2 {
 
-const QString ExportAnnotationsDialog::CSV_FORMAT_ID( "csv" );
+const QString ExportAnnotationsDialog::CSV_FORMAT_ID( "CSV" );
 
 ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidget *parent )
     : QDialog( parent ), ui( new Ui_ExportAnnotationsDialog( ) )
 {
     ui->setupUi( this );
-    new HelpButton(this, ui->buttonBox, "18220366");
+    new HelpButton(this, ui->buttonBox, "19759498");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -90,12 +90,6 @@ bool ExportAnnotationsDialog::exportSequence( ) const {
 
 bool ExportAnnotationsDialog::exportSequenceNames( ) const {
     return ui->exportSequenceNameCheck->isChecked( );
-}
-
-void ExportAnnotationsDialog::setExportSequenceVisible( bool value ) {
-    ui->exportSequenceCheck->setVisible( value );
-    ui->exportSequenceNameCheck->setVisible( value );
-    window()->resize(window()->width(), 0);
 }
 
 void ExportAnnotationsDialog::sl_formatChanged(const QString &newFormatId) {

@@ -311,20 +311,23 @@ int MultipleSequenceAlignmentObject::shiftRegion(int startPos, int startRow, int
 
     int n = 0;
     if (shift > 0) {
-        // if some trailing gaps are selected --> save them!
-        if (startPos + nBases + shift > getLength()) {
-            bool increaseAlignmentLen = true;
-            for (int i = startRow; i < startRow + nRows; i++) {
-                int rowLen = getMsaRow(i)->getRowLengthWithoutTrailing();
-                if (rowLen >= startPos + nBases + shift) {
-                    increaseAlignmentLen = false;
-                    break;
+        //if last symbol selected - do not add gaps at the end
+        if (!(startPos + nBases == getLength())) {
+            // if some trailing gaps are selected --> save them!
+            if (startPos + nBases + shift > getLength()) {
+                bool increaseAlignmentLen = true;
+                for (int i = startRow; i < startRow + nRows; i++) {
+                    int rowLen = getMsaRow(i)->getRowLengthWithoutTrailing();
+                    if (rowLen >= startPos + nBases + shift) {
+                        increaseAlignmentLen = false;
+                        break;
+                    }
                 }
-            }
-            if (increaseAlignmentLen) {
-                MsaDbiUtils::updateMsaLength(entityRef, startPos + nBases + shift, os);
-                SAFE_POINT_OP(os, 0);
-                updateCachedMultipleAlignment();
+                if (increaseAlignmentLen) {
+                    MsaDbiUtils::updateMsaLength(entityRef, startPos + nBases + shift, os);
+                    SAFE_POINT_OP(os, 0);
+                    updateCachedMultipleAlignment();
+                }
             }
         }
 

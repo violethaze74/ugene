@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,8 +30,7 @@ namespace U2 {
 
 const QString CircularViewSettingsWidgetFactory::GROUP_ID = "OP_CV_SETTINGS";
 const QString CircularViewSettingsWidgetFactory::GROUP_ICON_STR  = ":circular_view/images/circular.png";
-const QString CircularViewSettingsWidgetFactory::GROUP_TITLE = QObject::tr("Circular View Settings");
-const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "18220372";
+const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "19759504";
 
 CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext* context)
     : ctx(context) {
@@ -55,7 +54,7 @@ QWidget* CircularViewSettingsWidgetFactory::createWidget(GObjectView *objView) {
 }
 
 OPGroupParameters CircularViewSettingsWidgetFactory::getOPGroupParameters() {
-    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), GROUP_TITLE, GROUP_DOC_PAGE);
+    return OPGroupParameters(GROUP_ID, QPixmap(GROUP_ICON_STR), QObject::tr("Circular View Settings"), GROUP_DOC_PAGE);
 }
 
 bool CircularViewSettingsWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface *filter) {

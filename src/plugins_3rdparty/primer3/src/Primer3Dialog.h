@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -75,6 +75,7 @@ private:
     Primer3TaskSettings defaultSettings;
     Primer3TaskSettings settings;
     RegionSelector* rs;
+    ADVSequenceObjectContext *context;
 private slots:
     void sl_pbReset_clicked();
     void sl_pbPick_clicked();

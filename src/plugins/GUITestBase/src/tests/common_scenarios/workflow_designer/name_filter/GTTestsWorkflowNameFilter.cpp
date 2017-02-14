@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -177,7 +177,7 @@ GUI_TEST_CLASS_DEFINITION( test_0003 ) {
             }
         }
     }
-    CHECK_SET_ERR(count == 15, QString("Wrong number of visible items in sample tree: %1").arg(count));
+    CHECK_SET_ERR(count == 16, QString("Wrong number of visible items in sample tree: %1").arg(count));
 }
 
 }

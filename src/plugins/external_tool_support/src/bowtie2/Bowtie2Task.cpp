@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -274,7 +274,7 @@ void Bowtie2Task::prepare() {
 
 Task::ReportResult Bowtie2Task::report() {
     if(!justBuildIndex) {
-        haveResults = true;
+        hasResults = true;
     }
     return ReportResult_Finished;
 }

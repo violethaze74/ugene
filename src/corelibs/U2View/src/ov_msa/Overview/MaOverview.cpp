@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -86,19 +86,6 @@ void MaOverview::mouseReleaseEvent(QMouseEvent *me) {
 
 void MaOverview::setVisibleRangeForEmptyAlignment() {
     cachedVisibleRange = rect();
-}
-
-void MaOverview::showWarning(QPainter& painter, QPaintEvent *e, const QString& warningMessage) {
-    painter.fillRect(rect(), Qt::gray);
-
-    QFontMetrics metrics(painter.font(), this);
-    painter.drawText(rect(), Qt::AlignCenter, metrics.elidedText(
-        warningMessage,
-        Qt::ElideRight,
-        rect().width()));
-
-    QWidget::paintEvent(e);
-    return;
 }
 
 } // namespace

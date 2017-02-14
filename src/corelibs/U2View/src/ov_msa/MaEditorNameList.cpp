@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -303,6 +303,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         if (0 != (Qt::ShiftModifier & e->modifiers()) && ui->getSequenceArea()->isSeqInRange(newSeq - 1)) {
             newSeq--;
             updateSelection(newSeq);
+            ui->seqArea->updateVBarPosition(newSeq);
         } else if (0 == (Qt::ShiftModifier & e->modifiers())) {
             ui->getSequenceArea()->moveSelection(0, -1);
             if (0 <= curSeq - 1) {
@@ -317,6 +318,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         if (0 != (Qt::ShiftModifier & e->modifiers()) && ui->getSequenceArea()->isSeqInRange(newSeq + 1)) {
             newSeq++;
             updateSelection(newSeq);
+            ui->seqArea->updateVBarPosition(newSeq);
         } else if (0 == (Qt::ShiftModifier & e->modifiers())) {
             ui->getSequenceArea()->moveSelection(0, 1);
             if (ui->getSequenceArea()->getNumDisplayedSequences() > curSeq + 1) {
@@ -641,11 +643,12 @@ QRect MaEditorNameList::calculateButtonRect(const QRect& itemRect) const {
 }
 
 void MaEditorNameList::drawAll() {
-    QSize s = size();
+    QSize s = size() * devicePixelRatio();
     if (cachedView->size() != s) {
-        assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
+        cachedView->setDevicePixelRatio(devicePixelRatio());
+        completeRedraw = true;
     }
     if (completeRedraw) {
         QPainter pCached(cachedView);

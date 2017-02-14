@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -67,6 +67,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView *ann
     annsComboBox->addItem(tr("Inner"), ExtractProductSettings::Inner);
     annsComboBox->addItem(tr("All intersected"), ExtractProductSettings::All);
     annsComboBox->addItem(tr("None"), ExtractProductSettings::None);
+    annsComboBox->model()->sort(0);
 
     forwardPrimerBox->setAnnotatedDnaView(annotatedDnaView);
     reversePrimerBox->setAnnotatedDnaView(annotatedDnaView);

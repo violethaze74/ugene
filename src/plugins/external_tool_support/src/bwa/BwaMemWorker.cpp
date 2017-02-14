@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -174,7 +174,7 @@ void BwaMemWorkerFactory::init() {
             BwaMemWorker::tr("Skip pairing; mate rescue performed unless -S also in use (-P)."));
 
         Descriptor matchScore(MATCH_SCORE,
-            BwaMemWorker::tr("Mismatch penalty"),
+            BwaMemWorker::tr("Matching score"),
             BwaMemWorker::tr("Score for a sequence match (-A)."));
 
         Descriptor mismatchPenalty(MISMATCH_PENALTY,

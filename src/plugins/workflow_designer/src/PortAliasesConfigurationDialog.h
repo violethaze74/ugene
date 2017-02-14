@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -58,7 +58,6 @@ private slots:
 private:
     PortAliasesCfgDlgModel      model;
     QMap<int, Port*>            portListMap; // pairs (row, port)
-    int                         portNameMaxSz;
     int                         currentRow;
 
     void accept();

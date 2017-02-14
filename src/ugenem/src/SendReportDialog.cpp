@@ -1,7 +1,7 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
 * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
-* http://ugene.unipro.ru
+* http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@
 #include "Utils.h"
 #include "getMemorySize.c"
 
-#define HOST_URL "http://ugene.unipro.ru"
+#define HOST_URL "http://ugene.net"
 //#define HOST_URL "http://127.0.0.1:80"
 #ifdef Q_OS_LINUX
 #define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_lin.html"
@@ -208,7 +208,6 @@ bool ReportSender::send(const QString &additionalInfo, const QString &dumpUrl) {
 
     reply = netManager->post(request, multiPart);
     multiPart->setParent(reply);
-    connect(reply, SIGNAL(finished()), SLOT(sl_rreplyFinished()));
 
     loop.exec();
     if (reply->error() != QNetworkReply::NoError) {

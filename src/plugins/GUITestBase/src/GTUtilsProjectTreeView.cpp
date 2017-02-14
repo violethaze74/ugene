@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -197,7 +197,10 @@ void GTUtilsProjectTreeView::click(HI::GUITestOpStatus &os, const QString &itemN
     GT_CHECK(itemIndex.isValid(), "Item index is invalid");
     getTreeView(os)->scrollTo(itemIndex);
 
-    GTMouseDriver::moveTo(getItemCenter(os, itemIndex));
+    QPoint p = getItemCenter(os, itemIndex); // clicking on the center does not select the item (Linux)
+    p.setX(p.x() + 1);
+    p.setY(p.y() + 1);
+    GTMouseDriver::moveTo(p);
     GTMouseDriver::click(button);
 }
 #undef GT_METHOD_NAME
@@ -314,11 +317,11 @@ QModelIndexList GTUtilsProjectTreeView::findIndecies(HI::GUITestOpStatus &os,
                 s = s.mid(prefix.length() + 1);
             }
         } else {
-            const QString unload = "[unloaded]";
+            const QString unload = "[unloaded] ";
             if (s.startsWith(unload)){
                 s = s.mid(unload.length());
             }
-            const QRegExp loading("^\\[loading \\d+\\%\\]");
+            const QRegExp loading("^\\[loading \\d+\\%\\] ");
             if (-1 != loading.indexIn(s)) {
                 s = s.mid(loading.matchedLength());
             }

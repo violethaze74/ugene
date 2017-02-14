@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -68,7 +68,8 @@ void AssemblySequenceArea::initCellRenderer(QString id) {
 void AssemblySequenceArea::drawAll() {
     if(canDrawSequence()) {
         if (redraw) {
-            cachedView = QPixmap(size());
+            cachedView = QPixmap(size() * devicePixelRatio());
+            cachedView.setDevicePixelRatio(devicePixelRatio());
             cachedView.fill(Qt::transparent);
             QPainter p(&cachedView);
             redraw = false;
@@ -113,7 +114,7 @@ void AssemblySequenceArea::drawSequence(QPainter & p) {
                 text = false;
             }
         }
-        cellRenderer->render(QSize(letterWidth, letterHeight), text, f);
+        cellRenderer->render(QSize(letterWidth, letterHeight), devicePixelRatio(), text, f);
         QByteArray referenceFragment;
         if(needsReference) {
             referenceFragment = model->getReferenceRegionOrEmpty(getVisibleRegion());

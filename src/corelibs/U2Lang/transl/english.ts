@@ -1384,33 +1384,6 @@
     </message>
 </context>
 <context>
-    <name>U2::RunCmdlineWorkflowTask</name>
-    <message>
-        <source>Workflow process</source>
-        <translation type="vanished">Workflow process</translation>
-    </message>
-    <message>
-        <source>Cannot start process &apos;%1&apos;</source>
-        <translation type="vanished">Cannot start process &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
-        <translation type="vanished">The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</translation>
-    </message>
-    <message>
-        <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
-        <translation type="vanished">The process &apos;%1&apos; crashed some time after starting successfully</translation>
-    </message>
-    <message>
-        <source>Error occurred while reading from or writing to channel</source>
-        <translation type="vanished">Error occurred while reading from or writing to channel</translation>
-    </message>
-    <message>
-        <source>Unknown error occurred</source>
-        <translation type="vanished">Unknown error occurred</translation>
-    </message>
-</context>
-<context>
     <name>U2::RunFileSystem</name>
     <message>
         <location filename="../src/model/RunFileSystem.cpp" line="152"/>
@@ -1446,7 +1419,7 @@
     <message>
         <location filename="../src/support/SimpleWorkflowTask.cpp" line="123"/>
         <source>An error occurred during the task. See the log for details.</source>
-        <translation type="unfinished"></translation>
+        <translation>An error occurred during the task. See the log for details.</translation>
     </message>
     <message>
         <location filename="../src/support/SimpleWorkflowTask.cpp" line="128"/>

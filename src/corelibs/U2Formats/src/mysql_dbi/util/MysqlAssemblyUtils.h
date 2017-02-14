@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ public:
 
     static void unpackData(const QByteArray& packed, U2AssemblyRead &read, U2OpStatus& os);
 
-    static void calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& c, U2OpStatus& os);
+    static void calculateCoverage(U2SqlQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
     static void addToCoverage(U2AssemblyCoverageImportInfo& cii, const U2AssemblyRead& read);
 };

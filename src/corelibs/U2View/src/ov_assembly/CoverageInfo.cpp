@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,11 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include "AssemblyModel.h"
 #include "CoverageInfo.h"
 
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include "AssemblyModel.h"
 
 #include <algorithm>
 #include <limits>
@@ -31,8 +31,8 @@
 namespace U2 {
 
 void CoverageInfo::updateStats() {
-    maxCoverage = 0;
-    minCoverage = std::numeric_limits<qint64>::max();
+    CHECK(!coverageInfo.isEmpty(),)
+    maxCoverage = minCoverage = coverageInfo[0];
 
     qint64 sum = 0;
 
@@ -45,10 +45,13 @@ void CoverageInfo::updateStats() {
 }
 
 CalcCoverageInfoTask::CalcCoverageInfoTask(const CalcCoverageInfoTaskSettings & settings_) :
-BackgroundTask<CoverageInfo>("Calculate assembly coverage", TaskFlags_NR_FOSE_COSC), settings(settings_), calculateTask(NULL) {}
+BackgroundTask<CoverageInfo>("Calculate assembly coverage", TaskFlag_None), settings(settings_)
+{
+    tpm = Progress_Manual;
+}
 
+void CalcCoverageInfoTask::run() {
 
-void CalcCoverageInfoTask::prepare() {
     U2AssemblyCoverageStat cachedCoverageStat;
     {
         cachedCoverageStat = settings.model->getCoverageStat(stateInfo);
@@ -67,41 +70,35 @@ void CalcCoverageInfoTask::prepare() {
         }
     }
     double basesPerRegion = (double)settings.visibleRange.length/settings.regions;
-    double coverageStatBasesPerRegion = (double)modelLength/cachedCoverageStat.coverage->size();
+    double coverageStatBasesPerRegion = (double)modelLength/cachedCoverageStat.size();
 
     result.coverageInfo.resize(settings.regions);
     result.region = settings.visibleRange;
 
-    if(cachedCoverageStat.coverage->isEmpty() || (coverageStatBasesPerRegion > basesPerRegion)) {
-        calculateTask = new CalculateCoveragePerBaseOnRegionTask(settings.model->getDbiConnection().dbi->getDbiRef(), settings.model->getAssembly().id, settings.visibleRange);
-        addSubTask(calculateTask);
+    if(cachedCoverageStat.isEmpty() || (coverageStatBasesPerRegion > basesPerRegion)) {
+        U2AssemblyCoverageStat coverageStat;
+        coverageStat.resize(settings.regions);
+        {
+            settings.model->calculateCoverageStat(settings.visibleRange, coverageStat, stateInfo);
+            if(stateInfo.isCoR()) {
+                return;
+            }
+        }
+        assert(coverageStat.size() == settings.regions);
+        for(int regionIndex = 0;regionIndex < settings.regions;regionIndex++) {
+            result.coverageInfo[regionIndex] = coverageStat[regionIndex];
+        }
     } else {
         for(int regionIndex = 0;regionIndex < settings.regions;regionIndex++) {
             int startPosition = qRound((settings.visibleRange.startPos + basesPerRegion*regionIndex)/coverageStatBasesPerRegion);
             int endPosition = qRound((settings.visibleRange.startPos + basesPerRegion*(regionIndex + 1))/coverageStatBasesPerRegion);
             result.coverageInfo[regionIndex] = 0;
             for(int i = startPosition;i < endPosition;i++) {
-                result.coverageInfo[regionIndex] = std::max(result.coverageInfo[regionIndex], (qint64)cachedCoverageStat.coverage->at(i).maxValue);
+                result.coverageInfo[regionIndex] = std::max(result.coverageInfo[regionIndex], cachedCoverageStat[i]);
             }
-            result.updateStats();
         }
     }
-}
-
-QList<Task*> CalcCoverageInfoTask::onSubTaskFinished(Task* subTask) {
-    QList<Task*> tasks;
-    CHECK(!subTask->hasError(), tasks);
-    CHECK(!hasError(), tasks);
-    if (subTask == calculateTask) {
-        QVector<CoveragePerBaseInfo> *info = calculateTask->takeResult();
-        for (int i = 0; i < info->size(); i++) {
-            result.coverageInfo[i] = info->at(i).coverage;
-        }
-
-        delete info;
-        result.updateStats();
-    }
-    return tasks;
+    result.updateStats();
 }
 
 }

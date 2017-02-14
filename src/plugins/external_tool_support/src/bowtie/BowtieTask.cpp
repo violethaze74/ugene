@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -134,9 +134,9 @@ BowtieAssembleTask::BowtieAssembleTask(const DnaAssemblyToRefTaskSettings &setti
 {
 }
 
-bool BowtieAssembleTask::isHaveResults()const {
+bool BowtieAssembleTask::hasResult()const {
     CHECK(NULL != logParser, false);
-    return logParser->isHaveResults();
+    return logParser->hasResult();
 }
 
 void BowtieAssembleTask::prepare() {
@@ -292,7 +292,7 @@ void BowtieAssembleTask::prepare() {
 
 // BowtieAssembleTask::LogParser
 BowtieAssembleTask::LogParser::LogParser():
-    haveResults(false)
+    hasResults(false)
 {
 }
 
@@ -307,7 +307,7 @@ void BowtieAssembleTask::LogParser::parseErrOutput(const QString &partOfLog) {
     foreach(const QString &buf, log) {
         if(buf.contains(blockRegExp)) {
             if(blockRegExp.cap(1).toInt() > 0) {
-                haveResults = true;
+                hasResults = true;
             }
         }
     }
@@ -319,8 +319,8 @@ void BowtieAssembleTask::LogParser::parseErrOutput(const QString &partOfLog) {
     }
 }
 
-bool BowtieAssembleTask::LogParser::isHaveResults()const {
-    return haveResults;
+bool BowtieAssembleTask::LogParser::hasResult()const {
+    return hasResults;
 }
 
 // BowtieTask
@@ -400,7 +400,7 @@ void BowtieTask::prepare() {
 
 Task::ReportResult BowtieTask::report() {
     if(!justBuildIndex) {
-        haveResults = assembleTask->isHaveResults();
+        hasResults = assembleTask->hasResult();
     }
     return ReportResult_Finished;
 }

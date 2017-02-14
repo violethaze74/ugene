@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -536,12 +536,13 @@ void GSequenceLineViewRenderArea::drawFrame(QPainter& p) {
 
 
 void GSequenceLineViewRenderArea::paintEvent(QPaintEvent *e) {
-    QSize cachedViewSize = cachedView->size();
-    QSize currentSize = size();
+    QSize cachedViewSize = cachedView->size() * devicePixelRatio();
+    QSize currentSize = size() * devicePixelRatio();
     if (cachedViewSize != currentSize) {
         view->addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
         delete cachedView;
         cachedView = new QPixmap(currentSize);
+        cachedView->setDevicePixelRatio(devicePixelRatio());
     }
 
     drawAll(this);

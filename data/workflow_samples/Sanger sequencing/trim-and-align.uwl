@@ -91,7 +91,7 @@ workflow "Trim and align Sanger reads"{
             }
         }
         wizard {
-            help-page-id:16122701;    
+            help-page-id:16122701;
 	    auto-run: true;
             name:"Trim and Align Sanger Reads";
             page {

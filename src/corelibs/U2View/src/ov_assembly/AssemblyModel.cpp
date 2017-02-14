@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -67,9 +67,9 @@ namespace U2 {
 const QByteArray AssemblyModel::COVERAGE_STAT_ATTRIBUTE_NAME(U2BaseAttributeName::coverage_statistics.toLatin1());
 
 AssemblyModel::AssemblyModel(const DbiConnection& dbiCon_) :
-cachedModelLength(NO_VAL), cachedModelHeight(NO_VAL), assemblyDbi(0), dbiHandle(dbiCon_),
-loadingReference(false), refObj(NULL), md5Retrieved(false), cachedReadsNumber(NO_VAL), speciesRetrieved(false),
-uriRetrieved(false)
+    cachedModelLength(NO_VAL), cachedModelHeight(NO_VAL), assemblyDbi(NULL), dbiHandle(dbiCon_),
+    loadingReference(false), refObj(NULL), md5Retrieved(false), cachedReadsNumber(NO_VAL), speciesRetrieved(false),
+    uriRetrieved(false)
 {
     Project * prj = AppContext::getProject();
     if (prj != NULL) {
@@ -117,12 +117,12 @@ U2DbiIterator<U2AssemblyRead>* AssemblyModel::getReads(const U2Region & r, U2OpS
     return assemblyDbi->getReads(assembly.id, r, os);
 }
 
-void AssemblyModel::calculateCoverageStat(const U2Region & r, U2AssemblyCoverageStat & stat, U2OpStatus & os) {
-    return assemblyDbi->calculateCoverage(assembly.id, r, stat, os);
+void AssemblyModel::calculateCoverageStat(const U2Region & r, U2AssemblyCoverageStat& coverageStat, U2OpStatus & os) {
+    return assemblyDbi->calculateCoverage(assembly.id, r, coverageStat, os);
 }
 
 bool AssemblyModel::hasCachedCoverageStat() {
-    if(!cachedCoverageStat.coverage->isEmpty()) {
+    if(!cachedCoverageStat.isEmpty()) {
         return true;
     }
     U2AttributeDbi * attributeDbi = dbiHandle.dbi->getAttributeDbi();
@@ -140,28 +140,21 @@ bool AssemblyModel::hasCachedCoverageStat() {
 const U2AssemblyCoverageStat &AssemblyModel::getCoverageStat(U2OpStatus & os) {
     QMutexLocker mutexLocker(&mutex);
     Q_UNUSED(mutexLocker);
-    if(cachedCoverageStat.coverage->isEmpty()) {
+    if(cachedCoverageStat.isEmpty()) {
         U2AttributeDbi * attributeDbi = dbiHandle.dbi->getAttributeDbi();
         if(NULL != attributeDbi) {
             U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, assembly.id, COVERAGE_STAT_ATTRIBUTE_NAME, os);
             if(!os.isCoR()) {
-                /*
                 if(attr.hasValidId()) {
                     // TODO: check version
-                    U2AssemblyUtils::deserializeCoverageStat(attr.value, *cachedCoverageStat, os);
+                    U2AssemblyUtils::deserializeCoverageStat(attr.value, cachedCoverageStat, os);
                 } else {
-                */
                     qint64 length = getModelLength(os);
                     if(!os.isCoR()) {
-                        QScopedPointer<QVector<CoveragePerBaseInfo> > results(new QVector<CoveragePerBaseInfo>(length));
-                        cachedCoverageStat.coverage->clear();
-                        cachedCoverageStat.coverage->reserve(length);
-                        U2AssemblyUtils::calculateCoveragePerBase(getDbiConnection().dbi->getDbiRef(), getAssembly().id, U2Region(0, length), results.data(), os);
-                        for (int i = 0; i < results->size(); i++) {
-                            cachedCoverageStat.coverage->append(U2Range<int>(results->at(i).coverage, results->at(i).coverage));
-                        }
-                        
-                        /*
+                        static const qint64 MAX_COVERAGE_CACHE_SIZE = 1000*1000;
+                        int coverageCacheSize = (int)qMin(MAX_COVERAGE_CACHE_SIZE, length);
+                        cachedCoverageStat.resize(coverageCacheSize);
+                        calculateCoverageStat(U2Region(0, length), cachedCoverageStat, os);
                         if(!os.isCoR()) {
                             U2ByteArrayAttribute attribute;
                             attribute.objectId = assembly.id;
@@ -172,9 +165,8 @@ const U2AssemblyCoverageStat &AssemblyModel::getCoverageStat(U2OpStatus & os) {
                             attributeDbi->createByteArrayAttribute(attribute, opStatus);
                             LOG_OP(opStatus);
                         }
-                        */
                     }
-                //}
+                }
             }
         } else {
             os.setError("Attribute DBI is not supported");
@@ -680,4 +672,13 @@ U2SequenceObject* AssemblyModel::getRefObj() const {
     return refObj;
 }
 
+bool AssemblyModel::isDbLocked(int timeout){
+    QMutex* mutex = dbiHandle.dbi->getDbMutex();
+    CHECK(mutex != NULL, false);
+    if(mutex->tryLock(timeout)){
+        mutex->unlock();
+        return false;
+    }
+    return true;
+}
 } // U2

@@ -1,13 +1,37 @@
 #ifndef _PHYLIP_H_
 #define _PHYLIP_H_
 
-/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
+/* version 3.696.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, Andrew Keeffe,
    Mike Palczewski, Doug Buxton and Dan Fineman.
-   Permission is granted to copy and use this program provided no fee is
-   charged for it and provided that this copyright notice is not removed. */
 
-#define PHY_VERSION "3.69"
+   Copyright (c) 1980-2014, Joseph Felsenstein
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+
+   2. Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+   POSSIBILITY OF SUCH DAMAGE.
+*/
+
+#define PHY_VERSION "3.696"
 
 /* Debugging options */
 /* Define this to disable assertions */
@@ -162,7 +186,7 @@ void phyFillScreenColor(void);
 #endif
 
 #ifdef DOS
-#define MALLOCRETURN void 
+#define MALLOCRETURN void
 #else
 #define MALLOCRETURN void
 #endif
@@ -180,12 +204,12 @@ void phyFillScreenColor(void);
 #endif
 /*  if on a Mac cannot use screen controls */
 #ifdef MAC
-#define IBMCRT false 
+#define IBMCRT false
 #define ANSICRT false
 #endif
 /*  if on a Windows system can use IBM PC screen controls */
 #ifdef WIN32
-#define IBMCRT true 
+#define IBMCRT true
 #define ANSICRT false
 #endif
 /* otherwise, let's assume we are on a Linux or Unix system
@@ -193,7 +217,7 @@ void phyFillScreenColor(void);
 #ifndef MAC
 #ifndef DOS
 #ifndef WIN32
-#define IBMCRT false 
+#define IBMCRT false
 #define ANSICRT true
 #endif
 #endif
@@ -216,22 +240,13 @@ void phyFillScreenColor(void);
 #include <math.h>
 #include <ctype.h>
 
-#ifdef MAC
-#ifdef DRAW
-#include "interface.h"
-#else
-#include "macface.h"
-#endif
-#define getch gettch
-#endif
-
 /* directory delimiters */
 #ifdef MAC
 #define DELIMITER ':'
-#else 
+#else
 #ifdef WIN32
 #define DELIMITER '\\'
-#else 
+#else
 #define DELIMITER '/'
 #endif
 #endif
@@ -271,7 +286,6 @@ MALLOCRETURN    *mymalloc(long);
 #define MAXNCH          30   /* must be greater than or equal to nmlngth */
 #define maxcategs       9    /* maximum number of site types */
 #define maxcategs2     11    /* maximum number of site types + 2 */
-#define point           "."
 #define pointe          '.'
 #define down            2
 #define MAXSHIMOTREES 100
@@ -365,7 +379,7 @@ typedef Phylip_Char plotstring[MAXNCH];
    cascaded if statements */
 #include <limits.h>
 
-/* minimum double we feel safe with, anything less will be considered 
+/* minimum double we feel safe with, anything less will be considered
    underflow */
 #define MIN_DOUBLE 10e-100
 
@@ -379,16 +393,16 @@ typedef Phylip_Char plotstring[MAXNCH];
 #if INT_MAX == MAX_32BITS
 typedef int  group_type;
 
-#else  
+#else
      #if INT_MAX == MAX_32BITS_PLUS
      typedef int  group_type;
 
-     #else 
+     #else
           /* Else, if longs are 4 bytes, use them */
           #if LONG_MAX == MAX_32BITS
           typedef long group_type;
 
-          #else 
+          #else
                #if LONG_MAX == MAX_32BITS_PLUS
                 typedef long group_type;
 
@@ -414,7 +428,7 @@ typedef enum {
 bases& operator++(bases& b, int);  // int denotes postfix++
 
 typedef enum {
-  alanine, arginine, asparagine, aspartic, cysteine, 
+  alanine, arginine, asparagine, aspartic, cysteine,
   glutamine, glutamic, glycine, histidine, isoleucine,
   leucine, lysine, methionine, phenylalanine, proline,
   serine, threonine, tryptophan, tyrosine, valine
@@ -435,15 +449,15 @@ typedef enum {
 
 typedef double sitelike[(long)T - (long)A + 1];   /* used in dnaml, dnadist */
 typedef double psitelike[(long)valine - (long)alanine + 1];
-                             /* used in proml                                    */        
-     
+                             /* used in proml                                    */
+
 typedef long *baseptr;       /* baseptr used in dnapars, dnacomp & dnapenny */
 typedef long *baseptr2;      /* baseptr used in dnamove                     */
 typedef unsigned char *discbaseptr;         /* discbaseptr used in pars     */
 typedef sitelike *ratelike;                    /* used in dnaml ...            */
 typedef psitelike *pratelike;                    /* used in proml                    */
 typedef ratelike *phenotype;    /* phenotype used in dnaml, dnamlk, dnadist */
-typedef pratelike *pphenotype;  /* phenotype used in proml                    */ 
+typedef pratelike *pphenotype;  /* phenotype used in proml                    */
 typedef double *sitelike2;
 typedef sitelike2 *phenotype2;              /* phenotype2 used in restml    */
 typedef double *phenotype3;                 /* for continuous char programs */
@@ -483,7 +497,7 @@ typedef struct node {
   phenotype x;                     /* x used in dnaml, dnamlk, dnadist     */
   phenotype2 x2;                   /* x2 used in restml                    */
   phenotype3 view;                 /* contml etc                           */
-  pphenotype protx;                /* protx used in proml */ 
+  pphenotype protx;                /* protx used in proml */
   aas *seq;                  /* the sequence used in protpars              */
   seqptr siteset;            /* temporary storage for aa's used in protpars*/
   double v, deltav, ssq;       /* ssq used only in contrast                */
@@ -555,11 +569,11 @@ typedef struct tree {
 
   /* A pointer to the first node. Typically, root is used when the tree is rooted,
    * and points to an internal node with no back link. */
-  node *root;                    
-  
+  node *root;
+
   /* start is used when trees are unrooted. It points to an internal node whose
    * back link typically points to the outgroup leaf. */
-  node *start;                    
+  node *start;
 
   /* In maximum likelihood programs, the most recent evaluation is stored here */
   double likelihood;
@@ -686,7 +700,7 @@ void   hookup(node *, node *);
 void   unhookup(node *, node *);
 void   link_trees(long, long , long, pointarray);
 void   allocate_nodep(pointarray *, FILE **, long  *);
-  
+
 void   malloc_pheno(node *, long, long);
 void   malloc_ppheno(node *, long, long);
 long   take_name_from_tree (Phylip_Char *, Phylip_Char *, FILE *);

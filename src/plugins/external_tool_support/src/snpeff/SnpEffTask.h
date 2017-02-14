@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -68,8 +68,9 @@ protected:
 
 
 class SnpEffParser : public ExternalToolLogParser {
+    Q_OBJECT
 public:
-    SnpEffParser();
+    SnpEffParser(const QString &genome = QString());
 
     void parseOutput(const QString& partOfLog);
     void parseErrOutput(const QString& partOfLog);
@@ -78,6 +79,7 @@ private:
     static QStringList initStringsToIgnore();
 
     QString lastErrLine;
+    QString genome;
 
     static const QStringList stringsToIgnore;
 };

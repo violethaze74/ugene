@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/Annotation.h>
 #include <U2Gui/HelpButton.h>
+#include <QPushButton>
 
 #if (QT_VERSION < 0x050000) //Qt 5
 #include <QtGui/QMessageBox>
@@ -37,7 +38,9 @@ CSVColumnConfigurationDialog::CSVColumnConfigurationDialog(QWidget* w, const Col
 : QDialog(w), config(_config)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220365");
+    new HelpButton(this, buttonBox, "19759497");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connect(complMarkRB, SIGNAL(toggled(bool)), SLOT(sl_complMarkToggle(bool)));
     connect(startRB, SIGNAL(toggled(bool)), SLOT(sl_startToggle(bool)));

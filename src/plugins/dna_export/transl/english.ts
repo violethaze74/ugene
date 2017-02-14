@@ -9,9 +9,13 @@
         <translation>Set Base Content</translation>
     </message>
     <message>
-        <location filename="../src/BaseContentDialog.ui" line="26"/>
         <source>Base conetnt</source>
-        <translation>Base conetnt</translation>
+        <translation type="vanished">Base conetnt</translation>
+    </message>
+    <message>
+        <location filename="../src/BaseContentDialog.ui" line="26"/>
+        <source>Base content</source>
+        <translation>Base content</translation>
     </message>
     <message>
         <location filename="../src/BaseContentDialog.ui" line="55"/>
@@ -279,61 +283,6 @@
         <location filename="../src/ExportChromatogramDialog.ui" line="75"/>
         <source>Add document to the project</source>
         <translation>Add document to the project</translation>
-    </message>
-</context>
-<context>
-    <name>GTest</name>
-    <message>
-        <source>Unable to create temporary file</source>
-        <translation type="vanished">Unable to create temporary file</translation>
-    </message>
-    <message>
-        <source>Invalid translation table num: %1</source>
-        <translation type="vanished">Invalid translation table num: %1</translation>
-    </message>
-    <message>
-        <source>Invalid base : %1</source>
-        <translation type="vanished">Invalid base : %1</translation>
-    </message>
-    <message>
-        <source> context not found %1</source>
-        <translation type="vanished"> context not found %1</translation>
-    </message>
-    <message>
-        <source> container of object with type &quot;%1&quot; is empty</source>
-        <translation type="vanished"> container of object with type &quot;%1&quot; is empty</translation>
-    </message>
-    <message>
-        <source>context  not found %1</source>
-        <translation type="vanished">context  not found %1</translation>
-    </message>
-    <message>
-        <source>container  of object with type &quot;%1&quot; is empty</source>
-        <translation type="vanished">container  of object with type &quot;%1&quot; is empty</translation>
-    </message>
-    <message>
-        <source>context not  found %1</source>
-        <translation type="vanished">context not  found %1</translation>
-    </message>
-    <message>
-        <source>container of  object with type &quot;%1&quot; is empty</source>
-        <translation type="vanished">container of  object with type &quot;%1&quot; is empty</translation>
-    </message>
-    <message>
-        <source>Unexpected alignment length %1, expected %2</source>
-        <translation type="vanished">Unexpected alignment length %1, expected %2</translation>
-    </message>
-    <message>
-        <source>Unexpected alignment size %1, expected %2</source>
-        <translation type="vanished">Unexpected alignment size %1, expected %2</translation>
-    </message>
-    <message>
-        <source>Invalid name for row %1: %2, expected %3</source>
-        <translation type="vanished">Invalid name for row %1: %2, expected %3</translation>
-    </message>
-    <message>
-        <source>Invalid char at row %1 column %2: %3, expected %4</source>
-        <translation type="vanished">Invalid char at row %1 column %2: %3, expected %4</translation>
     </message>
 </context>
 <context>
@@ -646,18 +595,23 @@
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="254"/>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="277"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="172"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="255"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="278"/>
         <source>Base content</source>
         <translation>Base content</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="254"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="255"/>
         <source>Incorrect GC Skew value</source>
         <translation>Incorrect GC Skew value</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="277"/>
+        <location filename="../src/DNASequenceGeneratorDialog.cpp" line="278"/>
         <source>Total percentage has to be 100 %</source>
         <translation>Total percentage has to be 100 %</translation>
     </message>
@@ -665,7 +619,17 @@
 <context>
     <name>U2::CSVColumnConfigurationDialog</name>
     <message>
-        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="97"/>
+        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="42"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="43"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/CSVColumnConfigurationDialog.cpp" line="100"/>
         <source>Invalid qualifier name!</source>
         <translation>Invalid qualifier name!</translation>
     </message>
@@ -819,7 +783,7 @@
     <message>
         <location filename="../src/ExportSequenceTask.cpp" line="567"/>
         <source>Sequences of the selected annotations can&apos;t be exported. At least one of the annotations is out of boundaries</source>
-        <translation type="unfinished"></translation>
+        <translation>Sequences of the selected annotations can&apos;t be exported. At least one of the annotations is out of boundaries</translation>
     </message>
     <message>
         <location filename="../src/ExportSequenceTask.cpp" line="585"/>
@@ -1115,7 +1079,7 @@
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="374"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="554"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="553"/>
         <source>No sequence objects selected!</source>
         <translation>No sequence objects selected!</translation>
     </message>
@@ -1141,7 +1105,7 @@
         <translation>Select one annotation object to export</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="559"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="558"/>
         <source>Set output quality file</source>
         <translation>Set output quality file</translation>
     </message>
@@ -1243,117 +1207,117 @@
 <context>
     <name>U2::ExportSequencesDialog</name>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="20"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="32"/>
         <source>Export Selected Sequences</source>
         <translation>Export Selected Sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="48"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="50"/>
         <source>Export to file</source>
         <translation>Export to file</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="58"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="60"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="65"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="67"/>
         <source>File format to use</source>
         <translation>File format to use</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="31"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="43"/>
         <source>Export with annotations</source>
         <translation>Export with annotations</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="38"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="91"/>
         <source>Add document to the project</source>
         <translation>Add document to the project</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="75"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="77"/>
         <source>Use custom sequence name</source>
         <translation>Use custom sequence name</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="91"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="103"/>
         <source>Convertion options</source>
         <translation>Convertion options</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="97"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="109"/>
         <source>Save direct strand</source>
         <translation>Save direct strand</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="107"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="119"/>
         <source>Save complement strand</source>
         <translation>Save complement strand</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="114"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="126"/>
         <source>Save both strands</source>
         <translation>Save both strands</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="121"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="133"/>
         <source>Translate to amino alphabet</source>
         <translation>Save both strands</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="131"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="143"/>
         <source>Save all amino frames</source>
         <translation>Save all amino frames</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="161"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="186"/>
         <source>Back translation options</source>
         <translation>Back translation options</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="167"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="192"/>
         <source>Translate back to nucleic alphabet</source>
         <translation>Translate back to nucleic alphabet</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="179"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="204"/>
         <source>Most frequently used codons</source>
         <translation>Most frequently used codons</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="206"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="231"/>
         <source>Organism:</source>
         <translation>Organism:</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="241"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="279"/>
         <source>Save as separate sequences</source>
         <translation>Save as separate sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="192"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="217"/>
         <source>Frequency distribution</source>
         <translation>Frequency distribution</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="151"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="163"/>
         <source>Use custom translation table</source>
         <translation>Use custom translation table</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="228"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="266"/>
         <source>Merge options</source>
         <translation>Merge options</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="253"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="291"/>
         <source>Add gap symbols between sequences</source>
         <translation>Add gap symbols between sequences</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="234"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="272"/>
         <source>Merge sequences</source>
         <translation>Merge sequences</translation>
     </message>
@@ -1393,68 +1357,68 @@
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="115"/>
         <source>Unable to create temporary file</source>
-        <translation type="unfinished">Unable to create temporary file</translation>
+        <translation>Unable to create temporary file</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="134"/>
         <source>Invalid translation table num: %1</source>
-        <translation type="unfinished">Invalid translation table num: %1</translation>
+        <translation>Invalid translation table num: %1</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="150"/>
         <location filename="../src/DNAExportPluginTests.cpp" line="156"/>
         <source>Invalid base : %1</source>
-        <translation type="unfinished">Invalid base : %1</translation>
+        <translation>Invalid base : %1</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="169"/>
         <source> context not found %1</source>
-        <translation type="unfinished"> context not found %1</translation>
+        <translation> context not found %1</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="175"/>
         <source> container of object with type &quot;%1&quot; is empty</source>
-        <translation type="unfinished"> container of object with type &quot;%1&quot; is empty</translation>
+        <translation> container of object with type &quot;%1&quot; is empty</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="206"/>
         <source>context  not found %1</source>
-        <translation type="unfinished">context  not found %1</translation>
+        <translation>context  not found %1</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="212"/>
         <source>container  of object with type &quot;%1&quot; is empty</source>
-        <translation type="unfinished">container  of object with type &quot;%1&quot; is empty</translation>
+        <translation>container  of object with type &quot;%1&quot; is empty</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="229"/>
         <source>context not  found %1</source>
-        <translation type="unfinished">context not  found %1</translation>
+        <translation>context not  found %1</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="235"/>
         <source>container of  object with type &quot;%1&quot; is empty</source>
-        <translation type="unfinished">container of  object with type &quot;%1&quot; is empty</translation>
+        <translation>container of  object with type &quot;%1&quot; is empty</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="242"/>
         <source>Unexpected alignment length %1, expected %2</source>
-        <translation type="unfinished">Unexpected alignment length %1, expected %2</translation>
+        <translation>Unexpected alignment length %1, expected %2</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="247"/>
         <source>Unexpected alignment size %1, expected %2</source>
-        <translation type="unfinished">Unexpected alignment size %1, expected %2</translation>
+        <translation>Unexpected alignment size %1, expected %2</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="256"/>
         <source>Invalid name for row %1: %2, expected %3</source>
-        <translation type="unfinished">Invalid name for row %1: %2, expected %3</translation>
+        <translation>Invalid name for row %1: %2, expected %3</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="261"/>
         <source>Invalid char at row %1 column %2: %3, expected %4</source>
-        <translation type="unfinished">Invalid char at row %1 column %2: %3, expected %4</translation>
+        <translation>Invalid char at row %1 column %2: %3, expected %4</translation>
     </message>
 </context>
 <context>
@@ -2052,7 +2016,8 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</trans
         <source>The sequences from selected BLAST results will be downloaded from
 NCBI Genbank by their GI identifier
 </source>
-        <translation type="unfinished"></translation>
+        <translation>The sequences from selected BLAST results will be downloaded from
+NCBI Genbank by their GI identifier</translation>
     </message>
     <message>
         <location filename="../src/GetSequenceByIdDialog.ui" line="48"/>

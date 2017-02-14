@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -86,9 +86,6 @@ static QString getCigarString(const QString & ci) {
     return cigar;
 }
 
-static const QString DIRECT_STR(QObject::tr("direct"));
-static const QString COMPL_STR(QObject::tr("complement"));
-
 QString getReadSequence(const QByteArray & bytes) {
     QString ret(bytes);
     if(ret.size() < AssemblyReadsAreaHint::LETTER_MAX_COUNT) {
@@ -110,7 +107,7 @@ QString AssemblyReadsAreaHint::getReadDataAsString(const U2AssemblyRead & r) {
     ret += QString("Cigar: %1\n").arg(QString(U2AssemblyUtils::cigar2String(r->cigar)));
     {
         bool onCompl = ReadFlagsUtils::isComplementaryRead(r->flags);
-        ret += QString("Strand: %1\n").arg(onCompl ? COMPL_STR : DIRECT_STR);
+        ret += QString("Strand: %1\n").arg(onCompl ? QObject::tr("complement") : QObject::tr("direct"));
     }
     if(ReadFlagsUtils::isUnmappedRead(r->flags)) {
         ret += "Unmapped\n";
@@ -157,7 +154,7 @@ static QString formatReadInfo(U2AssemblyRead r) {
     text += QString("<tr><td><b>Cigar</b>:&nbsp;%1</td></tr>").arg(getCigarString(U2AssemblyUtils::cigar2String(r->cigar)));
     {
         bool onCompl = ReadFlagsUtils::isComplementaryRead(r->flags);
-        text += QString("<tr><td><b>Strand</b>:&nbsp;%1</td></tr>").arg(onCompl ? COMPL_STR : DIRECT_STR);
+        text += QString("<tr><td><b>Strand</b>:&nbsp;%1</td></tr>").arg(onCompl ? QObject::tr("complement") : QObject::tr("direct"));
     }
     text += QString("<tr><td><b>Read sequence</b>:&nbsp;%1</td></tr>").arg(getReadSequence(r->readSequence));
     if(ReadFlagsUtils::isUnmappedRead(r->flags)) {

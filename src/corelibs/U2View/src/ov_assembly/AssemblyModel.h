@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ public:
     QList<U2AssemblyRead> getReadsFromAssembly(const U2Region & r, qint64 minRow, qint64 maxRow, U2OpStatus & os);
     U2DbiIterator<U2AssemblyRead> * getReads(const U2Region & r, U2OpStatus & os);
 
-    void calculateCoverageStat(const U2Region & r, U2AssemblyCoverageStat & stat, U2OpStatus & os);
+    void calculateCoverageStat(const U2Region & r, U2AssemblyCoverageStat& coverageStat, U2OpStatus & os);
 
     const U2AssemblyCoverageStat &getCoverageStat(U2OpStatus & os);
 
@@ -96,6 +96,8 @@ public:
     void addTrackObject(VariantTrackObject *trackObj);
     bool checkPermissions(QFile::Permission permission, bool showDialog = true) const;
     void dissociateReference();
+
+    bool isDbLocked(int timeout = 0);
 
 private:
     /**

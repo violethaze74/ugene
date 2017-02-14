@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -61,7 +61,7 @@ ExportPrimersDialog::ExportPrimersDialog(const QList<Primer> &primers, QWidget *
     primers(primers)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "18220609");
+    new HelpButton(this, buttonBox, "19759741");
 
     init();
     connectSignals();

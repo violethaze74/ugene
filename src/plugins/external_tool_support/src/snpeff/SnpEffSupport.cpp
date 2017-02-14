@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,6 +20,8 @@
  */
 
 #include "SnpEffSupport.h"
+#include "SnpEffDatabaseListModel.h"
+#include "SnpEffDatabaseListTask.h"
 #include "java/JavaSupport.h"
 
 #include <U2Core/AppContext.h>
@@ -29,11 +31,13 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/ScriptingToolRegistry.h>
+#include <U2Core/Settings.h>
 
 #include <U2Formats/ConvertFileTask.h>
 
 namespace U2 {
 
+SnpEffDatabaseListModel* SnpEffSupport::databaseModel = new SnpEffDatabaseListModel();
 
 SnpEffSupport::SnpEffSupport(const QString& name, const QString& path) : ExternalTool(name, path)
 {
@@ -54,6 +58,8 @@ SnpEffSupport::SnpEffSupport(const QString& name, const QString& path) : Externa
 
     toolRunnerProgramm = ET_JAVA;
     dependencies << ET_JAVA;
+
+    connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
 }
 
 const QStringList SnpEffSupport::getToolRunnerAdditionalOptions() {
@@ -72,6 +78,26 @@ const QStringList SnpEffSupport::getToolRunnerAdditionalOptions() {
 #endif // windows or linux
     result << "-Xmx" + QString::number(memSize > 150 ? memSize - 150 : memSize) + "M";
     return result;
+}
+
+void SnpEffSupport::sl_validationStatusChanged(bool isValid) {
+    if (isValid) {
+        SnpEffDatabaseListTask* task = new SnpEffDatabaseListTask();
+        connect(task, SIGNAL(si_stateChanged()), SLOT(sl_databaseListIsReady()));
+        AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    }
+}
+
+void SnpEffSupport::sl_databaseListIsReady() {
+    SnpEffDatabaseListTask* task = dynamic_cast<SnpEffDatabaseListTask*>(sender());
+    SAFE_POINT(task != NULL, "SnpEffDatabaseListTask is NULL: wrong sender",);
+    if (task->isCanceled() || task->hasError() || !task->isFinished()) {
+        return;
+    }
+    QString dbListFilePath = task->getDbListFilePath();
+    SAFE_POINT(!dbListFilePath.isEmpty(), tr("Failed to get SnpEff database list"), );
+
+    SnpEffSupport::databaseModel->getData(dbListFilePath);
 }
 
 }//namespace

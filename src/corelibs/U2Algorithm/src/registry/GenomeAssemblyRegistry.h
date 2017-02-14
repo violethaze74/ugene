@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,6 +28,7 @@
 #include <QtCore/QMutex>
 #include <QtCore/QObject>
 
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/global.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/Task.h>
@@ -109,6 +110,7 @@ public:
     GUrl outDir;
     QString algName;
     bool openView;
+    QList<ExternalToolListener*> listeners;
 
 private:
     QMap<QString, QVariant> customSettings;

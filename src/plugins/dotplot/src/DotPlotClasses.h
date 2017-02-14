@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -56,10 +56,18 @@ private:
 enum DotPlotErrors {ErrorOpen, ErrorNames, NoErrors};
 
 struct DotPlotResults {
-    DotPlotResults(): x(0), y(0), len(0){};
-    DotPlotResults(int _x, int _y, int _len):x(_x), y(_y), len(_len){};
+    DotPlotResults()
+        : x(0),
+          y(0),
+          len(0) {}
+    DotPlotResults(int _x, int _y, int _len)
+        : x(_x),
+          y(_y),
+          len(_len) {}
 
-    int x, y, len;
+    int x;
+    int y;
+    int len;
 
     inline bool intersectRegion(const U2Region& r, const FilterIntersectionParameter& currentIntersParam){
         qint64 sd = - r.startPos;
@@ -87,7 +95,7 @@ public:
     virtual void onResults(const QVector<RFResult>& v);
 
 private:
-    QList<DotPlotResults> *dotPlotList;
+    QSharedPointer< QList<DotPlotResults> > dotPlotList;
     QMutex mutex;
 
     bool stateOk;

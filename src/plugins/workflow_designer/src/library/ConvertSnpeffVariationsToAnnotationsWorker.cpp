@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -114,7 +114,7 @@ void ConvertSnpeffVariationsToAnnotationsFactory::init() {
     QMap<QString, PropertyDelegate *> delegates;
     {
         DelegateTags tags;
-        tags.set(DelegateTags::PLACEHOLDER_TEXT, ConvertSnpeffVariationsToAnnotationsWorker::tr("The same as input file"));
+        tags.set(DelegateTags::PLACEHOLDER_TEXT, ConvertSnpeffVariationsToAnnotationsWorker::tr("Produced from the input file name"));
         delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(tags, "", "");
 
         QVariantMap map;
@@ -166,7 +166,8 @@ Task * ConvertSnpeffVariationsToAnnotationsWorker::createTask(const Message &mes
     QString annotationsFileUrl = actor->getParameter(BaseAttributes::URL_OUT_ATTRIBUTE().getId())->getAttributeValue<QString>(context);
     if (annotationsFileUrl.isEmpty()) {
         annotationsFileUrl = context->getMetadataStorage().get(message.getMetadataId()).getFileUrl();
-        annotationsFileUrl = context->workingDir() + GUrlUtils::changeFileExt(annotationsFileUrl, formatId).fileName();
+        const GUrl sourceUrl = GUrlUtils::changeFileExt(annotationsFileUrl, formatId);
+        annotationsFileUrl = GUrlUtils::rollFileName(context->workingDir() + sourceUrl.baseFileName() + "_variants." + sourceUrl.completeFileSuffix(), "_");
     }
     Task *task = new LoadConvertAndSaveSnpeffVariationsToAnnotationsTask(variationsFileurl, context->getDataStorage()->getDbiRef(), annotationsFileUrl, formatId);
     connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));

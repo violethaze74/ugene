@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,20 +23,12 @@
 #define _U2_PROPERTYWIDGET_H_
 
 #include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
+
 #include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QSpinBox>
 #include <QToolButton>
 #include <QWidget>
-#else
-#include <QtWidgets/QLayout>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QSpinBox>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QWidget>
-#endif
 #include <QVariant>
 
 #include <U2Lang/ConfigurationEditor.h>

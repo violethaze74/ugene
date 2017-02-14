@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -47,18 +47,7 @@ const QString ExportCoverageSettings::COMPRESSED_EXTENSION = ".gz";
 const QByteArray ExportCoverageTask::SEPARATOR = "\t";
 const QList<char> ExportCoverageTask::EXTENDED_CHARACTERS = QList<char>() << 'W' << 'R' << 'M' << 'K' << 'Y' << 'S' << 'B' << 'V' << 'H' << 'D';
 
-ExportCoverageTask::ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings, TaskFlags flags) :
-    Task(tr("Export coverage per base for %1"), flags),
-    dbiRef(dbiRef),
-    assemblyId(assemblyId),
-    settings(settings),
-    calculateTask(NULL),
-    alreadyProcessed(0)
-{
-    SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("Invalid database reference")), );
-    SAFE_POINT_EXT(!assemblyId.isEmpty(), setError(tr("Invalid assembly ID")), );
-    SAFE_POINT_EXT(!settings.url.isEmpty(), setError(tr("Invalid destination url")), );
-
+void GetAssemblyVisibleNameTask::run(){
     DbiConnection con(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
     U2AssemblyDbi *assemblyDbi = con.dbi->getAssemblyDbi();
@@ -67,11 +56,28 @@ ExportCoverageTask::ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &a
     const U2Assembly assembly = assemblyDbi->getAssemblyObject(assemblyId, stateInfo);
     CHECK_OP(stateInfo, );
     assemblyName = assembly.visualName;
-    setTaskName(getTaskName().arg(assemblyName));
+}
+
+ExportCoverageTask::ExportCoverageTask(const U2DbiRef &dbiRef, const U2DataId &assemblyId, const ExportCoverageSettings &settings, TaskFlags flags) :
+    Task(tr("Export assembly coverage per base"), flags),
+    dbiRef(dbiRef),
+    assemblyId(assemblyId),
+    settings(settings),
+    getAssemblyNameTask(NULL),
+    calculateTask(NULL),
+    alreadyProcessed(0)
+{
+    SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("Invalid database reference")), );
+    SAFE_POINT_EXT(!assemblyId.isEmpty(), setError(tr("Invalid assembly ID")), );
+    SAFE_POINT_EXT(!settings.url.isEmpty(), setError(tr("Invalid destination url")), );
+
     alphabetChars << 'A' << 'C' << 'G' << 'T';
 }
 
 void ExportCoverageTask::prepare() {
+    getAssemblyNameTask = new GetAssemblyVisibleNameTask(dbiRef, assemblyId);
+    addSubTask(getAssemblyNameTask);
+
     QDir().mkpath(QFileInfo(settings.url).absoluteDir().absolutePath());
     if (settings.compress) {
         IOAdapterFactory *ioAdapterFactory = IOAdapterUtils::get(BaseIOAdapters::GZIPPED_LOCAL_FILE);
@@ -93,6 +99,12 @@ void ExportCoverageTask::prepare() {
     addSubTask(calculateTask);
 }
 
+QList<Task *> ExportCoverageTask::onSubTaskFinished(Task *subTask){
+    if(subTask == getAssemblyNameTask){
+        assemblyName = getAssemblyNameTask->getAssemblyVisibleName();
+    }
+    return QList<Task *>();
+}
 Task::ReportResult ExportCoverageTask::report() {
     if (NULL != calculateTask) {
         SAFE_POINT_EXT(!calculateTask->areThereUnprocessedResults(), setError(tr("Not all regions were processed")), ReportResult_Finished);
@@ -120,7 +132,6 @@ void ExportCoverageTask::sl_regionIsProcessed(qint64 startPos) {
         }
     }
 }
-
 void ExportCoverageTask::identifyAlphabet(QVector<CoveragePerBaseInfo>* regionCoverage) {
     CHECK(alphabetChars.size() == 4, );
     foreach(const CoveragePerBaseInfo &info, *regionCoverage) {
@@ -255,9 +266,13 @@ ExportCoverageBedgraphTask::ExportCoverageBedgraphTask(const U2DbiRef &dbiRef, c
     GCOUNTER(c, t, "ExportCoverageBedgraphTask");
 }
 
-QList<Task *> ExportCoverageBedgraphTask::onSubTaskFinished(Task *) {
+QList<Task *> ExportCoverageBedgraphTask::onSubTaskFinished(Task *subTask) {
     CHECK_OP(stateInfo, QList<Task *>());
-    writeRegion();
+    if(subTask == getAssemblyNameTask){
+        assemblyName = getAssemblyNameTask->getAssemblyVisibleName();
+    }else{
+        writeRegion();
+    }
     return QList<Task *>();
 }
 

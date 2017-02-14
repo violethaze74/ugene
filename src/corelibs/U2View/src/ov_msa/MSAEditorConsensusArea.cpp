@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -238,8 +238,8 @@ void MSAEditorConsensusArea::resizeEvent(QResizeEvent *e) {
 }
 
 void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
-    QSize s = size();
-    QSize sas = ui->getSequenceArea()->size();
+    QSize s = size() * devicePixelRatio();
+    QSize sas = ui->getSequenceArea()->size() * devicePixelRatio();
 
     if (sas.width() != s.width()) { //this can happen due to the manual layouting performed by MSAEditor -> just wait for the next resize+paint
         return;
@@ -248,9 +248,10 @@ void MSAEditorConsensusArea::paintEvent(QPaintEvent *e) {
     assert(s.width() == sas.width());
 
     if (cachedView->size() != s) {
-        assert(completeRedraw);
         delete cachedView;
         cachedView = new QPixmap(s);
+        cachedView->setDevicePixelRatio(devicePixelRatio());
+        completeRedraw = true;
     }
 
     if (completeRedraw) {
@@ -431,7 +432,7 @@ void MSAEditorConsensusArea::drawHistogram(QPainter &p, int firstBase, int lastB
     }
 
 #if (QT_VERSION < 0x050000)
-    // A workaround for https://local.ugene.unipro.ru/tracker/browse/UGENE-4484 (see comments)
+    // A workaround for https://local.ugene.net/tracker/browse/UGENE-4484 (see comments)
     // drawRects() incorrectly processes rects with coordinates greater than 16384 on Qt4
     // drawRects() should be used for perfomance reasons
     // this branch should be removed after migrating to Qt5
@@ -668,7 +669,7 @@ void MSAEditorConsensusArea::mouseMoveEvent(QMouseEvent *e) {
     if ((e->buttons() & Qt::LeftButton) && scribbling) {
         int newPos = ui->getSequenceArea()->getColumnNumByX(e->x(), selecting);
         if ( ui->getSequenceArea()->isPosInRange(newPos)) {
-            ui->getSequenceArea()->updateHBarPosition(newPos);
+            ui->getSequenceArea()->updateHBarPosition(newPos, true);
         }
         updateSelection(newPos);
     }

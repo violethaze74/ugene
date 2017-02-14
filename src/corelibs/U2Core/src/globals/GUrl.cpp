@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,8 +36,12 @@ static QString makeFilePathCanonical(const QString& originalUrl) {
         result = result.mid(fileUrlPrefix.length());
 #ifdef Q_OS_WIN
         // on Windows, all slashes after "file:" can be trimmed, on Unix/Mac one must be kept to specify that it's an absolute path
-        while(result.startsWith("/")) {
-            result = result.mid(1);
+        if (result.startsWith("/")) {
+            while (result.startsWith("/")) {
+                result = result.mid(1);
+            }
+        } else {
+            result.prepend("//");
         }
 #endif
     }

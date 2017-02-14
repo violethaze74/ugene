@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -71,6 +71,12 @@ void AssemblyRuler::connectSlots() {
 
 void AssemblyRuler::drawAll() {
     if(!model->isEmpty()) {
+        QSize currentSize = size() * devicePixelRatio();
+        if (cachedView.size() != currentSize) {
+            cachedView = QPixmap(currentSize);
+            cachedView.setDevicePixelRatio(devicePixelRatio());
+            redraw = true;
+        }
         if (redraw) {
             cachedView.fill(Qt::transparent);
             QPainter p(&cachedView);
@@ -78,6 +84,7 @@ void AssemblyRuler::drawAll() {
             drawRuler(p);
         }
         QPixmap cachedViewCopy(cachedView);
+        cachedViewCopy.setDevicePixelRatio(devicePixelRatio());
         {
             QPainter p(&cachedViewCopy);
             drawCursor(p);
@@ -108,8 +115,10 @@ void AssemblyRuler::drawCursor(QPainter & p) {
     // pos + 1 because of 1-based coords
     QString cursorLabel = FormatUtils::formatNumberWithSeparators(posXInAsm + 1);
     if(showCoverage) {
-        qint64 coverage = browser->getCoverageAtPos(posXInAsm);
-        cursorLabel += " C " + FormatUtils::formatNumberWithSeparators(coverage);
+        qint32 coverage = browser->getCoverageAtPos(posXInAsm);
+        if (coverage >=0){//not have info about coverage yet
+            cursorLabel += " C " + FormatUtils::formatNumberWithSeparators(coverage);
+        }
     }
     int textWidth = p.fontMetrics().width(cursorLabel);
     int textHeight = p.fontMetrics().height();
@@ -133,8 +142,8 @@ void AssemblyRuler::drawCursor(QPainter & p) {
     assert(cachedLabelsRects.size() == cachedLabels.size());
     for(int i = 0; i < cachedLabels.size(); i++) {
         const QRect & labelRect = cachedLabelsRects.at(i);
-        if(!labelRect.intersects(offsetRect) && rect().contains(labelRect)) {
-            p.drawImage(cachedLabelsRects.at(i), cachedLabels.at(i));
+        if(!labelRect.intersects(offsetRect)) {
+            p.drawImage(labelRect, cachedLabels.at(i));
         }
     }
 }
@@ -187,7 +196,8 @@ void AssemblyRuler::drawRuler(QPainter & p) {
 
             if(offsetRect.left() > lastLabelRight) {
                 //render image with label and cache it. all images will be drawn on mouseMove event
-                QImage img(textWidth, textHeight, QImage::Format_ARGB32);
+                QImage img(textWidth * devicePixelRatio(), textHeight * devicePixelRatio(), QImage::Format_ARGB32);
+                img.setDevicePixelRatio(devicePixelRatio());
                 QPainter labelPainter(&img);
                 img.fill(Qt::transparent);
                 labelPainter.drawText(QRect(0, 0, textWidth, textHeight), Qt::AlignCenter, offsetStr);
@@ -227,18 +237,14 @@ void AssemblyRuler::paintEvent(QPaintEvent * e) {
     QWidget::paintEvent(e);
 }
 
-void AssemblyRuler::resizeEvent(QResizeEvent * e) {
-    sl_redraw();
-    QWidget::resizeEvent(e);
-}
-
 void AssemblyRuler::mouseMoveEvent(QMouseEvent * e) {
     sl_handleMoveToPos(e->pos());
     QWidget::mouseMoveEvent(e);
 }
 
 void AssemblyRuler::sl_redraw() {
-    cachedView = QPixmap (size());
+    cachedView = QPixmap(size() * devicePixelRatio());
+    cachedView.setDevicePixelRatio(devicePixelRatio());
     redraw = true;
     update();
 }

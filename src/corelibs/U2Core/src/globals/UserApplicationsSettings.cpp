@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -184,11 +184,7 @@ void UserAppsSettings::setUserTemporaryDirPath(const QString& newPath) {
 
 QString UserAppsSettings::getDefaultDataDirPath() const{
     QString dirpath;
-#if (QT_VERSION >= 0x050000)
-    dirpath = AppContext::getSettings()->getValue(SETTINGS_ROOT + DATA_DIR, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QDir::separator() + "UGENE_Data").toString();
-#else
-    dirpath = AppContext::getSettings()->getValue(SETTINGS_ROOT + DATA_DIR, QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + QDir::separator() + "UGENE_Data").toString();
-#endif
+    dirpath = AppContext::getSettings()->getValue(SETTINGS_ROOT + DATA_DIR, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/" + "UGENE_Data").toString();
     QDir d(dirpath);
     if(!d.exists(dirpath)){
         d.mkpath(dirpath);
@@ -209,7 +205,7 @@ void UserAppsSettings::setEnableCollectingStatistics(bool b) {
 }
 
 bool UserAppsSettings::tabbedWindowLayout() const {
-    return AppContext::getSettings()->getValue(SETTINGS_ROOT + WINDOW_LAYOUT, false, true).toBool();
+    return AppContext::getSettings()->getValue(SETTINGS_ROOT + WINDOW_LAYOUT, true, true).toBool();
 }
 
 void UserAppsSettings::setTabbedWindowLayout(bool b) {

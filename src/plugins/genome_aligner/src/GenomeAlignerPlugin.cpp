@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -70,9 +70,6 @@ public:
 };
 
 GenomeAlignerPlugin::GenomeAlignerPlugin() : Plugin( tr("UGENE Genome Aligner"), tr("Assembly DNA to reference sequence") ) {
-    if (AppContext::getMainWindow()) {
-        AppContext::getAppSettingsGUI()->registerPage(new GenomeAlignerSettingsPageController());
-    }
 
     // Register GenomeAligner algorithm
     DnaAssemblyAlgRegistry* registry = AppContext::getDnaAssemblyAlgRegistry();

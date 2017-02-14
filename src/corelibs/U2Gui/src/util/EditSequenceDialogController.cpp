@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -69,7 +69,7 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
 {
     ui = new Ui_EditSequenceDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "18220344");
+    new HelpButton(this, ui->buttonBox, "19759476");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

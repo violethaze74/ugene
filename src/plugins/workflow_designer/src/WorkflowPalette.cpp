@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -132,7 +132,7 @@ void PaletteDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
         buttonOption.features = QStyleOptionButton::None;
         m_view->style()->drawControl(QStyle::CE_PushButton, &buttonOption, painter, m_view);
 
-        QStyleOptionViewItemV2 branchOption;
+        QStyleOptionViewItem branchOption;
         static const int i = 9; // ### hardcoded in qcommonstyle.cpp
         QRect r = option.rect;
         branchOption.rect = QRect(r.left() + i/2, r.top() + (r.height() - i)/2, i, i);

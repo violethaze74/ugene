@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,7 +46,8 @@ void AssemblyCoverageGraph::connectSlots() {
 void AssemblyCoverageGraph::drawAll() {
     if(!model->isEmpty()) {
         if(cachedView.size() != size()) {
-            cachedView = QPixmap(size());
+            cachedView = QPixmap(size() * devicePixelRatio());
+            cachedView.setDevicePixelRatio(devicePixelRatio());
             redraw = true;
         }
         if (redraw) {
@@ -61,7 +62,7 @@ void AssemblyCoverageGraph::drawAll() {
                         drawGraph(p, ci, 128);
                     }
                     QString message = coverageTaskRunner.isIdle() ? tr("Coverage calculation canceled") : tr("Calculating coverage...");
-                    p.drawText(cachedView.rect(), Qt::AlignCenter, message);
+                    p.drawText(rect(), Qt::AlignCenter, message);
                 } else if(lastResult.region == visibleRegion) {
                     drawGraph(p, lastResult);
                 } else if(browser->isInLocalCoverageCache(visibleRegion)) {
@@ -80,8 +81,8 @@ void AssemblyCoverageGraph::drawAll() {
 void AssemblyCoverageGraph::drawGraph(QPainter & p, const CoverageInfo &ci, int alpha) {
     int cellWidth = browser->getCellWidth();
     int visibleBases = browser->basesVisible();
-    const QVector<qint64> & coverageInfo = ci.coverageInfo;
-    qint64 maxCoverage = ci.maxCoverage;
+    const U2AssemblyCoverageStat & coverageInfo = ci.coverageInfo;
+    qint32 maxCoverage = ci.maxCoverage;
 
     SAFE_POINT(visibleBases == coverageInfo.size(), "in AssemblyCoverageGraph::drawGraph: incorrect coverageInfo size",)
     CHECK(maxCoverage > 0,);

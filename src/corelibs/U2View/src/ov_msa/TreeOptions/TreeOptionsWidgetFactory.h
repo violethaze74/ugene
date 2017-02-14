@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -45,7 +45,6 @@ private slots:
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
-    static const QString GROUP_TITLE;
     static const QString GROUP_DOC_PAGE;
 
     TreeOpWidgetViewSettings *viewSettings;
@@ -67,7 +66,6 @@ private slots:
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
-    static const QString GROUP_TITLE;
     static const QString GROUP_DOC_PAGE;
 
     TreeOpWidgetViewSettings *viewSettings;
@@ -87,7 +85,6 @@ public:
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;
-    static const QString GROUP_TITLE;
     static const QString GROUP_DOC_PAGE;
 };
 

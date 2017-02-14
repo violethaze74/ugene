@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -85,7 +85,7 @@ public:
     QString getSequenceDocName() const;
     QVector<U2Region> getFragmentRegions() const;
     QByteArray getSequence(U2OpStatus &os) const;
-    int getLength(bool coreLength = false) const;
+    int getLength() const;
     bool isInverted() const { return reverseCompl; }
     const DNAAlphabet* getAlphabet() const;
     QByteArray getSourceSequence(U2OpStatus &os) const;

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ protected:
 private:
     StateLock*                  stateLock;
     const DNAAlphabet*          msaAlphabet;
-    QStringList                 errorList;    
+    QStringList                 errorList;
     U2MsaDbi*                   dbi;
     U2EntityRef                 entityRef;
     U2UseCommonUserModStep*     modStep;

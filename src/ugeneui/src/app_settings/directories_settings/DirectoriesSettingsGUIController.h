@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,6 +31,11 @@
 
 namespace U2 {
 
+class DirectoriesSettingsPageUtils {
+public:
+    static QString getIndexDir();
+    static void setIndexDir(const QString &indexDir);
+};
 
 class DirectoriesSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
@@ -54,8 +59,11 @@ class DirectoriesSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
     QString downloadsDirPath;
+    QString documentsDirectory;
     QString temporaryDirPath;
     QString fileStorageDirPath;
+    QString indexDirectoryEdit;
+    QString indexDirectory;
 };
 
 
@@ -70,9 +78,12 @@ public:
 
 private slots:
     void sl_browseDownloadsDirButtonClicked();
+    void sl_browseDocumentsDirButtonClicked();
     void sl_browseTmpDirButtonClicked();
     void sl_browseFileStorageButtonClicked();
     void sl_cleanupStorage();
+    void sl_onIndexDirButton();
+    
 };
 
 }//namespace

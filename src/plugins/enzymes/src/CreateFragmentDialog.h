@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,13 +40,15 @@ public:
     virtual void accept();
     const DNAFragment& getFragment() { return dnaFragment; }
 private:
-    CreateAnnotationWidgetController* ac;
-    U2SequenceObject*  seqObj;
-    QList<AnnotationTableObject *> relatedAnnotations;
-    QSet<QString>  enzymesSelection;
     void setupAnnotationsWidget();
-    DNAFragment dnaFragment;
-    RegionSelector* rs;
+
+    CreateAnnotationWidgetController*   ac;
+    U2SequenceObject*                   seqObj;
+    QList<AnnotationTableObject *>      relatedAnnotations;
+    QSet<QString>                       enzymesSelection;
+    DNAFragment                         dnaFragment;
+    RegionSelector*                     rs;
+    ADVSequenceObjectContext*           seqCtx;
 };
 
 

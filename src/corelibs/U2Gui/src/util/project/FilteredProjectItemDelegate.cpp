@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,34 +35,34 @@ FilteredProjectItemDelegate::FilteredProjectItemDelegate(QObject *parent)
 }
 
 void FilteredProjectItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
-    QStyleOptionViewItemV4 optionV4 = option;
-    initStyleOption(&optionV4, index);
+    QStyleOptionViewItem localOption = option;
+    initStyleOption(&localOption, index);
 
-    QStyle *style = optionV4.widget ? optionV4.widget->style() : QApplication::style();
+    QStyle *style = localOption.widget ? localOption.widget->style() : QApplication::style();
 
     QTextDocument doc;
-    doc.setHtml(optionV4.text);
+    doc.setHtml(localOption.text);
 
     painter->save();
 
     // Painting item without text
-    optionV4.text = QString();
-    style->drawControl(QStyle::CE_ItemViewItem, &optionV4, painter);
+    localOption.text = QString();
+    style->drawControl(QStyle::CE_ItemViewItem, &localOption, painter);
 
     QAbstractTextDocumentLayout::PaintContext ctx;
 
     // Highlighting text if item is selected
-    if (0 != (optionV4.state & QStyle::State_Selected)) {
-        ctx.palette.setColor(QPalette::Text, optionV4.palette.color(QPalette::Active, QPalette::HighlightedText));
+    if (0 != (localOption.state & QStyle::State_Selected)) {
+        ctx.palette.setColor(QPalette::Text, localOption.palette.color(QPalette::Active, QPalette::HighlightedText));
     } else {
-        ctx.palette.setColor(QPalette::Text, optionV4.palette.color(QPalette::Active, QPalette::Text));
+        ctx.palette.setColor(QPalette::Text, localOption.palette.color(QPalette::Active, QPalette::Text));
     }
 
-    if (0 == (optionV4.state & QStyle::State_Active)) {
-        ctx.palette.setColor(QPalette::Text, optionV4.palette.color(QPalette::Active, QPalette::Text));
+    if (0 == (localOption.state & QStyle::State_Active)) {
+        ctx.palette.setColor(QPalette::Text, localOption.palette.color(QPalette::Active, QPalette::Text));
     }
 
-    const QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &optionV4);
+    const QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &localOption);
     painter->translate(textRect.topLeft());
     painter->setClipRect(textRect.translated(-textRect.topLeft()));
     doc.documentLayout()->draw(painter, ctx);
@@ -71,13 +71,13 @@ void FilteredProjectItemDelegate::paint(QPainter *painter, const QStyleOptionVie
 }
 
 QSize FilteredProjectItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
-    QStyleOptionViewItemV4 optionV4 = option;
-    initStyleOption(&optionV4, index);
+    QStyleOptionViewItem localOption = option;
+    initStyleOption(&localOption, index);
 
     QTextDocument doc;
-    doc.setHtml(optionV4.text);
+    doc.setHtml(localOption.text);
     doc.setDocumentMargin(index.parent().isValid() ? 1 : 2);
-    doc.setDefaultFont(optionV4.font);
+    doc.setDefaultFont(localOption.font);
     return QSize(doc.idealWidth(), doc.size().height());
 }
 

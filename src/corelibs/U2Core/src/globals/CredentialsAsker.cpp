@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  * UGENE - Integrated Bioinformatics Tools.
  *
  * This program is free software; you can redistribute it and/or

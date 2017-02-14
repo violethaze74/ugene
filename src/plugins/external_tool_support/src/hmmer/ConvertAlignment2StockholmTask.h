@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,6 +30,7 @@ class LoadDocumentTask;
 class SaveAlignmentTask;
 
 class ConvertAlignment2Stockholm : public Task {
+    Q_OBJECT
 public:
     ConvertAlignment2Stockholm(const QString &msaUrl, const QString &workingDir);
 

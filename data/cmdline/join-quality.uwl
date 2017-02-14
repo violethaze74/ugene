@@ -15,7 +15,7 @@ workflow "Import PHRED quality scores"{
     write-fastq {
         type:write-sequence;
         name:"Write FASTQ";
-        document-format:fastq;
+        document-format:FASTQ;
     }
     import-phred-qualities {
         type:import-phred-qualities;

@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.unipro.ru
+ * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,9 +32,9 @@
 
 namespace U2 {
 
-const QString ImageExportTaskSettings::SVG_FORMAT = "svg";
-const QString ImageExportTaskSettings::PS_FORMAT = "ps";
-const QString ImageExportTaskSettings::PDF_FORMAT = "pdf";
+const QString ImageExportTaskSettings::SVG_FORMAT = "SVG";
+const QString ImageExportTaskSettings::PS_FORMAT = "PS";
+const QString ImageExportTaskSettings::PDF_FORMAT = "PDF";
 
 ImageExportTaskSettings::ImageExportTaskSettings(const QString &fileName,
                                                  const QString &format,
