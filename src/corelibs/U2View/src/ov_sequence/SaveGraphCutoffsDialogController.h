@@ -43,10 +43,12 @@ public:
 private:
     inline bool isAcceptableValue(float val);
     bool validate();
+    void tryAddObject(AnnotationTableObject *annotationTableObject);
 
     CreateAnnotationWidgetController*   ac;
+    SequenceObjectContext*              ctx;
     GSequenceGraphDrawer*               d;
-    QSharedPointer<GSequenceGraphData> gd;
+    QSharedPointer<GSequenceGraphData>  gd;
     QList<U2Region>                     resultRegions;
 };
 

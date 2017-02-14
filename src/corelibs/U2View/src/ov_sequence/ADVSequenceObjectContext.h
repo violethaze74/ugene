@@ -118,6 +118,7 @@ protected:
 };
 
 class U2VIEW_EXPORT ADVSequenceObjectContext : public SequenceObjectContext {
+    Q_OBJECT
 public:
     ADVSequenceObjectContext(AnnotatedDNAView* v, U2SequenceObject* obj);
 

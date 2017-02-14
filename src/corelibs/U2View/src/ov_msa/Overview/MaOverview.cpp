@@ -41,6 +41,10 @@ MaOverview::MaOverview(MaEditorWgt *_ui)
             SLOT(sl_redraw()));
 }
 
+MaEditor *MaOverview::getEditor() const {
+    return editor;
+}
+
 void MaOverview::sl_visibleRangeChanged() {
     if (!isValid()) {
         return;

@@ -712,7 +712,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QList<QAction*> actions;
     actions << insSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;
     editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
-    editMenu->insertAction(editMenu->actions().first(), ui->delSelectionAction);
+    editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 
     QMenu * exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != NULL, "exportMenu", );
@@ -1017,76 +1017,6 @@ void MSAEditorSequenceArea::sl_saveSequence(){
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
-<<<<<<< HEAD
-=======
-void MSAEditorSequenceArea::sl_registerCustomColorSchemes() {
-    deleteOldCustomSchemes();
-
-    MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory *> customFactories = msaColorSchemeRegistry->getMsaCustomColorSchemes(editor->getMSAObject()->getAlphabet()->getType());
-
-    foreach (MsaColorSchemeFactory *factory, customFactories) {
-        QAction *action = new QAction(factory->getName(), this);
-        action->setObjectName(factory->getName());
-        action->setCheckable(true);
-        action->setData(factory->getId());
-        connect(action, SIGNAL(triggered()), SLOT(sl_changeColorScheme()));
-        customColorSchemeMenuActions.append(action);
-    }
-}
-
-void MSAEditorSequenceArea::sl_colorSchemeFactoryUpdated() {
-    applyColorScheme(colorScheme->getFactory()->getId());
-}
-
-void MSAEditorSequenceArea::sl_setDefaultColorScheme() {
-    MsaColorSchemeFactory *defaultFactory = getDefaultColorSchemeFactory();
-    SAFE_POINT(NULL != defaultFactory, L10N::nullPointerError("default color scheme factory"), );
-    applyColorScheme(defaultFactory->getId());
-}
-
-void MSAEditorSequenceArea::cancelSelection()
-{
-    MSAEditorSelection emptySelection;
-    setSelection(emptySelection);
-}
-
-void MSAEditorSequenceArea::updateHBarPosition(int base, bool repeatAction) {
-    if (isAlignmentEmpty()) {
-        shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-        return;
-    }
-
-    if (base <= getFirstVisibleBase()) {
-        ( repeatAction ? shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10)
-                       : shBar->triggerAction(QAbstractSlider::SliderSingleStepSub) );
-    } else  if (base >= getLastVisibleBase(true)) {
-        ( repeatAction ? shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10)
-                       : shBar->triggerAction(QAbstractSlider::SliderSingleStepAdd) );
-
-    } else {
-        shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-    }
-}
-
-void MSAEditorSequenceArea::updateVBarPosition(int seq, bool repeatAction) {
-    if (isAlignmentEmpty()) {
-        svBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-        return;
-    }
-
-    if (seq <= getFirstVisibleSequence()) {
-        ( repeatAction ? svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10)
-                       : svBar->triggerAction(QAbstractSlider::SliderSingleStepSub) );
-    } else if (seq >= getLastVisibleSequence(true)) {
-        ( repeatAction ? svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10)
-                       : svBar->triggerAction(QAbstractSlider::SliderSingleStepAdd) );
-    } else {
-        svBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
-    }
-}
-
->>>>>>> origin/master
 void MSAEditorSequenceArea::sl_replaceSelectedCharacter() {
     msaMode = EditCharacterMode;
     editModeAnimationTimer.start(500);

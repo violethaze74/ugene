@@ -32,6 +32,7 @@
 
 #include <U2View/ADVAnnotationCreation.h>
 #include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
 
 #include "SaveGraphCutoffsDialogController.h"
 
@@ -41,7 +42,10 @@ SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGrap
                                                                    QSharedPointer<GSequenceGraphData>& _gd,
                                                                    QWidget *parent,
                                                                    SequenceObjectContext* ctx)
-    :QDialog(parent), d(_d), gd(_gd)
+    : QDialog(parent),
+      ctx(ctx),
+      d(_d),
+      gd(_gd)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759526");
@@ -138,7 +142,7 @@ void SaveGraphCutoffsDialogController::accept(){
         data.append(d);
     }
     AnnotationTableObject *aobj = mm.getAnnotationObject();
-    ctx->getAnnotatedDNAView()->tryAddObject(aobj);
+    tryAddObject(aobj);
     Task *t  = new CreateAnnotationsTask(aobj, data, mm.groupName);
     AppContext::getTaskScheduler()->registerTopLevelTask(t) ;
     QDialog::accept();
@@ -162,6 +166,12 @@ bool SaveGraphCutoffsDialogController::validate(){
         return false;
     }
     return true;
+}
+
+void SaveGraphCutoffsDialogController::tryAddObject(AnnotationTableObject *annotationTableObject) {
+    ADVSequenceObjectContext *advContext = qobject_cast<ADVSequenceObjectContext *>(ctx);
+    CHECK(NULL != advContext, );
+    advContext->getAnnotatedDNAView()->tryAddObject(annotationTableObject);
 }
 
 }

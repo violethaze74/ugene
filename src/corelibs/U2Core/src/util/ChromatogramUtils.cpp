@@ -91,7 +91,7 @@ namespace {
 template <class T>
 void zeroEndingCrop(QVector<T> &data, int startPos, int length) {
     data = data.mid(startPos, length);
-    if (!data.endsWith(0)) {
+    if (data.size() == startPos + length + 1) {
         data << 0;
     }
 }

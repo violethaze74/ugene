@@ -636,12 +636,6 @@ void MultipleChromatogramAlignmentRowData::removeTrailingGaps() {
     if (U2Msa::GAP_CHAR == charAt(MsaRowUtils::getRowLength(sequence.constData(), gaps) - 1)) {
         gaps.removeLast();
     }
-
-    if (gaps.first().offset == 0) {
-        const qint64 offset = gaps.first().gap;
-        gaps.removeFirst();
-        MsaRowUtils::shiftGapModel(gaps, -offset);
-    }
 }
 
 void MultipleChromatogramAlignmentRowData::syncLengths() {

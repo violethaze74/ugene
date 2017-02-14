@@ -21,9 +21,10 @@
 
 #include <QColorDialog>
 
+#include <U2Core/GUrlUtils.h>
+#include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/MainWindow.h>
@@ -31,7 +32,8 @@
 #include "MaOverviewContextMenu.h"
 #include "MaOverviewImageExportTask.h"
 #include "MaSimpleOverview.h"
-#include "../MSAEditorOverviewArea.h"
+#include "ov_msa/MaEditor.h"
+#include "ov_msa/MSAEditorOverviewArea.h"
 
 namespace U2 {
 
@@ -77,7 +79,7 @@ void MaOverviewContextMenu::connectSlots() {
 void MaOverviewContextMenu::sl_exportAsImageTriggered() {
     MaOverviewImageExportController factory(simpleOverview, graphOverview);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QString fileName = GUrlUtils::fixFileName(editor->getMSAObject()->getGObjectName());
+    const QString fileName = GUrlUtils::fixFileName(graphOverview->getEditor()->getMaObject()->getGObjectName());
     QObjectScopedPointer<ExportImageDialog> dialog = new ExportImageDialog(&factory, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
     dialog->exec();
 }

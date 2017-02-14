@@ -28,6 +28,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/ExportImageDialog.h>
 
@@ -91,7 +92,7 @@ QAction* MaEditorWgt::getRedoAction() const {
 void MaEditorWgt::sl_saveScreenshot(){
     MSAImageExportController controller(this);
     QWidget *p = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QString fileName = GUrlUtils::fixFileName(editor->getMSAObject()->getGObjectName());
+    QString fileName = GUrlUtils::fixFileName(editor->getMaObject()->getGObjectName());
     QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller, ExportImageDialog::MSA, fileName, ExportImageDialog::NoScaling, p);
     dlg->exec();
 }

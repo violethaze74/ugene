@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
 #include <QFile>
 #include <QMessageBox>
+#include <QPushButton>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>

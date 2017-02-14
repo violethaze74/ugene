@@ -303,7 +303,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         if (0 != (Qt::ShiftModifier & e->modifiers()) && ui->getSequenceArea()->isSeqInRange(newSeq - 1)) {
             newSeq--;
             updateSelection(newSeq);
-            ui->seqArea->updateVBarPosition(newSeq);
+            ui->getSequenceArea()->updateVBarPosition(newSeq);
         } else if (0 == (Qt::ShiftModifier & e->modifiers())) {
             ui->getSequenceArea()->moveSelection(0, -1);
             if (0 <= curSeq - 1) {
@@ -318,7 +318,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         if (0 != (Qt::ShiftModifier & e->modifiers()) && ui->getSequenceArea()->isSeqInRange(newSeq + 1)) {
             newSeq++;
             updateSelection(newSeq);
-            ui->seqArea->updateVBarPosition(newSeq);
+            ui->getSequenceArea()->updateVBarPosition(newSeq);
         } else if (0 == (Qt::ShiftModifier & e->modifiers())) {
             ui->getSequenceArea()->moveSelection(0, 1);
             if (ui->getSequenceArea()->getNumDisplayedSequences() > curSeq + 1) {

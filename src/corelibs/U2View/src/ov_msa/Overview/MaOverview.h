@@ -44,6 +44,7 @@ public:
     MaOverview(MaEditorWgt *_ui);
     virtual bool isValid() const { return false; }
     virtual QPixmap getView() { return QPixmap(); }
+    MaEditor *getEditor() const;
 
 public slots:
     void sl_visibleRangeChanged();

@@ -650,16 +650,18 @@ void MaEditorSequenceArea::centerPos(int pos) {
 }
 
 
-void MaEditorSequenceArea::updateHBarPosition(int base, bool repeatAction = false) {
+void MaEditorSequenceArea::updateHBarPosition(int base, bool repeatAction) {
     if (isAlignmentEmpty()) {
         shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
         return;
     }
 
     if (base <= getFirstVisibleBase()) {
-        shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10);
+        ( repeatAction ? shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10)
+                       : shBar->triggerAction(QAbstractSlider::SliderSingleStepSub) );
     } else  if (base >= getLastVisibleBase(true)) {
-        shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10);
+        ( repeatAction ? shBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10)
+                       : shBar->triggerAction(QAbstractSlider::SliderSingleStepAdd) );
     } else {
         shBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
     }
@@ -672,9 +674,11 @@ void MaEditorSequenceArea::updateVBarPosition(int seq, bool repeatAction) {
     }
 
     if (seq <= getFirstVisibleSequence()) {
-        svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10);
+        ( repeatAction ? svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepSub, 50, 10)
+                       : svBar->triggerAction(QAbstractSlider::SliderSingleStepSub) );
     } else if (seq >= getLastVisibleSequence(true)) {
-        svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10);
+        ( repeatAction ? svBar->setupRepeatAction(QAbstractSlider::SliderSingleStepAdd, 50, 10)
+                       : svBar->triggerAction(QAbstractSlider::SliderSingleStepAdd) );
     } else {
         svBar->setupRepeatAction(QAbstractSlider::SliderNoAction);
     }
