@@ -534,6 +534,24 @@ void MSAEditor::buildTree() {
     sl_buildTree();
 }
 
+QString MSAEditor::getReferenceRowName() const {
+    const MultipleAlignment alignment = getMaObject()->getMultipleAlignment();
+    U2OpStatusImpl os;
+    const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
+    return (U2MsaRow::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq)
+                                                : QString();
+}
+
+char MSAEditor::getReferenceCharAt(int pos) const {
+    CHECK(getReferenceRowId() != U2MsaRow::INVALID_ROW_ID, '\n');
+
+    U2OpStatusImpl os;
+    const int refSeq = maObject->getMultipleAlignment()->getRowIndexByRowId(getReferenceRowId(), os);
+    SAFE_POINT_OP(os, '\n');
+
+    return maObject->getMultipleAlignment()->charAt(refSeq, pos);
+}
+
 //////////////////////////////////////////////////////////////////////////
 MSAEditorUI::MSAEditorUI(MSAEditor* editor)
     : MaEditorWgt(editor),

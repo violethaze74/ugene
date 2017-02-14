@@ -132,7 +132,9 @@ void ChromaViewContext::sl_showChromatogram() {
         CHECK(a->view!=NULL, );
         GObject* editSeq = a->view->getEditedSequence();
         if (editSeq!=NULL) {
-            a->view->getSequenceContext()->getAnnotatedDNAView()->removeObject(editSeq);
+            //! SANGER_RED_TODO: check that it does not brake anything
+            adv->removeObject(editSeq);
+//            a->view->getSequenceContext()->getAnnotatedDNAView()->removeObject(editSeq);
         }
         adv->removeObject(chromaObj);
         delete a->view;

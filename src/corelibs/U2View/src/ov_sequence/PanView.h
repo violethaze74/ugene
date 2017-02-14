@@ -98,7 +98,7 @@ public:
         PanView *panView;
     };
 
-    PanView(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx);
+    PanView(QWidget* p, SequenceObjectContext* ctx);
     ~PanView();
 
     const U2Region& getFrameRange() const {return frameView->getVisibleRange();}
@@ -190,7 +190,7 @@ public:
 
     PanViewRenderArea* getRenderArea() const;
 
-    U2Region             frameRange;
+    U2Region            frameRange;
     int                 minNuclsPerScreen;
 
     QAction*            zoomInAction;
@@ -207,8 +207,6 @@ public:
     PanViewLinesSettings*     settings;
 
     int zoomUsing;
-
-    ADVSingleSequenceWidget*    seqWidget;
 };
 
 

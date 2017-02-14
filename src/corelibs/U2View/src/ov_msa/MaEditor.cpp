@@ -202,14 +202,6 @@ void MaEditor::saveHighlightingSettings( const QString &highlightingFactoryId, c
     snp.highlightSchemeSettings.insert(highlightingFactoryId, QVariant(settingsMap));
 }
 
-QString MaEditor::getReferenceRowName() const {
-    const MultipleAlignment alignment = getMaObject()->getMultipleAlignment();
-    U2OpStatusImpl os;
-    const int refSeq = alignment->getRowIndexByRowId(getReferenceRowId(), os);
-    return (U2MsaRow::INVALID_ROW_ID != refSeq) ? alignment->getRowNames().at(refSeq)
-        : QString();
-}
-
 void MaEditor::setReference(qint64 sequenceId) {
     if(sequenceId == U2MsaRow::INVALID_ROW_ID){
         exportHighlightedAction->setDisabled(true);

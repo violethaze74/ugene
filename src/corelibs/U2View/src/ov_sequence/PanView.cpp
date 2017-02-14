@@ -141,9 +141,8 @@ void PanView::ZoomUseObject::releaseZoom() {
 }
 
 #define MAX_VISIBLE_ROWS_ON_START 10
-PanView::PanView(ADVSingleSequenceWidget* p, ADVSequenceObjectContext* ctx)
-    : GSequenceLineViewAnnotated(p, ctx),
-    seqWidget(p)
+PanView::PanView(QWidget* p, SequenceObjectContext* ctx)
+    : GSequenceLineViewAnnotated(p, ctx)
 {
     rowBar = new QScrollBar(this);
 
@@ -617,12 +616,13 @@ void PanViewRenderArea::drawAll(QPaintDevice* pd) {
 
     p.drawPixmap(0, 0, *cachedView);
 
-    ADVSingleSequenceWidget* ssw = panView->seqWidget;
-    SAFE_POINT(ssw != NULL, "ADVSingleSequenceWidget is NULL", );
-    if (!ssw->isOverviewCollapsed()) {
-        //! VIEW_RENDERER_REFACTORING: consider to move frame drawing to renderer
-        drawFrame(p);
-    }
+    // SANGER_TODO: should not be this kind of connection
+//    ADVSingleSequenceWidget* ssw = panView->seqWidget;
+//    SAFE_POINT(ssw != NULL, "ADVSingleSequenceWidget is NULL", );
+//    if (!ssw->isOverviewCollapsed()) {
+//        //! VIEW_RENDERER_REFACTORING: consider to move frame drawing to renderer
+//        drawFrame(p);
+//    }
 
     renderer->drawSelection(p, QSize(pd->width(), pd->height()), view->getVisibleRange());
 

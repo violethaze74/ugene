@@ -50,6 +50,10 @@ bool GObjectRelation::operator ==(const GObjectRelation& r) const {
     return ref == r.ref && role == r.role;
 }
 
+bool GObjectReference::operator < (const GObjectReference& r) const {
+    return U2::qHash(this) < U2::qHash(r);
+}
+
 QDataStream &operator<<(QDataStream &out, const GObjectReference &myObj) {
     out << myObj.docUrl << myObj.objName << myObj.objType;
     return out;

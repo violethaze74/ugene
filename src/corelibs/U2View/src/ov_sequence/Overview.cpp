@@ -415,7 +415,7 @@ int OverviewRenderArea::getAnnotationDensity (int pos) const {
 
 void OverviewRenderArea::setAnnotationsOnPos() {
     annotationsOnPos.clear();
-    const ADVSequenceObjectContext *ctx = view->getSequenceContext();
+    const SequenceObjectContext *ctx = view->getSequenceContext();
     const qint64 len = ctx->getSequenceLength();
     annotationsOnPos.resize(len);
 

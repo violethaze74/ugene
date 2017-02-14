@@ -106,17 +106,18 @@ void MaSplitterController::removeWidget( QWidget *wgt )
 /************************************************************************/
 /* MSAWidget */
 /************************************************************************/
-MaUtilsWidget::MaUtilsWidget(MaEditorWgt* ui)
+MaUtilsWidget::MaUtilsWidget(MaEditorWgt* ui, QWidget* heightWidget)
     : ui(ui),
+      heightWidget(heightWidget),
       heightMargin(0)
 {
     connect(ui->getEditor(), SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_fontChanged()));
-    setMinimumHeight(ui->getConsensusArea()->height() + heightMargin);
+    setMinimumHeight(heightWidget->height() + heightMargin);
 }
 
 void MaUtilsWidget::sl_fontChanged() {
     update();
-    setMinimumHeight(ui->getConsensusArea()->height() + heightMargin);
+    setMinimumHeight(heightWidget->height() + heightMargin);
 }
 
 const QFont& MaUtilsWidget::getMsaEditorFont() {
@@ -125,7 +126,7 @@ const QFont& MaUtilsWidget::getMsaEditorFont() {
 
 void MaUtilsWidget::setHeightMargin(int _heightMargin) {
     heightMargin = _heightMargin;
-    setMinimumHeight(ui->getConsensusArea()->height() + heightMargin);
+    setMinimumHeight(heightWidget->height() + heightMargin);
 }
 
 void MaUtilsWidget::mousePressEvent( QMouseEvent * ) {
@@ -134,13 +135,14 @@ void MaUtilsWidget::mousePressEvent( QMouseEvent * ) {
 void MaUtilsWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);
     p.fillRect(rect(), Qt::white);
+    setMinimumHeight(heightWidget->height() + heightMargin);
 }
 
 /************************************************************************/
 /* MaLabelWidget */
 /************************************************************************/
-MaLabelWidget::MaLabelWidget(MaEditorWgt* ui, const QString & t, Qt::Alignment a)
-    : MaUtilsWidget(ui),
+MaLabelWidget::MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString & t, Qt::Alignment a)
+    : MaUtilsWidget(ui, heightWidget),
       text(t),
       ali(a) {
 }

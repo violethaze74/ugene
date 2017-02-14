@@ -35,7 +35,7 @@ namespace U2 {
 /* DetViewMultiLineRenderer */
 /************************************************************************/
 const int DetViewMultiLineRenderer::INDENT_BETWEEN_LINES = 30;
-DetViewMultiLineRenderer::DetViewMultiLineRenderer(DetView *detView, ADVSequenceObjectContext *ctx)
+DetViewMultiLineRenderer::DetViewMultiLineRenderer(DetView *detView, SequenceObjectContext *ctx)
     : DetViewRenderer(detView, ctx),
       extraIndent(0) {
     singleLinePainter = new DetViewSingleLineRenderer(detView, ctx);

@@ -25,7 +25,6 @@
 #include <U2Core/FormatUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -266,13 +265,23 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
         composeSubTask->setSubtaskProgressWeight(0.5f);
         result << composeSubTask;
     } else if (subTask == composeSubTask) {
-        QScopedPointer<MultipleChromatogramAlignmentObject> mcaObject(composeSubTask->takeAlignment());
-        CHECK_EXT(NULL != mcaObject, setError(tr("MCA object is NULL")), result);
         DocumentFormat *ugenedbFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::UGENEDB);
         QScopedPointer<Document> document(ugenedbFormat->createNewLoadedDocument(IOAdapterUtils::get(IOAdapterUtils::url2io(resultUrl)), resultUrl, stateInfo));
         CHECK_OP(stateInfo, result);
+
         document->setDocumentOwnsDbiResources(false);
-        document->addObject(mcaObject.take());
+        QList<GObject*> resObjects = composeSubTask->getResult();
+        SAFE_POINT_EXT(resObjects.size() >= 2, setError("Invalid count of result objects");, result);
+        foreach (GObject* object, resObjects) {
+            document->addObject(object);
+        }
+        // alignment should have the relation about reference
+        // SANGER_TODO: leave only one relation
+        resObjects.first()->addObjectRelation(GObjectRelation(GObjectReference(resObjects.last()),
+                                                              GObjectRelationRole::ObjectRole_ReferenceSequence));
+        resObjects.last()->addObjectRelation(GObjectRelation(GObjectReference(resObjects.first()),
+                                                              GObjectRelationRole::ObjectRole_ReferenceSequence));
+
         saveTask = new SaveDocumentTask(document.take(), SaveDocFlags(SaveDoc_DestroyAfter) | SaveDoc_Roll);
         result << saveTask;
     }

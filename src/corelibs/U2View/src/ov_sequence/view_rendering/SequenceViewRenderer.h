@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-class ADVSequenceObjectContext;
+class SequenceObjectContext;
 class U2Region;
 
 struct CommonSequenceViewMetrics {
@@ -50,7 +50,7 @@ struct CommonSequenceViewMetrics {
 /************************************************************************/
 class SequenceViewRenderer {
 public:
-    SequenceViewRenderer(ADVSequenceObjectContext* ctx);
+    SequenceViewRenderer(SequenceObjectContext* ctx);
 
     virtual qint64 coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const = 0;
 
@@ -70,7 +70,7 @@ public:
     virtual QSize getBaseCanvasSize(const U2Region& visibleRange) const = 0;
 
 protected:
-    ADVSequenceObjectContext*   ctx;
+    SequenceObjectContext*      ctx;
     CommonSequenceViewMetrics   commonMetrics;
 
 };

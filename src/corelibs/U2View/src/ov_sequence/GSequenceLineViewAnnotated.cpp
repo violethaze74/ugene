@@ -46,7 +46,7 @@
 
 namespace U2 {
 
-GSequenceLineViewAnnotated::GSequenceLineViewAnnotated(QWidget* p, ADVSequenceObjectContext* ctx)
+GSequenceLineViewAnnotated::GSequenceLineViewAnnotated(QWidget* p, SequenceObjectContext* ctx)
     : GSequenceLineView(p, ctx)
 {
     const QSet<AnnotationTableObject*> aObjs = ctx->getAnnotationObjects(true);

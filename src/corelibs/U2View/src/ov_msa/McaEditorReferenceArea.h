@@ -1,7 +1,7 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2016 UniPro <ugene@unipro.ru>
- * http://ugene.net
+ * http://ugene.unipro.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,36 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#include "DetViewRenderer.h"
-#include "DetViewSingleLineRenderer.h"
-#include "DetViewMultiLineRenderer.h"
+#ifndef _U2_MCA_EDITOR_REFERENCE_VIEW_H_
+#define _U2_MCA_EDITOR_REFERENCE_VIEW_H_
 
-#include <U2View/ADVSequenceObjectContext.h>
-#include <U2View/DetView.h>
+#include <U2View/PanView.h>
 
+#include "view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
-DetViewRenderer::DetViewRenderer(DetView* detView, SequenceObjectContext* ctx)
-    : SequenceViewAnnotatedRenderer(ctx),
-      detView(detView)   {
+class McaEditor;
+class McaEditorWgt;
 
-}
+class McaEditorReferenceArea : public PanView {
+    Q_OBJECT
+public:
+    McaEditorReferenceArea(McaEditorWgt* p, SequenceObjectContext* ctx);
 
-double DetViewRenderer::getCurrentScale() const {
-    return commonMetrics.charWidth;
-}
+signals:
+    void si_selectionChanged();
 
-qint64 DetViewRenderer::getSymbolsPerLine(const qint64 width) const {
-    return width / commonMetrics.charWidth;
-}
+public slots:
+    void sl_visibleRangeChanged();
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
 
-DetViewRenderer* DetViewRendererFactory::createRenderer(DetView *detView, SequenceObjectContext *ctx, bool multiLine) {
-    if (multiLine) {
-        return new DetViewMultiLineRenderer(detView, ctx);
-    } else {
-        return new DetViewSingleLineRenderer(detView, ctx);
-    }
-}
+private slots:
+    void sl_onSelectionChanged();
 
-} // namespace
+private:
+    McaEditor* editor;
+};
+
+} // namespace U2
+#endif // _U2_MCA_EDITOR_REFERENCE_VIEW_H_

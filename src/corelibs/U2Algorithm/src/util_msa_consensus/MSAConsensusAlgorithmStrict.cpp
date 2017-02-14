@@ -30,7 +30,9 @@ namespace U2 {
 
 
 MSAConsensusAlgorithmFactoryStrict::MSAConsensusAlgorithmFactoryStrict(QObject* p)
-: MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO, ConsensusAlgorithmFlags_AllAlphabets | ConsensusAlgorithmFlag_SupportThreshold, p)
+: MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO, ConsensusAlgorithmFlags_AllAlphabets
+                               | ConsensusAlgorithmFlag_SupportThreshold
+                               | ConsensusAlgorithmFlag_AvailableForChromatogram, p)
 {
 }
 

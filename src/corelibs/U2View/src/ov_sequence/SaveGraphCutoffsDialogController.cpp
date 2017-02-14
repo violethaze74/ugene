@@ -31,14 +31,17 @@
 #include <U2Gui/HelpButton.h>
 
 #include <U2View/ADVAnnotationCreation.h>
-#include <U2View/AnnotatedDNAView.h>
+#include <U2View/ADVSequenceObjectContext.h>
 
 #include "SaveGraphCutoffsDialogController.h"
 
 namespace U2{
 
-SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGraphDrawer *_d, QSharedPointer<GSequenceGraphData>& _gd, QWidget *parent, ADVSequenceObjectContext* _ctx)
-    :QDialog(parent), ctx(_ctx), d(_d), gd(_gd)
+SaveGraphCutoffsDialogController::SaveGraphCutoffsDialogController(GSequenceGraphDrawer *_d,
+                                                                   QSharedPointer<GSequenceGraphData>& _gd,
+                                                                   QWidget *parent,
+                                                                   SequenceObjectContext* ctx)
+    :QDialog(parent), d(_d), gd(_gd)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759526");

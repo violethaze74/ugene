@@ -40,13 +40,13 @@
 
 namespace U2 {
 
-class GSequenceLineViewRenderArea;
 class DNASequenceSelection;
 class LRegionsSelection;
 class GScrollBar;
-class ADVSequenceObjectContext;
-class GObjectViewOpConstraints;
+class GSequenceLineViewRenderArea;
 class GObject;
+class GObjectViewOpConstraints;
+class SequenceObjectContext;
 class U2SequenceObject;
 
 enum GSLV_UpdateFlag {
@@ -70,11 +70,11 @@ typedef QFlags<GSLV_FeatureFlag> GSLV_FeatureFlags;
 class U2VIEW_EXPORT GSequenceLineView : public WidgetWithLocalToolbar {
     Q_OBJECT
 public:
-    GSequenceLineView(QWidget* p, ADVSequenceObjectContext* ctx);
+    GSequenceLineView(QWidget* p, SequenceObjectContext* ctx);
 
     const U2Region& getVisibleRange() const {return visibleRange;}
 
-    ADVSequenceObjectContext* getSequenceContext() const {return ctx;}
+    SequenceObjectContext* getSequenceContext() const {return ctx;}
 
     GSequenceLineViewRenderArea* getRenderArea() const {return renderArea;}
 
@@ -157,7 +157,7 @@ protected:
     virtual int getSingleStep() const;
     virtual int getPageStep() const;
 
-    ADVSequenceObjectContext*       ctx;
+    SequenceObjectContext*          ctx;
     GSequenceLineViewRenderArea*    renderArea;
     U2Region                        visibleRange;
     GScrollBar*                     scrollBar;

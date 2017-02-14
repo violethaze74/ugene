@@ -56,7 +56,7 @@ namespace U2 {
 /************************************************************************/
 /* DetView */
 /************************************************************************/
-DetView::DetView(QWidget* p, ADVSequenceObjectContext* ctx)
+DetView::DetView(QWidget* p, SequenceObjectContext* ctx)
     : GSequenceLineViewAnnotated(p, ctx)
 {
     showComplementAction = new QAction(tr("Show complement strand"), this);

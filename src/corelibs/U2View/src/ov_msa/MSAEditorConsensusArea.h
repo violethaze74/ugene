@@ -43,15 +43,27 @@ class MaEditorSelection;
 class MaEditorWgt;
 class MaModificationInfo;
 
-enum MSAEditorConsElement {
+enum MaEditorConsElement {
     MSAEditorConsElement_HISTOGRAM,
     MSAEditorConsElement_CONSENSUS_TEXT,
     MSAEditorConsElement_RULER
 };
 
+class MaEditorConsensusAreaSettings {
+public:
+    MaEditorConsensusAreaSettings();
+    MaEditorConsensusAreaSettings(const QList<MaEditorConsElement>& order,
+                                  const QMap<MaEditorConsElement, bool>& visibility);
+    bool isVisible(const MaEditorConsElement element) const;
+
+    QList<MaEditorConsElement> order;
+    QMap<MaEditorConsElement, bool> visibility;
+};
+
 class U2VIEW_EXPORT MSAEditorConsensusArea : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(MSAEditorConsensusArea)
+
 public:
     MSAEditorConsensusArea(MaEditorWgt* ui);
     ~MSAEditorConsensusArea();
@@ -60,6 +72,8 @@ public:
 
     void setConsensusAlgorithm(MSAConsensusAlgorithmFactory* algo);
     void setConsensusAlgorithmConsensusThreshold(int val);
+
+    void setDrawSettings(const MaEditorConsensusAreaSettings& settings);
 
     MSAConsensusAlgorithm* getConsensusAlgorithm() const;
 
@@ -130,7 +144,8 @@ private:
     void drawSelection(QPainter& p);
 
 
-    U2Region getYRange(MSAEditorConsElement e) const;
+    U2Region getYRange(MaEditorConsElement e) const;
+    int getYRangeLength(MaEditorConsElement e) const;
 
     MSAConsensusAlgorithmFactory* getConsensusAlgorithmFactory();
     void updateConsensusAlgorithm();
@@ -147,8 +162,9 @@ private:
 
     QSharedPointer<MSAEditorConsensusCache>    consensusCache;
 
-    bool                completeRedraw;
-    QPixmap*            cachedView;
+    bool                            completeRedraw;
+    mutable MaEditorConsensusAreaSettings   drawSettings;
+    QPixmap*                        cachedView;
 
     QObject *childObject;
 };

@@ -37,7 +37,7 @@ public:
 
     bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx) const;
 
-    void drawSelection(QPainter &p) const;
+    virtual void drawSelection(QPainter &p) const;
     void drawFocus(QPainter& p) const;
 
 protected:

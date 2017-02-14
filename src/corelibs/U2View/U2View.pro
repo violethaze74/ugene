@@ -49,6 +49,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/ExportConsensus/MSAExportConsensusTab.h \
            src/ov_msa/ExportConsensus/MSAExportConsensusTabFactory.h \
            src/ov_msa/ExportHighlightedDialogController.h \
+           src/ov_msa/General/MaConsensusModeWidget.h \
            src/ov_msa/General/McaGeneralTab.h \
            src/ov_msa/General/McaGeneralTabFactory.h \
            src/ov_msa/General/MSAGeneralTab.h \
@@ -61,6 +62,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaEditorNameList.h \
            src/ov_msa/McaEditor.h \
            src/ov_msa/McaEditorOverviewArea.h \
+           src/ov_msa/McaEditorReferenceArea.h \
            src/ov_msa/McaEditorSequenceArea.h \
            src/ov_msa/MSACollapsibleModel.h \
            src/ov_msa/MSAEditor.h \
@@ -211,6 +213,7 @@ FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/ov_msa/ExportConsensus/ExportConsensusWidget.ui \
          src/ov_msa/ExportHighlightedDialog.ui \
          src/ov_msa/General/GeneralTabOptionsPanelWidget.ui \
+         src/ov_msa/General/MaConsensusModeWidget.ui \
          src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui \
          src/ov_msa/SeqStatistics/MSADistancesColumnSettingsWidget.ui \
          src/ov_msa/Export/MSAExportSettings.ui \
@@ -284,6 +287,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/DeleteGapsDialog.cpp \
            src/ov_msa/Export/MSAImageExportTask.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
+           src/ov_msa/General/MaConsensusModeWidget.cpp \
            src/ov_msa/General/McaGeneralTab.cpp \
            src/ov_msa/General/McaGeneralTabFactory.cpp \
            src/ov_msa/General/MSAGeneralTab.cpp \
@@ -296,6 +300,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MaEditorNameList.cpp \
            src/ov_msa/McaEditor.cpp \
            src/ov_msa/McaEditorOverviewArea.cpp \
+           src/ov_msa/McaEditorReferenceArea.cpp \
            src/ov_msa/McaEditorSequenceArea.cpp \
            src/ov_msa/MSACollapsibleModel.cpp \
            src/ov_msa/MSAEditor.cpp \

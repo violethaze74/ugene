@@ -35,6 +35,7 @@ enum ConsensusAlgorithmFlag {
     ConsensusAlgorithmFlag_Amino = 1 << 1,
     ConsensusAlgorithmFlag_Raw = 1 << 2,
     ConsensusAlgorithmFlag_SupportThreshold = 1 << 3,
+    ConsensusAlgorithmFlag_AvailableForChromatogram = 1 << 4
 };
 
 typedef QFlags<ConsensusAlgorithmFlag> ConsensusAlgorithmFlags;

@@ -27,7 +27,9 @@ namespace U2 {
 
 MSAConsensusAlgorithmFactoryLevitsky::MSAConsensusAlgorithmFactoryLevitsky(QObject* p)
 : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO,
-                               ConsensusAlgorithmFlags(ConsensusAlgorithmFlag_Nucleic ) | ConsensusAlgorithmFlag_SupportThreshold,
+                               ConsensusAlgorithmFlags(ConsensusAlgorithmFlag_Nucleic )
+                               | ConsensusAlgorithmFlag_SupportThreshold
+                               | ConsensusAlgorithmFlag_AvailableForChromatogram,
                                p)
 {
 }

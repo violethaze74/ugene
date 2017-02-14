@@ -40,10 +40,14 @@ public:
 
     int getScaleBarValue() const;
 
+    void drawSelection(QPainter &p) const;
+
     static const int INDENT_BETWEEN_ROWS;
 
 private:
     int drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const;
+
+    void drawReferenceSelection(QPainter &p) const;
 
     void drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& visibleRange) const;
 

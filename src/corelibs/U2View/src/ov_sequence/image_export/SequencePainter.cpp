@@ -35,7 +35,7 @@
 
 namespace U2 {
 
-bool checkAnnotationsCountInRegion(ADVSequenceObjectContext* ctx, const U2Region& region) {
+bool checkAnnotationsCountInRegion(SequenceObjectContext* ctx, const U2Region& region) {
     SAFE_POINT(ctx != NULL, "SequenceContext is NULL", false);
     int count = 0;
     foreach (AnnotationTableObject* table, ctx->getAnnotationObjects(true)) {

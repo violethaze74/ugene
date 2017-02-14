@@ -45,12 +45,6 @@ signals:
 
 public slots:
     void sl_alignmentChanged();
-    void sl_algorithmChanged(const QString& algoId);
-    void sl_thresholdChanged(int value);
-    void sl_algorithmSelectionChanged(int index);
-    void sl_thresholdSliderChanged(int value);
-    void sl_thresholdSpinBoxChanged(int value);
-    void sl_thresholdResetClicked(bool newState);
     void sl_copyFormatSelectionChanged(int value);
     void sl_copyFormatted();
     void sl_copyFormatStatusChanged(bool enabled);
@@ -59,8 +53,6 @@ private:
     void connectSignals();
     void initializeParameters();
     void updateState();
-    void updateThresholdState(bool enable, int minVal = 0, int maxVal = 0, int value = 0);
-    void initConsensusTypeCombo();
 
     MSAEditor* msa;
     QString curAlphabetId;

@@ -20,26 +20,41 @@
  */
 
 #include "McaEditor.h"
+
 #include "MaEditorFactory.h"
-#include "McaEditorSequenceArea.h"
-#include "McaEditorOverviewArea.h"
 #include "MaEditorNameList.h"
+#include "McaEditorSequenceArea.h"
+#include "McaEditorReferenceArea.h"
+#include "McaEditorOverviewArea.h"
+#include "MSAEditorConsensusArea.h"
 
 #include "view_rendering/MaEditorWgt.h"
+#include <U2View/ADVSequenceObjectContext.h>// SANGER_TODO: do not forget to rename the header
 
 #include <QToolBar>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/DNASequenceObject.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 
+#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
+#include <U2Algorithm/MSAConsensusAlgorithm.h>
+#include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
+
 namespace U2 {
 
-McaEditor::McaEditor(const QString &viewName, MultipleChromatogramAlignmentObject *obj)
-    : MaEditor(McaEditorFactory::ID, viewName, obj) {
+McaEditor::McaEditor(const QString &viewName,
+                     MultipleChromatogramAlignmentObject *obj,
+                     U2SequenceObject* ref)
+    : MaEditor(McaEditorFactory::ID, viewName, obj),
+      referenceObj(ref),
+      referenceCtx(NULL)
+{
     showChromatograms = true; // SANGER_TODO: check if there are chromatograms
 
     // SANGER_TODO: set new proper icon
@@ -53,6 +68,16 @@ McaEditor::McaEditor(const QString &viewName, MultipleChromatogramAlignmentObjec
     foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
         // SANGER_TODO: tmp
         chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), row->getRowId() % 2 == 0 ? true : false);
+    }
+
+    if (ref) {
+        objects.append(referenceObj);
+        onObjectAdded(referenceObj);
+
+        referenceCtx = new SequenceObjectContext(referenceObj, this);
+
+        // SANGER_TODO: basically sanger cannot be not nucleotide
+        saveHighlightingSettings(MsaHighlightingScheme::DISAGREEMENTS_NUCL);
     }
 }
 
@@ -92,6 +117,18 @@ bool McaEditor::isChromVisible(qint64 rowId) const {
 void McaEditor::toggleChromVisibility(qint64 rowId) {
     chromVisibility[rowId] = !chromVisibility[rowId];
     emit si_completeUpdate();
+}
+
+QString McaEditor::getReferenceRowName() const {
+    return referenceObj->getSequenceName();
+}
+
+char McaEditor::getReferenceCharAt(int pos) const {
+    U2OpStatusImpl os;
+    // SANGER_TODO: probably can be slow
+    DNASequence seq = referenceObj->getSequence(U2Region(pos, 1), os);
+    SAFE_POINT_OP(os, '\n');
+    return seq.seq[0];
 }
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
@@ -159,6 +196,26 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     : MaEditorWgt(editor) {
     initActions();
     initWidgets();
+
+    // SANGER_TODO: write sequence name
+    McaEditorReferenceArea* refArea = new McaEditorReferenceArea(this, getEditor()->referenceCtx);
+    seqAreaHeaderLayout->insertWidget(0, refArea);
+
+    MaEditorConsensusAreaSettings consSettings;
+    consSettings.visibility[MSAEditorConsElement_HISTOGRAM] = false;
+    consArea->setDrawSettings(consSettings);
+
+    MSAConsensusAlgorithmFactory* algoFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO);
+    consArea->setConsensusAlgorithm(algoFactory);
+
+    QString name = getEditor()->referenceCtx->getSequenceObject()->getSequenceName();
+    QWidget *refName = createHeaderLabelWidget(name, Qt::AlignCenter, refArea);
+
+    nameAreaLayout->insertWidget(0, refName);
+}
+
+McaEditorSequenceArea* McaEditorWgt::getSequenceArea() const {
+    return qobject_cast<McaEditorSequenceArea*>(seqArea);
 }
 
 void McaEditorWgt::initSeqArea(GScrollBar* shBar, GScrollBar* cvBar) {
