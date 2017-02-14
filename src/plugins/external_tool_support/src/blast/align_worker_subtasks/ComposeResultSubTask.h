@@ -59,7 +59,7 @@ private:
     DNASequence getReferenceSequence();
     U2MsaRowGapModel getReferenceGaps();
     U2MsaRowGapModel getShiftedGaps(int rowNum);
-    void insertShiftedGapsIntoReference(MultipleChromatogramAlignment &alignment, const U2MsaRowGapModel &gaps);
+    void insertShiftedGapsIntoReference(U2SequenceObject* reference, const U2MsaRowGapModel &gaps);
     void insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps);
     void createAlignmentAndAnnotations();
     U2Region getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const;
