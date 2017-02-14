@@ -106,6 +106,10 @@ QList<GObject*> ComposeResultSubTask::getResult() {
     U2SequenceObject* reference = StorageUtils::getSequenceObject(storage, this->reference);
     CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), result);
 
+    U2MsaRowGapModel referenceGaps = getReferenceGaps();
+    CHECK_OP(stateInfo, result);
+    insertShiftedGapsIntoReference(reference, referenceGaps);
+
     result << alignment;
     result << reference ;
 
@@ -119,16 +123,8 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
     CHECK_OP(stateInfo, );
     result->setAlphabet(referenceSeq.alphabet);
 
-    // add the reference row
-    // TODO: store the reference as a separate sequence with gap model
-//    result->addRow(referenceSeq.getName(), referenceSeq.seq, 0);
-//    CHECK_OP(stateInfo, );
-
     U2MsaRowGapModel referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, );
-
-//    insertShiftedGapsIntoReference(result, referenceGaps);
-//    CHECK_OP(stateInfo, );
 
     // initialize annotations table on reference
     QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceSeq.getName() + " features", storage->getDbiRef()));
@@ -312,12 +308,14 @@ U2MsaRowGapModel ComposeResultSubTask::getShiftedGaps(int rowNum) {
     return result;
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoReference(MultipleChromatogramAlignment &alignment, const U2MsaRowGapModel &gaps) {
+void ComposeResultSubTask::insertShiftedGapsIntoReference(U2SequenceObject* reference, const U2MsaRowGapModel &gaps) {
+    DNASequence dnaSeq = reference->getWholeSequence(stateInfo);
+    CHECK_OP(stateInfo, );
     for (int i = gaps.size() - 1; i >= 0; i--) {
         U2MsaGap gap = gaps[i];
-        alignment->insertGaps(0, gap.offset, gap.gap, stateInfo);
-        CHECK_OP(stateInfo, );
+        dnaSeq.seq.insert(gap.offset, &U2Msa::GAP_CHAR, gap.gap);
     }
+    reference->setWholeSequence(dnaSeq);
 }
 
 void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps) {

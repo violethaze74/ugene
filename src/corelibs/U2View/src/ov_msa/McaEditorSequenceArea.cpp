@@ -23,6 +23,9 @@
 
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
+#include <U2Algorithm/MsaColorScheme.h>
+#include <U2Algorithm/MsaHighlightingScheme.h>
+
 #include <U2Gui/GUIUtils.h>
 
 #include <QToolButton>
@@ -191,6 +194,13 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
     SAFE_POINT(viewMenu != NULL, "viewMenu", );
     viewMenu->addAction(showQVAction);
     viewMenu->addMenu(traceActionMenu);
+}
+
+void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid,
+                                                       DNAAlphabetType, bool) {
+    // SANGER_TODO: basically sanger cannot be not nucleotide
+    csid = MsaColorScheme::UGENE_NUCL;
+    hsid = MsaHighlightingScheme::DISAGREEMENTS_NUCL;
 }
 
 QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionName) {

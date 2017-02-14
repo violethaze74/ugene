@@ -71,6 +71,7 @@ protected:
     QMap<qint64, bool>  chromVisibility;
 
     U2SequenceObject*       referenceObj;
+    QByteArray              referenceCache;
 public: // SANGER_TODO: temprorary
     SequenceObjectContext*  referenceCtx;
 };

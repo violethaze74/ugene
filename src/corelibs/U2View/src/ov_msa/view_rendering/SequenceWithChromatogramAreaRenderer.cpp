@@ -128,8 +128,15 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const M
         if (chromaMax < chroma.T[i]) chromaMax = chroma.T[i];
     }
 
-    // SANGER_TODO: not Zero region -- there should be the chrom position on the alignment!
-    U2Region visible = U2Region(_visible.startPos, _visible.length + 1).intersect(U2Region(0, chroma.seqLength));
+    U2Region visible = U2Region(_visible.startPos, _visible.length + 1).intersect(row->getCoreRegion());
+    CHECK(!visible.isEmpty(), );
+    if (visible.startPos > _visible.startPos) {
+        MaEditor* editor = seqAreaWgt->getEditor();
+        SAFE_POINT(editor != NULL, "MaEditor is NULL", );
+        p.translate(editor->getColumnWidth() * (visible.startPos - _visible.startPos), 0);
+    }
+    visible.startPos -= row->getCoreStart();
+
     CHECK(!visible.isEmpty(), );
     int w = visible.length * seqAreaWgt->getEditor()->getColumnWidth();
 
