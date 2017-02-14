@@ -40,7 +40,7 @@ class U2VIEW_EXPORT GSequenceLineViewAnnotated : public GSequenceLineView {
     Q_OBJECT
 public:
 
-                                            GSequenceLineViewAnnotated(QWidget *p, ADVSequenceObjectContext *ctx);
+                                            GSequenceLineViewAnnotated(QWidget *p, SequenceObjectContext *ctx);
 
     bool                                    isAnnotationVisible(Annotation *a) const;
 

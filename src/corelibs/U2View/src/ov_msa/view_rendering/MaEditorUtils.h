@@ -63,7 +63,7 @@ private:
 class MaUtilsWidget : public QWidget {
     Q_OBJECT
 public:
-    MaUtilsWidget(MaEditorWgt* _ui);
+    MaUtilsWidget(MaEditorWgt* _ui, QWidget* heightWidget);
     virtual ~MaUtilsWidget() {}
     const QFont& getMsaEditorFont();
     void setHeightMargin(int _heightMargin);
@@ -75,8 +75,9 @@ protected:
     virtual void mousePressEvent(QMouseEvent *e);
     virtual void paintEvent(QPaintEvent *e);
 
-    MaEditorWgt*  ui;
-    int heightMargin;
+    MaEditorWgt*    ui;
+    QWidget*        heightWidget;
+    int             heightMargin;
 };
 
 /************************************************************************/
@@ -85,7 +86,8 @@ protected:
 class MaLabelWidget : public MaUtilsWidget {
     Q_OBJECT
 public:
-    MaLabelWidget(MaEditorWgt* _ui, const QString & _t, Qt::Alignment _a);
+    // SANGER_TODO: rename the class and reconsider the usage of it and its parent
+    MaLabelWidget(MaEditorWgt* _ui, QWidget* heightWidget, const QString & _t, Qt::Alignment _a);
 
     QString             text;
     Qt::Alignment       ali;

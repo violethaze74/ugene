@@ -119,6 +119,10 @@ int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
     return nVisible;
 }
 
+void McaEditorSequenceArea::sl_referenceSelectionChanged() {
+    update();
+}
+
 void McaEditorSequenceArea::sl_showHideTrace() {
     QAction* traceAction = qobject_cast<QAction*> (sender());
 

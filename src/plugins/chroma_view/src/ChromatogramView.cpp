@@ -66,6 +66,8 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     const QString objectName = "chromatogram_view_" + (NULL == v ? "" : v->getSequenceGObject()->getGObjectName());
     setObjectName(objectName);
 
+    dnaView = v->getAnnotatedDNAView();
+
     showQVAction = new QAction(tr("Show quality bars"), this);
     showQVAction->setIcon(QIcon(":chroma_view/images/bars.png"));
     showQVAction->setCheckable(true);
@@ -119,7 +121,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     removeChanges = new QAction(tr("Undo changes"),this);
     connect(removeChanges, SIGNAL(triggered()), SLOT(sl_removeChanges()));
 
-    connect(ctx->getAnnotatedDNAView(), SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_onObjectRemoved(GObjectView*, GObject*)));
+    connect(dnaView, SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_onObjectRemoved(GObjectView*, GObject*)));
     pack();
 
     addActionToLocalToolbar(showQVAction);
@@ -287,7 +289,7 @@ void ChromatogramView::sl_addNewSequenceObject() {
     currentBaseCalls = editDNASeq->getWholeSequenceData(os);
     CHECK_OP(os, );
     doc->addObject(editDNASeq);
-    ctx->getAnnotatedDNAView()->addObject(editDNASeq);
+    dnaView->addObject(editDNASeq);
     indexOfChangedChars.clear();
 }
 
@@ -305,7 +307,7 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
     ac.alphabetType = ctx->getSequenceObject()->getAlphabet()->getType();
     s.groupMode = ProjectTreeGroupMode_ByDocument;
     s.ignoreRemoteObjects = true;
-    foreach (GObject* o, ctx->getAnnotatedDNAView()->getObjects()) {
+    foreach (GObject* o, dnaView->getObjects()) {
         s.excludeObjectList.append(o);
     }
 
@@ -314,7 +316,7 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
         GObject* go = objs.first();
         if (go->getGObjectType() == GObjectTypes::SEQUENCE) {
             editDNASeq = qobject_cast<U2SequenceObject*>(go);
-            QString err = ctx->getAnnotatedDNAView()->addObject(editDNASeq);
+            QString err = dnaView->addObject(editDNASeq);
             assert(err.isEmpty());
             indexOfChangedChars.clear();
         } else if (go->getGObjectType() == GObjectTypes::UNLOADED) {
@@ -333,7 +335,7 @@ void ChromatogramView::sl_onSequenceObjectLoaded(Task* t) {
     assert(go);
     if (go) {
         editDNASeq = qobject_cast<U2SequenceObject*>(go);
-        QString err = ctx->getAnnotatedDNAView()->addObject(editDNASeq);
+        QString err = dnaView->addObject(editDNASeq);
         assert(err.isEmpty());
         indexOfChangedChars.clear();
         update();
@@ -348,7 +350,7 @@ void ChromatogramView::sl_clearEditableSequence() {
     if (editDNASeq == NULL) {
         return;
     }
-    ctx->getAnnotatedDNAView()->removeObject(editDNASeq);
+    dnaView->removeObject(editDNASeq);
 }
 
 void ChromatogramView::sl_removeChanges()   {
@@ -483,7 +485,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
     const U2Region& visible = view->getVisibleRange();
     assert(!visible.isEmpty());
 
-    ADVSequenceObjectContext* seqCtx = view->getSequenceContext();
+    SequenceObjectContext* seqCtx = view->getSequenceContext();
     U2OpStatusImpl os;
     QByteArray seq = seqCtx->getSequenceObject()->getWholeSequenceData(os);
     SAFE_POINT_OP(os, );

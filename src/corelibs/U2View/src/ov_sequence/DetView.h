@@ -42,7 +42,7 @@ class DetViewRenderer;
 class U2VIEW_EXPORT DetView : public GSequenceLineViewAnnotated {
     Q_OBJECT
 public:
-    DetView(QWidget* p, ADVSequenceObjectContext* ctx);
+    DetView(QWidget* p, SequenceObjectContext* ctx);
 
     DetViewRenderArea* getDetViewRenderArea() const;
 

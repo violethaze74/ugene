@@ -26,7 +26,9 @@
 
 #include "MaEditorUtils.h"
 
+class QGridLayout;
 class QScrollBar;
+class QVBoxLayout;
 
 namespace U2 {
 
@@ -50,7 +52,9 @@ class MaEditorWgt : public QWidget {
 public:
     MaEditorWgt(MaEditor* editor);
 
-    QWidget* createLabelWidget(const QString& text = QString(), Qt::Alignment ali = Qt::AlignCenter);
+    QWidget* createHeaderLabelWidget(const QString& text = QString(),
+                                     Qt::Alignment ali = Qt::AlignCenter,
+                                     QWidget* heightTarget = NULL);
 
     MaEditor*                       getEditor() const { return editor; }
     MaEditorSequenceArea*           getSequenceArea() const { return seqArea; }
@@ -72,6 +76,8 @@ public:
     bool isCollapsibleMode() const { return collapsibleMode; }
     void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
     MSACollapsibleItemModel* getCollapseModel() const { return collapseModel; }
+
+    QWidget* getHeaderWidget() const { return seqAreaHeader; }
 
 signals:
     void si_startMsaChanging();
@@ -98,6 +104,11 @@ protected:
     MSAEditorStatusWidget*          statusWidget;
 
     QWidget*                        nameAreaContainer;
+    QWidget*                        seqAreaHeader;
+    QVBoxLayout*                    seqAreaHeaderLayout;
+
+    QGridLayout*                    seqAreaLayout;
+    QVBoxLayout*                    nameAreaLayout;
     MaSplitterController            maSplitter;
 
     MsaUndoRedoFramework*           undoFWK;

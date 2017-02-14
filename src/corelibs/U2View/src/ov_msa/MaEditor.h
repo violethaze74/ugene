@@ -83,7 +83,9 @@ public:
 
     qint64 getReferenceRowId() const { return snp.seqId; }
 
-    QString getReferenceRowName() const;
+    virtual QString getReferenceRowName() const = 0;
+
+    virtual char getReferenceCharAt(int pos) const = 0;
 
     void setReference(qint64 sequenceId);
 

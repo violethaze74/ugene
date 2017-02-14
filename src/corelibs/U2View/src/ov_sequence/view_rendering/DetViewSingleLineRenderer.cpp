@@ -71,7 +71,7 @@ DetViewSingleLineRenderer::TranslationMetrics::TranslationMetrics(DetView* detVi
     fontIS.setItalic(true);
 }
 
-DetViewSingleLineRenderer::DetViewSingleLineRenderer(DetView *detView, ADVSequenceObjectContext *ctx)
+DetViewSingleLineRenderer::DetViewSingleLineRenderer(DetView *detView, SequenceObjectContext *ctx)
     : DetViewRenderer(detView, ctx) {
 
 }

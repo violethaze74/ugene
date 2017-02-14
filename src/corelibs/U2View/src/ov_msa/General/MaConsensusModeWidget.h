@@ -19,46 +19,44 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_GENERAL_TAB_H_
-#define _U2_MSA_GENERAL_TAB_H_
+#ifndef _U2_MA_CONSENSUS_MODE_WIDGET_H_
+#define _U2_MA_CONSENSUS_MODE_WIDGET_H_
 
-#include <U2Core/MultipleSequenceAlignment.h>
-
-#include "../MsaOpSavableTab.h"
-#include "ui_GeneralTabOptionsPanelWidget.h"
+#include "ui_MaConsensusModeWidget.h"
 
 namespace U2 {
 
-class MaModificationInfo;
-class MSAEditor;
+class MSAEditorConsensusArea;
+class MultipleAlignmentObject;
 
-class MSAGeneralTab : public QWidget, public Ui_GeneralTabOptionsPanelWidget {
+class MaConsensusModeWidget : public QWidget, public Ui_MaConsensusModeWidget {
     Q_OBJECT
 public:
-    MSAGeneralTab(MSAEditor* _msa);
+    MaConsensusModeWidget(QWidget* parent = NULL);
+    void init(MultipleAlignmentObject* maObject, MSAEditorConsensusArea* consArea);
+
+    void updateState();
+    void updateThresholdState(bool enable, int minVal = 0, int maxVal = 0, int value = 0);
 
 signals:
     void si_algorithmChanged(const QString& algoId);
     void si_thresholdChanged(int val);
-    void si_copyFormatChanged(const QString& formatId);
-    void si_copyFormatted();
 
 public slots:
-    void sl_alignmentChanged();
-    void sl_copyFormatSelectionChanged(int value);
-    void sl_copyFormatted();
-    void sl_copyFormatStatusChanged(bool enabled);
+    void sl_algorithmChanged(const QString& algoId);
+    void sl_algorithmSelectionChanged(int index);
+    void sl_thresholdSliderChanged(int value);
+    void sl_thresholdSpinBoxChanged(int value);
+    void sl_thresholdResetClicked(bool newState);
+    void sl_thresholdChanged(int value);
 
 private:
-    void connectSignals();
-    void initializeParameters();
-    void updateState();
+    void initConsensusTypeCombo();
 
-    MSAEditor* msa;
-    QString curAlphabetId;
-    MsaOpSavableTab savableTab;
+    MSAEditorConsensusArea*     consArea;
+    MultipleAlignmentObject*    maObject;
+    QString                     curAlphabetId;
 };
 
-} // namespace U2
-
-#endif // _U2_MSA_GENERAL_TAB_H_
+} // namespace
+#endif // _U2_MA_CONSENSUS_MODE_WIDGET_H_

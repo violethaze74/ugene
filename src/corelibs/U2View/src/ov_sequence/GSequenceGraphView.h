@@ -25,11 +25,7 @@
 #include "GSequenceLineView.h"
 #include "ADVGraphModel.h"
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QMenu>
-#else
-#include <QtWidgets/QMenu>
-#endif
+#include <QMenu>
 
 namespace U2 {
 
@@ -42,7 +38,7 @@ class GObjectView;
 class U2VIEW_EXPORT GSequenceGraphView : public GSequenceLineView {
     Q_OBJECT
 public:
-    GSequenceGraphView(QWidget* p, ADVSequenceObjectContext* ctx, GSequenceLineView* baseView, const QString& vName);
+    GSequenceGraphView(QWidget* p, SequenceObjectContext* ctx, GSequenceLineView* baseView, const QString& vName);
 
     ~GSequenceGraphView();
 

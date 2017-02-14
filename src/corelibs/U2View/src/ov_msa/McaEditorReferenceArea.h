@@ -19,37 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_AREA_RENDERER_H_
-#define _U2_SEQUENCE_AREA_RENDERER_H_
+#ifndef _U2_MCA_EDITOR_REFERENCE_VIEW_H_
+#define _U2_MCA_EDITOR_REFERENCE_VIEW_H_
 
-#include <U2Core/DNAChromatogram.h>
+#include <U2View/PanView.h>
 
-#include <U2View/MSAEditorSequenceArea.h>
-
-#include <QPen>
+#include "view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
-class SequenceAreaRenderer : public QObject {
+class McaEditor;
+class McaEditorWgt;
+
+class McaEditorReferenceArea : public PanView {
     Q_OBJECT
 public:
-    SequenceAreaRenderer(MaEditorSequenceArea* seqAreaWgt);
+    McaEditorReferenceArea(McaEditorWgt* p, SequenceObjectContext* ctx);
 
-    bool drawContent(QPainter &p, const U2Region& region, const QList<qint64> &seqIdx) const;
+signals:
+    void si_selectionChanged();
 
-    virtual void drawSelection(QPainter &p) const;
-    void drawFocus(QPainter& p) const;
+public slots:
+    void sl_visibleRangeChanged();
+    void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
 
-protected:
-    // returns the height of the drawn row
-    virtual int drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const;
+private slots:
+    void sl_onSelectionChanged();
 
-    MaEditorSequenceArea*  seqAreaWgt;
-
-    bool drawLeadingAndTrailingGaps;
+private:
+    McaEditor* editor;
 };
 
-} // namespace
-
-#endif // _U2_SEQUENCE_AREA_RENDERER_H_
-
+} // namespace U2
+#endif // _U2_MCA_EDITOR_REFERENCE_VIEW_H_

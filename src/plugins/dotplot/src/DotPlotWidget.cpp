@@ -324,7 +324,7 @@ void DotPlotWidget::sl_panViewChanged() {
     }
 
     U2Region lr = panView->getVisibleRange();
-    ADVSequenceObjectContext* ctx = lw->getSequenceContext();
+    SequenceObjectContext* ctx = lw->getSequenceContext();
 
     if (!ctx || ignorePanView) {
         return;

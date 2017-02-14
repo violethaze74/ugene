@@ -30,10 +30,16 @@
 
 namespace U2 {
 
+class McaEditorSequenceArea;
+class SequenceObjectContext;
+class U2SequenceObject;
+
 class McaEditor : public MaEditor {
     Q_OBJECT
 public:
-    McaEditor(const QString& viewName, MultipleChromatogramAlignmentObject* obj);
+    McaEditor(const QString& viewName,
+              MultipleChromatogramAlignmentObject* obj,
+              U2SequenceObject* ref = NULL);
 
     MultipleChromatogramAlignmentObject* getMaObject() const { return qobject_cast<MultipleChromatogramAlignmentObject*>(maObject); }
 
@@ -47,6 +53,10 @@ public:
     bool isChromVisible(qint64 rowId) const;
     void toggleChromVisibility(qint64 rowId);
 
+    QString getReferenceRowName() const;
+
+    char getReferenceCharAt(int pos) const;
+
 protected slots:
     void sl_onContextMenuRequested(const QPoint & pos);
     void sl_showHideChromatograms(bool show);
@@ -59,6 +69,10 @@ protected:
     QAction*          showChromatogramsAction;
 
     QMap<qint64, bool>  chromVisibility;
+
+    U2SequenceObject*       referenceObj;
+public: // SANGER_TODO: temprorary
+    SequenceObjectContext*  referenceCtx;
 };
 
 class McaEditorWgt : public MaEditorWgt {
@@ -67,6 +81,7 @@ public:
     McaEditorWgt(McaEditor* editor);
 
     McaEditor* getEditor() const { return qobject_cast<McaEditor* >(editor); }
+    McaEditorSequenceArea* getSequenceArea() const;
 
 protected:
     void initSeqArea(GScrollBar* shBar, GScrollBar* cvBar);

@@ -263,7 +263,7 @@ private:
     PositionSelector*   posSelector;
 
     QList<ADVSequenceObjectContext*>    seqContexts;
-    QList<AnnotationTableObject*>         annotations;
+    QList<AnnotationTableObject*>       annotations;
     QList<ADVObjectHandler*>            handlers;
     QList<ADVGlobalAction*>             advActions;
 

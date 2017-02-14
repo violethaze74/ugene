@@ -567,7 +567,7 @@ void ADVSingleSequenceWidget::setupGeneticCodeMenu(ADVSequenceObjectContext *seq
 
 bool ADVSingleSequenceWidget::isWidgetOnlyObject(GObject* o) const {
     foreach(GSequenceLineView* v, lineViews) {
-        ADVSequenceObjectContext *ctx = v->getSequenceContext();
+        SequenceObjectContext *ctx = v->getSequenceContext();
         if(ctx->getSequenceGObject() == o) {
             return true;
         }

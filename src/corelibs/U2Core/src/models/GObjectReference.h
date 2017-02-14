@@ -44,6 +44,8 @@ public:
 
     bool operator ==(const GObjectReference& o) const;
 
+    bool operator <(const GObjectReference& o) const;
+
     /** GObject reference keeps only string path of the document url.
         This must be enough to find document in the project
         while allows not to keep a complete url data here (for example username/password, etc...)
@@ -67,6 +69,10 @@ private:
 
 inline uint qHash(const GObjectReference& key) {
     return ::qHash(key.docUrl) + ::qHash(key.objName) + ::qHash(key.objType);
+}
+
+inline uint qHash(const GObjectReference* key) {
+    return ::qHash(key->docUrl) + ::qHash(key->objName) + ::qHash(key->objType);
 }
 
 //TODO: add constraints on relation roles
