@@ -55,7 +55,7 @@ McaEditor::McaEditor(const QString &viewName,
       referenceObj(ref),
       referenceCtx(NULL)
 {
-    showChromatograms = true; // SANGER_TODO: check if there are chromatograms
+    showChromatograms = true;
 
     // SANGER_TODO: set new proper icon
     showChromatogramsAction = new QAction(QIcon(":/core/images/graphs.png"), tr("Show/hide chromatogram(s)"), this);
@@ -66,8 +66,7 @@ McaEditor::McaEditor(const QString &viewName,
 
     U2OpStatusImpl os;
     foreach (const MultipleChromatogramAlignmentRow& row, obj->getMca()->getMcaRows()) {
-        // SANGER_TODO: tmp
-        chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), row->getRowId() % 2 == 0 ? true : false);
+        chromVisibility.insert(obj->getMca()->getRowIndexByRowId(row->getRowId(), os), true);
     }
 
     if (ref) {
