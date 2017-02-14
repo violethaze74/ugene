@@ -248,14 +248,15 @@ void MSAEditorStatusWidget::sl_findFocus() {
 }
 
 void MSAEditorStatusWidget::sl_alphabetChanged(){
-    searchEdit->setValidator(NULL);
-    if(validator != NULL){
-        delete validator;
-        validator = NULL;
+    if (!aliObj->getAlphabet()->isRaw()){
+        QByteArray alphabetChars = aliObj->getAlphabet()->getAlphabetChars(true);
+        //remove special characters
+        alphabetChars.remove(alphabetChars.indexOf('*'), 1);
+        alphabetChars.remove(alphabetChars.indexOf('-'), 1);
+        validator->setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
+    }else{
+        validator->setRegExp(QRegExp(".*"));
     }
-
-    validator = new MSASearchValidator(aliObj->getAlphabet(), this);
-    searchEdit->setValidator(validator);
 
     //check is pattern clean required
     QString currentPattern = QString(searchEdit->text());
