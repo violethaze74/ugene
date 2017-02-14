@@ -26,25 +26,21 @@
 #include <QtCore/QVector>
 #include <QtCore/QEvent>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QLineEdit>
-#else
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
-#endif
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QValidator>
+#include <QWidget>
 
 namespace U2 {
 
+class DNAAlphabet;
 class MAlignmentObject;
 class MAlignment;
 class MAlignmentModInfo;
 class MSAEditorSequenceArea;
 class MSAEditorSelection;
+class MSASearchValidator;
 
 class MSAEditorStatusWidget : public QWidget {
     Q_OBJECT
@@ -54,9 +50,10 @@ public:
     bool eventFilter(QObject* obj, QEvent* ev);
 
 private slots:
-    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&) {updateCoords();}
+    void sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&){updateCoords();}
     void sl_lockStateChanged() {updateLock();}
     void sl_selectionChanged(const MSAEditorSelection& , const MSAEditorSelection& ){updateCoords();}
+    void sl_alphabetChanged();
     void sl_findNext();
     void sl_findPrev();
     void sl_findFocus();
@@ -78,7 +75,14 @@ private:
     QLabel*                     posLabel;
     QPoint                      lastSearchPos;
     QAction*                    findAction;
+    MSASearchValidator*         validator;
 
+};
+
+class MSASearchValidator : public QRegExpValidator {
+public:
+    MSASearchValidator(const DNAAlphabet* alphabet, QObject* parent);
+    State validate(QString &input, int &pos) const;
 };
 
 
