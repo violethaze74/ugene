@@ -75,9 +75,6 @@ McaEditor::McaEditor(const QString &viewName,
         onObjectAdded(referenceObj);
 
         referenceCtx = new SequenceObjectContext(referenceObj, this);
-
-        // SANGER_TODO: basically sanger cannot be not nucleotide
-        saveHighlightingSettings(MsaHighlightingScheme::DISAGREEMENTS_NUCL);
     }
 }
 
