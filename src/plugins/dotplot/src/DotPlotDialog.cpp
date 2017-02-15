@@ -203,7 +203,7 @@ bool DotPlotDialog::isInverted() const {
 
 void DotPlotDialog::sl_directInvertedCheckBox() {
 
-    startButton->setEnabled(directCheckBox->isChecked() || invertedCheckBox->isChecked());
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(directCheckBox->isChecked() || invertedCheckBox->isChecked());
 }
 
 static const QString COLOR_STYLE("QPushButton { background-color: %1 }");
