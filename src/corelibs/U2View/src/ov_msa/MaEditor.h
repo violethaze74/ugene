@@ -38,7 +38,7 @@ public:
     QVariantMap highlightSchemeSettings;
 };
 
-class MaEditor : public GObjectView {
+class U2VIEW_EXPORT MaEditor : public GObjectView {
     Q_OBJECT
     friend class OpenSavedMSAEditorTask;
 public:
