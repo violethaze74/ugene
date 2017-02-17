@@ -77,7 +77,7 @@ BlastAllSupportRunDialog::BlastAllSupportRunDialog(ADVSequenceObjectContext* seq
 
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
-    
+
     programName->removeItem(2);//gpu-blastp
     if(dnaso->getAlphabet()->getType() == DNAAlphabet_AMINO){
         programName->removeItem(0);//blastn
@@ -131,7 +131,7 @@ void BlastAllSupportRunDialog::sl_runQuery(){
     lastDBName = dbSelector->baseNameLineEdit->text();
     settings.outputType = 7;//By default set output file format to xml
     if(seqCtx != NULL){
-        seqCtx->getAnnotatedDNAView()->tryAddObject(ca_c->getModel().getAnnotationObject());
+        seqCtx->getAnnotatedDNAView()->tryAddObject(settings.aobj);
     }
     accept();
 }

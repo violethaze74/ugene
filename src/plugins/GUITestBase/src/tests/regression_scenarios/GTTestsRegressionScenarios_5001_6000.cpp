@@ -1236,6 +1236,69 @@ GUI_TEST_CLASS_DEFINITION(test_5499) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5520_1) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/test/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
+            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
+
+            QRadioButton* rbNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
+            CHECK_SET_ERR(rbNewTable != NULL, "rbCreateNewTable not found");
+            GTRadioButton::click(os, rbNewTable);
+            GTGlobals::sleep();
+
+            QLineEdit* leTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath");
+            CHECK_SET_ERR(leTablePath != NULL, "leNewTablePath not found");
+            GTLineEdit::setText(os, leTablePath, sandBoxDir + "/test_5520_1.gb");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5520_2) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/test/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
+            GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
+
+            QRadioButton* rbNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
+            CHECK_SET_ERR(rbNewTable != NULL, "rbCreateNewTable not found");
+            GTRadioButton::click(os, rbNewTable);
+            GTGlobals::sleep();
+
+            QLineEdit* leTablePath = GTWidget::findExactWidget<QLineEdit*>(os, "leNewTablePath");
+            CHECK_SET_ERR(leTablePath != NULL, "leNewTablePath not found");
+            GTLineEdit::setText(os, leTablePath, sandBoxDir + "/test_5520_2.gb");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST+...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
