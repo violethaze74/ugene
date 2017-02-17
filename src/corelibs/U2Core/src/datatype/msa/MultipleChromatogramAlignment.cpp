@@ -390,7 +390,11 @@ void MultipleChromatogramAlignmentData::addRow(const U2MsaRow &rowInDb, const Mc
 }
 
 void MultipleChromatogramAlignmentData::insertGaps(int row, int pos, int count, U2OpStatus &os) {
-    if (row >= getNumRows() || row < 0 || pos > length || pos < 0 || count < 0) {
+    if (pos > length) {
+        length = pos + count;
+        return;
+    }
+    if (row >= getNumRows() || row < 0 || pos < 0 || count < 0) {
         coreLog.trace(QString("Internal error: incorrect parameters were passed "
             "to MultipleChromatogramAlignmentData::insertGaps: row index '%1', pos '%2', count '%3'").arg(row).arg(pos).arg(count));
         os.setError("Failed to insert gaps into an alignment");
