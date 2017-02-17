@@ -1,6 +1,6 @@
 /*****************************************************************
 * Unipro UGENE - Integrated Bioinformatics Suite
-* Copyright (C) 2008-2016 Unipro, Russia (http://ugene.net)
+* Copyright (C) 2008-2017 Unipro, Russia (http://ugene.net)
 * All Rights Reserved
 * 
 *     This source code is distributed under the terms of the
