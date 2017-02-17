@@ -100,12 +100,13 @@ void zeroEndingCrop(QVector<T> &data, int startPos, int length) {
 
 void ChromatogramUtils::crop(DNAChromatogram &chromatogram, int startPos, int length) {
     const U2Region traceRegion = sequenceRegion2TraceRegion(chromatogram, U2Region(startPos, length));
-    zeroEndingCrop(chromatogram.baseCalls, startPos, length);
+    const ushort baseCallOffset = traceRegion.startPos == 0 ? 0 : chromatogram.baseCalls[startPos - 1];
     if (traceRegion.startPos > 0) {
         for (int i = startPos, n = qMin(startPos + length, chromatogram.baseCalls.size()); i < n; i++) {
-            chromatogram.baseCalls[i] -= chromatogram.baseCalls[startPos - 1];
+            chromatogram.baseCalls[i] -= baseCallOffset;
         }
     }
+    zeroEndingCrop(chromatogram.baseCalls, startPos, length);
     chromatogram.traceLength = qMin(chromatogram.traceLength - traceRegion.startPos, traceRegion.length);
     chromatogram.seqLength = qMin(chromatogram.seqLength - startPos, length);
 
@@ -191,15 +192,19 @@ DNAChromatogram ChromatogramUtils::reverse(const DNAChromatogram &chromatogram) 
     DNAChromatogram reversedChromatogram = chromatogram;
 
     reversedChromatogram.baseCalls.clear();
-    foreach (ushort baseCall, chromatogram.baseCalls) {
-        if (baseCall == 0) {
+    bool zeroEnding = false;
+    for (int i = 1, n = chromatogram.baseCalls.size(); i < n; i++) {
+        if (i >= chromatogram.seqLength && chromatogram.baseCalls[i] == 0) {
+            zeroEnding = true;
             continue;
         }
-        reversedChromatogram.baseCalls << chromatogram.traceLength - baseCall;
+        reversedChromatogram.baseCalls << chromatogram.traceLength - chromatogram.baseCalls[i - 1];
     }
-    reversedChromatogram.baseCalls << chromatogram.traceLength;
+    reversedChromatogram.baseCalls << chromatogram.traceLength - chromatogram.baseCalls[chromatogram.baseCalls.size() - 1];
     std::reverse(reversedChromatogram.baseCalls.begin(), reversedChromatogram.baseCalls.end());
-    reversedChromatogram.baseCalls << 0;
+    if (zeroEnding) {
+        reversedChromatogram.baseCalls << 0;        // zero-ending vector
+    }
 
     std::reverse(reversedChromatogram.A.begin(), reversedChromatogram.A.end());
     std::reverse(reversedChromatogram.C.begin(), reversedChromatogram.C.end());
@@ -218,14 +223,14 @@ DNAChromatogram ChromatogramUtils::reverse(const DNAChromatogram &chromatogram) 
 
 DNAChromatogram ChromatogramUtils::complement(const DNAChromatogram &chromatogram) {
     DNAChromatogram complementedChromatogram = chromatogram;
-    complementedChromatogram.A = chromatogram.C;
-    complementedChromatogram.C = chromatogram.A;
-    complementedChromatogram.G = chromatogram.T;
-    complementedChromatogram.T = chromatogram.G;
-    complementedChromatogram.prob_A = chromatogram.prob_C;
-    complementedChromatogram.prob_C = chromatogram.prob_A;
-    complementedChromatogram.prob_G = chromatogram.prob_T;
-    complementedChromatogram.prob_T = chromatogram.prob_G;
+    complementedChromatogram.A = chromatogram.T;
+    complementedChromatogram.C = chromatogram.G;
+    complementedChromatogram.G = chromatogram.C;
+    complementedChromatogram.T = chromatogram.A;
+    complementedChromatogram.prob_A = chromatogram.prob_T;
+    complementedChromatogram.prob_C = chromatogram.prob_G;
+    complementedChromatogram.prob_G = chromatogram.prob_C;
+    complementedChromatogram.prob_T = chromatogram.prob_A;
     return complementedChromatogram;
 }
 
@@ -237,8 +242,9 @@ U2Region ChromatogramUtils::sequenceRegion2TraceRegion(const DNAChromatogram &ch
     SAFE_POINT(sequenceRegion.startPos <= chromatogram.baseCalls.length()
                && sequenceRegion.endPos() <= chromatogram.baseCalls.length(),
                "Sequence region is out of base calls array boundaries", U2Region());
-    return U2Region(chromatogram.baseCalls[sequenceRegion.startPos],
-            chromatogram.baseCalls[sequenceRegion.endPos() - 1] - chromatogram.baseCalls[sequenceRegion.startPos]);
+    const int traceStartPos = sequenceRegion.startPos == 0 ? 0 : chromatogram.baseCalls[sequenceRegion.startPos - 1];
+    const int traceLength = chromatogram.baseCalls[sequenceRegion.endPos()] - traceStartPos - 1;
+    return U2Region(traceStartPos, traceLength);
 }
 
 }   // namespace U2

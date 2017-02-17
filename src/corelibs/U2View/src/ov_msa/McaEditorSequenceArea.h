@@ -30,7 +30,8 @@ namespace U2 {
 
 class McaEditor;
 
-struct ChromatogramViewSettings {
+class ChromatogramViewSettings {
+public:
     ChromatogramViewSettings()  {
         drawTraceA = true;
         drawTraceC = true;
