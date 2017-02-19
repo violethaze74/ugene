@@ -19,11 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QDir>
-
-#include <QtXml/qdom.h>
+#include <qdom.h>
+#include <QDir>
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/L10n.h>
@@ -309,6 +309,8 @@ namespace {
 }
 
 Project* ProjectParser10::createProjectFromXMLModel( const QString& pURL, const QDomDocument& xmlDoc, U2OpStatus& os) {
+    GCOUNTER(cvar, tvar, "ProjectParser10: createProjectFromXMLModel");
+
     QDomElement projectElement = xmlDoc.documentElement();
     QString name = projectElement.attribute("name");
     quint64 oid = qMax(quint64(0), projectElement.attribute("oid").toULongLong());
@@ -319,6 +321,9 @@ Project* ProjectParser10::createProjectFromXMLModel( const QString& pURL, const 
     //read all documents
     QSet<QString> docUrls;
     QDomNodeList documentList = projectElement.elementsByTagName("document");
+
+    bool projectContainsInvalidFormats = false;
+
     for(int i=0; i < documentList.size(); i++) {
         QDomNode dn = documentList.item(i);
         if (!dn.isElement()) {
@@ -355,11 +360,14 @@ Project* ProjectParser10::createProjectFromXMLModel( const QString& pURL, const 
             ioLog.info(tr("Duplicate document found: %1, ignoring").arg(docUrl));
             continue;
         }
+
         DocumentFormatId format = docElement.attribute("format");
-        if (BaseDocumentFormats::DATABASE_CONNECTION == format) {
+        projectContainsInvalidFormats |= BaseDocumentFormats::isInvalidId(format);
+        if (BaseDocumentFormats::equal(BaseDocumentFormats::DATABASE_CONNECTION, format)) {
             ioLog.info(tr("Database document: %1, ignoring").arg(docUrl));
             continue;
         }
+
         docUrls.insert(docUrl);
 
         bool readonly = docElement.attribute("readonly").toInt() != 0;
@@ -408,6 +416,10 @@ Project* ProjectParser10::createProjectFromXMLModel( const QString& pURL, const 
         CHECK_OP_EXT(os, qDeleteAll(documents), NULL);
         d->setUserModLock(readonly);
         documents.append(d);
+    }
+
+    if (projectContainsInvalidFormats) {
+        GCOUNTER(cvar1, tvar1, "Invalid format IDs: a project was created with 1.26.0");
     }
 
     // read all saved views
