@@ -32,12 +32,12 @@ workflow "Extract transcript sequences"{
     files-conversion {
         type:files-conversion;
         name:"To FASTA";
-        document-format:FASTA;
+        document-format:fasta;
     }
     files-conversion-1 {
         type:files-conversion;
         name:"To GTF";
-        document-format:GTF;
+        document-format:gtf;
     }
 
     .actor-bindings {
