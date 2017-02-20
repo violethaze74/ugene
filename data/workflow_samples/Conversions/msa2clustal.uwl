@@ -13,7 +13,7 @@ workflow "Convert alignments to ClustalW"{
     }
     write-clustalw {
         type:write-msa;
-        document-format:CLUSTAL;
+        document-format:clustal;
         name:"Write ClustalW";
         write-mode:2;
         url-out:output.aln;

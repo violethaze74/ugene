@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QTextStream>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
@@ -547,13 +548,26 @@ Actor* HRSchemaSerializer::parseElementsDefinition(Tokenizer & tokenizer, const 
         }
     }
 
+    bool workflowContainsInvalidFormatIds = false;
     foreach( const QString & key, pairs.equalPairs.keys() ) {
         Attribute *attr = proc->getParameter(key);
+        QString value = pairs.equalPairs.value(key);
+
+        if (key == BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()) {
+            if (BaseDocumentFormats::isInvalidId(value)) {
+                workflowContainsInvalidFormatIds = true;
+                value = BaseDocumentFormats::toValidId(value);
+            }
+        }
+
         if (NULL != attr) {
-           attr->setAttributeValue(getAttrValue(proc, key, pairs.equalPairs.value(key)));
+           attr->setAttributeValue(getAttrValue(proc, key, value));
         } else {
             coreLog.details(tr("Unexpected actor attribute: %1").arg(key));
         }
+    }
+    if (workflowContainsInvalidFormatIds) {
+        GCOUNTER(cvar, tvar, "Invalid format IDs: an element was saved with 1.26.0");
     }
 
     foreach (const QString &valDef, pairs.blockPairs.values(Constants::VALIDATOR)) {
