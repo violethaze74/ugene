@@ -26,7 +26,7 @@ workflow "Find patterns"{
     write-sequence {
         type:write-sequence;
         name:"Write Sequence";
-        document-format:Genbank;
+        document-format:genbank;
         write-mode:0;
         url-out:annotations.gb;
     }

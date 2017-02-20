@@ -40,7 +40,7 @@ workflow "Multiple datasets Tuxedo: single-end reads"{
     files-conversion {
         type:files-conversion;
         name:"Convert File";
-        document-format:FASTQ;
+        document-format:fastq;
         excluded-formats:fasta;
     }
 

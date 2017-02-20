@@ -30,7 +30,7 @@ workflow "Merge sequences and annotations"{
     write-sequence {
         type:write-sequence;
         name:"Write Sequence";
-        document-format:Genbank;
+        document-format:genbank;
         url-out:merged.gb;
     }
 

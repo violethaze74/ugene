@@ -14,7 +14,7 @@ workflow "Convert sequence to Genbank"{
     }
     write-genbank {
         type:write-sequence;
-		document-format:Genbank;
+		document-format:genbank;
         name:"Write Genbank";
         accumulate:true;
         write-mode:2;

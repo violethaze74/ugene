@@ -24,7 +24,7 @@ workflow "CASAVA FASTQ Filter"{
     write-sequence {
         type:write-sequence;
         name:"Write Sequence";
-        document-format:FASTQ;
+        document-format:fastq;
         url-out:fastq.fastq;
     }
     Script-CASAVA-FASTQ-filter {
