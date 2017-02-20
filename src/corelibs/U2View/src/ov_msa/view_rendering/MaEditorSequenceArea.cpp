@@ -736,7 +736,6 @@ bool MaEditorSequenceArea::drawContent(QPainter &p, const QRect &area) {
             seqIdx.append(i);
         }
     }
-    p.fillRect(cachedView->rect(), Qt::white);
     bool ok = renderer->drawContent(p, U2Region(area.x(), area.width()), seqIdx);
     emit si_visibleRangeChanged();
 
@@ -1184,11 +1183,16 @@ void MaEditorSequenceArea::drawAll() {
         completeRedraw = true;
     }
     if (completeRedraw) {
+        cachedView->fill(Qt::transparent);
         QPainter pCached(cachedView);
         drawVisibleContent(pCached);
         completeRedraw = false;
     }
+
     QPainter p(this);
+    p.fillRect(QRect(QPoint(0, 0), s), Qt::white);
+    drawBackground(p);
+
     p.drawPixmap(0, 0, *cachedView);
     renderer->drawSelection(p);
     renderer->drawFocus(p);

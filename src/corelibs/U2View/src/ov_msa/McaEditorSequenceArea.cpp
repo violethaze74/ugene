@@ -189,6 +189,12 @@ void McaEditorSequenceArea::initRenderer() {
     renderer = new SequenceWithChromatogramAreaRenderer(this);
 }
 
+void McaEditorSequenceArea::drawBackground(QPainter& p) {
+    SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
+    SAFE_POINT(r != NULL, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
+    r->drawReferenceSelection(p);
+}
+
 void McaEditorSequenceArea::buildMenu(QMenu *m) {
     QMenu* viewMenu = GUIUtils::findSubMenu(m, MSAE_MENU_VIEW);
     SAFE_POINT(viewMenu != NULL, "viewMenu", );

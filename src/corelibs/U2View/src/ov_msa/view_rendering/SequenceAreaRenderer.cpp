@@ -43,10 +43,6 @@ bool SequenceAreaRenderer::drawContent(QPainter &p, const U2Region &region, cons
     MsaHighlightingScheme* highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
     MaEditor* editor = seqAreaWgt->getEditor();
 
-    p.fillRect(QRect(0, 0,
-                     editor->getColumnWidth() * region.length,
-                     editor->getRowHeight() * seqIdx.size()),
-               Qt::white);
     p.setPen(Qt::black);
     p.setFont(editor->getFont());
 

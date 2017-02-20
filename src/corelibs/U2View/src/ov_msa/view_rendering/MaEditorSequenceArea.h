@@ -251,6 +251,7 @@ protected:
 protected:
     virtual void initRenderer() = 0;
     virtual void updateActions() = 0;
+    virtual void drawBackground(QPainter& p) { Q_UNUSED(p); }
 
     void drawAll();
     void validateRanges();          //called on resize/refont like events

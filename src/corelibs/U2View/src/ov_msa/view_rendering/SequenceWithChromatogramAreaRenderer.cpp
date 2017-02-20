@@ -52,17 +52,34 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(McaEd
     maxTraceHeight = heightPD - heightBC;
 }
 
+void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &p) const {
+    McaEditor* editor = getSeqArea()->getEditor();
+    SAFE_POINT(editor != NULL, "McaEditor is NULL", );
+    DNASequenceSelection* selection = editor->referenceCtx->getSequenceSelection();
+    SAFE_POINT(selection != NULL, "DNASequenceSelection is NULL", );
+    SAFE_POINT(selection->regions.size() <= 1, "Unexpected multiselection",);
+    CHECK(!selection->regions.isEmpty(), );
+
+    U2Region region = selection->regions.first();
+    U2Region xRange = seqAreaWgt->getBaseXRange(region.startPos, true);
+
+    p.save();
+    // SANGER_TODO: color can be const -- for consensus and here
+    QColor color(Qt::lightGray);
+    color = color.lighter(115);
+    color.setAlpha(127);
+    p.fillRect(xRange.startPos, 0,
+               xRange.length * region.length, seqAreaWgt->height(),
+               color);
+    p.restore();
+}
+
 void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
     maxTraceHeight = h;
 }
 
 int SequenceWithChromatogramAreaRenderer::getScaleBarValue() const {
     return maxTraceHeight;
-}
-
-void SequenceWithChromatogramAreaRenderer::drawSelection(QPainter &p) const {
-    SequenceAreaRenderer::drawSelection(p);
-    drawReferenceSelection(p);
 }
 
 int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const {
@@ -85,34 +102,11 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &p, const MultipleAli
         const MultipleChromatogramAlignmentRow& row = editor->getMaObject()->getMcaRow(seq);
         drawChromatogram(p, row, region);
         p.setPen(QPen(Qt::gray, 1, Qt::DashLine));
-        p.fillRect(0, heightPD, w, INDENT_BETWEEN_ROWS / 2, Qt::white);
         p.restore();
         p.translate(0, - INDENT_BETWEEN_ROWS / 2);
         seqRowH = editor->getRowHeight();
     }
     return seqRowH;
-}
-
-void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &p) const {
-    McaEditor* editor = getSeqArea()->getEditor();
-    SAFE_POINT(editor != NULL, "McaEditor is NULL", );
-    DNASequenceSelection* selection = editor->referenceCtx->getSequenceSelection();
-    SAFE_POINT(selection != NULL, "DNASequenceSelection is NULL", );
-    SAFE_POINT(selection->regions.size() <= 1, "Unexpected multiselection",);
-    CHECK(!selection->regions.isEmpty(), );
-
-    U2Region region = selection->regions.first();
-    U2Region xRange = seqAreaWgt->getBaseXRange(region.startPos, true);
-
-    p.save();
-    // SANGER_TODO: color can be const -- for consensus and here
-    QColor color(Qt::lightGray);
-    color = color.lighter(115);
-    color.setAlpha(127);
-    p.fillRect(xRange.startPos, 0,
-               xRange.length * region.length, seqAreaWgt->height(),
-               color);
-    p.restore();
 }
 
 void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &p, const MultipleChromatogramAlignmentRow& row, const U2Region& _visible) const {

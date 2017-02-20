@@ -75,6 +75,7 @@ private slots:
 private:
     void initRenderer();
     void updateActions() {}
+    void drawBackground(QPainter& p);
 
     void buildMenu(QMenu* m);
 
