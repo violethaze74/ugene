@@ -24,6 +24,7 @@
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/U2SafePoints.h>
@@ -280,10 +281,12 @@ QList<AnnotatedRegion> AnnotHighlightWidget::getAllAnnotatedRegionsByStartPos(qi
 }
 
 void AnnotHighlightWidget::sl_onNextAnnotationClick() {
+    GCOUNTER(cvar, tvar, "Annotations navigation: next annotation");
     selectNextAnnotation(true);
 }
 
 void AnnotHighlightWidget::sl_onPrevAnnotationClick() {
+    GCOUNTER(cvar, tvar, "Annotations navigation: previous annotation");
     selectNextAnnotation(false);
 }
 
