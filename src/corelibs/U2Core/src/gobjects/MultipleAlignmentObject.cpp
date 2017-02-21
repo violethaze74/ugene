@@ -22,6 +22,7 @@
 #include <U2Core/DbiConnection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
+#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -213,6 +214,20 @@ void MultipleAlignmentObject::updateRowsOrder(U2OpStatus &os, const QList<qint64
     MaModificationInfo mi;
     mi.alignmentLengthChanged = false;
     updateCachedMultipleAlignment(mi);
+}
+
+void MultipleAlignmentObject::setLength(U2OpStatus &os, qint64 newLength) {
+    const qint64 length = getLength();
+    CHECK(length != newLength, );
+    SAFE_POINT(length < newLength, "Currently the length cannot be reduced with this method", );
+
+    MsaDbiUtils::updateMsaLength(getEntityRef(), newLength, os);
+    CHECK_OP(os, );
+
+    MaModificationInfo modificationInfo;
+    modificationInfo.rowContentChanged = false;
+    modificationInfo.rowListChanged = false;
+    updateCachedMultipleAlignment(modificationInfo);
 }
 
 void MultipleAlignmentObject::updateCachedMultipleAlignment(const MaModificationInfo &mi, const QList<qint64> &removedRowIds) {

@@ -101,6 +101,8 @@ public:
      */
     void updateRowsOrder(U2OpStatus &os, const QList<qint64> &rowIds);
 
+    void setLength(U2OpStatus &os, qint64 newLength);
+
     void updateCachedMultipleAlignment(const MaModificationInfo &mi = MaModificationInfo(), const QList<qint64> &removedRowIds = QList<qint64>());
     void sortRowsByList(const QStringList &order);
 

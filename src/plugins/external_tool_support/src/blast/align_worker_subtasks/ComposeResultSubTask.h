@@ -50,7 +50,8 @@ public:
     void run();
     const SharedDbiDataHandler& getAnnotations() const;
 
-    QList<GObject*> getResult();
+    U2SequenceObject *takeReferenceSequenceObject();
+    MultipleChromatogramAlignmentObject *takeMcaObject();
 
 private:
     BlastAndSwReadTask * getBlastSwTask(int readNum);
