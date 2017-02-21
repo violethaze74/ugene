@@ -640,6 +640,9 @@ UHMM3SearchResult GTest_UHMM3SearchCompare::getSearchResultFromOutput(const QStr
             readLine(io.data(), buf);
             readLine(io.data(), buf);
             readLine(io.data(), buf, &tokens);
+            if (buf.contains("inclusion threshold")) {
+                readLine(io.data(), buf, &tokens);
+            }
             if (buf.startsWith("[No hits detected")) {
                 fullSeqRes.isReported = false;
                 break;

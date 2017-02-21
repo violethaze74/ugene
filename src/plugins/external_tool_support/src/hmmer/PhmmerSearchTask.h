@@ -99,12 +99,10 @@ private:
     static void setSearchTaskSettings(PhmmerSearchSettings& set, const QDomElement& el, TaskStateInfo& si);
 
 private:
-    HmmerBuildSettings      buildSettings;
     PhmmerSearchSettings    searchSettings;
     QString                 queryFilename;
     QString                 dbFilename;
     PhmmerSearchTask *      phmmerTask;
-    HmmerBuildTask *        buildTask;
     QString                 outputDir;
 }; // GTest_UHMM3Phmmer
 
