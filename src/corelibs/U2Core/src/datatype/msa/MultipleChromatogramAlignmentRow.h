@@ -235,6 +235,13 @@ public:
 
     McaRowMemoryData getRowMemoryData() const;
 
+    void reverse();
+    void complement();
+    void reverseComplement();
+
+    bool isReversed() const;
+    bool isComplemented() const;
+
 private:
     /** Splits input to sequence bytes and gaps model */
     static void splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapModel);

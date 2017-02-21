@@ -25,6 +25,7 @@
 #include <U2Core/DNAChromatogram.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MultipleAlignmentRowInfo.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -177,21 +178,25 @@ const DNAChromatogram &MultipleChromatogramAlignmentRowData::getChromatogram() c
 
 DNAChromatogram MultipleChromatogramAlignmentRowData::getGappedChromatogram() const {
     DNAChromatogram gappedChromatogram = chromatogram;
-    const U2MsaGap trailingGap = gaps.isEmpty() ? U2MsaGap() : gaps.first().offset == 0 ? gaps.first() : U2MsaGap();
+    const U2MsaGap leadingGap = gaps.isEmpty() ? U2MsaGap() : gaps.first().offset == 0 ? gaps.first() : U2MsaGap();
     foreach (const U2MsaGap &gap, gaps) {
         if (gap.offset == 0) {
             continue;
         }
 
-        const int startBaseCallIndex = gap.offset - trailingGap.gap;
+        const int startBaseCallIndex = gap.offset - leadingGap.gap - 1;
         const int endBaseCallIndex = startBaseCallIndex + 1;
         SAFE_POINT(endBaseCallIndex <= gappedChromatogram.baseCalls.size(), "Gap is out of the chromatgoram range", DNAChromatogram());
 
         const ushort startBaseCall = gappedChromatogram.baseCalls[startBaseCallIndex];
         const ushort endBaseCall = gappedChromatogram.baseCalls[endBaseCallIndex];
-        const double step = ((double)endBaseCall - startBaseCall) / gap.gap;
+        const double step = ((double)endBaseCall - startBaseCall) / (gap.gap + 1);
         for (int i = 0; i < gap.gap; i++) {
-            gappedChromatogram.baseCalls.insert(startBaseCallIndex + i + 1, (ushort)(startBaseCall + step * i));
+            gappedChromatogram.baseCalls.insert(startBaseCallIndex + i + 1, (ushort)(startBaseCall + step * (i + 1)));
+            gappedChromatogram.prob_A.insert(startBaseCallIndex + i + 1, gap.gap, 0);
+            gappedChromatogram.prob_C.insert(startBaseCallIndex + i + 1, gap.gap, 0);
+            gappedChromatogram.prob_G.insert(startBaseCallIndex + i + 1, gap.gap, 0);
+            gappedChromatogram.prob_T.insert(startBaseCallIndex + i + 1, gap.gap, 0);
         }
         gappedChromatogram.seqLength += gap.gap;
     }
@@ -559,6 +564,32 @@ McaRowMemoryData MultipleChromatogramAlignmentRowData::getRowMemoryData() const 
     mcaRowMemoryData.rowLength = getRowLengthWithoutTrailing();
     mcaRowMemoryData.additionalInfo = additionalInfo;
     return mcaRowMemoryData;
+}
+
+void MultipleChromatogramAlignmentRowData::reverse() {
+    sequence.seq = DNASequenceUtils::reverse(sequence.seq);
+    chromatogram = ChromatogramUtils::reverse(chromatogram);
+    gaps = MsaRowUtils::reverseGapModel(gaps, getRowLengthWithoutTrailing());
+    MultipleAlignmentRowInfo::setReversed(additionalInfo, !isReversed());
+}
+
+void MultipleChromatogramAlignmentRowData::complement() {
+    sequence.seq = DNASequenceUtils::complement(sequence.seq);
+    chromatogram = ChromatogramUtils::complement(chromatogram);
+    MultipleAlignmentRowInfo::setComplemented(additionalInfo, !isComplemented());
+}
+
+void MultipleChromatogramAlignmentRowData::reverseComplement() {
+    reverse();
+    complement();
+}
+
+bool MultipleChromatogramAlignmentRowData::isReversed() const {
+    return MultipleAlignmentRowInfo::getReversed(additionalInfo);
+}
+
+bool MultipleChromatogramAlignmentRowData::isComplemented() const {
+    return MultipleAlignmentRowInfo::getComplemented(additionalInfo);
 }
 
 void MultipleChromatogramAlignmentRowData::splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapsModel) {

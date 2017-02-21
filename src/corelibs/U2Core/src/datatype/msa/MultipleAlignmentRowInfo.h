@@ -24,9 +24,11 @@
 
 #include <QVariantMap>
 
+#include <U2Core/global.h>
+
 namespace U2 {
 
-class MultipleAlignmentRowInfo {
+class U2CORE_EXPORT MultipleAlignmentRowInfo {
 public:
     static void setReversed(QVariantMap &info, bool reversed);
     static bool getReversed(const QVariantMap &info);

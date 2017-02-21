@@ -585,4 +585,27 @@ U2MsaRowGapModel MsaRowUtils::subtitudeGapModel(const U2MsaRowGapModel &minuendG
     return minuendGapModel;
 }
 
+U2MsaRowGapModel MsaRowUtils::reverseGapModel(const U2MsaRowGapModel &gapModel, qint64 rowLengthWithoutTrailing) {
+    U2MsaRowGapModel reversedGapModel = gapModel;
+
+    foreach (const U2MsaGap &gap, gapModel) {
+        if (rowLengthWithoutTrailing - gap.endPos() < 0) {
+            Q_ASSERT(false);     // original model has gaps out of range or trailing gaps
+            continue;
+        }
+        reversedGapModel.prepend(U2MsaGap(rowLengthWithoutTrailing - gap.offset, gap.gap));
+    }
+
+    if (hasLeadingGaps(gapModel)) {
+        reversedGapModel.removeLast();
+        reversedGapModel.prepend(gapModel.first());
+    }
+
+    return reversedGapModel;
+}
+
+bool MsaRowUtils::hasLeadingGaps(const U2MsaRowGapModel &gapModel) {
+    return !gapModel.isEmpty() && gapModel.first().offset == 0;
+}
+
 }   // namespace U2

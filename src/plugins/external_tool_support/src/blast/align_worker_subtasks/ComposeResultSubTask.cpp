@@ -28,6 +28,7 @@
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
+#include <U2Core/MultipleAlignmentRowInfo.h>
 #include <U2Core/MultipleChromatogramAlignment.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
@@ -145,6 +146,10 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         result->addRow(subTask->getReadName(), readChromatogram, readSeq.seq);
         CHECK_OP(stateInfo, );
 
+        if (subTask->isComplement()) {
+            result->getMcaRow(result->getNumRows() - 1)->reverseComplement();
+        }
+
         foreach (const U2MsaGap &gap, subTask->getReadGaps()) {
             result->insertGaps(rowsCounter, gap.offset, gap.gap, stateInfo);
             CHECK_OP(stateInfo, );
@@ -241,9 +246,6 @@ DNASequence ComposeResultSubTask::getReadSequence(int readNum) {
     CHECK_EXT(!readObject.isNull(), setError(L10N::nullPointerError("Read sequence")), DNASequence());
     DNASequence seq = readObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, DNASequence());
-    if (subTask->isComplement()) {
-        seq.seq = DNASequenceUtils::reverseComplement(seq.seq);
-    }
     return seq;
 }
 
@@ -261,11 +263,7 @@ DNAChromatogram ComposeResultSubTask::getReadChromatogram(int readNum) {
     DNAChromatogram chromatogram = ChromatogramUtils::exportChromatogram(stateInfo, chromatogramRef);
     CHECK_OP(stateInfo, DNAChromatogram());
 
-    if (subTask->isComplement()) {
-        chromatogram = ChromatogramUtils::reverseComplement(chromatogram);
-    }
     return chromatogram;
-
 }
 
 DNASequence ComposeResultSubTask::getReferenceSequence() {
