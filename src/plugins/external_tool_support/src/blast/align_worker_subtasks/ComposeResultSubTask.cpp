@@ -88,32 +88,29 @@ void ComposeResultSubTask::prepare() {
 void ComposeResultSubTask::run() {
     createAlignmentAndAnnotations();
     CHECK_OP(stateInfo, );
+
+    QScopedPointer<U2SequenceObject> reference(StorageUtils::getSequenceObject(storage, this->reference));
+    CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), );
+
+    U2MsaRowGapModel referenceGaps = getReferenceGaps();
+    CHECK_OP(stateInfo, );
+    insertShiftedGapsIntoReference(reference.data(), referenceGaps);
 }
 
 const SharedDbiDataHandler& ComposeResultSubTask::getAnnotations() const {
     return annotations;
 }
 
-QList<GObject*> ComposeResultSubTask::getResult() {
-    QList<GObject*> result;
+U2SequenceObject *ComposeResultSubTask::takeReferenceSequenceObject() {
+    U2SequenceObject *reference = StorageUtils::getSequenceObject(storage, this->reference);
+    CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), NULL);
+    return reference;
+}
 
+MultipleChromatogramAlignmentObject *ComposeResultSubTask::takeMcaObject() {
     MultipleChromatogramAlignmentObject *alignment = mcaObject;
     mcaObject = NULL;
-    if (alignment->thread() != QThread::currentThread()) {
-        alignment->moveToThread(QThread::currentThread());
-    }
-
-    U2SequenceObject* reference = StorageUtils::getSequenceObject(storage, this->reference);
-    CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), result);
-
-    U2MsaRowGapModel referenceGaps = getReferenceGaps();
-    CHECK_OP(stateInfo, result);
-    insertShiftedGapsIntoReference(reference, referenceGaps);
-
-    result << alignment;
-    result << reference ;
-
-    return result;
+    return alignment;
 }
 
 void ComposeResultSubTask::createAlignmentAndAnnotations() {
@@ -176,6 +173,8 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
 
     mcaObject = MultipleChromatogramAlignmentImporter::createAlignment(stateInfo, storage->getDbiRef(), U2ObjectDbi::ROOT_FOLDER, result);
     CHECK_OP(stateInfo, );
+    mcaObject->moveToThread(thread());
+
     // remove gap columns
     // TODO: implement the method and restoer code
 //    mcaObject->deleteColumnWithGaps(stateInfo, GAP_COLUMN_ONLY);

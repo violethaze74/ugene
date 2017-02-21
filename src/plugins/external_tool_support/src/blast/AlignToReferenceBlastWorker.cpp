@@ -25,6 +25,7 @@
 #include <U2Core/FormatUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -270,17 +271,18 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
         CHECK_OP(stateInfo, result);
 
         document->setDocumentOwnsDbiResources(false);
-        QList<GObject*> resObjects = composeSubTask->getResult();
-        SAFE_POINT_EXT(resObjects.size() >= 2, setError("Invalid count of result objects");, result);
-        foreach (GObject* object, resObjects) {
-            document->addObject(object);
-        }
-        // alignment should have the relation about reference
-        // SANGER_TODO: leave only one relation
-        resObjects.first()->addObjectRelation(GObjectRelation(GObjectReference(resObjects.last()),
-                                                              GObjectRelationRole::ObjectRole_ReferenceSequence));
-        resObjects.last()->addObjectRelation(GObjectRelation(GObjectReference(resObjects.first()),
-                                                              GObjectRelationRole::ObjectRole_ReferenceSequence));
+
+        MultipleChromatogramAlignmentObject *mcaObject = composeSubTask->takeMcaObject();
+        SAFE_POINT_EXT(NULL != mcaObject, setError("Result MCA object is NULL"), result);
+        document->addObject(mcaObject);
+
+        U2SequenceObject *referenceSequenceObject = composeSubTask->takeReferenceSequenceObject();
+        SAFE_POINT_EXT(NULL != referenceSequenceObject, setError("Result reference sequence object is NULL"), result);
+        document->addObject(referenceSequenceObject);
+
+        mcaObject->setLength(stateInfo, qMax(mcaObject->getLength(), referenceSequenceObject->getSequenceLength()));
+        CHECK_OP(stateInfo, result);
+        mcaObject->addObjectRelation(GObjectRelation(GObjectReference(referenceSequenceObject), ObjectRole_ReferenceSequence));
 
         saveTask = new SaveDocumentTask(document.take(), SaveDocFlags(SaveDoc_DestroyAfter) | SaveDoc_Roll);
         result << saveTask;
