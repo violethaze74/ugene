@@ -111,6 +111,7 @@ public:
     /** Returns a character (a gap or a non-gap) in the specified row and position */
     char charAt(int rowNumber, int pos) const;
     bool isGap(int rowNumber, int pos) const;
+    bool isTrailingOrLeadingGap(int rowNumber, int pos) const;
 
     /**
      * Inserts 'count' gaps into the specified position.

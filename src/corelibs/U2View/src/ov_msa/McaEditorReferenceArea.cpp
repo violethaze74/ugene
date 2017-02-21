@@ -40,6 +40,9 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
     connect(p->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
             SLOT(sl_selectionChanged(MaEditorSelection,MaEditorSelection)));
 
+    connect(p->getSequenceArea(), SIGNAL(si_clearReferenceSelection()),
+            SLOT(sl_clearSelection()));
+
     connect(ctx->getSequenceSelection(),
         SIGNAL(si_selectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&)),
         SLOT(sl_onSelectionChanged()));
@@ -63,6 +66,10 @@ void McaEditorReferenceArea::sl_visibleRangeChanged() {
 void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &) {
     U2Region selection(current.x(), current.width());
     setSelection(selection);
+}
+
+void McaEditorReferenceArea::sl_clearSelection() {
+    ctx->getSequenceSelection()->clear();
 }
 
 void McaEditorReferenceArea::sl_onSelectionChanged() {

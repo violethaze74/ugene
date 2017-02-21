@@ -70,8 +70,7 @@ void LRegionsSelection::removeRegion(const U2Region& r) {
     emit si_selectionChanged(this, emptyLRegions, tmpRemoved);
 }
 
-void LRegionsSelection::setRegion(const U2Region& r)
-{
+void LRegionsSelection::setRegion(const U2Region& r) {
     if (r.length == 0)
     {
         clear();

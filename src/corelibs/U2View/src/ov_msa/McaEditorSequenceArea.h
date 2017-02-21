@@ -63,6 +63,11 @@ public:
 
     int         countHeightForSequences(bool countClipped) const;
 
+    void setSelection(const MaEditorSelection& sel, bool newHighlightSelection = false);
+
+signals:
+    void si_clearReferenceSelection();
+
 public slots:
     void sl_referenceSelectionChanged();
 

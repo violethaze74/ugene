@@ -122,6 +122,20 @@ int McaEditorSequenceArea::countHeightForSequences(bool countClipped) const {
     return nVisible;
 }
 
+void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newHighlightSelection) {
+    if (sel.height() > 1 || sel.width() > 1) {
+        // ignore multi-selection
+        return;
+    }
+    if (getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
+        // clear selection
+        emit si_clearReferenceSelection();
+        MaEditorSequenceArea::setSelection(MaEditorSelection(), newHighlightSelection);
+        return;
+    }
+    MaEditorSequenceArea::setSelection(sel, newHighlightSelection);
+}
+
 void McaEditorSequenceArea::sl_referenceSelectionChanged() {
     update();
 }

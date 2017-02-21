@@ -45,6 +45,7 @@ public slots:
 
 private slots:
     void sl_onSelectionChanged();
+    void sl_clearSelection();
 
 private:
     McaEditor* editor;

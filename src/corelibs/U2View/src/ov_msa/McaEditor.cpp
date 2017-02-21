@@ -193,7 +193,6 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     initActions();
     initWidgets();
 
-    // SANGER_TODO: write sequence name
     McaEditorReferenceArea* refArea = new McaEditorReferenceArea(this, getEditor()->referenceCtx);
     seqAreaHeaderLayout->insertWidget(0, refArea);
 

@@ -604,6 +604,10 @@ bool MultipleChromatogramAlignmentData::isGap(int rowNumber, int pos) const {
     return getMcaRow(rowNumber)->isGap(pos);
 }
 
+bool MultipleChromatogramAlignmentData::isTrailingOrLeadingGap(int rowNumber, int pos) const {
+    return getMcaRow(rowNumber)->isTrailingOrLeadingGap(pos);
+}
+
 void MultipleChromatogramAlignmentData::setRowGapModel(int rowNumber, const QList<U2MsaGap> &gapModel) {
     SAFE_POINT(rowNumber >= 0 && rowNumber < getNumRows(), "Invalid row index", );
     length = qMax(length, (qint64)MsaRowUtils::getGapsLength(gapModel) + getMcaRow(rowNumber)->sequence.length());
