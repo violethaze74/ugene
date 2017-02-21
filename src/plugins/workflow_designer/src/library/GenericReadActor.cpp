@@ -143,7 +143,7 @@ GenericSeqActorProto::GenericSeqActorProto() : GenericReadDocProto(CoreLibConsta
 
 GenericMAActorProto::GenericMAActorProto() : GenericReadDocProto(CoreLibConstants::GENERIC_READ_MA_PROTO_ID)
 {
-    setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT);
+    setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
 
     setDisplayName(U2::Workflow::CoreLib::tr("Read Alignment"));
     desc = U2::Workflow::CoreLib::tr("Reads multiple sequence alignments (MSAs) from local or remote files."
@@ -171,7 +171,7 @@ bool GenericMAActorProto::isAcceptableDrop(const QMimeData* md, QVariantMap* par
     QList<DocumentFormat*> fs;
     QString url = WorkflowUtils::getDropUrl(fs, md);
     foreach(DocumentFormat* f, fs) {
-        if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_ALIGNMENT)) {
+        if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
             if (params != NULL) {
                 params->insert(BaseAttributes::URL_IN_ATTRIBUTE().getId(), url);
             }

@@ -48,9 +48,25 @@ public:
     static const qint64 msaSetNewRowsOrder;
     static const qint64 msaLengthChanged;
 
+    /** MCA modification types */
+    static const qint64 mcaUpdatedAlphabet;
+    static const qint64 mcaAddedRows;
+    static const qint64 mcaAddedRow;
+    static const qint64 mcaRemovedRows;
+    static const qint64 mcaRemovedRow;
+    static const qint64 mcaUpdatedRowInfo;
+    static const qint64 mcaUpdatedGapModel;
+    static const qint64 mcaSetNewRowsOrder;
+    static const qint64 mcaLengthChanged;
+
+    /** UDR modification types */
+    static const qint64 chromatogramUpdatedData;
+
     static bool isObjectModType(qint64 modType) { return modType > 0 && modType < 999; }
     static bool isSequenceModType(qint64 modType) { return modType >= 1000 && modType < 1100; }
     static bool isMsaModType(qint64 modType) { return modType >= 3000 && modType < 3100; }
+    static bool isMcaModType(qint64 modType) { return modType >= 4000 && modType < 4100; }
+    static bool isUdrModType(qint64 modType) { return modType >= 5000 && modType < 5100; }
 };
 
 /** Single modification of a dbi object */

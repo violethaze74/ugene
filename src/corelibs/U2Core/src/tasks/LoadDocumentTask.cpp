@@ -43,7 +43,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/SequenceUtils.h>
@@ -419,7 +419,7 @@ static Document* loadFromMultipleFiles(IOAdapterFactory* iof, QVariantMap& fs, U
         newObjects << sequences;
     }
     else if(fs.value(DocumentReadingMode_SequenceAsAlignmentHint).toBool()){
-        MAlignmentObject* msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
+        MultipleSequenceAlignmentObject* msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
         CHECK_OP(os, NULL);
         SAFE_POINT_EXT(NULL != msaObject, os.setError("The alignment object is NULL!"), NULL);
         newObjects << msaObject;

@@ -19,7 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
+
+#include <U2Core/U2SafePoints.h>
 
 #include "WorkflowBreakpointSharedInfo.h"
 #include "WorkflowDebugMessageParser.h"

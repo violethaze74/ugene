@@ -23,13 +23,13 @@
 #define _U2_ALPHABET_UTILS_H_
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/Timer.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Core/Timer.h>
 #include <U2Core/U2Alphabet.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
-class MAlignment;
 
 class DNAAlphabetComparator {
 public:
@@ -111,9 +111,9 @@ public:
 
     static char getDefaultSymbol(const U2AlphabetId& alphaId);
 
-    static void assignAlphabet(MAlignment& ma);
+    static void assignAlphabet(MultipleSequenceAlignment& ma);
 
-    static void assignAlphabet(MAlignment& ma, char ignore);
+    static void assignAlphabet(MultipleSequenceAlignment& ma, char ignore);
 
 
     static const DNAAlphabet* getById(const U2AlphabetId& id) {return getById(id.id);}

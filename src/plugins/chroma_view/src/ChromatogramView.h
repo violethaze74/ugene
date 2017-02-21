@@ -35,7 +35,9 @@
 
 namespace U2 {
 
+class ADVSequenceObjectContext;
 class ChromatogramViewRenderArea;
+class AnnotatedDNAView;
 class GObjectView;
 class Task;
 
@@ -84,6 +86,7 @@ private:
     int getEditSeqIndex(int bcIndex);
     QAction* createToggleTraceAction(const QString& actionName);
 
+    AnnotatedDNAView*           dnaView;
     U2SequenceObject*           editDNASeq;
     QByteArray                  currentBaseCalls;
     QSet<int>                   indexOfChangedChars;

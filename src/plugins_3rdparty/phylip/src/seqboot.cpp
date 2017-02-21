@@ -27,7 +27,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include "seqboot.h"
@@ -785,7 +785,7 @@ void charpermute(long m, long n)
 } /* charpermute */
 
 
-void writedata( QVector<U2::MAlignment*>& mavect, int rep, const U2::MAlignment& ma)
+void writedata( QVector<U2::MultipleSequenceAlignment>& mavect, int rep, const U2::MultipleSequenceAlignment& ma)
 {
     
 
@@ -927,11 +927,9 @@ void writedata( QVector<U2::MAlignment*>& mavect, int rep, const U2::MAlignment&
       }
       //putchar('\n');
       if (j >= mavect[rep]->getNumRows()) {
-          U2::U2OpStatus2Log os;
-          mavect[rep]->addRow(ma.getRow(j).getName(), curAr, os);
+          mavect[rep]->addRow(ma->getMsaRow(j)->getName(), curAr);
       }
       else {
-        const U2::MAlignmentRow& curR = mavect[rep]->getRow(j);
         mavect[rep]->appendChars(j,curAr.data(), curAr.length());
       }
       
@@ -1171,7 +1169,7 @@ void writefactors(void)
 } /* writefactors */
 
 
-void bootwrite( QVector<U2::MAlignment*>& mavect, const U2::MAlignment& ma)
+void bootwrite( QVector<U2::MultipleSequenceAlignment>& mavect, const U2::MultipleSequenceAlignment& ma)
 { /* does bootstrapping and writes out data sets */
   long i, j, rr, repdiv10;
 

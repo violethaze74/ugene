@@ -24,17 +24,17 @@
 
 #include "ui_SelectSubalignmentDialog.h"
 
-#include <U2Core/global.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
-class MSAEditorUI;
+class MaEditor;
 
 class SelectSubalignmentDialog : public QDialog, Ui_SelectSubalignmentDialog {
     Q_OBJECT
 public:
-    SelectSubalignmentDialog( MSAEditorUI *ui, const U2Region& region = U2Region(), const QList<qint64>& selectedIndexes = QList<qint64>(), QWidget *p = NULL);
+    SelectSubalignmentDialog( MaEditor *editor, const U2Region& region = U2Region(), const QList<qint64>& selectedIndexes = QList<qint64>(), QWidget *p = NULL);
 
     void accept();
 
@@ -51,7 +51,7 @@ public slots:
 private:
     void init();
 
-    MSAEditorUI *ui;
+    MaEditor* editor;
 
     U2Region window;
     QStringList selectedNames;

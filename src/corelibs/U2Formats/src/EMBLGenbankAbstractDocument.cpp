@@ -137,7 +137,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
         st.entry = &data;
 
         if (num_sequence == 0 || merge == false){
-            seqImporter.startSequence(dbiRef, folder, "default sequence name", false, os); //change name and circularity after finalize method
+            seqImporter.startSequence(os, dbiRef, folder, "default sequence name", false); //change name and circularity after finalize method
             CHECK_OP(os, );
         }
 

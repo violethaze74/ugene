@@ -22,7 +22,7 @@
 #include "SeqStatisticsWidget.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
@@ -83,7 +83,7 @@ void SeqStatisticsWidget::copySettings() {
         settings = new SimilarityStatisticsSettings();
         settings->excludeGaps = false;
         settings->autoUpdate = true;
-        settings->ma = msa->getMSAObject();
+        settings->ma = msa->getMaObject();
         settings->usePercents = true;
         settings->ui = msa->getUI();
     }
@@ -165,7 +165,7 @@ void SeqStatisticsWidget::sl_onAutoUpdateChanged(int state) {
 }
 
 void SeqStatisticsWidget::sl_onRefSeqChanged(qint64 referenceRowId) {
-    if(MAlignmentRow::invalidRowId() == referenceRowId && statisticsIsShown) {
+    if(U2MsaRow::INVALID_ROW_ID == referenceRowId && statisticsIsShown) {
         ui.refSeqWarning->show();
     } else {
         ui.refSeqWarning->hide();

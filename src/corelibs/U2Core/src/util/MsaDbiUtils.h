@@ -22,11 +22,12 @@
 #ifndef _U2_MSA_DBI_UTILS_
 #define _U2_MSA_DBI_UTILS_
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2MsaDbi.h>
 
-
 namespace U2 {
+
+class MultipleChromatogramAlignment;
 
 class U2CORE_EXPORT MsaDbiUtils : public QObject {
     Q_OBJECT
@@ -42,7 +43,7 @@ public:
      *    Otherwise adds or removes the corresponding rows and sequences.
      * 3) Updates rows positions
      */
-    static void updateMsa(const U2EntityRef& msaRef, const MAlignment& al, U2OpStatus& os);
+    static void updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAlignment& al, U2OpStatus& os);
 
     /**
     * Get the length of the alignment in the database.
@@ -224,7 +225,7 @@ private:
      * Parameter 'pos' can even be greater than the length of the row.
      * The row sequence and gap model are set to empty values in this case.
      */
-    static void cropCharsFromRow(MAlignmentRow& alRow, qint64 pos, qint64 count);
+    static void cropCharsFromRow(MultipleSequenceAlignmentRow& alRow, qint64 pos, qint64 count);
 
     /** Returns "true" if there is a gap on position "pos" */
     static bool gapInPosition(const QList<U2MsaGap>& gapModel, qint64 pos);

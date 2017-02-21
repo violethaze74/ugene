@@ -37,7 +37,7 @@ namespace U2 {
 class U2GUI_EXPORT ScaleBar : public QWidget {
     Q_OBJECT
 public:
-    ScaleBar(QWidget* parent = 0);
+    ScaleBar(Qt::Orientation ori = Qt::Vertical, QWidget* parent = 0);
     QSlider* slider() const {return scaleBar;}
     int value() const {return scaleBar->value();}
     void setValue(int v) {scaleBar->setValue(v);}

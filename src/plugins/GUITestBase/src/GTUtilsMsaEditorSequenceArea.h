@@ -22,9 +22,11 @@
 #ifndef GTUTILSMSAEDITORSEQUENCEAREA_H
 #define GTUTILSMSAEDITORSEQUENCEAREA_H
 
-#include "GTGlobals.h"
-#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include <GTGlobals.h>
+
 #include <U2View/MSAEditorSequenceArea.h>
+
+#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 
 namespace U2 {
 

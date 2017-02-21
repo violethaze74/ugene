@@ -52,7 +52,7 @@
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 #include <U2Core/DocumentModel.h>
 #include <U2View/ADVConstants.h>
 #include <U2Core/AppContext.h>

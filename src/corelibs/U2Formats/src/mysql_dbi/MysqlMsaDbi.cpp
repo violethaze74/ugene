@@ -147,6 +147,7 @@ QList<U2MsaRow> MysqlMsaDbi::getRows(const U2DataId& msaId, U2OpStatus& os) {
             U2MsaGap gap;
             gap.offset = gapQuery.getInt64(0);
             gap.gap = gapQuery.getInt64(1) - gap.offset;
+            SAFE_POINT_EXT(gap.isValid(), os.setError("An invalid gap is stored in the database"), res);
             row.gaps.append(gap);
         }
         CHECK_OP(os, res);
@@ -303,14 +304,8 @@ void MysqlMsaDbi::addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpStat
     CHECK_OP(os, );
 
     QList<qint64> posInMsa;
-    qint64 maxLen = 0;
     for (int i = 0; i < rows.count(); i++) {
         posInMsa << i + numOfRows;
-        maxLen = qMax(maxLen, rows[i].length);
-    }
-    if (maxLen > getMsaLength(msaId, os)) {
-        updateMsaLength(updateAction, msaId, maxLen, os);
-        CHECK_OP(os, );
     }
 
     QByteArray modDetails;
@@ -320,6 +315,16 @@ void MysqlMsaDbi::addRows(const U2DataId& msaId, QList<U2MsaRow>& rows, U2OpStat
 
     addRowsCore(msaId, posInMsa, rows, os);
     CHECK_OP(os, );
+
+    // Update msa length
+    qint64 maxLength = 0;
+    foreach (const U2MsaRow &row, rows) {
+        maxLength = qMax(maxLength, row.length);
+    }
+    if (maxLength > getMsaLength(msaId, os)) {
+        updateMsaLength(updateAction, msaId, maxLength, os);
+        CHECK_OP(os, );
+    }
 
     // Update track mod type for child sequence object
     if (TrackOnUpdate == trackMod) {
@@ -649,6 +654,35 @@ qint64 MysqlMsaDbi::getMsaLength(const U2DataId& msaId, U2OpStatus& os) {
     }
 
     return res;
+}
+
+U2DataId MysqlMsaDbi::createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, U2OpStatus &os) {
+    return createMcaObject(folder, name, alphabet, 0, os);
+}
+
+U2DataId MysqlMsaDbi::createMcaObject(const QString &folder, const QString &name, const U2AlphabetId &alphabet, int length, U2OpStatus &os) {
+    MysqlTransaction t(db, os);
+    Q_UNUSED(t);
+
+    U2Mca mca;
+    mca.visualName = name;
+    mca.alphabet = alphabet;
+    mca.length = length;
+
+    // Create the object
+    dbi->getMysqlObjectDbi()->createObject(mca, folder, U2DbiObjectRank_TopLevel, os);
+    CHECK_OP(os, U2DataId());
+
+    // Create a record in the Msa table
+    static const QString queryString = "INSERT INTO Msa(object, length, alphabet, numOfRows) VALUES(:object, :length, :alphabet, :numOfRows)";
+    U2SqlQuery q(queryString, db, os);
+    q.bindDataId(":object", mca.id);
+    q.bindInt64(":length", mca.length);
+    q.bindString(":alphabet", mca.alphabet.id);
+    q.bindInt64(":numOfRows", 0); // no rows
+    q.insert();
+
+    return mca.id;
 }
 
 void MysqlMsaDbi::addMsaRowAndGaps(const U2DataId& msaId, qint64 posInMsa, U2MsaRow& row, U2OpStatus& os) {

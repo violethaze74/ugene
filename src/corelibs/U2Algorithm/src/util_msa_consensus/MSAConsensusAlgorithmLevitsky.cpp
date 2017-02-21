@@ -21,13 +21,15 @@
 
 #include "MSAConsensusAlgorithmLevitsky.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 namespace U2 {
 
 MSAConsensusAlgorithmFactoryLevitsky::MSAConsensusAlgorithmFactoryLevitsky(QObject* p)
 : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::LEVITSKY_ALGO,
-                               ConsensusAlgorithmFlags(ConsensusAlgorithmFlag_Nucleic ) | ConsensusAlgorithmFlag_SupportThreshold,
+                               ConsensusAlgorithmFlags(ConsensusAlgorithmFlag_Nucleic )
+                               | ConsensusAlgorithmFlag_SupportThreshold
+                               | ConsensusAlgorithmFlag_AvailableForChromatogram,
                                p)
 {
 }
@@ -44,7 +46,7 @@ QString MSAConsensusAlgorithmFactoryLevitsky::getName() const  {
     return tr("Levitsky");
 }
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MAlignment& ma, QObject* p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryLevitsky::createAlgorithm(const MultipleAlignment& ma, QObject* p) {
     return new MSAConsensusAlgorithmLevitsky(this, ma, p);
 }
 
@@ -115,38 +117,38 @@ static void registerHit(int* data, char c) {
     }
 }
 
-MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MAlignment& ma,  QObject* p)
+MSAConsensusAlgorithmLevitsky::MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky* f, const MultipleAlignment& ma,  QObject* p)
 : MSAConsensusAlgorithm(f, p)
 {
     globalFreqs.resize(256);
     memset(globalFreqs.data(), 0, globalFreqs.size() * 4);
 
     int* freqsData = globalFreqs.data();
-    int len = ma.getLength();
-    foreach (const MAlignmentRow& row, ma.getRows()) {
+    int len = ma->getLength();
+    foreach (const MultipleAlignmentRow& row, ma->getRows()) {
         for (int i = 0; i < len; i++) {
-            char c = row.charAt(i);
+            char c = row->charAt(i);
             registerHit(freqsData, c);
         }
     }
 }
 
 
-char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MAlignment& msa, int column, const QVector<qint64> &seqIdx) const {
+char MSAConsensusAlgorithmLevitsky::getConsensusChar(const MultipleAlignment& ma, int column, const QVector<qint64> &seqIdx) const {
     // count local freqs first
     QVarLengthArray<int> localFreqs(256);
     memset(localFreqs.data(), 0, localFreqs.size() * 4);
 
     int* freqsData = localFreqs.data();
-    int nSeq =( seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size());
+    int nSeq =( seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
     for (int seq = 0; seq < nSeq; seq++) {
-        char c = msa.charAt( seqIdx.isEmpty() ? seq : seqIdx [seq] , column);
+        char c = ma->charAt( seqIdx.isEmpty() ? seq : seqIdx [seq] , column);
         registerHit(freqsData, c);
     }
 
     //find all symbols with freq > threshold, select one with the lowest global freq
-    char selectedChar = MAlignment_GapChar;
-    int selectedGlobalFreq = nSeq * msa.getLength();
+    char selectedChar = U2Msa::GAP_CHAR;
+    int selectedGlobalFreq = nSeq * ma->getLength();
     int thresholdScore = getThreshold();
     int minFreq = int(float(nSeq) * thresholdScore / 100);
     for (int c = 'A'; c <= 'Y'; c++) {

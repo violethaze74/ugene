@@ -27,18 +27,6 @@
 #include <QTableView>
 #include <QWebElement>
 
-#include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DocumentModel.h>
-
-#include <U2Gui/ToolsMenu.h>
-
-#include <U2View/ADVConstants.h>
-#include <U2View/ADVSequenceObjectContext.h>
-#include <U2View/DetView.h>
-#include <U2View/MSAEditorNameList.h>
-#include <U2View/MSAEditorTreeViewer.h>
-#include <U2View/MSAGraphOverview.h>
-
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -64,6 +52,19 @@
 #include <system/GTFile.h>
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
+
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DocumentModel.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/ToolsMenu.h>
+
+#include <U2View/ADVConstants.h>
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/DetView.h>
+#include <U2View/MaEditorNameList.h>
+#include <U2View/MSAEditorTreeViewer.h>
+#include <U2View/MaGraphOverview.h>
 
 #include "GTTestsRegressionScenarios_4001_5000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -92,7 +93,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-
 #include "runnables/ugene/corelibs/U2Gui/AddNewDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
@@ -3187,7 +3187,7 @@ GUI_TEST_CLASS_DEFINITION(test_4587) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4587/", "extended_dna.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::checkObjectTypes(os,
-        QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT,
+        QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
         GTUtilsProjectTreeView::findIndex(os, "Contig1"));
     CHECK_SET_ERR(!l.hasError(), "logfile shouldn't contain errors");
 }

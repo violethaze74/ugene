@@ -19,17 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#include "CAP3Support.h"
-#include "CAP3Worker.h"
-#include "TaskLocalStorage.h"
-
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/FailTask.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/FailTask.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Designer/DelegateEditors.h>
@@ -44,6 +41,9 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "CAP3Support.h"
+#include "CAP3Worker.h"
+#include "TaskLocalStorage.h"
 
 namespace U2 {
 namespace LocalWorkflow {

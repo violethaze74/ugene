@@ -23,14 +23,14 @@
 
 #include <U2Algorithm/MSAConsensusUtils.h>
 
-#include <U2Core/MAlignment.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleAlignment.h>
+#include <U2Core/MultipleAlignmentObject.h>
 
 #include "MsaColorSchemePercentageIdentity.h"
 
 namespace U2 {
 
-MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj)
+MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : MsaColorScheme(parent, factory, maObj),
       cacheVersion(0),
       objVersion(1)
@@ -45,12 +45,12 @@ MsaColorSchemePercentageIdentity::MsaColorSchemePercentageIdentity(QObject *pare
     colorsByRange[2] = QColor("#CCCCFF");
     colorsByRange[3] = QColor();
 
-    connect(maObj, SIGNAL(si_alignmentChanged(const MAlignment &, const MAlignmentModInfo &)), SLOT(sl_alignmentChanged()));
+    connect(maObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
 }
 
 QColor MsaColorSchemePercentageIdentity::getColor(int /*seq*/, int pos, char c) const {
     updateCache();
-    if (c == MAlignment_GapChar) {
+    if (c == U2Msa::GAP_CHAR) {
         return QColor();
     }
     quint32 packedVal = indentCache[pos];
@@ -72,11 +72,11 @@ void MsaColorSchemePercentageIdentity::updateCache() const {
     if (cacheVersion == objVersion) {
         return;
     }
-    const MAlignment& ma = maObj->getMAlignment();
-    int aliLen = ma.getLength();
+    const MultipleAlignment msa = maObj->getMultipleAlignment();
+    int aliLen = msa->getLength();
     indentCache.resize(aliLen);
     for (int i = 0; i < aliLen; i++) {
-        indentCache[i] = MSAConsensusUtils::packConsensusCharsToInt(ma, i, mask4, true);
+        indentCache[i] = MSAConsensusUtils::packConsensusCharsToInt(msa, i, mask4, true);
     }
     cacheVersion = objVersion;
 }
@@ -87,7 +87,7 @@ MsaColorSchemePercentageIdentityFactory::MsaColorSchemePercentageIdentityFactory
 
 }
 
-MsaColorScheme * MsaColorSchemePercentageIdentityFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaColorScheme * MsaColorSchemePercentageIdentityFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaColorSchemePercentageIdentity(parent, this, maObj);
 }
 

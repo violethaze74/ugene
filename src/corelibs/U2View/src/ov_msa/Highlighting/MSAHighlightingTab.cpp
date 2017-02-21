@@ -31,6 +31,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
@@ -160,7 +161,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 
     connect(colorScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
     connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), seqArea, SLOT(sl_changeColorSchemeOutside(const QString &)));
-    connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_doUseDots()));
+    connect(useDots, SIGNAL(stateChanged(int)), seqArea, SLOT(sl_triggerUseDots()));
 
     connect(seqArea, SIGNAL(si_highlightingChanged()), SLOT(sl_sync()));
 
@@ -168,7 +169,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     connect(msaColorSchemeRegistry, SIGNAL(si_customSettingsChanged()), SLOT(sl_customSchemesListChanged()));
 
     connect(m, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateHint()));
-    connect(m->getMSAObject(), SIGNAL(si_alphabetChanged(MAlignmentModInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
+    connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_customSchemesListChanged()));
 
     connect(highlightingScheme, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
@@ -185,8 +186,8 @@ void MSAHighlightingTab::initColorCB() {
     highlightingScheme->blockSignals(true);
 
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(msa->getMSAObject()->getAlphabet()->getType());
-    colorSchemesFactories << msaColorSchemeRegistry->getMsaCustomColorSchemes(msa->getMSAObject()->getAlphabet()->getType());
+    QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(msa->getMaObject()->getAlphabet()->getType());
+    colorSchemesFactories << msaColorSchemeRegistry->getMsaCustomColorSchemes(msa->getMaObject()->getAlphabet()->getType());
 
     colorScheme->clear();
     foreach (MsaColorSchemeFactory *factory, colorSchemesFactories) {
@@ -194,7 +195,7 @@ void MSAHighlightingTab::initColorCB() {
     }
 
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
-    QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMSAObject()->getAlphabet()->getType());
+    QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(msa->getMaObject()->getAlphabet()->getType());
 
     highlightingScheme->clear();
     foreach (MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
@@ -256,7 +257,7 @@ void MSAHighlightingTab::sl_updateHint() {
         thresholdMoreRb->hide();
         lessMoreLabel->hide();
     }
-    if (MAlignmentRow::invalidRowId() == msa->getReferenceRowId()
+    if (U2MsaRow::INVALID_ROW_ID == msa->getReferenceRowId()
         && !seqArea->getCurrentHighlightingScheme()->getFactory()->isRefFree())
     {
         hint->setText(tr("Hint: select a reference above"));

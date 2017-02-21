@@ -25,15 +25,18 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
+#include "McaEditor.h"
 #include "MSAEditor.h"
-#include "MSAEditorNameList.h"
+#include "MaEditorNameList.h"
+#include "MSAEditorOffsetsView.h"
 #include "MSAEditorSequenceArea.h"
 
-#include "MSAEditorOffsetsView.h"
+#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
 
@@ -41,7 +44,7 @@ namespace U2 {
 
 #define SETTINGS_SHOW_OFFSETS "show_offsets"
 
-MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEditor* ed, MSAEditorSequenceArea* sa)
+MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MaEditor* ed, MaEditorSequenceArea* sa)
     : QObject(p)
 {
     seqArea = sa;
@@ -52,13 +55,13 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEd
     rw = new MSAEditorOffsetsViewWidget(ed, seqArea, false);
     rw->setObjectName("msa_editor_offsets_view_widget_right");
 
-    connect(seqArea, SIGNAL(si_startChanged(const QPoint&,const QPoint&)), SLOT(sl_startChanged(const QPoint&,const QPoint&)));
-    connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_fontChanged()));
+    connect(seqArea, SIGNAL(si_startChanged(const QPoint&,const QPoint&)), SLOT(sl_updateOffsets()));
+    connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_updateOffsets()));
 
-    MAlignmentObject *mobj = editor->getMSAObject();
+    MultipleAlignmentObject *mobj = editor->getMaObject();
     SAFE_POINT(NULL != mobj, L10N::nullPointerError("multiple alignment object"), );
-    connect(mobj, SIGNAL(si_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)),
-        SLOT(sl_alignmentChanged(const MAlignment&, const MAlignmentModInfo&)));
+    connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+        SLOT(sl_updateOffsets()));
 
     seqArea->installEventFilter(this);
 
@@ -70,7 +73,8 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MSAEd
     viewAction->setCheckable(true);
     viewAction->setChecked(showOffsets);
     connect(viewAction, SIGNAL(triggered(bool)), SLOT(sl_showOffsets(bool)));
-    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_refSeqChanged(qint64)));
+    connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateOffsets()));
+    connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_updateOffsets()));
 
     updateOffsets();
 }
@@ -87,23 +91,7 @@ QAction * MSAEditorOffsetsViewController::getToggleColumnsViewAction() const {
     return viewAction;
 }
 
-void MSAEditorOffsetsViewController::sl_alignmentChanged(const MAlignment &, const MAlignmentModInfo &) {
-    updateOffsets();
-}
-
-void MSAEditorOffsetsViewController::sl_startChanged(const QPoint &, const QPoint &) {
-    updateOffsets();
-}
-
-void MSAEditorOffsetsViewController::sl_fontChanged() {
-    updateOffsets();
-}
-
-void MSAEditorOffsetsViewController::sl_modelChanged() {
-    updateOffsets();
-}
-
-void MSAEditorOffsetsViewController::sl_refSeqChanged(qint64) {
+void MSAEditorOffsetsViewController::sl_updateOffsets() {
     updateOffsets();
 }
 
@@ -133,15 +121,18 @@ void MSAEditorOffsetsViewController::updateOffsets() {
     rw->updateView();
 }
 
-MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MSAEditor *ed, MSAEditorSequenceArea* sa, bool sp)
-    : seqArea(sa), editor(ed), showStartPos(sp), completeRedraw(true)
+MSAEditorOffsetsViewWidget::MSAEditorOffsetsViewWidget(MaEditor *ed, MaEditorSequenceArea* sa, bool sp)
+    : seqArea(sa),
+      editor(ed),
+      showStartPos(sp),
+      completeRedraw(true)
 {
 
 }
 
 #define OFFS_WIDGET_BORDER 3
 void MSAEditorOffsetsViewWidget::updateView() {
-    const int aliLen = editor->getMSAObject()->getLength();
+    const int aliLen = editor->getMaObject()->getLength();
     QFont f = getOffsetsFont();
     QFontMetrics fm(f, this);
     int aliLenStrLen = int(log10((double)aliLen)) + 1;
@@ -176,11 +167,10 @@ QFont MSAEditorOffsetsViewWidget::getOffsetsFont() {
 }
 
 int MSAEditorOffsetsViewWidget::getBaseCounts(int seqNum, int aliPos, bool inclAliPos) const {
-    const MAlignment &ma = editor->getMSAObject()->getMAlignment();
-    const MAlignmentRow &row = ma.getRow(seqNum);
+    const MultipleAlignmentRow &row = editor->getMaObject()->getRow(seqNum);
     const int endPos = inclAliPos ? aliPos + 1 : aliPos;
 
-    return (endPos < row.getCoreStart()) ? 0 : row.getBaseCount(endPos);
+    return (endPos < row->getCoreStart()) ? 0 : row->getBaseCount(endPos);
 }
 
 void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
@@ -201,13 +191,13 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
 
     int nSeqVisible = seqArea->getNumVisibleSequences(true);
     int startSeq = seqArea->getFirstVisibleSequence();
-    int aliLen = editor->getMSAObject()->getLength();
+    int aliLen = editor->getMaObject()->getLength();
     int lbw = fm.width('[');
     int rbw = fm.width(']');
     int pos = showStartPos ? seqArea->getFirstVisibleBase() : seqArea->getLastVisibleBase(true, true);
 
     QVector<U2Region> visibleRows;
-    MSAEditorUI* ui = editor->getUI();
+    MaEditorWgt* ui = editor->getUI();
     if (ui->isCollapsibleMode()) {
         MSACollapsibleItemModel* m = ui->getCollapseModel();
         int lastSeq = seqArea->getLastVisibleSequence(true);
@@ -216,17 +206,22 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
         visibleRows.append(U2Region(startSeq, nSeqVisible));
     }
 
-    int i=0;
-    const MSAEditor *editor = ui->getEditor();
-    const MAlignment &alignment = editor->getMSAObject()->getMAlignment();
+    int i = 0;
+    const MultipleAlignment alignment = editor->getMaObject()->getMultipleAlignment();
     U2OpStatusImpl os;
-    const int refSeq = alignment.getRowIndexByRowId(editor->getReferenceRowId(), os);
+    const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);
 
-    const qint64 numRows = editor->getMSAObject()->getNumRows();
+    const qint64 numRows = editor->getMaObject()->getNumRows();
+    int indent = 0;
+    McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
+    if (mcaEditor != NULL && mcaEditor->getShowChromatogram()) {
+        indent  = SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2;
+    }
     foreach(const U2Region& r, visibleRows) {
         int end = static_cast<int>(qMin(r.endPos(), numRows));
         for (int row = r.startPos; row < end; row++) {
             U2Region yRange = seqArea->getSequenceYRange(startSeq + i, true);
+            yRange.startPos += indent;
             int offs = getBaseCounts(row, pos, !showStartPos);
             int seqSize = getBaseCounts(row, aliLen - 1, true);
             QString  offset = QString::number(offs + 1);
@@ -236,14 +231,14 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
                 if (i == refSeq){
                     drawRefSequence(p, lbr);
                 }
-                p.drawText(lbr, Qt::AlignCenter, "[");
+                p.drawText(lbr, Qt::AlignTop, "[");
             } else if (!showStartPos && offs == seqSize) {
                 p.setPen(Qt::black);
                 QRect rbr(w - OFFS_WIDGET_BORDER - rbw, yRange.startPos, rbw, yRange.length);
                 if (row == refSeq){
                     drawRefSequence(p, rbr);
                 }
-                p.drawText(rbr, Qt::AlignCenter, "]");
+                p.drawText(rbr, Qt::AlignTop, "]");
                 offset = QString::number(offs);
             } else {
                 p.setPen(dg);
@@ -252,7 +247,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
             if (row == refSeq){
                 drawRefSequence(p, tr);
             }
-            p.drawText(tr, Qt::AlignRight | Qt::AlignVCenter, offset);
+            p.drawText(tr, Qt::AlignRight | Qt::AlignTop, offset);
             i++;
         }
     }

@@ -32,7 +32,7 @@
 namespace U2 {
 
 class U2SequenceObject;
-class MAlignmentObject;
+class MultipleSequenceAlignmentObject;
 
 class GTest_ImportPhredQualityScoresTask : public GTest {
     Q_OBJECT
@@ -65,8 +65,8 @@ public:
     U2Region             selectedRows;
     ExportMSA2MSATask*  exportTask;
     LoadDocumentTask*   resultLoadTask;
-    MAlignment          srcAl;
-    MAlignment          resAl;
+    MultipleSequenceAlignment          srcAl;
+    MultipleSequenceAlignment          resAl;
 };
 
 class DNAExportPluginTests {

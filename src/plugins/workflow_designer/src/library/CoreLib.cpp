@@ -50,7 +50,6 @@
 #include <U2Lang/WorkflowManager.h>
 #include <U2Lang/WorkflowSettings.h>
 
-#include "AlignToReferenceWorker.h"
 #include "AminoTranslationWorker.h"
 #include "AssemblyToSequenceWorker.h"
 #include "BaseDocWriter.h"
@@ -86,6 +85,7 @@
 #include "ReverseComplementWorker.h"
 #include "RmdupBamWorker.h"
 #include "ScriptWorker.h"
+#include "SequenceQualityTrimWorker.h"
 #include "SequenceSplitWorker.h"
 #include "SequencesToMSAWorker.h"
 #include "SortBamWorker.h"
@@ -204,7 +204,7 @@ void CoreLib::init() {
     // GENERIC WRITE MSA actor proto
     {
         DocumentFormatConstraints constr;
-        constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_ALIGNMENT );
+        constr.supportedObjectTypes.insert( GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT );
         constr.addFlagToSupport(DocumentFormatFlag_SupportWriting);
         constr.addFlagToExclude(DocumentFormatFlag_CannotBeCreated);
         QList<DocumentFormatId> supportedFormats = AppContext::getDocumentFormatRegistry()->selectFormats( constr );
@@ -283,7 +283,6 @@ void CoreLib::init() {
             r->registerProto(BaseActorCategories::CATEGORY_DATASINK(), proto);
         }
     }
-    AlignToReferenceWorkerFactory::init();
     Alignment2SequenceWorkerFactory::init();
     AminoTranslationWorkerFactory::init();
     AssemblyToSequencesWorkerFactory::init();
@@ -297,6 +296,7 @@ void CoreLib::init() {
     ExtractConsensusWorkerFactory::init();
     ExtractMSAConsensusSequenceWorkerFactory::init();
     ExtractMSAConsensusStringWorkerFactory::init();
+    FastqQualityTrimWorkerFactory::init();
     FetchSequenceByIdFromAnnotationFactory::init();
     FilterAnnotationsByQualifierWorkerFactory::init();
     FilterAnnotationsWorkerFactory::init();
@@ -310,14 +310,14 @@ void CoreLib::init() {
     MergeFastqWorkerFactory::init();
     MultiplexerWorkerFactory::init();
     PassFilterWorkerFactory::init();
-    QualityTrimWorkerFactory::init();
     RCWorkerFactory::init();
     ReadAnnotationsWorkerFactory::init();
     ReadAssemblyWorkerFactory::init();
     ReadVariationWorkerFactory::init();
-    RenameChomosomeInVariationWorkerFactory::init();
     RemoteDBFetcherFactory::init();
+    RenameChomosomeInVariationWorkerFactory::init();
     RmdupBamWorkerFactory::init();
+    SequenceQualityTrimWorkerFactory::init();
     SequenceSplitWorkerFactory::init();
     SequencesToMSAWorkerFactory::init();
     SortBamWorkerFactory::init();

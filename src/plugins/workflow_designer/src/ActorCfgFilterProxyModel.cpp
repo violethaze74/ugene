@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include "ActorCfgModel.h"
+#include <U2Core/U2SafePoints.h>
 
 #include "ActorCfgFilterProxyModel.h"
+#include "ActorCfgModel.h"
 
 namespace U2 {
 

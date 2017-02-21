@@ -75,7 +75,7 @@
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorNameList.h>
+#include <U2View/MaEditorNameList.h>
 #include <U2View/ADVConstants.h>
 #include <U2Test/UGUITest.h>
 

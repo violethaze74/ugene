@@ -31,7 +31,7 @@
 #include <U2View/ADVConstants.h>
 #include <U2View/AnnotatedDNAViewFactory.h>
 #include <U2View/AssemblyBrowserFactory.h>
-#include <U2View/MSAEditorFactory.h>
+#include <U2View/MaEditorFactory.h>
 
 #include "GTTestsProject.h"
 #include "utils/GTUtilsApp.h"
@@ -200,7 +200,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
-    GTUtilsDocument::checkDocument(os, "ty3.aln.gz", MSAEditorFactory::ID);
+    GTUtilsDocument::checkDocument(os, "ty3.aln.gz", MsaEditorFactory::ID);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
@@ -496,9 +496,9 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
     GTFileDialog::openFile(os, testDir + "_common_data/ace/", "ace_test_1.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDocument::checkDocument(os, "ace_test_1.ace", MSAEditorFactory::ID);
+    GTUtilsDocument::checkDocument(os, "ace_test_1.ace", MsaEditorFactory::ID);
     GTUtilsProjectTreeView::checkObjectTypes(os,
-                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_ALIGNMENT,
+                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
                                              GTUtilsProjectTreeView::findIndex(os, "ace_test_1.ace"));
 
 //    3. Open "_common_data/ACE/ace_test_2.ace".

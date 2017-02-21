@@ -81,7 +81,6 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.h \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.h \
            src/util_msaedit/CreateSubalignmentTask.h \
-           src/util_msaedit/MAlignmentUtilTasks.h \
            src/util_msaedit/color_schemes/ColorSchemeUtils.h \
            src/util_msaedit/color_schemes/MsaColorScheme.h \
            src/util_msaedit/color_schemes/MsaColorSchemeClustalX.h \
@@ -110,7 +109,8 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_weight_matrix/PWMConversionAlgorithmNLG.h \
            src/util_weight_matrix/PWMConversionAlgorithmRegistry.h \
            src/util_gpu/opencl/OpenCLHelper.h \
-           src/util_gpu/opencl/OpenCLUtils.h
+           src/util_gpu/opencl/OpenCLUtils.h \
+    src/util_msaedit/MsaUtilTasks.h
 
 SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/misc/BitsTable.cpp \
@@ -180,7 +180,6 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.cpp \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.cpp \
            src/util_msaedit/CreateSubalignmentTask.cpp \
-           src/util_msaedit/MAlignmentUtilTasks.cpp \
            src/util_msaedit/color_schemes/ColorSchemeUtils.cpp \
            src/util_msaedit/color_schemes/MsaColorScheme.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemeClustalX.cpp \
@@ -209,7 +208,8 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_weight_matrix/PWMConversionAlgorithmNLG.cpp \
            src/util_weight_matrix/PWMConversionAlgorithmRegistry.cpp \
            src/util_gpu/opencl/OpenCLHelper.cpp \
-           src/util_gpu/opencl/OpenCLUtils.cpp
+           src/util_gpu/opencl/OpenCLUtils.cpp \
+    src/util_msaedit/MsaUtilTasks.cpp
 RESOURCES += U2Algorithm.qrc
 TRANSLATIONS += transl/english.ts transl/russian.ts
 

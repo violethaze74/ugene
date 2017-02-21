@@ -20,6 +20,8 @@
 */
 #include "MSAEditorMultiTreeViewer.h"
 #include "MsaEditorTreeTabArea.h"
+#include "../view_rendering/MaEditorUtils.h" // SANGER_TODO: add EXPORT and include to the header to avoid ../
+
 #include <U2View/GraphicsRectangularBranchItem.h>
 #include <U2View/MSAEditor.h>
 #include <U2Gui/ObjectViewModel.h>
@@ -32,8 +34,8 @@ namespace U2 {
 MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(QString _title, MSAEditor* _editor)
 : editor(_editor) {
     treeTabs = new MsaEditorTreeTabArea(editor, this);
-    titleWidget = _editor->getUI()->createLabelWidget(_title);
-    MSAWidget* title = dynamic_cast<MSAWidget*>(titleWidget);
+    titleWidget = _editor->getUI()->createHeaderLabelWidget(_title);
+    MaUtilsWidget* title = dynamic_cast<MaUtilsWidget*>(titleWidget);
     title->setHeightMargin(-55);
     QVBoxLayout* treeAreaLayout = new QVBoxLayout(this);
     treeAreaLayout->setMargin(0);

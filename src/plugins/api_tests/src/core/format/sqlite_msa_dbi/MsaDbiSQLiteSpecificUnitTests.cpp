@@ -1147,7 +1147,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_noModTrack) {
         CHECK_NO_ERROR(os);
     }
 
-    // Get current U2Msa
+    // Get current U2Ma
     U2Msa oldMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
 
@@ -1196,7 +1196,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_noModTrack) {
         CHECK_TRUE(oldSequences.contains(sequence), "sequence");
     }
 
-    // Verify U2Msa
+    // Verify U2Ma
     U2Msa newMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(oldMsa.alphabet == newMsa.alphabet, "msa");
@@ -1239,7 +1239,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_undo) {
         CHECK_NO_ERROR(os);
     }
 
-    // Get current U2Msa
+    // Get current U2Ma
     U2Msa oldMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
 
@@ -1288,7 +1288,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_undo) {
         CHECK_TRUE(oldSequences.contains(sequence), "sequence");
     }
 
-    // Verify U2Msa
+    // Verify U2Ma
     U2Msa newMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(oldMsa.alphabet == newMsa.alphabet, "msa");
@@ -1341,7 +1341,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_undo) {
         CHECK_TRUE(oldSequences.contains(sequence), "sequence");
     }
 
-    // Verify U2Msa
+    // Verify U2Ma
     newMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(oldMsa.alphabet == newMsa.alphabet, "msa");
@@ -1384,7 +1384,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
         CHECK_NO_ERROR(os);
     }
 
-    // Get current U2Msa
+    // Get current U2Ma
     U2Msa oldMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
 
@@ -1432,7 +1432,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
         CHECK_TRUE(oldSequences.contains(sequence), "sequence");
     }
 
-    // Verify U2Msa
+    // Verify U2Ma
     U2Msa newMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(oldMsa.alphabet == newMsa.alphabet, "msa");
@@ -1485,7 +1485,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
         CHECK_TRUE(oldSequences.contains(sequence), "sequence");
     }
 
-    // Verify U2Msa
+    // Verify U2Ma
     newMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(oldMsa.alphabet == newMsa.alphabet, "msa");
@@ -1539,7 +1539,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_redo) {
         CHECK_TRUE(oldSequences.contains(sequence), "sequence");
     }
 
-    // Verify U2Msa
+    // Verify U2Ma
     newMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(oldMsa.alphabet == newMsa.alphabet, "msa");
@@ -1578,7 +1578,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalSteps) {
         CHECK_NO_ERROR(os);
     }
 
-    // Get current U2Msa
+    // Get current U2Ma
     U2Msa oldMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
 
@@ -1667,7 +1667,7 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalSteps) {
         CHECK_TRUE(oldSequences.contains(sequence), "sequence");
     }
 
-    // Verify U2Msa
+    // Verify U2Ma
     U2Msa newMsa = sqliteDbi->getMsaDbi()->getMsaObject(msaId, os);
     CHECK_NO_ERROR(os);
     CHECK_TRUE(oldMsa.alphabet == newMsa.alphabet, "msa");

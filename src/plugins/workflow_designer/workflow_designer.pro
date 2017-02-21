@@ -40,7 +40,6 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/debug_messages_translation/SequenceMessageTranslator.h \
            src/debug_messages_translation/VariationTrackMessageTranslator.h \
            src/debug_messages_translation/WorkflowDebugMessageParserImpl.h \
-           src/library/AlignToReferenceWorker.h \
            src/library/AminoTranslationWorker.h \
            src/library/AssemblyToSequenceWorker.h \
            src/library/BaseDocWriter.h \
@@ -81,6 +80,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/library/RmdupBamWorker.h \
            src/library/SchemaWorker.h \
            src/library/ScriptWorker.h \
+           src/library/SequenceQualityTrimWorker.h \
            src/library/SequenceSplitWorker.h \
            src/library/SequencesToMSAWorker.h \
            src/library/StatisticWorkers.h \
@@ -91,6 +91,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/library/WriteVariationWorker.h \
            src/tasks/ReadAssemblyTask.h \
            src/tasks/RenameChromosomeInVariationTask.h \
+           src/tasks/SequenceQualityTrimTask.h \
            src/util/DatasetsCountValidator.h \
            src/util/DatasetValidator.h \
            src/util/GrouperActionUtils.h \
@@ -152,7 +153,6 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/debug_messages_translation/SequenceMessageTranslator.cpp \
            src/debug_messages_translation/VariationTrackMessageTranslator.cpp \
            src/debug_messages_translation/WorkflowDebugMessageParserImpl.cpp \
-           src/library/AlignToReferenceWorker.cpp \
            src/library/AminoTranslationWorker.cpp \
            src/library/AssemblyToSequenceWorker.cpp \
            src/library/BaseDocWriter.cpp \
@@ -193,6 +193,7 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/library/RmdupBamWorker.cpp \
            src/library/SchemaWorker.cpp \
            src/library/ScriptWorker.cpp \
+           src/library/SequenceQualityTrimWorker.cpp \
            src/library/SequenceSplitWorker.cpp \
            src/library/SequencesToMSAWorker.cpp \
            src/library/StatisticWorkers.cpp \
@@ -203,6 +204,7 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/library/WriteVariationWorker.cpp \
            src/tasks/ReadAssemblyTask.cpp \
            src/tasks/RenameChromosomeInVariationTask.cpp \
+           src/tasks/SequenceQualityTrimTask.cpp \
            src/util/DatasetsCountValidator.cpp \
            src/util/DatasetValidator.cpp \
            src/util/GrouperActionUtils.cpp \

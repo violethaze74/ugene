@@ -27,7 +27,7 @@
 #include "PhyMLSupport.h"
 
 #include <U2Gui/InputWidgetsControllers.h>
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/AppContext.h>
 #include <U2View/CreatePhyTreeWidget.h>
 
@@ -65,7 +65,7 @@ public:
 class PhyMlWidget : public CreatePhyTreeWidget, public Ui_PhyMLDialog{
    Q_OBJECT
 public:
-    PhyMlWidget(const MAlignment &ma, QWidget *parent);
+    PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent);
 
     void fillSettings(CreatePhyTreeSettings& settings);
     void storeSettings();
@@ -74,7 +74,7 @@ public:
 
 private:
     void createWidgetsControllers();
-    void fillComboBoxes(const MAlignment& ma);
+    void fillComboBoxes(const MultipleSequenceAlignment& ma);
 
     QStringList generatePhyMlSettingsScript();
 

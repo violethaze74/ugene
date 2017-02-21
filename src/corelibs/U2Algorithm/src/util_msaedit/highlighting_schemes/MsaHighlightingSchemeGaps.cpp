@@ -21,7 +21,7 @@
 
 #include <QColor>
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 
 #include "MsaHighlightingSchemeGaps.h"
 
@@ -29,14 +29,14 @@ namespace U2 {
 
 const QColor MsaHighlightingSchemeGaps::gapColor = QColor(192, 192, 192);
 
-MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject *parent, const MsaHighlightingSchemeFactory *factory, MAlignmentObject *maObj)
+MsaHighlightingSchemeGaps::MsaHighlightingSchemeGaps(QObject *parent, const MsaHighlightingSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : MsaHighlightingScheme(parent, factory, maObj)
 {
 
 }
 
 void MsaHighlightingSchemeGaps::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
-    if (seqChar == MAlignment_GapChar) {
+    if (seqChar == U2Msa::GAP_CHAR) {
         color = gapColor;
         highlight = true;
     } else {
@@ -52,7 +52,7 @@ MsaHighlightingSchemeGapsFactory::MsaHighlightingSchemeGapsFactory(QObject *pare
 
 }
 
-MsaHighlightingScheme * MsaHighlightingSchemeGapsFactory::create(QObject *parent, MAlignmentObject *maObj) const {
+MsaHighlightingScheme * MsaHighlightingSchemeGapsFactory::create(QObject *parent, MultipleAlignmentObject *maObj) const {
     return new MsaHighlightingSchemeGaps(parent, this, maObj);
 }
 

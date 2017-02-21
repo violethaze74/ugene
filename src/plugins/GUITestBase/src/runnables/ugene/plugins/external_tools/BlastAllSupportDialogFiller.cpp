@@ -20,13 +20,10 @@
  */
 
 #include <QtCore/qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QComboBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
-#endif
+
+#include <QApplication>
+#include <QComboBox>
+
 
 #include <U2Test/UGUITest.h>
 

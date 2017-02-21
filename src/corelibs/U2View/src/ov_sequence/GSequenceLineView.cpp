@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-GSequenceLineView::GSequenceLineView(QWidget* p, ADVSequenceObjectContext* _ctx)
+GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
     : WidgetWithLocalToolbar(p),
       ctx(_ctx),
       renderArea(NULL),

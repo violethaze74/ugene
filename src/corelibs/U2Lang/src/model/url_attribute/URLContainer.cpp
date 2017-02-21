@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/DbFolderScanner.h>
 #include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/WorkflowUtils.h>

@@ -22,10 +22,12 @@
 #ifndef _U2_BOWTIE_TESTS_H_
 #define _U2_BOWTIE_TESTS_H_
 
-#include <U2Test/XMLTestUtils.h>
-#include <U2Core/GObject.h>
-#include <QtXml/QDomElement>
+#include <QDomElement>
 #include <QFileInfo>
+
+#include <U2Core/GObject.h>
+
+#include <U2Test/XMLTestUtils.h>
 
 #include "bowtie/BowtieTask.h"
 
@@ -33,8 +35,7 @@ namespace U2 {
 
 class BowtieGObjectTask;
 class DnaAssemblyMultiTask;
-class MAlignmentObject;
-class MAlignment;
+class MultipleSequenceAlignmentObject;
 
 class GTest_Bowtie : public GTest {
     Q_OBJECT

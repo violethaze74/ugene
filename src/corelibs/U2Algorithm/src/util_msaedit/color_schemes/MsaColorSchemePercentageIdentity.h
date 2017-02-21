@@ -32,7 +32,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MsaColorSchemePercentageIdentity : public MsaColorScheme {
     Q_OBJECT
 public:
-    MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MAlignmentObject *maObj);
+    MsaColorSchemePercentageIdentity(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
     QColor getColor(int seq, int pos, char c) const;
 
@@ -56,7 +56,7 @@ class MsaColorSchemePercentageIdentityFactory : public MsaColorSchemeFactory {
 public:
     MsaColorSchemePercentageIdentityFactory(QObject *parent, const QString &id, const QString &name, DNAAlphabetType alphabetType);
 
-    MsaColorScheme * create(QObject *parent, MAlignmentObject *maObj) const;
+    MsaColorScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const;
 };
 
 

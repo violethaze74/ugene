@@ -66,7 +66,7 @@ static ObjectType toObjectType( U2::GObjectType type ) {
     ObjectType result = UNSUPPORTED;
     if ( U2::GObjectTypes::SEQUENCE == type ) {
         result = SEQUENCE;
-    } else if ( U2::GObjectTypes::MULTIPLE_ALIGNMENT == type ) {
+    } else if ( U2::GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT == type ) {
         result = MSA;
     }
     return result;

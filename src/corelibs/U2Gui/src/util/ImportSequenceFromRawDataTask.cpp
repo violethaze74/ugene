@@ -45,7 +45,7 @@ const U2EntityRef & ImportSequenceFromRawDataTask::getEntityRef() const {
 }
 
 void ImportSequenceFromRawDataTask::run() {
-    sequenceRef = U2SequenceUtils::import(dbiRef, folder, sequence, stateInfo);
+    sequenceRef = U2SequenceUtils::import(stateInfo, dbiRef, folder, sequence);
 }
 
 }   // namespace U2

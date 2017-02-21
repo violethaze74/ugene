@@ -23,6 +23,8 @@
 #include <QSplitter>
 #include <QTableView>
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Designer/MarkerEditorWidget.h>
 
 #include <U2Lang/BaseTypes.h>

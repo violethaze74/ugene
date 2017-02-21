@@ -58,11 +58,11 @@ PhyMLSupport::PhyMLSupport(const QString& name) : ExternalTool(name)
 ////////////////////////////////////////
 //PhyMLAdapter
 
-Task* PhyMLAdapter::createCalculatePhyTreeTask(const MAlignment& ma, const CreatePhyTreeSettings& s) {
+Task* PhyMLAdapter::createCalculatePhyTreeTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s) {
     return new PhyMLSupportTask(ma, s);
 }
 
-CreatePhyTreeWidget * PhyMLAdapter::createPhyTreeSettingsWidget(const MAlignment &ma, QWidget *parent) {
+CreatePhyTreeWidget * PhyMLAdapter::createPhyTreeSettingsWidget(const MultipleSequenceAlignment &ma, QWidget *parent) {
     return new PhyMlWidget(ma, parent);
 }
 

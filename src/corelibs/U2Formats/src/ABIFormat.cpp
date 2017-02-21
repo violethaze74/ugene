@@ -882,6 +882,7 @@ skip_bases:
     }
 
     /* SUCCESS */
+    cd.name = sequenceName.isEmpty() ? "chromatogram" : sequenceName + " chromatogram";
     cd.hasQV = true;
     cd.seqLength = sequence.size();
     assert(sequence.size() == int(numBases));

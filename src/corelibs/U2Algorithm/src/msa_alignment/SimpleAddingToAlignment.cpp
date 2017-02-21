@@ -19,15 +19,18 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
+
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/MAlignmentExporter.h>
-#include <U2Core/MAlignmentObject.h>
-#include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MSAUtils.h>
+#include <U2Core/MsaDbiUtils.h>
+#include <U2Core/MultipleSequenceAlignmentExporter.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2SafePoints.h>
+
 #include "SimpleAddingToAlignment.h"
-#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
 namespace U2 {
 
@@ -36,12 +39,12 @@ namespace U2 {
 /************************************************************************/
 SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignmentTaskSettings& settings)
     : AbstractAlignmentTask("Simple add to alignment task", TaskFlags_NR_FOSCOE), settings(settings) {
-        GCOUNTER(cvar, tvar, "SimpleAddToAlignmentTask" );
+    GCOUNTER(cvar, tvar, "SimpleAddToAlignmentTask" );
 
-        SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"),);
+    SAFE_POINT_EXT(settings.isValid(), setError("Incorrect settings were passed into SimpleAddToAlignmentTask"),);
 
-        MAlignmentExporter alnExporter;
-        inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
+    MultipleSequenceAlignmentExporter alnExporter;
+    inputMsa = alnExporter.getAlignment(settings.msaRef.dbiRef, settings.msaRef.entityId, stateInfo);
 }
 
 void SimpleAddToAlignmentTask::prepare()
@@ -70,7 +73,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     U2UseCommonUserModStep modStep(settings.msaRef, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
     U2MsaDbi *dbi = modStep.getDbi()->getMsaDbi();
-    int posInMsa = inputMsa.getNumRows();
+    int posInMsa = inputMsa->getNumRows();
 
 
     dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
@@ -101,7 +104,7 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
 /* BestPositionFindTask */
 /************************************************************************/
 
-BestPositionFindTask::BestPositionFindTask(const MAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId)
+BestPositionFindTask::BestPositionFindTask(const MultipleSequenceAlignment& alignment, const U2EntityRef& sequenceRef, const QString& sequenceId, int referenceRowId)
 : Task(tr("Best position find task"), TaskFlag_None), inputMsa(alignment), sequenceRef(sequenceRef), sequenceId(sequenceId), bestPosition(0), referenceRowId(referenceRowId) {
 
 }
@@ -113,36 +116,36 @@ void BestPositionFindTask::run() {
     if(sequence.isEmpty()) {
         return;
     }
-    if(!inputMsa.getAlphabet()->isCaseSensitive()) {
+    if(!inputMsa->getAlphabet()->isCaseSensitive()) {
         sequence = sequence.toUpper();
     }
-    const int aliLen = inputMsa.getLength();
-    const int nSeq = inputMsa.getNumRows();
+    const int aliLen = inputMsa->getLength();
+    const int nSeq = inputMsa->getNumRows();
 
     int similarity = 0;
 
     if(referenceRowId >= 0) {
-        const MAlignmentRow &row = inputMsa.getRow(referenceRowId);
+        const MultipleSequenceAlignmentRow row = inputMsa->getMsaRow(referenceRowId);
         int iterationsNum = aliLen - sequence.length() + 1;
         for (int p = 0; p < iterationsNum; p++ ) {
             stateInfo.setProgress(100 * p / iterationsNum);
-            char c = row.charAt(p);
+            char c = row->charAt(p);
             int selLength = 0;
             int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
-            if (MAlignment_GapChar != c && patternSimilarity > similarity) {
+            if (U2Msa::GAP_CHAR != c && patternSimilarity > similarity) {
                 similarity = patternSimilarity;
                 bestPosition = p;
             }
         }
     } else {
         int processedRows = 0;
-        foreach(const MAlignmentRow &row, inputMsa.getRows()) {
+        foreach(const MultipleSequenceAlignmentRow &row, inputMsa->getMsaRows()) {
             stateInfo.setProgress(100 * processedRows / nSeq);
             for (int p = 0; p < ( aliLen - sequence.length() + 1 ); p++ ) {
-                char c = row.charAt(p);
+                char c = row->charAt(p);
                 int selLength = 0;
                 int patternSimilarity = MSAUtils::getPatternSimilarityIgnoreGaps(row, p, sequence, selLength);
-                if (MAlignment_GapChar != c && patternSimilarity > similarity) {
+                if (U2Msa::GAP_CHAR != c && patternSimilarity > similarity) {
                     similarity = patternSimilarity;
                     bestPosition = p;
                 }

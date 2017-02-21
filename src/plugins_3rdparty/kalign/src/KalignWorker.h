@@ -56,7 +56,7 @@ private:
     KalignTaskSettings cfg;
 
 private:
-    void send(const MAlignment &msa);
+    void send(const MultipleSequenceAlignment &msa);
 }; 
 
 class KalignWorkerFactory : public DomainFactory {

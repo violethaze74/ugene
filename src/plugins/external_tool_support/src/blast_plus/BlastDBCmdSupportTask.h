@@ -28,7 +28,7 @@
 #include <U2Core/SaveDocumentTask.h>
 #include "utils/ExportTasks.h"
 
-#include <U2Core/MAlignmentObject.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
 

@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/U2SafePoints.h>
+
 #include <U2Lang/HRSchemaSerializer.h>
 
 #include "ActorScriptValidator.h"
-
 #include "ActorValidator.h"
 
 namespace U2 {

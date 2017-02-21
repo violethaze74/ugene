@@ -89,7 +89,7 @@ MatrixAndLogoController::MatrixAndLogoController( PFMatrix matrix, QWidget *p):Q
     }
 
     const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    MAlignment ma(QString("Temporary alignment"), al);
+    MultipleSequenceAlignment ma(QString("Temporary alignment"), al);
     for (int i = 0; i < size; i++) {
         QByteArray arr;
         for (int j = 0; j < len; j++) {
@@ -109,9 +109,7 @@ MatrixAndLogoController::MatrixAndLogoController( PFMatrix matrix, QWidget *p):Q
                 }
             }
         }
-        U2OpStatus2Log os;
-        ma.addRow(QString("Row %1").arg(i), arr, os);
-        CHECK_OP(os, );
+        ma->addRow(QString("Row %1").arg(i), arr);
     }
     AlignmentLogoSettings logoSettings(ma);
     logoWidget->resize(logowidth, logoheight);

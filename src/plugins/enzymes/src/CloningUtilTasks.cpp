@@ -660,7 +660,7 @@ void LigateFragmentsTask::createDocument(const QByteArray& seq, const QList<Shar
     resultDoc = df->createNewLoadedDocument(iof, cfg.docUrl, stateInfo);
     CHECK_OP(stateInfo,);
 
-    U2EntityRef seqRef = U2SequenceUtils::import(resultDoc->getDbiRef(), dna, stateInfo);
+    U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, resultDoc->getDbiRef(), dna);
     CHECK_OP_EXT(stateInfo, delete resultDoc; resultDoc = NULL,);
 
     U2SequenceObject* dnaObj = new U2SequenceObject(seqName, seqRef);

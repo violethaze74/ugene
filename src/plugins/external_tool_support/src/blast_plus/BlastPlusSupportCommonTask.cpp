@@ -122,7 +122,7 @@ void BlastPlusSupportCommonTask::prepare(){
     tmpDoc = df->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(url), stateInfo);
     CHECK_OP(stateInfo,);
 
-    U2EntityRef seqRef = U2SequenceUtils::import(tmpDoc->getDbiRef(), DNASequence(settings.querySequence, settings.alphabet), stateInfo);
+    U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, tmpDoc->getDbiRef(), DNASequence(settings.querySequence, settings.alphabet));
     CHECK_OP(stateInfo,);
     sequenceObject = new U2SequenceObject("input sequence", seqRef);
     tmpDoc->addObject(sequenceObject);

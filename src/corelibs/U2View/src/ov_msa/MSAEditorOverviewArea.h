@@ -22,41 +22,36 @@
 #ifndef _U2_MSA_EDITOR_OVERVIEW_H_
 #define _U2_MSA_EDITOR_OVERVIEW_H_
 
+#include "Overview/MaEditorOverviewArea.h"
+
 #include <U2Core/global.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QAction>
-#include <QtGui/QWidget>
-#else
-#include <QtWidgets/QAction>
-#include <QtWidgets/QWidget>
-#endif
+#include <QAction>
+#include <QWidget>
 
 namespace U2 {
 
-class MSAEditorUI;
-class MSASimpleOverview;
-class MSAGraphOverview;
-class MSAOverviewContextMenu;
+class MaEditorWgt;
+class MaSangerOverview;
+class MaSimpleOverview;
+class MaGraphOverview;
+class MaOverviewContextMenu;
 
-class U2VIEW_EXPORT MSAEditorOverviewArea : public QWidget {
+class U2VIEW_EXPORT MSAEditorOverviewArea : public MaEditorOverviewArea {
     Q_OBJECT
 public:
-    MSAEditorOverviewArea(MSAEditorUI* ui);
-    void cancelRendering();
+    MSAEditorOverviewArea(MaEditorWgt* ui);
+
     bool isOverviewWidget(QWidget* wgt) const;
 
-    MSASimpleOverview* getSimpleOverview() const { return simpleOverview; }
-    MSAGraphOverview* getGraphOverview() const { return graphOverview; }
-
     static const QString OVERVIEW_AREA_OBJECT_NAME;
+
 public slots:
     void sl_onContextMenuRequested(const QPoint& p);
-    void sl_show();
+
 private:
-    MSASimpleOverview*  simpleOverview;
-    MSAGraphOverview*   graphOverview;
-    MSAOverviewContextMenu* contextMenu;
+    MaSimpleOverview*  simpleOverview;
+    MaOverviewContextMenu* contextMenu;
 };
 
 }

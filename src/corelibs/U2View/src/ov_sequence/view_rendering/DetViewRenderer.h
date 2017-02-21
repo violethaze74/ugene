@@ -35,7 +35,7 @@ class DetView;
 /************************************************************************/
 class DetViewRenderer : public SequenceViewAnnotatedRenderer {
 public:
-    DetViewRenderer(DetView* detView, ADVSequenceObjectContext* ctx);
+    DetViewRenderer(DetView* detView, SequenceObjectContext* ctx);
     virtual ~DetViewRenderer() {}
 
     double getCurrentScale() const;
@@ -60,7 +60,7 @@ protected:
 /************************************************************************/
 class DetViewRendererFactory {
 public:
-    static DetViewRenderer* createRenderer(DetView* detView, ADVSequenceObjectContext* ctx, bool multiLine = false);
+    static DetViewRenderer* createRenderer(DetView* detView, SequenceObjectContext* ctx, bool multiLine = false);
 };
 
 } // namespace

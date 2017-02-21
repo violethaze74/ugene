@@ -21,7 +21,7 @@
 
 #include "MSAConsensusAlgorithmClustal.h"
 
-#include <U2Core/MAlignment.h>
+#include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/DNAAlphabet.h>
 
 namespace U2 {
@@ -35,25 +35,24 @@ QString MSAConsensusAlgorithmFactoryClustal::getName() const {
 }
 
 
-MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MAlignment&, QObject* p) {
+MSAConsensusAlgorithm* MSAConsensusAlgorithmFactoryClustal::createAlgorithm(const MultipleAlignment&, QObject* p) {
     return new MSAConsensusAlgorithmClustal(this, p);
 }
 
 //////////////////////////////////////////////////////////////////////////
 //Algorithm
 
-char MSAConsensusAlgorithmClustal::getConsensusChar(const MAlignment& msa, int pos, const QVector<qint64> &seqIdx) const {
-    if (!msa.getAlphabet()->isAmino()) {
+char MSAConsensusAlgorithmClustal::getConsensusChar(const MultipleAlignment& ma, int pos, const QVector<qint64> &seqIdx) const {
+    if (!ma->getAlphabet()->isAmino()) {
         // for nucleic alphabet work as strict algorithm but use ' ' as default
         char  defChar = ' ';
-        char pc = ( seqIdx.isEmpty() ? msa.getRows().first() : msa.getRows()[ seqIdx[0] ] ).charAt(pos);
-        if (pc == MAlignment_GapChar) {
+        char pc = ( seqIdx.isEmpty() ? ma->getRows().first() : ma->getRows()[ seqIdx[0] ] )->charAt(pos);
+        if (pc == U2Msa::GAP_CHAR) {
             pc = defChar;
         }
-        int nSeq =( seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size());
+        int nSeq =( seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
         for (int s = 1; s < nSeq; s++) {
-            const MAlignmentRow& row = msa.getRow( seqIdx.isEmpty() ? s : seqIdx [s] );
-            char c = row.charAt(pos);
+            char c = ma->getRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
             if (c != pc) {
                 pc = defChar;
                 break;
@@ -75,17 +74,16 @@ char MSAConsensusAlgorithmClustal::getConsensusChar(const MAlignment& msa, int p
         static int maxWeakGroupLen = 6;
 
         QByteArray currentGroup; //TODO: optimize 'currentGroup' related code!
-        int nSeq =( seqIdx.isEmpty() ? msa.getNumRows() : seqIdx.size());
+        int nSeq =( seqIdx.isEmpty() ? ma->getNumRows() : seqIdx.size());
         for (int s = 0; s < nSeq; s++) {
-            const MAlignmentRow& row = msa.getRow( seqIdx.isEmpty() ? s : seqIdx [s] );
-            char c = row.charAt(pos);
+            char c = ma->getRow(seqIdx.isEmpty() ? s : seqIdx[s])->charAt(pos);
             if (!currentGroup.contains(c)) {
                 currentGroup.append(c);
             }
         }
-        char consChar = MAlignment_GapChar;
+        char consChar = U2Msa::GAP_CHAR;
         if (currentGroup.size() == 1) {
-            consChar = (currentGroup[0] == MAlignment_GapChar) ? ' ' : '*';
+            consChar = (currentGroup[0] == U2Msa::GAP_CHAR) ? ' ' : '*';
         } else  {
             bool ok = false;
             int currentLen = currentGroup.length();

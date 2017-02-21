@@ -74,6 +74,8 @@ public:
 
     virtual U2FeatureDbi* getFeatureDbi() {return NULL;}
 
+    virtual U2McaDbi* getMcaDbi() {return NULL;}
+
     virtual U2MsaDbi* getMsaDbi() {return NULL;}
 
     virtual U2AssemblyDbi* getAssemblyDbi() {return NULL;}
