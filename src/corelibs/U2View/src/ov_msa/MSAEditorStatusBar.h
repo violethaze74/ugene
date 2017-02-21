@@ -34,10 +34,12 @@
 
 namespace U2 {
 
+class DNAAlphabet;
 class MultipleAlignmentObject;
 class MaModificationInfo;
 class MaEditorSequenceArea;
 class MaEditorSelection;
+class MSASearchValidator;
 
 class MSAEditorStatusWidget : public QWidget {
     Q_OBJECT
@@ -50,6 +52,7 @@ private slots:
     void sl_alignmentChanged() {updateCoords();}
     void sl_lockStateChanged() {updateLock();}
     void sl_selectionChanged(const MaEditorSelection& , const MaEditorSelection& ){updateCoords();}
+    void sl_alphabetChanged();
     void sl_findNext();
     void sl_findPrev();
     void sl_findFocus();

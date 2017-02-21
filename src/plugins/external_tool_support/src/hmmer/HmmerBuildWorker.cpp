@@ -22,7 +22,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/Log.h>
-#include <U2Core/MAlignment.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -63,7 +62,7 @@ void HmmerBuildWorkerFactory::init() {
         Descriptor id(BasePorts::IN_MSA_PORT_ID(), HmmerBuildWorker::tr("Input MSA"),
             HmmerBuildWorker::tr("Input multiple sequence alignment for building statistical model."));
         Descriptor od(OUT_HMM_URL_PORT_ID, HmmerBuildWorker::tr("HMM3 profile"), HmmerBuildWorker::tr("Produced HMM3 profile URL"));
-        
+
         QMap<Descriptor, DataTypePtr> inM;
         inM[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
         p << new PortDescriptor(id, DataTypePtr(new MapDataType("hmm3.build.in", inM)), true /*input*/);
@@ -81,7 +80,7 @@ void HmmerBuildWorkerFactory::init() {
         " about how conserved each column of the alignment is, and which residues are likely."));
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     QMap<QString, PropertyDelegate *> delegates;
-    
+
     {
         QVariantMap m;
         m["minimum"] = 0;
@@ -171,7 +170,7 @@ Task * HmmerBuildWorker::tick() {
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
         SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
-        
+
         cfg.profileUrl = monitor()->outputDir() + "hmmer_build/" + QFileInfo(context->getMetadataStorage().get(inputMessage.getMetadataId()).getFileUrl()).baseName() + ".hmm";
         HmmerBuildFromMsaTask *task = new HmmerBuildFromMsaTask(cfg, msa);
         task->addListeners(createLogListeners());
