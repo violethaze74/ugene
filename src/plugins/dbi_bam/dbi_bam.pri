@@ -14,7 +14,7 @@ use_bundled_zlib() {
 
 LIBS += -lugenedb -lsamtools
 
-win32-msvc2013 {
+win32-msvc2013|win32-msvc2015 {
     DEFINES += NOMINMAX _XKEYCHECK_H
     LIBS += -lzlib
 }
@@ -34,7 +34,7 @@ win32:DEFINES += _USE_MATH_DEFINES "inline=__inline" "__func__=__FUNCTION__" "R_
         LIBS -= -lugenedb -lsamtools
         LIBS += -lugenedbd -lsamtoolsd
 
-        win32-msvc2013 {
+        win32-msvc2013|win32-msvc2015 {
             LIBS -= -lzlib
             LIBS += -lzlibd
         }

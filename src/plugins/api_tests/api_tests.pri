@@ -21,7 +21,7 @@ win32:INCLUDEPATH += ../../libs_3rdparty/samtools/src/samtools/win32
 win32:LIBS += -lws2_32
 win32:DEFINES += _USE_MATH_DEFINES "inline=__inline" "__func__=__FUNCTION__" "R_OK=4" "atoll=_atoi64" "alloca=_alloca"
 
-win32-msvc2013 {
+win32-msvc2013|win32-msvc2015 {
     DEFINES += NOMINMAX _XKEYCHECK_H
     LIBS += -L../../_release -lzlib
 }
@@ -31,7 +31,7 @@ win32-msvc2013 {
         LIBS -= -lsamtools -L../../_release -lU2Script
         LIBS += -lsamtoolsd -L../../_debug -lU2Scriptd
 
-        win32-msvc2013 {
+        win32-msvc2013|win32-msvc2015 {
             LIBS -= -L../../_release -lzlib
             LIBS += -L../../_debug -lzlibd
         }
