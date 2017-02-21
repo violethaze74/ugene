@@ -195,12 +195,20 @@ void OpenViewTask::prepare()
         }
 
         if (res.isEmpty()) {
-            // no view can be opened -> check another special case: loaded object contains assemblies with their references
-            // -> load assemblies and their references and open view for the first assembly;
-            QList<GObject*> objList = doc->findGObjectByType(GObjectTypes::ASSEMBLY);
-            if (!objList.isEmpty()) {
+            // no view can be opened -> check another special cases: loaded object contains
+            // 1. assemblies with their references
+            // 2. multiple chromatogram alignment with a reference
+            // -> load assemblies/mca and their references and open view for the first object;
+            QList<GObject*> objectsToOpen;
+
+            objectsToOpen << doc->findGObjectByType(GObjectTypes::ASSEMBLY);
+            if (objectsToOpen.isEmpty()) {
+                objectsToOpen << doc->findGObjectByType(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT);
+            }
+
+            if (!objectsToOpen.isEmpty()) {
                 GObjectSelection os2;
-                os2.addToSelection(objList.first());
+                os2.addToSelection(objectsToOpen.first());
                 MultiGSelection ms2;
                 ms2.addSelection(&os2);
 
