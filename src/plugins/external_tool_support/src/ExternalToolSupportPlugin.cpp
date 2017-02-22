@@ -111,6 +111,7 @@
 #include "hmmer/HmmerSearchWorker.h"
 #include "hmmer/HmmerSupport.h"
 #include "hmmer/HmmerSearchTask.h"
+#include "hmmer/HmmerTests.h"
 #include "java/JavaSupport.h"
 #include "macs/MACSSupport.h"
 #include "macs/MACSWorker.h"
