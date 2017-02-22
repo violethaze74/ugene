@@ -280,8 +280,6 @@ QList<Task*> AlignToReferenceBlastTask::onSubTaskFinished(Task *subTask) {
         SAFE_POINT_EXT(NULL != referenceSequenceObject, setError("Result reference sequence object is NULL"), result);
         document->addObject(referenceSequenceObject);
 
-        mcaObject->setLength(stateInfo, qMax(mcaObject->getLength(), referenceSequenceObject->getSequenceLength()));
-        CHECK_OP(stateInfo, result);
         mcaObject->addObjectRelation(GObjectRelation(GObjectReference(referenceSequenceObject), ObjectRole_ReferenceSequence));
 
         saveTask = new SaveDocumentTask(document.take(), SaveDocFlags(SaveDoc_DestroyAfter) | SaveDoc_Roll);

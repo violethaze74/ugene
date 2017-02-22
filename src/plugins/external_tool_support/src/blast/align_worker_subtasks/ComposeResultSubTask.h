@@ -57,10 +57,9 @@ private:
     BlastAndSwReadTask * getBlastSwTask(int readNum);
     DNASequence getReadSequence(int readNum);
     DNAChromatogram getReadChromatogram(int readNum);
-    DNASequence getReferenceSequence();
     U2MsaRowGapModel getReferenceGaps();
     U2MsaRowGapModel getShiftedGaps(int rowNum);
-    void insertShiftedGapsIntoReference(U2SequenceObject* reference, const U2MsaRowGapModel &gaps);
+    void insertShiftedGapsIntoReference();
     void insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps);
     void createAlignmentAndAnnotations();
     U2Region getReadRegion(const MultipleChromatogramAlignmentRow &readRow, const U2MsaRowGapModel &referenceGapModel) const;
@@ -72,6 +71,7 @@ private:
     const QList<BlastAndSwReadTask*> subTasks;
     DbiDataStorage *storage;
     MultipleChromatogramAlignmentObject *mcaObject;
+    U2SequenceObject *referenceSequenceObject;
     SharedDbiDataHandler annotations;
 };
 

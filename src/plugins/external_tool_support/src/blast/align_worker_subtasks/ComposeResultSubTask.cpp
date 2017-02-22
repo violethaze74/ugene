@@ -64,13 +64,15 @@ ComposeResultSubTask::ComposeResultSubTask(const SharedDbiDataHandler &reference
       reads(reads),
       subTasks(subTasks),
       storage(storage),
-      mcaObject(NULL)
+      mcaObject(NULL),
+      referenceSequenceObject(NULL)
 {
     tpm = Task::Progress_Manual;
 }
 
 ComposeResultSubTask::~ComposeResultSubTask() {
     delete mcaObject;
+    delete referenceSequenceObject;
 }
 
 void ComposeResultSubTask::prepare() {
@@ -87,15 +89,19 @@ void ComposeResultSubTask::prepare() {
 }
 
 void ComposeResultSubTask::run() {
+    referenceSequenceObject = StorageUtils::getSequenceObject(storage, reference);
+    CHECK_EXT(NULL != referenceSequenceObject, setError(L10N::nullPointerError("reference sequence object")), );
+
     createAlignmentAndAnnotations();
     CHECK_OP(stateInfo, );
 
-    QScopedPointer<U2SequenceObject> reference(StorageUtils::getSequenceObject(storage, this->reference));
-    CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), );
-
-    U2MsaRowGapModel referenceGaps = getReferenceGaps();
+    insertShiftedGapsIntoReference();
     CHECK_OP(stateInfo, );
-    insertShiftedGapsIntoReference(reference.data(), referenceGaps);
+
+    mcaObject->enlargeLength(stateInfo, qMax(mcaObject->getLength(), referenceSequenceObject->getSequenceLength()));
+    CHECK_OP(stateInfo, );
+
+    referenceSequenceObject->moveToThread(thread());
 }
 
 const SharedDbiDataHandler& ComposeResultSubTask::getAnnotations() const {
@@ -103,8 +109,8 @@ const SharedDbiDataHandler& ComposeResultSubTask::getAnnotations() const {
 }
 
 U2SequenceObject *ComposeResultSubTask::takeReferenceSequenceObject() {
-    U2SequenceObject *reference = StorageUtils::getSequenceObject(storage, this->reference);
-    CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), NULL);
+    U2SequenceObject *reference = referenceSequenceObject;
+    referenceSequenceObject = NULL;
     return reference;
 }
 
@@ -116,16 +122,13 @@ MultipleChromatogramAlignmentObject *ComposeResultSubTask::takeMcaObject() {
 
 void ComposeResultSubTask::createAlignmentAndAnnotations() {
     MultipleChromatogramAlignment result("Aligned reads");
-
-    DNASequence referenceSeq = getReferenceSequence();
-    CHECK_OP(stateInfo, );
-    result->setAlphabet(referenceSeq.alphabet);
+    result->setAlphabet(referenceSequenceObject->getAlphabet());
 
     U2MsaRowGapModel referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, );
 
     // initialize annotations table on reference
-    QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceSeq.getName() + " features", storage->getDbiRef()));
+    QScopedPointer<AnnotationTableObject> annsObject(new AnnotationTableObject(referenceSequenceObject->getSequenceName() + " features", storage->getDbiRef()));
     QList<SharedAnnotationData> anns;
 
     int rowsCounter = 0;
@@ -266,14 +269,6 @@ DNAChromatogram ComposeResultSubTask::getReadChromatogram(int readNum) {
     return chromatogram;
 }
 
-DNASequence ComposeResultSubTask::getReferenceSequence() {
-    QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
-    CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("Reference sequence")), DNASequence());
-    DNASequence seq = refObject->getWholeSequence(stateInfo);
-    CHECK_OP(stateInfo, DNASequence());
-    return seq;
-}
-
 namespace {
     bool compare(const U2MsaGap &gap1, const U2MsaGap &gap2) {
         return gap1.offset < gap2.offset;
@@ -305,11 +300,17 @@ U2MsaRowGapModel ComposeResultSubTask::getShiftedGaps(int rowNum) {
     return result;
 }
 
-void ComposeResultSubTask::insertShiftedGapsIntoReference(U2SequenceObject* reference, const U2MsaRowGapModel &gaps) {
+void ComposeResultSubTask::insertShiftedGapsIntoReference() {
+    QScopedPointer<U2SequenceObject> reference(StorageUtils::getSequenceObject(storage, this->reference));
+    CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), );
+
+    U2MsaRowGapModel referenceGaps = getReferenceGaps();
+    CHECK_OP(stateInfo, );
+
     DNASequence dnaSeq = reference->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, );
-    for (int i = gaps.size() - 1; i >= 0; i--) {
-        U2MsaGap gap = gaps[i];
+    for (int i = referenceGaps.size() - 1; i >= 0; i--) {
+        U2MsaGap gap = referenceGaps[i];
         dnaSeq.seq.insert(gap.offset, &U2Msa::GAP_CHAR, gap.gap);
     }
     reference->setWholeSequence(dnaSeq);

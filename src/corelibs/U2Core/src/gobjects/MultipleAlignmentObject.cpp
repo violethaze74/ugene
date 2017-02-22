@@ -216,10 +216,10 @@ void MultipleAlignmentObject::updateRowsOrder(U2OpStatus &os, const QList<qint64
     updateCachedMultipleAlignment(mi);
 }
 
-void MultipleAlignmentObject::setLength(U2OpStatus &os, qint64 newLength) {
+void MultipleAlignmentObject::enlargeLength(U2OpStatus &os, qint64 newLength) {
     const qint64 length = getLength();
     CHECK(length != newLength, );
-    SAFE_POINT(length < newLength, "Currently the length cannot be reduced with this method", );
+    CHECK_EXT(length < newLength, os.setError("New length should be greater than the current"), );
 
     MsaDbiUtils::updateMsaLength(getEntityRef(), newLength, os);
     CHECK_OP(os, );
