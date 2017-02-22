@@ -52,7 +52,7 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
     files-conversion {
         type:files-conversion;
         name:"Convert to BAM";
-        document-format:BAM;
+        document-format:bam;
         out-mode:0;
     }
     merge-bam {

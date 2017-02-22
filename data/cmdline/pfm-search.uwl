@@ -28,7 +28,7 @@ workflow "Search frequency matrix"{
     write-genbank {
         type:write-sequence;
         name:"Write Genbank";
-        document-format:Genbank;
+        document-format:genbank;
     }
 
 

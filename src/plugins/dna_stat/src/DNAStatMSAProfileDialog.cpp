@@ -39,8 +39,8 @@
 
 namespace U2 {
 
-const QString DNAStatMSAProfileDialog::HTML = "HTML";
-const QString DNAStatMSAProfileDialog::CSV = "CSV";
+const QString DNAStatMSAProfileDialog::HTML = "html";
+const QString DNAStatMSAProfileDialog::CSV = "csv";
 
 DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MSAEditor* _c)
     : QDialog(p),
