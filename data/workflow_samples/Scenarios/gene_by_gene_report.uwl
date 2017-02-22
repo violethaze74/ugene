@@ -24,7 +24,7 @@ workflow "Gene-by-gene approach for characterization of genomes"{
     write-sequence {
         type:write-sequence;
         name:"Write Sequence";
-        document-format:Genbank;
+        document-format:genbank;
         url-out:annotated_sequence.gb;
     }
     genebygene-report-id {

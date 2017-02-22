@@ -112,7 +112,7 @@ bool DocumentFormatRegistryImpl::unregisterFormat(DocumentFormat* f) {
 
 DocumentFormat* DocumentFormatRegistryImpl::getFormatById(DocumentFormatId id) const {
     foreach (DocumentFormat* f, formats) {
-        if (f->getFormatId() == id) {
+        if (BaseDocumentFormats::equal(f->getFormatId(), id)) {
             return f;
         }
     }
