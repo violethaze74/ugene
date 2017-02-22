@@ -41,7 +41,7 @@ const QString GTest_UHMMER3Build::SEED_OPTION_TAG = "seed";
 const QString GTest_UHMMER3Build::MODEL_CONSTRUCTION_OPTION_TAG = "mc";
 const QString GTest_UHMMER3Build::RELATIVE_WEIGHTING_OPTION_TAG = "rw";
 const QString GTest_UHMMER3Build::EFFECTIVE_WEIGHTING_OPTION_TAG = "ew";
-const QString GTest_UHMMER3Build::E_VALUE_CALIBATION_OPTION_TAG = "eval";
+const QString GTest_UHMMER3Build::E_VALUE_CALIBRATION_OPTION_TAG = "eval";
 
 float infinity() {
     return std::numeric_limits< float >::infinity();
@@ -246,7 +246,7 @@ void GTest_UHMMER3Build::setBuildSettings(HmmerBuildSettings & settings, const Q
     setModelConstructionOption(settings, ti, el.attribute(MODEL_CONSTRUCTION_OPTION_TAG));
     setRelativeWeightingOption(settings, ti, el.attribute(RELATIVE_WEIGHTING_OPTION_TAG));
     setEffectiveWeightingOption(settings, ti, el.attribute(EFFECTIVE_WEIGHTING_OPTION_TAG));
-    setEvalueCalibrationOption(settings, ti, el.attribute(E_VALUE_CALIBATION_OPTION_TAG));
+    setEvalueCalibrationOption(settings, ti, el.attribute(E_VALUE_CALIBRATION_OPTION_TAG));
     setSeedOption(settings, ti, el.attribute(SEED_OPTION_TAG));
 }
 

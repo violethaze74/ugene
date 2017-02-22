@@ -34,7 +34,7 @@ void OutputCollector::addNewLogMessage(const QString& message, int messageType) 
     collectedLog.append(message);
 }
 
-QString OutputCollector::getLog() const {
+const QString& OutputCollector::getLog() const {
     return collectedLog;
 }
 

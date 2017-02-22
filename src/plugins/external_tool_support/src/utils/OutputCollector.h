@@ -32,7 +32,7 @@ class OutputCollector : public ExternalToolListener {
 public:
     OutputCollector();
     void addNewLogMessage(const QString& message, int messageType);
-    QString getLog() const;
+    const QString& getLog() const;
 private:
     bool firstLineSkipped;
     QString collectedLog;

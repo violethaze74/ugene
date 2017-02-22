@@ -45,7 +45,7 @@ public:
 
     static const QString EFFECTIVE_WEIGHTING_OPTION_TAG;/* --eent, --eclust, --enone, --eset */
 
-    static const QString E_VALUE_CALIBATION_OPTION_TAG; /*  */
+    static const QString E_VALUE_CALIBRATION_OPTION_TAG; /*  */
 
     static const QString MODEL_CONSTRUCTION_OPTION_TAG; /* --fast + symfrac and
                                                         --hand ( requires RF annotation )*/

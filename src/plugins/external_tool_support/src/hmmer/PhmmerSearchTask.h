@@ -26,14 +26,12 @@
 #include <U2Core/ExternalToolRunTask.h>
 
 #include "PhmmerSearchSettings.h"
-#include "HmmerBuildSettings.h"
 
 namespace U2 {
 
 class AnnotationTableObject;
 class HmmerParseSearchResultsTask;
 class SaveSequenceTask;
-class HmmerBuildTask;
 
 class PhmmerSearchTask : public ExternalToolSupportTask {
     Q_OBJECT

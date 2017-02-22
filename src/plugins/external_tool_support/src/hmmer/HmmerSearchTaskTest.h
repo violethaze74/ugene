@@ -22,8 +22,6 @@
 #ifndef _U2_HMMER_SEARCH_TASK_TESTS_H_
 #define _U2_HMMER_SEARCH_TASK_TESTS_H_
 
-//#include <U2Core/ExternalToolRunTask.h>
-
 #include <U2Test/GTest.h>
 #include <U2Test/XMLTestFormat.h>
 #include <U2Test/XMLTestUtils.h>
