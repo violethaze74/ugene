@@ -24,6 +24,7 @@
 
 #include <QColor>
 #include <QTimer>
+#include <QPainter>
 #include <QWidget>
 
 #include <U2Core/U2Region.h>
