@@ -32,3 +32,7 @@ macx {
     LIBS += -framework CoreServices
     DEFINES += __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__=1050
 }
+
+win32 {
+	LIBS += psapi.lib
+}
