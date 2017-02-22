@@ -28,7 +28,6 @@
 #include <U2Core/Counter.h>
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -86,9 +85,11 @@ QList<Task *> HmmerSearchTask::onSubTaskFinished(Task *subTask) {
         result << parseTask;
     } else if (subTask == parseTask) {
         removeTempDir();
-        Task *createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
-        createAnnotationsTask->setSubtaskProgressWeight(5);
-        result << createAnnotationsTask;
+        if (settings.annotationTable != NULL) {
+            Task *createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
+            createAnnotationsTask->setSubtaskProgressWeight(5);
+            result << createAnnotationsTask;
+        }
     }
 
     return result;
@@ -194,12 +195,12 @@ QStringList HmmerSearchTask::getArguments() const {
         FAIL(tr("Unknown option controlling model-specific thresholding"), arguments);
     }
 
-    arguments << "--F1" << QString::number(settings.f1);
-    arguments << "--F2" << QString::number(settings.f2);
-    arguments << "--F3" << QString::number(settings.f3);
-
     if (settings.doMax) {
         arguments << "--max";
+    } else {
+        arguments << "--F1" << QString::number(settings.f1);
+        arguments << "--F2" << QString::number(settings.f2);
+        arguments << "--F3" << QString::number(settings.f3);
     }
 
     if (settings.noBiasFilter) {
@@ -213,12 +214,14 @@ QStringList HmmerSearchTask::getArguments() const {
     arguments << "--seed" << QString::number(settings.seed);
     arguments << "--cpu" << QString::number(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
-    arguments << "--noali";
-    arguments << "--domtblout" << settings.workingDir + "/" + PER_DOMAIN_HITS_FILENAME;
+    if (settings.noali) {
+        arguments << "--noali";
+    }
 
+    arguments << "--domtblout" << settings.workingDir + "/" + PER_DOMAIN_HITS_FILENAME;
     arguments << settings.hmmProfileUrl;
     arguments << settings.sequenceUrl;
-
+    
     return arguments;
 }
 

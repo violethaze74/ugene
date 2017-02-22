@@ -60,6 +60,7 @@ public:
     bool doMax;                 // --max: Turn all heuristic filters off ( less speed more power )
     bool noBiasFilter;          // --nobias: turn off composition bias filter
     bool noNull2;               // --nonull2: turn off biased composition score corrections
+    bool noali;                 // --noali: turn off alignment writing
 
     int seed;                   // --seed : set RNG seed ( if 0: one-time arbitrary seed )
 

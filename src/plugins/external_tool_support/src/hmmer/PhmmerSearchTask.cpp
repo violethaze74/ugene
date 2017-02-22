@@ -39,6 +39,8 @@
 #include "PhmmerSearchTask.h"
 #include "utils/ExportTasks.h"
 
+#include "HmmerBuildTask.h"
+
 namespace U2 {
 
 const QString PhmmerSearchTask::INPUT_SEQUENCE_FILENAME = "input_sequence.fa";
@@ -86,9 +88,11 @@ QList<Task *> PhmmerSearchTask::onSubTaskFinished(Task *subTask) {
         result << parseTask;
     } else if (subTask == parseTask) {
         removeTempDir();
-        Task *createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
-        createAnnotationsTask->setSubtaskProgressWeight(5);
-        result << createAnnotationsTask;
+        if (settings.annotationTable != NULL) {
+            Task *createAnnotationsTask = new CreateAnnotationsTask(settings.annotationTable, parseTask->getAnnotations(), settings.pattern.groupName);
+            createAnnotationsTask->setSubtaskProgressWeight(5);
+            result << createAnnotationsTask;
+        }
     }
 
     return result;
@@ -157,30 +161,32 @@ void PhmmerSearchTask::removeTempDir() const {
 QStringList PhmmerSearchTask::getArguments() const {
     QStringList arguments;
 
-    arguments << "-E" << QString::number(settings.e);
     if (PhmmerSearchSettings::OPTION_NOT_SET != settings.t) {
         arguments << "-T" << QString::number(settings.t);
+    } else {
+        arguments << "-E" << QString::number(settings.e);
     }
 
     if (PhmmerSearchSettings::OPTION_NOT_SET != settings.z) {
         arguments << "-Z" << QString::number(settings.z);
     }
 
-    arguments << "--domE" << QString::number(settings.domE);
     if (PhmmerSearchSettings::OPTION_NOT_SET != settings.domT) {
         arguments << "--domT" << QString::number(settings.domT);
-    }
+    } else if (PhmmerSearchSettings::OPTION_NOT_SET != settings.domE) {
+        arguments << "--domE" << QString::number(settings.domE);
+    }    
 
     if (PhmmerSearchSettings::OPTION_NOT_SET != settings.domZ) {
         arguments << "--domZ" << QString::number(settings.domZ);
     }
 
-    arguments << "--F1" << QString::number(settings.f1);
-    arguments << "--F2" << QString::number(settings.f2);
-    arguments << "--F3" << QString::number(settings.f3);
-
     if (settings.doMax) {
         arguments << "--max";
+    } else {
+        arguments << "--F1" << QString::number(settings.f1);
+        arguments << "--F2" << QString::number(settings.f2);
+        arguments << "--F3" << QString::number(settings.f3);
     }
 
     if (settings.noBiasFilter) {
@@ -221,7 +227,9 @@ void PhmmerSearchTask::prepareSequenceSaveTask() {
 }
 
 void PhmmerSearchTask::preparePhmmerTask() {
-    phmmerTask = new ExternalToolRunTask(HmmerSupport::PHMMER_TOOL, getArguments(), new ExternalToolLogParser);
+    //phmmerTask = new ExternalToolRunTask(HmmerSupport::PHMMER_TOOL, getArguments(), new Hmmer3LogParser());
+    phmmerTask = new ExternalToolRunTask(HmmerSupport::PHMMER_TOOL, getArguments(), new ExternalToolLogParser());
+    setListenerForTask(phmmerTask);
     phmmerTask->setSubtaskProgressWeight(85);
 }
 

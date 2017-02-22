@@ -41,6 +41,7 @@ HmmerSearchSettings::HmmerSearchSettings()
       doMax(false),
       noBiasFilter(false),
       noNull2(false),
+      noali(true),
       seed(42),
       annotationTable(NULL)
 {

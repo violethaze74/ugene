@@ -108,8 +108,10 @@
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
 #include "hmmer/HmmerBuildWorker.h"
+#include "hmmer/HmmerSearchTask.h"
 #include "hmmer/HmmerSearchWorker.h"
 #include "hmmer/HmmerSupport.h"
+#include "hmmer/HmmerTests.h"
 #include "java/JavaSupport.h"
 #include "macs/MACSSupport.h"
 #include "macs/MACSWorker.h"
@@ -584,6 +586,21 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
 
         GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
         l->qlist = PhyMLToolTests::createTestFactories();
+
+        foreach(XMLTestFactory* f, l->qlist) {
+            bool res = xmlTestFormat->registerTestFactory(f);
+            Q_UNUSED(res);
+            assert(res);
+        }
+    }
+    {
+
+        GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+        XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+        assert(xmlTestFormat != NULL);
+
+        GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
+        l->qlist = HmmerTests::createTestFactories();
 
         foreach(XMLTestFactory* f, l->qlist) {
             bool res = xmlTestFormat->registerTestFactory(f);

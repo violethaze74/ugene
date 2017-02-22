@@ -101,16 +101,20 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/hmmer/HmmerBuildFromMsaTask.h \
            src/hmmer/HmmerBuildSettings.h \
            src/hmmer/HmmerBuildTask.h \
+           src/hmmer/HmmerBuildTaskTest.h \
            src/hmmer/HmmerBuildWorker.h \
            src/hmmer/HmmerParseSearchResultsTask.h \
            src/hmmer/HmmerSearchDialog.h \
            src/hmmer/HmmerSearchSettings.h \
            src/hmmer/HmmerSearchTask.h \
+           src/hmmer/HmmerSearchTaskTest.h \
            src/hmmer/HmmerSearchWorker.h \
            src/hmmer/HmmerSupport.h \
+           src/hmmer/HmmerTests.h \
            src/hmmer/PhmmerSearchDialog.h \
            src/hmmer/PhmmerSearchSettings.h \
            src/hmmer/PhmmerSearchTask.h \
+           src/hmmer/PhmmerSearchTaskTest.h \
            src/java/JavaSupport.h \
            src/macs/MACSSettings.h \
            src/macs/MACSSupport.h \
@@ -178,6 +182,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/utils/ExternalToolSupportAction.h \
            src/utils/ExternalToolUtils.h \
            src/utils/ExternalToolValidateTask.h \
+           src/utils/OutputCollector.h \
            src/vcftools/VcfConsensusSupport.h \
            src/vcftools/VcfConsensusSupportTask.h \
            src/vcftools/VcfConsensusWorker.h \
@@ -308,16 +313,19 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/hmmer/HmmerBuildFromMsaTask.cpp \
            src/hmmer/HmmerBuildSettings.cpp \
            src/hmmer/HmmerBuildTask.cpp \
+           src/hmmer/HmmerBuildTaskTest.cpp \
            src/hmmer/HmmerBuildWorker.cpp \
            src/hmmer/HmmerParseSearchResultsTask.cpp \
            src/hmmer/HmmerSearchDialog.cpp \
            src/hmmer/HmmerSearchSettings.cpp \
            src/hmmer/HmmerSearchTask.cpp \
+           src/hmmer/HmmerSearchTaskTest.cpp \
            src/hmmer/HmmerSearchWorker.cpp \
            src/hmmer/HmmerSupport.cpp \
            src/hmmer/PhmmerSearchDialog.cpp \
            src/hmmer/PhmmerSearchSettings.cpp \
            src/hmmer/PhmmerSearchTask.cpp \
+           src/hmmer/PhmmerSearchTaskTest.cpp \
            src/java/JavaSupport.cpp \
            src/macs/MACSSettings.cpp \
            src/macs/MACSSupport.cpp \
@@ -385,6 +393,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/utils/ExternalToolSupportAction.cpp \
            src/utils/ExternalToolUtils.cpp \
            src/utils/ExternalToolValidateTask.cpp \
+           src/utils/OutputCollector.cpp \
            src/vcftools/VcfConsensusSupport.cpp \
            src/vcftools/VcfConsensusSupportTask.cpp \
            src/vcftools/VcfConsensusWorker.cpp \
