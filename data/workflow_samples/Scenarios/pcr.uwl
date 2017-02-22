@@ -33,7 +33,7 @@ workflow "In silico PCR"{
         type:write-sequence;
         name:"Write Sequence";
         accumulate:false;
-        document-format:Genbank;
+        document-format:genbank;
     }
 
     .actor-bindings {

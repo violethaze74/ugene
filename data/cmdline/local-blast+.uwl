@@ -15,7 +15,7 @@ workflow local-blast+{
     write-genbank {
         type:write-sequence;
         name:"Write Genbank";
-        document-format:Genbank;
+        document-format:genbank;
     }
     blast-plus {
         type:blast-plus;

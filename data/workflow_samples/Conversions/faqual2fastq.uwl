@@ -25,7 +25,7 @@ workflow "Convert seq/qual pair to FASTQ"{
     write-sequence {
         type:write-sequence;
         name:"Write sequence";
-        document-format:FASTQ;
+        document-format:fastq;
         url-out:qualified_sequence.fastq;
     }
 
