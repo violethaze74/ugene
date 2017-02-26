@@ -58,7 +58,7 @@ class MsaColorSchemeFactory;
 class MsaHighlightingScheme;
 class MsaHighlightingSchemeFactory;
 
-class MaEditorSequenceArea : public QWidget {
+class U2VIEW_EXPORT MaEditorSequenceArea : public QWidget {
     Q_OBJECT
     friend class SequenceAreaRenderer;
 public:

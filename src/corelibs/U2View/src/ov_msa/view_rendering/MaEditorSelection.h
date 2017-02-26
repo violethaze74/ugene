@@ -24,6 +24,8 @@
 
 #include <QRect>
 
+#include <U2Core/global.h>
+
 namespace U2 {
 
 class MaEditorSequenceArea;
@@ -31,7 +33,7 @@ class MaEditorSequenceArea;
 /************************************************************************/
 /* MaEditorSelection */
 /************************************************************************/
-class MaEditorSelection {
+class U2VIEW_EXPORT MaEditorSelection {
 public:
     MaEditorSelection();
     MaEditorSelection(int left, int top, int width, int height);
