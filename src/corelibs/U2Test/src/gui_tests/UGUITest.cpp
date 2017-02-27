@@ -14,15 +14,15 @@ QString getTestDir(){
     int i = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
 #ifdef Q_OS_MAC
     if ( ok && i>1){
-        return QString("../../../../../../test%1/").arg(i-1);
+        return QString("../../../../../../test%1/general/").arg(i-1);
     }else{
-        return QString("../../../../../../test/");
+        return QString("../../../../../../test/general/");
     }
 #else
     if ( ok && i>1){
-        return QString("../../test%1/").arg(i-1);
+        return QString("../../test%1/general/").arg(i-1);
     }else{
-        return QString("../../test/");
+        return QString("../../test/general/");
     }
 #endif
 }

@@ -1236,6 +1236,20 @@ GUI_TEST_CLASS_DEFINITION(test_5499) {
     GTGlobals::sleep();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5517) {
+    //1. Open sequence
+    //2. Open build dotplot dialog
+    //3. Check both checkboxes direct and invert repeats search
+    //Expected state: UGENE not crashed
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os, 100, 0, true));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Build dotplot...", GTGlobals::UseMouse);
+    GTGlobals::sleep();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5520_1) {
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
