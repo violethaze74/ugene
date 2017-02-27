@@ -48,7 +48,7 @@ float infinity() {
 }
 
 bool isfin(float x) {
-    return !std::isnan(x) && !std::isinf(x);
+    return !isnan(x) && !isinf(x);
 }
 
 #ifdef _WINDOWS
