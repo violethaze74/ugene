@@ -75,7 +75,6 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(QObject* p, MaEdi
     connect(viewAction, SIGNAL(triggered(bool)), SLOT(sl_showOffsets(bool)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_updateOffsets()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_updateOffsets()));
-
     updateOffsets();
 }
 
@@ -228,7 +227,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
             if (showStartPos && offs == 0) {
                 p.setPen(Qt::black);
                 QRect lbr(OFFS_WIDGET_BORDER, yRange.startPos, lbw, yRange.length);
-                if (i == refSeq){
+                if (row == refSeq){
                     drawRefSequence(p, lbr);
                 }
                 p.drawText(lbr, Qt::AlignTop, "[");
