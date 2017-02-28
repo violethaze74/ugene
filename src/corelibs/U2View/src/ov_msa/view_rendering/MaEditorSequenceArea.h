@@ -195,11 +195,14 @@ public:
     bool drawContent(QPixmap& pixmap);
     bool drawContent(QPixmap& pixmap, const U2Region& region, const QList<qint64>& seqIdx);
 
+    void highlightCurrentSelection();
+
     QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
     MsaColorScheme * getCurrentColorScheme() const;
     MsaHighlightingScheme * getCurrentHighlightingScheme() const;
     bool getUseDotsCheckedState() const;
+
 
 public slots:
     void sl_changeColorSchemeOutside(const QString &name);
@@ -225,6 +228,9 @@ protected slots:
     void sl_setDefaultColorScheme();
     void sl_changeHighlightScheme();
 
+    void sl_replaceSelectedCharacter();
+    void sl_changeSelectionColor();
+
 signals:
     void si_startChanged(const QPoint& p, const QPoint& prev);
     void si_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
@@ -248,6 +254,9 @@ protected:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
+
+    void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
 
 protected:
     virtual void initRenderer() = 0;
@@ -273,7 +282,10 @@ protected:
 
     bool checkState() const;
 
+    void processCharacterInEditMode(QKeyEvent *e);
+    void replaceSelectedCharacter(char newCharacter);
     void exitFromEditCharacterMode();
+
     void deleteOldCustomSchemes();
 
 protected:
@@ -315,11 +327,13 @@ protected:
 
     int                 msaVersionBeforeShifting;
 
-    QAction*        useDotsAction;
+    QAction*            useDotsAction;
 
     QList<QAction*>     colorSchemeMenuActions;
     QList<QAction* >    customColorSchemeMenuActions;
     QList<QAction* >    highlightingSchemeMenuActions;
+
+    QAction*            replaceCharacterAction;
 
     // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
     // that does not fit into one method, e.g. shifting MSA region with mouse.

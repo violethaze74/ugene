@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/DbiConnection.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectTypes.h>
@@ -27,6 +28,7 @@
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentExporter.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -79,6 +81,45 @@ const MultipleChromatogramAlignment MultipleChromatogramAlignmentObject::getMcaC
 
 const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentObject::getMcaRow(int row) const {
     return getRow(row).dynamicCast<MultipleChromatogramAlignmentRow>();
+}
+
+void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
+    // SANGER_TODO: temp double code
+    coreLog.info(QString("I wanna to replace pos  %1, %2 to %3 carachter").arg(startPos).arg(rowIndex).arg(newChar));
+
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    const MultipleAlignment msa = getMultipleAlignment();
+    SAFE_POINT(rowIndex >= 0 && startPos + 1 <= msa->getLength(), "Invalid parameters", );
+    qint64 modifiedRowId = msa->getRow(rowIndex)->getRowId();
+
+    U2OpStatus2Log os;
+    if (newChar != U2Msa::GAP_CHAR) {
+        McaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
+    } else {
+        MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+    }
+    SAFE_POINT_OP(os, );
+
+    MaModificationInfo mi;
+    mi.rowContentChanged = true;
+    mi.rowListChanged = false;
+    mi.alignmentLengthChanged = false;
+    mi.modifiedRowIds << modifiedRowId;
+
+    if (newChar != ' ' && !msa->getAlphabet()->contains(newChar)) {
+        const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
+        const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alp, msa->getAlphabet());
+        SAFE_POINT(NULL != newAlphabet, "Common alphabet is NULL", );
+
+        if (newAlphabet->getId() != msa->getAlphabet()->getId()) {
+            MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
+            mi.alphabetChanged = true;
+            SAFE_POINT_OP(os, );
+        }
+    }
+
+    updateCachedMultipleAlignment(mi);
 }
 
 void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus &os) {

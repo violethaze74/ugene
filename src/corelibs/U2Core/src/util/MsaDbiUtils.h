@@ -86,6 +86,17 @@ public:
      */
     static void moveRows(const U2EntityRef& msaRef, const QList<qint64>& rowsToMove, const int delta, U2OpStatus& os);
 
+    /**
+     * Calculates start and end position in the sequence,
+     * depending on the start position in the row and the 'count' character from it
+     */
+    static void getStartAndEndSequencePositions(const QByteArray &seq, const QList<U2MsaGap> &gaps,
+        qint64 pos, qint64 count,
+        qint64& startPosInSeq, qint64& endPosInSeq);
+
+    static DbiConnection * getCheckedConnection(const U2DbiRef &dbiRef, U2OpStatus &os);
+    static bool validateRowIds(const MultipleSequenceAlignment& al, const QList<qint64>& rowIds);
+    static void validateRowIds(U2MsaDbi *msaDbi, const U2DataId &msaId, const QList<qint64>& rowIds, U2OpStatus &os);
 };
 
 class U2CORE_EXPORT MsaDbiUtils : public QObject {
@@ -208,14 +219,6 @@ private:
 
     /** If there are consecutive gaps in the gaps model, merges them into one gap */
     static void mergeConsecutiveGaps(QList<U2MsaGap>& gapModel);
-
-    /**
-     * Calculates start and end position in the sequence,
-     * depending on the start position in the row and the 'count' character from it
-     */
-    static void getStartAndEndSequencePositions(const QByteArray &seq, const QList<U2MsaGap> &gaps,
-        qint64 pos, qint64 count,
-        qint64& startPosInSeq, qint64& endPosInSeq);
 
     /** Removes chars/gaps from the row */
     static void removeCharsFromRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint64 pos, qint64 count);

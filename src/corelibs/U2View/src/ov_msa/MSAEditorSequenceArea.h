@@ -120,9 +120,6 @@ public:
 
     void deleteCurrentSelection();
 
-    void processCharacterInEditMode(QKeyEvent *e);
-    void replaceSelectedCharacter(char newCharacter);
-
     QStringList getAvailableHighlightingSchemes() const;
 
     bool hasAminoAlphabet();
@@ -131,14 +128,10 @@ private:
     // emulating cursor mode with
     void moveCursor(int dx, int dy);
 
-    void highlightCurrentSelection();
-
 public:
     QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 protected:
-    void keyPressEvent(QKeyEvent *);
-    void keyReleaseEvent(QKeyEvent *);
     void focusOutEvent(QFocusEvent* fe);
     void focusInEvent(QFocusEvent* fe);
 
@@ -152,7 +145,6 @@ private slots:
     void sl_addSeqFromFile();
     void sl_addSeqFromProject();
 
-    void sl_replaceSelectedCharacter();
     void sl_copyCurrentSelection();
     void sl_copyFormattedSelection();
     void sl_paste();
@@ -183,8 +175,6 @@ private slots:
     void sl_fontChanged(QFont font);
 
     void sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
-
-    void sl_changeSelectionColor();
 
 private:
     void initRenderer();
@@ -239,7 +229,6 @@ private:
     QAction*        sortByNameAction;
     QAction*        collapseModeSwitchAction;
     QAction*        collapseModeUpdateAction;
-    QAction*        replaceCharacterAction;
     QAction*        reverseComplementAction;
     QAction*        reverseAction;
     QAction*        complementAction;

@@ -36,6 +36,9 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     : MaEditorSequenceArea(ui, hb, vb) {
     initRenderer();
 
+    // TEST - remove the variable after fix
+    editingEnabled = true;
+
     showQVAction = new QAction(tr("Show quality bars"), this);
     showQVAction->setIcon(QIcon(":chroma_view/images/bars.png"));
     showQVAction->setCheckable(true);
@@ -203,6 +206,10 @@ void McaEditorSequenceArea::initRenderer() {
     renderer = new SequenceWithChromatogramAreaRenderer(this);
 }
 
+void McaEditorSequenceArea::updateActions() {
+    /// add separate methods smt like 'updateEditActions'
+}
+
 void McaEditorSequenceArea::drawBackground(QPainter& p) {
     SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     SAFE_POINT(r != NULL, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
@@ -214,6 +221,14 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
     SAFE_POINT(viewMenu != NULL, "viewMenu", );
     viewMenu->addAction(showQVAction);
     viewMenu->addMenu(traceActionMenu);
+
+    // SANGER_TODO
+    QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
+    SAFE_POINT(editMenu != NULL, "editMenu", );
+    QList<QAction*> actions;
+    actions /*<< insSymAction */<< replaceCharacterAction /*<< reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction*/;
+    editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
+//    editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid,

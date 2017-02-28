@@ -36,6 +36,9 @@
 #include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2SequenceUtils.h>
 
+#include <U2Core/DNASequenceUtils.h>
+#include <U2Core/U2OpStatusUtils.h>
+
 #include "McaDbiUtils.h"
 
 namespace U2 {
@@ -240,5 +243,70 @@ void McaDbiUtils::removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus&
     msaDbi->removeRow(mcaRef.entityId, rowId, os);
     // SANGER_TODO: remove chromatogram as well
 }
+
+void McaDbiUtils::replaceCharacterInRow(const U2EntityRef& msaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus& os) {
+    // Check parameters
+    CHECK_EXT(pos >= 0, os.setError(QString("Negative MSA pos: %1").arg(pos)), );
+
+    // Prepare the connection
+    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(msaRef.dbiRef, os));
+    CHECK_OP(os, );
+    U2MsaDbi* msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi* sequenceDbi = con->dbi->getSequenceDbi();
+
+    MaDbiUtils::validateRowIds(msaDbi, msaRef.entityId, QList<qint64>() << rowId, os);
+    CHECK_OP(os, );
+
+    U2MsaRow row = msaDbi->getRow(msaRef.entityId, rowId, os);
+    CHECK_OP(os, );
+    qint64 msaLength = msaDbi->getMsaLength(msaRef.entityId, os);
+    CHECK(pos < msaLength,);
+
+    U2Region seqReg(row.gstart, row.gend - row.gstart);
+    QByteArray seq = sequenceDbi->getSequenceData(row.sequenceId, seqReg, os);
+    CHECK_OP(os, );
+
+    replaceCharInRow(seq, row.gaps, pos, newChar);
+
+    // SANGER_TODO: the method drakes ugenedb file
+//    msaDbi->updateRowContent(msaRef.entityId, rowId, seq, row.gaps, os);
+//    CHECK_OP(os, );
+}
+
+void McaDbiUtils::replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint64 pos, char newChar) {
+    SAFE_POINT(pos >= 0, "Incorrect position!", );
+
+    qint64 rowLength = MsaRowUtils::getRowLengthWithoutTrailing(seq, gaps);
+
+    if (rowLength > pos) {
+        qint64 posInSeq = -1;
+        qint64 endPosInSeq = -1;
+
+        MaDbiUtils::getStartAndEndSequencePositions(seq, gaps, pos, 1, posInSeq, endPosInSeq);
+
+        coreLog.info(QString("Convert position to ungapped: %1 --> %2").arg(pos).arg(posInSeq));
+        return;
+
+        /*
+        if (posInSeq >= 0 && endPosInSeq > posInSeq) {
+            U2OpStatus2Log os;
+            DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);
+            SAFE_POINT_OP(os, );
+        } else {
+            U2OpStatus2Log os;
+            DNASequenceUtils::insertChars(seq, posInSeq, QByteArray(1, newChar), os);
+            SAFE_POINT_OP(os, );
+            calculateGapModelAfterReplaceChar(gaps, pos);
+        }*/
+    } /*else {
+        U2OpStatus2Log os;
+        seq.append(newChar);
+        SAFE_POINT_OP(os, );
+        if (pos != rowLength) {
+            calculateGapModelAfterAppendChar(gaps, pos, rowLength);
+        }
+    }*/
+}
+
 
 }   // namespace U2

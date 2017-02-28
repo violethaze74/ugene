@@ -141,6 +141,7 @@ void McaEditor::sl_onContextMenuRequested(const QPoint & pos) {
 
     addCopyMenu(&m);
     addViewMenu(&m);
+    addEditMenu(&m);
     addExportMenu(&m);
 
     m.addSeparator();

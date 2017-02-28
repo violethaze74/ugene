@@ -106,6 +106,8 @@ public:
     void updateCachedMultipleAlignment(const MaModificationInfo &mi = MaModificationInfo(), const QList<qint64> &removedRowIds = QList<qint64>());
     void sortRowsByList(const QStringList &order);
 
+    virtual void replaceCharacter(int startPos, int rowIndex, char newChar) = 0;
+
     void saveState();
     void releaseState();
 

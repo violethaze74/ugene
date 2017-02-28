@@ -45,7 +45,6 @@ class U2AttributeDbi;
 class U2CrossDatabaseReferenceDbi;
 class U2Dbi;
 class U2FeatureDbi;
-class U2McaDbi;
 class U2ModDbi;
 class U2MsaDbi;
 class U2ObjectDbi;
