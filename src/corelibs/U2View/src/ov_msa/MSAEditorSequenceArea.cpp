@@ -1442,7 +1442,7 @@ void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type
             // Split the sequence into gaps and chars
             QByteArray seqBytes;
             QList<U2MsaGap> gapModel;
-            MsaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
+            MaDbiUtils::splitBytesToCharsAndGaps(currentRowContent, seqBytes, gapModel);
 
             maObj->updateRow(os, i, name, seqBytes, gapModel);
             modifiedRowIds << currentRow->getRowId();

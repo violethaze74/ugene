@@ -21,7 +21,6 @@
 
 #include <U2Core/DatatypeSerializeUtils.h>
 #include <U2Core/DNASequenceUtils.h>
-#include <U2Core/MultipleChromatogramAlignment.h>
 #include <U2Core/MultipleSequenceAlignmentExporter.h>
 #include <U2Core/RawDataUdrSchema.h>
 #include <U2Core/U2AlphabetUtils.h>
@@ -34,7 +33,6 @@
 #include <U2Core/U2SequenceDbi.h>
 
 #include "MsaDbiUtils.h"
-#include "McaRowInnerData.h"
 
 namespace U2 {
 
@@ -84,6 +82,229 @@ bool validateCharactersCount(qint64 count) {
         return false;
     }
     return true;
+}
+
+void MaDbiUtils::splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MsaGap>& gapModel) {
+    bool previousCharIsGap = false;
+    int gapsCount = 0;
+    int gapsOffset = 0;
+
+    for (int i = 0; i < input.count(); ++i) {
+        // A char
+        if ((U2Msa::GAP_CHAR != input.at(i)))
+        {
+            if (previousCharIsGap) {
+                U2MsaGap gap(gapsOffset, gapsCount);
+                gapModel.append(gap);
+                gapsCount = 0;
+            }
+            seqBytes.append(input.at(i));
+            previousCharIsGap = false;
+        }
+        // A gap
+        else {
+            gapsCount++;
+            // A gap before the end of the row
+            if (i < input.count() - 1) {
+                if (!previousCharIsGap) {
+                    gapsOffset = i;
+                }
+                previousCharIsGap = true;
+            }
+            // A gap at the end of the row
+            else {
+                // Correct the offset if there is one gap at the end of the row
+                if (1 == gapsCount) {
+                    gapsOffset = i;
+                }
+                SAFE_POINT(gapsOffset >= 0, "Negative gap offset!", );
+                SAFE_POINT(gapsCount > 0, "Non-positive gap length!", );
+                U2MsaGap gap(gapsOffset, gapsCount);
+                gapModel.append(gap);
+            }
+        }
+    }
+
+    SAFE_POINT(-1 == seqBytes.indexOf(U2Msa::GAP_CHAR), "Row sequence contains gaps!", );
+}
+
+qint64 MaDbiUtils::getMaLength(const U2EntityRef& maRef, U2OpStatus& os) {
+    DbiConnection con(maRef.dbiRef, os);
+    CHECK_OP(os, -1);
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), -1);
+
+    qint64 length = msaDbi->getMsaLength(maRef.entityId, os);
+    CHECK_OP(os, -1);
+
+    return length;
+}
+
+void MaDbiUtils::updateMaLength(const U2EntityRef &maRef, qint64 newLen, U2OpStatus &os) {
+    // Prepare the connection
+    DbiConnection con(maRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), );
+
+    // Update the data
+    msaDbi->updateMsaLength(maRef.entityId, newLen, os);
+}
+
+U2AlphabetId MaDbiUtils::getMaAlphabet(const U2EntityRef& maRef, U2OpStatus& os) {
+    DbiConnection con(maRef.dbiRef, os);
+    CHECK_OP(os, U2AlphabetId());
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), U2AlphabetId());
+
+    U2AlphabetId alphabet = msaDbi->getMsaAlphabet(maRef.entityId, os);
+    CHECK_OP(os, U2AlphabetId());
+
+    return alphabet;
+}
+
+void MaDbiUtils::updateMaAlphabet(const U2EntityRef& maRef, const U2AlphabetId& alphabet, U2OpStatus& os) {
+    // Prepare the connection
+    SAFE_POINT_EXT(alphabet.isValid(), os.setError("Invalid alphabet was passed !"),);
+    DbiConnection con(maRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), );
+
+    // Update the data
+    msaDbi->updateMsaAlphabet(maRef.entityId, alphabet, os);
+}
+
+void MaDbiUtils::renameMa(const U2EntityRef& maRef, const QString& newName, U2OpStatus& os) {
+    if (newName.isEmpty()) {
+        os.setError(tr("Can't rename an alignment to an empty name!"));
+    }
+
+    // Prepare the connection
+    DbiConnection con(maRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!",);
+
+    // Update the name
+    msaDbi->updateMsaName(maRef.entityId, newName, os);
+}
+
+void MaDbiUtils::updateRowGapModel(const U2EntityRef& msaRef, qint64 rowId, const QList<U2MsaGap>& gaps, U2OpStatus& os) {
+    // Prepare the connection
+    DbiConnection con(msaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+
+    // Update the data
+    msaDbi->updateGapModel(msaRef.entityId, rowId, gaps, os);
+}
+
+void MaDbiUtils::updateRowsOrder(const U2EntityRef& meRef, const QList<qint64>& rowsOrder, U2OpStatus& os) {
+    // Prepare the connection
+    DbiConnection con(meRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+
+    // Update the data
+    msaDbi->setNewRowsOrder(meRef.entityId, rowsOrder, os);
+}
+
+void MaDbiUtils::renameRow(const U2EntityRef& msaRef, qint64 rowId, const QString& newName, U2OpStatus& os) {
+    if (newName.isEmpty()) {
+        os.setError(tr("Can't rename a row to an empty name!"));
+    }
+
+    // Prepare the connection
+    DbiConnection con(msaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!",);
+
+    // Update the row name
+    msaDbi->updateRowName(msaRef.entityId, rowId, newName, os);
+}
+
+void MaDbiUtils::moveRows(const U2EntityRef& msaRef, const QList<qint64>& rowsToMove, const int delta, U2OpStatus& os) {
+    DbiConnection con(msaRef.dbiRef, false, os);
+    CHECK_OP(os, );
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+
+    if (delta == 0 || rowsToMove.isEmpty()) {
+        return;
+    }
+
+    QList<U2MsaRow> rows = msaDbi->getRows(msaRef.entityId, os);
+    CHECK_OP(os, );
+
+    QList<qint64> rowIds;
+    for (int i = 0; i < rows.length(); ++i) {
+        rowIds << rows[i].rowId;
+    }
+
+    QList<QPair<int, int> > from_To;
+
+    if (delta < 0) {
+        int rowIndex = rowIds.indexOf(rowsToMove.first());
+        if (rowIndex == -1) {
+            os.setError("Invalid row list");
+            return;
+        }
+        int moveToIndex = rowIndex + delta >= 0 ? rowIndex + delta : 0;
+        from_To.append(QPair<int, int>(rowIndex, moveToIndex));
+        for (int i = 1; i < rowsToMove.length(); ++i) {
+            rowIndex = rowIds.indexOf(rowsToMove[i]);
+            if (rowIndex == -1) {
+                os.setError("Invalid row list");
+                return;
+            }
+            if (rowIndex <= from_To[i - 1].first) {
+                os.setError("List of rows to move is not ordered");
+                return;
+            }
+            moveToIndex = rowIndex + delta > from_To[i - 1].second ? rowIndex + delta : from_To[i - 1].second + 1;
+            from_To.append(QPair<int, int>(rowIndex, moveToIndex));
+        }
+    } else {
+        int rowIndex = rowIds.indexOf(rowsToMove.last());
+        if (rowIndex == -1) {
+            os.setError("Invalid row list");
+            return;
+        }
+        int moveToIndex = rowIndex + delta < rowIds.length() ? rowIndex + delta : rowIds.length() - 1;
+        from_To.append(QPair<int, int>(rowIndex, moveToIndex));
+        for (int i = 1; i < rowsToMove.length(); ++i) {
+            rowIndex = rowIds.indexOf(rowsToMove[rowsToMove.length() - i - 1]);
+            if (rowIndex == -1) {
+                os.setError("Invalid row list");
+                return;
+            }
+            if (rowIndex >= from_To[i - 1].first) {
+                os.setError("List of rows to move is not ordered");
+                return;
+            }
+            moveToIndex = rowIndex + delta < from_To[i - 1].second ? rowIndex + delta : from_To[i - 1].second - 1;
+            from_To.append(QPair<int, int>(rowIndex, moveToIndex));
+        }
+    }
+    QPair<int, int> coords;
+    foreach (coords, from_To) {
+        rowIds.move(coords.first, coords.second);
+    }
+    msaDbi->setNewRowsOrder(msaRef.entityId, rowIds, os);
+    CHECK_OP(os, );
 }
 
 /////////////////////////////////////////////////////////////////
@@ -438,7 +659,11 @@ void MsaDbiUtils::replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint6
     if (rowLength > pos) {
         qint64 posInSeq = -1;
         qint64 endPosInSeq = -1;
+
         getStartAndEndSequencePositions(seq, gaps, pos, 1, posInSeq, endPosInSeq);
+
+        coreLog.info(QString("Convert position to ungapped: %1 --> %2").arg(pos).arg(posInSeq));
+        return;
         if (posInSeq >= 0 && endPosInSeq > posInSeq) {
             U2OpStatus2Log os;
             DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);
@@ -525,49 +750,7 @@ bool MsaDbiUtils::gapInPosition(const QList<U2MsaGap>& gapModel, qint64 pos) {
 
 /////////////////////////////////////////////////////////////////
 // MSA DBI Utilities
-void MsaDbiUtils::splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MsaGap>& gapModel) {
-    bool previousCharIsGap = false;
-    int gapsCount = 0;
-    int gapsOffset = 0;
 
-    for (int i = 0; i < input.count(); ++i) {
-        // A char
-        if ((U2Msa::GAP_CHAR != input.at(i)))
-        {
-            if (previousCharIsGap) {
-                U2MsaGap gap(gapsOffset, gapsCount);
-                gapModel.append(gap);
-                gapsCount = 0;
-            }
-            seqBytes.append(input.at(i));
-            previousCharIsGap = false;
-        }
-        // A gap
-        else {
-            gapsCount++;
-            // A gap before the end of the row
-            if (i < input.count() - 1) {
-                if (!previousCharIsGap) {
-                    gapsOffset = i;
-                }
-                previousCharIsGap = true;
-            }
-            // A gap at the end of the row
-            else {
-                // Correct the offset if there is one gap at the end of the row
-                if (1 == gapsCount) {
-                    gapsOffset = i;
-                }
-                SAFE_POINT(gapsOffset >= 0, "Negative gap offset!", );
-                SAFE_POINT(gapsCount > 0, "Non-positive gap length!", );
-                U2MsaGap gap(gapsOffset, gapsCount);
-                gapModel.append(gap);
-            }
-        }
-    }
-
-    SAFE_POINT(-1 == seqBytes.indexOf(U2Msa::GAP_CHAR), "Row sequence contains gaps!", );
-}
 
 void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAlignment& al, U2OpStatus& os) {
     // Prepare the connection
@@ -703,59 +886,6 @@ void MsaDbiUtils::updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAli
     }
 }
 
-
-qint64 MsaDbiUtils::getMsaLength(const U2EntityRef& msaRef, U2OpStatus& os) {
-    DbiConnection con(msaRef.dbiRef, os);
-    CHECK_OP(os, -1);
-
-    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), -1);
-
-    qint64 length = msaDbi->getMsaLength(msaRef.entityId, os);
-    CHECK_OP(os, -1);
-
-    return length;
-}
-
-void MsaDbiUtils::updateMsaLength(const U2EntityRef &msaRef, qint64 newLen, U2OpStatus &os) {
-    // Prepare the connection
-    DbiConnection con(msaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), );
-
-    // Update the data
-    msaDbi->updateMsaLength(msaRef.entityId, newLen, os);
-}
-
-U2AlphabetId MsaDbiUtils::getMsaAlphabet(const U2EntityRef& msaRef, U2OpStatus& os) {
-    DbiConnection con(msaRef.dbiRef, os);
-    CHECK_OP(os, U2AlphabetId());
-
-    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), U2AlphabetId());
-
-    U2AlphabetId alphabet = msaDbi->getMsaAlphabet(msaRef.entityId, os);
-    CHECK_OP(os, U2AlphabetId());
-
-    return alphabet;
-}
-
-void MsaDbiUtils::updateMsaAlphabet(const U2EntityRef& msaRef, const U2AlphabetId& alphabet, U2OpStatus& os) {
-    // Prepare the connection
-    SAFE_POINT_EXT(alphabet.isValid(), os.setError("Invalid alphabet was passed !"),);
-    DbiConnection con(msaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi!"), );
-
-    // Update the data
-    msaDbi->updateMsaAlphabet(msaRef.entityId, alphabet, os);
-}
-
-
 void MsaDbiUtils::updateRowContent(const U2EntityRef& msaRef, qint64 rowId,
                                    const QByteArray& seqBytes, const QList<U2MsaGap>& gaps,
                                    U2OpStatus& os) {
@@ -768,118 +898,6 @@ void MsaDbiUtils::updateRowContent(const U2EntityRef& msaRef, qint64 rowId,
 
     // Update the data
     msaDbi->updateRowContent(msaRef.entityId, rowId, seqBytes, gaps, os);
-}
-
-void MsaDbiUtils::updateRowGapModel(const U2EntityRef& msaRef, qint64 rowId, const QList<U2MsaGap>& gaps, U2OpStatus& os) {
-    // Prepare the connection
-    DbiConnection con(msaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
-
-    // Update the data
-    msaDbi->updateGapModel(msaRef.entityId, rowId, gaps, os);
-}
-
-void MsaDbiUtils::updateRowsOrder(const U2EntityRef& msaRef, const QList<qint64>& rowsOrder, U2OpStatus& os) {
-    // Prepare the connection
-    DbiConnection con(msaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
-
-    // Update the data
-    msaDbi->setNewRowsOrder(msaRef.entityId, rowsOrder, os);
-}
-
-void MsaDbiUtils::moveRows(const U2EntityRef& msaRef, const QList<qint64>& rowsToMove, const int delta, U2OpStatus& os) {
-    DbiConnection con(msaRef.dbiRef, false, os);
-    CHECK_OP(os, );
-
-    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
-
-    if (delta == 0 || rowsToMove.isEmpty()) {
-        return;
-    }
-
-    QList<U2MsaRow> rows = msaDbi->getRows(msaRef.entityId, os);
-    CHECK_OP(os, );
-
-    QList<qint64> rowIds;
-    for (int i = 0; i < rows.length(); ++i) {
-        rowIds << rows[i].rowId;
-    }
-
-    QList<QPair<int, int> > from_To;
-
-    if (delta < 0) {
-        int rowIndex = rowIds.indexOf(rowsToMove.first());
-        if (rowIndex == -1) {
-            os.setError("Invalid row list");
-            return;
-        }
-        int moveToIndex = rowIndex + delta >= 0 ? rowIndex + delta : 0;
-        from_To.append(QPair<int, int>(rowIndex, moveToIndex));
-        for (int i = 1; i < rowsToMove.length(); ++i) {
-            rowIndex = rowIds.indexOf(rowsToMove[i]);
-            if (rowIndex == -1) {
-                os.setError("Invalid row list");
-                return;
-            }
-            if (rowIndex <= from_To[i - 1].first) {
-                os.setError("List of rows to move is not ordered");
-                return;
-            }
-            moveToIndex = rowIndex + delta > from_To[i - 1].second ? rowIndex + delta : from_To[i - 1].second + 1;
-            from_To.append(QPair<int, int>(rowIndex, moveToIndex));
-        }
-    } else {
-        int rowIndex = rowIds.indexOf(rowsToMove.last());
-        if (rowIndex == -1) {
-            os.setError("Invalid row list");
-            return;
-        }
-        int moveToIndex = rowIndex + delta < rowIds.length() ? rowIndex + delta : rowIds.length() - 1;
-        from_To.append(QPair<int, int>(rowIndex, moveToIndex));
-        for (int i = 1; i < rowsToMove.length(); ++i) {
-            rowIndex = rowIds.indexOf(rowsToMove[rowsToMove.length() - i - 1]);
-            if (rowIndex == -1) {
-                os.setError("Invalid row list");
-                return;
-            }
-            if (rowIndex >= from_To[i - 1].first) {
-                os.setError("List of rows to move is not ordered");
-                return;
-            }
-            moveToIndex = rowIndex + delta < from_To[i - 1].second ? rowIndex + delta : from_To[i - 1].second - 1;
-            from_To.append(QPair<int, int>(rowIndex, moveToIndex));
-        }
-    }
-    QPair<int, int> coords;
-    foreach (coords, from_To) {
-        rowIds.move(coords.first, coords.second);
-    }
-    msaDbi->setNewRowsOrder(msaRef.entityId, rowIds, os);
-    CHECK_OP(os, );
-}
-
-void MsaDbiUtils::renameMsa(const U2EntityRef& msaRef, const QString& newName, U2OpStatus& os) {
-    if (newName.isEmpty()) {
-        os.setError(tr("Can't rename an alignment to an empty name!"));
-    }
-
-    // Prepare the connection
-    DbiConnection con(msaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!",);
-
-    // Update the name
-    msaDbi->updateMsaName(msaRef.entityId, newName, os);
 }
 
 void MsaDbiUtils::insertGaps(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os) {
@@ -1194,22 +1212,6 @@ void MsaDbiUtils::removeRow(const U2EntityRef& msaRef, qint64 rowId, U2OpStatus&
 
     // Remove the row
     msaDbi->removeRow(msaRef.entityId, rowId, os);
-}
-
-void MsaDbiUtils::renameRow(const U2EntityRef& msaRef, qint64 rowId, const QString& newName, U2OpStatus& os) {
-    if (newName.isEmpty()) {
-        os.setError(tr("Can't rename a row to an empty name!"));
-    }
-
-    // Prepare the connection
-    DbiConnection con(msaRef.dbiRef, os);
-    CHECK_OP(os, );
-
-    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!",);
-
-    // Update the row name
-    msaDbi->updateRowName(msaRef.entityId, rowId, newName, os);
 }
 
 

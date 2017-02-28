@@ -221,7 +221,7 @@ void MultipleAlignmentObject::enlargeLength(U2OpStatus &os, qint64 newLength) {
     CHECK(length != newLength, );
     CHECK_EXT(length < newLength, os.setError("New length should be greater than the current"), );
 
-    MsaDbiUtils::updateMsaLength(getEntityRef(), newLength, os);
+    MaDbiUtils::updateMaLength(getEntityRef(), newLength, os);
     CHECK_OP(os, );
 
     MaModificationInfo modificationInfo;

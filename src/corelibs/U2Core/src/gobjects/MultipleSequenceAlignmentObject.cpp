@@ -134,13 +134,13 @@ int MultipleSequenceAlignmentObject::deleteGap(U2OpStatus &os, const U2Region &r
         CHECK_OP(os, 0);
 
         const MultipleSequenceAlignmentRow row = msa->getMsaRow(rowCount);
-        MsaDbiUtils::updateRowGapModel(entityRef, row->getRowId(), row->getGapModel(), os);
+        MaDbiUtils::updateRowGapModel(entityRef, row->getRowId(), row->getGapModel(), os);
         CHECK_OP(os, 0);
         modifiedRowIds << row->getRowId();
     }
     if (rows.startPos == 0 && rows.length == getNumRows()) {
         // delete columns
-        MsaDbiUtils::updateMsaLength(entityRef, getLength() - removingGapColumnCount, os);
+        MaDbiUtils::updateMaLength(entityRef, getLength() - removingGapColumnCount, os);
         CHECK_OP(os, 0);
     }
 
@@ -164,7 +164,7 @@ void MultipleSequenceAlignmentObject::updateGapModel(U2OpStatus &os, const U2Msa
             return;
         }
 
-        MsaDbiUtils::updateRowGapModel(entityRef, rowId, rowsGapModel.value(rowId), os);
+        MaDbiUtils::updateRowGapModel(entityRef, rowId, rowsGapModel.value(rowId), os);
         CHECK_OP(os, );
         modifiedRowIds.append(rowId);
     }
@@ -324,7 +324,7 @@ int MultipleSequenceAlignmentObject::shiftRegion(int startPos, int startRow, int
                     }
                 }
                 if (increaseAlignmentLen) {
-                    MsaDbiUtils::updateMsaLength(entityRef, startPos + nBases + shift, os);
+                    MaDbiUtils::updateMaLength(entityRef, startPos + nBases + shift, os);
                     SAFE_POINT_OP(os, 0);
                     updateCachedMultipleAlignment();
                 }
@@ -417,7 +417,7 @@ void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, cons
     MsaDbiUtils::updateRowContent(entityRef, rowId, seqBytes, gapModel, os);
     CHECK_OP(os, );
 
-    MsaDbiUtils::renameRow(entityRef, rowId, name, os);
+    MaDbiUtils::renameRow(entityRef, rowId, name, os);
     CHECK_OP(os, );
 }
 
@@ -448,7 +448,7 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
         SAFE_POINT(NULL != newAlphabet, "Common alphabet is NULL", );
 
         if (newAlphabet->getId() != msa->getAlphabet()->getId()) {
-            MsaDbiUtils::updateMsaAlphabet(entityRef, newAlphabet->getId(), os);
+            MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
             mi.alphabetChanged = true;
             SAFE_POINT_OP(os, );
         }
@@ -483,7 +483,7 @@ void MultipleSequenceAlignmentObject::updateDatabase(U2OpStatus &os, const Multi
 }
 
 void MultipleSequenceAlignmentObject::renameMaPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QString &newName) {
-    MsaDbiUtils::renameMsa(msaRef, newName, os);
+    MaDbiUtils::renameMa(msaRef, newName, os);
 }
 
 void MultipleSequenceAlignmentObject::removeRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId) {
@@ -491,23 +491,23 @@ void MultipleSequenceAlignmentObject::removeRowPrivate(U2OpStatus &os, const U2E
 }
 
 void MultipleSequenceAlignmentObject::renameRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId, const QString &newName) {
-    MsaDbiUtils::renameRow(msaRef, rowId, newName, os);
+    MaDbiUtils::renameRow(msaRef, rowId, newName, os);
 }
 
 void MultipleSequenceAlignmentObject::moveRowsPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QList<qint64> &rowsToMove, int delta) {
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
 }
 
 void MultipleSequenceAlignmentObject::updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QList<qint64> &rowsOrder) {
-    MsaDbiUtils::updateRowsOrder(msaRef, rowsOrder, os);
+    MaDbiUtils::updateRowsOrder(msaRef, rowsOrder, os);
 }
 
 qint64 MultipleSequenceAlignmentObject::getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &msaRef) {
-    return MsaDbiUtils::getMsaLength(msaRef, os);
+    return MaDbiUtils::getMaLength(msaRef, os);
 }
 
 U2AlphabetId MultipleSequenceAlignmentObject::getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &msaRef) {
-    return MsaDbiUtils::getMsaAlphabet(msaRef, os);
+    return MaDbiUtils::getMaAlphabet(msaRef, os);
 }
 
 int MultipleSequenceAlignmentObject::getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps) {

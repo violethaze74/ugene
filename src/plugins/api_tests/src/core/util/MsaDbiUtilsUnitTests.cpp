@@ -134,7 +134,7 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(const QStringList& rowsData 
     for (int i = 0; i < rowCount; ++i) {
         QByteArray seqData;
         QList<U2MsaGap> gapModel;
-        MsaDbiUtils::splitBytesToCharsAndGaps(rowsData[i].toLatin1(), seqData, gapModel);
+        MaDbiUtils::splitBytesToCharsAndGaps(rowsData[i].toLatin1(), seqData, gapModel);
 
         U2Sequence sequence;
         sequence.alphabet = BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
@@ -288,7 +288,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddle) {
     rowsToMove << allRows[3].rowId;
 
     int delta = -1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -305,7 +305,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddle) {
     rowsToMove << allRows[3].rowId;
 
     delta = 1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -331,7 +331,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddleToTheTop) {
     rowsToMove << allRows[3].rowId;
 
     int delta = -3;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -348,7 +348,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddleToTheTop) {
     rowsToMove << allRows[3].rowId;
 
     delta = -4;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -361,7 +361,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddleToTheTop) {
     rowsToMove << allRows[3].rowId;
 
     delta = -2;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -387,7 +387,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddleToTheBottom) {
     rowsToMove << allRows[3].rowId;
 
     int delta = 3;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -404,7 +404,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddleToTheBottom) {
     rowsToMove << allRows[3].rowId;
 
     delta = 4;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -417,7 +417,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneLineInMiddleToTheBottom) {
     rowsToMove << allRows[3].rowId;
 
     delta = 2;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -444,7 +444,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneBlockInMiddle) {
     rowsToMove << allRows[3].rowId << allRows[4].rowId;
 
     int delta = -1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -462,7 +462,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneBlockInMiddle) {
     rowsToMove << allRows[3].rowId << allRows[4].rowId;
 
     delta = 1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -489,7 +489,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneBlockInMiddleToTheOutside) {
     rowsToMove << allRows[3].rowId << allRows[4].rowId;
 
     int delta = -9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -507,7 +507,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_oneBlockInMiddleToTheOutside) {
     rowsToMove << allRows[3].rowId << allRows[4].rowId;
 
     delta = 9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -534,7 +534,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksInMiddleWithoutGluing) {
     rowsToMove << allRows[2].rowId << allRows[4].rowId;
 
     int delta = -1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -552,7 +552,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksInMiddleWithoutGluing) {
     rowsToMove << allRows[2].rowId << allRows[4].rowId;
 
     delta = 1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -579,7 +579,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksInMiddleWithGluing) {
     rowsToMove << allRows[2].rowId << allRows[4].rowId;
 
     int delta = -9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -597,7 +597,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksInMiddleWithGluing) {
     rowsToMove << allRows[2].rowId << allRows[4].rowId;
 
     delta = 9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -624,7 +624,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksOnTopWithoutGluing) {
     rowsToMove << allRows[0].rowId << allRows[3].rowId;
 
     int delta = -1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -642,7 +642,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksOnTopWithoutGluing) {
     rowsToMove << allRows[0].rowId << allRows[3].rowId;
 
     delta = 1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -669,7 +669,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksOnTopWithGluing) {
     rowsToMove << allRows[0].rowId << allRows[3].rowId;
 
     int delta = -9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -687,7 +687,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksOnTopWithGluing) {
     rowsToMove << allRows[0].rowId << allRows[3].rowId;
 
     delta = 9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -714,7 +714,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksOnBottomWithoutGluing) {
     rowsToMove << allRows[3].rowId << allRows[6].rowId;
 
     int delta = 1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -732,7 +732,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksOnBottomWithoutGluing) {
     rowsToMove << allRows[3].rowId << allRows[6].rowId;
 
     delta = -1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -759,7 +759,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksOnBottomWithGluing) {
     rowsToMove << allRows[3].rowId << allRows[6].rowId;
 
     int delta = 9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -777,7 +777,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_twoBlocksOnBottomWithGluing) {
     rowsToMove << allRows[3].rowId << allRows[6].rowId;
 
     delta = -9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -805,7 +805,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_threeBlocksWithoutGluing) {
     rowsToMove << allRows[0].rowId << allRows[4].rowId << allRows[6].rowId;
 
     int delta = -1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -824,7 +824,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_threeBlocksWithoutGluing) {
     rowsToMove << allRows[0].rowId << allRows[2].rowId << allRows[6].rowId;
 
     delta = 1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -852,7 +852,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_threeBlocksWithOnceGluing) {
     rowsToMove << allRows[0].rowId << allRows[2].rowId << allRows[6].rowId;
 
     int delta = -3;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -871,7 +871,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_threeBlocksWithOnceGluing) {
     rowsToMove << allRows[0].rowId << allRows[2].rowId << allRows[6].rowId;
 
     delta = 3;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -899,7 +899,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_threeBlocksWithTwiceGluing) {
     rowsToMove << allRows[0].rowId << allRows[2].rowId << allRows[6].rowId;
 
     int delta = -9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     QStringList actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -918,7 +918,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_threeBlocksWithTwiceGluing) {
     rowsToMove << allRows[0].rowId << allRows[2].rowId << allRows[6].rowId;
 
     delta = 9;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     CHECK_NO_ERROR(os);
 
     actual = MsaDbiUtilsTestUtils::getRowNames(msaRef);
@@ -938,7 +938,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_UnorderedList) {
     rowsToMove << allRows[5].rowId << allRows[3].rowId;
 
     int delta = 1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     if (!(!os.isCanceled() && os.hasError() && os.getError() == "List of rows to move is not ordered")) {
         CHECK_TRUE(false, "List not ordered");
     }
@@ -956,7 +956,7 @@ IMPLEMENT_TEST(MsaDbiUtilsUnitTests, moveRows_InvalidRowList) {
     rowsToMove << -1;
 
     int delta = 1;
-    MsaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
+    MaDbiUtils::moveRows(msaRef, rowsToMove, delta, os);
     if (!(!os.isCanceled() && os.hasError() && os.getError() == "Invalid row list")) {
         CHECK_TRUE(false, "Invalid row list");
     }

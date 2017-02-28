@@ -38,6 +38,8 @@ public:
     static void addRows(U2OpStatus &os, const U2EntityRef &mcaRef, QList<U2McaRow> &rows);
     static QList<U2McaRow> getMcaRows(U2OpStatus &os, const U2EntityRef &mcaRef);
     static U2McaRow getMcaRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
+
+    static void removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus& os);
 };
 
 }   // namespace U2

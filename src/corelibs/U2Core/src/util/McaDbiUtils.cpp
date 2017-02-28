@@ -228,4 +228,17 @@ U2McaRow McaDbiUtils::getMcaRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint6
     return mcaRow;
 }
 
+void McaDbiUtils::removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus& os) {
+    // Prepare the connection
+    DbiConnection con(mcaRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
+    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+
+    // Remove the row
+    msaDbi->removeRow(mcaRef.entityId, rowId, os);
+    // SANGER_TODO: remove chromatogram as well
+}
+
 }   // namespace U2

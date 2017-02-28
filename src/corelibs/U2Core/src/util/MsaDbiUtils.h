@@ -27,14 +27,71 @@
 
 namespace U2 {
 
-class MultipleChromatogramAlignment;
+class U2CORE_EXPORT MaDbiUtils : public QObject {
+    Q_OBJECT
+public:
+    /** Split 'input' bytes into sequence bytes (chars) and a gap model */
+    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MsaGap>& gapModel);
+
+    /**
+    * Get the length of the alignment in the database.
+    */
+    static qint64 getMaLength(const U2EntityRef& maRef, U2OpStatus& os);
+
+    /**
+    * Update the length of the alignment in the database.
+    */
+    static void updateMaLength(const U2EntityRef& maRef, qint64 newLen, U2OpStatus& os);
+
+    /**
+    * Get the alphabet of the alignment in the database.
+    */
+    static U2AlphabetId getMaAlphabet(const U2EntityRef& maRef, U2OpStatus& os);
+
+    /**
+    * Update the alphabet of the alignment in the database.
+    */
+    static void updateMaAlphabet(const U2EntityRef& maRef, const U2AlphabetId& alphabet, U2OpStatus& os);
+
+    /**
+     * Renames an alignment.
+     * Parameter 'newName' must be NOT empty!
+     */
+    static void renameMa(const U2EntityRef& maRef, const QString& newName, U2OpStatus& os);
+
+    /**
+     * Updates a gap model of the specified row in the database.
+     * Parameter 'rowId' must contain a valid row ID in the database.
+     */
+    static void updateRowGapModel(const U2EntityRef& maRef, qint64 rowId, const QList<U2MsaGap>& gaps, U2OpStatus& os);
+
+    /**
+     * Updates positions of the rows in the database according to the order in the list.
+     * All IDs must exactly match IDs of the MSA!
+     */
+    static void updateRowsOrder(const U2EntityRef& maRef, const QList<qint64>& rowsOrder, U2OpStatus& os);
+
+    /**
+     * Renames a row of the alignment, i.e. the corresponding sequence.
+     * Parameter 'rowId' must contain a valid row ID in the database.
+     * Parameter 'newName' must be NOT empty!
+     */
+    static void renameRow(const U2EntityRef& msaRef, qint64 rowId, const QString& newName, U2OpStatus& os);
+
+    /**
+     * Updates positions of the rows in the database according to the delta.
+     * If some rows can`t move, the other rows will continue to move until there is space.
+     * rowsToMove must have the same relative order as rows in database have.
+     * All IDs must exactly match IDs of the MSA!
+     */
+    static void moveRows(const U2EntityRef& msaRef, const QList<qint64>& rowsToMove, const int delta, U2OpStatus& os);
+
+};
 
 class U2CORE_EXPORT MsaDbiUtils : public QObject {
     Q_OBJECT
 
 public:
-    /** Split 'input' bytes into sequence bytes (chars) and a gap model */
-    static void splitBytesToCharsAndGaps(const QByteArray& input, QByteArray& seqBytes, QList<U2MsaGap>& gapModel);
 
     /**
      * Updates the whole alignment in the database:
@@ -44,32 +101,6 @@ public:
      * 3) Updates rows positions
      */
     static void updateMsa(const U2EntityRef& msaRef, const MultipleSequenceAlignment& al, U2OpStatus& os);
-
-    /**
-    * Get the length of the alignment in the database.
-    */
-    static qint64 getMsaLength(const U2EntityRef& msaRef, U2OpStatus& os);
-
-    /**
-    * Update the length of the alignment in the database.
-    */
-    static void updateMsaLength(const U2EntityRef& msaRef, qint64 newLen, U2OpStatus& os);
-
-    /**
-    * Get the alphabet of the alignment in the database.
-    */
-    static U2AlphabetId getMsaAlphabet(const U2EntityRef& msaRef, U2OpStatus& os);
-
-    /**
-    * Update the alphabet of the alignment in the database.
-    */
-    static void updateMsaAlphabet(const U2EntityRef& msaRef, const U2AlphabetId& alphabet, U2OpStatus& os);
-
-    /**
-     * Renames an alignment.
-     * Parameter 'newName' must be NOT empty!
-     */
-    static void renameMsa(const U2EntityRef& msaRef, const QString& newName, U2OpStatus& os);
 
     /**
      * Inserts 'count' gaps to rows with specified IDs from 'pos' position.
@@ -136,33 +167,6 @@ public:
     static void updateRowContent(const U2EntityRef& msaRef, qint64 rowId,
                                  const QByteArray& seqBytes, const QList<U2MsaGap>& gaps,
                                  U2OpStatus& os);
-
-    /**
-     * Updates a gap model of the specified row in the database.
-     * Parameter 'rowId' must contain a valid row ID in the database.
-     */
-    static void updateRowGapModel(const U2EntityRef& msaRef, qint64 rowId, const QList<U2MsaGap>& gaps, U2OpStatus& os);
-
-    /**
-     * Updates positions of the rows in the database according to the order in the list.
-     * All IDs must exactly match IDs of the MSA!
-     */
-    static void updateRowsOrder(const U2EntityRef& msaRef, const QList<qint64>& rowsOrder, U2OpStatus& os);
-
-    /**
-     * Updates positions of the rows in the database according to the delta.
-     * If some rows can`t move, the other rows will continue to move until there is space.
-     * rowsToMove must have the same relative order as rows in database have.
-     * All IDs must exactly match IDs of the MSA!
-     */
-    static void moveRows(const U2EntityRef& msaRef, const QList<qint64>& rowsToMove, const int delta, U2OpStatus& os);
-
-    /**
-     * Renames a row of the alignment, i.e. the corresponding sequence.
-     * Parameter 'rowId' must contain a valid row ID in the database.
-     * Parameter 'newName' must be NOT empty!
-     */
-    static void renameRow(const U2EntityRef& msaRef, qint64 rowId, const QString& newName, U2OpStatus& os);
 
     /**
      * If some of specified rows is empty it will be removed.

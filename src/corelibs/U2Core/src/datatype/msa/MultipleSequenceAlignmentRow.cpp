@@ -125,7 +125,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
 {
     QByteArray sequenceData;
     U2MsaRowGapModel gapModel;
-    MsaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
+    MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
     sequence = DNASequence(rowName, sequenceData);
     setGapModel(gapModel);
 }
@@ -482,7 +482,7 @@ MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getExplicitCopy()
 }
 
 void MultipleSequenceAlignmentRowData::splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapsModel) {
-    MsaDbiUtils::splitBytesToCharsAndGaps(input, seqBytes, gapsModel);
+    MaDbiUtils::splitBytesToCharsAndGaps(input, seqBytes, gapsModel);
 }
 
 void MultipleSequenceAlignmentRowData::addOffsetToGapModel(QList<U2MsaGap> &gapModel, int offset) {
