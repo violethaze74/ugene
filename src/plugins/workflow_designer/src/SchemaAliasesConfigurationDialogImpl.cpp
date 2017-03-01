@@ -62,7 +62,6 @@ SchemaAliasesConfigurationDialogImpl::SchemaAliasesConfigurationDialogImpl( cons
         QListWidgetItem * item = new QListWidgetItem( actor->getLabel() );
         procsListWidget->insertItem( pos, item );
         procListMap.insert( pos, actor->getId() );
-        int pointSz = item->font().pointSize();
     }
 
     connect( procsListWidget, SIGNAL(currentRowChanged( int )), SLOT(sl_procSelected( int )) );

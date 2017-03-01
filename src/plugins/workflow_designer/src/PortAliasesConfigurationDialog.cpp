@@ -74,7 +74,6 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog( const Schema & s
             QListWidgetItem *item = new QListWidgetItem(itemName);
             portListWidget->insertItem(pos, item);
             portListMap.insert(pos, port);
-            int pointSz = item->font().pointSize();
         }
     }
     if (portListMap.isEmpty()) {

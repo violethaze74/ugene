@@ -354,7 +354,7 @@ GUrl BAMUtils::mergeBam(const QStringList &bamUrls, const QString &mergetBamTarg
 
     bam_merge_core(0, mergetBamTargetUrl.toLocal8Bit().constData(), 0, urlsSize, mergeArgv, 0, 0);
 
-    delete mergeArgv;
+    delete [] mergeArgv;
 
     return QString(mergetBamTargetUrl);
 }
