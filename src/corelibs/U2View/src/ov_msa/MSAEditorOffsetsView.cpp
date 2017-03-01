@@ -224,7 +224,7 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
             yRange.startPos += indent;
             int offs = getBaseCounts(row, pos, !showStartPos);
             int seqSize = getBaseCounts(row, aliLen - 1, true);
-            QString  offset = QString::number(offs + 1);
+            QString  offset = offs + 1 > seqSize ? QString::number(seqSize) : QString::number(offs + 1);
             if (showStartPos && offs == 0) {
                 p.setPen(Qt::black);
                 QRect lbr(OFFS_WIDGET_BORDER, yRange.startPos, lbw, yRange.length);
