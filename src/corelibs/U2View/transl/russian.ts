@@ -5663,47 +5663,47 @@ Directory Path: %1</source>
         <translation>Искать вперёд &lt;b&gt;(Ввод)&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="101"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="104"/>
         <source>Find in alignment</source>
         <translation>Искать в выравнивании</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="114"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="117"/>
         <source>Alignment object is locked</source>
         <translation>Объект выравнивания заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="114"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="117"/>
         <source>Alignment object is not locked</source>
         <translation>Объект выравнивания рвзблокирован</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="123"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="126"/>
         <source>Ln %1 / %2</source>
         <translation>Стр %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="127"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="130"/>
         <source>Line %1 of %2</source>
         <translation>Строка %1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="130"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="133"/>
         <source>Col %1 / %2</source>
         <translation>Стб %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="134"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="137"/>
         <source>Column %1 of %2</source>
         <translation>Столбец %1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="138"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="141"/>
         <source>Pos %1 / %2</source>
         <translation>Позиция %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="141"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="144"/>
         <source>Position %1 of %2</source>
         <translation>Позиция %1 из %2</translation>
     </message>

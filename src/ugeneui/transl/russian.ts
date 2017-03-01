@@ -891,42 +891,42 @@ p, li { white-space: pre-wrap; }
         <translation>Выбрать формат</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="179"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="182"/>
         <source>Not matched</source>
         <translation>Не соответствует</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="182"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="185"/>
         <source>Very low similarity</source>
         <translation>Очень низкая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="185"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="188"/>
         <source>Low similarity</source>
         <translation>Низкая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="188"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="191"/>
         <source>Average similarity</source>
         <translation>Средняя схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="191"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
         <source>High similarity</source>
         <translation>Высокая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="197"/>
         <source>Very high similarity</source>
         <translation>Очень высокая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="196"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="199"/>
         <source>Perfect match</source>
         <translation>Идеальное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="204"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="207"/>
         <source>Format details for &apos;%1&apos; format</source>
         <translation>Детали для формата &apos;%1&apos;</translation>
     </message>

@@ -48,7 +48,8 @@ DotPlotFilterDialog::DotPlotFilterDialog(QWidget *parent, ADVSequenceObjectConte
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759538");
-
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     {
         filterGroup = new QButtonGroup(this);

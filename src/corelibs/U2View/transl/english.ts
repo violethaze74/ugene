@@ -5666,47 +5666,47 @@ Directory Path: %1</source>
         <translation>Find forward &lt;b&gt;(Enter)&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="101"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="104"/>
         <source>Find in alignment</source>
         <translation>Find in alignment</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="114"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="117"/>
         <source>Alignment object is locked</source>
         <translation>Alignment object is locked</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="114"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="117"/>
         <source>Alignment object is not locked</source>
         <translation>Alignment object is not locked</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="123"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="126"/>
         <source>Ln %1 / %2</source>
         <translation>Ln %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="127"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="130"/>
         <source>Line %1 of %2</source>
         <translation>Line %1 of %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="130"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="133"/>
         <source>Col %1 / %2</source>
         <translation>Col %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="134"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="137"/>
         <source>Column %1 of %2</source>
         <translation>Column %1 of %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="138"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="141"/>
         <source>Pos %1 / %2</source>
         <translation>Pos %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="141"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="144"/>
         <source>Position %1 of %2</source>
         <translation>Position %1 of %2</translation>
     </message>

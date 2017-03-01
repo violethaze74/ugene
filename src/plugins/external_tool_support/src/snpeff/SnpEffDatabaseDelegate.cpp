@@ -29,6 +29,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 
 #include <U2Gui/AppSettingsGUI.h>
+#include <U2Gui/HelpButton.h>
 
 #include <QPushButton>
 #include <QMessageBox>
@@ -43,8 +44,10 @@ namespace LocalWorkflow {
 SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget* parent)
     : QDialog(parent) {
     setupUi(this);
+    new HelpButton(this, buttonBox, "19767211");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
 
     proxyModel = new QSortFilterProxyModel(this);

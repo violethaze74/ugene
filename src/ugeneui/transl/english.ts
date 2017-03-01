@@ -891,42 +891,42 @@ p, li { white-space: pre-wrap; }
         <translation>Choose format manually</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="179"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="182"/>
         <source>Not matched</source>
         <translation>Not matched</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="182"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="185"/>
         <source>Very low similarity</source>
         <translation>Very low similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="185"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="188"/>
         <source>Low similarity</source>
         <translation>Low similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="188"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="191"/>
         <source>Average similarity</source>
         <translation>Average similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="191"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
         <source>High similarity</source>
         <translation>High similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="194"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="197"/>
         <source>Very high similarity</source>
         <translation>Very high similarity</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="196"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="199"/>
         <source>Perfect match</source>
         <translation>Perfect match</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="204"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="207"/>
         <source>Format details for &apos;%1&apos; format</source>
         <translation>Format details for &apos;%1&apos; format</translation>
     </message>
