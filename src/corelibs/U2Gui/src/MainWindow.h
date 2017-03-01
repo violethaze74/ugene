@@ -28,12 +28,8 @@
 
 #include "NotificationsTypes.h"
 
-#include <QtCore/QEvent>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QWidget>
-#else
+#include <QEvent>
 #include <QtWidgets/QWidget>
-#endif
 
 class QAction;
 class QMdiSubWindow;

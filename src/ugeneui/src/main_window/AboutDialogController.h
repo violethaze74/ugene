@@ -24,20 +24,13 @@
 
 #include <ui_AboutDialog.h>
 
-#include <QtCore/QBasicTimer>
-#include <QtCore/QPointer>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QLabel>
-#include <QtGui/QDialog>
-#else
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QDialog>
-#endif
-#include <QtGui/QPaintEvent>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QMouseEvent>
-
+#include <QBasicTimer>
+#include <QDialog>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QMouseEvent>
+#include <QPaintEvent>
+#include <QPointer>
 
 namespace U2 {
 

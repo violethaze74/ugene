@@ -48,7 +48,11 @@ float infinity() {
 }
 
 bool isfin(float x) {
-    return !isnan(x) && !isinf(x);
+#if __cplusplus <= 199711L
+    return !isnan(x) && isinf(x);
+#else
+    return !std::isnan(x) && !std::isinf(x);
+#endif
 }
 
 #ifdef _WINDOWS

@@ -54,13 +54,8 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
 
-#include <QtCore/QFileInfo>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#include <QApplication>
+#include <QFileInfo>
 
 #include "LoadDocumentTask.h"
 

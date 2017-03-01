@@ -24,11 +24,7 @@
 
 #include <ui_AppSettingsDialog.h>
 
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QTreeWidgetItem>
-#else
-#include <QtWidgets/QTreeWidgetItem>
-#endif
+#include <QTreeWidgetItem>
 #include <QtCore/QTimerEvent>
 
 class AppSettingsDialogTree;

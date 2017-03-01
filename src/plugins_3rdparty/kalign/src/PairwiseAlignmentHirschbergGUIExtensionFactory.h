@@ -26,18 +26,11 @@
 
 #include <U2View/AlignmentAlgorithmGUIExtension.h>
 
-#include <QtCore/QObject>
-#include <QtCore/QVariantMap>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QDoubleSpinBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QCheckBox>
-#else
-#include <QtWidgets/QDoubleSpinBox>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QCheckBox>
-#endif
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDoubleSpinBox>
+#include <QObject>
+#include <QVariantMap>
 
 namespace U2 {
 

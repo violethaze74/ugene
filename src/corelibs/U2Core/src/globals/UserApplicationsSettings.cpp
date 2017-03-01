@@ -26,25 +26,15 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/GUrlUtils.h>
 
-#include <QtCore/QSettings>
-#include <QtCore/QDir>
-#include <QtCore/QProcessEnvironment>
-
-#include <QtGui/QDesktopServices>
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleFactory>
-#include <QtGui/QDialogButtonBox>
-#else
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QStyleFactory>
-#include <QtWidgets/QDialogButtonBox>
+#include <QApplication>
+#include <QDesktopServices>
+#include <QDialogButtonBox>
+#include <QDir>
+#include <QProcessEnvironment>
+#include <QSettings>
 #include <QStandardPaths>
-#endif
-
-
+#include <QStyle>
+#include <QStyleFactory>
 
 namespace U2 {
 

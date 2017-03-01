@@ -19,14 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QtGui/QClipboard>
+#include <QApplication>
+#include <QClipboard>
 #include <QMimeData>
-
-#if (QT_VERSION < 0x050000) //Qt 5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>

@@ -22,13 +22,7 @@
 #ifndef _U2_PROJECT_MODEL_H_
 #define _U2_PROJECT_MODEL_H_
 
-#include <qglobal.h>
-#if (QT_VERSION < 0x050000) //Qt 5
 #include <QAction>
-#else
-#include <QtWidgets/QAction>
-#endif
-
 
 #include "DocumentModel.h"
 #include "StateLockableDataModel.h"

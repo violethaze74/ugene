@@ -22,8 +22,7 @@
 #ifndef _U2_PROPERTYWIDGET_H_
 #define _U2_PROPERTYWIDGET_H_
 
-#include <qglobal.h>
-
+#include <QLayout>
 #include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QSpinBox>
