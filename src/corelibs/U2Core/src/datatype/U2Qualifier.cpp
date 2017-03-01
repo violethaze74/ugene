@@ -35,7 +35,7 @@ U2Qualifier::U2Qualifier(const QString &name, const QString &value)
     : name(name),
       value(value)
 {
-    SAFE_POINT(isValid(), "An attempt to create an invalid qualifier", );
+//    SAFE_POINT(isValid(), "An attempt to create an invalid qualifier", );
 }
 
 bool U2Qualifier::isValid() const {
