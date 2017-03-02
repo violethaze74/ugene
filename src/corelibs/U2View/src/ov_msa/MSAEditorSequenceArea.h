@@ -136,8 +136,6 @@ protected:
     void focusInEvent(QFocusEvent* fe);
 
 private slots:
-    void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
-
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     void sl_buildContextMenu(GObjectView* v, QMenu* m);

@@ -96,6 +96,9 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
 //    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
 
     connect(&editModeAnimationTimer, SIGNAL(timeout()), SLOT(sl_changeSelectionColor()));
+
+    connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
+        SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
 }
 
 MaEditorSequenceArea::~MaEditorSequenceArea() {
@@ -926,6 +929,43 @@ void MaEditorSequenceArea::sl_buildStaticToolbar(GObjectView* , QToolBar* ) {
 
 void MaEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
     buildMenu(m);
+}
+
+void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &modInfo) {
+    exitFromEditCharacterMode();
+    int nSeq = editor->getNumSequences();
+    int aliLen = editor->getAlignmentLen();
+    //! TODO
+//    if (ui->isCollapsibleMode()) {
+//        nSeq = getNumDisplayedSequences();
+//        updateCollapsedGroups(modInfo);
+//    }
+
+    editor->updateReference();
+
+    //todo: set in one method!
+    setFirstVisibleBase(qBound(0, startPos, aliLen-countWidthForBases(false)));
+    setFirstVisibleSequence(qBound(0, startSeq, nSeq - countHeightForSequences(false)));
+
+    if ((selection.x() > aliLen - 1) || (selection.y() > nSeq - 1)) {
+        cancelSelection();
+    } else {
+        const QPoint selTopLeft(qMin(selection.x(), aliLen - 1),
+            qMin(selection.y(), nSeq - 1));
+        const QPoint selBottomRight(qMin(selection.x() + selection.width() - 1, aliLen - 1),
+            qMin(selection.y() + selection.height() - 1, nSeq -1));
+
+        MaEditorSelection newSelection(selTopLeft, selBottomRight);
+        // we don't emit "selection changed" signal to avoid redrawing
+        setSelection(newSelection);
+    }
+
+    updateHScrollBar();
+    updateVScrollBar();
+
+    completeRedraw = true;
+    updateActions();
+    update();
 }
 
 void MaEditorSequenceArea::buildMenu(QMenu* ) {

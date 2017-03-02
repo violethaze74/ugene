@@ -28,6 +28,7 @@
 #include <QWidget>
 
 #include <U2Core/U2Region.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include <U2Gui/GScrollBar.h>
 
@@ -53,6 +54,7 @@ class MaEditor;
 class MaEditorWgt;
 class SequenceAreaRenderer;
 
+class MaModificationInfo;
 class MsaColorScheme;
 class MsaColorSchemeFactory;
 class MsaHighlightingScheme;
@@ -214,6 +216,8 @@ protected slots:
     virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
     virtual void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     virtual void sl_buildContextMenu(GObjectView* v, QMenu* m);
+
+    void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
 
     void sl_onHScrollMoved(int pos);
     void sl_onVScrollMoved(int pos);

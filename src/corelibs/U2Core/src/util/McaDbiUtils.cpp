@@ -147,8 +147,8 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
             dbRow.rowId = U2MsaRow::INVALID_ROW_ID; // set the row ID automatically
             dbRow.chromatogramId = chromatogramRef.entityId;
             dbRow.sequenceId = sequenceRef.entityId;
-            dbRow.gstart = mcaRow->getCoreStart();
-            dbRow.gend = mcaRow->getCoreRegion().endPos();
+            dbRow.gstart = 0;
+            dbRow.gend = mcaRow->getRowLength();
             dbRow.gaps = mcaRow->getGapModel();
 
             McaDbiUtils::addRow(os, mcaRef, -1, dbRow);
@@ -268,9 +268,8 @@ void McaDbiUtils::replaceCharacterInRow(const U2EntityRef& msaRef, qint64 rowId,
 
     replaceCharInRow(seq, row.gaps, pos, newChar);
 
-    // SANGER_TODO: the method drakes ugenedb file
-//    msaDbi->updateRowContent(msaRef.entityId, rowId, seq, row.gaps, os);
-//    CHECK_OP(os, );
+    msaDbi->updateRowContent(msaRef.entityId, rowId, seq, row.gaps, os);
+    CHECK_OP(os, );
 }
 
 void McaDbiUtils::replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint64 pos, char newChar) {
@@ -278,34 +277,17 @@ void McaDbiUtils::replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint6
 
     qint64 rowLength = MsaRowUtils::getRowLengthWithoutTrailing(seq, gaps);
 
-    if (rowLength > pos) {
-        qint64 posInSeq = -1;
-        qint64 endPosInSeq = -1;
+    SAFE_POINT(pos < rowLength, "ReplaceChar cannot be performed in the trailing gaps area for MCA", );
 
-        MaDbiUtils::getStartAndEndSequencePositions(seq, gaps, pos, 1, posInSeq, endPosInSeq);
+    qint64 posInSeq = -1;
+    qint64 endPosInSeq = -1;
 
-        coreLog.info(QString("Convert position to ungapped: %1 --> %2").arg(pos).arg(posInSeq));
-        return;
+    MaDbiUtils::getStartAndEndSequencePositions(seq, gaps, pos, 1, posInSeq, endPosInSeq);
+    SAFE_POINT(posInSeq >= 0 && endPosInSeq > posInSeq, "ReplaceChar cannot be performed in the leading gaps area for MCA", );
 
-        /*
-        if (posInSeq >= 0 && endPosInSeq > posInSeq) {
-            U2OpStatus2Log os;
-            DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);
-            SAFE_POINT_OP(os, );
-        } else {
-            U2OpStatus2Log os;
-            DNASequenceUtils::insertChars(seq, posInSeq, QByteArray(1, newChar), os);
-            SAFE_POINT_OP(os, );
-            calculateGapModelAfterReplaceChar(gaps, pos);
-        }*/
-    } /*else {
-        U2OpStatus2Log os;
-        seq.append(newChar);
-        SAFE_POINT_OP(os, );
-        if (pos != rowLength) {
-            calculateGapModelAfterAppendChar(gaps, pos, rowLength);
-        }
-    }*/
+    U2OpStatus2Log os;
+    DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);
+    SAFE_POINT_OP(os, );
 }
 
 
