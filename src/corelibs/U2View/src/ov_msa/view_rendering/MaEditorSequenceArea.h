@@ -161,7 +161,7 @@ public:
     QString getCopyFormatedAlgorithmId() const;
     void setCopyFormatedAlgorithmId(const QString& algoId);
 
-    virtual void deleteCurrentSelection() = 0;
+    virtual void deleteCurrentSelection();
 
     /**
      * Shifts currently selected region to @shift.
@@ -211,6 +211,7 @@ public slots:
     void sl_changeCopyFormat(const QString& alg);
     void sl_changeColorScheme();
     void sl_delCurrentSelection();
+    void sl_fillCurrentSelectionWithGaps();
 
 protected slots:
     virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
@@ -266,6 +267,36 @@ protected:
     virtual void initRenderer() = 0;
     virtual void updateActions() = 0;
     virtual void drawBackground(QPainter& p) { Q_UNUSED(p); }
+
+    /**
+     * Inserts a region consisting of gaps only before the selection. The inserted region width
+     * is specified by @countOfGaps parameter if 0 < @countOfGaps, its height is equal to the
+     * current selection's height.
+     *
+     * If there is no selection in MSA then the method does nothing.
+     *
+     * If -1 == @countOfGaps then the inserting region width is equal to
+     * the selection's width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
+     */
+    void insertGapsBeforeSelection( int countOfGaps = -1 );
+
+    /**
+     * Reverse operation for @insertGapsBeforeSelection( ),
+     * removes the region preceding the selection if it consists of gaps only.
+     *
+     * If there is no selection in MSA then the method does nothing.
+     *
+     * @countOfGaps specifies maximum width of the removed region.
+     * If -1 == @countOfGaps then count of removed gap columns is equal to
+     * the selection width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
+     */
+    void removeGapsPrecedingSelection( int countOfGaps = -1 );
+
+    /*
+     * Interrupts the tracking of MSA modifications caused by a region shifting,
+     * also stops shifting. The method is used to keep consistence of undo/redo stack.
+     */
+    void cancelShiftTracking( );
 
     void drawAll();
     void validateRanges();          //called on resize/refont like events
@@ -338,6 +369,7 @@ protected:
     QList<QAction* >    highlightingSchemeMenuActions;
 
     QAction*            replaceCharacterAction;
+    QAction*            fillWithGapsinsSymAction;
 
     // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
     // that does not fit into one method, e.g. shifting MSA region with mouse.

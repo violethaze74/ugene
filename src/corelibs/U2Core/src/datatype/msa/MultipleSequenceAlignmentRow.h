@@ -172,7 +172,7 @@ public:
      * If the specified position is outside the row bounds, returns a gap.
      */
     char charAt(qint64 position) const;
-    bool isGap(int pos) const;
+    bool isGap(qint64 pos) const;
 
     /** Length of the sequence without gaps */
     inline int getUngappedLength() const;

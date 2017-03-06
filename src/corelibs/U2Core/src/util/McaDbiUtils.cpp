@@ -244,6 +244,10 @@ void McaDbiUtils::removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus&
     // SANGER_TODO: remove chromatogram as well
 }
 
+void McaDbiUtils::removeRegion(const U2EntityRef &msaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
+    // 5491_TODO
+}
+
 void McaDbiUtils::replaceCharacterInRow(const U2EntityRef& msaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus& os) {
     // Check parameters
     CHECK_EXT(pos >= 0, os.setError(QString("Negative MSA pos: %1").arg(pos)), );
@@ -283,7 +287,8 @@ void McaDbiUtils::replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint6
     qint64 endPosInSeq = -1;
 
     MaDbiUtils::getStartAndEndSequencePositions(seq, gaps, pos, 1, posInSeq, endPosInSeq);
-    SAFE_POINT(posInSeq >= 0 && endPosInSeq > posInSeq, "ReplaceChar cannot be performed in the leading gaps area for MCA", );
+    SAFE_POINT(posInSeq >= 0 && endPosInSeq > posInSeq,
+               QString("ReplaceChar cannot be performed in the leading gaps area for MCA: pos").arg(posInSeq), );
 
     U2OpStatus2Log os;
     DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);

@@ -147,32 +147,13 @@ void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus &os, const M
     McaDbiUtils::updateMca(os, entityRef, mca);
 }
 
-void MultipleChromatogramAlignmentObject::renameMaPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QString &newName) {
-    MaDbiUtils::renameMa(mcaRef, newName, os);
-}
-
 void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId) {
     McaDbiUtils::removeRow(mcaRef, rowId, os);
 }
 
-void MultipleChromatogramAlignmentObject::renameRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId, const QString &newName) {
-    MaDbiUtils::renameRow(mcaRef, rowId, newName, os);
-}
-
-void MultipleChromatogramAlignmentObject::moveRowsPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsToMove, int delta) {
-    MaDbiUtils::moveRows(mcaRef, rowsToMove, delta, os);
-}
-
-void MultipleChromatogramAlignmentObject::updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsOrder) {
-    MaDbiUtils::updateRowsOrder(mcaRef, rowsOrder, os);
-}
-
-qint64 MultipleChromatogramAlignmentObject::getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &mcaRef) {
-    return MaDbiUtils::getMaLength(mcaRef, os);
-}
-
-U2AlphabetId MultipleChromatogramAlignmentObject::getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &mcaRef) {
-    return MaDbiUtils::getMaAlphabet(mcaRef, os);
+void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef,
+                                                              const QList<qint64> &rows, int startPos, int nBases) {
+    McaDbiUtils::removeRegion(maRef, rows, startPos, nBases, os);
 }
 
 }   // namespace U2

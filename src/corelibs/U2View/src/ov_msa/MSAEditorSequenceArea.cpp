@@ -88,8 +88,7 @@
 namespace U2 {
 
 MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, GScrollBar* vb)
-    : MaEditorSequenceArea(_ui, hb, vb),
-      changeTracker(editor->getMaObject()->getEntityRef())
+    : MaEditorSequenceArea(_ui, hb, vb)
 {
     setObjectName("msa_editor_sequence_area");
     setFocusPolicy(Qt::WheelFocus);
@@ -114,12 +113,6 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     delColAction->setShortcutContext(Qt::WidgetShortcut);
     addAction(delColAction);
     connect(delColAction, SIGNAL(triggered()), SLOT(sl_delCol()));
-
-    insSymAction = new QAction(tr("Fill selection with gaps"), this);
-    insSymAction->setObjectName("fill_selection_with_gaps");
-    connect(insSymAction, SIGNAL(triggered()), SLOT(sl_fillCurrentSelectionWithGaps()));
-    addAction(insSymAction);
-
 
     createSubaligniment = new QAction(tr("Save subalignment..."), this);
     createSubaligniment->setObjectName("Save subalignment");
@@ -235,7 +228,7 @@ void MSAEditorSequenceArea::updateActions() {
     bool canEditSelectedArea = canEditAlignment && !selection.isNull();
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
 
-    insSymAction->setEnabled(canEditSelectedArea);
+    fillWithGapsinsSymAction->setEnabled(canEditSelectedArea);
     bool oneCharacterIsSelected = selection.width() == 1 && selection.height() == 1;
     replaceCharacterAction->setEnabled(canEditSelectedArea && oneCharacterIsSelected);
     delColAction->setEnabled(canEditAlignment);
@@ -285,56 +278,8 @@ void MSAEditorSequenceArea::moveCursor(int dx, int dy) {
         }
     }
     setCursorPos(p);
+    // SANGER_TODO: why is it under comment
     //setSelection(MSAEditorSelection(p, 1,1));
-}
-
-void MSAEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
-    const MaEditorSelection selectionBackup = selection;
-    // check if selection exists
-    if (selectionBackup.isNull()) {
-        return;
-    }
-
-    const QPoint selectionTopLeftCorner(selectionBackup.topLeft());
-    // don't perform the deletion if the selection is at the alignment start
-    if (0 == selectionTopLeftCorner.x() || -1 > countOfGaps || 0 == countOfGaps) {
-        return;
-    }
-
-    int removedRegionWidth = (-1 == countOfGaps) ? selectionBackup.width() : countOfGaps;
-    QPoint topLeftCornerOfRemovedRegion(selectionTopLeftCorner.x() - removedRegionWidth,
-        selectionTopLeftCorner.y());
-    if (0 > topLeftCornerOfRemovedRegion.x()) {
-        removedRegionWidth -= qAbs(topLeftCornerOfRemovedRegion.x());
-        topLeftCornerOfRemovedRegion.setX(0);
-    }
-
-    MultipleSequenceAlignmentObject *maObj = getEditor()->getMaObject();
-    if (NULL == maObj || maObj->isStateLocked()) {
-        return;
-    }
-
-    // if this method was invoked during a region shifting
-    // then shifting should be canceled
-    cancelShiftTracking();
-
-    const U2Region rowsContainingRemovedGaps(getSelectedRows());
-    U2OpStatus2Log os;
-    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-    Q_UNUSED(userModStep);
-
-    const int countOfDeletedSymbols = maObj->deleteGap(os, rowsContainingRemovedGaps,
-        topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
-
-    // if some symbols were actually removed and the selection is not located
-    // at the alignment end, then it's needed to move the selection
-    // to the place of the removed symbols
-    if (0 < countOfDeletedSymbols) {
-        const MaEditorSelection newSelection(selectionBackup.x() - countOfDeletedSymbols,
-            topLeftCornerOfRemovedRegion.y(), selectionBackup.width(),
-            selectionBackup.height());
-        setSelection(newSelection);
-    }
 }
 
 void MSAEditorSequenceArea::updateCollapsedGroups(const MaModificationInfo& modInfo) {
@@ -392,7 +337,8 @@ void MSAEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
     SAFE_POINT(editMenu != NULL, "editMenu", );
 
     QList<QAction*> actions;
-    actions << insSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;
+    actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction
+            << reverseAction << complementAction << delColAction << removeAllGapsAction;
 
     QMenu* copyMenu = GUIUtils::findSubMenu(m, MSAE_MENU_COPY);
     SAFE_POINT(copyMenu != NULL, "copyMenu", );
@@ -426,7 +372,7 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != NULL, "editMenu", );
     QList<QAction*> actions;
-    actions << insSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;
+    actions << fillWithGapsinsSymAction << replaceCharacterAction << reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction;
     editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
     editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 
@@ -556,14 +502,6 @@ void MSAEditorSequenceArea::sl_delCol() {
         Q_UNUSED(userModStep);
         SAFE_POINT_OP(os, );
         msaObj->deleteColumnWithGaps(gapCount);
-    }
-}
-
-void MSAEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
-    if(!isAlignmentLocked()) {
-        emit si_startMsaChanging();
-        insertGapsBeforeSelection();
-        emit si_stopMsaChanging(true);
     }
 }
 
@@ -804,49 +742,6 @@ void MSAEditorSequenceArea::sl_pasteFinished(Task* _pasteTask){
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
-void MSAEditorSequenceArea::deleteCurrentSelection() {
-    CHECK(getEditor() != NULL, );
-
-    if (selection.isNull()) {
-        return;
-    }
-    assert(isInRange(selection.topLeft()));
-    assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
-    MultipleSequenceAlignmentObject* maObj = getEditor()->getMaObject();
-    if (maObj == NULL || maObj->isStateLocked()) {
-        return;
-    }
-
-    const QRect areaBeforeSelection(0, 0, selection.x(), selection.height());
-    const QRect areaAfterSelection(selection.x() + selection.width(), selection.y(),
-        maObj->getLength() - selection.x() - selection.width(), selection.height());
-    if (maObj->isRegionEmpty(areaBeforeSelection.x(), areaBeforeSelection.y(), areaBeforeSelection.width(), areaBeforeSelection.height())
-        && maObj->isRegionEmpty(areaAfterSelection.x(), areaAfterSelection.y(), areaAfterSelection.width(), areaAfterSelection.height())
-        && selection.height() == maObj->getNumRows())
-    {
-        return;
-    }
-
-    // if this method was invoked during a region shifting
-    // then shifting should be canceled
-    cancelShiftTracking();
-
-    U2OpStatusImpl os;
-    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-    Q_UNUSED(userModStep);
-    SAFE_POINT_OP(os, );
-
-    const U2Region& sel = getSelectedRows();
-    maObj->removeRegion(selection.x(), sel.startPos, selection.width(), sel.length, true);
-
-    if (selection.height() == 1 && selection.width() == 1) {
-        if (isInRange(selection.topLeft())) {
-            return;
-        }
-    }
-    cancelSelection();
-}
-
 void MSAEditorSequenceArea::sl_addSeqFromFile()
 {
     CHECK(getEditor() != NULL, );
@@ -985,39 +880,6 @@ void MSAEditorSequenceArea::sl_updateCollapsingMode() {
     MaModificationInfo mi;
     mi.alignmentLengthChanged = false;
     msaObject->updateCachedMultipleAlignment(mi);
-}
-
-void MSAEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
-    CHECK(getEditor() != NULL, );
-    if (selection.isNull() || 0 == countOfGaps || -1 > countOfGaps) {
-        return;
-    }
-    SAFE_POINT(isInRange(selection.topLeft()), tr("Top left corner of the selection has incorrect coords"), );
-    SAFE_POINT(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)),
-        tr("Bottom right corner of the selection has incorrect coords"), );
-
-    // if this method was invoked during a region shifting
-    // then shifting should be canceled
-    cancelShiftTracking();
-
-    MultipleSequenceAlignmentObject *maObj = getEditor()->getMaObject();
-    if (NULL == maObj || maObj->isStateLocked()) {
-        return;
-    }
-    U2OpStatus2Log os;
-    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-    Q_UNUSED(userModStep);
-    SAFE_POINT_OP(os,);
-
-    const MultipleSequenceAlignment ma = maObj->getMultipleAlignment();
-    if (selection.width() == ma->getLength() && selection.height() == ma->getNumRows()) {
-        return;
-    }
-
-    const int removedRegionWidth = (-1 == countOfGaps) ? selection.width() : countOfGaps;
-    const U2Region& sequences = getSelectedRows();
-    maObj->insertGap(sequences,  selection.x() , removedRegionWidth);
-    moveSelection(removedRegionWidth, 0, true);
 }
 
 void MSAEditorSequenceArea::reverseComplementModification(ModificationType& type) {
@@ -1175,13 +1037,6 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
     msaObject->updateCachedMultipleAlignment(mi);
 
     updateVScrollBar();
-}
-
-void MSAEditorSequenceArea::cancelShiftTracking() {
-    shifting = false;
-    selecting = false;
-    changeTracker.finishTracking();
-    editor->getMaObject()->releaseState();
 }
 
 ExportHighligtningTask::ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditorSequenceArea *msaese_)

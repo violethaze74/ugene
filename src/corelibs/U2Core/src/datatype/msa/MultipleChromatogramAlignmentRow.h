@@ -286,6 +286,8 @@ private:
 
     DNAChromatogram chromatogram;
 
+    // 5491_TODO: move sequence, gapModel and rowId to the parent
+
     /** The sequence of the row without gaps (cached) */
     DNASequence sequence;
 

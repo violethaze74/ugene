@@ -36,6 +36,7 @@
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -88,11 +89,17 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     addAction(replaceCharacterAction);
     connect(replaceCharacterAction, SIGNAL(triggered()), SLOT(sl_replaceSelectedCharacter()));
 
+    fillWithGapsinsSymAction = new QAction(tr("Fill selection with gaps"), this);
+    fillWithGapsinsSymAction->setObjectName("fill_selection_with_gaps");
+    connect(fillWithGapsinsSymAction, SIGNAL(triggered()), SLOT(sl_fillCurrentSelectionWithGaps()));
+    addAction(fillWithGapsinsSymAction);
+
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_buildStaticMenu(GObjectView*, QMenu*)), SLOT(sl_buildStaticMenu(GObjectView*, QMenu*)));
     connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView* , QMenu*)), SLOT(sl_buildContextMenu(GObjectView*, QMenu*)));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_completeUpdate()));
+    // SANGER_TODO: why is it commented?
 //    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
 
     connect(&editModeAnimationTimer, SIGNAL(timeout()), SLOT(sl_changeSelectionColor()));
@@ -610,6 +617,50 @@ void MaEditorSequenceArea::setCopyFormatedAlgorithmId(const QString& algoId){
     AppContext::getSettings()->setValue(SETTINGS_ROOT + SETTINGS_COPY_FORMATTED, algoId);
 }
 
+
+void MaEditorSequenceArea::deleteCurrentSelection() {
+    CHECK(getEditor() != NULL, );
+
+    if (selection.isNull()) {
+        return;
+    }
+    assert(isInRange(selection.topLeft()));
+    assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
+    MultipleAlignmentObject* maObj = getEditor()->getMaObject();
+    if (maObj == NULL || maObj->isStateLocked()) {
+        return;
+    }
+
+    const QRect areaBeforeSelection(0, 0, selection.x(), selection.height());
+    const QRect areaAfterSelection(selection.x() + selection.width(), selection.y(),
+        maObj->getLength() - selection.x() - selection.width(), selection.height());
+    if (maObj->isRegionEmpty(areaBeforeSelection.x(), areaBeforeSelection.y(), areaBeforeSelection.width(), areaBeforeSelection.height())
+        && maObj->isRegionEmpty(areaAfterSelection.x(), areaAfterSelection.y(), areaAfterSelection.width(), areaAfterSelection.height())
+        && selection.height() == maObj->getNumRows())
+    {
+        return;
+    }
+
+    // if this method was invoked during a region shifting
+    // then shifting should be canceled
+    cancelShiftTracking();
+
+    U2OpStatusImpl os;
+    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
+    Q_UNUSED(userModStep);
+    SAFE_POINT_OP(os, );
+
+    const U2Region& sel = getSelectedRows();
+    maObj->removeRegion(selection.x(), sel.startPos, selection.width(), sel.length, true);
+
+    if (selection.height() == 1 && selection.width() == 1) {
+        if (isInRange(selection.topLeft())) {
+            return;
+        }
+    }
+    cancelSelection();
+}
+
 bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
     CHECK(shift != 0, true);
 
@@ -917,6 +968,14 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
     emit si_startMsaChanging();
     deleteCurrentSelection();
     emit si_stopMsaChanging(true);
+}
+
+void MaEditorSequenceArea::sl_fillCurrentSelectionWithGaps() {
+    if(!isAlignmentLocked()) {
+        emit si_startMsaChanging();
+        insertGapsBeforeSelection();
+        emit si_stopMsaChanging(true);
+    }
 }
 
 void MaEditorSequenceArea::sl_buildStaticMenu(GObjectView*, QMenu* m) {
@@ -1445,17 +1504,17 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
                 setCursorPos(QPoint(cp, cursorPos.y()));
             }
             break;
-//        case Qt::Key_Backspace:
-//            removeGapsPrecedingSelection(genuineCtrl ? 1 : -1);
-//            break;
+        case Qt::Key_Backspace:
+            removeGapsPrecedingSelection(genuineCtrl ? 1 : -1);
+            break;
         case Qt::Key_Insert:
-//        case Qt::Key_Space:
-//            // We can't use Command+Space on Mac OS X - it is reserved
-//            if(!isAlignmentLocked()) {
-//                emit si_startMsaChanging();
-//                insertGapsBeforeSelection(genuineCtrl ? 1 : -1);
-//            }
-//            break;
+        case Qt::Key_Space:
+            // We can't use Command+Space on Mac OS X - it is reserved
+            if(!isAlignmentLocked()) {
+                emit si_startMsaChanging();
+                insertGapsBeforeSelection(genuineCtrl ? 1 : -1);
+            }
+            break;
         case Qt::Key_Shift:
             if (!selection.isNull()) {
                 selectionStart = selection.topLeft();
@@ -1475,6 +1534,95 @@ void MaEditorSequenceArea::keyReleaseEvent(QKeyEvent *ke) {
     }
 
     QWidget::keyReleaseEvent(ke);
+}
+
+void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
+    CHECK(getEditor() != NULL, );
+    if (selection.isNull() || 0 == countOfGaps || -1 > countOfGaps) {
+        return;
+    }
+    SAFE_POINT(isInRange(selection.topLeft()), tr("Top left corner of the selection has incorrect coords"), );
+    SAFE_POINT(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)),
+        tr("Bottom right corner of the selection has incorrect coords"), );
+
+    // if this method was invoked during a region shifting
+    // then shifting should be canceled
+    cancelShiftTracking();
+
+    MultipleAlignmentObject *maObj = editor->getMaObject();
+    if (NULL == maObj || maObj->isStateLocked()) {
+        return;
+    }
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
+    Q_UNUSED(userModStep);
+    SAFE_POINT_OP(os,);
+
+    const MultipleAlignment ma = maObj->getMultipleAlignment();
+    if (selection.width() == ma->getLength() && selection.height() == ma->getNumRows()) {
+        return;
+    }
+
+    const int removedRegionWidth = (-1 == countOfGaps) ? selection.width() : countOfGaps;
+    const U2Region& sequences = getSelectedRows();
+    maObj->insertGap(sequences,  selection.x() , removedRegionWidth);
+    moveSelection(removedRegionWidth, 0, true);
+}
+
+void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
+    const MaEditorSelection selectionBackup = selection;
+    // check if selection exists
+    if (selectionBackup.isNull()) {
+        return;
+    }
+
+    const QPoint selectionTopLeftCorner(selectionBackup.topLeft());
+    // don't perform the deletion if the selection is at the alignment start
+    if (0 == selectionTopLeftCorner.x() || -1 > countOfGaps || 0 == countOfGaps) {
+        return;
+    }
+
+    int removedRegionWidth = (-1 == countOfGaps) ? selectionBackup.width() : countOfGaps;
+    QPoint topLeftCornerOfRemovedRegion(selectionTopLeftCorner.x() - removedRegionWidth,
+        selectionTopLeftCorner.y());
+    if (0 > topLeftCornerOfRemovedRegion.x()) {
+        removedRegionWidth -= qAbs(topLeftCornerOfRemovedRegion.x());
+        topLeftCornerOfRemovedRegion.setX(0);
+    }
+
+    MultipleAlignmentObject *maObj = editor->getMaObject();
+    if (NULL == maObj || maObj->isStateLocked()) {
+        return;
+    }
+
+    // if this method was invoked during a region shifting
+    // then shifting should be canceled
+    cancelShiftTracking();
+
+    const U2Region rowsContainingRemovedGaps(getSelectedRows());
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
+    Q_UNUSED(userModStep);
+
+    const int countOfDeletedSymbols = maObj->deleteGap(os, rowsContainingRemovedGaps,
+        topLeftCornerOfRemovedRegion.x(), removedRegionWidth);
+
+    // if some symbols were actually removed and the selection is not located
+    // at the alignment end, then it's needed to move the selection
+    // to the place of the removed symbols
+    if (0 < countOfDeletedSymbols) {
+        const MaEditorSelection newSelection(selectionBackup.x() - countOfDeletedSymbols,
+            topLeftCornerOfRemovedRegion.y(), selectionBackup.width(),
+            selectionBackup.height());
+        setSelection(newSelection);
+    }
+}
+
+void MaEditorSequenceArea::cancelShiftTracking() {
+    shifting = false;
+    selecting = false;
+    changeTracker.finishTracking();
+    editor->getMaObject()->releaseState();
 }
 
 void MaEditorSequenceArea::drawAll() {
@@ -1834,10 +1982,10 @@ void MaEditorSequenceArea::replaceSelectedCharacter(char newCharacter) {
         return;
     }
 
-//    U2OpStatusImpl os;
-//    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-//    Q_UNUSED(userModStep);
-//    SAFE_POINT_OP(os, );
+    U2OpStatusImpl os;
+    U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
+    Q_UNUSED(userModStep);
+    SAFE_POINT_OP(os, );
 
     // replacement is valid only for one symbol
     const U2Region& sel = getSelectedRows();

@@ -42,21 +42,8 @@ public:
     virtual GObject * clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 
     /** Const getters */
-    bool isRegionEmpty(int x, int y, int width, int height) const;
     char charAt(int seqNum, qint64 position) const;
     const MultipleSequenceAlignmentRow getMsaRow(int row) const;
-
-    /** Methods that modify the gap model only */
-    void insertGap(const U2Region &rows, int pos, int nGaps);
-
-    /**
-     * Removes gap region that extends from the @pos column and is no longer than @maxGaps.
-     * If the region starting from @pos and having width of @maxGaps includes any non-gap symbols
-     * then its longest subset starting from @pos and containing gaps only is removed.
-     *
-     * If the given region is a subset of a trailing gaps area then nothing happens.
-     */
-    int deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
 
     /**
      * Updates a gap model of the alignment.
@@ -66,10 +53,6 @@ public:
     void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
 
     U2MsaMapGapModel getGapModel() const;
-
-    /** Method that affect the whole alignment, including sequences
-     */
-    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track = true);
 
     void crop(const U2Region &window, const QSet<QString> &rowNames);
     /**
@@ -105,22 +88,9 @@ private:
     void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
     void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma);
 
-    void renameMaPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QString &newName);
     void removeRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId);
-    void renameRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId, const QString &newName);
-    void moveRowsPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QList<qint64> &rowsToMove, int delta);
-    void updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &msaRef, const QList<qint64> &rowsOrder);
-    qint64 getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &msaRef);
-    U2AlphabetId getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &msaRef);
-
-    /**
-     * Returns maximum count of subsequent gap columns in the region that starts from column
-     * with @pos number, has width of @maxGaps and includes the rows specified by @rows.
-     * @maxGaps, @pos are to be non-negative numbers. Gap columns should finish in column
-     * having @pos + @maxGaps number, otherwise 0 is returned. If the region is located
-     * in the MSA trailing gaps area, then 0 is returned.
-     */
-    int getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
+    void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
+                             int startPos, int nBases);
 };
 
 }   // namespace U2

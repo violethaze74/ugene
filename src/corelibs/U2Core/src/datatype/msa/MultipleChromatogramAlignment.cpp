@@ -448,20 +448,6 @@ void MultipleChromatogramAlignmentData::appendChars(int row, qint64 afterPos, co
     length = qMax(length, afterPos + len);
 }
 
-void MultipleChromatogramAlignmentData::removeChars(int rowNumber, int pos, int count, U2OpStatus &os) {
-    if (rowNumber >= getNumRows() || rowNumber < 0 || pos > length || pos < 0 || count < 0) {
-        coreLog.trace(QString("Internal error: incorrect parameters were passed "
-            "to MultipleChromatogramAlignmentData::removeChars: row index '%1', pos '%2', count '%3'").arg(rowNumber).arg(pos).arg(count));
-        os.setError("Failed to remove chars from an alignment");
-        return;
-    }
-
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-
-    getMcaRow(rowNumber)->removeChars(pos, count, os);
-}
-
 void MultipleChromatogramAlignmentData::removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows) {
     SAFE_POINT(startPos >= 0 && startPos + nBases <= length && nBases > 0,
         QString("Incorrect parameters were passed to MultipleChromatogramAlignmentData::removeRegion: startPos '%1', "

@@ -321,7 +321,7 @@ char MultipleSequenceAlignmentRowData::charAt(qint64 position) const {
     return MsaRowUtils::charAt(sequence.seq, gaps, position);
 }
 
-bool MultipleSequenceAlignmentRowData::isGap(int pos) const {
+bool MultipleSequenceAlignmentRowData::isGap(qint64 pos) const {
     return MsaRowUtils::isGap(sequence.length(), gaps, pos);
 }
 

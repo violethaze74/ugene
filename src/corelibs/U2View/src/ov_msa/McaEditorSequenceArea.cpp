@@ -58,6 +58,12 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     traceActionMenu->addSeparator();
     traceActionMenu->addAction(showAllTraces);
 
+    insertAction = new QAction(tr("Add insertion"), this); // 5491_TODO: the text should be meaningfull
+    insertAction->setObjectName("add_insertion");
+    // 5491_TODO: add shortcut
+    connect(insertAction, SIGNAL(triggered()), SLOT(sl_addInsertion()));
+    addAction(insertAction);
+
     scaleBar = new ScaleBar(Qt::Horizontal);
     scaleBar->slider()->setRange(100, 1000);
     scaleBar->slider()->setTickInterval(100);
@@ -202,12 +208,23 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
     t->addSeparator();
 }
 
+void McaEditorSequenceArea::sl_addInsertion() {
+    // 5491_TODO
+}
+
 void McaEditorSequenceArea::initRenderer() {
     renderer = new SequenceWithChromatogramAreaRenderer(this);
 }
 
 void McaEditorSequenceArea::updateActions() {
+    // 5491_TODO: checkall acions and disable the right ones
     /// add separate methods smt like 'updateEditActions'
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    assert(maObj != NULL);
+    bool readOnly = maObj->isStateLocked();
+    bool canEditAlignment = !readOnly && !isAlignmentEmpty();
+    bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
 }
 
 void McaEditorSequenceArea::drawBackground(QPainter& p) {
@@ -226,14 +243,13 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
     QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != NULL, "editMenu", );
     QList<QAction*> actions;
-    actions /*<< insSymAction */<< replaceCharacterAction /*<< reverseComplementAction << reverseAction << complementAction << delColAction << removeAllGapsAction*/;
+    actions << fillWithGapsinsSymAction << replaceCharacterAction << insertAction;
     editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
-//    editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
+    editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid,
                                                        DNAAlphabetType, bool) {
-    // SANGER_TODO: basically sanger cannot be not nucleotide
     csid = MsaColorScheme::UGENE_NUCL;
     hsid = MsaHighlightingScheme::DISAGREEMENTS_NUCL;
 }

@@ -118,8 +118,6 @@ public:
 
     MSAEditor* getEditor() const { return qobject_cast<MSAEditor*>(editor); }
 
-    void deleteCurrentSelection();
-
     QStringList getAvailableHighlightingSchemes() const;
 
     bool hasAminoAlphabet();
@@ -147,7 +145,6 @@ private slots:
     void sl_copyFormattedSelection();
     void sl_paste();
     void sl_pasteFinished(Task* pasteTask);
-    void sl_fillCurrentSelectionWithGaps();
     void sl_delCol();
     void sl_goto();
     void sl_removeAllGaps();
@@ -181,43 +178,12 @@ private:
 
     void updateActions();
 
-    /**
-     * Inserts a region consisting of gaps only before the selection. The inserted region width
-     * is specified by @countOfGaps parameter if 0 < @countOfGaps, its height is equal to the
-     * current selection's height.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * If -1 == @countOfGaps then the inserting region width is equal to
-     * the selection's width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
-     */
-    void insertGapsBeforeSelection( int countOfGaps = -1 );
-
-    /**
-     * Reverse operation for @insertGapsBeforeSelection( ),
-     * removes the region preceding the selection if it consists of gaps only.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * @countOfGaps specifies maximum width of the removed region.
-     * If -1 == @countOfGaps then count of removed gap columns is equal to
-     * the selection width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
-     */
-    void removeGapsPrecedingSelection( int countOfGaps = -1 );
-
     void reverseComplementModification(ModificationType& type);
-
-    /*
-     * Interrupts the tracking of MSA modifications caused by a region shifting,
-     * also stops shifting. The method is used to keep consistence of undo/redo stack.
-     */
-    void cancelShiftTracking( );
 
     void updateCollapsedGroups(const MaModificationInfo& modInfo);
 
     QAction*        copySelectionAction;
     QAction*        delColAction;
-    QAction*        insSymAction;
     QAction*        removeAllGapsAction;
     QAction*        gotoAction;
     QAction*        createSubaligniment;
@@ -231,12 +197,6 @@ private:
     QAction*        reverseAction;
     QAction*        complementAction;
     QAction*        lookMSASchemesSettingsAction;
-
-    // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
-    // that does not fit into one method, e.g. shifting MSA region with mouse.
-    // If the changing action fits within one method it's recommended using
-    // the U2UseCommonUserModStep object explicitly.
-    MsaEditorUserModStepController changeTracker;
 };
 
 // SANGER_TODO: move to EditorTasks?

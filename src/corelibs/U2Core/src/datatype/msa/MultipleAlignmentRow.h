@@ -24,6 +24,7 @@
 
 #include <QSharedPointer>
 
+#include <U2Core/DNASequence.h>
 #include <U2Core/MsaRowUtils.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2OpStatus.h>
@@ -84,6 +85,10 @@ class U2CORE_EXPORT MultipleAlignmentRowData {
 public:
     virtual ~MultipleAlignmentRowData();
 
+    /** Returns the list of gaps for the row */
+    virtual const U2MsaRowGapModel &getGapModel() const = 0;
+    virtual void removeChars(int pos, int count, U2OpStatus& os) = 0;
+
     /** Name of the row, can be empty */
     virtual QString getName() const = 0;
     virtual void setName(const QString &name) = 0;
@@ -93,6 +98,7 @@ public:
     virtual void setRowId(qint64 rowId) = 0;
 
     virtual char charAt(qint64 position) const = 0;
+    virtual bool isGap(qint64 position) const = 0;
 
     virtual QByteArray toByteArray(U2OpStatus &os, qint64 length) const = 0;
 

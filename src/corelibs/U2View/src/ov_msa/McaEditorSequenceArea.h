@@ -54,8 +54,6 @@ public:
     const ChromatogramViewSettings&  getSettings() const { return settings; }
     bool getShowQA() const {return showQVAction->isChecked(); }
 
-    void deleteCurrentSelection() {}
-
     U2Region getSequenceYRange(int seqNum, int firstVisibleRow, bool useVirtualCoords) const;
 
     int         getSequenceNumByY(int y) const;
@@ -78,6 +76,8 @@ private slots:
 
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 
+    void sl_addInsertion();
+
 private:
     void initRenderer();
     void updateActions();
@@ -97,6 +97,8 @@ private:
     QMenu*      traceActionMenu;
     ScaleBar*   scaleBar;
     QAction*    scaleAction;
+
+    QAction*    insertAction;
 };
 
 
