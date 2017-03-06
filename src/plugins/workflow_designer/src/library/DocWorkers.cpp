@@ -40,6 +40,7 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QVariantUtils.h>
 #include <U2Core/TextObject.h>
+#include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -329,7 +330,10 @@ inline static U2SequenceObject * getCopiedSequenceObject(const QVariantMap &data
         U2EntityRef seqRef = U2SequenceUtils::import(os, context->getDataStorage()->getDbiRef(), seq);
         CHECK_OP(os, NULL);
 
-        return new U2SequenceObject(seqObj->getSequenceName(), seqRef);
+        U2SequenceObject *clonedSeqObj = new U2SequenceObject(seqObj->getSequenceName(), seqRef);
+        U2AttributeUtils::copyObjectAttributes(seqObj->getEntityRef(), clonedSeqObj->getEntityRef(), os);
+
+        return clonedSeqObj;
     } else {
         return seqObj.take();
     }
