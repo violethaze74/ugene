@@ -24,6 +24,7 @@
 
 #include <QSharedPointer>
 
+#include <U2Core/DNASequence.h>
 #include <U2Core/MsaRowUtils.h>
 #include <U2Core/U2Msa.h>
 #include <U2Core/U2OpStatus.h>
@@ -82,7 +83,14 @@ Derived MultipleAlignmentRow::dynamicCast(U2OpStatus &os) const {
  */
 class U2CORE_EXPORT MultipleAlignmentRowData {
 public:
+    MultipleAlignmentRowData();
+    MultipleAlignmentRowData(const DNASequence &sequence, const QList<U2MsaGap> &gaps);
+
     virtual ~MultipleAlignmentRowData();
+
+    /** Returns the list of gaps for the row */
+    virtual const U2MsaRowGapModel &getGapModel() const = 0;
+    virtual void removeChars(int pos, int count, U2OpStatus& os) = 0;
 
     /** Name of the row, can be empty */
     virtual QString getName() const = 0;
@@ -93,6 +101,7 @@ public:
     virtual void setRowId(qint64 rowId) = 0;
 
     virtual char charAt(qint64 position) const = 0;
+    virtual bool isGap(qint64 position) const = 0;
 
     virtual QByteArray toByteArray(U2OpStatus &os, qint64 length) const = 0;
 
@@ -105,6 +114,16 @@ public:
 
     virtual bool operator !=(const MultipleAlignmentRowData &other) const = 0;
     virtual bool operator ==(const MultipleAlignmentRowData &other) const = 0;
+
+    /** The sequence of the row without gaps (cached) */
+    DNASequence sequence;
+
+    /**
+     * Gaps model of the row
+     * There should be no trailing gaps!
+     * Trailing gaps are 'Virtual': they are stored 'inside' the alignment length
+     */
+    QList<U2MsaGap> gaps;
 };
 
 inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 != *ptr2; }

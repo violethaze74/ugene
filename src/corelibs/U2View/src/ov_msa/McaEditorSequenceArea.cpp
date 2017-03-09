@@ -26,6 +26,9 @@
 #include <U2Algorithm/MsaColorScheme.h>
 #include <U2Algorithm/MsaHighlightingScheme.h>
 
+#include <U2Core/U2Mod.h>
+#include <U2Core/U2OpStatusUtils.h>
+
 #include <U2Gui/GUIUtils.h>
 
 #include <QToolButton>
@@ -33,8 +36,12 @@
 namespace U2 {
 
 McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScrollBar *vb)
-    : MaEditorSequenceArea(ui, hb, vb) {
+    : MaEditorSequenceArea(ui, hb, vb),
+      insertionMode(false) {
     initRenderer();
+
+    // TEST - remove the variable after fix
+    editingEnabled = true;
 
     showQVAction = new QAction(tr("Show quality bars"), this);
     showQVAction->setIcon(QIcon(":chroma_view/images/bars.png"));
@@ -54,6 +61,12 @@ McaEditorSequenceArea::McaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GS
     traceActionMenu->addAction( createToggleTraceAction("T") ) ;
     traceActionMenu->addSeparator();
     traceActionMenu->addAction(showAllTraces);
+
+    insertAction = new QAction(tr("Add insertion"), this); // 5491_TODO: the text should be meaningfull
+    insertAction->setObjectName("add_insertion");
+    // 5491_TODO: add shortcut
+    connect(insertAction, SIGNAL(triggered()), SLOT(sl_addInsertion()));
+    addAction(insertAction);
 
     scaleBar = new ScaleBar(Qt::Horizontal);
     scaleBar->slider()->setRange(100, 1000);
@@ -199,8 +212,27 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView *, QToolBar *t) {
     t->addSeparator();
 }
 
+void McaEditorSequenceArea::sl_addInsertion() {
+    msaMode = EditCharacterMode;
+    insertionMode = true;
+
+    editModeAnimationTimer.start(500);
+    highlightCurrentSelection();
+}
+
 void McaEditorSequenceArea::initRenderer() {
     renderer = new SequenceWithChromatogramAreaRenderer(this);
+}
+
+void McaEditorSequenceArea::updateActions() {
+    // 5491_TODO: checkall acions and disable the right ones
+    /// add separate methods smt like 'updateEditActions'
+    MultipleAlignmentObject* maObj = editor->getMaObject();
+    assert(maObj != NULL);
+    bool readOnly = maObj->isStateLocked();
+    bool canEditAlignment = !readOnly && !isAlignmentEmpty();
+    bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
 }
 
 void McaEditorSequenceArea::drawBackground(QPainter& p) {
@@ -214,11 +246,18 @@ void McaEditorSequenceArea::buildMenu(QMenu *m) {
     SAFE_POINT(viewMenu != NULL, "viewMenu", );
     viewMenu->addAction(showQVAction);
     viewMenu->addMenu(traceActionMenu);
+
+    // SANGER_TODO
+    QMenu* editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
+    SAFE_POINT(editMenu != NULL, "editMenu", );
+    QList<QAction*> actions;
+    actions << fillWithGapsinsSymAction << replaceCharacterAction << insertAction;
+    editMenu->insertActions(editMenu->isEmpty() ? NULL : editMenu->actions().first(), actions);
+    editMenu->insertAction(editMenu->actions().first(), ui->getDelSelectionAction());
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid,
                                                        DNAAlphabetType, bool) {
-    // SANGER_TODO: basically sanger cannot be not nucleotide
     csid = MsaColorScheme::UGENE_NUCL;
     hsid = MsaHighlightingScheme::DISAGREEMENTS_NUCL;
 }
@@ -231,6 +270,41 @@ QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionNam
     connect(showTraceAction, SIGNAL(triggered(bool)), SLOT(sl_showHideTrace()));
 
     return showTraceAction;
+}
+
+void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
+    if (!insertionMode) {
+        MaEditorSequenceArea::processCharacterInEditMode(newCharacter);
+    } else {
+        CHECK(getEditor() != NULL, );
+        CHECK(!selection.isNull(), );
+
+        assert(isInRange(selection.topLeft()));
+        assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
+
+        MultipleChromatogramAlignmentObject* maObj = getEditor()->getMaObject();
+        CHECK(maObj != NULL && !maObj->isStateLocked(), );
+
+        // if this method was invoked during a region shifting
+        // then shifting should be canceled
+        cancelShiftTracking();
+
+        U2OpStatusImpl os;
+        U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
+        Q_UNUSED(userModStep);
+        SAFE_POINT_OP(os, );
+
+        maObj->insertCharacter(selection.y(), selection.x(), newCharacter);
+
+        // insert char into the reference
+        U2SequenceObject* ref = getEditor()->referenceObj;
+        U2Region region = U2Region(selection.x(), 0);
+        ref->replaceRegion(region, DNASequence(QByteArray(1, newCharacter)), os);
+        SAFE_POINT_OP(os, );
+
+        insertionMode = false;
+        exitFromEditCharacterMode();
+    }
 }
 
 } // namespace

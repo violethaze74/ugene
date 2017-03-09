@@ -186,7 +186,7 @@ void MultipleSequenceAlignmentImporter::splitToCharsAndGaps(const DbiConnection 
 
         QByteArray pureSequenceData;
         U2MsaRowGapModel sequenceGapModel;
-        MsaDbiUtils::splitBytesToCharsAndGaps(sequenceData, pureSequenceData, sequenceGapModel);
+        MaDbiUtils::splitBytesToCharsAndGaps(sequenceData, pureSequenceData, sequenceGapModel);
         gapModel << sequenceGapModel;
 
         if (sequenceGapModel.isEmpty()) {

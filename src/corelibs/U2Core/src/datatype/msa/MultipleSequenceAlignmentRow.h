@@ -172,7 +172,7 @@ public:
      * If the specified position is outside the row bounds, returns a gap.
      */
     char charAt(qint64 position) const;
-    bool isGap(int pos) const;
+    bool isGap(qint64 pos) const;
 
     /** Length of the sequence without gaps */
     inline int getUngappedLength() const;
@@ -265,16 +265,6 @@ private:
     void setParentAlignment(MultipleSequenceAlignmentData *msaData);
 
     MultipleSequenceAlignmentData *alignment;
-
-    /** The sequence of the row without gaps (cached) */
-    DNASequence sequence;
-
-    /**
-     * Gaps model of the row
-     * There should be no trailing gaps!
-     * Trailing gaps are 'Virtual': they are stored 'inside' the alignment length
-     */
-    QList<U2MsaGap> gaps;
 
     /** The row in the database */
     U2MsaRow initialRowInDb;

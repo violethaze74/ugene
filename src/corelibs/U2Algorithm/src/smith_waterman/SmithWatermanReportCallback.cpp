@@ -384,8 +384,8 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     QByteArray notUsedOutputParam;
     refRow->gaps.clear();
     ptrnRow->gaps.clear();
-    MsaDbiUtils::splitBytesToCharsAndGaps(refSequenceData, notUsedOutputParam, refRow->gaps);
-    MsaDbiUtils::splitBytesToCharsAndGaps(ptrnSequenceData, notUsedOutputParam, ptrnRow->gaps);
+    MaDbiUtils::splitBytesToCharsAndGaps(refSequenceData, notUsedOutputParam, refRow->gaps);
+    MaDbiUtils::splitBytesToCharsAndGaps(ptrnSequenceData, notUsedOutputParam, ptrnRow->gaps);
 
     U2UseCommonUserModStep userModStep(sourceMsaRef, os);
     Q_UNUSED(userModStep);

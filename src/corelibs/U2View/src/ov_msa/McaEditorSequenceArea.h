@@ -54,8 +54,6 @@ public:
     const ChromatogramViewSettings&  getSettings() const { return settings; }
     bool getShowQA() const {return showQVAction->isChecked(); }
 
-    void deleteCurrentSelection() {}
-
     U2Region getSequenceYRange(int seqNum, int firstVisibleRow, bool useVirtualCoords) const;
 
     int         getSequenceNumByY(int y) const;
@@ -78,9 +76,11 @@ private slots:
 
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
 
+    void sl_addInsertion();
+
 private:
     void initRenderer();
-    void updateActions() {}
+    void updateActions();
     void drawBackground(QPainter& p);
 
     void buildMenu(QMenu* m);
@@ -88,6 +88,8 @@ private:
     void getColorAndHighlightingIds(QString &csid, QString &hsid, DNAAlphabetType atype, bool isFirstInitialization);
 
     QAction* createToggleTraceAction(const QString& actionName);
+
+    void processCharacterInEditMode(char newCharacter);
 
 private:
     ChromatogramViewSettings    settings;
@@ -97,6 +99,10 @@ private:
     QMenu*      traceActionMenu;
     ScaleBar*   scaleBar;
     QAction*    scaleAction;
+
+    QAction*    insertAction;
+
+    bool        insertionMode;
 };
 
 

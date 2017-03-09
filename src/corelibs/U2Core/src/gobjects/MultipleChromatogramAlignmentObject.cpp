@@ -20,6 +20,7 @@
  */
 
 #include <U2Core/DbiConnection.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectTypes.h>
@@ -27,6 +28,7 @@
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentExporter.h>
 #include <U2Core/MultipleChromatogramAlignmentImporter.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -81,6 +83,48 @@ const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentObject::getM
     return getRow(row).dynamicCast<MultipleChromatogramAlignmentRow>();
 }
 
+void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    const MultipleAlignment msa = getMultipleAlignment();
+    SAFE_POINT(rowIndex >= 0 && startPos + 1 <= msa->getLength(), "Invalid parameters", );
+    qint64 modifiedRowId = msa->getRow(rowIndex)->getRowId();
+
+    U2OpStatus2Log os;
+    if (newChar != U2Msa::GAP_CHAR) {
+        McaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
+    } else {
+        McaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+    }
+    SAFE_POINT_OP(os, );
+
+    MaModificationInfo mi;
+    mi.rowContentChanged = true;
+    mi.rowListChanged = false;
+    mi.alignmentLengthChanged = false;
+    mi.modifiedRowIds << modifiedRowId;
+
+    if (newChar != ' ' && !msa->getAlphabet()->contains(newChar)) {
+        const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
+        const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alp, msa->getAlphabet());
+        SAFE_POINT(NULL != newAlphabet, "Common alphabet is NULL", );
+
+        if (newAlphabet->getId() != msa->getAlphabet()->getId()) {
+            MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);
+            mi.alphabetChanged = true;
+            SAFE_POINT_OP(os, );
+        }
+    }
+
+    updateCachedMultipleAlignment(mi);
+}
+
+void MultipleChromatogramAlignmentObject::insertCharacter(int rowIndex, int pos, char newChar) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    insertGap(U2Region(0, getNumRows()), pos, 1);
+    replaceCharacter(pos, rowIndex, newChar);
+}
+
 void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus &os) {
     MultipleChromatogramAlignmentExporter mcaExporter;
     cachedMa = mcaExporter.getAlignment(os, entityRef.dbiRef, entityRef.entityId);
@@ -106,32 +150,13 @@ void MultipleChromatogramAlignmentObject::updateDatabase(U2OpStatus &os, const M
     McaDbiUtils::updateMca(os, entityRef, mca);
 }
 
-void MultipleChromatogramAlignmentObject::renameMaPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QString &newName) {
-    MsaDbiUtils::renameMsa(mcaRef, newName, os);
-}
-
 void MultipleChromatogramAlignmentObject::removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId) {
-    MsaDbiUtils::removeRow(mcaRef, rowId, os);
+    McaDbiUtils::removeRow(mcaRef, rowId, os);
 }
 
-void MultipleChromatogramAlignmentObject::renameRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId, const QString &newName) {
-    MsaDbiUtils::renameRow(mcaRef, rowId, newName, os);
-}
-
-void MultipleChromatogramAlignmentObject::moveRowsPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsToMove, int delta) {
-    MsaDbiUtils::moveRows(mcaRef, rowsToMove, delta, os);
-}
-
-void MultipleChromatogramAlignmentObject::updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, const QList<qint64> &rowsOrder) {
-    MsaDbiUtils::updateRowsOrder(mcaRef, rowsOrder, os);
-}
-
-qint64 MultipleChromatogramAlignmentObject::getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &mcaRef) {
-    return MsaDbiUtils::getMsaLength(mcaRef, os);
-}
-
-U2AlphabetId MultipleChromatogramAlignmentObject::getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &mcaRef) {
-    return MsaDbiUtils::getMsaAlphabet(mcaRef, os);
+void MultipleChromatogramAlignmentObject::removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef,
+                                                              const QList<qint64> &rows, int startPos, int nBases) {
+    McaDbiUtils::removeRegion(maRef, rows, startPos, nBases, os);
 }
 
 }   // namespace U2

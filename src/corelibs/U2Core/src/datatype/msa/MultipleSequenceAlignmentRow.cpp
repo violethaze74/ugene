@@ -101,7 +101,8 @@ QSharedPointer<MultipleSequenceAlignmentRowData> MultipleSequenceAlignmentRow::g
 }
 
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(MultipleSequenceAlignmentData *msaData)
-    : alignment(msaData)
+    : MultipleAlignmentRowData(),
+      alignment(msaData)
 {
     removeTrailingGaps();
 }
@@ -110,9 +111,8 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
                                                                    const DNASequence &sequence,
                                                                    const QList<U2MsaGap> &gaps,
                                                                    MultipleSequenceAlignmentData *msaData)
-    : alignment(msaData),
-      sequence(sequence),
-      gaps(gaps),
+    : MultipleAlignmentRowData(sequence, gaps),
+      alignment(msaData),
       initialRowInDb(rowInDb)
 {
     SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData is NULL", );
@@ -120,20 +120,20 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
 }
 
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRow &rowInDb, const QString &rowName, const QByteArray &rawData, MultipleSequenceAlignmentData *msaData)
-    : alignment(msaData),
+    : MultipleAlignmentRowData(),
+      alignment(msaData),
       initialRowInDb(rowInDb)
 {
     QByteArray sequenceData;
     U2MsaRowGapModel gapModel;
-    MsaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
+    MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
     sequence = DNASequence(rowName, sequenceData);
     setGapModel(gapModel);
 }
 
 MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const MultipleSequenceAlignmentRow &row, MultipleSequenceAlignmentData *msaData)
-    : alignment(msaData),
-      sequence(row->sequence),
-      gaps(row->gaps),
+    : MultipleAlignmentRowData(row->sequence, row->gaps),
+      alignment(msaData),
       initialRowInDb(row->initialRowInDb)
 {
     SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData is NULL", );
@@ -321,7 +321,7 @@ char MultipleSequenceAlignmentRowData::charAt(qint64 position) const {
     return MsaRowUtils::charAt(sequence.seq, gaps, position);
 }
 
-bool MultipleSequenceAlignmentRowData::isGap(int pos) const {
+bool MultipleSequenceAlignmentRowData::isGap(qint64 pos) const {
     return MsaRowUtils::isGap(sequence.length(), gaps, pos);
 }
 
@@ -482,7 +482,7 @@ MultipleSequenceAlignmentRow MultipleSequenceAlignmentRowData::getExplicitCopy()
 }
 
 void MultipleSequenceAlignmentRowData::splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapsModel) {
-    MsaDbiUtils::splitBytesToCharsAndGaps(input, seqBytes, gapsModel);
+    MaDbiUtils::splitBytesToCharsAndGaps(input, seqBytes, gapsModel);
 }
 
 void MultipleSequenceAlignmentRowData::addOffsetToGapModel(QList<U2MsaGap> &gapModel, int offset) {

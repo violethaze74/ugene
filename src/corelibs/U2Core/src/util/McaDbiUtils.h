@@ -23,6 +23,7 @@
 #define _U2_MCA_DBI_UTILS_H_
 
 #include <U2Core/U2Alphabet.h>
+#include <U2Core/U2Msa.h>
 
 namespace U2 {
 
@@ -38,6 +39,11 @@ public:
     static void addRows(U2OpStatus &os, const U2EntityRef &mcaRef, QList<U2McaRow> &rows);
     static QList<U2McaRow> getMcaRows(U2OpStatus &os, const U2EntityRef &mcaRef);
     static U2McaRow getMcaRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
+
+    static void removeRow(const U2EntityRef& mcaRef, qint64 rowId, U2OpStatus& os);
+    static void removeRegion(const U2EntityRef& msaRef, const QList<qint64>& rowIds, qint64 pos, qint64 count, U2OpStatus& os);
+
+    static void replaceCharacterInRow(const U2EntityRef& msaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus& os);
 };
 
 }   // namespace U2

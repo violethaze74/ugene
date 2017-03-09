@@ -120,12 +120,6 @@ public:
     void insertGaps(int row, int pos, int count, U2OpStatus &os);
 
     /**
-     * Removes up to n characters starting from the specified position.
-     * Can decrease the overall alignment length.
-     */
-    void removeChars(int row, int pos, int count, U2OpStatus &os);
-
-    /**
      * Removes a region from the alignment.
      * If "removeEmptyRows" is "true", removes all empty rows from the processed region.
      * The alignment is trimmed after removing the region.

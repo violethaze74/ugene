@@ -56,6 +56,16 @@ const MultipleAlignmentRowData * MultipleAlignmentRow::operator->() const {
     return maRowData.data();
 }
 
+MultipleAlignmentRowData::MultipleAlignmentRowData() {
+
+}
+
+MultipleAlignmentRowData::MultipleAlignmentRowData(const DNASequence &sequence, const QList<U2MsaGap> &gaps)
+    : sequence(sequence),
+      gaps(gaps) {
+
+}
+
 MultipleAlignmentRowData::~MultipleAlignmentRowData() {
 
 }

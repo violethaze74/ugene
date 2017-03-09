@@ -247,4 +247,18 @@ U2Region ChromatogramUtils::sequenceRegion2TraceRegion(const DNAChromatogram &ch
     return U2Region(traceStartPos, traceLength);
 }
 
+void ChromatogramUtils::insertBase(DNAChromatogram &chromatogram, int pos) {
+    if (pos != 0 && pos != chromatogram.seqLength) {
+        ushort newTracePos = chromatogram.baseCalls[pos] + (chromatogram.baseCalls[pos + 1] - chromatogram.baseCalls[pos])/2;
+        chromatogram.baseCalls.insert(pos + 1, newTracePos);
+
+        chromatogram.prob_A.insert(pos + 1, 0); // SANGER_TODO: or 100?
+        chromatogram.prob_C.insert(pos + 1, 0);
+        chromatogram.prob_G.insert(pos + 1, 0);
+        chromatogram.prob_T.insert(pos + 1, 0);
+
+        chromatogram.seqLength += 1;
+    }
+}
+
 }   // namespace U2

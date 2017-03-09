@@ -146,6 +146,7 @@ public:
     MultipleAlignmentRow getRowByRowId(qint64 rowId, U2OpStatus &os) const;
 
     char charAt(int rowNumber, qint64 position) const;
+    bool isGap(int rowNumber, qint64 pos) const;
 
     /** Returns all rows' names in the alignment */
     QStringList getRowNames() const;
@@ -166,6 +167,12 @@ public:
      * The alignment is changed only (to zero) if the alignment becomes empty.
      */
     void removeRow(int rowIndex, U2OpStatus &os);
+
+    /**
+     * Removes up to n characters starting from the specified position.
+     * Can decrease the overall alignment length.
+     */
+    void removeChars(int row, int pos, int n, U2OpStatus &os);
 
     /**
      * Shifts a selection of consequent rows.

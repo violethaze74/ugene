@@ -36,6 +36,7 @@ class U2SequenceObject;
 
 class McaEditor : public MaEditor {
     Q_OBJECT
+    friend class McaEditorSequenceArea;
 public:
     McaEditor(const QString& viewName,
               MultipleChromatogramAlignmentObject* obj,

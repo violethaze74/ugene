@@ -113,7 +113,8 @@ QSharedPointer<MultipleChromatogramAlignmentRowData> MultipleChromatogramAlignme
 }
 
 MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(MultipleChromatogramAlignmentData *mcaData)
-    : alignment(mcaData)
+    : MultipleAlignmentRowData(),
+      alignment(mcaData)
 {
     removeTrailingGaps();
 }
@@ -123,10 +124,9 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
                                                                            const DNASequence &sequence,
                                                                            const QList<U2MsaGap> &gaps,
                                                                            MultipleChromatogramAlignmentData *mcaData)
-    : alignment(mcaData),
+    : MultipleAlignmentRowData(sequence, gaps),
+      alignment(mcaData),
       chromatogram(chromatogram),
-      sequence(sequence),
-      gaps(gaps),
       initialRowInDb(rowInDb)
 {
     SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData is NULL", );
@@ -138,22 +138,22 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
                                                                            const DNAChromatogram &chromatogram,
                                                                            const QByteArray &rawData,
                                                                            MultipleChromatogramAlignmentData *mcaData)
-    : alignment(mcaData),
+    : MultipleAlignmentRowData(),
+      alignment(mcaData),
       chromatogram(chromatogram),
       initialRowInDb(rowInDb)
 {
     QByteArray sequenceData;
     U2MsaRowGapModel gapModel;
-    MsaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
+    MaDbiUtils::splitBytesToCharsAndGaps(rawData, sequenceData, gapModel);
     sequence = DNASequence(rowName, sequenceData);
     setGapModel(gapModel);
 }
 
 MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow &row, MultipleChromatogramAlignmentData *mcaData)
-    : alignment(mcaData),
+    : MultipleAlignmentRowData(row->sequence, row->gaps),
+      alignment(mcaData),
       chromatogram(row->chromatogram),
-      sequence(row->sequence),
-      gaps(row->gaps),
       initialRowInDb(row->initialRowInDb)
 {
     SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData is NULL", );
@@ -601,7 +601,7 @@ bool MultipleChromatogramAlignmentRowData::isComplemented() const {
 }
 
 void MultipleChromatogramAlignmentRowData::splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapsModel) {
-    MsaDbiUtils::splitBytesToCharsAndGaps(input, seqBytes, gapsModel);
+    MaDbiUtils::splitBytesToCharsAndGaps(input, seqBytes, gapsModel);
 }
 
 void MultipleChromatogramAlignmentRowData::addOffsetToGapModel(QList<U2MsaGap> &gapModel, int offset) {

@@ -28,6 +28,7 @@
 #include <QWidget>
 
 #include <U2Core/U2Region.h>
+#include <U2Core/MultipleAlignment.h>
 
 #include <U2Gui/GScrollBar.h>
 
@@ -53,6 +54,7 @@ class MaEditor;
 class MaEditorWgt;
 class SequenceAreaRenderer;
 
+class MaModificationInfo;
 class MsaColorScheme;
 class MsaColorSchemeFactory;
 class MsaHighlightingScheme;
@@ -159,7 +161,7 @@ public:
     QString getCopyFormatedAlgorithmId() const;
     void setCopyFormatedAlgorithmId(const QString& algoId);
 
-    virtual void deleteCurrentSelection() = 0;
+    virtual void deleteCurrentSelection();
 
     /**
      * Shifts currently selected region to @shift.
@@ -195,22 +197,28 @@ public:
     bool drawContent(QPixmap& pixmap);
     bool drawContent(QPixmap& pixmap, const U2Region& region, const QList<qint64>& seqIdx);
 
+    void highlightCurrentSelection();
+
     QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
     MsaColorScheme * getCurrentColorScheme() const;
     MsaHighlightingScheme * getCurrentHighlightingScheme() const;
     bool getUseDotsCheckedState() const;
 
+
 public slots:
     void sl_changeColorSchemeOutside(const QString &name);
     void sl_changeCopyFormat(const QString& alg);
     void sl_changeColorScheme();
     void sl_delCurrentSelection();
+    void sl_fillCurrentSelectionWithGaps();
 
 protected slots:
     virtual void sl_buildStaticMenu(GObjectView* v, QMenu* m);
     virtual void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     virtual void sl_buildContextMenu(GObjectView* v, QMenu* m);
+
+    void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
 
     void sl_onHScrollMoved(int pos);
     void sl_onVScrollMoved(int pos);
@@ -224,6 +232,9 @@ protected slots:
     void sl_colorSchemeFactoryUpdated();
     void sl_setDefaultColorScheme();
     void sl_changeHighlightScheme();
+
+    void sl_replaceSelectedCharacter();
+    void sl_changeSelectionColor();
 
 signals:
     void si_startChanged(const QPoint& p, const QPoint& prev);
@@ -249,10 +260,43 @@ protected:
     void mouseReleaseEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
 
+    void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
+
 protected:
     virtual void initRenderer() = 0;
     virtual void updateActions() = 0;
     virtual void drawBackground(QPainter& p) { Q_UNUSED(p); }
+
+    /**
+     * Inserts a region consisting of gaps only before the selection. The inserted region width
+     * is specified by @countOfGaps parameter if 0 < @countOfGaps, its height is equal to the
+     * current selection's height.
+     *
+     * If there is no selection in MSA then the method does nothing.
+     *
+     * If -1 == @countOfGaps then the inserting region width is equal to
+     * the selection's width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
+     */
+    void insertGapsBeforeSelection( int countOfGaps = -1 );
+
+    /**
+     * Reverse operation for @insertGapsBeforeSelection( ),
+     * removes the region preceding the selection if it consists of gaps only.
+     *
+     * If there is no selection in MSA then the method does nothing.
+     *
+     * @countOfGaps specifies maximum width of the removed region.
+     * If -1 == @countOfGaps then count of removed gap columns is equal to
+     * the selection width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
+     */
+    void removeGapsPrecedingSelection( int countOfGaps = -1 );
+
+    /*
+     * Interrupts the tracking of MSA modifications caused by a region shifting,
+     * also stops shifting. The method is used to keep consistence of undo/redo stack.
+     */
+    void cancelShiftTracking( );
 
     void drawAll();
     void validateRanges();          //called on resize/refont like events
@@ -273,7 +317,10 @@ protected:
 
     bool checkState() const;
 
+    void processCharacterInEditMode(QKeyEvent *e);
+    virtual void processCharacterInEditMode(char newCharacter);
     void exitFromEditCharacterMode();
+
     void deleteOldCustomSchemes();
 
 protected:
@@ -315,11 +362,14 @@ protected:
 
     int                 msaVersionBeforeShifting;
 
-    QAction*        useDotsAction;
+    QAction*            useDotsAction;
 
     QList<QAction*>     colorSchemeMenuActions;
     QList<QAction* >    customColorSchemeMenuActions;
     QList<QAction* >    highlightingSchemeMenuActions;
+
+    QAction*            replaceCharacterAction;
+    QAction*            fillWithGapsinsSymAction;
 
     // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
     // that does not fit into one method, e.g. shifting MSA region with mouse.

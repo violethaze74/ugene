@@ -232,6 +232,10 @@ char MultipleAlignmentData::charAt(int rowNumber, qint64 position) const {
     return getRow(rowNumber)->charAt(position);
 }
 
+bool MultipleAlignmentData::isGap(int rowNumber, qint64 pos) const {
+    return getRow(rowNumber)->isGap(pos);
+}
+
 QStringList MultipleAlignmentData::getRowNames() const {
     QStringList rowNames;
     foreach (const MultipleAlignmentRow &row, rows) {
@@ -281,6 +285,20 @@ void MultipleAlignmentData::removeRow(int rowIndex, U2OpStatus &os) {
     if (rows.isEmpty()) {
         length = 0;
     }
+}
+
+void MultipleAlignmentData::removeChars(int rowNumber, int pos, int n, U2OpStatus &os) {
+    if (rowNumber >= getNumRows() || rowNumber < 0 || pos > length || pos < 0 || n < 0) {
+        coreLog.trace(QString("Internal error: incorrect parameters were passed "
+            "to MultipleAlignmentData::removeChars: row index '%1', pos '%2', count '%3'").arg(rowNumber).arg(pos).arg(n));
+        os.setError("Failed to remove chars from an alignment");
+        return;
+    }
+
+    MaStateCheck check(this);
+    Q_UNUSED(check);
+
+    getRow(rowNumber)->removeChars(pos, n, os);
 }
 
 void MultipleAlignmentData::moveRowsBlock(int startRow, int numRows, int delta) {

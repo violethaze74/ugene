@@ -94,6 +94,8 @@ public:
     void renameRow(int rowIdx, const QString &newName);
     void moveRowsBlock(int firstRow, int numRows, int delta);
 
+    bool isRegionEmpty(int x, int y, int width, int height) const;
+
     /**
      * Updates the rows order.
      * There must be one-to-one correspondence between the specified rows IDs
@@ -105,6 +107,41 @@ public:
 
     void updateCachedMultipleAlignment(const MaModificationInfo &mi = MaModificationInfo(), const QList<qint64> &removedRowIds = QList<qint64>());
     void sortRowsByList(const QStringList &order);
+
+    virtual void replaceCharacter(int startPos, int rowIndex, char newChar) = 0;
+    /** Methods that modify the gap model only */
+    void insertGap(const U2Region &rows, int pos, int nGaps);
+
+    /** Method that affect the whole alignment, including sequences
+     */
+    void removeRegion(int startPos, int startRow, int nBases, int nRows, bool removeEmptyRows, bool track = true);
+
+    /**
+     * Removes gap region that extends from the @pos column and is no longer than @maxGaps.
+     * If the region starting from @pos and having width of @maxGaps includes any non-gap symbols
+     * then its longest subset starting from @pos and containing gaps only is removed.
+     *
+     * If the given region is a subset of a trailing gaps area then nothing happens.
+     */
+    int deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
+
+    /**
+     * Performs shift of the region specified by parameters @startPos (leftmost column number),
+     * @startRow (top row number), @nBases (region width), @nRows (region height) in no more
+     * than @shift bases.
+     *
+     * @startPos and @startRow must be non-negative numbers, @nBases and @nRows - strictly
+     * positive. The sign of @shift parameter specifies the direction of shifting: positive
+     * for right direction, negative for left one. If 0 == @shift nothing happens.
+     *
+     * Shifting to the left may be performed only if a region preceding the selection
+     * and having the same height consists of gaps only. In this case selected region
+     * is moved to the left in the width of the preceding gap region but no more
+     * than |@shift| bases.
+     *
+     * Returns shift size, besides sign of the returning value specifies direction of the shift
+     */
+    int shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift);
 
     void saveState();
     void releaseState();
@@ -122,14 +159,10 @@ protected:
     virtual void loadAlignment(U2OpStatus &os) = 0;
     virtual void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds) = 0;
     virtual void updateDatabase(U2OpStatus &os, const MultipleAlignment &ma) = 0;
-
-    virtual void renameMaPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QString &newName) = 0;
     virtual void removeRowPrivate(U2OpStatus &os, const U2EntityRef &maRef, qint64 rowId) = 0;
-    virtual void renameRowPrivate(U2OpStatus &os, const U2EntityRef &maRef, qint64 rowId, const QString &newName) = 0;
-    virtual void moveRowsPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rowsToMove, int delta) = 0;
-    virtual void updateRowsOrderPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rowsOrder) = 0;
-    virtual qint64 getMaLengthPrivate(U2OpStatus &os, const U2EntityRef &msaRef) = 0;
-    virtual U2AlphabetId getMaAlphabetPrivate(U2OpStatus &os, const U2EntityRef &maRef) = 0;
+    virtual void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
+                                     int startPos, int nBases) = 0;
+
 
     MultipleAlignment cachedMa;
 
@@ -137,6 +170,15 @@ protected:
 
 private:
     void loadDataCore(U2OpStatus &os);
+
+    /**
+     * Returns maximum count of subsequent gap columns in the region that starts from column
+     * with @pos number, has width of @maxGaps and includes the rows specified by @rows.
+     * @maxGaps, @pos are to be non-negative numbers. Gap columns should finish in column
+     * having @pos + @maxGaps number, otherwise 0 is returned. If the region is located
+     * in the MSA trailing gaps area, then 0 is returned.
+     */
+    int getMaxWidthOfGapRegion(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
 
     MaSavedState savedState;
 };

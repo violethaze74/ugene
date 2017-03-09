@@ -118,11 +118,6 @@ public:
 
     MSAEditor* getEditor() const { return qobject_cast<MSAEditor*>(editor); }
 
-    void deleteCurrentSelection();
-
-    void processCharacterInEditMode(QKeyEvent *e);
-    void replaceSelectedCharacter(char newCharacter);
-
     QStringList getAvailableHighlightingSchemes() const;
 
     bool hasAminoAlphabet();
@@ -131,20 +126,14 @@ private:
     // emulating cursor mode with
     void moveCursor(int dx, int dy);
 
-    void highlightCurrentSelection();
-
 public:
     QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 protected:
-    void keyPressEvent(QKeyEvent *);
-    void keyReleaseEvent(QKeyEvent *);
     void focusOutEvent(QFocusEvent* fe);
     void focusInEvent(QFocusEvent* fe);
 
 private slots:
-    void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
-
     void sl_buildStaticMenu(GObjectView* v, QMenu* m);
     void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     void sl_buildContextMenu(GObjectView* v, QMenu* m);
@@ -152,12 +141,10 @@ private slots:
     void sl_addSeqFromFile();
     void sl_addSeqFromProject();
 
-    void sl_replaceSelectedCharacter();
     void sl_copyCurrentSelection();
     void sl_copyFormattedSelection();
     void sl_paste();
     void sl_pasteFinished(Task* pasteTask);
-    void sl_fillCurrentSelectionWithGaps();
     void sl_delCol();
     void sl_goto();
     void sl_removeAllGaps();
@@ -184,8 +171,6 @@ private slots:
 
     void sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
 
-    void sl_changeSelectionColor();
-
 private:
     void initRenderer();
 
@@ -193,43 +178,12 @@ private:
 
     void updateActions();
 
-    /**
-     * Inserts a region consisting of gaps only before the selection. The inserted region width
-     * is specified by @countOfGaps parameter if 0 < @countOfGaps, its height is equal to the
-     * current selection's height.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * If -1 == @countOfGaps then the inserting region width is equal to
-     * the selection's width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
-     */
-    void insertGapsBeforeSelection( int countOfGaps = -1 );
-
-    /**
-     * Reverse operation for @insertGapsBeforeSelection( ),
-     * removes the region preceding the selection if it consists of gaps only.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * @countOfGaps specifies maximum width of the removed region.
-     * If -1 == @countOfGaps then count of removed gap columns is equal to
-     * the selection width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
-     */
-    void removeGapsPrecedingSelection( int countOfGaps = -1 );
-
     void reverseComplementModification(ModificationType& type);
-
-    /*
-     * Interrupts the tracking of MSA modifications caused by a region shifting,
-     * also stops shifting. The method is used to keep consistence of undo/redo stack.
-     */
-    void cancelShiftTracking( );
 
     void updateCollapsedGroups(const MaModificationInfo& modInfo);
 
     QAction*        copySelectionAction;
     QAction*        delColAction;
-    QAction*        insSymAction;
     QAction*        removeAllGapsAction;
     QAction*        gotoAction;
     QAction*        createSubaligniment;
@@ -239,17 +193,10 @@ private:
     QAction*        sortByNameAction;
     QAction*        collapseModeSwitchAction;
     QAction*        collapseModeUpdateAction;
-    QAction*        replaceCharacterAction;
     QAction*        reverseComplementAction;
     QAction*        reverseAction;
     QAction*        complementAction;
     QAction*        lookMSASchemesSettingsAction;
-
-    // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
-    // that does not fit into one method, e.g. shifting MSA region with mouse.
-    // If the changing action fits within one method it's recommended using
-    // the U2UseCommonUserModStep object explicitly.
-    MsaEditorUserModStepController changeTracker;
 };
 
 // SANGER_TODO: move to EditorTasks?
