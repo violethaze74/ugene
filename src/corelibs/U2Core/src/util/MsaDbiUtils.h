@@ -97,11 +97,13 @@ public:
     static DbiConnection * getCheckedConnection(const U2DbiRef &dbiRef, U2OpStatus &os);
     static bool validateRowIds(const MultipleSequenceAlignment& al, const QList<qint64>& rowIds);
     static void validateRowIds(U2MsaDbi *msaDbi, const U2DataId &msaId, const QList<qint64>& rowIds, U2OpStatus &os);
+
+    static void calculateGapModelAfterReplaceChar(QList<U2MsaGap>& gapModel, qint64 pos);
 };
 
 class U2CORE_EXPORT MsaDbiUtils : public QObject {
     Q_OBJECT
-
+    friend class McaDbiUtils;
 public:
 
     /**

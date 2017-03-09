@@ -665,9 +665,7 @@ bool MaEditorSequenceArea::shiftSelectedRegion(int shift) {
     CHECK(shift != 0, true);
 
     // shifting of selection
-    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(getEditor());
-    CHECK(msaEditor != NULL, false);
-    MultipleSequenceAlignmentObject *maObj = msaEditor->getMaObject();
+    MultipleAlignmentObject *maObj = editor->getMaObject();
     if (!maObj->isStateLocked()) {
         const U2Region rows = getSelectedRows();
         const int x = selection.x();

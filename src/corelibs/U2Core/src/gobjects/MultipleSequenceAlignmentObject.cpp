@@ -145,46 +145,6 @@ void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QS
     updateCachedMultipleAlignment();
 }
 
-int MultipleSequenceAlignmentObject::shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift) {
-    SAFE_POINT(!isStateLocked(), "Alignment state is locked", 0);
-    SAFE_POINT(!isRegionEmpty(startPos, startRow, nBases, nRows), "Region is empty", 0);
-    SAFE_POINT(0 <= startPos && 0 <= startRow && 0 < nBases && 0 < nRows, "Invalid parameters of selected region encountered", 0);
-    U2OpStatusImpl os;
-
-    int n = 0;
-    if (shift > 0) {
-        //if last symbol selected - do not add gaps at the end
-        if (!(startPos + nBases == getLength())) {
-            // if some trailing gaps are selected --> save them!
-            if (startPos + nBases + shift > getLength()) {
-                bool increaseAlignmentLen = true;
-                for (int i = startRow; i < startRow + nRows; i++) {
-                    int rowLen = getMsaRow(i)->getRowLengthWithoutTrailing();
-                    if (rowLen >= startPos + nBases + shift) {
-                        increaseAlignmentLen = false;
-                        break;
-                    }
-                }
-                if (increaseAlignmentLen) {
-                    MaDbiUtils::updateMaLength(entityRef, startPos + nBases + shift, os);
-                    SAFE_POINT_OP(os, 0);
-                    updateCachedMultipleAlignment();
-                }
-            }
-        }
-
-        insertGap(U2Region(startRow, nRows), startPos, shift);
-        n = shift;
-    } else if (0 < startPos) {
-        if (0 > startPos + shift) {
-            shift = -startPos;
-        }
-        n = -deleteGap(os, U2Region(startRow, nRows), startPos + shift, -shift);
-        SAFE_POINT_OP(os, 0);
-    }
-    return n;
-}
-
 void MultipleSequenceAlignmentObject::deleteColumnWithGaps(U2OpStatus &os, int requiredGapCount) {
     QList<qint64> colsForDelete = getColumnsWithGaps(requiredGapCount);
     if (getLength() == colsForDelete.count()) {

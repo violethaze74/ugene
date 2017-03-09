@@ -45,6 +45,8 @@ public:
     static DNAChromatogram complement(const DNAChromatogram &chromatogram);
     static DNAChromatogram reverseComplement(const DNAChromatogram &chromatogram);
     static U2Region sequenceRegion2TraceRegion(const DNAChromatogram &chromatogram, const U2Region &sequenceRegion);
+    // SANGER_TODO: the method does not take gaps into accaunt!
+    static void insertBase(DNAChromatogram &chromatogram, int pos);
 };
 
 }   // namespace U2

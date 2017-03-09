@@ -83,6 +83,9 @@ Derived MultipleAlignmentRow::dynamicCast(U2OpStatus &os) const {
  */
 class U2CORE_EXPORT MultipleAlignmentRowData {
 public:
+    MultipleAlignmentRowData();
+    MultipleAlignmentRowData(const DNASequence &sequence, const QList<U2MsaGap> &gaps);
+
     virtual ~MultipleAlignmentRowData();
 
     /** Returns the list of gaps for the row */
@@ -111,6 +114,16 @@ public:
 
     virtual bool operator !=(const MultipleAlignmentRowData &other) const = 0;
     virtual bool operator ==(const MultipleAlignmentRowData &other) const = 0;
+
+    /** The sequence of the row without gaps (cached) */
+    DNASequence sequence;
+
+    /**
+     * Gaps model of the row
+     * There should be no trailing gaps!
+     * Trailing gaps are 'Virtual': they are stored 'inside' the alignment length
+     */
+    QList<U2MsaGap> gaps;
 };
 
 inline bool	operator!=(const MultipleAlignmentRow &ptr1, const MultipleAlignmentRow &ptr2) { return *ptr1 != *ptr2; }

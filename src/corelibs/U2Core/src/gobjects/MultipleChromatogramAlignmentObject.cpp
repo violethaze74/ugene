@@ -96,7 +96,7 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
     if (newChar != U2Msa::GAP_CHAR) {
         McaDbiUtils::replaceCharacterInRow(entityRef, modifiedRowId, startPos, newChar, os);
     } else {
-        MsaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
+        McaDbiUtils::removeRegion(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
         MsaDbiUtils::insertGaps(entityRef, QList<qint64>() << modifiedRowId, startPos, 1, os);
     }
     SAFE_POINT_OP(os, );

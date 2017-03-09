@@ -286,18 +286,6 @@ private:
 
     DNAChromatogram chromatogram;
 
-    // 5491_TODO: move sequence, gapModel and rowId to the parent
-
-    /** The sequence of the row without gaps (cached) */
-    DNASequence sequence;
-
-    /**
-     * Gaps model of the row
-     * There should be no trailing gaps!
-     * Trailing gaps are 'Virtual': they are stored 'inside' the alignment length
-     */
-    QList<U2MsaGap> gaps;
-
     /** The row in the database */
     U2McaRow initialRowInDb;
 

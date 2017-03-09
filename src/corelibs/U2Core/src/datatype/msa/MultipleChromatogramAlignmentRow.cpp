@@ -113,7 +113,8 @@ QSharedPointer<MultipleChromatogramAlignmentRowData> MultipleChromatogramAlignme
 }
 
 MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(MultipleChromatogramAlignmentData *mcaData)
-    : alignment(mcaData)
+    : MultipleAlignmentRowData(),
+      alignment(mcaData)
 {
     removeTrailingGaps();
 }
@@ -123,10 +124,9 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
                                                                            const DNASequence &sequence,
                                                                            const QList<U2MsaGap> &gaps,
                                                                            MultipleChromatogramAlignmentData *mcaData)
-    : alignment(mcaData),
+    : MultipleAlignmentRowData(sequence, gaps),
+      alignment(mcaData),
       chromatogram(chromatogram),
-      sequence(sequence),
-      gaps(gaps),
       initialRowInDb(rowInDb)
 {
     SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData is NULL", );
@@ -138,7 +138,8 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
                                                                            const DNAChromatogram &chromatogram,
                                                                            const QByteArray &rawData,
                                                                            MultipleChromatogramAlignmentData *mcaData)
-    : alignment(mcaData),
+    : MultipleAlignmentRowData(),
+      alignment(mcaData),
       chromatogram(chromatogram),
       initialRowInDb(rowInDb)
 {
@@ -150,10 +151,9 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
 }
 
 MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const MultipleChromatogramAlignmentRow &row, MultipleChromatogramAlignmentData *mcaData)
-    : alignment(mcaData),
+    : MultipleAlignmentRowData(row->sequence, row->gaps),
+      alignment(mcaData),
       chromatogram(row->chromatogram),
-      sequence(row->sequence),
-      gaps(row->gaps),
       initialRowInDb(row->initialRowInDb)
 {
     SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData is NULL", );

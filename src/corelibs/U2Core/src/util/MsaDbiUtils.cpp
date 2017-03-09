@@ -632,8 +632,7 @@ void MsaDbiUtils::removeCharsFromRow(QByteArray &seq, QList<U2MsaGap> &gaps, qin
     mergeConsecutiveGaps(gaps);
 }
 
-namespace {
-void calculateGapModelAfterReplaceChar(QList<U2MsaGap>& gapModel, qint64 pos) {
+void MaDbiUtils::calculateGapModelAfterReplaceChar(QList<U2MsaGap>& gapModel, qint64 pos) {
     SAFE_POINT(pos >= 0, QString("Invalid position '%1'!").arg(pos), );
 
     for (int i = 0; i < gapModel.count(); ++i) {
@@ -666,6 +665,7 @@ void calculateGapModelAfterReplaceChar(QList<U2MsaGap>& gapModel, qint64 pos) {
     }
 }
 
+namespace {
 void calculateGapModelAfterAppendChar(QList<U2MsaGap>& gapModel, qint64 pos, qint64 originalRowLength) {
     CHECK(pos > originalRowLength, );
     gapModel.append(U2MsaGap(originalRowLength, pos - originalRowLength));
@@ -689,7 +689,7 @@ void MsaDbiUtils::replaceCharInRow(QByteArray &seq, QList<U2MsaGap> &gaps, qint6
             U2OpStatus2Log os;
             DNASequenceUtils::insertChars(seq, posInSeq, QByteArray(1, newChar), os);
             SAFE_POINT_OP(os, );
-            calculateGapModelAfterReplaceChar(gaps, pos);
+            MaDbiUtils::calculateGapModelAfterReplaceChar(gaps, pos);
         }
     } else {
         U2OpStatus2Log os;

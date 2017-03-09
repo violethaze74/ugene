@@ -125,6 +125,24 @@ public:
      */
     int deleteGap(U2OpStatus &os, const U2Region &rows, int pos, int maxGaps);
 
+    /**
+     * Performs shift of the region specified by parameters @startPos (leftmost column number),
+     * @startRow (top row number), @nBases (region width), @nRows (region height) in no more
+     * than @shift bases.
+     *
+     * @startPos and @startRow must be non-negative numbers, @nBases and @nRows - strictly
+     * positive. The sign of @shift parameter specifies the direction of shifting: positive
+     * for right direction, negative for left one. If 0 == @shift nothing happens.
+     *
+     * Shifting to the left may be performed only if a region preceding the selection
+     * and having the same height consists of gaps only. In this case selected region
+     * is moved to the left in the width of the preceding gap region but no more
+     * than |@shift| bases.
+     *
+     * Returns shift size, besides sign of the returning value specifies direction of the shift
+     */
+    int shiftRegion(int startPos, int startRow, int nBases, int nRows, int shift);
+
     void saveState();
     void releaseState();
 
