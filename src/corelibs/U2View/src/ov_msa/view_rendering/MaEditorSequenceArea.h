@@ -318,7 +318,7 @@ protected:
     bool checkState() const;
 
     void processCharacterInEditMode(QKeyEvent *e);
-    void replaceSelectedCharacter(char newCharacter);
+    virtual void processCharacterInEditMode(char newCharacter);
     void exitFromEditCharacterMode();
 
     void deleteOldCustomSchemes();

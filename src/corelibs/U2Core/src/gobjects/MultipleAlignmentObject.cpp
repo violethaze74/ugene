@@ -513,7 +513,7 @@ int MultipleAlignmentObject::shiftRegion(int startPos, int startRow, int nBases,
 }
 
 void MultipleAlignmentObject::saveState(){
-    const MultipleSequenceAlignment &ma = getMultipleAlignment();
+    const MultipleAlignment &ma = getMultipleAlignment();
     emit si_completeStateChanged(false);
     savedState.setState(ma);
 }

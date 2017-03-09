@@ -84,9 +84,6 @@ const MultipleChromatogramAlignmentRow MultipleChromatogramAlignmentObject::getM
 }
 
 void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int rowIndex, char newChar) {
-    // SANGER_TODO: temp double code
-    coreLog.info(QString("I wanna to replace pos  %1, %2 to %3 carachter").arg(startPos).arg(rowIndex).arg(newChar));
-
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     const MultipleAlignment msa = getMultipleAlignment();
     SAFE_POINT(rowIndex >= 0 && startPos + 1 <= msa->getLength(), "Invalid parameters", );
@@ -120,6 +117,12 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
     }
 
     updateCachedMultipleAlignment(mi);
+}
+
+void MultipleChromatogramAlignmentObject::insertCharacter(int rowIndex, int pos, char newChar) {
+    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
+    insertGap(U2Region(0, getNumRows()), pos, 1);
+    replaceCharacter(pos, rowIndex, newChar);
 }
 
 void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus &os) {

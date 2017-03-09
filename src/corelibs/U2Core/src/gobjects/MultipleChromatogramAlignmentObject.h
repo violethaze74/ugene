@@ -49,6 +49,8 @@ public:
     const MultipleChromatogramAlignmentRow getMcaRow(int row) const;
 
     void replaceCharacter(int startPos, int rowIndex, char newChar);
+    // inserts column of gaps with newChar at rowIndex row
+    void insertCharacter(int rowIndex, int pos, char newChar);
 
     void saveState();
     void releaseState();

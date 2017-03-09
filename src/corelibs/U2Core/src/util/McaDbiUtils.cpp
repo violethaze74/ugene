@@ -318,7 +318,7 @@ void McaDbiUtils::replaceCharacterInRow(const U2EntityRef& msaRef, qint64 rowId,
     qint64 msaLength = msaDbi->getMsaLength(msaRef.entityId, os);
     CHECK(pos < msaLength,);
 
-    U2Region seqReg(row.gstart, row.gend - row.gstart);
+    U2Region seqReg(0, row.length);
     QByteArray seq = sequenceDbi->getSequenceData(row.sequenceId, seqReg, os);
     CHECK_OP(os, );
 

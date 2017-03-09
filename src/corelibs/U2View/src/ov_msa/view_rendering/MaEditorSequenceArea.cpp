@@ -620,10 +620,8 @@ void MaEditorSequenceArea::setCopyFormatedAlgorithmId(const QString& algoId){
 
 void MaEditorSequenceArea::deleteCurrentSelection() {
     CHECK(getEditor() != NULL, );
+    CHECK(!selection.isNull(), );
 
-    if (selection.isNull()) {
-        return;
-    }
     assert(isInRange(selection.topLeft()));
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
     MultipleAlignmentObject* maObj = getEditor()->getMaObject();
@@ -1957,7 +1955,7 @@ void MaEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
         if (latinCharacterOrGap.exactMatch(text)) {
             QChar newChar = text.at(0);
             newChar = (newChar == '-' || newChar == emDash || newChar == ' ') ? U2Msa::GAP_CHAR : newChar;
-            replaceSelectedCharacter(newChar.toLatin1());
+            processCharacterInEditMode(newChar.toLatin1());
         }
         else {
             MainWindow *mainWindow = AppContext::getMainWindow();
@@ -1969,7 +1967,7 @@ void MaEditorSequenceArea::processCharacterInEditMode(QKeyEvent *e) {
     }
 }
 
-void MaEditorSequenceArea::replaceSelectedCharacter(char newCharacter) {
+void MaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
     CHECK(getEditor() != NULL, );
     if (selection.isNull()) {
         return;
