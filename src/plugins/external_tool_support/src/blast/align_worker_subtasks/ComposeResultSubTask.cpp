@@ -301,19 +301,18 @@ U2MsaRowGapModel ComposeResultSubTask::getShiftedGaps(int rowNum) {
 }
 
 void ComposeResultSubTask::insertShiftedGapsIntoReference() {
-    QScopedPointer<U2SequenceObject> reference(StorageUtils::getSequenceObject(storage, this->reference));
-    CHECK_EXT(reference != NULL, setError(L10N::nullPointerError("Reference sequence")), );
+    CHECK_EXT(referenceSequenceObject != NULL, setError(L10N::nullPointerError("Reference sequence")), );
 
     U2MsaRowGapModel referenceGaps = getReferenceGaps();
     CHECK_OP(stateInfo, );
 
-    DNASequence dnaSeq = reference->getWholeSequence(stateInfo);
+    DNASequence dnaSeq = referenceSequenceObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, );
     for (int i = referenceGaps.size() - 1; i >= 0; i--) {
         U2MsaGap gap = referenceGaps[i];
         dnaSeq.seq.insert(gap.offset, &U2Msa::GAP_CHAR, gap.gap);
     }
-    reference->setWholeSequence(dnaSeq);
+    referenceSequenceObject->setWholeSequence(dnaSeq);
 }
 
 void ComposeResultSubTask::insertShiftedGapsIntoRead(MultipleChromatogramAlignment &alignment, int readNum, int rowNum, const U2MsaRowGapModel &gaps) {
