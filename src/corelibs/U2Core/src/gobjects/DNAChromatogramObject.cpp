@@ -75,7 +75,7 @@ const DNAChromatogram & DNAChromatogramObject::getChromatogram() const {
 }
 
 void DNAChromatogramObject::setChromatogram(U2OpStatus &os, const DNAChromatogram &chromatogram) {
-    ChromatogramUtils::updateChromtogramData(os, getEntityRef(), chromatogram);
+    ChromatogramUtils::updateChromatogramData(os, getEntityRef(), chromatogram);
     CHECK_OP(os, );
     cache = chromatogram;
 }

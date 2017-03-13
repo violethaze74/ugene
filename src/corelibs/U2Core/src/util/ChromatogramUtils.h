@@ -28,25 +28,26 @@
 
 namespace U2 {
 
+class U2MsaGap;
 class U2CORE_EXPORT ChromatogramUtils {
 public:
     static void append(DNAChromatogram chromatogram, const DNAChromatogram &appendedChromatogram);
-    static void remove(U2OpStatus &os, DNAChromatogram &chromatogram, int startPos, int endPos);
+    static void removeBaseCalls(U2OpStatus &os, DNAChromatogram &chromatogram, int startPos, int endPos);
     static bool areEqual(const DNAChromatogram &first, const DNAChromatogram &second);
     static void crop(DNAChromatogram &chromatogram, int startPos, int length);
     static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNAChromatogram &chromatogram);
     static DNAChromatogram exportChromatogram(U2OpStatus &os, const U2EntityRef &chromatogramRef);
     static U2Chromatogram getChromatogramDbInfo(U2OpStatus &os, const U2EntityRef &chromatogramRef);
     static qint64 getChromatogramLength(U2OpStatus &os, const U2EntityRef &chromatogramRef);
-    static void updateChromtogramData(U2OpStatus &os, const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram);
+    static void updateChromatogramData(U2OpStatus &os, const U2EntityRef &chromatogramRef, const DNAChromatogram &chromatogram);
     static U2EntityRef getChromatogramIdByRelatedSequenceId(U2OpStatus &os, const U2EntityRef &sequenceRef);
     static QString getChromatogramName(U2OpStatus &os, const U2EntityRef &chromatogramRef);
     static DNAChromatogram reverse(const DNAChromatogram &chromatogram);
     static DNAChromatogram complement(const DNAChromatogram &chromatogram);
     static DNAChromatogram reverseComplement(const DNAChromatogram &chromatogram);
     static U2Region sequenceRegion2TraceRegion(const DNAChromatogram &chromatogram, const U2Region &sequenceRegion);
-    // SANGER_TODO: the method does not take gaps into accaunt!
-    static void insertBase(DNAChromatogram &chromatogram, int pos);
+    static void insertBase(DNAChromatogram &chromatogram, int posUngapped, const QList<U2MsaGap>& gapModel, int posWithGaps);
+    static DNAChromatogram getGappedChromatogram(const DNAChromatogram& chrom, const QList<U2MsaGap>& gapModel);
 };
 
 }   // namespace U2

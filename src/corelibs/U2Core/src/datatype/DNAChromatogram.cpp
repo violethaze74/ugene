@@ -26,6 +26,7 @@
 namespace U2 {
 
 const ushort DNAChromatogram::INVALID_VALUE = 0;
+const char DNAChromatogram::DEFAULT_PROBABILITY = 0; // SANGER_TODO: 100?
 
 DNAChromatogram::DNAChromatogram()
     : name("chromatogram"),
