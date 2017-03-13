@@ -148,6 +148,7 @@ void PanViewRenderer::drawSelection(QPainter &p, const QSize &canvasSize, const 
     int hCenter = getContentIndentY(canvasSize, visibleRange);
     p.translate(0, hCenter);
 
+    p.fillRect(0, 0, canvasSize.width(), canvasSize.height(), Qt::white);
     drawSequence(p, canvasSize, visibleRange);
 
     AnnotationDisplaySettings displaySettings;
@@ -263,7 +264,7 @@ void PanViewRenderer::drawSequenceSelection(QPainter& p, const QSize &canvasSize
         unitType = "bp";
     }
 
-    QString rangePattern = " " + panView->tr("[%1 %2]")+" ";
+    QString rangePattern = " " + panView->tr("[%1 %2]") + " ";
     foreach(const U2Region& r, selection) {
         if (!visibleRange.intersects(r)) {
             continue;
@@ -272,10 +273,10 @@ void PanViewRenderer::drawSequenceSelection(QPainter& p, const QSize &canvasSize
         int x2 = qMin(canvasSize.width(), posToXCoord(r.endPos(), canvasSize, visibleRange));
 
         p.setPen(pen1);
-        if (visibleRange.contains(r.startPos)) {
+        if (visibleRange.contains(r.startPos) && s->numLines > 1) {
             p.drawLine(x1, - getContentIndentY(canvasSize, visibleRange), x1, ly);
         }
-        if (visibleRange.contains(r.endPos()-1)) {
+        if (visibleRange.contains(r.endPos() - 1) && s->numLines > 1) {
             p.drawLine(x2, - getContentIndentY(canvasSize, visibleRange), x2, ly);
         }
 
@@ -421,6 +422,14 @@ const QString PanViewRenderer::getText(const PVRowData * rData) const {
         ? U2::PanView::tr("empty")
         : rData->key + " (" + QString::number(rData->annotations.size()) + ")";
     return text;
+}
+
+PanViewRendererFactory::~PanViewRendererFactory() {
+
+}
+
+PanViewRenderer *PanViewRendererFactory::createRenderer(PanView *panView) const {
+    return new PanViewRenderer(panView, panView->getSequenceContext());
 }
 
 } // namespace

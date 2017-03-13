@@ -345,6 +345,7 @@ void MaEditor::sl_changeFont() {
     }
     setFont(f);
     updateActions();
+    emit si_completeUpdate();
 }
 
 void MaEditor::sl_lockedStateChanged() {
@@ -428,7 +429,7 @@ void MaEditor::setFont(const QFont& f) {
     font = f;
     calcFontPixelToPointSizeCoef();
     font.setPointSize(qBound(MOBJECT_MIN_FONT_SIZE, pSize, MOBJECT_MAX_FONT_SIZE));
-    emit si_fontChanged(f);
+    emit si_fontChanged(font);
     saveFont(font);
 }
 

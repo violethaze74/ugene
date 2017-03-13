@@ -25,6 +25,7 @@
 #include <U2View/PanView.h>
 
 #include "view_rendering/MaEditorSelection.h"
+#include "view_rendering/McaReferenceAreaRenderer.h"
 
 namespace U2 {
 
@@ -39,17 +40,18 @@ public:
 signals:
     void si_selectionChanged();
 
-public slots:
+private slots:
     void sl_visibleRangeChanged();
     void sl_selectionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
-
-private slots:
     void sl_onSelectionChanged();
     void sl_clearSelection();
+    void sl_fontChanged(const QFont &newFont);
 
 private:
     McaEditor* editor;
+    McaReferenceAreaRenderer *renderer;
 };
 
 } // namespace U2
+
 #endif // _U2_MCA_EDITOR_REFERENCE_VIEW_H_

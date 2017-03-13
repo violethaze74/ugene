@@ -22,13 +22,16 @@
 #ifndef _U2_PAN_VIEW_PAINTER_H_
 #define _U2_PAN_VIEW_PAINTER_H_
 
-#include "SequenceViewAnnotatedRenderer.h"
+#include <U2Gui/GraphUtils.h>
 
-#include <U2View/PanView.h>
+#include "SequenceViewAnnotatedRenderer.h"
 
 namespace U2 {
 
 class ADVSequenceObjectContext;
+class PanView;
+class PanViewLinesSettings;
+class PVRowData;
 
 /************************************************************************/
 /* DetViewAnnotationPainter */
@@ -56,30 +59,35 @@ public:
 
     void drawAnnotations(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings& displaySettings);
 
-private:
+protected:
     int getLineY(int line) const;
-
     bool isSequenceCharsVisible() const;
 
-    void drawSequence(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
+    PanView*            panView;
+    PanViewLinesSettings*   s;
+
+private:
+    virtual void drawSequence(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
     void drawSequenceSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange);
 
-    void drawRuler(GraphUtils::RulerConfig c,  QPainter& p, const U2Region &visibleRange, int firstCharCenter, int firstLastWidth);
+    virtual void drawRuler(GraphUtils::RulerConfig c,  QPainter& p, const U2Region &visibleRange, int firstCharCenter, int firstLastWidth);
     void drawCustomRulers(GraphUtils::RulerConfig c,  QPainter& p, const U2Region &visibleRange,
                           int firstCharCenter, int lastCharCenter,
                           int width, int predefinedY = -1, bool ignoreVisbileRange = false);
 
     const QString getText(const PVRowData * rData) const;
 
-private:
-    PanView*            panView;
-
-    PanViewLinesSettings*   s;
-
     static const int RULER_NOTCH_SIZE;
     static const int MAX_VISIBLE_ROWS;
     static const int MAX_VISIBLE_ROWS_ON_START;
     static const int LINE_TEXT_OFFSET;
+};
+
+class PanViewRendererFactory {
+public:
+    ~PanViewRendererFactory();
+
+    virtual PanViewRenderer *createRenderer(PanView *panView) const;
 };
 
 } // namespace
