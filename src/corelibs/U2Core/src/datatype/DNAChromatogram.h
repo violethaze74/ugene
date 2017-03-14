@@ -57,6 +57,7 @@ public:
     bool operator ==(const DNAChromatogram &otherChromatogram) const;
 
     static const ushort INVALID_VALUE;
+    static const char   DEFAULT_PROBABILITY;
 };
 
 } //namespace
