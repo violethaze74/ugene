@@ -1260,7 +1260,7 @@ GUI_TEST_CLASS_DEFINITION(test_5520_1) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/test/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
             GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
 
             QRadioButton* rbNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
@@ -1291,7 +1291,7 @@ GUI_TEST_CLASS_DEFINITION(test_5520_2) {
             QWidget *dialog = QApplication::activeModalWidget();
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/test/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
             GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
 
             QRadioButton* rbNewTable = GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable");
