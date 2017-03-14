@@ -218,7 +218,7 @@ protected slots:
     virtual void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
     virtual void sl_buildContextMenu(GObjectView* v, QMenu* m);
 
-    void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo&);
+    void sl_alignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
 
     void sl_onHScrollMoved(int pos);
     void sl_onVScrollMoved(int pos);

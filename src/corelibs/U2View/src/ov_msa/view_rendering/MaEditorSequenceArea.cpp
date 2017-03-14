@@ -986,11 +986,11 @@ void MaEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
     buildMenu(m);
 }
 
-void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &modInfo) {
+void MaEditorSequenceArea::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &) {
     exitFromEditCharacterMode();
     int nSeq = editor->getNumSequences();
     int aliLen = editor->getAlignmentLen();
-    //! TODO
+    //! SANGER_TODO
 //    if (ui->isCollapsibleMode()) {
 //        nSeq = getNumDisplayedSequences();
 //        updateCollapsedGroups(modInfo);

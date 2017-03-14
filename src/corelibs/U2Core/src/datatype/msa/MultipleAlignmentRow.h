@@ -115,6 +115,7 @@ public:
     virtual bool operator !=(const MultipleAlignmentRowData &other) const = 0;
     virtual bool operator ==(const MultipleAlignmentRowData &other) const = 0;
 
+protected:
     /** The sequence of the row without gaps (cached) */
     DNASequence sequence;
 
