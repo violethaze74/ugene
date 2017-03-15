@@ -837,7 +837,7 @@ GUI_TEST_CLASS_DEFINITION(test_5352) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Close without Saving"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
     HIWebElement element = GTUtilsDashboard::findElement(os, "", "BUTTON");
     GTUtilsDashboard::click(os, element);
 
