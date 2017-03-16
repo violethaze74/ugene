@@ -54,8 +54,6 @@ DbiDocumentFormat::DbiDocumentFormat(const U2DbiFactoryId& _id, const DocumentFo
     formatFlags|=DocumentFormatFlag_DirectWriteOperations;
 }
 
-
-
 static void renameObjectsIfNamesEqual(QList<GObject*> & objs) {
     for(int i = 0; i < objs.size(); ++i) {
         int howManyEquals = 0;
@@ -129,20 +127,22 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
         objects << gobject;
     }
 
-    foreach(const U2DataId &id, objectIds) {
-        U2OpStatus2Log status;
-        GObject* srcObj = match[id];
-        QList<GObjectRelation> gRelations;
-
-        QList<U2ObjectRelation> relations = handle.dbi->getObjectRelationsDbi()->getObjectRelations(id, status);
-        foreach (const U2ObjectRelation& r, relations) {
-            GObject* relatedObject = match[r.referencedObject];
-            // SANGER_TODO: dbiId - url, should not be left like this
-            GObjectReference relatedRef(handle.dbi->getDbiId(), relatedObject->getGObjectName(), relatedObject->getGObjectType(), relatedObject->getEntityRef());
-            GObjectRelation gRelation(relatedRef, r.relationRole);
-            gRelations << gRelation;
+    if (handle.dbi->getObjectRelationsDbi() != NULL) {
+        foreach(const U2DataId &id, match.keys()) {
+            U2OpStatus2Log status;
+            GObject* srcObj = match.value(id, NULL);
+            SAFE_POINT(srcObj != NULL, "Source object is NULL", QList<GObject *>());
+            QList<GObjectRelation> gRelations;
+            QList<U2ObjectRelation> relations = handle.dbi->getObjectRelationsDbi()->getObjectRelations(id, status);
+            foreach (const U2ObjectRelation& r, relations) {
+                GObject* relatedObject = match[r.referencedObject];
+                // SANGER_TODO: dbiId - url, should not be left like this
+                GObjectReference relatedRef(handle.dbi->getDbiId(), relatedObject->getGObjectName(), relatedObject->getGObjectType(), relatedObject->getEntityRef());
+                GObjectRelation gRelation(relatedRef, r.relationRole);
+                gRelations << gRelation;
+            }
+            srcObj->setObjectRelations(gRelations);
         }
-        srcObj->setObjectRelations(gRelations);
     }
 
     return objects;
