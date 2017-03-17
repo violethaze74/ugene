@@ -546,6 +546,7 @@ GUI_TEST_CLASS_DEFINITION(test_5199) {
             GTUtilsTaskTreeView::waitTaskFinished(os);
 
             QTableWidget *resultsTable = GTWidget::findExactWidget<QTableWidget *>(os, "resultsTable", dialog);
+            GTGlobals::sleep();
             CHECK_SET_ERR(NULL != resultsTable, "resultsTable is NULL");
             const int resultsCount = resultsTable->rowCount();
             CHECK_SET_ERR(4 == resultsCount, QString("Unexpected results count: expected %1, got %2").arg(4).arg(resultsCount));
