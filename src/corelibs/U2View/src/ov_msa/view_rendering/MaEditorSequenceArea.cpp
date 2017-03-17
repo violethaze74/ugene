@@ -1070,8 +1070,9 @@ void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
     QList<MsaColorSchemeFactory *> customFactories = msaColorSchemeRegistry->getMsaCustomColorSchemes(editor->getMaObject()->getAlphabet()->getType());
 
     foreach (MsaColorSchemeFactory *factory, customFactories) {
-        QAction *action = new QAction(factory->getName(), this);
-        action->setObjectName(factory->getName());
+        QString name = factory->getName(editor->getMaObject()->getAlphabet()->getType());
+        QAction *action = new QAction(name, this);
+        action->setObjectName(name);
         action->setCheckable(true);
         action->setData(factory->getId());
         connect(action, SIGNAL(triggered()), SLOT(sl_changeColorScheme()));
@@ -1751,8 +1752,11 @@ void MaEditorSequenceArea::registerCommonColorSchemes() {
     QList<MsaColorSchemeFactory*> colorFactories = msaColorSchemeRegistry->getMsaColorSchemes(editor->getMaObject()->getAlphabet()->getType());
 
     foreach (MsaColorSchemeFactory *factory, colorFactories) {
-        QAction *action = new QAction(factory->getName(), this);
-        action->setObjectName(factory->getName());
+        DNAAlphabetType editorAlphabet = editor->getMaObject()->getAlphabet()->getType();
+        DNAAlphabetType factoryAlphabet = factory->getAlphabetType();
+        QString name = factory->getName(editor->getMaObject()->getAlphabet()->getType());
+        QAction *action = new QAction(name, this);
+        action->setObjectName(name);
         action->setCheckable(true);
         action->setData(factory->getId());
         connect(action, SIGNAL(triggered()), SLOT(sl_changeColorScheme()));
