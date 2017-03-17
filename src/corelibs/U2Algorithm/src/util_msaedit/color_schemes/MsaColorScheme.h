@@ -86,7 +86,8 @@ public:
     virtual MsaColorScheme * create(QObject *p, MultipleAlignmentObject *obj) const = 0;
 
     const QString & getId() const;
-    const QString & getName() const;
+    const QString getName(const DNAAlphabetType &msaAlphabet) const;
+    //const QString getNameWithAlphabet() const;
     DNAAlphabetType getAlphabetType() const;
 
 signals:

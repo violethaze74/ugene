@@ -191,7 +191,7 @@ void MSAHighlightingTab::initColorCB() {
 
     colorScheme->clear();
     foreach (MsaColorSchemeFactory *factory, colorSchemesFactories) {
-        colorScheme->addItem(factory->getName());
+        colorScheme->addItem(factory->getName(msa->getMaObject()->getAlphabet()->getType()));
     }
 
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
@@ -212,7 +212,7 @@ void MSAHighlightingTab::sl_sync() {
     SAFE_POINT(s->getFactory() != NULL, "Current scheme color factory is NULL", );
 
     colorScheme->blockSignals(true);
-    colorScheme->setCurrentIndex(colorScheme->findText(s->getFactory()->getName()));
+    colorScheme->setCurrentIndex(colorScheme->findText(s->getFactory()->getName(msa->getMaObject()->getAlphabet()->getType())));
     colorScheme->blockSignals(false);
 
     MsaHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();

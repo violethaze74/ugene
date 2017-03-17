@@ -40,7 +40,7 @@ MsaColorScheme * MsaColorSchemeCustomFactory::create(QObject *parent, MultipleAl
 
 bool MsaColorSchemeCustomFactory::isEqualTo(const ColorSchemeData &scheme) const {
     bool result = true;
-    result &= getName() == scheme.name;
+    result &= getName(DNAAlphabet_AMINO) == scheme.name; //amino alphabet as function argument for gathering short name
     result &= getAlphabetType() == scheme.type;
     result &= colorsPerChar == colorMapToColorVector(scheme.alpColors);
     return result;
