@@ -43,6 +43,7 @@ public:
     int getScaleBarValue() const;
 
     static const int INDENT_BETWEEN_ROWS;
+    static const int CHROMATOGRAM_MAX_HEIGHT;
 
 private:
     int drawRow(QPainter &p, const MultipleAlignment& msa, qint64 seq, const U2Region& region, qint64 yStart) const;

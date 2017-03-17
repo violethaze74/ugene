@@ -36,8 +36,6 @@
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorSequenceArea.h"
 
-#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
-
 namespace U2 {
 
 #define SETTINGS_ROOT QString("msaeditor/")
@@ -211,16 +209,11 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& p) {
     const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);
 
     const qint64 numRows = editor->getMaObject()->getNumRows();
-    int indent = 0;
-    McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
-    if (mcaEditor != NULL && mcaEditor->getShowChromatogram()) {
-        indent  = SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2;
-    }
     foreach(const U2Region& r, visibleRows) {
         int end = static_cast<int>(qMin(r.endPos(), numRows));
         for (int row = r.startPos; row < end; row++) {
             U2Region yRange = seqArea->getSequenceYRange(startSeq + i, true);
-            yRange.startPos += indent;
+            yRange.startPos += editor->getRowContentIndent(row);
             int offs = getBaseCounts(row, pos, !showStartPos);
             int seqSize = getBaseCounts(row, aliLen - 1, true);
             QString  offset = offs + 1 > seqSize ? QString::number(seqSize) : QString::number(offs + 1);

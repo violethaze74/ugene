@@ -56,7 +56,7 @@ namespace U2 {
         connect(plusButton,SIGNAL(clicked()),SLOT(sl_plusButtonClicked()));
 
         //layout
-        QBoxLayout *zoomLayout = new QBoxLayout(ori == Qt::Vertical ? QBoxLayout::TopToBottom : QBoxLayout::LeftToRight);
+        QBoxLayout *zoomLayout = new QBoxLayout(ori == Qt::Vertical ? QBoxLayout::TopToBottom : QBoxLayout::RightToLeft);
         zoomLayout->addWidget(plusButton);
         zoomLayout->addWidget(scaleBar);
         zoomLayout->addWidget(minusButton);

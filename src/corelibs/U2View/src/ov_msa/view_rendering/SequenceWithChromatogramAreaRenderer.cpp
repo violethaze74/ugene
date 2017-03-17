@@ -33,6 +33,7 @@
 namespace U2 {
 
 const int SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS = 15;
+const int SequenceWithChromatogramAreaRenderer::CHROMATOGRAM_MAX_HEIGHT = 100;
 const qreal SequenceWithChromatogramAreaRenderer::TRACE_OR_BC_LINES_DIVIDER = 2;
 
 SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(McaEditorSequenceArea *seqAreaWgt)

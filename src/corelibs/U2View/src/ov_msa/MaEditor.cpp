@@ -173,6 +173,10 @@ int MaEditor::getRowHeight() const {
     return fm.height() * zoomMult;
 }
 
+int MaEditor::getRowContentIndent(int) const {
+    return 0;
+}
+
 int MaEditor::getSequenceRowHeight() const {
     QFontMetrics fm(font, ui);
     return fm.height() * zoomMult;

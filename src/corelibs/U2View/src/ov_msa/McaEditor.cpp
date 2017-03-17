@@ -29,6 +29,7 @@
 #include "MSAEditorConsensusArea.h"
 
 #include "view_rendering/MaEditorWgt.h"
+#include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 #include <U2View/ADVSequenceObjectContext.h>// SANGER_TODO: do not forget to rename the header
 
 #include <QToolBar>
@@ -101,8 +102,14 @@ void McaEditor::buildStaticMenu(QMenu* m) {
 
 int McaEditor::getRowHeight() const {
     QFontMetrics fm(font, ui);
-    int chromHeigth = 100; // SANGER_TODO: set const chrom height
-    return (fm.height() + chromHeigth * showChromatograms)* zoomMult;
+    return (fm.height() + SequenceWithChromatogramAreaRenderer::CHROMATOGRAM_MAX_HEIGHT)* zoomMult;
+}
+
+int McaEditor::getRowContentIndent(int rowId) const {
+    if (chromVisibility[rowId]) {
+        return SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2;
+    }
+    return MaEditor::getRowContentIndent(rowId);
 }
 
 bool McaEditor::getShowChromatogram() const {

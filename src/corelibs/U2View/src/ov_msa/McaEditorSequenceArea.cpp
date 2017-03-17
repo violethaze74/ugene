@@ -299,7 +299,7 @@ void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
         // insert char into the reference
         U2SequenceObject* ref = getEditor()->referenceObj;
         U2Region region = U2Region(selection.x(), 0);
-        ref->replaceRegion(region, DNASequence(QByteArray(1, newCharacter)), os);
+        ref->replaceRegion(region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
         SAFE_POINT_OP(os, );
 
         insertionMode = false;
