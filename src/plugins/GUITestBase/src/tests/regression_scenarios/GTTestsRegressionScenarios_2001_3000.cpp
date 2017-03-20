@@ -4633,7 +4633,7 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
 //    3. Select vector format (svg, pdf or ps)
 //    Expected state: Quality tuning slider is not showed.
 
-//    4. Select jpeg format
+//    4. Select jpg format
 //    Expected state: Quality tuning slider is showed.
     GTFileDialog::openFile(os, dataDir + "/samples/Genbank/", "CVU55762.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4652,18 +4652,16 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
             QComboBox* formatsBox = dialog->findChild<QComboBox*>("formatsBox");
             QWidget* spin = dialog->findChild<QSpinBox*>("qualitySpinBox");
 
-            GTComboBox::setIndexWithText(os, formatsBox, "svg");
+            GTComboBox::setIndexWithText(os, formatsBox, "SVG");
             CHECK_SET_ERR( !spin->isVisible(), "Quality spin box is visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "pdf");
+            GTComboBox::setIndexWithText(os, formatsBox, "PDF");
             CHECK_SET_ERR( !spin->isVisible(), "Quality spin box is visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "ps");
+            GTComboBox::setIndexWithText(os, formatsBox, "PS");
             CHECK_SET_ERR( !spin->isVisible(), "Quality spin box is visible!");
 
-            GTComboBox::setIndexWithText(os, formatsBox, "jpg");
+            GTComboBox::setIndexWithText(os, formatsBox, "JPG");
             CHECK_SET_ERR( spin->isVisible(), "Quality spin box not visible!");
-            GTComboBox::setIndexWithText(os, formatsBox, "jpeg");
-            CHECK_SET_ERR( spin->isVisible(), "Quality spin box not visible!");
-
+            
             QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
             QPushButton* button = box->button(QDialogButtonBox::Cancel);
