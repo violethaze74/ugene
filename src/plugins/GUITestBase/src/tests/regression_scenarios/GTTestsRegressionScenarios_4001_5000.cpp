@@ -3081,7 +3081,7 @@ GUI_TEST_CLASS_DEFINITION(test_4524) {
     GTKeyboardDriver::keyClick( Qt::Key_Delete);
 
     // Export the msa to SVG.
-    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, sandBoxDir + "test_4524.svg", "svg", 0));
+    GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os, sandBoxDir + "test_4524.svg", "SVG", 0));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export" << "Export as image"));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
     GTMouseDriver::click(Qt::RightButton);
