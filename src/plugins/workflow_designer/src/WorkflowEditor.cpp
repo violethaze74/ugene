@@ -79,22 +79,15 @@ customWidget(NULL), subject(NULL), actor(NULL)
     outputPortBox->setVisible(true);
 
     caption->setMinimumHeight(nameEdit->sizeHint().height());
-    //doc->setMaximumHeight(height()/4);
 
     actorModel = new ActorCfgModel(this, owner);
     proxyModel = new ActorCfgFilterProxyModel(this);
     proxyModel->setSourceModel(actorModel);
     table->setModel(proxyModel);
 
-    table->horizontalHeader()->setStretchLastSection(true);
-
-#if (QT_VERSION < 0x050000) //Qt 5
-    table->horizontalHeader()->setClickable(false);
-    table->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-#else
     table->horizontalHeader()->setSectionsClickable(false);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-#endif
+
     table->verticalHeader()->hide();
     table->verticalHeader()->setDefaultSectionSize(QFontMetrics(QFont()).height() + 6);
     table->setItemDelegate(new SuperDelegate(this));
@@ -167,20 +160,12 @@ void WorkflowEditor::changeScriptMode(bool _mode) {
         table->clearSelection();
         table->setCurrentIndex(QModelIndex());
     }
+    bool updateRequired = _mode != actorModel->getScriptMode();
     actorModel->changeScriptMode(_mode);
-    //table->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 
-#if (QT_VERSION < 0x050000) //Qt 5
-    table->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-#else
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-#endif
-    table->horizontalHeader()->setStretchLastSection(true);
-    if(_mode) {
-        int tWidth = table->width();
-        table->setColumnWidth(0, tWidth/3 - 2);
-        table->setColumnWidth(1, tWidth/3 - 2);
-        table->setColumnWidth(2, tWidth/3 - 2);
+    if ((updateRequired && _mode)) {
+        table->horizontalHeader()->resizeSections(QHeaderView::Stretch);
     }
 }
 

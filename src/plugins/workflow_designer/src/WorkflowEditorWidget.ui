@@ -254,6 +254,9 @@ QGroupBox::indicator:checked {
              <property name="cornerButtonEnabled">
               <bool>false</bool>
              </property>
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
             </widget>
            </widget>
           </item>
