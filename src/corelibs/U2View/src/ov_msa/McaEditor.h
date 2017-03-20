@@ -49,6 +49,7 @@ public:
     virtual void buildStaticMenu(QMenu* m);
 
     virtual int getRowHeight() const;
+    virtual int getRowContentIndent(int rowId) const;
 
     bool getShowChromatogram() const;
     bool isChromVisible(qint64 rowId) const;

@@ -150,7 +150,7 @@ public:
 
     virtual void setSelection(const MaEditorSelection& sel, bool newHighlightSelection = false);
 
-    void moveSelection(int dx, int dy, bool allowSelectionResize = false);
+    virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
     void cancelSelection();
 

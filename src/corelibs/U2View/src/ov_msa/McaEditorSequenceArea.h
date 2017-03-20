@@ -63,6 +63,8 @@ public:
 
     void setSelection(const MaEditorSelection& sel, bool newHighlightSelection = false);
 
+    void moveSelection(int dx, int dy, bool allowSelectionResize = false);
+
 signals:
     void si_clearReferenceSelection();
 

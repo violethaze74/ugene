@@ -149,6 +149,31 @@ void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newH
     MaEditorSequenceArea::setSelection(sel, newHighlightSelection);
 }
 
+void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
+    CHECK(selection.width() == 1 && selection.height() == 1, );
+
+    const MultipleChromatogramAlignment& mca = getEditor()->getMaObject()->getMca();
+    if (dy == 0 && mca->isTrailingOrLeadingGap(selection.y(), selection.x() + dx)) {
+        return;
+    }
+
+    int nextRowToSelect = selection.y() + dy;
+    if (dy != 0) {
+        bool noRowAvailabe = true;
+        for ( ; nextRowToSelect > 0 && nextRowToSelect < editor->getNumSequences(); nextRowToSelect += dy) {
+            if (!mca->isTrailingOrLeadingGap(nextRowToSelect, selection.x() + dx)) {
+                noRowAvailabe  = false;
+                break;
+            }
+        }
+        CHECK(!noRowAvailabe, );
+    }
+
+    QPoint newSelectedPoint(selection.x() + dx, nextRowToSelect);
+    MaEditorSelection newSelection(newSelectedPoint, selection.width(), selection.height());
+    setSelection(newSelection);
+}
+
 void McaEditorSequenceArea::sl_referenceSelectionChanged() {
     update();
 }
@@ -299,7 +324,7 @@ void McaEditorSequenceArea::processCharacterInEditMode(char newCharacter) {
         // insert char into the reference
         U2SequenceObject* ref = getEditor()->referenceObj;
         U2Region region = U2Region(selection.x(), 0);
-        ref->replaceRegion(region, DNASequence(QByteArray(1, newCharacter)), os);
+        ref->replaceRegion(region, DNASequence(QByteArray(1, U2Msa::GAP_CHAR)), os);
         SAFE_POINT_OP(os, );
 
         insertionMode = false;
