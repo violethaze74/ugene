@@ -104,6 +104,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/view_rendering/MaEditorSequenceArea.h \
            src/ov_msa/view_rendering/MaEditorUtils.h \
            src/ov_msa/view_rendering/MaEditorWgt.h \
+           src/ov_msa/view_rendering/McaReferenceAreaRenderer.h \
            src/ov_msa/view_rendering/SequenceAreaRenderer.h \
            src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.h \
            src/ov_phyltree/CreateBranchesTask.h \
@@ -343,6 +344,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/view_rendering/MaEditorSequenceArea.cpp \
            src/ov_msa/view_rendering/MaEditorUtils.cpp \
            src/ov_msa/view_rendering/MaEditorWgt.cpp \
+           src/ov_msa/view_rendering/McaReferenceAreaRenderer.cpp \
            src/ov_msa/view_rendering/SequenceAreaRenderer.cpp \
            src/ov_msa/view_rendering/SequenceWithChromatogramAreaRenderer.cpp \
            src/ov_phyltree/CreateCircularBranchesTask.cpp \

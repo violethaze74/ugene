@@ -30,10 +30,16 @@
 namespace U2 {
 
 McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectContext *ctx)
-    : PanView(p, ctx) {
-    editor = p->getEditor();
-    setLocalToolbarVisible(false);
+    : PanView(p, ctx, McaReferenceAreaRendererFactory(NULL != p ? p->getEditor() : NULL)),
+      editor(NULL != p ? p->getEditor() : NULL),
+      renderer(dynamic_cast<McaReferenceAreaRenderer *>(getRenderArea()->getRenderer()))
+{
+    SAFE_POINT(NULL != renderer, "Renderer is NULL", );
 
+    setLocalToolbarVisible(false);
+    settings->showMainRuler = false;
+
+    scrollBar->hide();
     rowBar->hide();
 
     connect(p->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), SLOT(sl_visibleRangeChanged()));
@@ -49,10 +55,9 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
 
     connect(this, SIGNAL(si_selectionChanged()),
             p->getSequenceArea(), SLOT(sl_referenceSelectionChanged()));
+    connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_fontChanged(const QFont &)));
 
-    // SANGER_TODO: calculate  right size!
-    setMinimumHeight(50);
-    setMaximumHeight(100);
+    sl_fontChanged(editor->getFont());
 }
 
 void McaEditorReferenceArea::sl_visibleRangeChanged() {
@@ -70,6 +75,11 @@ void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &curren
 
 void McaEditorReferenceArea::sl_clearSelection() {
     ctx->getSequenceSelection()->clear();
+}
+
+void McaEditorReferenceArea::sl_fontChanged(const QFont &newFont) {
+    renderer->setFont(newFont);
+    setFixedHeight(renderer->getMinimumHeight());
 }
 
 void McaEditorReferenceArea::sl_onSelectionChanged() {

@@ -32,6 +32,7 @@
 #include <U2Gui/GraphUtils.h>
 
 #include "GSequenceLineViewAnnotated.h"
+#include "view_rendering/PanViewRenderer.h"
 
 namespace U2 {
 
@@ -41,8 +42,6 @@ class GObjectView;
 class PVRowsManager;
 class ADVSingleSequenceWidget;
 class PVRowData;
-class PanViewRenderer;
-
 
 class RulerInfo {
 public:
@@ -98,7 +97,7 @@ public:
         PanView *panView;
     };
 
-    PanView(QWidget* p, SequenceObjectContext* ctx);
+    PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRendererFactory &rendererFactory = PanViewRendererFactory());
     ~PanView();
 
     const U2Region& getFrameRange() const {return frameView->getVisibleRange();}
@@ -149,6 +148,7 @@ protected:
     virtual void registerAnnotations(const QList<Annotation *> &l);
     virtual void unregisterAnnotations(const QList<Annotation *> &l);
     virtual void ensureVisible(Annotation *a, int locationIdx);
+
 protected slots:
     virtual void sl_sequenceChanged();
     void sl_onAnnotationsModified(const AnnotationModification& md);
@@ -214,7 +214,7 @@ class PanViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
     friend class PanView;
     Q_OBJECT
 public:
-    PanViewRenderArea(PanView* d);
+    PanViewRenderArea(PanView *d, PanViewRenderer *renderer);
     ~PanViewRenderArea();
 
     PanViewRenderer* getRenderer() { return renderer; }
@@ -222,6 +222,8 @@ public:
     virtual U2Region getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const;
 
     int getRowLineHeight() const;
+
+    void setRenderer(PanViewRenderer *renderer);
 
 protected:
     virtual void drawAll(QPaintDevice* pd);

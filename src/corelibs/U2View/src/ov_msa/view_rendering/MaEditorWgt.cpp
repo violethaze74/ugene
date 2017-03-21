@@ -134,8 +134,6 @@ void MaEditorWgt::initWidgets() {
 
     QWidget* label1 = createHeaderLabelWidget();
     QWidget* label2 = createHeaderLabelWidget();
-    label1->setMinimumHeight(consArea->height());
-    label2->setMinimumHeight(consArea->height());
 
     seqAreaHeaderLayout->addWidget(consArea);
     seqAreaHeader->setLayout(seqAreaHeaderLayout);
@@ -144,16 +142,16 @@ void MaEditorWgt::initWidgets() {
     seqAreaLayout->setMargin(0);
     seqAreaLayout->setSpacing(0);
 
-    seqAreaLayout->addWidget(label1, 1, 0);
-    seqAreaLayout->addWidget(seqAreaHeader, 1, 1);
-    seqAreaLayout->addWidget(label2, 1, 2, 1, 2);
+    seqAreaLayout->addWidget(label1, 0, 0);
+    seqAreaLayout->addWidget(seqAreaHeader, 0, 1);
+    seqAreaLayout->addWidget(label2, 0, 2);
 
-    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 2, 0);
-    seqAreaLayout->addWidget(seqArea, 2, 1);
-    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 2, 2);
-    seqAreaLayout->addWidget(cvBar, 2, 3);
+    seqAreaLayout->addWidget(offsetsView->getLeftWidget(), 1, 0);
+    seqAreaLayout->addWidget(seqArea, 1, 1);
+    seqAreaLayout->addWidget(offsetsView->getRightWidget(), 1, 2);
+    seqAreaLayout->addWidget(cvBar, 1, 3);
 
-    seqAreaLayout->addWidget(shBar, 3, 0, 1, 3);
+    seqAreaLayout->addWidget(shBar, 2, 0, 1, 3);
 
     seqAreaLayout->setRowStretch(1, 1);
     seqAreaLayout->setColumnStretch(1, 1);

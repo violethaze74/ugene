@@ -24,7 +24,6 @@
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
 #include "PanViewRows.h"
-#include "view_rendering/PanViewRenderer.h"
 
 #include <U2Core/AnnotationModification.h>
 #include <U2Core/AnnotationSettings.h>
@@ -141,14 +140,14 @@ void PanView::ZoomUseObject::releaseZoom() {
 }
 
 #define MAX_VISIBLE_ROWS_ON_START 10
-PanView::PanView(QWidget* p, SequenceObjectContext* ctx)
+PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRendererFactory &rendererFactory)
     : GSequenceLineViewAnnotated(p, ctx)
 {
     rowBar = new QScrollBar(this);
 
     settings = new PanViewLinesSettings();
     rowsManager = new PVRowsManager();
-    renderArea = new PanViewRenderArea(this);
+    renderArea = new PanViewRenderArea(this, rendererFactory.createRenderer(this));
 
     updateNumVisibleRows();
 
@@ -215,7 +214,7 @@ void PanView::pack() {
     layout->setMargin(0);
     layout->setSpacing(0);
     layout->addWidget(renderArea, 0, 0, 1, 1);
-    layout->addWidget(rowBar, 0, 1, 2, 1);
+    layout->addWidget(rowBar, 0, 1, 1, 1);
     layout->addWidget(scrollBar, 1, 0, 1, 1);
     setContentLayout(layout);
 }
@@ -494,7 +493,7 @@ void PanView::setNumBasesVisible(qint64 n) {
 }
 
 PanViewRenderArea* PanView::getRenderArea() const {
-    return static_cast<PanViewRenderArea*>(renderArea);
+    return qobject_cast<PanViewRenderArea*>(renderArea);
 }
 
 QList<RulerInfo> PanView::getCustomRulers() const {
@@ -593,8 +592,12 @@ void PanView::sl_updateRows(){
 
 //////////////////////////////////////////////////////////////////////////
 /// render
-PanViewRenderArea::PanViewRenderArea(PanView* d) : GSequenceLineViewAnnotatedRenderArea(d, false), panView(d) {
-    renderer = new PanViewRenderer(d, d->getSequenceContext());
+PanViewRenderArea::PanViewRenderArea(PanView* d, PanViewRenderer *renderer)
+    : GSequenceLineViewAnnotatedRenderArea(d, false),
+      panView(d),
+      renderer(renderer)
+{
+    SAFE_POINT(NULL != renderer, "Renderer is NULL", );
 }
 
 PanViewRenderArea::~PanViewRenderArea() {
@@ -639,6 +642,12 @@ U2Region PanViewRenderArea::getAnnotationYRange(Annotation *a, int r, const Anno
 
 int PanViewRenderArea::getRowLineHeight() const {
     return renderer->getRowLineHeight();
+}
+
+void PanViewRenderArea::setRenderer(PanViewRenderer *newRenderer) {
+    SAFE_POINT(NULL != newRenderer, "New renderer is NULL", );
+    delete renderer;
+    renderer = newRenderer;
 }
 
 bool PanViewRenderArea::isSequenceCharsVisible() const {
