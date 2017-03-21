@@ -31,10 +31,11 @@ namespace U2 {
 class Problem;
 typedef QList<Problem> ProblemList;
 
-#define ACTOR_REF (Qt::UserRole)
+#define ACTOR_ID_REF (Qt::UserRole)
 #define PORT_REF (Qt::UserRole + 1)
 #define TEXT_REF (Qt::UserRole + 3)
 #define TYPE_REF (Qt::UserRole + 4)
+#define ACTOR_NAME_REF (Qt::UserRole + 5)
 
 class U2LANG_EXPORT Problem {
 public:

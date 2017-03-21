@@ -149,7 +149,7 @@ private:
     Schema                                      *schema;
     QScopedPointer<Metadata>                    meta;
     QPointer<WorkflowAbstractIterationRunner>   task;
-    QMap<QString, Actor*>                       procMap;
+    QMap<QString, QPointer<Actor> >             procMap;
     QMap<Task*, Actor*>                         taskMap;
     QList<Task*>                                errorTasks;
     QList<Monitor::FileInfo>                    outputFiles;

@@ -54,7 +54,7 @@ public:
 
     void onShow();
 
-    const WorkflowMonitor * monitor();
+    const QPointer<const WorkflowMonitor> monitor() const;
 
     void setClosed();
     QString directory() const;
@@ -95,7 +95,7 @@ private:
     QString name;
     QString dir;
     bool opened;
-    const WorkflowMonitor *_monitor;
+    const QPointer<const WorkflowMonitor> _monitor;
     bool initialized;
     bool workflowInProgress;
     DashboardPageController* dashboardPageController;
@@ -187,6 +187,7 @@ public slots:
     void sl_workerStatsUpdate();
     void sl_onLogChanged(U2::Workflow::Monitor::LogEntry entry);
     void sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &info);
+
 private:
     void initData();
 
@@ -203,7 +204,14 @@ private:
     bool isWebChannelInitialized;
     bool isDataReady;
     DashboardJsAgent* agent;
-    const WorkflowMonitor* monitor;
+    const QPointer<const WorkflowMonitor> monitor;
+
+    static const QString STATE_RUNNING;
+    static const QString STATE_RUNNING_WITH_PROBLEMS;
+    static const QString STATE_FINISHED_WITH_PROBLEMS;
+    static const QString STATE_FAILED;
+    static const QString STATE_SUCCESS;
+    static const QString STATE_CANCELED;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,7 +253,7 @@ private:
 
     QString lang;
     QString workersParamsInfo;
-    const WorkflowMonitor* monitor;
+    const QPointer<const WorkflowMonitor> monitor;
 };
 
 } // U2

@@ -1394,7 +1394,7 @@ void WorkflowView::setupContextMenu(QMenu* m) {
 }
 
 void WorkflowView::sl_pickInfo(QListWidgetItem* info) {
-    ActorId id = info->data(ACTOR_REF).value<ActorId>();
+    ActorId id = info->data(ACTOR_ID_REF).value<ActorId>();
     foreach(QGraphicsItem* it, scene->items()) {
         if (it->type() == WorkflowProcessItemType)
         {
@@ -2197,7 +2197,7 @@ void WorkflowView::commitWarningsToMonitor(WorkflowAbstractRunner* t) {
         QListWidgetItem* warning = infoList->item(i);
         foreach (WorkflowMonitor* monitor, t->getMonitors()) {
             monitor->addError(warning->data(TEXT_REF).toString(),
-                              warning->data(ACTOR_REF).toString(),
+                              warning->data(ACTOR_NAME_REF).toString(),
                               warning->data(TYPE_REF).toString());
         }
     }
