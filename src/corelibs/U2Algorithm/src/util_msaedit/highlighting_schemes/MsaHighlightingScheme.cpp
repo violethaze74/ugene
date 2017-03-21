@@ -100,7 +100,14 @@ const QString & MsaHighlightingSchemeFactory::getId() const {
     return id;
 }
 
-const QString & MsaHighlightingSchemeFactory::getName() const {
+const QString MsaHighlightingSchemeFactory::getName(bool nameWithAlphabet) const {
+    if (nameWithAlphabet) {
+        if (alphabetType == DNAAlphabet_NUCL) {
+            return tr("Nucleotide") + " " + name;
+        } else if (alphabetType == DNAAlphabet_AMINO) {
+            return  tr("Amino") + " " + name;
+        }
+    }
     return name;
 }
 

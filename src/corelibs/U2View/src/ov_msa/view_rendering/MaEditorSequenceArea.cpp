@@ -1070,7 +1070,8 @@ void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
     QList<MsaColorSchemeFactory *> customFactories = msaColorSchemeRegistry->getMsaCustomColorSchemes(editor->getMaObject()->getAlphabet()->getType());
 
     foreach (MsaColorSchemeFactory *factory, customFactories) {
-        QString name = factory->getName(editor->getMaObject()->getAlphabet()->getType());
+        bool isAlphabetRaw = editor->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
+        QString name = factory->getName(isAlphabetRaw);
         QAction *action = new QAction(name, this);
         action->setObjectName(name);
         action->setCheckable(true);
@@ -1743,7 +1744,7 @@ void MaEditorSequenceArea::registerCommonColorSchemes() {
     foreach (MsaColorSchemeFactory *factory, colorFactories) {
         DNAAlphabetType editorAlphabet = editor->getMaObject()->getAlphabet()->getType();
         DNAAlphabetType factoryAlphabet = factory->getAlphabetType();
-        QString name = factory->getName(editor->getMaObject()->getAlphabet()->getType());
+        QString name = factory->getName(editorAlphabet == DNAAlphabet_RAW);
         QAction *action = new QAction(name, this);
         action->setObjectName(name);
         action->setCheckable(true);

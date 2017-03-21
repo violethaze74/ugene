@@ -182,6 +182,7 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
 }
 
 void MSAHighlightingTab::initColorCB() {
+    bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
     colorScheme->blockSignals(true);
     highlightingScheme->blockSignals(true);
 
@@ -191,7 +192,7 @@ void MSAHighlightingTab::initColorCB() {
 
     colorScheme->clear();
     foreach (MsaColorSchemeFactory *factory, colorSchemesFactories) {
-        colorScheme->addItem(factory->getName(msa->getMaObject()->getAlphabet()->getType()));
+        colorScheme->addItem(factory->getName(isAlphabetRaw));
     }
 
     MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
@@ -199,7 +200,7 @@ void MSAHighlightingTab::initColorCB() {
 
     highlightingScheme->clear();
     foreach (MsaHighlightingSchemeFactory *factory, highlightingSchemesFactories) {
-        highlightingScheme->addItem(factory->getName());
+        highlightingScheme->addItem(factory->getName(isAlphabetRaw));
     }
 
     colorScheme->blockSignals(false);
@@ -207,12 +208,13 @@ void MSAHighlightingTab::initColorCB() {
 }
 
 void MSAHighlightingTab::sl_sync() {
+    bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
     MsaColorScheme *s = seqArea->getCurrentColorScheme();
     SAFE_POINT(s != NULL, "Current scheme is NULL", );
     SAFE_POINT(s->getFactory() != NULL, "Current scheme color factory is NULL", );
 
     colorScheme->blockSignals(true);
-    colorScheme->setCurrentIndex(colorScheme->findText(s->getFactory()->getName(msa->getMaObject()->getAlphabet()->getType())));
+    colorScheme->setCurrentIndex(colorScheme->findText(s->getFactory()->getName(isAlphabetRaw)));
     colorScheme->blockSignals(false);
 
     MsaHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();
@@ -220,7 +222,7 @@ void MSAHighlightingTab::sl_sync() {
     SAFE_POINT(sh->getFactory() != NULL, "Current highlighting scheme factory is NULL!", );
 
     highlightingScheme->blockSignals(true);
-    highlightingScheme->setCurrentIndex(highlightingScheme->findText(sh->getFactory()->getName()));
+    highlightingScheme->setCurrentIndex(highlightingScheme->findText(sh->getFactory()->getName(isAlphabetRaw)));
     highlightingScheme->blockSignals(false);
 
     useDots->blockSignals(true);

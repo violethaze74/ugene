@@ -81,32 +81,16 @@ const QString & MsaColorSchemeFactory::getId() const {
     return id;
 }
 
-const QString MsaColorSchemeFactory::getName(const DNAAlphabetType &msaAlphabet) const {
-    if (msaAlphabet == DNAAlphabet_RAW && alphabetType != DNAAlphabet_RAW) {
-        if (alphabetType == DNAAlphabet_RAW) {
-            return name + " " + tr("raw");
-        } else if (alphabetType == DNAAlphabet_NUCL) {
-            return name + " " + tr("nucleotide");
+const QString MsaColorSchemeFactory::getName(bool nameWithAlphabet) const {
+    if (nameWithAlphabet) {
+        if (alphabetType == DNAAlphabet_NUCL) {
+            return tr("Nucleotide") + " " + name;
         } else if (alphabetType == DNAAlphabet_AMINO) {
-            return name + " " + tr("amino");
+            return  tr("Amino") + " " + name;
         }
     }
     return name;
 }
-
-/*
-const QString MsaColorSchemeFactory::getNameWithAlphabet() const {
-    QString retName = name + " ";
-    if (alphabetType == DNAAlphabet_RAW) {
-        retName.append(tr("raw"));
-    } else if (alphabetType == DNAAlphabet_NUCL) {
-        retName.append(tr("nucleotide"));
-    } else if (alphabetType == DNAAlphabet_AMINO) {
-        retName.append(tr("amino"));
-    }
-    return retName;
-}
-*/
 
 DNAAlphabetType MsaColorSchemeFactory::getAlphabetType() const {
     return alphabetType;
@@ -132,10 +116,9 @@ const QList<MsaColorSchemeCustomFactory *> & MsaColorSchemeRegistry::getCustomCo
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaColorSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaColorSchemeFactory *> res;
     if (alphabetType == DNAAlphabet_RAW) {
-        bool noColorsPresent = false;
         foreach(MsaColorSchemeFactory *factory, colorers) {
             QString fId = factory->getId();
-            if (fId.contains("EMPTY") && (fId.contains("NUCL") || fId.contains("AMINO"))) {
+            if (fId == MsaColorScheme::EMPTY_AMINO || fId == MsaColorScheme::EMPTY_NUCL) {
                 continue;
             }
             res.append(factory);
@@ -205,7 +188,7 @@ bool compareNames(const MsaColorSchemeFactory* a1, const MsaColorSchemeFactory* 
     if (a2->getId() == MsaColorScheme::EMPTY_RAW) {
         return false;
     }
-    return a1->getName(DNAAlphabet_RAW) < a2->getName(DNAAlphabet_RAW);
+    return a1->getName() < a2->getName();
 }
 
 }
