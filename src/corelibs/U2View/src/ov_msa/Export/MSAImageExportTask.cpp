@@ -61,9 +61,9 @@ void MSAImageExportToBitmapTask::run() {
 
     bool exportAll = msaSettings.exportAll;
 
-    int ok = exportAll || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
+    int ok = (exportAll && mObj->getLength() > 0 && mObj->getNumRows() > 0) || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
     CHECK_OPERATION( ok, mObj->unlockState(lock));
-    SAFE_POINT_EXT( ok, setError(tr("Nothing to export")), );
+    CHECK_EXT( ok, setError(tr("Nothing to export")), );
 
     QPixmap seqPixmap;
     QPixmap namesPix;
