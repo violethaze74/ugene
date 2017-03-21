@@ -35,6 +35,8 @@ class SimilarityStatisticsSettings;
 class ShowHideSubgroupWidget;
 class TreeViewer;
 class TreeViewerUI;
+class MultipleAlignment;
+class MaModificationInfo;
 
 struct TreeOpWidgetViewSettings {
     TreeOpWidgetViewSettings()
@@ -109,6 +111,7 @@ public:
 private slots:
     void sl_onOpenTreeTriggered();
     void sl_onBuildTreeTriggered();
+    void sl_msaChanged(const MultipleAlignment&, const MaModificationInfo&);
 private:
     MSAEditor*   editor;
 

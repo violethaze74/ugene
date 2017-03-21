@@ -81,7 +81,7 @@ public:
 
 signals:
     void si_startMsaChanging();
-    void si_stopMsaChanging(bool modifyed = false);
+    void si_stopMsaChanging(bool modified = false);
 
 public slots:
     void sl_saveScreenshot();
@@ -99,7 +99,7 @@ protected:
     MaEditorSequenceArea*           seqArea;
     MaEditorNameList*               nameList;
     MSAEditorConsensusArea*         consArea;
-    MaEditorOverviewArea*          overviewArea;
+    MaEditorOverviewArea*           overviewArea;
     MSAEditorOffsetsViewController* offsetsView;
     MSAEditorStatusWidget*          statusWidget;
 
