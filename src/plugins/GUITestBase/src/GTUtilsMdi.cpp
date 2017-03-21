@@ -32,6 +32,7 @@
 #include "GTGlobals.h"
 #include "primitives/GTMenu.h"
 #include <drivers/GTMouseDriver.h>
+#include <drivers/GTKeyboardDriver.h>
 #include "utils/GTThread.h"
 #include <base_dialogs/MessageBoxFiller.h>
 
@@ -55,7 +56,17 @@ void GTUtilsMdi::click(HI::GUITestOpStatus &os, GTGlobals::WindowAction action) 
 //    }
 
 #ifndef Q_OS_MAC
-    GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
+	switch (action) {
+	case GTGlobals::Close: {
+		GTKeyboardDriver::keyPress(Qt::Key_Control);
+		GTKeyboardDriver::keyClick(Qt::Key_F4);
+		GTKeyboardDriver::keyRelease(Qt::Key_Control);
+		break;
+	}
+	default:
+		GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
+		break;
+	}
 #else
     MWMDIWindow *mdiWindow = mw->getMDIManager()->getActiveWindow();
     GT_CHECK(mdiWindow != NULL, "MDIWindow == NULL");
