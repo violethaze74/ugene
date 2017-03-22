@@ -107,6 +107,8 @@ public:
     const QList<MsaColorSchemeFactory *> & getMsaColorSchemes() const;
     const QList<MsaColorSchemeCustomFactory *> &getCustomColorSchemes() const;
 
+    static QStringList getExcludedIdsFromRawAlphabetSchemes();
+
     QList<MsaColorSchemeFactory *> getMsaColorSchemes(DNAAlphabetType alphabetType) const;
     QList<MsaColorSchemeFactory *> getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const;
 

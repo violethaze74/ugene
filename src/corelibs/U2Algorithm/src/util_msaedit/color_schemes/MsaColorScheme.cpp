@@ -113,12 +113,19 @@ const QList<MsaColorSchemeCustomFactory *> & MsaColorSchemeRegistry::getCustomCo
     return customColorers;
 }
 
+QStringList MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes() {
+    QStringList res;
+    res << MsaColorScheme::EMPTY_AMINO;
+    res << MsaColorScheme::EMPTY_NUCL;
+    return res;
+}
+
 QList<MsaColorSchemeFactory *> MsaColorSchemeRegistry::getMsaColorSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaColorSchemeFactory *> res;
     if (alphabetType == DNAAlphabet_RAW) {
         foreach(MsaColorSchemeFactory *factory, colorers) {
             QString fId = factory->getId();
-            if (fId == MsaColorScheme::EMPTY_AMINO || fId == MsaColorScheme::EMPTY_NUCL) {
+            if (getExcludedIdsFromRawAlphabetSchemes().contains(fId)) {
                 continue;
             }
             res.append(factory);
