@@ -158,8 +158,27 @@ MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getMsaHighlighting
     return NULL;
 }
 
+QStringList MsaHighlightingSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes() {
+    QStringList res;
+    res << MsaHighlightingScheme::EMPTY_AMINO;
+    res << MsaHighlightingScheme::EMPTY_NUCL;
+    res << MsaHighlightingScheme::GAPS_AMINO;
+    res << MsaHighlightingScheme::GAPS_NUCL;
+    return res;
+}
+
 QList<MsaHighlightingSchemeFactory *> MsaHighlightingSchemeRegistry::getMsaHighlightingSchemes(DNAAlphabetType alphabetType) const {
     QList<MsaHighlightingSchemeFactory *> res;
+    if (alphabetType == DNAAlphabet_RAW) {
+        foreach(MsaHighlightingSchemeFactory *factory, schemes) {
+            QString fId = factory->getId();
+            if (getExcludedIdsFromRawAlphabetSchemes().contains(fId)) {
+                continue;
+            }
+            res.append(factory);
+        }
+        return res;
+    }
     foreach (MsaHighlightingSchemeFactory *factory, schemes) {
         if (factory->getAlphabetType() == alphabetType) {
             res.append(factory);

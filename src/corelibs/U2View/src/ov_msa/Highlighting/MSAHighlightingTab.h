@@ -59,6 +59,8 @@ private:
     QWidget* createColorGroup();
     QWidget* createHighlightingGroup();
     void initColorCB();
+    void setColorScheme(bool isAlphabetRaw);
+    void setHighlightingScheme(bool isAlphabetRaw);
 
     MSAEditor *msa;
     MaEditorSequenceArea *seqArea;

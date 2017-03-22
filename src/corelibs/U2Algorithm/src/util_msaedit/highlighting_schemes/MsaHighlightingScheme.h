@@ -97,6 +97,8 @@ public:
     MsaHighlightingSchemeRegistry();
     ~MsaHighlightingSchemeRegistry();
 
+    static QStringList getExcludedIdsFromRawAlphabetSchemes();
+
     MsaHighlightingSchemeFactory * getMsaHighlightingSchemeFactoryById(const QString &id) const;
     QList<MsaHighlightingSchemeFactory *> getMsaHighlightingSchemes(DNAAlphabetType alphabetType) const;
 

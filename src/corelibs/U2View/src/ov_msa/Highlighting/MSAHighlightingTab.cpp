@@ -207,6 +207,24 @@ void MSAHighlightingTab::initColorCB() {
     highlightingScheme->blockSignals(false);
 }
 
+void MSAHighlightingTab::setColorScheme(bool isAlphabetRaw) {
+    MsaColorScheme *scheme = seqArea->getCurrentColorScheme();
+    if (isAlphabetRaw && MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(scheme->getFactory()->getId())) {
+        colorScheme->setCurrentIndex(colorScheme->findText(scheme->getFactory()->getName()));
+    } else {
+        colorScheme->setCurrentIndex(colorScheme->findText(scheme->getFactory()->getName(isAlphabetRaw)));
+    }
+}
+
+void MSAHighlightingTab::setHighlightingScheme(bool isAlphabetRaw) {
+    MsaHighlightingScheme *scheme = seqArea->getCurrentHighlightingScheme();
+    if (isAlphabetRaw && MsaHighlightingSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(scheme->getFactory()->getId())) {
+        highlightingScheme->setCurrentIndex(highlightingScheme->findText(scheme->getFactory()->getName()));
+    } else {
+        highlightingScheme->setCurrentIndex(highlightingScheme->findText(scheme->getFactory()->getName(isAlphabetRaw)));
+    }
+}
+
 void MSAHighlightingTab::sl_sync() {
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
     MsaColorScheme *s = seqArea->getCurrentColorScheme();
@@ -214,7 +232,7 @@ void MSAHighlightingTab::sl_sync() {
     SAFE_POINT(s->getFactory() != NULL, "Current scheme color factory is NULL", );
 
     colorScheme->blockSignals(true);
-    colorScheme->setCurrentIndex(colorScheme->findText(s->getFactory()->getName(isAlphabetRaw)));
+    setColorScheme(isAlphabetRaw);
     colorScheme->blockSignals(false);
 
     MsaHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();
@@ -222,7 +240,7 @@ void MSAHighlightingTab::sl_sync() {
     SAFE_POINT(sh->getFactory() != NULL, "Current highlighting scheme factory is NULL!", );
 
     highlightingScheme->blockSignals(true);
-    highlightingScheme->setCurrentIndex(highlightingScheme->findText(sh->getFactory()->getName(isAlphabetRaw)));
+    setHighlightingScheme(isAlphabetRaw);
     highlightingScheme->blockSignals(false);
 
     useDots->blockSignals(true);

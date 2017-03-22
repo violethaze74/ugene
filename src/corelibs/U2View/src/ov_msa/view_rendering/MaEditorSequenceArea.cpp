@@ -1702,7 +1702,8 @@ void MaEditorSequenceArea::updateColorAndHighlightSchemes() {
     if (!al){
         return;
     }
-    DNAAlphabetType atype = al->getType();    bool colorSchemesActionsIsEmpty = colorSchemeMenuActions.isEmpty();
+    DNAAlphabetType atype = al->getType();
+    bool colorSchemesActionsIsEmpty = colorSchemeMenuActions.isEmpty();
     MsaColorSchemeRegistry* csr = AppContext::getMsaColorSchemeRegistry();
     MsaHighlightingSchemeRegistry* hsr = AppContext::getMsaHighlightingSchemeRegistry();
 
@@ -1801,8 +1802,30 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
             csid = s->getValue(SETTINGS_ROOT + SETTINGS_COLOR_RAW, MsaColorScheme::EMPTY_RAW).toString();
             hsid = s->getValue(SETTINGS_ROOT + SETTINGS_HIGHLIGHT_NUCL, MsaHighlightingScheme::EMPTY_RAW).toString();
         } else {
-            csid = colorScheme->getFactory()->getId();
-            hsid = highlightingScheme->getFactory()->getId();
+            MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
+            QList<MsaColorSchemeFactory *> colorSchemesFactories = msaColorSchemeRegistry->getMsaColorSchemes(DNAAlphabet_RAW);
+
+            if (MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(colorScheme->getFactory()->getId())) {
+                foreach(MsaColorSchemeFactory *sf, colorSchemesFactories) {
+                    if (sf->getName() == colorScheme->getFactory()->getName()) {
+                        csid = sf->getId();
+                    }
+                }
+            } else {
+                csid = colorScheme->getFactory()->getId();
+            }
+            MsaHighlightingSchemeRegistry *msaHighlightingSchemeRegistry = AppContext::getMsaHighlightingSchemeRegistry();
+            QList<MsaHighlightingSchemeFactory *> highlightingSchemesFactories = msaHighlightingSchemeRegistry->getMsaHighlightingSchemes(DNAAlphabet_RAW);
+
+            if (MsaHighlightingSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes().contains(highlightingScheme->getFactory()->getId())) {
+                foreach(MsaHighlightingSchemeFactory *sf, highlightingSchemesFactories) {
+                    if (sf->getName() == highlightingScheme->getFactory()->getName()) {
+                        hsid = sf->getId();
+                    }
+                }
+            } else {
+                hsid = highlightingScheme->getFactory()->getId();
+            }
         }
         break;
     case DNAAlphabet_NUCL:
@@ -1833,6 +1856,8 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
 void MaEditorSequenceArea::applyColorScheme(const QString &id) {
     CHECK(NULL != ui->getEditor()->getMaObject(), );
 
+    DNAAlphabetType current = editor->getMaObject()->getAlphabet()->getType();
+
     MsaColorSchemeFactory *factory = AppContext::getMsaColorSchemeRegistry()->getMsaColorSchemeFactoryById(id);
     delete colorScheme;
     colorScheme = factory->create(this, ui->getEditor()->getMaObject());
@@ -1842,6 +1867,7 @@ void MaEditorSequenceArea::applyColorScheme(const QString &id) {
 
     QList<QAction *> tmpActions = QList<QAction *>() << colorSchemeMenuActions << customColorSchemeMenuActions;
     foreach (QAction *action, tmpActions) {
+        QString actionData = action->data().toString();
         action->setChecked(action->data() == id);
     }
 
