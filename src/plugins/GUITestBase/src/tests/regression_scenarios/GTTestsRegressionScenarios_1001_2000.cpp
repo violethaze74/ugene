@@ -3424,13 +3424,13 @@ GUI_TEST_CLASS_DEFINITION(test_1310) {
             CHECK_SET_ERR(NULL != algorithmBox, "algorithmBox is NULL");
             GTComboBox::setIndexWithText(os, algorithmBox, "PHYLIP Neighbor Joining");
 
-            GTUtilsDialog::waitForDialog(os, new LicenseAgreementDialogFiller(os));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new Scenario()));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1315_1) {
