@@ -1910,6 +1910,7 @@ void MaEditorSequenceArea::applyColorScheme(const QString &id) {
 
     QList<QAction *> tmpActions = QList<QAction *>() << colorSchemeMenuActions << customColorSchemeMenuActions;
     foreach (QAction *action, tmpActions) {
+        QString actionData = action->data().toString();
         action->setChecked(action->data() == id);
     }
 
