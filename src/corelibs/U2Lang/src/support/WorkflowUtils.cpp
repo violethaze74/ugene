@@ -318,10 +318,11 @@ bool WorkflowUtils::validate(const Schema &schema, QList<QListWidgetItem*> &info
             }
         }
 
-        item->setData(ACTOR_REF, problem.actor);
+        item->setData(ACTOR_ID_REF, problem.actor);
         item->setData(PORT_REF, problem.port);
         item->setData(TEXT_REF, problem.message);
         item->setData(TYPE_REF, problem.type);
+        item->setData(ACTOR_NAME_REF, schema.actorById(problem.actor)->getLabel());
 
         infoList << item;
     }

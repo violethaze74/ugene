@@ -96,7 +96,9 @@ const QMap<QString, Monitor::WorkerLogInfo> & WorkflowMonitor::getWorkersLog() c
 
 QString WorkflowMonitor::actorName(const QString &id) const {
     SAFE_POINT(procMap.contains(id), QString("Unknown actor id %1").arg(id), "");
-    return procMap[id]->getLabel();
+    QPointer<Actor> actor = procMap[id];
+    SAFE_POINT(NULL != actor, QString("Actor has already deleted: %1").arg(id), "");
+    return actor->getLabel();
 }
 
 void WorkflowMonitor::addOutputFile(const QString &url, const QString &producer, bool openBySystem) {
