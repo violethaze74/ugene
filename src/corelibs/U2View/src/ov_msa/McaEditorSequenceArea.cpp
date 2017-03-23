@@ -160,7 +160,7 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     int nextRowToSelect = selection.y() + dy;
     if (dy != 0) {
         bool noRowAvailabe = true;
-        for ( ; nextRowToSelect > 0 && nextRowToSelect < editor->getNumSequences(); nextRowToSelect += dy) {
+        for ( ; nextRowToSelect >= 0 && nextRowToSelect < editor->getNumSequences(); nextRowToSelect += dy) {
             if (!mca->isTrailingOrLeadingGap(nextRowToSelect, selection.x() + dx)) {
                 noRowAvailabe  = false;
                 break;
