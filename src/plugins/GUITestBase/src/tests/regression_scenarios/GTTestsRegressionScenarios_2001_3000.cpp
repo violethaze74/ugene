@@ -2545,7 +2545,7 @@ GUI_TEST_CLASS_DEFINITION( test_2377 ) {
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, assemblyReaderName ) );
     GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/sambroken_without_reads.sam" );
+    GTUtilsWorkflowDesigner::setDatasetInputFile( os, testDir + "_common_data/sam/broken_without_reads.sam" );
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter( os, assemblyWriterName ) );
     GTMouseDriver::click();
