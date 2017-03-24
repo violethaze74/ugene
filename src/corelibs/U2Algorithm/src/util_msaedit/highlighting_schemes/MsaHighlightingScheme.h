@@ -78,7 +78,7 @@ public:
     virtual MsaHighlightingScheme * create(QObject *parent, MultipleAlignmentObject *maObj) const = 0;
 
     const QString & getId() const;
-    const QString & getName() const;
+    const QString getName(bool nameWithAlphabet = false) const;
     DNAAlphabetType getAlphabetType() const;
     bool isRefFree() const;
     bool isNeedThreshold() const;
@@ -96,6 +96,8 @@ class U2ALGORITHM_EXPORT MsaHighlightingSchemeRegistry : public QObject {
 public:
     MsaHighlightingSchemeRegistry();
     ~MsaHighlightingSchemeRegistry();
+
+    static QStringList getExcludedIdsFromRawAlphabetSchemes();
 
     MsaHighlightingSchemeFactory * getMsaHighlightingSchemeFactoryById(const QString &id) const;
     QList<MsaHighlightingSchemeFactory *> getMsaHighlightingSchemes(DNAAlphabetType alphabetType) const;

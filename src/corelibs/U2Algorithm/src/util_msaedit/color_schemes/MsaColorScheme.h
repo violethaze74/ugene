@@ -86,7 +86,7 @@ public:
     virtual MsaColorScheme * create(QObject *p, MultipleAlignmentObject *obj) const = 0;
 
     const QString & getId() const;
-    const QString & getName() const;
+    const QString getName(bool nameWithAlphabet = false) const;
     DNAAlphabetType getAlphabetType() const;
 
 signals:
@@ -106,6 +106,8 @@ public:
 
     const QList<MsaColorSchemeFactory *> & getMsaColorSchemes() const;
     const QList<MsaColorSchemeCustomFactory *> &getCustomColorSchemes() const;
+
+    static QStringList getExcludedIdsFromRawAlphabetSchemes();
 
     QList<MsaColorSchemeFactory *> getMsaColorSchemes(DNAAlphabetType alphabetType) const;
     QList<MsaColorSchemeFactory *> getMsaCustomColorSchemes(DNAAlphabetType alphabetType) const;
