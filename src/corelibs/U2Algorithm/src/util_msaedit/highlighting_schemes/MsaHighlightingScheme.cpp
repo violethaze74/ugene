@@ -159,11 +159,13 @@ MsaHighlightingSchemeFactory * MsaHighlightingSchemeRegistry::getMsaHighlighting
 }
 
 QStringList MsaHighlightingSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes() {
-    QStringList res;
-    res << MsaHighlightingScheme::EMPTY_AMINO;
-    res << MsaHighlightingScheme::EMPTY_NUCL;
-    res << MsaHighlightingScheme::GAPS_AMINO;
-    res << MsaHighlightingScheme::GAPS_NUCL;
+    static QStringList res;
+    if (res.isEmpty()) {
+        res << MsaHighlightingScheme::EMPTY_AMINO;
+        res << MsaHighlightingScheme::EMPTY_NUCL;
+        res << MsaHighlightingScheme::GAPS_AMINO;
+        res << MsaHighlightingScheme::GAPS_NUCL;
+    }
     return res;
 }
 

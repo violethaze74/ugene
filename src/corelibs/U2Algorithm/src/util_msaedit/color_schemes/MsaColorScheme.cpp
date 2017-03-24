@@ -114,9 +114,11 @@ const QList<MsaColorSchemeCustomFactory *> & MsaColorSchemeRegistry::getCustomCo
 }
 
 QStringList MsaColorSchemeRegistry::getExcludedIdsFromRawAlphabetSchemes() {
-    QStringList res;
-    res << MsaColorScheme::EMPTY_AMINO;
-    res << MsaColorScheme::EMPTY_NUCL;
+    static QStringList res;
+    if (res.isEmpty()) {
+        res << MsaColorScheme::EMPTY_AMINO;
+        res << MsaColorScheme::EMPTY_NUCL;
+    }    
     return res;
 }
 

@@ -1068,9 +1068,9 @@ void MaEditorSequenceArea::sl_registerCustomColorSchemes() {
 
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     QList<MsaColorSchemeFactory *> customFactories = msaColorSchemeRegistry->getMsaCustomColorSchemes(editor->getMaObject()->getAlphabet()->getType());
+    bool isAlphabetRaw = editor->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
     foreach (MsaColorSchemeFactory *factory, customFactories) {
-        bool isAlphabetRaw = editor->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
         QString name = factory->getName(isAlphabetRaw);
         QAction *action = new QAction(name, this);
         action->setObjectName(name);
@@ -1741,9 +1741,9 @@ void MaEditorSequenceArea::registerCommonColorSchemes() {
 
     MsaColorSchemeRegistry *msaColorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
     QList<MsaColorSchemeFactory*> colorFactories = msaColorSchemeRegistry->getMsaColorSchemes(editor->getMaObject()->getAlphabet()->getType());
+    DNAAlphabetType editorAlphabet = editor->getMaObject()->getAlphabet()->getType();
 
     foreach (MsaColorSchemeFactory *factory, colorFactories) {
-        DNAAlphabetType editorAlphabet = editor->getMaObject()->getAlphabet()->getType();
         QString name = factory->getName(editorAlphabet == DNAAlphabet_RAW);
         QAction *action = new QAction(name, this);
         action->setObjectName(name);
@@ -1766,8 +1766,9 @@ void MaEditorSequenceArea::initHighlightSchemes(MsaHighlightingSchemeFactory* hs
 
     MsaHighlightingSchemeRegistry* hsr = AppContext::getMsaHighlightingSchemeRegistry();
     QList<MsaHighlightingSchemeFactory*> highFactories = hsr->getMsaHighlightingSchemes(atype);
+    DNAAlphabetType editorAlphabet = editor->getMaObject()->getAlphabet()->getType();
+
     foreach (MsaHighlightingSchemeFactory* factory, highFactories) {
-        DNAAlphabetType editorAlphabet = editor->getMaObject()->getAlphabet()->getType();
         QString name = factory->getName(editorAlphabet == DNAAlphabet_RAW);
         QAction* action = new QAction(name, this);
         action->setObjectName(name);
@@ -1898,8 +1899,6 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
 
 void MaEditorSequenceArea::applyColorScheme(const QString &id) {
     CHECK(NULL != ui->getEditor()->getMaObject(), );
-
-    DNAAlphabetType current = editor->getMaObject()->getAlphabet()->getType();
 
     MsaColorSchemeFactory *factory = AppContext::getMsaColorSchemeRegistry()->getMsaColorSchemeFactoryById(id);
     delete colorScheme;
