@@ -1309,6 +1309,8 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
         return;
     }
 
+    bool enlargeSelection = qobject_cast<MSAEditor*>(getEditor()) != NULL;
+
     bool shift = e->modifiers().testFlag(Qt::ShiftModifier);
     const bool ctrl = e->modifiers().testFlag(Qt::ControlModifier);
 #ifdef Q_OS_MAC
@@ -1333,7 +1335,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
              cancelSelection();
              break;
         case Qt::Key_Left:
-            if(!(Qt::ShiftModifier & e->modifiers())) {
+            if(!shift || !enlargeSelection) {
                 moveSelection(-1,0);
                 break;
             }
@@ -1359,7 +1361,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
             }
             break;
         case Qt::Key_Right:
-            if(!(Qt::ShiftModifier & e->modifiers())) {
+            if(!shift || !enlargeSelection) {
                 moveSelection(1,0);
                 break;
             }
@@ -1386,7 +1388,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
             }
             break;
         case Qt::Key_Up:
-            if(!(Qt::ShiftModifier & e->modifiers())) {
+            if(!shift || !enlargeSelection) {
                 moveSelection(0,-1);
                 break;
             }
@@ -1412,7 +1414,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
             }
             break;
         case Qt::Key_Down:
-            if(!(Qt::ShiftModifier & e->modifiers())) {
+            if(!shift || enlargeSelection) {
                 moveSelection(0,1);
                 break;
             }
