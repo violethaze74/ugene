@@ -58,6 +58,7 @@ private:
  * The PairedFastqComparator class
  */
 class U2FORMATS_EXPORT PairedFastqComparator : public QObject {
+    Q_OBJECT
 public:
     PairedFastqComparator(const QString& inputFile_1, const QString& inputFile_2,
                           const QString& outputFile_1, const QString& outputFile_2,

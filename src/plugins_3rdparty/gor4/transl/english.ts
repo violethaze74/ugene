@@ -51,12 +51,12 @@ Invalid amino acid type or secondary structure state : ==&gt;%3&lt;==</source>
 <context>
     <name>U2::SecStructPredictPlugin</name>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="58"/>
+        <location filename="../src/GorIVPlugin.cpp" line="51"/>
         <source>GORIV</source>
         <translation>GORIV</translation>
     </message>
     <message>
-        <location filename="../src/GorIVPlugin.cpp" line="58"/>
+        <location filename="../src/GorIVPlugin.cpp" line="51"/>
         <source>GORIV protein secondary structure prediction</source>
         <translation>GORIV protein secondary structure prediction</translation>
     </message>

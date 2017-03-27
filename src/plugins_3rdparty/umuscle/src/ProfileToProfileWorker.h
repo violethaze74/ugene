@@ -73,6 +73,7 @@ protected:
 };
 
 class ProfileToProfileTask : public Task {
+    Q_OBJECT
 public:
     ProfileToProfileTask(const MultipleSequenceAlignment &masterMsa, const MultipleSequenceAlignment &secondMsa);
     ~ProfileToProfileTask();

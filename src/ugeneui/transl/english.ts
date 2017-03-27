@@ -471,17 +471,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="728"/>
+        <location filename="../src/Main.cpp" line="732"/>
         <source>UGENE started</source>
         <translation>UGENE started</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="729"/>
+        <location filename="../src/Main.cpp" line="733"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>UGENE version: %1 %2-bit</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="730"/>
+        <location filename="../src/Main.cpp" line="734"/>
         <source>UGENE distribution: %1</source>
         <translation>UGENE distribution: %1</translation>
     </message>
@@ -707,7 +707,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/Main.cpp" line="475"/>
+        <location filename="../src/Main.cpp" line="479"/>
         <source>Style not available %1</source>
         <translation type="unfinished">Style not available %1</translation>
     </message>
@@ -2071,12 +2071,12 @@ Do you want view online documentation?</translation>
 <context>
     <name>U2::SplashScreenWidget</name>
     <message>
-        <location filename="../src/main_window/SplashScreen.cpp" line="168"/>
+        <location filename="../src/main_window/SplashScreen.cpp" line="163"/>
         <source>Version </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main_window/SplashScreen.cpp" line="168"/>
+        <location filename="../src/main_window/SplashScreen.cpp" line="163"/>
         <source> is loading</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2391,7 +2391,7 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="453"/>
+        <location filename="../src/Main.cpp" line="457"/>
         <source>UGENE initialization started</source>
         <translation type="unfinished">UGENE initialization started</translation>
     </message>

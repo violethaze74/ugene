@@ -46,6 +46,8 @@ DashboardsManagerDialog::DashboardsManagerDialog(ScanDashboardsDirTask *_task, Q
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759831");
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 
     setupList();
 

@@ -36,6 +36,7 @@ namespace U2 {
 class CmdlineInOutTaskRunner;
 
 class AlignToReferenceBlastCmdlineTask : public Task {
+    Q_OBJECT
 public:
     struct Settings {
         Settings()

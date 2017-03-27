@@ -41,6 +41,8 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog( const Schema & s
     setupUi(this);
     new HelpButton(this, buttonBox, "19759845");
 
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     QPushButton* cancelPushButton = buttonBox->button(QDialogButtonBox::Cancel);
     QPushButton* okPushButton = buttonBox->button(QDialogButtonBox::Ok);
 
