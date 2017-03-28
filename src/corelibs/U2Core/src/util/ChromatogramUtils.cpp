@@ -234,9 +234,9 @@ DNAChromatogram ChromatogramUtils::reverseComplement(const DNAChromatogram &chro
 }
 
 U2Region ChromatogramUtils::sequenceRegion2TraceRegion(const DNAChromatogram &chromatogram, const U2Region &sequenceRegion) {
-    SAFE_POINT(sequenceRegion.startPos <= chromatogram.baseCalls.length()
-               && sequenceRegion.endPos() <= chromatogram.baseCalls.length(),
-               "Sequence region is out of base calls array boundaries", U2Region());
+    CHECK(sequenceRegion.startPos <= chromatogram.baseCalls.length()
+               && sequenceRegion.endPos() <= chromatogram.baseCalls.length(), U2Region());
+
     const int traceStartPos = sequenceRegion.startPos == 0 ? 0 : chromatogram.baseCalls[sequenceRegion.startPos - 1];
     const int traceLength = chromatogram.baseCalls[sequenceRegion.endPos()] - traceStartPos - 1;
     return U2Region(traceStartPos, traceLength);

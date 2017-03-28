@@ -46,6 +46,7 @@ private slots:
     void sl_onSelectionChanged();
     void sl_clearSelection();
     void sl_fontChanged(const QFont &newFont);
+    void sl_update();
 
 private:
     McaEditor* editor;

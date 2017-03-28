@@ -62,6 +62,9 @@ public:
         Note: regionToReplace length can differ from dataToInsert length, so the method can be used to add/remove sequence regions
     */
     virtual void updateSequenceData(const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
+    virtual void updateSequenceData(const U2DataId &masterId, const U2DataId &sequenceId,
+                                    const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);
+
 
     /** The same as above, except passed modification action is used */
     void updateSequenceData(MysqlModificationAction &updateAction, const U2DataId &sequenceId, const U2Region &regionToReplace, const QByteArray &dataToInsert, const QVariantMap &hints, U2OpStatus &os);

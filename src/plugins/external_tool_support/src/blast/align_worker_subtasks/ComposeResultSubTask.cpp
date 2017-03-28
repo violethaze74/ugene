@@ -110,6 +110,14 @@ const SharedDbiDataHandler& ComposeResultSubTask::getAnnotations() const {
 
 U2SequenceObject *ComposeResultSubTask::takeReferenceSequenceObject() {
     U2SequenceObject *reference = referenceSequenceObject;
+
+    QScopedPointer<DbiConnection> con(new DbiConnection(storage->getDbiRef(), stateInfo));
+    CHECK_OP(stateInfo, NULL);
+    CHECK(con->dbi != NULL, NULL);
+
+    U2DataId seqId = referenceSequenceObject->getSequenceRef().entityId;
+    con->dbi->getObjectDbi()->setTrackModType(seqId, TrackOnUpdate, stateInfo);
+
     referenceSequenceObject = NULL;
     return reference;
 }

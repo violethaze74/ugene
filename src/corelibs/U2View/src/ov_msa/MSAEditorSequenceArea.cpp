@@ -181,12 +181,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(sl_fontChanged(QFont)));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeUpdate()));
 
-    QAction* undoAction = ui->getUndoAction();
-    QAction* redoAction = ui->getRedoAction();
-    addAction(undoAction);
-    addAction(redoAction);
-    connect(undoAction, SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
-    connect(redoAction, SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
+    connect(ui->getUndoAction(), SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
+    connect(ui->getRedoAction(), SIGNAL(triggered()), SLOT(sl_resetCollapsibleModel()));
 
     connect(editor->getMaObject(), SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet*)),
         SLOT(sl_alphabetChanged(const MaModificationInfo &, const DNAAlphabet*)));

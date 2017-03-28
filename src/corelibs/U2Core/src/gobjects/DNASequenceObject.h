@@ -67,6 +67,7 @@ public:
     const DNAAlphabet* getAlphabet() const;
 
     void replaceRegion(const U2Region& region, const DNASequence& seq, U2OpStatus& os);
+    void replaceRegion(const U2EntityRef &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os);
 
     GObject* clone(const U2DbiRef& ref, U2OpStatus& os, const QVariantMap &hints = QVariantMap()) const;
 
@@ -95,6 +96,8 @@ public:
     QByteArray getByteArrayAttribute(const QString& seqAttr) const;
 
     void setByteArrayAttribute(const QByteArray& newByteArrayAttributeValue, const QString& type);
+
+    void forceCachedSequenceUpdate();
 
     static bool lessThan( const U2SequenceObject *one, const U2SequenceObject *two){return one->name < two->name;}
 

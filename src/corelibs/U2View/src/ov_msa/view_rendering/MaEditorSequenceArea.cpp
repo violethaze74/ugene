@@ -94,6 +94,11 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
     connect(fillWithGapsinsSymAction, SIGNAL(triggered()), SLOT(sl_fillCurrentSelectionWithGaps()));
     addAction(fillWithGapsinsSymAction);
 
+    QAction* undoAction = ui->getUndoAction();
+    QAction* redoAction = ui->getRedoAction();
+    addAction(undoAction);
+    addAction(redoAction);
+
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_buildStaticMenu(GObjectView*, QMenu*)), SLOT(sl_buildStaticMenu(GObjectView*, QMenu*)));
     connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));

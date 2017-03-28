@@ -23,6 +23,7 @@
 #include "McaEditor.h"
 #include "McaEditorSequenceArea.h"
 
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2View/ADVSequenceObjectContext.h> // SANGER_TODO: rename
 #include <U2Core/U2SafePoints.h>
@@ -41,6 +42,9 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *p, SequenceObjectCo
 
     scrollBar->hide();
     rowBar->hide();
+
+    connect(p->getEditor()->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment,MaModificationInfo)),
+            SLOT(sl_update()));
 
     connect(p->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), SLOT(sl_visibleRangeChanged()));
     connect(p->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection,MaEditorSelection)),
@@ -80,6 +84,11 @@ void McaEditorReferenceArea::sl_clearSelection() {
 void McaEditorReferenceArea::sl_fontChanged(const QFont &newFont) {
     renderer->setFont(newFont);
     setFixedHeight(renderer->getMinimumHeight());
+}
+
+void McaEditorReferenceArea::sl_update() {
+    getSequenceObject()->forceCachedSequenceUpdate();
+    completeUpdate();
 }
 
 void McaEditorReferenceArea::sl_onSelectionChanged() {
