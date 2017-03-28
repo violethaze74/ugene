@@ -2797,7 +2797,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_linux){
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. press "export as image" on toolbar
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/bigImage.bmp", "jpeg" ,100));
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/bigImage.bmp", "JPG" ,100));
     //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 
     QAbstractButton* saveImage = GTAction::button(os,"Export as image");
@@ -2805,14 +2805,14 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_linux){
 
     GTWidget::click(os,saveImage);
 //    Expected state: export dialog appeared
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/smallImage.bmp","jpeg",50));
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/smallImage.bmp","JPG",50));
     GTWidget::click(os,saveImage);
     GTGlobals::sleep(500);
 //    3. fill dialog:
 //    file name: test/_common_data/scenarios/sandbox/image.bmp
 //    press OK
-    qint64 bigSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/bigImage.jpeg");
-    qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpeg");
+    qint64 bigSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
+    qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
 
     CHECK_SET_ERR(bigSize==4800933 && smallSize==917068, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
 //    Expected state: image is exported
@@ -2823,7 +2823,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_windows){
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. press "export as image" on toolbar
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/bigImage.bmp","jpeg",100));
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/bigImage.bmp","JPG",100));
     //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 
     QAbstractButton* saveImage = GTAction::button(os,"Export as image");
@@ -2831,15 +2831,15 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2_windows){
 
     GTWidget::click(os,saveImage);
 //    Expected state: export dialog appeared
-    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/smallImage.bmp","jpeg",50));
+    GTUtilsDialog::waitForDialog(os, new ExportImage(os,testDir + "_common_data/scenarios/sandbox/smallImage.bmp","JPG",50));
     GTWidget::click(os,saveImage);
 //    3. fill dialog:
 //    file name: test/_common_data/scenarios/sandbox/image.bmp
 //    press OK
-    qint64 bigSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/bigImage.jpeg");
-    qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpeg");
+    qint64 bigSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
+    qint64 smallSize = GTFile::getSize(os,testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
 
-    CHECK_SET_ERR(bigSize > 4000000 && bigSize < 5500000  && smallSize > 800000 && smallSize < 1500000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
+    CHECK_SET_ERR(bigSize > 3000000 && bigSize < 5500000  && smallSize > 700000 && smallSize < 1500000, QString().setNum(bigSize) + "  " + QString().setNum(smallSize));
 //    Expected state: image is exported
 }
 
@@ -2885,7 +2885,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028_linux){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Context menu -- "Export as image"
-    GTUtilsDialog::waitForDialog(os,new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("svg")));
+    GTUtilsDialog::waitForDialog(os,new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
     GTUtilsDialog::waitForDialog( os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
@@ -2901,7 +2901,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028_windows){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
 //    2. Context menu -- "Export as image"
-    GTUtilsDialog::waitForDialog(os,new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("svg")));
+    GTUtilsDialog::waitForDialog(os,new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test.svg", QString("SVG")));
     GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
@@ -3699,7 +3699,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042_2) {
                                                         ExportMsaImage::Settings(true, false, true)/*include all*/,
                                                         true,
                                                         false, RegionMsa(),
-                                                        "bmp"));
+                                                        "BMP"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
 
@@ -3814,7 +3814,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
     GTUtilsDialog::waitForDialog(os, new ExportMsaImage(os,
                                                         testDir + "_common_data/scenarios/sandbox/test_0046",
-                                                        "jpg", 50));
+                                                        "JPG",50));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
 
