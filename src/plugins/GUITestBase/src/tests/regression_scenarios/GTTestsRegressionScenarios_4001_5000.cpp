@@ -176,7 +176,7 @@ GUI_TEST_CLASS_DEFINITION(test_4007) {
 
 
     GTGlobals::FindOptions murineOptions(false);
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findFirstAnnotation(os, murineOptions) == NULL, "Annotations are connected to murine.gb");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findFirstAnnotation(os, murineOptions) != NULL, "Annotations are connected to murine.gb");
 
     //    Expected state: the file is reloaded, annotations object still have an association only with human_T1 sequence (if annotations object exists and has the same name as before reloading),
     //there is no errors in the log.
