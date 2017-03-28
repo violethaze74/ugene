@@ -20,36 +20,32 @@
  */
 
 #include <QApplication>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QFile>
 #include <QMessageBox>
-
-#include <QtWebSockets/QWebSocketServer>
-#include <QtWebChannel/QWebChannel>
-
-#include <QDesktopServices>
+#include <QWebChannel>
+#include <QWebSocketServer>
 
 #if (QT_VERSION < 0x050500) //Qt 5
 #include <U2Gui/WebSocketClientWrapper.h>
 #include <U2Gui/WebSocketTransport.h>
 #endif // endif
 
-#include <QClipboard>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/MainWindow.h>
 
-#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/URLAttribute.h>
 #include <U2Lang/URLContainer.h>
+#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
 
 #include "Dashboard.h"
@@ -62,26 +58,42 @@ static const QString SETTINGS_FILE_NAME("settings.ini");
 static const QString OPENED_SETTING("opened");
 static const QString NAME_SETTING("name");
 
+const QString STATE_RUNNING = "RUNNING";
+const QString STATE_RUNNING_WITH_PROBLEMS = "RUNNING_WITH_PROBLEMS";
+const QString STATE_FINISHED_WITH_PROBLEMS = "FINISHED_WITH_PROBLEMS";
+const QString STATE_FAILED = "FAILED";
+const QString STATE_SUCCESS = "SUCCESS";
+const QString STATE_CANCELED = "CANCELED";
+
+
 /************************************************************************/
 /* Dashboard */
 /************************************************************************/
-Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &_name, QWidget *parent)
-    : QWebEngineView(parent), loaded(false), name(_name), opened(true), _monitor(monitor), initialized(false), workflowInProgress(true)
+Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidget *parent)
+    : QWebEngineView(parent),
+      loaded(false),
+      name(name),
+      opened(true),
+      monitor(monitor),
+      initialized(false),
+      workflowInProgress(true)
 {
     connect(this, SIGNAL(loadFinished(bool)), SLOT(sl_loaded(bool)));
-    connect(_monitor, SIGNAL(si_report()), SLOT(sl_serialize()));
-    connect(_monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_setDirectory(const QString &)));
-    connect(_monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_workflowStateChanged(Monitor::TaskState)));
+    connect(this, SIGNAL(loadFinished(bool)), SLOT(sl_serialize()));
+    connect(monitor, SIGNAL(si_report()), SLOT(sl_serialize()));
+    connect(monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_setDirectory(const QString &)));
+    connect(monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_workflowStateChanged(Monitor::TaskState)));
 
     dashboardPageController = new DashboardPageController(this);
-    connect(_monitor, SIGNAL(si_progressChanged(int)), dashboardPageController, SLOT(sl_progressChanged(int)));
-    connect(_monitor, SIGNAL(si_taskStateChanged(U2::Workflow::Monitor::TaskState)), dashboardPageController, SLOT(sl_taskStateChanged(U2::Workflow::Monitor::TaskState)));
-    connect(_monitor, SIGNAL(si_workerInfoChanged(const QString &, const U2::Workflow::Monitor::WorkerInfo &)),
+    connect(monitor, SIGNAL(si_progressChanged(int)), dashboardPageController, SLOT(sl_progressChanged(int)));
+    connect(monitor, SIGNAL(si_taskStateChanged(U2::Workflow::Monitor::TaskState)), dashboardPageController, SLOT(sl_taskStateChanged(U2::Workflow::Monitor::TaskState)));
+    connect(monitor, SIGNAL(si_workerInfoChanged(const QString &, const U2::Workflow::Monitor::WorkerInfo &)),
         dashboardPageController, SLOT(sl_workerInfoChanged(const QString &, const U2::Workflow::Monitor::WorkerInfo &)));
-    connect(_monitor, SIGNAL(si_updateProducers()), dashboardPageController, SLOT(sl_workerStatsUpdate()));
-    connect(_monitor, SIGNAL(si_newOutputFile(const U2::Workflow::Monitor::FileInfo &)),
+    connect(monitor, SIGNAL(si_updateProducers()), dashboardPageController, SLOT(sl_workerStatsUpdate()));
+    connect(monitor, SIGNAL(si_newOutputFile(const U2::Workflow::Monitor::FileInfo &)),
         dashboardPageController, SLOT(sl_newOutputFile(const U2::Workflow::Monitor::FileInfo &)));
-    connect(_monitor, SIGNAL(si_logChanged(U2::Workflow::Monitor::LogEntry)), dashboardPageController, SLOT(sl_onLogChanged(U2::Workflow::Monitor::LogEntry)));
+    connect(monitor, SIGNAL(si_logChanged(U2::Workflow::Monitor::LogEntry)), dashboardPageController, SLOT(sl_onLogChanged(U2::Workflow::Monitor::LogEntry)));
+    connect(dashboardPageController, SIGNAL(si_initialized()), SLOT(sl_serialize()));
 
     setContextMenuPolicy(Qt::NoContextMenu);
     loadUrl = "qrc:///U2Designer/html/Dashboard_webengine.html";
@@ -90,7 +102,13 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &_name, QWidg
 }
 
 Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
-    : QWebEngineView(parent), loaded(false), dir(dirPath), opened(true), _monitor(NULL), initialized(false), workflowInProgress(false)
+    : QWebEngineView(parent),
+      loaded(false),
+      dir(dirPath),
+      opened(true),
+      monitor(NULL),
+      initialized(false),
+      workflowInProgress(false)
 {
     dashboardPageController = new DashboardPageController(this);
     connect(this, SIGNAL(loadFinished(bool)), SLOT(sl_loaded(bool)));
@@ -101,6 +119,7 @@ Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
 }
 
 Dashboard::~Dashboard() {
+
 }
 
 void Dashboard::onShow() {
@@ -142,7 +161,7 @@ void Dashboard::setName(const QString &value) {
 
 void Dashboard::loadDocument() {
     loaded = true;
-#if (QT_VERSION < 0x050500) //Qt 5.7 TODO: recheck local files loadUrl
+#if (QT_VERSION < 0x050500) // Qt 5.7 TODO: recheck local files loadUrl
     server = new QWebSocketServer(QStringLiteral("UGENE Standalone Server"), QWebSocketServer::NonSecureMode, this);
     port = 12346;
     while (!server->listen(QHostAddress::LocalHost, port)) {//TODO: need more useful solution
@@ -188,32 +207,34 @@ void Dashboard::loadDocument() {
 void Dashboard::sl_loaded(bool ok) {
     CHECK(!initialized, );
     SAFE_POINT(ok, "Loaded with errors", );
-    initialized = true;
+    initialized = dashboardPageController->isInitialized();
 
 #if (QT_VERSION < 0x050500)
-    page()->runJavaScript("installWebChannel(true," + QString((NULL != monitor()) ? "true" : "false") + "," + QString::number(port) + ")");
+    page()->runJavaScript("installWebChannel(true," + QString((NULL != getMonitor()) ? "true" : "false") + "," + QString::number(port) + ")");
 #else
-    page()->runJavaScript("installWebChannel(false," + QString((NULL != monitor()) ? "true" : "false") + ")");
+    page()->runJavaScript("installWebChannel(false," + QString((NULL != getMonitor()) ? "true" : "false") + ")");
 #endif
 
-    if (NULL != monitor()) {
-        connect(monitor(), SIGNAL(si_newProblem(Problem,int)), dashboardPageController, SLOT(sl_newProblem(Problem,int)));
-        if (!monitor()->getProblems().isEmpty()) {
-            foreach (Problem problem, monitor()->getProblems()) {
-                dashboardPageController->sl_newProblem(problem, 0);//TODO: fix count of problems
+    if (NULL != getMonitor()) {
+        connect(getMonitor(), SIGNAL(si_newProblem(Problem,int)), dashboardPageController, SLOT(sl_newProblem(Problem,int)));
+        if (!getMonitor()->getProblems().isEmpty()) {
+            foreach (Problem problem, getMonitor()->getProblems()) {
+                dashboardPageController->sl_newProblem(problem, 0); // TODO: fix count of problems
             }
         }
 
-        connect(monitor(), SIGNAL(si_runStateChanged(bool)), SLOT(sl_runStateChanged(bool)));
+        connect(getMonitor(), SIGNAL(si_runStateChanged(bool)), SLOT(sl_runStateChanged(bool)));
         dashboardPageController->setDataReady();
         dashboardPageController->sl_pageLoaded();
     }
+
     if (!WorkflowSettings::isShowLoadButtonHint()) {
         page()->runJavaScript("hideLoadBtnHint()");
     }
 }
 
 void Dashboard::sl_serialize() {
+    CHECK(initialized && loaded, );
     QCoreApplication::processEvents();
     QString reportDir = dir + REPORT_SUB_DIR;
     QDir d(reportDir);
@@ -246,8 +267,8 @@ void Dashboard::loadSettings() {
     name = s.value(NAME_SETTING).toString();
 }
 
-const QPointer<const WorkflowMonitor> Dashboard::monitor() const {
-    return _monitor;
+const QPointer<const WorkflowMonitor> Dashboard::getMonitor() const {
+    return monitor;
 }
 
 void Dashboard::sl_runStateChanged(bool paused) {
@@ -296,13 +317,6 @@ DashboardPageController* Dashboard::getController(){
 /************************************************************************/
 /* DashboardPageController */
 /************************************************************************/
-const QString DashboardPageController::STATE_RUNNING = "RUNNING";
-const QString DashboardPageController::STATE_RUNNING_WITH_PROBLEMS = "RUNNING_WITH_PROBLEMS";
-const QString DashboardPageController::STATE_FINISHED_WITH_PROBLEMS = "FINISHED_WITH_PROBLEMS";
-const QString DashboardPageController::STATE_FAILED = "FAILED";
-const QString DashboardPageController::STATE_SUCCESS = "SUCCESS";
-const QString DashboardPageController::STATE_CANCELED = "CANCELED";
-
 DashboardPageController::DashboardPageController(Dashboard *parent)
     : QObject(parent),
       progress(0),
@@ -311,35 +325,43 @@ DashboardPageController::DashboardPageController(Dashboard *parent)
       isWebChannelInitialized(false),
       isDataReady(false),
       agent(new DashboardJsAgent(parent)),
-      monitor(parent->monitor())
+      monitor(parent->getMonitor())
 {
 
 }
 
-void DashboardPageController::sl_progressChanged(int _progress){
-    progress = _progress;
+void DashboardPageController::sl_progressChanged(int newProgress){
+    progress = newProgress;
     if(isPageLoaded){
         emit agent->si_progressChanged(progress);
     }
 }
-void DashboardPageController::sl_taskStateChanged(U2::Workflow::Monitor::TaskState _state){
-    QString stateStr;
-    if (Monitor::RUNNING == _state) {
-        stateStr = STATE_RUNNING;
-    } else if (Monitor::RUNNING_WITH_PROBLEMS == _state) {
-        stateStr = STATE_RUNNING_WITH_PROBLEMS;
-    } else if (Monitor::FINISHED_WITH_PROBLEMS == _state) {
-        stateStr = STATE_FINISHED_WITH_PROBLEMS;
-    } else if (Monitor::FAILED == _state) {
-        stateStr = STATE_FAILED;
-    } else if (Monitor::SUCCESS == _state) {
-        stateStr = STATE_SUCCESS;
-    } else {
-        stateStr = STATE_CANCELED;
+
+namespace {
+
+QString state2String(Monitor::TaskState state) {
+    switch (state) {
+    case Monitor::RUNNING:
+        return STATE_RUNNING;
+    case Monitor::RUNNING_WITH_PROBLEMS:
+        return STATE_RUNNING_WITH_PROBLEMS;
+    case Monitor::FINISHED_WITH_PROBLEMS:
+        return STATE_FINISHED_WITH_PROBLEMS;
+    case Monitor::FAILED:
+        return STATE_FAILED;
+    case Monitor::SUCCESS:
+        return STATE_SUCCESS;
+    default:
+        return STATE_CANCELED;
     }
-    state = stateStr;
+}
+
+}
+
+void DashboardPageController::sl_taskStateChanged(U2::Workflow::Monitor::TaskState newState){
+    state = state2String(newState);
     if (isPageLoaded) {
-        emit agent->si_taskStateChanged(stateStr);
+        emit agent->si_taskStateChanged(state);
     }
 }
 
@@ -351,9 +373,9 @@ void DashboardPageController::sl_newProblem(const Problem &info, int count){
     infoJS["count"] = count;
     QJsonDocument doc(infoJS);
     QString strJson(doc.toJson(QJsonDocument::Compact));
-    if(isPageLoaded){
+    if (isPageLoaded) {
         emit agent->si_newProblem(strJson);
-    }else{
+    } else {
         problems.append(strJson);
     }
 }
@@ -367,14 +389,14 @@ void DashboardPageController::sl_workerInfoChanged(const QString &actorId, const
     infoJS["countOfProducedData"] = monitor->getDataProduced(actorId);
     QJsonDocument doc(infoJS);
     QString strJson(doc.toJson(QJsonDocument::Compact));
-    if(isPageLoaded){
+    if (isPageLoaded) {
         emit agent->si_workerStatsInfoChanged(strJson);
-    }else{
+    } else {
         infos.append(strJson);
     }
 }
 
-void DashboardPageController::sl_workerStatsUpdate(){
+void DashboardPageController::sl_workerStatsUpdate() {
     SAFE_POINT(NULL != monitor, "WorkflowMonitor is NULL", );
     QJsonArray workersStatisticsInfo;
     QMap<QString, Monitor::WorkerInfo> infos = monitor->getWorkersInfo();
@@ -387,11 +409,12 @@ void DashboardPageController::sl_workerStatsUpdate(){
         infoJS["countOfProducedData"] = monitor->getDataProduced(actorId);
         workersStatisticsInfo.append(infoJS);
     }
+
     QJsonDocument doc(workersStatisticsInfo);
     QString strJson(doc.toJson(QJsonDocument::Compact));
-    if(isPageLoaded){
+    if (isPageLoaded) {
         emit agent->si_workerStatsUpdate(strJson);
-    }else{
+    } else {
         workersStatisticsInfos.append(strJson);
     }
 }
@@ -404,9 +427,9 @@ void DashboardPageController::sl_newOutputFile(const U2::Workflow::Monitor::File
     infoJS["openBySystem"] = info.openBySystem;
     QJsonDocument doc(infoJS);
     QString strJson(doc.toJson(QJsonDocument::Compact));
-    if(isPageLoaded){
+    if (isPageLoaded) {
         emit agent->si_newOutputFile(strJson);
-    }else{
+    } else {
         fileInfos.append(strJson);
     }
 }
@@ -420,61 +443,75 @@ void DashboardPageController::sl_onLogChanged(U2::Workflow::Monitor::LogEntry en
     entryJS["lastLine"] = entry.lastLine;
     QJsonDocument doc(entryJS);
     QString strJson(doc.toJson(QJsonDocument::Compact));
-    if(isPageLoaded){
+    if (isPageLoaded) {
         emit agent->si_onLogChanged(strJson);
-    }else{
+    } else {
         logEntries.append(strJson);
     }
 }
 
 void DashboardPageController::sl_pageLoaded(){
-    if(isWebChannelInitialized && isDataReady){
+    if (isWebChannelInitialized && isDataReady) {
         initData();
     }
 }
+
 void DashboardPageController::initData(){
     emit agent->si_progressChanged(progress);
     emit agent->si_taskStateChanged(state);
-    foreach (QString problem, problems) {
+
+    foreach (const QString &problem, problems) {
         emit agent->si_newProblem(problem);
     }
 
-    foreach (QString info, infos) {
+    foreach (const QString &info, infos) {
         emit agent->si_workerStatsInfoChanged(info);
     }
-    foreach (QString workersStatisticsInfo, workersStatisticsInfos) {
+
+    foreach (const QString &workersStatisticsInfo, workersStatisticsInfos) {
         emit agent->si_workerStatsUpdate(workersStatisticsInfo);
     }
-    foreach (QString fileInfo, fileInfos) {
+
+    foreach (const QString &fileInfo, fileInfos) {
         emit agent->si_newOutputFile(fileInfo);
     }
-    foreach (QString entry, logEntries) {
+
+    foreach (const QString &entry, logEntries) {
         emit agent->si_onLogChanged(entry);
     }
+
     isPageLoaded = true;
+    emit si_initialized();
 }
 
-DashboardJsAgent* DashboardPageController::getAgent(){
+DashboardJsAgent* DashboardPageController::getAgent() {
     return agent;
 }
-void DashboardPageController::setWebChannelInitialized(){
+
+void DashboardPageController::setWebChannelInitialized() {
     isWebChannelInitialized = true;
 }
-void DashboardPageController::setDataReady(){
+
+void DashboardPageController::setDataReady() {
     isDataReady = true;
 }
+
+bool DashboardPageController::isInitialized() const {
+    return isPageLoaded;
+}
+
 /************************************************************************/
 /* DashboardJsAgent */
 /************************************************************************/
 DashboardJsAgent::DashboardJsAgent(Dashboard* parent)
     : QObject(parent),
-      monitor(parent->monitor())
+      monitor(parent->getMonitor())
 {
     //set language
     lang = AppContext::getAppSettings()->getUserAppsSettings()->getTranslationFile();
-    if(lang.isEmpty()){
+    if (lang.isEmpty()) {
         lang = "en";
-    }else {
+    } else {
         lang = lang.split("_")[1];
     }
     fillWorkerParamsInfo();
@@ -484,13 +521,13 @@ void DashboardJsAgent::sl_onJsError(const QString& errorMessage) {
     coreLog.error(errorMessage);
 }
 
-void DashboardJsAgent::sl_checkETsLog(){
+void DashboardJsAgent::sl_checkETsLog() {
 
 }
 
-void DashboardJsAgent::sl_webChannelInitialized(){
+void DashboardJsAgent::sl_webChannelInitialized() {
     Dashboard* dashboard = qobject_cast<Dashboard*>(parent());
-    if(dashboard->monitor() != NULL){
+    if (dashboard->getMonitor() != NULL) {
         dashboard->getController()->setWebChannelInitialized();
         dashboard->getController()->sl_pageLoaded();
     }
@@ -599,11 +636,14 @@ void DashboardJsAgent::fillWorkerParamsInfo(){
         workersParamsInfo = doc.toJson(QJsonDocument::Compact);
     }
 }
+
 /************************************************************************/
 /* DashboardWidget */
 /************************************************************************/
-DashboardWidget::DashboardWidget(const QString &_container, Dashboard *parent)
-: QObject(parent), dashboard(parent), container(_container)
+DashboardWidget::DashboardWidget(const QString &container, Dashboard *parent)
+    : QObject(parent),
+      dashboard(parent),
+      container(container)
 {
 
 }
@@ -662,6 +702,7 @@ RemoveDashboardsTask::RemoveDashboardsTask(const QList<DashboardInfo> &_dashboar
 {
 
 }
+
 void RemoveDashboardsTask::run() {
     foreach (const DashboardInfo &info, dashboards) {
         U2OpStatus2Log os;
@@ -676,8 +717,9 @@ DashboardInfo::DashboardInfo() {
 
 }
 
-DashboardInfo::DashboardInfo(const QString &dirPath, bool _opened)
-: path(dirPath), opened(_opened)
+DashboardInfo::DashboardInfo(const QString &dirPath, bool opened)
+    : path(dirPath),
+      opened(opened)
 {
     dirName = QDir(path).dirName();
 }
@@ -686,5 +728,4 @@ bool DashboardInfo::operator==(const DashboardInfo &other) const {
     return path == other.path;
 }
 
-} // ns
-
+}   // namespace U2

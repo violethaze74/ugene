@@ -24,14 +24,15 @@
 
 #include <qglobal.h>
 
-#if (QT_VERSION < 0x050500) //Qt 5.7
-#include <QtWebChannel/QWebChannel>
+#if (QT_VERSION < 0x050500)
+#include <QWebChannel>
 #include <QWebEngineView>
-#include <QtWebSockets/QWebSocketServer>
+#include <QWebSocketServer>
+
 #include <U2Gui/WebSocketClientWrapper.h>
 #else
+#include <QWebChannel>
 #include <QWebEngineView>
-#include <QtWebChannel/QWebChannel>
 #endif
 
 #include <U2Core/U2SafePoints.h>
@@ -41,8 +42,9 @@
 namespace U2 {
 using namespace Workflow;
 
-class ExternalToolsWidgetController;
+class DashboardJsAgent;
 class DashboardPageController;
+class ExternalToolsWidgetController;
 
 class U2DESIGNER_EXPORT Dashboard : public QWebEngineView {
     Q_OBJECT
@@ -54,7 +56,7 @@ public:
 
     void onShow();
 
-    const QPointer<const WorkflowMonitor> monitor() const;
+    const QPointer<const WorkflowMonitor> getMonitor() const;
 
     void setClosed();
     QString directory() const;
@@ -95,7 +97,7 @@ private:
     QString name;
     QString dir;
     bool opened;
-    const QPointer<const WorkflowMonitor> _monitor;
+    const QPointer<const WorkflowMonitor> monitor;
     bool initialized;
     bool workflowInProgress;
     DashboardPageController* dashboardPageController;
@@ -108,7 +110,7 @@ private:
     void saveSettings();
     void loadSettings();
 
-#if (QT_VERSION < 0x050500) //Qt 5.7
+#if (QT_VERSION < 0x050500)
     QWebSocketServer *server;
     WebSocketClientWrapper *clientWrapper;
     QWebChannel *channel;
@@ -117,28 +119,32 @@ private:
     QWebChannel *channel;
 #endif
 };
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 class DashboardWidget : public QObject {
     Q_OBJECT
 public:
     DashboardWidget(const QString &container, Dashboard *parent);
+
 protected:
     Dashboard *dashboard;
     QString container;
 };
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 class U2DESIGNER_EXPORT DashboardInfo {
 public:
+    DashboardInfo();
+    DashboardInfo(const QString &dirPath, bool opened = true);
+
+    bool operator==(const DashboardInfo &other) const;
+
     QString path;
     QString dirName;
     QString name;
     bool opened;
-
-public:
-    DashboardInfo();
-    DashboardInfo(const QString &dirPath, bool opened = true);
-    bool operator==(const DashboardInfo &other) const;
 };
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 class U2DESIGNER_EXPORT ScanDashboardsDirTask : public Task {
     Q_OBJECT
@@ -156,6 +162,7 @@ private:
     QStringList openedDashboards;
     QList<DashboardInfo> result;
 };
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 class U2DESIGNER_EXPORT RemoveDashboardsTask : public Task {
     Q_OBJECT
@@ -166,17 +173,20 @@ public:
 private:
     QList<DashboardInfo> dashboards;
 };
+
 ////////////////////////////////////////////////////////////////////////////////////////////
-class DashboardJsAgent;
 class DashboardPageController : public QObject {
     Q_OBJECT
 public:
     DashboardPageController(Dashboard* parent);
 
-
     DashboardJsAgent* getAgent();
     void setWebChannelInitialized();
     void setDataReady();
+    bool isInitialized() const;
+
+signals:
+    void si_initialized();
 
 public slots:
     void sl_pageLoaded();
@@ -205,13 +215,6 @@ private:
     bool isDataReady;
     DashboardJsAgent* agent;
     const QPointer<const WorkflowMonitor> monitor;
-
-    static const QString STATE_RUNNING;
-    static const QString STATE_RUNNING_WITH_PROBLEMS;
-    static const QString STATE_FINISHED_WITH_PROBLEMS;
-    static const QString STATE_FAILED;
-    static const QString STATE_SUCCESS;
-    static const QString STATE_CANCELED;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -235,6 +238,7 @@ public slots:
     void loadSchema();
     void setClipboardText(const QString &text);
     void hideLoadButtonHint();
+
 signals:
     void si_progressChanged(int progress);
     void si_taskStateChanged(QString state);
@@ -243,8 +247,8 @@ signals:
     void si_workerStatsUpdate(QString workersStatisticsInfo);//workaround for Qt5.4, sould be simple QJsonArray.
     void si_onLogChanged(QString logEntry); //workaround for Qt5.4 and Qt5.5, sould be simple QJsonObject. More info see https://bugreports.qt.io/browse/QTBUG-48198
     void si_newOutputFile(QString fileInfo); //workaround for Qt5.4 and Qt5.5, sould be simple QJsonObject. More info see https://bugreports.qt.io/browse/QTBUG-48198
-
     void si_createOutputWidget();
+
 private:
     Q_INVOKABLE QString getLang();
     Q_INVOKABLE QString getWorkersParamsInfo();
@@ -257,6 +261,7 @@ private:
 };
 
 } // U2
+
 Q_DECLARE_METATYPE(U2::DashboardInfo)
 
 #endif // _U2_DASHBOARD_H_
