@@ -3778,7 +3778,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ReadAnnotationsWorker.cpp" line="138"/>
-        <source>Reads annotations from files.</source>
+        <source>Reads annotations from files. All annotation file formats supported by UGENE are allowed as input to this element.</source>
         <translation>этот элемент считывает аннотации из файлов.</translation>
     </message>
     <message>
@@ -3857,7 +3857,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ReadAssemblyWorker.cpp" line="123"/>
-        <source>Reads assembly from files.</source>
+        <source>Reads assembly from files. All assembly file formats supported by UGENE are allowed as input to this element.</source>
         <translation>этот элемент считывает сборки из файлов.</translation>
     </message>
     <message>
@@ -3909,7 +3909,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ReadVariationWorker.cpp" line="188"/>
-        <source>Reads variations from files and produces variations tracks.</source>
+        <source>Reads variations from files and produces variations tracks. All variation file formats supported by UGENE are allowed as input to this element.</source>
         <translation>этот элемент читает вариации из файлов и производит наборы вариаций.</translation>
     </message>
     <message>
@@ -5294,7 +5294,7 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/CoreLib.cpp" line="174"/>
-        <source>Reads text from local or remote files.</source>
+        <source>Reads text from local or remote files. All text file formats supported by UGENE are allowed as input to this element.</source>
         <translation>этот элемент считывает текстовые данные из файлов, расположенных локально или удаленно.</translation>
     </message>
     <message>
@@ -5423,13 +5423,13 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/GenericReadActor.cpp" line="149"/>
-        <source>Reads multiple sequence alignments (MSAs) from local or remote files.&lt;p&gt;Besides recognized alignment formats, it supports aligning from a set of sequences in a corresponding file (e.g. FASTA or Genbank).</source>
+        <source>Reads multiple sequence alignments (MSAs) from local or remote files. All MSA file formats supported by UGENE are allowed as input to this element.&lt;p&gt;Besides recognized alignment formats, it supports aligning from a set of sequences in a corresponding file (e.g. FASTA or Genbank).</source>
         <translation>этот элемент считывает множественные выравнивания из файлов, расположенных локально или удаленно.
 &lt;p&gt;Помимо чтения готовых выравниваний известных форматов, поддерживается автоматическое составление выравниваний из наборов последовательностей, которые могут быть прочитаны из файла любого подходящего формата (например,  FASTA или Genbank).</translation>
     </message>
     <message>
         <location filename="../src/library/GenericReadActor.cpp" line="89"/>
-        <source>Reads sequences and annotations if any from local or remote files.</source>
+        <source>Reads sequences and annotations if any from local or remote files. All sequence file formats supported by UGENE (e.g. GenBank, FASTA) are allowed as input to this element.</source>
         <translation>этот элемент загружает последовательности, а также аннотации в случае их наличия, из файлов, расположенных локально или удаленно.</translation>
     </message>
 </context>

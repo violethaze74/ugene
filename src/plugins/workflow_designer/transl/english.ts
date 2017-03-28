@@ -2007,96 +2007,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
 </context>
 <context>
-    <name>U2::LocalWorkflow::DASFetcherPrompter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">unset</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::DASFetcherWorker</name>
-    <message>
-        <source>sequences identified with</source>
-        <translation type="vanished">sequences identified with</translation>
-    </message>
-    <message>
-        <source>sequence identified with</source>
-        <translation type="vanished">sequence identified with</translation>
-    </message>
-    <message>
-        <source>Save result to &lt;u&gt;%1&lt;/u&gt; directory.</source>
-        <translation type="vanished">Save result to &lt;u&gt;%1&lt;/u&gt; directory.</translation>
-    </message>
-    <message>
-        <source>Reads %1 %2 from &lt;u&gt;%3&lt;/u&gt; DAS source. %4</source>
-        <translation type="vanished">Reads %1 %2 from &lt;u&gt;%3&lt;/u&gt; DAS source. %4</translation>
-    </message>
-    <message>
-        <source>Cannot create directory &apos;%1&apos;</source>
-        <translation type="vanished">Cannot create directory &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>failed to load item from DAS source : %3</source>
-        <translation type="vanished">failed to load item from DAS source : %3</translation>
-    </message>
-    <message>
-        <source>Read from DAS</source>
-        <translation type="vanished">Read from DAS</translation>
-    </message>
-    <message>
-        <source>Reads sequences and annotations if any from the Distributed Annotation System.</source>
-        <translation type="vanished">Reads sequences and annotations if any from the Distributed Annotation System.</translation>
-    </message>
-    <message>
-        <source>Sequence</source>
-        <translation type="vanished">Sequence</translation>
-    </message>
-    <message>
-        <source>No DAS registry</source>
-        <translation type="vanished">No DAS registry</translation>
-    </message>
-    <message>
-        <source>No DAS sources</source>
-        <translation type="vanished">No DAS sources</translation>
-    </message>
-    <message>
-        <source>No DAS feature sources</source>
-        <translation type="vanished">No DAS feature sources</translation>
-    </message>
-    <message>
-        <source>Feature Sources</source>
-        <translation type="vanished">Feature Sources</translation>
-    </message>
-    <message>
-        <source>The DAS sources to read features from.</source>
-        <translation type="vanished">The DAS sources to read features from.</translation>
-    </message>
-    <message>
-        <source>Reference Source</source>
-        <translation type="vanished">Reference Source</translation>
-    </message>
-    <message>
-        <source>The DAS source to read reference from.</source>
-        <translation type="vanished">The DAS source to read reference from.</translation>
-    </message>
-    <message>
-        <source>Resource ID(s)</source>
-        <translation type="vanished">Resource ID(s)</translation>
-    </message>
-    <message>
-        <source>Semicolon-separated list of resource ID`s in the source.</source>
-        <translation type="vanished">Semicolon-separated list of resource ID`s in the source.</translation>
-    </message>
-    <message>
-        <source>Save file to directory</source>
-        <translation type="vanished">Save file to directory</translation>
-    </message>
-    <message>
-        <source>The directory to store sequence files loaded from the source.</source>
-        <translation type="vanished">The directory to store sequence files loaded from the source.</translation>
-    </message>
-</context>
-<context>
     <name>U2::LocalWorkflow::DNAStatWorker</name>
     <message>
         <location filename="../src/library/StatisticWorkers.cpp" line="65"/>
@@ -4072,8 +3982,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ReadAnnotationsWorker.cpp" line="138"/>
-        <source>Reads annotations from files.</source>
-        <translation>Reads annotations from files.</translation>
+        <source>Reads annotations from files. All annotation file formats supported by UGENE are allowed as input to this element.</source>
+        <translation>Reads annotations from files. All annotation file formats supported by UGENE are allowed as input to this element.</translation>
     </message>
     <message>
         <location filename="../src/library/ReadAnnotationsWorker.cpp" line="148"/>
@@ -4151,8 +4061,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ReadAssemblyWorker.cpp" line="123"/>
-        <source>Reads assembly from files.</source>
-        <translation>Reads assembly from files.</translation>
+        <source>Reads assembly from files. All assembly file formats supported by UGENE are allowed as input to this element.</source>
+        <translation>Reads assembly from files. All assembly file formats supported by UGENE are allowed as input to this element.</translation>
     </message>
     <message>
         <location filename="../src/library/ReadAssemblyWorker.cpp" line="133"/>
@@ -4203,8 +4113,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/ReadVariationWorker.cpp" line="188"/>
-        <source>Reads variations from files and produces variations tracks.</source>
-        <translation>Reads variations from files and produces variations tracks.</translation>
+        <source>Reads variations from files and produces variations tracks. All variation file formats supported by UGENE are allowed as input to this element.</source>
+        <translation>Reads variations from files and produces variations tracks. All variation file formats supported by UGENE are allowed as input to this element.</translation>
     </message>
     <message>
         <location filename="../src/library/ReadVariationWorker.cpp" line="197"/>
@@ -5614,8 +5524,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/CoreLib.cpp" line="174"/>
-        <source>Reads text from local or remote files.</source>
-        <translation>Reads text from local or remote files.</translation>
+        <source>Reads text from local or remote files. All text file formats supported by UGENE are allowed as input to this element.</source>
+        <translation>Reads text from local or remote files. All text file formats supported by UGENE are allowed as input to this element.</translation>
     </message>
     <message>
         <location filename="../src/library/CoreLib.cpp" line="175"/>
@@ -5696,8 +5606,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/GenericReadActor.cpp" line="89"/>
-        <source>Reads sequences and annotations if any from local or remote files.</source>
-        <translation>Reads sequences and annotations if any from local or remote files.</translation>
+        <source>Reads sequences and annotations if any from local or remote files. All sequence file formats supported by UGENE (e.g. GenBank, FASTA) are allowed as input to this element.</source>
+        <translation>Reads sequences and annotations if any from local or remote files. All sequence file formats supported by UGENE (e.g. GenBank, FASTA) are allowed as input to this element.</translation>
     </message>
     <message>
         <location filename="../src/library/GenericReadActor.cpp" line="101"/>
@@ -5716,8 +5626,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
     <message>
         <location filename="../src/library/GenericReadActor.cpp" line="149"/>
-        <source>Reads multiple sequence alignments (MSAs) from local or remote files.&lt;p&gt;Besides recognized alignment formats, it supports aligning from a set of sequences in a corresponding file (e.g. FASTA or Genbank).</source>
-        <translation>Reads multiple sequence alignments (MSAs) from local or remote files.&lt;p&gt;Besides recognized alignment formats, it supports aligning from a set of sequences in a corresponding file (e.g. FASTA or Genbank).</translation>
+        <source>Reads multiple sequence alignments (MSAs) from local or remote files. All MSA file formats supported by UGENE are allowed as input to this element.&lt;p&gt;Besides recognized alignment formats, it supports aligning from a set of sequences in a corresponding file (e.g. FASTA or Genbank).</source>
+        <translation>Reads multiple sequence alignments (MSAs) from local or remote files. All MSA file formats supported by UGENE are allowed as input to this element.&lt;p&gt;Besides recognized alignment formats, it supports aligning from a set of sequences in a corresponding file (e.g. FASTA or Genbank).</translation>
     </message>
     <message>
         <location filename="../src/library/GenericReadActor.cpp" line="163"/>
