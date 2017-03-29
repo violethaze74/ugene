@@ -22,6 +22,7 @@
 #include "AlignToReferenceBlastDialog.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -33,6 +34,7 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/U2FileDialog.h>
+#include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <QMessageBox>
@@ -41,13 +43,16 @@
 namespace U2 {
 
 const QString AlignToReferenceBlastCmdlineTask::ALIGN_TO_REF_CMDLINE = "align-to-reference";
-const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
-const QString AlignToReferenceBlastCmdlineTask::READS_ARG = "reads";
-const QString AlignToReferenceBlastCmdlineTask::MIN_IDENTITY_ARG = "min-identity";
+
+const QString AlignToReferenceBlastCmdlineTask::TRIM_ARG = "trim-both-ends";
 const QString AlignToReferenceBlastCmdlineTask::MIN_LEN_ARG = "min-length";
 const QString AlignToReferenceBlastCmdlineTask::THRESHOLD_ARG = "threshold";
-const QString AlignToReferenceBlastCmdlineTask::TRIM_ARG = "trim-both-ends";
-const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "out-alignment";
+
+const QString AlignToReferenceBlastCmdlineTask::READS_ARG = "reads";
+
+const QString AlignToReferenceBlastCmdlineTask::MIN_IDENTITY_ARG = "min-identity";
+const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
+const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-url";
 
 AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings &settings)
     : Task(tr("Align to reference workflow wrapper"), TaskFlags_NR_FOSE_COSC),
@@ -88,7 +93,7 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
         CHECK_EXT(!formats.isEmpty() && (NULL != formats.first().format), setError("wrong output format"), result);
 
         DocumentFormat *format = formats.first().format;
-        CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), setError("wrong output format"), result);
+        CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError("wrong output format"), result);
 
         LoadDocumentTask *loadTask= new LoadDocumentTask(format->getFormatId(),
                                                          settings.outAlignment, AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.outAlignment)));
@@ -103,7 +108,8 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task *subTask) 
 QStringList AlignToReferenceBlastDialog::lastUsedReadsUrls;
 AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     : QDialog(parent),
-      savableWidget(this)
+      savableWidget(this),
+      saveController(NULL)
 {
     setupUi(this);
 
@@ -113,11 +119,26 @@ AlignToReferenceBlastDialog::AlignToReferenceBlastDialog(QWidget *parent)
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     connectSlots();
+    initSaveController();
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
     foreach (const QString& read, lastUsedReadsUrls) {
         readsListWidget->addItem(read);
     }
+}
+
+void AlignToReferenceBlastDialog::initSaveController() {
+    SaveDocumentControllerConfig conf;
+    conf.defaultFormatId = BaseDocumentFormats::UGENEDB;
+    conf.fileDialogButton = setOutputButton;
+    conf.fileNameEdit = outputLineEdit;
+    conf.formatCombo = NULL;
+    conf.parentWidget = this;
+    conf.saveTitle = tr("Select Output File...");
+    conf.defaultFileName = "result.ugenedb";
+
+    const QList<DocumentFormatId> formats = QList<DocumentFormatId>() << BaseDocumentFormats::UGENEDB;
+    saveController = new SaveDocumentController(conf, formats, this);
 }
 
 AlignToReferenceBlastCmdlineTask::Settings AlignToReferenceBlastDialog::getSettings() const {
@@ -200,22 +221,11 @@ void AlignToReferenceBlastDialog::sl_removeRead() {
     qDeleteAll(selection);
 }
 
-void AlignToReferenceBlastDialog::sl_setOutput() {
-    LastUsedDirHelper lod;
-
-    lod.url = U2FileDialog::getSaveFileName(this, tr("Select Output File"), lod.dir);
-    if (lod.url.isEmpty()) {
-        return;
-    }
-
-    outputLineEdit->setText(lod.url);
-}
 
 void AlignToReferenceBlastDialog::connectSlots() {
     connect(setReferenceButton, SIGNAL(clicked(bool)), SLOT(sl_setReference()));
     connect(addReadButton, SIGNAL(clicked(bool)), SLOT(sl_addRead()));
     connect(removeReadButton, SIGNAL(clicked(bool)), SLOT(sl_removeRead()));
-    connect(setOutputButton, SIGNAL(clicked(bool)), SLOT(sl_setOutput()));
 }
 
 } // namespace

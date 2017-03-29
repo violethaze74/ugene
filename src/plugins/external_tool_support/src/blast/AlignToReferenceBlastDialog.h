@@ -34,6 +34,7 @@
 namespace U2 {
 
 class CmdlineInOutTaskRunner;
+class SaveDocumentController;
 
 class AlignToReferenceBlastCmdlineTask : public Task {
 public:
@@ -60,12 +61,12 @@ public:
     QList<Task*> onSubTaskFinished(Task *subTask);
 
     static const QString ALIGN_TO_REF_CMDLINE;
-    static const QString REF_ARG;
-    static const QString READS_ARG;
-    static const QString MIN_IDENTITY_ARG;
+    static const QString TRIM_ARG;
     static const QString MIN_LEN_ARG;
     static const QString THRESHOLD_ARG;
-    static const QString TRIM_ARG;
+    static const QString READS_ARG;
+    static const QString MIN_IDENTITY_ARG;
+    static const QString REF_ARG;
     static const QString RESULT_ALIGNMENT_ARG;
 
 private:
@@ -86,11 +87,12 @@ private slots:
     void sl_setReference();
     void sl_addRead();
     void sl_removeRead();
-    void sl_setOutput();
 
 private:
     void connectSlots();
+    void initSaveController();
 
+    SaveDocumentController *saveController;
     AlignToReferenceBlastCmdlineTask::Settings settings;
     U2SavableWidget savableWidget;
 
