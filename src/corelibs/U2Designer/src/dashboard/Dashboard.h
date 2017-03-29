@@ -98,7 +98,6 @@ private:
     QString dir;
     bool opened;
     const QPointer<const WorkflowMonitor> monitor;
-    bool initialized;
     bool workflowInProgress;
     DashboardPageController* dashboardPageController;
 

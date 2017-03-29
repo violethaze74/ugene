@@ -75,7 +75,6 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidge
       name(name),
       opened(true),
       monitor(monitor),
-      initialized(false),
       workflowInProgress(true)
 {
     connect(this, SIGNAL(loadFinished(bool)), SLOT(sl_loaded(bool)));
@@ -107,7 +106,6 @@ Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
       dir(dirPath),
       opened(true),
       monitor(NULL),
-      initialized(false),
       workflowInProgress(false)
 {
     dashboardPageController = new DashboardPageController(this);
@@ -205,9 +203,8 @@ void Dashboard::loadDocument() {
 }
 
 void Dashboard::sl_loaded(bool ok) {
-    CHECK(!initialized, );
+    CHECK(!dashboardPageController->isInitialized(), );
     SAFE_POINT(ok, "Loaded with errors", );
-    initialized = dashboardPageController->isInitialized();
 
 #if (QT_VERSION < 0x050500)
     page()->runJavaScript("installWebChannel(true," + QString((NULL != getMonitor()) ? "true" : "false") + "," + QString::number(port) + ")");
@@ -234,7 +231,7 @@ void Dashboard::sl_loaded(bool ok) {
 }
 
 void Dashboard::sl_serialize() {
-    CHECK(initialized && loaded, );
+    CHECK(dashboardPageController->isInitialized() && loaded, );
     QCoreApplication::processEvents();
     QString reportDir = dir + REPORT_SUB_DIR;
     QDir d(reportDir);
