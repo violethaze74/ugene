@@ -26,7 +26,11 @@
 #include <U2Core/DbiConnection.h>
 #include <U2Core/U2Type.h>
 
+#include <QSet>
+
 namespace U2 {
+
+class U2AbstractDbi;
 
 /** Modification types */
 class U2CORE_EXPORT U2ModType {
@@ -117,6 +121,43 @@ private:
 
 private:
     void init(U2OpStatus &os);
+};
+
+/** Helper class to track info about an object */
+class U2CORE_EXPORT ModificationAction {
+public:
+    ModificationAction(U2AbstractDbi* dbi, const U2DataId& masterObjId);
+
+    /**
+        Verifies if modification tracking is enabled for the object.
+        If it is, gets the object version.
+        If there are tracking steps with greater or equal version (e.g. left from "undo"), removes these records.
+        Returns the type of modifications  tracking for the object.
+     */
+    virtual U2TrackModType prepare(U2OpStatus& os) = 0;
+
+    /**
+        Adds the object ID to the object IDs set.
+        If tracking is enabled, adds a new single step to the list.
+     */
+    virtual void addModification(const U2DataId& objId, qint64 modType, const QByteArray& modDetails, U2OpStatus& os) = 0;
+
+    /**
+        If tracking is enabled, creates modification steps in the database.
+        Increments version of all objects in the set.
+     */
+    virtual void complete(U2OpStatus& os) = 0;
+
+    /** Returns modification tracking type of the master object. */
+    U2TrackModType getTrackModType() const { return trackMod; }
+
+protected:
+    U2AbstractDbi* dbi;
+
+    U2DataId masterObjId;
+    U2TrackModType trackMod;
+    QSet<U2DataId> objIds;
+    QList<U2SingleModStep> singleSteps;
 };
 
 } // namespace

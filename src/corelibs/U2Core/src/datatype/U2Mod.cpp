@@ -95,4 +95,12 @@ U2Dbi * U2UseCommonUserModStep::getDbi() const {
 }
 
 
+ModificationAction::ModificationAction(U2AbstractDbi* _dbi, const U2DataId& _masterObjId)
+    : dbi(_dbi),
+      masterObjId(_masterObjId),
+      trackMod(NoTrack)
+{
+    objIds.insert(masterObjId);
+}
+
 } // namespace

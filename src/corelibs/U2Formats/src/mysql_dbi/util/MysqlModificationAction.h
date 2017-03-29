@@ -31,7 +31,7 @@ namespace U2 {
 class MysqlDbi;
 
 /** Helper class to track info about an object */
-class MysqlModificationAction {
+class MysqlModificationAction : public ModificationAction {
 public:
     MysqlModificationAction(MysqlDbi* dbi, const U2DataId& masterObjId);
 
@@ -55,15 +55,8 @@ public:
      */
     void complete(U2OpStatus& os);
 
-    /** Returns modification tracking type of the master object. */
-    U2TrackModType getTrackModType() const;
-
 private:
-    MysqlDbi*               dbi;
-    U2DataId                masterObjId;
-    U2TrackModType          trackMod;
-    QSet<U2DataId>          objIds;
-    QList<U2SingleModStep>  singleSteps;
+    MysqlDbi* getDbi();
 };
 
 }   // namespace U2
