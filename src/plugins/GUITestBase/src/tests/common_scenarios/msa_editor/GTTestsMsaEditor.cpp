@@ -123,7 +123,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    GTUtilsMdi::click(os, GTGlobals::Maximize);
+    // GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);
@@ -142,7 +142,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    GTUtilsMdi::click(os, GTGlobals::Minimize);
+    // GTUtilsMdi::click(os, GTGlobals::Minimize);
     GTGlobals::sleep();
 
     int length = GTUtilsMSAEditorSequenceArea::getLength(os);

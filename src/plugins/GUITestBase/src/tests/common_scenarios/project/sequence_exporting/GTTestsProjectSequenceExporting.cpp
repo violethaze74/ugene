@@ -83,7 +83,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 #ifdef Q_OS_MAC
     expectedTitle = "proj4 UGENE";
 #else
-    expectedTitle = "proj4 UGENE - [Start Page]";
+    expectedTitle = "proj4 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 

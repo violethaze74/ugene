@@ -89,7 +89,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 #ifdef Q_OS_MAC
     expectedTitle = "proj1 UGENE";
 #else
-    expectedTitle = "proj1 UGENE - [Start Page]";
+    expectedTitle = "proj1 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 
@@ -144,7 +144,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 #ifdef Q_OS_MAC
     expectedTitle = "proj1 UGENE";
 #else
-    expectedTitle = "proj1 UGENE - [Start Page]";
+    expectedTitle = "proj1 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
@@ -160,7 +160,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 #ifdef Q_OS_MAC
     expectedTitle = "proj2 UGENE";
 #else
-    expectedTitle = "proj2 UGENE - [Start Page]";
+    expectedTitle = "proj2 UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
@@ -175,7 +175,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 #ifdef Q_OS_MAC
     expectedTitle = "UGENE";
 #else
-    expectedTitle = "UGENE - [Start Page]";
+    expectedTitle = "UGENE";
 #endif
     GTUtilsApp::checkUGENETitle(os, expectedTitle);
 
@@ -297,7 +297,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export document", GTGlobals::UseMouse));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine.gb"));
-    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os));
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/genbank/.dir/", "murine_copy1.gb",
+                                                   ExportDocumentDialogFiller::Genbank, false, true, GTGlobals::UseMouse));
+    
     GTMouseDriver::click(Qt::RightButton);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine_copy1.gb"));
@@ -407,7 +409,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/1m.fa");
     GTGlobals::sleep();
-    GTUtilsMdi::click(os, GTGlobals::Minimize);
+    // GTUtilsMdi::click(os, GTGlobals::Minimize);
 
     QWidget* w = GTUtilsMdi::findWindow(os, "1m [m] Multiple alignment");
     CHECK_SET_ERR(w != NULL, "Sequence view window title is not 1m [m] Multiple alignment");
