@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="347"/>
         <source>Save annotation(s) to</source>
-        <translation type="unfinished">Save annotation(s) to</translation>
+        <translation>Save annotation(s) to</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="359"/>
@@ -268,25 +268,17 @@
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="380"/>
         <source>Existing document</source>
-        <translation type="unfinished"></translation>
+        <translation>Existing document</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="407"/>
         <source>New document</source>
-        <translation type="unfinished"></translation>
+        <translation>New document</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationFullWidget.ui" line="414"/>
         <source>Use auto-annotations table</source>
         <translation>Use auto-annotations table</translation>
-    </message>
-    <message>
-        <source>Existing table</source>
-        <translation type="vanished">Existing table</translation>
-    </message>
-    <message>
-        <source>Create new table</source>
-        <translation type="vanished">Create new table</translation>
     </message>
 </context>
 <context>
@@ -302,10 +294,6 @@
         <translation>Choose a file to store the annotations</translation>
     </message>
     <message>
-        <source>Existing table</source>
-        <translation type="vanished">Existing table</translation>
-    </message>
-    <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="85"/>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="113"/>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="174"/>
@@ -314,18 +302,14 @@
         <translation>...</translation>
     </message>
     <message>
-        <source>Create new table</source>
-        <translation type="vanished">Create new table</translation>
-    </message>
-    <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="68"/>
         <source>Existing document</source>
-        <translation type="unfinished"></translation>
+        <translation>Existing document</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="96"/>
         <source>New document</source>
-        <translation type="unfinished"></translation>
+        <translation>New document</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationNormalWidget.ui" line="120"/>
@@ -406,10 +390,6 @@
         <translation>Choose a file to store the annotations</translation>
     </message>
     <message>
-        <source>Existing table:</source>
-        <translation type="vanished">Existing table:</translation>
-    </message>
-    <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="81"/>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="113"/>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="175"/>
@@ -418,18 +398,14 @@
         <translation>...</translation>
     </message>
     <message>
-        <source>Create new table:</source>
-        <translation type="vanished">Create new table:</translation>
-    </message>
-    <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="62"/>
         <source>Existing document:</source>
-        <translation type="unfinished"></translation>
+        <translation>Existing document:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="94"/>
         <source>New document:</source>
-        <translation type="unfinished"></translation>
+        <translation>New document:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateAnnotationOptionsPanelWidget.ui" line="122"/>
@@ -1600,24 +1576,24 @@ To append data to existing file press &apos;Append&apos;.</translation>
 <context>
     <name>U2::AddDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="332"/>
-        <location filename="../src/OpenViewTask.cpp" line="346"/>
+        <location filename="../src/OpenViewTask.cpp" line="340"/>
+        <location filename="../src/OpenViewTask.cpp" line="354"/>
         <source>Opening view for document: &apos;NONAME&apos;</source>
         <translation>Opening view for document: &apos;NONAME&apos;</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="336"/>
-        <location filename="../src/OpenViewTask.cpp" line="349"/>
+        <location filename="../src/OpenViewTask.cpp" line="344"/>
+        <location filename="../src/OpenViewTask.cpp" line="357"/>
         <source>Opening view for document: %1</source>
         <translation>Opening view for document: %1</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="338"/>
+        <location filename="../src/OpenViewTask.cpp" line="346"/>
         <source>Provided document is NULL</source>
         <translation>Provided document is NULL</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="351"/>
+        <location filename="../src/OpenViewTask.cpp" line="359"/>
         <source>Document provider is NULL</source>
         <translation>Document provider is NULL</translation>
     </message>
@@ -2472,14 +2448,14 @@ complement(5..15)</translation>
 <context>
     <name>U2::LoadRemoteDocumentAndAddToProjectTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="224"/>
-        <location filename="../src/OpenViewTask.cpp" line="231"/>
-        <location filename="../src/OpenViewTask.cpp" line="238"/>
+        <location filename="../src/OpenViewTask.cpp" line="232"/>
+        <location filename="../src/OpenViewTask.cpp" line="239"/>
+        <location filename="../src/OpenViewTask.cpp" line="246"/>
         <source>Load remote document and add to project</source>
         <translation>Load remote document and add to project</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="283"/>
+        <location filename="../src/OpenViewTask.cpp" line="291"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Cannot find %1 in %2 database</translation>
     </message>
@@ -2699,22 +2675,22 @@ complement(5..15)</translation>
 <context>
     <name>U2::ProjectParser10</name>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="351"/>
+        <location filename="../src/ProjectParsing.cpp" line="356"/>
         <source>Can&apos;t find project file: %1, ignoring</source>
         <translation>Can&apos;t find project file: %1, ignoring</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="355"/>
+        <location filename="../src/ProjectParsing.cpp" line="360"/>
         <source>Duplicate document found: %1, ignoring</source>
         <translation>Duplicate document found: %1, ignoring</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="360"/>
+        <location filename="../src/ProjectParsing.cpp" line="367"/>
         <source>Database document: %1, ignoring</source>
         <translation>Database document: %1, ignoring</translation>
     </message>
     <message>
-        <location filename="../src/ProjectParsing.cpp" line="406"/>
+        <location filename="../src/ProjectParsing.cpp" line="414"/>
         <source>The last loaded state was locked by format</source>
         <translation>The last loaded state was locked by format</translation>
     </message>
@@ -3088,7 +3064,7 @@ complement(5..15)</translation>
     <message>
         <location filename="../src/util/SearchBox.cpp" line="56"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Search...</translation>
     </message>
 </context>
 <context>

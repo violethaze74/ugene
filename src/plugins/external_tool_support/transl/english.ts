@@ -2,6 +2,95 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
+    <name>AlignToReferenceBlastDialog</name>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="14"/>
+        <source>Align Sanger Reads to Reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="20"/>
+        <source>Input data</source>
+        <translation type="unfinished">Input data</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="26"/>
+        <source>Reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="38"/>
+        <source>File path to the reference sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="45"/>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="183"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="54"/>
+        <source>Reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="79"/>
+        <source>Add</source>
+        <translation type="unfinished">Add</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="86"/>
+        <source>Remove</source>
+        <translation type="unfinished">Remove</translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="98"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="124"/>
+        <source>Quality threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="131"/>
+        <source>Min read length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="138"/>
+        <source>Trim both ends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="145"/>
+        <source>Min read identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="152"/>
+        <source>%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="168"/>
+        <source>Result alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="176"/>
+        <source>Path to the result file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/AlignToReferenceBlastDialog.ui" line="192"/>
+        <source>Add to project</source>
+        <translation type="unfinished">Add to project</translation>
+    </message>
+</context>
+<context>
     <name>BlastAllSupportDialog</name>
     <message>
         <location filename="../src/utils/BlastAllSupportDialog.ui" line="20"/>
@@ -2910,6 +2999,64 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
     </message>
 </context>
 <context>
+    <name>U2::AlignToReferenceBlastCmdlineTask</name>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="53"/>
+        <source>Align to reference workflow wrapper</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::AlignToReferenceBlastDialog</name>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="112"/>
+        <source>Align</source>
+        <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="113"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="129"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="136"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="156"/>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="130"/>
+        <source>Reference sequence is not set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="137"/>
+        <source>No reads provided.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="157"/>
+        <source>Output file is not set.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="170"/>
+        <source>Open Reference Sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="181"/>
+        <source>Select File(s) with Read(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="206"/>
+        <source>Select Output File</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::BedtoolsIntersectAnnotationsByEntityTask</name>
     <message>
         <location filename="../src/bedtools/BedtoolsIntersectTask.cpp" line="114"/>
@@ -2975,17 +3122,21 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastAllSupport</name>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="71"/>
+        <location filename="../src/blast/BlastAllSupport.cpp" line="68"/>
+        <source>Paths for the following tools are not selected: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/BlastAllSupport.cpp" line="106"/>
         <source>The &lt;i&gt;blastall&lt;/i&gt; is the old program developed and distributed by the NCBI for running BLAST searches. The NCBI recommends that people start using the programs of the BLAST+ package instead.</source>
         <translation>The &lt;i&gt;blastall&lt;/i&gt; is the old program developed and distributed by the NCBI for running BLAST searches. The NCBI recommends that people start using the programs of the BLAST+ package instead.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="85"/>
         <source>Path for BLAST %1 tool not selected.</source>
-        <translation>Path for BLAST %1 tool not selected.</translation>
+        <translation type="vanished">Path for BLAST %1 tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="86"/>
+        <location filename="../src/blast/BlastAllSupport.cpp" line="69"/>
         <source>Do you want to select it now?</source>
         <translation>Do you want to select it now?</translation>
     </message>
@@ -2993,22 +3144,20 @@ In order to achieve stable BWA performance it is strongly recommend to set the i
 <context>
     <name>U2::BlastAllSupportContext</name>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="135"/>
+        <location filename="../src/blast/BlastAllSupport.cpp" line="169"/>
         <source>Query with local BLAST...</source>
         <translation>Query with local BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="155"/>
         <source>Path for BLAST %1 tool not selected.</source>
-        <translation>Path for BLAST %1 tool not selected.</translation>
+        <translation type="vanished">Path for BLAST %1 tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="156"/>
         <source>Do you want to select it now?</source>
-        <translation>Do you want to select it now?</translation>
+        <translation type="vanished">Do you want to select it now?</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastAllSupport.cpp" line="204"/>
+        <location filename="../src/blast/BlastAllSupport.cpp" line="219"/>
         <source>Sequence object is NULL</source>
         <translation>Sequence object is NULL</translation>
     </message>
@@ -3917,17 +4066,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalOSupportContext</name>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="133"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="132"/>
         <source>Align with ClustalO...</source>
         <translation>Align with ClustalO...</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="158"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="157"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Path for %1 tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/clustalo/ClustalOSupport.cpp" line="159"/>
+        <location filename="../src/clustalo/ClustalOSupport.cpp" line="158"/>
         <source>Do you want to select it now?</source>
         <translation>Do you want to select it now?</translation>
     </message>
@@ -4066,17 +4215,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ClustalWSupportContext</name>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="133"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="132"/>
         <source>Align with ClustalW...</source>
         <translation>Align with ClustalW...</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="158"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="157"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Path for %1 tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWSupport.cpp" line="159"/>
+        <location filename="../src/clustalw/ClustalWSupport.cpp" line="158"/>
         <source>Do you want to select it now?</source>
         <translation>Do you want to select it now?</translation>
     </message>
@@ -4518,67 +4667,72 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportPlugin</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="165"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="167"/>
         <source>Search tools in PATH</source>
         <translation>Search tools in PATH</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="212"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="214"/>
         <source>External tool support</source>
         <translation>External tool support</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="212"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="214"/>
         <source>Runs other external tools</source>
         <translation>Runs other external tools</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="275"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="277"/>
         <source>Align with ClustalW...</source>
         <translation>Align with ClustalW...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="283"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="285"/>
         <source>Align with ClustalO...</source>
         <translation>Align with ClustalO...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="291"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="293"/>
         <source>Align with MAFFT...</source>
         <translation>Align with MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="299"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="301"/>
         <source>Align with T-Coffee...</source>
         <translation>Align with T-Coffee...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="450"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="452"/>
         <source>BLAST make database...</source>
         <translation>BLAST make database...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="454"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="456"/>
         <source>BLAST+ make database...</source>
         <translation>BLAST+ make database...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="472"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="468"/>
+        <source>Align Sanger reads to reference...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="479"/>
         <source>BLAST+ search...</source>
         <translation>BLAST+ search...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="476"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="483"/>
         <source>BLAST+ query database...</source>
         <translation>BLAST+ query database...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="487"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="494"/>
         <source>Contig assembly with %1...</source>
         <translation>Contig assembly with %1...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="462"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="464"/>
         <source>BLAST search...</source>
         <translation>BLAST search...</translation>
     </message>
@@ -4596,12 +4750,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportService</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="651"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="677"/>
         <source>External tools support</source>
         <translation>External tools support</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="651"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="677"/>
         <source>Provides support to run external tools from UGENE</source>
         <translation>Provides support to run external tools from UGENE</translation>
     </message>
@@ -4922,6 +5076,80 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     </message>
 </context>
 <context>
+    <name>U2::GTest_CompareHmmFiles</name>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="340"/>
+        <source>File #1 not set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="346"/>
+        <source>File #2 not set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="406"/>
+        <source>Error creating ioadapter for first file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="410"/>
+        <source>Error opening 1 file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="417"/>
+        <source>Error creating ioadapter for second file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="421"/>
+        <source>Error opening second file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="446"/>
+        <source>Names of aligments not matched</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="450"/>
+        <source>Comparing files length not matched</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="457"/>
+        <source>Files parts not equal:&apos;%1&apos; and &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::GTest_UHMM3SearchCompare</name>
+    <message>
+        <location filename="../src/hmmer/HmmerSearchTaskTest.cpp" line="247"/>
+        <source>Can&apos;t parse significance:%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerSearchTaskTest.cpp" line="256"/>
+        <source>Internal error (cannot parse float number from string &apos;%1&apos;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::GTest_UHMMER3Build</name>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="263"/>
+        <source>No input file given</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/hmmer/HmmerBuildTaskTest.cpp" line="269"/>
+        <source>No output file given</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>U2::Gene2PeakFormatLoader</name>
     <message>
         <location filename="../src/peak2gene/Gene2PeakFormatLoader.cpp" line="98"/>
@@ -4960,17 +5188,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerAdvContext</name>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="327"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="328"/>
         <source>Find HMM signals with HMMER3...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="341"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="342"/>
         <source>error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="341"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="342"/>
         <source>No sequence in focus found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4978,37 +5206,37 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerBuildDialog</name>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="63"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="70"/>
         <source>Build</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="64"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="71"/>
         <source>Cancel</source>
         <translation type="unfinished">Cancel</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="78"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="85"/>
         <source>Select hmm file to create</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="120"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="127"/>
         <source>Select multiple alignment file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="185"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="192"/>
         <source>input file is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="188"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="195"/>
         <source>output hmm file is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="197"/>
+        <location filename="../src/hmmer/HmmerBuildDialog.cpp" line="204"/>
         <source>Error: bad arguments!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5029,17 +5257,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerBuildFromMsaTask</name>
     <message>
-        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="38"/>
+        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="39"/>
         <source>Build HMMER profile from msa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="45"/>
+        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="46"/>
         <source>HMM profile URL is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="104"/>
+        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="105"/>
         <source>Cannot create a directory for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5145,7 +5373,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerMsaEditorContext</name>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="284"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="285"/>
         <source>Build HMMER3 profile</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5209,47 +5437,47 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerSearchTask</name>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="48"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="47"/>
         <source>HMMER search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="100"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="101"/>
         <source>HMM profile used: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="103"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="104"/>
         <source>Task was not finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="109"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="110"/>
         <source>Result annotation table: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="111"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="112"/>
         <source>Result annotation group: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="112"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="113"/>
         <source>Result annotation name: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="114"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="115"/>
         <source>Results count: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="146"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="147"/>
         <source>Cannot create a directory for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="194"/>
+        <location filename="../src/hmmer/HmmerSearchTask.cpp" line="195"/>
         <source>Unknown option controlling model-specific thresholding</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5257,54 +5485,54 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::HmmerSupport</name>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="135"/>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="162"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="136"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="163"/>
         <source>Error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="135"/>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="162"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="136"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="163"/>
         <source>Target sequence not selected: no opened annotated dna view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="191"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="192"/>
         <source>&lt;i&gt;HMMER build&lt;/i&gt; constructs HMM profiles from multiple sequence alignments.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="195"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="196"/>
         <source>Build HMM3 profile...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="211"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="212"/>
         <source>&lt;i&gt;HMMER search&lt;/i&gt; searches profile(s) against a sequence database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="215"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="216"/>
         <source>Search with HMMER3...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="231"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="232"/>
         <source>&lt;i&gt;PHMMER search&lt;/i&gt; searches a protein sequence against a protein database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="235"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="236"/>
         <source>Search with phmmer...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="246"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="247"/>
         <source>Path for %1 tool not selected.</source>
         <translation type="unfinished">Path for %1 tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSupport.cpp" line="247"/>
+        <location filename="../src/hmmer/HmmerSupport.cpp" line="248"/>
         <source>Do you want to select it now?</source>
         <translation type="unfinished">Do you want to select it now?</translation>
     </message>
@@ -5315,6 +5543,115 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/java/JavaSupport.cpp" line="47"/>
         <source>Java Platform lets you develop and deploy Java applications on desktops and servers.&lt;br&gt;&lt;i&gt;(Requires Java 1.7 or higher)&lt;/i&gt;.&lt;br&gt;Java can be freely downloaded on the official web-site: https://www.java.com/en/download/</source>
         <translation>Java Platform lets you develop and deploy Java applications on desktops and servers.&lt;br&gt;&lt;i&gt;(Requires Java 1.7 or higher)&lt;/i&gt;.&lt;br&gt;Java can be freely downloaded on the official web-site: https://www.java.com/en/download/</translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::AlignToReferenceBlastPrompter</name>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="82"/>
+        <source>Input sequence</source>
+        <translation type="unfinished">Input sequence</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="82"/>
+        <source>Input sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="83"/>
+        <source>Aligned data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="83"/>
+        <source>Aligned data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="97"/>
+        <source>Reference URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="98"/>
+        <source>A URL to the file with a reference sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="101"/>
+        <source>Result alignment URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="102"/>
+        <source>An URL to write the result alignment.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="105"/>
+        <source>Minimum read identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="106"/>
+        <source>Reads, whose identity with the reference is less than the stated value, will be ignored.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="147"/>
+        <source>unset</source>
+        <translation type="unfinished">unset</translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="150"/>
+        <source>Aligns each sequence from &lt;u&gt;%1&lt;/u&gt; to the reference sequence from &lt;u&gt;%2&lt;/u&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::AlignToReferenceBlastTask</name>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="236"/>
+        <source>Align to reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::LocalWorkflow::AlignToReferenceBlastWorker</name>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="121"/>
+        <source>Align to Reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="122"/>
+        <source>Align input sequences (e.g. Sanger reads) to the reference sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="174"/>
+        <source>Can not read the reference file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="184"/>
+        <source>Can&apos;t read the file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="186"/>
+        <source>No reference sequence in the file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="187"/>
+        <source>More than one sequence in the reference file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/AlignToReferenceBlastWorker.cpp" line="214"/>
+        <source>The result file was not produced</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5439,17 +5776,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BedGraphToBigWigPrompter</name>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="75"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="78"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="76"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="79"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> from &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="78"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="81"/>
         <source>Converts bedGraph files to bigWig %1 with bedGraphToBigWig.</source>
         <translation>Converts bedGraph files to bigWig %1 with bedGraphToBigWig.</translation>
     </message>
@@ -5457,113 +5794,113 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BedGraphToBigWigWorker</name>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="95"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="98"/>
         <source>Convert bedGraph Files to bigWig</source>
         <translation>Convert bedGraph Files to bigWig</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="96"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="99"/>
         <source>Convert bedGraph Files to bigWig.</source>
         <translation>Convert bedGraph Files to bigWig.</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="100"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="103"/>
         <source>BedGrapgh files</source>
         <translation>BedGrapgh files</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="101"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="104"/>
         <source>Set of bedGraph files</source>
         <translation>Set of bedGraph files</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="102"/>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="103"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="105"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="106"/>
         <source>BigWig files</source>
         <translation>BigWig files</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="117"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="120"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="118"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="121"/>
         <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
         <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="122"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="125"/>
         <source>Custom directory</source>
         <translation>Custom directory</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="123"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="126"/>
         <source>Select the custom output directory.</source>
         <translation>Select the custom output directory.</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="125"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="128"/>
         <source>Output name</source>
         <translation>Output name</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="126"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="129"/>
         <source>A name of an output file. If default of empty value is provided the output name is the name of the first BAM file with an extention.</source>
         <translation>A name of an output file. If default of empty value is provided the output name is the name of the first BAM file with an extention.</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="128"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="131"/>
         <source>Block size</source>
         <translation>Block size</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="129"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="132"/>
         <source>Number of items to bundle in r-tree (-blockSize).</source>
         <translation>Number of items to bundle in r-tree (-blockSize).</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="131"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="134"/>
         <source>Items per slot</source>
         <translation>Items per slot</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="132"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="135"/>
         <source>Number of data points bundled at lowest level (-itemsPerSlot).</source>
         <translation>Number of data points bundled at lowest level (-itemsPerSlot).</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="134"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="137"/>
         <source>Uncompressed</source>
         <translation>Uncompressed</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="135"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="138"/>
         <source>If set, do not use compression (-unc).</source>
         <translation>If set, do not use compression (-unc).</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="137"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="140"/>
         <source>Genome</source>
         <translation>Genome</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="138"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="141"/>
         <source>File with genome length.</source>
         <translation>File with genome length.</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="170"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="173"/>
         <source>Custom</source>
         <translation>Custom</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="168"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="171"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="169"/>
+        <location filename="../src/bigWigTools/BedGraphToBigWigWorker.cpp" line="172"/>
         <source>Workflow</source>
         <translation>Workflow</translation>
     </message>
@@ -5571,7 +5908,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BedtoolsIntersectPrompter</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="992"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="993"/>
         <source>Intersect annotations from &lt;u&gt;%1&lt;/u&gt; (&lt;b&gt;set A&lt;/b&gt;) with annotations from &lt;u&gt;%2&lt;/u&gt; (&lt;b&gt;set B&lt;/b&gt;). Report </source>
         <translation>Intersect annotations from &lt;u&gt;%1&lt;/u&gt; (&lt;b&gt;set A&lt;/b&gt;) with annotations from &lt;u&gt;%2&lt;/u&gt; (&lt;b&gt;set B&lt;/b&gt;). Report </translation>
     </message>
@@ -5579,68 +5916,68 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::LocalWorkflow::BedtoolsIntersectWorker</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="881"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="882"/>
         <source>Data not found by %1 id</source>
         <translation>Data not found by %1 id</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="885"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="886"/>
         <source>Can not get annotation table object</source>
         <translation>Can not get annotation table object</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="899"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="900"/>
         <source>Annotations A</source>
         <translation>Annotations A</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="904"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="905"/>
         <source>Annotations B</source>
         <translation>Annotations B</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="909"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="910"/>
         <source>Annotations</source>
         <translation>Annotations</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="909"/>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="925"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="910"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="926"/>
         <source>Result annotations</source>
         <translation>Result annotations</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="918"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="919"/>
         <source>Minimum overlap</source>
         <translation>Minimum overlap</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="919"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="920"/>
         <source>Minimum overlap required as a fraction of an annotation from set A.&lt;br/&gt;By default, even 1 bp overlap between annotations from set A and set B is taken into account. Yet sometimes you may want to restrict reported overlaps to cases where the annotations in B overlaps at least X% (e.g. 50%) of the A annotation. </source>
         <translation>Minimum overlap required as a fraction of an annotation from set A.&lt;br/&gt;By default, even 1 bp overlap between annotations from set A and set B is taken into account. Yet sometimes you may want to restrict reported overlaps to cases where the annotations in B overlaps at least X% (e.g. 50%) of the A annotation. </translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="926"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="927"/>
         <source>Select one of the following:&lt;ul&gt;&lt;li&gt;&lt;i&gt;Shared interval&lt;/i&gt; to report intervals shared between overlapped annotations from set A and set B.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Overlapped annotations from A&lt;/i&gt; to report annotations from set A that have an overlap with annotations from set B.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Non-overlapped annotations from A&lt;/i&gt; to report annotations from set A that have NO overlap with annotations from set B.&lt;/li&gt;&lt;/ul&gt;</source>
         <translation>Select one of the following:&lt;ul&gt;&lt;li&gt;&lt;i&gt;Shared interval&lt;/i&gt; to report intervals shared between overlapped annotations from set A and set B.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Overlapped annotations from A&lt;/i&gt; to report annotations from set A that have an overlap with annotations from set B.&lt;/li&gt;&lt;li&gt;&lt;i&gt;Non-overlapped annotations from A&lt;/i&gt; to report annotations from set A that have NO overlap with annotations from set B.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="938"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="939"/>
         <source>Unique overlaps</source>
         <translation>Unique overlaps</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="939"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="940"/>
         <source>If the parameter value is &quot;True&quot;, write original A entry once if any overlaps found in B. In other words, just report the fact at least one overlap was found in B.&lt;br/&gt;The minimum overlap number is ignored in this case.&lt;br/&gt;&lt;br/&gt;If the parameter value is &quot;False&quot;, the A annotation is reported for every overlap found.</source>
         <translation>If the parameter value is &quot;True&quot;, write original A entry once if any overlaps found in B. In other words, just report the fact at least one overlap was found in B.&lt;br/&gt;The minimum overlap number is ignored in this case.&lt;br/&gt;&lt;br/&gt;If the parameter value is &quot;False&quot;, the A annotation is reported for every overlap found.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="976"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="977"/>
         <source>Intersect Annotations</source>
         <translation>Intersect Annotations</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="977"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="978"/>
         <source>Intersects two sets of annotations denoted as A and B.</source>
         <translation>Intersects two sets of annotations denoted as A and B.</translation>
     </message>
@@ -7277,12 +7614,12 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::ClustalWPrompter</name>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="188"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="191"/>
         <source> from %1</source>
         <translation> from %1</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="189"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="192"/>
         <source>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with &quot;&lt;u&gt;ClustalW&lt;/u&gt;&quot;.</source>
         <translation>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with &quot;&lt;u&gt;ClustalW&lt;/u&gt;&quot;.</translation>
     </message>
@@ -7290,152 +7627,152 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::ClustalWWorker</name>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="64"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="67"/>
         <source>Input MSA</source>
         <translation>Input MSA</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="64"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="67"/>
         <source>Input MSA to process.</source>
         <translation>Input MSA to process.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="65"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="68"/>
         <source>ClustalW result MSA</source>
         <translation>ClustalW result MSA</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="66"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="69"/>
         <source>The result of the ClustalW alignment.</source>
         <translation>The result of the ClustalW alignment.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="75"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="78"/>
         <source>Gap open penalty</source>
         <translation>Gap open penalty</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="76"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="79"/>
         <source>The penalty for opening a gap.</source>
         <translation>The penalty for opening a gap.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="77"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="80"/>
         <source>Gap extension penalty</source>
         <translation>Gap extension penalty</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="78"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="81"/>
         <source>The penalty for extending a gap.</source>
         <translation>The penalty for extending a gap.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="79"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="82"/>
         <source>Gap distance</source>
         <translation>Gap distance</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="80"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="83"/>
         <source>The gap separation penalty. Tries to decrease the chances of gaps being too close to each other.</source>
         <translation>The gap separation penalty. Tries to decrease the chances of gaps being too close to each other.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="81"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="84"/>
         <source>End gaps</source>
         <translation>End gaps</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="82"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="85"/>
         <source>The penalty for closing a gap.</source>
         <translation>The penalty for closing a gap.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="83"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="86"/>
         <source>Residue-specific gaps off</source>
         <translation>Residue-specific gaps off</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="84"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="87"/>
         <source>Residue-specific penalties are amino specific gap penalties that reduce or increase the gap opening penalties at each position in the alignment.</source>
         <translation>Residue-specific penalties are amino specific gap penalties that reduce or increase the gap opening penalties at each position in the alignment.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="85"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="88"/>
         <source>Hydrophilic gaps off</source>
         <translation>Hydrophilic gaps off</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="86"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="89"/>
         <source>Hydrophilic gap penalties are used to increase the chances of a gap within a run (5 or more residues) of hydrophilic amino acids.</source>
         <translation>Hydrophilic gap penalties are used to increase the chances of a gap within a run (5 or more residues) of hydrophilic amino acids.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="87"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="90"/>
         <source>Iteration type</source>
         <translation>Iteration type</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="88"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="91"/>
         <source>Alignment improvement iteration type. Can take values: &lt;p&gt;                            &lt;ul&gt;                            &lt;li&gt;None - No iteration;&lt;/li&gt;                            &lt;li&gt;Tree - Iteration at each step of alignment process;&lt;/li&gt;                            &lt;li&gt;Alignment - Iteration only on final alignment.&lt;/li&gt;                            &lt;/ul&gt;</source>
         <translation>Alignment improvement iteration type. Can take values: &lt;p&gt;                            &lt;ul&gt;                            &lt;li&gt;None - No iteration;&lt;/li&gt;                            &lt;li&gt;Tree - Iteration at each step of alignment process;&lt;/li&gt;                            &lt;li&gt;Alignment - Iteration only on final alignment.&lt;/li&gt;                            &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="94"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="97"/>
         <source>Number of iterations</source>
         <translation>Number of iterations</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="95"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="98"/>
         <source>The maximum number of iterations to perform.</source>
         <translation>The maximum number of iterations to perform.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="96"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="99"/>
         <source>Weight matrix</source>
         <translation>Weight matrix</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="110"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="113"/>
         <source>Tool path</source>
         <translation>Tool path</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="111"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="114"/>
         <source>Path to the ClustalW tool.&lt;p&gt;The default path can be set in the UGENE application settings.</source>
         <translation>Path to the ClustalW tool.&lt;p&gt;The default path can be set in the UGENE application settings.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="115"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="118"/>
         <source>Directory to store temporary files.</source>
         <translation>Directory to store temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="130"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="133"/>
         <source>Aligns multiple sequence alignments (MSAs) supplied with ClustalW.&lt;p&gt;ClustalW is a general purpose multiple sequence alignment program for DNA or proteins.Visit &lt;a href=&quot;http://www.clustal.org/&quot;&gt;http://www.clustal.org/&lt;/a&gt; to learn more about it.</source>
         <translation>Aligns multiple sequence alignments (MSAs) supplied with ClustalW.&lt;p&gt;ClustalW is a general purpose multiple sequence alignment program for DNA or proteins.Visit &lt;a href=&quot;http://www.clustal.org/&quot;&gt;http://www.clustal.org/&lt;/a&gt; to learn more about it.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="260"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="263"/>
         <source>An empty MSA &apos;%1&apos; has been supplied to ClustalW.</source>
         <translation>An empty MSA &apos;%1&apos; has been supplied to ClustalW.</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="114"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="117"/>
         <source>Temporary directory</source>
         <translation>Temporary directory</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="97"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="100"/>
         <source>For proteins it is a scoring table which describes the similarity of each amino acid to each other and can take values: &lt;p&gt;                            &lt;ul&gt;                            &lt;li&gt;BLOSUM - Appear to be the best available for carrying out database similarity (homology searches).                            &lt;li&gt;PAM - Have been extremely widely used since the late &apos;70s.                            &lt;li&gt;Gonnet - Derived using almost the same procedure as the PAM bit are much more up to date.                            &lt;li&gt;ID - Identitical matrix gives a score of 1.0 to two identical amino acids and a score of zero otherwise.                            &lt;/ul&gt;                            &lt;p&gt;                            For DNA it is the scores assigned to matches and mismatches. The values available are:                            &lt;ul&gt;                            &lt;li&gt;IUB - The default scoring matrix used by BESTFIT for the comparison of nucleic acid sequences. All matches score 1.9; all mismatches for IUB symbols score 0.                           &lt;li&gt;ClustalW - The previous system used by Clustal W, in which matches score 1.0 and mismatches score 0. All matches for IUB symbols also score 0.                            &lt;/ul&gt;</source>
         <translation>For proteins it is a scoring table which describes the similarity of each amino acid to each other and can take values: &lt;p&gt;                            &lt;ul&gt;                            &lt;li&gt;BLOSUM - Appear to be the best available for carrying out database similarity (homology searches).                            &lt;li&gt;PAM - Have been extremely widely used since the late &apos;70s.                            &lt;li&gt;Gonnet - Derived using almost the same procedure as the PAM bit are much more up to date.                            &lt;li&gt;ID - Identitical matrix gives a score of 1.0 to two identical amino acids and a score of zero otherwise.                            &lt;/ul&gt;                            &lt;p&gt;                            For DNA it is the scores assigned to matches and mismatches. The values available are:                            &lt;ul&gt;                            &lt;li&gt;IUB - The default scoring matrix used by BESTFIT for the comparison of nucleic acid sequences. All matches score 1.9; all mismatches for IUB symbols score 0.                           &lt;li&gt;ClustalW - The previous system used by Clustal W, in which matches score 1.0 and mismatches score 0. All matches for IUB symbols also score 0.                            &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="129"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="132"/>
         <source>Align with ClustalW</source>
         <translation>Align with ClustalW</translation>
     </message>
     <message>
-        <location filename="../src/clustalw/ClustalWWorker.cpp" line="289"/>
+        <location filename="../src/clustalw/ClustalWWorker.cpp" line="292"/>
         <source>Aligned %1 with ClustalW</source>
         <translation>Aligned %1 with ClustalW</translation>
     </message>
@@ -8123,17 +8460,17 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::CutAdaptFastqPrompter</name>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="71"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="74"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="72"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="75"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> from &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="74"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="77"/>
         <source>Removes adapter sequences %1.</source>
         <translation>Removes adapter sequences %1.</translation>
     </message>
@@ -8141,12 +8478,12 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::CutAdaptFastqTask</name>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="244"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="247"/>
         <source>Can not copy the result file to: %1</source>
         <translation>Can not copy the result file to: %1</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="279"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="282"/>
         <source>Unknown file format: </source>
         <translation>Unknown file format: </translation>
     </message>
@@ -8154,77 +8491,77 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::CutAdaptFastqWorker</name>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="92"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="95"/>
         <source>Cut Adapter</source>
         <translation>Cut Adapter</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="93"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="96"/>
         <source>Removes adapter sequences</source>
         <translation>Removes adapter sequences</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="97"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="100"/>
         <source>Input File</source>
         <translation>Input File</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="98"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="101"/>
         <source>Set of FASTQ reads files</source>
         <translation>Set of FASTQ reads files</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="99"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="102"/>
         <source>Output File</source>
         <translation>Output File</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="100"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="103"/>
         <source>Output FASTQ file(s)</source>
         <translation>Output FASTQ file(s)</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="113"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="116"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="114"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="117"/>
         <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
         <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="118"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="121"/>
         <source>Custom directory</source>
         <translation>Custom directory</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="119"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="122"/>
         <source>Select the custom output directory.</source>
         <translation>Select the custom output directory.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="121"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="124"/>
         <source>Output file name</source>
         <translation>Output file name</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="122"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="125"/>
         <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
         <translation>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="124"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="127"/>
         <source>FASTA file with 3&apos; adapters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="125"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="128"/>
         <source>A FASTA file with one or multiple sequences of adapter that were ligated to the 3&apos; end. The adapter itself and anything that follows is trimmed. If the adapter sequence ends with the &apos;$&apos; character, the adapter is anchored to the end of the read and only found if it is a suffix of the read.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="131"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="134"/>
         <source>FASTA file with 5&apos; adapters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8241,32 +8578,32 @@ Default: 64.</translation>
         <translation type="vanished">FASTA file with reverse adapters</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="132"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="135"/>
         <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end. If the adapter sequence starts with the character &apos;^&apos;, the adapter is &apos;anchored&apos;. An anchored adapter must appear in its entirety at the 5&apos; end of the read (it is a prefix of the read). A non-anchored adapter may appear partially at the 5&apos; end, or it may occur within the read. If it is found within a read, the sequence preceding the adapter is also trimmed. In all cases, the adapter itself is trimmed.</source>
         <translation>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end. If the adapter sequence starts with the character &apos;^&apos;, the adapter is &apos;anchored&apos;. An anchored adapter must appear in its entirety at the 5&apos; end of the read (it is a prefix of the read). A non-anchored adapter may appear partially at the 5&apos; end, or it may occur within the read. If it is found within a read, the sequence preceding the adapter is also trimmed. In all cases, the adapter itself is trimmed.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="143"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="146"/>
         <source>FASTA file with 5&apos; and 3&apos; adapters</source>
         <translation>FASTA file with 5&apos; and 3&apos; adapters</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="144"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="147"/>
         <source>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end or 3&apos; end.</source>
         <translation>A FASTA file with one or multiple sequences of adapters that were ligated to the 5&apos; end or 3&apos; end.</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="173"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="176"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="174"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="177"/>
         <source>Workflow</source>
         <translation>Workflow</translation>
     </message>
     <message>
-        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="175"/>
+        <location filename="../src/cutadapt/CutadaptWorker.cpp" line="178"/>
         <source>Custom</source>
         <translation>Custom</translation>
     </message>
@@ -8274,17 +8611,17 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::FastQCPrompter</name>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="76"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="78"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="77"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="79"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> from &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="79"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="81"/>
         <source>Builds FastQC report for file(s) %1.</source>
         <translation>Builds FastQC report for file(s) %1.</translation>
     </message>
@@ -8292,77 +8629,77 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::FastQCWorker</name>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="86"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="88"/>
         <source>FastQC Quality Control</source>
         <translation>FastQC Quality Control</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="87"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="89"/>
         <source>Builds quality control reports.</source>
         <translation>Builds quality control reports.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="91"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="93"/>
         <source>Short reads</source>
         <translation>Short reads</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="92"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="94"/>
         <source>Short read data</source>
         <translation>Short read data</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="103"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="105"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="104"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="106"/>
         <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
         <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="108"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="110"/>
         <source>Custom directory</source>
         <translation>Custom directory</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="109"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="111"/>
         <source>Select the custom output directory.</source>
         <translation>Select the custom output directory.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="111"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="113"/>
         <source>List of adapters</source>
         <translation>List of adapters</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="112"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="114"/>
         <source>Specifies a non-default file which contains the list of adapter sequences which will be explicity searched against the library. The file must contain sets of named adapters in the form name[tab]sequence.  Lines prefixed with a hash will be ignored.</source>
         <translation>Specifies a non-default file which contains the list of adapter sequences which will be explicity searched against the library. The file must contain sets of named adapters in the form name[tab]sequence.  Lines prefixed with a hash will be ignored.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="117"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="119"/>
         <source>List of contaminants</source>
         <translation>List of contaminants</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="118"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="120"/>
         <source>Specifies a non-default file which contains the list of contaminants to screen overrepresented sequences against. The file must contain sets of named contaminants in the form name[tab]sequence.  Lines prefixed with a hash will be ignored.</source>
         <translation>Specifies a non-default file which contains the list of contaminants to screen overrepresented sequences against. The file must contain sets of named contaminants in the form name[tab]sequence.  Lines prefixed with a hash will be ignored.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="138"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="140"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="139"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="141"/>
         <source>Workflow</source>
         <translation>Workflow</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcWorker.cpp" line="140"/>
+        <location filename="../src/fastqc/FastqcWorker.cpp" line="142"/>
         <source>Custom</source>
         <translation>Custom</translation>
     </message>
@@ -8370,17 +8707,17 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::GenomecovPrompter</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="456"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="457"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="457"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="458"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> from &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="460"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="461"/>
         <source>%1 from %2 with bedtool genomecov.</source>
         <translation>%1 from %2 with bedtool genomecov.</translation>
     </message>
@@ -8388,7 +8725,7 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::GenomecovTask</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="702"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="703"/>
         <source>Unknown file format: </source>
         <translation>Unknown file format: </translation>
     </message>
@@ -8396,82 +8733,82 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::GenomecovWorker</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="477"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="478"/>
         <source>Genome Coverage</source>
         <translation>Genome Coverage</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="478"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="479"/>
         <source>Calculates genome coverage using bedtools genomecov.</source>
         <translation>Calculates genome coverage using bedtools genomecov.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="482"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="483"/>
         <source>Input File</source>
         <translation>Input File</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="483"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="484"/>
         <source>Set of files to NGS slop</source>
         <translation>Set of files to NGS slop</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="484"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="485"/>
         <source>Output File</source>
         <translation>Output File</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="485"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="486"/>
         <source>Output file</source>
         <translation>Output file</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="498"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="499"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="499"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="500"/>
         <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
         <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="503"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="504"/>
         <source>Custom directory</source>
         <translation>Custom directory</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="504"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="505"/>
         <source>Select the custom output directory.</source>
         <translation>Select the custom output directory.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="506"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="507"/>
         <source>Output file name</source>
         <translation>Output file name</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="507"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="508"/>
         <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
         <translation>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="509"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="510"/>
         <source>Genome</source>
         <translation>Genome</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="510"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="511"/>
         <source>In order to prevent the extension of intervals beyond chromosome boundaries, bedtools slop requires a genome file defining the length of each chromosome or contig. The format of the file is: &lt;chromName&gt;&lt;TAB&gt;&lt;chromSize&gt;. (-g)</source>
         <translation>In order to prevent the extension of intervals beyond chromosome boundaries, bedtools slop requires a genome file defining the length of each chromosome or contig. The format of the file is: &lt;chromName&gt;&lt;TAB&gt;&lt;chromSize&gt;. (-g)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="512"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="513"/>
         <source>Report mode</source>
         <translation>Report mode</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="513"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="514"/>
         <source>&lt;b&gt;%1 (%2)&lt;/b&gt; - %3 
 &lt;b&gt;%4 (%5)&lt;/b&gt; - %6 
 &lt;b&gt;%7 (%8)&lt;/b&gt; - %9 
@@ -8485,7 +8822,7 @@ Default: 64.</translation>
 &lt;b&gt;%13 (%14)&lt;/b&gt; - %15</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="525"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="526"/>
         <source>Split</source>
         <translation>Split</translation>
     </message>
@@ -8494,17 +8831,17 @@ Default: 64.</translation>
         <translation type="vanished">Treat  BAM or BED12 entries as distinct BED intervals when computing coverage. For BAM files, this uses the CIGAR  and  operations to infer the blocks for computing coverage. For BED12 files, this uses the BlockCount, BlockStarts, and BlockEnds fields (i.e., columns 10,11,12). (-split)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="528"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="529"/>
         <source>Strand</source>
         <translation>Strand</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="529"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="530"/>
         <source>Calculate coverage of intervals from a specific strand. With BED files, requires at least 6 columns (strand is column 6). (-strand)</source>
         <translation>Calculate coverage of intervals from a specific strand. With BED files, requires at least 6 columns (strand is column 6). (-strand)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="531"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="532"/>
         <source>5 prime</source>
         <translation>5 prime</translation>
     </message>
@@ -8513,7 +8850,7 @@ Default: 64.</translation>
         <translation type="vanished">Calculate coverage of 5&apos; positions (instead of entire interval). (-5)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="534"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="535"/>
         <source>3 prime</source>
         <translation>3 prime</translation>
     </message>
@@ -8522,72 +8859,72 @@ Default: 64.</translation>
         <translation type="vanished">Calculate coverage of 3&apos; positions (instead of entire interval). (-3)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="537"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="538"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="538"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="539"/>
         <source>Combine all positions with a depth &gt;= max into a single bin in the histogram. (-max)</source>
         <translation>Combine all positions with a depth &gt;= max into a single bin in the histogram. (-max)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="540"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="541"/>
         <source>Scale</source>
         <translation>Scale</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="541"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="542"/>
         <source>Scale the coverage by a constant factor.Each coverage value is multiplied by this factor before being reported. Useful for normalizing coverage by, e.g., reads per million (RPM). Default is 1.0; i.e., unscaled. (-scale)</source>
         <translation>Scale the coverage by a constant factor.Each coverage value is multiplied by this factor before being reported. Useful for normalizing coverage by, e.g., reads per million (RPM). Default is 1.0; i.e., unscaled. (-scale)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="543"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="544"/>
         <source>Trackline</source>
         <translation>Trackline</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="544"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="545"/>
         <source>Adds a UCSC/Genome-Browser track line definition in the first line of the output. (-trackline)</source>
         <translation>Adds a UCSC/Genome-Browser track line definition in the first line of the output. (-trackline)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="546"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="547"/>
         <source>Trackopts</source>
         <translation>Trackopts</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="547"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="548"/>
         <source>Writes additional track line definition parameters in the first line. (-trackopts)</source>
         <translation>Writes additional track line definition parameters in the first line. (-trackopts)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="584"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="585"/>
         <source>Custom</source>
         <translation>Custom</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="582"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="583"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="526"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="527"/>
         <source>Treat “split” BAM or BED12 entries as distinct BED intervals when computing coverage. For BAM files, this uses the CIGAR “N” and “D” operations to infer the blocks for computing coverage. For BED12 files, this uses the BlockCount, BlockStarts, and BlockEnds fields (i.e., columns 10,11,12). (-split)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="532"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="533"/>
         <source>Calculate coverage of 5’ positions (instead of entire interval). (-5)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="535"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="536"/>
         <source>Calculate coverage of 3’ positions (instead of entire interval). (-3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="583"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="584"/>
         <source>Workflow</source>
         <translation>Workflow</translation>
     </message>
@@ -8669,17 +9006,17 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::HmmerSearchPrompter</name>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="188"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="189"/>
         <source>For each sequence from &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="189"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="190"/>
         <source>using all profiles provided by &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="193"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="194"/>
         <source>%1 search HMMER signals %2. &lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%4&lt;/u&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8687,117 +9024,117 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::HmmerSearchWorker</name>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="80"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="81"/>
         <source>Filter by</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="81"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="82"/>
         <source>Parameter to filter results by.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="82"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="83"/>
         <source>HMMER profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="82"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="83"/>
         <source>HMMER profile(s) URL(s) to search with.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="83"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="84"/>
         <source>Input sequence</source>
         <translation type="unfinished">Input sequence</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="84"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="85"/>
         <source>An input sequence (nucleotide or protein) to search in.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="85"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="86"/>
         <source>HMMER annotations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="86"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="87"/>
         <source>Annotations marking found similar sequence regions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="98"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="99"/>
         <source>Result annotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="98"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="99"/>
         <source>A name of the result annotations.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="99"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="100"/>
         <source>Seed</source>
         <translation type="unfinished">Seed</translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="99"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="100"/>
         <source>Random generator seed. 0 - means that one-time arbitrary seed will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="100"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="101"/>
         <source>Filter by high E-value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="100"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="101"/>
         <source>Report domains with e-value less than.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="101"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="102"/>
         <source>Filter by low score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="101"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="102"/>
         <source>Report domains with score greater than.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="118"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="119"/>
         <source>HMM3 Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="119"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="120"/>
         <source>Searches each input sequence for significantly similar sequence matches to all specified HMM profiles. In case several profiles were supplied, searches with all profiles one by one and outputs united set of annotations for each sequence.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="159"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="160"/>
         <source>HMMER3 Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="238"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="239"/>
         <source>Value for attribute name is empty, default name used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="289"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="290"/>
         <source>Find HMMER signals in %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="294"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="295"/>
         <source>Bad sequence supplied to input: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="323"/>
+        <location filename="../src/hmmer/HmmerSearchWorker.cpp" line="324"/>
         <source>Found %1 HMMER signals</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9185,12 +9522,12 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::MAFFTPrompter</name>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="129"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="130"/>
         <source> from %1</source>
         <translation> from %1</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="131"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="132"/>
         <source>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with &lt;u&gt;&quot;MAFFT&quot;&lt;/u&gt;.</source>
         <translation>Aligns each MSA supplied &lt;u&gt;%1&lt;/u&gt; with &lt;u&gt;&quot;MAFFT&quot;&lt;/u&gt;.</translation>
     </message>
@@ -9198,92 +9535,92 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::MAFFTWorker</name>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="60"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="61"/>
         <source>Input MSA</source>
         <translation>Input MSA</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="61"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="62"/>
         <source>Multiple sequence alignment to be processed.</source>
         <translation>Multiple sequence alignment to be processed.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="62"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="63"/>
         <source>Multiple sequence alignment</source>
         <translation>Multiple sequence alignment</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="62"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="63"/>
         <source>Result of alignment.</source>
         <translation>Result of alignment.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="71"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="72"/>
         <source>Gap Open Penalty</source>
         <translation>Gap Open Penalty</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="72"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="73"/>
         <source>Gap Open Penalty.</source>
         <translation>Gap Open Penalty.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="73"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="74"/>
         <source>Offset</source>
         <translation>Offset</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="74"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="75"/>
         <source>Works like gap extension penalty.</source>
         <translation>Works like gap extension penalty.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="76"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="77"/>
         <source>Maximum number of iterative refinement.</source>
         <translation>Maximum number of iterative refinement.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="78"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="79"/>
         <source>External tool path.</source>
         <translation>External tool path.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="80"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="81"/>
         <source>Directory for temporary files.</source>
         <translation>Directory for temporary files.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="173"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="174"/>
         <source>An empty MSA &apos;%1&apos; has been supplied to MAFFT.</source>
         <translation>An empty MSA &apos;%1&apos; has been supplied to MAFFT.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="75"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="76"/>
         <source>Max Iteration</source>
         <translation>Max Iteration</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="77"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="78"/>
         <source>Tool Path</source>
         <translation>Tool Path</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="79"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="80"/>
         <source>Temporary directory</source>
         <translation>Temporary directory</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="88"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="89"/>
         <source>Align with MAFFT</source>
         <translation>Align with MAFFT</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="202"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="203"/>
         <source>Aligned %1 with MAFFT</source>
         <translation>Aligned %1 with MAFFT</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTWorker.cpp" line="89"/>
+        <location filename="../src/mafft/MAFFTWorker.cpp" line="90"/>
         <source>MAFFT is a multiple sequence alignment program for unix-like operating systems. &lt;p&gt;&lt;dfn&gt;It offers a range of multiple alignment methods, L-INS-i (accurate; for alignment of &amp;lt;&amp;#126;200 sequences), FFT-NS-2 (fast; for alignment of &amp;lt;&amp;#126;10,000 sequences), etc. &lt;/dfn&gt;&lt;/p&gt;</source>
         <translation>MAFFT is a multiple sequence alignment program for unix-like operating systems. &lt;p&gt;&lt;dfn&gt;It offers a range of multiple alignment methods, L-INS-i (accurate; for alignment of &amp;lt;&amp;#126;200 sequences), FFT-NS-2 (fast; for alignment of &amp;lt;&amp;#126;10,000 sequences), etc. &lt;/dfn&gt;&lt;/p&gt;</translation>
     </message>
@@ -9600,17 +9937,17 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::SlopbedPrompter</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="69"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="70"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="70"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="71"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> from &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="72"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="73"/>
         <source>Increases the size of each feature in files from %1 with bedtool slop.</source>
         <translation>Increases the size of each feature in files from %1 with bedtool slop.</translation>
     </message>
@@ -9618,117 +9955,117 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::SlopbedWorker</name>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="89"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="90"/>
         <source>slopBed</source>
         <translation>slopBed</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="90"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="91"/>
         <source>Increases the size of each feature in files using bedtools slop.</source>
         <translation>Increases the size of each feature in files using bedtools slop.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="94"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="95"/>
         <source>Input File</source>
         <translation>Input File</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="95"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="96"/>
         <source>Set of files to bedtools slop</source>
         <translation>Set of files to bedtools slop</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="96"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="97"/>
         <source>Output File</source>
         <translation>Output File</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="97"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="98"/>
         <source>Output file</source>
         <translation>Output file</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="110"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="111"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="111"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="112"/>
         <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
         <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="115"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="116"/>
         <source>Custom directory</source>
         <translation>Custom directory</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="116"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="117"/>
         <source>Select the custom output directory.</source>
         <translation>Select the custom output directory.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="118"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="119"/>
         <source>Output file name</source>
         <translation>Output file name</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="119"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="120"/>
         <source>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</source>
         <translation>A name of an output file. If default of empty value is provided the output name is the name of the first file with additional extention.</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="121"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="122"/>
         <source>Genome</source>
         <translation>Genome</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="122"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="123"/>
         <source>In order to prevent the extension of intervals beyond chromosome boundaries, bedtools slop requires a genome file defining the length of each chromosome or contig. The format of the file is: &lt;chromName&gt;&lt;TAB&gt;&lt;chromSize&gt; (-g).</source>
         <translation>In order to prevent the extension of intervals beyond chromosome boundaries, bedtools slop requires a genome file defining the length of each chromosome or contig. The format of the file is: &lt;chromName&gt;&lt;TAB&gt;&lt;chromSize&gt; (-g).</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="124"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="125"/>
         <source>Each direction increase</source>
         <translation>Each direction increase</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="125"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="126"/>
         <source>Increase the BED/GFF/VCF entry by the same number base pairs in each direction. If this parameter is used -l and -l are ignored. Enter 0 to disable. (-b)</source>
         <translation>Increase the BED/GFF/VCF entry by the same number base pairs in each direction. If this parameter is used -l and -l are ignored. Enter 0 to disable. (-b)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="127"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="128"/>
         <source>Substract from start</source>
         <translation>Substract from start</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="128"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="129"/>
         <source>The number of base pairs to subtract from the start coordinate. Enter 0 to disable. (-l)</source>
         <translation>The number of base pairs to subtract from the start coordinate. Enter 0 to disable. (-l)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="130"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="131"/>
         <source>Add to end</source>
         <translation>Add to end</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="131"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="132"/>
         <source>The number of base pairs to add to the end coordinate. Enter 0 to disable. (-r)</source>
         <translation>The number of base pairs to add to the end coordinate. Enter 0 to disable. (-r)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="133"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="134"/>
         <source>Strand-based</source>
         <translation>Strand-based</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="134"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="135"/>
         <source>Define -l and -r based on strand. For example. if used, -l 500 for a negative-stranded feature, it will add 500 bp to the end coordinate. (-s)</source>
         <translation>Define -l and -r based on strand. For example. if used, -l 500 for a negative-stranded feature, it will add 500 bp to the end coordinate. (-s)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="136"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="137"/>
         <source>As fraction</source>
         <translation>As fraction</translation>
     </message>
@@ -9740,42 +10077,42 @@ Default: 64.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="139"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="140"/>
         <source>Print header</source>
         <translation>Print header</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="140"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="141"/>
         <source>Print the header from the input file prior to results. (-header)</source>
         <translation>Print the header from the input file prior to results. (-header)</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="142"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="143"/>
         <source>Filter start&gt;end fields</source>
         <translation>Filter start&gt;end fields</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="143"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="144"/>
         <source>Remove lines with start postion greater than end position</source>
         <translation>Remove lines with start postion greater than end position</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="179"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="180"/>
         <source>Custom</source>
         <translation>Custom</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="177"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="178"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="137"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="138"/>
         <source>Define -l and -r as a fraction of the feature’s length. E.g. if used on a 1000bp feature, -l 0.50, will add 500 bp “upstream”. (-pct)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="178"/>
+        <location filename="../src/bedtools/BedToolsWorkersLibrary.cpp" line="179"/>
         <source>Workflow</source>
         <translation>Workflow</translation>
     </message>
@@ -9783,26 +10120,31 @@ Default: 64.</translation>
 <context>
     <name>U2::LocalWorkflow::SnpEffDatabaseDialog</name>
     <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="47"/>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="49"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="50"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
     </message>
 </context>
 <context>
     <name>U2::LocalWorkflow::SnpEffDatabasePropertyWidget</name>
     <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="85"/>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="88"/>
         <source>Select genome</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="115"/>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="118"/>
         <source>The list of %1 genomes is not available.
 Path for %1 tool is not selected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="116"/>
+        <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="119"/>
         <source>Do you want to select it now?</source>
         <translation type="unfinished">Do you want to select it now?</translation>
     </message>
@@ -9810,17 +10152,17 @@ Path for %1 tool is not selected.</source>
 <context>
     <name>U2::LocalWorkflow::SnpEffPrompter</name>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="86"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="87"/>
         <source>unset</source>
         <translation>unset</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="87"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="88"/>
         <source> from &lt;u&gt;%1&lt;/u&gt;</source>
         <translation> from &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="89"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="90"/>
         <source>Annotates and filters variations %1 with SnpEff.</source>
         <translation>Annotates and filters variations %1 with SnpEff.</translation>
     </message>
@@ -9828,143 +10170,143 @@ Path for %1 tool is not selected.</source>
 <context>
     <name>U2::LocalWorkflow::SnpEffWorker</name>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="96"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="97"/>
         <source>SnpEff Annotation and Filtration</source>
         <translation>SnpEff Annotation and Filtration</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="97"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="98"/>
         <source>Annotates and filters variations with SnpEff.</source>
         <translation>Annotates and filters variations with SnpEff.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="101"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="102"/>
         <source>Variations</source>
         <translation>Variations</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="102"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="103"/>
         <source>Set of variations</source>
         <translation>Set of variations</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="103"/>
         <location filename="../src/snpeff/SnpEffWorker.cpp" line="104"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="105"/>
         <source>Annotated variations</source>
         <translation>Annotated variations</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="118"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="119"/>
         <source>Output directory</source>
         <translation>Output directory</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="119"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="120"/>
         <source>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</source>
         <translation>Select an output directory. &lt;b&gt;Custom&lt;/b&gt; - specify the output directory in the &apos;Custom directory&apos; parameter. &lt;b&gt;Workflow&lt;/b&gt; - internal workflow directory. &lt;b&gt;Input file&lt;/b&gt; - the directory of the input file.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="123"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="124"/>
         <source>Custom directory</source>
         <translation>Custom directory</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="124"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="125"/>
         <source>Select the custom output directory.</source>
         <translation>Select the custom output directory.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="126"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="127"/>
         <source>Input format</source>
         <translation>Input format</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="127"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="128"/>
         <source>Select the input format of variations.</source>
         <translation>Select the input format of variations.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="129"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="130"/>
         <source>Output format</source>
         <translation>Output format</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="130"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="131"/>
         <source>Select the format of annotated output files.</source>
         <translation>Select the format of annotated output files.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="132"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="133"/>
         <source>Genome</source>
         <translation>Genome</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="133"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="134"/>
         <source>Select the target genome. Genome data will be downloaded if it is not found.</source>
         <translation>Select the target genome. Genome data will be downloaded if it is not found.</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="135"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="136"/>
         <source>Upstream/downstream length</source>
         <translation>Upstream/downstream length</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="136"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="137"/>
         <source>Upstream and downstream interval size. Eliminate any upstream and downstream effect by using 0 length</source>
         <translation>Upstream and downstream interval size. Eliminate any upstream and downstream effect by using 0 length</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="138"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="139"/>
         <source>Canonical transcripts</source>
         <translation>Canonical transcripts</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="139"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="140"/>
         <source>Use only canonical transcripts</source>
         <translation>Use only canonical transcripts</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="141"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="142"/>
         <source>HGVS nomenclature</source>
         <translation>HGVS nomenclature</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="142"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="143"/>
         <source>Annotate using HGVS nomenclature</source>
         <translation>Annotate using HGVS nomenclature</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="144"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="145"/>
         <source>Annotate Loss of function variations</source>
         <translation>Annotate Loss of function variations</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="145"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="146"/>
         <source>Annotate Loss of function variations (LOF) and Nonsense mediated decay (NMD)</source>
         <translation>Annotate Loss of function variations (LOF) and Nonsense mediated decay (NMD)</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="147"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="148"/>
         <source>Annotate TFBSs motifs</source>
         <translation>Annotate TFBSs motifs</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="148"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="149"/>
         <source>Annotate transcription factor binding site motifs (only available for latest GRCh37)</source>
         <translation>Annotate transcription factor binding site motifs (only available for latest GRCh37)</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="170"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="171"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="171"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="172"/>
         <source>Workflow</source>
         <translation>Workflow</translation>
     </message>
     <message>
-        <location filename="../src/snpeff/SnpEffWorker.cpp" line="172"/>
+        <location filename="../src/snpeff/SnpEffWorker.cpp" line="173"/>
         <source>Custom</source>
         <translation>Custom</translation>
     </message>
@@ -10113,12 +10455,12 @@ Path for %1 tool is not selected.</source>
 <context>
     <name>U2::LocalWorkflow::TCoffeePrompter</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="125"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="127"/>
         <source> from %1</source>
         <translation> from %1</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="127"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="129"/>
         <source>For each MSA&lt;u&gt;%1&lt;/u&gt;, build the alignment using &lt;u&gt;&quot;T-Coffee&quot;&lt;/u&gt; and send it to output.</source>
         <translation>For each MSA&lt;u&gt;%1&lt;/u&gt;, build the alignment using &lt;u&gt;&quot;T-Coffee&quot;&lt;/u&gt; and send it to output.</translation>
     </message>
@@ -10126,92 +10468,92 @@ Path for %1 tool is not selected.</source>
 <context>
     <name>U2::LocalWorkflow::TCoffeeWorker</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="59"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="61"/>
         <source>Input MSA</source>
         <translation>Input MSA</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="59"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="61"/>
         <source>Multiple sequence alignment to be processed.</source>
         <translation>Multiple sequence alignment to be processed.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="60"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="62"/>
         <source>Multiple sequence alignment</source>
         <translation>Multiple sequence alignment</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="60"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="62"/>
         <source>Result of alignment.</source>
         <translation>Result of alignment.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="69"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="71"/>
         <source>Gap Open Penalty</source>
         <translation>Gap Open Penalty</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="70"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="72"/>
         <source>Gap Open Penalty. Must be negative, best matches get a score of 1000.</source>
         <translation>Gap Open Penalty. Must be negative, best matches get a score of 1000.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="71"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="73"/>
         <source>Gap Extension Penalty</source>
         <translation>Gap Extension Penalty</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="72"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="74"/>
         <source>Gap Extension Penalty. Positive values give rewards to gaps and prevent the alignment of unrelated segments.</source>
         <translation>Gap Extension Penalty. Positive values give rewards to gaps and prevent the alignment of unrelated segments.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="73"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="75"/>
         <source>Max Iteration</source>
         <translation>Max Iteration</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="74"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="76"/>
         <source>Number of iteration on the progressive alignment.&lt;br&gt;0 - no iteration, -1 - Nseq iterations.</source>
         <translation>Number of iteration on the progressive alignment.&lt;br&gt;0 - no iteration, -1 - Nseq iterations.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="76"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="78"/>
         <source>Tool Path</source>
         <translation>Tool Path</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="77"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="79"/>
         <source>External tool path.</source>
         <translation>External tool path.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="79"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="81"/>
         <source>Directory for temporary file.s</source>
         <translation>Directory for temporary files</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="170"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="172"/>
         <source>An empty MSA &apos;%1&apos; has been supplied to T-Coffee.</source>
         <translation>An empty MSA &apos;%1&apos; has been supplied to T-Coffee.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="78"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="80"/>
         <source>Temporary directory</source>
         <translation>Temporary directory</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="87"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="89"/>
         <source>Align with T-Coffee</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="88"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="90"/>
         <source>T-Coffee is a multiple sequence alignment package. </source>
         <translation>T-Coffee is a multiple sequence alignment package. </translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="202"/>
+        <location filename="../src/tcoffee/TCoffeeWorker.cpp" line="204"/>
         <source>Aligned %1 with T-Coffee</source>
         <translation>Aligned %1 with T-Coffee</translation>
     </message>
@@ -10728,17 +11070,17 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::MAFFTSupportContext</name>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="131"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="129"/>
         <source>Align with MAFFT...</source>
         <translation>Align with MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="156"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="154"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Path for %1 tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/mafft/MAFFTSupport.cpp" line="157"/>
+        <location filename="../src/mafft/MAFFTSupport.cpp" line="155"/>
         <source>Do you want to select it now?</source>
         <translation>Do you want to select it now?</translation>
     </message>
@@ -11054,42 +11396,42 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::PhmmerSearchTask</name>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="48"/>
+        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="50"/>
         <source>Search with phmmer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="100"/>
+        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="104"/>
         <source>Query sequence: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="103"/>
+        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="107"/>
         <source>Task was not finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="109"/>
+        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="113"/>
         <source>Result annotation table: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="111"/>
+        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="115"/>
         <source>Result annotation group: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="112"/>
+        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="116"/>
         <source>Result annotation name: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="114"/>
+        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="118"/>
         <source>Results count: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="146"/>
+        <location filename="../src/hmmer/PhmmerSearchTask.cpp" line="150"/>
         <source>Cannot create a directory for temporary files.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11392,12 +11734,12 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::SaveAlignmentTask</name>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="64"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="63"/>
         <source>Export alignment to &apos;%1&apos;</source>
         <translation>Export alignment to &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="68"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="67"/>
         <source>An alignment is empty</source>
         <translation>An alignment is empty</translation>
     </message>
@@ -11405,7 +11747,7 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::SaveMSA2SequencesTask</name>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="107"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="104"/>
         <source>Export alignment to sequence: %1</source>
         <translation>Export alignment to sequence: %1</translation>
     </message>
@@ -11413,12 +11755,12 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::SaveSequenceTask</name>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="138"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="135"/>
         <source>Save sequence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="169"/>
+        <location filename="../src/utils/ExportTasks.cpp" line="166"/>
         <source>&apos;%&apos; format is not registered</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11609,17 +11951,17 @@ Set it empty if you want to run Tophat once for all input reads</translation>
 <context>
     <name>U2::TCoffeeSupportContext</name>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="134"/>
+        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="132"/>
         <source>Align with T-Coffee...</source>
         <translation>Align with T-Coffee...</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="159"/>
+        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="157"/>
         <source>Path for %1 tool not selected.</source>
         <translation>Path for %1 tool not selected.</translation>
     </message>
     <message>
-        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="160"/>
+        <location filename="../src/tcoffee/TCoffeeSupport.cpp" line="158"/>
         <source>Do you want to select it now?</source>
         <translation>Do you want to select it now?</translation>
     </message>
@@ -11886,6 +12228,63 @@ Set it empty if you want to run Tophat once for all input reads</translation>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="115"/>
         <source>Path to %1</source>
         <translation>Path to %1</translation>
+    </message>
+</context>
+<context>
+    <name>U2::Workflow::BlastAndSwReadTask</name>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="81"/>
+        <source>Align one read with BLAST &amp; SW task</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="140"/>
+        <source>%1 was skipped. Low identity.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="290"/>
+        <source>The %1 algorithm is not found. Add the %1 plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="293"/>
+        <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::Workflow::BlastReadsSubTask</name>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/BlastReadsSubTask.cpp" line="50"/>
+        <source>Align reads with BLAST &amp; SW task</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::Workflow::ComposeResultSubTask</name>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="62"/>
+        <source>Compose alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="177"/>
+        <source>No read satisfy minimum identity criteria.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/ComposeResultSubTask.cpp" line="264"/>
+        <source>The related chromatogram not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::Workflow::FormatDBSubTask</name>
+    <message>
+        <location filename="../src/blast/align_worker_subtasks/FormatDBSubTask.cpp" line="41"/>
+        <source>Format DB task wrapper</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

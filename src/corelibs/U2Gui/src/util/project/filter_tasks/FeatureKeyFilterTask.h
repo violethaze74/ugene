@@ -32,6 +32,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 
 class FeatureKeyFilterTask : public AbstractProjectFilterTask {
+    Q_OBJECT
 public:
     FeatureKeyFilterTask(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document> > &docs);
 

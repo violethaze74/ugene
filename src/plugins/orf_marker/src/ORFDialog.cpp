@@ -80,6 +80,8 @@ ORFDialog::ORFDialog(ADVSequenceObjectContext* _ctx)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "19759650");
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     tabWidget->setCurrentIndex(0);
 

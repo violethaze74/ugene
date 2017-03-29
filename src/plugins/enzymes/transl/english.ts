@@ -656,30 +656,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CreateFragmentDialog</name>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="101"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="55"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="77"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../src/CreateFragmentDialog.cpp" line="56"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="78"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../src/CreateFragmentDialog.cpp" line="106"/>
         <source>Left end contains unsupported symbols!</source>
         <translation>Left end contains unsupported symbols!</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="111"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="116"/>
         <source>Right end contains unsupported symbols!</source>
         <translation>Right end contains unsupported symbols!</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="122"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="127"/>
         <source>Invalid fragment region!
 Choose another region.</source>
         <translation>Invalid fragment region!
 Choose another region.</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="127"/>
         <location filename="../src/CreateFragmentDialog.cpp" line="132"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="137"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/CreateFragmentDialog.cpp" line="132"/>
+        <location filename="../src/CreateFragmentDialog.cpp" line="137"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Cannot create an annotation object. Please check settings</translation>
     </message>

@@ -785,32 +785,28 @@ Probably the data is too big.</translation>
         <translation>Sequence number:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="117"/>
         <source>Consensus type:</source>
-        <translation>Consensus type:</translation>
+        <translation type="vanished">Consensus type:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="129"/>
         <source>Threshold:</source>
-        <translation>Threshold:</translation>
+        <translation type="vanished">Threshold:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="136"/>
         <source>Reset to default value</source>
-        <translation>Reset to default value</translation>
+        <translation type="vanished">Reset to default value</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="176"/>
         <source>%</source>
-        <translation>%</translation>
+        <translation type="vanished">%</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="203"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="120"/>
         <source>Format:</source>
         <translation>Format:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="213"/>
+        <location filename="../src/ov_msa/General/GeneralTabOptionsPanelWidget.ui" line="130"/>
         <source>Copy</source>
         <translation>Copy</translation>
     </message>
@@ -1036,6 +1032,52 @@ Probably the data is too big.</translation>
     </message>
 </context>
 <context>
+    <name>MaConsensusModeWidget</name>
+    <message>
+        <location filename="../src/ov_msa/General/MaConsensusModeWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Form</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/General/MaConsensusModeWidget.ui" line="20"/>
+        <source>Consensus type:</source>
+        <translation type="unfinished">Consensus type:</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/General/MaConsensusModeWidget.ui" line="32"/>
+        <source>Threshold:</source>
+        <translation type="unfinished">Threshold:</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/General/MaConsensusModeWidget.ui" line="39"/>
+        <source>Reset to default value</source>
+        <translation type="unfinished">Reset to default value</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/General/MaConsensusModeWidget.ui" line="79"/>
+        <source>%</source>
+        <translation type="unfinished">%</translation>
+    </message>
+</context>
+<context>
+    <name>McaGeneralTab</name>
+    <message>
+        <location filename="../src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Form</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui" line="52"/>
+        <source>Sequence number:</source>
+        <translation type="unfinished">Sequence number:</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui" line="59"/>
+        <source>Length:</source>
+        <translation type="unfinished">Length:</translation>
+    </message>
+</context>
+<context>
     <name>PairwiseAlignmentOptionsPanelWidget</name>
     <message>
         <location filename="../src/ov_msa/PairAlign/PairwiseAlignmentOptionsPanelWidget.ui" line="20"/>
@@ -1180,22 +1222,22 @@ Do you want to replace it?</translation>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewImageExportTask.cpp" line="81"/>
+        <location filename="../src/ov_msa/Overview/MaOverviewImageExportTask.cpp" line="81"/>
         <source>Overview is NULL</source>
         <translation>Overview is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewImageExportTask.cpp" line="82"/>
+        <location filename="../src/ov_msa/Overview/MaOverviewImageExportTask.cpp" line="82"/>
         <source>Graph overview is NULL</source>
         <translation>Graph overview is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewImageExportTask.cpp" line="114"/>
+        <location filename="../src/ov_msa/Overview/MaOverviewImageExportTask.cpp" line="114"/>
         <source>Export simple overview</source>
         <translation>Export simple overview</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewImageExportTask.cpp" line="115"/>
+        <location filename="../src/ov_msa/Overview/MaOverviewImageExportTask.cpp" line="115"/>
         <source>Export graph overview</source>
         <translation>Export graph overview</translation>
     </message>
@@ -1386,6 +1428,7 @@ Double-click to collapse the branch</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/General/MSAGeneralTabFactory.cpp" line="62"/>
+        <location filename="../src/ov_msa/General/McaGeneralTabFactory.cpp" line="32"/>
         <source>General</source>
         <translation>General</translation>
     </message>
@@ -1395,17 +1438,17 @@ Double-click to collapse the branch</translation>
         <translation>Highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="41"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="42"/>
         <source>Data is outdated</source>
         <translation>Data is outdated</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="42"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="43"/>
         <source>Data is valid</source>
         <translation>Data is valid</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="43"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="44"/>
         <source>Data is being updated</source>
         <translation>Data is being updated</translation>
     </message>
@@ -1483,13 +1526,13 @@ Double-click to collapse the branch</translation>
         <translation>Bedgraph</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="45"/>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="59"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="46"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="60"/>
         <source>Show all annotation names</source>
         <translation>Show all annotation names</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="63"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="64"/>
         <source>Show names for the sequence only</source>
         <translation>Show names for the sequence only</translation>
     </message>
@@ -2140,34 +2183,28 @@ Double-click to collapse the branch</translation>
 <context>
     <name>U2::ADVSequenceObjectContext</name>
     <message>
-        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="207"/>
         <source>Incorrect signal sender!</source>
-        <translation>Incorrect signal sender!</translation>
+        <translation type="vanished">Incorrect signal sender!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="217"/>
         <source>Select genetic code</source>
-        <translation>Select genetic code</translation>
+        <translation type="vanished">Select genetic code</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="229"/>
         <source>Show/hide amino acid translations</source>
-        <translation>Show/hide amino acid translations</translation>
+        <translation type="vanished">Show/hide amino acid translations</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="237"/>
         <source>Show direct only</source>
-        <translation>Show direct only</translation>
+        <translation type="vanished">Show direct only</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="238"/>
         <source>Show complementary only</source>
-        <translation>Show complementary only</translation>
+        <translation type="vanished">Show complementary only</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="239"/>
         <source>Show all</source>
-        <translation>Show all</translation>
+        <translation type="vanished">Show all</translation>
     </message>
 </context>
 <context>
@@ -2487,37 +2524,37 @@ Double-click to collapse the branch</translation>
 <context>
     <name>U2::AnnotHighlightWidget</name>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="91"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="92"/>
         <source>Select an annotation name:</source>
         <translation>Select an annotation name:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="112"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="113"/>
         <source>Configure the annotations:</source>
         <translation>Configure the annotations:</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="124"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="125"/>
         <source>Previous annotation</source>
         <translation>Previous annotation</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="132"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="133"/>
         <source>Next annotation</source>
         <translation>Next annotation</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="210"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="211"/>
         <source>Sequence context is NULL</source>
         <translation>Sequence context is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="321"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="324"/>
         <source>The sequence doesn&apos;t have any annotations.</source>
         <translation>The sequence doesn&apos;t have any annotations.</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="324"/>
+        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="327"/>
         <source>The sequences do not have any annotations.</source>
         <translation>The sequences do not have any annotations.</translation>
     </message>
@@ -4373,27 +4410,27 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::ExportHighligtingDialogController</name>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="49"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="50"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="50"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="51"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="96"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="97"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="96"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="97"/>
         <source>Export to file URL is empty!</source>
         <translation>Export to file URL is empty!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="123"/>
+        <location filename="../src/ov_msa/ExportHighlightedDialogController.cpp" line="124"/>
         <source>Select file to save...</source>
         <translation>Select file to save...</translation>
     </message>
@@ -4401,17 +4438,17 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::ExportHighligtningTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="3038"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1043"/>
         <source>Export highlighting</source>
         <translation>Export highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="3066"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1071"/>
         <source>Export highligtning finished successfully</source>
         <translation>Export highligtning finished successfully</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="3066"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1071"/>
         <source>Result file:</source>
         <translation>Result file:</translation>
     </message>
@@ -4419,7 +4456,7 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::ExportMSAConsensusTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="218"/>
+        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="278"/>
         <source>Export consensus to MSA</source>
         <translation>Export consensus to MSA</translation>
     </message>
@@ -4510,12 +4547,12 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::ExtractConsensusTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="274"/>
+        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="334"/>
         <source>Export consensus to MSA</source>
         <translation>Export consensus to MSA</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="293"/>
+        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="353"/>
         <source>No sequences in alignment</source>
         <translation>No sequences in alignment</translation>
     </message>
@@ -4829,32 +4866,32 @@ Please, check external tools in the settings.</translation>
 <context>
     <name>U2::GSequenceGraphView</name>
     <message>
-        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="67"/>
+        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="71"/>
         <source>Select all extremum points...</source>
         <translation>Select all extremum points...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="57"/>
+        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="61"/>
         <source>Save cutoffs as annotations...</source>
         <translation>Save cutoffs as annotations...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="52"/>
+        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="56"/>
         <source>Graph settings...</source>
         <translation>Graph settings...</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="62"/>
+        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="66"/>
         <source>Delete all labels</source>
         <translation>Delete all labels</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="221"/>
+        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="225"/>
         <source>Graph</source>
         <translation>Graph</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="352"/>
+        <location filename="../src/ov_sequence/GSequenceGraphView.cpp" line="356"/>
         <source>%1 [%2, %3], Window: %4, Step %5</source>
         <translation>%1 [%2, %3], Window: %4, Step %5</translation>
     </message>
@@ -5070,172 +5107,121 @@ Directory Path: %1</source>
 <context>
     <name>U2::MSAClustalOverviewCalculationTask</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="169"/>
         <source>MSAConsensusAlgorithmRegistry is NULL!</source>
-        <translation>MSAConsensusAlgorithmRegistry is NULL!</translation>
+        <translation type="vanished">MSAConsensusAlgorithmRegistry is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="172"/>
         <source>Clustal algorithm factory is NULL</source>
-        <translation>Clustal algorithm factory is NULL</translation>
+        <translation type="vanished">Clustal algorithm factory is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="174"/>
         <source>MSA is NULL</source>
-        <translation>MSA is NULL</translation>
+        <translation type="vanished">MSA is NULL</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAConsensusOverviewCalculationTask</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="132"/>
         <source>MSAConsensusAlgorithmRegistry is NULL!</source>
-        <translation>MSAConsensusAlgorithmRegistry is NULL!</translation>
+        <translation type="vanished">MSAConsensusAlgorithmRegistry is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="135"/>
         <source>Strict consensus algorithm factory is NULL</source>
-        <translation>Strict consensus algorithm factory is NULL</translation>
+        <translation type="vanished">Strict consensus algorithm factory is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="137"/>
         <source>MSA is NULL</source>
-        <translation>MSA is NULL</translation>
+        <translation type="vanished">MSA is NULL</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAEditor</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="136"/>
-        <source>Zoom In</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="140"/>
-        <source>Zoom Out</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="144"/>
-        <source>Zoom To Selection</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="148"/>
-        <source>Reset Zoom</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="152"/>
-        <source>Change Font</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="156"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="114"/>
         <source>Build Tree</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="433"/>
         <source>Copy/Paste</source>
-        <translation>Copy/Paste</translation>
+        <translation type="vanished">Copy/Paste</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="508"/>
-        <source>Export as image</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="370"/>
-        <source>Select font for alignment</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="224"/>
         <source>Save Alignment</source>
-        <translation>Save Alignment</translation>
+        <translation type="vanished">Save Alignment</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="132"/>
         <source>Save alignment as</source>
-        <translation>Save alignment as</translation>
+        <translation type="vanished">Save alignment as</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="128"/>
         <source>Save alignment</source>
-        <translation>Save alignment</translation>
+        <translation type="vanished">Save alignment</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="184"/>
         <source>Export highlighted</source>
-        <translation>Export highlighted</translation>
+        <translation type="vanished">Export highlighted</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="438"/>
         <source>Edit</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="443"/>
         <source>Export</source>
-        <translation>Export</translation>
+        <translation type="vanished">Export</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="456"/>
         <source>View</source>
-        <translation>View</translation>
+        <translation type="vanished">View</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="464"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="512"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="237"/>
         <source>Align</source>
         <translation>Align</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="470"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="201"/>
         <source>Tree</source>
         <translation>Tree</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="477"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="208"/>
         <source>Advanced</source>
         <translation>Advanced</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="482"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="213"/>
         <source>Statistics</source>
         <translation>Statistics</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="488"/>
         <source>Add</source>
-        <translation>Add</translation>
+        <translation type="vanished">Add</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="516"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="241"/>
         <source>Align sequence to this alignment</source>
         <translation>Align sequence to this alignment</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="520"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="245"/>
         <source>Set this sequence as reference</source>
         <translation>Set this sequence as reference</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="524"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="249"/>
         <source>Unset reference sequence</source>
         <translation>Unset reference sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="714"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="789"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="809"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="407"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="482"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="502"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="801"/>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="804"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="494"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="497"/>
         <source>Open file with sequences</source>
         <translation>Open file with sequences</translation>
     </message>
@@ -5243,32 +5229,32 @@ Directory Path: %1</source>
 <context>
     <name>U2::MSAEditorConsensusArea</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="78"/>
+        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="101"/>
         <source>Copy consensus</source>
         <translation>Copy consensus</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="82"/>
+        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="105"/>
         <source>Copy consensus with gaps</source>
         <translation>Copy consensus with gaps</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="86"/>
+        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="109"/>
         <source>Consensus mode...</source>
         <translation>Consensus mode...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="152"/>
+        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="175"/>
         <source>MSA consensus algorothm is NULL</source>
         <translation>MSA consensus algorothm is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="153"/>
+        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="176"/>
         <source>MSA object is NULL</source>
         <translation>MSA object is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="173"/>
+        <location filename="../src/ov_msa/MSAEditorConsensusArea.cpp" line="196"/>
         <source>Percent value is out of [0..100] interval</source>
         <translation>Percent value is out of [0..100] interval</translation>
     </message>
@@ -5276,7 +5262,7 @@ Directory Path: %1</source>
 <context>
     <name>U2::MSAEditorConsensusCache</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorConsensusCache.cpp" line="69"/>
+        <location filename="../src/ov_msa/MSAEditorConsensusCache.cpp" line="71"/>
         <source>Can not update consensus chache item</source>
         <translation>Can not update consensus chache item</translation>
     </message>
@@ -5284,70 +5270,57 @@ Directory Path: %1</source>
 <context>
     <name>U2::MSAEditorFactory</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorFactory.cpp" line="44"/>
         <source>Alignment Editor</source>
-        <translation>Alignment Editor</translation>
+        <translation type="vanished">Alignment Editor</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorFactory.cpp" line="104"/>
         <source>Open multiple views</source>
-        <translation>Open multiple views</translation>
+        <translation type="vanished">Open multiple views</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAEditorNameList</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="67"/>
         <source>Edit sequence name</source>
-        <translation>Edit sequence name</translation>
+        <translation type="vanished">Edit sequence name</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="70"/>
         <source>Copy current sequence</source>
-        <translation>Copy current sequence</translation>
+        <translation type="vanished">Copy current sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="74"/>
         <source>Remove sequence(s)</source>
-        <translation>Remove sequence(s)</translation>
+        <translation type="vanished">Remove sequence(s)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="117"/>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="146"/>
         <source>MSA Editor UI is NULL</source>
-        <translation>MSA Editor UI is NULL</translation>
+        <translation type="vanished">MSA Editor UI is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="119"/>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="148"/>
         <source>MSA Editor sequence area is NULL</source>
-        <translation>MSA Editor sequence area is NULL</translation>
+        <translation type="vanished">MSA Editor sequence area is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="134"/>
         <source>MSA Object is NULL</source>
-        <translation>MSA Object is NULL</translation>
+        <translation type="vanished">MSA Object is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="139"/>
         <source>Invalid sequence index</source>
-        <translation>Invalid sequence index</translation>
+        <translation type="vanished">Invalid sequence index</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="860"/>
         <source>Rename</source>
-        <translation>Rename</translation>
+        <translation type="vanished">Rename</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorNameList.cpp" line="861"/>
         <source>New sequence name:</source>
-        <translation>New sequence name:</translation>
+        <translation type="vanished">New sequence name:</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAEditorOffsetsViewController</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorOffsetsView.cpp" line="68"/>
+        <location filename="../src/ov_msa/MSAEditorOffsetsView.cpp" line="69"/>
         <source>Show offsets</source>
         <translation>Show offsets</translation>
     </message>
@@ -5355,295 +5328,270 @@ Directory Path: %1</source>
 <context>
     <name>U2::MSAEditorSequenceArea</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="132"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="110"/>
         <source>Remove columns of gaps...</source>
         <translation>Remove columns of gaps...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="139"/>
         <source>Fill selection with gaps</source>
-        <translation>Fill selection with gaps</translation>
+        <translation type="vanished">Fill selection with gaps</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="145"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="117"/>
         <source>Save subalignment...</source>
         <translation>Save subalignment...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="149"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="121"/>
         <source>Save sequence...</source>
         <translation>Save sequence...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="153"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="125"/>
         <source>Go to position...</source>
         <translation>Go to position...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="160"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="132"/>
         <source>Remove all gaps</source>
         <translation>Remove all gaps</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="164"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="136"/>
         <source>Sequence from file...</source>
         <translation>Sequence from file...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="168"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="140"/>
         <source>Sequence from current project...</source>
         <translation>Sequence from current project...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="172"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="144"/>
         <source>Sort sequences by name</source>
         <translation>Sort sequences by name</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="176"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="148"/>
         <source>Switch on/off collapsing</source>
         <translation>Switch on/off collapsing</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="181"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="153"/>
         <source>Update collapsed groups</source>
         <translation>Update collapsed groups</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="186"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="158"/>
         <source>Replace selected rows with reverse-complement</source>
         <translation>Replace selected rows with reverse-complement</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="190"/>
         <source>Replace selected character</source>
-        <translation>Replace selected character</translation>
+        <translation type="vanished">Replace selected character</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="197"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="162"/>
         <source>Replace selected rows with reverse</source>
         <translation>Replace selected rows with reverse</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="201"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="166"/>
         <source>Replace selected rows with complement</source>
         <translation>Replace selected rows with complement</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="316"/>
         <source>Use dots</source>
-        <translation>Use dots</translation>
+        <translation type="vanished">Use dots</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="404"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="424"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="575"/>
         <source>Unknown alphabet</source>
-        <translation>Unknown alphabet</translation>
+        <translation type="vanished">Unknown alphabet</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="447"/>
         <source>MAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()</source>
-        <translation>MAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()</translation>
+        <translation type="vanished">MAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="449"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="210"/>
         <source>DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()</source>
         <translation>DNAAlphabet is null in MSAEditorSequenceArea::hasAminoAlphabet()</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="557"/>
         <source>No reference sequence selected</source>
-        <translation>No reference sequence selected</translation>
+        <translation type="vanished">No reference sequence selected</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="558"/>
         <source>Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</source>
-        <translation>Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</translation>
+        <translation type="vanished">Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="683"/>
         <source>Alignment object is NULL</source>
-        <translation>Alignment object is NULL</translation>
+        <translation type="vanished">Alignment object is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="805"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="900"/>
         <source>Position is out of range: %1</source>
-        <translation>Position is out of range: %1</translation>
+        <translation type="vanished">Position is out of range: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="831"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="909"/>
         <source>Sequence is out of range: %1</source>
-        <translation>Sequence is out of range: %1</translation>
+        <translation type="vanished">Sequence is out of range: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="868"/>
         <source>Negative startPos with non-empty alignment</source>
-        <translation>Negative startPos with non-empty alignment</translation>
+        <translation type="vanished">Negative startPos with non-empty alignment</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="869"/>
         <source>startPos is too big</source>
-        <translation>startPos is too big</translation>
+        <translation type="vanished">startPos is too big</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="890"/>
         <source>Negative startSeq with non-empty alignment</source>
-        <translation>Negative startSeq with non-empty alignment</translation>
+        <translation type="vanished">Negative startSeq with non-empty alignment</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="891"/>
         <source>startSeq is too big</source>
-        <translation>startSeq is too big</translation>
+        <translation type="vanished">startSeq is too big</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="923"/>
         <source>Horizontal scrollbar appears unexpectedly: numVisibleBases is too small</source>
-        <translation>Horizontal scrollbar appears unexpectedly: numVisibleBases is too small</translation>
+        <translation type="vanished">Horizontal scrollbar appears unexpectedly: numVisibleBases is too small</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="948"/>
         <source>Vertical scrollbar appears unexpectedly: numVisibleSequences is too small</source>
-        <translation>Vertical scrollbar appears unexpectedly: numVisibleSequences is too small</translation>
+        <translation type="vanished">Vertical scrollbar appears unexpectedly: numVisibleSequences is too small</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="995"/>
         <source>Alignment object is not available</source>
-        <translation>Alignment object is not available</translation>
+        <translation type="vanished">Alignment object is not available</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1026"/>
         <source>Last visible base is less than startPos</source>
-        <translation>Last visible base is less than startPos</translation>
+        <translation type="vanished">Last visible base is less than startPos</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1027"/>
         <source>Last visible base is out of range</source>
-        <translation>Last visible base is out of range</translation>
+        <translation type="vanished">Last visible base is out of range</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1060"/>
         <source>Last visible sequence is less than startSeq</source>
-        <translation>Last visible sequence is less than startSeq</translation>
+        <translation type="vanished">Last visible sequence is less than startSeq</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1061"/>
         <source>Last visible sequence is out of range</source>
-        <translation>Last visible sequence is out of range</translation>
+        <translation type="vanished">Last visible sequence is out of range</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1084"/>
         <source>Invalid collapsible item model!</source>
-        <translation>Invalid collapsible item model!</translation>
+        <translation type="vanished">Invalid collapsible item model!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1724"/>
         <source>Cursor position is out of range</source>
-        <translation>Cursor position is out of range</translation>
+        <translation type="vanished">Cursor position is out of range</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1938"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="208"/>
+        <source>MultipleAlignmentObject is null in MSAEditorSequenceArea::hasAminoAlphabet()</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="397"/>
         <source>Colors</source>
         <translation>Colors</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1945"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="404"/>
         <source>Custom schemes</source>
         <translation>Custom schemes</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1956"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="415"/>
         <source>Create new color scheme</source>
         <translation>Create new color scheme</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1964"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="423"/>
         <source>Highlighting</source>
         <translation>Highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1987"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="446"/>
         <source>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</source>
         <translation>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2006"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2105"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2166"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2683"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="465"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="533"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="564"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="844"/>
         <source>NULL collapsible model!</source>
         <translation>NULL collapsible model!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2060"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="511"/>
         <source>Go To</source>
         <translation>Go To</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2101"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="529"/>
         <source>NULL msa object!</source>
         <translation>NULL msa object!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2214"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="609"/>
         <source>Warning!</source>
         <translation>Warning!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2214"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="609"/>
         <source>You must select only one sequence for export.</source>
         <translation>You must select only one sequence for export.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2256"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="651"/>
         <source>warning</source>
         <translation>warning</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2256"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="651"/>
         <source>The document already in the project</source>
         <translation>The document already in the project</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2545"/>
         <source>It is not possible to insert the character into the alignment.Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</source>
-        <translation>It is not possible to insert the character into the alignment.Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</translation>
+        <translation type="vanished">It is not possible to insert the character into the alignment.Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2601"/>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2604"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="759"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="762"/>
         <source>Open file with sequences</source>
         <translation>Open file with sequences</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2610"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="768"/>
         <source>A problem occurred during adding sequences. The multiple alignment is no more available.</source>
         <translation>A problem occurred during adding sequences. The multiple alignment is no more available.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2700"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="862"/>
         <source>NULL Msa Object!</source>
         <translation>NULL Msa Object!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2705"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="867"/>
         <source>NULL document!</source>
         <translation>NULL document!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2728"/>
         <source>Top left corner of the selection has incorrect coords</source>
-        <translation>Top left corner of the selection has incorrect coords</translation>
+        <translation type="vanished">Top left corner of the selection has incorrect coords</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2730"/>
         <source>Bottom right corner of the selection has incorrect coords</source>
-        <translation>Bottom right corner of the selection has incorrect coords</translation>
+        <translation type="vanished">Bottom right corner of the selection has incorrect coords</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="2889"/>
+        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="1003"/>
         <source>Incorrect pointer to MSACollapsibleItemModel</source>
         <translation>Incorrect pointer to MSACollapsibleItemModel</translation>
     </message>
@@ -5651,62 +5599,62 @@ Directory Path: %1</source>
 <context>
     <name>U2::MSAEditorStatusWidget</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="46"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="45"/>
         <source>Find:</source>
         <translation>Find:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="50"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="49"/>
         <source>Find backward &lt;b&gt;(SHIFT + Enter)&lt;/b&gt;</source>
         <translation>Find backward &lt;b&gt;(SHIFT + Enter)&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="55"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="54"/>
         <source>Find forward &lt;b&gt;(Enter)&lt;/b&gt;</source>
         <translation>Find forward &lt;b&gt;(Enter)&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="104"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="103"/>
         <source>Find in alignment</source>
         <translation>Find in alignment</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="117"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="116"/>
         <source>Alignment object is locked</source>
         <translation>Alignment object is locked</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="117"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="116"/>
         <source>Alignment object is not locked</source>
         <translation>Alignment object is not locked</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="126"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="125"/>
         <source>Ln %1 / %2</source>
         <translation>Ln %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="130"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="129"/>
         <source>Line %1 of %2</source>
         <translation>Line %1 of %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="133"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="132"/>
         <source>Col %1 / %2</source>
         <translation>Col %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="137"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="136"/>
         <source>Column %1 of %2</source>
         <translation>Column %1 of %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="141"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="140"/>
         <source>Pos %1 / %2</source>
         <translation>Pos %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="144"/>
+        <location filename="../src/ov_msa/MSAEditorStatusBar.cpp" line="143"/>
         <source>Position %1 of %2</source>
         <translation>Position %1 of %2</translation>
     </message>
@@ -5791,32 +5739,27 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MSAEditorUI</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="918"/>
         <source>Remove selection</source>
-        <translation>Remove selection</translation>
+        <translation type="vanished">Remove selection</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="923"/>
         <source>Copy selection</source>
-        <translation>Copy selection</translation>
+        <translation type="vanished">Copy selection</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="932"/>
         <source>Copy formatted</source>
-        <translation>Copy formatted</translation>
+        <translation type="vanished">Copy formatted</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="941"/>
         <source>Paste</source>
-        <translation>Paste</translation>
+        <translation type="vanished">Paste</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="1000"/>
         <source>Consensus</source>
-        <translation>Consensus</translation>
+        <translation type="vanished">Consensus</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditor.cpp" line="1080"/>
+        <location filename="../src/ov_msa/MSAEditor.cpp" line="589"/>
         <source>Tree view</source>
         <translation>Tree view</translation>
     </message>
@@ -5824,12 +5767,12 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MSAExportConsensusTab</name>
     <message>
-        <location filename="../src/ov_msa/ExportConsensus/MSAExportConsensusTab.cpp" line="132"/>
+        <location filename="../src/ov_msa/ExportConsensus/MSAExportConsensusTab.cpp" line="133"/>
         <source>Save file</source>
         <translation>Save file</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/ExportConsensus/MSAExportConsensusTab.cpp" line="85"/>
+        <location filename="../src/ov_msa/ExportConsensus/MSAExportConsensusTab.cpp" line="86"/>
         <source>A problem occurred during export consensus. The multiple alignment is no more available.</source>
         <translation>A problem occurred during export consensus. The multiple alignment is no more available.</translation>
     </message>
@@ -5855,108 +5798,97 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MSAGraphCalculationTask</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="48"/>
         <source>MSA is NULL</source>
-        <translation>MSA is NULL</translation>
+        <translation type="vanished">MSA is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="69"/>
         <source>Overview width is zero</source>
-        <translation>Overview width is zero</translation>
+        <translation type="vanished">Overview width is zero</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="41"/>
         <source>Render overview</source>
-        <translation>Render overview</translation>
+        <translation type="vanished">Render overview</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAGraphOverview</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphOverview.cpp" line="106"/>
         <source>Multiple sequence alignment is too big. Overview is unavailable.</source>
-        <translation>Multiple sequence alignment is too big. Overview is unavailable.</translation>
+        <translation type="vanished">Multiple sequence alignment is too big. Overview is unavailable.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphOverview.cpp" line="111"/>
         <source>Waiting...</source>
-        <translation>Waiting...</translation>
+        <translation type="vanished">Waiting...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphOverview.cpp" line="117"/>
         <source>Overview is rendering...</source>
-        <translation>Overview is rendering...</translation>
+        <translation type="vanished">Overview is rendering...</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAHighlightingOverviewCalculationTask</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="201"/>
         <source>MSA highlighting scheme registry is NULL</source>
-        <translation>MSA highlighting scheme registry is NULL</translation>
+        <translation type="vanished">MSA highlighting scheme registry is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="203"/>
         <source>MSA highlighting scheme factory with &apos;%1&apos; id is NULL</source>
-        <translation>MSA highlighting scheme factory with &apos;%1&apos; id is NULL</translation>
+        <translation type="vanished">MSA highlighting scheme factory with &apos;%1&apos; id is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="220"/>
         <source>Color scheme is NULL</source>
-        <translation>Color scheme is NULL</translation>
+        <translation type="vanished">Color scheme is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="221"/>
         <source>Highlighting scheme is NULL</source>
-        <translation>Highlighting scheme is NULL</translation>
+        <translation type="vanished">Highlighting scheme is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAGraphCalculationTask.cpp" line="222"/>
         <source>Highlighting scheme factory is NULL</source>
-        <translation>Highlighting scheme factory is NULL</translation>
+        <translation type="vanished">Highlighting scheme factory is NULL</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAHighlightingTab</name>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="91"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="92"/>
         <source>Use dots</source>
         <translation>Use dots</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="95"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="96"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="103"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="104"/>
         <source>Highlight characters with conservation level:</source>
         <translation>Highlight characters with conservation level:</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="106"/>
         <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="107"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="108"/>
         <source> threshold</source>
         <translation> threshold</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="118"/>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="284"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="119"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="305"/>
         <source>Threshold: %1%</source>
         <translation>Threshold: %1%</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="146"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="147"/>
         <source>Color</source>
         <translation>Color</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="149"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="150"/>
         <source>Highlighting</source>
         <translation>Highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="262"/>
+        <location filename="../src/ov_msa/Highlighting/MSAHighlightingTab.cpp" line="283"/>
         <source>Hint: select a reference above</source>
         <translation>Hint: select a reference above</translation>
     </message>
@@ -6053,140 +5985,717 @@ All phylogenetic tree(s), opened in the same view, will be no more synchronized 
 <context>
     <name>U2::MSAOverviewContextMenu</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="44"/>
         <source>Overview is NULL</source>
-        <translation>Overview is NULL</translation>
+        <translation type="vanished">Overview is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="45"/>
         <source>Graph overview is NULL</source>
-        <translation>Graph overview is NULL</translation>
+        <translation type="vanished">Graph overview is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="55"/>
         <source>Set color...</source>
-        <translation>Set color...</translation>
+        <translation type="vanished">Set color...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="139"/>
         <source>Show simple overview</source>
-        <translation>Show simple overview</translation>
+        <translation type="vanished">Show simple overview</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="146"/>
         <source>Export as image</source>
-        <translation>Export as image</translation>
+        <translation type="vanished">Export as image</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="152"/>
         <source>Display settings...</source>
-        <translation>Display settings...</translation>
+        <translation type="vanished">Display settings...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="159"/>
         <source>Calculation method...</source>
-        <translation>Calculation method...</translation>
+        <translation type="vanished">Calculation method...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="162"/>
         <source>Strict</source>
-        <translation>Strict</translation>
+        <translation type="vanished">Strict</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="163"/>
         <source>Gaps</source>
-        <translation>Gaps</translation>
+        <translation type="vanished">Gaps</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="164"/>
         <source>Clustal</source>
-        <translation>Clustal</translation>
+        <translation type="vanished">Clustal</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="165"/>
         <source>Highlighting</source>
-        <translation>Highlighting</translation>
+        <translation type="vanished">Highlighting</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="193"/>
         <source>Graph type</source>
-        <translation>Graph type</translation>
+        <translation type="vanished">Graph type</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="197"/>
         <source>Histogram</source>
-        <translation>Histogram</translation>
+        <translation type="vanished">Histogram</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="198"/>
         <source>Line graph</source>
-        <translation>Line graph</translation>
+        <translation type="vanished">Line graph</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="199"/>
         <source>Area graph</source>
-        <translation>Area graph</translation>
+        <translation type="vanished">Area graph</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="220"/>
         <source>Orientation</source>
-        <translation>Orientation</translation>
+        <translation type="vanished">Orientation</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="224"/>
         <source>Top to bottom</source>
-        <translation>Top to bottom</translation>
+        <translation type="vanished">Top to bottom</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewContextMenu.cpp" line="225"/>
         <source>Bottom to top</source>
-        <translation>Bottom to top</translation>
+        <translation type="vanished">Bottom to top</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAOverviewImageExportController</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewImageExportTask.cpp" line="83"/>
         <source>Alignment overview</source>
-        <translation>Alignment overview</translation>
+        <translation type="vanished">Alignment overview</translation>
     </message>
 </context>
 <context>
     <name>U2::MSAOverviewImageExportToBitmapTask</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewImageExportTask.cpp" line="49"/>
         <source>Overview is NULL</source>
-        <translation>Overview is NULL</translation>
+        <translation type="vanished">Overview is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewImageExportTask.cpp" line="50"/>
         <source>Graph overview is NULL</source>
-        <translation>Graph overview is NULL</translation>
+        <translation type="vanished">Graph overview is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewImageExportTask.cpp" line="52"/>
         <source>Nothing to export. </source>
-        <translation>Nothing to export. </translation>
+        <translation type="vanished">Nothing to export. </translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSAOverviewImageExportTask.cpp" line="72"/>
         <source>FAIL</source>
-        <translation>FAIL</translation>
+        <translation type="vanished">FAIL</translation>
     </message>
 </context>
 <context>
     <name>U2::MSASimpleOverview</name>
     <message>
-        <location filename="../src/ov_msa/Overview/MSASimpleOverview.cpp" line="104"/>
         <source>Multiple sequence alignment is too big for current window size.
 Simple overview is unavailable.</source>
-        <translation>Multiple sequence alignment is too big for current window size.
+        <translation type="vanished">Multiple sequence alignment is too big for current window size.
 Simple overview is unavailable.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/Overview/MSASimpleOverview.cpp" line="153"/>
         <source>Incorrect multiple alignment object!</source>
-        <translation>Incorrect multiple alignment object!</translation>
+        <translation type="vanished">Incorrect multiple alignment object!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaClustalOverviewCalculationTask</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="169"/>
+        <source>MSAConsensusAlgorithmRegistry is NULL!</source>
+        <translation type="unfinished">MSAConsensusAlgorithmRegistry is NULL!</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="172"/>
+        <source>Clustal algorithm factory is NULL</source>
+        <translation type="unfinished">Clustal algorithm factory is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="174"/>
+        <source>MSA is NULL</source>
+        <translation type="unfinished">MSA is NULL</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaConsensusOverviewCalculationTask</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="133"/>
+        <source>MSAConsensusAlgorithmRegistry is NULL!</source>
+        <translation type="unfinished">MSAConsensusAlgorithmRegistry is NULL!</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="136"/>
+        <source>Strict consensus algorithm factory is NULL</source>
+        <translation type="unfinished">Strict consensus algorithm factory is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="138"/>
+        <source>MSA is NULL</source>
+        <translation type="unfinished">MSA is NULL</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaEditor</name>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="75"/>
+        <source>Save alignment</source>
+        <translation type="unfinished">Save alignment</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="79"/>
+        <source>Save alignment as</source>
+        <translation type="unfinished">Save alignment as</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="83"/>
+        <source>Zoom In</source>
+        <translation type="unfinished">Zoom In</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="87"/>
+        <source>Zoom Out</source>
+        <translation type="unfinished">Zoom Out</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="91"/>
+        <source>Zoom To Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="95"/>
+        <source>Reset Zoom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="99"/>
+        <source>Change Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="103"/>
+        <source>Export highlighted</source>
+        <translation type="unfinished">Export highlighted</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="340"/>
+        <source>Save Alignment</source>
+        <translation type="unfinished">Save Alignment</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="346"/>
+        <source>Select font for alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="370"/>
+        <source>Export as image</source>
+        <translation type="unfinished">Export as image</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="374"/>
+        <source>Overview</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="382"/>
+        <source>Copy/Paste</source>
+        <translation type="unfinished">Copy/Paste</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="387"/>
+        <source>Edit</source>
+        <translation type="unfinished">Edit</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="392"/>
+        <source>Export</source>
+        <translation type="unfinished">Export</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="405"/>
+        <source>View</source>
+        <translation type="unfinished">View</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="413"/>
+        <source>Add</source>
+        <translation type="unfinished">Add</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditor.cpp" line="418"/>
+        <source>Align</source>
+        <translation type="unfinished">Align</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaEditorFactory</name>
+    <message>
+        <location filename="../src/ov_msa/MaEditorFactory.cpp" line="46"/>
+        <source>Alignment Editor</source>
+        <translation type="unfinished">Alignment Editor</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorFactory.cpp" line="106"/>
+        <source>Open multiple views</source>
+        <translation type="unfinished">Open multiple views</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaEditorNameList</name>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="65"/>
+        <source>Edit sequence name</source>
+        <translation type="unfinished">Edit sequence name</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="68"/>
+        <source>Copy current sequence</source>
+        <translation type="unfinished">Copy current sequence</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="72"/>
+        <source>Remove sequence(s)</source>
+        <translation type="unfinished">Remove sequence(s)</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="116"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="145"/>
+        <source>MSA Editor UI is NULL</source>
+        <translation type="unfinished">MSA Editor UI is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="118"/>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="147"/>
+        <source>MSA Editor sequence area is NULL</source>
+        <translation type="unfinished">MSA Editor sequence area is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="133"/>
+        <source>MSA Object is NULL</source>
+        <translation type="unfinished">MSA Object is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="138"/>
+        <source>Invalid sequence index</source>
+        <translation type="unfinished">Invalid sequence index</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="854"/>
+        <source>Rename</source>
+        <translation type="unfinished">Rename</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="855"/>
+        <source>New sequence name:</source>
+        <translation type="unfinished">New sequence name:</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaEditorSequenceArea</name>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="85"/>
+        <source>Replace selected character</source>
+        <translation type="unfinished">Replace selected character</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="92"/>
+        <source>Fill selection with gaps</source>
+        <translation type="unfinished">Fill selection with gaps</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="154"/>
+        <source>Last visible base is less than startPos</source>
+        <translation type="unfinished">Last visible base is less than startPos</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="155"/>
+        <source>Last visible base is out of range</source>
+        <translation type="unfinished">Last visible base is out of range</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="204"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1034"/>
+        <source>Position is out of range: %1</source>
+        <translation type="unfinished">Position is out of range: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="251"/>
+        <source>Last visible sequence is less than startSeq</source>
+        <translation type="unfinished">Last visible sequence is less than startSeq</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="252"/>
+        <source>Last visible sequence is out of range</source>
+        <translation type="unfinished">Last visible sequence is out of range</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="275"/>
+        <source>Invalid collapsible item model!</source>
+        <translation type="unfinished">Invalid collapsible item model!</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="326"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1043"/>
+        <source>Sequence is out of range: %1</source>
+        <translation type="unfinished">Sequence is out of range: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="778"/>
+        <source>Alignment object is not available</source>
+        <translation type="unfinished">Alignment object is not available</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1126"/>
+        <source>No reference sequence selected</source>
+        <translation type="unfinished">No reference sequence selected</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1127"/>
+        <source>Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</source>
+        <translation type="unfinished">Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1144"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1796"/>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1928"/>
+        <source>Unknown alphabet</source>
+        <translation type="unfinished">Unknown alphabet</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1166"/>
+        <source>Cursor position is out of range</source>
+        <translation type="unfinished">Cursor position is out of range</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1544"/>
+        <source>Top left corner of the selection has incorrect coords</source>
+        <translation type="unfinished">Top left corner of the selection has incorrect coords</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1546"/>
+        <source>Bottom right corner of the selection has incorrect coords</source>
+        <translation type="unfinished">Bottom right corner of the selection has incorrect coords</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1665"/>
+        <source>Negative startPos with non-empty alignment</source>
+        <translation type="unfinished">Negative startPos with non-empty alignment</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1666"/>
+        <source>startPos is too big</source>
+        <translation type="unfinished">startPos is too big</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1687"/>
+        <source>Negative startSeq with non-empty alignment</source>
+        <translation type="unfinished">Negative startSeq with non-empty alignment</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1688"/>
+        <source>startSeq is too big</source>
+        <translation type="unfinished">startSeq is too big</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1732"/>
+        <source>Use dots</source>
+        <translation type="unfinished">Use dots</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1946"/>
+        <source>Horizontal scrollbar appears unexpectedly: numVisibleBases is too small</source>
+        <translation type="unfinished">Horizontal scrollbar appears unexpectedly: numVisibleBases is too small</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="1971"/>
+        <source>Vertical scrollbar appears unexpectedly: numVisibleSequences is too small</source>
+        <translation type="unfinished">Vertical scrollbar appears unexpectedly: numVisibleSequences is too small</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorSequenceArea.cpp" line="2025"/>
+        <source>It is not possible to insert the character into the alignment.Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</source>
+        <translation type="unfinished">It is not possible to insert the character into the alignment.Please use a character from set A-Z (upper-case or lower-case) or the gap character (&apos;Space&apos;, &apos;-&apos; or &apos;%1&apos;).</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaEditorWgt</name>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="163"/>
+        <source>Consensus</source>
+        <translation type="unfinished">Consensus</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="200"/>
+        <source>Remove selection</source>
+        <translation type="unfinished">Remove selection</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="205"/>
+        <source>Copy selection</source>
+        <translation type="unfinished">Copy selection</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="214"/>
+        <source>Copy formatted</source>
+        <translation type="unfinished">Copy formatted</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/MaEditorWgt.cpp" line="223"/>
+        <source>Paste</source>
+        <translation type="unfinished">Paste</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaGraphCalculationTask</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="41"/>
+        <source>Render overview</source>
+        <translation type="unfinished">Render overview</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="49"/>
+        <source>MSA is NULL</source>
+        <translation type="unfinished">MSA is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="70"/>
+        <source>Overview width is zero</source>
+        <translation type="unfinished">Overview width is zero</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaGraphOverview</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphOverview.cpp" line="99"/>
+        <source>Multiple sequence alignment is too big. Overview is unavailable.</source>
+        <translation type="unfinished">Multiple sequence alignment is too big. Overview is unavailable.</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphOverview.cpp" line="104"/>
+        <source>Waiting...</source>
+        <translation type="unfinished">Waiting...</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphOverview.cpp" line="110"/>
+        <source>Overview is rendering...</source>
+        <translation type="unfinished">Overview is rendering...</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaHighlightingOverviewCalculationTask</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="201"/>
+        <source>MSA highlighting scheme registry is NULL</source>
+        <translation type="unfinished">MSA highlighting scheme registry is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="203"/>
+        <source>MSA highlighting scheme factory with &apos;%1&apos; id is NULL</source>
+        <translation type="unfinished">MSA highlighting scheme factory with &apos;%1&apos; id is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="220"/>
+        <source>Color scheme is NULL</source>
+        <translation type="unfinished">Color scheme is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="221"/>
+        <source>Highlighting scheme is NULL</source>
+        <translation type="unfinished">Highlighting scheme is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaGraphCalculationTask.cpp" line="222"/>
+        <source>Highlighting scheme factory is NULL</source>
+        <translation type="unfinished">Highlighting scheme factory is NULL</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaOverviewContextMenu</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="44"/>
+        <source>Overview is NULL</source>
+        <translation type="unfinished">Overview is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="45"/>
+        <source>Graph overview is NULL</source>
+        <translation type="unfinished">Graph overview is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="55"/>
+        <source>Set color...</source>
+        <translation type="unfinished">Set color...</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="139"/>
+        <source>Show simple overview</source>
+        <translation type="unfinished">Show simple overview</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="146"/>
+        <source>Export as image</source>
+        <translation type="unfinished">Export as image</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="152"/>
+        <source>Display settings...</source>
+        <translation type="unfinished">Display settings...</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="159"/>
+        <source>Calculation method...</source>
+        <translation type="unfinished">Calculation method...</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="162"/>
+        <source>Strict</source>
+        <translation type="unfinished">Strict</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="163"/>
+        <source>Gaps</source>
+        <translation type="unfinished">Gaps</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="164"/>
+        <source>Clustal</source>
+        <translation type="unfinished">Clustal</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="165"/>
+        <source>Highlighting</source>
+        <translation type="unfinished">Highlighting</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="193"/>
+        <source>Graph type</source>
+        <translation type="unfinished">Graph type</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="197"/>
+        <source>Histogram</source>
+        <translation type="unfinished">Histogram</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="198"/>
+        <source>Line graph</source>
+        <translation type="unfinished">Line graph</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="199"/>
+        <source>Area graph</source>
+        <translation type="unfinished">Area graph</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="220"/>
+        <source>Orientation</source>
+        <translation type="unfinished">Orientation</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="224"/>
+        <source>Top to bottom</source>
+        <translation type="unfinished">Top to bottom</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewContextMenu.cpp" line="225"/>
+        <source>Bottom to top</source>
+        <translation type="unfinished">Bottom to top</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaOverviewImageExportController</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewImageExportTask.cpp" line="83"/>
+        <source>Alignment overview</source>
+        <translation type="unfinished">Alignment overview</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaOverviewImageExportToBitmapTask</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewImageExportTask.cpp" line="49"/>
+        <source>Overview is NULL</source>
+        <translation type="unfinished">Overview is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewImageExportTask.cpp" line="50"/>
+        <source>Graph overview is NULL</source>
+        <translation type="unfinished">Graph overview is NULL</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewImageExportTask.cpp" line="52"/>
+        <source>Nothing to export. </source>
+        <translation type="unfinished">Nothing to export. </translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaOverviewImageExportTask.cpp" line="72"/>
+        <source>FAIL</source>
+        <translation type="unfinished">FAIL</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaSangerOverview</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaSangerOverview.cpp" line="90"/>
+        <source>Incorrect multiple alignment object!</source>
+        <translation type="unfinished">Incorrect multiple alignment object!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaSimpleOverview</name>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaSimpleOverview.cpp" line="97"/>
+        <source>Multiple sequence alignment is too big for current window size.
+Simple overview is unavailable.</source>
+        <translation type="unfinished">Multiple sequence alignment is too big for current window size.
+Simple overview is unavailable.</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/Overview/MaSimpleOverview.cpp" line="146"/>
+        <source>Incorrect multiple alignment object!</source>
+        <translation type="unfinished">Incorrect multiple alignment object!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::McaEditor</name>
+    <message>
+        <location filename="../src/ov_msa/McaEditor.cpp" line="62"/>
+        <source>Show/hide chromatogram(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::McaEditorSequenceArea</name>
+    <message>
+        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="46"/>
+        <source>Show quality bars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="54"/>
+        <source>Show all</source>
+        <translation type="unfinished">Show all</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="57"/>
+        <source>Show/hide trace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/McaEditorSequenceArea.cpp" line="65"/>
+        <source>Add insertion</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>U2::McaGeneralTab</name>
+    <message>
+        <location filename="../src/ov_msa/General/McaGeneralTab.cpp" line="34"/>
+        <source>Alignment info</source>
+        <translation type="unfinished">Alignment info</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_msa/General/McaGeneralTab.cpp" line="36"/>
+        <source>Consensus mode</source>
+        <translation type="unfinished">Consensus mode</translation>
     </message>
 </context>
 <context>
@@ -6215,9 +6724,9 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::MsaEditorSimilarityColumn</name>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="62"/>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="68"/>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="76"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="63"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="69"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="77"/>
         <source>-</source>
         <translation>-</translation>
     </message>
@@ -6297,19 +6806,26 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::OpenMSAEditorTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="90"/>
         <source>Documet removed from project</source>
-        <translation>Documet removed from project</translation>
+        <translation type="vanished">Documet removed from project</translation>
+    </message>
+</context>
+<context>
+    <name>U2::OpenMaEditorTask</name>
+    <message>
+        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="100"/>
+        <source>Documet removed from project</source>
+        <translation type="unfinished">Documet removed from project</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="104"/>
+        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="113"/>
         <source>Multiple alignment object not found</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="109"/>
+        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="118"/>
         <source>Opening MSA editor for object: %1</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6331,7 +6847,7 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::OpenSavedMSAEditorTask</name>
     <message>
-        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="167"/>
+        <location filename="../src/ov_msa/MSAEditorTasks.cpp" line="226"/>
         <source>Alignment object not found: %1</source>
         <translation>Alignment object not found: %1</translation>
     </message>
@@ -6458,12 +6974,12 @@ Simple overview is unavailable.</translation>
         <translation>Save file</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PairAlign/PairAlign.cpp" line="363"/>
+        <location filename="../src/ov_msa/PairAlign/PairAlign.cpp" line="359"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/PairAlign/PairAlign.cpp" line="363"/>
+        <location filename="../src/ov_msa/PairAlign/PairAlign.cpp" line="359"/>
         <source>Please, change the output file.</source>
         <translation>Please, change the output file.</translation>
     </message>
@@ -6471,42 +6987,42 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::PanView</name>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="161"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="159"/>
         <source>Zoom In</source>
         <translation>Zoom In</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="165"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="163"/>
         <source>Zoom Out</source>
         <translation>Zoom Out</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="169"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="167"/>
         <source>Zoom to Selection</source>
         <translation>Zoom to Selection</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="173"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="171"/>
         <source>Zoom to Whole Sequence</source>
         <translation>Zoom to Whole Sequence</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="177"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="175"/>
         <source>Show Main Ruler</source>
         <translation>Show Main Ruler</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="183"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="181"/>
         <source>Show Custom Rulers</source>
         <translation>Show Custom Rulers</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="485"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="483"/>
         <source>range change request: [%1, %2]</source>
         <translation>range change request: [%1, %2]</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="421"/>
+        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="422"/>
         <source>empty</source>
         <translation>empty</translation>
     </message>
@@ -6514,7 +7030,7 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::PanViewRenderer</name>
     <message>
-        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="266"/>
+        <location filename="../src/ov_sequence/view_rendering/PanViewRenderer.cpp" line="267"/>
         <source>[%1 %2]</source>
         <translation>[%1 %2]</translation>
     </message>
@@ -6538,18 +7054,18 @@ Simple overview is unavailable.</translation>
 <context>
     <name>U2::SaveGraphCutoffsDialogController</name>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="45"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="52"/>
         <source>Save</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="46"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="53"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="101"/>
-        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="158"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="108"/>
+        <location filename="../src/ov_sequence/SaveGraphCutoffsDialogController.cpp" line="165"/>
         <source>Error!</source>
         <translation>Error!</translation>
     </message>
@@ -6716,22 +7232,20 @@ Please, load the corresponding plugins.</translation>
 <context>
     <name>U2::SelectSubalignmentDialog</name>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="119"/>
         <source>MSA Editor UI is NULL</source>
-        <translation>MSA Editor UI is NULL</translation>
+        <translation type="vanished">MSA Editor UI is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="120"/>
         <source>MSA Editor is NULL</source>
-        <translation>MSA Editor is NULL</translation>
+        <translation type="vanished">MSA Editor is NULL</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="124"/>
+        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="123"/>
         <source>Select</source>
         <translation>Select</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="131"/>
+        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="130"/>
         <source>MSA Object is NULL</source>
         <translation>MSA Object is NULL</translation>
     </message>
@@ -6750,6 +7264,11 @@ Please, load the corresponding plugins.</translation>
         <source>No sequences selected</source>
         <translation>No sequences selected</translation>
     </message>
+    <message>
+        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="119"/>
+        <source>Ma Editor is NULL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::SeqStatisticsWidget</name>
@@ -6767,6 +7286,14 @@ Please, load the corresponding plugins.</translation>
         <location filename="../src/ov_msa/SeqStatistics/SeqStatisticsWidget.cpp" line="104"/>
         <source>Press button to update</source>
         <translation>Press button to update</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SequenceAreaRenderer</name>
+    <message>
+        <location filename="../src/ov_msa/view_rendering/SequenceAreaRenderer.cpp" line="50"/>
+        <source>Alignment object is NULL</source>
+        <translation type="unfinished">Alignment object is NULL</translation>
     </message>
 </context>
 <context>
@@ -6813,6 +7340,39 @@ Please, load the corresponding plugins.</translation>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="485"/>
         <source>%1</source>
         <translation>%1</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SequenceObjectContext</name>
+    <message>
+        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="216"/>
+        <source>Incorrect signal sender!</source>
+        <translation type="unfinished">Incorrect signal sender!</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="227"/>
+        <source>Select genetic code</source>
+        <translation type="unfinished">Select genetic code</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="239"/>
+        <source>Show/hide amino acid translations</source>
+        <translation type="unfinished">Show/hide amino acid translations</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="247"/>
+        <source>Show direct only</source>
+        <translation type="unfinished">Show direct only</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="248"/>
+        <source>Show complementary only</source>
+        <translation type="unfinished">Show complementary only</translation>
+    </message>
+    <message>
+        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="249"/>
+        <source>Show all</source>
+        <translation type="unfinished">Show all</translation>
     </message>
 </context>
 <context>
@@ -6979,7 +7539,7 @@ Please, load the corresponding plugins.</translation>
 <context>
     <name>U2::SubalignmentToClipboardTask</name>
     <message>
-        <location filename="../src/ov_msa/Clipboard/SubalignmentToClipboardTask.cpp" line="242"/>
+        <location filename="../src/ov_msa/Clipboard/SubalignmentToClipboardTask.cpp" line="239"/>
         <source>Copy formatted alignment to the clipboard</source>
         <translation>Copy formatted alignment to the clipboard</translation>
     </message>

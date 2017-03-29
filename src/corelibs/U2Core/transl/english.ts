@@ -64,14 +64,14 @@
         <translation>Loaded sequences have different alphabets. That&apos;s why several sequence objects are created, each for specified alphabet. All sequences at one object have the same alphabet and sequences from different objects have different alphabets.</translation>
     </message>
     <message>
+        <location filename="../src/datatype/Annotation.cpp" line="603"/>
         <location filename="../src/datatype/Annotation.cpp" line="606"/>
-        <location filename="../src/datatype/Annotation.cpp" line="609"/>
         <source>Sequence</source>
         <translation>Sequence</translation>
     </message>
     <message>
+        <location filename="../src/datatype/Annotation.cpp" line="614"/>
         <location filename="../src/datatype/Annotation.cpp" line="617"/>
-        <location filename="../src/datatype/Annotation.cpp" line="620"/>
         <source>Translation</source>
         <translation>Translation</translation>
     </message>
@@ -86,17 +86,17 @@
         <translation>Invalid database type: %1</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectUtils.cpp" line="427"/>
+        <location filename="../src/gobjects/GObjectUtils.cpp" line="430"/>
         <source>Unsupported object type: %1</source>
         <translation>Unsupported object type: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="409"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="410"/>
         <source>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</source>
         <translation>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="564"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="565"/>
         <source>Invalid number of symbols: %1</source>
         <translation>Invalid number of symbols: %1</translation>
     </message>
@@ -551,12 +551,12 @@
         <translation>Unexpected feature operator value detected.</translation>
     </message>
     <message>
-        <location filename="../src/util/MAlignmentImporter.cpp" line="45"/>
+        <location filename="../src/util/MultipleSequenceAlignmentImporter.cpp" line="46"/>
         <source>Unexpected number of sequences in a multiple alignment</source>
         <translation>Unexpected number of sequences in a multiple alignment</translation>
     </message>
     <message>
-        <location filename="../src/util/MAlignmentImporter.cpp" line="83"/>
+        <location filename="../src/util/MultipleSequenceAlignmentImporter.cpp" line="84"/>
         <source>Unexpected error on MSA rows import</source>
         <translation>Unexpected error on MSA rows import</translation>
     </message>
@@ -564,6 +564,11 @@
         <location filename="../src/util/U2AlphabetUtils.h" line="101"/>
         <source>Symbol is not belong to alphabet</source>
         <translation>Symbol is not belong to alphabet</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleChromatogramAlignmentImporter.cpp" line="72"/>
+        <source>Unexpected error on MCA rows import</source>
+        <translation>Unexpected error on MCA rows import</translation>
     </message>
 </context>
 <context>
@@ -609,22 +614,22 @@
 <context>
     <name>U2::AddSequenceObjectsToAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="49"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="55"/>
         <source>Object is empty.</source>
         <translation>Object is empty.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="54"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="60"/>
         <source>Object is locked for modifications.</source>
         <translation>Object is locked for modifications.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="155"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="161"/>
         <source>Some sequences have wrong alphabet: </source>
         <translation>Some sequences have wrong alphabet: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="158"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="164"/>
         <source> and others</source>
         <translation> and others</translation>
     </message>
@@ -920,12 +925,12 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::DBXRefRegistry</name>
     <message>
-        <location filename="../src/globals/DBXRefRegistry.cpp" line="42"/>
+        <location filename="../src/globals/DBXRefRegistry.cpp" line="37"/>
         <source>File with db_xref mappings not found: %1</source>
         <translation>File with db_xref mappings not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/DBXRefRegistry.cpp" line="53"/>
+        <location filename="../src/globals/DBXRefRegistry.cpp" line="48"/>
         <source>Illegal db_xref file entry: %1</source>
         <translation></translation>
     </message>
@@ -1245,12 +1250,12 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::DbiDocumentFormat</name>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="46"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="47"/>
         <source>ugenedb is a internal UGENE database file format</source>
         <translation>ugenedb is a internal UGENE database file format</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="129"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="152"/>
         <source>Invalid destination database reference</source>
         <translation>Invalid destination database reference</translation>
     </message>
@@ -1319,12 +1324,12 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::DocumentUtils</name>
     <message>
-        <location filename="../src/models/DocumentUtils.cpp" line="260"/>
+        <location filename="../src/models/DocumentUtils.cpp" line="261"/>
         <source>Format does not support writing of alignments</source>
         <translation>Format does not support writing of alignments</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentUtils.cpp" line="271"/>
+        <location filename="../src/models/DocumentUtils.cpp" line="272"/>
         <source>File content was merged</source>
         <translation>File content was merged</translation>
     </message>
@@ -1484,42 +1489,44 @@ The session database file is removed after closing of UGENE.</translation>
         <translation>Chromatograms</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="49"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
         <source>Alignment</source>
         <translation>Alignment</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="49"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
         <source>Alignments</source>
         <translation>Alignments</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
         <source>Tree</source>
         <translation>Tree</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="50"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
         <source>Trees</source>
         <translation>Trees</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="53"/>
         <source>3D model</source>
         <translation>3D model</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="51"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="53"/>
         <source>3D models</source>
         <translation>3D models</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="54"/>
         <source>Assembly</source>
         <translation>Assembly</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectTypes.cpp" line="52"/>
+        <location filename="../src/gobjects/GObjectTypes.cpp" line="54"/>
         <source>Assemblies</source>
         <translation>Assemblies</translation>
     </message>
@@ -1972,43 +1979,43 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::LoadDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="230"/>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="245"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="225"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="240"/>
         <source>Read document: &apos;%1&apos;</source>
         <translation>Read document: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="266"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="261"/>
         <source>Document format is NULL!</source>
         <translation>Document format is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="267"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="262"/>
         <source>IO adapter factory is NULL!</source>
         <translation>IO adapter factory is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="447"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="442"/>
         <source>Document not found %1</source>
         <translation>Document not found %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="467"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="462"/>
         <source>Not enough memory to load document %1</source>
         <translation>Not enough memory to load document %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="483"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="478"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="513"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="508"/>
         <source>Object not found: %1</source>
         <translation>Object not found: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="520"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="515"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Can&apos;t add object. Document format constraints check failed: %1</translation>
     </message>
@@ -2029,37 +2036,37 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::LoadUnloadedDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="89"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="84"/>
         <source>Load &apos;%1&apos;</source>
         <translation>Load &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="97"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="92"/>
         <source>Document not found</source>
         <translation>Document not found</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="104"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="99"/>
         <source>Starting load document from %1, document format %2</source>
         <translation>Starting load document from %1, document format %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="130"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="125"/>
         <source>Document was removed</source>
         <translation>Document was removed</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="163"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="158"/>
         <source>Document is locked</source>
         <translation>Document is locked</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="182"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="177"/>
         <source>Project Document:</source>
         <translation>Project Document:</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="200"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="195"/>
         <source>Annotation object not found</source>
         <translation>Annotation object not found</translation>
     </message>
@@ -2073,65 +2080,45 @@ The session database file is removed after closing of UGENE.</translation>
     </message>
 </context>
 <context>
-    <name>U2::MAlignmentObject</name>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="77"/>
-        <source>Unexpected gap start</source>
-        <translation>Unexpected gap start</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="86"/>
-        <source>Unexpected gap start (too small)</source>
-        <translation>Unexpected gap start (too small)</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="87"/>
-        <source>Unexpected gap start (too big)</source>
-        <translation>Unexpected gap start (too big)</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="101"/>
-        <source> Incorrect gap splitting</source>
-        <translation> Incorrect gap splitting</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="136"/>
-        <source> Alignment walker is ended</source>
-        <translation> Alignment walker is ended</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MAlignmentWalker.cpp" line="137"/>
-        <source> Alignment changed</source>
-        <translation> Alignment changed</translation>
-    </message>
-</context>
-<context>
     <name>U2::MSAUtils</name>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="183"/>
+        <location filename="../src/util/MSAUtils.cpp" line="182"/>
         <source>Alphabets of the alignment and the sequence cannot be derived</source>
         <translation>Alphabets of the alignment and the sequence cannot be derived</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="191"/>
+        <location filename="../src/util/MSAUtils.cpp" line="190"/>
         <source>Sequences have different alphabets.</source>
         <translation>Sequences have different alphabets.</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="219"/>
-        <location filename="../src/util/MSAUtils.cpp" line="224"/>
+        <location filename="../src/util/MSAUtils.cpp" line="218"/>
+        <location filename="../src/util/MSAUtils.cpp" line="223"/>
         <source>Alignment is empty!</source>
         <translation>Alignment is empty!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="231"/>
+        <location filename="../src/util/MSAUtils.cpp" line="229"/>
         <source>Sequences in alignment have different sizes!</source>
         <translation>Sequences in alignment have different sizes!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="340"/>
+        <location filename="../src/util/MSAUtils.cpp" line="337"/>
         <source>Can&apos;t find a row in an alignment!</source>
         <translation>Can&apos;t find a row in an alignment!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MaDbiUtils</name>
+    <message>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="157"/>
+        <source>Can&apos;t rename an alignment to an empty name!</source>
+        <translation>Can&apos;t rename an alignment to an empty name!</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="197"/>
+        <source>Can&apos;t rename a row to an empty name!</source>
+        <translation>Can&apos;t rename a row to an empty name!</translation>
     </message>
 </context>
 <context>
@@ -2185,18 +2172,17 @@ The session database file is removed after closing of UGENE.</translation>
 <context>
     <name>U2::MsaDbiUtils</name>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="865"/>
         <source>Can&apos;t rename an alignment to an empty name!</source>
-        <translation>Can&apos;t rename an alignment to an empty name!</translation>
+        <translation type="vanished">Can&apos;t rename an alignment to an empty name!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="894"/>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="901"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="935"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="942"/>
         <source>Failed to insert gaps into an alignment!</source>
         <translation>Failed to insert gaps into an alignment!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1070"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1090"/>
         <source>Failed to crop an alignment!</source>
         <translation>Failed to crop an alignment!</translation>
     </message>
@@ -2205,9 +2191,41 @@ The session database file is removed after closing of UGENE.</translation>
         <translation type="obsolete">Failed to add a row to an alignment!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1195"/>
         <source>Can&apos;t rename a row to an empty name!</source>
-        <translation>Can&apos;t rename a row to an empty name!</translation>
+        <translation type="vanished">Can&apos;t rename a row to an empty name!</translation>
+    </message>
+</context>
+<context>
+    <name>U2::MultipleSequenceAlignmentObject</name>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="79"/>
+        <source>Unexpected gap start</source>
+        <translation>Unexpected gap start</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="88"/>
+        <source>Unexpected gap start (too small)</source>
+        <translation>Unexpected gap start (too small)</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="89"/>
+        <source>Unexpected gap start (too big)</source>
+        <translation>Unexpected gap start (too big)</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="103"/>
+        <source> Incorrect gap splitting</source>
+        <translation> Incorrect gap splitting</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="138"/>
+        <source> Alignment walker is ended</source>
+        <translation> Alignment walker is ended</translation>
+    </message>
+    <message>
+        <location filename="../src/util/MultipleSequenceAlignmentWalker.cpp" line="139"/>
+        <source> Alignment changed</source>
+        <translation> Alignment changed</translation>
     </message>
 </context>
 <context>
@@ -2638,8 +2656,8 @@ UGENE contains unsaved modifications.</translation>
         <translation>Invalid sequence DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="374"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="553"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="375"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="554"/>
         <source>Failed to derive sequence alphabet!</source>
         <translation>Failed to derive sequence alphabet!</translation>
     </message>
@@ -2647,7 +2665,7 @@ UGENE contains unsaved modifications.</translation>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/globals/UserApplicationsSettings.cpp" line="81"/>
+        <location filename="../src/globals/UserApplicationsSettings.cpp" line="71"/>
         <source>Cleaning temp dir: %1</source>
         <translation>Cleaning temp dir: %1</translation>
     </message>

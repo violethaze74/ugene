@@ -44,6 +44,7 @@ struct ExtractAssemblyRegionTaskSettings {
 };
 
 class ExtractAssemblyRegionAndOpenViewTask : public Task {
+    Q_OBJECT
 public:
     ExtractAssemblyRegionAndOpenViewTask(const ExtractAssemblyRegionTaskSettings& settings);
 
@@ -56,6 +57,7 @@ private:
 };
 
 class ExtractAssemblyRegionTask : public Task {
+    Q_OBJECT
 public:
     ExtractAssemblyRegionTask(const ExtractAssemblyRegionTaskSettings& settings);
 

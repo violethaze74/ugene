@@ -33,6 +33,7 @@ class DocumentFormat;
 class ImportSequenceFromRawDataTask;
 
 class CreateSequenceFromTextAndOpenViewTask : public Task {
+    Q_OBJECT
 public:
     CreateSequenceFromTextAndOpenViewTask(const QList<DNASequence> &sequences, const QString &formatId, const GUrl &saveToPath, bool saveImmediately);
 

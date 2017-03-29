@@ -239,7 +239,7 @@
 <context>
     <name>U2::LocalWorkflow::SiteconBuildPrompter</name>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="120"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="119"/>
         <source>For each MSA from &lt;u&gt;%1&lt;/u&gt;, build SITECON model.</source>
         <translation>Для каждого выравнивания из &lt;u&gt;%1&lt;/u&gt;, построить модель SITECON.</translation>
     </message>
@@ -247,112 +247,112 @@
 <context>
     <name>U2::LocalWorkflow::SiteconBuildWorker</name>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="84"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="83"/>
         <source>Build SITECON model</source>
         <translation>Построение модели SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="107"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="106"/>
         <source>None</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="108"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="107"/>
         <source>Algorithm2</source>
         <translation>Algorithm2</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="138"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="137"/>
         <source>Random seed can not be less zero</source>
         <translation>Затравка не может быть меньше нуля</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="142"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="141"/>
         <source>Calibration length can not be less zero</source>
         <translation>Калибровочная длина не может быть меньше нуля</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="147"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="146"/>
         <source>Window size can not be less zero</source>
         <translation>Window size can not be less zero</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="179"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="177"/>
         <source>Built SITECON model from: %1</source>
         <translation>Построен профайл SITECON из %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="60"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="59"/>
         <source>Input alignment</source>
         <translation>Входное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="66"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="65"/>
         <source>Sitecon model</source>
         <translation>Профайл SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="61"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="60"/>
         <source>Origin</source>
         <translation>Происхождение</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="73"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="72"/>
         <source>Window size, bp</source>
         <translation>Размер окна</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="73"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="72"/>
         <source>Window size.</source>
         <translation>Размер окна.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="74"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="73"/>
         <source>Calibration length</source>
         <translation>Калибровочная длина</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="74"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="73"/>
         <source>Calibration length.</source>
         <translation>Калибровочная длина.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="75"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="74"/>
         <source>Random seed</source>
         <translation>Затравка</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="75"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="74"/>
         <source>Random seed.</source>
         <translation>Затравка.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="76"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="75"/>
         <source>Weight algorithm</source>
         <translation>Алгоритм весов</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="60"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="59"/>
         <source>Input multiple sequence alignment for building statistical model.</source>
         <translation>Входное множественное выравнивание для построения статистической модели данного ССТФ.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="61"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="60"/>
         <source>Location of input alignment, used as optional hint for model description.</source>
         <translation>Адрес множественного выравнивания, используется для описания выходного профайла SITECON.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="66"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="65"/>
         <source>Produced statistical model of specified TFBS data.</source>
         <translation>Произведённый профайл SITECON.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="76"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="75"/>
         <source>Weight algorithm.</source>
         <translation>Алгоритм весов.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconBuildWorker.cpp" line="85"/>
+        <location filename="../src/SiteconBuildWorker.cpp" line="84"/>
         <source>Builds statistical profile for SITECON. The SITECON is a program for probabilistic recognition of transcription factor binding sites.</source>
         <translation>Строит статистический профайл для поиска ССТФ при помощи пакета SITECON.</translation>
     </message>
@@ -376,22 +376,22 @@
 <context>
     <name>U2::LocalWorkflow::SiteconSearchPrompter</name>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="151"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="150"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="152"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="151"/>
         <source>For each sequence from &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>Для каждой последовательности из &lt;u&gt;%1&lt;/u&gt;,</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="166"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="165"/>
         <source>%1 search transcription factor binding sites (TFBS) %2.&lt;br&gt;Recognize sites with &lt;u&gt;similarity %3%&lt;/u&gt;, process &lt;u&gt;%4&lt;/u&gt;.&lt;br&gt;Output the list of found regions annotated as &lt;u&gt;%5&lt;/u&gt;.</source>
         <translation>%1 искать сайты связывания ТФ %2.&lt;br&gt;Распознавать сайты с достоверностью &lt;u&gt;не менее %3%&lt;/u&gt;, рассматривать &lt;u&gt;%4 стренды&lt;/u&gt;.&lt;br&gt;Выдать список найденных регионов аннотированных как &lt;u&gt;%5&lt;/u&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="153"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="152"/>
         <source>with all profiles provided by &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>со всеми профайлами из &lt;u&gt;%1&lt;/u&gt;,</translation>
     </message>
@@ -399,132 +399,132 @@
 <context>
     <name>U2::LocalWorkflow::SiteconSearchWorker</name>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="160"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="159"/>
         <source>both strands</source>
         <translation>все</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="161"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="160"/>
         <source>direct strand</source>
         <translation>только прямые</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="162"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="161"/>
         <source>complement strand</source>
         <translation>только комплиментарные</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="66"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="65"/>
         <source>Sitecon Model</source>
         <translation>Профайл SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="67"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="66"/>
         <source>Sequence</source>
         <translation>Входная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="68"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="67"/>
         <source>SITECON annotations</source>
         <translation>Аннотированные ССТФ</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="82"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="81"/>
         <source>Result annotation</source>
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="88"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="87"/>
         <source>Alternative setting for filtering results, minimal value of Error type I.&lt;br&gt;Note that all thresholds (by score, by err1 and by err2) are applied when filtering results.&lt;p&gt;&lt;i&gt;If you need to switch off this filter choose &lt;b&gt;&quot;0&quot;&lt;/b&gt; value&lt;/i&gt;&lt;/p&gt;.</source>
         <translation>Фильтрация результатов по значению ошибки I рода. &lt;br&gt;Учтите что применяются все фильтры (по оценке и ошибкам 1, 2 рода).</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="92"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="91"/>
         <source>Alternative setting for filtering results, max value of Error type II.&lt;br&gt;Note that all thresholds (by score, by err1 and by err2) are applied when filtering results.&lt;p&gt;&lt;i&gt;If you need to switch off this filter choose &lt;b&gt;&quot;1&quot;&lt;/b&gt; value&lt;/i&gt;&lt;/p&gt;.</source>
         <translation>Фильтрация результатов по значению ошибки II рода. &lt;br&gt;Учтите что применяются все фильтры (по оценке и ошибкам 1, 2 рода).</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="102"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="101"/>
         <source>Search for TFBS with SITECON</source>
         <translation>Поиск сайтов связывания ТФ с помощью SITECON</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="205"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="204"/>
         <source>Min score can not be less 60% or more 100%</source>
         <translation>Минимальная оценка не может быть меньше 60 % и не больше 100%</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="208"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="207"/>
         <source>Min Err1 can not be less 0 or more 1</source>
         <translation>Минимальная ошибка первого рода не может быть меньше 0 или больше 1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="211"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="210"/>
         <source>Max Err2 can not be less 0 or more 1</source>
         <translation>Максимальная ошибка второго рода не может быть меньше 0 или больше 1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="214"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="213"/>
         <source>Search in strand can only be 0(both) or 1(direct) or -1(complement)</source>
         <translation>Направления могут быть следующими: 0 - обе цепи, 1- прямая, -1-комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="254"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="253"/>
         <source>Find TFBS in %1</source>
         <translation>Поиск ССТФ в %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="258"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="257"/>
         <source>Bad sequence supplied to SiteconSearch: %1</source>
         <translation>Неправильная последовательность для SITECON поиска : %1</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="282"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="281"/>
         <source>Found %1 TFBS</source>
         <translation>Найдено %1 возможных сайтов связывания ТФ</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="66"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="65"/>
         <source>Profile data to search with.</source>
         <translation>Профайл SITECON характеризующий искомые сайты.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="67"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="66"/>
         <source>Input nucleotide sequence to search in.</source>
         <translation>Входная нуклеотидная последовательность для поиска.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="69"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="68"/>
         <source>Annotations marking found TFBS sites.</source>
         <translation>Аннотации маркирующие найденные регионы.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="83"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="82"/>
         <source>Annotation name for marking found regions.</source>
         <translation>Имя аннотации для разметки найденных регионов.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="103"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="102"/>
         <source>Searches each input sequence for transcription factor binding sites significantly similar to specified SITECON profiles. In case several profiles were supplied, searches with all profiles one by one and outputs merged set of annotations for each sequence.</source>
         <translation>Поиск сайтов связывания транскрипционных факторов (ССТФ). В каждой нуклеотидной последовательности, поданной на вход задачи, ищутся значимые совпадения с указанными профайлами SITECON. Найденные регионы выдаются в виде набора аннотаций. Профайлов может быть несколько, поиск отработает для каждого профайла и выдаст общий набор аннотаций для каждой последовательности.&lt;p&gt; Протеиновые последовательности на входе допустимы но игнорируются.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="84"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="83"/>
         <source>Min score</source>
         <translation>Мин оценка</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="85"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="84"/>
         <source>Recognition quality percentage threshold.&lt;p&gt;&lt;i&gt;If you need to switch off this filter choose &lt;b&gt;the lowest&lt;/b&gt; value&lt;/i&gt;&lt;/p&gt;.</source>
         <translation>Порог качества. Для того, чтобы отключить этот фильтр укажите наименьшее значение.</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="87"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="86"/>
         <source>Min Err1</source>
         <translation>Мин ошибка 1 рода</translation>
     </message>
     <message>
-        <location filename="../src/SiteconSearchWorker.cpp" line="91"/>
+        <location filename="../src/SiteconSearchWorker.cpp" line="90"/>
         <source>Max Err2</source>
         <translation>Макс ошибка 2 рода</translation>
     </message>

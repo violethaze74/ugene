@@ -166,22 +166,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AddConstraintDialog</name>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1156"/>
+        <location filename="../src/QueryViewController.cpp" line="1157"/>
         <source>End-Start</source>
         <translation>Конец-Начало</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1159"/>
+        <location filename="../src/QueryViewController.cpp" line="1160"/>
         <source>End-End</source>
         <translation>Конец-Конец</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1162"/>
+        <location filename="../src/QueryViewController.cpp" line="1163"/>
         <source>Start-End</source>
         <translation>Начало-Конец</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1165"/>
+        <location filename="../src/QueryViewController.cpp" line="1166"/>
         <source>Start-Start</source>
         <translation>Начало-Начало</translation>
     </message>
@@ -231,17 +231,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::LocalWorkflow::QDPrompter</name>
     <message>
-        <location filename="../src/QDWorker.cpp" line="133"/>
+        <location filename="../src/QDWorker.cpp" line="134"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="134"/>
+        <location filename="../src/QDWorker.cpp" line="135"/>
         <source>from %1</source>
         <translation>из %1</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="137"/>
+        <location filename="../src/QDWorker.cpp" line="138"/>
         <source>Analyze each nucleotide sequence &lt;u&gt;%1&lt;/u&gt; with &lt;u&gt;%2&lt;/u&gt;.</source>
         <translation>Анализ каждой нуклеотидной послдовательности &lt;u&gt;%1&lt;/u&gt; с &lt;u&gt;%2&lt;/u&gt;.</translation>
     </message>
@@ -249,67 +249,67 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::LocalWorkflow::QDWorker</name>
     <message>
-        <location filename="../src/QDWorker.cpp" line="73"/>
+        <location filename="../src/QDWorker.cpp" line="74"/>
         <source>Input sequences</source>
         <translation>Входные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="74"/>
+        <location filename="../src/QDWorker.cpp" line="75"/>
         <source>A nucleotide sequence to analyze.</source>
         <translation>Последовательность для анализа.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="77"/>
+        <location filename="../src/QDWorker.cpp" line="78"/>
         <source>Result annotations</source>
         <translation>Выходные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="78"/>
+        <location filename="../src/QDWorker.cpp" line="79"/>
         <source>A set of annotations marking found results.</source>
         <translation>Найден набор аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="89"/>
+        <location filename="../src/QDWorker.cpp" line="90"/>
         <source>Schema</source>
         <translation>Схема</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="89"/>
+        <location filename="../src/QDWorker.cpp" line="90"/>
         <source>Schema file.</source>
         <translation>Файл схемы.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="90"/>
+        <location filename="../src/QDWorker.cpp" line="91"/>
         <source>Offset</source>
         <translation>Смещение</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="91"/>
+        <location filename="../src/QDWorker.cpp" line="92"/>
         <source>Specifies left and right offsets for merged annotation (if &apos;Merge&apos; parameter is set to true).</source>
         <translation>Задает правый и левый сдвиги для соединяемых аннотаций (если установлен соответствующий параметр для соединения).</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="92"/>
+        <location filename="../src/QDWorker.cpp" line="93"/>
         <source>Merge</source>
         <translation>Соединить</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="93"/>
+        <location filename="../src/QDWorker.cpp" line="94"/>
         <source>Merges regions of each result into single annotation if true.</source>
         <translation>Соединяет регионы каждого результата в одну аннотацию.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="100"/>
+        <location filename="../src/QDWorker.cpp" line="101"/>
         <source>Annotate with UQL</source>
         <translation>Аннотирование с помощью UQL</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="101"/>
+        <location filename="../src/QDWorker.cpp" line="102"/>
         <source>Analyzes a nucleotide sequence using different algorithms(Repeat finder, ORF finder, etc.) imposing constraints on the positional relationship of the results.</source>
         <translation>Анализирует нуклеотидную последовательность используя различные алгоритмы учитывая ограничения на взаимное расположение результатов.</translation>
     </message>
     <message>
-        <location filename="../src/QDWorker.cpp" line="109"/>
+        <location filename="../src/QDWorker.cpp" line="110"/>
         <source>Query schemes</source>
         <translation>Схемы запросов</translation>
     </message>
@@ -935,7 +935,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryScene</name>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1239"/>
+        <location filename="../src/QueryViewController.cpp" line="1240"/>
         <source>Preview is not available.</source>
         <translation>Предварительный просмотр недоступен.</translation>
     </message>
@@ -943,126 +943,126 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryViewController</name>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="658"/>
-        <location filename="../src/QueryViewController.cpp" line="1121"/>
+        <location filename="../src/QueryViewController.cpp" line="659"/>
+        <location filename="../src/QueryViewController.cpp" line="1122"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="672"/>
+        <location filename="../src/QueryViewController.cpp" line="673"/>
         <source>Elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="673"/>
+        <location filename="../src/QueryViewController.cpp" line="674"/>
         <source>Groups</source>
         <translation>Группы</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="674"/>
+        <location filename="../src/QueryViewController.cpp" line="675"/>
         <source>Samples</source>
         <translation>Примеры</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="720"/>
+        <location filename="../src/QueryViewController.cpp" line="721"/>
         <source>Run Schema...</source>
         <translation>Выполнить схему...</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="724"/>
+        <location filename="../src/QueryViewController.cpp" line="725"/>
         <source>New Schema</source>
         <translation>Создать схему</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="729"/>
+        <location filename="../src/QueryViewController.cpp" line="730"/>
         <source>Load Schema...</source>
         <translation>Загрузить схему...</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="734"/>
-        <location filename="../src/QueryViewController.cpp" line="955"/>
+        <location filename="../src/QueryViewController.cpp" line="735"/>
+        <location filename="../src/QueryViewController.cpp" line="956"/>
         <source>Save Schema</source>
         <translation>Сохранить схему</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="741"/>
+        <location filename="../src/QueryViewController.cpp" line="742"/>
         <source>Save Schema As...</source>
         <translation>Сохранить схему как...</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="747"/>
+        <location filename="../src/QueryViewController.cpp" line="748"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="759"/>
+        <location filename="../src/QueryViewController.cpp" line="760"/>
         <source>Show title</source>
         <translation>Показывать заголовок</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="764"/>
+        <location filename="../src/QueryViewController.cpp" line="765"/>
         <source>Show description</source>
         <translation>Показывать описание схемы</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="769"/>
+        <location filename="../src/QueryViewController.cpp" line="770"/>
         <source>Show element info</source>
         <translation>Показывать описание элемента</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="774"/>
+        <location filename="../src/QueryViewController.cpp" line="775"/>
         <source>Show order</source>
         <translation>Показывать порядок выполнения</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="781"/>
+        <location filename="../src/QueryViewController.cpp" line="782"/>
         <source>Direct strand</source>
         <translation>Считывать прямую цепь</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="784"/>
+        <location filename="../src/QueryViewController.cpp" line="785"/>
         <source>Reverse complementary strand</source>
         <translation>Считывать обратно-комлементарную цепь</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="787"/>
+        <location filename="../src/QueryViewController.cpp" line="788"/>
         <source>Both strands</source>
         <translation>Считывать обе цепи</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="846"/>
-        <location filename="../src/QueryViewController.cpp" line="872"/>
+        <location filename="../src/QueryViewController.cpp" line="847"/>
+        <location filename="../src/QueryViewController.cpp" line="873"/>
         <source>Query Sequence Mode</source>
         <translation>Режим считывания последовательности</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="837"/>
-        <location filename="../src/QueryViewController.cpp" line="867"/>
+        <location filename="../src/QueryViewController.cpp" line="838"/>
+        <location filename="../src/QueryViewController.cpp" line="868"/>
         <source>View Mode</source>
         <translation>Режим отображения</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="898"/>
+        <location filename="../src/QueryViewController.cpp" line="899"/>
         <source>The schema is empty!</source>
         <translation>Схема пуста!</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="900"/>
+        <location filename="../src/QueryViewController.cpp" line="901"/>
         <source>The schema is invalid! Please see the log for details.</source>
         <translation>Схема содержит ошибки. Для получения подробностей обратитесь к логу.</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="929"/>
+        <location filename="../src/QueryViewController.cpp" line="930"/>
         <source>Load Schema</source>
         <translation>Загрузить схему</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1068"/>
+        <location filename="../src/QueryViewController.cpp" line="1069"/>
         <source>Query Designer - %1</source>
         <translation>Дизайнер запросов - %1</translation>
     </message>
     <message>
-        <location filename="../src/QueryViewController.cpp" line="1122"/>
+        <location filename="../src/QueryViewController.cpp" line="1123"/>
         <source>The schema has been modified.
 Do you want to save changes?</source>
         <translation>Схема была изменена.

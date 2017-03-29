@@ -31,6 +31,7 @@ class StateLocker;
 class MultipleSequenceAlignmentObject;
 
 class ExportMsa2McaTask : public DocumentProviderTask {
+    Q_OBJECT
 public:
     ExportMsa2McaTask(MultipleSequenceAlignmentObject *msaObject, const QString &mcaFilePath);
     ~ExportMsa2McaTask();
