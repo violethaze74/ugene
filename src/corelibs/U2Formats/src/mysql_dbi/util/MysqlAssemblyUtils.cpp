@@ -300,7 +300,6 @@ void MysqlAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen - 1) / ii.coverageBasesPerPoint);
     if(endPos > csize - 1) {
-        coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
     int* coverageData = ii.coverage.data();

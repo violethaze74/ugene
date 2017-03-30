@@ -636,7 +636,6 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
     int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
     int endPos = (int)((read->leftmostPos + read->effectiveLen) / ii.coverageBasesPerPoint) - 1;
     if(endPos > csize - 1) {
-        coreLog.trace(QString("addToCoverage: endPos > csize - 1: %1 > %2").arg(endPos).arg(csize-1));
         endPos = csize - 1;
     }
     int* coverageData = ii.coverage.data();
