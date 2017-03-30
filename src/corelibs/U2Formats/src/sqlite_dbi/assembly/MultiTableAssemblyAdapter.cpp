@@ -61,7 +61,7 @@ void MultiTableAssemblyAdapter::syncTables(U2OpStatus& os) {
     if (versionInDb <= version) {
         return;
     }
-    SQLiteQuery q("SELECT idata FROM Assembly WHERE object = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT idata FROM Assembly WHERE object = ?1", db, os);
     q.bindDataId(1, assemblyId);
     if (q.step()) {
         QByteArray data = q.getBlob(0);
@@ -535,7 +535,7 @@ void MultiTableAssemblyAdapter::removeReads(const QList<U2DataId>& readIds, U2Op
 
 void MultiTableAssemblyAdapter::dropReadsTables(U2OpStatus &os) {
     // remove prepared queries to finalize them and prevent SQLite errors on table drop
-    db->preparedQueries.clear();
+    db->preparedQueries.clear();//???
 
     foreach (QVector<MTASingleTableAdapter*> adaptersVector, adaptersGrid) {
         foreach (MTASingleTableAdapter* adapter, adaptersVector) {
@@ -661,8 +661,8 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter* newA, const 
         QString idsTable = "tmp_mig_" + oldTable; //TODO
 
 #ifdef _DEBUG
-        qint64 nOldReads1 = SQLiteQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
-        qint64 nNewReads1 = SQLiteQuery("SELECT COUNT(*) FROM " + newTable, db, os).selectInt64();
+        qint64 nOldReads1 = SQLiteReadOnlyQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
+        qint64 nNewReads1 = SQLiteReadOnlyQuery("SELECT COUNT(*) FROM " + newTable, db, os).selectInt64();
         int readsMoved = migData.size();
         int rowsPerRange = multiTableAdapter->getRowsPerRange();
         U2Region newProwRegion(newA->rowPos * rowsPerRange, rowsPerRange);
@@ -702,8 +702,8 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter* newA, const 
             .arg(nMigrated).arg(totalMigrationCount).arg(100*nMigrated/totalMigrationCount));
 
 #ifdef _DEBUG
-        qint64 nOldReads2 = SQLiteQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
-        qint64 nNewReads2 = SQLiteQuery("SELECT COUNT(*) FROM " + newTable, db, os).selectInt64();
+        qint64 nOldReads2 = SQLiteReadOnlyQuery("SELECT COUNT(*) FROM " + oldTable, db, os).selectInt64();
+        qint64 nNewReads2 = SQLiteReadOnlyQuery("SELECT COUNT(*) FROM " + newTable, db, os).selectInt64();
         assert(nOldReads1 + nNewReads1 == nOldReads2 + nNewReads2);
         assert(nNewReads1 + readsMoved == nNewReads2);
 #endif

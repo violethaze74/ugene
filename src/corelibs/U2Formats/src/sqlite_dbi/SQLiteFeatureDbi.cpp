@@ -77,11 +77,11 @@ void SQLiteFeatureDbi::initSqlSchema(U2OpStatus& os) {
 
 class SqlFeatureRSLoader : public SqlRSLoader<U2Feature> {
 public:
-    U2Feature load(SQLiteQuery* q) {
+    U2Feature load(SQLiteReadOnlyQuery* q) {
         return loadStatic(q);
     }
 
-    static U2Feature loadStatic(SQLiteQuery* q) {
+    static U2Feature loadStatic(SQLiteReadOnlyQuery* q) {
         U2Feature res;
         //class, type, parent, root, name, sequence, strand, start, len
         res.id = q->getDataId(0, U2Type::Feature);

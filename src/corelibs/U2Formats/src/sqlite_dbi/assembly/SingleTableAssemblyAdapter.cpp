@@ -98,7 +98,7 @@ void SingleTableAssemblyAdapter::dropReadsIndexes(U2OpStatus& os) {
 }
 
 
-void SingleTableAssemblyAdapter::bindRegion(SQLiteQuery& q, const U2Region& r, bool forCount) {
+void SingleTableAssemblyAdapter::bindRegion(SQLiteReadOnlyQuery& q, const U2Region& r, bool forCount) {
     if (rangeMode) {
         q.bindInt64(1, r.endPos());
         q.bindInt64(2, r.startPos - maxReadLength);
@@ -114,10 +114,10 @@ void SingleTableAssemblyAdapter::bindRegion(SQLiteQuery& q, const U2Region& r, b
 
 qint64 SingleTableAssemblyAdapter::countReads(const U2Region& r, U2OpStatus& os) {
     if (r == U2_REGION_MAX) {
-        return SQLiteQuery(QString("SELECT COUNT(*) FROM %1").arg(readsTable), db, os).selectInt64();
+        return SQLiteReadOnlyQuery(QString("SELECT COUNT(*) FROM %1").arg(readsTable), db, os).selectInt64();
     }
     QString qStr = QString("SELECT COUNT(*) FROM %1 WHERE " + rangeConditionCheckForCount).arg(readsTable);
-    SQLiteQuery q(qStr, db, os);
+    SQLiteReadOnlyQuery q(qStr, db, os);
     bindRegion(q, r, true);
     return q.selectInt64();
 }
@@ -128,19 +128,19 @@ qint64 SingleTableAssemblyAdapter::countReadsPrecise(const U2Region& r, U2OpStat
     }
     //here we use not-optimized rangeConditionCheck but not rangeConditionCheckForCount
     QString qStr = QString("SELECT COUNT(*) FROM %1 WHERE " + rangeConditionCheck).arg(readsTable);
-    SQLiteQuery q(qStr, db, os);
+    SQLiteReadOnlyQuery q(qStr, db, os);
     bindRegion(q, r, false);
     return q.selectInt64();
 }
 
 qint64 SingleTableAssemblyAdapter::getMaxPackedRow(const U2Region& r, U2OpStatus& os) {
-    SQLiteQuery q(QString("SELECT MAX(prow) FROM %1 WHERE " + rangeConditionCheck).arg(readsTable), db, os);
+    SQLiteReadOnlyQuery q(QString("SELECT MAX(prow) FROM %1 WHERE " + rangeConditionCheck).arg(readsTable), db, os);
     bindRegion(q, r);
     return q.selectInt64();
 }
 
 qint64 SingleTableAssemblyAdapter::getMaxEndPos(U2OpStatus& os) {
-    return SQLiteQuery(QString("SELECT MAX(gstart + elen) FROM %1").arg(readsTable), db, os).selectInt64();
+    return SQLiteReadOnlyQuery(QString("SELECT MAX(gstart + elen) FROM %1").arg(readsTable), db, os).selectInt64();
 }
 
 U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint) {
@@ -149,28 +149,28 @@ U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReads(const U2Regi
         qStr += SORTED_READS;
     }
 
-    QSharedPointer<SQLiteQuery> q (new SQLiteQuery(qStr, db, os));
+    QSharedPointer<SQLiteReadOnlyQuery> q (new SQLiteReadOnlyQuery(qStr, db, os));
     bindRegion(*q, r);
-    return new SqlRSIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SqlRSROIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) {
     int rowFieldPos = rangeMode ? 4 : 3;
     QString qStr = QString("SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE " + rangeConditionCheck
         + " AND (prow >= ?%2 AND prow < ?%3)").arg(readsTable).arg(rowFieldPos).arg(rowFieldPos + 1);
-    QSharedPointer<SQLiteQuery> q ( new SQLiteQuery(qStr, db, os) );
+    QSharedPointer<SQLiteReadOnlyQuery> q ( new SQLiteReadOnlyQuery(qStr, db, os) );
     bindRegion(*q, r);
     q->bindInt64(rowFieldPos, minRow);
     q->bindInt64(rowFieldPos + 1, maxRow);
-    return new SqlRSIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SqlRSROIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead>* SingleTableAssemblyAdapter::getReadsByName(const QByteArray& name, U2OpStatus& os) {
     QString qStr = QString("SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE name = ?1").arg(readsTable);
-    QSharedPointer<SQLiteQuery> q (new SQLiteQuery(qStr, db, os));
+    QSharedPointer<SQLiteReadOnlyQuery> q (new SQLiteReadOnlyQuery(qStr, db, os));
     int hash = qHash(name);
     q->bindInt64(1, hash);
-    return new SqlRSIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(),
+    return new SqlRSROIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(),
         new SQLiteAssemblyNameFilter(name), U2AssemblyRead(), os);
 }
 
@@ -243,7 +243,7 @@ void SingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2Assembly
     if (rangeArgs) {
         queryString+=" WHERE " + rangeConditionCheck;
     }
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadOnlyQuery q(queryString, db, os);
     if (rangeArgs) {
         bindRegion(q, r, false);
     }
@@ -254,8 +254,8 @@ void SingleTableAssemblyAdapter::calculateCoverage(const U2Region& r, U2Assembly
 // pack adapter
 
 U2DbiIterator<PackAlgorithmData>* SingleTablePackAlgorithmAdapter::selectAllReads(U2OpStatus& os) {
-    QSharedPointer<SQLiteQuery> q (new SQLiteQuery("SELECT id, gstart, elen FROM " + readsTable + " ORDER BY gstart", db, os));
-    return new SqlRSIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), NULL, PackAlgorithmData(), os);
+    QSharedPointer<SQLiteReadOnlyQuery> q (new SQLiteReadOnlyQuery("SELECT id, gstart, elen FROM " + readsTable + " ORDER BY gstart", db, os));
+    return new SqlRSROIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), NULL, PackAlgorithmData(), os);
 }
 
 SingleTablePackAlgorithmAdapter::~SingleTablePackAlgorithmAdapter() {

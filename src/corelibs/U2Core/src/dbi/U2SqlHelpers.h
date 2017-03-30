@@ -38,6 +38,7 @@ struct sqlite3_stmt;
 namespace U2 {
 
 class SQLiteQuery;
+class SQLiteReadOnlyQuery;
 class SQLiteTransaction;
 
 class U2CORE_EXPORT DbRef {
@@ -50,6 +51,7 @@ public:
     bool                         useCache;
     QVector<SQLiteTransaction*>  transactionStack;
     QHash<QString, QSharedPointer<SQLiteQuery> > preparedQueries; //shared pointer because a query can be deleted elsewhere
+    QHash<QString, SQLiteReadOnlyQuery* > runingQueries;
 };
 
 class U2CORE_EXPORT SQLiteUtils {
@@ -84,7 +86,7 @@ public:
     SQLite query wrapper. Uses prepared statement internally
     An optimized and simplified interface for U2DBI needs.
 */
-class U2CORE_EXPORT SQLiteQuery  {
+class U2CORE_EXPORT SQLiteReadOnlyQuery  {
 public:
     /**
         Constructs prepared statement for SQLiteDB
@@ -92,11 +94,11 @@ public:
         It's desirable to release this object as soon as possible because it locks
         the database for concurrent modifications from other threads
     */
-    SQLiteQuery(const QString& sql, DbRef* d, U2OpStatus& os);
-    SQLiteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
+    SQLiteReadOnlyQuery(const QString& sql, DbRef* d, U2OpStatus& os);
+    SQLiteReadOnlyQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
 
     /** Releases all resources associated with the statement */
-    ~SQLiteQuery();
+    ~SQLiteReadOnlyQuery();
 
     //////////////////////////////////////////////////////////////////////////
     // Statement/query state manipulation methods
@@ -233,6 +235,19 @@ private:
     U2OpStatus*     os;
     sqlite3_stmt*   st;
     QString         sql;
+};
+
+class U2CORE_EXPORT SQLiteQuery: public SQLiteReadOnlyQuery  {
+public:
+    /**
+        Constructs prepared statement for SQLiteDB
+        If failed the error message is written to 'os'
+        It's desirable to release this object as soon as possible because it locks
+        the database for concurrent modifications from other threads
+    */
+    SQLiteQuery(const QString& sql, DbRef* d, U2OpStatus& os);
+    SQLiteQuery(const QString& sql, qint64 offset, qint64 count, DbRef* d, U2OpStatus& os);
+private:
     QMutexLocker    locker;
 };
 
@@ -265,7 +280,7 @@ public:
 template <class T> class SqlRSLoader {
 public:
     virtual ~SqlRSLoader(){}
-    virtual T load(SQLiteQuery* q) = 0;
+    virtual T load(SQLiteReadOnlyQuery* q) = 0;
 };
 
 /** Filter for SqlRSIterator. Checks if value must be filtered out from the result */
@@ -273,6 +288,65 @@ template <class T> class SqlRSFilter {
 public:
     virtual ~SqlRSFilter(){}
     virtual bool filter(const T&) = 0;
+};
+
+/** SQL read only query result set iterator */
+template<class T> class SqlRSROIterator : public U2DbiIterator<T> {
+public:
+    SqlRSROIterator(QSharedPointer<SQLiteReadOnlyQuery> q, SqlRSLoader<T>* l, SqlRSFilter<T>* f, const T& d, U2OpStatus& o)
+        : query(q), loader(l), filter(f), defaultValue(d), os(o), endOfStream(false)
+    {
+        fetchNext();
+    }
+
+    virtual ~SqlRSROIterator() {
+        delete filter;
+        delete loader;
+        query.clear();
+    }
+
+    virtual bool hasNext() {
+        return !endOfStream;
+    }
+
+    virtual T next() {
+        if (endOfStream) {
+            assert(0);
+            return defaultValue;
+        }
+        currentResult = nextResult;
+        fetchNext();
+        return currentResult;
+    }
+
+    virtual T peek() {
+        if (endOfStream) {
+            assert(0);
+            return defaultValue;
+        }
+        return nextResult;
+    }
+
+private:
+    void fetchNext() {
+        do {
+            if (!query->step()) {
+                endOfStream = true;
+                return;
+            }
+            nextResult = loader->load(query.data());
+        } while (filter != NULL && !filter->filter(nextResult));
+    }
+
+    QSharedPointer<SQLiteReadOnlyQuery>    query;
+    SqlRSLoader<T>* loader;
+    SqlRSFilter<T>* filter;
+    T               defaultValue;
+    U2OpStatus&     os;
+    bool            endOfStream;
+    T               nextResult;
+    T               currentResult;
+    bool            deleteQuery;
 };
 
 /** SQL query result set iterator */
@@ -347,7 +421,7 @@ protected:
 class SqlDataIdRSLoaderEx : public SqlRSLoader<U2DataId> {
 public:
     SqlDataIdRSLoaderEx(const QByteArray& _dbExra = QByteArray()) : dbExtra(_dbExra){}
-    U2DataId load(SQLiteQuery* q) { return q->getDataId(0, q->getDataType(1), dbExtra);}
+    U2DataId load(SQLiteReadOnlyQuery* q) { return q->getDataId(0, q->getDataType(1), dbExtra);}
 
 protected:
     U2DataType type;

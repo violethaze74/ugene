@@ -103,7 +103,7 @@ private:
 
     QString buildSelectAttributeQuery(const QString& attributeTable);
 
-    void readAttribute(SQLiteQuery &q, U2Attribute& attr);
+    void readAttribute(SQLiteReadOnlyQuery &q, U2Attribute& attr);
 };
 
 

@@ -74,7 +74,7 @@ AssemblyAdapter* SQLiteAssemblyDbi::getAdapter(const U2DataId& assemblyId, U2OpS
         return res;
     }
 
-    SQLiteQuery q("SELECT imethod, cmethod FROM Assembly WHERE object = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT imethod, cmethod FROM Assembly WHERE object = ?1", db, os);
     q.bindDataId(1, assemblyId);
     if (!q.step()) {
         os.setError(U2DbiL10n::tr("There is no assembly object with the specified id."));
@@ -109,7 +109,7 @@ U2Assembly SQLiteAssemblyDbi::getAssemblyObject(const U2DataId& assemblyId, U2Op
 
     CHECK_OP(os, res);
 
-    SQLiteQuery q("SELECT Assembly.reference, Object.type, '' FROM Assembly, Object "
+    SQLiteReadOnlyQuery q("SELECT Assembly.reference, Object.type, '' FROM Assembly, Object "
                   " WHERE Assembly.object = ?1 AND Object.id = Assembly.reference", db, os);
 
     q.bindDataId(1, assemblyId);
@@ -558,7 +558,7 @@ int removeAll(QVector<U2CigarOp> *vector,const U2CigarOp &t)
 }
 }
 #endif
-void SQLiteAssemblyUtils::calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
+void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadOnlyQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os) {
     int csize = coverage.size();
     SAFE_POINT(csize > 0, "illegal coverage vector size!", );
 
@@ -653,7 +653,7 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
 
 //////////////////////////////////////////////////////////////////////////
 // read loader
-U2AssemblyRead SimpleAssemblyReadLoader::load(SQLiteQuery* q) {
+U2AssemblyRead SimpleAssemblyReadLoader::load(SQLiteReadOnlyQuery* q) {
     U2AssemblyRead read(new U2AssemblyReadData());
 
     read->id = q->getDataId(0, U2Type::AssemblyRead);
@@ -682,7 +682,7 @@ U2AssemblyRead SimpleAssemblyReadLoader::load(SQLiteQuery* q) {
 }
 
 
-PackAlgorithmData SimpleAssemblyReadPackedDataLoader::load(SQLiteQuery* q) {
+PackAlgorithmData SimpleAssemblyReadPackedDataLoader::load(SQLiteReadOnlyQuery* q) {
     PackAlgorithmData data;
     data.readId = q->getDataId(0, U2Type::AssemblyRead);
     data.leftmostPos = q->getInt64(1);

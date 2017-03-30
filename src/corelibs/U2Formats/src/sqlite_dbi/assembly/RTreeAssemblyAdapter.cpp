@@ -76,24 +76,24 @@ void RTreeAssemblyAdapter::createReadsIndexes(U2OpStatus& os) {
 
 qint64 RTreeAssemblyAdapter::countReads(const U2Region& r, U2OpStatus& os) {
     if (r == U2_REGION_MAX) {
-        return SQLiteQuery(QString("SELECT COUNT(*) FROM %1").arg(readsTable), db, os).selectInt64();
+        return SQLiteReadOnlyQuery(QString("SELECT COUNT(*) FROM %1").arg(readsTable), db, os).selectInt64();
     }
     QString qStr = QString("SELECT COUNT(*) FROM %1 AS i WHERE " + RANGE_CONDITION_CHECK).arg(indexTable);
-    SQLiteQuery q(qStr, db, os);
+    SQLiteReadOnlyQuery q(qStr, db, os);
     q.bindInt64(1, r.endPos());
     q.bindInt64(2, r.startPos);
     return q.selectInt64();
 }
 
 qint64 RTreeAssemblyAdapter::getMaxPackedRow(const U2Region& r, U2OpStatus& os) {
-    SQLiteQuery q(QString("SELECT MAX(prow1) FROM %1 AS i WHERE (" + RANGE_CONDITION_CHECK + ")").arg(indexTable), db, os);
+    SQLiteReadOnlyQuery q(QString("SELECT MAX(prow1) FROM %1 AS i WHERE (" + RANGE_CONDITION_CHECK + ")").arg(indexTable), db, os);
     q.bindInt64(1, r.endPos());
     q.bindInt64(2, r.startPos);
     return q.selectInt64();
 }
 
 qint64 RTreeAssemblyAdapter::getMaxEndPos(U2OpStatus& os) {
-    return SQLiteQuery(QString("SELECT MAX(gend) FROM %1").arg(indexTable), db, os).selectInt64();
+    return SQLiteReadOnlyQuery(QString("SELECT MAX(gend) FROM %1").arg(indexTable), db, os).selectInt64();
 }
 
 U2DbiIterator<U2AssemblyRead>* RTreeAssemblyAdapter::getReads(const U2Region& r, U2OpStatus& os, bool sortedHint) {
@@ -103,29 +103,29 @@ U2DbiIterator<U2AssemblyRead>* RTreeAssemblyAdapter::getReads(const U2Region& r,
         qStr += SORTED_READS;
     }
 
-    QSharedPointer<SQLiteQuery> q(new SQLiteQuery(qStr, db, os));
+    QSharedPointer<SQLiteReadOnlyQuery> q(new SQLiteReadOnlyQuery(qStr, db, os));
     q->bindInt64(1, r.endPos());
     q->bindInt64(2, r.startPos);
-    return new SqlRSIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SqlRSROIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead>* RTreeAssemblyAdapter::getReadsByRow(const U2Region& r, qint64 minRow, qint64 maxRow, U2OpStatus& os) {
     QString qStr = QString("SELECT " + ALL_READ_FIELDS + FROM_2TABLES + " WHERE " + SAME_IDX + " AND "+ RANGE_CONDITION_CHECK +
                         " AND (i.prow1 >= ?3 AND i.prow2 < ?4)").arg(readsTable).arg(indexTable);
-    QSharedPointer<SQLiteQuery> q(new SQLiteQuery(qStr, db, os));
+    QSharedPointer<SQLiteReadOnlyQuery> q(new SQLiteReadOnlyQuery(qStr, db, os));
     q->bindInt64(1, r.endPos());
     q->bindInt64(2, r.startPos);
     q->bindInt64(3, minRow);
     q->bindInt64(4, maxRow);
-    return new SqlRSIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SqlRSROIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead>* RTreeAssemblyAdapter::getReadsByName(const QByteArray& name, U2OpStatus& os) {
     QString qStr = QString("SELECT " + ALL_READ_FIELDS + " FROM %1 WHERE name = ?1").arg(readsTable);
-    QSharedPointer<SQLiteQuery>q ( new SQLiteQuery(qStr, db, os) );
+    QSharedPointer<SQLiteReadOnlyQuery>q ( new SQLiteReadOnlyQuery(qStr, db, os) );
     int hash = qHash(name);
     q->bindInt64(1, hash);
-    return new SqlRSIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(),
+    return new SqlRSROIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(),
         new SQLiteAssemblyNameFilter(name), U2AssemblyRead(), os);
 }
 
@@ -216,7 +216,7 @@ void RTreeAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCovera
         queryString+="AS i WHERE " + RANGE_CONDITION_CHECK;
         rangeArgs = true;
     }
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadOnlyQuery q(queryString, db, os);
     if (rangeArgs) {
         q.bindInt64(1, r.endPos());
         q.bindInt64(2, r.startPos);
@@ -227,8 +227,8 @@ void RTreeAssemblyAdapter::calculateCoverage(const U2Region& r, U2AssemblyCovera
 
 
 U2DbiIterator<PackAlgorithmData>* RTreePackAlgorithmAdapter::selectAllReads(U2OpStatus& os) {
-    QSharedPointer<SQLiteQuery> q( new SQLiteQuery("SELECT id, gstart, gend - gstart FROM " + indexTable + " ORDER BY gstart", db, os));
-    return new SqlRSIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), NULL, PackAlgorithmData(), os);
+    QSharedPointer<SQLiteReadOnlyQuery> q( new SQLiteReadOnlyQuery("SELECT id, gstart, gend - gstart FROM " + indexTable + " ORDER BY gstart", db, os));
+    return new SqlRSROIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), NULL, PackAlgorithmData(), os);
 }
 
 RTreePackAlgorithmAdapter::~RTreePackAlgorithmAdapter() {

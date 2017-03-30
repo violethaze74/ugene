@@ -79,27 +79,27 @@ void SQLiteObjectDbi::initSqlSchema(U2OpStatus& os) {
 #define TOP_LEVEL_FILTER  ("rank = " + QString::number(U2DbiObjectRank_TopLevel))
 
 qint64 SQLiteObjectDbi::countObjects(U2OpStatus& os) {
-    return SQLiteQuery("SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER, db, os).selectInt64();
+    return SQLiteReadOnlyQuery("SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER, db, os).selectInt64();
 }
 
 qint64 SQLiteObjectDbi::countObjects(U2DataType type, U2OpStatus& os) {
-    SQLiteQuery q("SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT COUNT (*) FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = ?1", db, os);
     q.bindType(1, type);
     return q.selectInt64();
 }
 
 QList<U2DataId> SQLiteObjectDbi::getObjects(qint64 offset, qint64 count, U2OpStatus& os) {
-    return SQLiteQuery("SELECT id, type FROM Object WHERE " + TOP_LEVEL_FILTER, offset, count, db, os).selectDataIdsExt();
+    return SQLiteReadOnlyQuery("SELECT id, type FROM Object WHERE " + TOP_LEVEL_FILTER, offset, count, db, os).selectDataIdsExt();
 }
 
 QList<U2DataId> SQLiteObjectDbi::getObjects(U2DataType type, qint64 offset, qint64 count, U2OpStatus& os) {
-    SQLiteQuery q("SELECT id, type FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = ?1", offset, count, db, os );
+    SQLiteReadOnlyQuery q("SELECT id, type FROM Object WHERE " + TOP_LEVEL_FILTER + " AND type = ?1", offset, count, db, os );
     q.bindType(1, type);
     return q.selectDataIdsExt();
 }
 
 QList<U2DataId> SQLiteObjectDbi::getParents(const U2DataId& entityId, U2OpStatus& os) {
-    SQLiteQuery q("SELECT o.id AS id, o.type AS type FROM Parent AS p, Object AS o WHERE p.parent = o.id AND p.child = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT o.id AS id, o.type AS type FROM Parent AS p, Object AS o WHERE p.parent = o.id AND p.child = ?1", db, os);
     q.bindDataId(1, entityId);
     return q.selectDataIdsExt();
 }
@@ -109,12 +109,12 @@ U2DbiIterator<U2DataId>* SQLiteObjectDbi::getObjectsByVisualName(const QString& 
     bool checkType = (type != U2Type::Unknown);
     QString query = "SELECT id, type FROM Object WHERE " + TOP_LEVEL_FILTER
             + " AND name = ?1 " + (checkType ? "AND type = ?2" : "" + QString(" ORDER BY id"));
-    QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(query, db, os);
+    QSharedPointer<SQLiteReadOnlyQuery> q = t.getPreparedQuery(query, db, os);
     q->bindString(1, visualName);
     if (checkType) {
         q->bindType(2, type);
     }
-    return new SqlRSIterator<U2DataId>(q, new SqlDataIdRSLoaderEx(), NULL, U2DataId(), os);
+    return new SqlRSROIterator<U2DataId>(q, new SqlDataIdRSLoaderEx(), NULL, U2DataId(), os);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -309,7 +309,7 @@ void SQLiteObjectDbi::removeObjectModHistory(const U2DataId& id, U2OpStatus& os)
 
 QStringList SQLiteObjectDbi::getFolders(U2OpStatus& os) {
     // Comparison is case sensitive by default
-    return SQLiteQuery("SELECT path FROM Folder ORDER BY path", db, os).selectStrings();
+    return SQLiteReadOnlyQuery("SELECT path FROM Folder ORDER BY path", db, os).selectStrings();
 }
 
 QHash<U2Object, QString> SQLiteObjectDbi::getObjectFolders(U2OpStatus &os) {
@@ -319,7 +319,7 @@ QHash<U2Object, QString> SQLiteObjectDbi::getObjectFolders(U2OpStatus &os) {
         "SELECT o.id, o.type, o.version, o.name, o.trackMod, f.path "
         "FROM Object AS o, FolderContent AS fc, Folder AS f WHERE fc.object=o.id AND "
         "fc.folder=f.id AND " + TOP_LEVEL_FILTER;
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadOnlyQuery q(queryString, db, os);
     CHECK_OP(os, result);
 
     const QString dbId = dbi->getDbiId();
@@ -374,19 +374,19 @@ QString SQLiteObjectDbi::getFolderPreviousPath(const QString & /*currentPath*/, 
 }
 
 qint64 SQLiteObjectDbi::countObjects(const QString& folder, U2OpStatus& os) {
-    SQLiteQuery q("SELECT COUNT(fc.*) FROM FolderContent AS fc, Folder AS f WHERE f.path = ?1 AND fc.folder = f.id", db, os);
+    SQLiteReadOnlyQuery q("SELECT COUNT(fc.*) FROM FolderContent AS fc, Folder AS f WHERE f.path = ?1 AND fc.folder = f.id", db, os);
     q.bindString(1, folder);
     return q.selectInt64();
 }
 
 QList<U2DataId> SQLiteObjectDbi::getObjects(const QString& folder, qint64 , qint64 , U2OpStatus& os) {
-    SQLiteQuery q("SELECT o.id, o.type FROM Object AS o, FolderContent AS fc, Folder AS f WHERE f.path = ?1 AND fc.folder = f.id AND fc.object=o.id", db, os);
+    SQLiteReadOnlyQuery q("SELECT o.id, o.type FROM Object AS o, FolderContent AS fc, Folder AS f WHERE f.path = ?1 AND fc.folder = f.id AND fc.object=o.id", db, os);
     q.bindString(1, folder);
     return q.selectDataIdsExt();
 }
 
 QStringList SQLiteObjectDbi::getObjectFolders(const U2DataId& objectId, U2OpStatus& os) {
-    SQLiteQuery q("SELECT f.path FROM FolderContent AS fc, Folder AS f WHERE fc.object = ?1 AND fc.folder = f.id", db, os);
+    SQLiteReadOnlyQuery q("SELECT f.path FROM FolderContent AS fc, Folder AS f WHERE fc.object = ?1 AND fc.folder = f.id", db, os);
     q.bindDataId(1, objectId);
     return q.selectStrings();
 }
@@ -425,7 +425,7 @@ void SQLiteObjectDbi::createFolder(const QString& path, U2OpStatus& os) {
 
 bool SQLiteObjectDbi::removeFolder(const QString& folder, U2OpStatus& os) {
     // remove subfolders first
-    SQLiteQuery q("SELECT path FROM Folder WHERE path LIKE ?1 ORDER BY LENGTH(path) DESC", db, os);
+    SQLiteReadOnlyQuery q("SELECT path FROM Folder WHERE path LIKE ?1 ORDER BY LENGTH(path) DESC", db, os);
     q.bindString(1, folder + "/%");
     QStringList subfolders = q.selectStrings();
     CHECK_OP(os, false);
@@ -473,7 +473,7 @@ void SQLiteObjectDbi::addObjectsToFolder(const QList<U2DataId>& objectIds, const
         return;
     }
     QList<U2DataId> addedObjects;
-    SQLiteQuery countQ("SELECT count(object) FROM FolderContent WHERE folder = ?1", db, os);
+    SQLiteReadOnlyQuery countQ("SELECT count(object) FROM FolderContent WHERE folder = ?1", db, os);
     SQLiteQuery insertQ("INSERT INTO FolderContent(folder, object) VALUES(?1, ?2)", db, os);
     SQLiteQuery toplevelQ("UPDATE Object SET rank = " + QString::number(U2DbiObjectRank_TopLevel) + " WHERE id = ?1", db, os);
 
@@ -827,7 +827,7 @@ void SQLiteObjectDbi::incrementVersion(const U2DataId& objectId, DbRef* db, U2Op
 qint64 SQLiteObjectDbi::getObjectVersion(const U2DataId& objectId, U2OpStatus& os) {
     SQLiteTransaction t(db, os);
     static const QString queryString("SELECT version FROM Object WHERE id = ?1");
-    QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryString, db, os);
+    QSharedPointer<SQLiteReadOnlyQuery> q = t.getPreparedQuery(queryString, db, os);
     CHECK_OP(os, -1);
     q->bindDataId(1, objectId);
     return q->selectInt64();
@@ -843,7 +843,7 @@ void SQLiteObjectDbi::setTrackModType(const U2DataId& objectId, U2TrackModType t
 }
 
 U2TrackModType SQLiteObjectDbi::getTrackModType(const U2DataId& objectId, U2OpStatus& os) {
-    SQLiteQuery q("SELECT trackMod FROM Object WHERE id = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT trackMod FROM Object WHERE id = ?1", db, os);
     CHECK_OP(os, NoTrack);
 
     q.bindDataId(1, objectId);
@@ -898,7 +898,7 @@ U2DataId SQLiteObjectDbi::createObject(U2Object & object, const QString& folder,
 }
 
 void SQLiteObjectDbi::getObject(U2Object& object, const U2DataId& id, U2OpStatus& os) {
-    SQLiteQuery q("SELECT name, version, trackMod FROM Object WHERE id = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT name, version, trackMod FROM Object WHERE id = ?1", db, os);
     q.bindDataId(1, id);
     if (q.step()) {
         object.id = id;
@@ -920,7 +920,7 @@ void SQLiteObjectDbi::getObject(U2Object& object, const U2DataId& id, U2OpStatus
 }
 
 U2DataId SQLiteObjectDbi::getObject(qint64 objectId, U2OpStatus& os) {
-    SQLiteQuery q("SELECT id, type FROM Object WHERE id = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT id, type FROM Object WHERE id = ?1", db, os);
     q.bindInt64(1, objectId);
     if (q.step()) {
         U2DataId result = q.getDataIdExt(0);
@@ -937,7 +937,7 @@ QHash<U2DataId, QString> SQLiteObjectDbi::getObjectNames(qint64 offset, qint64 c
 
     static const QString queryString = "SELECT id, type, name FROM Object WHERE " + TOP_LEVEL_FILTER;
 
-    SQLiteQuery q(queryString, offset, count, db, os);
+    SQLiteReadOnlyQuery q(queryString, offset, count, db, os);
     CHECK_OP(os, result);
     while (q.step()) {
         const U2DataType type = q.getDataType(1);
@@ -957,7 +957,7 @@ void SQLiteObjectDbi::updateObject(U2Object& obj, U2OpStatus& os) {
 
 qint64 SQLiteObjectDbi::getFolderId(const QString& path, bool mustExist, DbRef* db, U2OpStatus& os) {
     static const QString queryString("SELECT id FROM Folder WHERE path = ?1");
-    SQLiteQuery q(queryString, db, os);
+    SQLiteReadOnlyQuery q(queryString, db, os);
     q.bindString(1, path);
     qint64 res = q.selectInt64();
     if (os.hasError()) {
@@ -970,13 +970,13 @@ qint64 SQLiteObjectDbi::getFolderId(const QString& path, bool mustExist, DbRef* 
 }
 
 qint64 SQLiteObjectDbi::getFolderLocalVersion(const QString& folder, U2OpStatus& os) {
-    SQLiteQuery q("SELECT vlocal FROM Folder WHERE path = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT vlocal FROM Folder WHERE path = ?1", db, os);
     q.bindString(1, folder);
     return q.selectInt64();
 }
 
 qint64 SQLiteObjectDbi::getFolderGlobalVersion(const QString& folder, U2OpStatus& os) {
-    SQLiteQuery q("SELECT vglobal FROM Folder WHERE path = ?1", db, os);
+    SQLiteReadOnlyQuery q("SELECT vglobal FROM Folder WHERE path = ?1", db, os);
     q.bindString(1, folder);
     return q.selectInt64();
 }
@@ -1043,7 +1043,7 @@ void SQLiteCrossDatabaseReferenceDbi::removeCrossReferenceData(const U2DataId &r
 
 U2CrossDatabaseReference SQLiteCrossDatabaseReferenceDbi::getCrossReference(const U2DataId& objectId, U2OpStatus& os) {
     U2CrossDatabaseReference res(objectId, dbi->getDbiId(), 0);
-    SQLiteQuery q("SELECT r.factory, r.dbi, r.rid, r.version, o.name, o.version FROM CrossDatabaseReference AS r, Object AS o "
+    SQLiteReadOnlyQuery q("SELECT r.factory, r.dbi, r.rid, r.version, o.name, o.version FROM CrossDatabaseReference AS r, Object AS o "
         " WHERE o.id = ?1 AND r.object = o.id", db, os);
     q.bindDataId(1, objectId);
     if (q.step())  {

@@ -167,7 +167,7 @@ void SQLiteVariantDbi::updateVariantTrack(U2VariantTrack& track, U2OpStatus& os)
 
 class SqliteVariantLoader: public SqlRSLoader<U2Variant> {
 public:
-    U2Variant load(SQLiteQuery* q) {
+    U2Variant load(SQLiteReadOnlyQuery* q) {
         U2Variant res;
         res.id = q->getDataId(0, U2Type::VariantType);
         res.startPos = q->getInt64(1);
@@ -183,21 +183,21 @@ public:
 U2DbiIterator<U2Variant>* SQLiteVariantDbi::getVariants(const U2DataId& trackId, const U2Region& region, U2OpStatus& os) {
     if (region == U2_REGION_MAX) {
         static QString queryString ("SELECT id, startPos, endPos, refData, obsData, publicId, additionalInfo FROM Variant WHERE track = ?1 ORDER BY startPos");
-        QSharedPointer<SQLiteQuery> q (new SQLiteQuery(queryString, db, os));
+        QSharedPointer<SQLiteReadOnlyQuery> q (new SQLiteReadOnlyQuery(queryString, db, os));
         q->bindDataId(1, trackId);
-        return new SqlRSIterator<U2Variant>(q, new SqliteVariantLoader(), NULL, U2Variant(), os);
+        return new SqlRSROIterator<U2Variant>(q, new SqliteVariantLoader(), NULL, U2Variant(), os);
     }
 
-    QSharedPointer<SQLiteQuery> q (new SQLiteQuery("SELECT id, startPos, endPos, refData, obsData, publicId, additionalInfo FROM Variant \
+    QSharedPointer<SQLiteReadOnlyQuery> q (new SQLiteReadOnlyQuery("SELECT id, startPos, endPos, refData, obsData, publicId, additionalInfo FROM Variant \
                                                                                             WHERE track = ?1 AND startPos >= ?2 AND startPos <?3", db, os));
     q->bindDataId(1, trackId);
     q->bindInt64(2, region.startPos);
     q->bindInt64(3, region.endPos());
-    return new SqlRSIterator<U2Variant>(q, new SqliteVariantLoader(), NULL, U2Variant(), os);
+    return new SqlRSROIterator<U2Variant>(q, new SqliteVariantLoader(), NULL, U2Variant(), os);
 }
 
 class SimpleVariantTrackLoader : public SqlRSLoader<U2VariantTrack> {
-    U2VariantTrack load(SQLiteQuery* q) {
+    U2VariantTrack load(SQLiteReadOnlyQuery* q) {
         U2VariantTrack track;
         track.id = q->getDataId(0, U2Type::VariantTrack);
         track.sequence = q->getDataId(1,U2Type::Sequence);

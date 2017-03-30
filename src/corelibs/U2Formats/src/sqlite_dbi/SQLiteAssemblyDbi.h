@@ -163,7 +163,7 @@ public:
 
     static void unpackData(const QByteArray& packed, U2AssemblyRead &read, U2OpStatus& os);
 
-    static void calculateCoverage(SQLiteQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
+    static void calculateCoverage(SQLiteReadOnlyQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
     static void addToCoverage(U2AssemblyCoverageImportInfo& cii, const U2AssemblyRead& read);
 };
@@ -179,12 +179,12 @@ protected:
 
 class SimpleAssemblyReadLoader: public SqlRSLoader<U2AssemblyRead> {
 public:
-    U2AssemblyRead load(SQLiteQuery* q);
+    U2AssemblyRead load(SQLiteReadOnlyQuery* q);
 };
 
 class SimpleAssemblyReadPackedDataLoader : public SqlRSLoader<PackAlgorithmData> {
 public:
-    virtual PackAlgorithmData load(SQLiteQuery* q);
+    virtual PackAlgorithmData load(SQLiteReadOnlyQuery* q);
 };
 
 
