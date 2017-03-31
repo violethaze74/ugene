@@ -85,7 +85,7 @@ void McaEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(zoomInAction);
     tb->addAction(zoomOutAction);
     tb->addAction(zoomToSelectionAction);
-    tb->addAction(resetFontAction);
+    tb->addAction(resetZoomAction);
 
     tb->addAction(showOverviewAction);
     tb->addAction(showChromatogramsAction);

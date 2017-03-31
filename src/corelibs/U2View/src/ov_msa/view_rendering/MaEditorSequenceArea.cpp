@@ -1416,7 +1416,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
             }
             break;
         case Qt::Key_Down:
-            if(!shift || enlargeSelection) {
+            if(!shift || !enlargeSelection) {
                 moveSelection(0,1);
                 break;
             }
@@ -1845,7 +1845,7 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
                         csid = sf->getId();
                     }
                 }
-            } 
+            }
             if(csid.isEmpty()) {
                 csid = colorScheme->getFactory()->getAlphabetType() == atype ? colorScheme->getFactory()->getId() : MsaColorScheme::UGENE_NUCL;
             }
