@@ -95,7 +95,7 @@ MSAEditorStatusWidget::MSAEditorStatusWidget(MultipleAlignmentObject* mobj, MaEd
     connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
         SLOT(sl_alignmentChanged()));
     connect(mobj, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockStateChanged()));
-    connect(mobj, SIGNAL(si_alphabetChanged(const MAlignmentModInfo&, const DNAAlphabet *)), SLOT(sl_alphabetChanged()));
+    connect(mobj, SIGNAL(si_alphabetChanged(const MaModificationInfo&, const DNAAlphabet *)), SLOT(sl_alphabetChanged()));
 
     connect(prevButton, SIGNAL(clicked()), SLOT(sl_findPrev()));
     connect(nextButton, SIGNAL(clicked()), SLOT(sl_findNext()));
