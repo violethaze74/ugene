@@ -199,7 +199,7 @@ void WriteAssemblyWorkerFactory::init() {
     {
         QVariantMap formatsMap;
         foreach (const DocumentFormatId &fid, supportedFormats) {
-            formatsMap[fid] = fid;
+            formatsMap[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
         }
         proto->getEditor()->addDelegate(new ComboBoxDelegate(formatsMap), BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
     }
