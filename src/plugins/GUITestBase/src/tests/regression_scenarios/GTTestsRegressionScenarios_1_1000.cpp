@@ -1070,7 +1070,7 @@ GUI_TEST_CLASS_DEFINITION(test_0684) {
             CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
 
 //       Add created fragment.
-            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "fragmentListWidget", dialog), "NC_004718 (sars.gb) Fragment (2000-9000) [7001 bp]");
+            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "fragmentListWidget", dialog), "NC_004718 (sars.gb) Fragment (2000-9000) [core length - 7001 bp]");
             GTWidget::click(os, GTWidget::findWidget(os, "takeButton", dialog));
 
 //       Set "Make circular" option selected
@@ -1078,7 +1078,7 @@ GUI_TEST_CLASS_DEFINITION(test_0684) {
 
 //       The overhangs should be highlighted in green
             QTreeWidgetItem *item = GTTreeWidget::findItem(os, GTWidget::findExactWidget<QTreeWidget *>(os, "molConstructWidget", dialog),
-                                                            "NC_004718 (sars.gb) Fragment (2000-9000) [7001 bp]", NULL, 1);
+                                                            "NC_004718 (sars.gb) Fragment (2000-9000) [core length - 7001 bp]", NULL, 1);
             CHECK_SET_ERR(NULL != item, "Item is NULL");
 
             const QColor color1 = item->textColor(0);
