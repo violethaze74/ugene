@@ -50,7 +50,7 @@ void SnpEffDatabaseDialogFiller::commonScenario() {
 
     QLineEdit* lineEdit = GTWidget::findExactWidget<QLineEdit*>(os, "lineEdit", dialog);
     GT_CHECK(lineEdit, "lineEdit is NULL");
-    GTLineEdit::setText(os, lineEdit, dbName);
+    GTLineEdit::setText(os, lineEdit, dbName, false, true);
     GTGlobals::sleep();
 
     QTableView* table = dynamic_cast<QTableView*>(GTWidget::findWidget(os, "tableView"));
