@@ -402,8 +402,14 @@ void PairAlign::sl_distanceCalculated() {
     if (NULL == distanceCalcTask)
         return;
     if (true == distanceCalcTask->isFinished()) {
-        MSADistanceMatrix distanceMatrix(distanceCalcTask, true);
-        similarityValueLabel->setText(QString::number(distanceMatrix.getSimilarity(0, 1)) + "%");
+     //   MSADistanceMatrix distanceMatrix(distanceCalcTask, true);
+      //  MSADistanceMatrix distanceMatrix = distanceCalcTask->getMatrix(true);
+        MSADistanceMatrix distanceMatrix;// = &distanceCalcTask->getMatrix(true);
+
+    //    &distanceCalcTask->getMatrix(true);
+     //   distanceCalcTask->getMatrix(true);
+      distanceCalcTask->getMatrix(distanceMatrix, true);
+        similarityValueLabel->setText(QString::number(distanceMatrix.getSimilarity(0, 1, true)) + "%");
         similarityWidget->setVisible(true);
         distanceCalcTask = NULL;
     }

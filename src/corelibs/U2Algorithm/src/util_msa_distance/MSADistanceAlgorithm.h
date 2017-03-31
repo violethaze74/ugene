@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -76,53 +76,15 @@ protected:
 
 typedef QVarLengthArray<QVarLengthArray<int> > varLengthMatrix;
 
-class U2ALGORITHM_EXPORT MSADistanceAlgorithm : public Task {
-    Q_OBJECT
-
-    friend class MSADistanceMatrix;
-public:
-    MSADistanceAlgorithm(MSADistanceAlgorithmFactory* factory, const MultipleSequenceAlignment& ma);
-
-    int getSimilarity(int row1, int row2);
-
-    virtual QString getDescription() const {return factory->getDescription();}
-
-    virtual QString getName() const {return factory->getName();}
-
-    QString getId() const {return factory->getId();}
-
-    bool isSimilarityMeasure() const {return isSimilarity;}
-
-    void setExcludeGaps(bool _excludeGaps) {excludeGaps = _excludeGaps;}
-
-    MSADistanceAlgorithmFactory* getFactory() const {return factory;}
-
-    bool getExcludeGapsFlag() const {return excludeGaps;}
-
-    void setDistanceValue(int row1, int row2, int distance);
-
-private:
-    varLengthMatrix              distanceTable;
-    MSADistanceAlgorithmFactory* factory;
-    MemoryLocker                 memoryLocker;
-
-protected:
-    virtual void fillTable();
-    virtual int calculateSimilarity(int , int ){return 0;}
-    MultipleSequenceAlignment                                  ma;
-    QMutex                                      lock;
-    bool                                        excludeGaps;
-    bool                                        isSimilarity;
-};
 class U2ALGORITHM_EXPORT MSADistanceMatrix : public QObject{
     Q_OBJECT
+    friend class MSADistanceAlgorithm;
 public:
-    MSADistanceMatrix(const MSADistanceAlgorithm *algo, bool _usePercents);
-    ~MSADistanceMatrix() {}
-    bool isEmpty(){ return distanceTable.isEmpty();}
-    int getSimilarity(int row1, int row2);
-    void showSimilarityInPercents(bool _usePercents) {usePercents = _usePercents;}
-    bool areUsePercents() {return usePercents;}
+    MSADistanceMatrix();
+    bool isEmpty(){ return distanceTable.isEmpty(); }
+    int getSimilarity(int row1, int row2, bool _usePercents);
+    void showSimilarityInPercents(bool _usePercents) { usePercents = _usePercents; }
+    bool areUsePercents() { return usePercents; }
 
 protected:
     varLengthMatrix                             distanceTable;
@@ -132,6 +94,45 @@ protected:
     int                                         alignmentLength;
 };
 
+class U2ALGORITHM_EXPORT MSADistanceAlgorithm : public Task {
+    Q_OBJECT
+
+public:
+    MSADistanceAlgorithm(MSADistanceAlgorithmFactory* factory, const MultipleSequenceAlignment& ma);
+
+    int getSimilarity(int row1, int row2, bool usePercents);
+
+    void getMatrix(MSADistanceMatrix& _distanceMatrix, bool _usePercents);
+        
+    virtual QString getDescription() const {return factory->getDescription();}
+
+    virtual QString getName() const {return factory->getName();}
+
+    QString getId() const {return factory->getId();}
+
+    bool isSimilarityMeasure() const {return isSimilarity;}
+
+    void setExcludeGaps(bool _excludeGaps) { excludeGaps = _excludeGaps; distanceMatrix.excludeGaps = _excludeGaps; }
+
+    MSADistanceAlgorithmFactory* getFactory() const {return factory;}
+
+    bool getExcludeGapsFlag() const {return excludeGaps;}
+
+    void setDistanceValue(int row1, int row2, int distance);
+
+private:
+    MSADistanceMatrix            distanceMatrix;
+    MSADistanceAlgorithmFactory* factory;
+    MemoryLocker                 memoryLocker;
+
+protected:
+    virtual void fillTable();
+    virtual int calculateSimilarity(int , int ){return 0;}
+    MultipleSequenceAlignment                   ma;
+    QMutex                                      lock;
+    bool                                        excludeGaps;
+    bool                                        isSimilarity;
+};
 
 }//namespace
 

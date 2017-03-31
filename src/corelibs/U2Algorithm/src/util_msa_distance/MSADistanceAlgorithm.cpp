@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2017 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -67,33 +67,38 @@ MSADistanceAlgorithm::MSADistanceAlgorithm(MSADistanceAlgorithmFactory* _factory
     qint64 requiredMemory = sizeof(int) * rowsNumber * rowsNumber / 2 + sizeof(QVarLengthArray<int>) * rowsNumber;
     bool memoryAcquired = memoryLocker.tryAcquire(requiredMemory);
     CHECK_EXT(memoryAcquired, setError(QString("There is not enough memory to calculating distances matrix, required %1 megabytes").arg(requiredMemory / 1024 / 1024)), );
-    distanceTable.reserve(rowsNumber);
+    distanceMatrix.distanceTable.reserve(rowsNumber);
     for (int i = 0; i < rowsNumber; i++) {
         if (isCanceled()) {
             break;
         }
-        distanceTable.append(QVarLengthArray<int>(i + 1));
-        memset(distanceTable[i].data(), 0, (i + 1) * sizeof(int));
+        distanceMatrix.distanceTable.append(QVarLengthArray<int>(i + 1));
+        memset(distanceMatrix.distanceTable[i].data(), 0, (i + 1) * sizeof(int));
+        distanceMatrix.seqsUngappedLenghts.append(ma->getMsaRow(i)->getUngappedLength());
     }
+    distanceMatrix.alignmentLength = ma->getLength();
 }
 
-int MSADistanceAlgorithm::getSimilarity(int row1, int row2) {
+int MSADistanceAlgorithm::getSimilarity (int row1, int row2, bool _usePercents) {
     lock.lock();
-    int res = 0;
-    if(row2 > row1) {
-        res = distanceTable[row2][row1];
-    } else {
-        res = distanceTable[row1][row2];
-    }
+    int res = distanceMatrix.getSimilarity(row1, row2, _usePercents);
     lock.unlock();
     return res;
 }
 
+void MSADistanceAlgorithm::getMatrix(MSADistanceMatrix& _distanceMatrix, bool _usePercents) {
+    _distanceMatrix.distanceTable = distanceMatrix.distanceTable;
+    _distanceMatrix.usePercents = _usePercents;
+    _distanceMatrix.excludeGaps = distanceMatrix.excludeGaps;
+    _distanceMatrix.seqsUngappedLenghts = distanceMatrix.seqsUngappedLenghts;
+    _distanceMatrix.alignmentLength = distanceMatrix.alignmentLength;
+}
+
 void MSADistanceAlgorithm::setDistanceValue(int row1, int row2, int distance) {
-    if(row2 > row1) {
-        distanceTable[row2][row1] = distance;
+    if (row2 > row1) {
+        distanceMatrix.distanceTable[row2][row1] = distance;
     } else {
-        distanceTable[row1][row2] = distance;
+        distanceMatrix.distanceTable[row1][row2] = distance;
     }
 }
 
@@ -112,31 +117,23 @@ void MSADistanceAlgorithm::fillTable() {
     }
 }
 
-
-MSADistanceMatrix::MSADistanceMatrix(const MSADistanceAlgorithm *algo, bool _usePercents)
-: distanceTable(algo->distanceTable), usePercents(_usePercents), excludeGaps(false) {
-    excludeGaps = algo->getExcludeGapsFlag();
-    int nSeq = algo->ma->getNumRows();
-    alignmentLength = algo->ma->getLength();
-    for (int i = 0; i < nSeq; i++) {
-        seqsUngappedLenghts.append(algo->ma->getMsaRow(i)->getUngappedLength());
-    }
+MSADistanceMatrix::MSADistanceMatrix() 
+: usePercents(true), excludeGaps(false), alignmentLength(0) {
 }
 
-int MSADistanceMatrix::getSimilarity(int refRow, int row) {
+int MSADistanceMatrix::getSimilarity (int refRow, int row, bool _usePercents) {
     if (refRow >= distanceTable.size() || row >= distanceTable.size()) {
         return -1;
     }
-    if(usePercents) {
+    if (_usePercents) {
         int refSeqLength = excludeGaps ? seqsUngappedLenghts.at(refRow) : alignmentLength;
-        if(refRow > row) {
-            return distanceTable[refRow][row] * 100 / refSeqLength;
+        if (refRow > row) {
+            return qRound((double)distanceTable[refRow][row] * 100 / refSeqLength);
         } else {
-            return distanceTable[row][refRow] * 100 / refSeqLength;
+            return qRound((double)distanceTable[row][refRow] * 100 / refSeqLength);
         }
-    }
-    else {
-        if(refRow > row) {
+    } else {
+        if (refRow > row) {
             return distanceTable[refRow][row];
         } else {
             return distanceTable[row][refRow];

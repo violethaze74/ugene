@@ -72,8 +72,8 @@ QString MsaEditorSimilarityColumn::getTextForRow( int s ) {
     U2OpStatusImpl os;
     const int refSequenceIndex = ma->getRowIndexByRowId(referenceRowId, os);
     CHECK_OP(os, QString());
-
-    int sim = matrix->getSimilarity(refSequenceIndex, s);
+    
+    int sim = matrix->getSimilarity(refSequenceIndex, s, matrix->areUsePercents());
     CHECK(-1 != sim, tr("-"));
     const QString units = matrix->areUsePercents() ? "%" : "";
     return QString("%1").arg(sim) + units;
@@ -186,13 +186,14 @@ QList<Task*> CreateDistanceMatrixTask::onSubTaskFinished(Task* subTask){
         return res;
     }
     MSADistanceAlgorithm* algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
-    MSADistanceMatrix *matrix = new MSADistanceMatrix(algo, s.usePercents && s.excludeGaps);
+    MSADistanceMatrix *mx = new MSADistanceMatrix;
+    algo->getMatrix(*mx, s.usePercents && s.excludeGaps);
     if(NULL != algo) {
         if(algo->hasError()) {
             setError(algo->getError());
             return res;
         }
-        resMatrix = matrix;
+        resMatrix = mx;
     }
     return res;
 }
@@ -279,5 +280,3 @@ void MsaEditorAlignmentDependentWidget::sl_onFontChanged(const QFont& font) {
 }
 
 } //namespace
-
-
