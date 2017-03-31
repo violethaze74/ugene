@@ -112,6 +112,8 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MaEditorWgt *_ui)
 
     setupFontAndHeight();
 
+    connect(editor, SIGNAL(si_fontChanged(QFont)), SLOT(setupFontAndHeight()));
+
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
 
@@ -549,7 +551,6 @@ void MSAEditorConsensusArea::setupFontAndHeight() {
     rulerFont.setPointSize(qMax(8, int(ui->getEditor()->getFont().pointSize() * 0.7)));
     rulerFontHeight = QFontMetrics(rulerFont,this).height();
     setFixedHeight( getYRange(MSAEditorConsElement_RULER).endPos() + 1);
-
 }
 
 void MSAEditorConsensusArea::sl_zoomOperationPerformed( bool resizeModeChanged )

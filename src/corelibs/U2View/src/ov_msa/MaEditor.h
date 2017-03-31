@@ -155,7 +155,7 @@ protected:
     QAction*          zoomToSelectionAction;
     QAction*          showOverviewAction;
     QAction*          changeFontAction;
-    QAction*          resetFontAction;
+    QAction*          resetZoomAction;
     QAction*          saveScreenshotAction;
     QAction*          exportHighlightedAction;
 };
