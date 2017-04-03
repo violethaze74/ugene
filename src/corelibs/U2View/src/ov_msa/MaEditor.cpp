@@ -92,9 +92,9 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     zoomToSelectionAction->setObjectName("Zoom To Selection");
     connect(zoomToSelectionAction, SIGNAL(triggered()), SLOT(sl_zoomToSelection()));
 
-    resetFontAction = new QAction(QIcon(":core/images/zoom_whole.png"), tr("Reset Zoom"), this);
-    resetFontAction->setObjectName("Reset Zoom");
-    connect(resetFontAction, SIGNAL(triggered()), SLOT(sl_resetZoom()));
+    resetZoomAction = new QAction(QIcon(":core/images/zoom_whole.png"), tr("Reset Zoom"), this);
+    resetZoomAction->setObjectName("Reset Zoom");
+    connect(resetZoomAction, SIGNAL(triggered()), SLOT(sl_resetZoom()));
 
     changeFontAction = new QAction(QIcon(":core/images/font.png"), tr("Change Font"), this);
     changeFontAction->setObjectName("Change Font");
@@ -132,7 +132,7 @@ void MaEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(zoomInAction);
     tb->addAction(zoomOutAction);
     tb->addAction(zoomToSelectionAction);
-    tb->addAction(resetFontAction);
+    tb->addAction(resetZoomAction);
 
     tb->addAction(showOverviewAction);
     tb->addAction(changeFontAction);
@@ -343,7 +343,8 @@ void MaEditor::sl_saveAlignmentAs(){
 
 void MaEditor::sl_changeFont() {
     bool ok = false;
-    QFont f = QFontDialog::getFont(&ok, font, widget, tr("Select font for alignment"));
+    // QFontDialog::DontUseNativeDialog - no color selector, affects only Mac OS
+    QFont f = QFontDialog::getFont(&ok, font, widget, tr("Select font for alignment"), QFontDialog::DontUseNativeDialog);
     if (!ok) {
         return;
     }

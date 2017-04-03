@@ -116,6 +116,8 @@ private slots:
     void sl_configureConsensusAction();
     void sl_zoomOperationPerformed(bool resizeModeChanged);
 
+    void setupFontAndHeight();
+
 public:
     void drawContent(QPainter& painter);
 
@@ -126,7 +128,7 @@ private:
     QString getThresholdSettingsKey(const QString& factoryId) const;
 
     void buildMenu(QMenu* m);
-    void setupFontAndHeight();
+
     void updateSelection(int newPos);
 
     void drawConsensus(QPainter& p);

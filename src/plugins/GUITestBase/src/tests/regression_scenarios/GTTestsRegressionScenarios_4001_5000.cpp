@@ -4157,7 +4157,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_1) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: "No colors" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "Nucleotide UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "Nucleotide UGENE");
@@ -4188,7 +4188,7 @@ GUI_TEST_CLASS_DEFINITION(test_4719_2) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence to this alignment");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: "No colors" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "Amino UGENE" color scheme is selected, "Amino UGENE" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "Amino UGENE");
@@ -4711,7 +4711,7 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    //    Expected state: "No colors" color scheme is selected, "No highlighting" highlight scheme is selected
+    //    Expected state: "Nucleotide UGENE" color scheme is selected, "No highlighting" highlight scheme is selected
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
     QComboBox* highlightingScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "Nucleotide UGENE");

@@ -223,7 +223,7 @@ void CoreLib::init() {
 
             QVariantMap m;
             foreach( const DocumentFormatId & fid, supportedFormats ) {
-                m[fid] = fid;
+                m[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
             }
             proto->getEditor()->addDelegate(new ComboBoxDelegate(m), BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
             proto->setPrompter(new WriteDocPrompter(tr("Save all MSAs from <u>%1</u> to <u>%2</u>."), BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()));
@@ -268,7 +268,7 @@ void CoreLib::init() {
 
             QVariantMap m;
             foreach( const DocumentFormatId & fid, supportedFormats ) {
-                m[fid] = fid;
+                m[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
             }
 
             ComboBoxDelegate *comboDelegate = new ComboBoxDelegate(m);
