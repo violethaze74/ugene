@@ -68,6 +68,7 @@ Document* DocumentFormat::createNewLoadedDocument(IOAdapterFactory* iof, const G
         hints, QString());
     doc->setLoaded(true);
     doc->setDocumentOwnsDbiResources(true);
+    doc->setModificationTrack(!checkFlags(DocumentFormatFlag_DirectWriteOperations));
     return doc;
 }
 
@@ -79,6 +80,7 @@ Document* DocumentFormat::createNewUnloadedDocument(IOAdapterFactory* iof, const
     Q_UNUSED(os);
     U2DbiRef dbiRef = (hints[DocumentFormat::DBI_REF_HINT]).value<U2DbiRef>();
     Document* doc = new Document(this, iof, url, dbiRef, info, hints, instanceModLockDesc);
+    doc->setModificationTrack(!checkFlags(DocumentFormatFlag_DirectWriteOperations));
     return doc;
 }
 
@@ -505,6 +507,7 @@ void Document::loadFrom(Document* sourceDoc) {
 
     dbiRef = sourceDoc->dbiRef;
     documentOwnsDbiResources = sourceDoc->isDocumentOwnsDbiResources();
+    trackModifications = sourceDoc->isModificationTracked();
     sourceDoc->dbiRef = U2DbiRef();
     sourceDoc->setDocumentOwnsDbiResources(false);
 
